@@ -30,6 +30,232 @@ the user's long-lived memory artifact.
 - `meta/workflows/`: Human-readable workflows for ingest, query, lint, and
   contradiction handling.
 - `tools/`: Small dependency-free helper scripts.
+- Clash95 HD mod files in the repository root are engineering artifacts for the
+  Windows game patching work. Keep patched executables uniquely named
+  `clash95_*.exe`; do not overwrite the original `C:\Clash\clash95.exe` unless
+  the user explicitly asks.
+- Keep only one freshest `.exe` artifact in the repository. Do not accumulate
+  old patched executables, experiment builds, or copied game binaries in git;
+  document the useful result in notes, keep the newest handoff executable, and
+  remove stale `.exe` files before committing. Temporary test executables may
+  live in `C:\Clash` while debugging.
+
+## Clash95 HD Debugging Workflow
+
+The game is a 32-bit Windows executable. Prefer x86 debugging tools and run
+patched executables from `C:\Clash` so the game can find its data files.
+
+Use this default loop for engine patch work:
+
+1. Build or copy a uniquely named patched executable, for example
+   `clash95_hdmap12_novswitch_relinput.exe`.
+2. Place or run it under `C:\Clash` with `C:\Clash` as the working directory.
+3. Kill stale game/debugger instances before each automated run unless the task
+   is specifically about attaching to an existing process.
+4. Skip the startup animation before judging menu or input behavior. The current
+   automation sends repeated center clicks plus `Space` pulses for this.
+5. Verify visuals with frame dumps first, then verify crashes/input with CDB
+   probes. PowerShell `SendInput`/`PostMessage` clicks are useful test signals
+   but are not proof that manual DirectInput mouse behavior works.
+6. Stop any newly launched game/debugger process before ending the task.
+
+Preferred headless debugger:
+
+- Use x86 CDB at
+  `C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe`.
+- Use `.cdb` scripts in this repository for repeatable probes.
+- x32dbg is useful for interactive GUI investigation, but CDB is the practical
+  choice for repeatable headless logs.
+
+Useful commands:
+
+```powershell
+.\run_cdb_menu_probe.ps1 `
+  -Exe 'C:\Clash\clash95_hdmap12_novswitch_relinput.exe' `
+  -Probe .\clash95_hd_crash_probe.cdb `
+  -Log 'C:\Clash\hd-cdb-menu.log' `
+  -RunSeconds 10
+```
+
+```powershell
+.\run_cdb_mouse_probe.ps1 `
+  -Exe 'C:\Clash\clash95_hdcentered_hitboxes.exe' `
+  -Log 'C:\Clash\hd-cdb-mouse-probe.log' `
+  -NoWait
+```
+
+```powershell
+.\run_clash_test.ps1 `
+  -Exe 'C:\Clash\clash95_hddisplay_absinput.exe' `
+  -Probe `
+  -MenuWaitSec 8 `
+  -AutoCloseSec 5
+```
+
+If a run hangs, clean up with a targeted process kill:
+
+```powershell
+Get-Process -ErrorAction SilentlyContinue |
+  Where-Object {
+    $_.ProcessName -like 'clash95*' -or
+    $_.ProcessName -eq 'cdb'
+  } |
+  Stop-Process -Force -ErrorAction SilentlyContinue
+```
+
+## Clash95 Frame Dumping And Click Tests
+
+Use `test_clash_menu_click.ps1` as the main visual regression harness. It starts
+the target executable, optionally copies it into `C:\Clash`, kills old
+`clash95*`/`cdb` processes by default, skips the intro animation, captures
+before/after PNG frames, attempts a menu click, writes `results.json` and
+`results.csv`, and kills the new instance when done.
+
+Typical HD menu check:
+
+```powershell
+.\test_clash_menu_click.ps1 `
+  -Exe .\clash95_hdmap12_novswitch_relinput.exe `
+  -WorkDir 'C:\Clash' `
+  -Click centered-exit `
+  -MenuWaitSec 6 `
+  -SurfaceWidth 800 `
+  -SurfaceHeight 600 `
+  -ClickMode SendInput
+```
+
+Multi-executable comparison:
+
+```powershell
+.\test_clash_menu_click.ps1 `
+  -Exe .\clash95_hdmenu_centered_safe_absinput.exe,.\clash95_hdmap12_novswitch_relinput.exe `
+  -Click native-exit,centered-exit `
+  -SurfaceWidth 800 `
+  -SurfaceHeight 600
+```
+
+Frame dump outputs are written under `captures/clicktest-YYYYMMDD-HHMMSS/`.
+Inspect:
+
+- `before.png` for final menu placement after intro skipping.
+- `after.png` for click result when the process remains alive.
+- `results.csv` or `results.json` for `ClientWidth`, `ClientHeight`,
+  `RenderX`, `RenderY`, `RenderScale`, capture dimensions, hashes,
+  `ChangedPercent`, `ExitedAfterClick`, `Passed`, and `Error`.
+
+Use `-CaptureFullClient` when debugging letterboxing, window sizing, or scaling.
+Without it, the harness captures the logical rendered surface derived from
+`-SurfaceWidth` and `-SurfaceHeight`.
+
+Use `capture_clash_window.ps1` for a one-off screenshot of an already visible
+game window:
+
+```powershell
+.\capture_clash_window.ps1 `
+  -ProcessName clash95_hdmap12_novswitch_relinput `
+  -Output 'C:\Clash\clash-window.png' `
+  -WaitSec 2
+```
+
+Frame dumping limitations:
+
+- The first visible state may be the startup animation, not the menu. Keep the
+  skip-click/skip-key pulses enabled unless intentionally testing the intro.
+- `SendInput` or `PostMessage` failures can be artifacts of how the game reads
+  input. Treat them as automation results, then confirm real input issues with
+  manual testing or CDB/memory probes.
+- Cursor position can change frame hashes. Prefer visible placement and
+  geometry checks over hash equality alone.
+- Keep `captures/` results when they document an important regression or fix;
+  otherwise summarize the important run in notes before pruning.
+
+## Clash95 HD Mod Development Aids
+
+Future work should favor small, repeatable probes over long manual debugging
+sessions. Add helper scripts when a question will recur more than once.
+
+High-value debugger probes:
+
+- DirectDraw lifecycle probe: log calls around display mode setup, primary/back
+  surface creation, blits, flips, pitch, width, height, and surface pointers.
+  This helps separate "window/client size is right" from "render surface or blit
+  rectangle is still native 640x480".
+- DirectInput and Win32 mouse probe: log raw cursor coordinates, translated game
+  coordinates, clip bounds, button state, and any writes to mouse globals. Use
+  this when the cursor snaps to the upper-left corner or clicks work while
+  movement feels wrong.
+- Viewport global write probe: use CDB hardware breakpoints such as `ba w4` on
+  suspected viewport width, height, scroll, origin, and clamp variables once
+  their addresses are known. Record the writer address, register state, and
+  nearby disassembly.
+- Crash triage probe: run CDB with first-chance access violation handling, then
+  dump `.ecxr`, `r`, `kv`, `ub eip`, `u eip`, and any relevant surface/viewport
+  globals. Save the log next to the frame dump that triggered the crash.
+- Patch-offset verifier: before launching a patched executable, assert the
+  expected original bytes or patched bytes at every known offset. Refuse to run
+  when the file hash or byte pattern does not match the patch script's expected
+  baseline.
+- CDB log parser: convert repeated `.printf` debugger output into CSV/JSON so
+  coordinate, surface, and crash probes can be compared across executables.
+
+High-value frame dumping improvements:
+
+- Golden baseline set: keep one native 640x480 menu frame and one last-known-good
+  HD menu/gameplay frame. Compare new runs against both, using masks for the
+  cursor and animated regions.
+- Geometry analyzer: write a small script that reads `before.png` and reports
+  black-bar bounds, rendered-surface bounds, menu panel bounds, and approximate
+  button centers. This would catch "menu is correct but shifted down/right"
+  without relying on eyeballing screenshots.
+- Full-client plus logical-surface captures: run important tests once with the
+  default logical HD surface capture and once with `-CaptureFullClient`. The pair
+  reveals whether a bug is in engine rendering, window scaling, or letterboxing.
+- Frame manifest: store executable name, SHA256, patch group names, command
+  line, client size, render size, skip settings, click mode, and timestamp beside
+  every capture directory.
+- Visual diff summaries: create a small diff image or crop sheet for before vs
+  after frames, focused on menu buttons, right map edge, bottom map edge, and
+  cursor region.
+- Gameplay tile-count frames: capture deterministic map/gameplay views and count
+  visible tile rows/columns or tile-center markers. Use this to prove the HD mod
+  draws additional map tiles rather than only enlarging the window.
+
+High-value automated tests:
+
+- Smoke test matrix: maintain a simple JSON or CSV list of patched executables,
+  expected client size, expected logical surface size, click points, and expected
+  outcome. Have `test_clash_menu_click.ps1` or a wrapper run the matrix.
+- Startup/menu test: launch, kill stale instances, skip intro, capture menu, and
+  assert no crash, expected client size, expected render bounds, and centered menu
+  geometry.
+- Input sanity test: after the menu is visible, move/click a few known points and
+  check CDB/memory logs for plausible translated coordinates. Do not rely only on
+  `SendInput` exit-click success.
+- Map viewport test: enter or load a deterministic game state, capture a gameplay
+  frame, and validate that right/bottom edge tiles are drawn and selectable.
+- Scroll/clamp test: drive scrolling toward every map edge and confirm the camera
+  clamps cleanly without old 640x480 limits, wrapped coordinates, or blank
+  regions.
+- Center-on-unit test: trigger any function that recenters the camera on a unit
+  and verify the viewport math uses the HD dimensions.
+- Regression gate: for each patch group, run the patch verifier, menu smoke
+  test, frame dump comparison, CDB crash probe, and a short manual mouse check
+  before calling the patch stable.
+
+Development notes for future agents:
+
+- Keep patch groups separable. A small patch that only changes surface/display
+  dimensions is easier to debug than a combined surface, menu, input, and map
+  patch.
+- Record original bytes, patched bytes, addresses, and rationale in
+  `CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md` whenever a patch changes.
+- When a test fails, preserve the exact executable, frame directory, CDB log, and
+  command used. The failure artifact is often more valuable than another manual
+  run.
+- Prefer adding deterministic helpers to the repo over depending on chat memory.
+  Useful candidates are `tools/verify_patch_bytes.py`,
+  `tools/analyze_capture_geometry.py`, `tools/compare_frame_sets.py`, and
+  `tools/parse_cdb_probe_log.py`.
 
 ## Safety Rules For Raw Sources
 
@@ -221,4 +447,3 @@ An agent maintenance task is done when:
 When the workflow evolves, update `AGENTS.md` in the same change as the workflow
 or tool update. Future agents should not have to reconstruct project rules from
 chat history.
-
