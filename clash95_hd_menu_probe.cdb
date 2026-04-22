@@ -1,0 +1,9 @@
+.logopen /t C:\Clash\hd-cdb-menu.log
+.echo === Clash95 HD menu/input probe ===
+.echo ignoring first-chance access violations from legacy init paths
+sxd av
+.echo logging sub_460D80 menu/default viewport switches
+bp 00460D80 ".if (@edx==005196a0) { .printf \"sub_460D80 default eax=%p edx=%p cur=(%x,%x) raw=(%x,%x) clamp=(%x,%x,%x,%x) active=%p shown=%x\n\", @eax, @edx, poi(@eax), poi(@eax+4), poi(@eax+24), poi(@eax+28), poi(@eax+10), poi(@eax+14), poi(@eax+18), poi(@eax+1c), poi(@eax+3c), poi(00544d10); dd @edx L0a; } .else { .if (@edx==00519808) { .printf \"sub_460D80 map eax=%p edx=%p cur=(%x,%x) raw=(%x,%x) clamp=(%x,%x,%x,%x) active=%p shown=%x\n\", @eax, @edx, poi(@eax), poi(@eax+4), poi(@eax+24), poi(@eax+28), poi(@eax+10), poi(@eax+14), poi(@eax+18), poi(@eax+1c), poi(@eax+3c), poi(00544d10); dd @edx L0a; } } ; g"
+.echo logging first Render_Present calls
+bp 00460EA0 ".printf \"Render_Present eax=%p cur=(%x,%x) raw=(%x,%x) logical=(%x,%x) active=%p shown=%x\n\", @eax, poi(@eax), poi(@eax+4), poi(@eax+24), poi(@eax+28), poi(@eax+30), poi(@eax+34), poi(@eax+3c), poi(00544d10); .if (poi(@eax+3c)!=0) { dd poi(@eax+3c) L0a; } ; g"
+g

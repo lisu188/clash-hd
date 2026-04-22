@@ -1,0 +1,15 @@
+.echo === Clash95 HD exit probe ===
+.echo breaks on explicit process-exit paths so the caller stack is visible
+sxd av
+sxd gp
+bu kernel32!ExitProcess ".printf \"KERNEL32_EXITPROCESS code=%x\n\", poi(@esp+4); r; kv; q"
+bu kernelbase!ExitProcess ".printf \"KERNELBASE_EXITPROCESS code=%x\n\", poi(@esp+4); r; kv; q"
+bu ntdll!RtlExitUserProcess ".printf \"RTL_EXITUSERPROCESS code=%x\n\", poi(@esp+4); r; kv; q"
+bu msvcrt!exit ".printf \"MSVCRT_EXIT code=%x\n\", poi(@esp+4); r; kv; q"
+bu msvcrt!_exit ".printf \"MSVCRT__EXIT code=%x\n\", poi(@esp+4); r; kv; q"
+g
+.echo === DEBUG STOP ===
+.lastevent
+r
+kv
+q

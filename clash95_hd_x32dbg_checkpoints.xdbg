@@ -1,0 +1,14 @@
+log "Clash95 HD checkpoint script loaded"
+log "Expected patched boot: 800x600 window/DDraw, 12x9 adventure tiles"
+
+bp 00461AAC
+bp 004046D0
+bp 0047514B
+bp 0046052C
+bp 00460E11
+bp 00406FA0
+bp 00406FE7
+bp 00407021
+bp 00407B90
+
+erun

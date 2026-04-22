@@ -1,0 +1,32 @@
+# OS/editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# Python temporary files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Logs and temporary output
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Obsidian local workspace/cache files. Markdown notes are not ignored.
+.obsidian/workspace*
+.obsidian/cache/
+.trash/
+

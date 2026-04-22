@@ -1,0 +1,12 @@
+.echo === Clash95 HD CDB boot probe ===
+.echo Target: C:\Clash\clash95_hdgameplay.exe
+.echo Expected: window/DDraw/render object 800x600 (0x320 x 0x258)
+.echo
+
+bp 00461AC7 ".echo --- CreateWindowExA call @00461AC7 ---; .printf \"CreateWindowExA width=%x height=%x x=%x y=%x style=%x\n\", poi(esp+18), poi(esp+1c), poi(esp+10), poi(esp+14), poi(esp+c); dd esp L0n12; g"
+bp 004046D0 ".echo --- Render_SetPixelFormat entry @004046D0 ---; .printf \"render_obj=%p first_dword(width|height?)=%x ecx=%x ebx=%x\n\", eax, poi(eax), ecx, ebx; dw eax L0n8; g"
+bp 0046052C ".echo --- viewport setup callsite @0046052C ---; .printf \"eax(obj)=%p ebx=%x ecx=%x edx=%x stack0=%x\n\", eax, ebx, ecx, edx, poi(esp); dd esp L0n8; g"
+bp 00460E11 ".echo --- viewport reapply callsite @00460E11 ---; .printf \"eax(obj)=%p ebx=%x ecx=%x edx=%x stack0=%x\n\", eax, ebx, ecx, edx, poi(esp); dd esp L0n8; g"
+bp 0047514B ".echo --- DirectDraw SetDisplayMode call @0047514B ---; .printf \"this=%p width=%x height=%x bpp=%x refresh=%x flags=%x\n\", poi(esp), poi(esp+4), poi(esp+8), poi(esp+c), poi(esp+10), poi(esp+14); dd esp L0n8; q"
+
+g
