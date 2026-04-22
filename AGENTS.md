@@ -103,6 +103,99 @@ Get-Process -ErrorAction SilentlyContinue |
   Stop-Process -Force -ErrorAction SilentlyContinue
 ```
 
+## Clash95 Ghidra Workflow
+
+Use Ghidra for static analysis and decompiler-assisted patch discovery. Use CDB
+for runtime proof. Treat Ghidra addresses as virtual addresses until converted
+and verified against original executable bytes.
+
+Known local reverse-engineering artifacts:
+
+- `C:\Clash\reverse\README.md`: notes for the current Ghidra export.
+- `C:\Clash\reverse\ghidra\ExportClash95Facts.java`: headless post-script that
+  applies names from `clash95.map` and exports metadata, imports, functions, and
+  selected decompilation.
+- `C:\Clash\reverse\ghidra-out\metadata.txt`: image base, language, entry
+  points, and memory blocks. Current export says image base `00400000`,
+  language `x86:LE:32:default`, compiler spec `windows`.
+- `C:\Clash\reverse\ghidra-out\imports.csv`: imported Win32, DirectX, AVI, and
+  audio symbols.
+- `C:\Clash\reverse\ghidra-out\functions.csv`: function inventory after applying
+  map names. Current export has 3,204 analyzed functions.
+- `C:\Clash\reverse\ghidra-out\selected_decompilation.c`: decompiler output for
+  selected high-value functions.
+
+Find a Windows Ghidra install with:
+
+```powershell
+Get-ChildItem 'C:\Program Files','C:\Program Files (x86)','C:\Tools',$env:LOCALAPPDATA,$env:ProgramData `
+  -Recurse -Filter analyzeHeadless.bat -ErrorAction SilentlyContinue |
+  Select-Object -First 10 FullName
+```
+
+If `analyzeHeadless.bat` is not found, ask the user for the exact Ghidra install
+path. Do not assume `winget install --id NSA.Ghidra` works; that package id may
+not exist on the user's winget source.
+
+Headless export command once the Ghidra path is known:
+
+```powershell
+$GhidraHeadless = 'C:\Path\To\ghidra_XX.X_PUBLIC\support\analyzeHeadless.bat'
+& $GhidraHeadless `
+  'C:\Clash\reverse\ghidra-projects' `
+  'clash95' `
+  -import 'C:\Clash\clash95.exe' `
+  -overwrite `
+  -scriptPath 'C:\Clash\reverse\ghidra' `
+  -postScript ExportClash95Facts.java 'C:\Clash\clash95.map' 'C:\Clash\reverse\ghidra-out'
+```
+
+GUI workflow:
+
+1. Start `ghidraRun.bat`.
+2. Create or open a project under `C:\Clash\reverse\ghidra-projects`.
+3. Import `C:\Clash\clash95.exe`; Ghidra should identify it as a 32-bit Windows
+   PE, `x86:LE:32:default:windows`.
+4. Run default analysis.
+5. Run `ExportClash95Facts.java` with arguments
+   `C:\Clash\clash95.map C:\Clash\reverse\ghidra-out`.
+6. Use the Symbol Tree, Decompiler, Function Graph, Defined Strings, and
+   References views to investigate viewport, DirectDraw, DirectInput, menu, and
+   tile-drawing code.
+
+How to use Ghidra results for the HD mod:
+
+- Start from `imports.csv` to find DirectDraw and DirectInput call sites, then
+  inspect callers in Ghidra.
+- Search `functions.csv` and the Symbol Tree for known names such as
+  `Render_CreateSurface`, `PlayGame`, `PlayGame_Dispatch`, AVI startup
+  functions, menu functions, map loading, and drawing helpers.
+- Add newly discovered high-value function names to `SELECTED_NAMES` in
+  `ExportClash95Facts.java`, rerun headless export, and inspect the refreshed
+  `selected_decompilation.c`.
+- Use Ghidra virtual addresses directly for CDB breakpoints when the module is
+  loaded at its normal base, for example `bp 00401020`.
+- Never patch by virtual address alone. Convert VA to file offset using PE
+  section headers or an offset helper, then verify expected original bytes before
+  writing a patch.
+- Record function names, Ghidra addresses, file offsets, original bytes, patched
+  bytes, and rationale in `CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md`.
+- For each candidate patch, connect the evidence chain: Ghidra decompilation
+  suggests the constant/global, CDB proves it is reached at runtime, frame dumps
+  prove the visual/input effect.
+
+Useful future Ghidra helpers:
+
+- Extend `ExportClash95Facts.java` to export references to constants `640`,
+  `480`, `800`, `600`, DirectDraw calls, DirectInput calls, and writes to known
+  viewport globals.
+- Add an export for function call graph edges around render/menu/input
+  functions.
+- Add a CSV with `virtual_address`, `rva`, `section`, and `file_offset` for
+  patch candidates.
+- Add a targeted decompile script that accepts function names or addresses so
+  agents can refresh only the functions currently under investigation.
+
 ## Clash95 Frame Dumping And Click Tests
 
 Use `test_clash_menu_click.ps1` as the main visual regression harness. It starts
