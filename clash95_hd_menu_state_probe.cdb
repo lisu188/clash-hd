@@ -1,0 +1,7 @@
+.echo === Clash95 HD menu placement probe ===
+.echo logging 00460D80 viewport switches and 00460EA0 presents
+sxd av
+r @$t0 = 0
+bp 00460D80 ".if (@edx==005196a0) { .printf \"SWITCH_MENU eax=%p raw=(%d,%d) viewport=(%d,%d) clamp=(%d,%d,%d,%d) active=%p shown=%d desc=\n\", @eax, poi(@eax+24), poi(@eax+28), poi(@eax+30), poi(@eax+34), poi(@eax+10), poi(@eax+14), poi(@eax+18), poi(@eax+1c), poi(@eax+3c), poi(00544d10); dd @edx L0a; } .else { .if (@edx==00519808) { .printf \"SWITCH_MAP eax=%p raw=(%d,%d) viewport=(%d,%d) active=%p shown=%d desc=\n\", @eax, poi(@eax+24), poi(@eax+28), poi(@eax+30), poi(@eax+34), poi(@eax+3c), poi(00544d10); dd @edx L0a; } } ; g"
+bp 00460EA0 ".printf \"PRESENT eax=%p raw=(%d,%d) viewport=(%d,%d) active=%p shown=%d\n\", @eax, poi(@eax+24), poi(@eax+28), poi(@eax+30), poi(@eax+34), poi(@eax+3c), poi(00544d10); .if (poi(@eax+3c)!=0) { dd poi(@eax+3c) L0a; } .if (poi(@eax+3c)==005196a0) { r @$t0 = @$t0 + 1; .if (@$t0 >= 3) { q } .else { g } } .else { g }"
+g

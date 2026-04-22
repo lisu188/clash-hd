@@ -1,0 +1,13 @@
+.echo === Clash95 HD crash probe ===
+.echo continuing past startup - second chance crashes should dump context below
+sxd av
+sxd gp
+g
+.echo === DEBUG STOP ===
+.lastevent
+r
+kv
+.ecxr
+r
+kv
+q

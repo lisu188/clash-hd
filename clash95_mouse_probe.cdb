@@ -1,0 +1,10 @@
+.echo Clash95 mouse/menu probe loaded.
+.echo Move the mouse over visible menu buttons, left/right click once, then close the game.
+.echo Log fields: x/y are game coordinates after scaling. dx/dy and lbtn/rbtn are DirectInput state.
+sxd av
+r @$t0 = -1
+r @$t1 = -1
+r @$t2 = -1
+r @$t3 = -1
+bp 00419B80 ".if (((((poi(00544cfc) >> by(0054512c)) != @$t0) + ((poi(00544d00) >> by(0054512c)) != @$t1) + (by(005451c0) != @$t2) + (by(005451c8) != @$t3)) != 0)) { .printf \"MENUHIT x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d lbtn=0x%02x rbtn=0x%02x mask=%d min=(%d,%d) max=(%d,%d) entry=0x%08x ex=%d ey=%d\\n\", (poi(00544cfc) >> by(0054512c)), (poi(00544d00) >> by(0054512c)), poi(00544cfc), poi(00544d00), poi(005451a8), poi(005451ac), by(0054512c), by(005451c0), by(005451c8), poi(00544d04), (poi(00544ce8) >> by(0054512c)), (poi(00544cec) >> by(0054512c)), (poi(00544cf0) >> by(0054512c)), (poi(00544cf4) >> by(0054512c)), @eax, poi(@eax), poi(@eax+4); r @$t0 = (poi(00544cfc) >> by(0054512c)); r @$t1 = (poi(00544d00) >> by(0054512c)); r @$t2 = by(005451c0); r @$t3 = by(005451c8); }; gc"
+g
