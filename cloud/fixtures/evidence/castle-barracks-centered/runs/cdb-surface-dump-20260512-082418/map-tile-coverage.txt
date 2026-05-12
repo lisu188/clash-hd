@@ -1,0 +1,2 @@
+map_tile_coverage.py skipped by -SkipMapValidation
+Use this only for non-map UI surfaces where gameplay tile coverage is the wrong validator.

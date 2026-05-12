@@ -1,0 +1,7 @@
+.echo === Clash95 dword_526994 minimal setup-owner probe ===
+.echo CDB-only minimal setup probe for run_cdb_surface_dump hidden desktop route
+
+bp 00423760 ".printf \"D526994_OWNER_423760_ENTRY ret=%p arg_eax=%p callback=%p flag526994=%p gd=%p gameplay=%d\\n\", poi(@esp), @eax, poi(00526990), poi(00526994), poi(005202e4), @$t14; gc"
+bp 00423B00 ".printf \"D526994_OWNER_423B00_ENTRY ret=%p callback=%p flag526994=%p gd=%p gameplay=%d\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e4), @$t14; gc"
+bp 00423B40 ".printf \"D526994_OWNER_423B40_ENTRY ret=%p callback=%p flag526994=%p gd=%p gameplay=%d\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e4), @$t14; gc"
+bp 004187A0 ".if (@$t14 != 0) { .printf \"D526994_MIN_CALLBACK_TEST ret=%p callback=%p flag526994=%p surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"

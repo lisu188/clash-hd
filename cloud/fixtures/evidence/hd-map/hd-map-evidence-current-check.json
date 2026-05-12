@@ -1,0 +1,91 @@
+{
+  "index": "<SOURCE_REPO>\\captures\\hd-map-evidence-current.md",
+  "counts": {
+    "links": 6,
+    "images": 2,
+    "local_records": 8,
+    "missing": 0,
+    "image_missing": 0,
+    "image_wrong_extension": 0
+  },
+  "links": [
+    {
+      "kind": "link",
+      "target": "hd-map-smoke-current.md",
+      "cleaned": "hd-map-smoke-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\hd-map-smoke-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "post-owner-evidence-current.md",
+      "cleaned": "post-owner-evidence-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\post-owner-evidence-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "patch-manifest-compare-current-vs-partial12.md",
+      "cleaned": "patch-manifest-compare-current-vs-partial12.md",
+      "resolved": "<SOURCE_REPO>\\captures\\patch-manifest-compare-current-vs-partial12.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-map-evidence-current-check.json",
+      "cleaned": "hd-map-evidence-current-check.json",
+      "resolved": "<SOURCE_REPO>\\captures\\hd-map-evidence-current-check.json",
+      "exists": true,
+      "extension": ".json",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
+      "cleaned": "cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260506-190037\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260506-201114/RUN-SUMMARY.md",
+      "cleaned": "cdb-surface-dump-20260506-201114/RUN-SUMMARY.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260506-201114\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    }
+  ],
+  "images": [
+    {
+      "kind": "image",
+      "target": "<SOURCE_REPO>/captures/cdb-surface-dump-20260506-190037/surface.png",
+      "cleaned": "<SOURCE_REPO>/captures/cdb-surface-dump-20260506-190037/surface.png",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260506-190037\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "<SOURCE_REPO>/captures/cdb-surface-dump-20260506-201114/surface.png",
+      "cleaned": "<SOURCE_REPO>/captures/cdb-surface-dump-20260506-201114/surface.png",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260506-201114\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    }
+  ],
+  "missing": [],
+  "image_missing": [],
+  "image_wrong_extension": [],
+  "passed": true
+}

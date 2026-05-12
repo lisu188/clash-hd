@@ -1,0 +1,9 @@
+.echo === Clash95 mouse state probe ===
+.echo logs sub_460A50 updates after raw mouse deltas are applied
+sxd av
+r @$t0 = -999999
+r @$t1 = -999999
+r @$t2 = -999999
+r @$t3 = -999999
+bp 00460A9D ".if ((poi(005451a8) != @$t0) + (poi(005451ac) != @$t1) + (poi(@edx+24) != @$t2) + (poi(@edx+28) != @$t3)) { .printf \"MOUSE obj=%p x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d speed=%d buttons=%d lbtn=0x%02x rbtn=0x%02x min=(%d,%d) max=(%d,%d)\\n\", @edx, (poi(@edx+24) >> by(@edx+454)), (poi(@edx+28) >> by(@edx+454)), poi(@edx+24), poi(@edx+28), poi(005451a8), poi(005451ac), by(@edx+454), poi(@edx+20), poi(@edx+2c), by(005451c0), by(005451c8), (poi(@edx+10) >> by(@edx+454)), (poi(@edx+14) >> by(@edx+454)), (poi(@edx+18) >> by(@edx+454)), (poi(@edx+1c) >> by(@edx+454)); r @$t0 = poi(005451a8); r @$t1 = poi(005451ac); r @$t2 = poi(@edx+24); r @$t3 = poi(@edx+28); }; gc"
+g

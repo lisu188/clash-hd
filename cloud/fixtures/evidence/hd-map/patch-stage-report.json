@@ -1,0 +1,121 @@
+{
+  "passed": true,
+  "exe": "C:\\ClashTests\\cdb-post-owner-forced-visible\\clash95_hd_surfdump_20260506_201114.exe",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "patches": {
+    "patched": 118,
+    "original": 0,
+    "unexpected": 0,
+    "total": 118
+  },
+  "map": {
+    "stage_groups": [
+      "input-bounds",
+      "viewport-init",
+      "viewport-switch-dynamic-surface",
+      "main-loops",
+      "full-redraw-12x9",
+      "full-redraw-present-bounds-800",
+      "minimap-right-clip",
+      "minimap-hd-right-anchor",
+      "helpers",
+      "map-surface-upgrade-scrollclamp"
+    ],
+    "visible_tiles": {
+      "x": 12,
+      "y": 9
+    },
+    "main_loops_12x9": true,
+    "full_redraw_12x9": true,
+    "full_redraw_present_bounds_800": true,
+    "minimap_right_clip": true,
+    "minimap_hd_right_anchor": true,
+    "helpers_12x9": true,
+    "input_bounds_800x600": true,
+    "viewport_init_800x600": true,
+    "viewport_switch_800x600": true,
+    "viewport_switch_dynamic_surface": true,
+    "menu_safe_viewport_switch": false,
+    "saved_scroll_restore_clamp": true,
+    "map_surface_upgrade_after_menu": true
+  },
+  "current_hd_map_gate": {
+    "passed": true,
+    "failures": [],
+    "checks": {
+      "visible_tiles_12x9": {
+        "expected": {
+          "x": 12,
+          "y": 9
+        },
+        "actual": {
+          "x": 12,
+          "y": 9
+        },
+        "passed": true
+      },
+      "main_loops_12x9": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "full_redraw_12x9": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "full_redraw_present_bounds_800": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "minimap_right_clip": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "minimap_hd_right_anchor": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "helpers_12x9": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "input_bounds_800x600": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "viewport_init_800x600": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "viewport_switch_800x600": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "viewport_switch_dynamic_surface": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "saved_scroll_restore_clamp": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      },
+      "map_surface_upgrade_after_menu": {
+        "expected": true,
+        "actual": true,
+        "passed": true
+      }
+    }
+  },
+  "failures": []
+}

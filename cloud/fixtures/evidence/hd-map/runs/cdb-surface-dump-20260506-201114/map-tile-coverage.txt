@@ -1,0 +1,13 @@
+image: <SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\surface.png (800x600, scale=1.0x1.0) active=108 measurable=99 inactive=0 flagged=0 blank=0 stale_or_solid=0
+  gameplay_frame_likely=True warnings=-
+  edge_coverage: overall=73.002% top=54.898% left=48.016% right_below_minimap=82.044% bottom=77.373%
+  masked_or_insufficient_active_cells: r0c9, r0c10, r0c11, r1c9, r1c10, r1c11, r2c9, r2c10, r2c11
+  lowest_nonblack_active_cells:
+    r5c0: nonblack=36.938% unmasked=100.0% mean_luma=56.38 flags=-
+    r5c5: nonblack=37.061% unmasked=100.0% mean_luma=56.088 flags=-
+    r5c10: nonblack=37.988% unmasked=100.0% mean_luma=58.484 flags=-
+    r5c3: nonblack=38.672% unmasked=100.0% mean_luma=58.042 flags=-
+    r5c8: nonblack=38.818% unmasked=100.0% mean_luma=58.278 flags=-
+    r2c8: nonblack=43.452% unmasked=65.625% mean_luma=30.044 flags=-
+    r5c9: nonblack=43.872% unmasked=100.0% mean_luma=38.264 flags=-
+    r8c1: nonblack=46.24% unmasked=100.0% mean_luma=87.827 flags=-

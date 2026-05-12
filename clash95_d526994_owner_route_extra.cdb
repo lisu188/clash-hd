@@ -1,0 +1,17 @@
+.echo === Clash95 dword_526994 owner route probe ===
+.echo CDB-only route probe for PlayGame 40A500 owner paths
+
+bp 0040B7AE ".printf \"D526994_ROUTE_PLAYGAME_SETUP_40A400 ret=%p selected=%d prior=%d flag526994=%p gd=%p\\n\", poi(@esp), poi(00511b58), poi(00514194), poi(00526994), poi(005202e4); gc"
+bp 0040B7B3 ".if (@$t14 != 0) { .printf \"D526994_ROUTE_FORCE_423B40 ret=%p selected_before=%d prior_before=%d flag_before=%p gd=%p\\n\", poi(@esp), poi(00511b58), poi(00514194), poi(00526994), poi(005202e4); ed 00511b58 ffffffff; ed 00514194 00000000; }; gc"
+
+bp 0040A490 ".printf \"D526994_ROUTE_40A490_ENTRY ret=%p selected=%d prior=%d flag526994=%p player=%d gd=%p ebp=%p\\n\", poi(@esp), poi(00511b58), poi(00514194), poi(00526994), poi(005202ec), poi(005202e4), @ebp; gc"
+bp 0040A4ED ".printf \"D526994_ROUTE_40A490_CALL_40A500 ret=%p selected=%d prior=%d flag526994=%p ecx=%p ebp=%p\\n\", poi(@esp), poi(00511b58), poi(00514194), poi(00526994), @ecx, @ebp; gc"
+bp 0040A500 ".printf \"D526994_ROUTE_40A500_ENTRY ret=%p selected=%d prior=%d flag526994=%p ecx=%p ebp=%p\\n\", poi(@esp), poi(00511b58), poi(00514194), poi(00526994), @ecx, @ebp; gc"
+bp 0040A51A ".printf \"D526994_ROUTE_423B40_CALL ret=%p selected=%d prior=%d flag526994=%p ecx=%p ebp=%p\\n\", poi(@esp), poi(00511b58), poi(00514194), poi(00526994), @ecx, @ebp; gc"
+bp 0040A5EE ".printf \"D526994_ROUTE_423B00_CALL ret=%p selected=%d prior=%d flag526994=%p ecx=%p ebp=%p\\n\", poi(@esp), poi(00511b58), poi(00514194), poi(00526994), @ecx, @ebp; gc"
+
+bp 004087C8 ".printf \"D526994_ROUTE_423760_CALL ret=%p eax=%p edx=%p selected=%d prior=%d flag526994=%p mouse=(%d,%d)\\n\", poi(@esp), @eax, @edx, poi(00511b58), poi(00514194), poi(00526994), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); gc"
+bp 00423760 ".printf \"D526994_OWNER_423760_ENTRY ret=%p arg_eax=%p callback=%p flag526994=%p gd=%p gameplay=%d\\n\", poi(@esp), @eax, poi(00526990), poi(00526994), poi(005202e4), @$t14; gc"
+bp 00423B00 ".printf \"D526994_OWNER_423B00_ENTRY ret=%p callback=%p flag526994=%p selected=%d prior=%d gd=%p gameplay=%d\\n\", poi(@esp), poi(00526990), poi(00526994), poi(00511b58), poi(00514194), poi(005202e4), @$t14; gc"
+bp 00423B40 ".printf \"D526994_OWNER_423B40_ENTRY ret=%p callback=%p flag526994=%p selected=%d prior=%d gd=%p gameplay=%d\\n\", poi(@esp), poi(00526990), poi(00526994), poi(00511b58), poi(00514194), poi(005202e4), @$t14; gc"
+bp 004187A0 ".if (@$t14 != 0) { .printf \"D526994_ROUTE_CALLBACK_TEST ret=%p callback=%p flag526994=%p surface=%p size=(%d,%d)\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"

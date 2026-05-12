@@ -1,0 +1,246 @@
+Opened log file 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260506-201114\cdb-surface-dump.log'
+
+************* Preparing the environment for Debugger Extensions Gallery repositories **************
+   ExtensionRepository : Implicit
+   UseExperimentalFeatureForNugetShare : true
+   AllowNugetExeUpdate : true
+   NonInteractiveNuget : true
+   AllowNugetMSCredentialProviderInstall : true
+   AllowParallelInitializationOfLocalRepositories : true
+
+   EnableRedirectToV8JsProvider : false
+
+   -- Configuring repositories
+      ----> Repository : LocalInstalled, Enabled: true
+      ----> Repository : UserExtensions, Enabled: true
+
+>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds
+
+************* Waiting for Debugger Extensions Gallery to Initialize **************
+
+>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds
+   ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29
+
+Microsoft (R) Windows Debugger Version 10.0.26100.8038 X86
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+CommandLine: C:\ClashTests\cdb-post-owner-forced-visible\clash95_hd_surfdump_20260506_201114.exe
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\atlmfc.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\ObjectiveC.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\concurrency.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\cpp_rest.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\stl.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Data.Json.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Geolocation.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Sensors.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Media.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\windows.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\winrt.natvis'
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Symbol search path is: srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Executable search path is: 
+ModLoad: 00400000 00562000   clash95.exe
+ModLoad: 76fb0000 7716f000   ntdll.dll
+ModLoad: 75600000 756f0000   C:\WINDOWS\SysWOW64\KERNEL32.DLL
+ModLoad: 75a10000 75cda000   C:\WINDOWS\SysWOW64\KERNELBASE.dll
+ModLoad: 77e10000 77ebe000   C:\WINDOWS\SysWOW64\apphelp.dll
+ModLoad: 76c80000 76ca2000   C:\WINDOWS\SysWOW64\GDI32.dll
+ModLoad: 76cb0000 76cca000   C:\WINDOWS\SysWOW64\win32u.dll
+ModLoad: 76cd0000 76dbb000   C:\WINDOWS\SysWOW64\gdi32full.dll
+ModLoad: 74920000 749a5000   C:\WINDOWS\SysWOW64\msvcp_win.dll
+ModLoad: 747f0000 74900000   C:\WINDOWS\SysWOW64\ucrtbase.dll
+ModLoad: 75730000 758ff000   C:\WINDOWS\SysWOW64\USER32.dll
+ModLoad: 665e0000 66613000   C:\WINDOWS\SysWOW64\WINMM.dll
+ModLoad: 65ec0000 65f36000   C:\WINDOWS\SysWOW64\DSOUND.dll
+ModLoad: 667d0000 667f5000   C:\ClashTests\cdb-post-owner-forced-visible\DDRAW.dll
+ModLoad: 66800000 66827000   C:\WINDOWS\SysWOW64\DINPUT.dll
+ModLoad: 75980000 75a02000   C:\WINDOWS\SysWOW64\advapi32.dll
+ModLoad: 00c50000 00cd2000   C:\WINDOWS\SysWOW64\ADVAPI32.dll
+ModLoad: 667b0000 667cc000   C:\WINDOWS\SysWOW64\AVIFIL32.dll
+ModLoad: 65e90000 65eb4000   C:\WINDOWS\SysWOW64\MSVFW32.dll
+ModLoad: 749b0000 74a77000   C:\WINDOWS\SysWOW64\msvcrt.dll
+ModLoad: 74310000 74393000   C:\WINDOWS\SysWOW64\sechost.dll
+ModLoad: 65df0000 65e8a000   C:\WINDOWS\SysWOW64\ResampleDmo.DLL
+ModLoad: 74d90000 753ca000   C:\WINDOWS\SysWOW64\SHELL32.dll
+ModLoad: 74650000 746ef000   C:\WINDOWS\SysWOW64\OLEAUT32.dll
+ModLoad: 74a80000 74d12000   C:\WINDOWS\SysWOW64\combase.dll
+ModLoad: 74720000 747dc000   C:\WINDOWS\SysWOW64\RPCRT4.dll
+ModLoad: 00c50000 00ee2000   C:\WINDOWS\SysWOW64\combase.dll
+ModLoad: 744d0000 745c9000   C:\WINDOWS\SysWOW64\wintypes.dll
+ModLoad: 76440000 76593000   C:\WINDOWS\SysWOW64\ole32.dll
+ModLoad: 65d50000 65de1000   C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.26100.8115_none_cf9a25ee8eaab31f\COMCTL32.dll
+ModLoad: 667a0000 667a9000   C:\WINDOWS\SysWOW64\msdmo.dll
+ModLoad: 66620000 6663a000   C:\WINDOWS\SysWOW64\MSACM32.dll
+ModLoad: 65d20000 65d45000   C:\WINDOWS\SysWOW64\winmmbase.dll
+ModLoad: 742b0000 74305000   C:\WINDOWS\SysWOW64\powrprof.dll
+ModLoad: 00c50000 00ca5000   C:\WINDOWS\SysWOW64\powrprof.dll
+ModLoad: 76dc0000 76e92000   C:\WINDOWS\SysWOW64\shcore.dll
+(5538.1660): Break instruction exception - code 80000003 (first chance)
+eax=00000000 ebx=00000000 ecx=d6520000 edx=00000000 esi=005f6710 edi=003fa000
+eip=770c8328 esp=000efa54 ebp=000efa80 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+ntdll!LdrpDoDebuggerBreak+0x2b:
+770c8328 cc              int     3
+0:000> $$><C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260506-201114\clash95_surface_dump_probe.generated.cdb
+=== Clash95 CDB surface dump probe ===
+route-injects load slot 0, waits for gameplay redraw, then dumps dword_5202E0
+SURFDUMP_START_ANIMS_SLEEP_FAST_FORWARD_ENABLED
+APPOST_FORCE_VISIBLE_SEVEN_GATE_ENABLED
+=== Clash95 post-owner tile visibility extra probe ===
+CDB-only owner action route with focused draw-time and dump-time visibility sampling
+ModLoad: 75700000 75725000   C:\WINDOWS\SysWOW64\IMM32.DLL
+ModLoad: 734a0000 734ae000   C:\WINDOWS\SysWOW64\UMPDC.dll
+ModLoad: 679a0000 67b12000   C:\WINDOWS\SysWOW64\inputhost.dll
+ModLoad: 68610000 686ed000   C:\WINDOWS\SysWOW64\CoreMessaging.dll
+ModLoad: 66540000 665c0000   C:\WINDOWS\SysWOW64\uxtheme.dll
+ModLoad: 745d0000 74644000   C:\WINDOWS\SysWOW64\bcryptPrimitives.dll
+ModLoad: 743a0000 744b8000   C:\WINDOWS\SysWOW64\MSCTF.dll
+ModLoad: 730f0000 730fa000   C:\WINDOWS\SysWOW64\CRYPTBASE.DLL
+ModLoad: 73220000 73235000   C:\WINDOWS\SysWOW64\kernel.appcore.dll
+ModLoad: 65ce0000 65cf6000   C:\WINDOWS\SysWOW64\msctfmonitor.dll
+ModLoad: 65c90000 65ccf000   C:\WINDOWS\SysWOW64\MSUTB.dll
+ModLoad: 64450000 64553000   C:\WINDOWS\SysWOW64\textinputframework.dll
+ModLoad: 6ce90000 6ce9b000   C:\WINDOWS\SysWOW64\HID.DLL
+ModLoad: 766a0000 76af1000   C:\WINDOWS\SysWOW64\SETUPAPI.DLL
+ModLoad: 734e0000 7351e000   C:\WINDOWS\SysWOW64\cfgmgr32.DLL
+ModLoad: 6df90000 6dfb4000   C:\WINDOWS\SysWOW64\DEVOBJ.dll
+ModLoad: 76630000 76697000   C:\WINDOWS\SysWOW64\WINTRUST.dll
+ModLoad: 75490000 75599000   C:\WINDOWS\SysWOW64\CRYPT32.dll
+ModLoad: 731e0000 731ee000   C:\WINDOWS\SysWOW64\MSASN1.dll
+ModLoad: 67900000 67935000   C:\WINDOWS\SysWOW64\MLANG.DLL
+SURFDUMP_BYPASS_MOUSE_ACQUIRE hwnd=*** WARNING: Unable to verify checksum for clash95.exe
+000d0472 device=006558e4
+SURFDUMP_BYPASS_KEYBOARD_ACQUIRE hwnd=000d0472 device=006624ac
+ModLoad: 765a0000 76626000   C:\WINDOWS\SysWOW64\clbcatq.dll
+ModLoad: 65a50000 65afa000   C:\Windows\SysWOW64\InputSwitch.dll
+ModLoad: 658e0000 65a4a000   C:\Windows\SysWOW64\DUI70.dll
+ModLoad: 6e440000 6e669000   C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.8115_none_85b49359f7b178a2\Comctl32.dll
+ModLoad: 65850000 658d2000   C:\Windows\SysWOW64\DUser.dll
+ModLoad: 560d0000 5666c000   C:\WINDOWS\SysWOW64\windowsudk.shellcommon.dll
+ModLoad: 6ae80000 6b06c000   C:\Windows\SysWOW64\twinapi.appcore.dll
+ModLoad: 65730000 6584a000   C:\Windows\SysWOW64\Windows.UI.Core.TextInput.dll
+ModLoad: 68370000 68602000   C:\WINDOWS\SysWOW64\CoreUIComponents.dll
+(5538.4a68): C++ EH exception - code e06d7363 (first chance)
+(5538.4a68): C++ EH exception - code e06d7363 (first chance)
+(5538.4a68): C++ EH exception - code e06d7363 (first chance)
+(5538.4a68): C++ EH exception - code e06d7363 (first chance)
+ModLoad: 65630000 6567c000   C:\Windows\SysWOW64\Bcp47Langs.dll
+pcshell\shell\inputswitch\switch\ctfhandler.cpp(2651)\InputSwitch.dll!65A67B21: (caller: 65A6498F) LogHr(1) tid(4a68) 80004005 Unspecified error
+    CallContext:[\Startup] 
+ModLoad: 6d810000 6d842000   C:\WINDOWS\SysWOW64\xmllite.dll
+ModLoad: 6b5d0000 6b7e3000   C:\WINDOWS\SysWOW64\dwrite.dll
+ModLoad: 75d50000 76434000   C:\WINDOWS\SysWOW64\Windows.Storage.dll
+ModLoad: 655e0000 65623000   C:\WINDOWS\SysWOW64\UIAnimation.dll
+ModLoad: 6c9b0000 6cba2000   C:\Windows\SysWOW64\d3d11.dll
+ModLoad: 6cc60000 6cd6b000   C:\Windows\SysWOW64\dxgi.dll
+ModLoad: 55a00000 560c3000   C:\WINDOWS\SysWOW64\D3D10Warp.dll
+ModLoad: 6b300000 6b336000   C:\WINDOWS\SysWOW64\dxcore.dll
+ModLoad: 67960000 67970000   C:\WINDOWS\SysWOW64\resourcepolicyclient.dll
+ModLoad: 69280000 692cf000   C:\WINDOWS\SysWOW64\directxdatabasehelper.dll
+ModLoad: 6a0b0000 6a245000   C:\WINDOWS\SysWOW64\dcomp.dll
+ModLoad: 6cf10000 6cf22000   C:\WINDOWS\SysWOW64\Microsoft.Internal.WarpPal.dll
+ModLoad: 78ea0000 78f45000   C:\WINDOWS\SysWOW64\TextShaping.dll
+ModLoad: 6d850000 6d8cd000   C:\WINDOWS\SysWOW64\MMDevApi.dll
+ModLoad: 65a50000 65afa000   C:\Windows\SysWOW64\InputSwitch.dll
+ModLoad: 658e0000 65a4a000   C:\Windows\SysWOW64\DUI70.dll
+ModLoad: 673d0000 6753d000   C:\WINDOWS\SysWOW64\AUDIOSES.DLL
+ModLoad: 65850000 658d2000   C:\Windows\SysWOW64\DUser.dll
+ModLoad: 67960000 67970000   C:\WINDOWS\SysWOW64\resourcepolicyclient.dll
+ModLoad: 65630000 6567c000   C:\Windows\SysWOW64\Bcp47Langs.dll
+pcshell\shell\inputswitch\switch\ctfhandler.cpp(2651)\InputSwitch.dll!65A67B21: (caller: 65A6498F) LogHr(1) tid(8ea8) 80004005 Unspecified error
+    CallContext:[\Startup] 
+ModLoad: 6d810000 6d842000   C:\WINDOWS\SysWOW64\xmllite.dll
+ModLoad: 6c9b0000 6cba2000   C:\Windows\SysWOW64\d3d11.dll
+ModLoad: 6cc60000 6cd6b000   C:\Windows\SysWOW64\dxgi.dll
+ModLoad: 55a00000 560c3000   C:\WINDOWS\SysWOW64\D3D10Warp.dll
+ModLoad: 69280000 692cf000   C:\WINDOWS\SysWOW64\directxdatabasehelper.dll
+ModLoad: 6a0b0000 6a245000   C:\WINDOWS\SysWOW64\dcomp.dll
+ModLoad: 6cf10000 6cf22000   C:\WINDOWS\SysWOW64\Microsoft.Internal.WarpPal.dll
+ModLoad: 6b070000 6b17f000   C:\Windows\SysWOW64\Windows.UI.dll
+ModLoad: 65720000 65729000   C:\WINDOWS\SysWOW64\avrt.dll
+SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6
+SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6
+SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6
+SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6
+SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_START_SLEEP ret=004478a1
+SURFDUMP_MAIN_HIT seq=0 choice=0 entry=0x000efa28 ex=239 ey=196 mouse=(300,218)
+SURFDUMP_FORCE_MAIN_CLICK seq=0 desc=0x000efa28 mouse=(300,218)
+SURFDUMP_SKIP_MAIN_LOAD_CALLBACK ret=00419c60 choice_before=0 exit_before=0 mouse=(300,218)
+SURFDUMP_LOAD_COORD seq=0 choice=5 entry=0x000efa5d ex=232 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=1 choice=5 entry=0x000efa92 ex=265 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=2 choice=5 entry=0x000efac7 ex=437 ey=196 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=3 choice=5 entry=0x000efafc ex=424 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=4 choice=5 entry=0x000efb31 ex=468 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_MENU_ENTRY choice=5 exit=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_MENU_ENTRY choice=5 exit=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_MENU_LOOP seq=0 exit=0 selected=-1 accept=0 mouse=(320,166) lbtn=0x80
+SURFDUMP_FORCE_LOAD_SELECT seq=0 mouse=(320,166) selected=-1 accept=0
+SURFDUMP_FORCE_LOAD_SELECT seq=1 mouse=(320,166) selected=-1 accept=0
+SURFDUMP_FORCE_LOAD_ACCEPT seq=0 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_FORCE_LOAD_ACCEPT seq=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_ACCEPT_CALL arg=0 selected=0 accept_before=0 mouse=(320,166)
+SURFDUMP_LOAD_COORD seq=5 choice=5 entry=0x000efca8 ex=329 ey=452 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOAD_COORD seq=6 choice=5 entry=0x000efca8 ex=329 ey=452 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOAD_COORD seq=7 choice=5 entry=0x000efcdd ex=409 ey=468 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=03e70030
+SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=03e70030
+APPOST_FORCE_VISIBLE_SEVEN timing=playgame scroll=(10,17) old_x20b2=00 old_x21b2=00 old_x20b3=00 old_x21b3=00 old_x10b3=00 cells=r6c10,r6c11,r7c10,r7c11,r8c0,r8c10,r8c11
+APPOST_FORCE_VISIBLE_SEVEN_DONE timing=playgame new_x20b2=80 new_x21b2=80 new_x20b3=03 new_x21b3=03 new_x10b3=02
+SURFDUMP_PLAYGAME gd=03e70030 map=(100,100) scroll=(10,17) surface=03e6c900 size=(640,480)
+SURFDUMP_REDRAW seq=0 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a2fedd0 size=(800,600)
+APPOST_OWNER_SETUP_CALL owner=03eec71a owner_flag_old=0x00 scroll=(10,17) surface=0a2fedd0 sz=(800,600)
+APPOST_OWNER_FLAG_FORCED owner=03eec71a owner_flag_new=0x02
+APPOST_WRITE_532150 eip=00433c26 ret=004617a0 new=03eec71a owner_flag=0x02 surface=0a2fedd0 sz=(800,600)
+APPOST_WRITE_53214C eip=00433c4b ret=004617a0 new=00000001 d532150=03eec71a surface=0a2fedd0 sz=(800,600)
+APPOST_WRITE_532154 eip=00433d5a ret=0040ae16 new=0a62b630 d532150=03eec71a d53214c=00000001 surface=0a2fedd0 sz=(800,600) short_return=1
+SURFDUMP_REDRAW seq=1 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a2fedd0 size=(800,600)
+APPOST_ACTION_CALL desc=00511d40 owner=03eec71a owner_flag=0x02 d532150=03eec71a d53214c=00000001 d532154=0a62b630 surface=0a2fedd0 sz=(800,600) skip_prelude=1
+APPOST_433914_CALL_435BC0 ret=0040ae16 owner_arg=03eec71a owner_global=03eec71a owner_flag=0x02 d532218=00000000 d5322c8=0 surface=0a2fedd0 sz=(800,600)
+APPOST_OWNER_435BC0_ENTRY ret=00433919 owner_arg=03eec71a d532218_before=00000000 d5322c8_before=0 d532210_before=0 surface=0a2fedd0 sz=(800,600) mouse=(4,166)
+APPOST_WRITE_532218 eip=00435bc5 ret=00000000 new=03eec71a d532220=0 d5322c8=0 surface=0a2fedd0 sz=(800,600)
+APPOST_WRITE_5322C8 eip=00435c38 ret=00000000 new=-1 d532218=03eec71a d532220=0 surface=0a2fedd0 sz=(800,600)
+APPOST_PANEL_DRAW_4347A0 ret=00435d84 d532218=03eec71a d532220=0 d5322c8=-1 render=0a2fedd0 map_surface=0a2fedd0 sz=(800,600)
+APPOST_GRID_DRAW_434E20 ret=00435172 d532218=03eec71a d532220=0 d5322c8=-1 render=0a2fedd0 map_surface=0a2fedd0 sz=(800,600)
+APPOST_STATUS_DRAW_435280 ret=00435d8e d532218=03eec71a d532220=0 d5322c8=-1 mouse=(4,166) render=0a2fedd0 map_surface=0a2fedd0
+APPOST_ACTION_BOX_435500 ret=00435d93 d532218=03eec71a d532220=0 d5322c8=-1 mouse=(4,166) render=0051d4c0 map_surface=0a2fedd0 scratch=0051d4c0 scratch_sz=(800,600) scratch_base=00000000 map_base=0a5a0030
+APPOST_OWNER_POLL_EXIT_ARM ret=00435de3 d532218=03eec71a d532220=0 d5322c8=-1 d532210=1 mouse=(4,166)
+APPOST_GRID_DRAW_434E20 ret=00435274 d532218=03eec71a d532220=0 d5322c8=-1 render=0051d4c0 map_surface=0a2fedd0 sz=(800,600)
+APPOST_4338E0_AFTER_435BC0 ret=0040ae16 d532218=03eec71a d532220=0 d5322c8=-1 surface=0a2fedd0 sz=(800,600)
+APPOST_SURFDUMP_READY after_action=1 surface=0a2fedd0 size=(800,600) base=0a5a0030 bytes=480000 d532150=03eec71a d532218=03eec71a d532220=0 d5322c8=-1 scroll=(10,17)
+APVIS_CELL id=r6c10 screen=(672,400) map=(20,23) byte=80 mask=80 hit=80 sample=c1 center_sample=c0
+APVIS_CELL id=r6c11 screen=(736,400) map=(21,23) byte=80 mask=80 hit=80 sample=c1 center_sample=c1
+APVIS_CELL id=r7c10 screen=(672,464) map=(20,24) byte=03 mask=01 hit=01 sample=c1 center_sample=29
+APVIS_CELL id=r7c11 screen=(736,464) map=(21,24) byte=03 mask=01 hit=01 sample=c1 center_sample=22
+APVIS_CELL id=r8c0 screen=(32,528) map=(10,25) byte=02 mask=02 hit=02 sample=a7 center_sample=7f
+APVIS_CELL id=r8c10 screen=(672,528) map=(20,25) byte=03 mask=02 hit=02 sample=c1 center_sample=c1
+APVIS_CELL id=r8c11 screen=(736,528) map=(21,25) byte=03 mask=02 hit=02 sample=c1 center_sample=c0
+SCROLL_VISDUMP player=0 screen0=(32,16) map0=(10,17) rows=9 cols=12 tile=(64,64) vis_base=03e92361 dump_start=03e923e5 count=160
+03e923e5  7c 02 00 00 00 00 00 00-00 00 00 00 00 fe 00 00  |...............
+03e923f5  00 00 00 00 00 00 00 00-00 00 ff 01 00 00 00 00  ................
+03e92405  00 00 00 00 00 00 00 ff-03 00 00 00 00 00 00 00  ................
+03e92415  00 00 00 00 ff 03 00 00-00 00 00 00 00 00 00 00  ................
+03e92425  00 ff 03 00 00 00 00 00-00 00 00 00 00 00 ff 03  ................
+03e92435  00 00 00 00 00 00 00 00-00 00 00 ff 03 00 00 00  ................
+03e92445  00 00 00 00 00 00 00 00-fe 03 00 00 00 00 00 00  ................
+03e92455  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+03e92465  00 00 80 03 00 00 00 00-00 00 00 00 00 00 00 80  ................
+03e92475  03 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+SURFDUMP_READY redraw_seq=951 surface=0a2fedd0 size=(800,600) base=0a5a0030 bytes=480000
+SURFDUMP_HOST_READY
+eax=00000000 ebx=000000a6 ecx=00000000 edx=00000000 esi=00000140 edi=00000001
+eip=00433919 esp=000edc6c ebp=00000000 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+clash95+0x33919:
+00433919 833d4c21530000  cmp     dword ptr [clash95!CSS_Init+0xc21bc (0053214c)],0 ds:002b:0053214c=00000001

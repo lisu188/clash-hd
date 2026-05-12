@@ -1,0 +1,10 @@
+.echo === Clash95 mouse mode probe ===
+.echo logs the alternate mouse-coordinate branch before DirectInput fallback
+sxd av
+r @$t0 = -1
+r @$t1 = -1
+r @$t2 = -1
+r @$t3 = -1
+bp 004612E8 ".if ((poi(@eax+468) != @$t0) + (wo(00519620) != @$t1) + (wo(00519622) != @$t2) + (by(00544ccc) != @$t3)) { .printf \"MODE obj=%p mode=%08x t0=%08x t1=%08x ptr=%08x winx=%d winy=%d btn=0x%02x range_start=%08x range_end=%08x\\n\", @eax, poi(@eax+468), poi(@eax+470), poi(@eax+474), poi(@eax+474), wo(00519620), wo(00519622), by(00544ccc), poi(00544cc0), poi(00544cc8); r @$t0 = poi(@eax+468); r @$t1 = wo(00519620); r @$t2 = wo(00519622); r @$t3 = by(00544ccc); }; gc"
+bp 004614D8 ".printf \"DIRECTINPUT_FALLBACK obj=%p mode=%08x winx=%d winy=%d btn=0x%02x\\n\", @esi, poi(@esi+468), wo(00519620), wo(00519622), by(00544ccc); gc"
+g

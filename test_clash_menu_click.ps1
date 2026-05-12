@@ -8,6 +8,14 @@ param(
     [int]$DiffStep = 8,
     [int]$SurfaceWidth = 800,
     [int]$SurfaceHeight = 600,
+    [int]$PreClickStableFrames = 2,
+    [int]$PreClickStableIntervalMs = 500,
+    [double]$PreClickStableMaxChangedPercent = 0.2,
+    [int]$PreClickStableTimeoutSec = 8,
+    [double]$PreClickMinNonblackPercent = 55.0,
+    [double]$PreClickMinTargetBrightPercent = 5.0,
+    [double]$PreClickMinTargetMeanLuma = 40.0,
+    [int]$PreClickTargetRadius = 18,
     [int]$SkipIntroClicks = 4,
     [int]$SkipIntroIntervalMs = 500,
     [int]$SkipIntroX = 400,
@@ -16,8 +24,15 @@ param(
     [ValidateSet('SendInput', 'PostMessage', 'Both')]
     [string]$SkipIntroClickMode = 'Both',
     [switch]$CaptureFullClient,
+    [int]$WindowX = 80,
+    [int]$WindowY = 80,
+    [switch]$NoMoveWindow,
     [ValidateSet('SendInput', 'PostMessage', 'Both')]
     [string]$ClickMode = 'SendInput',
+    [ValidateRange(0, 5000)]
+    [int]$ClickHoldMs = 0,
+    [ValidateRange(1, 20)]
+    [int]$ClickRepeat = 1,
     [switch]$NoInstallToWorkDir,
     [switch]$KeepExisting,
     [switch]$KeepOpenOnFailure
@@ -79,6 +94,29 @@ public static class ClashWin32 {
     [DllImport("user32.dll")]
     public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
+    [DllImport("user32.dll")]
+    public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
+
+    [DllImport("user32.dll")]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+    [DllImport("user32.dll")]
+    public static extern bool SetProcessDPIAware();
+
+    public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsWindowVisible(IntPtr hWnd);
+
     [DllImport("user32.dll", SetLastError=true)]
     public static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
 
@@ -87,6 +125,20 @@ public static class ClashWin32 {
 
     [DllImport("user32.dll")]
     public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+
+    public static IntPtr FindVisibleWindowForProcess(uint processId) {
+        IntPtr found = IntPtr.Zero;
+        EnumWindows(delegate(IntPtr hWnd, IntPtr lParam) {
+            uint windowProcessId;
+            GetWindowThreadProcessId(hWnd, out windowProcessId);
+            if (windowProcessId == processId && IsWindowVisible(hWnd)) {
+                found = hWnd;
+                return false;
+            }
+            return true;
+        }, IntPtr.Zero);
+        return found;
+    }
 }
 '@
 
@@ -155,12 +207,9 @@ function Wait-ForMainWindow {
 
     $deadline = (Get-Date).AddSeconds($TimeoutSec)
     while ((Get-Date) -lt $deadline) {
-        if ($Process.HasExited) {
-            throw "Process exited before its main window appeared: $($Process.Id)"
-        }
-        $Process.Refresh()
-        if ($Process.MainWindowHandle -ne [IntPtr]::Zero) {
-            return $Process.MainWindowHandle
+        $handle = Get-GameWindowHandle -Process $Process
+        if ($null -ne $handle -and $handle -ne [IntPtr]::Zero) {
+            return $handle
         }
         Start-Sleep -Milliseconds 200
     }
@@ -168,21 +217,49 @@ function Wait-ForMainWindow {
     throw "Timed out waiting for main window for process $($Process.Id)"
 }
 
+function Get-GameWindowHandle {
+    param(
+        [System.Diagnostics.Process]$Process,
+        [switch]$RequireVisible
+    )
+
+    if ($Process.HasExited) {
+        throw "Process exited before a visible game window was available: $($Process.Id)"
+    }
+
+    $Process.Refresh()
+    $handle = $Process.MainWindowHandle
+    if ($null -ne $handle -and $handle -ne [IntPtr]::Zero -and [ClashWin32]::IsWindow($handle)) {
+        return $handle
+    }
+
+    $handle = [ClashWin32]::FindVisibleWindowForProcess([uint32]$Process.Id)
+    if ($null -ne $handle -and $handle -ne [IntPtr]::Zero -and [ClashWin32]::IsWindow($handle)) {
+        return $handle
+    }
+
+    if ($RequireVisible) {
+        throw "Process has no visible game window handle: $($Process.Id)"
+    }
+    return [IntPtr]::Zero
+}
+
 function Get-ClientInfo {
     param([System.Diagnostics.Process]$Process)
 
-    $Process.Refresh()
-    if ($Process.MainWindowHandle -eq [IntPtr]::Zero) {
-        throw "Process has no visible main window: $($Process.Id)"
-    }
+    $handle = Get-GameWindowHandle -Process $Process -RequireVisible
 
     $rect = New-Object ClashWin32+RECT
-    [ClashWin32]::GetClientRect($Process.MainWindowHandle, [ref]$rect) | Out-Null
+    if (-not [ClashWin32]::GetClientRect($handle, [ref]$rect)) {
+        throw "GetClientRect failed for process $($Process.Id), hwnd 0x$($handle.ToInt64().ToString('X'))"
+    }
 
     $origin = New-Object ClashWin32+POINT
     $origin.X = 0
     $origin.Y = 0
-    [ClashWin32]::ClientToScreen($Process.MainWindowHandle, [ref]$origin) | Out-Null
+    if (-not [ClashWin32]::ClientToScreen($handle, [ref]$origin)) {
+        throw "ClientToScreen failed for process $($Process.Id), hwnd 0x$($handle.ToInt64().ToString('X'))"
+    }
 
     $width = $rect.Right - $rect.Left
     $height = $rect.Bottom - $rect.Top
@@ -208,7 +285,7 @@ function Get-ClientInfo {
     }
 
     [pscustomobject]@{
-        Handle = $Process.MainWindowHandle
+        Handle = $handle
         ClientX = $origin.X
         ClientY = $origin.Y
         Width = $width
@@ -224,9 +301,28 @@ function Get-ClientInfo {
 function Focus-GameWindow {
     param([System.Diagnostics.Process]$Process)
 
-    [ClashWin32]::ShowWindow($Process.MainWindowHandle, 5) | Out-Null
-    [ClashWin32]::BringWindowToTop($Process.MainWindowHandle) | Out-Null
-    [ClashWin32]::SetForegroundWindow($Process.MainWindowHandle) | Out-Null
+    $handle = Get-GameWindowHandle -Process $Process -RequireVisible
+
+    [ClashWin32]::ShowWindow($handle, 5) | Out-Null
+    if (-not $NoMoveWindow) {
+        $rect = New-Object ClashWin32+RECT
+        [ClashWin32]::GetWindowRect($handle, [ref]$rect) | Out-Null
+        $windowWidth = $rect.Right - $rect.Left
+        $windowHeight = $rect.Bottom - $rect.Top
+        if ($windowWidth -gt 0 -and $windowHeight -gt 0) {
+            [ClashWin32]::MoveWindow(
+                $handle,
+                $WindowX,
+                $WindowY,
+                $windowWidth,
+                $windowHeight,
+                $true
+            ) | Out-Null
+            Start-Sleep -Milliseconds 150
+        }
+    }
+    [ClashWin32]::BringWindowToTop($handle) | Out-Null
+    [ClashWin32]::SetForegroundWindow($handle) | Out-Null
     Start-Sleep -Milliseconds 250
 }
 
@@ -236,8 +332,8 @@ function Save-ClientFrame {
         [string]$Path
     )
 
-    $info = Get-ClientInfo -Process $Process
     Focus-GameWindow -Process $Process
+    $info = Get-ClientInfo -Process $Process
 
     $sourceX = if ($CaptureFullClient) { $info.ClientX } else { $info.RenderX }
     $sourceY = if ($CaptureFullClient) { $info.ClientY } else { $info.RenderY }
@@ -278,6 +374,31 @@ function Save-ClientFrame {
         RenderScale = $info.RenderScale
         Width = $captureWidth
         Height = $captureHeight
+    }
+}
+
+function Copy-CaptureAsBefore {
+    param(
+        [object]$Capture,
+        [string]$CaseDir
+    )
+
+    $beforePath = Join-Path $CaseDir 'before.png'
+    Copy-Item -LiteralPath $Capture.Path -Destination $beforePath -Force
+    [pscustomobject]@{
+        Path = $beforePath
+        Hash = $Capture.Hash
+        ClientX = $Capture.ClientX
+        ClientY = $Capture.ClientY
+        ClientWidth = $Capture.ClientWidth
+        ClientHeight = $Capture.ClientHeight
+        RenderX = $Capture.RenderX
+        RenderY = $Capture.RenderY
+        RenderWidth = $Capture.RenderWidth
+        RenderHeight = $Capture.RenderHeight
+        RenderScale = $Capture.RenderScale
+        Width = $Capture.Width
+        Height = $Capture.Height
     }
 }
 
@@ -323,41 +444,192 @@ function Compare-PngFrames {
     }
 }
 
+function Get-Luma {
+    param([System.Drawing.Color]$Color)
+
+    return (0.2126 * $Color.R) + (0.7152 * $Color.G) + (0.0722 * $Color.B)
+}
+
+function Measure-PreClickReadiness {
+    param(
+        [string]$FramePath,
+        [int]$ClickX,
+        [int]$ClickY
+    )
+
+    $bitmap = [System.Drawing.Bitmap]::FromFile($FramePath)
+    try {
+        $totalPixels = $bitmap.Width * $bitmap.Height
+        $nonblackPixels = 0
+        for ($y = 0; $y -lt $bitmap.Height; $y++) {
+            for ($x = 0; $x -lt $bitmap.Width; $x++) {
+                $pixel = $bitmap.GetPixel($x, $y)
+                if ([math]::Max($pixel.R, [math]::Max($pixel.G, $pixel.B)) -gt 12) {
+                    $nonblackPixels++
+                }
+            }
+        }
+
+        $x0 = [math]::Max(0, $ClickX - $PreClickTargetRadius)
+        $x1 = [math]::Min($bitmap.Width - 1, $ClickX + $PreClickTargetRadius)
+        $y0 = [math]::Max(0, $ClickY - $PreClickTargetRadius)
+        $y1 = [math]::Min($bitmap.Height - 1, $ClickY + $PreClickTargetRadius)
+        $targetPixels = 0
+        $targetBrightPixels = 0
+        $targetLumaSum = 0.0
+        for ($y = $y0; $y -le $y1; $y++) {
+            for ($x = $x0; $x -le $x1; $x++) {
+                $pixel = $bitmap.GetPixel($x, $y)
+                $luma = Get-Luma -Color $pixel
+                $targetPixels++
+                $targetLumaSum += $luma
+                if ($luma -ge 96.0) {
+                    $targetBrightPixels++
+                }
+            }
+        }
+
+        $nonblackPercent = if ($totalPixels) { [math]::Round(($nonblackPixels * 100.0) / $totalPixels, 3) } else { 0.0 }
+        $targetBrightPercent = if ($targetPixels) { [math]::Round(($targetBrightPixels * 100.0) / $targetPixels, 3) } else { 0.0 }
+        $targetMeanLuma = if ($targetPixels) { [math]::Round($targetLumaSum / $targetPixels, 3) } else { 0.0 }
+        $ready = (
+            $nonblackPercent -ge $PreClickMinNonblackPercent -and
+            (
+                $targetBrightPercent -ge $PreClickMinTargetBrightPercent -or
+                $targetMeanLuma -ge $PreClickMinTargetMeanLuma
+            )
+        )
+        $note = if ($ready) {
+            $null
+        } else {
+            "nonblack ${nonblackPercent}% targetBright ${targetBrightPercent}% targetMeanLuma $targetMeanLuma"
+        }
+
+        [pscustomobject]@{
+            Ready = $ready
+            NonblackPercent = $nonblackPercent
+            TargetBrightPercent = $targetBrightPercent
+            TargetMeanLuma = $targetMeanLuma
+            Note = $note
+        }
+    } finally {
+        $bitmap.Dispose()
+    }
+}
+
+function Wait-ForStableFrame {
+    param(
+        [System.Diagnostics.Process]$Process,
+        [string]$CaseDir
+    )
+
+    if ($PreClickStableFrames -le 0) {
+        $capture = Save-ClientFrame -Process $Process -Path (Join-Path $CaseDir 'before.png')
+        return [pscustomobject]@{
+            Before = $capture
+            Stable = $true
+            Samples = 0
+            Attempts = 1
+            LastChangedPercent = 0.0
+            Note = 'stability gate disabled'
+        }
+    }
+
+    $stableSamples = 0
+    $attempt = 0
+    $previous = $null
+    $lastChanged = $null
+    $deadline = (Get-Date).AddSeconds($PreClickStableTimeoutSec)
+
+    while ((Get-Date) -lt $deadline) {
+        $path = Join-Path $CaseDir ("ready-{0:D2}.png" -f $attempt)
+        $current = Save-ClientFrame -Process $Process -Path $path
+        if ($previous -ne $null) {
+            $comparison = Compare-PngFrames -Before $previous.Path -After $current.Path -Step $DiffStep
+            $lastChanged = $comparison.ChangedPercent
+            if ($comparison.ChangedPercent -le $PreClickStableMaxChangedPercent) {
+                $stableSamples++
+            } else {
+                $stableSamples = 0
+            }
+
+            if ($stableSamples -ge $PreClickStableFrames) {
+                return [pscustomobject]@{
+                    Before = Copy-CaptureAsBefore -Capture $current -CaseDir $CaseDir
+                    Stable = $true
+                    Samples = $stableSamples
+                    Attempts = $attempt + 1
+                    LastChangedPercent = $lastChanged
+                    Note = $comparison.Note
+                }
+            }
+        }
+
+        $previous = $current
+        $attempt++
+        Start-Sleep -Milliseconds $PreClickStableIntervalMs
+    }
+
+    if ($previous -ne $null) {
+        return [pscustomobject]@{
+            Before = Copy-CaptureAsBefore -Capture $previous -CaseDir $CaseDir
+            Stable = $false
+            Samples = $stableSamples
+            Attempts = $attempt
+            LastChangedPercent = $lastChanged
+            Note = "timed out waiting for $PreClickStableFrames stable frame comparison(s)"
+        }
+    }
+
+    throw "Unable to capture a pre-click frame for process $($Process.Id)"
+}
+
 function Invoke-ClientClick {
     param(
         [System.Diagnostics.Process]$Process,
         [int]$X,
         [int]$Y,
-        [string]$Mode
+        [string]$Mode,
+        [int]$HoldMs = 0,
+        [int]$Repeat = 1
     )
 
-    $info = Get-ClientInfo -Process $Process
     Focus-GameWindow -Process $Process
+    $info = Get-ClientInfo -Process $Process
 
     $screenX = [int]($info.RenderX + [math]::Floor(($X + 0.5) * $info.RenderScale))
     $screenY = [int]($info.RenderY + [math]::Floor(($Y + 0.5) * $info.RenderScale))
     [ClashWin32]::SetCursorPos($screenX, $screenY) | Out-Null
     Start-Sleep -Milliseconds 150
 
-    if ($Mode -eq 'SendInput' -or $Mode -eq 'Both') {
-        $down = New-Object ClashWin32+INPUT
-        $down.type = 0
-        $down.mi.dwFlags = 0x0002
+    for ($i = 0; $i -lt $Repeat; $i++) {
+        if ($Mode -eq 'SendInput' -or $Mode -eq 'Both') {
+            $down = New-Object ClashWin32+INPUT
+            $down.type = 0
+            $down.mi.dwFlags = 0x0002
 
-        $up = New-Object ClashWin32+INPUT
-        $up.type = 0
-        $up.mi.dwFlags = 0x0004
+            $up = New-Object ClashWin32+INPUT
+            $up.type = 0
+            $up.mi.dwFlags = 0x0004
 
-        $inputs = [ClashWin32+INPUT[]]@($down, $up)
-        $size = [Runtime.InteropServices.Marshal]::SizeOf([type][ClashWin32+INPUT])
-        [ClashWin32]::SendInput(2, $inputs, $size) | Out-Null
-    }
+            $size = [Runtime.InteropServices.Marshal]::SizeOf([type][ClashWin32+INPUT])
+            [ClashWin32]::SendInput(1, [ClashWin32+INPUT[]]@($down), $size) | Out-Null
+            if ($HoldMs -gt 0) {
+                Start-Sleep -Milliseconds $HoldMs
+            }
+            [ClashWin32]::SendInput(1, [ClashWin32+INPUT[]]@($up), $size) | Out-Null
+        }
 
-    if ($Mode -eq 'PostMessage' -or $Mode -eq 'Both') {
-        $lParam = [IntPtr](($Y -shl 16) -bor ($X -band 0xffff))
-        [ClashWin32]::PostMessage($Process.MainWindowHandle, 0x0201, [IntPtr]1, $lParam) | Out-Null
-        Start-Sleep -Milliseconds 50
-        [ClashWin32]::PostMessage($Process.MainWindowHandle, 0x0202, [IntPtr]0, $lParam) | Out-Null
+        if ($Mode -eq 'PostMessage' -or $Mode -eq 'Both') {
+            $lParam = [IntPtr](($Y -shl 16) -bor ($X -band 0xffff))
+            [ClashWin32]::PostMessage($info.Handle, 0x0201, [IntPtr]1, $lParam) | Out-Null
+            Start-Sleep -Milliseconds ([Math]::Max(50, $HoldMs))
+            [ClashWin32]::PostMessage($info.Handle, 0x0202, [IntPtr]0, $lParam) | Out-Null
+        }
+
+        if ($i -lt ($Repeat - 1)) {
+            Start-Sleep -Milliseconds 75
+        }
     }
 
     [pscustomobject]@{
@@ -365,6 +637,8 @@ function Invoke-ClientClick {
         ClientY = $Y
         ScreenX = $screenX
         ScreenY = $screenY
+        HoldMs = $HoldMs
+        Repeat = $Repeat
     }
 }
 
@@ -422,6 +696,9 @@ foreach ($exeArg in $Exe) {
         $diff = $null
         $clickInfo = $null
         $errorText = $null
+        $readiness = $null
+        $preClickReady = $null
+        $clickAttempted = $false
         $passed = $false
         $exitedAfterWait = $false
 
@@ -437,8 +714,17 @@ foreach ($exeArg in $Exe) {
                 Start-Sleep -Milliseconds $SkipIntroIntervalMs
             }
             Start-Sleep -Seconds $MenuWaitSec
-            $before = Save-ClientFrame -Process $process -Path (Join-Path $caseDir 'before.png')
-            $clickInfo = Invoke-ClientClick -Process $process -X $point.X -Y $point.Y -Mode $ClickMode
+            $readiness = Wait-ForStableFrame -Process $process -CaseDir $caseDir
+            $before = $readiness.Before
+            if (-not $readiness.Stable) {
+                throw "Pre-click frame did not stabilize: $($readiness.Note); last changed percent: $($readiness.LastChangedPercent)"
+            }
+            $preClickReady = Measure-PreClickReadiness -FramePath $before.Path -ClickX $point.X -ClickY $point.Y
+            if (-not $preClickReady.Ready) {
+                throw "Pre-click frame is not menu-ready: $($preClickReady.Note)"
+            }
+            $clickInfo = Invoke-ClientClick -Process $process -X $point.X -Y $point.Y -Mode $ClickMode -HoldMs $ClickHoldMs -Repeat $ClickRepeat
+            $clickAttempted = $true
             Start-Sleep -Milliseconds $AfterClickWaitMs
 
             $process.Refresh()
@@ -468,8 +754,20 @@ foreach ($exeArg in $Exe) {
             Click = $clickName
             ClickDescription = $point.Description
             ClickMode = $ClickMode
+            ClickHoldMs = $ClickHoldMs
+            ClickRepeat = $ClickRepeat
             ClientClickX = $point.X
             ClientClickY = $point.Y
+            PreClickStable = if ($readiness) { $readiness.Stable } else { $null }
+            PreClickStableSamples = if ($readiness) { $readiness.Samples } else { $null }
+            PreClickStableAttempts = if ($readiness) { $readiness.Attempts } else { $null }
+            PreClickLastChangedPercent = if ($readiness) { $readiness.LastChangedPercent } else { $null }
+            PreClickReady = if ($preClickReady) { $preClickReady.Ready } else { $null }
+            PreClickNonblackPercent = if ($preClickReady) { $preClickReady.NonblackPercent } else { $null }
+            PreClickTargetMeanLuma = if ($preClickReady) { $preClickReady.TargetMeanLuma } else { $null }
+            PreClickTargetBrightPercent = if ($preClickReady) { $preClickReady.TargetBrightPercent } else { $null }
+            ClickAttempted = $clickAttempted
+            PreClickReadinessNote = if ($preClickReady -and $preClickReady.Note) { $preClickReady.Note } elseif ($readiness) { $readiness.Note } else { $null }
             ScreenClickX = if ($clickInfo) { $clickInfo.ScreenX } else { $null }
             ScreenClickY = if ($clickInfo) { $clickInfo.ScreenY } else { $null }
             ClientWidth = if ($before) { $before.ClientWidth } else { $null }
@@ -503,7 +801,7 @@ $results | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $jsonPath -Encodin
 $results | Export-Csv -LiteralPath $csvPath -NoTypeInformation -Encoding ASCII
 
 $results |
-    Select-Object Case,Click,ClientWidth,ClientHeight,RenderScale,CaptureWidth,CaptureHeight,ChangedPercent,ExitedAfterClick,Passed,Error |
+    Select-Object Case,Click,ClientWidth,ClientHeight,RenderScale,CaptureWidth,CaptureHeight,PreClickStable,PreClickReady,PreClickNonblackPercent,PreClickTargetBrightPercent,ClickAttempted,ChangedPercent,ExitedAfterClick,Passed,Error |
     Format-Table -AutoSize
 
 [pscustomobject]@{

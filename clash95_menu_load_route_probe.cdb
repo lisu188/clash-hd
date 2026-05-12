@@ -1,0 +1,36 @@
+.echo === Clash95 menu/load deterministic route probe ===
+.echo logs mouse/menu-hit rows, load callback, load-slot accept, loadMap, PlayGame, and first redraws
+sxe -c ".echo AV_MENU_LOAD_ROUTE; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+r @$t0 = -999999
+r @$t1 = -999999
+r @$t2 = -999999
+r @$t3 = -999999
+r @$t4 = -999999
+r @$t5 = -999999
+r @$t6 = -999999
+r @$t7 = -999999
+r @$t8 = 0
+r @$t9 = 0
+r @$t10 = 0
+
+bp 0047BD66 ".printf \"ROUTE_DINPUT_FOREGROUND_GATE hwnd=%p sleep_ms=4000\\n\", poi(005452dc); .sleep 4000; gc"
+
+bp 00460A9D ".if ((poi(005451a8) != @$t0) + (poi(005451ac) != @$t1) + (poi(@edx+24) != @$t2) + (poi(@edx+28) != @$t3)) { .printf \"ROUTE_MOUSE obj=%p x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d buttons=%d lbtn=0x%02x rbtn=0x%02x min=(%d,%d) max=(%d,%d)\\n\", @edx, (poi(@edx+24) >> by(@edx+454)), (poi(@edx+28) >> by(@edx+454)), poi(@edx+24), poi(@edx+28), poi(005451a8), poi(005451ac), by(@edx+454), poi(@edx+2c), by(005451c0), by(005451c8), (poi(@edx+10) >> by(@edx+454)), (poi(@edx+14) >> by(@edx+454)), (poi(@edx+18) >> by(@edx+454)), (poi(@edx+1c) >> by(@edx+454)); r @$t0 = poi(005451a8); r @$t1 = poi(005451ac); r @$t2 = poi(@edx+24); r @$t3 = poi(@edx+28); }; gc"
+
+bp 00419B80 ".if (((((poi(00544cfc) >> by(0054512c)) != @$t4) + ((poi(00544d00) >> by(0054512c)) != @$t5) + (by(005451c0) != @$t6) + (by(005451c8) != @$t7)) != 0)) { .printf \"ROUTE_MENUHIT x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d lbtn=0x%02x rbtn=0x%02x mask=%d min=(%d,%d) max=(%d,%d) entry=0x%08x ex=%d ey=%d\\n\", (poi(00544cfc) >> by(0054512c)), (poi(00544d00) >> by(0054512c)), poi(00544cfc), poi(00544d00), poi(005451a8), poi(005451ac), by(0054512c), by(005451c0), by(005451c8), poi(00544d04), (poi(00544ce8) >> by(0054512c)), (poi(00544cec) >> by(0054512c)), (poi(00544cf0) >> by(0054512c)), (poi(00544cf4) >> by(0054512c)), @eax, poi(@eax), poi(@eax+4); r @$t4 = (poi(00544cfc) >> by(0054512c)); r @$t5 = (poi(00544d00) >> by(0054512c)); r @$t6 = by(005451c0); r @$t7 = by(005451c8); }; gc"
+
+bp 00447780 ".printf \"ROUTE_MAIN_LOAD_CALLBACK choice_before=%d exit_before=%d mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x\\n\", poi(00543d7c), poi(00543d78), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8); gc"
+
+bp 0044A140 ".if (@$t8 < 0n60) { .printf \"ROUTE_LOAD_SLOT_DRAW seq=%d slot=%d selected=%d accept=%d mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x\\n\", @$t8, poi(@esp+4), poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8); r @$t8 = @$t8 + 1; }; gc"
+
+bp 0044A110 ".printf \"ROUTE_LOAD_ACCEPT arg=%d selected=%d accept_before=%d mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x\\n\", poi(@esp+4), poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8); gc"
+
+bp 00444490 ".printf \"ROUTE_LOADSAVE arg=%p selected=%d accept=%d choice=%d gd=%p\\n\", poi(@esp+4), poi(005441e0), poi(00544190), poi(00543d7c), poi(005202e4); gc"
+
+bp 0044AE90 ".printf \"ROUTE_LOADMAP arg=%p gd=%p selected=%d accept=%d\\n\", poi(@esp+4), poi(005202e4), poi(005441e0), poi(00544190); gc"
+
+bp 0040B660 ".if (poi(005202e4) != 0) { .printf \"ROUTE_PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) mission=%d turn=%d mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n147143), poi(poi(005202e4)+0n147139), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8); } .else { .echo ROUTE_PLAYGAME gd=00000000; }; gc"
+
+bp 00406FA0 ".if (@$t9 < 0n20) { .if (poi(005202e4) != 0) { .printf \"ROUTE_MAP_REDRAW seq=%d scroll=(%d,%d) end12=(%d,%d) map=(%d,%d) mouse=(%d,%d)\\n\", @$t9, poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140008)+0n12, poi(poi(005202e4)+0n140012)+0n9, poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t9 = @$t9 + 1; }; }; gc"
+
+g

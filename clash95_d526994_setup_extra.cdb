@@ -1,0 +1,19 @@
+.echo === Clash95 dword_526994 setup-owner extra probe ===
+.echo CDB-only setup-path probe for run_cdb_surface_dump hidden desktop route
+
+bp 00423760 ".printf \"D526994_OWNER_423760_ENTRY ret=%p arg_eax=%p callback=%p flag526994=%p saved514194=%p gd=%p gameplay=%d\\n\", poi(@esp), @eax, poi(00526990), poi(00526994), poi(00514194), poi(005202e4), @$t14; gc"
+bp 004237B3 ".printf \"D526994_OWNER_423760_SET1 ret=%p callback=%p flag526994_before=%p ebp=%p\\n\", poi(@esp), poi(00526990), poi(00526994), @ebp; gc"
+bp 004237D9 ".printf \"D526994_OWNER_423760_REDRAW1 ret=%p callback=%p flag526994=%p eax=%p\\n\", poi(@esp), poi(00526990), poi(00526994), @eax; gc"
+bp 004237F3 ".printf \"D526994_OWNER_423760_RESTORE ret=%p callback=%p flag526994_before=%p restore=%p\\n\", poi(@esp), poi(00526990), poi(00526994), @eax; gc"
+bp 00423830 ".printf \"D526994_OWNER_423760_REDRAW2 ret=%p callback=%p flag526994=%p eax=%p\\n\", poi(@esp), poi(00526990), poi(00526994), @eax; gc"
+
+bp 00423B00 ".printf \"D526994_OWNER_423B00_ENTRY ret=%p callback=%p flag526994=%p saved511b58=%p gd=%p gameplay=%d\\n\", poi(@esp), poi(00526990), poi(00526994), poi(00511b58), poi(005202e4), @$t14; gc"
+bp 00423B11 ".printf \"D526994_OWNER_423B00_SET1 ret=%p callback=%p flag526994_before=%p eax=%p\\n\", poi(@esp), poi(00526990), poi(00526994), @eax; gc"
+bp 00423B37 ".printf \"D526994_OWNER_423B00_REDRAW ret=%p callback=%p flag526994=%p eax=%p\\n\", poi(@esp), poi(00526990), poi(00526994), @eax; gc"
+
+bp 00423B40 ".printf \"D526994_OWNER_423B40_ENTRY ret=%p callback=%p flag526994=%p gd=%p gameplay=%d\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e4), @$t14; gc"
+bp 00423B53 ".printf \"D526994_OWNER_423B40_CLEAR ret=%p callback=%p flag526994_before=%p\\n\", poi(@esp), poi(00526990), poi(00526994); gc"
+bp 00423B5F ".printf \"D526994_OWNER_423B40_REDRAW ret=%p callback=%p flag526994=%p eax=%p\\n\", poi(@esp), poi(00526990), poi(00526994), @eax; gc"
+
+bp 004187A0 ".if (@$t14 != 0) { .printf \"D526994_SETUP_CALLBACK_TEST ret=%p callback=%p flag526994=%p surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 004189AD ".if (@$t14 != 0) { .printf \"D526994_SETUP_FALLBACK_START ret=%p callback=%p flag526994=%p edi=%d edx=%d\\n\", poi(@esp), poi(00526990), poi(00526994), @edi, @edx; }; gc"
