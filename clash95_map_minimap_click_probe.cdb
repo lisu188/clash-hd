@@ -1,0 +1,21 @@
+.echo === Clash95 HD minimap click probe ===
+.echo logs moved minimap globals, mouse samples, minimap hit-test rows, and scroll changes
+sxe -c ".echo AV_MINIMAP_CLICK; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+r @$t5 = 0
+r @$t6 = -999999
+r @$t7 = -999999
+r @$t8 = 0
+r @$t9 = 0
+bp 0040D3B6 ".printf \"MINIMAP_INIT left=%d top=%d width=%d height=%d right=%d bottom=%d scale=%d\\n\", wo(00523344), wo(00523346), wo(00523348), wo(0052334a), wo(00523344)+wo(00523348)-1, wo(00523346)+wo(0052334a)-1, by(00523f54); gc"
+bp 0040B660 ".if (poi(005202e4) != 0) { r @$t8 = 1; .printf \"PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) minimap=(%d,%d,%d,%d,%d,%d) mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), wo(00523344), wo(00523346), wo(00523348), wo(0052334a), wo(00523344)+wo(00523348)-1, wo(00523346)+wo(0052334a)-1, poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8); }; gc"
+bp 00406FA0 ".if (@$t8 != 0) { .if (@$t1 < 0n120) { .printf \"MAP_REDRAW seq=%d gd=%p scroll=(%d,%d) map=(%d,%d) mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x minimap=(%d,%d,%d,%d,%d,%d)\\n\", @$t1, poi(005202e4), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8), wo(00523344), wo(00523346), wo(00523348), wo(0052334a), wo(00523344)+wo(00523348)-1, wo(00523346)+wo(0052334a)-1; r @$t1 = @$t1 + 1; }; }; gc"
+bp 00407B90 ".if (@$t8 != 0) { .if (@$t3 < 0n80) { .printf \"MAP_SCROLLHELPER seq=%d gd=%p scroll=(%d,%d) map=(%d,%d) mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x\\n\", @$t3, poi(005202e4), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8); r @$t3 = @$t3 + 1; }; }; gc"
+bp 00460A9D ".if (@$t8 != 0) { .if (@$t4 < 0n160) { .if ((poi(005451a8) != @$t6) + (poi(005451ac) != @$t7)) { .printf \"MOUSE seq=%d obj=%p x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d buttons=%d lbtn=0x%02x rbtn=0x%02x min=(%d,%d) max=(%d,%d)\\n\", @$t4, @edx, (poi(@edx+24) >> by(@edx+454)), (poi(@edx+28) >> by(@edx+454)), poi(@edx+24), poi(@edx+28), poi(005451a8), poi(005451ac), by(@edx+454), poi(@edx+2c), by(005451c0), by(005451c8), (poi(@edx+10) >> by(@edx+454)), (poi(@edx+14) >> by(@edx+454)), (poi(@edx+18) >> by(@edx+454)), (poi(@edx+1c) >> by(@edx+454)); r @$t4 = @$t4 + 1; r @$t6 = poi(005451a8); r @$t7 = poi(005451ac); }; }; }; gc"
+bp 0040D800 ".if (@$t8 != 0) { .if (@$t0 < 0n240) { .if (@eax > 0n350) { .if (@eax < 0n820) { .if (@ecx > 0n0) { .if (@ecx < 0n260) { .printf \"MINIMAP_TEST seq=%d x=%d y=%d left=%d top=%d width=%d height=%d right=%d bottom=%d scroll=(%d,%d) map=(%d,%d) mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x\\n\", @$t0, @eax, @ecx, wo(00523344), wo(00523346), wo(00523348), wo(0052334a), wo(00523344)+wo(00523348)-1, wo(00523346)+wo(0052334a)-1, poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8); r @$t0 = @$t0 + 1; }; }; }; }; }; }; gc"
+bp 0040D841 ".if (@$t8 != 0) { .if (@$t2 < 0n120) { .printf \"MINIMAP_TRUE seq=%d x=%d y=%d left=%d top=%d width=%d height=%d right=%d bottom=%d scroll=(%d,%d) map=(%d,%d) mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x\\n\", @$t2, @esi, @ecx, wo(00523344), wo(00523346), wo(00523348), wo(0052334a), wo(00523344)+wo(00523348)-1, wo(00523346)+wo(0052334a)-1, poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8); r @$t2 = @$t2 + 1; }; }; gc"
+g

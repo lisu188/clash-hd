@@ -1,0 +1,33 @@
+.echo === Clash95 castle interior descriptor catalog probe ===
+.echo CDB-only catalog of reachable castle-screen command descriptors
+.echo Logs full-overview surface ownership before and after stock redraw
+
+r @$t8=3
+r @$t18=0
+r @$t19=0
+.echo CDB-only centering proof is disabled here so patcher centering is validated independently
+
+bp /1 0040B660 ".if ((poi(005202e4) != 0) & (@$t18 == 0)) { r @$t18=1; r @$t0=0; r @$t1=0; .printf \"CASTLECAT_INVOKE_PLAYGAME castle_index=0 gd=%p current_player=%d surface=%p sz=(%d,%d)\n\", poi(005202e4), poi(005202ec), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r esp=@esp-4; ed @esp 0040b660; r eax=0; r eip=00422180; }; gc"
+bp 00422180 ".if (@$t18 != 0) { .printf \"CASTLECAT_SCREEN_FULL_ENTRY ret=%p eax_index=%d gd=%p\n\", poi(@esp), @eax, poi(005202e4); }; gc"
+bp /1 00422207 ".if (@$t18 != 0) { .printf \"CASTLECAT_OWNER_SET castle_index=%d owner_screen=%p owner=%d flags=0x%02x pos=(%d,%d)\n\", @ebp, @edx, by(@edx+2), by(@edx+0n416), by(@edx), by(@edx+1); }; gc"
+bp 00422305 ".if (@$t18 != 0) { .printf \"CASTLECAT_OVERVIEW_ALLOC_INITIAL before_main_surface=%p main_size=(%d,%d) old_overview_surface=%p\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00526a68); }; gc"
+bp 00422020 ".if (@$t18 != 0) { .printf \"CASTLECAT_RENDERHOOK_DRAW ret=%p owner_screen=%p surface=%p sz=(%d,%d)\n\", poi(@esp), poi(00526a64), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00422333 ".if (@$t18 != 0) { .printf \"CASTLECAT_OVERVIEW_POST_DRAW ret=%p main_surface=%p main_size=(%d,%d) overview_surface=%p overview_size=(%d,%d) owner_screen=%p\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00526a68), wo(poi(00526a68)), wo(poi(00526a68)+2), poi(00526a64); ed 00544cfc 00001500; ed 00544d00 00003880; .printf \"CASTLECAT_OVERVIEW_CENTERED_MOUSE_SET displayed=(84,226) native=(4,166) shift=%d\n\", by(0054512c); }; gc"
+bp 00422660 ".if (@$t18 != 0) { .printf \"CASTLECAT_OVERVIEW_ALLOC_ACTION before_main_surface=%p main_size=(%d,%d) old_overview_surface=%p\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00526a68); }; gc"
+bp 00422679 ".if (@$t18 != 0) { .printf \"CASTLECAT_OVERVIEW_ACTION_POST_DRAW main_surface=%p main_size=(%d,%d) overview_surface=%p overview_size=(%d,%d) owner_screen=%p\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00526a68), wo(poi(00526a68)), wo(poi(00526a68)+2), poi(00526a64); }; gc"
+bp 0051B6D0 ".if (@$t18 != 0) { .printf \"CASTLECAT_OVERVIEW_WRAPPER_ENTRY main_surface=%p main_size=(%d,%d) owner_screen=%p\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00526a64); }; gc"
+bp 0051B770 ".if (@$t18 != 0) { .printf \"CASTLECAT_OVERVIEW_DESC_INPUT_WRAPPER_ENTRY mouse=(%d,%d) shift=%d owner_screen=%p\n\", poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(0054512c), poi(00526a64); }; gc"
+bp 0051B7C0 ".if (@$t18 != 0) { .printf \"CASTLECAT_OVERVIEW_SURFACE_HIT_WRAPPER_ENTRY xy=(%d,%d) shifted=(%d,%d) owner_screen=%p\n\", @edx, @ebx, @edx-0n80, @ebx-0n60, poi(00526a64); }; gc"
+
+bp 00422544 ".if (@$t18 != 0) { .if (@$t0 < 8) { r @$t1=0x0f8+@$t0; .printf \"CASTLECAT_FORCE_HITTEST seq=%d hit=%d owner_screen=%p mouse=(%d,%d)\n\", @$t0, @$t1, poi(00526a64), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r eax=@$t1; r @$t0=@$t0+1; gc } .else { ed 00526e80 1; r @$t11=poi(005202e0); r @$t12=wo(@$t11); r @$t15=wo(@$t11+2); r @$t16=poi(@$t11+4); r @$t17=@$t12*@$t15; .printf \"CASTLECAT_SURFDUMP_READY after_catalog=1 forced=%d surface=%p size=(%d,%d) base=%p bytes=%d owner_screen=%p exit_flag=%d\n\", @$t0, @$t11, @$t12, @$t15, @$t16, @$t17, poi(00526a64), poi(00526e80); .printf \"SURFDUMP_READY redraw_seq=992 surface=%p size=(%d,%d) base=%p bytes=%d\n\", @$t11, @$t12, @$t15, @$t16, @$t17; .printf \"SURFDUMP_HOST_READY\n\"; } } .else { gc }"
+bp 0042257E ".if (@$t18 != 0) { .printf \"CASTLECAT_DESCRIPTOR_INSTALL seq=%d command=%d callback=%p text=%p arg_count=%d owner_screen=%p owner_flag=0x%02x surface=%p sz=(%d,%d)\n\", @$t0, @esi, @ecx, poi(@esp), poi(@esp+4), poi(00526a64), by(poi(00526a64)+0n416), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00422590 ".if (@$t18 != 0) { .printf \"CASTLECAT_CLICK_GATE command=%d callback=%p gate=%d suppressed=1 owner_screen=%p\n\", @esi, @ecx, @eax, poi(00526a64); r eax=0; }; gc"
+bp 0042262C ".if (@$t18 != 0) { .printf \"CASTLECAT_CALLBACK_CALL callback=%p eax_arg=%p command=%d owner_screen=%p\n\", @ecx, @eax, @esi, poi(00526a64); }; gc"
+
+bp 0042255B ".if (@$t18 != 0) { .printf \"CASTLECAT_BRANCH hit=248 command=134 callback=0044fe70 prior_command=%d\n\", @esi; }; gc"
+bp 004226DD ".if (@$t18 != 0) { .printf \"CASTLECAT_BRANCH hit=254 command=153 callback=0043dce0 prior_command=%d\n\", @esi; }; gc"
+bp 00422709 ".if (@$t18 != 0) { .printf \"CASTLECAT_BRANCH hit=254 command=99 callback=00433c20 prior_command=%d owner_flag=0x%02x\n\", @esi, by(poi(00526a64)+0n416); }; gc"
+bp 0042274F ".if (@$t18 != 0) { .printf \"CASTLECAT_BRANCH hit=255 command=159 callback=0043dee0 prior_command=%d\n\", @esi; }; gc"
+bp 0042277B ".if (@$t18 != 0) { .printf \"CASTLECAT_BRANCH hit=252 command=156 callback=0043d8e0 prior_command=%d\n\", @esi; }; gc"
+bp 004227A7 ".if (@$t18 != 0) { .printf \"CASTLECAT_BRANCH hit=253 command=166 callback=0043dae0 prior_command=%d\n\", @esi; }; gc"
+bp 004227D3 ".if (@$t18 != 0) { .printf \"CASTLECAT_BRANCH hit=251 command=135 callback=0042b0a0 prior_command=%d\n\", @esi; }; gc"

@@ -25,6 +25,11 @@ env/
 tmp/
 temp/
 
+# Local game binaries and patched executable artifacts.
+# Keep proprietary executables out of this repository; build/test candidates in
+# C:\Clash or isolated C:\ClashTests folders instead.
+/*.exe
+
 # Obsidian local workspace/cache files. Markdown notes are not ignored.
 .obsidian/workspace*
 .obsidian/cache/
@@ -32,3 +37,9 @@ temp/
 
 # Codex local state
 .codex
+.codex-loop/
+
+# Optional generated archive form of cloud fixtures. The searchable fixture tree
+# under cloud/fixtures/ is the committed source of truth.
+cloud/*.zip
+!cloud/fixtures/**/*.log

@@ -1,0 +1,4 @@
+LIBRARY DDRAW
+EXPORTS
+    DirectDrawCreate
+    DirectDrawCreateEx

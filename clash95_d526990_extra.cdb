@@ -1,0 +1,12 @@
+.echo === Clash95 dword_526990 callback extra probe ===
+.echo CDB-only branch/write probe for run_cdb_surface_dump hidden desktop route
+
+ba w4 00526990 ".printf \"D526990_WRITE eip=%p ret=%p value=%p flag526994=%p gameplay=%d\\n\", @eip, poi(@esp), poi(00526990), poi(00526994), @$t14; u @eip-10 @eip+10; .if (poi(00526990) != 0) { u poi(00526990) poi(00526990)+20; }; gc"
+
+bp 00418700 ".if (@$t14 != 0) { .printf \"D526990_FULLREDRAW_ENTER ret=%p arg_eax=%p callback=%p flag526994=%p surface=%p sz=(%d,%d) scroll=(%d,%d)\\n\", poi(@esp), @eax, poi(00526990), poi(00526994), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012); }; gc"
+bp 00418784 ".if (@$t14 != 0) { .printf \"D526990_SECOND_PASS_CHECK ret=%p flag526994=%p callback=%p edi=%d ecx=%d surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00526994), poi(00526990), @edi, @ecx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 004189AD ".if (@$t14 != 0) { .printf \"D526990_FALLBACK_LOOP_START ret=%p flag526994=%p callback=%p edi=%d edx=%d\\n\", poi(@esp), poi(00526994), poi(00526990), @edi, @edx; }; gc"
+bp 00418A02 ".if (@$t14 != 0) { .printf \"D526990_FALLBACK_LOOP_DONE ret=%p flag526994=%p callback=%p edi=%d ecx=%d\\n\", poi(@esp), poi(00526994), poi(00526990), @edi, @ecx; }; gc"
+bp 004187A0 ".if (@$t14 != 0) { .printf \"D526990_CALLBACK_TEST ret=%p callback=%p flag526994=%p surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 004187A9 ".if (@$t14 != 0) { .printf \"D526990_CALLBACK_CALL ret=%p target=%p flag526994=%p surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); u poi(00526990) poi(00526990)+40; kb; }; gc"
+bp 004187AF ".if (@$t14 != 0) { .printf \"D526990_CALLBACK_AFTER ret=%p callback=%p flag526994=%p ebp=%p\\n\", poi(@esp), poi(00526990), poi(00526994), @ebp; }; gc"

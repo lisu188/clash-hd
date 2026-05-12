@@ -1,0 +1,10 @@
+.echo === Clash95 HWND/origin probe ===
+.echo logs original hWnd globals beside wrapper HWND/origin call sites
+sxd av
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+bp 1803fdc4 ".if (@$t0 < 0n16) { r @$t0 = @$t0 + 1; .printf \"HWND_RECT seq=%d wrapperHwnd=%p hWnd_create=%p hWnd_DGROUP=%p hWnd_oldguess=%p rect=(%d,%d,%d,%d) size=(%d,%d)\\n\", @$t0, @esi, poi(005452dc), poi(005162dc), poi(005454dc), poi(@esp+10), poi(@esp+14), poi(@esp+18), poi(@esp+0n28), poi(@esp+18)-poi(@esp+10), poi(@esp+0n28)-poi(@esp+14); }; gc"
+bp 1803fdd2 ".if (@$t1 < 0n16) { r @$t1 = @$t1 + 1; .printf \"HWND_ORIGIN seq=%d wrapperHwnd=%p hWnd_create=%p hWnd_DGROUP=%p hWnd_oldguess=%p origin=(%d,%d)\\n\", @$t1, @esi, poi(005452dc), poi(005162dc), poi(005454dc), poi(@esp+10), poi(@esp+14); }; gc"
+bp 00461ace ".if (@$t2 < 0n8) { r @$t2 = @$t2 + 1; .printf \"WIN_CREATE_STORE seq=%d eax=%p hWnd_create_before=%p hWnd_DGROUP=%p hWnd_oldguess=%p\\n\", @$t2, @eax, poi(005452dc), poi(005162dc), poi(005454dc); }; gc"
+g
