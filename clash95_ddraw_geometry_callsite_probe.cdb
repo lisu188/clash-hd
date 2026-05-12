@@ -1,0 +1,14 @@
+.echo === Clash95 DDraw geometry callsite probe ===
+.echo logs wrapper-local rect/origin values after GetClientRect/ClientToScreen returns
+sxd av
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+bp 1803fdc4 ".if (@$t0 < 0n32) { r @$t0 = @$t0 + 1; .printf \"DDRAW_RECT seq=%d eip=%p hwnd=%p rect=(%d,%d,%d,%d) size=(%d,%d)\\n\", @$t0, @eip, @esi, poi(@esp+10), poi(@esp+14), poi(@esp+18), poi(@esp+0n28), poi(@esp+18)-poi(@esp+10), poi(@esp+0n28)-poi(@esp+14); }; gc"
+bp 1803fdd2 ".if (@$t1 < 0n32) { r @$t1 = @$t1 + 1; .printf \"DDRAW_ORIGIN_A seq=%d eip=%p hwnd=%p pt=(%d,%d)\\n\", @$t1, @eip, @esi, poi(@esp+10), poi(@esp+14); }; gc"
+bp 1803fdda ".if (@$t2 < 0n32) { r @$t2 = @$t2 + 1; .printf \"DDRAW_BOTTOMRIGHT_A seq=%d eip=%p hwnd=%p pt=(%d,%d) span=(%d,%d)\\n\", @$t2, @eip, @esi, poi(@esp+18), poi(@esp+0n28), poi(@esp+18)-poi(@esp+10), poi(@esp+0n28)-poi(@esp+14); }; gc"
+bp 1801c4e5 ".if (@$t3 < 0n32) { r @$t3 = @$t3 + 1; .printf \"DDRAW_ORIGIN_B seq=%d eip=%p hwnd=%p pt=(%d,%d)\\n\", @$t3, @eip, @edx, poi(@esp+50), poi(@esp+54); }; gc"
+bp 1801c4f3 ".if (@$t4 < 0n32) { r @$t4 = @$t4 + 1; .printf \"DDRAW_BOTTOMRIGHT_B seq=%d eip=%p hwnd=%p pt=(%d,%d) span=(%d,%d)\\n\", @$t4, @eip, poi(18440e80), poi(@esp+58), poi(@esp+0n92), poi(@esp+58)-poi(@esp+50), poi(@esp+0n92)-poi(@esp+54); }; gc"
+g

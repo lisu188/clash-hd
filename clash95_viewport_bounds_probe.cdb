@@ -1,0 +1,20 @@
+.echo === Clash95 HD viewport bounds probe ===
+.echo logs sub_460B20 entry/exit, init/switch call arguments, and mouse clamp bounds
+sxe -c ".echo AV_VIEWPORT_BOUNDS; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+r @$t5 = 0
+r @$t6 = -999999
+r @$t7 = -999999
+r @$t8 = 0
+bp 0040B660 ".if (poi(005202e4) != 0) { r @$t8 = 1; .printf \"PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) mouse=(%d,%d) lbtn=0x%02x rbtn=0x%02x\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0), by(005451c8); }; gc"
+bp 0046053F ".if (@$t2 < 0n40) { .printf \"VIEWPORT_INIT_CALL seq=%d obj=%p right_arg=%d bottom_arg=%d shift=%d gameplay=%d\\n\", @$t2, @eax, @ecx, poi(@esp), by(@eax+454), @$t8; r @$t2 = @$t2 + 1; }; gc"
+bp 00460D80 ".if (@$t3 < 0n120) { .printf \"VIEWPORT_SWITCH_ENTRY seq=%d obj=%p new_meta=%p old_meta=%p shift=%d fields_before=(%d,%d,%d,%d) gameplay=%d\\n\", @$t3, @eax, @edx, poi(@eax+3c), by(@eax+454), poi(@eax+10)>>by(@eax+454), poi(@eax+14)>>by(@eax+454), poi(@eax+18)>>by(@eax+454), poi(@eax+1c)>>by(@eax+454), @$t8; r @$t3 = @$t3 + 1; }; gc"
+bp 00460E32 ".if (@$t4 < 0n120) { .printf \"VIEWPORT_SWITCH_CALL seq=%d obj=%p right_arg=%d bottom_arg=%d shift=%d meta=%p gameplay=%d\\n\", @$t4, @eax, @ecx, poi(@esp), by(@eax+454), poi(@eax+3c), @$t8; r @$t4 = @$t4 + 1; }; gc"
+bp 00460B20 ".if (@$t0 < 0n180) { .printf \"VIEWPORT_ENTRY seq=%d ret=%p obj=%p left_arg=%d right_arg=%d top_arg=%d bottom_arg=%d shift=%d meta=%p meta_words=(%d,%d,%d,%d) fields_before=(%d,%d,%d,%d) gameplay=%d\\n\", @$t0, poi(@esp), @eax, (@edx & 0xffff), (@ecx & 0xffff), (@ebx & 0xffff), (poi(@esp+4) & 0xffff), by(@eax+454), poi(@eax+3c), wo(poi(@eax+3c)+0x0c), wo(poi(@eax+3c)+0x10), wo(poi(@eax+3c)+0x14), wo(poi(@eax+3c)+0x18), poi(@eax+10)>>by(@eax+454), poi(@eax+14)>>by(@eax+454), poi(@eax+18)>>by(@eax+454), poi(@eax+1c)>>by(@eax+454), @$t8; r @$t0 = @$t0 + 1; }; gc"
+bp 00460BA7 ".if (@$t1 < 0n180) { .printf \"VIEWPORT_SET seq=%d ret=%p obj=%p shift=%d min=(%d,%d) max=(%d,%d) raw=(0x%08x,0x%08x,0x%08x,0x%08x) meta=%p meta_words=(%d,%d,%d,%d) gameplay=%d\\n\", @$t1, poi(@esp+0x0c), @eax, by(@eax+454), poi(@eax+10)>>by(@eax+454), poi(@eax+14)>>by(@eax+454), poi(@eax+18)>>by(@eax+454), poi(@eax+1c)>>by(@eax+454), poi(@eax+10), poi(@eax+14), poi(@eax+18), poi(@eax+1c), poi(@eax+3c), wo(poi(@eax+3c)+0x0c), wo(poi(@eax+3c)+0x10), wo(poi(@eax+3c)+0x14), wo(poi(@eax+3c)+0x18), @$t8; r @$t1 = @$t1 + 1; }; gc"
+bp 00460A9D ".if (@$t5 < 0n120) { .if ((poi(005451a8) != @$t6) + (poi(005451ac) != @$t7)) { .printf \"MOUSE_BOUND seq=%d obj=%p x=%d y=%d dx=%d dy=%d shift=%d min=(%d,%d) max=(%d,%d) raw=(0x%08x,0x%08x,0x%08x,0x%08x) buttons=%d lbtn=0x%02x rbtn=0x%02x\\n\", @$t5, @edx, poi(@edx+24)>>by(@edx+454), poi(@edx+28)>>by(@edx+454), poi(005451a8), poi(005451ac), by(@edx+454), poi(@edx+10)>>by(@edx+454), poi(@edx+14)>>by(@edx+454), poi(@edx+18)>>by(@edx+454), poi(@edx+1c)>>by(@edx+454), poi(@edx+10), poi(@edx+14), poi(@edx+18), poi(@edx+1c), poi(@edx+2c), by(005451c0), by(005451c8); r @$t5 = @$t5 + 1; r @$t6 = poi(005451a8); r @$t7 = poi(005451ac); }; }; gc"
+g

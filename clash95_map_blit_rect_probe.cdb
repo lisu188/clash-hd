@@ -1,0 +1,24 @@
+.echo === Clash95 map blit/rect probe ===
+.echo gates logging after the first map redraw and records full-surface blits plus Render_FillRect rectangles
+sxe -c ".echo AV_BLITRECT_DETAIL; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+r @$t5 = 0
+r @$t6 = 0
+r @$t7 = 0
+r @$t8 = 0
+r @$t9 = 0
+r @$t10 = 0
+bp 0040B660 ".if (poi(005202e4) != 0) { .printf \"PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) player=%d selected=%d mission=%d turn=%d\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(005202ec), poi(00511b58), poi(poi(005202e4)+0n140017), wo(poi(005202e4)+0n140022); } .else { .printf \"PLAYGAME gd=00000000\\n\"; }; gc"
+bp 0040B76A ".if (poi(005202e4) != 0) { r @$t3 = poi(005202e4); r @$t4 = poi(@$t3+0n140000)-0n12; r @$t5 = poi(@$t3+0n140004)-0n9; .if (@$t4 < 0) { r @$t4 = 0; }; .if (@$t5 < 0) { r @$t5 = 0; }; .printf \"SCROLL_RESTORE before=(%d,%d) max=(%d,%d) map=(%d,%d)\\n\", poi(@$t3+0n140008), poi(@$t3+0n140012), @$t4, @$t5, poi(@$t3+0n140000), poi(@$t3+0n140004); }; gc"
+bp 0040B76F ".if (poi(005202e4) != 0) { .printf \"SCROLL_RESTORE_CLAMP after=(%d,%d)\\n\", poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012); }; gc"
+bp 00406FA0 "r @$t8 = 1; .if (@$t0 < 0n12) { .printf \"MAP_REDRAW seq=%d gd=%p scroll=(%d,%d) map=(%d,%d) end12=(%d,%d) end9=(%d,%d)\\n\", @$t0, poi(005202e4), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008)+0n12, poi(poi(005202e4)+0n140012)+0n9, poi(poi(005202e4)+0n140008)+0n9, poi(poi(005202e4)+0n140012)+0n7; r @$t0 = @$t0 + 1; }; gc"
+bp 00401E30 ".if (@$t8 != 0) { .if (@$t1 < 0n80) { .printf \"FULLBLIT seq=%d ret=%p src=%p srcsz=(%d,%d) d5202e0=%p scratchsz=(%d,%d) gdev=%p\\n\", @$t1, poi(@esp), @eax, wo(@eax), wo(@eax+2), poi(005202e0), wo(0051d4c0), wo(0051d4c2), poi(00511230); r @$t1 = @$t1 + 1; }; }; gc"
+bp 00401E60 ".if (@$t8 != 0) { .if (@$t1 < 0n80) { .printf \"CLEARFULL seq=%d ret=%p surf=%p size=(%d,%d) base=%p\\n\", @$t1, poi(@esp), @eax, wo(@eax), wo(@eax+2), poi(@eax+4); r @$t1 = @$t1 + 1; }; }; gc"
+bp 004024E0 ".if (@$t8 != 0) { .if (@$t2 < 0n220) { r @$t6 = 0; r @$t7 = 0; r @$t9 = 0; r @$t10 = 0; .if (@eax != 0) { r @$t6 = wo(@eax); r @$t7 = wo(@eax+2); }; .if (@edx != 0) { r @$t9 = wo(@edx); r @$t10 = wo(@edx+2); }; .printf \"RECT seq=%d ret=%p src=%p srcsz=(%d,%d) dst=%p dstsz=(%d,%d) ltrb=(%d,%d,%d,%d) dxy=(%d,%d)\\n\", @$t2, poi(@esp), @eax, @$t6, @$t7, @edx, @$t9, @$t10, @ebx, @ecx, poi(@esp+4), poi(@esp+8), poi(@esp+0c), poi(@esp+10); r @$t2 = @$t2 + 1; }; }; gc"
+bp 00404F20 ".if (@$t8 != 0) { .if (@$t1 < 0n80) { .printf \"SAVE_OR_COPY_A seq=%d ret=%p eax=%p eaxsz=(%d,%d) edx=%p d5202e0=%p scratchsz=(%d,%d)\\n\", @$t1, poi(@esp), @eax, wo(@eax), wo(@eax+2), @edx, poi(005202e0), wo(0051d4c0), wo(0051d4c2); r @$t1 = @$t1 + 1; }; }; gc"
+bp 00405020 ".if (@$t8 != 0) { .if (@$t1 < 0n80) { .printf \"SAVE_OR_COPY_B seq=%d ret=%p eax=%p eaxsz=(%d,%d) edx=%p ebx=%p d5202e0=%p scratchsz=(%d,%d)\\n\", @$t1, poi(@esp), @eax, wo(@eax), wo(@eax+2), @edx, @ebx, poi(005202e0), wo(0051d4c0), wo(0051d4c2); r @$t1 = @$t1 + 1; }; }; gc"
+g

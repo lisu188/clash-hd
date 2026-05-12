@@ -1,0 +1,8 @@
+.echo === Clash95 Win32 geometry entry probe ===
+.echo logs API entry caller, HWND, pointer arguments, and short stacks
+sxd av
+r @$t0 = 0
+r @$t1 = 0
+bu USER32!ClientToScreen ".if (@$t0 < 0n64) { r @$t0 = @$t0 + 1; .printf \"CLIENTTOSCREEN enter seq=%d caller=%p hwnd=%p pointptr=%p before=(%d,%d)\\n\", @$t0, poi(@esp), poi(@esp+4), poi(@esp+8), poi(poi(@esp+8)), poi(poi(@esp+8)+4); kb 5; }; gc"
+bu USER32!GetClientRect ".if (@$t1 < 0n64) { r @$t1 = @$t1 + 1; .printf \"GETCLIENTRECT enter seq=%d caller=%p hwnd=%p rectptr=%p before=(%d,%d,%d,%d)\\n\", @$t1, poi(@esp), poi(@esp+4), poi(@esp+8), poi(poi(@esp+8)), poi(poi(@esp+8)+4), poi(poi(@esp+8)+8), poi(poi(@esp+8)+0n12); kb 5; }; gc"
+g

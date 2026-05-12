@@ -1,0 +1,207 @@
+Opened log file 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260512-082418\cdb-surface-dump.log'
+
+************* Preparing the environment for Debugger Extensions Gallery repositories **************
+   ExtensionRepository : Implicit
+   UseExperimentalFeatureForNugetShare : true
+   AllowNugetExeUpdate : true
+   NonInteractiveNuget : true
+   AllowNugetMSCredentialProviderInstall : true
+   AllowParallelInitializationOfLocalRepositories : true
+
+   EnableRedirectToV8JsProvider : false
+
+   -- Configuring repositories
+      ----> Repository : LocalInstalled, Enabled: true
+      ----> Repository : UserExtensions, Enabled: true
+
+>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds
+
+************* Waiting for Debugger Extensions Gallery to Initialize **************
+
+>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.031 seconds
+   ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29
+
+Microsoft (R) Windows Debugger Version 10.0.26100.8038 X86
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+CommandLine: C:\ClashTests\cdb-castle-center-all\clash95_hd_surfdump_20260512_082418.exe
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\atlmfc.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\ObjectiveC.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\concurrency.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\cpp_rest.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\stl.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Data.Json.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Geolocation.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Sensors.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Media.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\windows.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\winrt.natvis'
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Symbol search path is: srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Executable search path is: 
+ModLoad: 00400000 00562000   clash95.exe
+ModLoad: 774a0000 7765f000   ntdll.dll
+ModLoad: 75bb0000 75ca0000   C:\WINDOWS\SysWOW64\KERNEL32.DLL
+ModLoad: 74f40000 7520a000   C:\WINDOWS\SysWOW64\KERNELBASE.dll
+ModLoad: 56890000 5693e000   C:\WINDOWS\SysWOW64\apphelp.dll
+ModLoad: 76570000 76592000   C:\WINDOWS\SysWOW64\GDI32.dll
+ModLoad: 77400000 7741a000   C:\WINDOWS\SysWOW64\win32u.dll
+ModLoad: 765a0000 7668b000   C:\WINDOWS\SysWOW64\gdi32full.dll
+ModLoad: 76690000 76715000   C:\WINDOWS\SysWOW64\msvcp_win.dll
+ModLoad: 763b0000 764c0000   C:\WINDOWS\SysWOW64\ucrtbase.dll
+ModLoad: 74a80000 74c4f000   C:\WINDOWS\SysWOW64\USER32.dll
+ModLoad: 6c690000 6c6c3000   C:\WINDOWS\SysWOW64\WINMM.dll
+ModLoad: 533d0000 533f7000   C:\WINDOWS\SysWOW64\DINPUT.dll
+ModLoad: 533a0000 533c5000   C:\ClashTests\cdb-castle-center-all\DDRAW.dll
+ModLoad: 53320000 53396000   C:\WINDOWS\SysWOW64\DSOUND.dll
+ModLoad: 75f40000 75fc2000   C:\WINDOWS\SysWOW64\ADVAPI32.dll
+ModLoad: 530d0000 530ec000   C:\WINDOWS\SysWOW64\AVIFIL32.dll
+ModLoad: 76060000 762f2000   C:\WINDOWS\SysWOW64\combase.dll
+ModLoad: 74c60000 74d27000   C:\WINDOWS\SysWOW64\msvcrt.dll
+ModLoad: 53070000 53094000   C:\WINDOWS\SysWOW64\MSVFW32.dll
+ModLoad: 75390000 7544c000   C:\WINDOWS\SysWOW64\RPCRT4.dll
+ModLoad: 77370000 773f3000   C:\WINDOWS\SysWOW64\sechost.dll
+ModLoad: 74800000 74953000   C:\WINDOWS\SysWOW64\ole32.dll
+ModLoad: 76cc0000 772fa000   C:\WINDOWS\SysWOW64\SHELL32.dll
+ModLoad: 75cc0000 75db9000   C:\WINDOWS\SysWOW64\wintypes.dll
+ModLoad: 747a0000 747f5000   C:\WINDOWS\SysWOW64\powrprof.dll
+ModLoad: 52fd0000 5306a000   C:\WINDOWS\SysWOW64\ResampleDmo.DLL
+ModLoad: 54b80000 54b9a000   C:\WINDOWS\SysWOW64\MSACM32.dll
+ModLoad: 76300000 7639f000   C:\WINDOWS\SysWOW64\OLEAUT32.dll
+ModLoad: 52f30000 52fc1000   C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.26100.8115_none_cf9a25ee8eaab31f\COMCTL32.dll
+ModLoad: 54c20000 54c45000   C:\WINDOWS\SysWOW64\winmmbase.dll
+ModLoad: 75df0000 75ec2000   C:\WINDOWS\SysWOW64\shcore.dll
+ModLoad: 53310000 53319000   C:\WINDOWS\SysWOW64\msdmo.dll
+(8fc0.6a80): Break instruction exception - code 80000003 (first chance)
+eax=00000000 ebx=00000000 ecx=380c0000 edx=00000000 esi=00606710 edi=0030b000
+eip=775b8328 esp=000efa54 ebp=000efa80 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+ntdll!LdrpDoDebuggerBreak+0x2b:
+775b8328 cc              int     3
+0:000> $$><C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260512-082418\clash95_surface_dump_probe.generated.cdb
+=== Clash95 CDB surface dump probe ===
+route-injects load slot 0, waits for gameplay redraw, then dumps dword_5202E0
+SURFDUMP_START_ANIMS_SLEEP_FAST_FORWARD_ENABLED
+=== Clash95 castle barracks centered second action descriptor selected-index-1 probe ===
+CDB-only route with centered click for descriptor 005151cf after forcing selected index 1
+CDB-only centering proof is disabled here so patcher centering is validated independently
+ModLoad: 75dc0000 75de5000   C:\WINDOWS\SysWOW64\IMM32.DLL
+ModLoad: 73990000 7399e000   C:\WINDOWS\SysWOW64\UMPDC.dll
+ModLoad: 5b620000 5b792000   C:\WINDOWS\SysWOW64\inputhost.dll
+ModLoad: 5b540000 5b61d000   C:\WINDOWS\SysWOW64\CoreMessaging.dll
+ModLoad: 6c6d0000 6c750000   C:\WINDOWS\SysWOW64\uxtheme.dll
+ModLoad: 76720000 76794000   C:\WINDOWS\SysWOW64\bcryptPrimitives.dll
+ModLoad: 74e20000 74f38000   C:\WINDOWS\SysWOW64\MSCTF.dll
+ModLoad: 6ee50000 6ee5a000   C:\WINDOWS\SysWOW64\CRYPTBASE.DLL
+ModLoad: 73710000 73725000   C:\WINDOWS\SysWOW64\kernel.appcore.dll
+ModLoad: 530b0000 530c6000   C:\WINDOWS\SysWOW64\msctfmonitor.dll
+ModLoad: 52e50000 52e8f000   C:\WINDOWS\SysWOW64\MSUTB.dll
+ModLoad: 6b4f0000 6b5f3000   C:\WINDOWS\SysWOW64\textinputframework.dll
+ModLoad: 6ce90000 6ce9b000   C:\WINDOWS\SysWOW64\HID.DLL
+ModLoad: 76860000 76cb1000   C:\WINDOWS\SysWOW64\SETUPAPI.DLL
+ModLoad: 739d0000 73a0e000   C:\WINDOWS\SysWOW64\cfgmgr32.DLL
+ModLoad: 68950000 68974000   C:\WINDOWS\SysWOW64\DEVOBJ.dll
+ModLoad: 75ff0000 76057000   C:\WINDOWS\SysWOW64\WINTRUST.dll
+ModLoad: 74970000 74a79000   C:\WINDOWS\SysWOW64\CRYPT32.dll
+ModLoad: 71f80000 71f8e000   C:\WINDOWS\SysWOW64\MSASN1.dll
+ModLoad: 532d0000 53305000   C:\WINDOWS\SysWOW64\MLANG.DLL
+SURFDUMP_BYPASS_MOUSE_ACQUIRE hwnd=*** WARNING: Unable to verify checksum for clash95.exe
+0e800986 device=006540a4
+SURFDUMP_BYPASS_KEYBOARD_ACQUIRE hwnd=0e800986 device=00661634
+ModLoad: 74d90000 74e16000   C:\WINDOWS\SysWOW64\clbcatq.dll
+ModLoad: 51f00000 51faa000   C:\Windows\SysWOW64\InputSwitch.dll
+ModLoad: 51d90000 51efa000   C:\Windows\SysWOW64\DUI70.dll
+ModLoad: 72a30000 72c59000   C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.8115_none_85b49359f7b178a2\Comctl32.dll
+ModLoad: 51d00000 51d82000   C:\Windows\SysWOW64\DUser.dll
+ModLoad: 77a60000 77ffc000   C:\WINDOWS\SysWOW64\windowsudk.shellcommon.dll
+ModLoad: 6e0a0000 6e28c000   C:\Windows\SysWOW64\twinapi.appcore.dll
+ModLoad: 51be0000 51cfa000   C:\Windows\SysWOW64\Windows.UI.Core.TextInput.dll
+ModLoad: 53c30000 53ec2000   C:\WINDOWS\SysWOW64\CoreUIComponents.dll
+(8fc0.8a50): C++ EH exception - code e06d7363 (first chance)
+(8fc0.8a50): C++ EH exception - code e06d7363 (first chance)
+(8fc0.8a50): C++ EH exception - code e06d7363 (first chance)
+(8fc0.8a50): C++ EH exception - code e06d7363 (first chance)
+ModLoad: 51b90000 51bdc000   C:\Windows\SysWOW64\Bcp47Langs.dll
+pcshell\shell\inputswitch\switch\ctfhandler.cpp(2651)\InputSwitch.dll!51F17B21: (caller: 51F1498F) LogHr(1) tid(8a50) 80004005 Unspecified error
+    CallContext:[\Startup] 
+ModLoad: 6dfa0000 6dfd2000   C:\WINDOWS\SysWOW64\xmllite.dll
+ModLoad: 691c0000 693d3000   C:\WINDOWS\SysWOW64\dwrite.dll
+ModLoad: 754c0000 75ba4000   C:\WINDOWS\SysWOW64\Windows.Storage.dll
+ModLoad: 51b40000 51b83000   C:\WINDOWS\SysWOW64\UIAnimation.dll
+ModLoad: 69730000 69922000   C:\Windows\SysWOW64\d3d11.dll
+ModLoad: 6bde0000 6beeb000   C:\Windows\SysWOW64\dxgi.dll
+ModLoad: 78550000 78c13000   C:\WINDOWS\SysWOW64\D3D10Warp.dll
+ModLoad: 6b860000 6b896000   C:\WINDOWS\SysWOW64\dxcore.dll
+ModLoad: 5b270000 5b280000   C:\WINDOWS\SysWOW64\resourcepolicyclient.dll
+ModLoad: 6d4f0000 6d53f000   C:\WINDOWS\SysWOW64\directxdatabasehelper.dll
+ModLoad: 6d570000 6d705000   C:\WINDOWS\SysWOW64\dcomp.dll
+ModLoad: 6d550000 6d562000   C:\WINDOWS\SysWOW64\Microsoft.Internal.WarpPal.dll
+ModLoad: 543f0000 54495000   C:\WINDOWS\SysWOW64\TextShaping.dll
+ModLoad: 6e460000 6e4dd000   C:\WINDOWS\SysWOW64\MMDevApi.dll
+ModLoad: 51f00000 51faa000   C:\Windows\SysWOW64\InputSwitch.dll
+ModLoad: 51d90000 51efa000   C:\Windows\SysWOW64\DUI70.dll
+ModLoad: 5b290000 5b3fd000   C:\WINDOWS\SysWOW64\AUDIOSES.DLL
+ModLoad: 51d00000 51d82000   C:\Windows\SysWOW64\DUser.dll
+ModLoad: 5b270000 5b280000   C:\WINDOWS\SysWOW64\resourcepolicyclient.dll
+ModLoad: 51b90000 51bdc000   C:\Windows\SysWOW64\Bcp47Langs.dll
+pcshell\shell\inputswitch\switch\ctfhandler.cpp(2651)\InputSwitch.dll!51F17B21: (caller: 51F1498F) LogHr(1) tid(67c8) 80004005 Unspecified error
+    CallContext:[\Startup] 
+ModLoad: 6dfa0000 6dfd2000   C:\WINDOWS\SysWOW64\xmllite.dll
+ModLoad: 69730000 69922000   C:\Windows\SysWOW64\d3d11.dll
+ModLoad: 6bde0000 6beeb000   C:\Windows\SysWOW64\dxgi.dll
+ModLoad: 78550000 78c13000   C:\WINDOWS\SysWOW64\D3D10Warp.dll
+ModLoad: 6d4f0000 6d53f000   C:\WINDOWS\SysWOW64\directxdatabasehelper.dll
+ModLoad: 6d570000 6d705000   C:\WINDOWS\SysWOW64\dcomp.dll
+ModLoad: 6d550000 6d562000   C:\WINDOWS\SysWOW64\Microsoft.Internal.WarpPal.dll
+ModLoad: 6e290000 6e39f000   C:\Windows\SysWOW64\Windows.UI.dll
+ModLoad: 54bb0000 54bb9000   C:\WINDOWS\SysWOW64\avrt.dll
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_START_SLEEP ret=004478a1
+SURFDUMP_MAIN_HIT seq=0 choice=0 entry=0x000efa28 ex=239 ey=196 mouse=(300,218)
+SURFDUMP_MAIN_HIT seq=1 choice=0 entry=0x000efa28 ex=239 ey=196 mouse=(300,218)
+SURFDUMP_FORCE_MAIN_CLICK seq=0 desc=0x000efa28 mouse=(300,218)
+SURFDUMP_SKIP_MAIN_LOAD_CALLBACK ret=00419c60 choice_before=0 exit_before=0 mouse=(300,218)
+SURFDUMP_LOAD_COORD seq=0 choice=5 entry=0x000efa5d ex=232 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=1 choice=5 entry=0x000efa92 ex=265 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=2 choice=5 entry=0x000efac7 ex=437 ey=196 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=3 choice=5 entry=0x000efafc ex=424 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=4 choice=5 entry=0x000efafc ex=424 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=5 choice=5 entry=0x000efafc ex=424 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=6 choice=5 entry=0x000efb31 ex=468 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_MENU_ENTRY choice=5 exit=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_MENU_ENTRY choice=5 exit=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_MENU_LOOP seq=0 exit=0 selected=-1 accept=0 mouse=(320,166) lbtn=0x80
+SURFDUMP_FORCE_LOAD_SELECT seq=0 mouse=(320,166) selected=-1 accept=0
+SURFDUMP_FORCE_LOAD_SELECT seq=1 mouse=(320,166) selected=-1 accept=0
+SURFDUMP_FORCE_LOAD_SELECT seq=2 mouse=(320,166) selected=-1 accept=0
+SURFDUMP_FORCE_LOAD_ACCEPT seq=0 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_ACCEPT_CALL arg=0 selected=0 accept_before=0 mouse=(320,166)
+SURFDUMP_LOAD_COORD seq=7 choice=5 entry=0x000efca8 ex=329 ey=452 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOAD_COORD seq=8 choice=5 entry=0x000efcdd ex=409 ey=468 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOAD_COORD seq=9 choice=5 entry=0x000efcdd ex=409 ey=468 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=03fb0030
+SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=038bc8d0 size=(640,480)
+SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=038bc8d0 size=(640,480)
+SURFDUMP_REDRAW seq=0 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a2fedd0 size=(800,600)
+APBARRACKS_OWNER_SETUP_CALL owner=0402c71a owner_flag_old=0x00 scroll=(10,17) surface=0a2fedd0 sz=(800,600) APBARRACKS_OWNER_FLAG_FORCED owner=0402c71a owner_flag_new=0x02 APBARRACKS_WRITE_532154 ret=0040ae16 new=0a62b610 d532150=0402c71a d53214c=00000001 surface=0a2fedd0 sz=(800,600) short_return=1 SURFDUMP_REDRAW seq=1 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a2fedd0 size=(800,600)
+APBARRACKS_ACTION_CALL desc=00511d40 owner=0402c71a owner_flag=0x02 d532150=0402c71a d53214c=00000001 d532154=0a62b610 surface=0a2fedd0 sz=(800,600) skip_prelude=1 APBARRACKS_433914_CALL_435BC0 ret=0040ae16 owner_arg=0402c71a owner_global=0402c71a owner_flag=0x02 d532218=00000000 d5322c8=0 surface=0a2fedd0 sz=(800,600) APBARRACKS_OWNER_435BC0_ENTRY ret=00433919 owner_arg=0402c71a d532218_before=00000000 d5322c8_before=0 d532210_before=0 surface=0a2fedd0 sz=(800,600) mouse=(320,166) APBARRACKS_SELECT_FORCED ret=00435d84 forced_index=1 selected_addon=1 list=(0,1,3,16,17,37,38,39,-1,-1,-1,-1) APBARRACKS_PANEL_DRAW_4347A0 ret=00435d84 owner=0402c71a selected_index=1 selected_addon=1 render=0a2fedd0 map_surface=0a2fedd0 sz=(800,600) APBARRACKS_GRID_DRAW_434E20 ret=00435172 owner=0402c71a selected_index=1 selected_addon=1 hover_slot=-1 render=0a2fedd0 map_surface=0a2fedd0 sz=(800,600) APBARRACKS_ACTION_BOX_435500 ret=00435d93 owner=0402c71a selected_index=1 selected_addon=1 hover_slot=-1 action_state=0 mouse=(320,166) render=0051d4c0 map_surface=0a2fedd0 APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0402c71a selected_index=1 selected_addon=1 hover_slot=-1 render=0051d4c0 map_surface=0a2fedd0 sz=(800,600) APBARRACKS_CLICKFLAG_WATCH_ARMED pass_index=1 mouse=(276,501) raw=(00004500,00007d40) click_flag=00000001 button0=0x80 APBARRACKS_ACTION_FORCE_CENTERED target=bottom-second-action pass_index=1 centered=(276,501) expected_native=(196,441) shift=6 raw=(00004500,00007d40) click_flag=00000001 button0=0x80 selected_index=1 selected_addon=1 hover_slot=-1 action_state=0 APBARRACKS_ACTION_DESCRIPTOR_ENTRY desc=00515130 mouse=(196,441) raw=(00003100,00006e40) click_flag=00000001 button0=0x80 selected_index=1 hover_slot=-1 action_state=0 APBARRACKS_ACTION_WIDGET_PRE_GATES desc=005151cf reason=no_rearm_trace click_flag=00000001 button0=0x80 mouse=(196,441) APBARRACKS_ACTION_WIDGET_CLICK_GATE desc=005151cf desc_xy=(156,425) state=0x01 hover_cb=00419770 click_cb=004356c0 type=0x02 mouse=(196,441) click_flag=00000001 button0=0x80 APBARRACKS_ACTION_WIDGET_CLICK_GATE_RET desc=005151cf click_gate=1 click_cb=004356c0 state=0x01 mouse=(196,441) click_flag=00000001 APBARRACKS_ACTION_DESCRIPTOR_CALLBACK desc=005151cf callback=004356c0 desc_xy=(156,425) state=0x01 mouse=(196,441) action_state=0 APBARRACKS_ACTION_CLICK_4356C0_ENTRY desc=005151cf mouse=(196,441) action_state_before=0 selected_index=1 selected_addon=1 hover_slot=-1 APBARRACKS_ACTION_CLICK_4356C0_CONTROLLED_STOP reason=entry_before_privileged_probe selected_index=1 selected_addon=1 action_state=1 surface=0a2fedd0 size=(800,600) base=0a5a0030 bytes=480000 APBARRACKS_SURFDUMP_READY after_action=controlled_stop surface=0a2fedd0 size=(800,600) base=0a5a0030 bytes=480000 d532150=0402c71a d532218=0402c71a selected_index=1 selected_addon=1 hover_slot=-1 action_state=1 scroll=(10,17) SURFDUMP_READY redraw_seq=993 surface=0a2fedd0 size=(800,600) base=0a5a0030 bytes=480000 SURFDUMP_HOST_READY
+eax=005151cf ebx=005151cf ecx=00000006 edx=000001dc esi=00000000 edi=00000003
+eip=004356c0 esp=000edc50 ebp=00000001 iopl=0         nv up ei pl nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+clash95+0x356c0:
+004356c0 53              push    ebx

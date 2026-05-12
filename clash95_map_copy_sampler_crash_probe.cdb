@@ -1,0 +1,22 @@
+.echo === Clash95 map copy sampler crash probe ===
+.echo clamps restored 12x9 scroll, arms lightweight copy sampler at first map redraw, exits with last-copy AV context
+sxe -c ".echo AV_BREAK; .printf \"LAST_COPY count=%d dst_edi=%p src_esi=%p len_eax=%d dwords_ecx=%d obj=%p objvt=%p dst_end=%p src_end=%p\\n\", @$t6, @$t9, @$t10, @$t11, @$t12, @$t13, @$t14, @$t9+@$t11, @$t10+@$t11; .exr -1; r; kb; u @eip-20 @eip+20; dd @esp L40; q" av
+r @$t0 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+r @$t5 = 0n4096
+r @$t6 = 0
+r @$t8 = 0
+r @$t9 = 0
+r @$t10 = 0
+r @$t11 = 0
+r @$t12 = 0
+r @$t13 = 0
+r @$t14 = 0
+bp 0040B660 ".if (poi(005202e4) != 0) { .printf \"PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) player=%d selected=%d mission=%d turn=%d\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(005202ec), poi(00511b58), poi(poi(005202e4)+0n140017), wo(poi(005202e4)+0n140022); } .else { .printf \"PLAYGAME gd=00000000\\n\"; }; gc"
+bp 0040B76A ".if (poi(005202e4) != 0) { r @$t3 = poi(005202e4); r @$t4 = poi(@$t3+0n140000)-0n12; r @$t5 = poi(@$t3+0n140004)-0n9; .if (@$t4 < 0) { r @$t4 = 0; }; .if (@$t5 < 0) { r @$t5 = 0; }; .printf \"SCROLL_RESTORE before=(%d,%d) max=(%d,%d) map=(%d,%d)\\n\", poi(@$t3+0n140008), poi(@$t3+0n140012), @$t4, @$t5, poi(@$t3+0n140000), poi(@$t3+0n140004); .if (poi(@$t3+0n140008) > @$t4) { ed @$t3+0n140008 @$t4; }; .if (poi(@$t3+0n140012) > @$t5) { ed @$t3+0n140012 @$t5; }; .printf \"SCROLL_RESTORE_CLAMP after=(%d,%d)\\n\", poi(@$t3+0n140008), poi(@$t3+0n140012); }; gc"
+bp 00406FA0 ".if (@$t0 == 0) { r @$t5 = 0n4096; r @$t6 = 0; r @$t8 = 1; }; .if (@$t0 < 0n12) { .printf \"MAP_REDRAW seq=%d gd=%p scroll=(%d,%d) map=(%d,%d) end12=(%d,%d) end9=(%d,%d) player=%d selected=%d fog=%d mission=%d turn=%d\\n\", @$t0, poi(005202e4), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008)+0n12, poi(poi(005202e4)+0n140012)+0n9, poi(poi(005202e4)+0n140008)+0n9, poi(poi(005202e4)+0n140012)+0n7, poi(005202ec), poi(00511b58), by(poi(005202e4)+0n140016), poi(poi(005202e4)+0n140017), wo(poi(005202e4)+0n140022); r @$t0 = @$t0 + 1; }; gc"
+bp 00418A90 ".if (@$t2 < 0n12) { .printf \"MAP_REPAINT seq=%d gd=%p scroll=(%d,%d) map=(%d,%d) eax=%p ebx=%p ecx=%p edx=%p\\n\", @$t2, poi(005202e4), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), @eax, @ebx, @ecx, @edx; r @$t2 = @$t2 + 1; }; gc"
+bp 00403582 ".if (@$t8 != 0) { r @$t6 = @$t6 + 1; r @$t9 = @edi; r @$t10 = @esi; r @$t11 = @eax; r @$t12 = @ecx; r @$t13 = poi(@ebp+0x5a); r @$t14 = poi(poi(@ebp+0x5a)); .if (@$t6 >= @$t5) { .printf \"COPY_EXEC seq=%d ebp=%p obj=%p objvt=%p dst_edi=%p src_esi=%p len_eax=%d dwords_ecx=%d dst_end=%p src_end=%p scratchvt=%p scratchobj=%p\\n\", @$t6, @ebp, @$t13, @$t14, @$t9, @$t10, @$t11, @$t12, @$t9+@$t11, @$t10+@$t11, poi(0051d4b8), 0051d4c0; r @$t5 = @$t5 + 0n4096; }; }; gc"
+g

@@ -1,0 +1,28 @@
+.echo === Clash95 HD map top-band probe ===
+.echo samples dword_5202E0 and logs blits intersecting x 608..799, y 16..225 after gameplay starts
+sxe -c ".echo AV_MAP_TOPBAND; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+r @$t5 = 0
+r @$t6 = 0
+r @$t7 = 0
+r @$t8 = 0
+r @$t9 = 0
+r @$t10 = 0
+r @$t11 = 0
+r @$t12 = 0
+
+bp 0040B660 ".if (poi(005202e4) != 0) { r @$t8 = 1; .printf \"PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) selected=%d d5202e0=%p d5202e0sz=(%d,%d)\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(00511b58), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+
+bp 00418700 ".if (@$t8 != 0) { .if (@$t0 < 0n8) { r @$t11 = poi(poi(005202e0)+4); .printf \"FULLREDRAW_ENTER seq=%d ret=%p d5202e0=%p size=(%d,%d) base=%p\\n\", @$t0, poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), @$t11; r @$t0 = @$t0 + 1; }; }; gc"
+
+bp 004188EB ".if (@$t8 != 0) { .if (@$t1 < 0n12) { r @$t11 = poi(poi(005202e0)+4); .printf \"TOPSRC_BEFORE seq=%d base=%p s608_16=%02x s672_16=%02x s736_16=%02x s608_80=%02x s672_80=%02x s736_80=%02x s608_144=%02x s672_144=%02x s736_144=%02x s608_208=%02x s672_208=%02x s736_208=%02x\\n\", @$t1, @$t11, by(@$t11+0n16*0n800+0n608), by(@$t11+0n16*0n800+0n672), by(@$t11+0n16*0n800+0n736), by(@$t11+0n80*0n800+0n608), by(@$t11+0n80*0n800+0n672), by(@$t11+0n80*0n800+0n736), by(@$t11+0n144*0n800+0n608), by(@$t11+0n144*0n800+0n672), by(@$t11+0n144*0n800+0n736), by(@$t11+0n208*0n800+0n608), by(@$t11+0n208*0n800+0n672), by(@$t11+0n208*0n800+0n736); r @$t1 = @$t1 + 1; }; }; gc"
+
+bp 004188F0 ".if (@$t8 != 0) { .if (@$t2 < 0n12) { r @$t11 = poi(poi(005202e0)+4); .printf \"TOPSRC_AFTER seq=%d base=%p s608_16=%02x s672_16=%02x s736_16=%02x s608_80=%02x s672_80=%02x s736_80=%02x s608_144=%02x s672_144=%02x s736_144=%02x s608_208=%02x s672_208=%02x s736_208=%02x\\n\", @$t2, @$t11, by(@$t11+0n16*0n800+0n608), by(@$t11+0n16*0n800+0n672), by(@$t11+0n16*0n800+0n736), by(@$t11+0n80*0n800+0n608), by(@$t11+0n80*0n800+0n672), by(@$t11+0n80*0n800+0n736), by(@$t11+0n144*0n800+0n608), by(@$t11+0n144*0n800+0n672), by(@$t11+0n144*0n800+0n736), by(@$t11+0n208*0n800+0n608), by(@$t11+0n208*0n800+0n672), by(@$t11+0n208*0n800+0n736); r @$t2 = @$t2 + 1; }; }; gc"
+
+bp 004024E0 ".if (@$t8 != 0) { .if (@$t3 < 0n240) { r @$t4 = poi(@esp+0c); r @$t5 = poi(@esp+10); r @$t6 = @$t4 + poi(@esp+4) - @ebx; r @$t7 = @$t5 + poi(@esp+8) - @ecx; .if (@eax == poi(005202e0)) { .if ((poi(@esp+4) >= 0n608) & (@ebx <= 0n799) & (poi(@esp+8) >= 0n16) & (@ecx <= 0n225)) { .printf \"TOPBAND_PRESENT seq=%d ret=%p call=%p src=%p srcsz=(%d,%d) dst=%p ltrb=(%d,%d,%d,%d) dxy=(%d,%d)\\n\", @$t3, poi(@esp), poi(@esp)-5, @eax, wo(@eax), wo(@eax+2), @edx, @ebx, @ecx, poi(@esp+4), poi(@esp+8), poi(@esp+0c), poi(@esp+10); r @$t3 = @$t3 + 1; }; }; .if (@edx == poi(005202e0)) { .if ((@$t6 >= 0n608) & (@$t4 <= 0n799) & (@$t7 >= 0n16) & (@$t5 <= 0n225)) { .printf \"TOPBAND_WRITE seq=%d ret=%p call=%p src=%p srcsz=(%d,%d) dst=%p dstsz=(%d,%d) src_ltrb=(%d,%d,%d,%d) dst_ltrb=(%d,%d,%d,%d)\\n\", @$t3, poi(@esp), poi(@esp)-5, @eax, wo(@eax), wo(@eax+2), @edx, wo(@edx), wo(@edx+2), @ebx, @ecx, poi(@esp+4), poi(@esp+8), @$t4, @$t5, @$t6, @$t7; r @$t3 = @$t3 + 1; }; }; }; }; gc"
+
+g

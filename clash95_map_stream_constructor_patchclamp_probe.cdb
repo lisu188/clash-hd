@@ -1,0 +1,18 @@
+.echo === Clash95 map stream-constructor patch-clamp probe ===
+.echo observes the permanent PlayGame saved-scroll clamp without editing scroll from CDB
+sxe -c ".echo AV_PATCHCLAMP_DETAIL; .exr -1; r; .printf \"COPY_STATE ebp=%p dst_edi=%p src_esi=%p len_eax=%d dwords_ecx=%d edx=%p obj_local=%p src_local=%p\\n\", @ebp, @edi, @esi, @eax, @ecx, @edx, poi(@ebp+0x5a), poi(@ebp-0x5a); .printf \"OBJ_STATE obj=%p objvt=%p obj_cursor=%p obj_aux=%p scratch_obj=%p scratchvt=%p scratch_p4=%p scratch_p8=%p\\n\", poi(@ebp+0x5a), poi(poi(@ebp+0x5a)), poi(poi(@ebp+0x5a)+4), poi(poi(@ebp+0x5a)+8), 0051d4b8, poi(0051d4b8), poi(0051d4bc), poi(0051d4c0); .printf \"COPY_DIFF dst_minus_obj_cursor=%d dst_minus_scratch_p4=%d dst_minus_scratch_p8=%d\\n\", @edi-poi(poi(@ebp+0x5a)+4), @edi-poi(0051d4bc), @edi-poi(0051d4c0); kb; u @eip-20 @eip+20; q" av
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+r @$t5 = 0
+r @$t8 = 0
+bp 0040B660 ".if (poi(005202e4) != 0) { .printf \"PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) player=%d selected=%d mission=%d turn=%d\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(005202ec), poi(00511b58), poi(poi(005202e4)+0n140017), wo(poi(005202e4)+0n140022); } .else { .printf \"PLAYGAME gd=00000000\\n\"; }; gc"
+bp 0040B76A ".if (poi(005202e4) != 0) { r @$t3 = poi(005202e4); r @$t4 = poi(@$t3+0n140000)-0n12; r @$t5 = poi(@$t3+0n140004)-0n9; .if (@$t4 < 0) { r @$t4 = 0; }; .if (@$t5 < 0) { r @$t5 = 0; }; .printf \"SCROLL_RESTORE before=(%d,%d) max=(%d,%d) map=(%d,%d)\\n\", poi(@$t3+0n140008), poi(@$t3+0n140012), @$t4, @$t5, poi(@$t3+0n140000), poi(@$t3+0n140004); }; gc"
+bp 0040B76F ".if (poi(005202e4) != 0) { .printf \"SCROLL_RESTORE_CLAMP after=(%d,%d)\\n\", poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012); }; gc"
+bp 00406FA0 "r @$t8 = 1; .if (@$t0 < 0n12) { .printf \"MAP_REDRAW seq=%d gd=%p scroll=(%d,%d) map=(%d,%d) end12=(%d,%d) end9=(%d,%d) player=%d selected=%d fog=%d mission=%d turn=%d\\n\", @$t0, poi(005202e4), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008)+0n12, poi(poi(005202e4)+0n140012)+0n9, poi(poi(005202e4)+0n140008)+0n9, poi(poi(005202e4)+0n140012)+0n7, poi(005202ec), poi(00511b58), by(poi(005202e4)+0n140016), poi(poi(005202e4)+0n140017), wo(poi(005202e4)+0n140022); r @$t0 = @$t0 + 1; }; gc"
+bp 00418A90 ".if (@$t2 < 0n12) { .printf \"MAP_REPAINT seq=%d gd=%p scroll=(%d,%d) map=(%d,%d) eax=%p ebx=%p ecx=%p edx=%p\\n\", @$t2, poi(005202e4), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), @eax, @ebx, @ecx, @edx; r @$t2 = @$t2 + 1; }; gc"
+bp 00403EC9 ".if (@$t8 != 0) { .if (@$t1 < 0n300) { .printf \"STREAM_A seq=%d obj=%p surf=%p width=%d height=%d base=%p row=%d x=%d cursor=%p\\n\", @$t1, @eax, @ecx, @esi, wo(@ecx+2), poi(@ecx+4), @ebx, @edx, poi(@ecx+4)+(@ebx*@esi)+@edx; r @$t1 = @$t1 + 1; }; }; gc"
+bp 00403F09 ".if (@$t8 != 0) { .if (@$t1 < 0n300) { .printf \"STREAM_B seq=%d obj=%p surf=%p width=%d height=%d base=%p row=%d x=%d cursor=%p\\n\", @$t1, @eax, @ecx, @esi, wo(@ecx+2), poi(@ecx+4), @ebx, @edx, poi(@ecx+4)+(@ebx*@esi)+@edx; r @$t1 = @$t1 + 1; }; }; gc"
+g

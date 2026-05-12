@@ -1,0 +1,25 @@
+.echo === Clash95 HD map overlay probe ===
+.echo logs gameplay blits/text/sprite callsites that still use native right-side overlay coordinates
+sxe -c ".echo AV_MAP_OVERLAY; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+r @$t5 = 0
+r @$t6 = 0
+r @$t7 = 0
+r @$t8 = 0
+r @$t9 = 0
+r @$t10 = 0
+bp 0040B660 ".if (poi(005202e4) != 0) { r @$t8 = 1; .printf \"PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) selected=%d d5202e0=%p d5202e0sz=(%d,%d)\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(00511b58), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00406FA0 ".if (@$t8 != 0) { .if (@$t9 < 0n20) { .printf \"MAP_REDRAW seq=%d gd=%p scroll=(%d,%d) map=(%d,%d) d5202e0=%p d5202e0sz=(%d,%d)\\n\", @$t9, poi(005202e4), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r @$t9 = @$t9 + 1; }; }; gc"
+bp 00418700 ".if (@$t8 != 0) { .if (@$t4 < 0n12) { .printf \"FULLREDRAW seq=%d ret=%p d5202e0=%p d5202e0sz=(%d,%d)\\n\", @$t4, poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r @$t4 = @$t4 + 1; }; }; gc"
+bp 004024E0 ".if (@$t8 != 0) { .if (@$t0 < 0n320) { r @$t5 = 0; r @$t6 = 0; r @$t7 = 0; .if (@eax != 0) { r @$t5 = wo(@eax); r @$t6 = wo(@eax+2); }; .if (@edx != 0) { r @$t7 = wo(@edx); }; .printf \"BLIT seq=%d ret=%p call=%p src=%p srcsz=(%d,%d) dst=%p dstw=%d ltrb=(%d,%d,%d,%d) dxy=(%d,%d) d511230=%p d5202e0=%p\\n\", @$t0, poi(@esp), poi(@esp)-5, @eax, @$t5, @$t6, @edx, @$t7, @ebx, @ecx, poi(@esp+4), poi(@esp+8), poi(@esp+0c), poi(@esp+10), poi(00511230), poi(005202e0); r @$t0 = @$t0 + 1; }; }; gc"
+bp 0040C150 ".if (@$t8 != 0) { .if (@$t1 < 0n180) { .printf \"TEXT seq=%d ret=%p call=%p left=%d right=%d y=%d mode=%d fmt=%p arg0=%p d511230=%p d5202e0=%p\\n\", @$t1, poi(@esp), poi(@esp)-5, poi(@esp+4), poi(@esp+8), poi(@esp+0c), poi(@esp+10), poi(@esp+14), poi(@esp+18), poi(00511230), poi(005202e0); r @$t1 = @$t1 + 1; }; }; gc"
+bp 00431403 ".if (@$t8 != 0) { .if (@$t2 < 0n120) { .printf \"SPRITE_A seq=%d call=00431403 surf=%p sprite=%p xy=(%d,%d) d511230=%p d5202e0=%p\\n\", @$t2, @eax, @edx, @ebx, @ecx, poi(00511230), poi(005202e0); r @$t2 = @$t2 + 1; }; }; gc"
+bp 00431451 ".if (@$t8 != 0) { .if (@$t2 < 0n120) { .printf \"SPRITE_B seq=%d call=00431451 surf=%p sprite=%p xy=(%d,%d) d511230=%p d5202e0=%p\\n\", @$t2, @eax, @edx, @ebx, @ecx, poi(00511230), poi(005202e0); r @$t2 = @$t2 + 1; }; }; gc"
+bp 004314C8 ".if (@$t8 != 0) { .if (@$t2 < 0n120) { .printf \"SPRITE_C seq=%d call=004314C8 surf=%p sprite=%p xy=(%d,%d) d511230=%p d5202e0=%p\\n\", @$t2, @eax, @edx, @ebx, @ecx, poi(00511230), poi(005202e0); r @$t2 = @$t2 + 1; }; }; gc"
+bp 004316CC ".if (@$t8 != 0) { .if (@$t2 < 0n120) { .printf \"SPRITE_D seq=%d call=004316CC surf=%p sprite=%p xy=(%d,%d) d511230=%p d5202e0=%p\\n\", @$t2, @eax, @edx, @ebx, @ecx, poi(00511230), poi(005202e0); r @$t2 = @$t2 + 1; }; }; gc"
+bp 004317C5 ".if (@$t8 != 0) { .if (@$t2 < 0n120) { .printf \"SPRITE_E seq=%d call=004317C5 surf=%p sprite=%p xy=(%d,%d) d511230=%p d5202e0=%p\\n\", @$t2, @eax, @edx, @ebx, @ecx, poi(00511230), poi(005202e0); r @$t2 = @$t2 + 1; }; }; gc"
+g

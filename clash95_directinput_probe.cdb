@@ -1,0 +1,25 @@
+.echo === Clash95 DirectInput acquisition/GetDeviceState probe ===
+.echo logs DirectInput mouse init, cooperative/data format calls, raw GetDeviceState, globals, and engine cursor consumption
+sxe -c ".echo AV_DIRECTINPUT_PROBE; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = -999999
+r @$t3 = -999999
+r @$t4 = 0
+r @$t5 = 0
+
+bp 0047BD10 ".printf \"DINPUT_INIT_ENTRY input=%p hinst=%p hwnd_arg=%p hwnd_global=%p\\n\", @eax, @edx, @ebx, poi(005452dc); gc"
+bp 0047BD27 ".printf \"DINPUT_CREATE hr=0x%08x input=%p di=%p hwnd_global=%p\\n\", @eax, @esi, poi(@esi), poi(005452dc); gc"
+bp 0047BD48 ".printf \"DINPUT_CREATEDEVICE_MOUSE hr=0x%08x input=%p mouse=%p guid=0051ca18\\n\", @eax, @esi, poi(@esi+8); gc"
+bp 0047BD5A ".printf \"DINPUT_MOUSE_SETDATAFORMAT hr=0x%08x dev=%p fmt=004e80f0\\n\", @eax, poi(@esi+8); gc"
+bp 0047BD66 ".printf \"DINPUT_MOUSE_SETCOOP hr=0x%08x dev=%p hwnd_arg=%p hwnd_global=%p flags_imm=0x%02x\\n\", @eax, poi(@esi+8), @ebx, poi(005452dc), by(0047bd5b); .printf \"DINPUT_FOREGROUND_GATE hwnd=%p sleep_ms=4000\\n\", poi(005452dc); .sleep 4000; gc"
+bp 0047BD6F ".printf \"DINPUT_MOUSE_ACQUIRE_INIT hr=0x%08x dev=%p enabled=%d\\n\", @eax, poi(@esi+8), poi(@esi+134); gc"
+
+bp 0047C02C ".if (@$t0 < 0n220) { .printf \"DINPUT_MOUSE_GETSTATE seq=%d hr=0x%08x dev=%p size=16 raw=(%d,%d,%d) rawhex=(0x%08x,0x%08x,0x%08x) buttons=(0x%02x,0x%02x,0x%02x,0x%02x)\\n\", @$t0, @eax, poi(@ebx+8), poi(@esp+50), poi(@esp+54), poi(@esp+58), poi(@esp+50), poi(@esp+54), poi(@esp+58), by(@esp+5c), by(@esp+5d), by(@esp+5e), by(@esp+5f); r @$t0 = @$t0 + 1; }; gc"
+bp 0047C03C ".if (@eax == 8007001e) { .printf \"DINPUT_MOUSE_GETSTATE_LOST reacquire_path dev=%p\\n\", poi(@ebx+8); }; gc"
+bp 0047C065 ".if (@$t1 < 0n220) { .printf \"DINPUT_MOUSE_STORE seq=%d dx=%d dy=%d rawhex=(0x%08x,0x%08x) buttons=(0x%02x,0x%02x,0x%02x)\\n\", @$t1, poi(005451a8), poi(005451ac), poi(005451a8), poi(005451ac), by(005451c0), by(005451c4), by(005451c8); r @$t1 = @$t1 + 1; }; gc"
+
+bp 00460A9D ".if ((poi(005451a8) != @$t2) + (poi(005451ac) != @$t3) + (@$t4 < 0n20)) { .printf \"DINPUT_ENGINE_MOUSE seq=%d obj=%p x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d buttons=%d lbtn=0x%02x rbtn=0x%02x min=(%d,%d) max=(%d,%d)\\n\", @$t4, @edx, (poi(@edx+24) >> by(@edx+454)), (poi(@edx+28) >> by(@edx+454)), poi(@edx+24), poi(@edx+28), poi(005451a8), poi(005451ac), by(@edx+454), poi(@edx+2c), by(005451c0), by(005451c8), (poi(@edx+10) >> by(@edx+454)), (poi(@edx+14) >> by(@edx+454)), (poi(@edx+18) >> by(@edx+454)), (poi(@edx+1c) >> by(@edx+454)); r @$t2 = poi(005451a8); r @$t3 = poi(005451ac); r @$t4 = @$t4 + 1; }; gc"
+
+g

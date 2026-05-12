@@ -1,0 +1,2 @@
+visibility_coverage.py skipped by -SkipMapValidation
+No gameplay tile visibility gate was run for this surface.
