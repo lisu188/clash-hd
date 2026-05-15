@@ -90,7 +90,14 @@ Lint wiki structure and links:
 python tools/wiki_lint.py
 ```
 
-Both scripts use only the Python standard library.
+Print a compact repository map for quick orientation:
+
+```powershell
+python tools/repo_structure.py
+python tools/repo_structure.py --counts
+```
+
+These scripts use only the Python standard library.
 
 If `python` is not on your `PATH`, run the same scripts with any Python 3
 interpreter path, for example:
