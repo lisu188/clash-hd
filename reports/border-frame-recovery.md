@@ -151,7 +151,7 @@ by descriptor entries that were never made HD-aware.
 - `UI_GetGridIndexFromMouse` VA `0x00435580`, file offset `0x034980`
 
 These are right-bottom/action-panel leads already targeted by
-`clash95_right_bottom_ui_probe.cdb` and `clash95_right_bottom_ui_extra.cdb`.
+`probes/cdb/ui/clash95_right_bottom_ui_probe.cdb` and `probes/cdb/ui/clash95_right_bottom_ui_extra.cdb`.
 Known native coordinates:
 
 - action icon grid draw base: `x=426`, `y=32`, step `48x82`, `4x3`
@@ -295,7 +295,7 @@ Expected CDB proof shape:
 - Palette/authentic-color evidence from the hidden CDB surface route. Current
   no-popup `surface.png` files are grayscale index visualizations, useful for
   geometry but not final art/color inspection.
-- A CDB-only run of `clash95_right_bottom_ui_probe.cdb` or equivalent extra
+- A CDB-only run of `probes/cdb/ui/clash95_right_bottom_ui_probe.cdb` or equivalent extra
   probe that reaches gameplay and records right-bottom UI/frame markers.
 
 ## Recommended Next Experiments

@@ -230,7 +230,7 @@ Useful commands:
 ```powershell
 .\run_cdb_menu_probe.ps1 `
   -Exe 'C:\Clash\clash95_hdmap12_novswitch_relinput.exe' `
-  -Probe .\clash95_hd_crash_probe.cdb `
+  -Probe .\probes/cdb/startup/clash95_hd_crash_probe.cdb `
   -Log 'C:\Clash\hd-cdb-menu.log' `
   -RunSeconds 10
 ```
@@ -466,7 +466,7 @@ Frame dumping limitations:
   `actual_screen`/`actual_client` with CDB `MOUSE dx/dy` and logical `x/y`.
   A typical wrapper failure is `DirectInputSample ~= screen / 4` instead of
   client coordinates. Confirm the live game HWND at `0x005452DC` with
-  `clash95_hwnd_origin_probe.cdb`, then use or refine the
+  `probes/cdb/mouse/clash95_hwnd_origin_probe.cdb`, then use or refine the
   `gameplay-menu640-centered-map12-dynorigin` stage. A good mouse validation
   has exact Python path coordinates, `MOUSE` rows matching requested client
   points, `MENUHIT` button rows, and zero menu-hit out-of-bounds rows.
@@ -479,7 +479,7 @@ Frame dumping limitations:
   mouse reaches the lower/right client edge, treat the probe as suspect before
   blaming the HD map patch.
 - Common DirectInput bug procedure under the current CDB-only workflow: run
-  `clash95_directinput_probe.cdb` only through a host or hidden-desktop CDB
+  `probes/cdb/mouse/clash95_directinput_probe.cdb` only through a host or hidden-desktop CDB
   harness. Compare exclusive and nonexclusive stages. `Acquire=0x80070005`
   means the mouse device was not enabled; a successful `Acquire` plus
   `button0=0x80` but `raw=(0,0,0)` means injected button state reached
@@ -492,9 +492,9 @@ Frame dumping limitations:
   Treat it as debugger evidence, not proof that manual mouse movement works.
 - Key-scroll boundary proof procedure: do not write `gameData+140008` or
   `gameData+140012` when proving input-driven map clamps. First use
-  `clash95_key_scroll_probe.cdb` to prove `sub_407D20` accepts key-state rows
+  `probes/cdb/key-scroll/clash95_key_scroll_probe.cdb` to prove `sub_407D20` accepts key-state rows
   for at least one real game scroll step. For boundary proof, use
-  `clash95_key_scroll_boundary_probe.cdb`, which repeatedly invokes the
+  `probes/cdb/key-scroll/clash95_key_scroll_boundary_probe.cdb`, which repeatedly invokes the
   patched key-scroll helper under a CDB-only harness while keeping right/down
   key-state bytes active. Validate with
   `tools\key_scroll_summary.py --require-hd-boundary`. If the final lower-right
@@ -570,7 +570,7 @@ Do not patch tile drawing for a dark cell until this gate says the blank is not
 explained by fog/unexplored state.
 
 For post-owner action captures, use
-`clash95_post_owner_tile_visibility_extra.cdb` through the hidden-desktop
+`probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb` through the hidden-desktop
 surface-dump harness when the right/bottom cells look like missing UI or tile
 draw. It logs focused `APVIS_CELL` rows for the current seven blank cells and
 emits a `SCROLL_VISDUMP` before the post-owner dump. A good fog/visibility
@@ -581,7 +581,7 @@ action-box copyback for those cells while same-run visibility evidence says
 they are unexplored/fogged.
 
 Use `-PostOwnerForceVisibleSeven` only as a debugger proof switch with
-`clash95_post_owner_tile_visibility_extra.cdb`. The switch injects exact
+`probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb`. The switch injects exact
 visibility bytes for `r6c10`, `r6c11`, `r7c10`, `r7c11`, `r8c0`, `r8c10`, and
 `r8c11` through the base PlayGame CDB breakpoint before the HD redraw; it must
 not become a normal gameplay patch. Validate archived proof with:
@@ -675,8 +675,8 @@ pass, then prints both screenshot paths and key counts. The current matrix pairs
 Use `--write-markdown captures\no-popup-map-evidence-current.md` when a durable
 human-readable report with embedded screenshot links is needed.
 
-Use `clash95_castle_owner_setup_extra.cdb`,
-`clash95_castle_screen_invoke_extra.cdb`, and
+Use `probes/cdb/castle/clash95_castle_owner_setup_extra.cdb`,
+`probes/cdb/castle/clash95_castle_screen_invoke_extra.cdb`, and
 `tools\castle_owner_setup_summary.py` when investigating the missing
 right-bottom castle/action owner UI. The full castle screen routine starts at
 `00422180` and installs render hook `00422020`; `00422020` is the render hook,
@@ -700,7 +700,7 @@ For centered castle/barracks UI input work, prefer the
 stage and validate with hidden-desktop CDB probes. The key coordinate proof is
 displayed `(530,133)` over the top-left barracks grid cell, which must map to
 native `(450,73)` while the owner-poll and `00435A17 -> 00435580` grid helper
-wrappers run. Use `clash95_castle_barracks_click_extra.cdb` plus
+wrappers run. Use `probes/cdb/castle/clash95_castle_barracks_click_extra.cdb` plus
 `tools\castle_barracks_hitbox_summary.py` with `--require-ready`,
 `--require-raw-gate`, `--forbid-forced-gate`, and `--require-grid-hit` when
 proving the click path. This
@@ -709,9 +709,9 @@ probe may set the click-state byte at `00544D04`, but it must not rewrite
 `APBARRACKS_HITBOX_GRID_GATE raw_result=1 forced_result=none`.
 
 For centered castle/barracks action-button probes, use
-`clash95_castle_barracks_click_consume_trace_extra.cdb` or a successor probe
+`probes/cdb/castle/clash95_castle_barracks_click_consume_trace_extra.cdb` or a successor probe
 that does not perform descriptor-local click rearm. The shared
-`clash95_surface_dump_probe.cdb` `00419B80` post-gameplay cleanup is guarded
+`probes/cdb/render/clash95_surface_dump_probe.cdb` `00419B80` post-gameplay cleanup is guarded
 with `@$t18 == 0`; this prevents the base harness from clearing `005451C0` and
 `00544D04` after an extra UI probe has entered its active phase. If a future
 probe sees `click_flag=1` immediately after injection but `click_flag=0` at
@@ -720,7 +720,7 @@ or the centered-input patch. The current clean action-button proof is
 `captures\cdb-surface-dump-20260511-162846`, where `0051519a` reaches callback
 `00435620` and sets `dword_532210=1` without descriptor-local rearm.
 For a second bottom action-button proof, use
-`clash95_castle_barracks_second_action_extra.cdb` with
+`probes/cdb/castle/clash95_castle_barracks_second_action_extra.cdb` with
 `tools\castle_barracks_action_click_summary.py --expect-desc 0x005151cf
 --expect-callback 0x004356c0`. Current evidence
 `captures\cdb-surface-dump-20260511-163846` proves centered `(276,501)` maps
@@ -746,7 +746,7 @@ loop redraw call route through wrapper `0051316F`. Do not remove the loop hook
 when fixing castle UI echo; the screenshot can look native-origin even if the
 initial present callback is wrapped correctly.
 
-Use `clash95_castle_interior_catalog_extra.cdb` with
+Use `probes/cdb/castle/clash95_castle_interior_catalog_extra.cdb` with
 `tools\castle_interior_catalog_summary.py` to enumerate castle-screen
 descriptors reachable from the current save. Current catalog evidence
 `captures\cdb-surface-dump-20260511-170708` found commands `0x63`, `0x86`,
@@ -956,7 +956,7 @@ High-value automated tests:
   `tools\right_bottom_ui_bounds.py` on screenshots such as
   `captures\map-minimapaction-minimapright-dynvswitch-v2-frame-20260424.png`
   to measure the minimap, right-side panel, bottom strip, and bottom-right
-  12x9 cells. Use `clash95_right_bottom_ui_probe.cdb` only through a CDB-only
+  12x9 cells. Use `probes/cdb/ui/clash95_right_bottom_ui_probe.cdb` only through a CDB-only
   launcher or hidden-desktop harness when changing action-panel or bottom-right
   UI constants; it late-arms `UI_DrawActionBox`, `UI_GetGridIndexFromMouse`,
   action-panel draw functions, `sub_460D80`, and `Render_BlitSurface` after

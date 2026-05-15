@@ -80,7 +80,7 @@ rejected those frames with `low_top_left_gameplay_border_coverage`.
 - `0040B660` - `PlayGame`.
 - `00406FA0` - map redraw function, useful after route success.
 
-Use `clash95_menu_load_route_probe.cdb` with `run_cdb_map_probe.ps1` to collect
+Use `probes/cdb/menu/clash95_menu_load_route_probe.cdb` with `run_cdb_map_probe.ps1` to collect
 these proof points.
 
 ## Suggested Validation Command
@@ -88,7 +88,7 @@ these proof points.
 ```powershell
 .\run_cdb_map_probe.ps1 `
   -Exe 'C:\Clash\clash95_hd_candidate.exe' `
-  -Probe .\clash95_menu_load_route_probe.cdb `
+  -Probe .\probes/cdb/menu/clash95_menu_load_route_probe.cdb `
   -Log .\captures\cdb-menu-load-route.log `
   -MouseJson .\captures\menu-load-route-mouse.json `
   -Frame .\captures\menu-load-route-frame.png `

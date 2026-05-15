@@ -16,7 +16,7 @@
 - Force visible edges: False
 - Post-owner force visible seven: False
 - Map validation skipped: True
-- Extra probe template: <SOURCE_REPO>\clash95_castle_barracks_second_action_select1_extra.cdb
+- Extra probe template: <SOURCE_REPO>\probes/cdb/castle/clash95_castle_barracks_second_action_select1_extra.cdb
 - DirectDraw proxy DLL: C:\ClashTests\cdb-castle-center-all\ddraw.dll
 - DirectDraw proxy log: C:\ClashTests\cdb-castle-center-all\ddraw_surfdump_proxy.log
 - Surface: 800x600, base=0a5a0030, bytes=480000
