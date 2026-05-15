@@ -30,6 +30,138 @@ That checkout contains a single older `clash.c` and is useful for historical
 logic comparison. The Windows target should be driven from `C:\Clash\clash95.c`
 and the map/Ghidra metadata.
 
+## 2026-05-14 Promotion Proof Manifest Enforcement
+
+The manual DirectInput checklist now supplies the shared proof-manifest schema
+for promotion decisions.
+
+- `tools/right_bottom_compose_promotion_decision.py` and
+  `tools/castle_overview_promotion_decision.py` validate
+  `--manual-input-proof` with `manual_directinput_checklist.validate_manual_proof`.
+- Placeholder proof files no longer make either validation stage eligible for
+  manual stable-stage promotion.
+- A valid manual proof must be JSON with `evidence_class=manual_directinput`,
+  `approved_visible_runtime=true`, a 64-hex `executable_sha256`, and passing
+  `checked_items` rows for all five required manual targets.
+- `tools\manual_directinput_proof_template.py` now writes a visible template
+  and report under `captures\manual-directinput-proof-template-current.*`.
+  The template deliberately uses placeholder values and reports
+  `template_valid_as_proof=False`, so it cannot promote a validation stage by
+  itself.
+- `tools\test_manual_directinput_proof_template.py` passes with `test_count=4`
+  in the current refresh and proves the template fails closed, lists all five
+  required IDs, and only becomes valid after every required proof field is
+  replaced.
+- The handoff freshness guard now requires
+  `captures\manual-directinput-proof-template-current.md` and
+  `template_valid_as_proof=False`, and preserves the user's no-popup runtime
+  preference: do not launch Clash95, CDB, wrappers, PowerShell harnesses, or
+  visible windows unless explicitly approved. It now also requires
+  `captures\visible-runtime-launcher-guard-current.md`,
+  `captures\visible-runtime-launcher-guard-tests-current.md`, and
+  `-AllowVisibleRuntime` approval wording. Its fixture tests pass with
+  `test_count=10`, including the missing proof-template artifact, missing
+  no-popup-preference case, missing visible-launcher-guard artifact, and stale
+  legacy outside-debugger/visible-capture task cases.
+- `tools\promotion_override_guard.py` now verifies that the current
+  right-bottom compose decision, castle overview decision, and manual
+  DirectInput checklist all keep CDB-only promotion overrides inactive. The
+  guard and `tools\test_promotion_override_guard.py` pass repo-only with
+  `test_count=7`.
+- Current decisions remain `defer_stable_promotion` with
+  `manual_input_proof_valid=False` for both `rightbottomcompose` and
+  `castlecenter-all`.
+- Refreshed repo-only tests pass:
+  `right_bottom_compose_promotion_decision_tests` has `test_count=6`, and
+  `castle_overview_promotion_decision_tests` has `test_count=7`.
+- This was verified through `tools\current_evidence_refresh.py --require-pass`;
+  no Clash95, CDB, wrapper, PowerShell, or visible game window was launched.
+  The current evidence index reports `72` links, `9` images, `81` local
+  records, and `0` missing records.
+
+## 2026-05-14 Visible Runtime Launcher Guard
+
+The user's current runtime preference is explicit: do not launch Clash95, CDB,
+wrappers, PowerShell harnesses, or visible windows unless explicitly approved.
+
+- Added `tools\visible_runtime_launcher_guard.py` to inspect legacy visible
+  launchers/helpers repo-only and require `[switch]$AllowVisibleRuntime`
+  before any risky runtime/window/input/capture call.
+- The guard covers `test_clash_menu_click.ps1`, `run_clash_visual_smoke.ps1`,
+  `run_cdb_menu_probe.ps1`, `run_cdb_map_probe.ps1`,
+  `run_cdb_python_mouse_map.ps1`, `run_cdb_viewport_bounds_probe.ps1`, and
+  `run_clash_windows_sandbox.ps1`, plus `run_cdb_mouse_probe.ps1`,
+  `run_clash_test.ps1`, `launch_clash95_hd_x32dbg.ps1`, and
+  `capture_clash_client_frame.ps1`, and `capture_clash_window.ps1`.
+- The guard also inventories root PowerShell risky calls. Current evidence
+  reports `inventory_risky_script_count=15` and
+  `inventory_unclassified_risky_script_count=0`; the only risky scripts outside
+  the visible-runtime guarded set are documented exemptions for installer or
+  hidden-desktop surface-dump plumbing.
+- Added `tools\test_visible_runtime_launcher_guard.py`; the fixture report
+  passes with `test_count=10`, covering gated launchers, gated foreground
+  helpers, gated screen-capture helpers, missing switches, missing explicit
+  approval wording, guarded child-helper forwarding, late guards after risky
+  calls, unclassified risky root scripts, documented exemptions, and CLI
+  fail-closed behavior.
+- `tools\current_evidence_refresh.py --require-pass` now includes
+  `visible_runtime_launcher_guard: PASS` and
+  `visible_runtime_launcher_guard_tests: PASS`; the no-popup boundary guard
+  requires both reports.
+- The handoff freshness guard now also requires the visible-runtime launcher
+  report links and `-AllowVisibleRuntime` wording so future handoffs preserve
+  the approval-only launcher boundary.
+- This is a repo-only source inspection guard. It does not launch Clash95, CDB,
+  wrappers, PowerShell harnesses, or visible windows.
+
+## 2026-05-14 Right-Bottom Grid-Hit Validation
+
+The right-bottom composition patch remains scoped to validation stage
+`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`.
+
+- Added CDB probe `clash95_right_bottom_grid_hit_extra.cdb`.
+- Added parser `tools/right_bottom_grid_hit_summary.py`.
+- Added repo-only guard `tools/right_bottom_grid_hit_probe_guard.py` and tests
+  `tools/test_right_bottom_grid_hit_probe_guard.py`.
+- Added repo-only route timing guard `tools/right_bottom_route_timing_guard.py`
+  and tests `tools/test_right_bottom_route_timing_guard.py`.
+- Passing hidden-desktop evidence:
+  `captures\cdb-surface-dump-20260514-140601`.
+- The run used `-UseDdrawProxy`, `-FastForwardStartAnims`,
+  `-SkipMapValidation`, and the same validation-stage candidate SHA
+  `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`.
+- The probe routes through the owner/action path, installs native mouse raw
+  coordinate `(450,73)`, reaches the grid hit-test, and gets result `0`.
+- Parser gate:
+  `grid_hit_ok=True`, `last_grid_entry=[450, 73]`,
+  `last_grid_result=0`, `forced_gate_count=1`,
+  `failure_exit_count=0`, `draw_row_count=5`, `av_count=0`.
+- Probe guard:
+  `captures\right-bottom-grid-hit-probe-guard-current.md` passes and verifies
+  the focused owner/action/grid breakpoints, parser marker coverage,
+  hidden-desktop archived proof, 800x600 ready surface, `(450,73) -> 0`, and
+  zero failure-exit/AV rows.
+- Probe guard tests:
+  `captures\right-bottom-grid-hit-probe-guard-tests-current.md` passes with
+  `test_count=6`, covering missing breakpoints, missing probe/parser markers,
+  visible fallback, stage/surface regressions, missing grid proof,
+  failure-exit rows, AV rows, and CLI fail-closed behavior.
+- Route timing guard:
+  `captures\right-bottom-route-timing-guard-current.md` passes and checks the
+  archived validation patch route, full-start owner/action route, and
+  controlled grid-hit route for hidden-desktop execution, 800x600 surfaces,
+  candidate SHA agreement, stable marker ordering through copyback/ready/grid
+  sequences, and zero AV/failure-exit rows.
+- Route timing guard tests:
+  `captures\right-bottom-route-timing-guard-tests-current.md` passes with
+  `test_count=6`, covering missing route/copyback markers, marker-order
+  regressions, visible fallback, surface/stage/SHA drift, grid proof failures,
+  failure-exit rows, AV rows, and CLI fail-closed behavior.
+
+This is no-popup controlled CDB/proxy input evidence. It does not prove manual
+DirectInput behavior, so it does not promote `right-bottom-compose-proof` into
+the stable HD map stage.
+
 ## Core Finding
 
 The engine has two separate resolution concepts that both matter:
@@ -351,9 +483,9 @@ Built/deployed test binaries:
 
 Startup/menu checks passed:
 
-- `scripts\smoke\test_clash_menu_click.ps1` saw an 800x600 client area and captured the
+- `test_clash_menu_click.ps1` saw an 800x600 client area and captured the
   centered menu from the map12 build.
-- `scripts\cdb\run_cdb_menu_probe.ps1` with `probes/cdb/startup/clash95_hd_crash_probe.cdb` survived a
+- `run_cdb_menu_probe.ps1` with `clash95_hd_crash_probe.cdb` survived a
   20-second no-skip intro/movie run using the real `C:\Clash\DDRAW.dll`
   wrapper, with no second-chance crash logged.
 - After manual testing showed mouse failure in the full viewport-switch build,
@@ -363,7 +495,7 @@ Startup/menu checks passed:
 
 ## 2026-04-22 Automated Frame/Click Harness
 
-`scripts\smoke\test_clash_menu_click.ps1` launches a patched exe from `C:\Clash`, kills stale
+`test_clash_menu_click.ps1` launches a patched exe from `C:\Clash`, kills stale
 `clash95*`/`cdb` processes before each case, skips the startup AVI/story path,
 dumps before/after PNGs, tries menu clicks, writes `results.json` and
 `results.csv`, and kills the test process at the end. With `C:\Clash\dxcfg.ini`
@@ -382,7 +514,7 @@ the menu frame is unchanged. For automated input validation, use CDB/memory
 injection or a lower-level HID-style clicker; do not treat PowerShell
 `SendInput` menu-click failures as proof that manual mouse input is broken.
 
-Harness update on 2026-04-22: `scripts\smoke\test_clash_menu_click.ps1` now reacquires the
+Harness update on 2026-04-22: `test_clash_menu_click.ps1` now reacquires the
 visible top-level window by process id when `MainWindowHandle` becomes null or
 zero. A fresh `gameplay-menu640-centered-map12-novswitch-relinput` candidate at
 `C:\Clash\clash95_hd_harnesscheck_20260422.exe` produced three full-client
@@ -399,7 +531,7 @@ has a unique before-frame hash. That can happen if the intro/menu state was not
 identical across cases, so the next harness improvement is a menu-readiness or
 frame-stability gate before result clicks.
 
-The readiness gate is now in `scripts\smoke\test_clash_menu_click.ps1`. The validation run at
+The readiness gate is now in `test_clash_menu_click.ps1`. The validation run at
 `captures\clicktest-20260422-182440` reached stable, menu-ready 800x600 frames
 for centered, shifted, and native exit clicks. All three clicks were attempted,
 but all three produced 0% post-click frame change with matching before/after
@@ -442,7 +574,7 @@ the Python forced-click path is exact for the abs-quarter candidate:
 `max_abs_error=0`, `max_sample_abs_error=0`, `path_verified=true`, and
 `click_path_verified=true`.
 
-`scripts\cdb\run_cdb_python_mouse_map.ps1` runs that same path while CDB logs internal
+`run_cdb_python_mouse_map.ps1` runs that same path while CDB logs internal
 `MOUSE` and `MENUHIT` rows. The run at
 `captures\cdb-python-mouse-map-20260422.log`, summarized in
 `captures\mousemenuprobe-20260422-cdb-python-map-summary.json`, changes the
@@ -467,7 +599,7 @@ the observed origin `(880,407)` except in an explicitly temporary diagnostic.
 ## 2026-04-22 DDraw Geometry And Screen-Origin Diagnostic
 
 The Win32 geometry trace proved the local DirectDraw wrapper already knows the
-client rectangle and screen origin. `probes/cdb/render/clash95_win32_geometry_entry_probe.cdb`
+client rectangle and screen origin. `clash95_win32_geometry_entry_probe.cdb`
 logged `USER32!GetClientRect` and `USER32!ClientToScreen` entry callers in
 `captures\win32-geometry-entry-probe-20260422.log`. The useful wrapper callers
 were:
@@ -478,7 +610,7 @@ were:
 - `1801c4e5` and `1801c4f3`: a second wrapper path for the same origin and
   bottom-right points.
 
-`probes/cdb/render/clash95_ddraw_geometry_callsite_probe.cdb` then broke at those wrapper return
+`clash95_ddraw_geometry_callsite_probe.cdb` then broke at those wrapper return
 sites and wrote `captures\ddraw-geometry-callsite-probe-20260422.log`. It
 recorded:
 
@@ -534,7 +666,7 @@ mouse-origin patch:
 - `CreateWindowExA` stores the game HWND at `0x005452DC` (`mov [005452dc],eax`
   at `0x00461ACE`).
 - The executable imports `USER32!ClientToScreen` through IAT `0x004EA3E0`.
-- `probes/cdb/mouse/clash95_hwnd_origin_probe.cdb` confirmed that `0x005452DC` equals the HWND
+- `clash95_hwnd_origin_probe.cdb` confirmed that `0x005452DC` equals the HWND
   used by the local `DDRAW.dll` wrapper when the wrapper reports the `800x600`
   client origin.
 
@@ -571,7 +703,7 @@ Validation:
   recorded exact Python cursor placement with `path_verified=true` and
   `click_path_verified=true`.
 
-Remaining caveat: `scripts\smoke\test_clash_menu_click.ps1` with held SendInput still did not
+Remaining caveat: `test_clash_menu_click.ps1` with held SendInput still did not
 exit from the centered-exit point in a non-CDB frame run. Because CDB proves
 the internal cursor/button path is now aligned, treat that as a click-target,
 menu-flow, or harness-cadence question rather than evidence that the coordinate
@@ -852,10 +984,10 @@ path can still include debugger-console pixels.
 
 Clean non-CDB capture update:
 
-- `scripts\capture\capture_clash_client_frame.ps1` now captures frames from a separate
+- `capture_clash_client_frame.ps1` now captures frames from a separate
   DPI-aware process and refuses captures whose client center is not the target
   Clash window.
-- `scripts\smoke\run_clash_visual_smoke.ps1` keeps mouse driving DPI-unaware/logical, then
+- `run_clash_visual_smoke.ps1` keeps mouse driving DPI-unaware/logical, then
   calls that helper only for screenshots.
 - The clean smoke at
   `captures\visual-smoke-20260423-113427\results.json` proves the combined
@@ -1150,7 +1282,7 @@ Next validation:
 The moved minimap now has separate evidence for drawing and hit testing, but
 not yet for navigation:
 
-- `probes/cdb/map/clash95_map_minimap_click_probe.cdb` logs minimap initialization,
+- `clash95_map_minimap_click_probe.cdb` logs minimap initialization,
   play-game entry, redraw state, mouse rows, minimap hit-test calls/successes,
   and AV rows.
 - `tools\minimap_probe_summary.py` summarizes minimap bounds, old-anchor
@@ -1188,7 +1320,7 @@ bound writes first and only then rerun physical click navigation.
 
 ### Viewport Switch Bound Writes And Rerun, 2026-04-23
 
-`probes/cdb/render/clash95_viewport_bounds_probe.cdb` now logs:
+`clash95_viewport_bounds_probe.cdb` now logs:
 
 - initial viewport args at `0046053F`;
 - later switch args at `00460E32`;
@@ -1249,7 +1381,7 @@ That trace is now in place.
 
 Added:
 
-- `probes/cdb/map/clash95_minimap_action_probe.cdb`
+- `clash95_minimap_action_probe.cdb`
 - `tools\minimap_action_summary.py`
 
 The focused action run against
@@ -1445,9 +1577,9 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 No-popup CDB surface dump follow-up:
 
 - Added a host-side hidden-desktop harness:
-  `scripts\cdb\run_cdb_surface_dump.ps1`.
+  `run_cdb_surface_dump.ps1`.
 - Added the route/dump probe:
-  `probes/cdb/render/clash95_surface_dump_probe.cdb`.
+  `clash95_surface_dump_probe.cdb`.
 - Added the raw surface converter:
   `tools\cdb_surface_dump_to_png.py`.
 - Intended proof path:
@@ -1486,12 +1618,12 @@ No-popup DirectDraw proxy evidence:
 
 No-popup host-read visibility evidence:
 
-- `scripts\cdb\run_cdb_surface_dump.ps1` now defaults to host-side `ReadProcessMemory`
+- `run_cdb_surface_dump.ps1` now defaults to host-side `ReadProcessMemory`
   after the CDB log emits `SURFDUMP_READY`. The generated CDB script prints
   `SURFDUMP_HOST_READY` and continues while the host reads the surface bytes,
   then the harness kills only the launched CDB/candidate processes. This avoids
   the older nested `.writemem` command-tail issue.
-- `probes/cdb/render/clash95_surface_dump_probe.cdb` now emits `SCROLL_VISDUMP` plus a CDB `db`
+- `clash95_surface_dump_probe.cdb` now emits `SCROLL_VISDUMP` plus a CDB `db`
   memory dump for the same 12x9 viewport before the surface dump action.
 - Successful run:
   `captures\cdb-surface-dump-20260429-111340`.
@@ -1517,7 +1649,7 @@ No-popup host-read visibility evidence:
 
 No-popup visible-edge experiment:
 
-- Added `-ForceVisibleEdges` to `scripts\cdb\run_cdb_surface_dump.ps1`. It is a
+- Added `-ForceVisibleEdges` to `run_cdb_surface_dump.ps1`. It is a
   debugger-only validation switch for the current load-slot-0 viewport at
   `scroll=(10,17)`, not a normal gameplay patch.
 - First syntax attempts:
@@ -1552,12 +1684,12 @@ No-popup visible-edge experiment:
 
 No-popup forced visible-edge proof:
 
-- `probes/cdb/render/clash95_surface_dump_probe.cdb` now carries disabled-at-start VEDGE
+- `clash95_surface_dump_probe.cdb` now carries disabled-at-start VEDGE
   breakpoints for the same branch evidence used by the earlier visibility proof:
   pre-call tile entry at `00416850`, `sub_40F0C0` call/return at
   `004169bc` / `004169c1`, clear/draw branches at `00417a98` / `004169e6`,
   and post-return pixel samples at `0041876b` / `004189fa`.
-- `scripts\cdb\run_cdb_surface_dump.ps1 -ForceVisibleEdges` enables those breakpoints at
+- `run_cdb_surface_dump.ps1 -ForceVisibleEdges` enables those breakpoints at
   `PlayGame`, injects the exact visibility bytes for the current load-slot-0
   viewport, and freezes the proof viewport at `scroll=(10,17)` during redraw.
 - `-FastForwardStartAnims` was changed from the older unsafe AVI-call skip to a
@@ -1565,7 +1697,7 @@ No-popup forced visible-edge proof:
 - Successful run:
   `captures\cdb-surface-dump-20260429-133917`.
 - Command:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ForceVisibleEdges -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ForceVisibleEdges -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
 - Runtime evidence:
   hidden desktop, local DirectDraw proxy, `SURFDUMP_FORCE_VISIBLE_EDGES`,
   `SURFDUMP_FORCE_VIEWPORT`, `SURFDUMP_READY` on an `800x600` surface at
@@ -1582,7 +1714,7 @@ No-popup forced visible-edge proof:
 Forced visible-edge proof gate:
 
 - Added `tools\forced_visible_summary.py` and wired it into
-  `scripts\cdb\run_cdb_surface_dump.ps1 -ForceVisibleEdges`.
+  `run_cdb_surface_dump.ps1 -ForceVisibleEdges`.
 - The gate requires the exact proof shape, not just a nonblank image:
   `gameplay_frame_likely=True`, zero active blank cells, latest
   `SCROLL_VISDUMP map0=(10,17)`, force-visible and force-viewport markers, 54
@@ -1597,7 +1729,7 @@ Forced visible-edge proof gate:
 
 Normal no-popup visibility explanation gate:
 
-- `scripts\cdb\run_cdb_surface_dump.ps1` now runs
+- `run_cdb_surface_dump.ps1` now runs
   `tools\visibility_coverage.py --require-explained` whenever a normal
   non-`-ForceVisibleEdges` dump has active blank cells.
 - The harness records `VisibilityExitCode`, `VisibilityRequireExplained`, and
@@ -1653,9 +1785,9 @@ Current HD map patch-stage gate:
 CDB-only right-bottom UI policy, 2026-04-30:
 
 - User direction: use CDB-only proof for current HD-map work.
-- Use `scripts\cdb\run_cdb_surface_dump.ps1`, hidden-desktop CDB, host CDB probes, and
+- Use `run_cdb_surface_dump.ps1`, hidden-desktop CDB, host CDB probes, and
   CDB-only harnesses for new right-bottom UI and map-drawing proof.
-- Added `probes/cdb/ui/clash95_right_bottom_ui_probe.cdb` as the current static/runtime probe
+- Added `clash95_right_bottom_ui_probe.cdb` as the current static/runtime probe
   target for action-panel/right-bottom UI work. It should be launched only by a
   CDB-only route harness.
 - `tools\right_bottom_ui_bounds.py` is the current screenshot-side helper for
@@ -1664,13 +1796,13 @@ CDB-only right-bottom UI policy, 2026-04-30:
   `captures\map-minimapaction-minimapright-dynvswitch-v2-frame-20260424.png`
   is stored at `captures\right-bottom-ui-bounds-baseline-20260429.json`.
 - Every completed task report should show a current UI screenshot artifact. For
-  CDB-only runs, the reconstructed surface PNG from `scripts\cdb\run_cdb_surface_dump.ps1`
+  CDB-only runs, the reconstructed surface PNG from `run_cdb_surface_dump.ps1`
   counts as the screenshot artifact; for docs-only work, reuse the latest
   relevant UI capture and label it as reused.
 
 dword_526990 callback probe, 2026-04-30:
 
-- Added `probes/cdb/castle/clash95_d526990_extra.cdb` and `tools\d526990_summary.py`.
+- Added `clash95_d526990_extra.cdb` and `tools\d526990_summary.py`.
 - Successful hidden-desktop run:
   `captures\cdb-surface-dump-20260430-115605`.
 - The run reached gameplay and `SURFDUMP_READY`, dumped an 800x600
@@ -1695,8 +1827,8 @@ dword_526994 static owner probe, 2026-04-30:
   - `00423B00` sets `00526994=1` and calls `sub_418700`.
   - `00423B40` clears `00526994=0` after `00418FE0` and calls `sub_418700`.
   - `00418AF1` reads `00526994` in the lower/right dirty-edge fallback path.
-- Added `probes/cdb/castle/clash95_d526994_setup_extra.cdb`,
-  `probes/cdb/castle/clash95_d526994_setup_min_extra.cdb`, and parser support in
+- Added `clash95_d526994_setup_extra.cdb`,
+  `clash95_d526994_setup_min_extra.cdb`, and parser support in
   `tools\d526990_summary.py`.
 - Runtime setup attempts in
   `captures\cdb-surface-dump-20260430-121113`,
@@ -1708,7 +1840,7 @@ dword_526994 static owner probe, 2026-04-30:
 
 startup-stall and dword_526994 rerun, 2026-04-30:
 
-- Added `probes/cdb/startup/clash95_startup_stall_d526994_extra.cdb` and
+- Added `clash95_startup_stall_d526994_extra.cdb` and
   `tools\startup_stall_summary.py`.
 - `captures\cdb-surface-dump-20260430-142129` with full startup reached the
   logo `Video_Avi_playIn` path and stopped progressing after
@@ -1730,7 +1862,7 @@ dword_526994 owner route trigger, 2026-04-30:
   - `00423B00` and `00423B40` are both reached through `sub_40A500`; the
     initial `PlayGame` setup reaches `sub_40A400` at `0040B7AE` and then
     `sub_40A500` at `0040B7B3`.
-- Added `probes/cdb/castle/clash95_d526994_owner_route_extra.cdb` plus
+- Added `clash95_d526994_owner_route_extra.cdb` plus
   `tools\d526994_owner_route_summary.py`.
 - Hidden-desktop CDB run
   `captures\cdb-surface-dump-20260430-224749` passed and generated a fresh
@@ -1750,7 +1882,7 @@ dword_526994 owner route trigger, 2026-04-30:
 
 dword_511D40 descriptor trace, 2026-05-06:
 
-- Added `probes/cdb/ui/clash95_descriptor_trace_extra.cdb` and
+- Added `clash95_descriptor_trace_extra.cdb` and
   `tools\descriptor_trace_summary.py`.
 - Hidden-desktop CDB run
   `captures\cdb-surface-dump-20260506-092608` passed and generated the current
@@ -1778,7 +1910,7 @@ dword_511D40 descriptor trace, 2026-05-06:
 
 hover/selection UI probe, 2026-05-06:
 
-- Added `probes/cdb/ui/clash95_hover_selection_ui_extra.cdb` and
+- Added `clash95_hover_selection_ui_extra.cdb` and
   `tools\hover_selection_ui_summary.py`.
 - Probe targets:
   `004347A0`, `00434E20`, `00435280`, `00435500`, `00419F70`, `0041A7B2`,
@@ -1809,7 +1941,7 @@ hover/selection UI probe, 2026-05-06:
 
 passive action panel route probe, 2026-05-06:
 
-- Added `probes/cdb/castle/clash95_action_panel_route_extra.cdb` and
+- Added `clash95_action_panel_route_extra.cdb` and
   `tools\action_panel_route_summary.py`.
 - The probe does not write mouse globals. It passively watches:
   `PlayGame -> 40A400/40A500`, `004338E0`, the `00433914` call to
@@ -1840,7 +1972,7 @@ passive action panel route probe, 2026-05-06:
 
 controlled action panel state-route probe, 2026-05-06:
 
-- Added `probes/cdb/castle/clash95_action_panel_state_route_extra.cdb` and extended
+- Added `clash95_action_panel_state_route_extra.cdb` and extended
   `tools\action_panel_route_summary.py` for `APSTATE_*` markers.
 - Static safety point:
   `sub_435BC0` sets `dword_532210=0`, calls `sub_435B90`, and exits the loop
@@ -1883,14 +2015,14 @@ castle owner setup static/runtime probe, 2026-05-06:
   `dword_53214C`, and `00433D5A` writes `dword_532154` after resource
   allocation. The later action path remains `004338E0 -> 00433914 ->
   sub_435BC0`.
-- Added `probes/cdb/castle/clash95_castle_owner_setup_extra.cdb` as a passive CDB-only probe for
+- Added `clash95_castle_owner_setup_extra.cdb` as a passive CDB-only probe for
   `00422020`, `00422709`, `0042257E`, `00433C20`, write watches on
   `00532150` / `0053214C` / `00532154`, and the `004338E0` / `00433914` /
   `00435BC0` action-owner path.
 - Added `tools\castle_owner_setup_summary.py` to parse those markers and write
   JSON/markdown run summaries.
 - Runtime command:
-  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_owner_setup_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-owner-setup -RunSeconds 150`.
+  `run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -ExtraProbeTemplate .\clash95_castle_owner_setup_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-owner-setup -RunSeconds 150`.
 - Runtime evidence:
   `captures\cdb-surface-dump-20260506-121909` passed on the hidden desktop,
   produced a fresh 800x600 `surface.png`, and the current HD map patch-stage
@@ -1914,7 +2046,7 @@ castle owner setup static/runtime probe, 2026-05-06:
 
 castle screen invoke and owner setup proof, 2026-05-06:
 
-- Added `probes/cdb/castle/clash95_castle_screen_invoke_extra.cdb` as a controlled CDB-only probe.
+- Added `clash95_castle_screen_invoke_extra.cdb` as a controlled CDB-only probe.
   It route-injects from `PlayGame` into full castle screen routine `00422180`
   with `eax=0` for castle index 0, forces one command `0x63` hit-test result,
   forces the descriptor click test, and dumps the current surface when
@@ -1923,11 +2055,11 @@ castle screen invoke and owner setup proof, 2026-05-06:
   `00422180` is the full castle screen routine and `00422020` is the render
   hook installed by that routine. The command `0x63` setup path is still
   `00422709 -> 0042257E -> 00433C20`.
-- Added `-SkipMapValidation` to `scripts\cdb\run_cdb_surface_dump.ps1` so non-map UI
+- Added `-SkipMapValidation` to `run_cdb_surface_dump.ps1` so non-map UI
   surface dumps can still produce `summary.json`, `RUN-SUMMARY.md`, and a PNG
   without forcing `map_tile_coverage.py` onto castle/menu surfaces.
 - Runtime command:
-  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_screen_invoke_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-screen-invoke -RunSeconds 120`.
+  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\clash95_castle_screen_invoke_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-screen-invoke -RunSeconds 120`.
 - Successful evidence:
   `captures\cdb-surface-dump-20260506-141239` passed on the hidden desktop with
   host-side `ReadProcessMemory`, no AV rows, and candidate SHA-256
@@ -1957,7 +2089,7 @@ castle screen invoke and owner setup proof, 2026-05-06:
 
 post-owner action panel proof, 2026-05-06:
 
-- Added/refined `probes/cdb/map/clash95_post_owner_action_extra.cdb` for a CDB-only,
+- Added/refined `clash95_post_owner_action_extra.cdb` for a CDB-only,
   debugger-controlled route from the 800x600 gameplay redraw into owner setup
   and then the action-panel path.
 - Probe shape that works:
@@ -1966,7 +2098,7 @@ post-owner action panel proof, 2026-05-06:
   route at `0043390F` so it still loads `dword_532150` and reaches
   `00433914 -> sub_435BC0` without stalling in the `004338E0` prelude.
 - Successful command:
-  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_action_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-action -RunSeconds 120`.
+  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\clash95_post_owner_action_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-action -RunSeconds 120`.
 - Successful evidence:
   `captures\cdb-surface-dump-20260506-175108` passed on the hidden desktop,
   dumped an 800x600 surface, and produced
@@ -1985,7 +2117,7 @@ post-owner action panel proof, 2026-05-06:
 
 castle barracks UI probe, 2026-05-11:
 
-- Added `probes/cdb/castle/clash95_castle_barracks_ui_extra.cdb` as a focused CDB-only probe for
+- Added `clash95_castle_barracks_ui_extra.cdb` as a focused CDB-only probe for
   the post-owner castle action-panel path. It records owner setup, the
   `00433914 -> 00435BC0` entry, selected addon/list state, panel/grid/status
   draw rows, and the bottom action-box render target.
@@ -2020,7 +2152,7 @@ castle barracks UI probe, 2026-05-11:
 
 action-box redirect/copyback negative proof, 2026-05-06:
 
-- Extended `probes/cdb/map/clash95_post_owner_action_extra.cdb` with debugger-only
+- Extended `clash95_post_owner_action_extra.cdb` with debugger-only
   `APREDIR_*` breakpoints around the `00435500` action-box render-target
   switch and the following `00435D93 -> 00405020` call.
 - Redirect-only run:
@@ -2045,7 +2177,7 @@ action-box redirect/copyback negative proof, 2026-05-06:
 
 post-owner tile visibility proof, 2026-05-06:
 
-- Added `probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb` for the same safe
+- Added `clash95_post_owner_tile_visibility_extra.cdb` for the same safe
   post-owner action route plus focused visibility samples for the seven blank
   cells.
 - Extended `tools\visibility_coverage.py` so it can consume `APVIS_CELL` rows
@@ -2075,7 +2207,7 @@ post-owner tile visibility proof, 2026-05-06:
 post-owner seven-cell forced-visible proof, 2026-05-06:
 
 - Added a debugger-only `-PostOwnerForceVisibleSeven` path to
-  `scripts\cdb\run_cdb_surface_dump.ps1`. It writes exactly the visibility bytes needed for
+  `run_cdb_surface_dump.ps1`. It writes exactly the visibility bytes needed for
   `r6c10`, `r6c11`, `r7c10`, `r7c11`, `r8c0`, `r8c10`, and `r8c11` through the
   existing PlayGame CDB breakpoint before HD redraw. This is evidence only, not
   a gameplay patch.
@@ -2101,7 +2233,7 @@ post-owner seven-cell forced-visible proof, 2026-05-06:
 post-owner forced-visible harness gate, 2026-05-06:
 
 - Wired `tools\post_owner_forced_visible_summary.py` into
-  `scripts\cdb\run_cdb_surface_dump.ps1` for `-PostOwnerForceVisibleSeven` runs. The
+  `run_cdb_surface_dump.ps1` for `-PostOwnerForceVisibleSeven` runs. The
   harness now emits `post-owner-forced-visible-summary.json` /
   `post-owner-forced-visible-summary.txt`, reports the gate in
   `RUN-SUMMARY.md`, and throws if the focused proof fails.
@@ -2139,7 +2271,7 @@ HD map smoke matrix, 2026-05-08:
   it records each selected patch's file offset, RVA, VA, expected old bytes,
   expected new bytes, actual bytes, status, group, and rationale note before
   the candidate is accepted by `tools\hd_map_smoke_matrix.py`.
-- `scripts\smoke\prepare_hd_map_smoke_candidate.ps1` is the safe dry-run entrypoint for that
+- `prepare_hd_map_smoke_candidate.ps1` is the safe dry-run entrypoint for that
   reproduction path. It verifies the base SHA when accessible, prints the
   unique candidate path and commands, and refuses repository-local candidate
   output by default.
@@ -2159,7 +2291,7 @@ HD map smoke matrix, 2026-05-08:
 
 castle barracks selected-addon and copyback trace, 2026-05-11:
 
-- Added `probes/cdb/castle/clash95_castle_barracks_select_extra.cdb` as a CDB-only route proof
+- Added `clash95_castle_barracks_select_extra.cdb` as a CDB-only route proof
   for the castle barracks/action-panel UI. It forces `dword_532220` to selected
   index `1`, then logs `004347A0`, `00434E20`, `00435280`, `00435500`,
   `00435532`, `0043553F`, `00435569`, `00435D93`, `00435D9E`, and `00435DA5`.
@@ -2262,7 +2394,7 @@ castle barracks grid hitbox proof, 2026-05-11:
     `E8 6E D8 0D 00`, redirects the grid helper call;
   - file `0x11148A`, VA `0051328A`, old `00 * 80`, wraps `00435580` with the
     same temporary `-80,-60` logical mouse transform and restores `eax`.
-- Added `probes/cdb/castle/clash95_castle_barracks_hitbox_extra.cdb` to force a displayed
+- Added `clash95_castle_barracks_hitbox_extra.cdb` to force a displayed
   centered grid coordinate and log the transform chain. The proof coordinate
   is displayed `(530,133)`, expected native `(450,73)`, grid result `0`.
 - Passing validation:
@@ -2293,7 +2425,7 @@ castle barracks raw click-gate proof, 2026-05-11:
   bypassed the raw `DD_IsFlipping(dword_544CD8)` route gate.
   `004608F0` shows that this gate reads bit `1` from the input object byte at
   `00544D04`.
-- Added `probes/cdb/castle/clash95_castle_barracks_click_extra.cdb`. The probe still uses CDB to
+- Added `clash95_castle_barracks_click_extra.cdb`. The probe still uses CDB to
   set displayed mouse `(530,133)` and the click-state flag, but it no longer
   rewrites `eax` at `00435A0E`.
 - Important rows:
@@ -2317,7 +2449,7 @@ castle barracks action descriptor proof, 2026-05-11:
 
 - Follow-up run:
   `captures\cdb-surface-dump-20260511-160221`.
-- Added `probes/cdb/castle/clash95_castle_barracks_action_click_extra.cdb` and
+- Added `clash95_castle_barracks_action_click_extra.cdb` and
   `tools\castle_barracks_action_click_summary.py`.
 - Target:
   displayed centered bottom-left action coordinate `(161,501)`, expected
@@ -2379,7 +2511,7 @@ castle barracks no-rearm CDB harness fix, 2026-05-11:
 - Screenshot:
   `captures\cdb-surface-dump-20260511-162846\surface.png`.
 - Template change:
-  `probes/cdb/render/clash95_surface_dump_probe.cdb` now keeps its generic `00419B80`
+  `clash95_surface_dump_probe.cdb` now keeps its generic `00419B80`
   post-gameplay button cleanup only while no extra UI probe is active
   (`@$t18 == 0`).
 - Validation:
@@ -2400,7 +2532,7 @@ castle barracks no-rearm CDB harness fix, 2026-05-11:
 
 castle barracks second bottom action descriptor, 2026-05-11:
 
-- Added `probes/cdb/castle/clash95_castle_barracks_second_action_extra.cdb`.
+- Added `clash95_castle_barracks_second_action_extra.cdb`.
 - Extended `tools\castle_barracks_action_click_summary.py` with
   `--expect-desc` and `--expect-callback`.
 - Passing run:
@@ -2433,7 +2565,7 @@ castlecenter-all catalog and selected action proof, 2026-05-11:
   It currently aliases the proven `castlecenter-hitbox` byte set while the
   runtime catalog identifies which additional castle-interior routes need
   their own surgical hooks.
-- Added `probes/cdb/castle/clash95_castle_interior_catalog_extra.cdb` and
+- Added `clash95_castle_interior_catalog_extra.cdb` and
   `tools\castle_interior_catalog_summary.py`. The catalog run
   `captures\cdb-surface-dump-20260511-170708` safely invoked full castle
   screen routine `00422180`, forced descriptor hit-test results, suppressed
@@ -2454,7 +2586,7 @@ castlecenter-all catalog and selected action proof, 2026-05-11:
   `captures\cdb-surface-dump-20260511-170759` passed hidden-desktop CDB, dumped
   an 800x600 `surface.png`, and passed the geometry gate:
   `centered_gate=PASS image=800x600 centered_nonblack=74.464% max_margin_nonblack=24.979%`.
-- The same run used `probes/cdb/castle/clash95_castle_barracks_second_action_select1_extra.cdb`
+- The same run used `clash95_castle_barracks_second_action_select1_extra.cdb`
   to select addon `1`, click displayed `(276,501)` -> native `(196,441)`, hit
   descriptor `005151cf`, and reach callback `004356c0`'s success branch.
   Parser gate:
@@ -2476,7 +2608,7 @@ castle overview gate and selected-action harness cleanup, 2026-05-12:
   because it still reports a `640x480` surface. This keeps the next patch
   target narrowed to the full castle overview allocation/present path around
   `00422305` and `00422020`.
-- Updated `probes/cdb/castle/clash95_castle_barracks_second_action_select1_extra.cdb` to produce
+- Updated `clash95_castle_barracks_second_action_select1_extra.cdb` to produce
   a controlled dump-ready stop at `004356C0` for the selected-index-1 proof
   before the callback can hit the May 12 `c0000096` path at `004024E6`.
 - Extended `tools\castle_barracks_action_click_summary.py` with
@@ -2530,6 +2662,1033 @@ castle barracks duplicate/blur fix, 2026-05-12:
   `--require-4356c0-controlled-stop` for that run. The older May 11 run remains
   the success-branch proof, but its native-origin echo is now rejected by the
   stricter geometry gate.
+
+castle full overview 800x600 wrapper, 2026-05-12:
+
+- Added patch group `castle-overview-center-present-wrapper` and kept it only
+  in the `castlecenter-all` validation stage.
+- Static target:
+  `00422180` installs/uses full castle overview redraws. `00422305` still
+  allocates the native overview backing surface, but the final display route is
+  the `00422020` redraw call. The patched callsites are:
+  `0042232E: e8edfcffff -> e89d930f00` and
+  `00422674: e8a7f9ffff -> e857900f00`.
+- Cave:
+  `0051B6D0` (`file offset 0x1198D0`) first ensures `dword_5202E0` is 800x600
+  when the overview route enters on a native surface, calls stock `00422020`,
+  then uses the proven copy/clear/copy centering primitive to place the native
+  640x480 overview layer at `(80,60)`.
+- Passing CDB evidence:
+  `captures\cdb-surface-dump-20260512-101803` with candidate SHA-256
+  `C86E725766BE1111879322BCA147A4BDA4F02A60A470E602E528C1580CDFDCD3`.
+- Parser/gate evidence:
+  `tools\castle_interior_catalog_summary.py` reports
+  `ready=True surface_size=[800,600] descriptors=7 commands=0x63,0x86,0x87,0x99,0x9C,0x9F,0xA6 av_count=0`;
+  `tools\castle_ui_center_geometry.py --require-centered` reports
+  `centered_nonblack=69.914% max_margin_nonblack=0.0%`; and
+  `tools\castle_overview_gate.py --barracks-run captures\cdb-surface-dump-20260512-082418 --require-pass`
+  passes.
+- Patch-stage:
+  `132 patched, 0 original, 0 unexpected`; `castle-overview-center-present-wrapper`
+  is `3/3`, `castle-ui-center-present-wrapper` is `3/3`, and the current HD map
+  gate still passes.
+- Important non-promotion note:
+  the stable default HD map stage remains
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`.
+  `castlecenter-all` remains a validation stage until real/manual full-overview
+  hitbox proof is added.
+- Failed input experiment:
+  the attempted full-overview centered-input wrapper candidate
+  `7883518125B342310403AA9BA731B29513DBE0F93E50899776959CDF37247C57` caused the
+  forced catalog route to AV before `SURFDUMP_READY`
+  (`captures\cdb-surface-dump-20260512-101405`). Do not carry that input wrapper
+  into the active stage without a dedicated centered overview hitbox probe.
+
+castle full overview native-render centering fix, 2026-05-15:
+
+- User screenshot review caught that the May 12 full-overview wrapper could pass
+  the existing catalog/geometry gate while the actual overview image was
+  horizontally stripe-corrupted. The palette-aware rerun
+  `captures\cdb-surface-dump-20260515-104555` confirmed this was not just the
+  old grayscale converter: the overview was still stripey with a captured
+  DirectDraw palette.
+- Root cause:
+  the first wrapper forced `dword_5202E0` to an 800x600 target before calling
+  stock `00422020`. That repeats the earlier `menu-surface` failure mode where
+  a fixed native 640x480 renderer writes into an 800-wide surface.
+- Patch change:
+  `castle-overview-center-present-wrapper` still hooks only the proven redraw
+  callsites `0042232E` and `00422674`, but cave `0051B6D0` now calls stock
+  `00422020` first while the overview route still owns its native target. It
+  then copies the freshly rendered native result to scratch `0051D4C0`, ensures
+  `dword_5202E0` is 800x600 with the existing `0xBC`/`00403D70` allocation
+  pattern, clears the HD target, and center-copies the native overview back at
+  `(80,60)`.
+- Old-byte coverage:
+  the callsite old bytes remain
+  `0042232E: e8edfcffff -> e89d930f00` and
+  `00422674: e8a7f9ffff -> e857900f00`. The cave old-byte reservation grew to
+  `0x1198D0..0x11999F` (`208` zero bytes), ending immediately before the
+  `castle-overview-centered-input` cave at `0x1199A0`.
+- Hidden/no-popup evidence:
+  `captures\cdb-surface-dump-20260515-105041`; candidate
+  `C:\ClashTests\cdb-castle-overview-nativerender\clash95_hd_surfdump_20260515_105041.exe`;
+  SHA-256 `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6`.
+  The run used the process-local DirectDraw proxy, hidden desktop launch,
+  captured DirectDraw palette mode, and produced a clean 800x600 centered
+  overview screenshot at
+  `captures\cdb-surface-dump-20260515-105041\surface.png`.
+- Gate hardening:
+  `tools\castle_overview_gate.py` now includes a stripe visual-integrity check
+  over the centered 640x480 region. The old stripey run
+  `captures\cdb-surface-dump-20260515-104555` now fails with
+  `vertical_high=23.93%` and `stripe_excess=20.682%`; the fixed run passes with
+  `vertical_high=4.696%` and `stripe_excess=1.223%`.
+- Current parser/gate evidence:
+  `reports\castlecenter_all_patch_stage_20260515_105041.json` reports `134`
+  patched, `0` original, `0` unexpected; and
+  `reports\castle_overview_gate_20260515_105041.md` passes catalog readiness,
+  expected commands, 800x600 post-draw size, centered geometry, visual
+  integrity, the no-AV check, and the existing barracks baseline.
+
+castle full overview centered hitbox wrapper, 2026-05-12:
+
+- Probe:
+  `clash95_castle_overview_hitbox_extra.cdb` targets the full-overview
+  descriptor loop around `00422520`, `00422544`, `0042257E`, `00422590`, and
+  `0042262C`.
+- Parser:
+  `tools\castle_overview_hitbox_summary.py` now distinguishes the old
+  debugger-side native transform from the real binary-wrapper proof with
+  `--require-displayed-hit`.
+- Patch group:
+  `castle-overview-centered-input`, scoped only to the
+  `castlecenter-all` validation stage.
+- Static patch:
+  `00422520` / file offset `0x021920` replaces the 36-byte descriptor
+  hit-test setup block
+  `8b1d004d54008a0d2c5154008b15fc4c5400a330125100d3fb8bb8b8000000d3faff5710`
+  with a jump to cave `0051B7A0` and NOP padding. Cave file offset `0x1199A0`
+  preserves the original register setup, subtracts `0x50` from `edx` and
+  `0x3c` from `ebx`, calls `[edi+0x10]`, then jumps back to `00422544`.
+- Passing CDB hitbox evidence:
+  `captures\cdb-surface-dump-20260514-130015`; candidate SHA-256
+  `8472F37672FEEC5005214BF154AA914E17207135D6546FCA9C98E249E1C1AD62`.
+- Parser result:
+  `ready=True surface_size=[800,600] displayed_hit_ok=True native_hit_ok=False descriptor_ok=True click_gate_ok=True callback_suppressed=True callback_called=False av_count=0`.
+  Displayed coordinate `(371,107)` returned raw hit `248`, installed command
+  `0x86` callback `0044FE70`, and got click gate `1` without the debugger-side
+  native fallback.
+- Fresh descriptor catalog evidence:
+  `captures\cdb-surface-dump-20260512-160516` passed
+  `tools\castle_overview_gate.py` with commands
+  `0x63,0x86,0x87,0x99,0x9C,0x9F,0xA6`, centered 800x600 geometry, no AV rows,
+  and the existing barracks baseline.
+- Patch-stage:
+  `134 patched, 0 original, 0 unexpected`; `castle-overview-centered-input`
+  is `2/2`, `castle-overview-center-present-wrapper` is `3/3`, and the current
+  HD map gate still passes.
+- Promotion note:
+  this remains CDB/proxy validation for the `castlecenter-all` stage. Do not
+  promote castle overview wrappers into the stable HD map stage until broader
+  or manual/real input proof exists.
+
+castle full overview multi-hitbox broadening, 2026-05-13:
+
+- Hitable-surface dump:
+  `clash95_castle_overview_hitmap_dump_extra.cdb` dumps the native overview
+  hitmap behind the centered 800x600 presentation. Clean harness run:
+  `captures\cdb-surface-dump-20260513-094220`.
+- Hitable-surface summary:
+  `tools\castle_overview_hitmap_summary.py` wrote
+  `captures\castle-overview-hitmap-current.json` and `.md`. Present raw IDs are
+  `0xF8`, `0xF9`, `0xFE`, and `0xFF`; catalog command raw IDs `0xFA`,
+  `0xFB`, `0xFC`, and `0xFD` are absent in this surface.
+- Interpretation:
+  commands `0x99`, `0x9C`, `0x9F`, and `0xA6` are still valid forced-catalog
+  branch evidence, but not real-coordinate hitbox proof for the current castle
+  overview state because their raw IDs are not present in the dumped hitmap.
+- Multi-hit probe:
+  `clash95_castle_overview_multihit_extra.cdb` uses the present hitmap
+  coordinates and the binary `castle-overview-centered-input` wrapper.
+- Passing multi-hit evidence:
+  `captures\cdb-surface-dump-20260513-094059`; candidate SHA-256
+  `8472F37672FEEC5005214BF154AA914E17207135D6546FCA9C98E249E1C1AD62`.
+- Parser result:
+  `ready=True surface_size=[800,600] all_targets_ok=True callback_called=False av_count=0`.
+  Proved:
+  displayed `(371,107)` raw `0xF8` command `0x86` callback `0044FE70`,
+  displayed `(231,366)` raw `0xFE` command `0x63` callback `00433C20`, and
+  displayed `(635,405)` raw `0xFF` command `0x87` callback `0042B0A0`. Each
+  target returned stock click gate `1`, and the probe suppressed callbacks
+  after gate proof.
+- Regression state:
+  centered screenshot geometry passes, the full overview catalog gate remains
+  passing, the barracks controlled-stop baseline remains passing, and
+  `tools\patch_stage_report.py` still reports `134 patched, 0 original,
+  0 unexpected`.
+- Next proof target:
+  either find a state that makes `0xFA` through `0xFD` physically present in
+  the overview hitmap, or add a less synthetic/manual overview input proof.
+
+castle full overview dormant-descriptor proof, 2026-05-13:
+
+- Owner-record state scan:
+  `clash95_castle_owner_records_dump_extra.cdb` dumped
+  `gameData+0x7C6EA` for the current loaded state in
+  `captures\cdb-surface-dump-20260513-095307`. The parser
+  `tools\castle_owner_records_summary.py` shows four active castle records
+  and no parsed owner feature flags (`flags_1a0=0x00`,
+  `flags_1a4=0x00`), explaining why the normal hitmap only exposes
+  `0xF8`, `0xF9`, `0xFE`, and `0xFF`.
+- Alternate-index scan:
+  `captures\cdb-surface-dump-20260513-094830` invoked castle index `1`,
+  selected owner record `(90,7)` / owner `1`, and produced the same visible
+  raw-ID set as index `0`.
+- Dormant-ID state proof:
+  `clash95_castle_overview_hitmap_flags1f_extra.cdb` forced only the selected
+  owner record feature bytes before the overview draw
+  (`flags_1a0=0x1F`, `flags_1a4=0x01`). Hidden-desktop run
+  `captures\cdb-surface-dump-20260513-095443` passed, and
+  `captures\castle-overview-hitmap-flags1f.md` shows all raw IDs
+  `0xF8` through `0xFF` present in the real native hitmap.
+- Dormant descriptor click-gate proof:
+  `clash95_castle_overview_flags1f_multihit_extra.cdb` targeted the observed
+  displayed coordinates for `0xFA` through `0xFD` under the binary
+  `castle-overview-centered-input` wrapper. Run
+  `captures\cdb-surface-dump-20260513-095704` passed with centered 800x600
+  geometry and parser result
+  `ready=True surface_size=[800,600] all_targets_ok=True callback_called=False av_count=0`.
+  The proven rows are:
+  `0xFA -> 0x99 -> 0043DCE0` at displayed `(170,134)`,
+  `0xFB -> 0x9C -> 0043D8E0` at `(545,223)`,
+  `0xFC -> 0x9F -> 0043DEE0` at `(350,329)`, and
+  `0xFD -> 0xA6 -> 0043DAE0` at `(599,315)`, each with stock click gate `1`.
+- Parser update:
+  `tools\castle_overview_multihit_summary.py` now derives expected targets
+  from `CASTLEOV_MULTI_TARGET_SET` rows, while preserving the original
+  fallback expectations for older three-target logs.
+- Stage scope:
+  all cataloged full-overview descriptors now have CDB/proxy coordinate and
+  click-gate proof under the centered `(80,60)` presentation. This still
+  remains validation-stage evidence; do not silently merge castle overview
+  wrappers into the stable HD map stage without a deliberate promotion/manual
+  input decision.
+
+castle overview evidence matrix, 2026-05-13:
+
+- Added `tools\castle_overview_evidence_matrix.py` as a repo-only no-popup
+  matrix for the current `castlecenter-all` evidence. The tool reads existing
+  CDB/proxy captures, raw hitmap/owner dumps, and patch bytes; it does not
+  launch the game, CDB, wrappers, or any visible window.
+- Current output:
+  `captures\castle-overview-evidence-current.json` and
+  `captures\castle-overview-evidence-current.md`.
+- Current result:
+  `overall: PASS`, `promotion-status: validation_stage_only`, candidate SHA-256
+  `8472F37672FEEC5005214BF154AA914E17207135D6546FCA9C98E249E1C1AD62`, and
+  `134 patched, 0 original, 0 unexpected` for the resolved stage
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all`.
+- Covered checks:
+  overview visual/catalog centering, focused `0x86` hitbox, visible commands
+  `0x86`, `0x63`, `0x87`, owner-record explanation, forced owner-feature
+  hitmap coverage, dormant commands `0x99`, `0x9C`, `0x9F`, `0xA6`, and the
+  barracks baseline.
+- Active constraint:
+  do not run visible/manual overview input proof without explicit user
+  approval. Keep future continuation on no-popup hidden-desktop/CDB or
+  repo-only evidence unless a visible/manual validation run is explicitly
+  requested.
+
+castle overview evidence matrix tests, 2026-05-14:
+
+- Added `tools\test_castle_overview_evidence_matrix.py` and wired it into
+  `tools\current_evidence_refresh.py` as
+  `castle_overview_evidence_matrix_tests`.
+- The fixture test report covers the all-checks-pass aggregation path, every
+  required component-gate failure, displayed-wrapper proof in the focused
+  command `0x86` hitbox gate, target-done completion proof in the
+  visible/dormant multi-hit gates, validation-stage-only status, and the CLI
+  JSON/Markdown output plus `--require-pass` fail-closed path.
+- Current outputs:
+  `captures\castle-overview-evidence-matrix-tests-current.md` and
+  `captures\castle-overview-evidence-matrix-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_evidence_matrix_tests: PASS`, and the no-popup boundary
+  guard requires this fixture-test report as supporting castle overview proof.
+
+castle owner records summary tests, 2026-05-14:
+
+- Added `tools\test_castle_owner_records_summary.py` and wired it into
+  `tools\current_evidence_refresh.py` as
+  `castle_owner_records_summary_tests`.
+- Extended `tools\castle_owner_records_summary.py` with `--require-active`
+  and `--forbid-interesting` so current owner-record assumptions can fail
+  closed from the parser CLI.
+- The fixture test report covers active, retired, nonempty, interesting, and
+  flag-value record classification, plus no-active, require-interesting,
+  forbid-interesting, and truncated raw-dump fail-closed paths.
+- Current outputs:
+  `captures\castle-owner-records-summary-tests-current.md` and
+  `captures\castle-owner-records-summary-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_owner_records_summary_tests: PASS`, and the no-popup boundary guard
+  requires this fixture-test report as supporting castle overview proof.
+
+castle overview gate tests, 2026-05-14:
+
+- Added `tools\test_castle_overview_gate.py` and wired it into
+  `tools\current_evidence_refresh.py` as `castle_overview_gate_tests`.
+- The fixture test report covers the all-inputs-pass path, overview readiness,
+  AV rows, overview post-draw/surface-size regressions, missing expected
+  commands, centered-geometry regression, barracks baseline regressions, and
+  the CLI JSON/Markdown output plus `--require-pass` fail-closed path.
+- Current outputs:
+  `captures\castle-overview-gate-tests-current.md` and
+  `captures\castle-overview-gate-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_gate_tests: PASS`, and the no-popup boundary guard requires
+  this fixture-test report as supporting castle overview proof.
+
+castle overview hitbox summary tests, 2026-05-14:
+
+- Added `tools\test_castle_overview_hitbox_summary.py` and wired it into
+  `tools\current_evidence_refresh.py` as
+  `castle_overview_hitbox_summary_tests`.
+- The fixture test report covers focused displayed/native hit parsing,
+  descriptor and click-gate parsing, callback suppression, callback entry,
+  AV rows, ready surface size, and the CLI required-flag fail-closed paths.
+- Current outputs:
+  `captures\castle-overview-hitbox-summary-tests-current.md` and
+  `captures\castle-overview-hitbox-summary-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_hitbox_summary_tests: PASS`, and the no-popup boundary
+  guard requires this fixture-test report as supporting castle overview proof.
+
+castle overview hitmap summary tests, 2026-05-14:
+
+- Added `tools\test_castle_overview_hitmap_summary.py` and wired it into
+  `tools\current_evidence_refresh.py` as
+  `castle_overview_hitmap_summary_tests`.
+- The fixture test report covers raw command IDs, presence/absence, counts,
+  bounding boxes, centered displayed coordinates, required present/absent CLI
+  flags, and wrong raw-dimension handling.
+- Current outputs:
+  `captures\castle-overview-hitmap-summary-tests-current.md` and
+  `captures\castle-overview-hitmap-summary-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_hitmap_summary_tests: PASS`, and the no-popup boundary
+  guard requires this fixture-test report as supporting castle overview proof.
+
+castle overview multihit summary tests, 2026-05-14:
+
+- Added `tools\test_castle_overview_multihit_summary.py` and wired it into
+  `tools\current_evidence_refresh.py` as
+  `castle_overview_multihit_summary_tests`.
+- The fixture test report covers target-set rows, hit-test results, descriptor
+  and click-gate rows, target-done completion rows, callback entry, AV rows,
+  ready surface size, and the CLI required-flag fail-closed paths including
+  completion mismatch.
+- Current outputs:
+  `captures\castle-overview-multihit-summary-tests-current.md` and
+  `captures\castle-overview-multihit-summary-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_multihit_summary_tests: PASS`, and the no-popup boundary
+  guard requires this fixture-test report as supporting castle overview proof.
+
+castle overview promotion decision, 2026-05-13:
+
+- Added `tools\castle_overview_promotion_decision.py` so promotion state is a
+  deliberate artifact rather than an implication of the passing evidence
+  matrix.
+- Current output:
+  `captures\castle-overview-promotion-decision-current.json` and
+  `captures\castle-overview-promotion-decision-current.md`.
+- Current result:
+  `decision=defer_stable_promotion`,
+  `stable_stage_should_change=False`, decision record `PASS`.
+- Reason:
+  the matrix passes and the decision record now carries focused
+  displayed-wrapper proof plus visible/dormant multi-hit completion proof, but
+  the evidence class is still repo-only CDB/proxy and no manual/visible
+  DirectInput proof has been supplied.
+- Resulting stage rule:
+  leave the patcher default stable HD map stage unchanged at
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`;
+  keep the castle overview wrappers scoped to `castlecenter-all` unless a
+  future explicit approval or promotion override changes the evidence
+  requirement.
+
+current evidence refresh, 2026-05-13:
+
+- Added `tools\current_evidence_refresh.py` as a no-runtime coordinator for
+  current repo-only evidence. It does not launch Clash95, CDB, wrappers, or
+  any visible window.
+- Current output:
+  `captures\current-evidence-refresh-current.json` and
+  `captures\current-evidence-refresh-current.md`.
+- Current result:
+  `overall: PASS`.
+- The refreshed checks are:
+  HD map smoke matrix `PASS`, patch-manifest comparison `PASS`,
+  HD evidence-index check `PASS`, barracks success-branch proof `PASS`,
+  right-bottom UI probe `PASS`, right-bottom owner route `PASS`, castle
+  overview evidence `PASS`, and castle overview promotion decision `PASS`.
+- Patch-manifest comparison pass means no original/unexpected records; the
+  intentional partial12 structural differences remain documented
+  (`structural_diff_count=5`, `changed_records=3` in the current refresh).
+
+right-bottom UI CDB launcher run, 2026-05-13:
+
+- Hidden-desktop no-popup run:
+  `captures\cdb-surface-dump-20260513-104200`.
+- Candidate SHA-256:
+  `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`.
+- Summary:
+  `right-bottom-ui-summary.json` reports `Passed=True`,
+  `SURFDUMP_PLAYGAME=1`, `SURFDUMP_READY=1`, `RBUI_DESC_SWITCH=26`, and
+  `RBUI_VIEWPORT_SWITCH=1`.
+- Negative owner evidence:
+  `RBUI_PANEL_DRAW=0`, `RBUI_GRID_DRAW=0`, `RBUI_STATUS_DRAW=0`, and
+  `RBUI_ACTION_BOX=0`; the launcher and descriptor/viewport path work, but
+  the right-bottom action/status draw owner still is not reached in this route.
+- Region check:
+  `right-bottom-ui-bounds.json` reports bottom tooltip `66.451%` nonblack,
+  bottom-right panel `21.43%` nonblack, and bottom frame `32.306%` nonblack.
+  All three still have large black components touching the lower/right area.
+
+right-bottom owner/action route proof, 2026-05-13:
+
+- Hidden-desktop no-popup run:
+  `captures\cdb-surface-dump-20260513-105411`.
+- Command shape:
+  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\clash95_post_owner_action_extra.cdb`.
+- Candidate SHA-256:
+  `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`.
+- Route parser:
+  `tools\action_panel_route_summary.py` reports
+  `ready=True av_count=0 owner_rows=11 panel_rows=12 draw_rows=5 nonzero_owner_rows=13`.
+- Proven route markers:
+  `APPOST_OWNER_SETUP_CALL`, `APPOST_ACTION_CALL`,
+  `APPOST_PANEL_DRAW_4347A0`, `APPOST_GRID_DRAW_434E20`,
+  `APPOST_STATUS_DRAW_435280`, `APPOST_ACTION_BOX_435500`,
+  `APREDIR_AFTER_ACTION_BOX`, `APREDIR_COPYBACK_AFTER_CALL`, and
+  `APPOST_SURFDUMP_READY`.
+- Region check:
+  `right-bottom-ui-bounds.json` still reports `bottom_right_ui_corner=21.43%`
+  nonblack and `bottom_right_tile_r8c10` / `bottom_right_tile_r8c11` at
+  `0.0%` nonblack.
+- Interpretation:
+  current no-popup CDB evidence now proves the `004347A0..00435500`
+  action/status route can execute on the 800x600 gameplay surface without an
+  AV. The remaining right-bottom panel work should focus on `00435500`
+  render-target/copyback, native anchors, or final composition behavior before
+  any patch is attempted.
+
+right-bottom action-box composition proof, 2026-05-13:
+
+- Probe update:
+  `clash95_post_owner_action_extra.cdb` now logs filtered text rows,
+  low-level copy/present rows, and `APCOMP_*` samples around the proven
+  `00435500` action-box route.
+- Passing hidden-desktop run:
+  `captures\cdb-surface-dump-20260513-112339`.
+- Candidate SHA-256:
+  `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`.
+- Route parser:
+  `ready=True`, `av_count=0`, owner/action route reached, action-box redirect
+  returned, and copyback returned.
+- Composition parser:
+  `captures\cdb-surface-dump-20260513-112339\action-box-composition-summary.md`
+  reports `13` text rows, `0` non-null present rows, `5` null-destination
+  present/copy rows, `2` sample rows, and `0` AV rows.
+- Native-anchor evidence:
+  action-box/status text and copy rows stay in native UI coordinates:
+  `TOOLTIP_TEXTFMT ret=00435566 x=285 y=349 right=430`, native action box
+  `(285,350,450,425)`, status rect `(401,288,593,357)`, and action-box copy
+  rect `(285,425,350,450)`.
+- HD-region evidence:
+  no present row intersects the `bottom_tooltip` or `bottom_right_panel`
+  regions; screenshot bounds still show `bottom_right_ui_corner=21.43%`
+  nonblack and `r8c10` / `r8c11` fully black.
+- Interpretation:
+  the right-bottom action/status route is live, but the content is not anchored
+  or composed into the HD lower/right regions. Next patch research should focus
+  on a narrow anchor/final-composition strategy for this UI, not on broad map
+  redraw or visibility changes.
+
+right-bottom debugger final-composition proof, 2026-05-13:
+
+- Added `clash95_post_owner_action_compose_extra.cdb` as a validation-only
+  hidden-desktop CDB probe. It reuses the proven post-owner action route and
+  manually calls the stock present helper to copy native action/status output
+  into HD destinations.
+- First run `captures\cdb-surface-dump-20260513-114720` stayed hidden but
+  timed out after a CDB script error: pseudo-registers `@$t21` / `@$t22` are
+  invalid in this CDB context. The corrected probe uses low pseudo-registers
+  and resets them when the post-owner route begins.
+- Passing run: `captures\cdb-surface-dump-20260513-115303`.
+- Candidate SHA-256:
+  `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`.
+- Route summary:
+  `ready=True`, `av_count=0`, `owner_rows=11`, `panel_rows=12`,
+  `draw_rows=5`, and `nonzero_owner_rows=13`.
+- Composition summary:
+  `APCOMPOSE_STATUS_SHIFT_CALL=1`, `APCOMPOSE_STATUS_SHIFT_DONE=1`,
+  `APCOMPOSE_ACTION_SHIFT_CALL=1`, `APCOMPOSE_ACTION_SHIFT_DONE=1`,
+  `samples=6`, and `av=0`.
+- Manual copies proven under CDB:
+  status rect `(401,288,593,357)` to destination `(586,528)`, and action-box
+  rect `(285,350,450,425)` to destination `(285,524)`.
+- Region comparison versus `captures\cdb-surface-dump-20260513-112339`:
+  `bottom_right_ui_corner` improves `21.43% -> 48.228%` nonblack,
+  `bottom_right_tile_r8c10` improves `0.0% -> 54.102%`, and
+  `bottom_right_tile_r8c11` improves `0.0% -> 42.822%`.
+- `tools\current_evidence_refresh.py --require-pass` now includes the
+  validation-only `right_bottom_compose_probe` repo check.
+- Interpretation: final composition is a viable narrow fix class. The next
+  patch should be isolated to a new validation-stage group, verify old bytes,
+  and perform the proven final-copy strategy after the native `00435280` /
+  `00435500` output exists. Do not promote it into the stable HD map stage
+  until patched no-popup proof passes.
+
+right-bottom validation patch stage, 2026-05-13:
+
+- Added `right-bottom-compose-proof` as an isolated patch group, exposed only
+  through
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`.
+  The stable HD map stage remains
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`.
+- Hook/cave details:
+  `004352B3` / file offset `0x0346B3` jumps to `005132E0` / `0x1114E0`,
+  copies status rect `(401,288,593,357)` to destination `(586,528)`, restores
+  `mov edx,0051D4C0`, then returns to `004352B8`.
+- Hook/cave details:
+  `00435DA5` / file offset `0x0351A5` jumps to `00513E80` / `0x112080`,
+  copies action-box rect `(285,350,450,425)` to destination `(285,524)`,
+  restores `mov eax,00544CD8`, then returns to `00435DAA`.
+- Manifest:
+  `captures\patch-stage-right-bottom-compose-20260513.json` records
+  `right-bottom-compose-proof=4/4`, `122` patched selected records, zero
+  `original` / `unexpected` records, and `current_hd_map_gate=PASS`.
+- Hidden-desktop patched proof:
+  `captures\cdb-surface-dump-20260513-120712` ran with
+  `-UseDdrawProxy -FastForwardStartAnims -SkipMapValidation` and
+  `clash95_post_owner_action_extra.cdb`, not the manual composition probe.
+- Result:
+  candidate SHA-256
+  `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`,
+  `ready=True`, `av_count=0`, owner/action route reached, and the lower-right
+  region matched the debugger proof: `bottom_right_ui_corner=48.228%`,
+  `r8c10=54.102%`, `r8c11=42.822%` nonblack.
+- Interpretation: the right-bottom copy strategy is now buildable and
+  old-byte-checked, but remains validation-only pending broader route/input
+  evidence.
+
+right-bottom validation patch full-start owner/action route, 2026-05-13:
+
+- Run `captures\cdb-surface-dump-20260513-122928` exercised the
+  `rightbottomcompose` validation stage through the full startup/resource path
+  and the controlled owner/action route with `-UseDdrawProxy`,
+  `-NoSkipStartAnims`, `-SkipMapValidation`, and
+  `clash95_post_owner_action_extra.cdb`, no visible fallback.
+- Candidate SHA-256:
+  `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`.
+- Route summary:
+  `ready=True`, `av_count=0`, `owner_rows=11`, `panel_rows=12`,
+  `draw_rows=5`, and `nonzero_owner_rows=13`.
+- Composition summary:
+  `text=13`, `present=0`, `present_null=5`, `samples=2`, and `av=0`.
+- Region comparison against `captures\cdb-surface-dump-20260513-112339`:
+  `bottom_right_ui_corner` improves `21.43% -> 48.228%` nonblack,
+  `bottom_right_tile_r8c10` improves `0.0% -> 54.102%`, and
+  `bottom_right_tile_r8c11` improves `0.0% -> 42.822%`.
+- Interpretation: the validation patch recovery is not dependent on the
+  fast-forwarded startup path. It still remains validation-only until broader
+  route/input safety justifies promotion.
+
+right-bottom validation patch normal map gate, 2026-05-13:
+
+- Run `captures\cdb-surface-dump-20260513-121513` exercised the
+  `rightbottomcompose` validation stage through the normal hidden map
+  validation path: `-UseDdrawProxy -NoSkipStartAnims -RequireGameplay`, no
+  `-SkipMapValidation`, no visible fallback.
+- Candidate SHA-256 matched the patched proof:
+  `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`.
+- The surface dump passed at 800x600 with `gameplay_frame_likely=True`,
+  `active_cells=108`, and `SURFDUMP_READY` after the map surface upgrade.
+- Visibility explanation passed for all blank active cells:
+  `VisibilityRequireExplained=True`, `VisibilityExplainedGate.Passed=True`,
+  `VisibilityUnexplainedBlankCells=[]`, and `visibility_zero=13`.
+- Interpretation: the validation patch survives the standard no-popup
+  map/visibility gate, but this remains safety evidence for a validation stage,
+  not a stable-stage promotion.
+
+right-bottom validation patch natural UI probe, 2026-05-13:
+
+- Run `captures\cdb-surface-dump-20260513-122200` exercised
+  `clash95_right_bottom_ui_extra.cdb` against the `rightbottomcompose`
+  validation stage through the hidden-desktop launcher.
+- Candidate SHA-256:
+  `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`.
+- Marker shape:
+  `RBUI_DESC_SWITCH=35`, `RBUI_VIEWPORT_SWITCH=1`, `SURFDUMP_PLAYGAME=1`,
+  `SURFDUMP_READY=1`, and no natural owner/action draw rows
+  (`RBUI_PANEL_DRAW=0`, `RBUI_ACTION_BOX=0`).
+- Interpretation: the validation patch preserves the natural descriptor and
+  viewport evidence path; final-composition recovery still depends on the
+  controlled owner/action route proof.
+
+right-bottom validation patch promotion decision, 2026-05-13:
+
+- Added `tools\right_bottom_compose_promotion_decision.py` as a repo-only gate
+  for deciding whether the `rightbottomcompose` validation patch can move into
+  the stable HD map stage.
+- Current outputs:
+  `captures\right-bottom-compose-promotion-decision-current.json` and
+  `captures\right-bottom-compose-promotion-decision-current.md`.
+- Required checks all pass:
+  `right_bottom_compose_patch`, `right_bottom_compose_fullstart_route`,
+  `right_bottom_compose_normal_gate`, and `right_bottom_compose_ui_probe`.
+- Decision:
+  `defer_stable_promotion`, with `stable_stage_should_change=False`.
+- Reasons:
+  current evidence is repo-only CDB/proxy evidence, no manual/visible
+  DirectInput proof has been supplied, the natural UI probe still has
+  `RBUI_PANEL_DRAW=0` and `RBUI_ACTION_BOX=0`, and visible/manual runs require
+  explicit user approval.
+- Interpretation: this codifies the current promotion blocker and prevents the
+  validation patch from being mistaken for the stable HD map stage.
+
+right-bottom validation evidence matrix, 2026-05-13:
+
+- Added `tools\right_bottom_compose_evidence_matrix.py` as the compact
+  repo-only matrix for the `rightbottomcompose` validation stage.
+- Current outputs:
+  `captures\right-bottom-compose-evidence-current.json` and
+  `captures\right-bottom-compose-evidence-current.md`.
+- Required checks:
+  `right_bottom_compose_patch`, `right_bottom_compose_fullstart_route`,
+  `right_bottom_compose_normal_gate`, `right_bottom_compose_ui_probe`, and
+  `right_bottom_compose_promotion_decision` all pass.
+- Result:
+  `overall=PASS`, `promotion_status=validation_stage_only`,
+  `stable_stage_should_change=False`, candidate SHA
+  `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`.
+- Interpretation: this is now the concise no-runtime gate for right-bottom
+  validation-patch status, separate from stable HD map promotion.
+
+right-bottom validation guard tests, 2026-05-14:
+
+- Added `tools\test_right_bottom_compose_promotion_decision.py` as repo-only
+  fixture coverage for the `rightbottomcompose` promotion decision helper.
+- Added `tools\test_right_bottom_compose_evidence_matrix.py` as repo-only
+  fixture coverage for the compact right-bottom validation evidence matrix.
+- Output:
+  `captures\right-bottom-compose-promotion-decision-tests-current.md` /
+  `.json` and `captures\right-bottom-compose-evidence-matrix-tests-current.md`
+  / `.json`.
+- Result:
+  both reports pass with `overall=PASS` and `test_count=5`.
+- Coverage:
+  promotion-decision tests cover default deferral, missing/failing
+  route/grid/timing gates, manual-proof promotion eligibility, explicit
+  CDB-only override eligibility, and CLI `--require-pass` failure.
+  Evidence-matrix tests cover required route/map/UI/grid-hit/timing/decision
+  gates, hidden-desktop and full-start safety, normal visibility proof,
+  candidate SHA agreement, deferred promotion status, and CLI `--require-pass`
+  failure.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `right_bottom_compose_promotion_decision_tests: PASS` and
+  `right_bottom_compose_evidence_matrix_tests: PASS`, and the no-popup
+  boundary guard requires both reports as supporting right-bottom proof.
+- Interpretation: right-bottom promotion remains validation-only unless those
+  fixture-covered safety conditions are deliberately changed.
+
+stable stage guard, 2026-05-13:
+
+- Added `tools\stable_stage_guard.py` to verify the current stable patcher
+  default and validation-stage scoping without launching the game.
+- Output:
+  `captures\stable-stage-guard-current.md` and
+  `captures\stable-stage-guard-current.json`.
+- Result:
+  `overall=PASS`, patcher default
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`,
+  and `validation_only_groups_in_stable=[]`.
+- Scope checks:
+  `right-bottom-compose-proof` remains only in the `rightbottomcompose`
+  validation stage; castle/barracks and castle-overview centering/input groups
+  remain in the castle validation stages; the castle overview promotion
+  decision plus evidence matrix still carry focused displayed-wrapper plus
+  visible/dormant multi-hit proof. The guard also checks 11 `mapsurface`
+  stages and records no stage with the old global `menu-surface` group and no
+  stage missing the gameplay-only `map-surface-upgrade-scrollclamp` group.
+- Interpretation: the stable HD map stage is now guarded by repo-only evidence
+  against accidental promotion of the current validation patches.
+
+stable stage guard tests, 2026-05-14:
+
+- Added `tools\test_stable_stage_guard.py` to cover the stable-stage guard
+  failure modes without launching the game.
+- Output:
+  `captures\stable-stage-guard-tests-current.md` and
+  `captures\stable-stage-guard-tests-current.json`.
+- Result:
+  `overall=PASS`, `test_count=10`.
+- Coverage:
+  the fixture tests prove `tools\stable_stage_guard.py` passes with deferred
+  promotion decisions, and fails when the patcher default drifts from the
+  stable stage, a validation-only group leaks into the stable stage,
+  `castlecenter-all` loses an expected validation group, a `mapsurface` stage
+  reintroduces the global `menu-surface` group, a `mapsurface` stage loses the
+  gameplay-only map-surface upgrade, or a promotion decision would change the
+  stable stage. They also fail when the castle promotion decision or evidence
+  matrix omits required focused/multihit proof, and exercise the CLI
+  JSON/Markdown output and `--require-pass` fail-closed path.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `stable_stage_guard_tests: PASS`, and the no-popup boundary guard requires
+  this fixture-test report as supporting stable-stage proof.
+
+executable artifact guard, 2026-05-14:
+
+- Added `tools\exe_artifact_guard.py` to verify repository executable hygiene
+  without launching the game.
+- Output:
+  `captures\exe-artifact-guard-current.md` and
+  `captures\exe-artifact-guard-current.json`.
+- Result:
+  `overall=PASS`, `filesystem_exes=0`, `tracked_exes=0`,
+  `allowed_staged_deletions=28`, and `root_exe_ignore_present=True`.
+- Interpretation: the repo-only evidence refresh now fails if generated or
+  proprietary `.exe` artifacts reappear in the repository filesystem or git
+  index, while allowing the staged cleanup deletions for old root-level
+  executable artifacts.
+
+no-visible runtime guard, 2026-05-14:
+
+- Added `tools\no_visible_runtime_guard.py` to verify the current no-popup
+  evidence set without launching the game.
+- Output:
+  `captures\no-visible-runtime-guard-current.md` and
+  `captures\no-visible-runtime-guard-current.json`.
+- Result:
+  `overall=PASS`, `run_count=19`, and `hidden_run_count=19`.
+- Scope:
+  every referenced `captures\cdb-surface-dump-*` run in the current evidence
+  payloads reports `LaunchMode=hidden-desktop` and `HiddenDesktop=True`.
+- Interpretation: the current evidence refresh is now guarded against
+  accidental visible-desktop fallback.
+
+no-visible runtime guard tests, 2026-05-14:
+
+- Added `tools\test_no_visible_runtime_guard.py` and wired it into
+  `tools\current_evidence_refresh.py` as `no_visible_runtime_guard_tests`.
+- The fixture test report covers hidden-desktop surface-dump summaries, weak
+  runtime policy text, visible runtime summary regressions, missing run
+  summaries, and CLI JSON/Markdown output plus `--require-pass` fail-closed
+  behavior.
+- Output:
+  `captures\no-visible-runtime-guard-tests-current.md` and
+  `captures\no-visible-runtime-guard-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `no_visible_runtime_guard_tests: PASS`, and the no-popup boundary guard
+  requires this fixture-test report as supporting no-visible runtime proof.
+
+process hygiene guard, 2026-05-14:
+
+- Added `tools\process_hygiene_guard.py` to verify no stale Clash95/CDB
+  runtime process remains alive while the current evidence set is considered
+  clean.
+- Output:
+  `captures\process-hygiene-guard-current.md` and
+  `captures\process-hygiene-guard-current.json`.
+- Result:
+  `overall=PASS` and `matching_process_count=0`.
+- Scope:
+  the guard uses a Windows Toolhelp process snapshot, launches no game,
+  debugger, wrapper, shell helper, or visible GUI process, and fails on any
+  `cdb.exe` or `clash95*` process.
+- Interpretation: the current evidence refresh now fails if a stale debugger
+  or game candidate is still running.
+
+process hygiene guard tests, 2026-05-14:
+
+- Added `tools\test_process_hygiene_guard.py` as repo-only fixture coverage
+  for `tools\process_hygiene_guard.py`.
+- Output:
+  `captures\process-hygiene-guard-tests-current.md` and
+  `captures\process-hygiene-guard-tests-current.json`.
+- Result:
+  `overall=PASS` and `test_count=5`.
+- Coverage:
+  clean process snapshots, exact `cdb.exe` matches, `clash95*` prefix matches,
+  Toolhelp snapshot failures, case-insensitive target matching, and CLI output
+  plus `--require-pass` failure.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `process_hygiene_guard_tests: PASS`, and the no-popup boundary guard
+  requires this fixture-test report as supporting process hygiene proof.
+
+manual DirectInput checklist, 2026-05-14:
+
+- Added `tools\manual_directinput_checklist.py` and
+  `tools\test_manual_directinput_checklist.py`.
+- Output:
+  `captures\manual-directinput-validation-checklist-current.md`,
+  `captures\manual-directinput-validation-checklist-current.json`,
+  `captures\manual-directinput-validation-checklist-tests-current.md`, and
+  `captures\manual-directinput-validation-checklist-tests-current.json`.
+- Result:
+  `status=pending_manual_validation`, `pending_count=5`,
+  `promotion_ready=False`, `manual_proof_valid=False`,
+  `stable_stage_should_change=False`, and `test_count=9`.
+- Scope:
+  the checklist is repo-only and launches no game, CDB, wrapper, PowerShell
+  process, or visible GUI process. It now records the no-popup operator
+  preference directly: do not launch Clash95, CDB, wrappers, PowerShell
+  harnesses, or visible windows unless the user explicitly approves.
+- Coverage:
+  the pending manual/real DirectInput targets are stable menu load, stable HD
+  map input, right-bottom validation-stage input, castle barracks centered
+  input, and full castle overview centered input. The fixture tests also
+  reject placeholder proof files, proof manifests missing candidate/stage,
+  observation evidence, exact pass/fail notes, no-crash rows, or
+  no-stale-process cleanup, and only mark promotion ready for a valid manual
+  proof manifest or an explicit CDB-only override.
+- Interpretation: this enumerates the remaining manual validation work without
+  treating CDB/proxy proof as manual input proof or changing the stable stage.
+
+surface dump policy guard, 2026-05-14:
+
+- Added `tools\surface_dump_policy_guard.py` to verify the no-popup
+  surface-dump launcher defaults to hidden desktop and requires explicit
+  `-AllowVisibleDesktop` for active-desktop fallback.
+- Updated `run_cdb_surface_dump.ps1` so both early failure summaries and final
+  summaries record `HiddenDesktop` and `AllowVisibleDesktop`.
+- Output:
+  `captures\surface-dump-policy-guard-current.md` and
+  `captures\surface-dump-policy-guard-current.json`.
+- Result:
+  `overall=PASS`.
+- Scope:
+  the guard reads `run_cdb_surface_dump.ps1` only; it launches no game, CDB,
+  wrapper, PowerShell process, or visible GUI process.
+- Interpretation: the current evidence refresh now fails if the no-popup
+  harness source drifts toward implicit visible fallback behavior.
+
+no-popup boundary guard, 2026-05-14:
+
+- Added `tools\no_popup_boundary_guard.py` as an aggregate check over the
+  current no-popup guard set.
+- Output:
+  `captures\no-popup-boundary-guard-current.md` and
+  `captures\no-popup-boundary-guard-current.json`.
+- Result:
+  `overall=PASS`.
+- Scope:
+  the guard requires the current refresh to include passing
+  `stable_stage_guard`, `exe_artifact_guard`, `surface_dump_policy_guard`,
+  `no_visible_runtime_guard`, and `process_hygiene_guard` entries. It also
+  requires supporting `no_popup_map_evidence`, `no_popup_map_evidence_tests`,
+  `no_visible_runtime_guard_tests`, `no_popup_guard_tests`,
+  `process_hygiene_guard_tests`,
+  `manual_directinput_checklist`, `manual_directinput_checklist_tests`,
+  `handoff_freshness_guard`, `handoff_freshness_guard_tests`,
+  `right_bottom_compose_promotion_decision_tests`,
+  `right_bottom_compose_evidence_matrix_tests`,
+  `castle_overview_baseline_recheck`,
+  `castle_overview_baseline_recheck_tests`,
+  `castle_owner_records_summary_tests`,
+  `castle_overview_evidence_matrix_tests`,
+  `castle_overview_gate_tests`,
+  `castle_overview_hitbox_summary_tests`,
+  `castle_overview_hitmap_summary_tests`,
+  `castle_overview_multihit_summary_tests`,
+  `castle_overview_promotion_decision_tests`, `castle_overview_probe_guard`,
+  `castle_overview_probe_guard_tests`, and `stable_stage_guard_tests` entries,
+  and requires the current evidence index to link every report.
+- Interpretation: the current evidence refresh now has one compact
+  machine-check proving the no-popup boundary reports remain complete and
+  linked.
+
+no-popup map evidence refresh integration, 2026-05-14:
+
+- Added `tools\no_popup_map_evidence_matrix.py` to
+  `tools\current_evidence_refresh.py` as `no_popup_map_evidence`.
+- Output:
+  `captures\no-popup-map-evidence-current.md` and
+  `captures\no-popup-map-evidence-current.json`.
+- Baseline pair:
+  stable normal visibility-explained run
+  `captures\cdb-surface-dump-20260429-140916` and stable forced-visible edge
+  proof `captures\cdb-surface-dump-20260429-135242`.
+- Result:
+  `no_popup_map_evidence: PASS`, normal blank active cells `13`, unexplained
+  blank cells `0`, forced-visible blank active cells `0`,
+  `ForcedVisibleExitCode=0`, and `54` nonzero visibility/nonblack post rows.
+- Interpretation: the no-popup map baseline is now part of the current
+  repo-only refresh and no-popup boundary guard, so future HD-map changes
+  compare against the same stable no-popup proof before runtime work.
+
+no-popup map evidence matrix tests, 2026-05-14:
+
+- Added `tools\test_no_popup_map_evidence_matrix.py` and wired it into
+  `tools\current_evidence_refresh.py` as `no_popup_map_evidence_tests`.
+- The fixture test report covers explicit normal plus forced-visible inputs,
+  latest passing-run selection, normal visibility-gate regressions,
+  forced-visible gate regressions, and CLI JSON/Markdown output plus
+  `--require-pass` fail-closed behavior.
+- Output:
+  `captures\no-popup-map-evidence-tests-current.md` and
+  `captures\no-popup-map-evidence-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `no_popup_map_evidence_tests: PASS`, and the no-popup boundary guard
+  requires this fixture-test report as supporting map-baseline proof.
+
+no-popup guard regression tests, 2026-05-14:
+
+- Added `tools\test_no_popup_guards.py` to cover the new no-popup guard set.
+- The fixture tests prove `tools\no_popup_boundary_guard.py` passes with all
+  reports present/linked and fails when each report link is missing, a core
+  refresh check is missing, each supporting refresh check is missing, or a
+  refresh check reports failure.
+- The fixture tests prove `tools\surface_dump_policy_guard.py` passes on the
+  hidden-desktop-by-default launcher shape and fails when the explicit
+  `visible-desktop-explicit` branch marker is removed.
+- The failing surface-dump policy CLI fixture now writes its JSON/Markdown
+  outputs under `.codex-loop\tmp-tests\no-popup-guards-fixture`, keeping the
+  current `captures\surface-dump-policy-guard-current.md/json` reports reserved
+  for live refresh output.
+- Current result:
+  `tools\test_no_popup_guards.py` passes without launching Clash95, CDB,
+  wrappers, PowerShell, or any visible GUI process.
+- Output:
+  `captures\no-popup-guard-tests-current.md` and
+  `captures\no-popup-guard-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `no_popup_guard_tests: PASS`.
+
+castle overview baseline recheck, 2026-05-14:
+
+- Added `tools\castle_overview_baseline_recheck.py` to make the existing
+  read-only castle overview baselines part of the current refresh.
+- Output:
+  `captures\castle-overview-baseline-recheck-current.md` and
+  `captures\castle-overview-baseline-recheck-current.json`.
+- Result:
+  `overall=PASS`.
+- Scope:
+  the recheck verifies the older full-overview visual/catalog baseline
+  `captures\cdb-surface-dump-20260512-101803`, the barracks controlled-stop
+  baseline `captures\cdb-surface-dump-20260512-082418`, and the latest
+  `castlecenter-all` evidence matrix, including visible and dormant multi-hit
+  target-done completion proof.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_baseline_recheck: PASS`.
+- Interpretation: the original read-only castle overview baseline proof remains
+  attached to the current no-popup evidence bundle without launching Clash95,
+  CDB, wrappers, PowerShell, or any visible GUI process.
+
+castle overview baseline recheck tests, 2026-05-14:
+
+- Added `tools\test_castle_overview_baseline_recheck.py` to cover the compact
+  baseline recheck without launching the game.
+- Output:
+  `captures\castle-overview-baseline-recheck-tests-current.md` and
+  `captures\castle-overview-baseline-recheck-tests-current.json`.
+- Result:
+  `overall=PASS`, `test_count=6`.
+- Coverage:
+  the fixture tests prove `tools\castle_overview_baseline_recheck.py` passes
+  when the overview visual baseline, barracks controlled-stop baseline, and
+  latest castle overview matrix all pass, and fails when any one of those three
+  inputs fails. They also fail when the latest matrix omits visible/dormant
+  target-done completion proof and exercise JSON/Markdown output writing.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_baseline_recheck_tests: PASS`, and the no-popup boundary
+  guard requires this fixture-test report as supporting castle overview proof.
+
+castle overview probe guard, 2026-05-14:
+
+- Added `tools\castle_overview_probe_guard.py` to keep the focused full
+  overview hitbox probe mechanically pinned to the descriptor-loop callsites
+  that matter for the centered `(80,60)` presentation.
+- The guard verifies that `clash95_castle_overview_hitbox_extra.cdb` still has
+  breakpoints at `00422544`, `0042257E`, `00422590`, and `0042262C`, and that
+  the parser still recognizes the required displayed-hit, descriptor-install,
+  displayed-wrapper-success, click-gate, callback-sentinel,
+  callback-suppression, and ready markers.
+- It also scans the probe, parser, and patcher for the old crashing
+  `CASTLECAT_OVERVIEW_DESC_INPUT_WRAPPER_ENTRY` marker, which must stay absent.
+- The focused log check uses
+  `captures\cdb-surface-dump-20260514-130015\cdb-surface-dump.log` and passes
+  with ready size `[800,600]`, native overview size `[640,480]`, displayed hit
+  OK, displayed wrapper OK, descriptor OK, click gate OK, callback suppressed,
+  callback not called, and `av_count=0`.
+- Added `tools\test_castle_overview_probe_guard.py` fixture coverage for the
+  pass case, every missing breakpoint, every missing required probe/parser
+  marker, forbidden marker, AV-log failure, missing focused proof rows,
+  missing displayed-wrapper proof, callback entry, and surface-size
+  regressions.
+- Current outputs:
+  `captures\castle-overview-probe-guard-current.md` and
+  `captures\castle-overview-probe-guard-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_probe_guard: PASS`, and the no-popup boundary guard requires
+  the report as a supporting no-popup/castle-overview proof.
+
+castle overview probe guard tests, 2026-05-14:
+
+- Wired `tools\test_castle_overview_probe_guard.py` into
+  `tools\current_evidence_refresh.py` as
+  `castle_overview_probe_guard_tests`.
+- The fixture test report covers the good focused-probe shape, every missing
+  descriptor-loop breakpoint, every missing required probe/parser marker, both
+  old crashing overview wrapper markers, AV rows in the focused hitbox log,
+  missing ready state, wrong main/overview surface sizes, displayed-hit,
+  displayed-wrapper, descriptor, click-gate, and callback-suppression
+  regressions, callback entry, and the CLI JSON/Markdown output plus
+  `--require-pass` fail-closed path.
+- Current outputs:
+  `captures\castle-overview-probe-guard-tests-current.md` and
+  `captures\castle-overview-probe-guard-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_probe_guard_tests: PASS`, and the no-popup boundary guard
+  requires this fixture-test report as supporting castle overview proof.
+
+castle overview promotion decision tests, 2026-05-14:
+
+- Added `tools\test_castle_overview_promotion_decision.py` and wired it into
+  `tools\current_evidence_refresh.py` as
+  `castle_overview_promotion_decision_tests`.
+- The fixture test report covers the default defer decision, the
+  failing-matrix fail-closed path, missing focused/multihit proof,
+  manual-proof promotion eligibility, explicit CDB-only override promotion
+  eligibility, and the CLI JSON/Markdown output plus `--require-pass`
+  fail-closed path.
+- Current outputs:
+  `captures\castle-overview-promotion-decision-tests-current.md` and
+  `captures\castle-overview-promotion-decision-tests-current.json`.
+- Refresh integration:
+  `tools\current_evidence_refresh.py --require-pass` now includes
+  `castle_overview_promotion_decision_tests: PASS`, and the no-popup boundary
+  guard requires this fixture-test report as supporting castle overview proof.
 
 ## Recommended Workflow
 

@@ -5,10 +5,15 @@ param(
     [string]$Log,
     [int]$MenuWaitSec = 8,
     [int]$AutoCloseSec = 0,
-    [switch]$KeepExisting
+    [switch]$KeepExisting,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $AllowVisibleRuntime) {
+    throw "This legacy harness launches a visible Clash95 runtime. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
 
 if (-not (Test-Path -LiteralPath $Exe)) {
     throw "Executable was not found: $Exe"
@@ -35,7 +40,7 @@ if ($Probe) {
         $name = [IO.Path]::GetFileNameWithoutExtension($Exe)
         $Log = Join-Path $WorkDir "$name-cdb-probe.log"
     }
-    & $probeRunner -Exe $Exe -Log $Log -NoWait
+    & $probeRunner -Exe $Exe -Log $Log -NoWait -AllowVisibleRuntime
     Start-Sleep -Seconds $MenuWaitSec
     $game = Get-Process -ErrorAction SilentlyContinue |
         Where-Object { $_.Path -eq $Exe } |

@@ -2,10 +2,16 @@ param(
     [string]$Exe = 'C:\Clash\clash95_hdcentered_hitboxes.exe',
     [string]$Cdb = 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe',
     [string]$Log = 'C:\Clash\hd-cdb-mouse-probe.log',
-    [switch]$NoWait
+    [switch]$NoWait,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $AllowVisibleRuntime) {
+    throw "This legacy harness launches a visible Clash95/CDB runtime. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
+
 $Probe = Join-Path (Join-Path $PSScriptRoot '..\..') 'probes/cdb/mouse/clash95_mouse_probe.cdb'
 
 if (-not (Test-Path -LiteralPath $Cdb)) {
