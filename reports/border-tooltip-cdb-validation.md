@@ -26,7 +26,7 @@ Use this CDB-only sequence first.
 $PY = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
 $Stage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch'
 
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 `
   -UseDdrawProxy `
   -NoSkipStartAnims `
   -RequireGameplay `
@@ -54,7 +54,7 @@ $Png = Join-Path $Run.FullName 'surface.png'
   --logical-height 600 `
   --require-gameplay
 
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_right_bottom_ui_probe.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_right_bottom_ui_probe.ps1 `
   -Stage $Stage `
   -CandidateDir C:\ClashTests\cdb-right-bottom-ui `
   -RunSeconds 150
@@ -67,15 +67,15 @@ for the task report. Expected output from the final command includes
 
 ## Existing Evidence And Harnesses
 
-- `run_cdb_surface_dump.ps1` is the best base harness. It launches x86 CDB on a
+- `scripts\cdb\run_cdb_surface_dump.ps1` is the best base harness. It launches x86 CDB on a
   hidden desktop, optionally builds the local DirectDraw surface-dump proxy,
   dumps `dword_5202E0`, reconstructs `surface.png`, runs
   `tools\map_tile_coverage.py`, runs `tools\visibility_coverage.py`, writes
   `summary.json`, and embeds the reconstructed PNG in `RUN-SUMMARY.md`.
-- `run_cdb_surface_dump.ps1 -ExtraProbeTemplate <file.cdb>` can splice an
+- `scripts\cdb\run_cdb_surface_dump.ps1 -ExtraProbeTemplate <file.cdb>` can splice an
   extra CDB probe into the route. The extra probe must not contain a standalone
   `g` command. This is the right extension point for border/tooltip probes.
-- `run_cdb_right_bottom_ui_probe.ps1` already wraps the hidden-desktop surface
+- `scripts\cdb\run_cdb_right_bottom_ui_probe.ps1` already wraps the hidden-desktop surface
   dump harness with `probes/cdb/ui/clash95_right_bottom_ui_extra.cdb`, counts `RBUI_*`
   markers, and writes `right-bottom-ui-summary.json` / `.txt` into the run
   folder. This is already CDB-only and should replace older route experiments.
@@ -156,7 +156,7 @@ Observed highlights:
 Run the current HD stage through the hidden-desktop surface dump path:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 `
   -UseDdrawProxy `
   -NoSkipStartAnims `
   -RequireGameplay `
@@ -180,7 +180,7 @@ The `surface.png` from this run is the screenshot artifact for the task report.
 Run the existing CDB-only right-bottom UI wrapper:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_right_bottom_ui_probe.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_right_bottom_ui_probe.ps1 `
   -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch `
   -CandidateDir C:\ClashTests\cdb-right-bottom-ui `
   -RunSeconds 150
@@ -343,7 +343,7 @@ Use the CDB rows before changing bytes:
 
 Implement `tools\border_tooltip_summary.py` plus
 `probes/cdb/ui/clash95_border_tooltip_extra.cdb`, then run them through
-`run_cdb_surface_dump.ps1 -ExtraProbeTemplate` against the current HD stage.
+`scripts\cdb\run_cdb_surface_dump.ps1 -ExtraProbeTemplate` against the current HD stage.
 The resulting `RUN-SUMMARY.md` must embed the fresh `surface.png` screenshot
 artifact and record whether the border/tooltip rows are drawn, clipped, or not
 reached.

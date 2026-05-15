@@ -1,5 +1,5 @@
 param(
-    [string]$RepoRoot = $PSScriptRoot,
+    [string]$RepoRoot = (Join-Path $PSScriptRoot '..\..'),
     [string]$GameRoot = 'C:\Clash',
     [string]$PythonHostPath = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
     [string]$Stage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch',
@@ -93,7 +93,7 @@ try {
         '-ExecutionPolicy',
         'Bypass',
         '-File',
-        (Join-Path `$Repo 'run_clash_visual_smoke.ps1'),
+        (Join-Path `$Repo 'scripts\smoke\run_clash_visual_smoke.ps1'),
         '-Exe',
         `$Candidate,
         '-WorkDir',

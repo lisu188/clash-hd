@@ -2,7 +2,7 @@ param(
     [string]$Exe = 'C:\Clash\clash95_hd_mousedynorigin_menusurface_scrollclamp_20260423.exe',
     [string]$WorkDir = 'C:\Clash',
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
-    [string]$OutRoot = (Join-Path $PSScriptRoot 'captures'),
+    [string]$OutRoot = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures'),
     [string]$Points = '300,218;320,166;400,226',
     [ValidateSet('load-slot0', 'campaign-start', 'custom', 'menu-only')]
     [string]$Route = 'load-slot0',
@@ -280,7 +280,7 @@ function Invoke-GameplayFrameCheck {
         [string]$Json
     )
 
-    $coverageTool = Join-Path $PSScriptRoot 'tools\map_tile_coverage.py'
+    $coverageTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\map_tile_coverage.py'
     if ($NoGameplayCheck -or -not (Test-Path -LiteralPath $coverageTool)) {
         return [pscustomobject]@{
             Attempted = $false
@@ -452,7 +452,7 @@ function Save-CleanClientFrame {
         [string]$Path
     )
 
-    $captureScript = Join-Path $PSScriptRoot 'capture_clash_client_frame.ps1'
+    $captureScript = Join-Path (Join-Path $PSScriptRoot '..\capture') 'capture_clash_client_frame.ps1'
     if (-not (Test-Path -LiteralPath $captureScript)) {
         throw "Capture helper was not found: $captureScript"
     }
@@ -474,7 +474,7 @@ function Invoke-MousePath {
         [switch]$AllowUnverified
     )
 
-    $mouseTool = Join-Path $PSScriptRoot 'tools\mouse_path_probe.py'
+    $mouseTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\mouse_path_probe.py'
     $args = @(
         $mouseTool,
         '--pid', $Process.Id,
@@ -562,7 +562,7 @@ foreach ($path in @($Exe, $WorkDir, $Python)) {
         throw "Required path was not found: $path"
     }
 }
-$mousePath = Join-Path $PSScriptRoot 'tools\mouse_path_probe.py'
+$mousePath = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\mouse_path_probe.py'
 if (-not (Test-Path -LiteralPath $mousePath)) {
     throw "Required path was not found: $mousePath"
 }

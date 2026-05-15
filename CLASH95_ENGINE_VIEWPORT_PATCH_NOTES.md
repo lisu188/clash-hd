@@ -351,9 +351,9 @@ Built/deployed test binaries:
 
 Startup/menu checks passed:
 
-- `test_clash_menu_click.ps1` saw an 800x600 client area and captured the
+- `scripts\smoke\test_clash_menu_click.ps1` saw an 800x600 client area and captured the
   centered menu from the map12 build.
-- `run_cdb_menu_probe.ps1` with `probes/cdb/startup/clash95_hd_crash_probe.cdb` survived a
+- `scripts\cdb\run_cdb_menu_probe.ps1` with `probes/cdb/startup/clash95_hd_crash_probe.cdb` survived a
   20-second no-skip intro/movie run using the real `C:\Clash\DDRAW.dll`
   wrapper, with no second-chance crash logged.
 - After manual testing showed mouse failure in the full viewport-switch build,
@@ -363,7 +363,7 @@ Startup/menu checks passed:
 
 ## 2026-04-22 Automated Frame/Click Harness
 
-`test_clash_menu_click.ps1` launches a patched exe from `C:\Clash`, kills stale
+`scripts\smoke\test_clash_menu_click.ps1` launches a patched exe from `C:\Clash`, kills stale
 `clash95*`/`cdb` processes before each case, skips the startup AVI/story path,
 dumps before/after PNGs, tries menu clicks, writes `results.json` and
 `results.csv`, and kills the test process at the end. With `C:\Clash\dxcfg.ini`
@@ -382,7 +382,7 @@ the menu frame is unchanged. For automated input validation, use CDB/memory
 injection or a lower-level HID-style clicker; do not treat PowerShell
 `SendInput` menu-click failures as proof that manual mouse input is broken.
 
-Harness update on 2026-04-22: `test_clash_menu_click.ps1` now reacquires the
+Harness update on 2026-04-22: `scripts\smoke\test_clash_menu_click.ps1` now reacquires the
 visible top-level window by process id when `MainWindowHandle` becomes null or
 zero. A fresh `gameplay-menu640-centered-map12-novswitch-relinput` candidate at
 `C:\Clash\clash95_hd_harnesscheck_20260422.exe` produced three full-client
@@ -399,7 +399,7 @@ has a unique before-frame hash. That can happen if the intro/menu state was not
 identical across cases, so the next harness improvement is a menu-readiness or
 frame-stability gate before result clicks.
 
-The readiness gate is now in `test_clash_menu_click.ps1`. The validation run at
+The readiness gate is now in `scripts\smoke\test_clash_menu_click.ps1`. The validation run at
 `captures\clicktest-20260422-182440` reached stable, menu-ready 800x600 frames
 for centered, shifted, and native exit clicks. All three clicks were attempted,
 but all three produced 0% post-click frame change with matching before/after
@@ -442,7 +442,7 @@ the Python forced-click path is exact for the abs-quarter candidate:
 `max_abs_error=0`, `max_sample_abs_error=0`, `path_verified=true`, and
 `click_path_verified=true`.
 
-`run_cdb_python_mouse_map.ps1` runs that same path while CDB logs internal
+`scripts\cdb\run_cdb_python_mouse_map.ps1` runs that same path while CDB logs internal
 `MOUSE` and `MENUHIT` rows. The run at
 `captures\cdb-python-mouse-map-20260422.log`, summarized in
 `captures\mousemenuprobe-20260422-cdb-python-map-summary.json`, changes the
@@ -571,7 +571,7 @@ Validation:
   recorded exact Python cursor placement with `path_verified=true` and
   `click_path_verified=true`.
 
-Remaining caveat: `test_clash_menu_click.ps1` with held SendInput still did not
+Remaining caveat: `scripts\smoke\test_clash_menu_click.ps1` with held SendInput still did not
 exit from the centered-exit point in a non-CDB frame run. Because CDB proves
 the internal cursor/button path is now aligned, treat that as a click-target,
 menu-flow, or harness-cadence question rather than evidence that the coordinate
@@ -852,10 +852,10 @@ path can still include debugger-console pixels.
 
 Clean non-CDB capture update:
 
-- `capture_clash_client_frame.ps1` now captures frames from a separate
+- `scripts\capture\capture_clash_client_frame.ps1` now captures frames from a separate
   DPI-aware process and refuses captures whose client center is not the target
   Clash window.
-- `run_clash_visual_smoke.ps1` keeps mouse driving DPI-unaware/logical, then
+- `scripts\smoke\run_clash_visual_smoke.ps1` keeps mouse driving DPI-unaware/logical, then
   calls that helper only for screenshots.
 - The clean smoke at
   `captures\visual-smoke-20260423-113427\results.json` proves the combined
@@ -1445,7 +1445,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 No-popup CDB surface dump follow-up:
 
 - Added a host-side hidden-desktop harness:
-  `run_cdb_surface_dump.ps1`.
+  `scripts\cdb\run_cdb_surface_dump.ps1`.
 - Added the route/dump probe:
   `probes/cdb/render/clash95_surface_dump_probe.cdb`.
 - Added the raw surface converter:
@@ -1486,7 +1486,7 @@ No-popup DirectDraw proxy evidence:
 
 No-popup host-read visibility evidence:
 
-- `run_cdb_surface_dump.ps1` now defaults to host-side `ReadProcessMemory`
+- `scripts\cdb\run_cdb_surface_dump.ps1` now defaults to host-side `ReadProcessMemory`
   after the CDB log emits `SURFDUMP_READY`. The generated CDB script prints
   `SURFDUMP_HOST_READY` and continues while the host reads the surface bytes,
   then the harness kills only the launched CDB/candidate processes. This avoids
@@ -1517,7 +1517,7 @@ No-popup host-read visibility evidence:
 
 No-popup visible-edge experiment:
 
-- Added `-ForceVisibleEdges` to `run_cdb_surface_dump.ps1`. It is a
+- Added `-ForceVisibleEdges` to `scripts\cdb\run_cdb_surface_dump.ps1`. It is a
   debugger-only validation switch for the current load-slot-0 viewport at
   `scroll=(10,17)`, not a normal gameplay patch.
 - First syntax attempts:
@@ -1557,7 +1557,7 @@ No-popup forced visible-edge proof:
   pre-call tile entry at `00416850`, `sub_40F0C0` call/return at
   `004169bc` / `004169c1`, clear/draw branches at `00417a98` / `004169e6`,
   and post-return pixel samples at `0041876b` / `004189fa`.
-- `run_cdb_surface_dump.ps1 -ForceVisibleEdges` enables those breakpoints at
+- `scripts\cdb\run_cdb_surface_dump.ps1 -ForceVisibleEdges` enables those breakpoints at
   `PlayGame`, injects the exact visibility bytes for the current load-slot-0
   viewport, and freezes the proof viewport at `scroll=(10,17)` during redraw.
 - `-FastForwardStartAnims` was changed from the older unsafe AVI-call skip to a
@@ -1565,7 +1565,7 @@ No-popup forced visible-edge proof:
 - Successful run:
   `captures\cdb-surface-dump-20260429-133917`.
 - Command:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ForceVisibleEdges -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ForceVisibleEdges -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
 - Runtime evidence:
   hidden desktop, local DirectDraw proxy, `SURFDUMP_FORCE_VISIBLE_EDGES`,
   `SURFDUMP_FORCE_VIEWPORT`, `SURFDUMP_READY` on an `800x600` surface at
@@ -1582,7 +1582,7 @@ No-popup forced visible-edge proof:
 Forced visible-edge proof gate:
 
 - Added `tools\forced_visible_summary.py` and wired it into
-  `run_cdb_surface_dump.ps1 -ForceVisibleEdges`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -ForceVisibleEdges`.
 - The gate requires the exact proof shape, not just a nonblank image:
   `gameplay_frame_likely=True`, zero active blank cells, latest
   `SCROLL_VISDUMP map0=(10,17)`, force-visible and force-viewport markers, 54
@@ -1597,7 +1597,7 @@ Forced visible-edge proof gate:
 
 Normal no-popup visibility explanation gate:
 
-- `run_cdb_surface_dump.ps1` now runs
+- `scripts\cdb\run_cdb_surface_dump.ps1` now runs
   `tools\visibility_coverage.py --require-explained` whenever a normal
   non-`-ForceVisibleEdges` dump has active blank cells.
 - The harness records `VisibilityExitCode`, `VisibilityRequireExplained`, and
@@ -1653,7 +1653,7 @@ Current HD map patch-stage gate:
 CDB-only right-bottom UI policy, 2026-04-30:
 
 - User direction: use CDB-only proof for current HD-map work.
-- Use `run_cdb_surface_dump.ps1`, hidden-desktop CDB, host CDB probes, and
+- Use `scripts\cdb\run_cdb_surface_dump.ps1`, hidden-desktop CDB, host CDB probes, and
   CDB-only harnesses for new right-bottom UI and map-drawing proof.
 - Added `probes/cdb/ui/clash95_right_bottom_ui_probe.cdb` as the current static/runtime probe
   target for action-panel/right-bottom UI work. It should be launched only by a
@@ -1664,7 +1664,7 @@ CDB-only right-bottom UI policy, 2026-04-30:
   `captures\map-minimapaction-minimapright-dynvswitch-v2-frame-20260424.png`
   is stored at `captures\right-bottom-ui-bounds-baseline-20260429.json`.
 - Every completed task report should show a current UI screenshot artifact. For
-  CDB-only runs, the reconstructed surface PNG from `run_cdb_surface_dump.ps1`
+  CDB-only runs, the reconstructed surface PNG from `scripts\cdb\run_cdb_surface_dump.ps1`
   counts as the screenshot artifact; for docs-only work, reuse the latest
   relevant UI capture and label it as reused.
 
@@ -1890,7 +1890,7 @@ castle owner setup static/runtime probe, 2026-05-06:
 - Added `tools\castle_owner_setup_summary.py` to parse those markers and write
   JSON/markdown run summaries.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_owner_setup_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-owner-setup -RunSeconds 150`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_owner_setup_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-owner-setup -RunSeconds 150`.
 - Runtime evidence:
   `captures\cdb-surface-dump-20260506-121909` passed on the hidden desktop,
   produced a fresh 800x600 `surface.png`, and the current HD map patch-stage
@@ -1923,11 +1923,11 @@ castle screen invoke and owner setup proof, 2026-05-06:
   `00422180` is the full castle screen routine and `00422020` is the render
   hook installed by that routine. The command `0x63` setup path is still
   `00422709 -> 0042257E -> 00433C20`.
-- Added `-SkipMapValidation` to `run_cdb_surface_dump.ps1` so non-map UI
+- Added `-SkipMapValidation` to `scripts\cdb\run_cdb_surface_dump.ps1` so non-map UI
   surface dumps can still produce `summary.json`, `RUN-SUMMARY.md`, and a PNG
   without forcing `map_tile_coverage.py` onto castle/menu surfaces.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_screen_invoke_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-screen-invoke -RunSeconds 120`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_screen_invoke_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-screen-invoke -RunSeconds 120`.
 - Successful evidence:
   `captures\cdb-surface-dump-20260506-141239` passed on the hidden desktop with
   host-side `ReadProcessMemory`, no AV rows, and candidate SHA-256
@@ -1966,7 +1966,7 @@ post-owner action panel proof, 2026-05-06:
   route at `0043390F` so it still loads `dword_532150` and reaches
   `00433914 -> sub_435BC0` without stalling in the `004338E0` prelude.
 - Successful command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_action_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-action -RunSeconds 120`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_action_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-action -RunSeconds 120`.
 - Successful evidence:
   `captures\cdb-surface-dump-20260506-175108` passed on the hidden desktop,
   dumped an 800x600 surface, and produced
@@ -2075,7 +2075,7 @@ post-owner tile visibility proof, 2026-05-06:
 post-owner seven-cell forced-visible proof, 2026-05-06:
 
 - Added a debugger-only `-PostOwnerForceVisibleSeven` path to
-  `run_cdb_surface_dump.ps1`. It writes exactly the visibility bytes needed for
+  `scripts\cdb\run_cdb_surface_dump.ps1`. It writes exactly the visibility bytes needed for
   `r6c10`, `r6c11`, `r7c10`, `r7c11`, `r8c0`, `r8c10`, and `r8c11` through the
   existing PlayGame CDB breakpoint before HD redraw. This is evidence only, not
   a gameplay patch.
@@ -2101,7 +2101,7 @@ post-owner seven-cell forced-visible proof, 2026-05-06:
 post-owner forced-visible harness gate, 2026-05-06:
 
 - Wired `tools\post_owner_forced_visible_summary.py` into
-  `run_cdb_surface_dump.ps1` for `-PostOwnerForceVisibleSeven` runs. The
+  `scripts\cdb\run_cdb_surface_dump.ps1` for `-PostOwnerForceVisibleSeven` runs. The
   harness now emits `post-owner-forced-visible-summary.json` /
   `post-owner-forced-visible-summary.txt`, reports the gate in
   `RUN-SUMMARY.md`, and throws if the focused proof fails.
@@ -2139,7 +2139,7 @@ HD map smoke matrix, 2026-05-08:
   it records each selected patch's file offset, RVA, VA, expected old bytes,
   expected new bytes, actual bytes, status, group, and rationale note before
   the candidate is accepted by `tools\hd_map_smoke_matrix.py`.
-- `prepare_hd_map_smoke_candidate.ps1` is the safe dry-run entrypoint for that
+- `scripts\smoke\prepare_hd_map_smoke_candidate.ps1` is the safe dry-run entrypoint for that
   reproduction path. It verifies the base SHA when accessible, prints the
   unique candidate path and commands, and refuses repository-local candidate
   output by default.

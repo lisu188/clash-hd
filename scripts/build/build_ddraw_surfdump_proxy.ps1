@@ -30,11 +30,12 @@ function Find-VcVars32 {
     throw 'Could not find vcvars32.bat. Install Visual Studio Build Tools with the C++ toolchain.'
 }
 
-$source = Join-Path $PSScriptRoot 'ddraw_surfdump_proxy\ddraw_surfdump_proxy.cpp'
+$repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
+$source = Join-Path $repoRoot 'ddraw_surfdump_proxy\ddraw_surfdump_proxy.cpp'
 if (-not (Test-Path -LiteralPath $source)) {
     throw "Source file was not found: $source"
 }
-$defFile = Join-Path $PSScriptRoot 'ddraw_surfdump_proxy\ddraw_surfdump_proxy.def'
+$defFile = Join-Path $repoRoot 'ddraw_surfdump_proxy\ddraw_surfdump_proxy.def'
 if (-not (Test-Path -LiteralPath $defFile)) {
     throw "DEF file was not found: $defFile"
 }

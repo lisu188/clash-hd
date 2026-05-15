@@ -8,9 +8,9 @@ param(
     [string]$CandidateDir = '',
     [switch]$UseDdrawProxy,
     [string]$DdrawProxyDll = '',
-    [string]$DdrawProxyBuildScript = (Join-Path $PSScriptRoot 'build_ddraw_surfdump_proxy.ps1'),
-    [string]$OutRoot = (Join-Path $PSScriptRoot 'captures'),
-    [string]$ProbeTemplate = (Join-Path $PSScriptRoot 'probes/cdb/render/clash95_surface_dump_probe.cdb'),
+    [string]$DdrawProxyBuildScript = (Join-Path (Join-Path $PSScriptRoot '..\build') 'build_ddraw_surfdump_proxy.ps1'),
+    [string]$OutRoot = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures'),
+    [string]$ProbeTemplate = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes/cdb/render/clash95_surface_dump_probe.cdb'),
     [string]$ExtraProbeTemplate = '',
     [int]$RunSeconds = 90,
     [switch]$NoSkipStartAnims,
@@ -352,12 +352,12 @@ if ($ExtraProbeTemplate -and -not (Test-Path -LiteralPath $ExtraProbeTemplate)) 
 }
 
 $pythonExe = Resolve-PythonPath -Requested $Python
-$patcher = Join-Path $PSScriptRoot 'patch_clash95_hd.py'
-$converter = Join-Path $PSScriptRoot 'tools\cdb_surface_dump_to_png.py'
-$coverageTool = Join-Path $PSScriptRoot 'tools\map_tile_coverage.py'
-$visibilityTool = Join-Path $PSScriptRoot 'tools\visibility_coverage.py'
-$forcedVisibleTool = Join-Path $PSScriptRoot 'tools\forced_visible_summary.py'
-$postOwnerForcedVisibleTool = Join-Path $PSScriptRoot 'tools\post_owner_forced_visible_summary.py'
+$patcher = Join-Path (Join-Path $PSScriptRoot '..\..') 'patch_clash95_hd.py'
+$converter = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\cdb_surface_dump_to_png.py'
+$coverageTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\map_tile_coverage.py'
+$visibilityTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\visibility_coverage.py'
+$forcedVisibleTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\forced_visible_summary.py'
+$postOwnerForcedVisibleTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\post_owner_forced_visible_summary.py'
 foreach ($path in @($patcher, $converter, $coverageTool, $visibilityTool, $forcedVisibleTool, $postOwnerForcedVisibleTool)) {
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Required helper was not found: $path"
