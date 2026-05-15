@@ -27,7 +27,7 @@ if (-not $KeepExisting) {
 }
 
 if ($Probe) {
-    $probeRunner = Join-Path $PSScriptRoot 'run_cdb_mouse_probe.ps1'
+    $probeRunner = Join-Path (Join-Path $PSScriptRoot '..\cdb') 'run_cdb_mouse_probe.ps1'
     if (-not (Test-Path -LiteralPath $probeRunner)) {
         throw "Probe runner was not found: $probeRunner"
     }

@@ -3,7 +3,7 @@
 ## Evidence Run
 
 - Run: `captures\cdb-surface-dump-20260511-084202`
-- Harness: `run_cdb_surface_dump.ps1`
+- Harness: `scripts\cdb\run_cdb_surface_dump.ps1`
 - Extra probe: `probes/cdb/castle/clash95_castle_barracks_ui_extra.cdb`
 - Candidate: `C:\ClashTests\cdb-castle-barracks-ui\clash95_hd_surfdump_20260511_084202.exe`
 - Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
@@ -48,7 +48,7 @@ widening.
 ## Validation Commands
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 `
   -UseDdrawProxy `
   -FastForwardStartAnims `
   -SkipMapValidation `

@@ -76,7 +76,7 @@ CDB / WinDbg:
 - Use CDB for repeatable crash logs and scripted evidence.
 - Current active workflow is CDB-only. Use host CDB, hidden-desktop CDB,
   local CDB probes, and CDB-only harnesses for new validation.
-- For no-popup runtime evidence, prefer `run_cdb_surface_dump.ps1`, hidden
+- For no-popup runtime evidence, prefer `scripts\cdb\run_cdb_surface_dump.ps1`, hidden
   desktop CDB launches, local CDB probes, and CDB-only harnesses.
 - Avoid semicolons in CDB `.echo` lines. CDB command files are
   semicolon-sensitive, and a semicolon inside an echo message can stop the probe
@@ -228,7 +228,7 @@ Preferred headless debugger:
 Useful commands:
 
 ```powershell
-.\run_cdb_menu_probe.ps1 `
+.\scripts\cdb\run_cdb_menu_probe.ps1 `
   -Exe 'C:\Clash\clash95_hdmap12_novswitch_relinput.exe' `
   -Probe .\probes/cdb/startup/clash95_hd_crash_probe.cdb `
   -Log 'C:\Clash\hd-cdb-menu.log' `
@@ -236,14 +236,14 @@ Useful commands:
 ```
 
 ```powershell
-.\run_cdb_mouse_probe.ps1 `
+.\scripts\cdb\run_cdb_mouse_probe.ps1 `
   -Exe 'C:\Clash\clash95_hdcentered_hitboxes.exe' `
   -Log 'C:\Clash\hd-cdb-mouse-probe.log' `
   -NoWait
 ```
 
 ```powershell
-.\run_clash_test.ps1 `
+.\scripts\smoke\run_clash_test.ps1 `
   -Exe 'C:\Clash\clash95_hddisplay_absinput.exe' `
   -Probe `
   -MenuWaitSec 8 `
@@ -356,7 +356,7 @@ Useful future Ghidra helpers:
 
 ## Clash95 Frame Dumping And Click Tests
 
-Use `test_clash_menu_click.ps1` as the main visual regression harness. It starts
+Use `scripts\smoke\test_clash_menu_click.ps1` as the main visual regression harness. It starts
 the target executable, optionally copies it into `C:\Clash`, kills old
 `clash95*`/`cdb` processes by default, skips the intro animation, captures
 before/after PNG frames, attempts a menu click, writes `results.json` and
@@ -365,7 +365,7 @@ before/after PNG frames, attempts a menu click, writes `results.json` and
 Typical HD menu check:
 
 ```powershell
-.\test_clash_menu_click.ps1 `
+.\scripts\smoke\test_clash_menu_click.ps1 `
   -Exe .\clash95_hdmap12_novswitch_relinput.exe `
   -WorkDir 'C:\Clash' `
   -Click centered-exit `
@@ -378,7 +378,7 @@ Typical HD menu check:
 Multi-executable comparison:
 
 ```powershell
-.\test_clash_menu_click.ps1 `
+.\scripts\smoke\test_clash_menu_click.ps1 `
   -Exe .\clash95_hdmenu_centered_safe_absinput.exe,.\clash95_hdmap12_novswitch_relinput.exe `
   -Click native-exit,centered-exit `
   -SurfaceWidth 800 `
@@ -402,7 +402,7 @@ Harness window handles:
 
 - `MainWindowHandle` can temporarily refresh to null/zero for Clash95 wrapper
   runs even when a visible top-level game window still exists.
-- `test_clash_menu_click.ps1` must reacquire the window by enumerating visible
+- `scripts\smoke\test_clash_menu_click.ps1` must reacquire the window by enumerating visible
   windows for the target process id before calling `GetClientRect`,
   `ClientToScreen`, `MoveWindow`, or `PostMessage`.
 - Treat a null-handle error as a harness failure first; rerun after handle
@@ -412,11 +412,11 @@ Use `-CaptureFullClient` when debugging letterboxing, window sizing, or scaling.
 Without it, the harness captures the logical rendered surface derived from
 `-SurfaceWidth` and `-SurfaceHeight`.
 
-Use `capture_clash_window.ps1` for a one-off screenshot of an already visible
+Use `scripts\capture\capture_clash_window.ps1` for a one-off screenshot of an already visible
 game window:
 
 ```powershell
-.\capture_clash_window.ps1 `
+.\scripts\capture\capture_clash_window.ps1 `
   -ProcessName clash95_hdmap12_novswitch_relinput `
   -Output 'C:\Clash\clash-window.png' `
   -WaitSec 2
@@ -431,14 +431,14 @@ Frame dumping limitations:
 
 - The first visible state may be the startup animation, not the menu. Keep the
   skip-click/skip-key pulses enabled unless intentionally testing the intro.
-- `run_clash_visual_smoke.ps1` supports `-MoveMode setcursor|sendinput-absolute|auto|none`,
+- `scripts\smoke\run_clash_visual_smoke.ps1` supports `-MoveMode setcursor|sendinput-absolute|auto|none`,
   `-ClickMode sendinput|postmessage|both`, and `-PostIntroWaitSec`. Prefer
   `-MoveMode auto -ClickMode sendinput` for real cursor/input smoke. If the
   Codex desktop runner gets `[WinError 5]` from `SetCursorPos`, `SendInput`, or
   `GetCursorPos`, use `-MoveMode none -ClickMode postmessage` only as a
   fallback liveness/menu-flow check; it is not DirectInput proof and may not
   enter gameplay.
-- `capture_clash_client_frame.ps1` may report
+- `scripts\capture\capture_clash_client_frame.ps1` may report
   `CaptureMode=windowdc-contaminated-fallback` when another top-level window
   covers the target center. Treat that as weaker visual evidence than
   `CaptureMode=screen`; inspect the PNG and nonblack bounds before drawing
@@ -456,12 +456,12 @@ Frame dumping limitations:
   observations using `vis_base + player*1423 + map_x*13 + (map_y >> 3)`.
   Treat `visibility_zero` rows as fog/unexplored-state evidence, not as tile
   draw failure.
-- Use `run_cdb_python_mouse_map.ps1` when the question is whether those exact
+- Use `scripts\cdb\run_cdb_python_mouse_map.ps1` when the question is whether those exact
   Python-forced clicks line up with the engine's `MOUSE`/`MENUHIT` rows. Held
   clicks are better evidence than instantaneous down/up pairs because the game
   can miss a click between DirectInput polling frames.
 - Common HD/windowed mouse bug procedure: if the cursor snaps to a corner/edge
-  or clicks work while movement is wrong, run `run_cdb_python_mouse_map.ps1`
+  or clicks work while movement is wrong, run `scripts\cdb\run_cdb_python_mouse_map.ps1`
   with `-ClickHoldMs 250 -ClickRepeat 2` and compare Python
   `actual_screen`/`actual_client` with CDB `MOUSE dx/dy` and logical `x/y`.
   A typical wrapper failure is `DirectInputSample ~= screen / 4` instead of
@@ -501,7 +501,7 @@ Frame dumping limitations:
   screenshot is mostly black, sample visibility/fog before treating it as a
   rendering failure.
 - Do not trust instant frame-click failure by itself. If the CDB/Python probe
-  sees held button rows but `test_clash_menu_click.ps1` does not exit, treat it
+  sees held button rows but `scripts\smoke\test_clash_menu_click.ps1` does not exit, treat it
   as either a harness cadence/target issue or a menu-flow issue until CDB proves
   the internal cursor and descriptor tested at the specific click point.
 - Cursor position can change frame hashes. Prefer visible placement and
@@ -517,7 +517,7 @@ Frame dumping limitations:
 
 ## Clash95 No-Popup CDB Surface Dumps
 
-Use `run_cdb_surface_dump.ps1` when the goal is to test a no-popup capture path
+Use `scripts\cdb\run_cdb_surface_dump.ps1` when the goal is to test a no-popup capture path
 without placing a Clash95 window on the active desktop.
 The harness creates a timestamped `captures/cdb-surface-dump-*/` folder, builds
 a uniquely named candidate outside the repo, generates a per-run CDB script,
@@ -528,7 +528,7 @@ starts x86 CDB on a separate hidden Windows desktop with `CreateDesktop` /
 Preferred no-popup map-surface command:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 `
   -UseDdrawProxy `
   -NoSkipStartAnims `
   -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch `
@@ -628,7 +628,7 @@ then run `tools\hd_map_smoke_matrix.py --patch-exe <candidate> --normal-run
 captures\cdb-surface-dump-20260506-190037 --forced-run
 captures\cdb-surface-dump-20260506-201114 --require-pass`. Do not commit the
 generated candidate executable.
-Use `prepare_hd_map_smoke_candidate.ps1` as the dry-run launcher for this path.
+Use `scripts\smoke\prepare_hd_map_smoke_candidate.ps1` as the dry-run launcher for this path.
 Default mode only prints the plan, verifies the base SHA when accessible, and
 refuses candidate output inside the repository. Use `-Execute` only from a
 normal Windows shell when writing to `C:\ClashTests\hd-map-smoke` is allowed.
@@ -790,7 +790,7 @@ current baseline is:
 Experimental visible-edge proof command:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 `
   -UseDdrawProxy `
   -FastForwardStartAnims `
   -ForceVisibleEdges `
@@ -844,7 +844,7 @@ cleanly.
 
 ## Clash95 Windows Sandbox UI Testing
 
-Use `run_clash_windows_sandbox.ps1` when the game window should not disrupt the
+Use `scripts\smoke\run_clash_windows_sandbox.ps1` when the game window should not disrupt the
 host desktop. This implements the preferred disposable UI test route:
 
 - It generates a run folder under `captures/sandbox-YYYYMMDD-HHMMSS/`.
@@ -857,25 +857,25 @@ host desktop. This implements the preferred disposable UI test route:
   names. Do not copy game files into the repo.
 - It maps the bundled Python runtime directory read-only as `C:\HostPython`.
 - Inside the sandbox it builds a patched candidate from the read-only original,
-  runs `run_clash_visual_smoke.ps1`, and then runs
+  runs `scripts\smoke\run_clash_visual_smoke.ps1`, and then runs
   `tools\map_tile_coverage.py` against `after-map-path.png` when that frame
   exists.
 
 Dry-run/config generation:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_clash_windows_sandbox.ps1 -NoLaunch
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_clash_windows_sandbox.ps1 -NoLaunch
 ```
 
 Launch a sandbox run:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_clash_windows_sandbox.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_clash_windows_sandbox.ps1
 ```
 
 If `WindowsSandbox.exe` is missing, enable the Windows feature
 `Containers-DisposableClientVM` from an elevated shell, reboot, then rerun the
-script. Use hidden-desktop testing only through `run_cdb_surface_dump.ps1` and
+script. Use hidden-desktop testing only through `scripts\cdb\run_cdb_surface_dump.ps1` and
 treat a hidden-desktop DirectDraw failure as evidence, not as a reason to fall
 back to a visible host-window run.
 
@@ -943,7 +943,7 @@ High-value automated tests:
 
 - Smoke test matrix: maintain a simple JSON or CSV list of patched executables,
   expected client size, expected logical surface size, click points, and expected
-  outcome. Have `test_clash_menu_click.ps1` or a wrapper run the matrix.
+  outcome. Have `scripts\smoke\test_clash_menu_click.ps1` or a wrapper run the matrix.
 - Startup/menu test: launch, kill stale instances, skip intro, capture menu, and
   assert no crash, expected client size, expected render bounds, and centered menu
   geometry.
