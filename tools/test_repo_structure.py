@@ -19,9 +19,10 @@ def main() -> int:
     output = repo_structure.build_output(ROOT)
     assert output.startswith("# Compact Repository Structure\n"), output
     assert "clash-hd/" in output, output
-    assert "├── tools/" in output, output
-    assert "├── raw/" in output, output
-    assert "└── meta/" in output, output
+    assert "|-- tools/" in output, output
+    assert "|-- scripts/" in output, output
+    assert "|-- raw/" in output, output
+    assert "`-- meta/" in output, output
     assert "User-owned source material" in output, output
     assert "Agent-maintained Obsidian-compatible" in output, output
 

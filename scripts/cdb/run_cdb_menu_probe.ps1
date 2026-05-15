@@ -12,10 +12,15 @@ param(
     [int]$SweepIntervalMs = 400,
     [int]$WindowX = 80,
     [int]$WindowY = 80,
-    [switch]$NoMoveWindow
+    [switch]$NoMoveWindow,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $AllowVisibleRuntime) {
+    throw "This legacy harness launches a visible Clash95 runtime. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
 
 Add-Type @'
 using System;
