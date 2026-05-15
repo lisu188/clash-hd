@@ -150,7 +150,7 @@ does not tie it to the missing lower tooltip in the current capture.
    visually valid for old UI but no longer align with the 800x600 map surface
    and right-anchored minimap.
 
-4. **Surface dumps may miss final UI composition.** `run_cdb_surface_dump.ps1`
+4. **Surface dumps may miss final UI composition.** `scripts\cdb\run_cdb_surface_dump.ps1`
    dumps `dword_5202E0`. If the missing tooltip/status is composited via another
    surface or final front-buffer operation, the raw map-surface PNG may not show
    it even if the user-facing frame would.
@@ -183,7 +183,7 @@ does not tie it to the missing lower tooltip in the current capture.
 5. Run through a CDB-only harness, preferably hidden-desktop/no-popup:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 `
   -UseDdrawProxy `
   -NoSkipStartAnims `
   -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch `
@@ -239,7 +239,7 @@ in preferred order:
 
 1. Add a CDB-only bottom-tooltip probe with filtered `TEXT`, `TEXTFMT`, and
    `RBUI_PRESENT` rows for the address ranges above.
-2. Add `-ExtraProbe` support to `run_cdb_surface_dump.ps1` if it does not
+2. Add `-ExtraProbe` support to `scripts\cdb\run_cdb_surface_dump.ps1` if it does not
    already exist, so right-bottom/bottom-tooltip probes can ride on the proven
    no-popup route.
 3. Run one normal CDB-only hidden-desktop dump and confirm whether

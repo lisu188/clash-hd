@@ -28,7 +28,7 @@ historical context. [source page: [[Clash95 Engine Viewport Patch Notes]]]
 
 ## Key Claims
 
-- The current no-popup workflow uses `run_cdb_surface_dump.ps1` and an x86 CDB
+- The current no-popup workflow uses `scripts\cdb\run_cdb_surface_dump.ps1` and an x86 CDB
   harness to collect map and UI evidence. [source page: [[Current HD Map Evidence]]]
 - The current HD map status depends on CDB surface-dump evidence paired with
   repo-only patch and evidence checks. [source page: [[Current HD Map Evidence]]]

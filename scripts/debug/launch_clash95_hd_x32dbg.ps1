@@ -2,7 +2,7 @@ $ErrorActionPreference = 'Stop'
 
 $x32dbg = 'C:\Tools\x64dbg\release\x32\x32dbg.exe'
 $target = 'C:\Clash\clash95_hdtest.exe'
-$script = Join-Path $PSScriptRoot 'clash95_hd_x32dbg_checkpoints.xdbg'
+$script = Join-Path (Join-Path $PSScriptRoot '..\..') 'clash95_hd_x32dbg_checkpoints.xdbg'
 $workDir = Split-Path -Parent $target
 
 if (-not (Test-Path -LiteralPath $x32dbg)) {

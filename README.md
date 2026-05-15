@@ -120,14 +120,14 @@ exact commands it would run, and refuses repository-local candidate output by
 default:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\prepare_hd_map_smoke_candidate.ps1 -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\prepare_hd_map_smoke_candidate.ps1 -Json
 ```
 
 When the plan looks right, run the same helper with `-Execute` from a normal
 Windows shell:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\prepare_hd_map_smoke_candidate.ps1 -Execute
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\prepare_hd_map_smoke_candidate.ps1 -Execute
 ```
 
 The manual equivalent is below.

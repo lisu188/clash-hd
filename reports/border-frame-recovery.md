@@ -242,7 +242,7 @@ becoming a parallel renderer. Keep it as a fallback, not the next patch.
 
 ## CDB-Only Validation Ideas
 
-1. Add a CDB-only frame probe through `run_cdb_surface_dump.ps1` with
+1. Add a CDB-only frame probe through `scripts\cdb\run_cdb_surface_dump.ps1` with
    `-ExtraProbeTemplate` that late-arms after `SURFDUMP_PLAYGAME`.
 2. Break/log `sub_418700` at:
    - entry `00418700`
@@ -301,7 +301,7 @@ Expected CDB proof shape:
 ## Recommended Next Experiments
 
 1. Write `clash95_border_frame_probe.cdb` as a CDB-only extra probe for
-   `run_cdb_surface_dump.ps1`, focused on `sub_418700`, `dword_526990`, and the
+   `scripts\cdb\run_cdb_surface_dump.ps1`, focused on `sub_418700`, `dword_526990`, and the
    UI candidates listed above.
 2. Run it with the current stage via hidden-desktop CDB and DirectDraw proxy,
    then attach the resulting `surface.png` as the required screenshot artifact.
