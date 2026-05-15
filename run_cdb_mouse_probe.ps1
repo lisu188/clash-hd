@@ -6,7 +6,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$Probe = Join-Path $PSScriptRoot 'clash95_mouse_probe.cdb'
+$Probe = Join-Path $PSScriptRoot 'probes/cdb/mouse/clash95_mouse_probe.cdb'
 
 if (-not (Test-Path -LiteralPath $Cdb)) {
     throw "cdb.exe was not found at: $Cdb"

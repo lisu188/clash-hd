@@ -10,7 +10,7 @@ param(
     [string]$DdrawProxyDll = '',
     [string]$DdrawProxyBuildScript = (Join-Path $PSScriptRoot 'build_ddraw_surfdump_proxy.ps1'),
     [string]$OutRoot = (Join-Path $PSScriptRoot 'captures'),
-    [string]$ProbeTemplate = (Join-Path $PSScriptRoot 'clash95_surface_dump_probe.cdb'),
+    [string]$ProbeTemplate = (Join-Path $PSScriptRoot 'probes/cdb/render/clash95_surface_dump_probe.cdb'),
     [string]$ExtraProbeTemplate = '',
     [int]$RunSeconds = 90,
     [switch]$NoSkipStartAnims,
@@ -479,7 +479,7 @@ if ($ExtraProbeTemplate) {
         else {
             1
         }
-        # clash95_border_tooltip_extra.cdb declares nine cold breakpoints before
+        # probes/cdb/ui/clash95_border_tooltip_extra.cdb declares nine cold breakpoints before
         # the three hot text/present breakpoints. Keep those hot breakpoints
         # disabled until gameplay full redraw reaches the extra probe.
         $hotStartId = 20 + $startAnimsBpCount + 9

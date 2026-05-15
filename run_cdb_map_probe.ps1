@@ -2,7 +2,7 @@ param(
     [string]$Exe = 'C:\Clash\clash95_hd_mousedynorigin_boundguard_20260422.exe',
     [string]$WorkDir = 'C:\Clash',
     [string]$Cdb = 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe',
-    [string]$Probe = (Join-Path $PSScriptRoot 'clash95_map_runtime_probe.cdb'),
+    [string]$Probe = (Join-Path $PSScriptRoot 'probes/cdb/map/clash95_map_runtime_probe.cdb'),
     [string]$Log = (Join-Path $PSScriptRoot 'captures\cdb-map-runtime-20260422.log'),
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
     [string]$MouseJson = (Join-Path $PSScriptRoot 'captures\map-runtime-mouse-path-20260422.json'),

@@ -27,8 +27,8 @@ area are not recovered yet.
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`.
 - `captures/map-minimapaction-minimapright-dynvswitch-v2-frame-20260424.png`:
   visible baseline for lower UI defects.
-- `clash95_right_bottom_ui_probe.cdb` and
-  `clash95_right_bottom_ui_extra.cdb`: existing CDB-only probe material for
+- `probes/cdb/ui/clash95_right_bottom_ui_probe.cdb` and
+  `probes/cdb/ui/clash95_right_bottom_ui_extra.cdb`: existing CDB-only probe material for
   right-bottom action/status UI.
 - `C:\Clash\reverse\ghidra-out\functions.csv`: recovered function names and
   addresses.
@@ -158,7 +158,7 @@ does not tie it to the missing lower tooltip in the current capture.
 ## Minimal CDB-Only Validation Plan
 
 1. Create a narrow `clash95_bottom_tooltip_probe.cdb` or extend
-   `clash95_right_bottom_ui_extra.cdb`.
+   `probes/cdb/ui/clash95_right_bottom_ui_extra.cdb`.
 
 2. Late-arm after gameplay, like the existing right-bottom probe. Do not arm hot
    text/present breakpoints from process start.
