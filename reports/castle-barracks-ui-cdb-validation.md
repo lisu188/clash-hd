@@ -4,7 +4,7 @@
 
 - Run: `captures\cdb-surface-dump-20260511-084202`
 - Harness: `run_cdb_surface_dump.ps1`
-- Extra probe: `clash95_castle_barracks_ui_extra.cdb`
+- Extra probe: `probes/cdb/castle/clash95_castle_barracks_ui_extra.cdb`
 - Candidate: `C:\ClashTests\cdb-castle-barracks-ui\clash95_hd_surfdump_20260511_084202.exe`
 - Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
 - Surface: `800x600`
@@ -52,7 +52,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.p
   -UseDdrawProxy `
   -FastForwardStartAnims `
   -SkipMapValidation `
-  -ExtraProbeTemplate .\clash95_castle_barracks_ui_extra.cdb `
+  -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_barracks_ui_extra.cdb `
   -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch `
   -CandidateDir C:\ClashTests\cdb-castle-barracks-ui `
   -RunSeconds 120
@@ -73,7 +73,7 @@ python tools\right_bottom_ui_bounds.py `
 ## Selected-Addon Copyback Trace
 
 - Run: `captures\cdb-surface-dump-20260511-134947`
-- Extra probe: `clash95_castle_barracks_select_extra.cdb`
+- Extra probe: `probes/cdb/castle/clash95_castle_barracks_select_extra.cdb`
 - Candidate SHA-256:
   `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
 - Result: hidden-desktop CDB passed, no AV rows, `SURFDUMP_READY` reached,
@@ -171,7 +171,7 @@ cleaner hitbox proof than the earlier `20260511-144934` exploratory run.
 ## Centered Raw Click-Gate Hitbox Proof
 
 - Run: `captures\cdb-surface-dump-20260511-150643`
-- Extra probe: `clash95_castle_barracks_click_extra.cdb`
+- Extra probe: `probes/cdb/castle/clash95_castle_barracks_click_extra.cdb`
 - Stage:
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox`
 - Candidate SHA-256:
@@ -198,7 +198,7 @@ after the input gate has run.
 ## Centered Action Descriptor Proof
 
 - Run: `captures\cdb-surface-dump-20260511-160221`
-- Extra probe: `clash95_castle_barracks_action_click_extra.cdb`
+- Extra probe: `probes/cdb/castle/clash95_castle_barracks_action_click_extra.cdb`
 - Stage:
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox`
 - Candidate SHA-256:
@@ -304,7 +304,7 @@ before the stock gates.
 - Run:
   `captures\cdb-surface-dump-20260511-163846`.
 - Probe:
-  `clash95_castle_barracks_second_action_extra.cdb`.
+  `probes/cdb/castle/clash95_castle_barracks_second_action_extra.cdb`.
 - Screenshot:
   `captures\cdb-surface-dump-20260511-163846\surface.png`.
 - Candidate SHA-256:
@@ -341,7 +341,7 @@ change for the current selected unit.
 - Stage:
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all`.
 - New catalog probe:
-  `clash95_castle_interior_catalog_extra.cdb`.
+  `probes/cdb/castle/clash95_castle_interior_catalog_extra.cdb`.
 - New parsers:
   `tools\castle_interior_catalog_summary.py` and
   `tools\castle_ui_center_geometry.py`.
@@ -378,7 +378,7 @@ surface/present path gets its own narrow centering hook.
 - Run:
   `captures\cdb-surface-dump-20260511-170759`.
 - Probe:
-  `clash95_castle_barracks_second_action_select1_extra.cdb`.
+  `probes/cdb/castle/clash95_castle_barracks_second_action_select1_extra.cdb`.
 - Screenshot:
   `captures\cdb-surface-dump-20260511-170759\surface.png`.
 - Candidate SHA-256:
@@ -406,7 +406,7 @@ overview descriptor.
 - Run:
   `captures\cdb-surface-dump-20260512-082418`.
 - Probe:
-  `clash95_castle_barracks_second_action_select1_extra.cdb`.
+  `probes/cdb/castle/clash95_castle_barracks_second_action_select1_extra.cdb`.
 - Screenshot:
   `captures\cdb-surface-dump-20260512-082418\surface.png`.
 - Candidate SHA-256:

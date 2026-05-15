@@ -16,7 +16,7 @@
 - Force visible edges: False
 - Post-owner force visible seven: True
 - Map validation skipped: False
-- Extra probe template: <SOURCE_REPO>\clash95_post_owner_tile_visibility_extra.cdb
+- Extra probe template: <SOURCE_REPO>\probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb
 - DirectDraw proxy DLL: C:\ClashTests\cdb-post-owner-forced-visible\ddraw.dll
 - DirectDraw proxy log: C:\ClashTests\cdb-post-owner-forced-visible\ddraw_surfdump_proxy.log
 - Surface: 800x600, base=0a5a0030, bytes=480000
