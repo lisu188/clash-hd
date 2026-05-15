@@ -34,24 +34,24 @@
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/RUN-SUMMARY.md",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "8b128feaf9a580e1418e95f489400be50e64fe42ee3027401cc534991b96bffd",
-      "sha256": "3430325107f89e5c156805c84283edf19d8ba91c4f85b82745c5c50d5e279ac3",
-      "bytes": 1903
+      "sha256": "36b1ffde6036c91937dce3d1f75e842bde9cbc60917968cffffc6cde8b87c5ec",
+      "bytes": 1924
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.json",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.json",
       "reason": "Current castle/barracks centered UI proof.",
-      "source_sha256": "7aaf7b924fcdff3bd140f20e9c9fe7bf862c8c04ea1511968dbd1b0cdc234dc8",
-      "sha256": "5553e67b8018dfe029e5952cf509fe13e20cf14683541771f696b883800f7162",
-      "bytes": 11866
+      "source_sha256": "2848af31b6373165967f7fdb73375794cb89cc61561f1f5cb155ef5145599a68",
+      "sha256": "2848af31b6373165967f7fdb73375794cb89cc61561f1f5cb155ef5145599a68",
+      "bytes": 11854
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.md",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.md",
       "reason": "Current castle/barracks centered UI proof.",
-      "source_sha256": "211a6800199aad8932caa5ca2ee07b22921ecc962e915e0cb126d329028f9ef1",
-      "sha256": "20ebe78c9f5d49ca4c7e5a1e5bb6f6bae9c5dad58bdc494c7cca8ddfa3fdbcbc",
-      "bytes": 3837
+      "source_sha256": "dad75a478b398e137b69f454e0bbd9b3c60d8112ee9b372836f0c56db134cfd6",
+      "sha256": "dad75a478b398e137b69f454e0bbd9b3c60d8112ee9b372836f0c56db134cfd6",
+      "bytes": 3825
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260512-082418/castle-ui-center-geometry.json",
@@ -121,33 +121,33 @@
       "source": "repo:captures/hd-map-evidence-current-check.json",
       "target": "evidence/hd-map/hd-map-evidence-current-check.json",
       "reason": "Evidence-index link check result.",
-      "source_sha256": "433677167b95f65044d28a14ec3fe8ed29d7ffb2fb7d802318b58e91110bdeed",
-      "sha256": "3f964b04f39cf69d8a8f90a134a5e51be42a43211f82d6a59f9f1b2fbac7b709",
-      "bytes": 3118
+      "source_sha256": "7069b5e6fb288162a64d40ccb6b61c30a3f825d15529e90f816822b0c71a1316",
+      "sha256": "c403b5c125f68ca9a728e63cb1f477d94cb2acabfd3c99df5a40ca07ca1bc08b",
+      "bytes": 32436
     },
     {
       "source": "repo:captures/hd-map-evidence-current.md",
       "target": "evidence/hd-map/hd-map-evidence-current.md",
       "reason": "Current human-readable evidence index.",
-      "source_sha256": "0ce53bbe95a998d6da5fa6e030c98b0e18a1e3e77833b3e7b097fe44b27da062",
-      "sha256": "c8e78a453f905afc84ca8f8a0c622d317f873d4dc46896925357eacbb5a0e9fb",
-      "bytes": 3747
+      "source_sha256": "276eb89f536120247cf2510fd4071d7e52556f53cfa2523d5046a97a166cec8b",
+      "sha256": "6bac3abcf4cd70f5177aaebb3fe73f6db0467fd3e61a2c0f22ba2f607b3fb4f0",
+      "bytes": 44554
     },
     {
       "source": "repo:captures/hd-map-smoke-current.json",
       "target": "evidence/hd-map/hd-map-smoke-current.json",
       "reason": "Current HD map smoke matrix output.",
-      "source_sha256": "9f3e272997ffc34d8c26c87767d454eb57d7e324f419494a96e9bfbee68742b7",
-      "sha256": "d6a85195cf4fd00d424f43114646f4844ee78d01d0f936d1bce846f3973315c1",
+      "source_sha256": "de228fd5337297d56909d3d0c0ff11695590e3fee3684d1279c3aff2bab97102",
+      "sha256": "5531c315378ad598761fc902f56c51440e7b8ec75c69b4c015f405ca310ac7f7",
       "bytes": 9333
     },
     {
       "source": "repo:captures/hd-map-smoke-current.md",
       "target": "evidence/hd-map/hd-map-smoke-current.md",
       "reason": "Current HD map smoke matrix summary.",
-      "source_sha256": "fd929631db03ad5c5a57136d6800cf61e733cb3f1a93611a6b15b88ed15e56e5",
-      "sha256": "2266fc22c74c1727a026ddfd2ebdf4261d5d3932db8d9971fd3108f153e5036a",
-      "bytes": 853
+      "source_sha256": "a80bc22d2bf158c969c7d4847393fa5acd415c4312764a363286bb8555fda673",
+      "sha256": "2c649ac5fa24a841968dac2de1318baa3632100a11cd112638fa029f4931031e",
+      "bytes": 859
     },
     {
       "source": "repo:captures/patch-manifest-compare-current-vs-partial12.json",
@@ -170,7 +170,7 @@
       "target": "evidence/hd-map/patch-stage-report.json",
       "reason": "Archived current HD map patch-byte report for cloud smoke checks.",
       "json_key": "patch_stage",
-      "source_sha256": "9f3e272997ffc34d8c26c87767d454eb57d7e324f419494a96e9bfbee68742b7",
+      "source_sha256": "de228fd5337297d56909d3d0c0ff11695590e3fee3684d1279c3aff2bab97102",
       "sha256": "a795cd1e10267e0be6b521e2919f999dc4f2c622412add9d8811f12f67b81d67",
       "bytes": 2981
     },
@@ -187,8 +187,8 @@
       "target": "evidence/hd-map/post-owner-evidence-current.md",
       "reason": "Readable paired post-owner evidence matrix.",
       "source_sha256": "8be6b0836c60b0fa6622b9b3b10d6bdebb47d04213859f83d908e361263d522e",
-      "sha256": "df4b5655ec0776242ef696bb081ac70ff2825252c79c1f6c2dbd4ae15380b615",
-      "bytes": 712
+      "sha256": "2599d8fe0e369e6efd1d0127bdeb7bbe7682dada2e118dee6273806635c9d7b2",
+      "bytes": 718
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260506-190037/POST-OWNER-TILE-VISIBILITY.md",
@@ -203,8 +203,8 @@
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "4874e9f8686124a739f023a07187d3d075657f395ca536f92c813b78f900e7df",
-      "sha256": "05985159b83de37cd72c9c8a7f8b156bfb8c4154cee71abbe8669af50f2dbd50",
-      "bytes": 1807
+      "sha256": "5505be7d50df9efafd753e315894d34c23284908c7aadcb7c5872c42687c4286",
+      "bytes": 1828
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260506-190037/cdb-surface-dump.log",
@@ -227,8 +227,8 @@
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/map-tile-coverage.txt",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "1f728bdc24e9abfd545d16db45704946b6402a94b43b884f12ae2d2a29a8e06e",
-      "sha256": "9e19c1d184a9a2d25aa8bfb109d446069e71cf7991521f1d3258878b2cf6552d",
-      "bytes": 1060
+      "sha256": "b615ed56161bfc46bd5967e9bb329794b15ad5f6a351fa594b99939187185898",
+      "bytes": 1063
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260506-190037/post-owner-tile-visibility-action-summary.json",
@@ -283,16 +283,16 @@
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/visibility-coverage.txt",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "8c0acc0f29d1e7d5a11ad95ee8497834e6128c03a03939597d738ad2da2bca39",
-      "sha256": "ea189af2fbaa51c7e1d61e6f642686016d4135462f2b0dcf241f706ffad23f69",
-      "bytes": 732
+      "sha256": "a9e1bc2d8b1e2dbaf311abb2a49aea5392a1a404b6d4352241c27fa2ab3aa457",
+      "bytes": 735
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260506-201114/RUN-SUMMARY.md",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/RUN-SUMMARY.md",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "b377fdadc68a8a9beb1bb804c29e6bee10bfa1553a3af5a3463d0079efa8c18b",
-      "sha256": "59001617943ca541bfb3c65a1bbc879220d754113fe2422066fd79f8ff3f10ea",
-      "bytes": 1983
+      "sha256": "ef6f4797ec759058da76a6d19ce29c7d6a47060b508f86344c3f33aab2574762",
+      "bytes": 2007
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260506-201114/cdb-surface-dump.log",
@@ -315,8 +315,8 @@
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/map-tile-coverage.txt",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "6c1077dba1d97ccabf8e00b9e7dff3b1ff14c90176e0670ddde009e773bf19c8",
-      "sha256": "45af7593c66e4c2d87bc82a3f52e2dec4bb373e0744c5cc8a3abd426f0edd7eb",
-      "bytes": 999
+      "sha256": "8c66516a7bfe0010da97a71b1d7287f2d41897443cb004426767251c7c55060a",
+      "bytes": 1002
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260506-201114/post-owner-forced-visible-summary.json",
@@ -331,8 +331,8 @@
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/post-owner-forced-visible-summary.txt",
       "reason": "Focused seven-cell forced-visible proof details.",
       "source_sha256": "10066b0f63a0c42a3b93bb80ae3aa6be653b80a73e326f7eac2c1f1ffdb8e3c5",
-      "sha256": "c28e7fc8854f89005095f0370d64d3f00db70d9aea9052dd15be995aa79d16ed",
-      "bytes": 318
+      "sha256": "292db19b9ff51f71f10539aa0cdad3110ef92d109f891536dde8e04e80f42038",
+      "bytes": 324
     },
     {
       "source": "repo:captures/cdb-surface-dump-20260506-201114/summary.json",
@@ -371,8 +371,8 @@
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/visibility-coverage.txt",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "88b4c4491113c040b32d8c6ff428382f0a0c7adc8e2518e07e77c895172b7c0a",
-      "sha256": "96a08914a2a1a4c7c5485a99f80389c1c462981353c13638afe54837953d478d",
-      "bytes": 229
+      "sha256": "0b9bfbeb8792eba148faf96be2f41368d1d996b1a5d1fd6dd653f373bf271c41",
+      "bytes": 232
     },
     {
       "source": "external:C:/Clash/reverse/ghidra-out/README.md",

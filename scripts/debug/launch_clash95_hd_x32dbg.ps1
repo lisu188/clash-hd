@@ -1,4 +1,12 @@
+param(
+    [switch]$AllowVisibleRuntime
+)
+
 $ErrorActionPreference = 'Stop'
+
+if (-not $AllowVisibleRuntime) {
+    throw "This legacy harness launches a visible Clash95/x32dbg runtime. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
 
 $x32dbg = 'C:\Tools\x64dbg\release\x32\x32dbg.exe'
 $target = 'C:\Clash\clash95_hdtest.exe'

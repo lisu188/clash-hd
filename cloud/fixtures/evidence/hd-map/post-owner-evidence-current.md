@@ -10,7 +10,7 @@
 - Blank active cells: r6c10, r6c11, r7c10, r7c11, r8c0, r8c10, r8c11
 - Visibility status counts: `{'visibility_zero': 7}`
 
-![normal post-owner surface](<SOURCE_REPO>\captures\cdb-surface-dump-20260506-190037\surface.png)
+![normal post-owner surface](<CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\surface.png)
 
 ## Seven-Cell Forced-Visible Proof
 
@@ -19,4 +19,4 @@
 - Blank active cells: none
 - Gate counts: force=1 done=1 action=1 ready=1
 
-![forced-visible post-owner surface](<SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\surface.png)
+![forced-visible post-owner surface](<CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\surface.png)

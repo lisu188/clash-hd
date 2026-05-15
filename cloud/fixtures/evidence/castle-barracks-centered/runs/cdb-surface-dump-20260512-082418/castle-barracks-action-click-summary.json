@@ -399,5 +399,5 @@
       "text": "SURFDUMP_READY redraw_seq=993 surface=0a2fedd0 size=(800,600) base=0a5a0030 bytes=480000 SURFDUMP_HOST_READY"
     }
   ],
-  "screenshot": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260512-082418\\surface.png"
+  "screenshot": ".\\captures\\cdb-surface-dump-20260512-082418\\surface.png"
 }

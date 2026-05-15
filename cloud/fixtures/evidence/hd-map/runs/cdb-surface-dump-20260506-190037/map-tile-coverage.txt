@@ -1,4 +1,4 @@
-image: <SOURCE_REPO>\captures\cdb-surface-dump-20260506-190037\surface.png (800x600, scale=1.0x1.0) active=108 measurable=99 inactive=0 flagged=7 blank=7 stale_or_solid=0
+image: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\surface.png (800x600, scale=1.0x1.0) active=108 measurable=99 inactive=0 flagged=7 blank=7 stale_or_solid=0
   gameplay_frame_likely=True warnings=-
   edge_coverage: overall=64.72% top=54.898% left=48.016% right_below_minimap=25.845% bottom=50.377%
   blank_active_cells: r6c10, r6c11, r7c10, r7c11, r8c0, r8c10, r8c11

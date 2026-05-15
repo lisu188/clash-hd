@@ -16,15 +16,15 @@
 - Force visible edges: False
 - Post-owner force visible seven: False
 - Map validation skipped: True
-- Extra probe template: <SOURCE_REPO>\probes/cdb/castle/clash95_castle_barracks_second_action_select1_extra.cdb
+- Extra probe template: <CLOUD_WORKTREE>\clash95_castle_barracks_second_action_select1_extra.cdb
 - DirectDraw proxy DLL: C:\ClashTests\cdb-castle-center-all\ddraw.dll
 - DirectDraw proxy log: C:\ClashTests\cdb-castle-center-all\ddraw_surfdump_proxy.log
 - Surface: 800x600, base=0a5a0030, bytes=480000
-- Raw: <SOURCE_REPO>\captures\cdb-surface-dump-20260512-082418\surface.raw
-- PNG: <SOURCE_REPO>\captures\cdb-surface-dump-20260512-082418\surface.png
-- Coverage JSON: <SOURCE_REPO>\captures\cdb-surface-dump-20260512-082418\map-tile-coverage.json
+- Raw: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260512-082418\surface.raw
+- PNG: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260512-082418\surface.png
+- Coverage JSON: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260512-082418\map-tile-coverage.json
 - Coverage blank active cells: none
-- Visibility JSON: <SOURCE_REPO>\captures\cdb-surface-dump-20260512-082418\visibility-coverage-summary.json
+- Visibility JSON: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260512-082418\visibility-coverage-summary.json
 - Visibility require explained: False
 - Visibility explained gate: not required
 - Visibility unexplained blanks: none
@@ -33,6 +33,6 @@
 - Forced-visible JSON: not used
 - Post-owner forced-visible gate: not used
 - Post-owner forced-visible JSON: not used
-- Log: <SOURCE_REPO>\captures\cdb-surface-dump-20260512-082418\cdb-surface-dump.log
+- Log: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260512-082418\cdb-surface-dump.log
 
-![surface dump](<SOURCE_REPO>\captures\cdb-surface-dump-20260512-082418\surface.png)
+![surface dump](<CLOUD_WORKTREE>\captures\cdb-surface-dump-20260512-082418\surface.png)
