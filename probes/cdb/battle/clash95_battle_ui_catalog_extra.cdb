@@ -1,0 +1,10 @@
+.echo === Clash95 battle UI catalog probe ===
+.echo Probe-first battle route discovery with no patching and no forced input
+r @$t20=0
+
+bp 0041AD20 ".printf \"BATTLE_ROUTE_CANDIDATE name=Unit_Attack eip=0041ad20 ret=%p attacker=%p target=%p surface=%p width=%d height=%d mouse=(%d,%d)\n\", poi(@esp), @eax, @edx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t20=1; gc"
+bp 0041B7D0 ".printf \"BATTLE_ROUTE_CANDIDATE name=Unit_AttackBuilding eip=0041b7d0 ret=%p attacker=%p target=%p surface=%p width=%d height=%d mouse=(%d,%d)\n\", poi(@esp), @eax, @edx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t20=1; gc"
+bp 0041C4A0 ".printf \"BATTLE_ROUTE_CANDIDATE name=CalculateBattleResult eip=0041c4a0 ret=%p a=%p b=%p c=%p surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, @ecx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r @$t20=1; gc"
+bp 0042E5A0 ".printf \"BATTLE_READY source=HandleBattleResults eip=0042e5a0 ret=%p a=%p b=%p c=%p surface=%p width=%d height=%d mouse=(%d,%d)\n\", poi(@esp), @eax, @edx, @ecx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); .printf \"BATTLE_SURFACE ptr=%p width=%d height=%d pitch=0 base=%p mode=unknown\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(005202e0)+4); r @$t20=1; gc"
+bp 00441350 ".printf \"BATTLE_ROUTE_CANDIDATE name=BattleMapFileName eip=00441350 ret=%p arg=%p surface=%p width=%d height=%d\n\", poi(@esp), @eax, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r @$t20=1; gc"
+bp 0042E6F0 ".if (@$t20 != 0) { .printf \"BATTLE_DONE reason=after_HandleBattleResults eip=0042e6f0 surface=%p width=%d height=%d\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"

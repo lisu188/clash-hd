@@ -1,14 +1,464 @@
 {
   "index": "<SOURCE_REPO>\\captures\\hd-map-evidence-current.md",
   "counts": {
-    "links": 6,
-    "images": 2,
-    "local_records": 8,
+    "links": 82,
+    "images": 9,
+    "local_records": 91,
     "missing": 0,
     "image_missing": 0,
     "image_wrong_extension": 0
   },
   "links": [
+    {
+      "kind": "link",
+      "target": "current-evidence-refresh-current.md",
+      "cleaned": "current-evidence-refresh-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\current-evidence-refresh-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-popup-map-evidence-current.md",
+      "cleaned": "no-popup-map-evidence-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\no-popup-map-evidence-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-popup-map-evidence-tests-current.md",
+      "cleaned": "no-popup-map-evidence-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\no-popup-map-evidence-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-popup-boundary-guard-current.md",
+      "cleaned": "no-popup-boundary-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\no-popup-boundary-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-popup-guard-tests-current.md",
+      "cleaned": "no-popup-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\no-popup-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "visible-runtime-launcher-guard-current.md",
+      "cleaned": "visible-runtime-launcher-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\visible-runtime-launcher-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "visible-runtime-launcher-guard-tests-current.md",
+      "cleaned": "visible-runtime-launcher-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\visible-runtime-launcher-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "python-runtime-safety-current.md",
+      "cleaned": "python-runtime-safety-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\python-runtime-safety-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "python-runtime-safety-tests-current.md",
+      "cleaned": "python-runtime-safety-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\python-runtime-safety-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "patch-definition-current.md",
+      "cleaned": "patch-definition-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\patch-definition-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "patch-definition-tests-current.md",
+      "cleaned": "patch-definition-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\patch-definition-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "capture-corpus-index-current.md",
+      "cleaned": "capture-corpus-index-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\capture-corpus-index-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "capture-corpus-index-tests-current.md",
+      "cleaned": "capture-corpus-index-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\capture-corpus-index-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "handoff-freshness-guard-current.md",
+      "cleaned": "handoff-freshness-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\handoff-freshness-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "handoff-freshness-guard-tests-current.md",
+      "cleaned": "handoff-freshness-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\handoff-freshness-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-visible-runtime-guard-current.md",
+      "cleaned": "no-visible-runtime-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\no-visible-runtime-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-visible-runtime-guard-tests-current.md",
+      "cleaned": "no-visible-runtime-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\no-visible-runtime-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "process-hygiene-guard-current.md",
+      "cleaned": "process-hygiene-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\process-hygiene-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "process-hygiene-guard-tests-current.md",
+      "cleaned": "process-hygiene-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\process-hygiene-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-validation-checklist-current.md",
+      "cleaned": "manual-directinput-validation-checklist-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\manual-directinput-validation-checklist-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-validation-checklist-tests-current.md",
+      "cleaned": "manual-directinput-validation-checklist-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\manual-directinput-validation-checklist-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-proof-template-current.md",
+      "cleaned": "manual-directinput-proof-template-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\manual-directinput-proof-template-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-proof-template-tests-current.md",
+      "cleaned": "manual-directinput-proof-template-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\manual-directinput-proof-template-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "promotion-override-guard-current.md",
+      "cleaned": "promotion-override-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\promotion-override-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "promotion-override-guard-tests-current.md",
+      "cleaned": "promotion-override-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\promotion-override-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "promotion-override-manifest-current.md",
+      "cleaned": "promotion-override-manifest-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\promotion-override-manifest-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "promotion-override-manifest-tests-current.md",
+      "cleaned": "promotion-override-manifest-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\promotion-override-manifest-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "docs-consistency-current.md",
+      "cleaned": "docs-consistency-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\docs-consistency-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "docs-consistency-tests-current.md",
+      "cleaned": "docs-consistency-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\docs-consistency-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "surface-dump-policy-guard-current.md",
+      "cleaned": "surface-dump-policy-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\surface-dump-policy-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "exe-artifact-guard-current.md",
+      "cleaned": "exe-artifact-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\exe-artifact-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "stable-stage-guard-current.md",
+      "cleaned": "stable-stage-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\stable-stage-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "stable-stage-guard-tests-current.md",
+      "cleaned": "stable-stage-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\stable-stage-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-baseline-recheck-current.md",
+      "cleaned": "castle-overview-baseline-recheck-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-baseline-recheck-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-baseline-recheck-tests-current.md",
+      "cleaned": "castle-overview-baseline-recheck-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-baseline-recheck-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-probe-guard-current.md",
+      "cleaned": "castle-overview-probe-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-probe-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-probe-guard-tests-current.md",
+      "cleaned": "castle-overview-probe-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-probe-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-evidence-current.md",
+      "cleaned": "castle-overview-evidence-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-evidence-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-owner-records-summary-tests-current.md",
+      "cleaned": "castle-owner-records-summary-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-owner-records-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-evidence-matrix-tests-current.md",
+      "cleaned": "castle-overview-evidence-matrix-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-evidence-matrix-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-gate-tests-current.md",
+      "cleaned": "castle-overview-gate-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-gate-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-hitbox-summary-tests-current.md",
+      "cleaned": "castle-overview-hitbox-summary-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-hitbox-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-hitmap-summary-tests-current.md",
+      "cleaned": "castle-overview-hitmap-summary-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-hitmap-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-multihit-summary-tests-current.md",
+      "cleaned": "castle-overview-multihit-summary-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-multihit-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-promotion-decision-current.md",
+      "cleaned": "castle-overview-promotion-decision-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-promotion-decision-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-promotion-decision-tests-current.md",
+      "cleaned": "castle-overview-promotion-decision-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\castle-overview-promotion-decision-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-compose-evidence-current.md",
+      "cleaned": "right-bottom-compose-evidence-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-compose-evidence-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-compose-promotion-decision-current.md",
+      "cleaned": "right-bottom-compose-promotion-decision-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-compose-promotion-decision-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-compose-promotion-decision-tests-current.md",
+      "cleaned": "right-bottom-compose-promotion-decision-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-compose-promotion-decision-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-compose-evidence-matrix-tests-current.md",
+      "cleaned": "right-bottom-compose-evidence-matrix-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-compose-evidence-matrix-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
     {
       "kind": "link",
       "target": "hd-map-smoke-current.md",
@@ -47,6 +497,240 @@
     },
     {
       "kind": "link",
+      "target": "cdb-surface-dump-20260513-112339/action-panel-route-summary.md",
+      "cleaned": "cdb-surface-dump-20260513-112339/action-panel-route-summary.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-112339\\action-panel-route-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-112339/action-box-composition-summary.md",
+      "cleaned": "cdb-surface-dump-20260513-112339/action-box-composition-summary.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-112339\\action-box-composition-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-112339/RUN-SUMMARY.md",
+      "cleaned": "cdb-surface-dump-20260513-112339/RUN-SUMMARY.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-112339\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-115303/action-panel-route-summary.md",
+      "cleaned": "cdb-surface-dump-20260513-115303/action-panel-route-summary.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-115303\\action-panel-route-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-115303/action-box-compose-summary.md",
+      "cleaned": "cdb-surface-dump-20260513-115303/action-box-compose-summary.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-115303\\action-box-compose-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-115303/RUN-SUMMARY.md",
+      "cleaned": "cdb-surface-dump-20260513-115303/RUN-SUMMARY.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-115303\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-120712/action-panel-route-patch-summary.md",
+      "cleaned": "cdb-surface-dump-20260513-120712/action-panel-route-patch-summary.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-120712\\action-panel-route-patch-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-120712/action-box-compose-patch-summary.md",
+      "cleaned": "cdb-surface-dump-20260513-120712/action-box-compose-patch-summary.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-120712\\action-box-compose-patch-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-120712/RUN-SUMMARY.md",
+      "cleaned": "cdb-surface-dump-20260513-120712/RUN-SUMMARY.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-120712\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-122928/action-panel-route-fullstart-summary.md",
+      "cleaned": "cdb-surface-dump-20260513-122928/action-panel-route-fullstart-summary.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-122928\\action-panel-route-fullstart-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-122928/action-box-compose-fullstart-summary.md",
+      "cleaned": "cdb-surface-dump-20260513-122928/action-box-compose-fullstart-summary.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-122928\\action-box-compose-fullstart-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-122928/RUN-SUMMARY.md",
+      "cleaned": "cdb-surface-dump-20260513-122928/RUN-SUMMARY.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-122928\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-121513/RUN-SUMMARY.md",
+      "cleaned": "cdb-surface-dump-20260513-121513/RUN-SUMMARY.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-121513\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-121513/map-tile-coverage.txt",
+      "cleaned": "cdb-surface-dump-20260513-121513/map-tile-coverage.txt",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-121513\\map-tile-coverage.txt",
+      "exists": true,
+      "extension": ".txt",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-121513/visibility-coverage.txt",
+      "cleaned": "cdb-surface-dump-20260513-121513/visibility-coverage.txt",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-121513\\visibility-coverage.txt",
+      "exists": true,
+      "extension": ".txt",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-122200/right-bottom-ui-summary.json",
+      "cleaned": "cdb-surface-dump-20260513-122200/right-bottom-ui-summary.json",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-122200\\right-bottom-ui-summary.json",
+      "exists": true,
+      "extension": ".json",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260513-122200/RUN-SUMMARY.md",
+      "cleaned": "cdb-surface-dump-20260513-122200/RUN-SUMMARY.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-122200\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-grid-hit-current.md",
+      "cleaned": "right-bottom-grid-hit-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-grid-hit-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-grid-hit-summary-tests-current.md",
+      "cleaned": "right-bottom-grid-hit-summary-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-grid-hit-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-grid-hit-probe-guard-current.md",
+      "cleaned": "right-bottom-grid-hit-probe-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-grid-hit-probe-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-grid-hit-probe-guard-tests-current.md",
+      "cleaned": "right-bottom-grid-hit-probe-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-grid-hit-probe-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-route-timing-guard-current.md",
+      "cleaned": "right-bottom-route-timing-guard-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-route-timing-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-route-timing-guard-tests-current.md",
+      "cleaned": "right-bottom-route-timing-guard-tests-current.md",
+      "resolved": "<SOURCE_REPO>\\captures\\right-bottom-route-timing-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260514-140601/RUN-SUMMARY.md",
+      "cleaned": "cdb-surface-dump-20260514-140601/RUN-SUMMARY.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260514-140601\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "cdb-surface-dump-20260514-140601/right-bottom-grid-hit-summary.md",
+      "cleaned": "cdb-surface-dump-20260514-140601/right-bottom-grid-hit-summary.md",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260514-140601\\right-bottom-grid-hit-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "patch-stage-right-bottom-compose-20260513.json",
+      "cleaned": "patch-stage-right-bottom-compose-20260513.json",
+      "resolved": "<SOURCE_REPO>\\captures\\patch-stage-right-bottom-compose-20260513.json",
+      "exists": true,
+      "extension": ".json",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
       "target": "cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
       "cleaned": "cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260506-190037\\RUN-SUMMARY.md",
@@ -67,8 +751,8 @@
   "images": [
     {
       "kind": "image",
-      "target": "<SOURCE_REPO>/captures/cdb-surface-dump-20260506-190037/surface.png",
-      "cleaned": "<SOURCE_REPO>/captures/cdb-surface-dump-20260506-190037/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-190037/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-190037/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260506-190037\\surface.png",
       "exists": true,
       "extension": ".png",
@@ -76,9 +760,72 @@
     },
     {
       "kind": "image",
-      "target": "<SOURCE_REPO>/captures/cdb-surface-dump-20260506-201114/surface.png",
-      "cleaned": "<SOURCE_REPO>/captures/cdb-surface-dump-20260506-201114/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-201114/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-201114/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260506-201114\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-112339/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-112339/surface.png",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-112339\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-115303/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-115303/surface.png",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-115303\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-120712/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-120712/surface.png",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-120712\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122928/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122928/surface.png",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-122928\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-121513/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-121513/surface.png",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-121513\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122200/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122200/surface.png",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-122200\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260514-140601/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260514-140601/surface.png",
+      "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260514-140601\\surface.png",
       "exists": true,
       "extension": ".png",
       "is_image_extension": true

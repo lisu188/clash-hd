@@ -28,8 +28,8 @@
     "DumpMethod":  "host-readprocessmemory",
     "HostDumpedMemory":  true,
     "HostDumpError":  null,
-    "ProbeTemplate":  "<SOURCE_REPO>\\probes/cdb/render/clash95_surface_dump_probe.cdb",
-    "ExtraProbeTemplate":  "<SOURCE_REPO>\\probes/cdb/castle/clash95_castle_barracks_second_action_select1_extra.cdb",
+    "ProbeTemplate":  "<SOURCE_REPO>\\clash95_surface_dump_probe.cdb",
+    "ExtraProbeTemplate":  "<SOURCE_REPO>\\clash95_castle_barracks_second_action_select1_extra.cdb",
     "GeneratedProbe":  "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260512-082418\\clash95_surface_dump_probe.generated.cdb",
     "Log":  "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260512-082418\\cdb-surface-dump.log",
     "Surface":  {

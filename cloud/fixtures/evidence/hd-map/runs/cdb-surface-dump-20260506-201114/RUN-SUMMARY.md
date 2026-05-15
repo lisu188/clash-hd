@@ -16,15 +16,15 @@
 - Force visible edges: False
 - Post-owner force visible seven: True
 - Map validation skipped: False
-- Extra probe template: <SOURCE_REPO>\probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb
+- Extra probe template: <CLOUD_WORKTREE>\clash95_post_owner_tile_visibility_extra.cdb
 - DirectDraw proxy DLL: C:\ClashTests\cdb-post-owner-forced-visible\ddraw.dll
 - DirectDraw proxy log: C:\ClashTests\cdb-post-owner-forced-visible\ddraw_surfdump_proxy.log
 - Surface: 800x600, base=0a5a0030, bytes=480000
-- Raw: <SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\surface.raw
-- PNG: <SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\surface.png
-- Coverage JSON: <SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\map-tile-coverage.json
+- Raw: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\surface.raw
+- PNG: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\surface.png
+- Coverage JSON: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\map-tile-coverage.json
 - Coverage blank active cells: none
-- Visibility JSON: <SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\visibility-coverage-summary.json
+- Visibility JSON: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\visibility-coverage-summary.json
 - Visibility require explained: False
 - Visibility explained gate: not required
 - Visibility unexplained blanks: none
@@ -32,7 +32,7 @@
 - Forced-visible gate: not used
 - Forced-visible JSON: not used
 - Post-owner forced-visible gate: passed
-- Post-owner forced-visible JSON: <SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\post-owner-forced-visible-summary.json
-- Log: <SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\cdb-surface-dump.log
+- Post-owner forced-visible JSON: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\post-owner-forced-visible-summary.json
+- Log: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\cdb-surface-dump.log
 
-![surface dump](<SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\surface.png)
+![surface dump](<CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\surface.png)

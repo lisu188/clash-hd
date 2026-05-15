@@ -29,6 +29,18 @@ temp/
 # Keep proprietary executables out of this repository; build/test candidates in
 # C:\Clash or isolated C:\ClashTests folders instead.
 /*.exe
+*.exe
+*.dll
+*.dmp
+*.dump
+*.pml
+*.raw
+*.iso
+*.cue
+*.bin
+*.sav
+*.sg
+*.dat
 
 # Obsidian local workspace/cache files. Markdown notes are not ignored.
 .obsidian/workspace*
@@ -43,3 +55,11 @@ temp/
 # under cloud/fixtures/ is the committed source of truth.
 cloud/*.zip
 !cloud/fixtures/**/*.log
+
+# Local-only Codex loop credentials/secrets. Keep VM passwords out of git.
+.codex-loop/*.local.*
+.codex-loop/*credential*
+.codex-loop/*secret*
+.codex-loop/tmp-tests/
+.codex-loop/tmp-tests-probe/
+captures/tmp-tests-probe/

@@ -22,7 +22,6 @@ ROOT_FILES: tuple[tuple[str, str], ...] = (
     ("README.md", "Project overview, wiki usage, and HD smoke reproduction notes"),
     ("AGENTS.md", "Durable operating instructions for Codex and future agents"),
     ("*.md", "Clash95 HD mod analysis, patch notes, and progress reports"),
-    ("*.ps1", "Windows harnesses for building, launching, capturing, and probing"),
     ("patch_clash95_hd.py", "Main binary patch helper; writes candidates outside the repo"),
 )
 
@@ -39,7 +38,7 @@ SECTIONS: tuple[Section, ...] = (
     Section(
         "probes/",
         "Repeatable debugger probe scripts organized by tool and topic",
-        (("cdb/", "CDB probes grouped into map, menu, mouse, castle, render, UI, startup, and key-scroll topics"),),
+        (("cdb/", "CDB probes grouped into map, menu, mouse, castle, battle, render, UI, startup, and key-scroll topics"),),
     ),
     Section(
         "ddraw_surfdump_proxy/",
@@ -52,6 +51,18 @@ SECTIONS: tuple[Section, ...] = (
     Section(
         "reports/",
         "Human-readable validation and recovery reports for focused investigations",
+    ),
+    Section(
+        "scripts/",
+        "PowerShell entrypoints grouped by build, capture, CDB, debug, install, and smoke workflows",
+        (
+            ("build/", "Local build helpers"),
+            ("capture/", "Window and client-frame capture helpers"),
+            ("cdb/", "Repeatable CDB harnesses"),
+            ("debug/", "Interactive debugger launch helpers"),
+            ("install/", "Debugger/tool installer helpers"),
+            ("smoke/", "Visual smoke tests and candidate-preparation entrypoints"),
+        ),
     ),
     Section(
         "cloud/",
@@ -110,17 +121,17 @@ def format_tree(root: Path, include_counts: bool = False) -> str:
     root_entries = list(ROOT_FILES)
     sections = iter_existing_sections(root)
     for index, (name, description) in enumerate(root_entries):
-        connector = "├──" if index < len(root_entries) - 1 or sections else "└──"
+        connector = "|--" if index < len(root_entries) - 1 or sections else "`--"
         lines.append(f"{connector} {name:<25} # {description}")
 
     for section_index, section in enumerate(sections):
         is_last_section = section_index == len(sections) - 1
-        connector = "└──" if is_last_section else "├──"
+        connector = "`--" if is_last_section else "|--"
         count_suffix = f" ({count_files(root, section.path)} files)" if include_counts else ""
         lines.append(f"{connector} {section.path:<25} # {section.description}{count_suffix}")
-        child_prefix = "    " if is_last_section else "│   "
+        child_prefix = "    " if is_last_section else "|   "
         for child_index, (child, child_description) in enumerate(section.children):
-            child_connector = "└──" if child_index == len(section.children) - 1 else "├──"
+            child_connector = "`--" if child_index == len(section.children) - 1 else "|--"
             lines.append(f"{child_prefix}{child_connector} {child:<21} # {child_description}")
 
     lines.extend(["```", ""])

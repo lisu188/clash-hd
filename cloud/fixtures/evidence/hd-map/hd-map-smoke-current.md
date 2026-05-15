@@ -1,7 +1,7 @@
 # HD Map Smoke Matrix
 
 - Overall: PASS
-- Generated: `2026-05-08T12:04:28+02:00`
+- Generated: `2026-05-15T11:21:22+02:00`
 
 ## Patch Stage
 
@@ -17,6 +17,6 @@
 - Normal run: `captures\cdb-surface-dump-20260506-190037`
 - Forced-visible run: `captures\cdb-surface-dump-20260506-201114`
 
-![normal post-owner surface](<SOURCE_REPO>\captures\cdb-surface-dump-20260506-190037\surface.png)
+![normal post-owner surface](<CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\surface.png)
 
-![forced-visible post-owner surface](<SOURCE_REPO>\captures\cdb-surface-dump-20260506-201114\surface.png)
+![forced-visible post-owner surface](<CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\surface.png)

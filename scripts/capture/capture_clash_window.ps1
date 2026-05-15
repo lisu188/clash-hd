@@ -1,10 +1,16 @@
 param(
     [string]$ProcessName = 'clash95_hddisplay_absinput',
     [string]$Output = 'C:\Clash\clash-window.png',
-    [int]$WaitSec = 2
+    [int]$WaitSec = 2,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $AllowVisibleRuntime) {
+    throw "This capture helper reads a visible Clash95 window. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
+
 Start-Sleep -Seconds $WaitSec
 
 Add-Type -AssemblyName System.Drawing

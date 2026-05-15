@@ -13,6 +13,7 @@ WIKI_DIR = ROOT / "wiki"
 REQUIRED = [WIKI_DIR / "index.md", WIKI_DIR / "log.md", WIKI_DIR / "overview.md"]
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:#[^\]|]+)?(?:\|[^\]]+)?\]\]")
 RAW_FILE_RE = re.compile(r"(?<!\[source: )\braw/[^\s\])`]+?\.[A-Za-z0-9]{1,8}\b")
+FRONTMATTER_SCAN_LINES = 120
 
 
 def normalize_name(value: str) -> str:
@@ -27,7 +28,7 @@ def has_frontmatter(text: str) -> bool:
     if not text.startswith("---\n"):
         return False
     lines = text.splitlines()
-    return any(line.strip() == "---" for line in lines[1:40])
+    return any(line.strip() == "---" for line in lines[1:FRONTMATTER_SCAN_LINES])
 
 
 def first_heading(text: str) -> str | None:
@@ -41,7 +42,7 @@ def frontmatter_title(text: str) -> str | None:
     if not text.startswith("---\n"):
         return None
     lines = text.splitlines()
-    for line in lines[1:40]:
+    for line in lines[1:FRONTMATTER_SCAN_LINES]:
         if line.strip() == "---":
             break
         if line.lower().startswith("title:"):
@@ -144,4 +145,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

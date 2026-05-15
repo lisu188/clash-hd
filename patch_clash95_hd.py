@@ -21,6 +21,11 @@ surface, dynamically fixes wrapper mouse coordinates, swaps gameplay to an
 rectangles, moves the minimap to the HD upper-right corner, and conditionally
 keeps the later viewport switch at 640x480 for menu metadata but 800x600 for
 the CDB-proven map metadata object.
+``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose``
+adds a validation-only right-bottom composition proof: the stock post-owner
+action route still draws at native coordinates, then two narrow copy hooks move
+the status/action regions into the HD bottom strip. Keep it out of the stable
+HD map stage until hidden-desktop evidence proves it broadly.
 ``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter``
 adds a narrow castle/barracks presentation proof that recenters the native
 640x480 castle UI layer inside the 800x600 surface after the action-panel draw.
@@ -36,9 +41,15 @@ is the castle-interior validation target. It keeps the `castlecenter-hitbox`
 input transforms, but replaces the earlier pre-present visual copy with a
 present-callback wrapper so the stock castle/barracks render hook runs first
 and the freshly rendered native UI is centered exactly once. It also wraps the
-full castle overview redraw calls around `00422180` / `00422020` so that route
-has an 800x600 target and the native 640x480 overview layer is centered before
-the catalog/present evidence is dumped.
+full castle overview redraw calls around `00422180` / `00422020`. That wrapper
+lets stock rendering draw into its native 640x480 target first, then copies the
+native layer into an 800x600 target at `(80,60)` before the catalog/present
+evidence is dumped.
+``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter``
+is a probe-first battle UI validation target. It intentionally selects the same
+bytes as `castlecenter-all` until battle draw/input routes are proven by CDB
+evidence; do not add battle patch groups or promote this stage without a
+passing battle gate.
 ``--stage gameplay-menu640-centered-map12-novswitch-relinput`` is the older
 menu-safe map path: it expands the adventure map drawing/scroll helpers to
 12x9 tiles, but deliberately leaves the later global cursor/view switch at
@@ -140,6 +151,10 @@ from typing import Iterable
 
 
 EXPECTED_SHA256 = "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+DEFAULT_STAGE = (
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-"
+    "presentbounds-minimapright-dynvswitch"
+)
 
 
 @dataclass(frozen=True)
@@ -349,49 +364,72 @@ PATCHES: tuple[Patch, ...] = (
     Patch(
         "castle-overview-center-present-wrapper",
         0x1198D0,
-        "00" * 153,
+        "00" * 208,
         (
-            "60a1e002520085c0740766813820037428b8bc000000e81565f4ff"
-            "85c0741a53bb58020000ba20030000e87186eeff5b85c07405"
-            "a3e002520061e81169f0ff60a1e002520085c0744e668138"
-            "200375476a006a0068df010000bac0d45100687f02000031c9"
-            "31dbe8a46deeffff35e00252008b0424e81667eeff5a6a3c"
-            "6a5068df010000687f02000031c931dbb8c0d45100e8796deeff61c3"
+            "60e84a69f0ff6160a1e00252006a006a0068df010000bac0d45100"
+            "687f02000031c931dbe8e76deeffa1e002520085c074076681382003"
+            "7428b8bc000000e8ed64f4ff85c0741a53bb58020000ba20030000"
+            "e84986eeff5b85c07405a3e0025200ff35e00252008b0424e82167"
+            "eeff5a6a3c6a5068df010000687f02000031c931dbb8c0d45100e884"
+            "6deeff61c3"
+            + ("00" * 66)
         ),
-        "0x51B6D0 DGROUP cave: ensure full castle overview has an 800x600 dword_5202E0, call stock 0x422020, then center native 640x480 content at 80,60",
+        "0x51B6D0 DGROUP cave: call stock 0x422020 on its native 640x480 target first, copy that result to scratch, then ensure an 800x600 dword_5202E0 and center-copy the native overview at 80,60",
     ),
     Patch(
         "castle-overview-centered-input",
-        0x021916,
-        "e8a578ffff",
-        "e855920f00",
-        "0x422516 full castle overview descriptor hit-test call -> wrapper with logical mouse -80,-60",
+        0x021920,
+        "8b1d004d54008a0d2c5154008b15fc4c5400a330125100d3fb8bb8b8000000d3faff5710",
+        "e97b920f00" + ("90" * 31),
+        "0x422520 full castle overview descriptor hit-test block -> 0x51B7A0 centered input wrapper",
     ),
     Patch(
         "castle-overview-centered-input",
-        0x021941,
-        "ff57102df8000000",
-        "e87a920f00909090",
-        "0x422541 full castle overview surface-hit call and subtract-0xF8 -> centered hit wrapper",
-    ),
-    Patch(
-        "castle-overview-centered-input",
-        0x119970,
-        "00" * 80,
+        0x1199A0,
+        "00" * 64,
         (
-            "51528a0d2c515400ba50000000d3e22915fc4c5400ba3c000000"
-            "d3e22915004d54005a59e827e6efff5051528a0d2c515400"
-            "ba50000000d3e20115fc4c5400ba3c000000d3e20115004d"
-            "54005a5958c3"
+            "8b1d004d54008a0d2c5154008b15fc4c5400a330125100d3fb"
+            "8bb8b8000000d3fa83ea5083eb3cff5710e9756df0ff"
+            + ("00" * 17)
         ),
-        "0x51B770 DGROUP cave: wrap 0x419DC0 overview descriptor hit tests with logical mouse -80,-60 and restore",
+        "0x51B7A0 DGROUP cave: wrap full castle overview descriptor hit test with logical mouse -80,-60",
     ),
     Patch(
-        "castle-overview-centered-input",
-        0x1199C0,
-        "00" * 19,
-        "525383ea5083eb3cff57105b5a2df8000000c3",
-        "0x51B7C0 DGROUP cave: call overview surface hit-test with edx/ebx shifted by -80,-60, then apply stock hit-0xF8",
+        "right-bottom-compose-proof",
+        0x0346B3,
+        "bac0d45100",
+        "e928e00d00",
+        "0x4352B3 post-owner status setup -> 0x5132E0 HD bottom-strip status copy hook",
+    ),
+    Patch(
+        "right-bottom-compose-proof",
+        0x1114E0,
+        "00" * 64,
+        (
+            "60a1e00252006810020000684a020000686501000089c26851020000"
+            "bb91010000b920010000e8d5f1eeff61bac0d45100e9a21ff2ff"
+            + ("00" * 10)
+        ),
+        "0x5132E0 DGROUP cave: copy native status rect 401,288,593,357 to HD bottom-strip destination 586,528 then resume 0x4352B8",
+    ),
+    Patch(
+        "right-bottom-compose-proof",
+        0x0351A5,
+        "b8d84c5400",
+        "e9d6e00d00",
+        "0x435DA5 post-owner action-box setup -> 0x513E80 HD bottom-strip action copy hook",
+    ),
+    Patch(
+        "right-bottom-compose-proof",
+        0x112080,
+        "00" * 64,
+        (
+            "60b8c0d45100680c020000681d01000068a90100008b15e0025200"
+            "68c2010000bb1d010000b95e010000e831e6eeff61b8d84c5400"
+            "e9f01ef2ff"
+            + ("00" * 6)
+        ),
+        "0x513E80 DGROUP cave: copy native action-box rect 285,350,450,425 to HD bottom-strip destination 285,524 then resume 0x435DAA",
     ),
     # Group A2: shift start-menu button descriptors to match centered 640x480 menu art.
     # These are 53-byte UI descriptors copied to stack by PlayGame_Dispatch.
@@ -1011,6 +1049,23 @@ STAGE_GROUPS = {
         "mouse-dynamic-origin",
         "map-surface-upgrade-scrollclamp",
     ),
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose": (
+        "display",
+        "shared-surface",
+        "gameplay-surface",
+        *DYNAMIC_VIEWPORT_GROUPS,
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "helpers",
+        "surface-blit-hd-aware",
+        "menu-center-hitboxes",
+        "mouse-dynamic-origin",
+        "map-surface-upgrade-scrollclamp",
+        "right-bottom-compose-proof",
+    ),
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter": (
         "display",
         "shared-surface",
@@ -1047,6 +1102,26 @@ STAGE_GROUPS = {
         "castle-ui-centered-input",
     ),
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all": (
+        "display",
+        "shared-surface",
+        "gameplay-surface",
+        *DYNAMIC_VIEWPORT_GROUPS,
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "helpers",
+        "surface-blit-hd-aware",
+        "menu-center-hitboxes",
+        "mouse-dynamic-origin",
+        "map-surface-upgrade-scrollclamp",
+        "castle-ui-center-present-wrapper",
+        "castle-ui-centered-input",
+        "castle-overview-center-present-wrapper",
+        "castle-overview-centered-input",
+    ),
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter": (
         "display",
         "shared-surface",
         "gameplay-surface",
@@ -1190,7 +1265,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--stage",
         choices=tuple(STAGE_GROUPS),
-        default="gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+        default=DEFAULT_STAGE,
         help=(
             "patch stage: gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch=current "
             "HD map proof path with centered 640x480 menus, dynamic wrapper mouse origin, "
@@ -1216,9 +1291,11 @@ def parse_args() -> argparse.Namespace:
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp upgrades that surface only after menu dispatch; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds also widens proven sub_418700 present rectangles; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch makes the later sub_460D80 viewport switch use 800x600 for the map metadata object; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose adds validation-only status/action composition copies into the HD bottom strip; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter also recenters the native castle/barracks UI layer visually; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox additionally wraps castle/barracks polling, descriptor hit tests, and the barracks grid hit-test call with the matching -80,-60 mouse transform; "
-            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all is the current broad castle-interior validation target and uses a present-callback wrapper so stock castle/barracks rendering runs before the 80,60 centering copy, plus a full-overview wrapper around 00422020; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all is the current broad castle-interior validation target and uses a present-callback wrapper so stock castle/barracks rendering runs before the 80,60 centering copy, plus a native-render-first full-overview 00422020 visual wrapper and 00422520 hit-test wrapper; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter is a probe-first battle validation stage with no battle-specific patch groups until battle routes are proven; "
             "gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch keeps that stack but tests hybrid DirectInput; "
             "gameplay-menu640-centered-map12-absinput assigns large DirectInput X/Y samples as coordinates; "
             "gameplay-menu640-absinput keeps native menu placement with absolute mouse; "

@@ -2722,3 +2722,20 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   availability-failed path. Use the controlled selected-index-1 run for the
   current no-echo screenshot and keep the older success-branch evidence as a
   separate action-state proof.
+
+## Battle UI Probe Lane, 2026-05-15
+
+- Added a probe-only battle validation stage:
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter`.
+- The stage deliberately selects the same patch groups as `castlecenter-all`;
+  no battle-specific patch bytes were added.
+- Added CDB templates under `probes/cdb/battle/` for catalog, present/copyback,
+  and descriptor/input discovery.
+- Added `tools/battle_ui_summary.py` and `tools/battle_ui_gate.py` plus
+  fixture tests. The gate fails closed until battle reachability, surface,
+  centered visual mode, command hit, tactical-grid hit, modal classification,
+  clean patch-stage bytes, and stable HD-map regression evidence are all
+  present.
+- Current status:
+  battle runtime proof is still pending; the new work only makes the next
+  hidden/no-popup battle probe measurable and patch-safe.

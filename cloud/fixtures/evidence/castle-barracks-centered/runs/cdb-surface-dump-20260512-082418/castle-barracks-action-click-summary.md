@@ -29,7 +29,7 @@
 
 ## Screenshot
 
-![castle barracks action click](<SOURCE_REPO>\captures\cdb-surface-dump-20260512-082418\surface.png)
+![castle barracks action click](.\captures\cdb-surface-dump-20260512-082418\surface.png)
 
 ## Key Rows
 

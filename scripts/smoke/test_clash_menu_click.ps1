@@ -35,10 +35,15 @@ param(
     [int]$ClickRepeat = 1,
     [switch]$NoInstallToWorkDir,
     [switch]$KeepExisting,
-    [switch]$KeepOpenOnFailure
+    [switch]$KeepOpenOnFailure,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $AllowVisibleRuntime) {
+    throw "This legacy harness launches a visible Clash95 runtime. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
 
 Add-Type -AssemblyName System.Drawing
 Add-Type @'
