@@ -4,11 +4,11 @@ param(
     [string]$CandidateName = '',
     [string]$Python = '',
     [string]$Stage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch',
-    [string]$NormalRun = (Join-Path $PSScriptRoot 'captures\cdb-surface-dump-20260506-190037'),
-    [string]$ForcedRun = (Join-Path $PSScriptRoot 'captures\cdb-surface-dump-20260506-201114'),
-    [string]$PatchManifest = (Join-Path $PSScriptRoot 'captures\patch-stage-current-hd-map.json'),
-    [string]$MatrixJson = (Join-Path $PSScriptRoot 'captures\hd-map-smoke-current.json'),
-    [string]$MatrixMarkdown = (Join-Path $PSScriptRoot 'captures\hd-map-smoke-current.md'),
+    [string]$NormalRun = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\cdb-surface-dump-20260506-190037'),
+    [string]$ForcedRun = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\cdb-surface-dump-20260506-201114'),
+    [string]$PatchManifest = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\patch-stage-current-hd-map.json'),
+    [string]$MatrixJson = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\hd-map-smoke-current.json'),
+    [string]$MatrixMarkdown = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\hd-map-smoke-current.md'),
     [switch]$Execute,
     [switch]$AllowRepoCandidateDir,
     [switch]$Json
@@ -17,14 +17,14 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $ExpectedBaseSha256 = '500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae'
-$RepoRoot = [System.IO.Path]::GetFullPath($PSScriptRoot)
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 
 function Resolve-PlanPath {
     param([Parameter(Mandatory = $true)][string]$Path)
     if ([System.IO.Path]::IsPathRooted($Path)) {
         return [System.IO.Path]::GetFullPath($Path)
     }
-    return [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot $Path))
+    return [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $Path))
 }
 
 function Test-IsUnderPath {

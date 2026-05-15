@@ -15,7 +15,7 @@ $ErrorActionPreference = 'Stop'
 
 function Get-LatestRun {
     param([DateTime]$After)
-    Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'captures') -Directory -Filter 'cdb-surface-dump-*' |
+    Get-ChildItem -LiteralPath (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures') -Directory -Filter 'cdb-surface-dump-*' |
         Where-Object { $_.LastWriteTime -ge $After.AddSeconds(-2) } |
         Sort-Object LastWriteTime -Descending |
         Select-Object -First 1
@@ -35,7 +35,7 @@ function Count-Markers {
 }
 
 $surfaceRunner = Join-Path $PSScriptRoot 'run_cdb_surface_dump.ps1'
-$extraProbe = Join-Path $PSScriptRoot 'probes/cdb/ui/clash95_right_bottom_ui_extra.cdb'
+$extraProbe = Join-Path (Join-Path $PSScriptRoot '..\..') 'probes/cdb/ui/clash95_right_bottom_ui_extra.cdb'
 foreach ($path in @($surfaceRunner, $extraProbe, $InputExe, $WorkDir, $Cdb, $Python)) {
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Required path was not found: $path"

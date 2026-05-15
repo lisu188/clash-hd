@@ -2,11 +2,11 @@ param(
     [string]$Exe = 'C:\Clash\clash95_hd_mousedynorigin_boundguard_20260422.exe',
     [string]$WorkDir = 'C:\Clash',
     [string]$Cdb = 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe',
-    [string]$Probe = (Join-Path $PSScriptRoot 'probes/cdb/map/clash95_map_runtime_probe.cdb'),
-    [string]$Log = (Join-Path $PSScriptRoot 'captures\cdb-map-runtime-20260422.log'),
+    [string]$Probe = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes/cdb/map/clash95_map_runtime_probe.cdb'),
+    [string]$Log = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\cdb-map-runtime-20260422.log'),
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
-    [string]$MouseJson = (Join-Path $PSScriptRoot 'captures\map-runtime-mouse-path-20260422.json'),
-    [string]$Frame = (Join-Path $PSScriptRoot 'captures\map-runtime-final-frame-20260422.png'),
+    [string]$MouseJson = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\map-runtime-mouse-path-20260422.json'),
+    [string]$Frame = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\map-runtime-final-frame-20260422.png'),
     [string]$Points = '300,218;320,166;400,226',
     [ValidateSet('setcursor', 'sendinput-absolute', 'sendinput-relative', 'sendinput-client-delta', 'auto', 'none')]
     [string]$MoveMode = 'setcursor',
@@ -155,7 +155,7 @@ function Save-ClientFrame {
         [string]$Path
     )
 
-    $captureScript = Join-Path $PSScriptRoot 'capture_clash_client_frame.ps1'
+    $captureScript = Join-Path (Join-Path $PSScriptRoot '..\capture') 'capture_clash_client_frame.ps1'
     if (-not (Test-Path -LiteralPath $captureScript)) {
         throw "Capture helper was not found: $captureScript"
     }
@@ -194,7 +194,7 @@ foreach ($path in @($Exe, $WorkDir, $Cdb, $Probe, $Python)) {
     }
 }
 
-$mouseTool = Join-Path $PSScriptRoot 'tools\mouse_path_probe.py'
+$mouseTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\mouse_path_probe.py'
 if (-not (Test-Path -LiteralPath $mouseTool)) {
     throw "Mouse path probe was not found: $mouseTool"
 }

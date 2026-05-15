@@ -1,7 +1,7 @@
 param(
     [string]$Exe = 'C:\Clash\clash95_hddisplay_absinput.exe',
     [string]$Cdb = 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe',
-    [string]$Probe = (Join-Path $PSScriptRoot 'probes/cdb/menu/clash95_hd_menu_state_probe.cdb'),
+    [string]$Probe = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes/cdb/menu/clash95_hd_menu_state_probe.cdb'),
     [string]$Log = 'C:\Clash\hd-cdb-menu.log',
     [string]$WorkDir = 'C:\Clash',
     [int]$RunSeconds = 10,

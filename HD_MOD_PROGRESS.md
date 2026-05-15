@@ -54,7 +54,7 @@ continuing deeper viewport patches.
     hashes;
   - therefore the current centered pass is not clean hitbox proof yet. It may
     be caused by different intro/menu readiness state.
-- Added a pre-click stability/readiness gate to `test_clash_menu_click.ps1`.
+- Added a pre-click stability/readiness gate to `scripts\smoke\test_clash_menu_click.ps1`.
   It waits for stable pre-click frames, checks coarse menu readiness via
   nonblack coverage and click-target brightness/luma, and emits
   `PreClickStable`, `PreClickReady`, `ClickAttempted`,
@@ -69,7 +69,7 @@ continuing deeper viewport patches.
   0% post-click frame change. This makes the current failure a stronger input
   path problem rather than a menu-readiness artifact.
 - Ran CDB mouse-state probe:
-  `run_cdb_menu_probe.ps1 -Exe C:\Clash\clash95_hd_harnesscheck_20260422.exe -Probe probes/cdb/mouse/clash95_mouse_state_probe.cdb -Log C:\Clash\hd-cdb-harnesscheck-mouse-state-20260422.log -MouseSweep`.
+  `scripts\cdb\run_cdb_menu_probe.ps1 -Exe C:\Clash\clash95_hd_harnesscheck_20260422.exe -Probe probes/cdb/mouse/clash95_mouse_state_probe.cdb -Log C:\Clash\hd-cdb-harnesscheck-mouse-state-20260422.log -MouseSweep`.
 - Added dependency-free parser `tools/mouse_probe_summary.py` and wrote:
   `captures\mouseprobe-20260422-183513-summary.json`.
 - Mouse-state probe findings:
@@ -134,7 +134,7 @@ with the Python click mapper plus the combined CDB probe.
   skips the intro with Space pulses, moves through known client points, holds
   optional forced clicks, and records requested client/screen points plus
   actual cursor screen/client positions for every click phase.
-- Added `run_cdb_python_mouse_map.ps1` to run the Python mapper while CDB logs
+- Added `scripts\cdb\run_cdb_python_mouse_map.ps1` to run the Python mapper while CDB logs
   `MOUSE` and `MENUHIT` rows from `probes/cdb/mouse/clash95_mouse_menu_dynamic_probe.cdb`.
 - Python-only mapper evidence:
   `captures\mouseclickmap-20260422-absquarter-sendinput-v2.json`.
@@ -232,7 +232,7 @@ with the Python click mapper plus the combined CDB probe.
   `button_rows=19`, `menuhit_button_rows=10`, `preclamp_over_bounds=0`,
   `menuhit_over_bounds=0`, `path_verified=true`, and
   `click_path_verified=true`.
-- Added `-ClickHoldMs` and `-ClickRepeat` to `test_clash_menu_click.ps1` so
+- Added `-ClickHoldMs` and `-ClickRepeat` to `scripts\smoke\test_clash_menu_click.ps1` so
   frame tests can use the same held-click cadence that CDB proves reaches
   DirectInput.
 - Non-CDB frame smoke:
@@ -266,13 +266,13 @@ with the Python click mapper plus the combined CDB probe.
 ### HD Map Runtime Probe
 
 - Added runtime map evidence files:
-  `probes/cdb/map/clash95_map_runtime_probe.cdb`, `run_cdb_map_probe.ps1`, and
+  `probes/cdb/map/clash95_map_runtime_probe.cdb`, `scripts\cdb\run_cdb_map_probe.ps1`, and
   `tools/map_probe_summary.py`.
 - Probe target:
   `C:\Clash\clash95_hd_mousedynorigin_boundguard_20260422.exe`
   (`E1725A5FCB4E2BA8E7700914FE5F9312670831D3097E92A8CE41F4110D5FC7CF`).
 - Runtime command:
-  `Set-ExecutionPolicy -Scope Process Bypass -Force; & 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\run_cdb_map_probe.ps1' -Exe 'C:\Clash\clash95_hd_mousedynorigin_boundguard_20260422.exe' -Log 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-map-runtime-loadslot0-v2-20260422.log' -MouseJson 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\map-runtime-mouse-loadslot0-v2-20260422.json' -Frame 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\map-runtime-frame-loadslot0-v2-20260422.png' -Points '300,218;320,166;400,226' -RunSeconds 12 -ClickHoldMs 300 -ClickRepeat 2 -ClickIntervalMs 900`
+  `Set-ExecutionPolicy -Scope Process Bypass -Force; & 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\run_cdb_map_probe.ps1' -Exe 'C:\Clash\clash95_hd_mousedynorigin_boundguard_20260422.exe' -Log 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-map-runtime-loadslot0-v2-20260422.log' -MouseJson 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\map-runtime-mouse-loadslot0-v2-20260422.json' -Frame 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\map-runtime-frame-loadslot0-v2-20260422.png' -Points '300,218;320,166;400,226' -RunSeconds 12 -ClickHoldMs 300 -ClickRepeat 2 -ClickIntervalMs 900`
 - Mouse path evidence:
   `captures\map-runtime-mouse-loadslot0-v2-20260422.json` had
   `path_verified=true`, `click_path_verified=true`, `max_abs_error=0`,
@@ -351,7 +351,7 @@ with the Python click mapper plus the combined CDB probe.
   `probes/cdb/map/clash95_map_redraw_copy_extent_probe.cdb`.
 - Added copy-row parsing and object/vtable aggregation to
   `tools/map_probe_summary.py`.
-- Quieted `run_cdb_map_probe.ps1` so `tools\mouse_path_probe.py` still writes
+- Quieted `scripts\cdb\run_cdb_map_probe.ps1` so `tools\mouse_path_probe.py` still writes
   JSON evidence but no longer floods stdout with the full mouse trace.
 - Automation note:
   an explicit neutral pre-click at `400,300` is needed before the Load/slot
@@ -474,7 +474,7 @@ with the Python click mapper plus the combined CDB probe.
 - Added no-edit runtime probe:
   `probes/cdb/map/clash95_map_stream_constructor_patchclamp_probe.cdb`.
 - Runtime command:
-  `Set-ExecutionPolicy -Scope Process Bypass -Force; & 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\run_cdb_map_probe.ps1' -Exe 'C:\Clash\clash95_hd_mousedynorigin_menusurface_scrollclamp_20260423.exe' -Probe 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\probes/cdb/map/clash95_map_stream_constructor_patchclamp_probe.cdb' -Log 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-map-stream-constructors-menusurface-scrollclamp-loadslot0-20260423.log' -MouseJson 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\map-stream-constructors-mouse-menusurface-scrollclamp-loadslot0-20260423.json' -Frame 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\map-stream-constructors-frame-menusurface-scrollclamp-loadslot0-20260423.png' -Points '400,300;300,218;320,166;400,226' -RunSeconds 20 -ClickHoldMs 300 -ClickRepeat 2 -ClickIntervalMs 1000`
+  `Set-ExecutionPolicy -Scope Process Bypass -Force; & 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\run_cdb_map_probe.ps1' -Exe 'C:\Clash\clash95_hd_mousedynorigin_menusurface_scrollclamp_20260423.exe' -Probe 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\probes/cdb/map/clash95_map_stream_constructor_patchclamp_probe.cdb' -Log 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-map-stream-constructors-menusurface-scrollclamp-loadslot0-20260423.log' -MouseJson 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\map-stream-constructors-mouse-menusurface-scrollclamp-loadslot0-20260423.json' -Frame 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\map-stream-constructors-frame-menusurface-scrollclamp-loadslot0-20260423.png' -Points '400,300;300,218;320,166;400,226' -RunSeconds 20 -ClickHoldMs 300 -ClickRepeat 2 -ClickIntervalMs 1000`
 - Runtime result:
   `captures\map-stream-constructors-menusurface-scrollclamp-loadslot0-summary-20260423.json`
   entered gameplay, restored scroll `(39,42)`, clamped it to `(38,41)`, logged
@@ -503,10 +503,10 @@ with the Python click mapper plus the combined CDB probe.
 
 ### Clean Visual Smoke And Menusurface Regression, 2026-04-23
 
-- Added `capture_clash_client_frame.ps1`, a DPI-aware capture subprocess that
+- Added `scripts\capture\capture_clash_client_frame.ps1`, a DPI-aware capture subprocess that
   raises the Clash window, verifies the client center belongs to the target
   top-level window, captures only the client area, and writes frame metadata.
-- Updated `run_cdb_map_probe.ps1` and new `run_clash_visual_smoke.ps1` to use
+- Updated `scripts\cdb\run_cdb_map_probe.ps1` and new `scripts\smoke\run_clash_visual_smoke.ps1` to use
   that capture helper. This avoids the earlier CDB/desktop contamination caused
   by screen capture from the wrong coordinate context.
 - Important DPI lesson:
@@ -515,7 +515,7 @@ with the Python click mapper plus the combined CDB probe.
   in the legacy logical coordinate mode and use a separate DPI-aware process
   only for capture.
 - Clean non-CDB smoke command:
-  `Set-ExecutionPolicy -Scope Process Bypass -Force; & 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\run_clash_visual_smoke.ps1' -Exe 'C:\Clash\clash95_hd_mousedynorigin_menusurface_scrollclamp_20260423.exe' -RunSeconds 30 -ClickHoldMs 300 -ClickRepeat 2 -ClickIntervalMs 1000`
+  `Set-ExecutionPolicy -Scope Process Bypass -Force; & 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\smoke\run_clash_visual_smoke.ps1' -Exe 'C:\Clash\clash95_hd_mousedynorigin_menusurface_scrollclamp_20260423.exe' -RunSeconds 30 -ClickHoldMs 300 -ClickRepeat 2 -ClickIntervalMs 1000`
 - Evidence:
   `captures\visual-smoke-20260423-113427\results.json` captured clean target
   frames with `CenterWindowMatchesTarget=true`.
@@ -852,7 +852,7 @@ with the Python click mapper plus the combined CDB probe.
   - later viewport-switch call args at `00460E32`;
   - `sub_460B20` entry/exit around `00460B20` / `00460BA7`;
   - mouse-bound rows at `00460A9D`.
-- Added `run_cdb_viewport_bounds_probe.ps1`, a timed CDB-only harness that
+- Added `scripts\cdb\run_cdb_viewport_bounds_probe.ps1`, a timed CDB-only harness that
   kills stale/new `clash95*` and `cdb` processes after the run and only sends
   optional space pulses to skip the intro. It does not depend on
   `SetCursorPos`.
@@ -992,7 +992,7 @@ with the Python click mapper plus the combined CDB probe.
   bounds back to native `max=(610,452)`, while the v2 conditional switch keeps
   map metadata `005196a0` at `max=(770,572)` and preserves moved-minimap scroll
   behavior.
-- Hardened `capture_clash_client_frame.ps1`:
+- Hardened `scripts\capture\capture_clash_client_frame.ps1`:
   - it can reacquire a same-process top-level HWND when the wrapper exposes more
     than one visible window;
   - if another top-level window still covers the target center, it falls back to
@@ -1003,7 +1003,7 @@ with the Python click mapper plus the combined CDB probe.
   - added `--move-mode none` for PostMessage-only liveness checks;
   - cursor API failures now write explicit `cursor_error` rows instead of
     aborting before JSON is saved.
-- Extended `run_clash_visual_smoke.ps1` with `-MoveMode`, `-ClickMode`, and
+- Extended `scripts\smoke\run_clash_visual_smoke.ps1` with `-MoveMode`, `-ClickMode`, and
   `-PostIntroWaitSec`.
 - Runtime smoke attempts in the Codex desktop context:
   - `captures\visual-smoke-20260424-073707`: failed at contaminated capture.
@@ -1105,7 +1105,7 @@ with the Python click mapper plus the combined CDB probe.
 
 ## Windows Sandbox UI Harness, 2026-04-24
 
-- Added `run_clash_windows_sandbox.ps1` to support a disposable UI testing
+- Added `scripts\smoke\run_clash_windows_sandbox.ps1` to support a disposable UI testing
   route where the game window runs inside Windows Sandbox instead of disrupting
   the host desktop.
 - Behavior:
@@ -1115,11 +1115,11 @@ with the Python click mapper plus the combined CDB probe.
   - copies the game install only into sandbox-local `C:\Clash`, skipping
     obvious `crack.exe` / `keygen.exe` names;
   - builds a patched candidate inside the sandbox;
-  - runs `run_clash_visual_smoke.ps1`;
+  - runs `scripts\smoke\run_clash_visual_smoke.ps1`;
   - runs `tools\map_tile_coverage.py` against `after-map-path.png` when a frame
     exists.
 - Validation:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_clash_windows_sandbox.ps1 -NoLaunch`
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_clash_windows_sandbox.ps1 -NoLaunch`
   generated:
   `captures\sandbox-20260424-091715\clash-hd-sandbox.wsb`,
   `captures\sandbox-20260424-091715\sandbox-entry.ps1`, and
@@ -1135,7 +1135,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 
 ## No-Popup CDB Surface Dump Harness, 2026-04-28
 
-- Added `run_cdb_surface_dump.ps1`.
+- Added `scripts\cdb\run_cdb_surface_dump.ps1`.
 - Added `probes/cdb/render/clash95_surface_dump_probe.cdb`.
 - Added `tools\cdb_surface_dump_to_png.py`.
 - Harness behavior:
@@ -1152,7 +1152,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   dependency-free raw 8-bit to PNG conversion with a deterministic grayscale
   index palette plus metadata JSON. `--self-test` passed.
 - Runtime command:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 20`.
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 20`.
 - Runtime result:
   `captures\cdb-surface-dump-20260428-105423\RUN-SUMMARY.md` reports a clean
   hidden-desktop diagnostic failure, not a timeout:
@@ -1171,13 +1171,13 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 
 - Added `ddraw_surfdump_proxy\ddraw_surfdump_proxy.cpp` and
   `ddraw_surfdump_proxy\ddraw_surfdump_proxy.def`.
-- Added `build_ddraw_surfdump_proxy.ps1` to build a 32-bit local `ddraw.dll`
+- Added `scripts\build\build_ddraw_surfdump_proxy.ps1` to build a 32-bit local `ddraw.dll`
   into `C:\ClashTests\cdb-surface-dump` or another isolated candidate folder.
-- Extended `run_cdb_surface_dump.ps1` with `-UseDdrawProxy`,
+- Extended `scripts\cdb\run_cdb_surface_dump.ps1` with `-UseDdrawProxy`,
   `-NoSkipStartAnims`, `-FastForwardStartAnims`, forward-slash CDB dump paths,
   and post-dump cleanup polling.
 - Successful runtime command:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
 - Successful run folder:
   `captures\cdb-surface-dump-20260428-123224`.
 - Runtime evidence:
@@ -1199,14 +1199,14 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 - Updated `probes/cdb/render/clash95_surface_dump_probe.cdb` to emit `SCROLL_VISDUMP` and the
   matching CDB `db` visibility-memory dump for the 12x9 viewport before the
   surface dump action.
-- Updated `run_cdb_surface_dump.ps1` so the default dump method is host-side
+- Updated `scripts\cdb\run_cdb_surface_dump.ps1` so the default dump method is host-side
   `ReadProcessMemory` after `SURFDUMP_READY`; the old CDB `.writemem` route is
   still available with `-UseCdbWriteMem`.
 - Updated the harness to run `tools\visibility_coverage.py` after
   `tools\map_tile_coverage.py` and include the visibility summary in
   `summary.json` / `RUN-SUMMARY.md`.
 - Runtime command:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
 - Successful run folder:
   `captures\cdb-surface-dump-20260429-111340`.
 - Runtime result:
@@ -1234,7 +1234,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 
 ## No-Popup Visible-Edge Experiment, 2026-04-29
 
-- Added experimental `-ForceVisibleEdges` to `run_cdb_surface_dump.ps1`.
+- Added experimental `-ForceVisibleEdges` to `scripts\cdb\run_cdb_surface_dump.ps1`.
 - Updated `probes/cdb/render/clash95_surface_dump_probe.cdb` with placeholders for debugger-only
   visibility injection at `PlayGame` and before surface dumping.
 - The switch is not a normal HD patch. It temporarily targets the current
@@ -1272,7 +1272,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   breakpoints around the same branch path used by the earlier visibility proof:
   `00416850`, `004169bc`, `004169c1`, `00417a98`, `004169e6`,
   `0041876b`, and `004189fa`.
-- Updated `run_cdb_surface_dump.ps1 -ForceVisibleEdges` so it enables those
+- Updated `scripts\cdb\run_cdb_surface_dump.ps1 -ForceVisibleEdges` so it enables those
   breakpoints at `PlayGame`, writes the same player-0 visibility bytes as the
   earlier proof, and freezes the proof viewport at `scroll=(10,17)` during
   redraw.
@@ -1284,7 +1284,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   dump, but the viewport drifted to `map0=(0,41)` before capture; coverage
   correctly failed with `gameplay_frame_likely=False`.
 - Successful runtime command:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ForceVisibleEdges -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ForceVisibleEdges -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
 - Successful run folder:
   `captures\cdb-surface-dump-20260429-133917`.
 - Runtime result:
@@ -1314,7 +1314,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   `SURFDUMP_FORCE_VIEWPORT`, 54 `SURFDUMP_VEDGE_VISRET` rows, 54
   `SURFDUMP_VEDGE_POST` rows, nonzero visibility for all VEDGE rows, and
   nonblack post samples for all VEDGE rows.
-- Wired the gate into `run_cdb_surface_dump.ps1 -ForceVisibleEdges`. The harness
+- Wired the gate into `scripts\cdb\run_cdb_surface_dump.ps1 -ForceVisibleEdges`. The harness
   now writes `forced-visible-summary.json` and `forced-visible-summary.txt`, and
   a forced-visible run cannot report success unless this gate passes.
 - Direct validation:
@@ -1327,7 +1327,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   missing `SURFDUMP_FORCE_VIEWPORT`, wrong VEDGE counts, zero visibility rows,
   and active blank cells.
 - Integrated runtime command:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ForceVisibleEdges -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ForceVisibleEdges -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 120`.
 - Integrated run folder:
   `captures\cdb-surface-dump-20260429-135242`.
 - Integrated result:
@@ -1340,7 +1340,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 
 ## Normal No-Popup Visibility Explanation Gate, 2026-04-29
 
-- Updated `run_cdb_surface_dump.ps1` so normal no-popup runs with active blank
+- Updated `scripts\cdb\run_cdb_surface_dump.ps1` so normal no-popup runs with active blank
   cells invoke `tools\visibility_coverage.py --require-explained`.
 - The harness now records `VisibilityExitCode`, `VisibilityRequireExplained`,
   and `VisibilityExplainedGate` in `summary.json`, reports the gate in
@@ -1362,7 +1362,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 ## Fresh Normal No-Popup Gate Run, 2026-04-29
 
 - Command:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 180`.
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-surface-dump -RunSeconds 180`.
 - Run folder:
   `captures\cdb-surface-dump-20260429-140916`.
 - Result:
@@ -1458,11 +1458,11 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   - generic panel/notification candidates `004438A0`, `00445360`, `00447330`,
     and `00447610`.
 - Added CDB-only probe infrastructure before the target pivot:
-  - `run_cdb_surface_dump.ps1` now accepts `-ExtraProbeTemplate` and refuses
+  - `scripts\cdb\run_cdb_surface_dump.ps1` now accepts `-ExtraProbeTemplate` and refuses
     extra templates with a standalone `g` command.
   - `probes/cdb/ui/clash95_right_bottom_ui_extra.cdb` is an injectable extra probe for the
     right-bottom/action/status cluster.
-  - `run_cdb_right_bottom_ui_probe.ps1` wraps the no-popup surface dump route
+  - `scripts\cdb\run_cdb_right_bottom_ui_probe.ps1` wraps the no-popup surface dump route
     and counts `RBUI_*` markers.
 - Required next proof:
   add a filtered `probes/cdb/ui/clash95_border_tooltip_extra.cdb` plus
@@ -1473,10 +1473,10 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 ## Border/Tooltip CDB Extra Probe, 2026-04-30
 
 - Implemented `probes/cdb/ui/clash95_border_tooltip_extra.cdb` as a CDB-only extra probe for
-  the hidden-desktop `run_cdb_surface_dump.ps1 -ExtraProbeTemplate` path.
+  the hidden-desktop `scripts\cdb\run_cdb_surface_dump.ps1 -ExtraProbeTemplate` path.
 - Implemented `tools\border_tooltip_summary.py` to summarize border/tooltip
   markers and measure fixed UI regions in reconstructed 800x600 surface PNGs.
-- Hardened `run_cdb_surface_dump.ps1` extra-probe placeholder expansion:
+- Hardened `scripts\cdb\run_cdb_surface_dump.ps1` extra-probe placeholder expansion:
   PowerShell breakpoint-ID arithmetic now emits `29,30,31` correctly, and the
   probe can late-enable only filtered text breakpoints while keeping the very
   hot present breakpoint disabled.
@@ -1507,7 +1507,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 ## dword_526990 One-Shot Probe, 2026-04-30
 
 - Implemented `probes/cdb/castle/clash95_d526990_extra.cdb` for the hidden-desktop
-  `run_cdb_surface_dump.ps1 -ExtraProbeTemplate` path.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -ExtraProbeTemplate` path.
 - The probe avoids hot present hooks. It logs:
   - hardware writes to `00526990`;
   - `sub_418700` entry at `00418700`;
@@ -1518,7 +1518,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 - Implemented `tools\d526990_summary.py` to summarize CDB marker counts,
   callback values, write values, and `dword_526994` values.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-d526990 -RunSeconds 240 -ExtraProbeTemplate .\probes/cdb/castle/clash95_d526990_extra.cdb`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-d526990 -RunSeconds 240 -ExtraProbeTemplate .\probes/cdb/castle/clash95_d526990_extra.cdb`.
 - Result:
   `captures\cdb-surface-dump-20260430-115605` passed on the hidden desktop,
   dumped an 800x600 `surface.png`, and exited after host
@@ -1574,7 +1574,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 - Added parser:
   `tools\startup_stall_summary.py`.
 - Full-startup diagnostic command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-startup-d526994 -RunSeconds 180 -ExtraProbeTemplate .\probes/cdb/startup/clash95_startup_stall_d526994_extra.cdb`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-startup-d526994 -RunSeconds 180 -ExtraProbeTemplate .\probes/cdb/startup/clash95_startup_stall_d526994_extra.cdb`.
 - Full-startup result:
   `captures\cdb-surface-dump-20260430-142129` timed out. It reached
   `STARTUP_UI_AVI_CALL tag=logo`, `STARTUP_VIDEO_IN_ENTRY`, and
@@ -1582,7 +1582,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   reach `SURFDUMP_MAIN_HIT`. No AV was observed. This localizes the no-skip
   hidden-desktop stall to the logo `Video_Avi_playIn` path.
 - Sleep-fast-forward rerun command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-startup-d526994 -RunSeconds 120 -ExtraProbeTemplate .\probes/cdb/startup/clash95_startup_stall_d526994_extra.cdb`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-startup-d526994 -RunSeconds 120 -ExtraProbeTemplate .\probes/cdb/startup/clash95_startup_stall_d526994_extra.cdb`.
 - Sleep-fast-forward result:
   `captures\cdb-surface-dump-20260430-145646` passed, dumped an `800x600`
   `surface.png`, and preserved the normal visibility explanation gate.
@@ -1618,7 +1618,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   reaches `sub_423B40`.
 - Added parser `tools\d526994_owner_route_summary.py`.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-d526994-owner-route -RunSeconds 120 -ExtraProbeTemplate .\probes/cdb/castle/clash95_d526994_owner_route_extra.cdb`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-d526994-owner-route -RunSeconds 120 -ExtraProbeTemplate .\probes/cdb/castle/clash95_d526994_owner_route_extra.cdb`.
 - Result:
   `captures\cdb-surface-dump-20260430-224749` passed on the hidden desktop,
   generated a fresh 800x600 `surface.png`, and produced parser output
@@ -1644,7 +1644,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 - Added parser:
   `tools\descriptor_trace_summary.py`.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-descriptor-trace -RunSeconds 120 -ExtraProbeTemplate .\probes/cdb/ui/clash95_descriptor_trace_extra.cdb`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-descriptor-trace -RunSeconds 120 -ExtraProbeTemplate .\probes/cdb/ui/clash95_descriptor_trace_extra.cdb`.
 - Result:
   `captures\cdb-surface-dump-20260506-092608` passed on the hidden desktop
   and dumped an 800x600 `surface.png`.
@@ -1688,7 +1688,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   matches SHA-256
   `500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE`.
 - Runtime command shape:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-hover-selection -RunSeconds 150 -ExtraProbeTemplate .\probes/cdb/ui/clash95_hover_selection_ui_extra.cdb`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-hover-selection -RunSeconds 150 -ExtraProbeTemplate .\probes/cdb/ui/clash95_hover_selection_ui_extra.cdb`.
 - First run:
   `captures\cdb-surface-dump-20260506-093846` passed and produced a normal
   800x600 `surface.png`, but the hover setter did not fire because a breakpoint
@@ -1743,7 +1743,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   `004338E0`, with the actual `sub_435BC0` call at `00433914`. The probe was
   corrected to observe both addresses.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-action-panel-route -RunSeconds 150 -ExtraProbeTemplate .\probes/cdb/castle/clash95_action_panel_route_extra.cdb`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -RequireGameplay -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-action-panel-route -RunSeconds 150 -ExtraProbeTemplate .\probes/cdb/castle/clash95_action_panel_route_extra.cdb`.
 - Final corrected run:
   `captures\cdb-surface-dump-20260506-102113` passed on the hidden desktop and
   produced an 800x600 `surface.png`.
@@ -1785,7 +1785,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   calls `sub_435B90`, and exits when `dword_532210` changes. The probe uses
   that as a debugger-only safety latch if the owner path is reachable.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -ExtraProbeTemplate .\probes/cdb/castle/clash95_action_panel_state_route_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-action-panel-state-route -RunSeconds 180`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -ExtraProbeTemplate .\probes/cdb/castle/clash95_action_panel_state_route_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-action-panel-state-route -RunSeconds 180`.
 - First pass:
   `captures\cdb-surface-dump-20260506-111052` passed and produced an 800x600
   `surface.png`, but skipped the forced owner call because `dword_532150=0`.
@@ -1836,7 +1836,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 - Added parser:
   `tools\castle_owner_setup_summary.py`.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_owner_setup_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-owner-setup -RunSeconds 150`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -NoSkipStartAnims -RequireGameplay -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_owner_setup_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-owner-setup -RunSeconds 150`.
 - Fresh hidden-desktop CDB evidence:
   `captures\cdb-surface-dump-20260506-121909` passed, produced an 800x600
   `surface.png`, and used candidate
@@ -1872,7 +1872,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   castle render hook. Command `0x63` is installed at `00422709` with callback
   `00433C20`.
 - Added harness support:
-  `run_cdb_surface_dump.ps1 -SkipMapValidation` skips map tile/visibility
+  `scripts\cdb\run_cdb_surface_dump.ps1 -SkipMapValidation` skips map tile/visibility
   analysis for non-map UI surfaces while still converting raw surface memory to
   PNG and writing normal run summaries.
 - First full-startup attempt:
@@ -1880,7 +1880,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   proved `00433C20` wrote `dword_532150`, `dword_53214C`, and `dword_532154`,
   but timed out after a write-watch resume (`SetContext failed 0x80070005`).
 - Successful hidden-desktop command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_screen_invoke_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-screen-invoke -RunSeconds 120`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_screen_invoke_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-screen-invoke -RunSeconds 120`.
 - Fresh evidence:
   `captures\cdb-surface-dump-20260506-141239` passed with host-side
   `ReadProcessMemory`, no AV rows, and candidate
@@ -1921,7 +1921,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   timing/presentation prelude while still executing the live owner load and
   `00433914 -> sub_435BC0`.
 - Successful hidden-desktop command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_action_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-action -RunSeconds 120`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_action_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-action -RunSeconds 120`.
 - Fresh evidence:
   `captures\cdb-surface-dump-20260506-175108` passed, wrote an 800x600
   `surface.png`, used candidate
@@ -1958,7 +1958,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 - Extended `tools\action_panel_route_summary.py` so redirect/copyback rows are
   counted and reported in generated summaries.
 - First hidden-desktop command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_action_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-action -RunSeconds 120`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_action_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-action -RunSeconds 120`.
 - Redirect-only evidence:
   `captures\cdb-surface-dump-20260506-180501` passed with no AV rows,
   candidate SHA-256
@@ -2003,7 +2003,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 - Extended `tools\visibility_coverage.py` to parse focused `APVIS_CELL` rows
   and the base `SURFDUMP_VEDGE_*` draw-time visibility rows.
 - Successful clean command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-visibility -RunSeconds 120`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-visibility -RunSeconds 120`.
 - Fresh clean evidence:
   `captures\cdb-surface-dump-20260506-190037` passed hidden-desktop CDB,
   dumped an 800x600 post-owner action surface, and used candidate SHA-256
@@ -2043,7 +2043,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 
 ## Post-Owner Seven-Cell Forced-Visible Proof, 2026-05-06
 
-- Added `-PostOwnerForceVisibleSeven` to `run_cdb_surface_dump.ps1`. The switch
+- Added `-PostOwnerForceVisibleSeven` to `scripts\cdb\run_cdb_surface_dump.ps1`. The switch
   injects only the seven target visibility bits through the base PlayGame CDB
   breakpoint before HD redraw, then leaves the post-owner route in
   `probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb` to dump the same 800x600 map
@@ -2062,7 +2062,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   reused `@$t18`, which blocked the post-owner route state and allowed the base
   dump to win early. The capture is useful only as a harness failure.
 - Successful hidden-desktop command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -PostOwnerForceVisibleSeven -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-forced-visible -RunSeconds 120 -RequireGameplay`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -PostOwnerForceVisibleSeven -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-forced-visible -RunSeconds 120 -RequireGameplay`.
 - Fresh proof:
   `captures\cdb-surface-dump-20260506-200426` passed with candidate SHA-256
   `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`.
@@ -2090,7 +2090,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 ## Post-Owner Forced-Visible Harness Gate, 2026-05-06
 
 - Wired `tools\post_owner_forced_visible_summary.py` into
-  `run_cdb_surface_dump.ps1`. When `-PostOwnerForceVisibleSeven` is used, the
+  `scripts\cdb\run_cdb_surface_dump.ps1`. When `-PostOwnerForceVisibleSeven` is used, the
   harness now writes `post-owner-forced-visible-summary.json` /
   `post-owner-forced-visible-summary.txt`, includes the result in
   `summary.json` and `RUN-SUMMARY.md`, and fails the run if the focused gate
@@ -2098,7 +2098,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 - Added a guard so `-PostOwnerForceVisibleSeven` cannot be combined with
   `-SkipMapValidation`.
 - Fresh hidden-desktop command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -PostOwnerForceVisibleSeven -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-forced-visible -RunSeconds 120 -RequireGameplay`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -PostOwnerForceVisibleSeven -ExtraProbeTemplate .\probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-post-owner-forced-visible -RunSeconds 120 -RequireGameplay`.
 - Fresh gated evidence:
   `captures\cdb-surface-dump-20260506-201114` passed with
   `Post-owner forced-visible gate: passed` in `RUN-SUMMARY.md`.
@@ -2168,18 +2168,18 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
 
 ## HD Map Smoke Dry-Run Helper, 2026-05-08
 
-- Added `prepare_hd_map_smoke_candidate.ps1`.
+- Added `scripts\smoke\prepare_hd_map_smoke_candidate.ps1`.
 - Default mode is dry-run only. It prints the exact patch, manifest, and matrix
   commands; selects a unique candidate path under
   `C:\ClashTests\hd-map-smoke`; verifies the base SHA when
   `C:\Clash\clash95.exe` is accessible; and refuses candidate output under the
   repository unless `-AllowRepoCandidateDir` is explicitly passed.
 - Validation:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\prepare_hd_map_smoke_candidate.ps1 -Json`
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\prepare_hd_map_smoke_candidate.ps1 -Json`
   passed, found `C:\Clash\clash95.exe`, and verified SHA-256
   `500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae`.
 - Guard validation:
-  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\prepare_hd_map_smoke_candidate.ps1 -CandidateDir . -Json`
+  `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\prepare_hd_map_smoke_candidate.ps1 -CandidateDir . -Json`
   failed as intended with a repository-output refusal.
 
 ## Patch Manifest Compare Helper, 2026-05-08
@@ -2235,7 +2235,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   count panel/grid/action-box markers, report selected addon ids, and fail when
   ready/panel markers or AV rows are missing.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_barracks_ui_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-barracks-ui -RunSeconds 120`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_barracks_ui_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-barracks-ui -RunSeconds 120`.
 - Fresh evidence:
   `captures\cdb-surface-dump-20260511-084202` passed on the hidden desktop,
   dumped an 800x600 surface, and used candidate
@@ -2280,7 +2280,7 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   `captures\cdb-surface-dump-20260511-134947`, passed with hidden desktop CDB,
   no AV rows, a host-read `800x600` surface dump, and selected addon `1`.
 - Runtime command:
-  `run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_barracks_select_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-barracks-ui -RunSeconds 120`.
+  `scripts\cdb\run_cdb_surface_dump.ps1 -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -ExtraProbeTemplate .\probes/cdb/castle/clash95_castle_barracks_select_extra.cdb -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch -CandidateDir C:\ClashTests\cdb-castle-barracks-ui -RunSeconds 120`.
 - Fresh evidence:
   `captures\cdb-surface-dump-20260511-134947\RUN-SUMMARY.md` passed with
   candidate

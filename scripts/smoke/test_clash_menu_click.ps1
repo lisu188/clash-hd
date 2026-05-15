@@ -2,7 +2,7 @@ param(
     [string[]]$Exe = @('.\clash95_hddisplay_absinput.exe'),
     [string]$WorkDir = 'C:\Clash',
     [string[]]$Click = @('native-exit', 'centered-exit'),
-    [string]$OutRoot = (Join-Path $PSScriptRoot 'captures'),
+    [string]$OutRoot = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures'),
     [int]$MenuWaitSec = 6,
     [int]$AfterClickWaitMs = 1500,
     [int]$DiffStep = 8,
