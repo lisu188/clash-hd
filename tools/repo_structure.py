@@ -23,7 +23,6 @@ ROOT_FILES: tuple[tuple[str, str], ...] = (
     ("AGENTS.md", "Durable operating instructions for Codex and future agents"),
     ("*.md", "Clash95 HD mod analysis, patch notes, and progress reports"),
     ("*.ps1", "Windows harnesses for building, launching, capturing, and probing"),
-    ("*.cdb", "Repeatable CDB debugger probes for runtime evidence"),
     ("patch_clash95_hd.py", "Main binary patch helper; writes candidates outside the repo"),
 )
 
@@ -36,6 +35,11 @@ SECTIONS: tuple[Section, ...] = (
         "captures/",
         "Checked-in evidence artifacts, screenshots, JSON/CSV summaries, and matrices",
         (("clicktest-*/", "Timestamped menu/input visual regression outputs"),),
+    ),
+    Section(
+        "probes/",
+        "Repeatable debugger probe scripts organized by tool and topic",
+        (("cdb/", "CDB probes grouped into map, menu, mouse, castle, render, UI, startup, and key-scroll topics"),),
     ),
     Section(
         "ddraw_surfdump_proxy/",

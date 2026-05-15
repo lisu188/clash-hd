@@ -35,7 +35,7 @@ function Count-Markers {
 }
 
 $surfaceRunner = Join-Path $PSScriptRoot 'run_cdb_surface_dump.ps1'
-$extraProbe = Join-Path $PSScriptRoot 'clash95_right_bottom_ui_extra.cdb'
+$extraProbe = Join-Path $PSScriptRoot 'probes/cdb/ui/clash95_right_bottom_ui_extra.cdb'
 foreach ($path in @($surfaceRunner, $extraProbe, $InputExe, $WorkDir, $Cdb, $Python)) {
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Required path was not found: $path"

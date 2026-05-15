@@ -76,11 +76,11 @@ for the task report. Expected output from the final command includes
   extra CDB probe into the route. The extra probe must not contain a standalone
   `g` command. This is the right extension point for border/tooltip probes.
 - `run_cdb_right_bottom_ui_probe.ps1` already wraps the hidden-desktop surface
-  dump harness with `clash95_right_bottom_ui_extra.cdb`, counts `RBUI_*`
+  dump harness with `probes/cdb/ui/clash95_right_bottom_ui_extra.cdb`, counts `RBUI_*`
   markers, and writes `right-bottom-ui-summary.json` / `.txt` into the run
   folder. This is already CDB-only and should replace older route experiments.
-- `clash95_right_bottom_ui_probe.cdb` and
-  `clash95_right_bottom_ui_extra.cdb` identify likely gameplay UI paths:
+- `probes/cdb/ui/clash95_right_bottom_ui_probe.cdb` and
+  `probes/cdb/ui/clash95_right_bottom_ui_extra.cdb` identify likely gameplay UI paths:
   - `004347A0`: action/right-side panel draw candidate.
   - `00434E20`: 4x3 action icon grid draw candidate.
   - `00435280`: selected-building/status draw candidate; likely relevant to
@@ -92,7 +92,7 @@ for the task report. Expected output from the final command includes
   - `00460D80`: viewport switch evidence point.
   - `004024E0`: copy/present primitive. Filter by caller and rectangle
     intersection rather than arming it hot from process start.
-- `clash95_map_topband_probe.cdb`, `tools\topband_probe_summary.py`, and
+- `probes/cdb/map/clash95_map_topband_probe.cdb`, `tools\topband_probe_summary.py`, and
   `tools\topband_image_summary.py` are a proven pattern for finding stale UI
   bands: sample the surface, log copy rectangles that intersect a target band,
   then compare whole-image region coverage.
@@ -204,8 +204,8 @@ than a patching issue.
 ### 3. Add A Dedicated Border/Tooltip Extra Probe
 
 Create a new extra probe template, for example
-`clash95_border_tooltip_extra.cdb`, that follows the existing
-`clash95_right_bottom_ui_extra.cdb` rules:
+`probes/cdb/ui/clash95_border_tooltip_extra.cdb`, that follows the existing
+`probes/cdb/ui/clash95_right_bottom_ui_extra.cdb` rules:
 
 - no standalone `g`;
 - late-arm only after gameplay, using the surface-dump route flag;
@@ -342,7 +342,7 @@ Use the CDB rows before changing bytes:
 ## Next Concrete Engineering Task
 
 Implement `tools\border_tooltip_summary.py` plus
-`clash95_border_tooltip_extra.cdb`, then run them through
+`probes/cdb/ui/clash95_border_tooltip_extra.cdb`, then run them through
 `run_cdb_surface_dump.ps1 -ExtraProbeTemplate` against the current HD stage.
 The resulting `RUN-SUMMARY.md` must embed the fresh `surface.png` screenshot
 artifact and record whether the border/tooltip rows are drawn, clipped, or not
@@ -350,7 +350,7 @@ reached.
 
 ## 2026-04-30 Probe Update
 
-Implemented `clash95_border_tooltip_extra.cdb` and
+Implemented `probes/cdb/ui/clash95_border_tooltip_extra.cdb` and
 `tools\border_tooltip_summary.py`.
 
 Runtime result:
@@ -379,7 +379,7 @@ owner is known.
 Implemented and ran the one-shot branch/write probe:
 
 - Probe template:
-  `clash95_d526990_extra.cdb`
+  `probes/cdb/castle/clash95_d526990_extra.cdb`
 - Parser:
   `tools\d526990_summary.py`
 - Successful run:
@@ -412,8 +412,8 @@ callback branch. It did find a `00526994` owner cluster at `00423760`,
 `00423B00`, and `00423B40`, all of which bracket calls to `sub_418700` while
 setting or clearing the flag.
 
-Added `clash95_d526994_setup_extra.cdb` and the minimal
-`clash95_d526994_setup_min_extra.cdb`. Both are CDB-only extra probes for the
+Added `probes/cdb/castle/clash95_d526994_setup_extra.cdb` and the minimal
+`probes/cdb/castle/clash95_d526994_setup_min_extra.cdb`. Both are CDB-only extra probes for the
 hidden-desktop surface-dump harness. `tools\d526990_summary.py` now parses the
 new `D526994_*` marker rows.
 
@@ -425,7 +425,7 @@ gameplay.
 
 ## 2026-04-30 Startup-Stall And Setup Rerun
 
-Added `clash95_startup_stall_d526994_extra.cdb` and
+Added `probes/cdb/startup/clash95_startup_stall_d526994_extra.cdb` and
 `tools\startup_stall_summary.py`.
 
 `captures\cdb-surface-dump-20260430-142129` localizes the full-startup hidden
@@ -447,7 +447,7 @@ drive or force the game state that should invoke one of them.
 
 Added a CDB-only owner-route probe:
 
-- `clash95_d526994_owner_route_extra.cdb`
+- `probes/cdb/castle/clash95_d526994_owner_route_extra.cdb`
 - `tools\d526994_owner_route_summary.py`
 
 Static caller results:
@@ -486,7 +486,7 @@ patch.
 
 Added the CDB-only descriptor probe and summary parser:
 
-- `clash95_descriptor_trace_extra.cdb`
+- `probes/cdb/ui/clash95_descriptor_trace_extra.cdb`
 - `tools\descriptor_trace_summary.py`
 
 Run folder:
@@ -525,7 +525,7 @@ action/status and unit-info pane functions, especially `004347A0`, `00434E20`,
 
 Added:
 
-- `clash95_hover_selection_ui_extra.cdb`
+- `probes/cdb/ui/clash95_hover_selection_ui_extra.cdb`
 - `tools\hover_selection_ui_summary.py`
 
 Clean harness ride:
@@ -573,7 +573,7 @@ owner path.
 
 Added:
 
-- `clash95_action_panel_route_extra.cdb`
+- `probes/cdb/castle/clash95_action_panel_route_extra.cdb`
 - `tools\action_panel_route_summary.py`
 
 The probe is passive with respect to mouse state. It watches

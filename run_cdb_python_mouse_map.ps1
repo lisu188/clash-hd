@@ -2,7 +2,7 @@ param(
     [string]$Exe = 'C:\Clash\clash95_hd_mouseabsq_20260422.exe',
     [string]$WorkDir = 'C:\Clash',
     [string]$Cdb = 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe',
-    [string]$Probe = (Join-Path $PSScriptRoot 'clash95_mouse_menu_dynamic_probe.cdb'),
+    [string]$Probe = (Join-Path $PSScriptRoot 'probes/cdb/mouse/clash95_mouse_menu_dynamic_probe.cdb'),
     [string]$Log = (Join-Path $PSScriptRoot 'captures\cdb-python-mouse-map.log'),
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
     [string]$OutJson = (Join-Path $PSScriptRoot 'captures\mouseclickmap-cdb-python.json'),
