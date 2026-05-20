@@ -10,6 +10,25 @@ tags:
 
 # Log
 
+## [2026-05-15] correction | Right-bottom action-menu visual gate
+
+- Source updated: `[source: tools/current_evidence_refresh.py]`,
+  `[source: tools/right_bottom_compose_evidence_matrix.py]`,
+  `[source: tools/right_bottom_compose_promotion_decision.py]`,
+  `[source: captures/right-bottom-compose-evidence-current.md]`, and
+  `[source: captures/right-bottom-compose-promotion-decision-current.md]`.
+- Pages updated: [[Clash95 HD Mod Progress]],
+  [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
+- Contradictions: previous right-bottom reports treated controlled CDB/proxy
+  evidence as passing validation even though the screenshot showed stripey,
+  misplaced action/status buttons.
+- Resolution: the controlled grid-hit screenshot is diagnostic only. Natural
+  owner/action draw rows are now required; the current right-bottom compose
+  matrix and promotion decision fail closed with `RBUI_PANEL_DRAW=0` and
+  `RBUI_ACTION_BOX=0`.
+- Open questions: find a natural owner/action route with acceptable final
+  placement, then revisit anchor/copyback and paired hitboxes.
+
 ## [2026-05-15] maintenance | Manual proof contract
 
 - Source updated: `[source: tools/manual_directinput_checklist.py]`,
@@ -1145,6 +1164,217 @@ tags:
 - Contradictions: none recorded.
 - Open questions: gameplay border owner, bottom-tooltip recovery design,
   castle overview centering path, and remaining manual DirectInput validation.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-15] maintenance | Battle UI catalog smoke
+
+- Source updated: `[source: reports/battle_ui_catalog_probe_20260515.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: deterministic no-popup battle-entry route before any
+  `battle-ui-*` patch group.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-17] maintenance | Right-bottom action native-center strict probe
+
+- Source updated: `[source: captures/right-bottom-action-nativecenter-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural route/input proof still must enter the owner/action
+  draw cluster before the right-bottom action-menu visual fix can be promoted.
+- Notes: `rightbottomaction-nativecenter` keeps the controlled action-screen
+  visual fix and candidate SHA
+  `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`.
+- Notes: the strict fast-forward natural UI run
+  `captures/cdb-surface-dump-20260517-163734` passed the hidden map dump and
+  visibility gate, but failed the right-bottom UI gate with
+  `OwnerActionRowsSeen=false`, `RBUI_PANEL_DRAW=0`, and `RBUI_ACTION_BOX=0`.
+- Notes: wrapper-aware controlled run
+  `captures/cdb-surface-dump-20260517-172611` passed with
+  `clash95_post_owner_action_nativecenter_extra.cdb`; it proves stock
+  `00435BC0` drew on a temporary 640x480 surface and the wrapper copied the
+  native action screen back to an 800x600 surface at `0051B86D`.
+- Notes: unit-selection evidence at
+  `captures/cdb-surface-dump-20260517-171559` is tracked as a separate
+  selected-unit info/action route, not as right-bottom owner/action proof.
+- Notes: `run_cdb_right_bottom_ui_probe.ps1` now requires owner/action rows by
+  default; descriptor-only diagnostics require `-AllowDescriptorOnly`.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-18] maintenance | Natural castle-click route split
+
+- Source updated: `[source: captures/right-bottom-action-nativecenter-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: the natural route still must drive castle overview command
+  `0x63` or equivalent owner setup into `004338E0 -> 00435BC0` before the
+  right-bottom action-menu visual fix can be promoted.
+- Notes: focused hidden-desktop run
+  `captures/cdb-surface-dump-20260518-092756` passed with candidate SHA
+  `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`.
+- Notes: `clash95_building_click_route_extra.cdb` forces the live
+  map-handler call site at `0040B233` to screen `(352,272)` / map `(15,21)`,
+  reaches castle tile `32768`, building index `0`, owner `0`, mode `2`,
+  active `0`, and follows
+  `sub_4084A0 -> Building_GetInto -> 00422180`.
+- Notes: the run dumps a 640x480 castle overview surface at
+  `captures/cdb-surface-dump-20260518-092756/surface.png`; it does not produce
+  owner/action rows for `004338E0`, `00433914`, or `00435BC0`.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-18] maintenance | Castle command 0x63 owner setup split
+
+- Source updated: `[source: captures/right-bottom-action-nativecenter-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: the natural route still needs the second right-bottom
+  descriptor input after command `0x63` to enter `004338E0 -> 00433914 ->
+  0051B7E0`.
+- Notes: focused hidden-desktop run
+  `captures/cdb-surface-dump-20260518-100917` passed with candidate SHA
+  `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`.
+- Notes: `clash95_castle_click_cmd99_to_action_extra.cdb` drives the natural
+  castle-click route through overview raw hit `254`, command `99`, callback
+  `00433C20`, and verifies writes to `dword_532150`, `dword_53214C`, and
+  `dword_532154`.
+- Notes: after owner setup, the first map-loop `00511D40` descriptor scan
+  reports `result=0`, `d532218=00000000`, and no action-wrapper rows, so
+  command `0x63` is owner-state setup rather than the action-screen opener by
+  itself.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-18] maintenance | Battle UI force-entry and initial centering
+
+- Source updated: `[source: captures/battle-ui-force-entry-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: battle command-button hits, tactical-grid hits,
+  modal/dialog routing, and later battle-loop redraw centering still need
+  runtime proof.
+- Notes: the user-visible stripey/right-bottom button screenshot was traced to
+  the battle UI lane, not the castle owner/action menu lane.
+- Notes: baseline hidden-desktop run
+  `captures/cdb-surface-dump-20260518-214535` reaches forced `Unit_Attack`,
+  `BATTLE_OWNER_ENTRY source=BattleRunner`, and the bad uncentered 800x600
+  battle composition.
+- Notes: patched hidden-desktop run
+  `captures/cdb-surface-dump-20260518-221018` uses CDB `.writemem`, logs
+  wrapper return `0051ba63`, has no access violations, and classifies the
+  initial battle frame as `centered-native-640x480` at offset `[80, 60]`.
+- Notes: `battle-ui-center-present-wrapper` patches only initial battle
+  `Render_Present` callsite `0042F2F5` to cave `0051BA00`; broad battle
+  present wrapping remains unpromoted because earlier broad wrapping produced
+  redraw artifacts.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI command descriptor hit
+
+- Source updated: `[source: captures/battle-ui-command-hit-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: command callback/manual cadence, tactical-grid hits,
+  modal/dialog routing, and later battle-loop redraw centering still need
+  runtime proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-094032` extends the forced battle route
+  with controlled command descriptor probing.
+- Notes: the run logs `BATTLE_COMMAND_HIT coord_mode=visual result=2` for the
+  displayed command coordinate and `BATTLE_COMMAND_NATIVE_HIT
+  coord_mode=native result=2` for the native coordinate, with no AV rows.
+- Notes: the proof is harnessed: it controls mouse globals and skips turn
+  banner/frame waits. It should not be treated as natural/manual click
+  validation yet.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI command callback entry
+
+- Source updated: `[source: captures/battle-ui-command-callback-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: enabled-command state change, manual input cadence,
+  tactical-grid hits, modal/dialog routing, and later battle-loop redraw
+  centering still need runtime proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-100717` extends the forced battle route
+  with a command callback probe.
+- Notes: the run reaches descriptor `00514b78`, forces the descriptor click
+  gate, enters callback `0042d4e0`, and records
+  `BATTLE_COMMAND_CALLBACK_RESULT branch=precondition-disabled`.
+- Notes: the disabled branch reports `unit_index=0`, `unit_type=5`,
+  `avail=8`, and `enabled=0`, so it proves callback entry but not an enabled
+  command state transition.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI enabled command callback result
+
+- Source updated: `[source: captures/battle-ui-command-enabled-callback-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural/manual enabled-command cadence, tactical-grid hits,
+  modal/dialog routing, and later battle-loop redraw centering still need
+  runtime proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-101859` extends the forced battle route
+  with an enabled-command callback proof.
+- Notes: the probe temporarily changes selected unit type `5` to `8`, records
+  `avail=10`, `enabled=3`, skips the callback render-begin lock under CDB, and
+  reaches `BATTLE_COMMAND_CALLBACK_RESULT branch=state2`.
+- Notes: this is still harness evidence, not natural/manual input validation.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI tactical-grid coordinate classification
+
+- Source updated: `[source: captures/battle-ui-grid-hit-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural/manual enabled-command cadence, actual grid-input
+  transform, modal/dialog routing, and later battle-loop redraw centering still
+  need runtime proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-103155` extends the forced battle route
+  with tactical-grid hit-test probing.
+- Notes: the probe reaches `0042CB50`, records displayed `(144,108)` landing
+  in cell `(1,1)`, records native `(64,48)` landing in cell `(0,0)`, and has no
+  AV rows.
+- Notes: this is coordinate-classification evidence. It proves the live grid
+  hit-test route and the need for a centered-input transform, not a complete
+  battle action or natural/manual input validation.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI modal input path classification
+
+- Source updated: `[source: captures/battle-ui-modal-classified-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural/manual enabled-command cadence, actual centered
+  input transforms, and later battle-loop redraw centering still need runtime
+  proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-103714` extends the forced battle route
+  with modal/input path classification.
+- Notes: the probe reaches battle loop input updater `004605D0`, records
+  `BATTLE_MODAL_CLASSIFIED status=input_update_seen_no_modal`, and has no AV
+  rows.
+- Notes: this is a no-hit classification for the current route. It does not
+  prove a separate modal dialog hit or natural/manual input validation.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI combined evidence matrix
+
+- Source updated: `[source: captures/battle-ui-evidence-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural/manual enabled-command cadence, actual centered
+  input transforms, and later battle-loop redraw centering still need runtime
+  proof.
+- Notes: added `tools/battle_ui_evidence_matrix.py` and
+  `tools/test_battle_ui_evidence_matrix.py`.
+- Notes: the matrix passes with no failures and combines force-entry
+  centering, command hit/callback, enabled callback, tactical-grid coordinate
+  classification, modal no-hit classification, patch-stage bytes, and stable
+  HD-map smoke evidence.
+- Notes: this is a validation-stage checkpoint, not stable promotion or
+  natural/manual input validation.
 - Notes: `raw/` was not edited or reorganized.
 
 Future entries should be appended using this shape:

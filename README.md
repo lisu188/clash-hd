@@ -129,12 +129,41 @@ Known-good input SHA-256:
 500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae
 ```
 
-Current release status as of 2026-05-15:
+Current release status as of 2026-05-18:
 
 - Stable HD map stage remains
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`.
-- `rightbottomcompose` and `castlecenter-all` are validation-only; they are not
-  part of the stable default stage.
+- `rightbottomcompose` currently fails the right-bottom action-menu validation:
+  the controlled CDB route/hit-test evidence exists, but the natural UI probe
+  still reports `RBUI_PANEL_DRAW=0` and `RBUI_ACTION_BOX=0`, and the forced
+  screenshot is not visually acceptable.
+- `rightbottomaction-nativecenter` is the current controlled visual candidate
+  for the action-menu stripe/layout issue. The wrapper-aware hidden-desktop CDB
+  surface dump at `captures\cdb-surface-dump-20260517-172611` passes and proves
+  stock `00435BC0` renders on a temporary 640x480 surface before copyback to the
+  800x600 map surface. A refreshed strict natural UI probe still fails closed
+  because the map/viewport path is reached but owner/action rows are absent, so
+  it remains validation-only until natural UI and manual input proof are
+  refreshed against it.
+- Focused natural castle-click proof
+  `captures\cdb-surface-dump-20260518-092756` now proves screen `(352,272)` /
+  map `(15,21)` on castle tile `32768` follows
+  `sub_4084A0 -> Building_GetInto -> 00422180` and dumps a 640x480 castle
+  overview surface. Follow-up route-split proof
+  `captures\cdb-surface-dump-20260518-100917` drives overview command `0x63`
+  through callback `00433C20` and verifies the owner-global writes. The full
+  owner-loop gate `captures\cdb-surface-dump-20260518-213418` then proves the
+  `004338E0` action descriptor exists but is intentionally parked at `x=1000`
+  because this save's owner flag is `0x00`.
+- Battle UI force-entry proof
+  `captures\cdb-surface-dump-20260518-214535` reaches
+  `Unit_Attack -> 0042E9E0` and reproduces the uncentered/stripey battle UI
+  composition. The narrowed `battle-ui-center-present-wrapper` patch is now in
+  the `battlecenter` validation stage, and exact CDB `.writemem` proof
+  `captures\cdb-surface-dump-20260518-221018` classifies the initial battle
+  frame as `centered-native-640x480` at offset `(80,60)` with no AV rows.
+- `castlecenter-all` is validation-only; it is not part of the stable default
+  stage.
 - Hidden/no-popup validation passes for the stable map path and refreshed
   castle overview evidence.
 - Manual DirectInput proof is still pending, so the mod should not be described
@@ -322,6 +351,85 @@ sample rows, and no present rows intersecting the bottom tooltip or bottom-right
 panel regions, so the next right-bottom target is native anchor/final
 composition behavior.
 
+The current controlled right-bottom visual candidate is
+`captures\right-bottom-action-nativecenter-current.md`, backed by wrapper-aware
+hidden run `captures\cdb-surface-dump-20260517-172611` and stage
+`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter`.
+That stage hooks the `00433914 -> 00435BC0` action-owner call through a
+temporary native 640x480 surface, then center-copies the native action screen
+to the 800x600 map surface. The CDB log proves stock `00435BC0` entered with a
+640x480 surface, `0051B7E0` restored the 800x600 map surface, and
+`SURFDUMP_READY` dumped the copied-back action screen. The screenshot removes
+the striped `dw_13.gfx` backdrop and keeps the buttons on the action-screen
+art. It is still validation-only pending refreshed natural UI and manual/input
+proof.
+
+The refreshed native-center natural UI probe is
+`captures\cdb-surface-dump-20260517-163734`. It uses the same candidate SHA
+`D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`, passes the
+hidden map surface/visibility gate, and records `RBUI_VIEWPORT_SWITCH=1`, but
+the strict right-bottom UI summary fails with `OwnerActionRowsSeen=False`,
+`RBUI_PANEL_DRAW=0`, and `RBUI_ACTION_BOX=0`. The right-bottom UI launcher now
+fails closed by default unless owner/action rows appear; descriptor-only
+diagnostics require `-AllowDescriptorOnly`. A full-start attempt at
+`captures\cdb-surface-dump-20260517-163116` timed out before gameplay with no
+AV rows.
+
+The focused natural castle command route is
+`captures\cdb-surface-dump-20260518-100917`. It starts from the live map castle
+click, reaches `00422180`, hits overview raw ID `254`, installs command `99`
+callback `00433C20`, and writes `dword_532150`, `dword_53214C`, and
+`dword_532154`. After the probe exits overview, the first `00511D40`
+descriptor scan reports `result=0` with `d532218=00000000`, so command `0x63`
+is owner-state setup rather than the action-screen opener by itself.
+
+The full owner-loop gate is
+`captures\cdb-surface-dump-20260518-213418`. It reaches the owner descriptor
+list after command `0x63` and logs descriptor `d1=(1000,426 cb=004338e0)`.
+Because `owner_flag=0x00`, the action descriptor is intentionally off-screen in
+this save state; the castle route is therefore not the source of the user's
+visible stripe/layout screenshot.
+
+The current battle UI evidence is
+`captures\battle-ui-force-entry-current.md`, backed by exact CDB `.writemem`
+run `captures\cdb-surface-dump-20260518-221018`. The harness-only force-entry
+probe reaches `Unit_Attack -> 0042E9E0`, the new
+`battle-ui-center-present-wrapper` calls through cave `0051BA00`, and the
+summary records `visual_mode=centered-native-640x480`,
+`centered_offset=[80,60]`, `centered_wrapper_seen=True`, and `av_count=0`.
+Command descriptor hit proof is now
+`captures\battle-ui-command-hit-current.md`, backed by
+`captures\cdb-surface-dump-20260520-094032`; the controlled CDB probe logs both
+`BATTLE_COMMAND_HIT coord_mode=visual result=2` and
+`BATTLE_COMMAND_NATIVE_HIT coord_mode=native result=2`. Command callback entry
+proof is `captures\battle-ui-command-callback-current.md`, backed by
+`captures\cdb-surface-dump-20260520-100717`; descriptor `00514b78` reaches
+callback `0042d4e0`, then records
+`BATTLE_COMMAND_CALLBACK_RESULT branch=precondition-disabled` with
+`unit_type=5`, `avail=8`, and `enabled=0`. Enabled-command callback result
+proof is `captures\battle-ui-command-enabled-callback-current.md`, backed by
+`captures\cdb-surface-dump-20260520-101859`; it temporarily changes selected
+unit type `5` to `8`, records `avail=10`, `enabled=3`, skips the callback
+render-begin lock under CDB, and reaches `branch=state2` with no AV rows.
+Tactical-grid coordinate proof is `captures\battle-ui-grid-hit-current.md`,
+backed by `captures\cdb-surface-dump-20260520-103155`; the probe reaches
+`0042CB50` and classifies displayed `(144,108)` as cell `(1,1)` versus native
+`(64,48)` as cell `(0,0)`. Modal/input classification is
+`captures\battle-ui-modal-classified-current.md`, backed by
+`captures\cdb-surface-dump-20260520-103714`; the probe reaches `004605D0` and
+logs `BATTLE_MODAL_CLASSIFIED status=input_update_seen_no_modal`.
+The current combined checkpoint is `captures\battle-ui-evidence-current.md`,
+which passes repo-only checks over force-entry, command, enabled callback,
+grid, modal, patch-stage, and stable HD-map smoke evidence.
+Natural/manual enabled-command cadence, actual centered input transforms, and
+later redraw proof are still pending.
+
+Unit-selection evidence is now separated from the right-bottom owner/action
+menu: `captures\cdb-surface-dump-20260517-171559` proves the stable
+`sub_408030 -> sub_406980 -> sub_40A500 -> sub_423B00` selected-unit route
+after the turn-loop boundary, but that path does not enter the
+`004338E0 -> 00435BC0` castle/building owner action cluster.
+
 The current validation-only native-to-HD composition proof is
 `captures\cdb-surface-dump-20260513-115303`. It is also hidden-desktop and
 uses `-SkipMapValidation`; the extra probe manually copies the native status
@@ -354,33 +462,32 @@ The same validation stage also passed a normal hidden map-validation run at
 gameplay-like surface with `108` active cells; all `13` blank active cells were
 explained as `visibility_zero`, with zero unexplained blanks.
 
-It also passed the natural right-bottom UI launcher at
+The natural right-bottom UI launcher at
 `captures\cdb-surface-dump-20260513-122200`. That run keeps the existing
 descriptor/viewport evidence intact on the validation stage
 (`RBUI_DESC_SWITCH=35`, `RBUI_VIEWPORT_SWITCH=1`) without naturally entering
 the owner/action draw rows (`RBUI_PANEL_DRAW=0`, `RBUI_ACTION_BOX=0`).
-Treat this as proof that a narrow final-composition patch is viable, not as a
-stable-stage promotion.
+The current repo-only gate treats this as a failure, not a visual pass.
 
 The current explicit right-bottom promotion decision is
-`captures\right-bottom-compose-promotion-decision-current.md`. It passes as a
-decision record with `decision=defer_stable_promotion` and
-`stable_stage_should_change=False`, because the validation evidence is still
-repo-only CDB/proxy evidence, no manual/visible DirectInput proof has been
-supplied, and the natural UI probe still does not enter the owner/action draw
-rows.
+`captures\right-bottom-compose-promotion-decision-current.md`. It now fails
+closed with `decision=defer_stable_promotion` and
+`stable_stage_should_change=False`, because the natural UI probe still does not
+enter owner/action draw rows and the controlled grid-hit screenshot is
+diagnostic, not an acceptable user-facing layout.
 
 The compact right-bottom validation matrix is
-`captures\right-bottom-compose-evidence-current.md`. It passes repo-only with
+`captures\right-bottom-compose-evidence-current.md`. It fails repo-only with
 `promotion_status=validation_stage_only`, `stable_stage_should_change=False`,
 and the same validation-stage SHA
 `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`.
 
 The right-bottom validation guard tests are
 `captures\right-bottom-compose-promotion-decision-tests-current.md` and
-`captures\right-bottom-compose-evidence-matrix-tests-current.md`. Both pass
-repo-only with `test_count=5`; they cover default defer behavior, missing or
-failing route gates, manual-proof/CDB-override promotion eligibility, required
+`captures\right-bottom-compose-evidence-matrix-tests-current.md`. They pass
+repo-only with `test_count=6` and `test_count=5`; they cover default defer
+behavior, natural owner/action row requirements, missing or failing route
+gates, manual-proof/CDB-override promotion eligibility, required
 route/map/UI/decision gates, hidden-desktop and full-start safety, visibility
 proof, candidate SHA agreement, and CLI `--require-pass` fail-closed behavior.
 

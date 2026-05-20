@@ -25,7 +25,20 @@ MARKERS = (
     "BATTLE_PRESENT_CALL",
     "BATTLE_COPYBACK_CALL",
     "BATTLE_DESCRIPTOR",
+    "BATTLE_COMMAND_ATTEMPT",
+    "BATTLE_COMMAND_RESULT",
+    "BATTLE_COMMAND_FORCE_ENABLED_UNIT",
+    "BATTLE_COMMAND_CLICK_GATE_FORCE",
+    "BATTLE_COMMAND_DESCRIPTOR_CALLBACK",
+    "BATTLE_COMMAND_RENDER_BEGIN_SKIP",
+    "BATTLE_COMMAND_CALLBACK_RESULT",
+    "BATTLE_COMMAND_CALLBACK",
+    "BATTLE_COMMAND_SKIP_TURN_BANNER",
+    "BATTLE_COMMAND_SKIP_TURN_FRAME",
     "BATTLE_COMMAND_HIT",
+    "BATTLE_COMMAND_NATIVE_HIT",
+    "BATTLE_GRID_ATTEMPT",
+    "BATTLE_GRID_RESULT",
     "BATTLE_GRID_HIT",
     "BATTLE_MODAL_HIT",
     "BATTLE_MODAL_CLASSIFIED",
@@ -38,6 +51,7 @@ MARKERS = (
 
 KV_RE = re.compile(r"(?P<key>[A-Za-z_][A-Za-z0-9_]*)=(?P<value>\([^)]*\)|[^\s]+)")
 MARKER_RE = re.compile("|".join(re.escape(marker) for marker in MARKERS))
+PRINTF_TOKEN_RE = re.compile(r"%[0-9A-Za-z]")
 
 
 def capture_paths(path: Path) -> tuple[Path, Path | None, Path | None]:
@@ -73,6 +87,8 @@ def parse_rows(text: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             marker = match.group(0)
             end = matches[index + 1].start() if index + 1 < len(matches) else len(line)
             fragment = line[match.start() : end].strip()
+            if PRINTF_TOKEN_RE.search(fragment):
+                continue
             rows.append(
                 {
                     "line": line_no,
@@ -85,6 +101,14 @@ def parse_rows(text: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
                 }
             )
     return rows, av_rows
+
+
+def markdown_image_ref(screenshot: str, markdown_path: Path) -> str:
+    screenshot_path = Path(screenshot)
+    try:
+        return screenshot_path.resolve().relative_to(markdown_path.parent.resolve()).as_posix()
+    except (OSError, ValueError):
+        return screenshot
 
 
 def load_summary_json(path: Path | None) -> dict[str, Any]:
@@ -108,6 +132,16 @@ def last_row(rows: list[dict[str, Any]], marker: str) -> dict[str, Any] | None:
         if row["marker"] == marker:
             return row
     return None
+
+
+def battle_center_wrapper_seen(rows: list[dict[str, Any]]) -> bool:
+    for row in rows:
+        if row["marker"] != "BATTLE_PRESENT_CALL":
+            continue
+        ret = row.get("values", {}).get("ret")
+        if isinstance(ret, int) and 0x0051BA00 <= ret < 0x0051BB00:
+            return True
+    return False
 
 
 def surface_size_from_ready(row: dict[str, Any] | None) -> list[int] | None:
@@ -146,6 +180,10 @@ def build_summary(path: Path) -> dict[str, Any]:
     battle_ready = marker_counts["BATTLE_READY"] > 0
     command_descriptor_found = marker_counts["BATTLE_DESCRIPTOR"] > 0
     command_hit_ok = marker_counts["BATTLE_COMMAND_HIT"] > 0
+    command_native_hit_ok = marker_counts["BATTLE_COMMAND_NATIVE_HIT"] > 0
+    command_callback_ok = marker_counts["BATTLE_COMMAND_CALLBACK"] > 0
+    command_callback_result_ok = marker_counts["BATTLE_COMMAND_CALLBACK_RESULT"] > 0
+    command_render_begin_skip_seen = marker_counts["BATTLE_COMMAND_RENDER_BEGIN_SKIP"] > 0
     grid_hit_ok = marker_counts["BATTLE_GRID_HIT"] > 0
     modal_hit = marker_counts["BATTLE_MODAL_HIT"] > 0
     modal_classified = marker_counts["BATTLE_MODAL_CLASSIFIED"] > 0
@@ -154,6 +192,7 @@ def build_summary(path: Path) -> dict[str, Any]:
     battle_surface = last_row(rows, "BATTLE_SURFACE")
     surfdump_ready = last_row(rows, "SURFDUMP_READY")
     surface_size = surface_size_from_ready(battle_surface) or surface_size_from_ready(surfdump_ready)
+    centered_wrapper_seen = battle_center_wrapper_seen(rows)
     visual_mode = "unknown"
     centered_offset = None
     if battle_surface is not None:
@@ -161,6 +200,9 @@ def build_summary(path: Path) -> dict[str, Any]:
         if values.get("mode") == "centered-native" or values.get("offset") == [80, 60]:
             visual_mode = "centered-native-640x480"
             centered_offset = values.get("offset", [80, 60])
+        elif centered_wrapper_seen and surface_size == [800, 600]:
+            visual_mode = "centered-native-640x480"
+            centered_offset = [80, 60]
         elif surface_size == [800, 600]:
             visual_mode = "hd-surface-unclassified"
         elif surface_size == [640, 480]:
@@ -188,9 +230,19 @@ def build_summary(path: Path) -> dict[str, Any]:
     else:
         classification.append("battle command descriptor was not observed")
     if command_hit_ok:
-        classification.append("battle command hit row observed")
+        classification.append("battle visual command hit row observed")
+    elif command_native_hit_ok:
+        classification.append("battle native-coordinate command hit row observed, but visual hit remains unproven")
     else:
-        classification.append("battle command hit proof was not observed")
+        classification.append("battle visual command hit proof was not observed")
+    if command_callback_result_ok:
+        classification.append("battle command callback result row observed")
+    elif command_callback_ok:
+        classification.append("battle command callback entry row observed, but no result row was captured")
+    else:
+        classification.append("battle command callback proof was not observed")
+    if command_render_begin_skip_seen:
+        classification.append("battle command callback render-begin skip row observed")
     if grid_hit_ok:
         classification.append("battle tactical-grid hit row observed")
     else:
@@ -213,7 +265,7 @@ def build_summary(path: Path) -> dict[str, Any]:
         "summary_json": str(summary_path) if summary_path else None,
         "screenshot": str(screenshot) if screenshot else None,
         "runtime_policy": "repo-only parser; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
-        "candidate": first_present(run_summary, "Candidate", "candidate"),
+        "candidate": first_present(run_summary, "CandidatePath", "Candidate", "candidate_path", "candidate"),
         "candidate_sha256": first_present(run_summary, "CandidateSha256", "CandidateSHA256", "candidate_sha256"),
         "launch_mode": first_present(run_summary, "LaunchMode", "launch_mode"),
         "hidden_desktop": first_present(run_summary, "HiddenDesktop", "hidden_desktop"),
@@ -228,16 +280,28 @@ def build_summary(path: Path) -> dict[str, Any]:
         "surface_size": surface_size,
         "visual_mode": visual_mode,
         "centered_offset": centered_offset,
+        "centered_wrapper_seen": centered_wrapper_seen,
         "command_descriptor_found": command_descriptor_found,
         "command_hit_ok": command_hit_ok,
+        "command_native_hit_ok": command_native_hit_ok,
+        "command_callback_ok": command_callback_ok,
+        "command_callback_result_ok": command_callback_result_ok,
+        "command_render_begin_skip_seen": command_render_begin_skip_seen,
         "grid_hit_ok": grid_hit_ok,
         "modal_hit": modal_hit,
         "modal_classified": modal_classified,
         "no_av": no_av,
         "last_battle_surface": battle_surface,
         "last_command_hit": last_row(rows, "BATTLE_COMMAND_HIT"),
+        "last_command_native_hit": last_row(rows, "BATTLE_COMMAND_NATIVE_HIT"),
+        "last_command_callback": last_row(rows, "BATTLE_COMMAND_CALLBACK"),
+        "last_command_render_begin_skip": last_row(rows, "BATTLE_COMMAND_RENDER_BEGIN_SKIP"),
+        "last_command_callback_result": last_row(rows, "BATTLE_COMMAND_CALLBACK_RESULT"),
+        "last_grid_attempt": last_row(rows, "BATTLE_GRID_ATTEMPT"),
+        "last_grid_result": last_row(rows, "BATTLE_GRID_RESULT"),
         "last_grid_hit": last_row(rows, "BATTLE_GRID_HIT"),
         "last_modal_hit": last_row(rows, "BATTLE_MODAL_HIT"),
+        "last_modal_classified": last_row(rows, "BATTLE_MODAL_CLASSIFIED"),
         "classification": classification,
     }
 
@@ -260,8 +324,13 @@ def write_markdown(path: Path, summary: dict[str, Any]) -> None:
         f"- Surface size: `{summary['surface_size']}`",
         f"- Visual mode: `{summary['visual_mode']}`",
         f"- Centered offset: `{summary['centered_offset']}`",
+        f"- Centered wrapper seen: `{summary['centered_wrapper_seen']}`",
         f"- Command descriptor found: `{summary['command_descriptor_found']}`",
-        f"- Command hit ok: `{summary['command_hit_ok']}`",
+        f"- Command visual hit ok: `{summary['command_hit_ok']}`",
+        f"- Command native hit ok: `{summary['command_native_hit_ok']}`",
+        f"- Command callback ok: `{summary['command_callback_ok']}`",
+        f"- Command callback result ok: `{summary['command_callback_result_ok']}`",
+        f"- Command render-begin skip seen: `{summary['command_render_begin_skip_seen']}`",
         f"- Grid hit ok: `{summary['grid_hit_ok']}`",
         f"- Modal classified: `{summary['modal_hit'] or summary['modal_classified']}`",
         "",
@@ -270,7 +339,8 @@ def write_markdown(path: Path, summary: dict[str, Any]) -> None:
     ]
     lines.extend(f"- {item}" for item in summary["classification"])
     if summary.get("screenshot"):
-        lines.extend(["", "## Screenshot", "", f"![battle UI surface]({summary['screenshot']})"])
+        screenshot = markdown_image_ref(summary["screenshot"], path)
+        lines.extend(["", "## Screenshot", "", f"![battle UI surface]({screenshot})"])
     lines.extend(["", "## Recent Rows", ""])
     for row in summary["rows"][-25:]:
         lines.append(f"- line {row['line']}: `{row['text']}`")
@@ -295,6 +365,10 @@ def main() -> int:
     print(f"surface-size: {summary['surface_size']}")
     print(f"visual-mode: {summary['visual_mode']}")
     print(f"command-hit-ok: {summary['command_hit_ok']}")
+    print(f"command-native-hit-ok: {summary['command_native_hit_ok']}")
+    print(f"command-callback-ok: {summary['command_callback_ok']}")
+    print(f"command-callback-result-ok: {summary['command_callback_result_ok']}")
+    print(f"command-render-begin-skip-seen: {summary['command_render_begin_skip_seen']}")
     print(f"grid-hit-ok: {summary['grid_hit_ok']}")
     print(f"av-count: {summary['av_count']}")
     if args.write_json:

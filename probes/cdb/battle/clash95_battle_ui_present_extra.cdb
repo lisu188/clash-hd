@@ -1,13 +1,14 @@
 .echo === Clash95 battle UI present probe ===
 .echo Second-step probe for battle draw and present routes after battle entry is reachable
-r @$t20=0
+r @$t19=0
 
-bp 0042E5A0 ".printf \"BATTLE_READY source=HandleBattleResults eip=0042e5a0 ret=%p surface=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); .printf \"BATTLE_SURFACE ptr=%p width=%d height=%d pitch=0 base=%p mode=unknown\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(005202e0)+4); r @$t20=1; gc"
-bp 00441670 ".if (@$t20 != 0) { .printf \"BATTLE_DRAW_ENTRY eip=00441670 name=FUN_00441670 ret=%p target=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
-bp 00441720 ".if (@$t20 != 0) { .printf \"BATTLE_DRAW_ENTRY eip=00441720 name=FUN_00441720 ret=%p target=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
-bp 0044A140 ".if (@$t20 != 0) { .printf \"BATTLE_DRAW_ENTRY eip=0044a140 name=FUN_0044A140 ret=%p target=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
-bp 0044A880 ".if (@$t20 != 0) { .printf \"BATTLE_DRAW_ENTRY eip=0044a880 name=FUN_0044A880 ret=%p target=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
-bp 00460EA0 ".if (@$t20 != 0) { .printf \"BATTLE_PRESENT_CALL eip=00460ea0 ret=%p src=%p dst=%p rect=(0,0,%d,%d) surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, wo(poi(005202e0)), wo(poi(005202e0)+2), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
-bp 00460B20 ".if (@$t20 != 0) { .printf \"BATTLE_COPYBACK_CALL eip=00460b20 ret=%p src=%p dst=%p x=%d y=%d w=0 h=0 surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, @ecx, @ebx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
-bp 00460BB0 ".if (@$t20 != 0) { .printf \"BATTLE_COPYBACK_CALL eip=00460bb0 ret=%p src=%p dst=%p x=%d y=%d w=0 h=0 surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, @ecx, @ebx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
-bp 0042E6F0 ".if (@$t20 != 0) { .printf \"BATTLE_DONE reason=after_HandleBattleResults eip=0042e6f0 surface=%p width=%d height=%d\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 0042E9E0 ".printf \"BATTLE_OWNER_ENTRY source=BattleRunner eip=0042e9e0 ret=%p attacker=%p defender=%p result_ptr=%p surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, @ecx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); .printf \"BATTLE_SURFACE ptr=%p width=%d height=%d pitch=0 base=%p mode=unknown\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(005202e0)+4); r @$t19=1; gc"
+bp 0042E5A0 ".printf \"BATTLE_READY source=HandleBattleResults eip=0042e5a0 ret=%p surface=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); .printf \"BATTLE_SURFACE ptr=%p width=%d height=%d pitch=0 base=%p mode=unknown\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(005202e0)+4); r @$t19=1; gc"
+bp 00441670 ".if (@$t19 != 0) { .printf \"BATTLE_DRAW_ENTRY eip=00441670 name=FUN_00441670 ret=%p target=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00441720 ".if (@$t19 != 0) { .printf \"BATTLE_DRAW_ENTRY eip=00441720 name=FUN_00441720 ret=%p target=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 0044A140 ".if (@$t19 != 0) { .printf \"BATTLE_DRAW_ENTRY eip=0044a140 name=FUN_0044A140 ret=%p target=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 0044A880 ".if (@$t19 != 0) { .printf \"BATTLE_DRAW_ENTRY eip=0044a880 name=FUN_0044A880 ret=%p target=%p width=%d height=%d\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00460EA0 ".if (@$t19 != 0) { .printf \"BATTLE_PRESENT_CALL eip=00460ea0 ret=%p src=%p dst=%p rect=(0,0,%d,%d) surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, wo(poi(005202e0)), wo(poi(005202e0)+2), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00460B20 ".if (@$t19 != 0) { .printf \"BATTLE_COPYBACK_CALL eip=00460b20 ret=%p src=%p dst=%p x=%d y=%d w=0 h=0 surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, @ecx, @ebx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00460BB0 ".if (@$t19 != 0) { .printf \"BATTLE_COPYBACK_CALL eip=00460bb0 ret=%p src=%p dst=%p x=%d y=%d w=0 h=0 surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, @ecx, @ebx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 0042E6F0 ".if (@$t19 != 0) { .printf \"BATTLE_DONE reason=after_HandleBattleResults eip=0042e6f0 surface=%p width=%d height=%d\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
