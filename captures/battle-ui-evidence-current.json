@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-05-20T10:44:32+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+  "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+  "promotion_status": "validation_stage_only",
+  "stable_stage_should_change": false,
+  "checks": {
+    "force_entry": {
+      "passed": false,
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\.codex-loop\\tmp-tests\\battle-ui-evidence-matrix-fixture\\cli\\missing.json",
+      "failures": [
+        "missing JSON: C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\.codex-loop\\tmp-tests\\battle-ui-evidence-matrix-fixture\\cli\\missing.json"
+      ]
+    },
+    "command_hit": {
+      "passed": true,
+      "path": "captures\\battle-ui-command-hit-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\cdb-surface-dump-20260520-094032\\surface.png",
+      "failures": []
+    },
+    "command_callback": {
+      "passed": true,
+      "path": "captures\\battle-ui-command-callback-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\cdb-surface-dump-20260520-100717\\surface.png",
+      "failures": []
+    },
+    "enabled_callback": {
+      "passed": true,
+      "path": "captures\\battle-ui-command-enabled-callback-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\cdb-surface-dump-20260520-101859\\surface.png",
+      "failures": []
+    },
+    "grid_hit": {
+      "passed": true,
+      "path": "captures\\battle-ui-grid-hit-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\cdb-surface-dump-20260520-103155\\surface.png",
+      "failures": []
+    },
+    "modal_classified": {
+      "passed": true,
+      "path": "captures\\battle-ui-modal-classified-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\cdb-surface-dump-20260520-103714\\surface.png",
+      "failures": []
+    },
+    "patch_stage": {
+      "passed": true,
+      "path": "captures\\patch-stage-battlecenter-current.json",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+      "candidate": "C:\\ClashTests\\battlecenter-force-entry\\clash95_hd_surfdump_20260518_221018.exe",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "status_counts": {
+        "patched": 136
+      },
+      "battle_group": {
+        "patched": 2,
+        "total": 2
+      },
+      "failures": []
+    },
+    "stable_smoke": {
+      "passed": true,
+      "path": "captures\\hd-map-smoke-current.json",
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "failures": []
+    }
+  },
+  "key_evidence": {
+    "centered_visual": null,
+    "command_hit_ok": true,
+    "command_native_hit_ok": true,
+    "command_callback_branch": "precondition-disabled",
+    "enabled_callback_branch": "state2",
+    "grid_visual_cell": [
+      1,
+      1
+    ],
+    "grid_native_cell": [
+      0,
+      0
+    ],
+    "modal_classified": true
+  },
+  "failures": [
+    "missing JSON: C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\.codex-loop\\tmp-tests\\battle-ui-evidence-matrix-fixture\\cli\\missing.json"
+  ]
+}
