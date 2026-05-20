@@ -176,7 +176,15 @@ def test_cli_writes_outputs_and_requires_pass(fixture: Path) -> None:
     assert json.loads(out_json.read_text(encoding="utf-8"))["passed"] is True
     assert "- Overall: PASS" in out_md.read_text(encoding="utf-8")
 
-    failing = run_script("--force-entry-json", str(fixture / "missing.json"), "--require-pass")
+    failing = run_script(
+        "--force-entry-json",
+        str(fixture / "missing.json"),
+        "--write-json",
+        str(fixture / "failing-matrix.json"),
+        "--write-md",
+        str(fixture / "failing-matrix.md"),
+        "--require-pass",
+    )
     assert failing.returncode == 2, failing.stdout + failing.stderr
 
 
