@@ -10,6 +10,25 @@ tags:
 
 # Log
 
+## [2026-05-15] correction | Right-bottom action-menu visual gate
+
+- Source updated: `[source: tools/current_evidence_refresh.py]`,
+  `[source: tools/right_bottom_compose_evidence_matrix.py]`,
+  `[source: tools/right_bottom_compose_promotion_decision.py]`,
+  `[source: captures/right-bottom-compose-evidence-current.md]`, and
+  `[source: captures/right-bottom-compose-promotion-decision-current.md]`.
+- Pages updated: [[Clash95 HD Mod Progress]],
+  [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
+- Contradictions: previous right-bottom reports treated controlled CDB/proxy
+  evidence as passing validation even though the screenshot showed stripey,
+  misplaced action/status buttons.
+- Resolution: the controlled grid-hit screenshot is diagnostic only. Natural
+  owner/action draw rows are now required; the current right-bottom compose
+  matrix and promotion decision fail closed with `RBUI_PANEL_DRAW=0` and
+  `RBUI_ACTION_BOX=0`.
+- Open questions: find a natural owner/action route with acceptable final
+  placement, then revisit anchor/copyback and paired hitboxes.
+
 ## [2026-05-15] maintenance | Manual proof contract
 
 - Source updated: `[source: tools/manual_directinput_checklist.py]`,
@@ -1146,6 +1165,503 @@ tags:
 - Open questions: gameplay border owner, bottom-tooltip recovery design,
   castle overview centering path, and remaining manual DirectInput validation.
 - Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-15] maintenance | Battle UI catalog smoke
+
+- Source updated: `[source: reports/battle_ui_catalog_probe_20260515.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: deterministic no-popup battle-entry route before any
+  `battle-ui-*` patch group.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-17] maintenance | Right-bottom action native-center strict probe
+
+- Source updated: `[source: captures/right-bottom-action-nativecenter-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural route/input proof still must enter the owner/action
+  draw cluster before the right-bottom action-menu visual fix can be promoted.
+- Notes: `rightbottomaction-nativecenter` keeps the controlled action-screen
+  visual fix and candidate SHA
+  `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`.
+- Notes: the strict fast-forward natural UI run
+  `captures/cdb-surface-dump-20260517-163734` passed the hidden map dump and
+  visibility gate, but failed the right-bottom UI gate with
+  `OwnerActionRowsSeen=false`, `RBUI_PANEL_DRAW=0`, and `RBUI_ACTION_BOX=0`.
+- Notes: wrapper-aware controlled run
+  `captures/cdb-surface-dump-20260517-172611` passed with
+  `clash95_post_owner_action_nativecenter_extra.cdb`; it proves stock
+  `00435BC0` drew on a temporary 640x480 surface and the wrapper copied the
+  native action screen back to an 800x600 surface at `0051B86D`.
+- Notes: unit-selection evidence at
+  `captures/cdb-surface-dump-20260517-171559` is tracked as a separate
+  selected-unit info/action route, not as right-bottom owner/action proof.
+- Notes: `run_cdb_right_bottom_ui_probe.ps1` now requires owner/action rows by
+  default; descriptor-only diagnostics require `-AllowDescriptorOnly`.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-18] maintenance | Natural castle-click route split
+
+- Source updated: `[source: captures/right-bottom-action-nativecenter-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: the natural route still must drive castle overview command
+  `0x63` or equivalent owner setup into `004338E0 -> 00435BC0` before the
+  right-bottom action-menu visual fix can be promoted.
+- Notes: focused hidden-desktop run
+  `captures/cdb-surface-dump-20260518-092756` passed with candidate SHA
+  `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`.
+- Notes: `clash95_building_click_route_extra.cdb` forces the live
+  map-handler call site at `0040B233` to screen `(352,272)` / map `(15,21)`,
+  reaches castle tile `32768`, building index `0`, owner `0`, mode `2`,
+  active `0`, and follows
+  `sub_4084A0 -> Building_GetInto -> 00422180`.
+- Notes: the run dumps a 640x480 castle overview surface at
+  `captures/cdb-surface-dump-20260518-092756/surface.png`; it does not produce
+  owner/action rows for `004338E0`, `00433914`, or `00435BC0`.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-18] maintenance | Castle command 0x63 owner setup split
+
+- Source updated: `[source: captures/right-bottom-action-nativecenter-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: the natural route still needs the second right-bottom
+  descriptor input after command `0x63` to enter `004338E0 -> 00433914 ->
+  0051B7E0`.
+- Notes: focused hidden-desktop run
+  `captures/cdb-surface-dump-20260518-100917` passed with candidate SHA
+  `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`.
+- Notes: `clash95_castle_click_cmd99_to_action_extra.cdb` drives the natural
+  castle-click route through overview raw hit `254`, command `99`, callback
+  `00433C20`, and verifies writes to `dword_532150`, `dword_53214C`, and
+  `dword_532154`.
+- Notes: after owner setup, the first map-loop `00511D40` descriptor scan
+  reports `result=0`, `d532218=00000000`, and no action-wrapper rows, so
+  command `0x63` is owner-state setup rather than the action-screen opener by
+  itself.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-18] maintenance | Battle UI force-entry and initial centering
+
+- Source updated: `[source: captures/battle-ui-force-entry-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: battle command-button hits, tactical-grid hits,
+  modal/dialog routing, and later battle-loop redraw centering still need
+  runtime proof.
+- Notes: the user-visible stripey/right-bottom button screenshot was traced to
+  the battle UI lane, not the castle owner/action menu lane.
+- Notes: baseline hidden-desktop run
+  `captures/cdb-surface-dump-20260518-214535` reaches forced `Unit_Attack`,
+  `BATTLE_OWNER_ENTRY source=BattleRunner`, and the bad uncentered 800x600
+  battle composition.
+- Notes: patched hidden-desktop run
+  `captures/cdb-surface-dump-20260518-221018` uses CDB `.writemem`, logs
+  wrapper return `0051ba63`, has no access violations, and classifies the
+  initial battle frame as `centered-native-640x480` at offset `[80, 60]`.
+- Notes: `battle-ui-center-present-wrapper` patches only initial battle
+  `Render_Present` callsite `0042F2F5` to cave `0051BA00`; broad battle
+  present wrapping remains unpromoted because earlier broad wrapping produced
+  redraw artifacts.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI command descriptor hit
+
+- Source updated: `[source: captures/battle-ui-command-hit-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: command callback/manual cadence, tactical-grid hits,
+  modal/dialog routing, and later battle-loop redraw centering still need
+  runtime proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-094032` extends the forced battle route
+  with controlled command descriptor probing.
+- Notes: the run logs `BATTLE_COMMAND_HIT coord_mode=visual result=2` for the
+  displayed command coordinate and `BATTLE_COMMAND_NATIVE_HIT
+  coord_mode=native result=2` for the native coordinate, with no AV rows.
+- Notes: the proof is harnessed: it controls mouse globals and skips turn
+  banner/frame waits. It should not be treated as natural/manual click
+  validation yet.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI command callback entry
+
+- Source updated: `[source: captures/battle-ui-command-callback-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: enabled-command state change, manual input cadence,
+  tactical-grid hits, modal/dialog routing, and later battle-loop redraw
+  centering still need runtime proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-100717` extends the forced battle route
+  with a command callback probe.
+- Notes: the run reaches descriptor `00514b78`, forces the descriptor click
+  gate, enters callback `0042d4e0`, and records
+  `BATTLE_COMMAND_CALLBACK_RESULT branch=precondition-disabled`.
+- Notes: the disabled branch reports `unit_index=0`, `unit_type=5`,
+  `avail=8`, and `enabled=0`, so it proves callback entry but not an enabled
+  command state transition.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI enabled command callback result
+
+- Source updated: `[source: captures/battle-ui-command-enabled-callback-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural/manual enabled-command cadence, tactical-grid hits,
+  modal/dialog routing, and later battle-loop redraw centering still need
+  runtime proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-101859` extends the forced battle route
+  with an enabled-command callback proof.
+- Notes: the probe temporarily changes selected unit type `5` to `8`, records
+  `avail=10`, `enabled=3`, skips the callback render-begin lock under CDB, and
+  reaches `BATTLE_COMMAND_CALLBACK_RESULT branch=state2`.
+- Notes: this is still harness evidence, not natural/manual input validation.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI tactical-grid coordinate classification
+
+- Source updated: `[source: captures/battle-ui-grid-hit-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural/manual enabled-command cadence, actual grid-input
+  transform, modal/dialog routing, and later battle-loop redraw centering still
+  need runtime proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-103155` extends the forced battle route
+  with tactical-grid hit-test probing.
+- Notes: the probe reaches `0042CB50`, records displayed `(144,108)` landing
+  in cell `(1,1)`, records native `(64,48)` landing in cell `(0,0)`, and has no
+  AV rows.
+- Notes: this is coordinate-classification evidence. It proves the live grid
+  hit-test route and the need for a centered-input transform, not a complete
+  battle action or natural/manual input validation.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI modal input path classification
+
+- Source updated: `[source: captures/battle-ui-modal-classified-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural/manual enabled-command cadence, actual centered
+  input transforms, and post-ready battle-loop redraw centering still need
+  runtime proof.
+- Notes: hidden-desktop run
+  `captures/cdb-surface-dump-20260520-103714` extends the forced battle route
+  with modal/input path classification.
+- Notes: the probe reaches battle loop input updater `004605D0`, records
+  `BATTLE_MODAL_CLASSIFIED status=input_update_seen_no_modal`, and has no AV
+  rows.
+- Notes: this is a no-hit classification for the current route. It does not
+  prove a separate modal dialog hit or natural/manual input validation.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI combined evidence matrix
+
+- Source updated: `[source: captures/battle-ui-evidence-current.md]`.
+- Pages updated: [[Log]].
+- Contradictions: none recorded.
+- Open questions: natural/manual enabled-command cadence, centered-input
+  wrapper mechanics, and post-ready battle-loop redraw centering still need
+  runtime proof.
+- Notes: added `tools/battle_ui_evidence_matrix.py` and
+  `tools/test_battle_ui_evidence_matrix.py`.
+
+## [2026-05-20] evidence | Battle UI centered input wrappers
+
+- Source updated: `[source: captures/battle-ui-centered-input-current.md]`.
+- Related source: `[source: captures/cdb-surface-dump-20260520-111115/RUN-SUMMARY.md]`.
+- Claim: the validation-only `battlecenter-inputprobe` stage proves the battle
+  grid and descriptor centered-input wrappers transform visual mouse
+  coordinates to native coordinates and restore them afterward.
+- Evidence:
+  `captures/cdb-surface-dump-20260520-111115` passed hidden-desktop with
+  candidate SHA
+  `F84933776944E2B616F6BBCCF7708ABBF06498D5438FA8DF7B7AF1BB56CD180A`,
+  `SURFDUMP_READY`, no AV rows, and a fresh 800x600 surface dump.
+- Notes: `battle-grid-centered-input` wraps `0042E4ED -> 0042CB50` through
+  cave `0051BAA0`; `battle-ui-centered-input` wraps `0042E501 -> 00419DC0`
+  through cave `0051BAF0`. The focused probe skips helper bodies after entry,
+  so natural/manual input cadence remains open.
+- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+  the combined matrix includes the inputprobe summary and inputprobe
+  patch-stage bytes.
+- Notes: the matrix passes with no failures and combines force-entry
+  centering, command hit/callback, enabled callback, tactical-grid coordinate
+  classification, centered-input wrapper proof, modal no-hit classification,
+  patch-stage bytes, and stable HD-map smoke evidence.
+- Notes: this is a validation-stage checkpoint, not stable promotion or
+  natural/manual input validation.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle UI post-ready redraw
+
+- Source updated: `[source: captures/battle-ui-post-ready-redraw-current.md]`.
+- Related source: `[source: captures/cdb-surface-dump-20260520-195244/RUN-SUMMARY.md]`.
+- Claim: the forced hidden-desktop battle route keeps producing centered
+  800x600 post-ready present/copyback activity after the initial battle
+  present.
+- Evidence:
+  `captures/cdb-surface-dump-20260520-195244` passed hidden-desktop with
+  candidate SHA
+  `F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF`,
+  `BATTLE_READY`, 9 post-ready presents, 6 post-ready copybacks, one forced
+  grid point `(144,108)->(64,48)`, final present return `0042CB46`, no AV
+  rows, and a fresh 800x600 surface dump.
+- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+  the combined matrix includes `post_ready_redraw: PASS`.
+- Open questions: natural/manual enabled-command cadence and stable-stage
+  battle promotion remain open.
+- Notes: this is validation evidence from a forced CDB route, not natural
+  gameplay proof.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle command availability scan
+
+- Source updated: `[source: captures/battle-command-availability-current.md]`.
+- Related source: `[source: captures/cdb-surface-dump-20260520-195244/RUN-SUMMARY.md]`.
+- Claim: the current forced battle fixture does not contain a naturally enabled
+  command unit, which explains why the enabled callback proof requires the CDB
+  type-8 override.
+- Evidence: 18 natural unit records were parsed. The selected unit is type `5`
+  with `availability=8` and `enabled=0`; all unit types present in the fixture
+  have `enabled=0`. The executable table scan through unit type `31` finds 11
+  enabled unit types to hunt for in a richer fixture: Dragon cavalry, Archer,
+  Crossbower, Musketeer, Catapult, Cannon, Forester, Cyklop, Wizard, Winger,
+  and Dragon.
+- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+  the combined matrix includes `availability_scan: PASS`.
+- Open questions: find a richer natural battle state with enabled commands, or
+  capture manual cadence in a state that naturally exposes one.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle save-slot command-state scan
+
+- Source updated: `[source: captures/battle-slot-scan-current.md]`.
+- Related sources: `[source: run_cdb_surface_dump.ps1]`,
+  `[source: clash95_surface_dump_probe.cdb]`,
+  `[source: probes/cdb/battle/clash95_battle_unit_scan_extra.cdb]`,
+  `[source: tools/battle_slot_scan_summary.py]`.
+- Claim: the current local save slots do not contain a naturally enabled
+  command unit for the battle UI proof.
+- Evidence: six save-slot attempts were aggregated. Slots `0`, `1`, and `2`
+  routed far enough to expose unit rows, with natural enabled command unit
+  count `0`; slots `3`, `4`, and `5` timed out before unit scan under the
+  current hidden CDB route.
+- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+  the combined matrix includes `slot_scan: PASS`.
+- Open questions: find or construct a richer battle state with enabled command
+  units, or capture manual cadence in such a state.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle save-file unit inventory
+
+- Source updated: `[source: captures/battle-save-unit-inventory-current.md]`.
+- Related source: `[source: tools/battle_save_unit_inventory.py]`.
+- Claim: direct save-file parsing confirms the current local saves do not
+  contain naturally enabled battle command units.
+- Evidence: the save unit layout starts at `0x00023EF6`, 16 bytes after the
+  runtime game-data unit offset `0x00023EE6`. The inventory reads all six
+  `C:\Clash\save\*.dat` files, parses 63 units, and reports
+  `natural_enabled_unit_count=0`. The decoded local-save unit types are
+  Peasant, Light infantry, Light cavalry, Highlander, and Builder.
+- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+  the combined matrix includes `save_inventory: PASS`.
+- Open questions: obtain or construct a richer battle state with enabled unit
+  types, then replace the current type-8 CDB override with natural/manual
+  command cadence proof.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-20] evidence | Battle constructed save fixture
+
+- Source updated: `[source: captures/battle-constructed-save-fixture-current.md]`.
+- Related sources: `[source: tools/battle_constructed_save_fixture.py]`,
+  `[source: captures/battle-constructed-fixture-unit-scan-current.md]`, and
+  `[source: captures/cdb-surface-dump-20260520-210816/RUN-SUMMARY.md]`.
+- Claim: an isolated copied-save fixture can load a naturally enabled battle
+  command unit without editing `C:\Clash\save`.
+- Evidence: unit index `0` in `C:\Clash\save\0.dat` has type offset
+  `0x00023EFC`; changing Light cavalry (`enabled=0`) to Dragon cavalry
+  (`enabled=3`) produces patched SHA-256
+  `278126F248C5F7A84F396EEBF25F37B21948968557571838CF73462EDFD39CDC`. The
+  copied save was written to
+  `C:\ClashTests\battle-enabled-fixture-20260520-210728\game\save\0.dat`.
+  Hidden CDB loaded slot `0` from that isolated work dir and parsed one
+  naturally enabled Dragon cavalry unit with `availability=10`, `enabled=3`.
+- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+  the combined matrix includes `constructed_fixture_plan: PASS` and
+  `constructed_fixture_unit_scan: PASS`.
+- Follow-up evidence:
+  `[source: captures/battle-constructed-fixture-command-callback-current.md]`
+  reaches `0042D4E0` from the isolated fixture with `unit_type=8`, `avail=10`,
+  `enabled=3`, click gate `eax=1`, `branch=state1`, and zero
+  `BATTLE_COMMAND_FORCE_ENABLED_UNIT` or `BATTLE_COMMAND_CLICK_GATE_FORCE`
+  rows. The refreshed hidden CDB run `captures\cdb-surface-dump-20260520-220459`
+  uses the battlecenter inputprobe stage, starts the attempt at displayed
+  `(588,440)`, reaches `BATTLE_COMMAND_PRE_GATES` as native `(508,380)`,
+  removes the descriptor-local pre-gate rearm, the direct render-begin skip,
+  and the old `DD_IsLost` guard, then releases the synthetic click state before
+  `Render_Begin`; the call exits naturally at iteration `1` with `guard=0`.
+- Open questions: replace the remaining synthetic hidden-CDB click/release with
+  natural/manual cadence proof.
+- Notes: `raw/` was not edited or reorganized.
+
+## [2026-05-27] evidence | Load-slot transition and slot5 fixture probe
+
+- Source updated:
+  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+- Related sources:
+  `[source: captures/cdb-surface-dump-20260527-120235/load-slot-transition-summary.md]`,
+  `[source: captures/cdb-surface-dump-20260527-120522/load-slot-transition-summary.md]`,
+  `[source: captures/cdb-surface-dump-20260527-120753/load-slot-transition-summary.md]`,
+  `[source: captures/cdb-surface-dump-20260527-121823/right-bottom-slot-fixture-result-summary.md]`,
+  and
+  `[source: clash95_castle_cmd99_owner_action_slot5_fixture_extra.cdb]`.
+- Claim: slot `5` still does not reach the natural right-bottom owner/action
+  acceptance route under hidden CDB, and the isolated fixture remains
+  diagnostic rather than promotion-ready.
+- Evidence: slots `3` and `4` produced no main-load handoff rows. Slot `5`
+  matched the expected target slot but stalled before `LSTRANS_LOAD_MENU_ENTRY`,
+  `LOADSAVE`, and `PlayGame`, with no AV rows. The guarded
+  `non_natural_isolated_fixture` loaded slot `0` from a copy of
+  `C:\Clash\save\5.dat`, reached `LOADSAVE`, `PlayGame`, map tile `(14,20)`,
+  building index `0`, `flags=0x0b`, and castle overview entry, then gave up
+  after bounded overview hit-test misses before command `0x63`.
+- Follow-up: derive the correct centered/native castle overview command target
+  or descriptor coordinates for this fixture before attempting any further
+  right-bottom owner/action patch work.
+- Notes: `raw/` was not edited or reorganized. `DEFAULT_STAGE` remains
+  unchanged, and no validation-only group was promoted.
+
+## [2026-05-27] evidence | Slot5 load gap rows and fixture native command target
+
+- Source updated:
+  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+- Related sources:
+  `[source: captures/cdb-surface-dump-20260527-160111/load-slot-transition-summary.md]`,
+  `[source: captures/cdb-surface-dump-20260527-160557/right-bottom-slot-fixture-result-summary.md]`,
+  `[source: captures/cdb-surface-dump-20260527-161047/right-bottom-slot-fixture-result-summary.md]`,
+  `[source: clash95_load_slot_entry_transition_extra.cdb]`, and
+  `[source: clash95_castle_cmd99_owner_action_slot5_fixture_extra.cdb]`.
+- Claim: natural slot `5` still does not reach the load-menu entry, but the
+  isolated fixture now explains and corrects the command `0x63` click target.
+- Evidence: the hidden slot `5` transition run observed callback entry and the
+  main wait-gate row, then timed out before switch-dispatch, `0044895A`,
+  `LOADSAVE`, or `PlayGame`, with no AV rows. The fixture hitmap sample showed
+  displayed `(231,366)` had raw byte `0x0c`, while native `(151,306)` had raw
+  byte `0xfe`. After retargeting only the fixture probe to native `(151,306)`,
+  the hidden fixture reached raw hit `254`, command `99`, owner flag `0x0b`
+  with bit `0x02`, descriptor `004338E0`, and a bounded surface dump.
+- Follow-up: keep debugging the natural slot `5` transition before promotion;
+  use the fixture result only as diagnostic evidence for the native overview
+  coordinate path.
+- Notes: `raw/` was not edited or reorganized. `DEFAULT_STAGE` remains
+  unchanged, no visible/manual runtime was run, and no validation-only group was
+  promoted.
+
+## [2026-05-27] evidence | Slot5 natural load success and right-bottom Render_Begin stall
+
+- Source updated:
+  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+- Related sources:
+  `[source: captures/cdb-surface-dump-20260527-163809/load-slot-transition-summary.md]`,
+  `[source: captures/cdb-surface-dump-20260527-165909/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/cdb-surface-dump-20260527-165909/timeout-stack.log]`,
+  `[source: clash95_load_slot_entry_transition_extra.cdb]`, and
+  `[source: clash95_castle_cmd99_owner_action_slot5_natural_extra.cdb]`.
+- Claim: natural slot `5` now reaches `0044895A`, `LOADSAVE`, and `PlayGame`,
+  but strict right-bottom promotion is still blocked inside the owner/action
+  prelude before draw/copyback rows.
+- Evidence: hidden run `captures/cdb-surface-dump-20260527-163809` used
+  late-only slot forcing and produced strict `late_entry_load_success` for slot
+  `5` with no AV rows. Hidden run `captures/cdb-surface-dump-20260527-165909`
+  then reached slot `5`, map tile `(14,20)`, overview raw hit `254`, command
+  `99`, owner flag `0x0b` with bit `0x02`, descriptor
+  `d1=(155,426 cb=004338e0)`, and `NOWNER_4338E0_ENTRY`. It reached
+  `NOWNER_419ED0_RENDER_BEGIN`, but did not return from that marker or reach
+  `NOWNER_ACTION_CALL_WRAPPER`, `NOWNER_OWNER_435BC0_ENTRY`, or
+  `NOWNER_WRAPPER_COPYBACK_DONE`.
+- Follow-up: inspect or instrument the `Render_Begin` / `DD_Pump` wait in the
+  natural owner/action prelude before attempting battle visible proof, manual
+  DirectInput proof, or any stable-stage promotion.
+- Notes: `raw/` was not edited or reorganized. `DEFAULT_STAGE` remains
+  unchanged, no visible/manual runtime was run, and no validation-only group was
+  promoted.
+
+## [2026-05-27] evidence | Right-bottom Render_Begin/DD_Pump blocker classified
+
+- Source updated:
+  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+- Related sources:
+  `[source: captures/cdb-surface-dump-20260527-173354/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/cdb-surface-dump-20260527-173354/summary.json]`,
+  `[source: captures/cdb-surface-dump-20260527-173354/timeout-stack.log]`,
+  `[source: clash95_castle_cmd99_owner_action_slot5_natural_extra.cdb]`, and
+  `[source: tools/right_bottom_slot_fixture_result_summary.py]`.
+- Claim: natural slot `5` right-bottom routing now has a precise non-AV
+  `Render_Begin` / DirectDraw wait blocker, not a load-route or owner-bit
+  blocker.
+- Evidence: hidden run `captures/cdb-surface-dump-20260527-173354` used
+  isolated candidate dir `C:\ClashTests\right-bottom-natural-slot5\v5-renderbegin`
+  and candidate SHA-256
+  `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`. The
+  summary reports `status=owner_action_ddraw_wait_stalled`, matching slot `5`,
+  `LOADSAVE`, `PlayGame`, owner flag `0x0b` with bit `0x02`,
+  `NOWNER_RENDER_BEGIN_LATE_ARMED=1`, `NOWNER_DD_PUMP_ENTRY=1`,
+  `NOWNER_DD_PUMP_MSG_PUMP_RETURN=1`, flip result `eax=1`, lost result
+  `eax=1`, no `NOWNER_RENDER_BEGIN_EXIT`, and zero AV rows.
+- Follow-up: keep the next work hidden/no-popup and explain why the
+  owner/action `Render_Begin` remains lost/flipping before any visible/manual
+  DirectInput, battle proof, or stable promotion attempt.
+- Notes: `raw/` was not edited or reorganized. `DEFAULT_STAGE` remains
+  unchanged, and no validation-only group was promoted.
+
+## [2026-05-27] evidence | Right-bottom render flag clears and copyback remains blocked
+
+- Source updated:
+  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+- Related sources:
+  `[source: captures/cdb-surface-dump-20260527-193159/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/cdb-surface-dump-20260527-193512/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/right-bottom-blocker-triage-current.md]`, and
+  `[source: clash95_castle_cmd99_owner_action_slot5_natural_release_extra.cdb]`.
+- Claim: the natural slot `5` owner/action route is no longer blocked inside
+  `Render_Begin`; the current hidden blocker is missing wrapper copyback after
+  owner/action draw entry.
+- Evidence: the v6 observation run showed `d544d04=1` on `004338E0` entry,
+  then `DD_Pump` cleared it to `0`; `Render_Begin` exited on iteration `2`,
+  and the route reached `NOWNER_ACTION_CALL_WRAPPER` plus
+  `NOWNER_OWNER_435BC0_ENTRY` with no AV.
+- Evidence: the v7 release run logged `NOWNER_RELEASE_OWNER_DESC_CLICK` after
+  `004338E0`, changing `d544d04` from `1` to `0` and button0 from `0x80` to
+  `0x00`; `Render_Begin` exited on iteration `1`.
+- Follow-up: diagnose why `00435BC0` does not reach the `0051B86D`
+  `NOWNER_WRAPPER_COPYBACK_DONE` row before attempting battle visible proof,
+  manual DirectInput proof, or stable promotion.
+- Notes: `raw/` was not edited or reorganized. `DEFAULT_STAGE` remains
+  unchanged, no visible/manual runtime was run, and no validation-only group was
+  promoted.
+
+## [2026-05-28] tooling | Right-bottom copyback trace prepared
+
+- Source updated:
+  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+- Related sources:
+  `[source: clash95_castle_cmd99_owner_action_slot5_natural_extra.cdb]`,
+  `[source: clash95_castle_cmd99_owner_action_slot5_natural_release_extra.cdb]`,
+  `[source: tools/right_bottom_slot_fixture_result_summary.py]`, and
+  `[source: captures/right-bottom-blocker-triage-current.md]`.
+- Claim: the next hidden slot `5` right-bottom run can now distinguish whether
+  the native-centering wrapper enters, stock `00435BC0` loops or returns, and
+  whether wrapper copyback/present reaches `0051B86D`.
+- Evidence: parser tests cover copyback reached, copyback missing after stock
+  return, and bounded `00435BC0` loop-stall classifications while preserving
+  older evidence status.
+- Notes: no runtime proof, visible/manual validation, patch bytes, stable-stage
+  change, or promotion was added in this tooling step.
 
 Future entries should be appended using this shape:
 
