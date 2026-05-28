@@ -49,6 +49,78 @@ conservative pattern.
     the load menu if the slot validates.
   - After a selected slot is accepted, the menu path calls `00444490`
     (`FUN_00444490`, load save), then reaches `0040B660` (`PlayGame`).
+- Current load-slot boundary:
+  - `captures\load-slot-route-limit-current.md` keeps the current evidence
+    machine-checkable. Static code still shows ten local load rows and
+    integer `save\%d.dat` checks, and `run_cdb_surface_dump.ps1` still uses
+    `x=320`, `y=166 + 22 * LoadSlot`.
+  - Archived hidden-desktop CDB evidence proves slot 2 reaches
+    `SURFDUMP_LOADSAVE`/`PlayGame`, but slots 3, 4, and 5 currently time out
+    before forced load-select, forced load-accept, `LOADSAVE`, or `PlayGame`.
+  - `captures\load-slot-timeout-phase-current.md` narrows that blocker:
+    slot 2 reaches `0044895A` load-menu entry, loop rows, forced
+    select/accept, `LOADSAVE`, and `PlayGame`; slots 3, 4, 5, plus the
+    current slot-5 right-bottom attempt, reach early `00419B80`
+    load-coordinate descriptor rows only and stall before `0044895A`.
+  - `captures\load-slot-entry-gap-current.md` now keeps the exact transition
+    gap machine-checkable: rows 3-5 stop after the forced main Load callback
+    and before real case-5 load-menu entry, so they are not yet evidence of
+    invalid save rows or broken `sub_444750` checks.
+  - `captures\load-slot-transition-probe-guard-current.md` keeps the next
+    focused probe ready: `clash95_load_slot_entry_transition_extra.cdb` avoids
+    early `00419B80` coordinate forcing, logs the `00419C60`/`00447D61`
+    handoff, and late-arms row selection only after `0044895A`.
+  - `tools\load_slot_transition_summary.py` parses future `LSTRANS_*` logs and
+    classifies them as pre-entry stalls, entry-without-`LOADSAVE` blockers, or
+    late-entry load success.
+  - Do not treat the presence of `C:\Clash\save\5.dat` or the slot-5
+    action-eligible owner record as proof that the natural load-menu row-5
+    route is working. Until rows 3-5 are proven, use an isolated slot fixture
+    or a direct-loader probe and label it as non-natural route evidence.
+  - `captures\right-bottom-slot-fixture-plan-current.md` now makes the safest
+    non-promoting fixture route explicit: copy only the route-compatible
+    `C:\Clash\save\5.dat` state into an isolated workdir as `save\0.dat`, then
+    rerun the already-proven row-0 hidden-desktop route. This must not mutate
+    `C:\Clash\save`, must not write the fixture into the repository, and must
+    not promote `rightbottomcompose` while natural row-5 loading is still
+    blocked before `LOADSAVE`.
+  - `prepare_right_bottom_slot_fixture.ps1` is the dry-run helper for that
+    route. By default it only prints a JSON/text plan; with `-SeedWorkDir` it
+    plans a non-save seed from `C:\Clash` before overlaying `save\0.dat`, the
+    actual `Copy-Item` writes are after the `-Execute` gate, and
+    `captures\right-bottom-slot-fixture-script-guard-current.md` verifies the
+    helper refuses source-workdir, live-save, and repository fixture output.
+  - `captures\right-bottom-slot-fixture-runtime-plan-current.md` now records
+    the future hidden-desktop runtime command sequence for that fixture:
+    prepare dry-run with `-SeedWorkDir`, explicit `-Execute` to seed non-save
+    workdir files plus the route-compatible save overlay, then
+    `run_cdb_surface_dump.ps1` with the isolated fixture as `-WorkDir`, a child
+    `-CandidateDir`, `-LoadSlot 0`, and the right-bottom owner/action CDB
+    probe, followed by `tools\right_bottom_slot_fixture_result_summary.py`
+    with `--require-load-success`, `--require-slot-match`,
+    `--require-owner-bit2`, and `--require-owner-action`. This remains
+    non-natural fixture evidence until natural rows 3-5 enter `LOADSAVE`.
+  - `captures\right-bottom-slot-fixture-result-summary-tests-current.md`
+    covers the future result parser before runtime use: missing
+    `LOADSAVE`/`PlayGame`, owner-flag-blocked, owner-loop-without-action,
+    owner/action reached, and AV rows each classify distinctly and fail closed
+    when a required owner/action proof is absent.
+  - 2026-05-27 update: slot `5` is no longer blocked at the load transition.
+    `captures\cdb-surface-dump-20260527-163809\load-slot-transition-summary.md`
+    proves the real `0044895A -> LOADSAVE -> PlayGame` route for slot `5`
+    when slot forcing is deferred until after `0044895A` with
+    `-LateLoadSlotForcingOnly`.
+  - The follow-up natural right-bottom run
+    `captures\cdb-surface-dump-20260527-193512\right-bottom-natural-slot5-summary.md`
+    shows the next blocker is later: command `0x63`, owner flag bit `0x02`,
+    `004338E0`, `Render_Begin` exit, `NOWNER_ACTION_CALL_WRAPPER`, and
+    `NOWNER_OWNER_435BC0_ENTRY` are reached. The diagnostic click-release row
+    clears `d544d04` after `004338E0`, but `NOWNER_WRAPPER_COPYBACK_DONE`
+    remains absent.
+  - The next right-bottom probe lane is v8 copyback tracing: it keeps slot `5`
+    natural routing intact, then logs wrapper entry at `0051B7E0`, stock
+    `00435BC0` loop/return rows, copyback call/return, and final `0051B86D`.
+    This is evidence-only and does not change the stable/default stage.
 - Existing runtime evidence:
   - `captures\visual-smoke-20260423-121409\results.json` used
     `400,300;300,218;320,166;400,226` and reached a gameplay-looking

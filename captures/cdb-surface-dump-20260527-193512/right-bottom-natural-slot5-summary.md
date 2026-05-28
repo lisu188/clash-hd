@@ -1,0 +1,197 @@
+# Right-Bottom Slot Fixture Result Summary
+
+- Log: `captures\cdb-surface-dump-20260527-193512\cdb-surface-dump.log`
+- Proof class: `natural_slot5_right_bottom_route`
+- Status: `owner_action_draw_reached`
+- Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter`
+- Candidate path: `C:\ClashTests\right-bottom-natural-slot5\v7-clickrelease\clash95_hd_surfdump_20260527_193512.exe`
+- Candidate SHA-256: `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`
+- Candidate dir: `C:\ClashTests\right-bottom-natural-slot5\v7-clickrelease`
+- Expected slot: `5`
+- Selected arg: `5`
+- Selected global: `5`
+- LOADSAVE slot values: `[5, 5, 5, 5]`
+- LOADSAVE slot consistent: `True`
+- LOADSAVE slot expected match: `True`
+- Expected slot match: `True`
+- Rows parsed: `43`
+- Access violations: `0`
+- Load success: `True`
+- Owner loop reached: `True`
+- Owner flag test: `{'owner': 65849114, 'owner_flag': 11, 'bit2': 2, 'bit1': 1, 'bit8': 8, 'ret': 4333600, 'd532150': 65849114, 'd53214c': 1, 'd532154': 167862544}`
+- Owner/action route count: `3`
+- Owner/action draw count: `2`
+- Owner/action prelude count: `20`
+- Copyback path marker count: `0`
+- Owner/action Render_Begin reached: `True`
+- Owner/action Render_Begin returned: `True`
+- Owner/action Render_Begin stalled: `False`
+- Owner/action DD_Pump wait stalled: `False`
+- Render_Begin marker count: `5`
+- Render_Begin late-armed count: `1`
+- Render_Begin entry count: `1`
+- Render_Begin loop count: `1`
+- Render_Begin flip result count: `1`
+- Render_Begin DD_Pump call count: `0`
+- Render_Begin DD_Pump return count: `0`
+- Render_Begin lost result count: `1`
+- Render_Begin iteration limit count: `0`
+- Render_Begin exit count: `1`
+- Owner descriptor click-release count: `1`
+- Last owner descriptor click-release: `{'before_d544d04': 1, 'before_button0': 128, 'after_d544d04': 0, 'after_button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5, 'reason': 'post_4338e0_entry'}`
+- Wrapper copyback count: `0`
+- Wrapper entry count: `0`
+- Wrapper call-stock count: `0`
+- Wrapper stock-return count: `0`
+- Wrapper copyback-call count: `0`
+- Wrapper copyback-return count: `0`
+- Wrapper alloc-failed fallback count: `0`
+- 00435BC0 loop head count: `0`
+- 00435BC0 loop limit count: `0`
+- 00435BC0 return count: `0`
+- Last wrapper entry: `None`
+- Last wrapper stock return: `None`
+- Last 00435BC0 loop row: `None`
+- Last 00435BC0 hit result: `None`
+- Last 00435BC0 compare: `None`
+- Render flag values: `[1, 0, 0, 0, 0, 0, 0, 0]`
+- Render flag unique values: `[1, 0]`
+- Render flag bit01 count: `1`
+- Render flag last value: `0`
+- Render flag held during spin: `False`
+- DD_Pump marker count: `0`
+- DD_Pump entry count: `0`
+- DD_Pump message pump call count: `0`
+- DD_Pump message pump return count: `0`
+- Last Render_Begin flip result: `{'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}`
+- Last Render_Begin lost result: `{'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}`
+- Last Render_Begin DD_Pump return: `None`
+- Timeout stack classification: `timeout_other`
+- Timeout stack: `captures\cdb-surface-dump-20260527-193512\timeout-stack.log`
+- Castle hitmap sample: `{'surface': 171619448, 'size': [640, 480], 'base': 172163120, 'displayed': [231, 366], 'displayed_sample': 12, 'native': [151, 306], 'native_sample': 254, 'bbox_min': [77, 306], 'bbox_min_sample': 254, 'bbox_max': [237, 426], 'bbox_max_sample': 53, 'expected_raw': 254}`
+- Castle command-99 target: `{'native': [151, 306], 'displayed_hint': [231, 366], 'raw': [9664, 19584]}`
+- Castle hit count: `1`
+- Last castle hit: `{'raw_hit': 254, 'adjusted': 6, 'expected_raw': 254, 'command': 99, 'callback': 4406304, 'owner_screen': 65849114}`
+
+## Marker Counts
+
+- `SURFDUMP_LOADSAVE`: `2`
+- `SURFDUMP_PLAYGAME`: `4`
+- `SURFDUMP_READY`: `0`
+- `SURFDUMP_HOST_READY`: `0`
+- `NOWNER_HEADER`: `1`
+- `NOWNER_FORCE_MAP_CASTLE_CLICK`: `1`
+- `NOWNER_MAP_TILE`: `1`
+- `NOWNER_BUILDING_TILE`: `1`
+- `NOWNER_CASTLE_OVERVIEW_ENTRY`: `1`
+- `NOWNER_CASTLE_HIT_GIVEUP`: `0`
+- `NOWNER_CASTLE_HITMAP_SAMPLE`: `1`
+- `NOWNER_CASTLE_CMD99_TARGET`: `1`
+- `NOWNER_CASTLE_HIT`: `1`
+- `NOWNER_CASTLE_CMD99_GATE`: `1`
+- `NOWNER_CASTLE_CALLBACK`: `1`
+- `NOWNER_433C20_ENTRY`: `1`
+- `NOWNER_OWNER_FLAG_TEST`: `1`
+- `NOWNER_OWNER_SCREEN_DESC_DRAW`: `1`
+- `NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY`: `0`
+- `NOWNER_4338E0_ENTRY`: `1`
+- `NOWNER_419ED0_ENTRY`: `1`
+- `NOWNER_419ED0_SOUND_PREP`: `1`
+- `NOWNER_419ED0_SOUND_RETURN`: `1`
+- `NOWNER_419ED0_STATE6_READY`: `1`
+- `NOWNER_419ED0_RENDER_BEGIN`: `2`
+- `NOWNER_419ED0_RENDER_BEGIN_RETURN`: `0`
+- `NOWNER_419ED0_STATE5_DONE`: `1`
+- `NOWNER_RENDER_BEGIN_LATE_ARMED`: `1`
+- `NOWNER_RELEASE_OWNER_DESC_CLICK`: `1`
+- `NOWNER_RENDER_BEGIN_ENTRY`: `1`
+- `NOWNER_RENDER_BEGIN_LOOP`: `1`
+- `NOWNER_RENDER_BEGIN_FLIP_RESULT`: `1`
+- `NOWNER_RENDER_BEGIN_DD_PUMP_CALL`: `0`
+- `NOWNER_RENDER_BEGIN_DD_PUMP_RETURN`: `0`
+- `NOWNER_RENDER_BEGIN_LOST_RESULT`: `1`
+- `NOWNER_RENDER_BEGIN_ITERATION_LIMIT`: `0`
+- `NOWNER_RENDER_BEGIN_EXIT`: `1`
+- `NOWNER_DD_PUMP_ENTRY`: `0`
+- `NOWNER_DD_PUMP_MSG_PUMP_CALL`: `0`
+- `NOWNER_DD_PUMP_MSG_PUMP_RETURN`: `0`
+- `NOWNER_4338E0_AFTER_SELECT`: `1`
+- `NOWNER_4338E0_AFTER_GATE`: `1`
+- `NOWNER_4338E0_RESOURCE_SETUP`: `1`
+- `NOWNER_4338E0_PRE_PUMP`: `1`
+- `NOWNER_4338E0_PUMP_ENTRY`: `1`
+- `NOWNER_4338E0_PUMP_FILL`: `0`
+- `NOWNER_4338E0_PUMP_RETURN`: `1`
+- `NOWNER_4338E0_POST_PUMP`: `1`
+- `NOWNER_4338E0_SURFDUMP_READY`: `0`
+- `NOWNER_4338E0_OWNER_FLAG_BLOCKED`: `0`
+- `NOWNER_ACTION_CALL_WRAPPER`: `1`
+- `NOWNER_WRAPPER_ENTRY`: `0`
+- `NOWNER_WRAPPER_ALLOC_RESULT`: `0`
+- `NOWNER_WRAPPER_TEMP_SURFACE`: `0`
+- `NOWNER_WRAPPER_CALL_STOCK_435BC0`: `0`
+- `NOWNER_OWNER_435BC0_ENTRY`: `1`
+- `NOWNER_435BC0_ALLOC_RESULT`: `0`
+- `NOWNER_435BC0_MODEL_CHECK`: `0`
+- `NOWNER_435BC0_LOOP_HEAD`: `0`
+- `NOWNER_435BC0_LOOP_PUMP_CALL`: `0`
+- `NOWNER_435BC0_LOOP_DRAW_CALL`: `0`
+- `NOWNER_435BC0_LOOP_DRAW_RETURN`: `0`
+- `NOWNER_435BC0_LOOP_HIT_RESULT`: `0`
+- `NOWNER_435BC0_LOOP_COMPARE`: `0`
+- `NOWNER_435BC0_LOOP_LIMIT`: `0`
+- `NOWNER_435BC0_LOOP_EXIT`: `0`
+- `NOWNER_435BC0_NO_HIT_UPDATE`: `0`
+- `NOWNER_435BC0_RETURN`: `0`
+- `NOWNER_WRAPPER_STOCK_RETURN`: `0`
+- `NOWNER_WRAPPER_RESTORE_SURFACE`: `0`
+- `NOWNER_WRAPPER_COPYBACK_CALL`: `0`
+- `NOWNER_WRAPPER_COPYBACK_RETURN`: `0`
+- `NOWNER_WRAPPER_PRESENT_CALL`: `0`
+- `NOWNER_WRAPPER_ALLOC_FAILED_FALLBACK`: `0`
+- `NOWNER_WRAPPER_COPYBACK_DONE`: `0`
+- `AV_SURFDUMP`: `0`
+
+## Classification
+
+- LOADSAVE and PlayGame were reached
+- candidate SHA-256: D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C
+- probe stage: gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter
+- observed load slot matches the expected fixture slot
+- castle command-99 owner loop was reached
+- castle overview hitmap samples were captured around command 0x63
+- owner flag bit 0x02 was set
+- owner/action prelude markers were observed: 20
+- owner/action prelude returned from Render_Begin
+- Render_Begin markers late_armed=1 entry=1 loop=1 flip=1 dd_pump_call=0 dd_pump_return=0 lost=1 limit=0 exit=1
+- Render_Begin flag values d544d04 unique=[1, 0] bit01_rows=1 last=0
+- owner descriptor click-release rows were observed: 1
+- last owner descriptor click-release row: {'before_d544d04': 1, 'before_button0': 128, 'after_d544d04': 0, 'after_button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5, 'reason': 'post_4338e0_entry'}
+- last Render_Begin flip result: {'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}
+- last Render_Begin lost result: {'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}
+- timeout stack classification: timeout_other
+- owner/action route markers were observed
+- owner/action draw rows were observed
+
+## Key Rows
+
+- line 217: `NOWNER_419ED0_SOUND_PREP desc=00514ff5 sound=004efd67 ret=004338e6`
+- line 217: `NOWNER_419ED0_SOUND_RETURN desc=00514ff5 ret=004338e6 eax=004efd67`
+- line 217: `NOWNER_419ED0_STATE6_READY desc=00514ff5 ret=004338e6 state=1 d544cd8=00544cd8`
+- line 217: `NOWNER_419ED0_RENDER_BEGIN desc=00514ff5 ret=004338e6 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005 render=00000001`
+- line 217: `NOWNER_RENDER_BEGIN_ENTRY ret=00419efa render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a07ee10 size=(800,600)`
+- line 217: `NOWNER_RENDER_BEGIN_LOOP iter=1 render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005`
+- line 217: `NOWNER_RENDER_BEGIN_FLIP_RESULT iter=1 eax=00000000 render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005`
+- line 217: `NOWNER_RENDER_BEGIN_LOST_RESULT iter=1 eax=00000000 render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005`
+- line 217: `NOWNER_RENDER_BEGIN_EXIT ret=00419efa render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005 iter=1`
+- line 217: `NOWNER_419ED0_RENDER_BEGIN_RETURN desc=00514ff5 ret=004338e6 eax=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 d543d78=00000001 d543d7c=00000005`
+- line 217: `NOWNER_419ED0_STATE5_DONE desc=00514ff5 ret=004338e6 state=5 eax=00000001`
+- line 217: `NOWNER_4338E0_AFTER_SELECT owner=03ecc71a owner_flag=0x0b d532218=00000000 d5322c8=0 eax=00000001`
+- line 217: `NOWNER_4338E0_AFTER_GATE owner=03ecc71a owner_flag=0x0b d544d10=00000001 surface=0a07ee10 size=(800,600)`
+- line 217: `NOWNER_4338E0_RESOURCE_SETUP ret=000001dc eax=0051d4c0 edx=00000014 d544d10=00000001 owner=03ecc71a owner_flag=0x0b`
+- line 217: `NOWNER_4338E0_PRE_PUMP ret=000001dc render=00000000 d544d10=00000001 surface=0a07ee10 size=(800,600)`
+- line 217: `NOWNER_4338E0_PUMP_ENTRY ret=0043390f render=00544cd8 d544d10=00000001 surface=0a07ee10 size=(800,600)`
+- line 217: `NOWNER_4338E0_PUMP_RETURN ret=0043390f d544d10=00000000 surface=0a07ee10 size=(800,600)`
+- line 217: `NOWNER_4338E0_POST_PUMP ret=000001dc owner=03ecc71a owner_flag=0x0b d544d10=00000000 surface=0a07ee10 size=(800,600)`
+- line 217: `NOWNER_ACTION_CALL_WRAPPER ret=000001dc owner_arg=03ecc71a owner_global=03ecc71a owner_flag=0x0b d532218=00000000 d5322c8=0 surface=0a07ee10 size=(800,600)`
+- line 217: `NOWNER_OWNER_435BC0_ENTRY ret=0051b837 owner_arg=03ecc71a d532218_before=00000000 d5322c8_before=0 surface=0a019858 size=(640,480) mouse=(180,440)`
