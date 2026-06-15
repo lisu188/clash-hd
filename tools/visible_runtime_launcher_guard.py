@@ -307,9 +307,10 @@ def write_markdown(path: Path, guard: dict[str, Any]) -> None:
                 f"- Guarded risky scripts: `{inventory['guarded_risky_script_count']}`",
                 f"- Exempt risky scripts: `{inventory['exempt_risky_script_count']}`",
                 f"- Unclassified risky scripts: `{inventory['unclassified_risky_script_count']}`",
-                "",
             ]
         )
+        if inventory["scripts"]:
+            lines.append("")
         for script in inventory["scripts"]:
             suffix = f" reason=`{script['reason']}`" if script.get("reason") else ""
             lines.append(
