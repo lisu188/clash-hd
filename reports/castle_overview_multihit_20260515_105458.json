@@ -1,0 +1,739 @@
+{
+  "log": "captures\\archive\\cdb-surface-dump-20260515-105458\\cdb-surface-dump.log",
+  "expected_targets": {
+    "0": {
+      "raw": 248,
+      "command": 134,
+      "callback": 4521584,
+      "gate": 1
+    },
+    "1": {
+      "raw": 254,
+      "command": 99,
+      "callback": 4406304,
+      "gate": 1
+    },
+    "2": {
+      "raw": 255,
+      "command": 135,
+      "callback": 4370592,
+      "gate": 1
+    }
+  },
+  "targets": {
+    "0": {
+      "expected": {
+        "raw": 248,
+        "command": 134,
+        "callback": 4521584,
+        "gate": 1
+      },
+      "ok": true,
+      "target_set": {
+        "index": 0,
+        "raw": 248,
+        "command": 134,
+        "callback": 4521584,
+        "expected_gate": 1,
+        "displayed": [
+          371,
+          107
+        ],
+        "native": [
+          291,
+          47
+        ]
+      },
+      "hittest_result": {
+        "index": 0,
+        "raw_hit": 248,
+        "expected_raw": 248,
+        "adjusted_hit": 0,
+        "mouse": [
+          371,
+          107
+        ],
+        "raw": [
+          23744,
+          6848
+        ]
+      },
+      "descriptor": {
+        "index": 0,
+        "command": 134,
+        "expected_command": 134,
+        "callback": 4521584,
+        "expected_callback": 4521584,
+        "text": 3,
+        "arg_count": 5171110,
+        "owner_screen": 69715738,
+        "surface": 167853784,
+        "sz": [
+          800,
+          600
+        ],
+        "mouse": [
+          371,
+          107
+        ]
+      },
+      "click_gate": {
+        "index": 0,
+        "command": 134,
+        "expected_command": 134,
+        "callback": 4521584,
+        "expected_callback": 4521584,
+        "gate": 1,
+        "expected_gate": 1,
+        "mouse": [
+          371,
+          107
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "completion": {
+        "index": 0,
+        "command": 134,
+        "callback": 4521584,
+        "gate": 1,
+        "raw": 248
+      },
+      "raw_ok": true,
+      "descriptor_ok": true,
+      "gate_ok": true,
+      "completion_ok": true
+    },
+    "1": {
+      "expected": {
+        "raw": 254,
+        "command": 99,
+        "callback": 4406304,
+        "gate": 1
+      },
+      "ok": true,
+      "target_set": {
+        "index": 1,
+        "raw": 254,
+        "command": 99,
+        "callback": 4406304,
+        "expected_gate": 1,
+        "displayed": [
+          231,
+          366
+        ],
+        "native": [
+          151,
+          306
+        ]
+      },
+      "hittest_result": {
+        "index": 1,
+        "raw_hit": 254,
+        "expected_raw": 254,
+        "adjusted_hit": 6,
+        "mouse": [
+          231,
+          366
+        ],
+        "raw": [
+          14784,
+          23424
+        ]
+      },
+      "descriptor": {
+        "index": 1,
+        "command": 99,
+        "expected_command": 99,
+        "callback": 4406304,
+        "expected_callback": 4406304,
+        "text": 3,
+        "arg_count": 5171298,
+        "owner_screen": 69715738,
+        "surface": 167853784,
+        "sz": [
+          800,
+          600
+        ],
+        "mouse": [
+          231,
+          366
+        ]
+      },
+      "click_gate": {
+        "index": 1,
+        "command": 99,
+        "expected_command": 99,
+        "callback": 4406304,
+        "expected_callback": 4406304,
+        "gate": 1,
+        "expected_gate": 1,
+        "mouse": [
+          231,
+          366
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "completion": {
+        "index": 1,
+        "command": 99,
+        "callback": 4406304,
+        "gate": 1,
+        "raw": 254
+      },
+      "raw_ok": true,
+      "descriptor_ok": true,
+      "gate_ok": true,
+      "completion_ok": true
+    },
+    "2": {
+      "expected": {
+        "raw": 255,
+        "command": 135,
+        "callback": 4370592,
+        "gate": 1
+      },
+      "ok": true,
+      "target_set": {
+        "index": 2,
+        "raw": 255,
+        "command": 135,
+        "callback": 4370592,
+        "expected_gate": 1,
+        "displayed": [
+          635,
+          405
+        ],
+        "native": [
+          555,
+          345
+        ]
+      },
+      "hittest_result": {
+        "index": 2,
+        "raw_hit": 255,
+        "expected_raw": 255,
+        "adjusted_hit": 7,
+        "mouse": [
+          635,
+          405
+        ],
+        "raw": [
+          40640,
+          25920
+        ]
+      },
+      "descriptor": {
+        "index": 2,
+        "command": 135,
+        "expected_command": 135,
+        "callback": 4370592,
+        "expected_callback": 4370592,
+        "text": 3,
+        "arg_count": 5171275,
+        "owner_screen": 69715738,
+        "surface": 167853784,
+        "sz": [
+          800,
+          600
+        ],
+        "mouse": [
+          635,
+          405
+        ]
+      },
+      "click_gate": {
+        "index": 2,
+        "command": 135,
+        "expected_command": 135,
+        "callback": 4370592,
+        "expected_callback": 4370592,
+        "gate": 1,
+        "expected_gate": 1,
+        "mouse": [
+          635,
+          405
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "completion": {
+        "index": 2,
+        "command": 135,
+        "callback": 4370592,
+        "gate": 1,
+        "raw": 255
+      },
+      "raw_ok": true,
+      "descriptor_ok": true,
+      "gate_ok": true,
+      "completion_ok": true
+    }
+  },
+  "all_targets_ok": true,
+  "marker_counts": {
+    "CASTLEOV_MULTI_TARGET_SET": 3,
+    "CASTLEOV_MULTI_OVERVIEW_POST_DRAW": 1,
+    "CASTLEOV_MULTI_HITTEST_BEGIN": 3,
+    "CASTLEOV_MULTI_HITTEST_RESULT": 3,
+    "CASTLEOV_MULTI_HITTEST_MISS": 0,
+    "CASTLEOV_MULTI_DESCRIPTOR_INSTALL": 3,
+    "CASTLEOV_MULTI_CLICK_GATE": 3,
+    "CASTLEOV_MULTI_TARGET_OK": 0,
+    "CASTLEOV_MULTI_TARGET_DONE": 3,
+    "CASTLEOV_MULTI_CALLBACK_CALL": 0,
+    "CASTLEOV_MULTI_SURFDUMP_READY": 1,
+    "SURFDUMP_READY": 1,
+    "SURFDUMP_HOST_READY": 1
+  },
+  "row_count": 22,
+  "av_count": 0,
+  "av_rows": [],
+  "last_ready": {
+    "redraw_seq": 997,
+    "surface": 167853784,
+    "size": [
+      800,
+      600
+    ],
+    "base": 171835440,
+    "bytes": 480000
+  },
+  "callback_called": false,
+  "classification": [
+    "target 0 raw 0xF8 command 0x86 gate 1: ok",
+    "target 1 raw 0xFE command 0x63 gate 1: ok",
+    "target 2 raw 0xFF command 0x87 gate 1: ok",
+    "surface dump reached ready state"
+  ],
+  "rows": [
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_OVERVIEW_POST_DRAW",
+      "values": {
+        "index": 0,
+        "main_surface": 167853784,
+        "main_size": [
+          800,
+          600
+        ],
+        "overview_surface": 168230224,
+        "overview_size": [
+          640,
+          480
+        ],
+        "owner_screen": 69715738
+      },
+      "text": "CASTLEOV_MULTI_OVERVIEW_POST_DRAW index=0 main_surface=0a013ed8 main_size=(800,600) overview_surface=0a06fd50 overview_size=(640,480) owner_screen=0427c71a",
+      "index": 0
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_TARGET_SET",
+      "values": {
+        "index": 0,
+        "raw": 248,
+        "command": 134,
+        "callback": 4521584,
+        "expected_gate": 1,
+        "displayed": [
+          371,
+          107
+        ],
+        "native": [
+          291,
+          47
+        ]
+      },
+      "text": "CASTLEOV_MULTI_TARGET_SET index=0 raw=248 command=134 callback=0044fe70 expected_gate=1 displayed=(371,107) native=(291,47)",
+      "index": 0
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_HITTEST_BEGIN",
+      "values": {
+        "index": 0,
+        "expected_raw": 248,
+        "expected_command": 134,
+        "expected_callback": 4521584,
+        "mouse": [
+          371,
+          107
+        ],
+        "raw": [
+          23744,
+          6848
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_MULTI_HITTEST_BEGIN index=0 expected_raw=248 expected_command=134 expected_callback=0044fe70 mouse=(371,107) raw=(00005cc0,00001ac0) click_flag=00000001 button0=0x80",
+      "index": 0
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_HITTEST_RESULT",
+      "values": {
+        "index": 0,
+        "raw_hit": 248,
+        "expected_raw": 248,
+        "adjusted_hit": 0,
+        "mouse": [
+          371,
+          107
+        ],
+        "raw": [
+          23744,
+          6848
+        ]
+      },
+      "text": "CASTLEOV_MULTI_HITTEST_RESULT index=0 raw_hit=248 expected_raw=248 adjusted_hit=0 mouse=(371,107) raw=(00005cc0,00001ac0)",
+      "index": 0
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_DESCRIPTOR_INSTALL",
+      "values": {
+        "index": 0,
+        "command": 134,
+        "expected_command": 134,
+        "callback": 4521584,
+        "expected_callback": 4521584,
+        "text": 3,
+        "arg_count": 5171110,
+        "owner_screen": 69715738,
+        "surface": 167853784,
+        "sz": [
+          800,
+          600
+        ],
+        "mouse": [
+          371,
+          107
+        ]
+      },
+      "text": "CASTLEOV_MULTI_DESCRIPTOR_INSTALL index=0 command=134 expected_command=134 callback=0044fe70 expected_callback=0044fe70 text=00000003 arg_count=5171110 owner_screen=0427c71a surface=0a013ed8 sz=(800,600) mouse=(371,107)",
+      "index": 0
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_CLICK_GATE",
+      "values": {
+        "index": 0,
+        "command": 134,
+        "expected_command": 134,
+        "callback": 4521584,
+        "expected_callback": 4521584,
+        "gate": 1,
+        "expected_gate": 1,
+        "mouse": [
+          371,
+          107
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_MULTI_CLICK_GATE index=0 command=134 expected_command=134 callback=0044fe70 expected_callback=0044fe70 gate=1 expected_gate=1 mouse=(371,107) click_flag=00000001 button0=0x80",
+      "index": 0
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_TARGET_DONE",
+      "values": {
+        "index": 0,
+        "command": 134,
+        "callback": 4521584,
+        "gate": 1,
+        "raw": 248
+      },
+      "text": "CASTLEOV_MULTI_TARGET_DONE index=0 command=134 callback=0044fe70 gate=1 raw=248",
+      "index": 0
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_TARGET_SET",
+      "values": {
+        "index": 1,
+        "raw": 254,
+        "command": 99,
+        "callback": 4406304,
+        "expected_gate": 1,
+        "displayed": [
+          231,
+          366
+        ],
+        "native": [
+          151,
+          306
+        ]
+      },
+      "text": "CASTLEOV_MULTI_TARGET_SET index=1 raw=254 command=99 callback=00433c20 expected_gate=1 displayed=(231,366) native=(151,306)",
+      "index": 1
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_HITTEST_BEGIN",
+      "values": {
+        "index": 1,
+        "expected_raw": 254,
+        "expected_command": 99,
+        "expected_callback": 4406304,
+        "mouse": [
+          231,
+          366
+        ],
+        "raw": [
+          14784,
+          23424
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_MULTI_HITTEST_BEGIN index=1 expected_raw=254 expected_command=99 expected_callback=00433c20 mouse=(231,366) raw=(000039c0,00005b80) click_flag=00000001 button0=0x80",
+      "index": 1
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_HITTEST_RESULT",
+      "values": {
+        "index": 1,
+        "raw_hit": 254,
+        "expected_raw": 254,
+        "adjusted_hit": 6,
+        "mouse": [
+          231,
+          366
+        ],
+        "raw": [
+          14784,
+          23424
+        ]
+      },
+      "text": "CASTLEOV_MULTI_HITTEST_RESULT index=1 raw_hit=254 expected_raw=254 adjusted_hit=6 mouse=(231,366) raw=(000039c0,00005b80)",
+      "index": 1
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_DESCRIPTOR_INSTALL",
+      "values": {
+        "index": 1,
+        "command": 99,
+        "expected_command": 99,
+        "callback": 4406304,
+        "expected_callback": 4406304,
+        "text": 3,
+        "arg_count": 5171298,
+        "owner_screen": 69715738,
+        "surface": 167853784,
+        "sz": [
+          800,
+          600
+        ],
+        "mouse": [
+          231,
+          366
+        ]
+      },
+      "text": "CASTLEOV_MULTI_DESCRIPTOR_INSTALL index=1 command=99 expected_command=99 callback=00433c20 expected_callback=00433c20 text=00000003 arg_count=5171298 owner_screen=0427c71a surface=0a013ed8 sz=(800,600) mouse=(231,366)",
+      "index": 1
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_CLICK_GATE",
+      "values": {
+        "index": 1,
+        "command": 99,
+        "expected_command": 99,
+        "callback": 4406304,
+        "expected_callback": 4406304,
+        "gate": 1,
+        "expected_gate": 1,
+        "mouse": [
+          231,
+          366
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_MULTI_CLICK_GATE index=1 command=99 expected_command=99 callback=00433c20 expected_callback=00433c20 gate=1 expected_gate=1 mouse=(231,366) click_flag=00000001 button0=0x80",
+      "index": 1
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_TARGET_DONE",
+      "values": {
+        "index": 1,
+        "command": 99,
+        "callback": 4406304,
+        "gate": 1,
+        "raw": 254
+      },
+      "text": "CASTLEOV_MULTI_TARGET_DONE index=1 command=99 callback=00433c20 gate=1 raw=254",
+      "index": 1
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_TARGET_SET",
+      "values": {
+        "index": 2,
+        "raw": 255,
+        "command": 135,
+        "callback": 4370592,
+        "expected_gate": 1,
+        "displayed": [
+          635,
+          405
+        ],
+        "native": [
+          555,
+          345
+        ]
+      },
+      "text": "CASTLEOV_MULTI_TARGET_SET index=2 raw=255 command=135 callback=0042b0a0 expected_gate=1 displayed=(635,405) native=(555,345)",
+      "index": 2
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_HITTEST_BEGIN",
+      "values": {
+        "index": 2,
+        "expected_raw": 255,
+        "expected_command": 135,
+        "expected_callback": 4370592,
+        "mouse": [
+          635,
+          405
+        ],
+        "raw": [
+          40640,
+          25920
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_MULTI_HITTEST_BEGIN index=2 expected_raw=255 expected_command=135 expected_callback=0042b0a0 mouse=(635,405) raw=(00009ec0,00006540) click_flag=00000001 button0=0x80",
+      "index": 2
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_HITTEST_RESULT",
+      "values": {
+        "index": 2,
+        "raw_hit": 255,
+        "expected_raw": 255,
+        "adjusted_hit": 7,
+        "mouse": [
+          635,
+          405
+        ],
+        "raw": [
+          40640,
+          25920
+        ]
+      },
+      "text": "CASTLEOV_MULTI_HITTEST_RESULT index=2 raw_hit=255 expected_raw=255 adjusted_hit=7 mouse=(635,405) raw=(00009ec0,00006540)",
+      "index": 2
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_DESCRIPTOR_INSTALL",
+      "values": {
+        "index": 2,
+        "command": 135,
+        "expected_command": 135,
+        "callback": 4370592,
+        "expected_callback": 4370592,
+        "text": 3,
+        "arg_count": 5171275,
+        "owner_screen": 69715738,
+        "surface": 167853784,
+        "sz": [
+          800,
+          600
+        ],
+        "mouse": [
+          635,
+          405
+        ]
+      },
+      "text": "CASTLEOV_MULTI_DESCRIPTOR_INSTALL index=2 command=135 expected_command=135 callback=0042b0a0 expected_callback=0042b0a0 text=00000003 arg_count=5171275 owner_screen=0427c71a surface=0a013ed8 sz=(800,600) mouse=(635,405)",
+      "index": 2
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_CLICK_GATE",
+      "values": {
+        "index": 2,
+        "command": 135,
+        "expected_command": 135,
+        "callback": 4370592,
+        "expected_callback": 4370592,
+        "gate": 1,
+        "expected_gate": 1,
+        "mouse": [
+          635,
+          405
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_MULTI_CLICK_GATE index=2 command=135 expected_command=135 callback=0042b0a0 expected_callback=0042b0a0 gate=1 expected_gate=1 mouse=(635,405) click_flag=00000001 button0=0x80",
+      "index": 2
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_TARGET_DONE",
+      "values": {
+        "index": 2,
+        "command": 135,
+        "callback": 4370592,
+        "gate": 1,
+        "raw": 255
+      },
+      "text": "CASTLEOV_MULTI_TARGET_DONE index=2 command=135 callback=0042b0a0 gate=1 raw=255",
+      "index": 2
+    },
+    {
+      "line": 207,
+      "marker": "CASTLEOV_MULTI_SURFDUMP_READY",
+      "values": {
+        "targets_done": 3,
+        "surface": 167853784,
+        "size": [
+          800,
+          600
+        ],
+        "base": 171835440,
+        "bytes": 480000,
+        "owner_screen": 69715738,
+        "exit_flag": 0
+      },
+      "text": "CASTLEOV_MULTI_SURFDUMP_READY targets_done=3 surface=0a013ed8 size=(800,600) base=0a3e0030 bytes=480000 owner_screen=0427c71a exit_flag=0",
+      "index": null
+    },
+    {
+      "line": 207,
+      "marker": "SURFDUMP_READY",
+      "values": {
+        "redraw_seq": 997,
+        "surface": 167853784,
+        "size": [
+          800,
+          600
+        ],
+        "base": 171835440,
+        "bytes": 480000
+      },
+      "text": "SURFDUMP_READY redraw_seq=997 surface=0a013ed8 size=(800,600) base=0a3e0030 bytes=480000",
+      "index": null
+    },
+    {
+      "line": 207,
+      "marker": "SURFDUMP_HOST_READY",
+      "values": {},
+      "text": "SURFDUMP_HOST_READY",
+      "index": null
+    }
+  ]
+}

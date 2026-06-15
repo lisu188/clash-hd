@@ -143,7 +143,7 @@ def build_from_paths(paths: dict[str, Path]) -> dict:
 def test_good_blocker_shape_passes(fixture: Path) -> None:
     report = build_from_paths(write_payloads(fixture))
     assert report["passed"] is True, report
-    assert report["classification"] == "controlled_recovered_but_natural_route_blocked", report
+    assert report["classification"] == "controlled_recovered_but_natural_route_nonpromoting", report
     assert report["promotion_ready"] is False, report
     assert report["checks"]["natural_route_blocker_documented"] is True, report
 
@@ -228,6 +228,262 @@ def test_slot5_copyback_path_blocker_status_passes(fixture: Path) -> None:
     assert report["observations"]["natural_slot5_copyback_path_marker_count"] == 8, report
 
 
+def test_slot5_loopstate_coordinate_blocker_passes(fixture: Path) -> None:
+    payloads = good_payloads()
+    payloads["natural"]["summary"]["owner_flag_test"] = {
+        "owner_flag": "0x02",
+        "bit2": 2,
+        "bit1": 0,
+        "bit8": 0,
+    }
+    payloads["natural"]["summary"]["state_gated_by_owner_flag"] = False
+    payloads["slot5"] = {
+        "proof_class": "natural_slot5_right_bottom_loopstate",
+        "status": "owner_action_435bc0_loop_stalled",
+        "expected_slot_match": True,
+        "load_success": True,
+        "owner_bit2_set": True,
+        "owner_action_route_count": 3,
+        "owner_action_draw_count": 2,
+        "render_begin_exit_count": 1,
+        "copyback_path_marker_count": 225,
+        "wrapper_copyback_count": 0,
+        "owner_435bc0_loop_count": 8,
+        "owner_435bc0_return_count": 0,
+        "owner_435bc0_poll_count": 16,
+        "owner_435bc0_poll_limit_count": 1,
+        "owner_435bc0_grid_route_count": 26,
+        "owner_435bc0_grid_fail_count": 10,
+        "owner_435bc0_selection_update_count": 0,
+        "last_owner_435bc0_poll": {"mouse": [4, 440], "raw": [256, 28160]},
+        "last_owner_435bc0_grid_gate": {"raw_result": 0, "mouse": [4, 440]},
+        "timeout_stack_classification": "descriptor_hit_scan",
+        "av_count": 0,
+    }
+    report = build_from_paths(write_payloads(fixture, payloads))
+    assert report["passed"] is True, report
+    assert report["checks"]["natural_route_blocker_documented"] is True, report
+    assert report["observations"]["natural_slot5_proof_class"] == "natural_slot5_right_bottom_loopstate", report
+    assert report["observations"]["natural_slot5_435bc0_grid_fail_count"] == 10, report
+    assert report["observations"]["natural_slot5_timeout_stack_classification"] == "descriptor_hit_scan", report
+
+
+def test_slot5_input_resample_blocker_passes(fixture: Path) -> None:
+    payloads = good_payloads()
+    payloads["natural"]["summary"]["owner_flag_test"] = {
+        "owner_flag": "0x02",
+        "bit2": 2,
+        "bit1": 0,
+        "bit8": 0,
+    }
+    payloads["natural"]["summary"]["state_gated_by_owner_flag"] = False
+    payloads["slot5"] = {
+        "proof_class": "natural_slot5_right_bottom_input_resample",
+        "status": "owner_action_copyback_not_reached",
+        "expected_slot_match": True,
+        "load_success": True,
+        "owner_bit2_set": True,
+        "owner_action_route_count": 3,
+        "owner_action_draw_count": 2,
+        "render_begin_exit_count": 1,
+        "copyback_path_marker_count": 240,
+        "wrapper_copyback_count": 0,
+        "owner_435bc0_loop_count": 8,
+        "owner_435bc0_return_count": 0,
+        "owner_435bc0_poll_count": 16,
+        "owner_435bc0_grid_route_count": 26,
+        "owner_435bc0_grid_fail_count": 10,
+        "owner_435bc0_selection_update_count": 0,
+        "owner_435bc0_pump_cb14_call_count": 1,
+        "owner_435bc0_pump_608f0b_call_count": 1,
+        "first_owner_435bc0_pump_cb14_call": {"cb14": 0x004612E0, "raw": [0x2D00, 0x6E00]},
+        "first_owner_435bc0_pump_608f0b_call": {"raw": [0x0100, 0x6E00], "button0": 0x93},
+        "last_owner_435bc0_pump_cb14_call": {"cb14": 0x004612E0, "raw": [0x2D00, 0x6E00]},
+        "last_owner_435bc0_pump_608f0b_call": {"raw": [0x0100, 0x6E00], "button0": 0x93},
+        "last_owner_435bc0_poll": {"mouse": [4, 440], "raw": [0x0100, 0x6E00]},
+        "av_count": 0,
+    }
+    report = build_from_paths(write_payloads(fixture, payloads))
+    assert report["passed"] is True, report
+    assert report["checks"]["natural_route_blocker_documented"] is True, report
+    assert report["observations"]["natural_slot5_proof_class"] == "natural_slot5_right_bottom_input_resample", report
+    assert report["observations"]["natural_slot5_first_435bc0_pump_cb14_call"]["raw"] == [0x2D00, 0x6E00], report
+    assert report["observations"]["natural_slot5_last_435bc0_pump_cb14_call"]["cb14"] == 0x004612E0, report
+    assert any("00519620" in item for item in report["next_proof_options"]), report
+
+
+def test_slot5_sourcehold_coords_blocker_passes(fixture: Path) -> None:
+    payloads = good_payloads()
+    payloads["natural"]["summary"]["owner_flag_test"] = {
+        "owner_flag": "0x02",
+        "bit2": 2,
+        "bit1": 0,
+        "bit8": 0,
+    }
+    payloads["natural"]["summary"]["state_gated_by_owner_flag"] = False
+    payloads["slot5"] = {
+        "proof_class": "natural_slot5_right_bottom_sourcehold_coords_callsite",
+        "status": "owner_action_435bc0_loop_stalled",
+        "expected_slot_match": True,
+        "load_success": True,
+        "owner_bit2_set": True,
+        "owner_action_route_count": 3,
+        "owner_action_draw_count": 2,
+        "render_begin_exit_count": 1,
+        "copyback_path_marker_count": 832,
+        "wrapper_copyback_count": 0,
+        "owner_435bc0_loop_count": 8,
+        "owner_435bc0_return_count": 0,
+        "owner_435bc0_poll_count": 16,
+        "owner_435bc0_grid_route_count": 60,
+        "owner_435bc0_grid_gate_count": 60,
+        "owner_435bc0_grid_fail_count": 0,
+        "owner_435bc0_selection_update_count": 0,
+        "owner_435bc0_pump_cb14_call_count": 7,
+        "owner_435bc0_pump_608f0b_call_count": 61,
+        "last_sourcehold_marker": "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE",
+        "last_sourcehold": {"raw": [0x2D00, 0x6E00], "d544d04": 0, "button0": 0},
+        "last_owner_435bc0_poll": {"mouse": [180, 440], "raw": [0x2D00, 0x6E00]},
+        "last_owner_435bc0_grid_gate": {"raw_result": 0, "mouse": [180, 440]},
+        "last_owner_435bc0_pump_cb14_call": {
+            "cb14": 0x004612E0,
+            "raw": [0x2D00, 0x6E00],
+            "d544d04": 0,
+        },
+        "last_owner_435bc0_pump_608f0b_call": {
+            "raw": [0x2D00, 0x6E00],
+            "d544d04": 0,
+            "button0": 0,
+        },
+        "timeout_stack_classification": "descriptor_hit_scan",
+        "av_count": 0,
+    }
+    report = build_from_paths(write_payloads(fixture, payloads))
+    assert report["passed"] is True, report
+    assert report["checks"]["natural_route_blocker_documented"] is True, report
+    assert report["observations"]["natural_slot5_proof_class"] == (
+        "natural_slot5_right_bottom_sourcehold_coords_callsite"
+    ), report
+    assert report["observations"]["natural_slot5_last_sourcehold_marker"] == (
+        "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE"
+    ), report
+    assert report["observations"]["natural_slot5_last_sourcehold"]["button0"] == 0, report
+    assert any("grid route" in item for item in report["next_proof_options"]), report
+
+
+def test_slot5_action_click_native_copyback_diagnostic_passes(fixture: Path) -> None:
+    payloads = good_payloads()
+    payloads["natural"]["summary"]["owner_flag_test"] = {
+        "owner_flag": "0x02",
+        "bit2": 2,
+        "bit1": 0,
+        "bit8": 0,
+    }
+    payloads["natural"]["summary"]["state_gated_by_owner_flag"] = False
+    payloads["slot5"] = {
+        "proof_class": "natural_slot5_right_bottom_action_click_native",
+        "status": "owner_action_copyback_reached",
+        "expected_slot_match": True,
+        "load_success": True,
+        "owner_bit2_set": True,
+        "owner_action_route_count": 4,
+        "owner_action_draw_count": 4,
+        "render_begin_exit_count": 2,
+        "copyback_path_marker_count": 74,
+        "wrapper_copyback_count": 1,
+        "wrapper_stock_return_count": 1,
+        "owner_435bc0_loop_count": 1,
+        "owner_435bc0_return_count": 1,
+        "owner_435bc0_poll_count": 16,
+        "owner_435bc0_poll_limit_count": 1,
+        "action_click_marker_count": 10,
+        "action_click_force_count": 1,
+        "action_descriptor_callback_count": 1,
+        "action_click_435620_entry_count": 1,
+        "action_click_exit_set_count": 1,
+        "last_action_force": {
+            "target": "bottom-left-action",
+            "native": [81, 441],
+            "raw": [0x1440, 0x6E40],
+            "button0": 0x80,
+        },
+        "last_action_descriptor_callback": {
+            "desc": 0x0051519A,
+            "callback": 0x00435620,
+            "mouse": [81, 441],
+        },
+        "last_action_click_exit_set": {"action_state": 1},
+        "av_count": 0,
+    }
+    report = build_from_paths(write_payloads(fixture, payloads))
+    assert report["passed"] is True, report
+    assert report["checks"]["natural_route_blocker_documented"] is True, report
+    assert report["classification"] == "controlled_recovered_but_natural_route_nonpromoting", report
+    assert report["observations"]["natural_slot5_proof_class"] == "natural_slot5_right_bottom_action_click_native", report
+    assert report["observations"]["natural_slot5_action_click_435620_entry_count"] == 1, report
+    assert report["observations"]["natural_slot5_last_action_descriptor_callback"]["callback"] == 0x00435620, report
+    assert any("debugger-forced" in item for item in report["next_proof_options"]), report
+
+
+def test_slot5_centered_input_copyback_diagnostic_passes(fixture: Path) -> None:
+    payloads = good_payloads()
+    payloads["natural"]["summary"]["owner_flag_test"] = {
+        "owner_flag": "0x02",
+        "bit2": 2,
+        "bit1": 0,
+        "bit8": 0,
+    }
+    payloads["natural"]["summary"]["state_gated_by_owner_flag"] = False
+    payloads["slot5"] = {
+        "proof_class": "natural_slot5_right_bottom_action_click_centered_input",
+        "status": "owner_action_copyback_reached",
+        "expected_slot_match": True,
+        "load_success": True,
+        "owner_bit2_set": True,
+        "owner_action_route_count": 4,
+        "owner_action_draw_count": 4,
+        "render_begin_exit_count": 2,
+        "copyback_path_marker_count": 74,
+        "wrapper_copyback_count": 1,
+        "wrapper_stock_return_count": 1,
+        "owner_435bc0_loop_count": 1,
+        "owner_435bc0_return_count": 1,
+        "owner_435bc0_poll_count": 16,
+        "owner_435bc0_poll_limit_count": 1,
+        "action_click_marker_count": 10,
+        "action_click_force_count": 1,
+        "action_click_native_force_count": 0,
+        "action_click_display_force_count": 1,
+        "action_descriptor_callback_count": 1,
+        "action_click_435620_entry_count": 1,
+        "action_click_exit_set_count": 1,
+        "last_action_force_marker": "NOWNER_ACTION_FORCE_DISPLAY",
+        "last_action_force": {
+            "target": "bottom-left-action",
+            "displayed": [161, 501],
+            "expected_native": [81, 441],
+            "raw": [0x2840, 0x7D40],
+            "button0": 0x80,
+        },
+        "last_action_descriptor_callback": {
+            "desc": 0x0051519A,
+            "callback": 0x00435620,
+            "mouse": [81, 441],
+        },
+        "last_action_click_exit_set": {"action_state": 1},
+        "av_count": 0,
+    }
+    report = build_from_paths(write_payloads(fixture, payloads))
+    assert report["passed"] is True, report
+    assert report["checks"]["natural_route_blocker_documented"] is True, report
+    assert report["observations"]["natural_slot5_proof_class"] == (
+        "natural_slot5_right_bottom_action_click_centered_input"
+    ), report
+    assert report["observations"]["natural_slot5_action_click_display_force_count"] == 1, report
+    assert report["observations"]["natural_slot5_last_action_force"]["displayed"] == [161, 501], report
+    assert report["observations"]["natural_slot5_last_action_descriptor_callback"]["mouse"] == [81, 441], report
+
+
 def test_promoting_fixture_plan_fails(fixture: Path) -> None:
     payloads = good_payloads()
     payloads["fixture"]["summary"]["promotion_ready"] = True
@@ -274,6 +530,11 @@ def run_tests() -> None:
         test_obsolete_owner_flag_gate_fails(fixture / "owner-flag-obsolete")
         test_slot5_copyback_blocker_passes(fixture / "slot5-copyback")
         test_slot5_copyback_path_blocker_status_passes(fixture / "slot5-copyback-path")
+        test_slot5_loopstate_coordinate_blocker_passes(fixture / "slot5-loopstate-coordinate")
+        test_slot5_input_resample_blocker_passes(fixture / "slot5-input-resample")
+        test_slot5_sourcehold_coords_blocker_passes(fixture / "slot5-sourcehold-coords")
+        test_slot5_action_click_native_copyback_diagnostic_passes(fixture / "slot5-action-click-native")
+        test_slot5_centered_input_copyback_diagnostic_passes(fixture / "slot5-centered-input")
         test_promoting_fixture_plan_fails(fixture / "promoting-fixture")
         test_cli_writes_outputs(fixture / "cli")
     finally:

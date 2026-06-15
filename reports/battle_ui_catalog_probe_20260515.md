@@ -20,7 +20,7 @@ entry.
 - Patch-stage manifest:
   `reports\battlecenter_patch_stage_20260515_01.json`
 - Hidden CDB run:
-  `captures\cdb-surface-dump-20260515-114101`
+  `captures\archive\cdb-surface-dump-20260515-114101`
 
 ## Results
 

@@ -16,7 +16,7 @@ required current UI screenshot artifact:
 
 The freshest CDB/no-popup surface proof for the current HD stage is:
 
-![current no-popup surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/cdb-surface-dump-20260429-140916/surface.png)
+![current no-popup surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260429-140916/surface.png)
 
 ## Minimum Runnable Runbook
 
@@ -131,7 +131,7 @@ CDB/no-popup surface:
 ```powershell
 & 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' `
   tools\right_bottom_ui_bounds.py `
-  captures\cdb-surface-dump-20260429-140916\surface.png `
+  captures\archive\cdb-surface-dump-20260429-140916\surface.png `
   --region frame_left:0,0,31,599 `
   --region frame_top:0,0,799,15 `
   --region map_native_border_bottom:0,464,799,527 `
@@ -167,11 +167,11 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_su
 
 Required artifacts:
 
-- `captures\cdb-surface-dump-*\surface.png`
-- `captures\cdb-surface-dump-*\summary.json`
-- `captures\cdb-surface-dump-*\map-tile-coverage.json`
-- `captures\cdb-surface-dump-*\visibility-coverage-summary.json`
-- `captures\cdb-surface-dump-*\RUN-SUMMARY.md`
+- `captures\archive\cdb-surface-dump-*\surface.png`
+- `captures\archive\cdb-surface-dump-*\summary.json`
+- `captures\archive\cdb-surface-dump-*\map-tile-coverage.json`
+- `captures\archive\cdb-surface-dump-*\visibility-coverage-summary.json`
+- `captures\archive\cdb-surface-dump-*\RUN-SUMMARY.md`
 
 The `surface.png` from this run is the screenshot artifact for the task report.
 
@@ -280,7 +280,7 @@ After any fresh run, measure border and tooltip regions:
 ```powershell
 & 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' `
   tools\right_bottom_ui_bounds.py `
-  captures\cdb-surface-dump-YYYYMMDD-HHMMSS\surface.png `
+  captures\archive\cdb-surface-dump-YYYYMMDD-HHMMSS\surface.png `
   --region frame_left:0,0,31,599 `
   --region frame_top:0,0,799,15 `
   --region right_frame_under_minimap:586,230,799,527 `
@@ -288,7 +288,7 @@ After any fresh run, measure border and tooltip regions:
   --region bottom_right_panel:586,528,799,599 `
   --region bottom_frame:0,580,799,599 `
   --only-custom-regions `
-  --write-json captures\cdb-surface-dump-YYYYMMDD-HHMMSS\border-tooltip-bounds.json
+  --write-json captures\archive\cdb-surface-dump-YYYYMMDD-HHMMSS\border-tooltip-bounds.json
 ```
 
 Also keep the standard gameplay map gate:
@@ -296,7 +296,7 @@ Also keep the standard gameplay map gate:
 ```powershell
 & 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' `
   tools\map_tile_coverage.py `
-  captures\cdb-surface-dump-YYYYMMDD-HHMMSS\surface.png `
+  captures\archive\cdb-surface-dump-YYYYMMDD-HHMMSS\surface.png `
   --logical-width 800 `
   --logical-height 600 `
   --require-gameplay
@@ -355,7 +355,7 @@ Implemented `probes/cdb/ui/clash95_border_tooltip_extra.cdb` and
 
 Runtime result:
 
-- `captures\cdb-surface-dump-20260430-111545` reached `SURFDUMP_PLAYGAME` and
+- `captures\archive\cdb-surface-dump-20260430-111545` reached `SURFDUMP_PLAYGAME` and
   `BORDER_FULLREDRAW_ENTER` under the hidden-desktop CDB route.
 - The redraw entry reported `d5202e0` as an 800x600 surface and
   `d526990=00000000`.
@@ -364,9 +364,9 @@ Runtime result:
   probe keeps that hook disabled by default and late-enables only filtered text
   helper breakpoints.
 - A fresh no-extra baseline surface dump passed at
-  `captures\cdb-surface-dump-20260430-114459` and produced the current UI
+  `captures\archive\cdb-surface-dump-20260430-114459` and produced the current UI
   screenshot artifact:
-  `captures\cdb-surface-dump-20260430-114459\surface.png`.
+  `captures\archive\cdb-surface-dump-20260430-114459\surface.png`.
 
 Next concrete engineering task:
 
@@ -383,9 +383,9 @@ Implemented and ran the one-shot branch/write probe:
 - Parser:
   `tools\d526990_summary.py`
 - Successful run:
-  `captures\cdb-surface-dump-20260430-115605`
+  `captures\archive\cdb-surface-dump-20260430-115605`
 - Screenshot artifact:
-  `captures\cdb-surface-dump-20260430-115605\surface.png`
+  `captures\archive\cdb-surface-dump-20260430-115605\surface.png`
 
 Observed rows:
 
@@ -428,12 +428,12 @@ gameplay.
 Added `probes/cdb/startup/clash95_startup_stall_d526994_extra.cdb` and
 `tools\startup_stall_summary.py`.
 
-`captures\cdb-surface-dump-20260430-142129` localizes the full-startup hidden
+`captures\archive\cdb-surface-dump-20260430-142129` localizes the full-startup hidden
 desktop stall: the run reaches the logo `Video_Avi_playIn` path and logs
 `STARTUP_VIDEO_AFTER_MODE_BEGIN`, then never returns to the menu route. No AV
 is observed.
 
-`captures\cdb-surface-dump-20260430-145646` uses the harness
+`captures\archive\cdb-surface-dump-20260430-145646` uses the harness
 `-FastForwardStartAnims` mode and passes. It reaches `SURFDUMP_MAIN_HIT`,
 `SURFDUMP_PLAYGAME`, and `SURFDUMP_READY`, dumps a fresh 800x600 surface, and
 logs 3 `D526994_MIN_CALLBACK_TEST` rows. The callback and flag remain zero,
@@ -460,8 +460,8 @@ Static caller results:
 
 Runtime result:
 
-- Run folder: `captures\cdb-surface-dump-20260430-224749`
-- Screenshot artifact: `captures\cdb-surface-dump-20260430-224749\surface.png`
+- Run folder: `captures\archive\cdb-surface-dump-20260430-224749`
+- Screenshot artifact: `captures\archive\cdb-surface-dump-20260430-224749\surface.png`
 - Parser: `owner_count=1 route_count=8 ready=True av_count=0`
 
 The probe applied a debugger-only state nudge before the natural `0040B7B3`
@@ -491,9 +491,9 @@ Added the CDB-only descriptor probe and summary parser:
 
 Run folder:
 
-- `captures\cdb-surface-dump-20260506-092608`
+- `captures\archive\cdb-surface-dump-20260506-092608`
 - Screenshot artifact:
-  `captures\cdb-surface-dump-20260506-092608\surface.png`
+  `captures\archive\cdb-surface-dump-20260506-092608\surface.png`
 
 Summary parser result:
 
@@ -530,14 +530,14 @@ Added:
 
 Clean harness ride:
 
-- `captures\cdb-surface-dump-20260506-093846` passed and produced a normal
+- `captures\archive\cdb-surface-dump-20260506-093846` passed and produced a normal
   800x600 screenshot, but its hover setter was replaced by the harness redraw
   breakpoint at `00406FA0`.
 
 Corrected forced-hover runs:
 
 - The setter moved to `0040AE11`, immediately before `sub_406FA0`.
-- Runs through `captures\cdb-surface-dump-20260506-100922` reached
+- Runs through `captures\archive\cdb-surface-dump-20260506-100922` reached
   `SURFDUMP_READY` and logged forced hover states.
 
 Final parsed result:
@@ -588,9 +588,9 @@ Static correction:
 
 Final corrected run:
 
-- `captures\cdb-surface-dump-20260506-102113`
+- `captures\archive\cdb-surface-dump-20260506-102113`
 - Screenshot artifact:
-  `captures\cdb-surface-dump-20260506-102113\surface.png`
+  `captures\archive\cdb-surface-dump-20260506-102113\surface.png`
 
 Parser result:
 

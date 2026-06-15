@@ -1,0 +1,10 @@
+.echo === Clash95 battle UI input probe ===
+.echo Second-step probe for battle descriptors and tactical input after battle entry is reachable
+r @$t20=0
+
+bp 0042E5A0 ".printf \"BATTLE_READY source=HandleBattleResults eip=0042e5a0 ret=%p surface=%p width=%d height=%d mouse=(%d,%d)\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); .printf \"BATTLE_SURFACE ptr=%p width=%d height=%d pitch=0 base=%p mode=unknown\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(005202e0)+4); r @$t20=1; gc"
+bp 00419D80 ".if (@$t20 != 0) { .printf \"BATTLE_DESCRIPTOR desc=%p x=%d y=%d w=0 h=0 callback=%p source=draw_list render=%p surface=%p width=%d height=%d\n\", @eax, poi(@eax), poi(@eax+4), poi(@eax+0n32), poi(00511230), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00419DC0 ".if (@$t20 != 0) { .printf \"BATTLE_INPUT_SCAN eip=00419dc0 list=%p displayed=(%d,%d) native=(%d,%d) scale=%d render=%p surface=%p width=%d height=%d\n\", @eax, poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), (poi(00544cfc)>>by(0054512c))-0n80, (poi(00544d00)>>by(0054512c))-0n60, by(0054512c), poi(00511230), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00416850 ".if (@$t20 != 0) { .printf \"BATTLE_ROUTE_CANDIDATE name=sub_416850_tile_or_grid_candidate eip=00416850 ret=%p displayed=(%d,%d) native=(%d,%d) surface=%p width=%d height=%d\n\", poi(@esp), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), (poi(00544cfc)>>by(0054512c))-0n80, (poi(00544d00)>>by(0054512c))-0n60, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00460950 ".if (@$t20 != 0) { .printf \"BATTLE_MODAL_CLASSIFIED status=input_poll_seen eip=00460950 displayed=(%d,%d) native=(%d,%d) scale=%d\n\", poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), (poi(00544cfc)>>by(0054512c))-0n80, (poi(00544d00)>>by(0054512c))-0n60, by(0054512c); }; gc"
+bp 0042E6F0 ".if (@$t20 != 0) { .printf \"BATTLE_DONE reason=after_HandleBattleResults eip=0042e6f0 surface=%p width=%d height=%d\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"

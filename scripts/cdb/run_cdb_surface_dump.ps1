@@ -8,9 +8,9 @@ param(
     [string]$CandidateDir = '',
     [switch]$UseDdrawProxy,
     [string]$DdrawProxyDll = '',
-    [string]$DdrawProxyBuildScript = (Join-Path (Join-Path $PSScriptRoot '..\build') 'build_ddraw_surfdump_proxy.ps1'),
-    [string]$OutRoot = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures'),
-    [string]$ProbeTemplate = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes/cdb/render/clash95_surface_dump_probe.cdb'),
+    [string]$DdrawProxyBuildScript = (Join-Path (Join-Path $PSScriptRoot '..\..') 'scripts\build\build_ddraw_surfdump_proxy.ps1'),
+    [string]$OutRoot = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\archive'),
+    [string]$ProbeTemplate = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes\cdb\render\clash95_surface_dump_probe.cdb'),
     [string]$ExtraProbeTemplate = '',
     [int]$RunSeconds = 90,
     [switch]$NoSkipStartAnims,
@@ -20,10 +20,14 @@ param(
     [switch]$UseCdbWriteMem,
     [switch]$AllowVisibleDesktop,
     [switch]$SkipMapValidation,
-    [switch]$RequireGameplay
+    [switch]$RequireGameplay,
+    [switch]$LateLoadSlotForcingOnly,
+    [ValidateRange(0,9)]
+    [int]$LoadSlot = 0
 )
 
 $ErrorActionPreference = 'Stop'
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 
 if ($PostOwnerForceVisibleSeven -and $SkipMapValidation) {
     throw '-PostOwnerForceVisibleSeven requires map validation; do not use -SkipMapValidation.'
@@ -352,12 +356,12 @@ if ($ExtraProbeTemplate -and -not (Test-Path -LiteralPath $ExtraProbeTemplate)) 
 }
 
 $pythonExe = Resolve-PythonPath -Requested $Python
-$patcher = Join-Path (Join-Path $PSScriptRoot '..\..') 'patch_clash95_hd.py'
-$converter = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\cdb_surface_dump_to_png.py'
-$coverageTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\map_tile_coverage.py'
-$visibilityTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\visibility_coverage.py'
-$forcedVisibleTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\forced_visible_summary.py'
-$postOwnerForcedVisibleTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\post_owner_forced_visible_summary.py'
+$patcher = Join-Path $RepoRoot 'patch_clash95_hd.py'
+$converter = Join-Path $RepoRoot 'tools\cdb_surface_dump_to_png.py'
+$coverageTool = Join-Path $RepoRoot 'tools\map_tile_coverage.py'
+$visibilityTool = Join-Path $RepoRoot 'tools\visibility_coverage.py'
+$forcedVisibleTool = Join-Path $RepoRoot 'tools\forced_visible_summary.py'
+$postOwnerForcedVisibleTool = Join-Path $RepoRoot 'tools\post_owner_forced_visible_summary.py'
 foreach ($path in @($patcher, $converter, $coverageTool, $visibilityTool, $forcedVisibleTool, $postOwnerForcedVisibleTool)) {
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Required helper was not found: $path"
@@ -416,6 +420,7 @@ $generatedProbe = Join-Path $runDir 'clash95_surface_dump_probe.generated.cdb'
 $proxyDllPath = $null
 $proxyManifestPath = $null
 $proxyLogPath = $null
+$proxyPalettePath = $null
 $proxySha = $null
 if ($UseDdrawProxy) {
     $candidateDirFull = Get-FullPath -Path $CandidateDir
@@ -443,7 +448,9 @@ if ($UseDdrawProxy) {
     $proxySha = Get-FileSha256 -Path $proxyDllPath
     $proxyManifestPath = Join-Path $candidateDirFull 'ddraw_surfdump_proxy.build.json'
     $proxyLogPath = Join-Path $candidateDirFull 'ddraw_surfdump_proxy.log'
+    $proxyPalettePath = Join-Path $candidateDirFull 'ddraw_surfdump_palette.bin'
     Remove-Item -LiteralPath $proxyLogPath -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $proxyPalettePath -Force -ErrorAction SilentlyContinue
 }
 
 $inputSha = Get-FileSha256 -Path $inputFull
@@ -455,11 +462,28 @@ if ($patchExit -ne 0) {
 $candidateSha = Get-FileSha256 -Path $candidateFull
 
 $probeText = Get-Content -LiteralPath $ProbeTemplate -Raw
+$loadMouseX = 320
+$loadMouseY = 166 + (22 * $LoadSlot)
+$loadMouseRawX = $loadMouseX -shl 6
+$loadMouseRawY = $loadMouseY -shl 6
+$preEntryLoadCoordAction = if ($LateLoadSlotForcingOnly) {
+    '.if (@$t1 < 0n16) { .printf \"SURFDUMP_PRE_ENTRY_SLOT_DEFERRED seq=%d choice=%d entry=0x%08x ex=%d ey=%d mouse=(%d,%d) selected=%d accept=%d\\n\", @$t1, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(005441e0), poi(00544190); r @$t1 = @$t1 + 1; };'
+}
+else {
+    'ed 00544cfc __LOAD_MOUSE_RAW_X__; ed 00544d00 __LOAD_MOUSE_RAW_Y__; eb 005451c0 80; ed 00544d04 1; .if (@$t1 < 0n16) { .printf \"SURFDUMP_LOAD_COORD seq=%d choice=%d entry=0x%08x ex=%d ey=%d mouse=(%d,%d) selected=%d accept=%d\\n\", @$t1, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(005441e0), poi(00544190); r @$t1 = @$t1 + 1; };'
+}
+$probeText = $probeText.Replace('__PRE_ENTRY_LOAD_COORD_ACTION__', $preEntryLoadCoordAction)
+$probeText = $probeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)
+$probeText = $probeText.Replace('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))
+$probeText = $probeText.Replace('__LOAD_MOUSE_RAW_Y__', ('{0:x8}' -f $loadMouseRawY))
 if ($PostOwnerForceVisibleSeven -and -not $ExtraProbeTemplate) {
     throw '-PostOwnerForceVisibleSeven requires -ExtraProbeTemplate with the post-owner visibility probe.'
 }
 if ($ExtraProbeTemplate) {
     $extraProbeText = (Get-Content -LiteralPath $ExtraProbeTemplate -Raw).Trim()
+    $extraProbeText = $extraProbeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)
+    $extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))
+    $extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_Y__', ('{0:x8}' -f $loadMouseRawY))
     if ($extraProbeText -match '(?m)^\s*g\s*$') {
         throw "Extra CDB probe template must not contain a standalone g command: $ExtraProbeTemplate"
     }
@@ -683,6 +707,8 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists) {
         Passed = $false
         Error = $failureReason
         LaunchMode = $launchMode
+        HiddenDesktop = (-not $AllowVisibleDesktop)
+        AllowVisibleDesktop = [bool]$AllowVisibleDesktop
         TimedOut = $timedOut
         StoppedAfterDump = $stoppedAfterDump
         DumpMethod = $dumpMethod
@@ -698,12 +724,14 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists) {
         CandidateDir = (Get-FullPath -Path $CandidateDir)
         CandidatePath = $candidateFull
         CandidateSha256 = $candidateSha
+        LoadSlot = $LoadSlot
         UseDdrawProxy = [bool]$UseDdrawProxy
         NoSkipStartAnims = [bool]$NoSkipStartAnims
         FastForwardStartAnims = [bool]$FastForwardStartAnims
         ForceVisibleEdges = [bool]$ForceVisibleEdges
         PostOwnerForceVisibleSeven = [bool]$PostOwnerForceVisibleSeven
         SkipMapValidation = [bool]$SkipMapValidation
+        LateLoadSlotForcingOnly = [bool]$LateLoadSlotForcingOnly
         DdrawProxyDll = $proxyDllPath
         DdrawProxySha256 = $proxySha
         DdrawProxyLog = $proxyLogPath
@@ -737,10 +765,11 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists) {
         "- DirectDraw proxy: $([bool]$UseDdrawProxy)"
         "- No skip start animations: $([bool]$NoSkipStartAnims)"
         "- Fast-forward start animations: $([bool]$FastForwardStartAnims)"
-        "- Force visible edges: $([bool]$ForceVisibleEdges)"
-        "- Post-owner force visible seven: $([bool]$PostOwnerForceVisibleSeven)"
-        "- Map validation skipped: $([bool]$SkipMapValidation)"
-        "- DirectDraw proxy DLL: $(if ($proxyDllPath) { $proxyDllPath } else { 'not used' })"
+    "- Force visible edges: $([bool]$ForceVisibleEdges)"
+    "- Post-owner force visible seven: $([bool]$PostOwnerForceVisibleSeven)"
+    "- Map validation skipped: $([bool]$SkipMapValidation)"
+    "- Late load-slot forcing only: $([bool]$LateLoadSlotForcingOnly)"
+    "- DirectDraw proxy DLL: $(if ($proxyDllPath) { $proxyDllPath } else { 'not used' })"
         "- DirectDraw proxy log: $(if ($proxyLogPath) { $proxyLogPath } else { 'not used' })"
         "- Generated probe: $generatedProbe"
         "- Log: $logPath"
@@ -753,7 +782,11 @@ if ($rawBytes -lt $ready.Bytes) {
     throw "Surface dump is shorter than expected: expected $($ready.Bytes), found $rawBytes"
 }
 
-& $pythonExe $converter $rawPath --width $ready.Width --height $ready.Height --output $pngPath --metadata $pngMetaPath --log $logPath
+$convertArgs = @($converter, $rawPath, '--width', $ready.Width, '--height', $ready.Height, '--output', $pngPath, '--metadata', $pngMetaPath, '--log', $logPath)
+if ($proxyPalettePath -and (Test-Path -LiteralPath $proxyPalettePath -PathType Leaf)) {
+    $convertArgs += @('--palette', $proxyPalettePath)
+}
+& $pythonExe @convertArgs
 $convertExit = $LASTEXITCODE
 if ($convertExit -ne 0) {
     throw "cdb_surface_dump_to_png.py failed with exit code $convertExit"
@@ -902,6 +935,7 @@ $summaryObject = [pscustomobject]@{
     Error = $validationFailure
     LaunchMode = $launchMode
     HiddenDesktop = (-not $AllowVisibleDesktop)
+    AllowVisibleDesktop = [bool]$AllowVisibleDesktop
     DesktopName = $launch.DesktopName
     RunDir = $runDir
     Stage = $Stage
@@ -910,15 +944,18 @@ $summaryObject = [pscustomobject]@{
     CandidatePath = $candidateFull
     CandidateDir = (Get-FullPath -Path $CandidateDir)
     CandidateSha256 = $candidateSha
+    LoadSlot = $LoadSlot
     UseDdrawProxy = [bool]$UseDdrawProxy
     NoSkipStartAnims = [bool]$NoSkipStartAnims
     FastForwardStartAnims = [bool]$FastForwardStartAnims
     ForceVisibleEdges = [bool]$ForceVisibleEdges
     PostOwnerForceVisibleSeven = [bool]$PostOwnerForceVisibleSeven
     SkipMapValidation = [bool]$SkipMapValidation
+    LateLoadSlotForcingOnly = [bool]$LateLoadSlotForcingOnly
     DdrawProxyDll = $proxyDllPath
     DdrawProxySha256 = $proxySha
     DdrawProxyLog = $proxyLogPath
+    DdrawProxyPalette = $proxyPalettePath
     DdrawProxyManifest = $proxyManifestPath
     Cdb = (Get-FullPath -Path $Cdb)
     CdbExitCode = $cdbExitCode
@@ -937,6 +974,7 @@ $summaryObject = [pscustomobject]@{
     PngPath = $pngPath
     PngSha256 = $pngMeta.png_sha256
     PngMetadata = $pngMetaPath
+    PngPaletteMode = $pngMeta.palette_mode
     CoverageJson = $coverageJson
     CoverageText = $coverageText
     CoverageBlankActiveCells = $blankActiveCells
@@ -972,18 +1010,22 @@ $summaryObject | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $summaryJson
     "- Stage: $Stage"
     "- Candidate: $candidateFull"
     "- Candidate SHA-256: $candidateSha"
+    "- Load slot: $LoadSlot"
     "- DirectDraw proxy: $([bool]$UseDdrawProxy)"
     "- No skip start animations: $([bool]$NoSkipStartAnims)"
     "- Fast-forward start animations: $([bool]$FastForwardStartAnims)"
     "- Force visible edges: $([bool]$ForceVisibleEdges)"
     "- Post-owner force visible seven: $([bool]$PostOwnerForceVisibleSeven)"
     "- Map validation skipped: $([bool]$SkipMapValidation)"
+    "- Late load-slot forcing only: $([bool]$LateLoadSlotForcingOnly)"
     "- Extra probe template: $(if ($ExtraProbeTemplate) { Get-FullPath -Path $ExtraProbeTemplate } else { 'not used' })"
     "- DirectDraw proxy DLL: $(if ($proxyDllPath) { $proxyDllPath } else { 'not used' })"
     "- DirectDraw proxy log: $(if ($proxyLogPath) { $proxyLogPath } else { 'not used' })"
+    "- DirectDraw proxy palette: $(if ($proxyPalettePath -and (Test-Path -LiteralPath $proxyPalettePath -PathType Leaf)) { $proxyPalettePath } else { 'not captured' })"
     "- Surface: $($ready.Width)x$($ready.Height), base=$($ready.Base), bytes=$($ready.Bytes)"
     "- Raw: $rawPath"
     "- PNG: $pngPath"
+    "- PNG palette mode: $($pngMeta.palette_mode)"
     "- Coverage JSON: $coverageJson"
     "- Coverage blank active cells: $(if ($blankActiveCells.Count) { $blankActiveCells -join ', ' } else { 'none' })"
     "- Visibility JSON: $visibilityJson"

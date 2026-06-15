@@ -2,7 +2,7 @@
 """Gate Clash95 no-popup forced-visible surface-dump evidence.
 
 This is intentionally narrow: it validates the debugger-only
-`run_cdb_surface_dump.ps1 -ForceVisibleEdges` proof for the load-slot-0
+`scripts/cdb/run_cdb_surface_dump.ps1 -ForceVisibleEdges` proof for the load-slot-0
 viewport. It is not a gameplay visibility rule and must not be used to justify
 forcing fog/reveal behavior in normal play.
 """

@@ -3,8 +3,8 @@
 
 This is repo-only triage. It reads generated evidence reports and records why
 the right-bottom action UI is still not promotable: controlled composition
-renders the lower/right UI, but the natural route does not enter owner/action
-draw rows and remains save-state/load-route gated.
+renders the lower/right UI, and the natural slot-5 route can copy back only
+when a debugger-forced native action-button click drives the stock modal loop.
 """
 
 from __future__ import annotations
@@ -16,17 +16,17 @@ from pathlib import Path
 from typing import Any
 
 
-DEFAULT_COMPOSE_EVIDENCE_JSON = Path("captures/right-bottom-compose-evidence-current.json")
-DEFAULT_PROMOTION_DECISION_JSON = Path("captures/right-bottom-compose-promotion-decision-current.json")
-DEFAULT_NATURAL_ROUTE_JSON = Path("captures/right-bottom-natural-route-guard-current.json")
+DEFAULT_COMPOSE_EVIDENCE_JSON = Path("captures/current/right-bottom-compose-evidence-current.json")
+DEFAULT_PROMOTION_DECISION_JSON = Path("captures/current/right-bottom-compose-promotion-decision-current.json")
+DEFAULT_NATURAL_ROUTE_JSON = Path("captures/current/right-bottom-natural-route-guard-current.json")
 DEFAULT_NATURAL_SLOT5_SUMMARY_JSON = Path(
-    "captures/cdb-surface-dump-20260527-193512/right-bottom-natural-slot5-summary.json"
+    "captures/archive/cdb-surface-dump-20260615-100407/right-bottom-natural-slot5-summary.json"
 )
-DEFAULT_SLOT_FIXTURE_RUNTIME_PLAN_JSON = Path("captures/right-bottom-slot-fixture-runtime-plan-current.json")
-DEFAULT_LOAD_SLOT_ENTRY_GAP_JSON = Path("captures/load-slot-entry-gap-current.json")
-DEFAULT_MANUAL_RUN_PLAN_JSON = Path("captures/manual-directinput-run-plan-current.json")
-DEFAULT_JSON = Path("captures/right-bottom-blocker-triage-current.json")
-DEFAULT_MD = Path("captures/right-bottom-blocker-triage-current.md")
+DEFAULT_SLOT_FIXTURE_RUNTIME_PLAN_JSON = Path("captures/current/right-bottom-slot-fixture-runtime-plan-current.json")
+DEFAULT_LOAD_SLOT_ENTRY_GAP_JSON = Path("captures/current/load-slot-entry-gap-current.json")
+DEFAULT_MANUAL_RUN_PLAN_JSON = Path("captures/current/manual-directinput-run-plan-current.json")
+DEFAULT_JSON = Path("captures/current/right-bottom-blocker-triage-current.json")
+DEFAULT_MD = Path("captures/current/right-bottom-blocker-triage-current.md")
 
 RUNTIME_POLICY = (
     "repo-only evidence triage; reads generated JSON reports and does not launch "
@@ -35,8 +35,10 @@ RUNTIME_POLICY = (
 GUARD_POLICY = (
     "passes only while the current blocker is explicitly classified as non-promoting: "
     "controlled composition is recovered, natural owner/action rows are absent, the "
-    "natural route is either owner-flag gated or blocked inside the slot5 "
-    "Render_Begin/DD_Pump/copyback lane, and the next proof path remains hidden diagnosis "
+    "natural route is either owner-flag gated, blocked inside the slot5 "
+    "Render_Begin/DD_Pump/copyback lane, blocked by the documented loop-state/"
+    "input-resample/source-hold lane, or has only debugger-forced native "
+    "action-click copyback proof; the next proof path remains hidden diagnosis "
     "or approved manual input"
 )
 
@@ -127,9 +129,19 @@ def build_triage(
         and int(natural_summary.get("action_route_count") or 0) == 0
         and int(natural_summary.get("av_count") or 0) == 0
     )
+    slot5_proof_class = natural_slot5.get("proof_class")
+    slot5_natural_proof_class = slot5_proof_class in {
+        "natural_slot5_right_bottom_route",
+        "natural_slot5_right_bottom_loopstate",
+        "natural_slot5_right_bottom_input_resample",
+        "natural_slot5_right_bottom_sourcehold_callsite",
+        "natural_slot5_right_bottom_sourcehold_coords_callsite",
+        "natural_slot5_right_bottom_action_click_native",
+        "natural_slot5_right_bottom_action_click_centered_input",
+    }
     natural_slot5_render_begin_blocked = bool(
         natural_slot5
-        and natural_slot5.get("proof_class") == "natural_slot5_right_bottom_route"
+        and slot5_natural_proof_class
         and natural_slot5.get("status") in {
             "owner_action_render_begin_stalled",
             "owner_action_ddraw_wait_stalled",
@@ -150,7 +162,7 @@ def build_triage(
     )
     natural_slot5_copyback_blocked = bool(
         natural_slot5
-        and natural_slot5.get("proof_class") == "natural_slot5_right_bottom_route"
+        and slot5_natural_proof_class
         and natural_slot5.get("status") in {
             "owner_action_draw_reached",
             "owner_action_copyback_not_reached",
@@ -163,10 +175,107 @@ def build_triage(
         and int(natural_slot5.get("owner_action_draw_count") or 0) > 0
         and int(natural_slot5.get("render_begin_exit_count") or 0) > 0
         and int(natural_slot5.get("wrapper_copyback_count") or 0) == 0
+        and (
+            natural_slot5.get("proof_class") != "natural_slot5_right_bottom_input_resample"
+            or (
+                int(natural_slot5.get("owner_435bc0_pump_cb14_call_count") or 0) > 0
+                and int(natural_slot5.get("owner_435bc0_pump_608f0b_call_count") or 0) > 0
+            )
+        )
+        and int(natural_slot5.get("av_count") or 0) == 0
+    )
+    natural_slot5_loopstate_or_input_resample_blocked = bool(
+        natural_slot5
+        and natural_slot5.get("proof_class")
+        in {
+            "natural_slot5_right_bottom_loopstate",
+            "natural_slot5_right_bottom_input_resample",
+            "natural_slot5_right_bottom_sourcehold_callsite",
+            "natural_slot5_right_bottom_sourcehold_coords_callsite",
+        }
+        and natural_slot5.get("status") == "owner_action_435bc0_loop_stalled"
+        and natural_slot5.get("expected_slot_match") is True
+        and natural_slot5.get("load_success") is True
+        and natural_slot5.get("owner_bit2_set") is True
+        and int(natural_slot5.get("owner_action_route_count") or 0) > 0
+        and int(natural_slot5.get("owner_action_draw_count") or 0) > 0
+        and int(natural_slot5.get("render_begin_exit_count") or 0) > 0
+        and int(natural_slot5.get("wrapper_copyback_count") or 0) == 0
+        and int(natural_slot5.get("owner_435bc0_poll_count") or 0) > 0
+        and int(natural_slot5.get("owner_435bc0_grid_route_count") or 0) > 0
+        and (
+            int(natural_slot5.get("owner_435bc0_grid_fail_count") or 0) > 0
+            or natural_slot5.get("proof_class")
+            in {
+                "natural_slot5_right_bottom_sourcehold_callsite",
+                "natural_slot5_right_bottom_sourcehold_coords_callsite",
+            }
+        )
+        and int(natural_slot5.get("owner_435bc0_selection_update_count") or 0) == 0
+        and (
+            natural_slot5.get("proof_class") == "natural_slot5_right_bottom_loopstate"
+            or (
+                int(natural_slot5.get("owner_435bc0_pump_cb14_call_count") or 0) > 0
+                and int(natural_slot5.get("owner_435bc0_pump_608f0b_call_count") or 0) > 0
+            )
+        )
+        and int(natural_slot5.get("av_count") or 0) == 0
+    )
+    action_force = natural_slot5.get("last_action_force") or {}
+    action_callback = natural_slot5.get("last_action_descriptor_callback") or {}
+    action_exit_set = natural_slot5.get("last_action_click_exit_set") or {}
+    natural_slot5_action_click_copyback_diagnostic = bool(
+        natural_slot5
+        and natural_slot5.get("proof_class") == "natural_slot5_right_bottom_action_click_native"
+        and natural_slot5.get("status") == "owner_action_copyback_reached"
+        and natural_slot5.get("expected_slot_match") is True
+        and natural_slot5.get("load_success") is True
+        and natural_slot5.get("owner_bit2_set") is True
+        and int(natural_slot5.get("owner_action_route_count") or 0) > 0
+        and int(natural_slot5.get("owner_action_draw_count") or 0) > 0
+        and int(natural_slot5.get("render_begin_exit_count") or 0) > 0
+        and int(natural_slot5.get("wrapper_copyback_count") or 0) > 0
+        and int(natural_slot5.get("wrapper_stock_return_count") or 0) > 0
+        and int(natural_slot5.get("action_click_force_count") or 0) > 0
+        and int(natural_slot5.get("action_descriptor_callback_count") or 0) > 0
+        and int(natural_slot5.get("action_click_435620_entry_count") or 0) > 0
+        and int(natural_slot5.get("action_click_exit_set_count") or 0) > 0
+        and action_force.get("native") == [81, 441]
+        and _int_value(action_callback.get("callback")) == 0x00435620
+        and _int_value(action_exit_set.get("action_state")) == 1
+        and int(natural_slot5.get("av_count") or 0) == 0
+    )
+    natural_slot5_centered_input_copyback_diagnostic = bool(
+        natural_slot5
+        and natural_slot5.get("proof_class") == "natural_slot5_right_bottom_action_click_centered_input"
+        and natural_slot5.get("status") == "owner_action_copyback_reached"
+        and natural_slot5.get("expected_slot_match") is True
+        and natural_slot5.get("load_success") is True
+        and natural_slot5.get("owner_bit2_set") is True
+        and int(natural_slot5.get("owner_action_route_count") or 0) > 0
+        and int(natural_slot5.get("owner_action_draw_count") or 0) > 0
+        and int(natural_slot5.get("render_begin_exit_count") or 0) > 0
+        and int(natural_slot5.get("wrapper_copyback_count") or 0) > 0
+        and int(natural_slot5.get("wrapper_stock_return_count") or 0) > 0
+        and int(natural_slot5.get("action_click_display_force_count") or 0) > 0
+        and int(natural_slot5.get("action_click_native_force_count") or 0) == 0
+        and int(natural_slot5.get("action_descriptor_callback_count") or 0) > 0
+        and int(natural_slot5.get("action_click_435620_entry_count") or 0) > 0
+        and int(natural_slot5.get("action_click_exit_set_count") or 0) > 0
+        and action_force.get("displayed") == [161, 501]
+        and action_force.get("expected_native") == [81, 441]
+        and _int_value(action_callback.get("callback")) == 0x00435620
+        and action_callback.get("mouse") == [81, 441]
+        and _int_value(action_exit_set.get("action_state")) == 1
         and int(natural_slot5.get("av_count") or 0) == 0
     )
     natural_route_blocker_documented = bool(
-        natural_route_state_gated or natural_slot5_render_begin_blocked or natural_slot5_copyback_blocked
+        natural_route_state_gated
+        or natural_slot5_render_begin_blocked
+        or natural_slot5_copyback_blocked
+        or natural_slot5_loopstate_or_input_resample_blocked
+        or natural_slot5_action_click_copyback_diagnostic
+        or natural_slot5_centered_input_copyback_diagnostic
     )
     hidden_fixture_plan_ready = bool(
         fixture_plan.get("passed")
@@ -204,19 +313,26 @@ def build_triage(
             failures.append(f"triage check failed: {name}")
 
     classification = (
-        "controlled_recovered_but_natural_route_blocked"
+        "controlled_recovered_but_natural_route_nonpromoting"
         if not failures
         else "triage_incomplete_or_stale"
     )
     conclusion = (
         "The right-bottom action/menu surface is not stable-promotable yet. "
-        "Controlled composition recovers the lower/right UI, but natural owner/action "
-        "copyback remains absent. The current slot 5 natural route reaches owner bit "
-        "0x02, 004338E0, Render_Begin exit, and owner/action draw entry, then stops "
-        "before wrapper copyback."
+        "Controlled composition recovers the lower/right UI, and the v17b natural "
+        "slot-5 diagnostic proves the right-bottom wrapper can allocate the native "
+        "surface, enter stock 00435BC0, force a native action-button click at "
+        "(81,441), reach descriptor 0051519a and callback 00435620, set the modal "
+        "exit state, return from stock, and copy the native surface back into the "
+        "800x600 HD surface without an AV. That is debugger-forced proof, not a "
+        "real input-source or manual DirectInput proof, so stable promotion remains "
+        "deferred."
     )
     next_proof_options = [
-        "run the hidden v8 copyback trace to classify wrapper entry, stock 00435BC0 return, copyback call/return, or loop stall before 0051B86D",
+        "prove the real input-source path through 00519620/00519622 or 004612E0 that naturally supplies the action-button click without debugger-forced native coordinates",
+        "finish interpreting the stock 00435BC0 grid route/selection-update behavior now that v17b proves the native action-button exit/copyback path",
+        "decide whether the HD wrapper should drive a native-modal input transform or preserve the stock modal loop while copying back only after exit",
+        "reduce the v17b diagnostic into a patch-stage decision that excludes debugger-only coordinate injection",
         "collect approved visible/manual DirectInput proof and validate the manual proof manifest",
     ]
 
@@ -249,6 +365,7 @@ def build_triage(
             "natural_route_owner_flag_test": owner_flag,
             "natural_route_action_descriptor": action_descriptor,
             "natural_slot5_status": natural_slot5.get("status"),
+            "natural_slot5_proof_class": natural_slot5.get("proof_class"),
             "natural_slot5_render_begin_stalled": natural_slot5.get("owner_action_render_begin_stalled"),
             "natural_slot5_ddraw_wait_stalled": natural_slot5.get("owner_action_ddraw_wait_stalled"),
             "natural_slot5_render_begin_late_armed_count": natural_slot5.get("render_begin_late_armed_count"),
@@ -260,8 +377,60 @@ def build_triage(
             "natural_slot5_owner_action_draw_count": natural_slot5.get("owner_action_draw_count"),
             "natural_slot5_wrapper_copyback_count": natural_slot5.get("wrapper_copyback_count"),
             "natural_slot5_copyback_path_marker_count": natural_slot5.get("copyback_path_marker_count"),
+            "natural_slot5_action_click_marker_count": natural_slot5.get("action_click_marker_count"),
+            "natural_slot5_action_click_force_count": natural_slot5.get("action_click_force_count"),
+            "natural_slot5_action_click_native_force_count": natural_slot5.get(
+                "action_click_native_force_count"
+            ),
+            "natural_slot5_action_click_display_force_count": natural_slot5.get(
+                "action_click_display_force_count"
+            ),
+            "natural_slot5_action_descriptor_callback_count": natural_slot5.get(
+                "action_descriptor_callback_count"
+            ),
+            "natural_slot5_action_click_435620_entry_count": natural_slot5.get(
+                "action_click_435620_entry_count"
+            ),
+            "natural_slot5_action_click_exit_set_count": natural_slot5.get("action_click_exit_set_count"),
+            "natural_slot5_last_action_force_marker": natural_slot5.get("last_action_force_marker"),
+            "natural_slot5_last_action_force": natural_slot5.get("last_action_force"),
+            "natural_slot5_last_action_descriptor_callback": natural_slot5.get(
+                "last_action_descriptor_callback"
+            ),
+            "natural_slot5_last_action_click_exit_set": natural_slot5.get("last_action_click_exit_set"),
             "natural_slot5_435bc0_loop_count": natural_slot5.get("owner_435bc0_loop_count"),
             "natural_slot5_435bc0_return_count": natural_slot5.get("owner_435bc0_return_count"),
+            "natural_slot5_435bc0_poll_count": natural_slot5.get("owner_435bc0_poll_count"),
+            "natural_slot5_435bc0_poll_limit_count": natural_slot5.get("owner_435bc0_poll_limit_count"),
+            "natural_slot5_435bc0_grid_route_count": natural_slot5.get("owner_435bc0_grid_route_count"),
+            "natural_slot5_435bc0_grid_fail_count": natural_slot5.get("owner_435bc0_grid_fail_count"),
+            "natural_slot5_435bc0_selection_update_count": natural_slot5.get("owner_435bc0_selection_update_count"),
+            "natural_slot5_last_435bc0_poll": natural_slot5.get("last_owner_435bc0_poll"),
+            "natural_slot5_last_435bc0_grid_gate": natural_slot5.get("last_owner_435bc0_grid_gate"),
+            "natural_slot5_last_sourcehold_marker": natural_slot5.get("last_sourcehold_marker"),
+            "natural_slot5_last_sourcehold": natural_slot5.get("last_sourcehold"),
+            "natural_slot5_last_435bc0_pump_tick_return": natural_slot5.get(
+                "last_owner_435bc0_pump_tick_return"
+            ),
+            "natural_slot5_last_435bc0_pump_cb14_call": natural_slot5.get(
+                "last_owner_435bc0_pump_cb14_call"
+            ),
+            "natural_slot5_last_435bc0_pump_608f0b_call": natural_slot5.get(
+                "last_owner_435bc0_pump_608f0b_call"
+            ),
+            "natural_slot5_last_435bc0_pump_cb04_call": natural_slot5.get(
+                "last_owner_435bc0_pump_cb04_call"
+            ),
+            "natural_slot5_first_435bc0_pump_tick_return": natural_slot5.get(
+                "first_owner_435bc0_pump_tick_return"
+            ),
+            "natural_slot5_first_435bc0_pump_cb14_call": natural_slot5.get(
+                "first_owner_435bc0_pump_cb14_call"
+            ),
+            "natural_slot5_first_435bc0_pump_608f0b_call": natural_slot5.get(
+                "first_owner_435bc0_pump_608f0b_call"
+            ),
+            "natural_slot5_timeout_stack_classification": natural_slot5.get("timeout_stack_classification"),
             "grid_hit_ok": grid_hit.get("grid_hit_ok"),
             "grid_hit_entry": grid_hit.get("last_grid_entry"),
             "grid_hit_result": grid_hit.get("last_grid_result"),
@@ -308,6 +477,7 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
             f"- Natural UI owner/action rows: `{observations.get('natural_ui_owner_action_rows')}`",
             f"- Natural route owner flag test: `{observations.get('natural_route_owner_flag_test')}`",
             f"- Natural route action descriptor: `{observations.get('natural_route_action_descriptor')}`",
+            f"- Natural slot5 proof class: `{observations.get('natural_slot5_proof_class')}`",
             f"- Natural slot5 status: `{observations.get('natural_slot5_status')}`",
             f"- Natural slot5 Render_Begin stalled: `{observations.get('natural_slot5_render_begin_stalled')}`",
             f"- Natural slot5 DD_Pump wait stalled: `{observations.get('natural_slot5_ddraw_wait_stalled')}`",
@@ -320,7 +490,26 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
             f"- Natural slot5 owner/action draw count: `{observations.get('natural_slot5_owner_action_draw_count')}`",
             f"- Natural slot5 wrapper copyback count: `{observations.get('natural_slot5_wrapper_copyback_count')}`",
             f"- Natural slot5 copyback path marker count: `{observations.get('natural_slot5_copyback_path_marker_count')}`",
+            f"- Natural slot5 native action-click marker count: `{observations.get('natural_slot5_action_click_marker_count')}`",
+            f"- Natural slot5 native/display force counts: `{observations.get('natural_slot5_action_click_native_force_count')}` / `{observations.get('natural_slot5_action_click_display_force_count')}`",
+            f"- Natural slot5 native action force/callback/00435620/exit counts: `{observations.get('natural_slot5_action_click_force_count')}` / `{observations.get('natural_slot5_action_descriptor_callback_count')}` / `{observations.get('natural_slot5_action_click_435620_entry_count')}` / `{observations.get('natural_slot5_action_click_exit_set_count')}`",
+            f"- Natural slot5 last native action force marker: `{observations.get('natural_slot5_last_action_force_marker')}`",
+            f"- Natural slot5 last native action force: `{observations.get('natural_slot5_last_action_force')}`",
+            f"- Natural slot5 last native action descriptor callback: `{observations.get('natural_slot5_last_action_descriptor_callback')}`",
+            f"- Natural slot5 last native action click exit-set: `{observations.get('natural_slot5_last_action_click_exit_set')}`",
             f"- Natural slot5 00435BC0 loop/return count: `{observations.get('natural_slot5_435bc0_loop_count')}` / `{observations.get('natural_slot5_435bc0_return_count')}`",
+            f"- Natural slot5 00435BC0 poll/limit count: `{observations.get('natural_slot5_435bc0_poll_count')}` / `{observations.get('natural_slot5_435bc0_poll_limit_count')}`",
+            f"- Natural slot5 00435BC0 grid route/fail/selection-update count: `{observations.get('natural_slot5_435bc0_grid_route_count')}` / `{observations.get('natural_slot5_435bc0_grid_fail_count')}` / `{observations.get('natural_slot5_435bc0_selection_update_count')}`",
+            f"- Natural slot5 last 00435BC0 poll: `{observations.get('natural_slot5_last_435bc0_poll')}`",
+            f"- Natural slot5 last 00435BC0 grid gate: `{observations.get('natural_slot5_last_435bc0_grid_gate')}`",
+            f"- Natural slot5 last 00435BC0 pump tick-return: `{observations.get('natural_slot5_last_435bc0_pump_tick_return')}`",
+            f"- Natural slot5 last 00435BC0 pump cb14 call: `{observations.get('natural_slot5_last_435bc0_pump_cb14_call')}`",
+            f"- Natural slot5 last 00435BC0 pump 608f0b call: `{observations.get('natural_slot5_last_435bc0_pump_608f0b_call')}`",
+            f"- Natural slot5 last 00435BC0 pump cb04 call: `{observations.get('natural_slot5_last_435bc0_pump_cb04_call')}`",
+            f"- Natural slot5 first 00435BC0 pump tick-return: `{observations.get('natural_slot5_first_435bc0_pump_tick_return')}`",
+            f"- Natural slot5 first 00435BC0 pump cb14 call: `{observations.get('natural_slot5_first_435bc0_pump_cb14_call')}`",
+            f"- Natural slot5 first 00435BC0 pump 608f0b call: `{observations.get('natural_slot5_first_435bc0_pump_608f0b_call')}`",
+            f"- Natural slot5 timeout stack classification: `{observations.get('natural_slot5_timeout_stack_classification')}`",
             f"- Grid hit: `ok={observations.get('grid_hit_ok')}`, `entry={observations.get('grid_hit_entry')}`, `result={observations.get('grid_hit_result')}`",
             f"- Fixture proof class / load slot: `{observations.get('fixture_proof_class')}` / `{observations.get('fixture_target_load_slot')}`",
             f"- Legacy load-slot gap / blocked rows: `{observations.get('load_slot_gap_classification')}` / `{observations.get('load_slot_blocked_rows')}`",

@@ -1,0 +1,5 @@
+.echo === Clash95 post-owner action pre-clear experiment ===
+.echo Includes the proven owner/action route, then clears the 800x600 map surface before 00435BC0 draws the action UI
+$$$$><C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\clash95_post_owner_action_extra.cdb
+
+bp 00435BC0 ".if ((@$t18 != 0) & (@$t6 == 0) & (wo(poi(005202e0)) == 0n800) & (wo(poi(005202e0)+2) == 0n600)) { r @$t6=1; r @$t11=poi(005202e0); r @$t16=poi(@$t11+4); .printf \"APCLEAR_BEFORE_435BC0 surface=%p base=%p bytes=480000 samples_before=(%02x,%02x,%02x)\\n\", @$t11, @$t16, by(@$t16), by(@$t16+0n300*0n800+0n400), by(@$t16+0n599*0n800+0n799); f @$t16 L0n480000 00; .printf \"APCLEAR_AFTER_435BC0 surface=%p base=%p samples_after=(%02x,%02x,%02x)\\n\", @$t11, @$t16, by(@$t16), by(@$t16+0n300*0n800+0n400), by(@$t16+0n599*0n800+0n799); }; gc"

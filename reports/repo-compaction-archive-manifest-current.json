@@ -1,0 +1,1387 @@
+{
+    "generated_at":  "2026-06-15T18:16:25",
+    "archive_roots":  [
+                          "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                          "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck"
+                      ],
+    "file_count":  172,
+    "total_bytes":  101752217,
+    "records":  [
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/README.md",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\README.md",
+                        "size":  437,
+                        "sha256":  "ae5b16a0e4e88d38324842e3f4a413dc54b22dc2e582555c730dfdd1e22d1a06",
+                        "reason":  "captures layout index archived by earlier classifier version; restored in repo"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/battle-ui-catalog-summary-20260515-114101.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\battle-ui-catalog-summary-20260515-114101.json",
+                        "size":  2505,
+                        "sha256":  "08836d9aee1f2e1719f136cbb6da345da970e62539061c16440f75492d633021",
+                        "reason":  "stale unreferenced capture file"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/battle-ui-catalog-summary-20260515-114101.md",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\battle-ui-catalog-summary-20260515-114101.md",
+                        "size":  1363,
+                        "sha256":  "56c519502f0b7ae2fafde3b7270ab53f44e4386050ac4ad43db5e3c44e0ff0cf",
+                        "reason":  "stale unreferenced capture file"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/battle-ui-gate-20260515-114101.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\battle-ui-gate-20260515-114101.json",
+                        "size":  3985,
+                        "sha256":  "181dff3f85b125fd46a95eb17440eb50e3a3fd881777bb034e697d6a6728cef1",
+                        "reason":  "stale unreferenced capture file"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/battle-ui-gate-20260515-114101.md",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\battle-ui-gate-20260515-114101.md",
+                        "size":  1910,
+                        "sha256":  "ae65e6fd6f09fa3251779526e4013711832eeb0c21f7be723563e8c6c99da106",
+                        "reason":  "stale unreferenced capture file"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/original_menu.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\original_menu.png",
+                        "size":  488903,
+                        "sha256":  "981b769a839d5556e3c1dfc93c6dac3cdf9f024e867dc3f6fd2831ad7a8fc40a",
+                        "reason":  "stale unreferenced capture file"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-144756/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-144756\\results.csv",
+                        "size":  976,
+                        "sha256":  "0f9f7dbd50667b03085b6dfadf9f2b51aba55a75e24082d693d55580669d1f25",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-144756/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-144756\\results.json",
+                        "size":  1181,
+                        "sha256":  "414381964edd2a44d99117665ddabe5e7484bdec8043f7cd034811270932d2c4",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-144756/clash95_hdmenu_centered_relinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-144756\\clash95_hdmenu_centered_relinput-centered-exit\\after.png",
+                        "size":  156380,
+                        "sha256":  "aa5f1e72efa35cd0a92b8a425ff6b7ae3f368bddada4120818916ff735a07e74",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-144756/clash95_hdmenu_centered_relinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-144756\\clash95_hdmenu_centered_relinput-centered-exit\\before.png",
+                        "size":  156380,
+                        "sha256":  "aa5f1e72efa35cd0a92b8a425ff6b7ae3f368bddada4120818916ff735a07e74",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-145855/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-145855\\results.csv",
+                        "size":  948,
+                        "sha256":  "3e8703694c3c83c8b354f9734cec028149b624023fa75a759f48b39bc896e131",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-145855/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-145855\\results.json",
+                        "size":  1153,
+                        "sha256":  "effd7427ed96e0af0a2bf37fa6e85f02ea71c77089be54afc69f1c8f740d6bbe",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-145855/clash95_hdmap12_relinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-145855\\clash95_hdmap12_relinput-centered-exit\\after.png",
+                        "size":  154247,
+                        "sha256":  "8235c368cb684a29aec4cbf6d01f42a7985cde603c1fbdf7e00a7afb5031ada0",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-145855/clash95_hdmap12_relinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-145855\\clash95_hdmap12_relinput-centered-exit\\before.png",
+                        "size":  154261,
+                        "sha256":  "1edc7eb9d321b9eabb0ece8804bb3d7a1b46b2030b009431e47b8a9635aaa80a",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-151033/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-151033\\results.csv",
+                        "size":  984,
+                        "sha256":  "4d1e8fa5b2a9771d10906b805e8735d8d9937609e31c0a305b5bb80f56445716",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-151033/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-151033\\results.json",
+                        "size":  1189,
+                        "sha256":  "da6ca6c78a12aada34714eefa73372c4a385dc4468e31581e4adc3bc520a95f0",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-151033/clash95_hdmap12_novswitch_relinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-151033\\clash95_hdmap12_novswitch_relinput-centered-exit\\after.png",
+                        "size":  148060,
+                        "sha256":  "86b442da3ab3f68f3ba7a372fb7096bfa374424cfcc44b7706df1f821112f91d",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150",
+                        "old_path":  "captures/archive/clicktest-20260422-151033/clash95_hdmap12_novswitch_relinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150\\captures\\archive\\clicktest-20260422-151033\\clash95_hdmap12_novswitch_relinput-centered-exit\\before.png",
+                        "size":  148060,
+                        "sha256":  "86b442da3ab3f68f3ba7a372fb7096bfa374424cfcc44b7706df1f821112f91d",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121202/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121202\\results.csv",
+                        "size":  1473,
+                        "sha256":  "989b65bb18a394ef8c96f2ce7d7dbb22a5014cfc784f4f2a38d5f96a736861f3",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121202/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121202\\results.json",
+                        "size":  2242,
+                        "sha256":  "79429e474aad7b21443e4556028a865738fe8866bf0b46c8bef15aa7fb2f5f34",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121202/clash95_hddisplay_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121202\\clash95_hddisplay_absinput-centered-exit\\after.png",
+                        "size":  646513,
+                        "sha256":  "3ac987e76126e6c279d8f9029ed43bfd32def29a151b611ba974172cbb0acca5",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121202/clash95_hddisplay_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121202\\clash95_hddisplay_absinput-centered-exit\\before.png",
+                        "size":  679014,
+                        "sha256":  "f5a02dc0a40b61b36f04802e1799f8fb303f55dc3be0f6a0fcc1709f1b2889fd",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121202/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121202\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  1982160,
+                        "sha256":  "1370c3d1d767061769cde8044486c5a58816f13559657ef637a44ccfc93f0528",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121202/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121202\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  674111,
+                        "sha256":  "dfdffbfe3c5bcba95deee3bf7c6e169039b090eda1d58753190c097dee64c6e6",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121419/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121419\\results.csv",
+                        "size":  859,
+                        "sha256":  "c7725bd41f6a896a5b0a25d6be1e650ccdced5a7111096ba6238c19822b866f9",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121419/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121419\\results.json",
+                        "size":  1909,
+                        "sha256":  "06dbb37e87226660e2f2153993b24017772234b97caaaadd97fce9fec364abd8",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121511/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121511\\results.csv",
+                        "size":  1113,
+                        "sha256":  "21f6a0223f60c246b224d06682e7ed5623c2648d1e24a5c788750f4b8b006b73",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121511/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121511\\results.json",
+                        "size":  2183,
+                        "sha256":  "75f6fa0ee1cc5bea6cb5d55873441f8f7fe6b08e362f2a7a6eb5bc9c3f04d852",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121556/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121556\\results.csv",
+                        "size":  1595,
+                        "sha256":  "7110b3ab5cf1fb5a71a97de063bbccd26df311745fe47f7264eed4dc87038716",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121556/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121556\\results.json",
+                        "size":  2541,
+                        "sha256":  "0360b82facbfe09f6e46d692559318bd37aeb187862e05006663d9943675776d",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121556/clash95_hddisplay_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121556\\clash95_hddisplay_absinput-centered-exit\\after.png",
+                        "size":  1332025,
+                        "sha256":  "fb9ebaf36381b4c3fd31272a3c2041827b7cb08f87337a33593d1db444508992",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121556/clash95_hddisplay_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121556\\clash95_hddisplay_absinput-centered-exit\\before.png",
+                        "size":  1334821,
+                        "sha256":  "829041aaae866b79a688fde6e7023746ea416e7fbba34b0a111bd18e497379fa",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121556/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121556\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  1332025,
+                        "sha256":  "fb9ebaf36381b4c3fd31272a3c2041827b7cb08f87337a33593d1db444508992",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121556/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121556\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  1379030,
+                        "sha256":  "3de53683ce4a53b5a77680fc492cd5e93d05d6a54e01a2108be37ce5485817c8",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\results.csv",
+                        "size":  10910,
+                        "sha256":  "ead7f8b11758b1ed3a6dff027cf5c6bd5da7162d03c0a97eae8d61c76d9dd84c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\results.json",
+                        "size":  20634,
+                        "sha256":  "d68d27c001882865ae50dfddc0d2c05850310bbb53d5cc8a47c78332df5c45db",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hdcentered_visual_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hdcentered_visual_absinput-centered-exit\\after.png",
+                        "size":  393431,
+                        "sha256":  "548a3a4b33e4de36644fccaa4085bfe12a250942422671c85e075d87bb5446b1",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hdcentered_visual_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hdcentered_visual_absinput-centered-exit\\before.png",
+                        "size":  404677,
+                        "sha256":  "39d184291c6fcf1bc764334b10b1889e40400fd7370ff7a9b6e49e7ec8eb03af",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hdcentered_visual_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hdcentered_visual_absinput-native-exit\\after.png",
+                        "size":  395806,
+                        "sha256":  "35925a725809afa9a403f0857fc02422d31f6077dac64c0816ef294f4ce0eb49",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hdcentered_visual_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hdcentered_visual_absinput-native-exit\\before.png",
+                        "size":  401244,
+                        "sha256":  "724d5c0e183e2d8abfe8ea50334f278cb7502a7f315216b48c4529abefcdf77a",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hddisplay_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hddisplay_absinput-centered-exit\\after.png",
+                        "size":  1335163,
+                        "sha256":  "daee800d36afb0c9bbb9fa7c238b32235ee48cbc94d965f90d76544b411e7c39",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hddisplay_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hddisplay_absinput-centered-exit\\before.png",
+                        "size":  1375962,
+                        "sha256":  "0e6756f3a17b0a5b871ae931d42b47b9fbce09899025c8d8fff7a081f45bc87c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  1334781,
+                        "sha256":  "3c38c94243f9e84738a2b7d6e4cfb5b3053c2e852e80895f1474d36bf792ccde",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  1379204,
+                        "sha256":  "2453f357817aa2ea90d8891bb740b25652939720c2872801ba255753531c58c7",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hddisplay_centered_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hddisplay_centered_absinput-centered-exit\\after.png",
+                        "size":  998523,
+                        "sha256":  "515d608e9f18ecb644ba9bf7cccfae03a289073db7663748b5c953e158095881",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hddisplay_centered_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hddisplay_centered_absinput-centered-exit\\before.png",
+                        "size":  1004004,
+                        "sha256":  "19d94b3e020353420a0d24e23b6ce3d60c06381e4df41442d4f540dd0221ff2d",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hddisplay_centered_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hddisplay_centered_absinput-native-exit\\after.png",
+                        "size":  937116,
+                        "sha256":  "6e8d09040a9992b431aaacaa2b2295c1d903388f4415cc7092f128e2d3b0015c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hddisplay_centered_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hddisplay_centered_absinput-native-exit\\before.png",
+                        "size":  939983,
+                        "sha256":  "0984f900472324fc6c4272e8df62e87c3d3b3c90423802954140bab49aa0e218",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hdmenu_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hdmenu_absinput-centered-exit\\after.png",
+                        "size":  395806,
+                        "sha256":  "35925a725809afa9a403f0857fc02422d31f6077dac64c0816ef294f4ce0eb49",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hdmenu_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hdmenu_absinput-centered-exit\\before.png",
+                        "size":  403028,
+                        "sha256":  "e727aa58d1d6ff10885fc7e810ab341a5b4f64db30d28efb5ad5842fed2829f1",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hdmenu_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hdmenu_absinput-native-exit\\after.png",
+                        "size":  393338,
+                        "sha256":  "cd433a4b69b3ef7049608b4876a82f37a630d4a0e02a65782ad356a7806fa795",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_hdmenu_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_hdmenu_absinput-native-exit\\before.png",
+                        "size":  403028,
+                        "sha256":  "e727aa58d1d6ff10885fc7e810ab341a5b4f64db30d28efb5ad5842fed2829f1",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_inputbounds_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_inputbounds_absinput-centered-exit\\after.png",
+                        "size":  1332025,
+                        "sha256":  "fb9ebaf36381b4c3fd31272a3c2041827b7cb08f87337a33593d1db444508992",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_inputbounds_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_inputbounds_absinput-centered-exit\\before.png",
+                        "size":  1379305,
+                        "sha256":  "0b82a2cc188a89f896c21b5af34f81b2f79dcf2349658cc63951be96e689aa84",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_inputbounds_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_inputbounds_absinput-native-exit\\after.png",
+                        "size":  1332025,
+                        "sha256":  "fb9ebaf36381b4c3fd31272a3c2041827b7cb08f87337a33593d1db444508992",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_inputbounds_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_inputbounds_absinput-native-exit\\before.png",
+                        "size":  1334821,
+                        "sha256":  "829041aaae866b79a688fde6e7023746ea416e7fbba34b0a111bd18e497379fa",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_loops_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_loops_absinput-centered-exit\\after.png",
+                        "size":  393431,
+                        "sha256":  "548a3a4b33e4de36644fccaa4085bfe12a250942422671c85e075d87bb5446b1",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_loops_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_loops_absinput-centered-exit\\before.png",
+                        "size":  397535,
+                        "sha256":  "f35557bcb1e2a91dd9f16041934cc043e41799520acb2b422a51730d609c7c5b",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_loops_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_loops_absinput-native-exit\\after.png",
+                        "size":  1376192,
+                        "sha256":  "e9319b97a4cf500f9e15ea0243f2ce74cbc4355da51f25b2b1223c856e68032c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_loops_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_loops_absinput-native-exit\\before.png",
+                        "size":  1376192,
+                        "sha256":  "e9319b97a4cf500f9e15ea0243f2ce74cbc4355da51f25b2b1223c856e68032c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_surface_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_surface_absinput-centered-exit\\after.png",
+                        "size":  395806,
+                        "sha256":  "35925a725809afa9a403f0857fc02422d31f6077dac64c0816ef294f4ce0eb49",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_surface_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_surface_absinput-centered-exit\\before.png",
+                        "size":  401244,
+                        "sha256":  "724d5c0e183e2d8abfe8ea50334f278cb7502a7f315216b48c4529abefcdf77a",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_surface_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_surface_absinput-native-exit\\after.png",
+                        "size":  393431,
+                        "sha256":  "548a3a4b33e4de36644fccaa4085bfe12a250942422671c85e075d87bb5446b1",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_surface_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_surface_absinput-native-exit\\before.png",
+                        "size":  397535,
+                        "sha256":  "f35557bcb1e2a91dd9f16041934cc043e41799520acb2b422a51730d609c7c5b",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_viewportcall_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_viewportcall_absinput-centered-exit\\after.png",
+                        "size":  1334864,
+                        "sha256":  "992c0a1461580cc4ae36f947711b66df74a3b6b72aa7e54a21e755800d1d1e59",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_viewportcall_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_viewportcall_absinput-centered-exit\\before.png",
+                        "size":  1334821,
+                        "sha256":  "829041aaae866b79a688fde6e7023746ea416e7fbba34b0a111bd18e497379fa",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_viewportcall_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_viewportcall_absinput-native-exit\\after.png",
+                        "size":  1374759,
+                        "sha256":  "777fe093961944c2dd9af3c1ea7b3ef78fc8178ac75e899a2cc7314f4d1cd091",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-121821/clash95_isolate_viewportcall_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-121821\\clash95_isolate_viewportcall_absinput-native-exit\\before.png",
+                        "size":  1379080,
+                        "sha256":  "1903c8e5f4c9c6657da3084c827d11f0b1bc68fc438af0c9f9049fb42c783184",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\results.csv",
+                        "size":  10904,
+                        "sha256":  "cc163eeaa9394e2945ef916ccc6ccca975b585380e4f0769fef6cb4334ac84fa",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\results.json",
+                        "size":  20628,
+                        "sha256":  "54c2e2027659056298ab34372425ce3a4aa26633f163a257aed0d54ee0f06d93",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hdcentered_visual_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hdcentered_visual_absinput-centered-exit\\after.png",
+                        "size":  388875,
+                        "sha256":  "5d3f8ef3aae7e399d66ee540bc2e5d75c3d0213bb38095412d30d70ba7739fed",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hdcentered_visual_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hdcentered_visual_absinput-centered-exit\\before.png",
+                        "size":  399735,
+                        "sha256":  "8236455ea64a5c7926a42897356a40337ecfe9f89708cc63cfa955d5cd0f9e3c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hdcentered_visual_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hdcentered_visual_absinput-native-exit\\after.png",
+                        "size":  387672,
+                        "sha256":  "a248dd5e100a43dedaddfd2bcdb88abe47bfb37748789d4cbba22a1298b30738",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hdcentered_visual_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hdcentered_visual_absinput-native-exit\\before.png",
+                        "size":  401586,
+                        "sha256":  "4bf484266958e36f4d3512f813bf52e12fafa64bcca6969065be58f177805c9f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hddisplay_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hddisplay_absinput-centered-exit\\after.png",
+                        "size":  388875,
+                        "sha256":  "5d3f8ef3aae7e399d66ee540bc2e5d75c3d0213bb38095412d30d70ba7739fed",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hddisplay_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hddisplay_absinput-centered-exit\\before.png",
+                        "size":  399735,
+                        "sha256":  "8236455ea64a5c7926a42897356a40337ecfe9f89708cc63cfa955d5cd0f9e3c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  385524,
+                        "sha256":  "b396907f6f822030d4ee8890d9e727867441f7eae8dc74d11beecccf42f7bca8",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  398381,
+                        "sha256":  "3fb6117400d025197ac6606ecade3629de7982ca85ba2762cea6ea7d5f64099a",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hddisplay_centered_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hddisplay_centered_absinput-centered-exit\\after.png",
+                        "size":  388875,
+                        "sha256":  "5d3f8ef3aae7e399d66ee540bc2e5d75c3d0213bb38095412d30d70ba7739fed",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hddisplay_centered_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hddisplay_centered_absinput-centered-exit\\before.png",
+                        "size":  399735,
+                        "sha256":  "8236455ea64a5c7926a42897356a40337ecfe9f89708cc63cfa955d5cd0f9e3c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hddisplay_centered_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hddisplay_centered_absinput-native-exit\\after.png",
+                        "size":  388875,
+                        "sha256":  "5d3f8ef3aae7e399d66ee540bc2e5d75c3d0213bb38095412d30d70ba7739fed",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hddisplay_centered_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hddisplay_centered_absinput-native-exit\\before.png",
+                        "size":  397447,
+                        "sha256":  "bf3ba134b788040f13279e0ca77cdc34403aa66ff8d2ed3af49255cd83fc5bd5",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hdmenu_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hdmenu_absinput-centered-exit\\after.png",
+                        "size":  385073,
+                        "sha256":  "0637828ab1bc51f3ea921ca8e4b29894cfde651124ca6f2524fc330aca598cea",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hdmenu_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hdmenu_absinput-centered-exit\\before.png",
+                        "size":  399735,
+                        "sha256":  "8236455ea64a5c7926a42897356a40337ecfe9f89708cc63cfa955d5cd0f9e3c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hdmenu_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hdmenu_absinput-native-exit\\after.png",
+                        "size":  385524,
+                        "sha256":  "b396907f6f822030d4ee8890d9e727867441f7eae8dc74d11beecccf42f7bca8",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_hdmenu_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_hdmenu_absinput-native-exit\\before.png",
+                        "size":  398381,
+                        "sha256":  "3fb6117400d025197ac6606ecade3629de7982ca85ba2762cea6ea7d5f64099a",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_inputbounds_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_inputbounds_absinput-centered-exit\\after.png",
+                        "size":  384822,
+                        "sha256":  "9984e44420e0ef3109955005e32be5651c550be8b66a46c248f9eedd1bdfeafd",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_inputbounds_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_inputbounds_absinput-centered-exit\\before.png",
+                        "size":  398381,
+                        "sha256":  "3fb6117400d025197ac6606ecade3629de7982ca85ba2762cea6ea7d5f64099a",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_inputbounds_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_inputbounds_absinput-native-exit\\after.png",
+                        "size":  387672,
+                        "sha256":  "a248dd5e100a43dedaddfd2bcdb88abe47bfb37748789d4cbba22a1298b30738",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_inputbounds_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_inputbounds_absinput-native-exit\\before.png",
+                        "size":  399735,
+                        "sha256":  "8236455ea64a5c7926a42897356a40337ecfe9f89708cc63cfa955d5cd0f9e3c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_loops_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_loops_absinput-centered-exit\\after.png",
+                        "size":  384822,
+                        "sha256":  "9984e44420e0ef3109955005e32be5651c550be8b66a46c248f9eedd1bdfeafd",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_loops_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_loops_absinput-centered-exit\\before.png",
+                        "size":  399735,
+                        "sha256":  "8236455ea64a5c7926a42897356a40337ecfe9f89708cc63cfa955d5cd0f9e3c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_loops_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_loops_absinput-native-exit\\after.png",
+                        "size":  385524,
+                        "sha256":  "b396907f6f822030d4ee8890d9e727867441f7eae8dc74d11beecccf42f7bca8",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_loops_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_loops_absinput-native-exit\\before.png",
+                        "size":  397447,
+                        "sha256":  "bf3ba134b788040f13279e0ca77cdc34403aa66ff8d2ed3af49255cd83fc5bd5",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_surface_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_surface_absinput-centered-exit\\after.png",
+                        "size":  388875,
+                        "sha256":  "5d3f8ef3aae7e399d66ee540bc2e5d75c3d0213bb38095412d30d70ba7739fed",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_surface_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_surface_absinput-centered-exit\\before.png",
+                        "size":  399735,
+                        "sha256":  "8236455ea64a5c7926a42897356a40337ecfe9f89708cc63cfa955d5cd0f9e3c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_surface_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_surface_absinput-native-exit\\after.png",
+                        "size":  387672,
+                        "sha256":  "a248dd5e100a43dedaddfd2bcdb88abe47bfb37748789d4cbba22a1298b30738",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_surface_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_surface_absinput-native-exit\\before.png",
+                        "size":  401586,
+                        "sha256":  "4bf484266958e36f4d3512f813bf52e12fafa64bcca6969065be58f177805c9f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_viewportcall_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_viewportcall_absinput-centered-exit\\after.png",
+                        "size":  385576,
+                        "sha256":  "6b4abcae750bd0d93baa18b57d107a44adcdb66a7bcf6062d9496e80c1b827a9",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_viewportcall_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_viewportcall_absinput-centered-exit\\before.png",
+                        "size":  396616,
+                        "sha256":  "59f753c21e498492e6b5143015f93e70e2a21fab6ea0a3414bbaa5e57e9135b6",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_viewportcall_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_viewportcall_absinput-native-exit\\after.png",
+                        "size":  388875,
+                        "sha256":  "5d3f8ef3aae7e399d66ee540bc2e5d75c3d0213bb38095412d30d70ba7739fed",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-122310/clash95_isolate_viewportcall_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-122310\\clash95_isolate_viewportcall_absinput-native-exit\\before.png",
+                        "size":  399735,
+                        "sha256":  "8236455ea64a5c7926a42897356a40337ecfe9f89708cc63cfa955d5cd0f9e3c",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123115/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123115\\results.csv",
+                        "size":  945,
+                        "sha256":  "fac854b3c52b4f13339762d606807c9d661b81670bee71bdef1034e63ea6213e",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123115/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123115\\results.json",
+                        "size":  1150,
+                        "sha256":  "16f473c166dc0a1efa6e0a8f5ab05e9072782101b9363e1acca8b9ef11f9c73b",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123115/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123115\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  394279,
+                        "sha256":  "f8d8b0c3aafc11bff7abe0d0a81e1a859e14e44d68fb0773f9d8016a880cb965",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123115/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123115\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  392920,
+                        "sha256":  "fa2ee3c9fd27c9932c348a2bc82fcbd0a7264865200ee7dd00a62ba7af6348f1",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123235/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123235\\results.csv",
+                        "size":  945,
+                        "sha256":  "34a66c137184147c068e169feba520bb4da7aa4ff12b0c770779374169aca857",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123235/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123235\\results.json",
+                        "size":  1150,
+                        "sha256":  "faed5b340fbc8e418e875381ce54e413c9cc9ecdcf4ca0787e4334b572c51704",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123235/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123235\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  390871,
+                        "sha256":  "05d1148f6d9d2ef58beb3c986361fc089ae081ecc066bd980c0e221c06e6fd30",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123235/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123235\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  395592,
+                        "sha256":  "a92fca822e434037530dea5fff114be355f0954f23902866ca33d87aab234c44",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123522/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123522\\results.csv",
+                        "size":  942,
+                        "sha256":  "9e0089bb584b05aa81a360243f6c5314c0020a778a153784395a6885d95362ca",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123522/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123522\\results.json",
+                        "size":  1147,
+                        "sha256":  "e929e2361ad0c353d701deba1379b84af7700556f473c832e63b013ba228008d",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123522/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123522\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123522/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123522\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123627/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123627\\results.csv",
+                        "size":  942,
+                        "sha256":  "b749914135a19d70fd7d69d4cddb063d59ff431dab0e711c2221b93ae3073cdb",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123627/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123627\\results.json",
+                        "size":  1147,
+                        "sha256":  "b777f2631d18b8967d301c2a0a2b99f3a1e84cddd55f172a26daabd58e7f89eb",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123627/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123627\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  1379080,
+                        "sha256":  "1903c8e5f4c9c6657da3084c827d11f0b1bc68fc438af0c9f9049fb42c783184",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-123627/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-123627\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  1379080,
+                        "sha256":  "1903c8e5f4c9c6657da3084c827d11f0b1bc68fc438af0c9f9049fb42c783184",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124415/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124415\\results.csv",
+                        "size":  2249,
+                        "sha256":  "309ceb6a2f75632c58b1bb4b854f38a6a9d8942812c2aba30662f64d95a6b4f5",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124415/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124415\\results.json",
+                        "size":  3822,
+                        "sha256":  "7d61c3f8c314049df234921cf4a7177042bbbb12ddd70b198efe5be1d31538f3",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124415/clash95_hddisplay_absinput-centered-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124415\\clash95_hddisplay_absinput-centered-exit\\after.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124415/clash95_hddisplay_absinput-centered-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124415\\clash95_hddisplay_absinput-centered-exit\\before.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124415/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124415\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  1379080,
+                        "sha256":  "1903c8e5f4c9c6657da3084c827d11f0b1bc68fc438af0c9f9049fb42c783184",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124415/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124415\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  1379080,
+                        "sha256":  "1903c8e5f4c9c6657da3084c827d11f0b1bc68fc438af0c9f9049fb42c783184",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124415/clash95_hddisplay_absinput-shifted-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124415\\clash95_hddisplay_absinput-shifted-exit\\after.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124415/clash95_hddisplay_absinput-shifted-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124415\\clash95_hddisplay_absinput-shifted-exit\\before.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124947/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124947\\results.csv",
+                        "size":  971,
+                        "sha256":  "55846040efbf6309349cc728f89c0782f463572b73722949544e994b732a1753",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124947/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124947\\results.json",
+                        "size":  1176,
+                        "sha256":  "7f1690ee1618ea5ae8c881ace176f32654d3b41e3edaba950bca1168b69c0e8e",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124947/clash95_hddisplay_absinput-shifted-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124947\\clash95_hddisplay_absinput-shifted-exit\\after.png",
+                        "size":  1379204,
+                        "sha256":  "2453f357817aa2ea90d8891bb740b25652939720c2872801ba255753531c58c7",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-124947/clash95_hddisplay_absinput-shifted-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-124947\\clash95_hddisplay_absinput-shifted-exit\\before.png",
+                        "size":  1379204,
+                        "sha256":  "2453f357817aa2ea90d8891bb740b25652939720c2872801ba255753531c58c7",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\results.csv",
+                        "size":  5525,
+                        "sha256":  "46a1f786d6d62ef34d23754bea2ba19b97f466a6bd10c868d3bc335574372b16",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\results.json",
+                        "size":  10233,
+                        "sha256":  "76a30c354250222a89a2200c91cb1dbc4a1ec81acc7f3138540974f8df0d0b2b",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_hdcentered_visual_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_hdcentered_visual_absinput-native-exit\\after.png",
+                        "size":  1006370,
+                        "sha256":  "f67f1fbf42ee5bbcdcea670e706b7be1c55c222f472c52f197a2556b6fc9bd62",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_hdcentered_visual_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_hdcentered_visual_absinput-native-exit\\before.png",
+                        "size":  1006370,
+                        "sha256":  "f67f1fbf42ee5bbcdcea670e706b7be1c55c222f472c52f197a2556b6fc9bd62",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_hddisplay_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_hddisplay_absinput-native-exit\\after.png",
+                        "size":  1379434,
+                        "sha256":  "9633aff1857c269b4dd1588a7b6b9453d22ab71c68ffac37fbfca4a8f0ac21d1",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_hddisplay_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_hddisplay_absinput-native-exit\\before.png",
+                        "size":  1379434,
+                        "sha256":  "9633aff1857c269b4dd1588a7b6b9453d22ab71c68ffac37fbfca4a8f0ac21d1",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_hddisplay_centered_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_hddisplay_centered_absinput-native-exit\\after.png",
+                        "size":  1006370,
+                        "sha256":  "f67f1fbf42ee5bbcdcea670e706b7be1c55c222f472c52f197a2556b6fc9bd62",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_hddisplay_centered_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_hddisplay_centered_absinput-native-exit\\before.png",
+                        "size":  1006370,
+                        "sha256":  "f67f1fbf42ee5bbcdcea670e706b7be1c55c222f472c52f197a2556b6fc9bd62",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_hdmenu_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_hdmenu_absinput-native-exit\\after.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_hdmenu_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_hdmenu_absinput-native-exit\\before.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_isolate_inputbounds_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_isolate_inputbounds_absinput-native-exit\\after.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_isolate_inputbounds_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_isolate_inputbounds_absinput-native-exit\\before.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_isolate_loops_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_isolate_loops_absinput-native-exit\\after.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_isolate_loops_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_isolate_loops_absinput-native-exit\\before.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_isolate_surface_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_isolate_surface_absinput-native-exit\\after.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_isolate_surface_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_isolate_surface_absinput-native-exit\\before.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_isolate_viewportcall_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_isolate_viewportcall_absinput-native-exit\\after.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-125357/clash95_isolate_viewportcall_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-125357\\clash95_isolate_viewportcall_absinput-native-exit\\before.png",
+                        "size":  1381178,
+                        "sha256":  "98b26d27f77322764dc25434cd9b45c6746ddb4a30470e390e3314259d266c7f",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-131211/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-131211\\results.csv",
+                        "size":  1679,
+                        "sha256":  "00e376502f7207ee39163fa878b1681c6cdccf62c18f500f7c502f0531a91246",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-131211/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-131211\\results.json",
+                        "size":  2625,
+                        "sha256":  "f725ff7b48ebeafa69952fbc925f8444ac268d1d0f05283c70d3518ef5409519",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-131211/clash95_hdgameplay_menu800_centered_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-131211\\clash95_hdgameplay_menu800_centered_absinput-native-exit\\after.png",
+                        "size":  1704169,
+                        "sha256":  "e3a849ccce307b03dcbecb8baecd755d6dd9e524538651c4a95b0e443303f449",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-131211/clash95_hdgameplay_menu800_centered_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-131211\\clash95_hdgameplay_menu800_centered_absinput-native-exit\\before.png",
+                        "size":  1704169,
+                        "sha256":  "e3a849ccce307b03dcbecb8baecd755d6dd9e524538651c4a95b0e443303f449",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-131211/clash95_hdmenu800_centered_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-131211\\clash95_hdmenu800_centered_absinput-native-exit\\after.png",
+                        "size":  1699954,
+                        "sha256":  "16358f056bc6fb2a63761965a41e8c4accfe01a95ca66cb6093a9c704b6c8462",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-131211/clash95_hdmenu800_centered_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-131211\\clash95_hdmenu800_centered_absinput-native-exit\\before.png",
+                        "size":  1699954,
+                        "sha256":  "16358f056bc6fb2a63761965a41e8c4accfe01a95ca66cb6093a9c704b6c8462",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-135410/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-135410\\results.csv",
+                        "size":  946,
+                        "sha256":  "907bf906c5940c1ba2f41fb5664eedca81f43ad33a0f511ec3ee7f03951bce91",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-135410/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-135410\\results.json",
+                        "size":  1151,
+                        "sha256":  "a4f6c9b2a1a09a4693306645c6485b495f68daa5f7dd2cc6b93f8d96decc5c91",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-135410/clash95_hdcentered_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-135410\\clash95_hdcentered_absinput-native-exit\\after.png",
+                        "size":  971391,
+                        "sha256":  "4c9037d9bfb2f34c56285b814278d67c795d965b85316e0f9be70a639e5865d2",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-135410/clash95_hdcentered_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-135410\\clash95_hdcentered_absinput-native-exit\\before.png",
+                        "size":  971391,
+                        "sha256":  "4c9037d9bfb2f34c56285b814278d67c795d965b85316e0f9be70a639e5865d2",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-135723/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-135723\\results.csv",
+                        "size":  966,
+                        "sha256":  "2d467108c86ea0081d73f5b32b553d4e2c54add0f4a3176d3afa1dc3f7bba68d",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-135723/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-135723\\results.json",
+                        "size":  1171,
+                        "sha256":  "c286f7107ef122a4a6cee7452453384c9a95ae0ac8717d0902daf7d0f6356f9e",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-135723/clash95_hdmenu_centered_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-135723\\clash95_hdmenu_centered_absinput-native-exit\\after.png",
+                        "size":  973506,
+                        "sha256":  "aeb16449a6502088b1868ab0de989dfe595fff81901e2b3538ae95115d30008e",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-135723/clash95_hdmenu_centered_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-135723\\clash95_hdmenu_centered_absinput-native-exit\\before.png",
+                        "size":  973506,
+                        "sha256":  "aeb16449a6502088b1868ab0de989dfe595fff81901e2b3538ae95115d30008e",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-141508/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-141508\\results.csv",
+                        "size":  962,
+                        "sha256":  "4ff96e1bdf43ebf6b61e31382b479b3d9fd6fd9f5ca1f176f8fcfff33a1fffaa",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-141508/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-141508\\results.json",
+                        "size":  1167,
+                        "sha256":  "83d2648b00778473ac63834480fa8b5c5a7e5ff5e2eb1c154cd95bb5b13774b4",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-141508/clash95_hdmenu_centered_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-141508\\clash95_hdmenu_centered_absinput-native-exit\\after.png",
+                        "size":  50997,
+                        "sha256":  "e417a41a56f743dbf65fdd39c34da57b5d78384487092fdd8544b09e009768b0",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-141508/clash95_hdmenu_centered_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-141508\\clash95_hdmenu_centered_absinput-native-exit\\before.png",
+                        "size":  50997,
+                        "sha256":  "e417a41a56f743dbf65fdd39c34da57b5d78384487092fdd8544b09e009768b0",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-142007/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-142007\\results.csv",
+                        "size":  675,
+                        "sha256":  "4150c2d2d73c401a73d521d6cbdcc28c7d3b773c436864773b9aef6c9717bee4",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-142007/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-142007\\results.json",
+                        "size":  932,
+                        "sha256":  "bfcebd8b91061568a4de7eb72cd52145fbbfae4768c4d3ea6e9599eee56a17ad",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-142908/results.csv",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-142908\\results.csv",
+                        "size":  986,
+                        "sha256":  "96cb9bbe0f035f8353c5d88d3d63584993de66dc111d8ab3215eed100dd7fa57",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-142908/results.json",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-142908\\results.json",
+                        "size":  1191,
+                        "sha256":  "577e0b474e74334c862239f11c9a5c945acca26c3fbdde00aa6345ba45928a7b",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-142908/clash95_hdmenu_centered_safe_absinput-native-exit/after.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-142908\\clash95_hdmenu_centered_safe_absinput-native-exit\\after.png",
+                        "size":  152561,
+                        "sha256":  "b5e8a349e6be9300dac479ea6f168a3f19fa095302de7ecdd9f3ac29cc59a6e9",
+                        "reason":  "stale generated click-test capture directory"
+                    },
+                    {
+                        "archive_root":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck",
+                        "old_path":  "captures/archive/clicktest-20260422-142908/clash95_hdmenu_centered_safe_absinput-native-exit/before.png",
+                        "new_path":  "C:\\ClashCaptures\\repo-compaction-20260615-181150-postcheck\\captures\\archive\\clicktest-20260422-142908\\clash95_hdmenu_centered_safe_absinput-native-exit\\before.png",
+                        "size":  152633,
+                        "sha256":  "18dbd45428d3f10519acaa0875747eab3d6d42a17622bb2d11be089736c981c1",
+                        "reason":  "stale generated click-test capture directory"
+                    }
+                ]
+}

@@ -2,7 +2,7 @@ param(
     [string]$Exe = 'C:\Clash\clash95_hd_mousedynorigin_menusurface_scrollclamp_20260423.exe',
     [string]$WorkDir = 'C:\Clash',
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
-    [string]$OutRoot = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures'),
+    [string]$OutRoot = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\archive'),
     [string]$Points = '300,218;320,166;400,226',
     [ValidateSet('load-slot0', 'campaign-start', 'custom', 'menu-only')]
     [string]$Route = 'load-slot0',
@@ -25,10 +25,16 @@ param(
     [int]$MoveWindowX = 80,
     [int]$MoveWindowY = 80,
     [switch]$NoGameplayCheck,
-    [switch]$KeepOpen
+    [switch]$KeepOpen,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
+
+if (-not $AllowVisibleRuntime) {
+    throw "This legacy harness launches a visible Clash95 runtime. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
 
 Add-Type -AssemblyName System.Drawing
 Add-Type @'
@@ -280,7 +286,7 @@ function Invoke-GameplayFrameCheck {
         [string]$Json
     )
 
-    $coverageTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\map_tile_coverage.py'
+    $coverageTool = Join-Path $RepoRoot 'tools\map_tile_coverage.py'
     if ($NoGameplayCheck -or -not (Test-Path -LiteralPath $coverageTool)) {
         return [pscustomobject]@{
             Attempted = $false
@@ -452,14 +458,14 @@ function Save-CleanClientFrame {
         [string]$Path
     )
 
-    $captureScript = Join-Path (Join-Path $PSScriptRoot '..\capture') 'capture_clash_client_frame.ps1'
+    $captureScript = Join-Path $RepoRoot 'scripts\capture\capture_clash_client_frame.ps1'
     if (-not (Test-Path -LiteralPath $captureScript)) {
         throw "Capture helper was not found: $captureScript"
     }
     $metaPath = "$Path.json"
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $captureScript -TargetProcessId $Process.Id -Path $Path -Json $metaPath -WindowTimeoutSec $WindowTimeoutSec | Out-Null
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $captureScript -TargetProcessId $Process.Id -Path $Path -Json $metaPath -WindowTimeoutSec $WindowTimeoutSec -AllowVisibleRuntime | Out-Null
     if ($LASTEXITCODE -ne 0) {
-        throw "capture_clash_client_frame.ps1 failed with exit code $LASTEXITCODE"
+        throw "scripts\capture\capture_clash_client_frame.ps1 failed with exit code $LASTEXITCODE"
     }
     Get-Content -LiteralPath $metaPath -Raw | ConvertFrom-Json
 }
@@ -474,7 +480,7 @@ function Invoke-MousePath {
         [switch]$AllowUnverified
     )
 
-    $mouseTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\mouse_path_probe.py'
+    $mouseTool = Join-Path $RepoRoot 'tools\mouse_path_probe.py'
     $args = @(
         $mouseTool,
         '--pid', $Process.Id,
@@ -562,7 +568,7 @@ foreach ($path in @($Exe, $WorkDir, $Python)) {
         throw "Required path was not found: $path"
     }
 }
-$mousePath = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\mouse_path_probe.py'
+$mousePath = Join-Path $RepoRoot 'tools\mouse_path_probe.py'
 if (-not (Test-Path -LiteralPath $mousePath)) {
     throw "Required path was not found: $mousePath"
 }

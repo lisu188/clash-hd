@@ -20,6 +20,7 @@ from typing import Any
 
 
 RUN_RE = re.compile(r"^cdb-surface-dump-(\d{8})-(\d{6})$")
+DEFAULT_CAPTURES_ROOT = Path("captures/archive")
 
 
 @dataclass
@@ -66,6 +67,16 @@ def load_run(path: Path) -> Run:
     except OSError:
         mtime = 0.0
     return Run(path=run_dir, summary=load_json(summary_path), mtime=mtime)
+
+
+def screenshot_path(run: Run, summary: dict[str, Any]) -> str | None:
+    png = summary.get("PngPath")
+    if png and Path(png).exists():
+        return str(Path(png).resolve())
+    archived_png = run.path / "surface.png"
+    if archived_png.exists():
+        return str(archived_png.resolve())
+    return png
 
 
 def scan_runs(captures_root: Path) -> list[Run]:
@@ -158,7 +169,7 @@ def summarize_normal(run: Run | None) -> dict[str, Any]:
         "passed": not failures,
         "run": str(run.path),
         "mtime": iso_mtime(run.mtime),
-        "screenshot": summary.get("PngPath"),
+        "screenshot": screenshot_path(run, summary),
         "candidate_sha256": summary.get("CandidateSha256"),
         "surface": summary.get("Surface"),
         "blank_active_count": len(blank),
@@ -197,7 +208,7 @@ def summarize_forced(run: Run | None) -> dict[str, Any]:
         "passed": not failures,
         "run": str(run.path),
         "mtime": iso_mtime(run.mtime),
-        "screenshot": summary.get("PngPath"),
+        "screenshot": screenshot_path(run, summary),
         "candidate_sha256": summary.get("CandidateSha256"),
         "surface": summary.get("Surface"),
         "blank_active_count": len(blank),
@@ -335,7 +346,7 @@ def render_markdown(matrix: dict[str, Any]) -> str:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--captures-root", type=Path, default=Path("captures"))
+    parser.add_argument("--captures-root", type=Path, default=DEFAULT_CAPTURES_ROOT)
     parser.add_argument("--normal-run", type=Path, help="Normal run folder or summary.json")
     parser.add_argument("--forced-run", type=Path, help="Forced-visible run folder or summary.json")
     parser.add_argument("--write-json", type=Path)

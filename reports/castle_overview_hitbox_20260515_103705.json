@@ -1,0 +1,378 @@
+{
+  "log": "captures\\archive\\cdb-surface-dump-20260515-103705\\cdb-surface-dump.log",
+  "expected_command": 134,
+  "expected_callback": 4521584,
+  "expected_hit": 248,
+  "marker_counts": {
+    "CASTLEOV_HITBOX_NATIVE_TRANSFORM_SET": 0,
+    "CASTLEOV_HITBOX_DISPLAYED_HITTEST_BEGIN": 1,
+    "CASTLEOV_HITBOX_CALLBACK_SUPPRESSED": 1,
+    "CASTLEOV_HITBOX_SURFDUMP_READY": 1,
+    "CASTLEOV_HITBOX_CLICK_GATE_OK": 1,
+    "CASTLEOV_HITBOX_INVOKE_PLAYGAME": 1,
+    "CASTLEOV_HITBOX_SCREEN_ENTRY": 0,
+    "CASTLEOV_HITBOX_OVERVIEW_POST_DRAW": 1,
+    "CASTLEOV_HITBOX_DISPLAYED_SET": 1,
+    "CASTLEOV_HITBOX_DISPLAYED_RESULT": 1,
+    "CASTLEOV_HITBOX_DISPLAYED_WRAPPER_OK": 1,
+    "CASTLEOV_HITBOX_NATIVE_RESULT": 0,
+    "CASTLEOV_HITBOX_NATIVE_MISS": 0,
+    "CASTLEOV_HITBOX_DESCRIPTOR_INSTALL": 1,
+    "CASTLEOV_HITBOX_CLICK_STATE": 1,
+    "CASTLEOV_HITBOX_CLICK_GATE": 1,
+    "CASTLEOV_HITBOX_CALLBACK_CALL": 0,
+    "SURFDUMP_READY": 1,
+    "SURFDUMP_HOST_READY": 1
+  },
+  "row_count": 14,
+  "av_count": 0,
+  "av_rows": [],
+  "displayed_result": {
+    "raw_hit": 248,
+    "adjusted_hit": 0,
+    "mouse": [
+      371,
+      107
+    ],
+    "raw": [
+      23744,
+      6848
+    ],
+    "target_raw": 248
+  },
+  "native_result": null,
+  "descriptor_ok": true,
+  "displayed_hit_ok": true,
+  "native_hit_ok": false,
+  "click_gate_ok": true,
+  "callback_suppressed": true,
+  "callback_called": false,
+  "last_descriptor": {
+    "command": 134,
+    "callback": 4521584,
+    "text": 3,
+    "arg_count": 5171110,
+    "owner_screen": 68601626,
+    "surface": 168230288,
+    "sz": [
+      800,
+      600
+    ],
+    "mouse": [
+      371,
+      107
+    ]
+  },
+  "last_click_gate": {
+    "command": 134,
+    "callback": 4521584,
+    "gate": 1,
+    "mouse": [
+      371,
+      107
+    ],
+    "click_flag": 1,
+    "button0": 128
+  },
+  "last_ready": {
+    "redraw_seq": 995,
+    "surface": 168230288,
+    "size": [
+      800,
+      600
+    ],
+    "base": 169017392,
+    "bytes": 480000
+  },
+  "last_overview_post_draw": {
+    "main_surface": 168230288,
+    "main_size": [
+      800,
+      600
+    ],
+    "overview_surface": 168230096,
+    "overview_size": [
+      640,
+      480
+    ],
+    "owner_screen": 68601626,
+    "mouse": [
+      371,
+      107
+    ],
+    "click_flag": 1,
+    "button0": 128
+  },
+  "classification": [
+    "displayed coordinate 371,107 was installed",
+    "displayed coordinate hit the target overview command",
+    "debugger-side native transform was not installed",
+    "native coordinate did not prove target raw hit 0xF8",
+    "displayed coordinate reached the target through the binary input wrapper",
+    "descriptor command 0x86 callback 0x0044FE70 was installed",
+    "stock click gate returned 1 for the target descriptor",
+    "target callback was suppressed after gate proof",
+    "surface dump reached ready state"
+  ],
+  "rows": [
+    {
+      "line": 200,
+      "marker": "CASTLEOV_HITBOX_INVOKE_PLAYGAME",
+      "values": {
+        "castle_index": 0,
+        "gd": 68091952,
+        "current_player": 0,
+        "surface": 59558176,
+        "sz": [
+          640,
+          480
+        ],
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ],
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLEOV_HITBOX_INVOKE_PLAYGAME castle_index=0 gd=040f0030 current_player=0 surface=038cc920 sz=(640,480) SURFDUMP_PLAYGAME gd=040f0030 map=(100,100) scroll=(10,17) surface=038cc920 size=(640,480)"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_OVERVIEW_POST_DRAW",
+      "values": {
+        "main_surface": 168230288,
+        "main_size": [
+          800,
+          600
+        ],
+        "overview_surface": 168230096,
+        "overview_size": [
+          640,
+          480
+        ],
+        "owner_screen": 68601626,
+        "mouse": [
+          371,
+          107
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_HITBOX_OVERVIEW_POST_DRAW main_surface=0a06fd90 main_size=(800,600) overview_surface=0a06fcd0 overview_size=(640,480) owner_screen=0416c71a mouse=(371,107) click_flag=00000001 button0=0x80"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_DISPLAYED_SET",
+      "values": {
+        "target": "command86",
+        "displayed": [
+          371,
+          107
+        ],
+        "expected_native": [
+          291,
+          47
+        ],
+        "raw": [
+          23744,
+          6848
+        ],
+        "shift": 6
+      },
+      "text": "CASTLEOV_HITBOX_DISPLAYED_SET target=command86 displayed=(371,107) expected_native=(291,47) raw=(00005cc0,00001ac0) shift=6"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_DISPLAYED_HITTEST_BEGIN",
+      "values": {
+        "displayed": [
+          371,
+          107
+        ],
+        "expected_native": [
+          291,
+          47
+        ],
+        "raw": [
+          23744,
+          6848
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_HITBOX_DISPLAYED_HITTEST_BEGIN displayed=(371,107) expected_native=(291,47) raw=(00005cc0,00001ac0) click_flag=00000001 button0=0x80"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_DISPLAYED_RESULT",
+      "values": {
+        "raw_hit": 248,
+        "adjusted_hit": 0,
+        "mouse": [
+          371,
+          107
+        ],
+        "raw": [
+          23744,
+          6848
+        ],
+        "target_raw": 248
+      },
+      "text": "CASTLEOV_HITBOX_DISPLAYED_RESULT raw_hit=248 adjusted_hit=0 mouse=(371,107) raw=(00005cc0,00001ac0) target_raw=248"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_DISPLAYED_WRAPPER_OK",
+      "values": {
+        "raw_hit": 248,
+        "mouse": [
+          371,
+          107
+        ],
+        "raw": [
+          23744,
+          6848
+        ],
+        "target_raw": 248
+      },
+      "text": "CASTLEOV_HITBOX_DISPLAYED_WRAPPER_OK raw_hit=248 mouse=(371,107) raw=(00005cc0,00001ac0) target_raw=248"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_DESCRIPTOR_INSTALL",
+      "values": {
+        "command": 134,
+        "callback": 4521584,
+        "text": 3,
+        "arg_count": 5171110,
+        "owner_screen": 68601626,
+        "surface": 168230288,
+        "sz": [
+          800,
+          600
+        ],
+        "mouse": [
+          371,
+          107
+        ]
+      },
+      "text": "CASTLEOV_HITBOX_DESCRIPTOR_INSTALL command=134 callback=0044fe70 text=00000003 arg_count=5171110 owner_screen=0416c71a surface=0a06fd90 sz=(800,600) mouse=(371,107)"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_CLICK_STATE",
+      "values": {
+        "command": 134,
+        "callback": 4521584,
+        "mouse": [
+          371,
+          107
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_HITBOX_CLICK_STATE command=134 callback=0044fe70 mouse=(371,107) click_flag=00000001 button0=0x80"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_CLICK_GATE",
+      "values": {
+        "command": 134,
+        "callback": 4521584,
+        "gate": 1,
+        "mouse": [
+          371,
+          107
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "text": "CASTLEOV_HITBOX_CLICK_GATE command=134 callback=0044fe70 gate=1 mouse=(371,107) click_flag=00000001 button0=0x80"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_CLICK_GATE_OK",
+      "values": {
+        "command": 134,
+        "callback": 4521584,
+        "gate": 1,
+        "displayed": [
+          371,
+          107
+        ],
+        "native": [
+          291,
+          47
+        ],
+        "surface": 168230288,
+        "size": [
+          800,
+          600
+        ],
+        "base": 169017392,
+        "bytes": 480000
+      },
+      "text": "CASTLEOV_HITBOX_CLICK_GATE_OK command=134 callback=0044fe70 gate=1 displayed=(371,107) native=(291,47) surface=0a06fd90 size=(800,600) base=0a130030 bytes=480000"
+    },
+    {
+      "line": 201,
+      "marker": "CASTLEOV_HITBOX_SURFDUMP_READY",
+      "values": {
+        "reason": "click_gate_ok",
+        "surface": 168230288,
+        "size": [
+          800,
+          600
+        ],
+        "base": 169017392,
+        "bytes": 480000,
+        "owner_screen": 68601626,
+        "exit_flag": 0
+      },
+      "text": "CASTLEOV_HITBOX_SURFDUMP_READY reason=click_gate_ok surface=0a06fd90 size=(800,600) base=0a130030 bytes=480000 owner_screen=0416c71a exit_flag=0"
+    },
+    {
+      "line": 201,
+      "marker": "SURFDUMP_READY",
+      "values": {
+        "redraw_seq": 995,
+        "surface": 168230288,
+        "size": [
+          800,
+          600
+        ],
+        "base": 169017392,
+        "bytes": 480000
+      },
+      "text": "SURFDUMP_READY redraw_seq=995 surface=0a06fd90 size=(800,600) base=0a130030 bytes=480000"
+    },
+    {
+      "line": 201,
+      "marker": "SURFDUMP_HOST_READY",
+      "values": {},
+      "text": "SURFDUMP_HOST_READY"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLEOV_HITBOX_CALLBACK_SUPPRESSED",
+      "values": {
+        "command": 134,
+        "callback": 4521584,
+        "reason": "probe_gate_complete",
+        "eax": 5324184,
+        "ebx": 0,
+        "ecx": 0,
+        "edx": 5324184,
+        "esi": 31,
+        "edi": 5303844
+      },
+      "text": "CASTLEOV_HITBOX_CALLBACK_SUPPRESSED command=134 callback=0044fe70 reason=probe_gate_complete eax=00513d98 ebx=00000000 ecx=00000000 edx=00513d98 esi=0000001f edi=0050ee24"
+    }
+  ]
+}

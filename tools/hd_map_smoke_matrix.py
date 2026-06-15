@@ -23,6 +23,7 @@ import post_owner_evidence_matrix
 
 
 DEFAULT_STAGE = "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch"
+DEFAULT_CAPTURES_ROOT = Path("captures/archive")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -244,7 +245,7 @@ def write_markdown(path: Path, matrix: dict[str, Any]) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--captures-root", type=Path, default=Path("captures"))
+    parser.add_argument("--captures-root", type=Path, default=DEFAULT_CAPTURES_ROOT)
     parser.add_argument("--normal-run", type=Path)
     parser.add_argument("--forced-run", type=Path)
     parser.add_argument("--patch-exe", type=Path)

@@ -1,0 +1,11 @@
+.echo === Clash95 combined mouse/menu-hit probe ===
+.echo logs sub_460A50 MOUSE state and the first 2048 0x00419B80 MENUHIT descriptor tests
+sxd av
+r @$t0 = -999999
+r @$t1 = -999999
+r @$t2 = -999999
+r @$t3 = -999999
+r @$t8 = 0
+bp 00460A9D ".if ((poi(005451a8) != @$t0) + (poi(005451ac) != @$t1) + (poi(@edx+24) != @$t2) + (poi(@edx+28) != @$t3)) { .printf \"MOUSE obj=%p x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d speed=%d buttons=%d lbtn=0x%02x rbtn=0x%02x min=(%d,%d) max=(%d,%d)\\n\", @edx, (poi(@edx+24) >> by(@edx+454)), (poi(@edx+28) >> by(@edx+454)), poi(@edx+24), poi(@edx+28), poi(005451a8), poi(005451ac), by(@edx+454), poi(@edx+20), poi(@edx+2c), by(005451c0), by(005451c8), (poi(@edx+10) >> by(@edx+454)), (poi(@edx+14) >> by(@edx+454)), (poi(@edx+18) >> by(@edx+454)), (poi(@edx+1c) >> by(@edx+454)); r @$t0 = poi(005451a8); r @$t1 = poi(005451ac); r @$t2 = poi(@edx+24); r @$t3 = poi(@edx+28); }; gc"
+bp 00419B80 ".if (@$t8 < 0n2048) { .printf \"MENUHIT seq=%d x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d lbtn=0x%02x rbtn=0x%02x mask=%d min=(%d,%d) max=(%d,%d) entry=0x%08x ex=%d ey=%d\\n\", @$t8, (poi(00544cfc) >> by(0054512c)), (poi(00544d00) >> by(0054512c)), poi(00544cfc), poi(00544d00), poi(005451a8), poi(005451ac), by(0054512c), by(005451c0), by(005451c8), poi(00544d04), (poi(00544ce8) >> by(0054512c)), (poi(00544cec) >> by(0054512c)), (poi(00544cf0) >> by(0054512c)), (poi(00544cf4) >> by(0054512c)), @eax, poi(@eax), poi(@eax+4); r @$t8 = @$t8 + 1; }; gc"
+g
