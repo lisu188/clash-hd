@@ -32,6 +32,8 @@ import docs_consistency_guard
 import evidence_index_check
 import exe_artifact_guard
 import handoff_freshness_guard
+import hd_soak_harness_guard
+import hd_soak_report
 import hd_map_smoke_matrix
 import load_slot_entry_gap_plan
 import load_slot_route_limit_guard
@@ -112,6 +114,7 @@ import test_process_hygiene_guard
 import test_python_runtime_safety_guard
 import test_stable_stage_guard
 import test_handoff_freshness_guard
+import test_hd_soak_harness_guard
 import test_load_slot_entry_gap_plan
 import test_load_slot_route_limit_guard
 import test_load_slot_timeout_phase
@@ -487,6 +490,14 @@ DEFAULT_CAPTURE_CORPUS_INDEX_JSON = Path("captures/current/capture-corpus-index-
 DEFAULT_CAPTURE_CORPUS_INDEX_MD = Path("captures/current/capture-corpus-index-current.md")
 DEFAULT_CAPTURE_CORPUS_INDEX_TESTS_JSON = Path("captures/current/capture-corpus-index-tests-current.json")
 DEFAULT_CAPTURE_CORPUS_INDEX_TESTS_MD = Path("captures/current/capture-corpus-index-tests-current.md")
+DEFAULT_HD_SOAK_HARNESS_SCRIPT = hd_soak_harness_guard.DEFAULT_SCRIPT
+DEFAULT_HD_SOAK_HARNESS_GUARD_JSON = hd_soak_harness_guard.DEFAULT_JSON
+DEFAULT_HD_SOAK_HARNESS_GUARD_MD = hd_soak_harness_guard.DEFAULT_MD
+DEFAULT_HD_SOAK_HARNESS_GUARD_TESTS_JSON = Path("captures/current/hd-soak-harness-guard-tests-current.json")
+DEFAULT_HD_SOAK_HARNESS_GUARD_TESTS_MD = Path("captures/current/hd-soak-harness-guard-tests-current.md")
+DEFAULT_HD_SOAK_REPORT = Path("captures/current/hd-soak-short-current.json")
+DEFAULT_HD_SOAK_REPORT_GUARD_JSON = Path("captures/current/hd-soak-report-guard-current.json")
+DEFAULT_HD_SOAK_REPORT_GUARD_MD = Path("captures/current/hd-soak-report-guard-current.md")
 DEFAULT_PROMOTION_OVERRIDE_MANIFEST_JSON = Path("captures/current/promotion-override-manifest-current.json")
 DEFAULT_PROMOTION_OVERRIDE_MANIFEST_MD = Path("captures/current/promotion-override-manifest-current.md")
 DEFAULT_PROMOTION_OVERRIDE_MANIFEST_TESTS_JSON = Path(
@@ -4592,6 +4603,7 @@ def build_capture_corpus_index_tests(args: argparse.Namespace) -> dict[str, Any]
             "capture_corpus_index fails missing current references",
             "capture_corpus_index ignores fixture-run placeholder references",
             "capture_corpus_index ignores transition-run placeholder references",
+            "capture_corpus_index ignores external C:\\ClashCaptures evidence paths",
             "capture_corpus_index reports stale visible artifacts without failing",
             "capture_corpus_index fails current visible/sandbox references",
             "capture_corpus_index fails current visible-fallback CDB references",
@@ -4602,6 +4614,81 @@ def build_capture_corpus_index_tests(args: argparse.Namespace) -> dict[str, Any]
         md_path=args.capture_corpus_index_tests_md,
         guard_policy="proves capture references resolve, synthetic fixture/transition placeholders stay non-current, and stale visible-era artifacts cannot become active evidence silently",
     )
+
+
+def build_hd_soak_harness_guard(args: argparse.Namespace) -> dict[str, Any]:
+    guard = hd_soak_harness_guard.build_guard(args.hd_soak_harness_script)
+    write_json(args.hd_soak_harness_guard_json, guard)
+    hd_soak_harness_guard.write_markdown(args.hd_soak_harness_guard_md, guard)
+    return {
+        "passed": bool(guard.get("passed")),
+        "json": str(args.hd_soak_harness_guard_json),
+        "markdown": str(args.hd_soak_harness_guard_md),
+        "summary": {
+            "script": guard.get("script"),
+            "guard_policy": guard.get("guard_policy"),
+            "runtime_policy": guard.get("runtime_policy"),
+        },
+        "failures": guard.get("failures", []),
+    }
+
+
+def build_hd_soak_harness_guard_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_harness_guard,
+        tests=[
+            "hd_soak_harness_guard passes the current opt-in soak harness",
+            "hd_soak_harness_guard rejects protected stage drift",
+            "hd_soak_harness_guard rejects repository candidate defaults",
+            "hd_soak_harness_guard rejects missing explicit approval text",
+            "hd_soak_harness_guard rejects missing required report metrics",
+            "hd_soak_harness_guard CLI writes JSON/Markdown and fails closed",
+        ],
+        title="HD Soak Harness Guard Tests",
+        json_path=args.hd_soak_harness_guard_tests_json,
+        md_path=args.hd_soak_harness_guard_tests_md,
+        guard_policy="proves the opt-in soak harness stays protected-stage, approval-gated, non-promoting, and artifact-safe",
+    )
+
+
+def build_hd_soak_report_guard(args: argparse.Namespace) -> dict[str, Any]:
+    if args.hd_soak_report.exists():
+        evaluation = hd_soak_report.evaluate_report(hd_soak_report.load_json(args.hd_soak_report))
+    else:
+        evaluation = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "runtime_policy": hd_soak_report.RUNTIME_POLICY,
+            "overall": False,
+            "source_report": str(args.hd_soak_report),
+            "stage": None,
+            "tier": None,
+            "route": None,
+            "duration_sec": None,
+            "checks": {},
+            "failures": [f"soak report does not exist: {args.hd_soak_report}"],
+        }
+    write_json(args.hd_soak_report_guard_json, evaluation)
+    args.hd_soak_report_guard_md.parent.mkdir(parents=True, exist_ok=True)
+    args.hd_soak_report_guard_md.write_text(hd_soak_report.to_markdown(evaluation), encoding="ascii")
+    checks = evaluation.get("checks") or {}
+    return {
+        "passed": bool(evaluation.get("overall")),
+        "json": str(args.hd_soak_report_guard_json),
+        "markdown": str(args.hd_soak_report_guard_md),
+        "summary": {
+            "source_report": str(args.hd_soak_report),
+            "stage": evaluation.get("stage"),
+            "tier": evaluation.get("tier"),
+            "route": evaluation.get("route"),
+            "duration_sec": evaluation.get("duration_sec"),
+            "executed": (checks.get("executed") or {}).get("summary", {}).get("executed"),
+            "right_bottom_promotion_blocked": (
+                (checks.get("promotion_boundary") or {}).get("summary", {}).get("right_bottom_promotion_blocked")
+            ),
+            "runtime_policy": evaluation.get("runtime_policy"),
+        },
+        "failures": evaluation.get("failures", []),
+    }
 
 
 def build_promotion_override_manifest(args: argparse.Namespace) -> dict[str, Any]:
@@ -5894,6 +5981,9 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["handoff_freshness_guard_tests"] = build_handoff_freshness_guard_tests(args)
     checks["current_completion_summary_tests"] = build_current_completion_summary_tests(args)
     checks["current_completion_summary"] = build_current_completion_summary(args, checks)
+    checks["hd_soak_harness_guard"] = build_hd_soak_harness_guard(args)
+    checks["hd_soak_harness_guard_tests"] = build_hd_soak_harness_guard_tests(args)
+    checks["hd_soak_report_guard"] = build_hd_soak_report_guard(args)
     checks["capture_corpus_index"] = build_capture_corpus_index(args)
     checks["capture_corpus_index_tests"] = build_capture_corpus_index_tests(args)
     checks["no_popup_boundary_guard"] = build_no_popup_boundary_guard(args, checks)
@@ -6954,6 +7044,22 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=DEFAULT_CAPTURE_CORPUS_INDEX_TESTS_MD,
     )
+    parser.add_argument("--hd-soak-harness-script", type=Path, default=DEFAULT_HD_SOAK_HARNESS_SCRIPT)
+    parser.add_argument("--hd-soak-harness-guard-json", type=Path, default=DEFAULT_HD_SOAK_HARNESS_GUARD_JSON)
+    parser.add_argument("--hd-soak-harness-guard-md", type=Path, default=DEFAULT_HD_SOAK_HARNESS_GUARD_MD)
+    parser.add_argument(
+        "--hd-soak-harness-guard-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_HARNESS_GUARD_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-harness-guard-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_HARNESS_GUARD_TESTS_MD,
+    )
+    parser.add_argument("--hd-soak-report", type=Path, default=DEFAULT_HD_SOAK_REPORT)
+    parser.add_argument("--hd-soak-report-guard-json", type=Path, default=DEFAULT_HD_SOAK_REPORT_GUARD_JSON)
+    parser.add_argument("--hd-soak-report-guard-md", type=Path, default=DEFAULT_HD_SOAK_REPORT_GUARD_MD)
     parser.add_argument("--docs-consistency-json", type=Path, default=DEFAULT_DOCS_CONSISTENCY_JSON)
     parser.add_argument("--docs-consistency-md", type=Path, default=DEFAULT_DOCS_CONSISTENCY_MD)
     parser.add_argument("--docs-consistency-tests-json", type=Path, default=DEFAULT_DOCS_CONSISTENCY_TESTS_JSON)
