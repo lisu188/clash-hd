@@ -1,7 +1,7 @@
 # Load Slot Transition Geometry Guard
 
-- Status: FAIL
-- Generated: `2026-06-15T22:14:10+02:00`
+- Status: PASS
+- Generated: `2026-06-15T22:35:47+02:00`
 - Runtime policy: repo-only source/plan inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when the transition run plan targets rows 3-5 and the surface-dump launcher still replaces extra-probe load-slot mouse placeholders using x=320 and y=166+22*slot shifted into raw mouse globals
 - Promotion ready: `False`
@@ -10,7 +10,7 @@
 
 ## Checks
 
-- `run_plan_passed`: `FAIL`
+- `run_plan_passed`: `PASS`
 - `target_rows_3_4_5`: `PASS`
 - `surface_formula_present`: `PASS`
 - `probe_placeholders_present`: `PASS`
@@ -23,7 +23,3 @@
 - slot `3`: mouse=(320,232) raw=(00005000,00003a00)
 - slot `4`: mouse=(320,254) raw=(00005000,00003f80)
 - slot `5`: mouse=(320,276) raw=(00005000,00004500)
-
-## Failures
-
-- transition geometry guard failed: run_plan_passed

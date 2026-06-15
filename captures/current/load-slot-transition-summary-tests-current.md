@@ -1,7 +1,7 @@
 # Load Slot Transition Summary Tests
 
 - Status: PASS
-- Generated: `2026-06-15T22:14:19+02:00`
+- Generated: `2026-06-15T22:35:53+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves future LSTRANS logs can be classified as pre-entry stalls, entry-without-LOADSAVE blockers, or late-entry load success, and fails closed on target-slot drift
 

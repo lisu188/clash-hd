@@ -1,7 +1,7 @@
 # Load Slot Transition Probe Preview
 
-- Status: FAIL
-- Generated: `2026-06-15T22:14:10+02:00`
+- Status: PASS
+- Generated: `2026-06-15T22:35:47+02:00`
 - Runtime policy: repo-only generated-probe preview; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when generated row 3-5 transition probes have no placeholders, carry row-specific raw mouse values, and keep late select/accept conditions targeted at the requested slot
 - Promotion ready: `False`
@@ -11,8 +11,8 @@
 
 ## Checks
 
-- `run_plan_passed`: `FAIL`
-- `geometry_guard_passed`: `FAIL`
+- `run_plan_passed`: `PASS`
+- `geometry_guard_passed`: `PASS`
 - `target_rows_3_4_5`: `PASS`
 - `geometry_rows_match_target_rows`: `PASS`
 - `non_promoting`: `PASS`
@@ -30,7 +30,6 @@
 - Target-slot marker count: `17`
 - Raw-x replacement count: `2`
 - Raw-y replacement count: `2`
-
 ### Slot 4
 
 - Status: `PASS`
@@ -52,8 +51,3 @@
 - Target-slot marker count: `17`
 - Raw-x replacement count: `2`
 - Raw-y replacement count: `2`
-
-## Failures
-
-- transition probe preview failed: run_plan_passed
-- transition probe preview failed: geometry_guard_passed

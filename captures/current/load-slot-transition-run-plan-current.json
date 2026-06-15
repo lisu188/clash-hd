@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:14:10+02:00",
-  "passed": false,
+  "generated_at": "2026-06-15T22:35:47+02:00",
+  "passed": true,
   "runtime_policy": "repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "passes only when rows 3-5 remain blocked before 0044895A, the transition probe guard is passing, and every future command stays hidden-desktop and non-promoting",
   "promotion_ready": false,
@@ -60,7 +60,5 @@
     "slot forcing proof: pre-0044895A load-slot coordinate forcing stays disabled; slot selection is armed only at or after the load-menu entry",
     "promotion remains blocked until natural owner/action proof or approved manual DirectInput proof exists"
   ],
-  "failures": [
-    "load-slot entry gap report is not passing"
-  ]
+  "failures": []
 }

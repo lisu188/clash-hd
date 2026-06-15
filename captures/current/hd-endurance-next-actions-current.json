@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:14:55.591565+00:00",
+  "generated_at": "2026-06-15T20:36:18.607483+00:00",
   "passed": true,
   "runtime_policy": "repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "checklist": "captures\\current\\hd-endurance-release-checklist-current.json",

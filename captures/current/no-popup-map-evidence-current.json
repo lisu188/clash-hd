@@ -5,7 +5,7 @@
     "present": true,
     "passed": true,
     "run": "captures\\archive\\cdb-surface-dump-20260429-140916",
-    "mtime": "2026-05-15T11:23:47+02:00",
+    "mtime": "2026-06-15T22:22:54+02:00",
     "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260429-140916\\surface.png",
     "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
     "surface": {
@@ -49,7 +49,7 @@
     "present": true,
     "passed": true,
     "run": "captures\\archive\\cdb-surface-dump-20260429-135242",
-    "mtime": "2026-05-15T11:23:47+02:00",
+    "mtime": "2026-06-15T22:22:54+02:00",
     "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260429-135242\\surface.png",
     "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
     "surface": {

@@ -51,6 +51,7 @@ def source_payloads(
     boundary_passed=True,
     rb_status="validation_stage_only",
     rb_passed=True,
+    hd_smoke_has_post_owner_screenshots=True,
 ) -> argparse.Namespace:
     captures = fixture / "captures"
     screenshots = {
@@ -75,6 +76,7 @@ def source_payloads(
     castle_matrix_json = fixture / "castle-overview-evidence-current.json"
     castle_decision_json = fixture / "castle-overview-promotion-decision-current.json"
     hd_smoke_json = fixture / "hd-map-smoke-current.json"
+    post_owner_evidence_json = fixture / "post-owner-evidence-current.json"
     no_popup_map_json = fixture / "no-popup-map-evidence-current.json"
     visible_json = fixture / "visible-runtime-launcher-guard-current.json"
     no_visible_json = fixture / "no-visible-runtime-guard-current.json"
@@ -227,14 +229,19 @@ def source_payloads(
             },
         },
     )
+    hd_smoke_payload = {"passed": True, "post_owner_evidence": {}}
+    if hd_smoke_has_post_owner_screenshots:
+        hd_smoke_payload["post_owner_evidence"] = {
+            "normal": {"screenshot": screenshots["normal_post_owner"]},
+            "forced_visible": {"screenshot": screenshots["forced_visible_post_owner"]},
+        }
+    write_json(hd_smoke_json, hd_smoke_payload)
     write_json(
-        hd_smoke_json,
+        post_owner_evidence_json,
         {
             "passed": True,
-            "post_owner_evidence": {
-                "normal": {"screenshot": screenshots["normal_post_owner"]},
-                "forced_visible": {"screenshot": screenshots["forced_visible_post_owner"]},
-            },
+            "normal": {"screenshot": screenshots["normal_post_owner"]},
+            "forced_visible": {"screenshot": screenshots["forced_visible_post_owner"]},
         },
     )
     write_json(
@@ -292,6 +299,7 @@ def source_payloads(
         castle_matrix_json=castle_matrix_json,
         castle_decision_json=castle_decision_json,
         hd_map_smoke_json=hd_smoke_json,
+        post_owner_evidence_json=post_owner_evidence_json,
         no_popup_map_json=no_popup_map_json,
         visible_runtime_json=visible_json,
         no_visible_runtime_json=no_visible_json,
@@ -358,6 +366,8 @@ def run_script(args: argparse.Namespace, *extra: str) -> subprocess.CompletedPro
             str(args.castle_decision_json),
             "--hd-map-smoke-json",
             str(args.hd_map_smoke_json),
+            "--post-owner-evidence-json",
+            str(args.post_owner_evidence_json),
             "--no-popup-map-json",
             str(args.no_popup_map_json),
             "--visible-runtime-json",
@@ -385,6 +395,15 @@ def test_good_fixture(fixture: Path) -> None:
     args = source_payloads(fixture)
     guard = docs_consistency_guard.build_guard(args)
     assert guard["passed"] is True, guard
+
+
+def test_post_owner_screenshot_fallback(fixture: Path) -> None:
+    args = source_payloads(fixture, hd_smoke_has_post_owner_screenshots=False)
+    guard = docs_consistency_guard.build_guard(args)
+    assert guard["passed"] is True, guard
+    screenshots = guard["facts"]["screenshots"]
+    assert screenshots["normal_post_owner"].endswith("cdb-surface-dump-20260506-190037\\surface.png")
+    assert screenshots["forced_visible_post_owner"].endswith("cdb-surface-dump-20260506-201114\\surface.png")
 
 
 def test_stale_boundary_counts_fail(fixture: Path) -> None:
@@ -452,6 +471,7 @@ def run_tests() -> None:
     fixture.mkdir(parents=True)
     try:
         test_good_fixture(fixture / "good")
+        test_post_owner_screenshot_fallback(fixture / "post-owner-fallback")
         test_stale_boundary_counts_fail(fixture / "stale-counts")
         test_stale_boundary_status_fails(fixture / "stale-status")
         test_stale_validation_status_fails(fixture / "stale-validation")

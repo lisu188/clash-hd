@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:14:10+02:00",
-  "passed": false,
+  "generated_at": "2026-06-15T22:35:47+02:00",
+  "passed": true,
   "runtime_policy": "repo-only; reads decompilation text, CDB probe text, and generated timeout phase JSON; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when static code still places the real load-row loop after the main Load callback, the current probe spans both sides of that transition, slot 2 reaches the post-entry accept path, and slots 3-5 still stop before 0044895A load-menu entry",
   "promotion_ready": false,
@@ -34,10 +34,10 @@
   "cdb_probe": {
     "path": "probes\\cdb\\render\\clash95_surface_dump_probe.cdb",
     "exists": true,
-    "passed": false,
+    "passed": true,
     "markers": {
       "early_descriptor_breakpoint": true,
-      "pre_entry_load_coord_placeholder": false,
+      "pre_entry_load_coord_log": true,
       "main_load_callback_skip": true,
       "main_load_callback_log": true,
       "main_dispatch_poll": true,
@@ -50,9 +50,7 @@
       "loadsave_breakpoint": true,
       "playgame_breakpoint": true
     },
-    "failures": [
-      "missing marker pre_entry_load_coord_placeholder: __PRE_ENTRY_LOAD_COORD_ACTION__"
-    ]
+    "failures": []
   },
   "timeout_phase": {
     "path": "captures\\current\\load-slot-timeout-phase-current.json",
@@ -187,7 +185,5 @@
     "next_non_promoting_route_option": "use an isolated slot fixture or direct-loader probe only if it is labeled non-natural route evidence until the menu transition is proven"
   },
   "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
-  "failures": [
-    "cdb_probe: missing marker pre_entry_load_coord_placeholder: __PRE_ENTRY_LOAD_COORD_ACTION__"
-  ]
+  "failures": []
 }

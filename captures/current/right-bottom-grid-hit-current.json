@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T22:14:10+02:00",
+  "generated_at": "2026-06-15T22:35:47+02:00",
   "passed": true,
   "runtime_policy": "existing hidden-desktop CDB/proxy evidence only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "run": "captures\\archive\\cdb-surface-dump-20260514-140601",

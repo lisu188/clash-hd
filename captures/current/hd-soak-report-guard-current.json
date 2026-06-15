@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:14:55.137398+00:00",
+  "generated_at": "2026-06-15T20:36:18.108151+00:00",
   "runtime_policy": "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "overall": false,
   "source_report": "captures/current/hd-soak-short-current.json",

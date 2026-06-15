@@ -1,7 +1,7 @@
 # No-Popup Boundary Guard
 
 - Overall: FAIL
-- Generated: `2026-06-15T22:14:58+02:00`
+- Generated: `2026-06-15T22:36:20+02:00`
 - Runtime policy: repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current refresh must include all no-popup boundary reports and the evidence index must link each report
 - Evidence index: `captures\current\hd-map-evidence-current.md`
@@ -68,22 +68,17 @@
 - `load_slot_route_limit_guard_tests`: `PASS` report=`captures\current\load-slot-route-limit-tests-current.md` linked=`True`
 - `load_slot_timeout_phase`: `PASS` report=`captures\current\load-slot-timeout-phase-current.md` linked=`True`
 - `load_slot_timeout_phase_tests`: `PASS` report=`captures\current\load-slot-timeout-phase-tests-current.md` linked=`True`
-- `load_slot_entry_gap`: `FAIL` report=`captures\current\load-slot-entry-gap-current.md` linked=`True`
-  - refresh check is not passing: load_slot_entry_gap
+- `load_slot_entry_gap`: `PASS` report=`captures\current\load-slot-entry-gap-current.md` linked=`True`
 - `load_slot_entry_gap_tests`: `PASS` report=`captures\current\load-slot-entry-gap-tests-current.md` linked=`True`
 - `load_slot_transition_probe_guard`: `PASS` report=`captures\current\load-slot-transition-probe-guard-current.md` linked=`True`
 - `load_slot_transition_probe_guard_tests`: `PASS` report=`captures\current\load-slot-transition-probe-guard-tests-current.md` linked=`True`
-- `load_slot_transition_run_plan`: `FAIL` report=`captures\current\load-slot-transition-run-plan-current.md` linked=`True`
-  - refresh check is not passing: load_slot_transition_run_plan
+- `load_slot_transition_run_plan`: `PASS` report=`captures\current\load-slot-transition-run-plan-current.md` linked=`True`
 - `load_slot_transition_run_plan_tests`: `PASS` report=`captures\current\load-slot-transition-run-plan-tests-current.md` linked=`True`
-- `load_slot_transition_geometry_guard`: `FAIL` report=`captures\current\load-slot-transition-geometry-guard-current.md` linked=`True`
-  - refresh check is not passing: load_slot_transition_geometry_guard
+- `load_slot_transition_geometry_guard`: `PASS` report=`captures\current\load-slot-transition-geometry-guard-current.md` linked=`True`
 - `load_slot_transition_geometry_guard_tests`: `PASS` report=`captures\current\load-slot-transition-geometry-guard-tests-current.md` linked=`True`
-- `load_slot_transition_probe_preview`: `FAIL` report=`captures\current\load-slot-transition-probe-preview-current.md` linked=`True`
-  - refresh check is not passing: load_slot_transition_probe_preview
+- `load_slot_transition_probe_preview`: `PASS` report=`captures\current\load-slot-transition-probe-preview-current.md` linked=`True`
 - `load_slot_transition_probe_preview_tests`: `PASS` report=`captures\current\load-slot-transition-probe-preview-tests-current.md` linked=`True`
-- `load_slot_transition_readiness`: `FAIL` report=`captures\current\load-slot-transition-readiness-current.md` linked=`True`
-  - refresh check is not passing: load_slot_transition_readiness
+- `load_slot_transition_readiness`: `PASS` report=`captures\current\load-slot-transition-readiness-current.md` linked=`True`
 - `load_slot_transition_readiness_tests`: `PASS` report=`captures\current\load-slot-transition-readiness-tests-current.md` linked=`True`
 - `load_slot_transition_summary_tests`: `PASS` report=`captures\current\load-slot-transition-summary-tests-current.md` linked=`True`
 - `right_bottom_owner_flag_static_guard`: `PASS` report=`captures\current\right-bottom-owner-flag-static-guard-current.md` linked=`True`
@@ -113,10 +108,5 @@
 
 - stable_stage_guard: refresh check is not passing: stable_stage_guard
 - right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
-- load_slot_entry_gap: refresh check is not passing: load_slot_entry_gap
-- load_slot_transition_run_plan: refresh check is not passing: load_slot_transition_run_plan
-- load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard
-- load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview
-- load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness
 - castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck
 - docs_consistency_guard: refresh check is not passing: docs_consistency_guard

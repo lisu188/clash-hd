@@ -27,6 +27,7 @@ DEFAULT_RIGHT_BOTTOM_DECISION_JSON = Path("captures/current/right-bottom-compose
 DEFAULT_CASTLE_MATRIX_JSON = Path("captures/current/castle-overview-evidence-current.json")
 DEFAULT_CASTLE_DECISION_JSON = Path("captures/current/castle-overview-promotion-decision-current.json")
 DEFAULT_HD_MAP_SMOKE_JSON = Path("captures/current/hd-map-smoke-current.json")
+DEFAULT_POST_OWNER_EVIDENCE_JSON = Path("captures/current/post-owner-evidence-current.json")
 DEFAULT_NO_POPUP_MAP_JSON = Path("captures/current/no-popup-map-evidence-current.json")
 DEFAULT_VISIBLE_RUNTIME_JSON = Path("captures/current/visible-runtime-launcher-guard-current.json")
 DEFAULT_NO_VISIBLE_RUNTIME_JSON = Path("captures/current/no-visible-runtime-guard-current.json")
@@ -179,6 +180,13 @@ def screenshot_from_refresh(refresh: dict[str, Any], name: str) -> str | None:
     return canonical_capture_path(refresh_check(refresh, name).get("screenshot"))
 
 
+def first_present(*values: str | None) -> str | None:
+    for value in values:
+        if value:
+            return value
+    return None
+
+
 def build_facts(args: argparse.Namespace) -> dict[str, Any]:
     refresh = getattr(args, "refresh_payload", None) or load_json(args.refresh_json)
     boundary = getattr(args, "boundary_payload", None) or load_json(args.boundary_json)
@@ -190,6 +198,7 @@ def build_facts(args: argparse.Namespace) -> dict[str, Any]:
     castle_matrix = load_json(args.castle_matrix_json)
     castle_decision = load_json(args.castle_decision_json)
     hd_smoke = load_json(args.hd_map_smoke_json)
+    post_owner_evidence = load_json(args.post_owner_evidence_json)
     no_popup_map = load_json(args.no_popup_map_json)
     visible = load_json(args.visible_runtime_json)
     no_visible = load_json(args.no_visible_runtime_json)
@@ -201,9 +210,13 @@ def build_facts(args: argparse.Namespace) -> dict[str, Any]:
     no_visible_summary = refresh_summary(refresh, "no_visible_runtime_guard")
 
     screenshots = {
-        "normal_post_owner": nested_get(hd_smoke, ["post_owner_evidence", "normal", "screenshot"]),
-        "forced_visible_post_owner": nested_get(
-            hd_smoke, ["post_owner_evidence", "forced_visible", "screenshot"]
+        "normal_post_owner": first_present(
+            nested_get(hd_smoke, ["post_owner_evidence", "normal", "screenshot"]),
+            nested_get(post_owner_evidence, ["normal", "screenshot"]),
+        ),
+        "forced_visible_post_owner": first_present(
+            nested_get(hd_smoke, ["post_owner_evidence", "forced_visible", "screenshot"]),
+            nested_get(post_owner_evidence, ["forced_visible", "screenshot"]),
         ),
         "right_bottom_owner_route": screenshot_from_refresh(refresh, "right_bottom_owner_route"),
         "right_bottom_compose_probe": screenshot_from_refresh(refresh, "right_bottom_compose_probe"),
@@ -737,6 +750,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--castle-matrix-json", type=Path, default=DEFAULT_CASTLE_MATRIX_JSON)
     parser.add_argument("--castle-decision-json", type=Path, default=DEFAULT_CASTLE_DECISION_JSON)
     parser.add_argument("--hd-map-smoke-json", type=Path, default=DEFAULT_HD_MAP_SMOKE_JSON)
+    parser.add_argument("--post-owner-evidence-json", type=Path, default=DEFAULT_POST_OWNER_EVIDENCE_JSON)
     parser.add_argument("--no-popup-map-json", type=Path, default=DEFAULT_NO_POPUP_MAP_JSON)
     parser.add_argument("--visible-runtime-json", type=Path, default=DEFAULT_VISIBLE_RUNTIME_JSON)
     parser.add_argument("--no-visible-runtime-json", type=Path, default=DEFAULT_NO_VISIBLE_RUNTIME_JSON)

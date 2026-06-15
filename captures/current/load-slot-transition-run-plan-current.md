@@ -1,7 +1,7 @@
 # Load Slot Transition Run Plan
 
-- Status: FAIL
-- Generated: `2026-06-15T22:14:10+02:00`
+- Status: PASS
+- Generated: `2026-06-15T22:35:47+02:00`
 - Runtime policy: repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: passes only when rows 3-5 remain blocked before 0044895A, the transition probe guard is passing, and every future command stays hidden-desktop and non-promoting
 - Promotion ready: `False`
@@ -73,7 +73,3 @@ python 'tools\load_slot_transition_summary.py' 'captures\cdb-surface-dump-TRANSI
 - success proof: if LOADSAVE/PlayGame appear, rerun the same summary with --require-success and require those slot rows to match before treating it as load success
 - slot forcing proof: pre-0044895A load-slot coordinate forcing stays disabled; slot selection is armed only at or after the load-menu entry
 - promotion remains blocked until natural owner/action proof or approved manual DirectInput proof exists
-
-## Failures
-
-- load-slot entry gap report is not passing

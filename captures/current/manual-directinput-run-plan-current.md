@@ -1,7 +1,7 @@
 # Manual DirectInput Run Plan
 
 - Overall: PASS
-- Generated: `2026-06-15T22:14:53+02:00`
+- Generated: `2026-06-15T22:36:16+02:00`
 - Runtime policy: repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, move the mouse, or open visible windows
 - Guard policy: manual DirectInput commands remain templates until explicit user approval; every visible runtime command must carry -AllowVisibleRuntime and the proof manifest must be validated before promotion
 - Visible runtime requires approval: `True`

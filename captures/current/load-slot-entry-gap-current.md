@@ -1,7 +1,7 @@
 # Load Slot Entry Gap
 
-- Status: FAIL
-- Generated: `2026-06-15T22:14:10+02:00`
+- Status: PASS
+- Generated: `2026-06-15T22:35:47+02:00`
 - Runtime policy: repo-only; reads decompilation text, CDB probe text, and generated timeout phase JSON; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when static code still places the real load-row loop after the main Load callback, the current probe spans both sides of that transition, slot 2 reaches the post-entry accept path, and slots 3-5 still stop before 0044895A load-menu entry
 - Promotion ready: `False`
@@ -17,7 +17,7 @@ Rows 3-5 are stopped in the transition after the forced main Load callback and b
 ## Static And Probe Coverage
 
 - Static decomp markers: `PASS`
-- CDB probe markers: `FAIL`
+- CDB probe markers: `PASS`
 - Timeout phase report: `PASS`
 
 ## Blocked Rows
@@ -40,7 +40,3 @@ Rows 3-5 are stopped in the transition after the forced main Load callback and b
 use an isolated slot fixture or direct-loader probe only if it is labeled non-natural route evidence until the menu transition is proven
 
 ![slot2 load route surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260520-202424\surface.png)
-
-## Failures
-
-- cdb_probe: missing marker pre_entry_load_coord_placeholder: __PRE_ENTRY_LOAD_COORD_ACTION__

@@ -1,7 +1,7 @@
 # Manual DirectInput Run Plan Tests
 
 - Status: PASS
-- Generated: `2026-06-15T22:14:53+02:00`
+- Generated: `2026-06-15T22:36:16+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the manual DirectInput run plan remains repo-only, keeps visible commands approval-gated with -AllowVisibleRuntime, and cannot substitute for a valid manual proof manifest
 

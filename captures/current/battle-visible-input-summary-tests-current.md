@@ -1,7 +1,7 @@
 # Battle Visible Input Summary Tests
 
 - Status: PASS
-- Generated: `2026-06-15T22:14:35+02:00`
+- Generated: `2026-06-15T22:36:05+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for parser CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves visible-input evidence cannot be promoted from command readiness to pass until a real visible click is consumed by the battle command callback
 

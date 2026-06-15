@@ -1,7 +1,7 @@
 # HD Soak Approval Preflight
 
 - Overall: PASS
-- Generated: `2026-06-15T20:14:56.369072+00:00`
+- Generated: `2026-06-15T20:36:19.387846+00:00`
 - Runtime policy: repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Status: `ready_for_explicit_approval`
 - Current step: `short2_menu_idle`

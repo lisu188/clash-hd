@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T22:14:19+02:00",
+  "generated_at": "2026-06-15T22:35:53+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the aggregate transition readiness report stays hidden-desktop, row-specific, strict about summary and target-slot acceptance, and non-promoting",
