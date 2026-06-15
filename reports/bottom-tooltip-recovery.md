@@ -20,7 +20,7 @@ area are not recovered yet.
 
 - `AGENTS.md`: current workflow is CDB-only, with host and hidden-desktop CDB
   harnesses as the preferred validation path.
-- `CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md`: current HD map stage has 800x600
+- `docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md`: current HD map stage has 800x600
   map surface, widened `sub_418700` present bounds, right-anchored minimap, and
   12x9 redraw helpers.
 - `patch_clash95_hd.py`: current recommended stage is

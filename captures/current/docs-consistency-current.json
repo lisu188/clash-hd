@@ -1,0 +1,395 @@
+{
+  "generated_at": "2026-06-15T18:36:12+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "guard_policy": "generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries",
+  "facts": {
+    "refresh_passed": false,
+    "stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "patcher_default_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "manual_target_ids": [
+      "stable_menu_load",
+      "stable_hd_map_input",
+      "right_bottom_validation_input",
+      "castle_barracks_centered_input",
+      "castle_overview_centered_input"
+    ],
+    "manual_pending_ids": [
+      "stable_menu_load",
+      "stable_hd_map_input",
+      "right_bottom_validation_input",
+      "castle_barracks_centered_input",
+      "castle_overview_centered_input"
+    ],
+    "template_required_ids": [
+      "stable_menu_load",
+      "stable_hd_map_input",
+      "right_bottom_validation_input",
+      "castle_barracks_centered_input",
+      "castle_overview_centered_input"
+    ],
+    "manual_status": "pending_manual_validation",
+    "manual_item_count": 5,
+    "manual_pending_count": 5,
+    "manual_proof_valid": false,
+    "manual_promotion_ready": false,
+    "manual_stable_stage_should_change": false,
+    "no_popup_preference": "Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.",
+    "visible_runtime_requires_approval": true,
+    "visible_runtime_guard": {
+      "passed": true,
+      "script_count": 7,
+      "passing_script_count": 7,
+      "guard_policy": "legacy visible-runtime launchers/helpers must fail closed unless -AllowVisibleRuntime is explicitly supplied after user approval; guarded child helpers must receive the same switch; root PowerShell risky-call inventory must be guarded or explicitly exempt",
+      "inventory_risky_script_count": 0,
+      "inventory_unclassified_risky_script_count": 0
+    },
+    "no_visible_runtime_guard": {
+      "passed": true,
+      "run_count": 19,
+      "hidden_run_count": 19
+    },
+    "no_popup_boundary": {
+      "passed": false,
+      "refresh_passed": false,
+      "required_guard_count": 6,
+      "required_supporting_report_count": 82,
+      "required_report_count": 88,
+      "summary_required_guard_count": 6,
+      "summary_required_supporting_report_count": 82,
+      "summary_required_report_count": 88
+    },
+    "no_popup_map": {
+      "passed": true,
+      "normal_run": "captures\\archive\\cdb-surface-dump-20260429-140916",
+      "normal_blank_active_count": 13,
+      "normal_unexplained_blank_count": 0,
+      "normal_visibility_zero": 13,
+      "forced_run": "captures\\archive\\cdb-surface-dump-20260429-135242",
+      "forced_blank_active_count": 0,
+      "forced_visret_nonzero_count": 54,
+      "forced_post_nonblack_count": 54
+    },
+    "right_bottom": {
+      "matrix_passed": false,
+      "promotion_status": "validation_stage_only",
+      "stable_stage_should_change": false,
+      "decision_passed": false,
+      "decision": "defer_stable_promotion",
+      "decision_stable_stage_should_change": false,
+      "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+      "normal_active_cells": 108,
+      "normal_blank_active_cells": 13,
+      "normal_unexplained_blank_cells": 0,
+      "normal_visibility_zero": 13,
+      "grid_hit_ok": true,
+      "grid_entry": [
+        450,
+        73
+      ],
+      "grid_result": 0,
+      "route_timing_failure_exit_count": 0,
+      "route_timing_av_count": 0
+    },
+    "castle": {
+      "matrix_passed": false,
+      "promotion_status": "validation_stage_only",
+      "decision_passed": false,
+      "decision": "defer_stable_promotion",
+      "decision_stable_stage_should_change": false,
+      "stage": "castlecenter-all",
+      "resolved_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "patch_total": null,
+      "patch_patched": null,
+      "patch_original": null,
+      "patch_unexpected": null,
+      "visible_target_count": 3,
+      "dormant_target_count": 4
+    },
+    "screenshots": {
+      "normal_post_owner": null,
+      "forced_visible_post_owner": null,
+      "right_bottom_owner_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
+      "right_bottom_compose_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
+      "right_bottom_compose_patch": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
+      "right_bottom_compose_fullstart_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\surface.png",
+      "right_bottom_compose_normal_gate": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+      "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\surface.png",
+      "right_bottom_grid_hit": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png"
+    }
+  },
+  "doc_groups": {
+    "codex_loop": [
+      ".codex-loop\\NEXT.md",
+      ".codex-loop\\STATE.md",
+      ".codex-loop\\TASKS.md"
+    ],
+    "readme_progress": [
+      "README.md",
+      "docs\\hd\\HD_MOD_PROGRESS.md"
+    ],
+    "evidence_index": [
+      "captures\\current\\hd-map-evidence-current.md"
+    ],
+    "wiki_summaries": [
+      "wiki\\sources\\current-hd-map-evidence.md",
+      "wiki\\syntheses\\current-clash95-hd-state.md",
+      "wiki\\syntheses\\hd-map-evidence-chain.md",
+      "wiki\\concepts\\active-hd-map-stage.md",
+      "wiki\\concepts\\no-popup-surface-dump.md",
+      "wiki\\questions\\what-manual-directinput-validation-remains.md",
+      "wiki\\syntheses\\right-bottom-ui-and-bottom-tooltip-recovery.md"
+    ]
+  },
+  "checks": {
+    "manual_target_ids": {
+      "passed": true,
+      "summary": {
+        "expected_ids": [
+          "stable_menu_load",
+          "stable_hd_map_input",
+          "right_bottom_validation_input",
+          "castle_barracks_centered_input",
+          "castle_overview_centered_input"
+        ],
+        "manual_target_ids": [
+          "stable_menu_load",
+          "stable_hd_map_input",
+          "right_bottom_validation_input",
+          "castle_barracks_centered_input",
+          "castle_overview_centered_input"
+        ],
+        "template_required_ids": [
+          "stable_menu_load",
+          "stable_hd_map_input",
+          "right_bottom_validation_input",
+          "castle_barracks_centered_input",
+          "castle_overview_centered_input"
+        ],
+        "manual_status": "pending_manual_validation",
+        "manual_item_count": 5,
+        "manual_pending_count": 5
+      },
+      "failures": []
+    },
+    "stable_stage": {
+      "passed": true,
+      "summary": {
+        "stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+        "patcher_default_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch"
+      },
+      "failures": []
+    },
+    "runtime_boundary": {
+      "passed": true,
+      "summary": {
+        "no_popup_preference": "Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.",
+        "visible_runtime_requires_approval": true,
+        "visible_script_count": 7,
+        "visible_passing_script_count": 7,
+        "no_visible_run_count": 19,
+        "no_visible_hidden_run_count": 19
+      },
+      "failures": []
+    },
+    "boundary_counts": {
+      "passed": false,
+      "summary": {
+        "passed": false,
+        "refresh_passed": false,
+        "required_guard_count": 6,
+        "required_supporting_report_count": 82,
+        "required_report_count": 88,
+        "summary_required_guard_count": 6,
+        "summary_required_supporting_report_count": 82,
+        "summary_required_report_count": 88
+      },
+      "failures": [
+        "no-popup boundary guard is not passing"
+      ]
+    },
+    "map_boundary_counts": {
+      "passed": true,
+      "summary": {
+        "no_popup": {
+          "passed": true,
+          "normal_run": "captures\\archive\\cdb-surface-dump-20260429-140916",
+          "normal_blank_active_count": 13,
+          "normal_unexplained_blank_count": 0,
+          "normal_visibility_zero": 13,
+          "forced_run": "captures\\archive\\cdb-surface-dump-20260429-135242",
+          "forced_blank_active_count": 0,
+          "forced_visret_nonzero_count": 54,
+          "forced_post_nonblack_count": 54
+        },
+        "right_bottom_normal_active_cells": 108,
+        "right_bottom_normal_blank_active_cells": 13,
+        "right_bottom_normal_unexplained_blank_cells": 0,
+        "right_bottom_normal_visibility_zero": 13
+      },
+      "failures": []
+    },
+    "validation_only_status": {
+      "passed": false,
+      "summary": {
+        "right_bottom": {
+          "matrix_passed": false,
+          "promotion_status": "validation_stage_only",
+          "stable_stage_should_change": false,
+          "decision_passed": false,
+          "decision": "defer_stable_promotion",
+          "decision_stable_stage_should_change": false,
+          "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+          "normal_active_cells": 108,
+          "normal_blank_active_cells": 13,
+          "normal_unexplained_blank_cells": 0,
+          "normal_visibility_zero": 13,
+          "grid_hit_ok": true,
+          "grid_entry": [
+            450,
+            73
+          ],
+          "grid_result": 0,
+          "route_timing_failure_exit_count": 0,
+          "route_timing_av_count": 0
+        },
+        "castle": {
+          "matrix_passed": false,
+          "promotion_status": "validation_stage_only",
+          "decision_passed": false,
+          "decision": "defer_stable_promotion",
+          "decision_stable_stage_should_change": false,
+          "stage": "castlecenter-all",
+          "resolved_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+          "patch_total": null,
+          "patch_patched": null,
+          "patch_original": null,
+          "patch_unexpected": null,
+          "visible_target_count": 3,
+          "dormant_target_count": 4
+        }
+      },
+      "failures": [
+        "castle validation matrix/decision is not passing"
+      ]
+    },
+    "screenshot_files": {
+      "passed": false,
+      "summary": {
+        "screenshots": {
+          "normal_post_owner": null,
+          "forced_visible_post_owner": null,
+          "right_bottom_owner_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
+          "right_bottom_compose_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
+          "right_bottom_compose_patch": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
+          "right_bottom_compose_fullstart_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\surface.png",
+          "right_bottom_compose_normal_gate": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+          "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\surface.png",
+          "right_bottom_grid_hit": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png"
+        }
+      },
+      "failures": [
+        "normal_post_owner: missing path",
+        "forced_visible_post_owner: missing path"
+      ]
+    },
+    "docs_codex_loop": {
+      "passed": true,
+      "summary": {
+        "paths": [
+          ".codex-loop\\NEXT.md",
+          ".codex-loop\\STATE.md",
+          ".codex-loop\\TASKS.md"
+        ],
+        "stable_stage_found": true,
+        "no_popup_approval_found": true,
+        "boundary_pass_found": true,
+        "strict_boundary_counts_required": false,
+        "strict_boundary_counts_found": false
+      },
+      "failures": []
+    },
+    "docs_readme_progress": {
+      "passed": true,
+      "summary": {
+        "paths": [
+          "README.md",
+          "docs\\hd\\HD_MOD_PROGRESS.md"
+        ],
+        "stable_stage_found": true,
+        "no_popup_approval_found": true,
+        "boundary_pass_found": true,
+        "strict_boundary_counts_required": false,
+        "strict_boundary_counts_found": true
+      },
+      "failures": []
+    },
+    "docs_evidence_index": {
+      "passed": true,
+      "summary": {
+        "paths": [
+          "captures\\current\\hd-map-evidence-current.md"
+        ],
+        "stable_stage_found": true,
+        "no_popup_approval_found": true,
+        "boundary_pass_found": true,
+        "strict_boundary_counts_required": true,
+        "strict_boundary_counts_found": true
+      },
+      "failures": []
+    },
+    "docs_wiki_summaries": {
+      "passed": true,
+      "summary": {
+        "paths": [
+          "wiki\\sources\\current-hd-map-evidence.md",
+          "wiki\\syntheses\\current-clash95-hd-state.md",
+          "wiki\\syntheses\\hd-map-evidence-chain.md",
+          "wiki\\concepts\\active-hd-map-stage.md",
+          "wiki\\concepts\\no-popup-surface-dump.md",
+          "wiki\\questions\\what-manual-directinput-validation-remains.md",
+          "wiki\\syntheses\\right-bottom-ui-and-bottom-tooltip-recovery.md"
+        ],
+        "stable_stage_found": true,
+        "no_popup_approval_found": true,
+        "boundary_pass_found": true,
+        "strict_boundary_counts_required": true,
+        "strict_boundary_counts_found": true
+      },
+      "failures": []
+    },
+    "docs_current_screenshot_paths": {
+      "passed": false,
+      "summary": {
+        "evidence_index": "captures\\current\\hd-map-evidence-current.md",
+        "screenshots": {
+          "normal_post_owner": null,
+          "forced_visible_post_owner": null,
+          "right_bottom_owner_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
+          "right_bottom_compose_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
+          "right_bottom_compose_patch": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
+          "right_bottom_compose_fullstart_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\surface.png",
+          "right_bottom_compose_normal_gate": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+          "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\surface.png",
+          "right_bottom_grid_hit": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png"
+        },
+        "missing": [
+          "normal_post_owner: None",
+          "forced_visible_post_owner: None"
+        ]
+      },
+      "failures": [
+        "evidence index missing current screenshot path normal_post_owner: None",
+        "evidence index missing current screenshot path forced_visible_post_owner: None"
+      ]
+    }
+  },
+  "failures": [
+    "boundary_counts: no-popup boundary guard is not passing",
+    "validation_only_status: castle validation matrix/decision is not passing",
+    "screenshot_files: normal_post_owner: missing path",
+    "screenshot_files: forced_visible_post_owner: missing path",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: None",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: None"
+  ]
+}

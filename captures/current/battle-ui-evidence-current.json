@@ -1,0 +1,333 @@
+{
+  "generated_at": "2026-06-15T18:34:49+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+  "input_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
+  "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+  "input_candidate_sha256": "F84933776944E2B616F6BBCCF7708ABBF06498D5438FA8DF7B7AF1BB56CD180A",
+  "promotion_status": "validation_stage_only",
+  "stable_stage_should_change": false,
+  "checks": {
+    "force_entry": {
+      "passed": true,
+      "path": "captures\\current\\battle-ui-force-entry-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260518-221018\\surface.png",
+      "failures": []
+    },
+    "command_hit": {
+      "passed": true,
+      "path": "captures\\current\\battle-ui-command-hit-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260520-094032\\surface.png",
+      "failures": []
+    },
+    "command_callback": {
+      "passed": true,
+      "path": "captures\\current\\battle-ui-command-callback-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260520-100717\\surface.png",
+      "failures": []
+    },
+    "enabled_callback": {
+      "passed": true,
+      "path": "captures\\current\\battle-ui-command-enabled-callback-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260520-101859\\surface.png",
+      "failures": []
+    },
+    "grid_hit": {
+      "passed": true,
+      "path": "captures\\current\\battle-ui-grid-hit-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260520-103155\\surface.png",
+      "failures": []
+    },
+    "centered_input": {
+      "passed": true,
+      "path": "captures\\current\\battle-ui-centered-input-current.json",
+      "candidate_sha256": "F84933776944E2B616F6BBCCF7708ABBF06498D5438FA8DF7B7AF1BB56CD180A",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260520-111115\\surface.png",
+      "failures": []
+    },
+    "post_ready_redraw": {
+      "passed": true,
+      "path": "captures\\current\\battle-ui-post-ready-redraw-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260520-195244\\surface.png",
+      "failures": []
+    },
+    "modal_classified": {
+      "passed": true,
+      "path": "captures\\current\\battle-ui-modal-classified-current.json",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260520-103714\\surface.png",
+      "failures": []
+    },
+    "patch_stage": {
+      "passed": true,
+      "path": "captures\\current\\patch-stage-battlecenter-current.json",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+      "candidate": "C:\\ClashTests\\battlecenter-force-entry\\clash95_hd_surfdump_20260518_221018.exe",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "status_counts": {
+        "patched": 136
+      },
+      "groups": {
+        "battle-ui-center-present-wrapper": {
+          "patched": 2,
+          "total": 2
+        }
+      },
+      "failures": []
+    },
+    "input_patch_stage": {
+      "passed": true,
+      "path": "captures\\current\\patch-stage-battlecenter-inputprobe-patched-current.json",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
+      "candidate": "C:\\ClashTests\\battle-inputprobe\\clash95_battle_inputprobe.exe",
+      "candidate_sha256": "F84933776944E2B616F6BBCCF7708ABBF06498D5438FA8DF7B7AF1BB56CD180A",
+      "status_counts": {
+        "patched": 140
+      },
+      "groups": {
+        "battle-ui-center-present-wrapper": {
+          "patched": 2,
+          "total": 2
+        },
+        "battle-grid-centered-input": {
+          "patched": 2,
+          "total": 2
+        },
+        "battle-ui-centered-input": {
+          "patched": 2,
+          "total": 2
+        }
+      },
+      "failures": []
+    },
+    "availability_scan": {
+      "passed": true,
+      "path": "captures\\current\\battle-command-availability-current.json",
+      "unit_count": 18,
+      "selected_unit_naturally_disabled": true,
+      "naturally_enabled_unit_count": 0,
+      "enabled_table_type_count": 11,
+      "enabled_table_type_names": [
+        "Dragon cavalry",
+        "Archer",
+        "Crossbower",
+        "Musketeer",
+        "Catapult",
+        "Cannon",
+        "Forester",
+        "Cyklop",
+        "Wizard",
+        "Winger",
+        "Dragon"
+      ],
+      "failures": []
+    },
+    "slot_scan": {
+      "passed": true,
+      "path": "captures\\current\\battle-slot-scan-current.json",
+      "run_count": 6,
+      "routed_slot_count": 3,
+      "timeout_before_unit_scan_count": 3,
+      "natural_enabled_unit_count": 0,
+      "failures": []
+    },
+    "save_inventory": {
+      "passed": true,
+      "path": "captures\\current\\battle-save-unit-inventory-current.json",
+      "slot_count": 6,
+      "total_unit_count": 63,
+      "natural_enabled_unit_count": 0,
+      "save_memory_delta": 16,
+      "failures": []
+    },
+    "constructed_fixture_plan": {
+      "passed": true,
+      "path": "captures\\current\\battle-constructed-save-fixture-current.json",
+      "status": "copied_save_written",
+      "dry_run": false,
+      "wrote_output": true,
+      "unit_index": 0,
+      "unit_type_offset": "0x00023EFC",
+      "old_unit_type": 5,
+      "old_name": "Light cavalry",
+      "target_unit_type": 8,
+      "target_name": "Dragon cavalry",
+      "target_enabled": 3,
+      "failures": []
+    },
+    "constructed_fixture_unit_scan": {
+      "passed": true,
+      "path": "captures\\current\\battle-constructed-fixture-unit-scan-current.json",
+      "unit_count": 18,
+      "naturally_enabled_unit_count": 1,
+      "first_enabled_unit_type": 8,
+      "first_enabled_name": "Dragon cavalry",
+      "first_enabled_value": 3,
+      "failures": []
+    },
+    "constructed_fixture_command": {
+      "passed": true,
+      "path": "captures\\current\\battle-constructed-fixture-command-callback-current.json",
+      "candidate_sha256": "F84933776944E2B616F6BBCCF7708ABBF06498D5438FA8DF7B7AF1BB56CD180A",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260520-220459\\surface.png",
+      "attempt_coord_mode": "visual-click",
+      "attempt_displayed": [
+        588,
+        440
+      ],
+      "attempt_expected_native": [
+        508,
+        380
+      ],
+      "unit_type": 8,
+      "availability": 10,
+      "enabled": 3,
+      "branch": "state1",
+      "forced_unit_rows": 0,
+      "forced_click_gate_rows": 0,
+      "observed_click_gate_rows": 1,
+      "render_begin_skip_seen": false,
+      "render_begin_enter_seen": true,
+      "rearm_pre_gates_seen": false,
+      "pre_gates_seen": true,
+      "synthetic_release_seen": true,
+      "render_begin_guard_seen": false,
+      "render_begin_exit_seen": true,
+      "failures": []
+    },
+    "stable_smoke": {
+      "passed": false,
+      "path": "captures\\current\\hd-map-smoke-current.json",
+      "candidate_sha256": null,
+      "failures": [
+        "stable HD-map smoke did not pass"
+      ]
+    },
+    "visible_input": {
+      "passed": true,
+      "path": "captures\\current\\battle-visible-input-current.json",
+      "summary_passed": false,
+      "focused_completion_percent": 99.91,
+      "command_ready_run_count": 2,
+      "click_consumed_run_count": 0,
+      "invalid_run_count": 1,
+      "real_visible_click_consumed": false,
+      "open_items": [
+        "real visible click-to-callback proof remains open",
+        "1 invalid visible-input run(s) are retained as negative evidence"
+      ],
+      "failures": []
+    }
+  },
+  "key_evidence": {
+    "centered_visual": "centered-native-640x480",
+    "command_hit_ok": true,
+    "command_native_hit_ok": true,
+    "command_callback_branch": "precondition-disabled",
+    "enabled_callback_branch": "state2",
+    "grid_visual_cell": [
+      1,
+      1
+    ],
+    "grid_native_cell": [
+      0,
+      0
+    ],
+    "centered_input_wrapper_ok": true,
+    "grid_input_inner_mouse": [
+      64,
+      48
+    ],
+    "descriptor_input_inner_mouse": [
+      508,
+      380
+    ],
+    "post_ready_redraw_sample_ok": true,
+    "post_ready_presents": 9,
+    "post_ready_copybacks": 6,
+    "post_ready_grid_native": [
+      64,
+      48
+    ],
+    "post_ready_last_present_ret": "0x0042CB46",
+    "natural_enabled_unit_count": 0,
+    "selected_unit_naturally_disabled": true,
+    "enabled_table_type_count": 11,
+    "enabled_table_type_names": [
+      "Dragon cavalry",
+      "Archer",
+      "Crossbower",
+      "Musketeer",
+      "Catapult",
+      "Cannon",
+      "Forester",
+      "Cyklop",
+      "Wizard",
+      "Winger",
+      "Dragon"
+    ],
+    "slot_scan_routed_slots": 3,
+    "slot_scan_timeouts": 3,
+    "slot_scan_natural_enabled_units": 0,
+    "save_inventory_slots": 6,
+    "save_inventory_units": 63,
+    "save_inventory_natural_enabled_units": 0,
+    "constructed_fixture_status": "copied_save_written",
+    "constructed_fixture_change": "Light cavalry -> Dragon cavalry",
+    "constructed_fixture_type_offset": "0x00023EFC",
+    "constructed_fixture_natural_enabled_units": 1,
+    "constructed_fixture_enabled_unit": "Dragon cavalry",
+    "constructed_fixture_attempt_coord_mode": "visual-click",
+    "constructed_fixture_attempt_displayed": [
+      588,
+      440
+    ],
+    "constructed_fixture_attempt_expected_native": [
+      508,
+      380
+    ],
+    "constructed_fixture_callback_unit_type": 8,
+    "constructed_fixture_callback_enabled": 3,
+    "constructed_fixture_callback_branch": "state1",
+    "constructed_fixture_forced_unit_rows": 0,
+    "constructed_fixture_forced_click_gate_rows": 0,
+    "constructed_fixture_observed_click_gate_rows": 1,
+    "constructed_fixture_render_begin_skip_seen": false,
+    "constructed_fixture_render_begin_enter_seen": true,
+    "constructed_fixture_rearm_pre_gates_seen": false,
+    "constructed_fixture_pre_gates_seen": true,
+    "constructed_fixture_synthetic_release_seen": true,
+    "constructed_fixture_render_begin_guard_seen": false,
+    "constructed_fixture_render_begin_exit_seen": true,
+    "modal_classified": true,
+    "visible_input_focused_completion_percent": 99.91,
+    "visible_input_summary_passed": false,
+    "visible_input_command_ready_runs": 2,
+    "visible_input_click_consumed_runs": 0,
+    "visible_input_invalid_runs": 1,
+    "visible_input_real_click_consumed": false
+  },
+  "completion_summary": {
+    "focused_area": "battle/right-bottom command lane",
+    "focused_completion_percent": 99.91,
+    "real_visible_click_consumed": false,
+    "full_game_complete": false,
+    "full_game_completion_percent": null,
+    "full_game_statement": "Full-game reverse engineering is not 100%.",
+    "remaining_blocker": "real visible click-to-callback proof"
+  },
+  "open_items": [
+    "real visible click-to-callback proof remains open",
+    "1 invalid visible-input run(s) are retained as negative evidence"
+  ],
+  "failures": [
+    "stable_smoke: stable HD-map smoke did not pass"
+  ]
+}

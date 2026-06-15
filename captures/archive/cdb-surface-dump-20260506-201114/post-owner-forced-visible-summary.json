@@ -1,0 +1,141 @@
+{
+  "coverage_json": "captures\\cdb-surface-dump-20260506-201114\\map-tile-coverage.json",
+  "log": "captures\\cdb-surface-dump-20260506-201114\\cdb-surface-dump.log",
+  "required_cells": [
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "gameplay_frame_likely": true,
+  "active_cells": 108,
+  "measurable_active_cells": 99,
+  "blank_active_cells": [],
+  "possible_stale_or_solid_active_cells": [],
+  "force_rows": 1,
+  "force_done_rows": 1,
+  "action_rows": 1,
+  "ready_rows": 1,
+  "apvis_cells": {
+    "r6c10": {
+      "line_no": 224,
+      "screen": [
+        672,
+        400
+      ],
+      "map": [
+        20,
+        23
+      ],
+      "byte": "80",
+      "mask": "80",
+      "hit": "80",
+      "sample": "c1",
+      "center_sample": "c0"
+    },
+    "r6c11": {
+      "line_no": 225,
+      "screen": [
+        736,
+        400
+      ],
+      "map": [
+        21,
+        23
+      ],
+      "byte": "80",
+      "mask": "80",
+      "hit": "80",
+      "sample": "c1",
+      "center_sample": "c1"
+    },
+    "r7c10": {
+      "line_no": 226,
+      "screen": [
+        672,
+        464
+      ],
+      "map": [
+        20,
+        24
+      ],
+      "byte": "03",
+      "mask": "01",
+      "hit": "01",
+      "sample": "c1",
+      "center_sample": "29"
+    },
+    "r7c11": {
+      "line_no": 227,
+      "screen": [
+        736,
+        464
+      ],
+      "map": [
+        21,
+        24
+      ],
+      "byte": "03",
+      "mask": "01",
+      "hit": "01",
+      "sample": "c1",
+      "center_sample": "22"
+    },
+    "r8c0": {
+      "line_no": 228,
+      "screen": [
+        32,
+        528
+      ],
+      "map": [
+        10,
+        25
+      ],
+      "byte": "02",
+      "mask": "02",
+      "hit": "02",
+      "sample": "a7",
+      "center_sample": "7f"
+    },
+    "r8c10": {
+      "line_no": 229,
+      "screen": [
+        672,
+        528
+      ],
+      "map": [
+        20,
+        25
+      ],
+      "byte": "03",
+      "mask": "02",
+      "hit": "02",
+      "sample": "c1",
+      "center_sample": "c1"
+    },
+    "r8c11": {
+      "line_no": 230,
+      "screen": [
+        736,
+        528
+      ],
+      "map": [
+        21,
+        25
+      ],
+      "byte": "03",
+      "mask": "02",
+      "hit": "02",
+      "sample": "c1",
+      "center_sample": "c0"
+    }
+  },
+  "missing_cells": [],
+  "zero_hit_cells": [],
+  "still_blank_cells": [],
+  "failures": [],
+  "passed": true
+}

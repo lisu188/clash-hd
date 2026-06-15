@@ -1,0 +1,451 @@
+{
+  "log": "captures\\cdb-surface-dump-20260517-171559\\cdb-surface-dump.log",
+  "expected_slot": 0,
+  "marker_counts": {
+    "UNITSEL_ROUTE_START": 1,
+    "UNITSEL_INVOKE_408030_THEN_406980": 1,
+    "UNITSEL_SELECT_ENTRY": 0,
+    "UNITSEL_SELECT_TILE": 1,
+    "UNITSEL_SELECT_SUCCESS": 1,
+    "UNITSEL_SELECT_FAIL": 0,
+    "UNITSEL_WRITE_511B58": 0,
+    "UNITSEL_WRITE_514194": 1,
+    "UNITSEL_406980_ENTRY": 2,
+    "UNITSEL_406980_PRESENT_HELPER": 0,
+    "UNITSEL_406980_RENDER_PRESENT": 0,
+    "UNITSEL_406980_RETURN_DUMP": 0,
+    "UNITSEL_40A490_ENTRY": 1,
+    "UNITSEL_40A500_ENTRY": 1,
+    "UNITSEL_40A500_CALL_423B00": 1,
+    "UNITSEL_423B00_ENTRY": 2,
+    "SURFDUMP_LOADSAVE": 2,
+    "SURFDUMP_PLAYGAME": 1,
+    "SURFDUMP_REDRAW": 16,
+    "SURFDUMP_READY": 1,
+    "SURFDUMP_HOST_READY": 1,
+    "AV_SURFDUMP": 0
+  },
+  "rows": [
+    {
+      "line_no": 203,
+      "marker": "SURFDUMP_LOADSAVE",
+      "raw_marker": "SURFDUMP_LOADSAVE",
+      "line": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=04220030",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": "04220030"
+      }
+    },
+    {
+      "line_no": 204,
+      "marker": "SURFDUMP_LOADSAVE",
+      "raw_marker": "SURFDUMP_LOADSAVE",
+      "line": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=04220030",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": "04220030"
+      }
+    },
+    {
+      "line_no": 205,
+      "marker": "SURFDUMP_PLAYGAME",
+      "raw_marker": "SURFDUMP_PLAYGAME",
+      "line": "SURFDUMP_PLAYGAME gd=04220030 map=(100,100) scroll=(10,17) surface=03e9c880 size=(640,480)",
+      "values": {
+        "gd": "04220030",
+        "surface": "03e9c880"
+      }
+    },
+    {
+      "line_no": 206,
+      "marker": "UNITSEL_ROUTE_START",
+      "raw_marker": "RLOOPU_HEADER",
+      "line": "RLOOPU_HEADER gd=04220030 player=0 scroll=(10,17) map=(100,100) selected=-1 prior=-1 shift=6 surface=03ace540 size=(800,600)",
+      "values": {
+        "gd": "04220030",
+        "player": 0,
+        "selected": -1,
+        "prior": -1,
+        "shift": 6,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 207,
+      "marker": "UNITSEL_INVOKE_408030_THEN_406980",
+      "raw_marker": "RLOOPU_INVOKE_408030_THEN_406980",
+      "line": "RLOOPU_INVOKE_408030_THEN_406980 screen=(448,176) raw=(0x00007000,0x00002c00) select_return=00406980 update_return=0040b0c3",
+      "values": {
+        "select_return": "00406980",
+        "update_return": "0040b0c3"
+      }
+    },
+    {
+      "line_no": 208,
+      "marker": "UNITSEL_SELECT_TILE",
+      "raw_marker": "RLOOPU_SELECT_TILE",
+      "line": "RLOOPU_SELECT_TILE map=(16,19) tile=3 selected_before=-1 current=0",
+      "values": {
+        "tile": 3,
+        "selected_before": -1,
+        "current": 0
+      }
+    },
+    {
+      "line_no": 209,
+      "marker": "UNITSEL_SELECT_SUCCESS",
+      "raw_marker": "RLOOPU_SELECT_SUCCESS",
+      "line": "RLOOPU_SELECT_SUCCESS eax=1 selected_after=3",
+      "values": {
+        "eax": 1,
+        "selected_after": 3
+      }
+    },
+    {
+      "line_no": 210,
+      "marker": "UNITSEL_406980_ENTRY",
+      "raw_marker": "RLOOPU_406980_ENTRY",
+      "line": "RLOOPU_406980_ENTRY ret=0040b0c3 selected=3 prior=-1 d526994=0 d532218=00000000 d5322c8=0 render=03ace540 map_surface=03ace540 sz=(800,600)",
+      "values": {
+        "ret": "0040b0c3",
+        "selected": 3,
+        "prior": -1,
+        "d526994": 0,
+        "d532218": 0,
+        "d5322c8": 0,
+        "render": "03ace540",
+        "map_surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 211,
+      "marker": "UNITSEL_406980_ENTRY",
+      "raw_marker": "RLOOPU_406980_ENTRY",
+      "line": "RLOOPU_406980_ENTRY ret=0040b0c3 selected=3 prior=-1 d526994=0 d532218=00000000 d5322c8=0 render=03ace540 map_surface=03ace540 sz=(800,600)",
+      "values": {
+        "ret": "0040b0c3",
+        "selected": 3,
+        "prior": -1,
+        "d526994": 0,
+        "d532218": 0,
+        "d5322c8": 0,
+        "render": "03ace540",
+        "map_surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 212,
+      "marker": "UNITSEL_40A490_ENTRY",
+      "raw_marker": "RLOOPU_40A490_ENTRY",
+      "line": "RLOOPU_40A490_ENTRY ret=0040698c selected=3 prior=-1 current=0 d526994=0 d532218=00000000 d5322c8=0",
+      "values": {
+        "ret": "0040698c",
+        "selected": 3,
+        "prior": -1,
+        "current": 0,
+        "d526994": 0,
+        "d532218": 0,
+        "d5322c8": 0
+      }
+    },
+    {
+      "line_no": 216,
+      "marker": "UNITSEL_40A500_ENTRY",
+      "raw_marker": "RLOOPU_40A500_ENTRY",
+      "line": "RLOOPU_40A500_ENTRY ret=0040a4f2 eax=00000010 edx=000001b3 ecx=04220030 ebp=00000000 selected=3 prior=-1 d526994=0 d532218=00000000 d5322c8=0",
+      "values": {
+        "ret": "0040a4f2",
+        "eax": "00000010",
+        "edx": "000001b3",
+        "ecx": "04220030",
+        "ebp": 0,
+        "selected": 3,
+        "prior": -1,
+        "d526994": 0,
+        "d532218": 0,
+        "d5322c8": 0
+      }
+    },
+    {
+      "line_no": 217,
+      "marker": "UNITSEL_40A500_CALL_423B00",
+      "raw_marker": "RLOOPU_40A500_CALL_423B00",
+      "line": "RLOOPU_40A500_CALL_423B00 ret=00000003 selected=3 prior=-1 d526994=0 d532218=00000000 d5322c8=0",
+      "values": {
+        "ret": "00000003",
+        "selected": 3,
+        "prior": -1,
+        "d526994": 0,
+        "d532218": 0,
+        "d5322c8": 0
+      }
+    },
+    {
+      "line_no": 218,
+      "marker": "UNITSEL_423B00_ENTRY",
+      "raw_marker": "RLOOPU_423B00_ENTRY",
+      "line": "RLOOPU_423B00_ENTRY ret=0040a5f3 eax=00000008 edx=0000087f ecx=04220030 ebp=00000000 selected=3 prior=-1 d526994=0 d532218=00000000 d5322c8=0",
+      "values": {
+        "ret": "0040a5f3",
+        "eax": "00000008",
+        "edx": "0000087f",
+        "ecx": "04220030",
+        "ebp": 0,
+        "selected": 3,
+        "prior": -1,
+        "d526994": 0,
+        "d532218": 0,
+        "d5322c8": 0
+      }
+    },
+    {
+      "line_no": 219,
+      "marker": "UNITSEL_423B00_ENTRY",
+      "raw_marker": "RLOOPU_423B00_ENTRY",
+      "line": "RLOOPU_423B00_ENTRY ret=0040a5f3 eax=00000008 edx=0000087f ecx=04220030 ebp=00000000 selected=3 prior=-1 d526994=0 d532218=00000000 d5322c8=0",
+      "values": {
+        "ret": "0040a5f3",
+        "eax": "00000008",
+        "edx": "0000087f",
+        "ecx": "04220030",
+        "ebp": 0,
+        "selected": 3,
+        "prior": -1,
+        "d526994": 0,
+        "d532218": 0,
+        "d5322c8": 0
+      }
+    },
+    {
+      "line_no": 220,
+      "marker": "UNITSEL_WRITE_514194",
+      "raw_marker": "RLOOPU_WRITE_514194",
+      "line": "RLOOPU_WRITE_514194 eip=00423b1c ret=0000087f selected=3 new_prior=3 d526994=1 d532218=00000000 d5322c8=0",
+      "values": {
+        "eip": "00423b1c",
+        "ret": "0000087f",
+        "selected": 3,
+        "new_prior": 3,
+        "d526994": 1,
+        "d532218": 0,
+        "d5322c8": 0
+      }
+    },
+    {
+      "line_no": 221,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=0 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 0,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 222,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=1 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 1,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 223,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=2 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 2,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 224,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=3 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 3,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 225,
+      "marker": "SURFDUMP_READY",
+      "raw_marker": "SURFDUMP_READY",
+      "line": "SURFDUMP_READY redraw_seq=4 surface=03ace540 size=(800,600) base=03ad0030 bytes=480000",
+      "values": {
+        "redraw_seq": 4,
+        "surface": "03ace540",
+        "base": "03ad0030",
+        "bytes": 480000
+      }
+    },
+    {
+      "line_no": 237,
+      "marker": "SURFDUMP_HOST_READY",
+      "raw_marker": "SURFDUMP_HOST_READY",
+      "line": "SURFDUMP_HOST_READY",
+      "values": {}
+    },
+    {
+      "line_no": 238,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=4 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 4,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 239,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=5 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 5,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 240,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=6 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 6,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 241,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=7 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 7,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 242,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=8 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 8,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 243,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=9 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 9,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 244,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=10 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 10,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 245,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=11 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 11,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 246,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=12 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 12,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 247,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=13 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 13,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 248,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=14 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 14,
+        "surface": "03ace540"
+      }
+    },
+    {
+      "line_no": 249,
+      "marker": "SURFDUMP_REDRAW",
+      "raw_marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=15 scroll=(10,17) end12=(22,26) map=(100,100) surface=03ace540 size=(800,600)",
+      "values": {
+        "seq": 15,
+        "surface": "03ace540"
+      }
+    }
+  ],
+  "loadsave_rows": [
+    {
+      "line_no": 203,
+      "selected_arg": 0,
+      "selected_global": 0
+    },
+    {
+      "line_no": 204,
+      "selected_arg": 0,
+      "selected_global": 0
+    }
+  ],
+  "load_slot_match": true,
+  "ready": true,
+  "first_ready_line": 225,
+  "first_redraw_line": 221,
+  "pre_redraw_dump": false,
+  "selection_success": true,
+  "unit_info_route": true,
+  "present_helper": false,
+  "render_present": false,
+  "action_update": true,
+  "av_count": 0,
+  "av_rows": [],
+  "classification": [
+    "load route used expected slot 0",
+    "first-mission unit selection succeeded",
+    "selected-unit info/action updater 00406980 ran",
+    "selected-unit action update route reached 0040A500 -> 00423B00",
+    "surface dump happened after the normal redraw cadence"
+  ]
+}

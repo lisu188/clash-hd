@@ -1,0 +1,172 @@
+{
+  "path": "captures\\cdb-surface-dump-20260512-082001\\surface.png",
+  "image": {
+    "width": 800,
+    "height": 600
+  },
+  "threshold": 12,
+  "regions": {
+    "full": {
+      "rect": [
+        0,
+        0,
+        799,
+        599
+      ],
+      "clipped_rect": [
+        0,
+        0,
+        799,
+        599
+      ],
+      "pixels": 480000,
+      "nonblack_pixels": 310632,
+      "nonblack_percent": 64.715,
+      "nonblack_bounds": {
+        "x": 0,
+        "y": 0,
+        "right": 799,
+        "bottom": 591,
+        "width": 800,
+        "height": 592
+      }
+    },
+    "centered_640x480": {
+      "rect": [
+        80,
+        60,
+        719,
+        539
+      ],
+      "clipped_rect": [
+        80,
+        60,
+        719,
+        539
+      ],
+      "pixels": 307200,
+      "nonblack_pixels": 215759,
+      "nonblack_percent": 70.234,
+      "nonblack_bounds": {
+        "x": 80,
+        "y": 60,
+        "right": 719,
+        "bottom": 539,
+        "width": 640,
+        "height": 480
+      }
+    },
+    "native_top_left_640x480": {
+      "rect": [
+        0,
+        0,
+        639,
+        479
+      ],
+      "clipped_rect": [
+        0,
+        0,
+        639,
+        479
+      ],
+      "pixels": 307200,
+      "nonblack_pixels": 218811,
+      "nonblack_percent": 71.228,
+      "nonblack_bounds": {
+        "x": 0,
+        "y": 0,
+        "right": 639,
+        "bottom": 479,
+        "width": 640,
+        "height": 480
+      }
+    },
+    "top_left_margin_80x60": {
+      "rect": [
+        0,
+        0,
+        79,
+        59
+      ],
+      "clipped_rect": [
+        0,
+        0,
+        79,
+        59
+      ],
+      "pixels": 4800,
+      "nonblack_pixels": 3144,
+      "nonblack_percent": 65.5,
+      "nonblack_bounds": {
+        "x": 0,
+        "y": 0,
+        "right": 79,
+        "bottom": 59,
+        "width": 80,
+        "height": 60
+      }
+    },
+    "left_margin_80x480": {
+      "rect": [
+        0,
+        60,
+        79,
+        539
+      ],
+      "clipped_rect": [
+        0,
+        60,
+        79,
+        539
+      ],
+      "pixels": 38400,
+      "nonblack_pixels": 22529,
+      "nonblack_percent": 58.669,
+      "nonblack_bounds": {
+        "x": 0,
+        "y": 60,
+        "right": 79,
+        "bottom": 507,
+        "width": 80,
+        "height": 448
+      }
+    },
+    "top_margin_640x60": {
+      "rect": [
+        80,
+        0,
+        719,
+        59
+      ],
+      "clipped_rect": [
+        80,
+        0,
+        719,
+        59
+      ],
+      "pixels": 38400,
+      "nonblack_pixels": 26390,
+      "nonblack_percent": 68.724,
+      "nonblack_bounds": {
+        "x": 80,
+        "y": 0,
+        "right": 719,
+        "bottom": 59,
+        "width": 640,
+        "height": 60
+      }
+    }
+  },
+  "gate": {
+    "passed": false,
+    "checks": {
+      "image_size_800x600": true,
+      "centered_region_has_content": true,
+      "centered_region_dominates_margins": false,
+      "native_origin_echo_absent": false
+    },
+    "centered_nonblack_percent": 70.234,
+    "max_margin_nonblack_percent": 68.724,
+    "max_allowed_echo_percent": 25.0
+  }
+}

@@ -751,8 +751,8 @@
   "images": [
     {
       "kind": "image",
-      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-190037/surface.png",
-      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-190037/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260506-190037/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260506-190037/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260506-190037\\surface.png",
       "exists": true,
       "extension": ".png",
@@ -760,8 +760,8 @@
     },
     {
       "kind": "image",
-      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-201114/surface.png",
-      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-201114/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260506-201114/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260506-201114/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260506-201114\\surface.png",
       "exists": true,
       "extension": ".png",
@@ -769,8 +769,8 @@
     },
     {
       "kind": "image",
-      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-112339/surface.png",
-      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-112339/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-112339/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-112339/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-112339\\surface.png",
       "exists": true,
       "extension": ".png",
@@ -778,8 +778,8 @@
     },
     {
       "kind": "image",
-      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-115303/surface.png",
-      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-115303/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-115303/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-115303/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-115303\\surface.png",
       "exists": true,
       "extension": ".png",
@@ -787,8 +787,8 @@
     },
     {
       "kind": "image",
-      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-120712/surface.png",
-      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-120712/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-120712/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-120712/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-120712\\surface.png",
       "exists": true,
       "extension": ".png",
@@ -796,8 +796,8 @@
     },
     {
       "kind": "image",
-      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122928/surface.png",
-      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122928/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-122928/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-122928/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-122928\\surface.png",
       "exists": true,
       "extension": ".png",
@@ -805,8 +805,8 @@
     },
     {
       "kind": "image",
-      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-121513/surface.png",
-      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-121513/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-121513/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-121513/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-121513\\surface.png",
       "exists": true,
       "extension": ".png",
@@ -814,8 +814,8 @@
     },
     {
       "kind": "image",
-      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122200/surface.png",
-      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122200/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-122200/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-122200/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260513-122200\\surface.png",
       "exists": true,
       "extension": ".png",
@@ -823,8 +823,8 @@
     },
     {
       "kind": "image",
-      "target": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260514-140601/surface.png",
-      "cleaned": "<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260514-140601/surface.png",
+      "target": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260514-140601/surface.png",
+      "cleaned": "<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260514-140601/surface.png",
       "resolved": "<SOURCE_REPO>\\captures\\cdb-surface-dump-20260514-140601\\surface.png",
       "exists": true,
       "extension": ".png",

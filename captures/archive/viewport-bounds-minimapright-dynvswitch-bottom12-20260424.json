@@ -1,0 +1,186 @@
+[
+  {
+    "log": "captures\\cdb-viewport-bounds-minimapright-dynvswitch-bottom12-20260424.log",
+    "call_rows": 1,
+    "switch_entry_rows": 2,
+    "entry_rows": 3,
+    "set_rows": 3,
+    "mouse_rows": 1,
+    "playgame_rows": 0,
+    "av_rows": 0,
+    "right_bottom_args": [
+      {
+        "x": 640,
+        "y": 480,
+        "count": 1
+      },
+      {
+        "x": 800,
+        "y": 600,
+        "count": 3
+      }
+    ],
+    "max_pairs": [
+      {
+        "x": 628,
+        "y": 463,
+        "count": 1
+      },
+      {
+        "x": 770,
+        "y": 572,
+        "count": 1
+      },
+      {
+        "x": 788,
+        "y": 583,
+        "count": 1
+      }
+    ],
+    "mouse_max_pairs": [
+      {
+        "x": 628,
+        "y": 463,
+        "count": 1
+      }
+    ],
+    "native_640x480_call_seen": true,
+    "hd_800x600_call_seen": true,
+    "native_mouse_max_seen": false,
+    "hd_mouse_max_seen": true,
+    "final_set": [
+      {
+        "kind": "VIEWPORT_SET",
+        "line_no": 204,
+        "seq": 2,
+        "ret": "004e99f3",
+        "obj": "00544cd8",
+        "shift": 6,
+        "minx": 1,
+        "miny": 1,
+        "maxx": 770,
+        "maxy": 572,
+        "meta": "005196a0",
+        "gameplay": 0
+      }
+    ],
+    "final_gameplay_set": [],
+    "final_mouse": [
+      {
+        "kind": "MOUSE_BOUND",
+        "line_no": 166,
+        "seq": 0,
+        "obj": "00544cd8",
+        "x": 0,
+        "y": 0,
+        "dx": 0,
+        "dy": 0,
+        "shift": 6,
+        "minx": 1,
+        "miny": 1,
+        "maxx": 628,
+        "maxy": 463
+      }
+    ],
+    "final_set_is_native_640x480": false,
+    "final_set_is_hd_800x600": true,
+    "final_mouse_is_native_640x480": false,
+    "final_mouse_is_hd_800x600": false,
+    "first_last_call": {
+      "first": [
+        {
+          "kind": "VIEWPORT_INIT_CALL",
+          "line_no": 167,
+          "seq": 0,
+          "obj": "00544cd8",
+          "right_arg": 800,
+          "bottom_arg": 600,
+          "shift": 6,
+          "gameplay": 0
+        }
+      ],
+      "last": [
+        {
+          "kind": "VIEWPORT_INIT_CALL",
+          "line_no": 167,
+          "seq": 0,
+          "obj": "00544cd8",
+          "right_arg": 800,
+          "bottom_arg": 600,
+          "shift": 6,
+          "gameplay": 0
+        }
+      ]
+    },
+    "first_last_set": {
+      "first": [
+        {
+          "kind": "VIEWPORT_SET",
+          "line_no": 165,
+          "seq": 0,
+          "ret": "004e99f3",
+          "obj": "00544cd8",
+          "shift": 6,
+          "minx": 1,
+          "miny": 1,
+          "maxx": 628,
+          "maxy": 463,
+          "meta": "00545158",
+          "gameplay": 0
+        }
+      ],
+      "last": [
+        {
+          "kind": "VIEWPORT_SET",
+          "line_no": 204,
+          "seq": 2,
+          "ret": "004e99f3",
+          "obj": "00544cd8",
+          "shift": 6,
+          "minx": 1,
+          "miny": 1,
+          "maxx": 770,
+          "maxy": 572,
+          "meta": "005196a0",
+          "gameplay": 0
+        }
+      ]
+    },
+    "first_last_mouse": {
+      "first": [
+        {
+          "kind": "MOUSE_BOUND",
+          "line_no": 166,
+          "seq": 0,
+          "obj": "00544cd8",
+          "x": 0,
+          "y": 0,
+          "dx": 0,
+          "dy": 0,
+          "shift": 6,
+          "minx": 1,
+          "miny": 1,
+          "maxx": 628,
+          "maxy": 463
+        }
+      ],
+      "last": [
+        {
+          "kind": "MOUSE_BOUND",
+          "line_no": 166,
+          "seq": 0,
+          "obj": "00544cd8",
+          "x": 0,
+          "y": 0,
+          "dx": 0,
+          "dy": 0,
+          "shift": 6,
+          "minx": 1,
+          "miny": 1,
+          "maxx": 628,
+          "maxy": 463
+        }
+      ]
+    }
+  }
+]

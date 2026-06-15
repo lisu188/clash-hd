@@ -41,9 +41,9 @@ evidence, not authentic final color proof. [source page:
 
 ## Examples
 
-- `captures/cdb-surface-dump-20260506-190037` is the normal post-owner
+- `captures/archive/cdb-surface-dump-20260506-190037` is the normal post-owner
   visibility-zero proof. [source page: [[Current HD Map Evidence]]]
-- `captures/cdb-surface-dump-20260506-201114` is the forced-visible
+- `captures/archive/cdb-surface-dump-20260506-201114` is the forced-visible
   seven-cell proof. [source page: [[Current HD Map Evidence]]]
 
 ## Related Concepts
@@ -62,4 +62,3 @@ evidence, not authentic final color proof. [source page:
 - [[Current HD Map Evidence]]
 - [[Castle Barracks UI CDB Validation]]
 - [[Border And Bottom Tooltip Recovery Reports]]
-

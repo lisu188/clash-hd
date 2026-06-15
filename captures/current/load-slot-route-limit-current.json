@@ -1,0 +1,368 @@
+{
+  "generated_at": "2026-06-15T18:34:33+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only; reads decompilation text, harness text, and existing hidden-desktop CDB artifacts; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the current slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame",
+  "promotion_ready": false,
+  "static_decomp": {
+    "path": "C:\\Clash\\clash95.c",
+    "exists": true,
+    "passed": true,
+    "markers": {
+      "save_formatter": true,
+      "load_accept_file_check": true,
+      "load_accept_sets_flag": true,
+      "draws_ten_rows": true,
+      "hit_tests_ten_rows": true,
+      "selected_row_formula": true,
+      "accept_helper_call": true,
+      "loadsave_after_accept": true,
+      "row_draw_formula": true,
+      "row_text_bounds": true
+    },
+    "failures": []
+  },
+  "harness": {
+    "path": "scripts\\cdb\\run_cdb_surface_dump.ps1",
+    "exists": true,
+    "passed": true,
+    "markers": {
+      "validate_range_0_9": true,
+      "load_mouse_x": true,
+      "load_mouse_y_formula": true,
+      "load_mouse_raw_x": true,
+      "load_mouse_raw_y": true,
+      "load_slot_replacement": true
+    },
+    "failures": []
+  },
+  "slot_status": {
+    "slot2_success": {
+      "status": "loads",
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202424",
+      "selected": {
+        "selected_arg": 2,
+        "selected_global": 2,
+        "accept": 1
+      },
+      "mouse": [
+        320,
+        210
+      ],
+      "failures": []
+    },
+    "slot3_blocked": {
+      "status": "timeout_before_force_select_and_loadsave",
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202504",
+      "mouse": [
+        320,
+        232
+      ],
+      "force_select_count": 0,
+      "force_accept_count": 0,
+      "load_accept_count": 0,
+      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202504\\timeout-stack.log",
+      "failures": []
+    },
+    "slot4_blocked": {
+      "status": "timeout_before_force_select_and_loadsave",
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202640",
+      "mouse": [
+        320,
+        254
+      ],
+      "force_select_count": 0,
+      "force_accept_count": 0,
+      "load_accept_count": 0,
+      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202640\\timeout-stack.log",
+      "failures": []
+    },
+    "slot5_blocked": {
+      "status": "timeout_before_force_select_and_loadsave",
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202810",
+      "mouse": [
+        320,
+        276
+      ],
+      "force_select_count": 0,
+      "force_accept_count": 0,
+      "load_accept_count": 0,
+      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202810\\timeout-stack.log",
+      "failures": []
+    },
+    "recent_slot5_blocked": {
+      "status": "timeout_before_force_select_and_loadsave",
+      "run": "captures\\archive\\cdb-surface-dump-20260523-000931",
+      "mouse": [
+        320,
+        276
+      ],
+      "force_select_count": 0,
+      "force_accept_count": 0,
+      "load_accept_count": 0,
+      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260523-000931\\timeout-stack.log",
+      "failures": []
+    }
+  },
+  "runs": {
+    "slot2_success": {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202424",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260520-202424\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-202424\\cdb-surface-dump.log",
+      "summary_exists": true,
+      "log_exists": true,
+      "passed": true,
+      "timed_out": false,
+      "hidden_desktop": true,
+      "allow_visible_desktop": false,
+      "use_ddraw_proxy": true,
+      "skip_map_validation": true,
+      "fast_forward_start_anims": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "load_slot": 2,
+      "route_injected_load_slot": 2,
+      "expected_mouse": [
+        320,
+        210
+      ],
+      "first_load_coord": {
+        "seq": 0,
+        "mouse_x": 320,
+        "mouse_y": 210,
+        "selected": 0,
+        "accept": 0
+      },
+      "actual_mouse": [
+        320,
+        210
+      ],
+      "mouse_formula_ok": true,
+      "load_coord_count": 10,
+      "force_select_count": 1,
+      "force_accept_count": 2,
+      "load_accept_count": 1,
+      "loadsave": {
+        "selected_arg": 2,
+        "selected_global": 2,
+        "accept": 1
+      },
+      "playgame": {
+        "map_w": 50,
+        "map_h": 50,
+        "scroll_x": 39,
+        "scroll_y": 42,
+        "surface_w": 640,
+        "surface_h": 480
+      },
+      "load_succeeded": true,
+      "no_av": true,
+      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+      "timeout_stack_log": null,
+      "failures": []
+    },
+    "slot3_blocked": {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202504",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260520-202504\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-202504\\cdb-surface-dump.log",
+      "summary_exists": true,
+      "log_exists": true,
+      "passed": false,
+      "timed_out": true,
+      "hidden_desktop": true,
+      "allow_visible_desktop": false,
+      "use_ddraw_proxy": true,
+      "skip_map_validation": true,
+      "fast_forward_start_anims": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "load_slot": 3,
+      "route_injected_load_slot": 3,
+      "expected_mouse": [
+        320,
+        232
+      ],
+      "first_load_coord": {
+        "seq": 0,
+        "mouse_x": 320,
+        "mouse_y": 232,
+        "selected": 0,
+        "accept": 0
+      },
+      "actual_mouse": [
+        320,
+        232
+      ],
+      "mouse_formula_ok": true,
+      "load_coord_count": 1,
+      "force_select_count": 0,
+      "force_accept_count": 0,
+      "load_accept_count": 0,
+      "loadsave": null,
+      "playgame": null,
+      "load_succeeded": false,
+      "no_av": true,
+      "screenshot": null,
+      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202504\\timeout-stack.log",
+      "failures": []
+    },
+    "slot4_blocked": {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202640",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260520-202640\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-202640\\cdb-surface-dump.log",
+      "summary_exists": true,
+      "log_exists": true,
+      "passed": false,
+      "timed_out": true,
+      "hidden_desktop": true,
+      "allow_visible_desktop": false,
+      "use_ddraw_proxy": true,
+      "skip_map_validation": true,
+      "fast_forward_start_anims": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "load_slot": 4,
+      "route_injected_load_slot": 4,
+      "expected_mouse": [
+        320,
+        254
+      ],
+      "first_load_coord": {
+        "seq": 0,
+        "mouse_x": 320,
+        "mouse_y": 254,
+        "selected": 0,
+        "accept": 0
+      },
+      "actual_mouse": [
+        320,
+        254
+      ],
+      "mouse_formula_ok": true,
+      "load_coord_count": 2,
+      "force_select_count": 0,
+      "force_accept_count": 0,
+      "load_accept_count": 0,
+      "loadsave": null,
+      "playgame": null,
+      "load_succeeded": false,
+      "no_av": true,
+      "screenshot": null,
+      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202640\\timeout-stack.log",
+      "failures": []
+    },
+    "slot5_blocked": {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202810",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260520-202810\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-202810\\cdb-surface-dump.log",
+      "summary_exists": true,
+      "log_exists": true,
+      "passed": false,
+      "timed_out": true,
+      "hidden_desktop": true,
+      "allow_visible_desktop": false,
+      "use_ddraw_proxy": true,
+      "skip_map_validation": true,
+      "fast_forward_start_anims": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+      "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+      "load_slot": 5,
+      "route_injected_load_slot": 5,
+      "expected_mouse": [
+        320,
+        276
+      ],
+      "first_load_coord": {
+        "seq": 0,
+        "mouse_x": 320,
+        "mouse_y": 276,
+        "selected": 0,
+        "accept": 0
+      },
+      "actual_mouse": [
+        320,
+        276
+      ],
+      "mouse_formula_ok": true,
+      "load_coord_count": 3,
+      "force_select_count": 0,
+      "force_accept_count": 0,
+      "load_accept_count": 0,
+      "loadsave": null,
+      "playgame": null,
+      "load_succeeded": false,
+      "no_av": true,
+      "screenshot": null,
+      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202810\\timeout-stack.log",
+      "failures": []
+    },
+    "recent_slot5_blocked": {
+      "run": "captures\\archive\\cdb-surface-dump-20260523-000931",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260523-000931\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260523-000931\\cdb-surface-dump.log",
+      "summary_exists": true,
+      "log_exists": true,
+      "passed": false,
+      "timed_out": true,
+      "hidden_desktop": true,
+      "allow_visible_desktop": false,
+      "use_ddraw_proxy": true,
+      "skip_map_validation": true,
+      "fast_forward_start_anims": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+      "load_slot": 5,
+      "route_injected_load_slot": 5,
+      "expected_mouse": [
+        320,
+        276
+      ],
+      "first_load_coord": {
+        "seq": 0,
+        "mouse_x": 320,
+        "mouse_y": 276,
+        "selected": 0,
+        "accept": 0
+      },
+      "actual_mouse": [
+        320,
+        276
+      ],
+      "mouse_formula_ok": true,
+      "load_coord_count": 4,
+      "force_select_count": 0,
+      "force_accept_count": 0,
+      "load_accept_count": 0,
+      "loadsave": null,
+      "playgame": null,
+      "load_succeeded": false,
+      "no_av": true,
+      "screenshot": null,
+      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260523-000931\\timeout-stack.log",
+      "failures": []
+    }
+  },
+  "summary": {
+    "static_load_rows": "0..9",
+    "harness_mouse_formula": "x=320, y=166 + 22 * LoadSlot",
+    "archived_success_slots": [
+      2
+    ],
+    "archived_blocked_slots": [
+      3,
+      4,
+      5
+    ],
+    "recent_slot5_blocked": true,
+    "current_boundary": "static code and harness parameters allow rows 0-9, but current archived hidden evidence only proves the slot-2 row path. Slots 3, 4, and 5, plus the current slot-5 right-bottom attempt, stall before force-select/accept and LOADSAVE.",
+    "next_proof_options": [
+      "debug why rows 3-5 stop before the forced load-select breakpoint under the current CDB route",
+      "or create an isolated test working directory that maps the slot-5 save state to a proven row without editing C:\\Clash\\save",
+      "or use a direct-loader probe, but label it non-natural route evidence until menu selection is proven"
+    ],
+    "cohort_candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
+    "cohort_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter"
+  },
+  "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+  "failures": []
+}

@@ -1,0 +1,19 @@
+# Stable Stage Guard Regression Tests
+
+- Status: PASS
+- Generated: `2026-06-15T18:34:51+02:00`
+- Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
+- Guard policy: proves the stable-stage guard rejects patcher-default drift, validation-only group leakage into the stable stage, missing validation-stage groups, mapsurface stages that reintroduce global menu-surface allocation or lose the gameplay-only map surface upgrade, and promotion decisions/evidence matrices that would change the stable stage or omit required castle focused/multihit proof
+
+## Tests
+
+- `stable_stage_guard passes with stable stage and deferred promotion decisions`
+- `stable_stage_guard fails when the patcher default drifts from the stable stage`
+- `stable_stage_guard fails when a validation-only group leaks into the stable stage`
+- `stable_stage_guard fails when castlecenter-all loses an expected validation group`
+- `stable_stage_guard fails when a mapsurface stage reintroduces the global menu-surface group`
+- `stable_stage_guard fails when a mapsurface stage loses the gameplay-only map surface upgrade`
+- `stable_stage_guard fails when a promotion decision would change the stable stage`
+- `stable_stage_guard fails when the castle promotion decision lacks focused/multihit proof`
+- `stable_stage_guard fails when the castle evidence matrix lacks focused/multihit proof`
+- `stable_stage_guard CLI writes JSON/Markdown and returns 2 on --require-pass failure`

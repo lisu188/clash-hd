@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-06-15T18:34:28+02:00",
+  "captures_root": "captures",
+  "patch_report_json": null,
+  "passed": false,
+  "patch_stage": {
+    "passed": false,
+    "exe": null,
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "failures": [
+      "no candidate executable path was found"
+    ]
+  },
+  "post_owner_evidence": {
+    "captures_root": "captures",
+    "normal": {
+      "kind": "normal-post-owner",
+      "present": false,
+      "passed": false,
+      "failures": [
+        "no passing normal post-owner run found"
+      ]
+    },
+    "forced_visible": {
+      "kind": "post-owner-forced-visible",
+      "present": false,
+      "passed": false,
+      "failures": [
+        "no passing post-owner forced-visible run found"
+      ]
+    },
+    "passed": false
+  },
+  "failures": [
+    "patch-stage: no candidate executable path was found",
+    "post-owner evidence matrix failed"
+  ]
+}

@@ -1,0 +1,121 @@
+# Action Panel Route Summary
+
+- Log: `captures\cdb-surface-dump-20260506-185450\cdb-surface-dump.log`
+- Ready: True
+- AV rows: 0
+- Owner/global rows: 0
+- Panel route rows: 0
+- Draw rows: 0
+- Nonzero owner rows: 0
+- PlayGame line: 219
+- Ready line: 570
+
+## Classification
+- surface dump reached gameplay ready state
+- action-panel owner/global route was not reached
+- no action-panel poll hit-test or draw rows fired
+- right-bottom action/status draw functions did not execute
+- dword_532218 stayed zero in observed route rows
+
+## Marker Counts
+- APROUTE_PLAYGAME_SETUP_40A400: 0
+- APROUTE_PLAYGAME_CALL_40A500: 0
+- APROUTE_40A400_ENTRY: 0
+- APROUTE_40A500_ENTRY: 0
+- APROUTE_40A500_CALL_423B40: 0
+- APROUTE_40A500_CALL_423B00: 0
+- APROUTE_WRITE_532218: 0
+- APROUTE_WRITE_5322C8: 0
+- APROUTE_CASTLE_UI_ENTRY: 0
+- APROUTE_CASTLE_UI_CALL_435BC0: 0
+- APROUTE_OWNER_435BC0_ENTRY: 0
+- APROUTE_OWNER_POLL_435B90: 0
+- APROUTE_HOVER_435A00_ENTRY: 0
+- APROUTE_SCROLLBOX_435AC0_ENTRY: 0
+- APROUTE_GRID_HIT_ENTRY: 0
+- APROUTE_GRID_HIT_FAIL: 0
+- APROUTE_GRID_HIT_OK: 0
+- APROUTE_CLICK_DISPATCH_435620: 0
+- APROUTE_PANEL_DRAW_4347A0: 0
+- APROUTE_GRID_DRAW_434E20: 0
+- APROUTE_STATUS_DRAW_435280: 0
+- APROUTE_ACTION_BOX_435500: 0
+- APSTATE_NUDGE_SKIPPED: 0
+- APSTATE_WRITE_532150: 0
+- APSTATE_WRITE_53214C: 0
+- APSTATE_WRITE_532154: 0
+- APSTATE_NUDGE_ATTEMPT: 0
+- APSTATE_OWNER_FLAG_SET: 0
+- APSTATE_FORCED_CALL_4338E0: 0
+- APSTATE_4338E0_ENTRY: 0
+- APSTATE_433914_CALL_435BC0: 0
+- APSTATE_OWNER_435BC0_ENTRY: 0
+- APSTATE_OWNER_POLL_EXIT_ARM: 0
+- APSTATE_OWNER_POLL_435B90: 0
+- APSTATE_PANEL_DRAW_4347A0: 0
+- APSTATE_GRID_DRAW_434E20: 0
+- APSTATE_STATUS_DRAW_435280: 0
+- APSTATE_ACTION_BOX_435500: 0
+- APSTATE_FORCED_RETURN: 0
+- APPOST_WRITE_532150: 0
+- APPOST_WRITE_53214C: 0
+- APPOST_WRITE_532154: 0
+- APPOST_WRITE_532218: 0
+- APPOST_WRITE_5322C8: 0
+- APPOST_OWNER_SETUP_CALL: 0
+- APPOST_OWNER_FLAG_FORCED: 0
+- APPOST_433C20_ENTRY: 0
+- APPOST_ACTION_CALL: 0
+- APPOST_4338E0_ENTRY: 0
+- APPOST_433914_CALL_435BC0: 0
+- APPOST_4338E0_AFTER_435BC0: 0
+- APPOST_OWNER_435BC0_ENTRY: 0
+- APPOST_OWNER_POLL_EXIT_ARM: 0
+- APPOST_OWNER_POLL_435B90: 0
+- APPOST_PANEL_DRAW_4347A0: 0
+- APPOST_GRID_DRAW_434E20: 0
+- APPOST_STATUS_DRAW_435280: 0
+- APPOST_ACTION_BOX_435500: 0
+- APREDIR_SET_MAP_TARGET: 0
+- APREDIR_AFTER_BACKUP_COPY: 0
+- APREDIR_BEFORE_RESTORE: 0
+- APREDIR_AFTER_ACTION_BOX: 0
+- APREDIR_COPYBACK_SET_MAP_TARGET: 0
+- APREDIR_COPYBACK_AFTER_CALL: 0
+- APPOST_SURFDUMP_READY: 0
+- SURFDUMP_PLAYGAME: 10
+- SURFDUMP_REDRAW: 16
+- SURFDUMP_READY: 1
+- SURFDUMP_HOST_READY: 1
+- SURFDUMP_DONE: 0
+- AV_SURFDUMP: 0
+
+## First Route Rows
+- line 219: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 220: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 221: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 222: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 223: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 224: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 225: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 226: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 227: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 228: SURFDUMP_PLAYGAME gd=03fb0030 map=(100,100) scroll=(10,17) surface=03fac8f0 size=(640,480)
+- line 487: SURFDUMP_REDRAW seq=0 scroll=(10,17) end12=(22,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 488: SURFDUMP_REDRAW seq=1 scroll=(10,17) end12=(22,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 568: SURFDUMP_REDRAW seq=2 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 569: SURFDUMP_REDRAW seq=3 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 570: SURFDUMP_READY redraw_seq=4 surface=03a9e540 size=(800,600) base=03aa0030 bytes=480000
+- line 582: SURFDUMP_HOST_READY
+- line 583: SURFDUMP_REDRAW seq=4 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 584: SURFDUMP_REDRAW seq=5 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 585: SURFDUMP_REDRAW seq=6 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 586: SURFDUMP_REDRAW seq=7 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 587: SURFDUMP_REDRAW seq=8 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 588: SURFDUMP_REDRAW seq=9 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 589: SURFDUMP_REDRAW seq=10 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 590: SURFDUMP_REDRAW seq=11 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 591: SURFDUMP_REDRAW seq=12 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 592: SURFDUMP_REDRAW seq=13 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 593: SURFDUMP_REDRAW seq=14 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)
+- line 594: SURFDUMP_REDRAW seq=15 scroll=(0,17) end12=(12,26) map=(100,100) surface=03a9e540 size=(800,600)

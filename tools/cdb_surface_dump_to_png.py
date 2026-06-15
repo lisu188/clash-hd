@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Convert a Clash95 CDB 8-bit surface dump into a PNG visualization.
-
-The first version intentionally uses a deterministic grayscale index palette:
-palette index N becomes RGB(N, N, N). That is enough for blank/fog/tile
-coverage checks without depending on DirectDraw palette extraction.
-"""
+"""Convert a Clash95 CDB 8-bit surface dump into a PNG visualization."""
 
 from __future__ import annotations
 
@@ -30,7 +25,27 @@ def png_chunk(kind: bytes, payload: bytes) -> bytes:
     return struct.pack(">I", len(payload)) + kind + payload + struct.pack(">I", crc)
 
 
-def indices_to_rgb_rows(indices: bytes, width: int, height: int, pitch: int) -> bytes:
+def load_palette(path: Path | None) -> tuple[bytes | None, str]:
+    if path is None:
+        return None, "grayscale-index"
+    palette = path.read_bytes()
+    expected = 256 * 4
+    if len(palette) < expected:
+        raise ValueError(f"palette dump is too small: expected at least {expected} bytes, found {len(palette)}")
+    palette = palette[:expected]
+    if all(palette[offset] == 0 and palette[offset + 1] == 0 and palette[offset + 2] == 0 for offset in range(0, expected, 4)):
+        return None, "grayscale-index-empty-palette"
+    return palette, "directdraw-palette"
+
+
+def palette_rgb(palette: bytes | None, value: int) -> tuple[int, int, int]:
+    if palette is None:
+        return value, value, value
+    offset = value * 4
+    return palette[offset], palette[offset + 1], palette[offset + 2]
+
+
+def indices_to_rgb_rows(indices: bytes, width: int, height: int, pitch: int, palette: bytes | None) -> bytes:
     rows = bytearray()
     for y in range(height):
         rows.append(0)  # filter type 0
@@ -38,12 +53,12 @@ def indices_to_rgb_rows(indices: bytes, width: int, height: int, pitch: int) -> 
         if len(row) != width:
             raise ValueError(f"short row {y}: expected {width} bytes, found {len(row)}")
         for value in row:
-            rows.extend((value, value, value))
+            rows.extend(palette_rgb(palette, value))
     return bytes(rows)
 
 
-def write_png(path: Path, indices: bytes, width: int, height: int, pitch: int) -> bytes:
-    raw_rows = indices_to_rgb_rows(indices, width, height, pitch)
+def write_png(path: Path, indices: bytes, width: int, height: int, pitch: int, palette: bytes | None) -> bytes:
+    raw_rows = indices_to_rgb_rows(indices, width, height, pitch, palette)
     payload = bytearray(PNG_SIGNATURE)
     payload.extend(
         png_chunk(
@@ -67,6 +82,7 @@ def convert(
     pitch: int | None,
     metadata_path: Path | None,
     log_path: Path | None,
+    palette_path: Path | None,
 ) -> dict[str, Any]:
     if width <= 0 or height <= 0:
         raise ValueError("width and height must be positive")
@@ -79,15 +95,17 @@ def convert(
     if len(raw) < expected:
         raise ValueError(f"raw dump is too small: expected at least {expected} bytes, found {len(raw)}")
     used = raw[:expected]
-    png = write_png(output_path, used, width, height, effective_pitch)
+    palette, palette_mode = load_palette(palette_path)
+    png = write_png(output_path, used, width, height, effective_pitch, palette)
     metadata = {
         "raw_path": str(raw_path),
         "png_path": str(output_path),
         "log_path": str(log_path) if log_path else None,
+        "palette_path": str(palette_path) if palette_path else None,
         "width": width,
         "height": height,
         "pitch": effective_pitch,
-        "palette_mode": "grayscale-index",
+        "palette_mode": palette_mode,
         "raw_bytes": len(raw),
         "used_bytes": len(used),
         "raw_sha256": sha256(raw),
@@ -110,7 +128,7 @@ def run_self_test() -> int:
     height = 8
     raw = bytes((x + y * width) & 0xFF for y in range(height) for x in range(width))
     raw_path.write_bytes(raw)
-    metadata = convert(raw_path, png_path, width, height, None, metadata_path, None)
+    metadata = convert(raw_path, png_path, width, height, None, metadata_path, None, None)
     png = png_path.read_bytes()
     if not png.startswith(PNG_SIGNATURE):
         raise AssertionError("self-test PNG signature mismatch")
@@ -131,6 +149,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, help="PNG output path")
     parser.add_argument("--metadata", type=Path, help="metadata JSON output path")
     parser.add_argument("--log", type=Path, help="source CDB log path for metadata")
+    parser.add_argument("--palette", type=Path, help="optional 256-entry DirectDraw PALETTEENTRY dump")
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
     if args.self_test:
@@ -148,7 +167,7 @@ def main() -> int:
     args = parse_args()
     if args.self_test:
         return run_self_test()
-    metadata = convert(args.raw, args.output, args.width, args.height, args.pitch, args.metadata, args.log)
+    metadata = convert(args.raw, args.output, args.width, args.height, args.pitch, args.metadata, args.log, args.palette)
     print(
         "wrote {png} ({width}x{height}, pitch={pitch}, raw_sha256={raw}, png_sha256={pngsha})".format(
             png=metadata["png_path"],

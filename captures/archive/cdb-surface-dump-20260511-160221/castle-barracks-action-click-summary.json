@@ -1,0 +1,341 @@
+{
+  "log": "captures\\cdb-surface-dump-20260511-160221\\cdb-surface-dump.log",
+  "marker_counts": {
+    "APBARRACKS_ACTION_FORCE_CENTERED": 1,
+    "APBARRACKS_ACTION_DESCRIPTOR_ENTRY": 1,
+    "APBARRACKS_ACTION_WIDGET_CLICK_GATE": 2,
+    "APBARRACKS_ACTION_WIDGET_REARM_CLICK": 1,
+    "APBARRACKS_ACTION_WIDGET_CLICK_GATE_RET": 0,
+    "APBARRACKS_ACTION_WIDGET_HOVER_ARM": 0,
+    "APBARRACKS_ACTION_DESCRIPTOR_CALLBACK": 1,
+    "APBARRACKS_ACTION_DESCRIPTOR_RESULT": 1,
+    "APBARRACKS_ACTION_DESCRIPTOR_FAIL_EXIT": 0,
+    "APBARRACKS_ACTION_CLICK_435620_ENTRY": 1,
+    "APBARRACKS_ACTION_CLICK_435620_BEFORE_SET": 1,
+    "APBARRACKS_ACTION_CLICK_EXIT_SET": 1,
+    "APBARRACKS_ACTION_BOX_435500": 1,
+    "APBARRACKS_SURFDUMP_READY": 1,
+    "SURFDUMP_READY": 1
+  },
+  "row_count": 13,
+  "av_count": 0,
+  "av_rows": [],
+  "descriptor_click_ok": true,
+  "action_exit_ok": true,
+  "failure_exit_count": 0,
+  "last_callback": {
+    "desc": 5329306,
+    "callback": 4412960,
+    "desc_xy": [
+      41,
+      425
+    ],
+    "state": 1,
+    "mouse": [
+      81,
+      441
+    ],
+    "action_state": 0
+  },
+  "last_click": {
+    "desc": 5329306,
+    "mouse": [
+      81,
+      441
+    ],
+    "action_state_before": 0,
+    "selected_index": 0,
+    "selected_addon": 0,
+    "hover_slot": -1,
+    "ret": 4412020,
+    "owner": 67618586,
+    "render": 5362880,
+    "map_surface": 169602448,
+    "sz": [
+      800,
+      600
+    ]
+  },
+  "last_exit": {
+    "pass_index": 4,
+    "action_state": 1,
+    "selected_index": 0,
+    "selected_addon": 0,
+    "hover_slot": -1,
+    "ret": 4412020,
+    "owner": 67618586,
+    "render": 5362880,
+    "map_surface": 169602448,
+    "sz": [
+      800,
+      600
+    ]
+  },
+  "classification": [
+    "centered action coordinate was installed",
+    "descriptor callback resolved to 00435620 action click dispatch",
+    "00435620 action click dispatch was entered",
+    "action click set dword_532210 to exit the barracks loop",
+    "surface dump reached ready state"
+  ],
+  "rows": [
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_BOX_435500",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "selected_addon": 0,
+        "hover_slot": -1,
+        "action_state": 0,
+        "mouse": [
+          320,
+          166
+        ],
+        "render": 5362880,
+        "map_surface": 169602448,
+        "sz": [
+          800,
+          600
+        ]
+      },
+      "text": "APBARRACKS_ACTION_BOX_435500 ret=00435d93 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 action_state=0 mouse=(320,166) render=0051d4c0 map_surface=0a1bed90 APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 render=0051d4c0 map_surface=0a1bed90 sz=(800,600)"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_FORCE_CENTERED",
+      "values": {
+        "target": "bottom-left-action",
+        "pass_index": 1,
+        "centered": [
+          161,
+          501
+        ],
+        "expected_native": [
+          81,
+          441
+        ],
+        "shift": 6,
+        "raw": [
+          10304,
+          32064
+        ],
+        "click_flag": 3,
+        "button0": 128,
+        "selected_index": 0,
+        "selected_addon": 0,
+        "hover_slot": -1,
+        "action_state": 0
+      },
+      "text": "APBARRACKS_ACTION_FORCE_CENTERED target=bottom-left-action pass_index=1 centered=(161,501) expected_native=(81,441) shift=6 raw=(00002840,00007d40) click_flag=00000003 button0=0x80 selected_index=0 selected_addon=0 hover_slot=-1 action_state=0"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_DESCRIPTOR_ENTRY",
+      "values": {
+        "desc": 5329200,
+        "mouse": [
+          81,
+          441
+        ],
+        "raw": [
+          5184,
+          28224
+        ],
+        "click_flag": 3,
+        "button0": 128,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "action_state": 0
+      },
+      "text": "APBARRACKS_ACTION_DESCRIPTOR_ENTRY desc=00515130 mouse=(81,441) raw=(00001440,00006e40) click_flag=00000003 button0=0x80 selected_index=0 hover_slot=-1 action_state=0"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_WIDGET_REARM_CLICK",
+      "values": {
+        "desc": 5329306,
+        "reason": "action_descriptor",
+        "click_flag": 3,
+        "button0": 128
+      },
+      "text": "APBARRACKS_ACTION_WIDGET_REARM_CLICK desc=0051519a reason=action_descriptor click_flag=00000003 button0=0x80"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_WIDGET_CLICK_GATE",
+      "values": {
+        "desc": 5329306,
+        "desc_xy": [
+          41,
+          425
+        ],
+        "state": 1,
+        "hover_cb": 4298608,
+        "click_cb": 4412960,
+        "type": 2,
+        "mouse": [
+          81,
+          441
+        ],
+        "click_flag": 3,
+        "button0": 128
+      },
+      "text": "APBARRACKS_ACTION_WIDGET_CLICK_GATE desc=0051519a desc_xy=(41,425) state=0x01 hover_cb=00419770 click_cb=00435620 type=0x02 mouse=(81,441) click_flag=00000003 button0=0x80"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_WIDGET_CLICK_GATE",
+      "values": {
+        "desc": 5329306,
+        "click_gate": 1,
+        "click_cb": 4412960,
+        "state": 1,
+        "mouse": [
+          81,
+          441
+        ],
+        "click_flag": 3
+      },
+      "text": "APBARRACKS_ACTION_WIDGET_CLICK_GATE_RET desc=0051519a click_gate=1 click_cb=00435620 state=0x01 mouse=(81,441) click_flag=00000003"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_DESCRIPTOR_CALLBACK",
+      "values": {
+        "desc": 5329306,
+        "callback": 4412960,
+        "desc_xy": [
+          41,
+          425
+        ],
+        "state": 1,
+        "mouse": [
+          81,
+          441
+        ],
+        "action_state": 0
+      },
+      "text": "APBARRACKS_ACTION_DESCRIPTOR_CALLBACK desc=0051519a callback=00435620 desc_xy=(41,425) state=0x01 mouse=(81,441) action_state=0"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_CLICK_435620_ENTRY",
+      "values": {
+        "desc": 5329306,
+        "mouse": [
+          81,
+          441
+        ],
+        "action_state_before": 0,
+        "selected_index": 0,
+        "selected_addon": 0,
+        "hover_slot": -1,
+        "ret": 4412020,
+        "owner": 67618586,
+        "render": 5362880,
+        "map_surface": 169602448,
+        "sz": [
+          800,
+          600
+        ]
+      },
+      "text": "APBARRACKS_ACTION_CLICK_435620_ENTRY desc=0051519a mouse=(81,441) action_state_before=0 selected_index=0 selected_addon=0 hover_slot=-1 APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 render=0051d4c0 map_surface=0a1bed90 sz=(800,600) APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 render=0051d4c0 map_surface=0a1bed90 sz=(800,600) APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 render=0051d4c0 map_surface=0a1bed90 sz=(800,600) APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 render=0051d4c0 map_surface=0a1bed90 sz=(800,600) APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 render=0051d4c0 map_surface=0a1bed90 sz=(800,600)"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_CLICK_435620_BEFORE_SET",
+      "values": {
+        "edx": 1,
+        "action_state_before": 0
+      },
+      "text": "APBARRACKS_ACTION_CLICK_435620_BEFORE_SET edx=1 action_state_before=0"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_CLICK_EXIT_SET",
+      "values": {
+        "pass_index": 4,
+        "action_state": 1,
+        "selected_index": 0,
+        "selected_addon": 0,
+        "hover_slot": -1,
+        "ret": 4412020,
+        "owner": 67618586,
+        "render": 5362880,
+        "map_surface": 169602448,
+        "sz": [
+          800,
+          600
+        ]
+      },
+      "text": "APBARRACKS_ACTION_CLICK_EXIT_SET pass_index=4 action_state=1 selected_index=0 selected_addon=0 hover_slot=-1 APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 render=0051d4c0 map_surface=0a1bed90 sz=(800,600) APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 render=0051d4c0 map_surface=0a1bed90 sz=(800,600) APBARRACKS_GRID_DRAW_434E20 ret=00435274 owner=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 render=0051d4c0 map_surface=0a1bed90 sz=(800,600)"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_ACTION_DESCRIPTOR_RESULT",
+      "values": {
+        "result": 3,
+        "pass_index": 4,
+        "mouse": [
+          84,
+          501
+        ],
+        "action_state": 1,
+        "ret": 4238870,
+        "d532218": 67618586,
+        "selected_index": 0,
+        "selected_addon": 0,
+        "hover_slot": -1,
+        "surface": 169602448,
+        "sz": [
+          800,
+          600
+        ]
+      },
+      "text": "APBARRACKS_ACTION_DESCRIPTOR_RESULT result=3 pass_index=4 mouse=(84,501) action_state=1 APBARRACKS_4338E0_AFTER_435BC0 ret=0040ae16 d532218=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 action_state=1 surface=0a1bed90 sz=(800,600)"
+    },
+    {
+      "line": 203,
+      "marker": "APBARRACKS_SURFDUMP_READY",
+      "values": {
+        "after_action": 1,
+        "surface": 169602448,
+        "size": [
+          800,
+          600
+        ],
+        "base": 172359728,
+        "bytes": 480000,
+        "d532150": 67618586,
+        "d532218": 67618586,
+        "selected_index": 0,
+        "selected_addon": 0,
+        "hover_slot": -1,
+        "action_state": 1,
+        "scroll": [
+          10,
+          17
+        ]
+      },
+      "text": "APBARRACKS_SURFDUMP_READY after_action=1 surface=0a1bed90 size=(800,600) base=0a460030 bytes=480000 d532150=0407c71a d532218=0407c71a selected_index=0 selected_addon=0 hover_slot=-1 action_state=1 scroll=(10,17)"
+    },
+    {
+      "line": 203,
+      "marker": "SURFDUMP_READY",
+      "values": {
+        "redraw_seq": 981,
+        "surface": 169602448,
+        "size": [
+          800,
+          600
+        ],
+        "base": 172359728,
+        "bytes": 480000
+      },
+      "text": "SURFDUMP_READY redraw_seq=981 surface=0a1bed90 size=(800,600) base=0a460030 bytes=480000 SURFDUMP_HOST_READY"
+    }
+  ],
+  "screenshot": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/cdb-surface-dump-20260511-160221/surface.png"
+}

@@ -19,8 +19,9 @@ Tactical-grid hit-test entry is classified through `0042CB50`: displayed
 Modal/input routing is classified as `input_update_seen_no_modal` at
 `004605D0` for the current forced route. The natural save-state callback result
 is disabled by command availability (`unit_type=5`, `avail=8`, `enabled=0`),
-so actual centered input transforms, natural/manual enabled-command cadence,
-and later battle-loop redraws are still probe candidates.
+so natural/manual enabled-command cadence is still a probe candidate. Post-ready
+battle-loop present/copyback behavior is now sampled under the forced
+hidden-desktop route.
 
 ## Candidate Routes
 
@@ -31,8 +32,8 @@ Route:
   old bytes/context: `Unit_Attack` in `functions.csv`; called from map action paths in `C:\Clash\clash95.c`
   caller: adventure-map unit action routes
   callee: `CalculateBattleResult` and battle/result helpers in some paths
-  runtime evidence: `captures\cdb-surface-dump-20260518-214535` and
-  `captures\cdb-surface-dump-20260518-221018` force-entry rows call
+  runtime evidence: `captures\archive\cdb-surface-dump-20260518-214535` and
+  `captures\archive\cdb-surface-dump-20260518-221018` force-entry rows call
   `Unit_Attack` with live attacker/defender unit records and log
   `BATTLE_ROUTE_CANDIDATE name=Unit_Attack_calls_BattleRunner eip=0041b145`
   confidence: high for the battle-entry route, low as a patch site
@@ -85,8 +86,8 @@ Route:
   caller: `Unit_Attack` and `Unit_AttackBuilding` flows after battle result setup
   callee: battle resource setup, live battle loop/draw paths, `HandleBattleResults`
   runtime evidence: `BATTLE_OWNER_ENTRY source=BattleRunner eip=0042e9e0`
-  appears in `captures\cdb-surface-dump-20260518-214535` and
-  `captures\cdb-surface-dump-20260518-221018`, with the same attacker/defender
+  appears in `captures\archive\cdb-surface-dump-20260518-214535` and
+  `captures\archive\cdb-surface-dump-20260518-221018`, with the same attacker/defender
   pointers from the forced `Unit_Attack` call
   confidence: high as the live battle owner route
   safe to patch: no
@@ -112,12 +113,12 @@ Route:
   old bytes/context: existing descriptor tracing uses this function for UI list draw
   caller: many UI modes including map/castle
   callee: descriptor draw callback path
-  runtime evidence: `captures\cdb-surface-dump-20260518-221018` logs
+  runtime evidence: `captures\archive\cdb-surface-dump-20260518-221018` logs
   `BATTLE_DESCRIPTOR desc=00514b78 x=498 y=370 w=0 h=0 callback=0042d4e0`
-  during the centered battle run; `captures\cdb-surface-dump-20260520-094032`
+  during the centered battle run; `captures\archive\cdb-surface-dump-20260520-094032`
   repeats that descriptor before command-hit probing; and
-  `captures\cdb-surface-dump-20260520-100717` reaches its click callback
-  `0042d4e0`; `captures\cdb-surface-dump-20260520-101859` forces an enabled
+  `captures\archive\cdb-surface-dump-20260520-100717` reaches its click callback
+  `0042d4e0`; `captures\archive\cdb-surface-dump-20260520-101859` forces an enabled
   unit type and reaches the callback result branch
   confidence: medium for command-button cataloging and harnessed callback paths
   safe to patch: no
@@ -131,22 +132,29 @@ Route:
   old bytes/context: existing descriptor tracing uses this function for hit testing
   caller: many UI modes including map/castle
   callee: descriptor hit callbacks
-  runtime evidence: `captures\cdb-surface-dump-20260520-094032` uses the
+  runtime evidence: `captures\archive\cdb-surface-dump-20260520-094032` uses the
   centered battle frame and logs `BATTLE_COMMAND_HIT coord_mode=visual result=2`
   plus `BATTLE_COMMAND_NATIVE_HIT coord_mode=native result=2`; summary
-  `captures\battle-ui-command-hit-current.md` records
+  `captures\current\battle-ui-command-hit-current.md` records
   `command_hit_ok=True`, `command_native_hit_ok=True`, and `av_count=0`;
-  `captures\cdb-surface-dump-20260520-100717` then forces the command click
+  `captures\archive\cdb-surface-dump-20260520-100717` then forces the command click
   gate, reaches callback `0042d4e0`, and records
   `BATTLE_COMMAND_CALLBACK_RESULT branch=precondition-disabled`;
-  `captures\cdb-surface-dump-20260520-101859` temporarily changes selected
+  `captures\archive\cdb-surface-dump-20260520-101859` temporarily changes selected
   unit type `5` to `8` and reaches
-  `BATTLE_COMMAND_CALLBACK_RESULT branch=state2`
+  `BATTLE_COMMAND_CALLBACK_RESULT branch=state2`. The follow-up inputprobe
+  stage patches the battle-loop `0042E501` descriptor call to wrapper
+  `0051BAF0`; `captures\archive\cdb-surface-dump-20260520-111115` logs
+  `BATTLE_INPUTPROBE_DESCRIPTOR_PRE displayed=(588,440)`,
+  `BATTLE_INPUTPROBE_DESCRIPTOR_INNER mouse=(508,380)`, and
+  `BATTLE_INPUTPROBE_DESCRIPTOR_POST ... mouse=(588,440)`. Summary
+  `captures\current\battle-ui-centered-input-current.md` records
+  `descriptor_input_wrapper_ok=True`.
   confidence: medium for battle command/modal input if battle uses stock descriptors
-  safe to patch: no
-  reason: command descriptor hits are proven only under CDB-forced mouse state
-  and turn-banner/frame skips; callback result paths are also harnessed;
-  actual centered input transforms still need separate rows before wrapping input
+  safe to patch: yes, validation-lane only
+  reason: command descriptor hits and callback paths remain harnessed, and the
+  centered-input wrapper mechanics are now proven under CDB with the helper body
+  skipped after entry; natural/manual cadence is still not proven
 
 Route:
   name: Present path
@@ -156,8 +164,10 @@ Route:
   caller: many UI modes
   callee: DirectDraw present/flip path
   runtime evidence: proven broadly; battle rows in
-  `captures\cdb-surface-dump-20260518-221018` include shared present returns
-  from map/UI redraw callers plus wrapper return `ret=0051ba63`
+  `captures\archive\cdb-surface-dump-20260518-221018` include shared present returns
+  from map/UI redraw callers plus wrapper return `ret=0051ba63`.
+  `captures\archive\cdb-surface-dump-20260520-195244` then logs 9 post-ready battle
+  presents after `BATTLE_READY`, ending with `ret=0042cb46`.
   confidence: high as shared present helper, low as a global patch site
   safe to patch: no
   reason: shared helper cannot be patched globally for battle without a proven battle-only callsite
@@ -169,8 +179,8 @@ Route:
   old bytes/context: `e8 a6 1b 03 00` call to `Render_Present`
   caller: `BattleRunner` initial battle present path
   callee: cave `0051BA00`, then stock `Render_Present`
-  runtime evidence: `captures\cdb-surface-dump-20260518-214535` reproduces the
-  uncentered/stripey 800x600 battle frame; `captures\cdb-surface-dump-20260518-221018`
+  runtime evidence: `captures\archive\cdb-surface-dump-20260518-214535` reproduces the
+  uncentered/stripey 800x600 battle frame; `captures\archive\cdb-surface-dump-20260518-221018`
   logs `BATTLE_PRESENT_CALL ... ret=0051ba63`, `BATTLE_READY
   source=BattleInitialPresent`, and classifies `centered-native-640x480`
   at offset `[80, 60]`
@@ -178,7 +188,8 @@ Route:
   safe to patch: yes, validation-lane only
   reason: narrow callsite wrapper copies the native 640x480 battle frame to a
   scratch area, clears the 800x600 render target, copies back at `(80,60)`,
-  and calls the stock present helper; it does not solve later redraw/input paths
+  and calls the stock present helper; later redraw/copyback is separately
+  sampled but broader battle promotion still needs natural/manual cadence
 
 Route:
   name: Copyback/dirty rectangle helpers
@@ -187,10 +198,13 @@ Route:
   old bytes/context: known render/copy helpers from existing map/castle probes
   caller: many UI modes
   callee: render copy/rect helpers
-  runtime evidence: proven broadly, not battle-specific
+  runtime evidence: `captures\archive\cdb-surface-dump-20260520-195244` logs
+  `BATTLE_READY`, 6 post-ready battle copybacks, a forced post-ready grid point
+  `(144,108)->(64,48)`, and an 800x600 surface dump with no AV
   confidence: medium for present/copyback observation
   safe to patch: no
-  reason: shared helper, only useful as a logged callsite until battle caller is known
+  reason: shared helper, currently useful as proof that the forced battle route
+  continues copyback/present activity after the initial centered frame
 
 Route:
   name: Tactical-grid or tile candidate
@@ -212,16 +226,22 @@ Route:
   disassembly shows `cell_x=(x-32)>>6`, `cell_y=(y-16)>>6`
   caller: battle command/tactical input loop after the turn-banner gate
   callee: grid cell lookup and selection/action state handling
-  runtime evidence: `captures\cdb-surface-dump-20260520-103155` logs
+  runtime evidence: `captures\archive\cdb-surface-dump-20260520-103155` logs
   `BATTLE_GRID_RESULT coord_mode=visual ... cell=(1,1)` for displayed
   `(144,108)`, then logs `BATTLE_GRID_HIT coord_mode=1 ... cell=(0,0)` for
-  native `(64,48)`; summary `captures\battle-ui-grid-hit-current.md` records
-  `grid_hit_ok=True`, centered-native visual mode, and `av_count=0`
+  native `(64,48)`; summary `captures\current\battle-ui-grid-hit-current.md` records
+  `grid_hit_ok=True`, centered-native visual mode, and `av_count=0`.
+  The follow-up inputprobe stage patches the `0042E4ED` call to wrapper
+  `0051BAA0`; `captures\archive\cdb-surface-dump-20260520-111115` logs
+  `BATTLE_INPUTPROBE_GRID_PRE displayed=(144,108)`,
+  `BATTLE_INPUTPROBE_GRID_INNER mouse=(64,48)`, and
+  `BATTLE_INPUTPROBE_GRID_POST ... mouse=(144,108)`. Summary
+  `captures\current\battle-ui-centered-input-current.md` records
+  `grid_input_wrapper_ok=True` and `centered_input_wrapper_ok=True`.
   confidence: medium for the live battle grid hit-test route
-  safe to patch: no
-  reason: route and coordinate mismatch are classified under CDB-forced mouse
-  state, but the actual centered-input transform and natural/manual cadence are
-  not proven yet
+  safe to patch: yes, validation-lane only
+  reason: wrapper mechanics are proven under CDB with helper bodies skipped
+  after entry; natural/manual cadence is still not proven
 
 Route:
   name: Battle loop input updater and modal no-hit classification
@@ -232,9 +252,9 @@ Route:
   classifier from the same input cluster
   caller: battle command/tactical input loop after the turn-banner gate
   callee: input state update, dirty rectangle redraw, and surface copy helpers
-  runtime evidence: `captures\cdb-surface-dump-20260520-103714` logs
+  runtime evidence: `captures\archive\cdb-surface-dump-20260520-103714` logs
   `BATTLE_MODAL_CLASSIFIED status=input_update_seen_no_modal eip=004605d0`;
-  summary `captures\battle-ui-modal-classified-current.md` records
+  summary `captures\current\battle-ui-modal-classified-current.md` records
   `modal_classified=True`, centered-native visual mode, and `av_count=0`
   confidence: medium for classifying that no modal dialog opened on the current
   forced battle route
@@ -247,21 +267,26 @@ Route:
 - Hidden/no-popup force-entry now reaches battle mode, but the route is still a
   debugger harness path rather than natural gameplay proof.
 - Initial `BATTLE_READY`, `BATTLE_OWNER_ENTRY`, and battle surface size are
-  proven in `captures\cdb-surface-dump-20260518-221018`.
+  proven in `captures\archive\cdb-surface-dump-20260518-221018`.
 - Initial battle present centering is proven only at `0042F2F5` through cave
   `0051BA00`.
 - Battle command descriptor hits are harness-proven in
-  `captures\cdb-surface-dump-20260520-094032`; command callback entry is
-  harness-proven in `captures\cdb-surface-dump-20260520-100717`; enabled
+  `captures\archive\cdb-surface-dump-20260520-094032`; command callback entry is
+  harness-proven in `captures\archive\cdb-surface-dump-20260520-100717`; enabled
   callback result is harness-proven in
-  `captures\cdb-surface-dump-20260520-101859`, but natural/manual input is not
+  `captures\archive\cdb-surface-dump-20260520-101859`, but natural/manual input is not
   yet proven.
-- Battle tactical-grid hit-test entry is harness-proven in
-  `captures\cdb-surface-dump-20260520-103155`, but the actual centered-input
-  transform is not patched or naturally/manual proven.
+- Battle tactical-grid and descriptor centered-input wrappers are
+  validation-proven in `captures\archive\cdb-surface-dump-20260520-111115`, but helper
+  bodies are skipped after entry and natural/manual cadence is still not proven.
+- Post-ready battle-loop redraw/copyback sampling is proven in
+  `captures\archive\cdb-surface-dump-20260520-195244`: 9 post-ready presents,
+  6 post-ready copybacks, forced grid point `(144,108)->(64,48)`, and final
+  present return `0042CB46`.
 - Battle modal/input path is classified in
-  `captures\cdb-surface-dump-20260520-103714` as
+  `captures\archive\cdb-surface-dump-20260520-103714` as
   `input_update_seen_no_modal`; no separate modal dialog hit is proven because
   the current forced route does not open one.
-- No later battle-loop redraw centering patch is proven; previous broad present
-  wrapping caused redraw artifacts and must not be restored without new proof.
+- No broad battle-loop present patch is proven or needed from this evidence;
+  previous broad present wrapping caused redraw artifacts and must not be
+  restored without a separate exact callsite proof.

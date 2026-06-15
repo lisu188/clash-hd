@@ -1,0 +1,382 @@
+{
+  "generated_at": "2026-06-15T18:34:33+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "focused right-bottom grid-hit proof must keep the owner/action/grid breakpoints, continue to prove native coordinate (450,73) returns grid cell 0, and stay hidden-desktop with no failure-exit or AV rows",
+  "expected_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+  "expected_entry": [
+    450,
+    73
+  ],
+  "expected_result": 0,
+  "required_breakpoints": {
+    "00433D5F": "right-bottom owner surface pointer write short-return",
+    "0040AE16": "debugger-routed owner/action sequence and surface-ready row",
+    "00433914": "action descriptor call into owner route",
+    "00433919": "post-owner return and fallback ready row",
+    "00435BC0": "right-bottom owner route entry",
+    "00435BCA": "right-bottom owner pointer write",
+    "00435C3E": "right-bottom hover-slot write",
+    "004347A0": "right-bottom panel draw",
+    "00434E20": "right-bottom grid draw",
+    "00435280": "right-bottom status draw",
+    "00435500": "right-bottom action-box draw",
+    "00435B90": "native grid coordinate injection",
+    "00435A00": "grid route entry",
+    "00435A0E": "grid gate result",
+    "00435A17": "grid hit-test call",
+    "00435580": "grid hit-test entry",
+    "0043560E": "grid hit-test result and accept",
+    "004355FF": "grid failure sentinel",
+    "00435A9A": "selection-update sentinel",
+    "00435AA0": "selection-after sentinel"
+  },
+  "required_probe_markers": {
+    "RBGRID_OWNER_SETUP_CALL": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_OWNER_FLAG_FORCED": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_WRITE_532154": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_ACTION_CALL": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_433914_CALL_435BC0": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_OWNER_435BC0_ENTRY": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_WRITE_532218": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_WRITE_5322C8": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_PANEL_DRAW_4347A0": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_GRID_DRAW_434E20": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_STATUS_DRAW_435280": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_ACTION_BOX_435500": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_FORCE_NATIVE": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_GRID_ROUTE_ENTRY": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_GRID_GATE": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_GRID_CALL": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_GRID_ENTRY": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_GRID_RESULT": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_GRID_ACCEPT": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_GRID_FAIL": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_FAIL_EXIT_ARM": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_SELECTION_UPDATE": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_SELECTION_AFTER": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_4338E0_AFTER_435BC0": "recognized right-bottom controlled grid-hit probe row",
+    "RBGRID_SURFDUMP_READY": "recognized right-bottom controlled grid-hit probe row",
+    "SURFDUMP_READY": "recognized right-bottom controlled grid-hit probe row"
+  },
+  "required_log_markers": {
+    "RBGRID_OWNER_SETUP_CALL": "owner setup was reached",
+    "RBGRID_OWNER_FLAG_FORCED": "owner action flag was forced",
+    "RBGRID_WRITE_532154": "owner surface pointer write was observed",
+    "RBGRID_ACTION_CALL": "action descriptor route was invoked",
+    "RBGRID_433914_CALL_435BC0": "owner route callsite was reached",
+    "RBGRID_OWNER_435BC0_ENTRY": "owner route entered",
+    "RBGRID_WRITE_532218": "owner global write was observed",
+    "RBGRID_WRITE_5322C8": "hover-slot write was observed",
+    "RBGRID_PANEL_DRAW_4347A0": "panel draw row was observed",
+    "RBGRID_GRID_DRAW_434E20": "grid draw row was observed",
+    "RBGRID_STATUS_DRAW_435280": "status draw row was observed",
+    "RBGRID_ACTION_BOX_435500": "action-box draw row was observed",
+    "RBGRID_FORCE_NATIVE": "native coordinate was installed",
+    "RBGRID_GRID_ROUTE_ENTRY": "grid route entry was reached",
+    "RBGRID_GRID_GATE": "grid gate was reached",
+    "RBGRID_GRID_CALL": "grid hit-test callsite was reached",
+    "RBGRID_GRID_ENTRY": "grid hit-test entry was reached",
+    "RBGRID_GRID_RESULT": "grid hit-test result was logged",
+    "RBGRID_GRID_ACCEPT": "expected grid result was accepted",
+    "RBGRID_4338E0_AFTER_435BC0": "owner route returned cleanly",
+    "RBGRID_SURFDUMP_READY": "probe surface-ready row was emitted",
+    "SURFDUMP_READY": "surface-dump host row was emitted"
+  },
+  "checks": {
+    "probe_script": {
+      "passed": true,
+      "path": "probes\\cdb\\ui\\clash95_right_bottom_grid_hit_extra.cdb",
+      "breakpoints": {
+        "00433D5F": {
+          "present": true,
+          "purpose": "right-bottom owner surface pointer write short-return"
+        },
+        "0040AE16": {
+          "present": true,
+          "purpose": "debugger-routed owner/action sequence and surface-ready row"
+        },
+        "00433914": {
+          "present": true,
+          "purpose": "action descriptor call into owner route"
+        },
+        "00433919": {
+          "present": true,
+          "purpose": "post-owner return and fallback ready row"
+        },
+        "00435BC0": {
+          "present": true,
+          "purpose": "right-bottom owner route entry"
+        },
+        "00435BCA": {
+          "present": true,
+          "purpose": "right-bottom owner pointer write"
+        },
+        "00435C3E": {
+          "present": true,
+          "purpose": "right-bottom hover-slot write"
+        },
+        "004347A0": {
+          "present": true,
+          "purpose": "right-bottom panel draw"
+        },
+        "00434E20": {
+          "present": true,
+          "purpose": "right-bottom grid draw"
+        },
+        "00435280": {
+          "present": true,
+          "purpose": "right-bottom status draw"
+        },
+        "00435500": {
+          "present": true,
+          "purpose": "right-bottom action-box draw"
+        },
+        "00435B90": {
+          "present": true,
+          "purpose": "native grid coordinate injection"
+        },
+        "00435A00": {
+          "present": true,
+          "purpose": "grid route entry"
+        },
+        "00435A0E": {
+          "present": true,
+          "purpose": "grid gate result"
+        },
+        "00435A17": {
+          "present": true,
+          "purpose": "grid hit-test call"
+        },
+        "00435580": {
+          "present": true,
+          "purpose": "grid hit-test entry"
+        },
+        "0043560E": {
+          "present": true,
+          "purpose": "grid hit-test result and accept"
+        },
+        "004355FF": {
+          "present": true,
+          "purpose": "grid failure sentinel"
+        },
+        "00435A9A": {
+          "present": true,
+          "purpose": "selection-update sentinel"
+        },
+        "00435AA0": {
+          "present": true,
+          "purpose": "selection-after sentinel"
+        }
+      },
+      "markers": {
+        "RBGRID_OWNER_SETUP_CALL": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_OWNER_FLAG_FORCED": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_WRITE_532154": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_ACTION_CALL": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_433914_CALL_435BC0": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_OWNER_435BC0_ENTRY": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_WRITE_532218": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_WRITE_5322C8": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_PANEL_DRAW_4347A0": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_GRID_DRAW_434E20": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_STATUS_DRAW_435280": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_ACTION_BOX_435500": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_FORCE_NATIVE": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_GRID_ROUTE_ENTRY": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_GRID_GATE": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_GRID_CALL": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_GRID_ENTRY": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_GRID_RESULT": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_GRID_ACCEPT": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_GRID_FAIL": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_FAIL_EXIT_ARM": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_SELECTION_UPDATE": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_SELECTION_AFTER": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_4338E0_AFTER_435BC0": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "RBGRID_SURFDUMP_READY": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        },
+        "SURFDUMP_READY": {
+          "present": true,
+          "purpose": "recognized right-bottom controlled grid-hit probe row"
+        }
+      },
+      "failures": []
+    },
+    "summary_parser": {
+      "passed": true,
+      "path": "tools\\right_bottom_grid_hit_summary.py",
+      "markers": {
+        "RBGRID_OWNER_SETUP_CALL": true,
+        "RBGRID_OWNER_FLAG_FORCED": true,
+        "RBGRID_WRITE_532154": true,
+        "RBGRID_ACTION_CALL": true,
+        "RBGRID_433914_CALL_435BC0": true,
+        "RBGRID_OWNER_435BC0_ENTRY": true,
+        "RBGRID_WRITE_532218": true,
+        "RBGRID_WRITE_5322C8": true,
+        "RBGRID_PANEL_DRAW_4347A0": true,
+        "RBGRID_GRID_DRAW_434E20": true,
+        "RBGRID_STATUS_DRAW_435280": true,
+        "RBGRID_ACTION_BOX_435500": true,
+        "RBGRID_FORCE_NATIVE": true,
+        "RBGRID_GRID_ROUTE_ENTRY": true,
+        "RBGRID_GRID_GATE": true,
+        "RBGRID_GRID_CALL": true,
+        "RBGRID_GRID_ENTRY": true,
+        "RBGRID_GRID_RESULT": true,
+        "RBGRID_GRID_ACCEPT": true,
+        "RBGRID_GRID_FAIL": true,
+        "RBGRID_FAIL_EXIT_ARM": true,
+        "RBGRID_SELECTION_UPDATE": true,
+        "RBGRID_SELECTION_AFTER": true,
+        "RBGRID_4338E0_AFTER_435BC0": true,
+        "RBGRID_SURFDUMP_READY": true,
+        "SURFDUMP_READY": true
+      },
+      "failures": []
+    },
+    "focused_grid_hit_log": {
+      "passed": true,
+      "run": "captures\\archive\\cdb-surface-dump-20260514-140601",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260514-140601\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260514-140601\\cdb-surface-dump.log",
+      "hidden_desktop": true,
+      "allow_visible_desktop": false,
+      "use_ddraw_proxy": true,
+      "fast_forward_start_anims": true,
+      "skip_map_validation": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+      "extra_probe_template": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_right_bottom_grid_hit_extra.cdb",
+      "surface": [
+        800,
+        600
+      ],
+      "ready_sizes": [
+        [
+          800,
+          600
+        ],
+        [
+          800,
+          600
+        ]
+      ],
+      "ready": true,
+      "grid_hit_ok": true,
+      "last_grid_entry": [
+        450,
+        73
+      ],
+      "last_grid_result": 0,
+      "forced_gate_count": 1,
+      "failure_exit_count": 0,
+      "draw_row_count": 5,
+      "av_count": 0,
+      "marker_counts": {
+        "RBGRID_OWNER_SETUP_CALL": 1,
+        "RBGRID_OWNER_FLAG_FORCED": 1,
+        "RBGRID_WRITE_532154": 1,
+        "RBGRID_ACTION_CALL": 1,
+        "RBGRID_433914_CALL_435BC0": 1,
+        "RBGRID_OWNER_435BC0_ENTRY": 1,
+        "RBGRID_WRITE_532218": 1,
+        "RBGRID_WRITE_5322C8": 1,
+        "RBGRID_PANEL_DRAW_4347A0": 1,
+        "RBGRID_GRID_DRAW_434E20": 2,
+        "RBGRID_STATUS_DRAW_435280": 1,
+        "RBGRID_ACTION_BOX_435500": 1,
+        "RBGRID_FORCE_NATIVE": 1,
+        "RBGRID_GRID_ROUTE_ENTRY": 1,
+        "RBGRID_GRID_GATE": 1,
+        "RBGRID_GRID_CALL": 1,
+        "RBGRID_GRID_ENTRY": 1,
+        "RBGRID_GRID_RESULT": 1,
+        "RBGRID_GRID_ACCEPT": 1,
+        "RBGRID_GRID_FAIL": 0,
+        "RBGRID_FAIL_EXIT_ARM": 0,
+        "RBGRID_SELECTION_UPDATE": 0,
+        "RBGRID_SELECTION_AFTER": 0,
+        "RBGRID_4338E0_AFTER_435BC0": 1,
+        "RBGRID_SURFDUMP_READY": 1,
+        "SURFDUMP_READY": 1
+      },
+      "failures": []
+    }
+  },
+  "failures": []
+}

@@ -1,0 +1,318 @@
+{
+  "coverage_json": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-191042\\map-tile-coverage.json",
+  "logs": [
+    "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log"
+  ],
+  "observation_points": 108,
+  "blank_cells": [
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "status_counts": {
+    "visibility_zero": 7
+  },
+  "explained_blank_cells": [
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "unexplained_blank_cells": [],
+  "classified_cells": [
+    {
+      "id": "r6c10",
+      "logical_rect": [
+        672,
+        400,
+        735,
+        463
+      ],
+      "nonblack_percent": 0.0,
+      "status": "visibility_zero",
+      "observation": {
+        "screen": [
+          672,
+          400
+        ],
+        "seqs": [
+          82
+        ],
+        "map_points": [
+          [
+            20,
+            23
+          ]
+        ],
+        "vis_values": [
+          0,
+          0
+        ],
+        "clips": [],
+        "clear_count": 0,
+        "post_samples": [
+          "01",
+          "01"
+        ],
+        "neighbor_checks": 0,
+        "neighbor_hits": 0,
+        "sources": [
+          "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log"
+        ]
+      }
+    },
+    {
+      "id": "r6c11",
+      "logical_rect": [
+        736,
+        400,
+        799,
+        463
+      ],
+      "nonblack_percent": 0.0,
+      "status": "visibility_zero",
+      "observation": {
+        "screen": [
+          736,
+          400
+        ],
+        "seqs": [
+          83
+        ],
+        "map_points": [
+          [
+            21,
+            23
+          ]
+        ],
+        "vis_values": [
+          0,
+          0
+        ],
+        "clips": [],
+        "clear_count": 0,
+        "post_samples": [
+          "01",
+          "01"
+        ],
+        "neighbor_checks": 0,
+        "neighbor_hits": 0,
+        "sources": [
+          "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log"
+        ]
+      }
+    },
+    {
+      "id": "r7c10",
+      "logical_rect": [
+        672,
+        464,
+        735,
+        527
+      ],
+      "nonblack_percent": 0.0,
+      "status": "visibility_zero",
+      "observation": {
+        "screen": [
+          672,
+          464
+        ],
+        "seqs": [
+          94
+        ],
+        "map_points": [
+          [
+            20,
+            24
+          ]
+        ],
+        "vis_values": [
+          0,
+          0
+        ],
+        "clips": [],
+        "clear_count": 0,
+        "post_samples": [
+          "01",
+          "01"
+        ],
+        "neighbor_checks": 0,
+        "neighbor_hits": 0,
+        "sources": [
+          "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log"
+        ]
+      }
+    },
+    {
+      "id": "r7c11",
+      "logical_rect": [
+        736,
+        464,
+        799,
+        527
+      ],
+      "nonblack_percent": 0.0,
+      "status": "visibility_zero",
+      "observation": {
+        "screen": [
+          736,
+          464
+        ],
+        "seqs": [
+          95
+        ],
+        "map_points": [
+          [
+            21,
+            24
+          ]
+        ],
+        "vis_values": [
+          0,
+          0
+        ],
+        "clips": [],
+        "clear_count": 0,
+        "post_samples": [
+          "01",
+          "01"
+        ],
+        "neighbor_checks": 0,
+        "neighbor_hits": 0,
+        "sources": [
+          "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log"
+        ]
+      }
+    },
+    {
+      "id": "r8c0",
+      "logical_rect": [
+        32,
+        528,
+        95,
+        591
+      ],
+      "nonblack_percent": 0.0,
+      "status": "visibility_zero",
+      "observation": {
+        "screen": [
+          32,
+          528
+        ],
+        "seqs": [
+          96
+        ],
+        "map_points": [
+          [
+            10,
+            25
+          ]
+        ],
+        "vis_values": [
+          0,
+          0
+        ],
+        "clips": [],
+        "clear_count": 0,
+        "post_samples": [
+          "01",
+          "01"
+        ],
+        "neighbor_checks": 0,
+        "neighbor_hits": 0,
+        "sources": [
+          "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log"
+        ]
+      }
+    },
+    {
+      "id": "r8c10",
+      "logical_rect": [
+        672,
+        528,
+        735,
+        591
+      ],
+      "nonblack_percent": 0.0,
+      "status": "visibility_zero",
+      "observation": {
+        "screen": [
+          672,
+          528
+        ],
+        "seqs": [
+          106
+        ],
+        "map_points": [
+          [
+            20,
+            25
+          ]
+        ],
+        "vis_values": [
+          0,
+          0
+        ],
+        "clips": [],
+        "clear_count": 0,
+        "post_samples": [
+          "01",
+          "01"
+        ],
+        "neighbor_checks": 0,
+        "neighbor_hits": 0,
+        "sources": [
+          "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log"
+        ]
+      }
+    },
+    {
+      "id": "r8c11",
+      "logical_rect": [
+        736,
+        528,
+        799,
+        591
+      ],
+      "nonblack_percent": 0.0,
+      "status": "visibility_zero",
+      "observation": {
+        "screen": [
+          736,
+          528
+        ],
+        "seqs": [
+          107
+        ],
+        "map_points": [
+          [
+            21,
+            25
+          ]
+        ],
+        "vis_values": [
+          0,
+          0
+        ],
+        "clips": [],
+        "clear_count": 0,
+        "post_samples": [
+          "01",
+          "01"
+        ],
+        "neighbor_checks": 0,
+        "neighbor_hits": 0,
+        "sources": [
+          "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "generated_at": "2026-06-15T18:34:33+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only; reads decompilation text, CDB probe text, and generated timeout phase JSON; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "passes only when static code still places the real load-row loop after the main Load callback, the current probe spans both sides of that transition, slot 2 reaches the post-entry accept path, and slots 3-5 still stop before 0044895A load-menu entry",
+  "promotion_ready": false,
+  "gap_classification": "after_main_load_callback_before_load_menu_case_entry",
+  "static_decomp": {
+    "path": "C:\\Clash\\clash95.c",
+    "exists": true,
+    "passed": true,
+    "markers": {
+      "case5_load_menu_entry": true,
+      "selected_reset_before_load_menu": true,
+      "draws_ten_rows_after_entry": true,
+      "copies_load_descriptors": true,
+      "initializes_load_descriptors": true,
+      "resets_exit_flag_after_descriptor_init": true,
+      "load_loop_after_present": true,
+      "load_row_x_bounds": true,
+      "load_row_formula": true,
+      "load_row_limit": true,
+      "selected_row_write": true,
+      "click_accept_helper": true,
+      "accept_helper_call": true,
+      "accept_file_check": true,
+      "accept_sets_success_flag": true,
+      "accept_exits_load_loop": true,
+      "loadsave_after_accept": true,
+      "playgame_after_accept": true
+    },
+    "failures": []
+  },
+  "cdb_probe": {
+    "path": "probes\\cdb\\render\\clash95_surface_dump_probe.cdb",
+    "exists": true,
+    "passed": false,
+    "markers": {
+      "early_descriptor_breakpoint": true,
+      "pre_entry_load_coord_placeholder": false,
+      "main_load_callback_skip": true,
+      "main_load_callback_log": true,
+      "main_dispatch_poll": true,
+      "load_menu_entry_breakpoint": true,
+      "load_menu_entry_log": true,
+      "load_menu_loop_breakpoint": true,
+      "force_load_select_breakpoint": true,
+      "force_load_accept_breakpoint": true,
+      "load_accept_helper_breakpoint": true,
+      "loadsave_breakpoint": true,
+      "playgame_breakpoint": true
+    },
+    "failures": [
+      "missing marker pre_entry_load_coord_placeholder: __PRE_ENTRY_LOAD_COORD_ACTION__"
+    ]
+  },
+  "timeout_phase": {
+    "path": "captures\\current\\load-slot-timeout-phase-current.json",
+    "exists": true,
+    "passed": true,
+    "slot2": {
+      "status": "load_menu_accept_success",
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202424",
+      "load_coord_count": 10,
+      "load_menu_entry_count": 1,
+      "load_menu_loop_count": 4,
+      "force_select_count": 1,
+      "loadsave_count": 1,
+      "playgame_count": 5
+    },
+    "blocked_rows": {
+      "slot3_timeout": {
+        "slot": 3,
+        "status": "stalled_after_load_button_before_load_menu_loop",
+        "load_coord_count": 1,
+        "last_load_coord": {
+          "entry": "0x000efa5d",
+          "seq": 0,
+          "choice": 5,
+          "ex": 232,
+          "ey": 228,
+          "mouse_x": 320,
+          "mouse_y": 232,
+          "selected": 0,
+          "accept": 0
+        },
+        "last_marker": "SURFDUMP_LOAD_COORD",
+        "timeout_stack_category": "qpc_timing_poll_before_load_menu_loop",
+        "passed": true,
+        "failures": []
+      },
+      "slot4_timeout": {
+        "slot": 4,
+        "status": "stalled_after_load_button_before_load_menu_loop",
+        "load_coord_count": 2,
+        "last_load_coord": {
+          "entry": "0x000efa5d",
+          "seq": 1,
+          "choice": 5,
+          "ex": 232,
+          "ey": 228,
+          "mouse_x": 320,
+          "mouse_y": 254,
+          "selected": 0,
+          "accept": 0
+        },
+        "last_marker": "SURFDUMP_LOAD_COORD",
+        "timeout_stack_category": "qpc_timing_poll_before_load_menu_loop",
+        "passed": true,
+        "failures": []
+      },
+      "slot5_timeout": {
+        "slot": 5,
+        "status": "stalled_after_load_button_before_load_menu_loop",
+        "load_coord_count": 3,
+        "last_load_coord": {
+          "entry": "0x000efa92",
+          "seq": 2,
+          "choice": 5,
+          "ex": 265,
+          "ey": 264,
+          "mouse_x": 320,
+          "mouse_y": 276,
+          "selected": 0,
+          "accept": 0
+        },
+        "last_marker": "SURFDUMP_LOAD_COORD",
+        "timeout_stack_category": "win32_message_poll_before_load_menu_loop",
+        "passed": true,
+        "failures": []
+      },
+      "recent_slot5_timeout": {
+        "slot": 5,
+        "status": "stalled_after_load_button_before_load_menu_loop",
+        "load_coord_count": 4,
+        "last_load_coord": {
+          "entry": "0x000efa92",
+          "seq": 3,
+          "choice": 5,
+          "ex": 265,
+          "ey": 264,
+          "mouse_x": 320,
+          "mouse_y": 276,
+          "selected": 0,
+          "accept": 0
+        },
+        "last_marker": "SURFDUMP_LOAD_COORD",
+        "timeout_stack_category": "engine_timing_poll_before_load_menu_loop",
+        "passed": true,
+        "failures": []
+      }
+    },
+    "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+    "summary": {
+      "slot2_phase": "load_menu_accept_success",
+      "blocked_slots": [
+        3,
+        4,
+        5
+      ],
+      "recent_slot5_blocked": true,
+      "current_divergence": "slot 2 reaches the 0044895A load-menu entry and accept path; slots 3-5 reach early 00419B80 load-coordinate descriptor rows, then time out before 0044895A load-menu entry, forced select, LOADSAVE, or PlayGame",
+      "timeout_stack_categories": {
+        "slot3_timeout": "qpc_timing_poll_before_load_menu_loop",
+        "slot4_timeout": "qpc_timing_poll_before_load_menu_loop",
+        "slot5_timeout": "win32_message_poll_before_load_menu_loop",
+        "recent_slot5_timeout": "engine_timing_poll_before_load_menu_loop"
+      },
+      "next_probe_target": "instrument the transition between the early 00419B80 load descriptors and 0044895A load-menu entry for rows 3-5"
+    },
+    "failures": []
+  },
+  "summary": {
+    "current_gap": "Rows 3-5 are stopped in the transition after the forced main Load callback and before 0044895A load-menu entry. They are not yet evidence of invalid save rows because 0044A110/sub_444750, LOADSAVE, and PlayGame are never reached.",
+    "slot2_post_entry_success": true,
+    "blocked_rows": [
+      3,
+      4,
+      5
+    ],
+    "recent_slot5_same_gap": true,
+    "next_probe_targets": [
+      "add a CDB transition row between 00447780 and 0044895A to prove when case 5 is dispatched",
+      "late-arm row forcing only after 0044895A instead of relying on early 00419B80 descriptor hits",
+      "log dword_543D7C and dword_543D78 immediately before and after the main dispatch consumes the load callback"
+    ],
+    "next_non_promoting_route_option": "use an isolated slot fixture or direct-loader probe only if it is labeled non-natural route evidence until the menu transition is proven"
+  },
+  "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+  "failures": [
+    "cdb_probe: missing marker pre_entry_load_coord_placeholder: __PRE_ENTRY_LOAD_COORD_ACTION__"
+  ]
+}

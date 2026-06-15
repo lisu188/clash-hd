@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-06-15T18:34:33+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only source/plan inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "passes only when the transition run plan targets rows 3-5 and the surface-dump launcher still replaces extra-probe load-slot mouse placeholders using x=320 and y=166+22*slot shifted into raw mouse globals",
+  "promotion_ready": false,
+  "stable_stage_should_change": false,
+  "source_artifacts": {
+    "run_plan_json": "captures\\current\\load-slot-transition-run-plan-current.json",
+    "surface_dump_script": "scripts\\cdb\\run_cdb_surface_dump.ps1",
+    "extra_probe": "probes\\cdb\\menu\\clash95_load_slot_entry_transition_extra.cdb"
+  },
+  "checks": {
+    "run_plan_passed": false,
+    "target_rows_3_4_5": true,
+    "surface_formula_present": true,
+    "probe_placeholders_present": true,
+    "commands_row_specific": true,
+    "summary_commands_require_entry": true,
+    "non_promoting": true
+  },
+  "summary": {
+    "target_rows": [
+      3,
+      4,
+      5
+    ],
+    "row_geometry": [
+      {
+        "slot": 3,
+        "mouse_x": 320,
+        "mouse_y": 232,
+        "raw_x": 20480,
+        "raw_y": 14848,
+        "raw_x_hex": "00005000",
+        "raw_y_hex": "00003a00"
+      },
+      {
+        "slot": 4,
+        "mouse_x": 320,
+        "mouse_y": 254,
+        "raw_x": 20480,
+        "raw_y": 16256,
+        "raw_x_hex": "00005000",
+        "raw_y_hex": "00003f80"
+      },
+      {
+        "slot": 5,
+        "mouse_x": 320,
+        "mouse_y": 276,
+        "raw_x": 20480,
+        "raw_y": 17664,
+        "raw_x_hex": "00005000",
+        "raw_y_hex": "00004500"
+      }
+    ],
+    "formula": "mouse_x=320; mouse_y=166+22*slot; raw=logical<<6",
+    "run_plan_command_count": 3,
+    "run_plan_summary_command_count": 3
+  },
+  "failures": [
+    "transition geometry guard failed: run_plan_passed"
+  ]
+}

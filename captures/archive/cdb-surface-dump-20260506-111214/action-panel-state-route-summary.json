@@ -1,0 +1,240 @@
+{
+  "log": "captures\\cdb-surface-dump-20260506-111214\\cdb-surface-dump.log",
+  "marker_counts": {
+    "APROUTE_PLAYGAME_SETUP_40A400": 0,
+    "APROUTE_PLAYGAME_CALL_40A500": 0,
+    "APROUTE_40A400_ENTRY": 0,
+    "APROUTE_40A500_ENTRY": 0,
+    "APROUTE_40A500_CALL_423B40": 0,
+    "APROUTE_40A500_CALL_423B00": 0,
+    "APROUTE_WRITE_532218": 0,
+    "APROUTE_WRITE_5322C8": 0,
+    "APROUTE_CASTLE_UI_ENTRY": 0,
+    "APROUTE_CASTLE_UI_CALL_435BC0": 0,
+    "APROUTE_OWNER_435BC0_ENTRY": 0,
+    "APROUTE_OWNER_POLL_435B90": 0,
+    "APROUTE_HOVER_435A00_ENTRY": 0,
+    "APROUTE_SCROLLBOX_435AC0_ENTRY": 0,
+    "APROUTE_GRID_HIT_ENTRY": 0,
+    "APROUTE_GRID_HIT_FAIL": 0,
+    "APROUTE_GRID_HIT_OK": 0,
+    "APROUTE_CLICK_DISPATCH_435620": 0,
+    "APROUTE_PANEL_DRAW_4347A0": 0,
+    "APROUTE_GRID_DRAW_434E20": 0,
+    "APROUTE_STATUS_DRAW_435280": 0,
+    "APROUTE_ACTION_BOX_435500": 0,
+    "APSTATE_NUDGE_SKIPPED": 1,
+    "APSTATE_WRITE_532150": 0,
+    "APSTATE_WRITE_53214C": 0,
+    "APSTATE_WRITE_532154": 0,
+    "APSTATE_NUDGE_ATTEMPT": 0,
+    "APSTATE_OWNER_FLAG_SET": 0,
+    "APSTATE_FORCED_CALL_4338E0": 0,
+    "APSTATE_4338E0_ENTRY": 0,
+    "APSTATE_433914_CALL_435BC0": 0,
+    "APSTATE_OWNER_435BC0_ENTRY": 0,
+    "APSTATE_OWNER_POLL_EXIT_ARM": 0,
+    "APSTATE_OWNER_POLL_435B90": 0,
+    "APSTATE_PANEL_DRAW_4347A0": 0,
+    "APSTATE_GRID_DRAW_434E20": 0,
+    "APSTATE_STATUS_DRAW_435280": 0,
+    "APSTATE_ACTION_BOX_435500": 0,
+    "APSTATE_FORCED_RETURN": 0,
+    "SURFDUMP_PLAYGAME": 1,
+    "SURFDUMP_REDRAW": 13,
+    "SURFDUMP_READY": 1,
+    "SURFDUMP_HOST_READY": 1,
+    "SURFDUMP_DONE": 0,
+    "AV_SURFDUMP": 0
+  },
+  "rows": [
+    {
+      "line_no": 184,
+      "marker": "SURFDUMP_PLAYGAME",
+      "line": "SURFDUMP_PLAYGAME gd=04360030 map=(100,100) scroll=(10,17) surface=0413c8f8 size=(640,480)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 185,
+      "marker": "APSTATE_NUDGE_SKIPPED",
+      "line": "APSTATE_NUDGE_SKIPPED reason=no_owner selected=-1 prior=-1 d532150=00000000 d532218=00000000 mouse=(320,166) scroll=(10,17)",
+      "values": {
+        "selected": "-1",
+        "prior": "-1",
+        "d532150": "00000000",
+        "d532218": "00000000"
+      },
+      "mouse": [
+        320,
+        166
+      ],
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 186,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=0 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 187,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=1 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 188,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=2 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 189,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=3 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 190,
+      "marker": "SURFDUMP_READY",
+      "line": "SURFDUMP_READY redraw_seq=4 surface=0a1bedb0 size=(800,600) base=0a460030 bytes=480000",
+      "values": {}
+    },
+    {
+      "line_no": 202,
+      "marker": "SURFDUMP_HOST_READY",
+      "line": "SURFDUMP_HOST_READY",
+      "values": {}
+    },
+    {
+      "line_no": 203,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=4 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 204,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=5 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 205,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=6 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 206,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=7 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 207,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=8 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 208,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=9 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 209,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=10 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 210,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=11 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    },
+    {
+      "line_no": 211,
+      "marker": "SURFDUMP_REDRAW",
+      "line": "SURFDUMP_REDRAW seq=12 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1bedb0 size=(800,600)",
+      "values": {},
+      "scroll": [
+        10,
+        17
+      ]
+    }
+  ],
+  "owner_rows": [],
+  "panel_rows": [],
+  "draw_rows": [],
+  "nonzero_owner_rows": [],
+  "ready": true,
+  "playgame_line": 184,
+  "ready_line": 190,
+  "av_count": 0,
+  "av_rows": [],
+  "classification": [
+    "surface dump reached gameplay ready state",
+    "action-panel owner/global route was not reached",
+    "state-route nudge skipped because the owner global was unavailable",
+    "no action-panel poll hit-test or draw rows fired",
+    "right-bottom action/status draw functions did not execute",
+    "dword_532218 stayed zero in observed route rows"
+  ]
+}

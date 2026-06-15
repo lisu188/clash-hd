@@ -1,0 +1,674 @@
+{
+  "log": "captures\\cdb-surface-dump-20260511-170708\\cdb-surface-dump.log",
+  "marker_counts": {
+    "CASTLECAT_INVOKE_PLAYGAME": 1,
+    "CASTLECAT_SCREEN_FULL_ENTRY": 1,
+    "CASTLECAT_OWNER_SET": 1,
+    "CASTLECAT_RENDERHOOK_DRAW": 1,
+    "CASTLECAT_FORCE_HITTEST": 8,
+    "CASTLECAT_BRANCH": 7,
+    "CASTLECAT_DESCRIPTOR_INSTALL": 7,
+    "CASTLECAT_CLICK_GATE": 8,
+    "CASTLECAT_CALLBACK_CALL": 0,
+    "CASTLECAT_SURFDUMP_READY": 1,
+    "SURFDUMP_READY": 1,
+    "SURFDUMP_HOST_READY": 1
+  },
+  "row_count": 37,
+  "av_count": 0,
+  "av_rows": [],
+  "forced_hit_count": 8,
+  "branch_count": 7,
+  "descriptor_row_count": 7,
+  "descriptors": [
+    {
+      "command": 134,
+      "command_hex": "0x86",
+      "callback": 4521584,
+      "callback_hex": "0x0044FE70",
+      "text": 3,
+      "owner_flag": 0,
+      "first_line": 202
+    },
+    {
+      "command": 153,
+      "command_hex": "0x99",
+      "callback": 4447456,
+      "callback_hex": "0x0043DCE0",
+      "text": 3,
+      "owner_flag": 0,
+      "first_line": 202
+    },
+    {
+      "command": 156,
+      "command_hex": "0x9C",
+      "callback": 4446432,
+      "callback_hex": "0x0043D8E0",
+      "text": 3,
+      "owner_flag": 0,
+      "first_line": 202
+    },
+    {
+      "command": 159,
+      "command_hex": "0x9F",
+      "callback": 4447968,
+      "callback_hex": "0x0043DEE0",
+      "text": 3,
+      "owner_flag": 0,
+      "first_line": 202
+    },
+    {
+      "command": 166,
+      "command_hex": "0xA6",
+      "callback": 4446944,
+      "callback_hex": "0x0043DAE0",
+      "text": 3,
+      "owner_flag": 0,
+      "first_line": 202
+    },
+    {
+      "command": 99,
+      "command_hex": "0x63",
+      "callback": 4406304,
+      "callback_hex": "0x00433C20",
+      "text": 3,
+      "owner_flag": 0,
+      "first_line": 202
+    },
+    {
+      "command": 135,
+      "command_hex": "0x87",
+      "callback": 4370592,
+      "callback_hex": "0x0042B0A0",
+      "text": 3,
+      "owner_flag": 0,
+      "first_line": 202
+    }
+  ],
+  "commands": [
+    99,
+    134,
+    135,
+    153,
+    156,
+    159,
+    166
+  ],
+  "commands_hex": [
+    "0x63",
+    "0x86",
+    "0x87",
+    "0x99",
+    "0x9C",
+    "0x9F",
+    "0xA6"
+  ],
+  "callbacks": [
+    4370592,
+    4406304,
+    4446432,
+    4446944,
+    4447456,
+    4447968,
+    4521584
+  ],
+  "callbacks_hex": [
+    "0x0042B0A0",
+    "0x00433C20",
+    "0x0043D8E0",
+    "0x0043DAE0",
+    "0x0043DCE0",
+    "0x0043DEE0",
+    "0x0044FE70"
+  ],
+  "last_surface": {
+    "redraw_seq": 992,
+    "surface": 59623608,
+    "size": [
+      640,
+      480
+    ],
+    "base": 167510064,
+    "bytes": 307200
+  },
+  "classification": [
+    "controlled castle-screen invocation was attempted",
+    "cataloged 7 unique castle descriptor callbacks",
+    "surface dump reached ready state",
+    "catalog finished on surface size [640, 480]"
+  ],
+  "rows": [
+    {
+      "line": 201,
+      "marker": "CASTLECAT_INVOKE_PLAYGAME",
+      "values": {
+        "castle_index": 0,
+        "gd": 65536048,
+        "current_player": 0,
+        "surface": 59623608,
+        "sz": [
+          640,
+          480
+        ],
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ],
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLECAT_INVOKE_PLAYGAME castle_index=0 gd=03e80030 current_player=0 surface=038dc8b8 sz=(640,480) SURFDUMP_PLAYGAME gd=03e80030 map=(100,100) scroll=(10,17) surface=038dc8b8 size=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_SCREEN_FULL_ENTRY",
+      "values": {
+        "ret": 4240992,
+        "eax_index": 0,
+        "gd": 65536048
+      },
+      "text": "CASTLECAT_SCREEN_FULL_ENTRY ret=0040b660 eax_index=0 gd=03e80030"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_OWNER_SET",
+      "values": {
+        "castle_index": 0,
+        "owner_screen": 66045722,
+        "owner": 0,
+        "flags": 0,
+        "pos": [
+          14,
+          20
+        ]
+      },
+      "text": "CASTLECAT_OWNER_SET castle_index=0 owner_screen=03efc71a owner=0 flags=0x00 pos=(14,20)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_RENDERHOOK_DRAW",
+      "values": {
+        "ret": 4334387,
+        "owner_screen": 66045722,
+        "surface": 59623608,
+        "sz": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLECAT_RENDERHOOK_DRAW ret=00422333 owner_screen=03efc71a surface=038dc8b8 sz=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_FORCE_HITTEST",
+      "values": {
+        "seq": 0,
+        "hit": 248,
+        "owner_screen": 66045722,
+        "mouse": [
+          4,
+          166
+        ]
+      },
+      "text": "CASTLECAT_FORCE_HITTEST seq=0 hit=248 owner_screen=03efc71a mouse=(4,166)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_BRANCH",
+      "values": {
+        "hit": 248,
+        "command": 134,
+        "callback": 4521584,
+        "prior_command": 0
+      },
+      "text": "CASTLECAT_BRANCH hit=248 command=134 callback=0044fe70 prior_command=0"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_DESCRIPTOR_INSTALL",
+      "values": {
+        "seq": 1,
+        "command": 134,
+        "callback": 4521584,
+        "text": 3,
+        "arg_count": 5171110,
+        "owner_screen": 66045722,
+        "owner_flag": 0,
+        "surface": 59623608,
+        "sz": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLECAT_DESCRIPTOR_INSTALL seq=1 command=134 callback=0044fe70 text=00000003 arg_count=5171110 owner_screen=03efc71a owner_flag=0x00 surface=038dc8b8 sz=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_CLICK_GATE",
+      "values": {
+        "command": 134,
+        "callback": 4521584,
+        "gate": 0,
+        "suppressed": 1,
+        "owner_screen": 66045722
+      },
+      "text": "CASTLECAT_CLICK_GATE command=134 callback=0044fe70 gate=0 suppressed=1 owner_screen=03efc71a"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_FORCE_HITTEST",
+      "values": {
+        "seq": 1,
+        "hit": 249,
+        "owner_screen": 66045722,
+        "mouse": [
+          4,
+          166
+        ]
+      },
+      "text": "CASTLECAT_FORCE_HITTEST seq=1 hit=249 owner_screen=03efc71a mouse=(4,166)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_CLICK_GATE",
+      "values": {
+        "command": 0,
+        "callback": 0,
+        "gate": 0,
+        "suppressed": 1,
+        "owner_screen": 66045722
+      },
+      "text": "CASTLECAT_CLICK_GATE command=0 callback=00000000 gate=0 suppressed=1 owner_screen=03efc71a"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_FORCE_HITTEST",
+      "values": {
+        "seq": 2,
+        "hit": 250,
+        "owner_screen": 66045722,
+        "mouse": [
+          4,
+          166
+        ]
+      },
+      "text": "CASTLECAT_FORCE_HITTEST seq=2 hit=250 owner_screen=03efc71a mouse=(4,166)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_BRANCH",
+      "values": {
+        "hit": 254,
+        "command": 153,
+        "callback": 4447456,
+        "prior_command": 0
+      },
+      "text": "CASTLECAT_BRANCH hit=254 command=153 callback=0043dce0 prior_command=0"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_DESCRIPTOR_INSTALL",
+      "values": {
+        "seq": 3,
+        "command": 153,
+        "callback": 4447456,
+        "text": 3,
+        "arg_count": 5171145,
+        "owner_screen": 66045722,
+        "owner_flag": 0,
+        "surface": 59623608,
+        "sz": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLECAT_DESCRIPTOR_INSTALL seq=3 command=153 callback=0043dce0 text=00000003 arg_count=5171145 owner_screen=03efc71a owner_flag=0x00 surface=038dc8b8 sz=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_CLICK_GATE",
+      "values": {
+        "command": 153,
+        "callback": 4447456,
+        "gate": 0,
+        "suppressed": 1,
+        "owner_screen": 66045722
+      },
+      "text": "CASTLECAT_CLICK_GATE command=153 callback=0043dce0 gate=0 suppressed=1 owner_screen=03efc71a"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_FORCE_HITTEST",
+      "values": {
+        "seq": 3,
+        "hit": 251,
+        "owner_screen": 66045722,
+        "mouse": [
+          4,
+          166
+        ]
+      },
+      "text": "CASTLECAT_FORCE_HITTEST seq=3 hit=251 owner_screen=03efc71a mouse=(4,166)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_BRANCH",
+      "values": {
+        "hit": 252,
+        "command": 156,
+        "callback": 4446432,
+        "prior_command": 153
+      },
+      "text": "CASTLECAT_BRANCH hit=252 command=156 callback=0043d8e0 prior_command=153"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_DESCRIPTOR_INSTALL",
+      "values": {
+        "seq": 4,
+        "command": 156,
+        "callback": 4446432,
+        "text": 3,
+        "arg_count": 5171226,
+        "owner_screen": 66045722,
+        "owner_flag": 0,
+        "surface": 59623608,
+        "sz": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLECAT_DESCRIPTOR_INSTALL seq=4 command=156 callback=0043d8e0 text=00000003 arg_count=5171226 owner_screen=03efc71a owner_flag=0x00 surface=038dc8b8 sz=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_CLICK_GATE",
+      "values": {
+        "command": 156,
+        "callback": 4446432,
+        "gate": 0,
+        "suppressed": 1,
+        "owner_screen": 66045722
+      },
+      "text": "CASTLECAT_CLICK_GATE command=156 callback=0043d8e0 gate=0 suppressed=1 owner_screen=03efc71a"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_FORCE_HITTEST",
+      "values": {
+        "seq": 4,
+        "hit": 252,
+        "owner_screen": 66045722,
+        "mouse": [
+          4,
+          166
+        ]
+      },
+      "text": "CASTLECAT_FORCE_HITTEST seq=4 hit=252 owner_screen=03efc71a mouse=(4,166)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_BRANCH",
+      "values": {
+        "hit": 255,
+        "command": 159,
+        "callback": 4447968,
+        "prior_command": 156
+      },
+      "text": "CASTLECAT_BRANCH hit=255 command=159 callback=0043dee0 prior_command=156"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_DESCRIPTOR_INSTALL",
+      "values": {
+        "seq": 5,
+        "command": 159,
+        "callback": 4447968,
+        "text": 3,
+        "arg_count": 5171200,
+        "owner_screen": 66045722,
+        "owner_flag": 0,
+        "surface": 59623608,
+        "sz": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLECAT_DESCRIPTOR_INSTALL seq=5 command=159 callback=0043dee0 text=00000003 arg_count=5171200 owner_screen=03efc71a owner_flag=0x00 surface=038dc8b8 sz=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_CLICK_GATE",
+      "values": {
+        "command": 159,
+        "callback": 4447968,
+        "gate": 0,
+        "suppressed": 1,
+        "owner_screen": 66045722
+      },
+      "text": "CASTLECAT_CLICK_GATE command=159 callback=0043dee0 gate=0 suppressed=1 owner_screen=03efc71a"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_FORCE_HITTEST",
+      "values": {
+        "seq": 5,
+        "hit": 253,
+        "owner_screen": 66045722,
+        "mouse": [
+          4,
+          166
+        ]
+      },
+      "text": "CASTLECAT_FORCE_HITTEST seq=5 hit=253 owner_screen=03efc71a mouse=(4,166)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_BRANCH",
+      "values": {
+        "hit": 253,
+        "command": 166,
+        "callback": 4446944,
+        "prior_command": 159
+      },
+      "text": "CASTLECAT_BRANCH hit=253 command=166 callback=0043dae0 prior_command=159"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_DESCRIPTOR_INSTALL",
+      "values": {
+        "seq": 6,
+        "command": 166,
+        "callback": 4446944,
+        "text": 3,
+        "arg_count": 5171247,
+        "owner_screen": 66045722,
+        "owner_flag": 0,
+        "surface": 59623608,
+        "sz": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLECAT_DESCRIPTOR_INSTALL seq=6 command=166 callback=0043dae0 text=00000003 arg_count=5171247 owner_screen=03efc71a owner_flag=0x00 surface=038dc8b8 sz=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_CLICK_GATE",
+      "values": {
+        "command": 166,
+        "callback": 4446944,
+        "gate": 0,
+        "suppressed": 1,
+        "owner_screen": 66045722
+      },
+      "text": "CASTLECAT_CLICK_GATE command=166 callback=0043dae0 gate=0 suppressed=1 owner_screen=03efc71a"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_FORCE_HITTEST",
+      "values": {
+        "seq": 6,
+        "hit": 254,
+        "owner_screen": 66045722,
+        "mouse": [
+          4,
+          166
+        ]
+      },
+      "text": "CASTLECAT_FORCE_HITTEST seq=6 hit=254 owner_screen=03efc71a mouse=(4,166)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_BRANCH",
+      "values": {
+        "hit": 254,
+        "command": 99,
+        "callback": 4406304,
+        "prior_command": 166,
+        "owner_flag": 0
+      },
+      "text": "CASTLECAT_BRANCH hit=254 command=99 callback=00433c20 prior_command=166 owner_flag=0x00"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_DESCRIPTOR_INSTALL",
+      "values": {
+        "seq": 7,
+        "command": 99,
+        "callback": 4406304,
+        "text": 3,
+        "arg_count": 5171298,
+        "owner_screen": 66045722,
+        "owner_flag": 0,
+        "surface": 59623608,
+        "sz": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLECAT_DESCRIPTOR_INSTALL seq=7 command=99 callback=00433c20 text=00000003 arg_count=5171298 owner_screen=03efc71a owner_flag=0x00 surface=038dc8b8 sz=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_CLICK_GATE",
+      "values": {
+        "command": 99,
+        "callback": 4406304,
+        "gate": 1,
+        "suppressed": 1,
+        "owner_screen": 66045722
+      },
+      "text": "CASTLECAT_CLICK_GATE command=99 callback=00433c20 gate=1 suppressed=1 owner_screen=03efc71a"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_FORCE_HITTEST",
+      "values": {
+        "seq": 7,
+        "hit": 255,
+        "owner_screen": 66045722,
+        "mouse": [
+          4,
+          166
+        ]
+      },
+      "text": "CASTLECAT_FORCE_HITTEST seq=7 hit=255 owner_screen=03efc71a mouse=(4,166)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_BRANCH",
+      "values": {
+        "hit": 251,
+        "command": 135,
+        "callback": 4370592,
+        "prior_command": 99
+      },
+      "text": "CASTLECAT_BRANCH hit=251 command=135 callback=0042b0a0 prior_command=99"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_DESCRIPTOR_INSTALL",
+      "values": {
+        "seq": 8,
+        "command": 135,
+        "callback": 4370592,
+        "text": 3,
+        "arg_count": 5171275,
+        "owner_screen": 66045722,
+        "owner_flag": 0,
+        "surface": 59623608,
+        "sz": [
+          640,
+          480
+        ]
+      },
+      "text": "CASTLECAT_DESCRIPTOR_INSTALL seq=8 command=135 callback=0042b0a0 text=00000003 arg_count=5171275 owner_screen=03efc71a owner_flag=0x00 surface=038dc8b8 sz=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_CLICK_GATE",
+      "values": {
+        "command": 135,
+        "callback": 4370592,
+        "gate": 1,
+        "suppressed": 1,
+        "owner_screen": 66045722
+      },
+      "text": "CASTLECAT_CLICK_GATE command=135 callback=0042b0a0 gate=1 suppressed=1 owner_screen=03efc71a"
+    },
+    {
+      "line": 202,
+      "marker": "CASTLECAT_SURFDUMP_READY",
+      "values": {
+        "after_catalog": 1,
+        "forced": 8,
+        "surface": 59623608,
+        "size": [
+          640,
+          480
+        ],
+        "base": 167510064,
+        "bytes": 307200,
+        "owner_screen": 66045722,
+        "exit_flag": 1
+      },
+      "text": "CASTLECAT_SURFDUMP_READY after_catalog=1 forced=8 surface=038dc8b8 size=(640,480) base=09fc0030 bytes=307200 owner_screen=03efc71a exit_flag=1"
+    },
+    {
+      "line": 202,
+      "marker": "SURFDUMP_READY",
+      "values": {
+        "redraw_seq": 992,
+        "surface": 59623608,
+        "size": [
+          640,
+          480
+        ],
+        "base": 167510064,
+        "bytes": 307200
+      },
+      "text": "SURFDUMP_READY redraw_seq=992 surface=038dc8b8 size=(640,480) base=09fc0030 bytes=307200"
+    },
+    {
+      "line": 202,
+      "marker": "SURFDUMP_HOST_READY",
+      "values": {
+        "eax": 17,
+        "ebx": 166,
+        "ecx": 4370438,
+        "edx": 4,
+        "esi": 135,
+        "edi": 5303844
+      },
+      "text": "SURFDUMP_HOST_READY eax=00000011 ebx=000000a6 ecx=0042b006 edx=00000004 esi=00000087 edi=0050ee24"
+    }
+  ],
+  "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260511-170708\\surface.png"
+}

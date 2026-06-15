@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-06-15T18:34:52+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "proves risky Python runtime/window/input helpers are gated, exempt, or fail closed",
+  "tests": [
+    "python_runtime_safety_guard rejects unclassified risky helpers",
+    "python_runtime_safety_guard allows gated/exempt helpers and test fixtures",
+    "python_runtime_safety_guard CLI writes outputs and fails closed under --require-pass"
+  ],
+  "failures": []
+}

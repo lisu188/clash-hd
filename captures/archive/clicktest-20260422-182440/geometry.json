@@ -1,0 +1,195 @@
+{
+  "capture_dir": "captures\\clicktest-20260422-182440",
+  "threshold": 12,
+  "target_radius": 18,
+  "cases": [
+    {
+      "case": "clash95_hd_harnesscheck_20260422-centered-exit",
+      "click": "centered-exit",
+      "passed": false,
+      "error": null,
+      "before_hash": "291FFBFC5ED36778624104519199556076850406E971F78C62C1969E236826E8",
+      "after_hash": "291FFBFC5ED36778624104519199556076850406E971F78C62C1969E236826E8",
+      "image": {
+        "width": 800,
+        "height": 600
+      },
+      "reported_client": {
+        "width": 800,
+        "height": 600,
+        "render_scale": 1
+      },
+      "nonblack_bounds": {
+        "x": 0,
+        "y": 0,
+        "right": 799,
+        "bottom": 599,
+        "width": 800,
+        "height": 600,
+        "pixels": 348941
+      },
+      "nonblack_percent": 72.696,
+      "nonblack_border": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "approx_menu_panel_bounds": {
+        "x": 0,
+        "y": 0,
+        "right": 799,
+        "bottom": 599,
+        "width": 800,
+        "height": 600,
+        "pixels": 235981
+      },
+      "click_in_nonblack_bounds": true,
+      "click_target_probe": {
+        "x": 302,
+        "y": 267,
+        "right": 338,
+        "bottom": 303,
+        "pixels": 1369,
+        "mean_luma": 105.58,
+        "nonblack_percent": 99.71,
+        "bright_percent": 38.5,
+        "changed_percent": 0.0
+      },
+      "changed_bounds": null,
+      "click_delta_from_changed_bounds_center": null,
+      "frame_state_hint": [
+        "full_frame_nonblack",
+        "stable_after_click"
+      ],
+      "before_hash_reused_count": 3
+    },
+    {
+      "case": "clash95_hd_harnesscheck_20260422-shifted-exit",
+      "click": "shifted-exit",
+      "passed": false,
+      "error": null,
+      "before_hash": "291FFBFC5ED36778624104519199556076850406E971F78C62C1969E236826E8",
+      "after_hash": "291FFBFC5ED36778624104519199556076850406E971F78C62C1969E236826E8",
+      "image": {
+        "width": 800,
+        "height": 600
+      },
+      "reported_client": {
+        "width": 800,
+        "height": 600,
+        "render_scale": 1
+      },
+      "nonblack_bounds": {
+        "x": 0,
+        "y": 0,
+        "right": 799,
+        "bottom": 599,
+        "width": 800,
+        "height": 600,
+        "pixels": 348941
+      },
+      "nonblack_percent": 72.696,
+      "nonblack_border": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "approx_menu_panel_bounds": {
+        "x": 0,
+        "y": 0,
+        "right": 799,
+        "bottom": 599,
+        "width": 800,
+        "height": 600,
+        "pixels": 235981
+      },
+      "click_in_nonblack_bounds": true,
+      "click_target_probe": {
+        "x": 412,
+        "y": 317,
+        "right": 448,
+        "bottom": 353,
+        "pixels": 1369,
+        "mean_luma": 123.96,
+        "nonblack_percent": 100.0,
+        "bright_percent": 81.3,
+        "changed_percent": 0.0
+      },
+      "changed_bounds": null,
+      "click_delta_from_changed_bounds_center": null,
+      "frame_state_hint": [
+        "full_frame_nonblack",
+        "stable_after_click"
+      ],
+      "before_hash_reused_count": 3
+    },
+    {
+      "case": "clash95_hd_harnesscheck_20260422-native-exit",
+      "click": "native-exit",
+      "passed": false,
+      "error": null,
+      "before_hash": "291FFBFC5ED36778624104519199556076850406E971F78C62C1969E236826E8",
+      "after_hash": "291FFBFC5ED36778624104519199556076850406E971F78C62C1969E236826E8",
+      "image": {
+        "width": 800,
+        "height": 600
+      },
+      "reported_client": {
+        "width": 800,
+        "height": 600,
+        "render_scale": 1
+      },
+      "nonblack_bounds": {
+        "x": 0,
+        "y": 0,
+        "right": 799,
+        "bottom": 599,
+        "width": 800,
+        "height": 600,
+        "pixels": 348941
+      },
+      "nonblack_percent": 72.696,
+      "nonblack_border": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "approx_menu_panel_bounds": {
+        "x": 0,
+        "y": 0,
+        "right": 799,
+        "bottom": 599,
+        "width": 800,
+        "height": 600,
+        "pixels": 235981
+      },
+      "click_in_nonblack_bounds": true,
+      "click_target_probe": {
+        "x": 222,
+        "y": 207,
+        "right": 258,
+        "bottom": 243,
+        "pixels": 1369,
+        "mean_luma": 98.27,
+        "nonblack_percent": 98.98,
+        "bright_percent": 52.23,
+        "changed_percent": 0.0
+      },
+      "changed_bounds": null,
+      "click_delta_from_changed_bounds_center": null,
+      "frame_state_hint": [
+        "full_frame_nonblack",
+        "stable_after_click"
+      ],
+      "before_hash_reused_count": 3
+    }
+  ],
+  "warnings": [
+    "clash95_hd_harnesscheck_20260422-centered-exit has full-frame nonblack bounds; border detection alone cannot prove menu placement",
+    "clash95_hd_harnesscheck_20260422-shifted-exit has full-frame nonblack bounds; border detection alone cannot prove menu placement",
+    "clash95_hd_harnesscheck_20260422-native-exit has full-frame nonblack bounds; border detection alone cannot prove menu placement"
+  ]
+}

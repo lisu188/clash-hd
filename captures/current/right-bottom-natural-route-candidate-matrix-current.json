@@ -1,0 +1,377 @@
+{
+  "generated_at": "2026-06-15T18:34:33+02:00",
+  "passed": true,
+  "runtime_policy": "repo/local metadata only; reads generated save-scan JSON and existing hidden-desktop CDB artifacts, and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "passes only when current evidence shows an action-eligible installed save record exists, the archived slot-0 natural route clicks owner record index 0 but is blocked by owner flag 0x00, slot 2 loads yet misses the bit-2 record with the current click, and slot 5 has a route-compatible bit-2 record but the current load harness times out before LOADSAVE",
+  "promotion_ready": false,
+  "save_scan_json": "captures\\current\\castle-save-owner-flag-scan-current.json",
+  "baseline_run": "captures\\archive\\cdb-surface-dump-20260518-213418",
+  "slot2_run": "captures\\archive\\cdb-surface-dump-20260523-001159",
+  "slot5_run": "captures\\archive\\cdb-surface-dump-20260523-000931",
+  "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260523-001159\\surface.png",
+  "summary": {
+    "save_scan_passed": true,
+    "action_eligible_record_count": 7,
+    "baseline_route_index": 0,
+    "baseline_owner_flag_zero_blocker": true,
+    "route_compatible_candidate": {
+      "save": "C:\\Clash\\save\\5.dat",
+      "save_slot": 5,
+      "record_index": 0,
+      "position": [
+        14,
+        20
+      ],
+      "owner": 0,
+      "flags_1a0": 11,
+      "flags_1a0_hex": "0x0B",
+      "flags_1a4_hex": "0x01",
+      "bit2": 2,
+      "bit1": 1,
+      "bit8": 8,
+      "action_eligible": true
+    },
+    "slot2_status": {
+      "status": "loads_but_click_misses_castle",
+      "load_succeeded": true,
+      "map_click_hits_building": false,
+      "castle_overview_reached": false,
+      "first_map_tile": {
+        "x": 43,
+        "y": 45,
+        "mouse_x": 352,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      },
+      "action_record": {
+        "save": "C:\\Clash\\save\\2.dat",
+        "save_slot": 2,
+        "record_index": 1,
+        "position": [
+          1,
+          23
+        ],
+        "owner": 1,
+        "flags_1a0": 22,
+        "flags_1a0_hex": "0x16",
+        "flags_1a4_hex": "0x00",
+        "bit2": 2,
+        "bit1": 0,
+        "bit8": 0,
+        "action_eligible": true
+      }
+    },
+    "slot5_status": {
+      "status": "timeout_before_loadsave",
+      "timed_out": true,
+      "load_succeeded": false,
+      "loadsave": null,
+      "route_compatible_candidate": {
+        "save": "C:\\Clash\\save\\5.dat",
+        "save_slot": 5,
+        "record_index": 0,
+        "position": [
+          14,
+          20
+        ],
+        "owner": 0,
+        "flags_1a0": 11,
+        "flags_1a0_hex": "0x0B",
+        "flags_1a4_hex": "0x01",
+        "bit2": 2,
+        "bit1": 1,
+        "bit8": 8,
+        "action_eligible": true
+      }
+    },
+    "current_blocker": "route-compatible save slot 5 has owner flag bit 0x02 at record index 0, but the hidden CDB load-slot route currently times out before LOADSAVE; slot 2 confirms alternate-slot loading works but the current map click misses its bit-2 castle",
+    "next_proof_options": [
+      "fix the hidden CDB load-slot selection path for slot 5 and rerun the natural owner/action probe",
+      "or build an isolated working-directory fixture that maps the slot-5 save state to a route-compatible slot without mutating C:\\Clash\\save",
+      "or retarget the CDB map click/scroll path to the slot-2 bit-2 castle at record index 1"
+    ]
+  },
+  "baseline": {
+    "run": "captures\\archive\\cdb-surface-dump-20260518-213418",
+    "summary_json": "captures\\archive\\cdb-surface-dump-20260518-213418\\summary.json",
+    "log": "captures\\archive\\cdb-surface-dump-20260518-213418\\cdb-surface-dump.log",
+    "summary_exists": true,
+    "log_exists": true,
+    "passed": true,
+    "timed_out": false,
+    "hidden_desktop": true,
+    "use_ddraw_proxy": true,
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+    "stage_ok": true,
+    "probe_ok": true,
+    "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+    "load_slot": 0,
+    "route_injected_load_slot": 0,
+    "loadsave": {
+      "selected_arg": 0,
+      "selected_global": 0,
+      "accept": 1
+    },
+    "load_succeeded": true,
+    "playgame": {
+      "map_w": 100,
+      "map_h": 100,
+      "scroll_x": 10,
+      "scroll_y": 17,
+      "surface_w": 640,
+      "surface_h": 480
+    },
+    "map_tiles": [
+      {
+        "x": 15,
+        "y": 21,
+        "mouse_x": 352,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      }
+    ],
+    "map_tile_count": 1,
+    "building_tiles": [
+      {
+        "x": 15,
+        "y": 21,
+        "tile": 32768,
+        "index": 0,
+        "owner": 0,
+        "mode": 2,
+        "active": 0,
+        "flags": "0x00"
+      }
+    ],
+    "building_tile": {
+      "x": 15,
+      "y": 21,
+      "tile": 32768,
+      "index": 0,
+      "owner": 0,
+      "mode": 2,
+      "active": 0,
+      "flags": "0x00"
+    },
+    "map_click_hits_building": true,
+    "castle_overview_reached": true,
+    "flag_test": {
+      "owner_flag": "0x00",
+      "bit2": 0,
+      "bit1": 0,
+      "bit8": 0
+    },
+    "owner_flag_zero_blocker": true,
+    "action_route_count": 0,
+    "marker_counts": {
+      "SURFDUMP_LOADSAVE": 2,
+      "SURFDUMP_PLAYGAME": 2,
+      "NOWNER_MAP_TILE": 1,
+      "NOWNER_BUILDING_TILE": 1,
+      "NOWNER_CASTLE_OVERVIEW_ENTRY": 1,
+      "NOWNER_OWNER_FLAG_TEST": 1,
+      "NOWNER_4338E0_ENTRY": 0,
+      "NOWNER_ACTION_CALL_WRAPPER": 0,
+      "NOWNER_OWNER_435BC0_ENTRY": 0,
+      "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+      "SURFDUMP_READY": 2,
+      "SURFDUMP_HOST_READY": 1,
+      "AV_SURFDUMP": 0
+    },
+    "no_av": true,
+    "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260518-213418\\surface.png",
+    "failures": []
+  },
+  "slot2": {
+    "run": "captures\\archive\\cdb-surface-dump-20260523-001159",
+    "summary_json": "captures\\archive\\cdb-surface-dump-20260523-001159\\summary.json",
+    "log": "captures\\archive\\cdb-surface-dump-20260523-001159\\cdb-surface-dump.log",
+    "summary_exists": true,
+    "log_exists": true,
+    "passed": true,
+    "timed_out": false,
+    "hidden_desktop": true,
+    "use_ddraw_proxy": true,
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+    "stage_ok": true,
+    "probe_ok": true,
+    "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+    "load_slot": 2,
+    "route_injected_load_slot": 2,
+    "loadsave": {
+      "selected_arg": 2,
+      "selected_global": 2,
+      "accept": 1
+    },
+    "load_succeeded": true,
+    "playgame": {
+      "map_w": 50,
+      "map_h": 50,
+      "scroll_x": 39,
+      "scroll_y": 42,
+      "surface_w": 640,
+      "surface_h": 480
+    },
+    "map_tiles": [
+      {
+        "x": 43,
+        "y": 45,
+        "mouse_x": 352,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      },
+      {
+        "x": 38,
+        "y": 45,
+        "mouse_x": 40,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      },
+      {
+        "x": 38,
+        "y": 45,
+        "mouse_x": 40,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      },
+      {
+        "x": 38,
+        "y": 45,
+        "mouse_x": 40,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      },
+      {
+        "x": 38,
+        "y": 45,
+        "mouse_x": 40,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      },
+      {
+        "x": 38,
+        "y": 45,
+        "mouse_x": 40,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      },
+      {
+        "x": 38,
+        "y": 45,
+        "mouse_x": 40,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      },
+      {
+        "x": 38,
+        "y": 45,
+        "mouse_x": 40,
+        "mouse_y": 272,
+        "selected": -1,
+        "current": 0
+      }
+    ],
+    "map_tile_count": 9,
+    "building_tiles": [],
+    "building_tile": null,
+    "map_click_hits_building": false,
+    "castle_overview_reached": false,
+    "flag_test": null,
+    "owner_flag_zero_blocker": false,
+    "action_route_count": 0,
+    "marker_counts": {
+      "SURFDUMP_LOADSAVE": 1,
+      "SURFDUMP_PLAYGAME": 1,
+      "NOWNER_MAP_TILE": 9,
+      "NOWNER_BUILDING_TILE": 0,
+      "NOWNER_CASTLE_OVERVIEW_ENTRY": 0,
+      "NOWNER_OWNER_FLAG_TEST": 0,
+      "NOWNER_4338E0_ENTRY": 0,
+      "NOWNER_ACTION_CALL_WRAPPER": 0,
+      "NOWNER_OWNER_435BC0_ENTRY": 0,
+      "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+      "SURFDUMP_READY": 1,
+      "SURFDUMP_HOST_READY": 1,
+      "AV_SURFDUMP": 0
+    },
+    "no_av": true,
+    "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260523-001159\\surface.png",
+    "failures": []
+  },
+  "slot5": {
+    "run": "captures\\archive\\cdb-surface-dump-20260523-000931",
+    "summary_json": "captures\\archive\\cdb-surface-dump-20260523-000931\\summary.json",
+    "log": "captures\\archive\\cdb-surface-dump-20260523-000931\\cdb-surface-dump.log",
+    "summary_exists": true,
+    "log_exists": true,
+    "passed": false,
+    "timed_out": true,
+    "hidden_desktop": true,
+    "use_ddraw_proxy": true,
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+    "stage_ok": true,
+    "probe_ok": true,
+    "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+    "load_slot": 5,
+    "route_injected_load_slot": 5,
+    "loadsave": null,
+    "load_succeeded": false,
+    "playgame": null,
+    "map_tiles": [],
+    "map_tile_count": 0,
+    "building_tiles": [],
+    "building_tile": null,
+    "map_click_hits_building": false,
+    "castle_overview_reached": false,
+    "flag_test": null,
+    "owner_flag_zero_blocker": false,
+    "action_route_count": 0,
+    "marker_counts": {
+      "SURFDUMP_LOADSAVE": 0,
+      "SURFDUMP_PLAYGAME": 0,
+      "NOWNER_MAP_TILE": 0,
+      "NOWNER_BUILDING_TILE": 0,
+      "NOWNER_CASTLE_OVERVIEW_ENTRY": 0,
+      "NOWNER_OWNER_FLAG_TEST": 0,
+      "NOWNER_4338E0_ENTRY": 0,
+      "NOWNER_ACTION_CALL_WRAPPER": 0,
+      "NOWNER_OWNER_435BC0_ENTRY": 0,
+      "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+      "SURFDUMP_READY": 0,
+      "SURFDUMP_HOST_READY": 0,
+      "AV_SURFDUMP": 0
+    },
+    "no_av": true,
+    "screenshot": null,
+    "failures": []
+  },
+  "route_compatible_records": [
+    {
+      "save": "C:\\Clash\\save\\5.dat",
+      "save_slot": 5,
+      "record_index": 0,
+      "position": [
+        14,
+        20
+      ],
+      "owner": 0,
+      "flags_1a0": 11,
+      "flags_1a0_hex": "0x0B",
+      "flags_1a4_hex": "0x01",
+      "bit2": 2,
+      "bit1": 1,
+      "bit8": 8,
+      "action_eligible": true
+    }
+  ],
+  "failures": []
+}

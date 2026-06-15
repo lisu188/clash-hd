@@ -1,0 +1,14 @@
+.echo === Clash95 dynamic mouse/menu-hit probe ===
+.echo logs MOUSE rows plus MENUHIT rows when cursor/button state changes
+sxd av
+r @$t0 = -999999
+r @$t1 = -999999
+r @$t2 = -999999
+r @$t3 = -999999
+r @$t4 = -999999
+r @$t5 = -999999
+r @$t6 = -999999
+r @$t7 = -999999
+bp 00460A9D ".if ((poi(005451a8) != @$t0) + (poi(005451ac) != @$t1) + (poi(@edx+24) != @$t2) + (poi(@edx+28) != @$t3)) { .printf \"MOUSE obj=%p x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d speed=%d buttons=%d lbtn=0x%02x rbtn=0x%02x min=(%d,%d) max=(%d,%d)\\n\", @edx, (poi(@edx+24) >> by(@edx+454)), (poi(@edx+28) >> by(@edx+454)), poi(@edx+24), poi(@edx+28), poi(005451a8), poi(005451ac), by(@edx+454), poi(@edx+20), poi(@edx+2c), by(005451c0), by(005451c8), (poi(@edx+10) >> by(@edx+454)), (poi(@edx+14) >> by(@edx+454)), (poi(@edx+18) >> by(@edx+454)), (poi(@edx+1c) >> by(@edx+454)); r @$t0 = poi(005451a8); r @$t1 = poi(005451ac); r @$t2 = poi(@edx+24); r @$t3 = poi(@edx+28); }; gc"
+bp 00419B80 ".if (((((poi(00544cfc) >> by(0054512c)) != @$t4) + ((poi(00544d00) >> by(0054512c)) != @$t5) + (by(005451c0) != @$t6) + (by(005451c8) != @$t7)) != 0)) { .printf \"MENUHIT x=%d y=%d rawx=0x%08x rawy=0x%08x dx=%d dy=%d shift=%d lbtn=0x%02x rbtn=0x%02x mask=%d min=(%d,%d) max=(%d,%d) entry=0x%08x ex=%d ey=%d\\n\", (poi(00544cfc) >> by(0054512c)), (poi(00544d00) >> by(0054512c)), poi(00544cfc), poi(00544d00), poi(005451a8), poi(005451ac), by(0054512c), by(005451c0), by(005451c8), poi(00544d04), (poi(00544ce8) >> by(0054512c)), (poi(00544cec) >> by(0054512c)), (poi(00544cf0) >> by(0054512c)), (poi(00544cf4) >> by(0054512c)), @eax, poi(@eax), poi(@eax+4); r @$t4 = (poi(00544cfc) >> by(0054512c)); r @$t5 = (poi(00544d00) >> by(0054512c)); r @$t6 = by(005451c0); r @$t7 = by(005451c8); }; gc"
+g

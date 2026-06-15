@@ -4,6 +4,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 
 function Get-FileSha256 {
     param([string]$Path)
@@ -30,12 +31,11 @@ function Find-VcVars32 {
     throw 'Could not find vcvars32.bat. Install Visual Studio Build Tools with the C++ toolchain.'
 }
 
-$repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
-$source = Join-Path $repoRoot 'ddraw_surfdump_proxy\ddraw_surfdump_proxy.cpp'
+$source = Join-Path $RepoRoot 'src\ddraw_surfdump_proxy\ddraw_surfdump_proxy.cpp'
 if (-not (Test-Path -LiteralPath $source)) {
     throw "Source file was not found: $source"
 }
-$defFile = Join-Path $repoRoot 'ddraw_surfdump_proxy\ddraw_surfdump_proxy.def'
+$defFile = Join-Path $RepoRoot 'src\ddraw_surfdump_proxy\ddraw_surfdump_proxy.def'
 if (-not (Test-Path -LiteralPath $defFile)) {
     throw "DEF file was not found: $defFile"
 }

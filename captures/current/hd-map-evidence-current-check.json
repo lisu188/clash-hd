@@ -1,0 +1,1198 @@
+{
+  "index": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-map-evidence-current.md",
+  "counts": {
+    "links": 122,
+    "images": 9,
+    "local_records": 131,
+    "missing": 0,
+    "image_missing": 0,
+    "image_wrong_extension": 0
+  },
+  "links": [
+    {
+      "kind": "link",
+      "target": "current-evidence-refresh-current.md",
+      "cleaned": "current-evidence-refresh-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\current-evidence-refresh-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-popup-map-evidence-current.md",
+      "cleaned": "no-popup-map-evidence-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\no-popup-map-evidence-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-popup-map-evidence-tests-current.md",
+      "cleaned": "no-popup-map-evidence-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\no-popup-map-evidence-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "current-completion-summary-current.md",
+      "cleaned": "current-completion-summary-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\current-completion-summary-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "current-completion-summary-tests-current.md",
+      "cleaned": "current-completion-summary-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\current-completion-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-popup-boundary-guard-current.md",
+      "cleaned": "no-popup-boundary-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\no-popup-boundary-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-popup-guard-tests-current.md",
+      "cleaned": "no-popup-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\no-popup-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "visible-runtime-launcher-guard-current.md",
+      "cleaned": "visible-runtime-launcher-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\visible-runtime-launcher-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "visible-runtime-launcher-guard-tests-current.md",
+      "cleaned": "visible-runtime-launcher-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\visible-runtime-launcher-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "python-runtime-safety-current.md",
+      "cleaned": "python-runtime-safety-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\python-runtime-safety-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "python-runtime-safety-tests-current.md",
+      "cleaned": "python-runtime-safety-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\python-runtime-safety-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "patch-definition-current.md",
+      "cleaned": "patch-definition-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\patch-definition-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "patch-definition-tests-current.md",
+      "cleaned": "patch-definition-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\patch-definition-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "capture-corpus-index-current.md",
+      "cleaned": "capture-corpus-index-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\capture-corpus-index-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "capture-corpus-index-tests-current.md",
+      "cleaned": "capture-corpus-index-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\capture-corpus-index-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "handoff-freshness-guard-current.md",
+      "cleaned": "handoff-freshness-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\handoff-freshness-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "handoff-freshness-guard-tests-current.md",
+      "cleaned": "handoff-freshness-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\handoff-freshness-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-visible-runtime-guard-current.md",
+      "cleaned": "no-visible-runtime-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\no-visible-runtime-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "no-visible-runtime-guard-tests-current.md",
+      "cleaned": "no-visible-runtime-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\no-visible-runtime-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "process-hygiene-guard-current.md",
+      "cleaned": "process-hygiene-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\process-hygiene-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "process-hygiene-guard-tests-current.md",
+      "cleaned": "process-hygiene-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\process-hygiene-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-validation-checklist-current.md",
+      "cleaned": "manual-directinput-validation-checklist-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\manual-directinput-validation-checklist-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-validation-checklist-tests-current.md",
+      "cleaned": "manual-directinput-validation-checklist-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\manual-directinput-validation-checklist-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-proof-template-current.md",
+      "cleaned": "manual-directinput-proof-template-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\manual-directinput-proof-template-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-proof-template-tests-current.md",
+      "cleaned": "manual-directinput-proof-template-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\manual-directinput-proof-template-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-run-plan-current.md",
+      "cleaned": "manual-directinput-run-plan-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\manual-directinput-run-plan-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "manual-directinput-run-plan-tests-current.md",
+      "cleaned": "manual-directinput-run-plan-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\manual-directinput-run-plan-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "promotion-override-guard-current.md",
+      "cleaned": "promotion-override-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\promotion-override-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "promotion-override-guard-tests-current.md",
+      "cleaned": "promotion-override-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\promotion-override-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "promotion-override-manifest-current.md",
+      "cleaned": "promotion-override-manifest-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\promotion-override-manifest-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "promotion-override-manifest-tests-current.md",
+      "cleaned": "promotion-override-manifest-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\promotion-override-manifest-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "docs-consistency-current.md",
+      "cleaned": "docs-consistency-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\docs-consistency-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "docs-consistency-tests-current.md",
+      "cleaned": "docs-consistency-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\docs-consistency-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "surface-dump-policy-guard-current.md",
+      "cleaned": "surface-dump-policy-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\surface-dump-policy-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "exe-artifact-guard-current.md",
+      "cleaned": "exe-artifact-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\exe-artifact-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "stable-stage-guard-current.md",
+      "cleaned": "stable-stage-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\stable-stage-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "stable-stage-guard-tests-current.md",
+      "cleaned": "stable-stage-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\stable-stage-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-baseline-recheck-current.md",
+      "cleaned": "castle-overview-baseline-recheck-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-baseline-recheck-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-baseline-recheck-tests-current.md",
+      "cleaned": "castle-overview-baseline-recheck-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-baseline-recheck-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-probe-guard-current.md",
+      "cleaned": "castle-overview-probe-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-probe-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-probe-guard-tests-current.md",
+      "cleaned": "castle-overview-probe-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-probe-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-evidence-current.md",
+      "cleaned": "castle-overview-evidence-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-evidence-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-owner-records-summary-tests-current.md",
+      "cleaned": "castle-owner-records-summary-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-owner-records-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-evidence-matrix-tests-current.md",
+      "cleaned": "castle-overview-evidence-matrix-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-evidence-matrix-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-gate-tests-current.md",
+      "cleaned": "castle-overview-gate-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-gate-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-hitbox-summary-tests-current.md",
+      "cleaned": "castle-overview-hitbox-summary-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-hitbox-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-hitmap-summary-tests-current.md",
+      "cleaned": "castle-overview-hitmap-summary-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-hitmap-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-multihit-summary-tests-current.md",
+      "cleaned": "castle-overview-multihit-summary-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-multihit-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-promotion-decision-current.md",
+      "cleaned": "castle-overview-promotion-decision-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-promotion-decision-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "castle-overview-promotion-decision-tests-current.md",
+      "cleaned": "castle-overview-promotion-decision-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\castle-overview-promotion-decision-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-compose-evidence-current.md",
+      "cleaned": "right-bottom-compose-evidence-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-compose-evidence-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-compose-promotion-decision-current.md",
+      "cleaned": "right-bottom-compose-promotion-decision-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-compose-promotion-decision-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-compose-promotion-decision-tests-current.md",
+      "cleaned": "right-bottom-compose-promotion-decision-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-compose-promotion-decision-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-compose-evidence-matrix-tests-current.md",
+      "cleaned": "right-bottom-compose-evidence-matrix-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-compose-evidence-matrix-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-blocker-triage-current.md",
+      "cleaned": "right-bottom-blocker-triage-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-blocker-triage-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-blocker-triage-tests-current.md",
+      "cleaned": "right-bottom-blocker-triage-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-blocker-triage-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-visual-artifact-guard-current.md",
+      "cleaned": "right-bottom-visual-artifact-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-visual-artifact-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-visual-artifact-guard-tests-current.md",
+      "cleaned": "right-bottom-visual-artifact-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-visual-artifact-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-run-plan-current.md",
+      "cleaned": "load-slot-transition-run-plan-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-run-plan-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-run-plan-tests-current.md",
+      "cleaned": "load-slot-transition-run-plan-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-run-plan-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-geometry-guard-current.md",
+      "cleaned": "load-slot-transition-geometry-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-geometry-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-geometry-guard-tests-current.md",
+      "cleaned": "load-slot-transition-geometry-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-geometry-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-probe-preview-current.md",
+      "cleaned": "load-slot-transition-probe-preview-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-probe-preview-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-probe-preview-tests-current.md",
+      "cleaned": "load-slot-transition-probe-preview-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-probe-preview-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-readiness-current.md",
+      "cleaned": "load-slot-transition-readiness-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-readiness-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-readiness-tests-current.md",
+      "cleaned": "load-slot-transition-readiness-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-readiness-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-map-smoke-current.md",
+      "cleaned": "hd-map-smoke-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-map-smoke-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "post-owner-evidence-current.md",
+      "cleaned": "post-owner-evidence-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\post-owner-evidence-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "patch-manifest-compare-current-vs-partial12.md",
+      "cleaned": "patch-manifest-compare-current-vs-partial12.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\patch-manifest-compare-current-vs-partial12.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-map-evidence-current-check.json",
+      "cleaned": "hd-map-evidence-current-check.json",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-map-evidence-current-check.json",
+      "exists": true,
+      "extension": ".json",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-112339/action-panel-route-summary.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-112339/action-panel-route-summary.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\action-panel-route-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-112339/action-box-composition-summary.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-112339/action-box-composition-summary.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\action-box-composition-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-112339/RUN-SUMMARY.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-112339/RUN-SUMMARY.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-115303/action-panel-route-summary.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-115303/action-panel-route-summary.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\action-panel-route-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-115303/action-box-compose-summary.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-115303/action-box-compose-summary.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\action-box-compose-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-115303/RUN-SUMMARY.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-115303/RUN-SUMMARY.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-120712/action-panel-route-patch-summary.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-120712/action-panel-route-patch-summary.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\action-panel-route-patch-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-120712/action-box-compose-patch-summary.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-120712/action-box-compose-patch-summary.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\action-box-compose-patch-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-120712/RUN-SUMMARY.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-120712/RUN-SUMMARY.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-122928/action-panel-route-fullstart-summary.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-122928/action-panel-route-fullstart-summary.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\action-panel-route-fullstart-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-122928/action-box-compose-fullstart-summary.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-122928/action-box-compose-fullstart-summary.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\action-box-compose-fullstart-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-122928/RUN-SUMMARY.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-122928/RUN-SUMMARY.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-121513/RUN-SUMMARY.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-121513/RUN-SUMMARY.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-121513/map-tile-coverage.txt",
+      "cleaned": "../archive/cdb-surface-dump-20260513-121513/map-tile-coverage.txt",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\map-tile-coverage.txt",
+      "exists": true,
+      "extension": ".txt",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-121513/visibility-coverage.txt",
+      "cleaned": "../archive/cdb-surface-dump-20260513-121513/visibility-coverage.txt",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\visibility-coverage.txt",
+      "exists": true,
+      "extension": ".txt",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-122200/right-bottom-ui-summary.json",
+      "cleaned": "../archive/cdb-surface-dump-20260513-122200/right-bottom-ui-summary.json",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\right-bottom-ui-summary.json",
+      "exists": true,
+      "extension": ".json",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260513-122200/RUN-SUMMARY.md",
+      "cleaned": "../archive/cdb-surface-dump-20260513-122200/RUN-SUMMARY.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-grid-hit-current.md",
+      "cleaned": "right-bottom-grid-hit-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-grid-hit-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-grid-hit-summary-tests-current.md",
+      "cleaned": "right-bottom-grid-hit-summary-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-grid-hit-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-grid-hit-probe-guard-current.md",
+      "cleaned": "right-bottom-grid-hit-probe-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-grid-hit-probe-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-grid-hit-probe-guard-tests-current.md",
+      "cleaned": "right-bottom-grid-hit-probe-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-grid-hit-probe-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-natural-route-guard-current.md",
+      "cleaned": "right-bottom-natural-route-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-natural-route-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-natural-route-guard-tests-current.md",
+      "cleaned": "right-bottom-natural-route-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-natural-route-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-slot-fixture-plan-current.md",
+      "cleaned": "right-bottom-slot-fixture-plan-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-slot-fixture-plan-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-slot-fixture-plan-tests-current.md",
+      "cleaned": "right-bottom-slot-fixture-plan-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-slot-fixture-plan-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-slot-fixture-script-guard-current.md",
+      "cleaned": "right-bottom-slot-fixture-script-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-slot-fixture-script-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-slot-fixture-script-guard-tests-current.md",
+      "cleaned": "right-bottom-slot-fixture-script-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-slot-fixture-script-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-slot-fixture-runtime-plan-current.md",
+      "cleaned": "right-bottom-slot-fixture-runtime-plan-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-slot-fixture-runtime-plan-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-slot-fixture-runtime-plan-tests-current.md",
+      "cleaned": "right-bottom-slot-fixture-runtime-plan-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-slot-fixture-runtime-plan-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-slot-fixture-result-summary-tests-current.md",
+      "cleaned": "right-bottom-slot-fixture-result-summary-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-slot-fixture-result-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-route-limit-current.md",
+      "cleaned": "load-slot-route-limit-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-route-limit-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-route-limit-tests-current.md",
+      "cleaned": "load-slot-route-limit-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-route-limit-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-timeout-phase-current.md",
+      "cleaned": "load-slot-timeout-phase-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-timeout-phase-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-timeout-phase-tests-current.md",
+      "cleaned": "load-slot-timeout-phase-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-timeout-phase-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-entry-gap-current.md",
+      "cleaned": "load-slot-entry-gap-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-entry-gap-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-entry-gap-tests-current.md",
+      "cleaned": "load-slot-entry-gap-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-entry-gap-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-probe-guard-current.md",
+      "cleaned": "load-slot-transition-probe-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-probe-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-probe-guard-tests-current.md",
+      "cleaned": "load-slot-transition-probe-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-probe-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-readiness-current.md",
+      "cleaned": "load-slot-transition-readiness-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-readiness-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-readiness-tests-current.md",
+      "cleaned": "load-slot-transition-readiness-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-readiness-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "load-slot-transition-summary-tests-current.md",
+      "cleaned": "load-slot-transition-summary-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\load-slot-transition-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-owner-flag-static-guard-current.md",
+      "cleaned": "right-bottom-owner-flag-static-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-owner-flag-static-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-owner-flag-static-guard-tests-current.md",
+      "cleaned": "right-bottom-owner-flag-static-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-owner-flag-static-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-owner-flag-inventory-current.md",
+      "cleaned": "right-bottom-owner-flag-inventory-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-owner-flag-inventory-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-owner-flag-inventory-tests-current.md",
+      "cleaned": "right-bottom-owner-flag-inventory-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-owner-flag-inventory-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-route-timing-guard-current.md",
+      "cleaned": "right-bottom-route-timing-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-route-timing-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "right-bottom-route-timing-guard-tests-current.md",
+      "cleaned": "right-bottom-route-timing-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\right-bottom-route-timing-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260514-140601/RUN-SUMMARY.md",
+      "cleaned": "../archive/cdb-surface-dump-20260514-140601/RUN-SUMMARY.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260514-140601/right-bottom-grid-hit-summary.md",
+      "cleaned": "../archive/cdb-surface-dump-20260514-140601/right-bottom-grid-hit-summary.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\right-bottom-grid-hit-summary.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/patch-stage-right-bottom-compose-20260513.json",
+      "cleaned": "../archive/patch-stage-right-bottom-compose-20260513.json",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\patch-stage-right-bottom-compose-20260513.json",
+      "exists": true,
+      "extension": ".json",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
+      "cleaned": "../archive/cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "../archive/cdb-surface-dump-20260506-201114/RUN-SUMMARY.md",
+      "cleaned": "../archive/cdb-surface-dump-20260506-201114/RUN-SUMMARY.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\RUN-SUMMARY.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    }
+  ],
+  "images": [
+    {
+      "kind": "image",
+      "target": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260506-190037/surface.png",
+      "cleaned": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260506-190037/surface.png",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260506-201114/surface.png",
+      "cleaned": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260506-201114/surface.png",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-112339/surface.png",
+      "cleaned": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-112339/surface.png",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-115303/surface.png",
+      "cleaned": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-115303/surface.png",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-120712/surface.png",
+      "cleaned": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-120712/surface.png",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-122928/surface.png",
+      "cleaned": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-122928/surface.png",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-121513/surface.png",
+      "cleaned": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-121513/surface.png",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-122200/surface.png",
+      "cleaned": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-122200/surface.png",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    },
+    {
+      "kind": "image",
+      "target": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260514-140601/surface.png",
+      "cleaned": "C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260514-140601/surface.png",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png",
+      "exists": true,
+      "extension": ".png",
+      "is_image_extension": true
+    }
+  ],
+  "missing": [],
+  "image_missing": [],
+  "image_wrong_extension": [],
+  "passed": true
+}

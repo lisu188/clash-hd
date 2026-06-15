@@ -1,0 +1,39 @@
+# dword_526994 Owner Route Summary
+
+- Log: `captures\cdb-surface-dump-20260430-224749\cdb-surface-dump.log`
+- Ready: True
+- Owner entries: 1
+- Route rows: 8
+- AV rows: 0
+- First forced route: `D526994_ROUTE_FORCE_423B40 ret=00000000 selected_before=-1 prior_before=-1 flag_before=00000000 gd=03fb0030`
+- First owner: `D526994_OWNER_423B40_ENTRY ret=0040a51f callback=00000000 flag526994=00000000 selected=-1 prior=0 gd=03fb0030 gameplay=1`
+
+## Marker Counts
+- D526994_ROUTE_PLAYGAME_SETUP_40A400: 1
+- D526994_ROUTE_FORCE_423B40: 1
+- D526994_ROUTE_40A490_ENTRY: 0
+- D526994_ROUTE_40A490_CALL_40A500: 0
+- D526994_ROUTE_40A500_ENTRY: 1
+- D526994_ROUTE_423B40_CALL: 1
+- D526994_ROUTE_423B00_CALL: 0
+- D526994_ROUTE_423760_CALL: 0
+- D526994_OWNER_423760_ENTRY: 0
+- D526994_OWNER_423B00_ENTRY: 0
+- D526994_OWNER_423B40_ENTRY: 1
+- D526994_ROUTE_CALLBACK_TEST: 4
+
+## Surface Counts
+- SURFDUMP_MAIN_HIT: 2
+- SURFDUMP_PLAYGAME: 3
+- SURFDUMP_REDRAW: 16
+- SURFDUMP_READY: 1
+- SURFDUMP_HOST_READY: 1
+- SURFDUMP_DONE: 0
+- AV_SURFDUMP: 0
+
+## Observed Values
+- flag526994: 00000000
+- flag_before: 00000000
+- callback: 00000000
+- selected: -1, 0
+- prior: -1, 0

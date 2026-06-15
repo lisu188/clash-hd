@@ -18,9 +18,72 @@ from typing import Any
 import castle_barracks_action_click_summary
 import castle_interior_catalog_summary
 import castle_ui_center_geometry
+from capture_geometry import read_png
 
 
 DEFAULT_COMMANDS = (0x63, 0x86, 0x87, 0x99, 0x9C, 0x9F, 0xA6)
+
+
+def analyze_visual_integrity(
+    path: Path,
+    rect: tuple[int, int, int, int] = (80, 60, 719, 539),
+    diff_threshold: float = 40.0,
+    max_vertical_high_percent: float = 12.0,
+    max_vertical_stripe_excess_percent: float = 8.0,
+) -> dict[str, Any]:
+    image = read_png(path)
+    left, top, right, bottom = rect
+    left = max(0, left)
+    top = max(0, top)
+    right = min(image.width - 1, right)
+    bottom = min(image.height - 1, bottom)
+
+    def average_diff(a: tuple[int, int, int], b: tuple[int, int, int]) -> float:
+        return sum(abs(int(a[index]) - int(b[index])) for index in range(3)) / 3.0
+
+    vertical_diffs: list[float] = []
+    for x in range(left, right):
+        total = 0.0
+        samples = 0
+        for y in range(top, bottom + 1):
+            total += average_diff(image.rgb_at(x, y), image.rgb_at(x + 1, y))
+            samples += 1
+        vertical_diffs.append(total / max(1, samples))
+
+    horizontal_diffs: list[float] = []
+    for y in range(top, bottom):
+        total = 0.0
+        samples = 0
+        for x in range(left, right + 1):
+            total += average_diff(image.rgb_at(x, y), image.rgb_at(x, y + 1))
+            samples += 1
+        horizontal_diffs.append(total / max(1, samples))
+
+    vertical_high = sum(1 for value in vertical_diffs if value >= diff_threshold)
+    horizontal_high = sum(1 for value in horizontal_diffs if value >= diff_threshold)
+    vertical_high_percent = round(vertical_high * 100.0 / max(1, len(vertical_diffs)), 3)
+    horizontal_high_percent = round(horizontal_high * 100.0 / max(1, len(horizontal_diffs)), 3)
+    vertical_mean_diff = sum(vertical_diffs) / max(1, len(vertical_diffs))
+    horizontal_mean_diff = sum(horizontal_diffs) / max(1, len(horizontal_diffs))
+    vertical_stripe_excess_percent = round(max(0.0, vertical_high_percent - horizontal_high_percent), 3)
+    mean_diff_ratio = round(vertical_mean_diff / max(0.001, horizontal_mean_diff), 3)
+
+    return {
+        "passed": (
+            vertical_high_percent <= max_vertical_high_percent
+            and vertical_stripe_excess_percent <= max_vertical_stripe_excess_percent
+        ),
+        "rect": [left, top, right, bottom],
+        "diff_threshold": diff_threshold,
+        "vertical_high_percent": vertical_high_percent,
+        "horizontal_high_percent": horizontal_high_percent,
+        "vertical_stripe_excess_percent": vertical_stripe_excess_percent,
+        "vertical_mean_diff": round(vertical_mean_diff, 3),
+        "horizontal_mean_diff": round(horizontal_mean_diff, 3),
+        "mean_diff_ratio": mean_diff_ratio,
+        "max_vertical_high_percent": max_vertical_high_percent,
+        "max_vertical_stripe_excess_percent": max_vertical_stripe_excess_percent,
+    }
 
 
 def command_label(command: int) -> str:
@@ -60,12 +123,14 @@ def build_gate(
         failures.append(f"missing catalog log: {log_path}")
 
     geometry = None
+    visual_integrity = None
     if png_path.exists():
         geometry = castle_ui_center_geometry.analyze(
             png_path,
             threshold=threshold,
             max_echo_percent=max_echo_percent,
         )
+        visual_integrity = analyze_visual_integrity(png_path)
     else:
         failures.append(f"missing surface PNG: {png_path}")
 
@@ -106,6 +171,8 @@ def build_gate(
     centered_gate = bool(geometry and geometry.get("gate", {}).get("passed"))
     if not centered_gate:
         failures.append("centered 800x600 geometry gate failed")
+    if not (visual_integrity and visual_integrity.get("passed")):
+        failures.append("overview visual integrity gate failed")
 
     barracks_baseline = None
     if barracks_run is not None:
@@ -138,6 +205,7 @@ def build_gate(
             "classification": catalog.get("classification", []),
         },
         "geometry": geometry,
+        "visual_integrity": visual_integrity,
         "barracks_baseline": barracks_baseline,
     }
 
@@ -209,6 +277,7 @@ def write_markdown(path: Path, gate: dict[str, Any]) -> None:
     catalog = gate["catalog"]
     geometry = gate.get("geometry") or {}
     geometry_gate = geometry.get("gate", {})
+    visual_integrity = gate.get("visual_integrity") or {}
     barracks_baseline = gate.get("barracks_baseline")
     screenshot = gate.get("screenshot")
     lines = [
@@ -224,12 +293,20 @@ def write_markdown(path: Path, gate: dict[str, Any]) -> None:
         f"- Access violations: {catalog['av_count']}",
         f"- Overview post-draw surface: `{catalog['last_overview_post_draw'].get('main_size')}`",
         f"- Centered geometry: {'PASS' if geometry_gate.get('passed') else 'FAIL'}",
+        f"- Visual integrity: {'PASS' if visual_integrity.get('passed') else 'FAIL'}",
         "",
         "## Geometry",
         "",
         f"- Image: `{geometry.get('image', {}).get('width')}x{geometry.get('image', {}).get('height')}`",
         f"- Centered nonblack: `{geometry_gate.get('centered_nonblack_percent')}`",
         f"- Max margin nonblack: `{geometry_gate.get('max_margin_nonblack_percent')}`",
+        "",
+        "## Visual Integrity",
+        "",
+        f"- Vertical high: `{visual_integrity.get('vertical_high_percent')}`%",
+        f"- Horizontal high: `{visual_integrity.get('horizontal_high_percent')}`%",
+        f"- Vertical stripe excess: `{visual_integrity.get('vertical_stripe_excess_percent')}`%",
+        f"- Mean diff ratio: `{visual_integrity.get('mean_diff_ratio')}`",
         "",
     ]
     if gate["failures"]:
@@ -296,6 +373,7 @@ def main() -> int:
     print(f"commands: {','.join(gate['catalog']['commands']) or 'none'}")
     geometry_gate = (gate.get("geometry") or {}).get("gate", {})
     print(f"centered-geometry: {'PASS' if geometry_gate.get('passed') else 'FAIL'}")
+    print(f"visual-integrity: {'PASS' if (gate.get('visual_integrity') or {}).get('passed') else 'FAIL'}")
     if gate["failures"]:
         print("failures:")
         for failure in gate["failures"]:

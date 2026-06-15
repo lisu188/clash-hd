@@ -1,0 +1,162 @@
+{
+  "captures_root": "captures",
+  "normal": {
+    "kind": "normal",
+    "present": true,
+    "passed": true,
+    "run": "captures\\archive\\cdb-surface-dump-20260429-140916",
+    "mtime": "2026-05-15T11:23:47+02:00",
+    "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-140916\\surface.png",
+    "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+    "surface": {
+      "RedrawSeq": 4,
+      "Surface": "0a2fed90",
+      "Width": 800,
+      "Height": 600,
+      "Base": "0a5a0030",
+      "Bytes": 480000
+    },
+    "blank_active_count": 13,
+    "unexplained_blank_count": 0,
+    "visibility_status_counts": {
+      "visibility_zero": 13
+    },
+    "visibility_gate": {
+      "Required": true,
+      "Passed": true,
+      "ExitCode": 0,
+      "BlankActiveCells": [
+        "r3c10",
+        "r3c11",
+        "r4c10",
+        "r4c11",
+        "r5c10",
+        "r5c11",
+        "r6c10",
+        "r6c11",
+        "r7c10",
+        "r7c11",
+        "r8c0",
+        "r8c10",
+        "r8c11"
+      ],
+      "UnexplainedBlankCells": []
+    },
+    "failures": []
+  },
+  "forced_visible": {
+    "kind": "forced-visible",
+    "present": true,
+    "passed": true,
+    "run": "captures\\archive\\cdb-surface-dump-20260429-135242",
+    "mtime": "2026-05-15T11:23:47+02:00",
+    "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\surface.png",
+    "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+    "surface": {
+      "RedrawSeq": 4,
+      "Surface": "0a2fed90",
+      "Width": 800,
+      "Height": 600,
+      "Base": "0a5a0030",
+      "Bytes": 480000
+    },
+    "blank_active_count": 0,
+    "forced_visible_exit_code": 0,
+    "vedge_visret_count": 54,
+    "vedge_post_count": 54,
+    "vedge_visret_nonzero_count": 54,
+    "vedge_post_nonblack_count": 54,
+    "latest_visdump": {
+      "line_no": 427,
+      "player": 0,
+      "screen0": [
+        32,
+        16
+      ],
+      "map0": [
+        10,
+        17
+      ],
+      "rows": 9,
+      "cols": 12,
+      "tile": [
+        64,
+        64
+      ]
+    },
+    "forced_visible_gate": {
+      "coverage_json": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\map-tile-coverage.json",
+      "log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\cdb-surface-dump.log",
+      "expect_map0": [
+        10,
+        17
+      ],
+      "expect_vedge_visret": 54,
+      "expect_vedge_post": 54,
+      "gameplay_frame_likely": true,
+      "blank_active_cells": [],
+      "possible_stale_or_solid_active_cells": [],
+      "active_cells": 108,
+      "measurable_active_cells": 99,
+      "ready_count": 1,
+      "visdump_count": 1,
+      "latest_visdump": {
+        "line_no": 427,
+        "player": 0,
+        "screen0": [
+          32,
+          16
+        ],
+        "map0": [
+          10,
+          17
+        ],
+        "rows": 9,
+        "cols": 12,
+        "tile": [
+          64,
+          64
+        ]
+      },
+      "force_visible_edges_rows": 2,
+      "force_viewport_rows": 4,
+      "vedge_visret_count": 54,
+      "vedge_post_count": 54,
+      "vedge_visret_unique_seq_count": 54,
+      "vedge_post_unique_seq_count": 54,
+      "vedge_visret_nonzero_count": 54,
+      "vedge_post_nonblack_count": 54,
+      "first_vedge_visret": [
+        {
+          "line_no": 204,
+          "seq": 0,
+          "screen": [
+            32,
+            208
+          ],
+          "center": [
+            10,
+            20
+          ],
+          "vis": -1
+        }
+      ],
+      "first_vedge_post": [
+        {
+          "line_no": 205,
+          "seq": 0,
+          "ret": "0041876b",
+          "screen": [
+            32,
+            208
+          ],
+          "sample": "a7"
+        }
+      ],
+      "failures": [],
+      "passed": true
+    },
+    "failures": []
+  },
+  "passed": true
+}

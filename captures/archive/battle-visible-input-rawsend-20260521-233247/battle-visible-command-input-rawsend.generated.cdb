@@ -1,0 +1,85 @@
+.echo === Clash95 CDB surface dump probe ===
+.echo route-injects load slot 0, waits for gameplay redraw, then dumps dword_5202E0
+sxe -c ".echo AV_SURFDUMP; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+bc *
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+r @$t5 = 0
+r @$t6 = 0
+r @$t7 = 0
+r @$t8 = 0
+r @$t9 = 0
+r @$t10 = 0
+r @$t11 = 0
+r @$t12 = 0
+r @$t13 = 0
+r @$t14 = 0
+r @$t15 = 0
+r @$t16 = 0
+r @$t17 = 0
+r @$t18 = 0
+r @$t19 = 0
+
+
+bp 00401DDA ".printf \"SURFDUMP_APP_REQUEST_QUIT text_ptr=%p caption_ptr=%p\n\", poi(@esp+4), poi(@esp+8); da poi(@esp+4); da poi(@esp+8); kb; q"
+bp 0047BD66 ".printf \"BATTLE_DIRECTINPUT_MOUSE_ACQUIRE eip=0047bd66 result=%p hwnd=%p device=%p\n\", @eax, poi(005452dc), poi(@esi+8); gc"
+bp 0047BDAE ".printf \"SURFDUMP_BYPASS_KEYBOARD_ACQUIRE hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+4); r eax=0; r eip=0047bdbf; gc"
+.echo SURFDUMP_START_ANIMS_SLEEP_FAST_FORWARD_ENABLED
+bp 0044789a ".printf \"SURFDUMP_SKIP_START_SLEEP ret=004478a1\\n\"; r eip=004478a1; r esp=@esp+4; gc"
+bp 0046e4d0 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046e4d7; r esp=@esp+4; gc } .else { gc }"
+bp 0046e6df ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046e6e6; r esp=@esp+4; gc } .else { gc }"
+bp 0046fd01 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046fd01 next=0046fd08\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046fd08; r esp=@esp+4; gc } .else { gc }"
+bp 0047BFD0 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_TIME_SLEEP ret=%p\\n\", poi(@esp); r @$t12 = @$t12 + 1; }; r eax=0; r eip=poi(@esp); r esp=@esp+4; gc } .else { gc }"
+
+bp 00419B80 ".if (@$t14 == 0) { .if (poi(00543d7c) != 5) { ed 00544cfc 00004b00; ed 00544d00 00003680; eb 005451c0 80; ed 00544d04 1; .if (@$t0 < 0n16) { .printf \"SURFDUMP_MAIN_HIT seq=%d choice=%d entry=0x%08x ex=%d ey=%d mouse=(%d,%d)\\n\", @$t0, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t0 = @$t0 + 1; }; } .else { ed 00544cfc 00005000; ed 00544d00 00002980; eb 005451c0 80; ed 00544d04 1; .if (@$t1 < 0n16) { .printf \"SURFDUMP_LOAD_COORD seq=%d choice=%d entry=0x%08x ex=%d ey=%d mouse=(%d,%d) selected=%d accept=%d\\n\", @$t1, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(005441e0), poi(00544190); r @$t1 = @$t1 + 1; }; }; } .else { .if (@$t18 == 0) { eb 005451c0 00; ed 00544d04 0; }; }; gc"
+bp 00419C51 ".if (@$t14 == 0) { .if (poi(00543d7c) != 5) { r eax=1; .if (@$t2 < 0n8) { .printf \"SURFDUMP_FORCE_MAIN_CLICK seq=%d desc=0x%08x mouse=(%d,%d)\\n\", @$t2, @ebx, poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t2 = @$t2 + 1; }; }; }; gc"
+bp 00447780 ".printf \"SURFDUMP_SKIP_MAIN_LOAD_CALLBACK ret=%p choice_before=%d exit_before=%d mouse=(%d,%d)\\n\", poi(@esp), poi(00543d7c), poi(00543d78), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); ed 00543d7c 5; ed 00543d78 1; r eip=poi(@esp); r esp=@esp+4; gc"
+bp 00447D61 ".if (@$t8 < 0n12) { .printf \"SURFDUMP_MAIN_DISPATCH_POLL seq=%d choice=%d exit=%d aux=%d accept=%d selected=%d\\n\", @$t8, poi(00543d7c), poi(00543d78), poi(00544184), poi(00544190), poi(005441e0); r @$t8 = @$t8 + 1; }; gc"
+bp 0044895A ".if (@$t14 == 0) { .printf \"SURFDUMP_LOAD_MENU_ENTRY choice=%d exit=%d selected=%d accept=%d mouse=(%d,%d)\\n\", poi(00543d7c), poi(00543d78), poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+bp 00448A45 ".if (@$t14 == 0) { .if (@$t9 < 0n12) { .printf \"SURFDUMP_LOAD_MENU_LOOP seq=%d exit=%d selected=%d accept=%d mouse=(%d,%d) lbtn=0x%02x\\n\", @$t9, poi(00543d78), poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0); r @$t9 = @$t9 + 1; }; }; gc"
+bp 00448A68 ".if (@$t14 == 0) { .if (poi(00543d7c) == 5) { ed 00544cfc 00005000; ed 00544d00 00002980; eb 005451c0 80; ed 00544d04 1; r eax=1; .if (@$t4 < 0n8) { .printf \"SURFDUMP_FORCE_LOAD_SELECT seq=%d mouse=(%d,%d) selected=%d accept=%d\\n\", @$t4, poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(005441e0), poi(00544190); r @$t4 = @$t4 + 1; }; }; }; gc"
+bp 00448AE3 ".if (@$t14 == 0) { .if (poi(00543d7c) == 5) { r eax=1; .if (@$t5 < 0n8) { .printf \"SURFDUMP_FORCE_LOAD_ACCEPT seq=%d selected=%d accept=%d mouse=(%d,%d)\\n\", @$t5, poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t5 = @$t5 + 1; }; }; }; gc"
+bp 0044A110 ".if (@$t14 == 0) { .printf \"SURFDUMP_LOAD_ACCEPT_CALL arg=%d selected=%d accept_before=%d mouse=(%d,%d)\\n\", @eax, poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+bp 00444490 ".printf \"SURFDUMP_LOADSAVE selected_arg=%d selected_global=%d accept=%d choice=%d gd=%p\\n\", @eax, poi(005441e0), poi(00544190), poi(00543d7c), poi(005202e4); gc"
+bp 00448B74 ".printf \"SURFDUMP_LOADSAVE_RETURN selected=%d accept=%d choice=%d gd=%p surface=%p size=(%d,%d)\n\", poi(005441e0), poi(00544190), poi(00543d7c), poi(005202e4), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); gc"
+
+.echo === Clash95 battle force-command callback probe ===
+.echo Harness-only battle entry plus natural command descriptor click callback trace
+r @$t15=0
+r @$t18=0
+r @$t19=0
+r @$t10=0
+r @$t11=0
+r @$t12=0
+
+bp 0040B0C3 ".if ((poi(005202e4) != 0) & (@$t18 == 0)) { r @$t18=1; r @$t0=poi(005202e4); r @$t1=poi(005202ec); r @$t2=0xffffffff; r @$t3=0xffffffff; r @$t6=0; r @$t7=0; .printf \"BATTLE_FORCE_SCAN gd=%p current=%d selected=%d prior=%d d51d01c=%d surface=%p width=%d height=%d\n\", @$t0, @$t1, poi(00511b58), poi(00514194), poi(0051d01c), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); .for (r @$t4=0; @$t4 < 0n500; r @$t4=@$t4+1) { r @$t5=@$t0+0n147174+(@$t4*0n725); .if ((wo(@$t5) < 0n100) & (wo(@$t5+2) < 0n100) & (by(@$t5+4) < 4) & (wo(@$t5+6) <= 0n40)) { .printf \"BATTLE_FORCE_UNIT idx=%d ptr=%p owner=%d xy=(%d,%d) first=%d status720=%d\n\", @$t4, @$t5, by(@$t5+4), wo(@$t5), wo(@$t5+2), wo(@$t5+6), by(@$t5+0n720); .if ((@$t2 == 0xffffffff) & (by(@$t5+4) == @$t1)) { r @$t2=@$t4; r @$t6=@$t5; }; .if ((@$t3 == 0xffffffff) & (by(@$t5+4) != @$t1)) { r @$t3=@$t4; r @$t7=@$t5; }; }; }; .if ((@$t2 != 0xffffffff) & (@$t3 != 0xffffffff)) { r @$t8=wo(@$t7); r @$t9=wo(@$t7+2); .if (@$t8 > 0) { ew @$t6 (@$t8-1) } .else { ew @$t6 (@$t8+1) }; ew @$t6+2 @$t9; r @$t10=poi(0051d01c); ed 0051d01c 1; .printf \"BATTLE_FORCE_ATTACK_CALL attacker=%d defender=%d attacker_ptr=%p defender_ptr=%p attacker_owner=%d defender_owner=%d attacker_xy=(%d,%d) defender_xy=(%d,%d) old_d51d01c=%d new_d51d01c=%d return=0040b0c3\n\", @$t2, @$t3, @$t6, @$t7, by(@$t6+4), by(@$t7+4), wo(@$t6), wo(@$t6+2), wo(@$t7), wo(@$t7+2), @$t10, poi(0051d01c); r @$t7=0; r esp=@esp-4; ed @esp 0040B0C3; r eax=@$t2; r edx=@$t3; r ebx=(@ebx & 0xffffff00); r eip=0041AD20; } .else { .printf \"BATTLE_FORCE_SCAN_FAILED attacker=%d defender=%d current=%d gd=%p\n\", @$t2, @$t3, @$t1, @$t0; r @$t7=0; }; }; gc"
+
+bp 0041AD20 ".if (@$t18 != 0) { .printf \"BATTLE_ROUTE_CANDIDATE name=Unit_Attack eip=0041ad20 ret=%p attacker=%d target=%d surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 0041B145 ".if (@$t18 != 0) { .printf \"BATTLE_ROUTE_CANDIDATE name=Unit_Attack_calls_BattleRunner eip=0041b145 ret=%p attacker_ptr=%p defender_ptr=%p result_ptr=%p stack_arg=%p ebp=%p surface=%p width=%d height=%d\n\", poi(@esp), @eax, @edx, @ecx, poi(@esp), @ebp, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 0041CE7A ".if (@$t18 != 0) { r eax=1; .printf \"BATTLE_FORCE_WAIT_GATE name=Unit_Attack_DD_IsFlipping eip=0041ce7a forced_eax=1 click_flag_before=%p button0=0x%02x\n\", poi(00544d04), by(005451c0); }; gc"
+bp 0042E9E0 ".if (@$t18 != 0) { .printf \"BATTLE_OWNER_ENTRY source=BattleRunner eip=0042e9e0 ret=%p attacker=%p defender=%p result_ptr=%p building_ptr=%p ebp=%p surface=%p width=%d height=%d mouse=(%d,%d)\n\", poi(@esp), @eax, @edx, @ecx, @ebx, @ebp, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); .printf \"BATTLE_SURFACE ptr=%p width=%d height=%d pitch=0 base=%p mode=unknown\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(005202e0)+4); r @$t19=1; }; gc"
+bp 0042E4B2 ".if (@$t19 != 0) { r eip=0042E4B7; }; gc"
+bp 0042E4D9 ".if (@$t19 != 0) { .if (@$t17 == 0) { .printf \"BATTLE_COMMAND_SKIP_TURN_FRAME eip=0042e4d9 next=0042e4fc mouse=(%d,%d)\n\", poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t17=1; }; r eip=0042E4FC; }; gc"
+bp 0042E501 ".if ((@$t19 != 0) & (@$t15 == 0)) { .if ((@$t16 == 0) | (((by(005451c0) != 0) | (poi(00544d04) != 0)) & (@$t16 < 0n24))) { .printf \"BATTLE_COMMAND_INPUT_WINDOW coord_mode=visible-window expected_displayed=(588,440) expected_native=(508,380) mouse=(%d,%d) raw=(%p,%p) click_flag=%p button0=0x%02x scale=%d list=%p\n\", poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544cfc), poi(00544d00), poi(00544d04), by(005451c0), by(0054512c), @eax; r @$t16=@$t16+1; }; }; gc"
+bp 00419C28 ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_PRE_GATES desc=%p state=0x%02x hover_cb=%p click_cb=%p type=0x%02x mouse=(%d,%d) click_flag=%p button0=0x%02x\n\", @ebx, by(@ebx+8), poi(@ebx+1c), poi(@ebx+20), by(@ebx+30), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04), by(005451c0); }; gc"
+bp 00419C47 ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_CLICK_GATE desc=%p desc_xy=(%d,%d) state=0x%02x hover_cb=%p click_cb=%p mouse=(%d,%d) click_flag=%p button0=0x%02x\n\", @ebx, poi(@ebx), poi(@ebx+4), by(@ebx+8), poi(@ebx+1c), poi(@ebx+20), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04), by(005451c0); }; gc"
+bp 00419C51 ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_CLICK_GATE_OBSERVED desc=%p eax=%d desc_xy=(%d,%d) state=0x%02x click_cb=%p mouse=(%d,%d) click_flag=%p button0=0x%02x\n\", @ebx, @eax, poi(@ebx), poi(@ebx+4), by(@ebx+8), poi(@ebx+20), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04), by(005451c0); }; gc"
+bp 00419C53 ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_CLICK_GATE_RET desc=%p click_gate=%d click_cb=%p state=0x%02x mouse=(%d,%d) click_flag=%p\n\", @ebx, @eax, poi(@ebx+20), by(@ebx+8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04); }; gc"
+bp 00419C5D ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_DESCRIPTOR_CALLBACK desc=%p callback=%p desc_xy=(%d,%d) state=0x%02x mouse=(%d,%d) d53205c=%d d532060=%d d514b80=%d\n\", @ebx, poi(@ebx+20), poi(@ebx), poi(@ebx+4), by(@ebx+8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(0053205c), poi(00532060), poi(00514b80); }; gc"
+bp 0042D4E0 ".if (@$t19 != 0) { r @$t15=2; r @$t6=@eax; r @$t8=poi(00511b58); r @$t9=wo(poi(00532048)+(@$t8*0n31)+0n852); r @$t7=@$t9*0n88; .printf \"BATTLE_COMMAND_CALLBACK eip=0042d4e0 ret=%p desc=%p state=0x%02x displayed=(%d,%d) unit_index=%d unit_type=%d avail=%d enabled=%d d53205c_before=%d d532060=%d d514b80=%d\n\", poi(@esp), @eax, by(@eax+8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), @$t8, @$t9, by(0051257e+@$t7), by(00512582+@$t7), poi(0053205c), poi(00532060), poi(00514b80); }; gc"
+bp 0042D520 ".if ((@$t19 != 0) & (@$t15 == 2)) { r @$t10=0; r @$t11=0; r @$t12=0; .printf \"BATTLE_COMMAND_RENDER_BEGIN_ENTER eip=0042d520 call=004609d0 desc=%p unit_type=%d avail=%d enabled=%d click_flag=%p button0=0x%02x\n\", @$t6, @$t9, by(0051257e+@$t7), by(00512582+@$t7), poi(00544d04), by(005451c0); }; gc"
+bp 004609D0 ".if ((@$t19 != 0) & (@$t15 == 2) & (@eax == 00544cd8)) { r @$t10=1; r @$t11=0; r @$t12=0; .printf \"BATTLE_RENDER_BEGIN_ENTER eip=004609d0 surface=%p desc=%p unit_type=%d avail=%d enabled=%d\n\", @eax, @$t6, @$t9, by(0051257e+@$t7), by(00512582+@$t7); }; gc"
+bp 004609E0 ".if (@$t10 == 1) { r @$t11=@$t11+1; .if (@$t11 <= 6) { .printf \"BATTLE_RENDER_BEGIN_LOOP iter=%d eip=004609e0 dd_is_flipping=%d desc=%p unit_type=%d\n\", @$t11, @eax, @$t6, @$t9; }; .if ((@eax != 0) & (@$t11 >= 8)) { r @$t12=1; r eax=0; .printf \"BATTLE_RENDER_BEGIN_SPIN_GUARD iter=%d eip=004609e0 forced_flipping=0 desc=%p unit_type=%d\n\", @$t11, @$t6, @$t9; }; }; gc"
+bp 004609FC ".if (@$t10 == 1) { .if ((@$t11 <= 6) | (@$t12 != 0) | ((@eax != 0) & (@$t11 >= 8))) { .printf \"BATTLE_RENDER_BEGIN_LOST_CHECK iter=%d eip=004609fc dd_is_lost=%d guard=%d desc=%p unit_type=%d\n\", @$t11, @eax, @$t12, @$t6, @$t9; }; .if ((@eax != 0) & (@$t11 >= 8)) { r @$t12=2; r eax=0; .printf \"BATTLE_RENDER_BEGIN_LOST_GUARD iter=%d eip=004609fc forced_lost=0 reason=lost desc=%p unit_type=%d\n\", @$t11, @$t6, @$t9; }; .if ((@$t12 == 1) & (@eax != 0)) { r eax=0; .printf \"BATTLE_RENDER_BEGIN_LOST_GUARD iter=%d eip=004609fc forced_lost=0 reason=spin desc=%p unit_type=%d\n\", @$t11, @$t6, @$t9; }; }; gc"
+bp 00460A00 ".if (@$t10 == 1) { .printf \"BATTLE_RENDER_BEGIN_EXIT eip=00460a00 iter=%d guard=%d desc=%p unit_type=%d result=%d\n\", @$t11, @$t12, @$t6, @$t9, @eax; r @$t10=0; r @$t12=0; }; gc"
+bp 0042D51C ".if ((@$t19 != 0) & (@$t15 == 2)) { r @$t15=3; r @$t19=0; r @$t10=poi(005202e0); r @$t11=wo(@$t10); r @$t12=wo(@$t10+2); r @$t13=poi(@$t10+4); r @$t16=@$t13; r @$t17=@$t11*@$t12; .printf \"BATTLE_COMMAND_CALLBACK_RESULT branch=precondition-disabled desc=%p state=0x%02x unit_index=%d unit_type=%d avail=%d enabled=%d d53205c=%d d532060=%d d514b80=%d surface=%p size=(%d,%d)\n\", @$t6, by(@$t6+8), @$t8, @$t9, by(0051257e+@$t7), by(00512582+@$t7), poi(0053205c), poi(00532060), poi(00514b80), @$t10, @$t11, @$t12; .printf \"SURFDUMP_READY redraw_seq=3 surface=%p size=(%d,%d) base=%p bytes=%d\n\", @$t10, @$t11, @$t12, @$t13, @$t17; .echo SURFDUMP_HOST_READY; gc }; gc"
+bp 0042D543 ".if ((@$t19 != 0) & (@$t15 == 2)) { r @$t15=3; r @$t19=0; r @$t10=poi(005202e0); r @$t11=wo(@$t10); r @$t12=wo(@$t10+2); r @$t13=poi(@$t10+4); r @$t16=@$t13; r @$t17=@$t11*@$t12; .printf \"BATTLE_COMMAND_CALLBACK_RESULT branch=state2 desc=%p state=0x%02x d53205c=%d d532060=%d d514b80=%d surface=%p size=(%d,%d)\n\", @ecx, by(@ecx+8), poi(0053205c), poi(00532060), poi(00514b80), @$t10, @$t11, @$t12; .printf \"SURFDUMP_READY redraw_seq=3 surface=%p size=(%d,%d) base=%p bytes=%d\n\", @$t10, @$t11, @$t12, @$t13, @$t17; .echo SURFDUMP_HOST_READY; gc }; gc"
+bp 0042D55C ".if ((@$t19 != 0) & (@$t15 == 2)) { r @$t15=3; r @$t19=0; r @$t10=poi(005202e0); r @$t11=wo(@$t10); r @$t12=wo(@$t10+2); r @$t13=poi(@$t10+4); r @$t16=@$t13; r @$t17=@$t11*@$t12; .printf \"BATTLE_COMMAND_CALLBACK_RESULT branch=state1 desc=%p state=0x%02x d53205c=%d d532060=%d d514b80=%d surface=%p size=(%d,%d)\n\", @ecx, by(@ecx+8), poi(0053205c), poi(00532060), poi(00514b80), @$t10, @$t11, @$t12; .printf \"SURFDUMP_READY redraw_seq=3 surface=%p size=(%d,%d) base=%p bytes=%d\n\", @$t10, @$t11, @$t12, @$t13, @$t17; .echo SURFDUMP_HOST_READY; gc }; gc"
+
+bp 0040B660 ".if ((poi(005202e4) != 0) & (@$t14 == 0)) { r @$t14 = 1; eb 005451c0 00; ed 00544d04 0; .printf \"SURFDUMP_PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) surface=%p size=(%d,%d)\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); } .else { .if (poi(005202e4) == 0) { .echo SURFDUMP_PLAYGAME gd=00000000; }; }; gc"
+
+
+g

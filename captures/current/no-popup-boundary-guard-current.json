@@ -1,0 +1,1279 @@
+{
+  "generated_at": "2026-06-15T18:35:00+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report",
+  "evidence_index": "captures\\current\\hd-map-evidence-current.md",
+  "required_guard_count": 6,
+  "required_supporting_report_count": 82,
+  "required_report_count": 88,
+  "required_guards": [
+    "stable_stage_guard",
+    "exe_artifact_guard",
+    "surface_dump_policy_guard",
+    "visible_runtime_launcher_guard",
+    "no_visible_runtime_guard",
+    "process_hygiene_guard"
+  ],
+  "required_supporting_reports": [
+    "no_popup_map_evidence",
+    "no_popup_map_evidence_tests",
+    "no_visible_runtime_guard_tests",
+    "no_popup_guard_tests",
+    "visible_runtime_launcher_guard_tests",
+    "python_runtime_safety_guard",
+    "python_runtime_safety_guard_tests",
+    "patch_definition_guard",
+    "patch_definition_guard_tests",
+    "capture_corpus_index",
+    "capture_corpus_index_tests",
+    "current_completion_summary",
+    "current_completion_summary_tests",
+    "process_hygiene_guard_tests",
+    "manual_directinput_checklist",
+    "manual_directinput_checklist_tests",
+    "manual_directinput_proof_template",
+    "manual_directinput_proof_template_tests",
+    "manual_directinput_run_plan",
+    "manual_directinput_run_plan_tests",
+    "promotion_override_guard",
+    "promotion_override_guard_tests",
+    "promotion_override_manifest",
+    "promotion_override_manifest_tests",
+    "handoff_freshness_guard",
+    "handoff_freshness_guard_tests",
+    "right_bottom_compose_promotion_decision_tests",
+    "right_bottom_compose_evidence_matrix_tests",
+    "right_bottom_blocker_triage",
+    "right_bottom_blocker_triage_tests",
+    "right_bottom_visual_artifact_guard",
+    "right_bottom_visual_artifact_guard_tests",
+    "right_bottom_grid_hit",
+    "right_bottom_grid_hit_summary_tests",
+    "right_bottom_grid_hit_probe_guard",
+    "right_bottom_grid_hit_probe_guard_tests",
+    "right_bottom_natural_route_guard",
+    "right_bottom_natural_route_guard_tests",
+    "right_bottom_slot_fixture_plan",
+    "right_bottom_slot_fixture_plan_tests",
+    "right_bottom_slot_fixture_script_guard",
+    "right_bottom_slot_fixture_script_guard_tests",
+    "right_bottom_slot_fixture_runtime_plan",
+    "right_bottom_slot_fixture_runtime_plan_tests",
+    "right_bottom_slot_fixture_result_summary_tests",
+    "load_slot_route_limit_guard",
+    "load_slot_route_limit_guard_tests",
+    "load_slot_timeout_phase",
+    "load_slot_timeout_phase_tests",
+    "load_slot_entry_gap",
+    "load_slot_entry_gap_tests",
+    "load_slot_transition_probe_guard",
+    "load_slot_transition_probe_guard_tests",
+    "load_slot_transition_run_plan",
+    "load_slot_transition_run_plan_tests",
+    "load_slot_transition_geometry_guard",
+    "load_slot_transition_geometry_guard_tests",
+    "load_slot_transition_probe_preview",
+    "load_slot_transition_probe_preview_tests",
+    "load_slot_transition_readiness",
+    "load_slot_transition_readiness_tests",
+    "load_slot_transition_summary_tests",
+    "right_bottom_owner_flag_static_guard",
+    "right_bottom_owner_flag_static_guard_tests",
+    "right_bottom_owner_flag_inventory",
+    "right_bottom_owner_flag_inventory_tests",
+    "right_bottom_route_timing_guard",
+    "right_bottom_route_timing_guard_tests",
+    "castle_overview_baseline_recheck",
+    "castle_overview_baseline_recheck_tests",
+    "castle_owner_records_summary_tests",
+    "castle_overview_evidence_matrix_tests",
+    "castle_overview_gate_tests",
+    "castle_overview_hitbox_summary_tests",
+    "castle_overview_hitmap_summary_tests",
+    "castle_overview_multihit_summary_tests",
+    "castle_overview_promotion_decision_tests",
+    "castle_overview_probe_guard",
+    "castle_overview_probe_guard_tests",
+    "stable_stage_guard_tests",
+    "docs_consistency_guard",
+    "docs_consistency_guard_tests"
+  ],
+  "required_reports": [
+    "stable_stage_guard",
+    "exe_artifact_guard",
+    "surface_dump_policy_guard",
+    "visible_runtime_launcher_guard",
+    "no_visible_runtime_guard",
+    "process_hygiene_guard",
+    "no_popup_map_evidence",
+    "no_popup_map_evidence_tests",
+    "no_visible_runtime_guard_tests",
+    "no_popup_guard_tests",
+    "visible_runtime_launcher_guard_tests",
+    "python_runtime_safety_guard",
+    "python_runtime_safety_guard_tests",
+    "patch_definition_guard",
+    "patch_definition_guard_tests",
+    "capture_corpus_index",
+    "capture_corpus_index_tests",
+    "current_completion_summary",
+    "current_completion_summary_tests",
+    "process_hygiene_guard_tests",
+    "manual_directinput_checklist",
+    "manual_directinput_checklist_tests",
+    "manual_directinput_proof_template",
+    "manual_directinput_proof_template_tests",
+    "manual_directinput_run_plan",
+    "manual_directinput_run_plan_tests",
+    "promotion_override_guard",
+    "promotion_override_guard_tests",
+    "promotion_override_manifest",
+    "promotion_override_manifest_tests",
+    "handoff_freshness_guard",
+    "handoff_freshness_guard_tests",
+    "right_bottom_compose_promotion_decision_tests",
+    "right_bottom_compose_evidence_matrix_tests",
+    "right_bottom_blocker_triage",
+    "right_bottom_blocker_triage_tests",
+    "right_bottom_visual_artifact_guard",
+    "right_bottom_visual_artifact_guard_tests",
+    "right_bottom_grid_hit",
+    "right_bottom_grid_hit_summary_tests",
+    "right_bottom_grid_hit_probe_guard",
+    "right_bottom_grid_hit_probe_guard_tests",
+    "right_bottom_natural_route_guard",
+    "right_bottom_natural_route_guard_tests",
+    "right_bottom_slot_fixture_plan",
+    "right_bottom_slot_fixture_plan_tests",
+    "right_bottom_slot_fixture_script_guard",
+    "right_bottom_slot_fixture_script_guard_tests",
+    "right_bottom_slot_fixture_runtime_plan",
+    "right_bottom_slot_fixture_runtime_plan_tests",
+    "right_bottom_slot_fixture_result_summary_tests",
+    "load_slot_route_limit_guard",
+    "load_slot_route_limit_guard_tests",
+    "load_slot_timeout_phase",
+    "load_slot_timeout_phase_tests",
+    "load_slot_entry_gap",
+    "load_slot_entry_gap_tests",
+    "load_slot_transition_probe_guard",
+    "load_slot_transition_probe_guard_tests",
+    "load_slot_transition_run_plan",
+    "load_slot_transition_run_plan_tests",
+    "load_slot_transition_geometry_guard",
+    "load_slot_transition_geometry_guard_tests",
+    "load_slot_transition_probe_preview",
+    "load_slot_transition_probe_preview_tests",
+    "load_slot_transition_readiness",
+    "load_slot_transition_readiness_tests",
+    "load_slot_transition_summary_tests",
+    "right_bottom_owner_flag_static_guard",
+    "right_bottom_owner_flag_static_guard_tests",
+    "right_bottom_owner_flag_inventory",
+    "right_bottom_owner_flag_inventory_tests",
+    "right_bottom_route_timing_guard",
+    "right_bottom_route_timing_guard_tests",
+    "castle_overview_baseline_recheck",
+    "castle_overview_baseline_recheck_tests",
+    "castle_owner_records_summary_tests",
+    "castle_overview_evidence_matrix_tests",
+    "castle_overview_gate_tests",
+    "castle_overview_hitbox_summary_tests",
+    "castle_overview_hitmap_summary_tests",
+    "castle_overview_multihit_summary_tests",
+    "castle_overview_promotion_decision_tests",
+    "castle_overview_probe_guard",
+    "castle_overview_probe_guard_tests",
+    "stable_stage_guard_tests",
+    "docs_consistency_guard",
+    "docs_consistency_guard_tests"
+  ],
+  "checks": {
+    "stable_stage_guard": {
+      "passed": false,
+      "summary": {
+        "purpose": "validation-only groups stay out of the stable HD map stage",
+        "expected_markdown": "stable-stage-guard-current.md",
+        "refresh_markdown": "captures\\current\\stable-stage-guard-current.md",
+        "refresh_json": "captures\\current\\stable-stage-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": [
+        "refresh check is not passing: stable_stage_guard"
+      ]
+    },
+    "exe_artifact_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "repository contains no tracked or filesystem .exe artifacts",
+        "expected_markdown": "exe-artifact-guard-current.md",
+        "refresh_markdown": "captures\\current\\exe-artifact-guard-current.md",
+        "refresh_json": "captures\\current\\exe-artifact-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "surface_dump_policy_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "surface-dump launcher defaults to hidden desktop",
+        "expected_markdown": "surface-dump-policy-guard-current.md",
+        "refresh_markdown": "captures\\current\\surface-dump-policy-guard-current.md",
+        "refresh_json": "captures\\current\\surface-dump-policy-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "visible_runtime_launcher_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "legacy visible-runtime launchers require explicit approval switch",
+        "expected_markdown": "visible-runtime-launcher-guard-current.md",
+        "refresh_markdown": "captures\\current\\visible-runtime-launcher-guard-current.md",
+        "refresh_json": "captures\\current\\visible-runtime-launcher-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "no_visible_runtime_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "referenced CDB surface-dump evidence is hidden-desktop",
+        "expected_markdown": "no-visible-runtime-guard-current.md",
+        "refresh_markdown": "captures\\current\\no-visible-runtime-guard-current.md",
+        "refresh_json": "captures\\current\\no-visible-runtime-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "process_hygiene_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "no cdb.exe or clash95* process is left running",
+        "expected_markdown": "process-hygiene-guard-current.md",
+        "refresh_markdown": "captures\\current\\process-hygiene-guard-current.md",
+        "refresh_json": "captures\\current\\process-hygiene-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "no_popup_map_evidence": {
+      "passed": true,
+      "summary": {
+        "purpose": "compact no-popup map visibility and forced-visible baseline",
+        "expected_markdown": "no-popup-map-evidence-current.md",
+        "refresh_markdown": "captures\\current\\no-popup-map-evidence-current.md",
+        "refresh_json": "captures\\current\\no-popup-map-evidence-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "no_popup_map_evidence_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the no-popup map evidence matrix",
+        "expected_markdown": "no-popup-map-evidence-tests-current.md",
+        "refresh_markdown": "captures\\current\\no-popup-map-evidence-tests-current.md",
+        "refresh_json": "captures\\current\\no-popup-map-evidence-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "no_visible_runtime_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the no-visible runtime guard",
+        "expected_markdown": "no-visible-runtime-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\no-visible-runtime-guard-tests-current.md",
+        "refresh_json": "captures\\current\\no-visible-runtime-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "no_popup_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the no-popup guard set",
+        "expected_markdown": "no-popup-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\no-popup-guard-tests-current.md",
+        "refresh_json": "captures\\current\\no-popup-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "visible_runtime_launcher_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for legacy visible-runtime launcher gates",
+        "expected_markdown": "visible-runtime-launcher-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\visible-runtime-launcher-guard-tests-current.md",
+        "refresh_json": "captures\\current\\visible-runtime-launcher-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "python_runtime_safety_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "Python helpers with runtime/window/input APIs are gated, exempt, or fail closed",
+        "expected_markdown": "python-runtime-safety-current.md",
+        "refresh_markdown": "captures\\current\\python-runtime-safety-current.md",
+        "refresh_json": "captures\\current\\python-runtime-safety-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "python_runtime_safety_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for risky Python helper classification",
+        "expected_markdown": "python-runtime-safety-tests-current.md",
+        "refresh_markdown": "captures\\current\\python-runtime-safety-tests-current.md",
+        "refresh_json": "captures\\current\\python-runtime-safety-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "patch_definition_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "patch stage definitions keep stable and validation-only groups separated",
+        "expected_markdown": "patch-definition-current.md",
+        "refresh_markdown": "captures\\current\\patch-definition-current.md",
+        "refresh_json": "captures\\current\\patch-definition-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "patch_definition_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for patch definition drift and overlap failures",
+        "expected_markdown": "patch-definition-tests-current.md",
+        "refresh_markdown": "captures\\current\\patch-definition-tests-current.md",
+        "refresh_json": "captures\\current\\patch-definition-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "capture_corpus_index": {
+      "passed": true,
+      "summary": {
+        "purpose": "read-only capture corpus index prevents stale visible-era artifacts becoming current blockers",
+        "expected_markdown": "capture-corpus-index-current.md",
+        "refresh_markdown": "captures\\current\\capture-corpus-index-current.md",
+        "refresh_json": "captures\\current\\capture-corpus-index-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "capture_corpus_index_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for capture reference and stale artifact classification",
+        "expected_markdown": "capture-corpus-index-tests-current.md",
+        "refresh_markdown": "captures\\current\\capture-corpus-index-tests-current.md",
+        "refresh_json": "captures\\current\\capture-corpus-index-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "current_completion_summary": {
+      "passed": true,
+      "summary": {
+        "purpose": "percentage progress report stays generated from current evidence gates",
+        "expected_markdown": "current-completion-summary-current.md",
+        "refresh_markdown": "captures\\current\\current-completion-summary-current.md",
+        "refresh_json": "captures\\current\\current-completion-summary-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "current_completion_summary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the generated percentage progress report",
+        "expected_markdown": "current-completion-summary-tests-current.md",
+        "refresh_markdown": "captures\\current\\current-completion-summary-tests-current.md",
+        "refresh_json": "captures\\current\\current-completion-summary-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "process_hygiene_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the process hygiene guard",
+        "expected_markdown": "process-hygiene-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\process-hygiene-guard-tests-current.md",
+        "refresh_json": "captures\\current\\process-hygiene-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "manual_directinput_checklist": {
+      "passed": true,
+      "summary": {
+        "purpose": "remaining manual DirectInput targets stay enumerated and promotion remains blocked",
+        "expected_markdown": "manual-directinput-validation-checklist-current.md",
+        "refresh_markdown": "captures\\current\\manual-directinput-validation-checklist-current.md",
+        "refresh_json": "captures\\current\\manual-directinput-validation-checklist-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "manual_directinput_checklist_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the manual DirectInput checklist",
+        "expected_markdown": "manual-directinput-validation-checklist-tests-current.md",
+        "refresh_markdown": "captures\\current\\manual-directinput-validation-checklist-tests-current.md",
+        "refresh_json": "captures\\current\\manual-directinput-validation-checklist-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "manual_directinput_proof_template": {
+      "passed": true,
+      "summary": {
+        "purpose": "manual DirectInput proof manifest template stays visible and non-promoting",
+        "expected_markdown": "manual-directinput-proof-template-current.md",
+        "refresh_markdown": "captures\\current\\manual-directinput-proof-template-current.md",
+        "refresh_json": "captures\\current\\manual-directinput-proof-template-report-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "manual_directinput_proof_template_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the manual DirectInput proof template",
+        "expected_markdown": "manual-directinput-proof-template-tests-current.md",
+        "refresh_markdown": "captures\\current\\manual-directinput-proof-template-tests-current.md",
+        "refresh_json": "captures\\current\\manual-directinput-proof-template-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "manual_directinput_run_plan": {
+      "passed": true,
+      "summary": {
+        "purpose": "approval-gated visible/manual DirectInput command plan remains non-executing and non-promoting",
+        "expected_markdown": "manual-directinput-run-plan-current.md",
+        "refresh_markdown": "captures\\current\\manual-directinput-run-plan-current.md",
+        "refresh_json": "captures\\current\\manual-directinput-run-plan-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "manual_directinput_run_plan_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the manual DirectInput run plan",
+        "expected_markdown": "manual-directinput-run-plan-tests-current.md",
+        "refresh_markdown": "captures\\current\\manual-directinput-run-plan-tests-current.md",
+        "refresh_json": "captures\\current\\manual-directinput-run-plan-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "promotion_override_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "CDB-only promotion override remains inactive in current evidence",
+        "expected_markdown": "promotion-override-guard-current.md",
+        "refresh_markdown": "captures\\current\\promotion-override-guard-current.md",
+        "refresh_json": "captures\\current\\promotion-override-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "promotion_override_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the promotion override guard",
+        "expected_markdown": "promotion-override-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\promotion-override-guard-tests-current.md",
+        "refresh_json": "captures\\current\\promotion-override-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "promotion_override_manifest": {
+      "passed": true,
+      "summary": {
+        "purpose": "CDB-only promotion override manifest remains absent or strictly validated",
+        "expected_markdown": "promotion-override-manifest-current.md",
+        "refresh_markdown": "captures\\current\\promotion-override-manifest-current.md",
+        "refresh_json": "captures\\current\\promotion-override-manifest-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "promotion_override_manifest_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for strict CDB-only promotion override manifests",
+        "expected_markdown": "promotion-override-manifest-tests-current.md",
+        "refresh_markdown": "captures\\current\\promotion-override-manifest-tests-current.md",
+        "refresh_json": "captures\\current\\promotion-override-manifest-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "handoff_freshness_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "current handoff docs point at the latest no-popup blockers",
+        "expected_markdown": "handoff-freshness-guard-current.md",
+        "refresh_markdown": "captures\\current\\handoff-freshness-guard-current.md",
+        "refresh_json": "captures\\current\\handoff-freshness-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "handoff_freshness_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the handoff freshness guard",
+        "expected_markdown": "handoff-freshness-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\handoff-freshness-guard-tests-current.md",
+        "refresh_json": "captures\\current\\handoff-freshness-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_compose_promotion_decision_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom compose promotion decision",
+        "expected_markdown": "right-bottom-compose-promotion-decision-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-compose-promotion-decision-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-compose-promotion-decision-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_compose_evidence_matrix_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom compose evidence matrix",
+        "expected_markdown": "right-bottom-compose-evidence-matrix-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-compose-evidence-matrix-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-compose-evidence-matrix-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_blocker_triage": {
+      "passed": true,
+      "summary": {
+        "purpose": "compact non-promoting triage of the current right-bottom action-menu blocker",
+        "expected_markdown": "right-bottom-blocker-triage-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-blocker-triage-current.md",
+        "refresh_json": "captures\\current\\right-bottom-blocker-triage-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_blocker_triage_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom action-menu blocker triage",
+        "expected_markdown": "right-bottom-blocker-triage-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-blocker-triage-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-blocker-triage-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_visual_artifact_guard": {
+      "passed": false,
+      "summary": {
+        "purpose": "right-bottom natural UI stripe/layout artifact remains explicitly non-promoting",
+        "expected_markdown": "right-bottom-visual-artifact-guard-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-visual-artifact-guard-current.md",
+        "refresh_json": "captures\\current\\right-bottom-visual-artifact-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": [
+        "refresh check is not passing: right_bottom_visual_artifact_guard"
+      ]
+    },
+    "right_bottom_visual_artifact_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom visual artifact guard",
+        "expected_markdown": "right-bottom-visual-artifact-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-visual-artifact-guard-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-visual-artifact-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_grid_hit": {
+      "passed": true,
+      "summary": {
+        "purpose": "controlled no-popup native grid-hit proof for the right-bottom compose validation stage",
+        "expected_markdown": "right-bottom-grid-hit-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-grid-hit-current.md",
+        "refresh_json": "captures\\current\\right-bottom-grid-hit-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_grid_hit_summary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom grid-hit parser",
+        "expected_markdown": "right-bottom-grid-hit-summary-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-grid-hit-summary-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-grid-hit-summary-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_grid_hit_probe_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "focused right-bottom grid-hit probe keeps proven no-popup callsites",
+        "expected_markdown": "right-bottom-grid-hit-probe-guard-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-grid-hit-probe-guard-current.md",
+        "refresh_json": "captures\\current\\right-bottom-grid-hit-probe-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_grid_hit_probe_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom grid-hit probe guard",
+        "expected_markdown": "right-bottom-grid-hit-probe-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-grid-hit-probe-guard-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-grid-hit-probe-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_natural_route_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "natural right-bottom castle/action route is classified as owner-flag save-state gated",
+        "expected_markdown": "right-bottom-natural-route-guard-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-natural-route-guard-current.md",
+        "refresh_json": "captures\\current\\right-bottom-natural-route-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_natural_route_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom natural-route guard",
+        "expected_markdown": "right-bottom-natural-route-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-natural-route-guard-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-natural-route-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_slot_fixture_plan": {
+      "passed": true,
+      "summary": {
+        "purpose": "non-promoting isolated slot5-as-slot0 fixture plan for the right-bottom owner/action route",
+        "expected_markdown": "right-bottom-slot-fixture-plan-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-plan-current.md",
+        "refresh_json": "captures\\current\\right-bottom-slot-fixture-plan-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_slot_fixture_plan_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom isolated slot fixture plan",
+        "expected_markdown": "right-bottom-slot-fixture-plan-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-plan-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-slot-fixture-plan-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_slot_fixture_script_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "source guard for the dry-run right-bottom slot fixture preparation helper",
+        "expected_markdown": "right-bottom-slot-fixture-script-guard-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-script-guard-current.md",
+        "refresh_json": "captures\\current\\right-bottom-slot-fixture-script-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_slot_fixture_script_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom slot fixture preparation helper guard",
+        "expected_markdown": "right-bottom-slot-fixture-script-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-script-guard-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-slot-fixture-script-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_slot_fixture_runtime_plan": {
+      "passed": true,
+      "summary": {
+        "purpose": "hidden-desktop command plan for the non-promoting right-bottom isolated slot fixture",
+        "expected_markdown": "right-bottom-slot-fixture-runtime-plan-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.md",
+        "refresh_json": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_slot_fixture_runtime_plan_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom slot fixture runtime command plan",
+        "expected_markdown": "right-bottom-slot-fixture-runtime-plan-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-runtime-plan-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-slot-fixture-runtime-plan-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_slot_fixture_result_summary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for future right-bottom slot fixture CDB result classification",
+        "expected_markdown": "right-bottom-slot-fixture-result-summary-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-result-summary-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-slot-fixture-result-summary-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_route_limit_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "load-slot route boundary keeps slot5/right-bottom save-state candidate classified as route-harness blocked",
+        "expected_markdown": "load-slot-route-limit-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-route-limit-current.md",
+        "refresh_json": "captures\\current\\load-slot-route-limit-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_route_limit_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the load-slot route limit guard",
+        "expected_markdown": "load-slot-route-limit-tests-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-route-limit-tests-current.md",
+        "refresh_json": "captures\\current\\load-slot-route-limit-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_timeout_phase": {
+      "passed": true,
+      "summary": {
+        "purpose": "load-slot timeout phase keeps rows 3-5 classified as pre-load-menu-loop stalls",
+        "expected_markdown": "load-slot-timeout-phase-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-timeout-phase-current.md",
+        "refresh_json": "captures\\current\\load-slot-timeout-phase-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_timeout_phase_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the load-slot timeout phase classifier",
+        "expected_markdown": "load-slot-timeout-phase-tests-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-timeout-phase-tests-current.md",
+        "refresh_json": "captures\\current\\load-slot-timeout-phase-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_entry_gap": {
+      "passed": false,
+      "summary": {
+        "purpose": "load-slot entry gap keeps rows 3-5 classified as stopping before case-5 entry",
+        "expected_markdown": "load-slot-entry-gap-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-entry-gap-current.md",
+        "refresh_json": "captures\\current\\load-slot-entry-gap-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": [
+        "refresh check is not passing: load_slot_entry_gap"
+      ]
+    },
+    "load_slot_entry_gap_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the load-slot entry gap classifier",
+        "expected_markdown": "load-slot-entry-gap-tests-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-entry-gap-tests-current.md",
+        "refresh_json": "captures\\current\\load-slot-entry-gap-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_transition_probe_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "focused late-entry load-slot transition probe avoids early descriptor forcing",
+        "expected_markdown": "load-slot-transition-probe-guard-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-probe-guard-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-probe-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_transition_probe_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the load-slot transition probe guard",
+        "expected_markdown": "load-slot-transition-probe-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-probe-guard-tests-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-probe-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_transition_run_plan": {
+      "passed": false,
+      "summary": {
+        "purpose": "hidden-desktop command plan for the rows 3-5 load-slot transition blocker",
+        "expected_markdown": "load-slot-transition-run-plan-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-run-plan-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-run-plan-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": [
+        "refresh check is not passing: load_slot_transition_run_plan"
+      ]
+    },
+    "load_slot_transition_run_plan_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the load-slot transition run plan",
+        "expected_markdown": "load-slot-transition-run-plan-tests-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-run-plan-tests-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-run-plan-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_transition_geometry_guard": {
+      "passed": false,
+      "summary": {
+        "purpose": "row geometry guard for the rows 3-5 load-slot transition plan",
+        "expected_markdown": "load-slot-transition-geometry-guard-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-geometry-guard-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-geometry-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": [
+        "refresh check is not passing: load_slot_transition_geometry_guard"
+      ]
+    },
+    "load_slot_transition_geometry_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the load-slot transition row geometry guard",
+        "expected_markdown": "load-slot-transition-geometry-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-geometry-guard-tests-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-geometry-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_transition_probe_preview": {
+      "passed": false,
+      "summary": {
+        "purpose": "row-specific generated CDB preview for the rows 3-5 load-slot transition probes",
+        "expected_markdown": "load-slot-transition-probe-preview-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-probe-preview-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-probe-preview-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": [
+        "refresh check is not passing: load_slot_transition_probe_preview"
+      ]
+    },
+    "load_slot_transition_probe_preview_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for row-specific generated transition probe previews",
+        "expected_markdown": "load-slot-transition-probe-preview-tests-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-probe-preview-tests-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-probe-preview-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_transition_readiness": {
+      "passed": false,
+      "summary": {
+        "purpose": "aggregate hidden transition readiness matrix for rows 3-5",
+        "expected_markdown": "load-slot-transition-readiness-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-readiness-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-readiness-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": [
+        "refresh check is not passing: load_slot_transition_readiness"
+      ]
+    },
+    "load_slot_transition_readiness_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the load-slot transition readiness matrix",
+        "expected_markdown": "load-slot-transition-readiness-tests-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-readiness-tests-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-readiness-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "load_slot_transition_summary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for future LSTRANS log classification",
+        "expected_markdown": "load-slot-transition-summary-tests-current.md",
+        "refresh_markdown": "captures\\current\\load-slot-transition-summary-tests-current.md",
+        "refresh_json": "captures\\current\\load-slot-transition-summary-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_owner_flag_static_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "static original-exe byte guard for command-99 owner-loop and action owner-flag gates",
+        "expected_markdown": "right-bottom-owner-flag-static-guard-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-owner-flag-static-guard-current.md",
+        "refresh_json": "captures\\current\\right-bottom-owner-flag-static-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_owner_flag_static_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom owner-flag static guard",
+        "expected_markdown": "right-bottom-owner-flag-static-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-owner-flag-static-guard-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-owner-flag-static-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_owner_flag_inventory": {
+      "passed": true,
+      "summary": {
+        "purpose": "right-bottom owner-flag inventory keeps natural and forced action-route evidence classified",
+        "expected_markdown": "right-bottom-owner-flag-inventory-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-owner-flag-inventory-current.md",
+        "refresh_json": "captures\\current\\right-bottom-owner-flag-inventory-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_owner_flag_inventory_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom owner-flag inventory",
+        "expected_markdown": "right-bottom-owner-flag-inventory-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-owner-flag-inventory-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-owner-flag-inventory-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_route_timing_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "right-bottom patch/full-start/grid marker ordering remains stable",
+        "expected_markdown": "right-bottom-route-timing-guard-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-route-timing-guard-current.md",
+        "refresh_json": "captures\\current\\right-bottom-route-timing-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "right_bottom_route_timing_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the right-bottom route timing guard",
+        "expected_markdown": "right-bottom-route-timing-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\right-bottom-route-timing-guard-tests-current.md",
+        "refresh_json": "captures\\current\\right-bottom-route-timing-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_overview_baseline_recheck": {
+      "passed": false,
+      "summary": {
+        "purpose": "current fixed castle overview and barracks no-popup baselines remain attached",
+        "expected_markdown": "castle-overview-baseline-recheck-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-baseline-recheck-current.md",
+        "refresh_json": "captures\\current\\castle-overview-baseline-recheck-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": [
+        "refresh check is not passing: castle_overview_baseline_recheck"
+      ]
+    },
+    "castle_overview_baseline_recheck_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the castle overview baseline recheck",
+        "expected_markdown": "castle-overview-baseline-recheck-tests-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-baseline-recheck-tests-current.md",
+        "refresh_json": "captures\\current\\castle-overview-baseline-recheck-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_owner_records_summary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the castle owner-record parser",
+        "expected_markdown": "castle-owner-records-summary-tests-current.md",
+        "refresh_markdown": "captures\\current\\castle-owner-records-summary-tests-current.md",
+        "refresh_json": "captures\\current\\castle-owner-records-summary-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_overview_evidence_matrix_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the castle overview evidence matrix",
+        "expected_markdown": "castle-overview-evidence-matrix-tests-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-evidence-matrix-tests-current.md",
+        "refresh_json": "captures\\current\\castle-overview-evidence-matrix-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_overview_gate_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the castle overview visual/catalog gate",
+        "expected_markdown": "castle-overview-gate-tests-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-gate-tests-current.md",
+        "refresh_json": "captures\\current\\castle-overview-gate-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_overview_hitbox_summary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the focused castle overview hitbox parser",
+        "expected_markdown": "castle-overview-hitbox-summary-tests-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-hitbox-summary-tests-current.md",
+        "refresh_json": "captures\\current\\castle-overview-hitbox-summary-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_overview_hitmap_summary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the castle overview raw hitmap parser",
+        "expected_markdown": "castle-overview-hitmap-summary-tests-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-hitmap-summary-tests-current.md",
+        "refresh_json": "captures\\current\\castle-overview-hitmap-summary-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_overview_multihit_summary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the castle overview multi-hit parser",
+        "expected_markdown": "castle-overview-multihit-summary-tests-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-multihit-summary-tests-current.md",
+        "refresh_json": "captures\\current\\castle-overview-multihit-summary-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_overview_promotion_decision_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the castle overview promotion decision",
+        "expected_markdown": "castle-overview-promotion-decision-tests-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-promotion-decision-tests-current.md",
+        "refresh_json": "captures\\current\\castle-overview-promotion-decision-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_overview_probe_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "focused castle overview probe keeps proven no-popup hitbox callsites",
+        "expected_markdown": "castle-overview-probe-guard-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-probe-guard-current.md",
+        "refresh_json": "captures\\current\\castle-overview-probe-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "castle_overview_probe_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the focused castle overview probe guard",
+        "expected_markdown": "castle-overview-probe-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\castle-overview-probe-guard-tests-current.md",
+        "refresh_json": "captures\\current\\castle-overview-probe-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "stable_stage_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for stable-stage validation-scope boundaries",
+        "expected_markdown": "stable-stage-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\stable-stage-guard-tests-current.md",
+        "refresh_json": "captures\\current\\stable-stage-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "docs_consistency_guard": {
+      "passed": false,
+      "summary": {
+        "purpose": "current docs and handoff files match generated stable-stage/no-popup/manual-proof facts",
+        "expected_markdown": "docs-consistency-current.md",
+        "refresh_markdown": "captures\\current\\docs-consistency-current.md",
+        "refresh_json": "captures\\current\\docs-consistency-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": [
+        "refresh check is not passing: docs_consistency_guard"
+      ]
+    },
+    "docs_consistency_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for stale docs and generated-count drift",
+        "expected_markdown": "docs-consistency-tests-current.md",
+        "refresh_markdown": "captures\\current\\docs-consistency-tests-current.md",
+        "refresh_json": "captures\\current\\docs-consistency-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    }
+  },
+  "failures": [
+    "stable_stage_guard: refresh check is not passing: stable_stage_guard",
+    "right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
+    "load_slot_entry_gap: refresh check is not passing: load_slot_entry_gap",
+    "load_slot_transition_run_plan: refresh check is not passing: load_slot_transition_run_plan",
+    "load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard",
+    "load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview",
+    "load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness",
+    "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
+    "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+    "stamp":  "20260521-232626",
+    "run_dir":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\battle-visible-input-minimal-20260521-232626",
+    "candidate":  "C:\\ClashTests\\battle-visible-input-proxy-20260521-221704\\candidate\\clash95_hd_battle_visible_input_proxy_20260521-221704.exe",
+    "work_dir":  "C:\\ClashTests\\battle-enabled-fixture-20260520-210728\\game",
+    "probe":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\battle-visible-input-minimal-20260521-232626\\battle-visible-command-input-minimal.generated.cdb",
+    "log":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\battle-visible-input-minimal-20260521-232626\\cdb-visible-input-minimal.log",
+    "mouse_json":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\battle-visible-input-minimal-20260521-232626\\mouse-visible-input-minimal.json",
+    "ddraw_proxy":  "C:\\ClashTests\\battle-visible-input-proxy-20260521-221704\\candidate\\ddraw.dll",
+    "directinput_mouse_acquire_bypass":  false,
+    "directinput_keyboard_acquire_bypass":  true,
+    "synthetic_battle_command_click":  false,
+    "synthetic_battle_command_release":  false,
+    "minimal_probe":  true,
+    "note":  "Minimal visible battle command input probe: no surface dump or present/descriptors spam, preserving real SendInput handoff evidence."
+}

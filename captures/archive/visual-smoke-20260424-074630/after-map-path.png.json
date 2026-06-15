@@ -1,0 +1,24 @@
+{
+    "Path":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\visual-smoke-20260424-074630\\after-map-path.png",
+    "Hash":  "3BD487B726DF599ED2DD9E511DE59975E9B30F879751EFBDCA3CE2A4DE42B0CF",
+    "Width":  1200,
+    "Height":  900,
+    "OriginX":  125,
+    "OriginY":  159,
+    "CenterWindowMatchesTarget":  false,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "windowdc-contaminated-fallback",
+    "TargetHwnd":  "0xCE0472",
+    "CenterWindowHwnd":  "0xAF704F4",
+    "CenterRootHwnd":  "0xAF704F4",
+    "NonblackPercent":  27.403,
+    "MeanLuma":  23.029,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  800,
+                           "Bottom":  600,
+                           "Width":  801,
+                           "Height":  601
+                       }
+}

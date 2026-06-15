@@ -2,13 +2,13 @@
 
 ## Evidence Run
 
-- Run: `captures\cdb-surface-dump-20260511-084202`
+- Run: `captures\archive\cdb-surface-dump-20260511-084202`
 - Harness: `scripts\cdb\run_cdb_surface_dump.ps1`
 - Extra probe: `probes/cdb/castle/clash95_castle_barracks_ui_extra.cdb`
 - Candidate: `C:\ClashTests\cdb-castle-barracks-ui\clash95_hd_surfdump_20260511_084202.exe`
 - Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
 - Surface: `800x600`
-- Screenshot: `captures\cdb-surface-dump-20260511-084202\surface.png`
+- Screenshot: `captures\archive\cdb-surface-dump-20260511-084202\surface.png`
 
 ## Findings
 
@@ -26,13 +26,13 @@
 ## Current Visual Result
 
 - Full screenshot:
-  `captures\cdb-surface-dump-20260511-084202\surface.png`
+  `captures\archive\cdb-surface-dump-20260511-084202\surface.png`
 - Right panel crop:
-  `captures\cdb-surface-dump-20260511-084202\castle-barracks-right-panel.png`
+  `captures\archive\cdb-surface-dump-20260511-084202\castle-barracks-right-panel.png`
 - Bottom action-box crop:
-  `captures\cdb-surface-dump-20260511-084202\castle-barracks-action-box.png`
+  `captures\archive\cdb-surface-dump-20260511-084202\castle-barracks-action-box.png`
 - Grid/detail crop:
-  `captures\cdb-surface-dump-20260511-084202\castle-barracks-grid-area.png`
+  `captures\archive\cdb-surface-dump-20260511-084202\castle-barracks-grid-area.png`
 
 `tools\right_bottom_ui_bounds.py` reports the right-side and bottom-right
 regions still contain large black components. The most important runtime row is:
@@ -60,19 +60,19 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_cdb_su
 
 ```powershell
 python tools\castle_barracks_ui_summary.py `
-  captures\cdb-surface-dump-20260511-084202\cdb-surface-dump.log `
+  captures\archive\cdb-surface-dump-20260511-084202\cdb-surface-dump.log `
   --require-ready `
   --require-panel
 ```
 
 ```powershell
 python tools\right_bottom_ui_bounds.py `
-  captures\cdb-surface-dump-20260511-084202\surface.png
+  captures\archive\cdb-surface-dump-20260511-084202\surface.png
 ```
 
 ## Selected-Addon Copyback Trace
 
-- Run: `captures\cdb-surface-dump-20260511-134947`
+- Run: `captures\archive\cdb-surface-dump-20260511-134947`
 - Extra probe: `probes/cdb/castle/clash95_castle_barracks_select_extra.cdb`
 - Candidate SHA-256:
   `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
@@ -80,11 +80,11 @@ python tools\right_bottom_ui_bounds.py `
   and selected addon id `1` was active through panel, grid, status, and action
   box draw rows.
 - Screenshot artifacts:
-  `captures\cdb-surface-dump-20260511-134947\surface.png`,
-  `captures\cdb-surface-dump-20260511-134947\castle-barracks-top-panel.png`,
-  `captures\cdb-surface-dump-20260511-134947\castle-barracks-selected-card.png`,
+  `captures\archive\cdb-surface-dump-20260511-134947\surface.png`,
+  `captures\archive\cdb-surface-dump-20260511-134947\castle-barracks-top-panel.png`,
+  `captures\archive\cdb-surface-dump-20260511-134947\castle-barracks-selected-card.png`,
   and
-  `captures\cdb-surface-dump-20260511-134947\castle-barracks-bottom-actions.png`.
+  `captures\archive\cdb-surface-dump-20260511-134947\castle-barracks-bottom-actions.png`.
 
 Key copyback observation:
 
@@ -99,8 +99,8 @@ action-box rectangle from the `0051D4C0` scratch/render source into
 
 ## Centered Presentation Patch
 
-- CDB-only proof run: `captures\cdb-surface-dump-20260511-141143`
-- Patch-stage proof run: `captures\cdb-surface-dump-20260511-142304`
+- CDB-only proof run: `captures\archive\cdb-surface-dump-20260511-141143`
+- Patch-stage proof run: `captures\archive\cdb-surface-dump-20260511-142304`
 - New patch group: `castle-ui-center-present`
 - New stage:
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter`
@@ -108,7 +108,7 @@ action-box rectangle from the `0051D4C0` scratch/render source into
   the patch-stage proof passed with no debugger-side `APBARRACKS_CENTER_*`
   markers, no AV rows, `SURFDUMP_READY`, and selected addon id `1`.
 - Screenshot:
-  `captures\cdb-surface-dump-20260511-142304\surface.png`
+  `captures\archive\cdb-surface-dump-20260511-142304\surface.png`
 
 The stage visually centers the native 640x480 castle/barracks UI layer at
 `(80,60)` inside the 800x600 surface by hooking `00435DA5` and routing through
@@ -117,13 +117,13 @@ target is hitbox and mouse-coordinate alignment for the centered screen.
 
 ## Centered Hitbox Transform
 
-- Run: `captures\cdb-surface-dump-20260511-143741`
+- Run: `captures\archive\cdb-surface-dump-20260511-143741`
 - Stage:
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox`
 - Candidate SHA-256:
   `BEC4674A98060928337F05CB967AEDBD2A800905389DBBE4990CF771C6DF19C8`
 - Screenshot:
-  `captures\cdb-surface-dump-20260511-143741\surface.png`
+  `captures\archive\cdb-surface-dump-20260511-143741\surface.png`
 - Parser:
   `ready=True panel=True action_box=True av_count=0 last_selected_addon=1`
 - Patch byte report:
@@ -144,13 +144,13 @@ unchanged centered screenshot.
 
 ## Centered Grid Hitbox Proof
 
-- Run: `captures\cdb-surface-dump-20260511-145141`
+- Run: `captures\archive\cdb-surface-dump-20260511-145141`
 - Stage:
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox`
 - Candidate SHA-256:
   `F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434`
 - Screenshot:
-  `captures\cdb-surface-dump-20260511-145141\surface.png`
+  `captures\archive\cdb-surface-dump-20260511-145141\surface.png`
 - Parser:
   `ready=True grid_hit_ok=True last_grid_entry=[450, 73] last_grid_result=0 av_count=0`
 - Patch byte report:
@@ -170,14 +170,14 @@ cleaner hitbox proof than the earlier `20260511-144934` exploratory run.
 
 ## Centered Raw Click-Gate Hitbox Proof
 
-- Run: `captures\cdb-surface-dump-20260511-150643`
+- Run: `captures\archive\cdb-surface-dump-20260511-150643`
 - Extra probe: `probes/cdb/castle/clash95_castle_barracks_click_extra.cdb`
 - Stage:
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox`
 - Candidate SHA-256:
   `F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434`
 - Screenshot:
-  `captures\cdb-surface-dump-20260511-150643\surface.png`
+  `captures\archive\cdb-surface-dump-20260511-150643\surface.png`
 - Parser:
   `ready=True grid_hit_ok=True last_grid_entry=[450, 73] last_grid_result=0 raw_gate_ok=True forced_gate_count=0 selection_updates=0 av_count=0`
 
@@ -197,14 +197,14 @@ after the input gate has run.
 
 ## Centered Action Descriptor Proof
 
-- Run: `captures\cdb-surface-dump-20260511-160221`
+- Run: `captures\archive\cdb-surface-dump-20260511-160221`
 - Extra probe: `probes/cdb/castle/clash95_castle_barracks_action_click_extra.cdb`
 - Stage:
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox`
 - Candidate SHA-256:
   `F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434`
 - Screenshot:
-  `captures\cdb-surface-dump-20260511-160221\surface.png`
+  `captures\archive\cdb-surface-dump-20260511-160221\surface.png`
 - Parser:
   `ready=True descriptor_click_ok=True action_exit_ok=True failure_exits=0 av_count=0`
 
@@ -230,13 +230,13 @@ inject the input state earlier without this descriptor-local rearm.
 
 ## Centered Action Descriptor Pre-Gate Refinement
 
-- Run: `captures\cdb-surface-dump-20260511-161212`
+- Run: `captures\archive\cdb-surface-dump-20260511-161212`
 - Failed exploratory run:
-  `captures\cdb-surface-dump-20260511-160850` timed out when a global
+  `captures\archive\cdb-surface-dump-20260511-160850` timed out when a global
   `00419B80` descriptor-entry breakpoint was installed. That breakpoint is too
   hot during startup/menu routing unless it is late-armed.
 - Screenshot:
-  `captures\cdb-surface-dump-20260511-161212\surface.png`
+  `captures\archive\cdb-surface-dump-20260511-161212\surface.png`
 - Parser:
   `ready=True descriptor_click_ok=True action_exit_ok=True failure_exits=0 av_count=0`
 - Patch byte report:
@@ -266,11 +266,11 @@ is known and before the stock gates run.
 ## CDB Harness Click Preservation Fix
 
 - Diagnostic run:
-  `captures\cdb-surface-dump-20260511-162607`.
+  `captures\archive\cdb-surface-dump-20260511-162607`.
 - Passing run after harness fix:
-  `captures\cdb-surface-dump-20260511-162846`.
+  `captures\archive\cdb-surface-dump-20260511-162846`.
 - Screenshot:
-  `captures\cdb-surface-dump-20260511-162846\surface.png`.
+  `captures\archive\cdb-surface-dump-20260511-162846\surface.png`.
 - Candidate SHA-256:
   `F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434`.
 - Parser:
@@ -302,11 +302,11 @@ before the stock gates.
 ## Centered Second Action Descriptor Proof
 
 - Run:
-  `captures\cdb-surface-dump-20260511-163846`.
+  `captures\archive\cdb-surface-dump-20260511-163846`.
 - Probe:
   `probes/cdb/castle/clash95_castle_barracks_second_action_extra.cdb`.
 - Screenshot:
-  `captures\cdb-surface-dump-20260511-163846\surface.png`.
+  `captures\archive\cdb-surface-dump-20260511-163846\surface.png`.
 - Candidate SHA-256:
   `F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434`.
 - Parser:
@@ -346,9 +346,9 @@ change for the current selected unit.
   `tools\castle_interior_catalog_summary.py` and
   `tools\castle_ui_center_geometry.py`.
 - Catalog run:
-  `captures\cdb-surface-dump-20260511-170708`.
+  `captures\archive\cdb-surface-dump-20260511-170708`.
 - Catalog screenshot:
-  `captures\cdb-surface-dump-20260511-170708\surface.png`.
+  `captures\archive\cdb-surface-dump-20260511-170708\surface.png`.
 - Catalog parser:
   `ready=True surface_size=[640, 480] descriptors=7 commands=0x63,0x86,0x87,0x99,0x9C,0x9F,0xA6 av_count=0`.
 
@@ -376,11 +376,11 @@ surface/present path gets its own narrow centering hook.
 ## Castlecenter-All Barracks Success-Branch Proof
 
 - Run:
-  `captures\cdb-surface-dump-20260511-170759`.
+  `captures\archive\cdb-surface-dump-20260511-170759`.
 - Probe:
   `probes/cdb/castle/clash95_castle_barracks_second_action_select1_extra.cdb`.
 - Screenshot:
-  `captures\cdb-surface-dump-20260511-170759\surface.png`.
+  `captures\archive\cdb-surface-dump-20260511-170759\surface.png`.
 - Candidate SHA-256:
   `F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434`.
 - Patch-stage report:
@@ -404,11 +404,11 @@ overview descriptor.
 ## Castlecenter-All No-Echo Barracks Fix
 
 - Run:
-  `captures\cdb-surface-dump-20260512-082418`.
+  `captures\archive\cdb-surface-dump-20260512-082418`.
 - Probe:
   `probes/cdb/castle/clash95_castle_barracks_second_action_select1_extra.cdb`.
 - Screenshot:
-  `captures\cdb-surface-dump-20260512-082418\surface.png`.
+  `captures\archive\cdb-surface-dump-20260512-082418\surface.png`.
 - Candidate SHA-256:
   `4E42D4A3EA61E1DB31007600A8B6515B4803E14CCC07FD2CBF1C2BA838492498`.
 - Patch-stage report:
@@ -423,7 +423,7 @@ The fix changed the broad castle/barracks visual path from a pre-present copy
 to a stock-render-then-center wrapper. The wrapper is used both as the initial
 `Render_Present` callback (`00435DAA`) and as the per-frame loop redraw call
 (`00435DDE`). That second hook is the important anti-echo piece: wrapping only
-the initial present callback produced `captures\cdb-surface-dump-20260512-082001`,
+the initial present callback produced `captures\archive\cdb-surface-dump-20260512-082001`,
 where the screenshot still had meaningful native-origin content in the top and
 left margins.
 

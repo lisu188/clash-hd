@@ -1,0 +1,61 @@
+{
+  "template_note": "This template is intentionally not valid proof. Replace placeholders only after an approved visible/manual DirectInput validation run.",
+  "evidence_class": "manual_directinput_template",
+  "approved_visible_runtime": false,
+  "approval_record": "REPLACE_WITH_APPROVAL_NOTE_OR_LINK",
+  "candidate_path": "REPLACE_WITH_CANDIDATE_EXE_PATH",
+  "executable_sha256": "REPLACE_WITH_64_HEX_SHA256",
+  "no_stale_processes": false,
+  "checked_items": [
+    {
+      "id": "stable_menu_load",
+      "title": "Stable HD map stage menu load and held-click route",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "status": "pending",
+      "observed_result": "REPLACE_WITH_MANUAL_OBSERVATION",
+      "evidence": "REPLACE_WITH_SCREENSHOT_OR_NOTES",
+      "pass_fail_notes": "REPLACE_WITH_EXACT_PASS_FAIL_NOTES",
+      "no_crash": false
+    },
+    {
+      "id": "stable_hd_map_input",
+      "title": "Stable HD map edge scroll, minimap, and selection input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "status": "pending",
+      "observed_result": "REPLACE_WITH_MANUAL_OBSERVATION",
+      "evidence": "REPLACE_WITH_SCREENSHOT_OR_NOTES",
+      "pass_fail_notes": "REPLACE_WITH_EXACT_PASS_FAIL_NOTES",
+      "no_crash": false
+    },
+    {
+      "id": "right_bottom_validation_input",
+      "title": "Right-bottom composition validation-stage manual input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+      "status": "pending",
+      "observed_result": "REPLACE_WITH_MANUAL_OBSERVATION",
+      "evidence": "REPLACE_WITH_SCREENSHOT_OR_NOTES",
+      "pass_fail_notes": "REPLACE_WITH_EXACT_PASS_FAIL_NOTES",
+      "no_crash": false
+    },
+    {
+      "id": "castle_barracks_centered_input",
+      "title": "Castle barracks centered manual input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "status": "pending",
+      "observed_result": "REPLACE_WITH_MANUAL_OBSERVATION",
+      "evidence": "REPLACE_WITH_SCREENSHOT_OR_NOTES",
+      "pass_fail_notes": "REPLACE_WITH_EXACT_PASS_FAIL_NOTES",
+      "no_crash": false
+    },
+    {
+      "id": "castle_overview_centered_input",
+      "title": "Full castle overview centered manual input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "status": "pending",
+      "observed_result": "REPLACE_WITH_MANUAL_OBSERVATION",
+      "evidence": "REPLACE_WITH_SCREENSHOT_OR_NOTES",
+      "pass_fail_notes": "REPLACE_WITH_EXACT_PASS_FAIL_NOTES",
+      "no_crash": false
+    }
+  ]
+}

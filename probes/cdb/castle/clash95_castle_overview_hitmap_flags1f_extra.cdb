@@ -1,0 +1,9 @@
+.echo === Clash95 castle overview hitmap flags 1f probe ===
+.echo CDB-only dump after forcing owner feature flags for dormant descriptor hit IDs
+r @$t8=3
+r @$t17=0
+r @$t18=0
+
+bp /1 0040B660 ".if ((poi(005202e4) != 0) & (@$t18 == 0)) { r @$t18=1; .printf \"CASTLEOV_HITMAP_FLAGS_INVOKE_PLAYGAME castle_index=%d gd=%p current_player=%d surface=%p sz=(%d,%d)\n\", @$t17, poi(005202e4), poi(005202ec), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r esp=@esp-4; ed @esp 0040b660; r eax=@$t17; r eip=00422180; }; gc"
+bp 00422207 ".if (@$t18 != 0) { .printf \"CASTLEOV_HITMAP_FLAGS_OWNER_BEFORE castle_index=%d owner_screen=%p owner_byte=%d byte4=0x%02x flags_1a0=0x%02x flags_1a4=0x%02x map_pos=(%d,%d)\n\", @$t17, @edx, by(@edx+2), by(@edx+4), by(@edx+0n416), by(@edx+0n420), by(@edx), by(@edx+1); eb @edx+0n416 1f; eb @edx+0n420 01; .printf \"CASTLEOV_HITMAP_FLAGS_OWNER_AFTER castle_index=%d owner_screen=%p byte4=0x%02x flags_1a0=0x%02x flags_1a4=0x%02x\n\", @$t17, @edx, by(@edx+4), by(@edx+0n416), by(@edx+0n420); }; gc"
+bp 00422333 ".if (@$t18 != 0) { r @$t11=poi(00526a68); r @$t12=wo(@$t11); r @$t15=wo(@$t11+2); r @$t16=poi(@$t11+4); .printf \"CASTLEOV_HITMAP_FLAGS_OVERVIEW_SURFACE castle_index=%d surface=%p size=(%d,%d) base=%p bytes=%d owner_screen=%p\n\", @$t17, @$t11, @$t12, @$t15, @$t16, @$t12*@$t15, poi(00526a64); .writemem castle-overview-hitmap-flags1f.raw @$t16 L0n307200; .printf \"CASTLEOV_HITMAP_FLAGS_DUMPED castle_index=%d path=castle-overview-hitmap-flags1f.raw bytes=%d\n\", @$t17, @$t12*@$t15; r @$t11=poi(005202e0); r @$t12=wo(@$t11); r @$t15=wo(@$t11+2); r @$t16=poi(@$t11+4); .printf \"SURFDUMP_READY redraw_seq=990 surface=%p size=(%d,%d) base=%p bytes=%d\n\", @$t11, @$t12, @$t15, @$t16, @$t12*@$t15; .echo SURFDUMP_HOST_READY; r @$t18=0; } .else { gc }"

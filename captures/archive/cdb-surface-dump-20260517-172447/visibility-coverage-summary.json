@@ -1,0 +1,115 @@
+{
+  "coverage_json": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260517-172447\\map-tile-coverage.json",
+  "logs": [
+    "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260517-172447\\cdb-surface-dump.log"
+  ],
+  "observation_points": 0,
+  "blank_cells": [
+    "r3c11",
+    "r4c11",
+    "r5c11",
+    "r6c11",
+    "r7c11",
+    "r8c0",
+    "r8c11"
+  ],
+  "status_counts": {
+    "unexplained_blank": 7
+  },
+  "explained_blank_cells": [],
+  "unexplained_blank_cells": [
+    "r3c11",
+    "r4c11",
+    "r5c11",
+    "r6c11",
+    "r7c11",
+    "r8c0",
+    "r8c11"
+  ],
+  "classified_cells": [
+    {
+      "id": "r3c11",
+      "logical_rect": [
+        736,
+        208,
+        799,
+        271
+      ],
+      "nonblack_percent": 0.0,
+      "status": "unexplained_blank",
+      "observation": null
+    },
+    {
+      "id": "r4c11",
+      "logical_rect": [
+        736,
+        272,
+        799,
+        335
+      ],
+      "nonblack_percent": 0.0,
+      "status": "unexplained_blank",
+      "observation": null
+    },
+    {
+      "id": "r5c11",
+      "logical_rect": [
+        736,
+        336,
+        799,
+        399
+      ],
+      "nonblack_percent": 0.0,
+      "status": "unexplained_blank",
+      "observation": null
+    },
+    {
+      "id": "r6c11",
+      "logical_rect": [
+        736,
+        400,
+        799,
+        463
+      ],
+      "nonblack_percent": 0.0,
+      "status": "unexplained_blank",
+      "observation": null
+    },
+    {
+      "id": "r7c11",
+      "logical_rect": [
+        736,
+        464,
+        799,
+        527
+      ],
+      "nonblack_percent": 0.0,
+      "status": "unexplained_blank",
+      "observation": null
+    },
+    {
+      "id": "r8c0",
+      "logical_rect": [
+        32,
+        528,
+        95,
+        591
+      ],
+      "nonblack_percent": 1.392,
+      "status": "unexplained_blank",
+      "observation": null
+    },
+    {
+      "id": "r8c11",
+      "logical_rect": [
+        736,
+        528,
+        799,
+        591
+      ],
+      "nonblack_percent": 0.0,
+      "status": "unexplained_blank",
+      "observation": null
+    }
+  ]
+}

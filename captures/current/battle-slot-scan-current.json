@@ -1,0 +1,170 @@
+{
+  "generated_at": "2026-05-20T20:33:50+02:00",
+  "runtime_policy": "repo-only parser; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "exe": "C:\\Clash\\clash95.exe",
+  "run_count": 6,
+  "routed_slot_count": 3,
+  "timeout_before_unit_scan_count": 3,
+  "natural_enabled_unit_count": 0,
+  "natural_enabled_units": [],
+  "rows": [
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-195244",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-195244\\cdb-surface-dump.log",
+      "slot": 0,
+      "passed": true,
+      "timed_out": false,
+      "error": null,
+      "loadsave_seen": true,
+      "loadsave_selected_arg": 0,
+      "loadsave_selected_global": 0,
+      "last_load_mouse": [
+        320,
+        166
+      ],
+      "slot_scan_seen": false,
+      "slot_scan_unit_count": null,
+      "unit_count": 18,
+      "unit_types": [
+        0,
+        1,
+        5,
+        16,
+        17
+      ],
+      "natural_enabled_unit_count": 0,
+      "natural_enabled_units": [],
+      "classification": "routed-no-natural-enabled",
+      "candidate": "C:\\ClashTests\\battle-postready-redraw\\clash95_hd_surfdump_20260520_195244.exe",
+      "png": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260520-195244\\surface.png"
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202027",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-202027\\cdb-surface-dump.log",
+      "slot": 1,
+      "passed": false,
+      "timed_out": true,
+      "error": "CDB surface dump timed out after 120 seconds",
+      "loadsave_seen": true,
+      "loadsave_selected_arg": 1,
+      "loadsave_selected_global": 1,
+      "last_load_mouse": [
+        320,
+        188
+      ],
+      "slot_scan_seen": false,
+      "slot_scan_unit_count": null,
+      "unit_count": 18,
+      "unit_types": [
+        0,
+        1,
+        5,
+        16,
+        17
+      ],
+      "natural_enabled_unit_count": 0,
+      "natural_enabled_units": [],
+      "classification": "routed-no-natural-enabled",
+      "candidate": "C:\\ClashTests\\battle-slot-scan\\clash95_hd_surfdump_20260520_202027.exe",
+      "png": null
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202424",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-202424\\cdb-surface-dump.log",
+      "slot": 2,
+      "passed": true,
+      "timed_out": false,
+      "error": null,
+      "loadsave_seen": true,
+      "loadsave_selected_arg": 2,
+      "loadsave_selected_global": 2,
+      "last_load_mouse": [
+        320,
+        210
+      ],
+      "slot_scan_seen": true,
+      "slot_scan_unit_count": 1,
+      "unit_count": 1,
+      "unit_types": [
+        0
+      ],
+      "natural_enabled_unit_count": 0,
+      "natural_enabled_units": [],
+      "classification": "routed-no-natural-enabled",
+      "candidate": "C:\\ClashTests\\battle-slot-scan\\clash95_hd_surfdump_20260520_202424.exe",
+      "png": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260520-202424\\surface.png"
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202504",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-202504\\cdb-surface-dump.log",
+      "slot": 3,
+      "passed": false,
+      "timed_out": true,
+      "error": "CDB surface dump timed out after 60 seconds",
+      "loadsave_seen": false,
+      "loadsave_selected_arg": null,
+      "loadsave_selected_global": null,
+      "last_load_mouse": [
+        320,
+        232
+      ],
+      "slot_scan_seen": false,
+      "slot_scan_unit_count": null,
+      "unit_count": 0,
+      "unit_types": [],
+      "natural_enabled_unit_count": 0,
+      "natural_enabled_units": [],
+      "classification": "timeout-before-unit-scan",
+      "candidate": "C:\\ClashTests\\battle-slot-scan\\clash95_hd_surfdump_20260520_202504.exe",
+      "png": null
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202640",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-202640\\cdb-surface-dump.log",
+      "slot": 4,
+      "passed": false,
+      "timed_out": true,
+      "error": "CDB surface dump timed out after 60 seconds",
+      "loadsave_seen": false,
+      "loadsave_selected_arg": null,
+      "loadsave_selected_global": null,
+      "last_load_mouse": [
+        320,
+        254
+      ],
+      "slot_scan_seen": false,
+      "slot_scan_unit_count": null,
+      "unit_count": 0,
+      "unit_types": [],
+      "natural_enabled_unit_count": 0,
+      "natural_enabled_units": [],
+      "classification": "timeout-before-unit-scan",
+      "candidate": "C:\\ClashTests\\battle-slot-scan\\clash95_hd_surfdump_20260520_202640.exe",
+      "png": null
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260520-202810",
+      "log": "captures\\archive\\cdb-surface-dump-20260520-202810\\cdb-surface-dump.log",
+      "slot": 5,
+      "passed": false,
+      "timed_out": true,
+      "error": "CDB surface dump timed out after 60 seconds",
+      "loadsave_seen": false,
+      "loadsave_selected_arg": null,
+      "loadsave_selected_global": null,
+      "last_load_mouse": [
+        320,
+        276
+      ],
+      "slot_scan_seen": false,
+      "slot_scan_unit_count": null,
+      "unit_count": 0,
+      "unit_types": [],
+      "natural_enabled_unit_count": 0,
+      "natural_enabled_units": [],
+      "classification": "timeout-before-unit-scan",
+      "candidate": "C:\\ClashTests\\battle-slot-scan\\clash95_hd_surfdump_20260520_202810.exe",
+      "png": null
+    }
+  ]
+}

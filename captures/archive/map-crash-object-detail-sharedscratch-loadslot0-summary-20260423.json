@@ -1,0 +1,199 @@
+{
+  "log": "captures\\cdb-map-crash-object-detail-sharedscratch-loadslot0-20260423.log",
+  "patch_report": "captures\\patch-stage-dynorigin-sharedscratch-20260422.json",
+  "expected_visible_tiles": {
+    "x": 12,
+    "y": 9
+  },
+  "loadsave_rows": 0,
+  "loadmap_rows": 0,
+  "playgame_rows": 1,
+  "redraw_rows": 12,
+  "scroll_rows": 0,
+  "repaint_rows": 12,
+  "copy_pre_rows": 0,
+  "copy_exec_rows": 0,
+  "copy_state_rows": 1,
+  "obj_state_rows": 2,
+  "copy_diff_rows": 1,
+  "stream_rows": 0,
+  "first_stream": [],
+  "last_stream": [],
+  "stream_groups": [],
+  "first_copy_pre": [],
+  "last_copy_pre": [],
+  "first_copy_exec": [],
+  "last_copy_exec": [],
+  "last_copy_state": [
+    {
+      "line_no": 225,
+      "ebp": "000edaca",
+      "dst_edi": "0b26c1d0",
+      "src_esi": "0bb20612",
+      "len_eax": 64,
+      "dwords_ecx": 16,
+      "edx": "0050ed94",
+      "obj_local": "00f89be0",
+      "src_local": "0bb20612"
+    }
+  ],
+  "last_obj_state": [
+    {
+      "line_no": 226,
+      "obj": "00f89be0",
+      "objvt": "0050ed94",
+      "obj_cursor": "0b26c1d0",
+      "obj_aux": "00000280",
+      "scratch_obj": "0051d4b8",
+      "scratchvt": "0050ef24",
+      "scratch_p4": "00000000",
+      "scratch_p8": "02580320"
+    }
+  ],
+  "last_copy_diff": [
+    {
+      "line_no": 227,
+      "dst_minus_obj_cursor": 0,
+      "dst_minus_scratch_p4": 187089360,
+      "dst_minus_scratch_p8": 147766960
+    }
+  ],
+  "copy_pre_groups": [],
+  "copy_exec_groups": [],
+  "restore_rows": 1,
+  "restore_clamp_rows": 1,
+  "first_restore": [
+    {
+      "line_no": 185,
+      "beforex": 39,
+      "beforey": 42,
+      "maxx": 38,
+      "maxy": 41,
+      "mapw": 50,
+      "maph": 50
+    }
+  ],
+  "first_restore_clamp": [
+    {
+      "line_no": 186,
+      "afterx": 38,
+      "aftery": 41
+    }
+  ],
+  "exception_rows": 1,
+  "first_exception": [
+    {
+      "line_no": 211,
+      "code": "c0000005",
+      "chance": "first chance"
+    }
+  ],
+  "last_exception": [
+    {
+      "line_no": 211,
+      "code": "c0000005",
+      "chance": "first chance"
+    }
+  ],
+  "last_exception_address": [
+    {
+      "line_no": 213,
+      "address": "00403582",
+      "symbol": "clash95+0x00003582"
+    }
+  ],
+  "last_write_address": [
+    {
+      "line_no": 219,
+      "address": "0b26c1d0"
+    }
+  ],
+  "last_eip": [
+    {
+      "line_no": 221,
+      "eip": "00403582"
+    }
+  ],
+  "map_entered": true,
+  "redraw_hit": true,
+  "first_loadsave": [],
+  "first_loadmap": [],
+  "first_playgame": [
+    {
+      "line_no": 184,
+      "gd": "03150030",
+      "mapw": 50,
+      "maph": 50,
+      "scrollx": 39,
+      "scrolly": 42,
+      "player": 0,
+      "selected": -1,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "first_redraw": [
+    {
+      "line_no": 187,
+      "seq": 0,
+      "gd": "03150030",
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "end12x": 50,
+      "end12y": 50,
+      "end9x": 47,
+      "end9y": 48,
+      "player": 0,
+      "selected": -1,
+      "fog": 0,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "last_redraw": [
+    {
+      "line_no": 210,
+      "seq": 11,
+      "gd": "03150030",
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "end12x": 50,
+      "end12y": 50,
+      "end9x": 47,
+      "end9y": 48,
+      "player": 0,
+      "selected": -1,
+      "fog": 0,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "scrollx_range": {
+    "min": 38,
+    "max": 38,
+    "unique": 1
+  },
+  "scrolly_range": {
+    "min": 41,
+    "max": 41,
+    "unique": 1
+  },
+  "mapw_range": {
+    "min": 50,
+    "max": 50,
+    "unique": 1
+  },
+  "maph_range": {
+    "min": 50,
+    "max": 50,
+    "unique": 1
+  },
+  "edge_overrun_rows": 0,
+  "first_edge_overrun": [],
+  "last_edge_overrun": [],
+  "static_patch_expects_12x9": true
+}

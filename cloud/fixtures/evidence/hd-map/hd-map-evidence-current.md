@@ -226,39 +226,39 @@
 
 Normal post-owner visibility-zero surface:
 
-![normal post-owner surface](<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-190037/surface.png)
+![normal post-owner surface](<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260506-190037/surface.png)
 
 Forced-visible post-owner surface:
 
-![forced-visible post-owner surface](<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260506-201114/surface.png)
+![forced-visible post-owner surface](<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260506-201114/surface.png)
 
 Right-bottom owner/action route surface:
 
-![right-bottom owner route surface](<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-112339/surface.png)
+![right-bottom owner route surface](<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-112339/surface.png)
 
 Right-bottom debugger composition surface:
 
-![right-bottom debugger composition surface](<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-115303/surface.png)
+![right-bottom debugger composition surface](<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-115303/surface.png)
 
 Right-bottom validation patch surface:
 
-![right-bottom validation patch surface](<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-120712/surface.png)
+![right-bottom validation patch surface](<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-120712/surface.png)
 
 Right-bottom validation patch full-start owner/action route surface:
 
-![right-bottom validation patch full-start route surface](<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122928/surface.png)
+![right-bottom validation patch full-start route surface](<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-122928/surface.png)
 
 Right-bottom validation patch normal map surface:
 
-![right-bottom validation patch normal map surface](<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-121513/surface.png)
+![right-bottom validation patch normal map surface](<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-121513/surface.png)
 
 Right-bottom validation patch natural UI surface:
 
-![right-bottom validation patch natural UI surface](<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260513-122200/surface.png)
+![right-bottom validation patch natural UI surface](<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260513-122200/surface.png)
 
 Right-bottom validation patch controlled grid-hit surface:
 
-![right-bottom validation patch controlled grid-hit surface](<CLOUD_WORKTREE>/captures/cdb-surface-dump-20260514-140601/surface.png)
+![right-bottom validation patch controlled grid-hit surface](<CLOUD_WORKTREE>/captures/archive/cdb-surface-dump-20260514-140601/surface.png)
 
 ## Key Evidence
 
@@ -269,79 +269,79 @@ Right-bottom validation patch controlled grid-hit surface:
 - Stage:
   `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - No-popup map evidence matrix:
-  `captures\no-popup-map-evidence-current.md`
+  `captures\current\no-popup-map-evidence-current.md`
 - No-popup map evidence matrix tests:
-  `captures\no-popup-map-evidence-tests-current.md`
+  `captures\current\no-popup-map-evidence-tests-current.md`
 - Normal evidence pair:
-  `captures\cdb-surface-dump-20260506-190037`
+  `captures\archive\cdb-surface-dump-20260506-190037`
 - Forced-visible evidence pair:
-  `captures\cdb-surface-dump-20260506-201114`
+  `captures\archive\cdb-surface-dump-20260506-201114`
 - Right-bottom owner/action route proof:
-  `captures\cdb-surface-dump-20260513-112339`
+  `captures\archive\cdb-surface-dump-20260513-112339`
 - Right-bottom debugger composition proof:
-  `captures\cdb-surface-dump-20260513-115303`
+  `captures\archive\cdb-surface-dump-20260513-115303`
 - Right-bottom validation patch proof:
-  `captures\cdb-surface-dump-20260513-120712`
+  `captures\archive\cdb-surface-dump-20260513-120712`
 - Right-bottom validation patch full-start owner/action route proof:
-  `captures\cdb-surface-dump-20260513-122928`
+  `captures\archive\cdb-surface-dump-20260513-122928`
 - Right-bottom validation patch normal map proof:
-  `captures\cdb-surface-dump-20260513-121513`
+  `captures\archive\cdb-surface-dump-20260513-121513`
 - Right-bottom validation patch natural UI proof:
-  `captures\cdb-surface-dump-20260513-122200`
+  `captures\archive\cdb-surface-dump-20260513-122200`
 - Right-bottom validation patch controlled grid-hit proof:
-  `captures\cdb-surface-dump-20260514-140601`
+  `captures\archive\cdb-surface-dump-20260514-140601`
 - Right-bottom validation patch promotion decision:
-  `captures\right-bottom-compose-promotion-decision-current.md`
+  `captures\current\right-bottom-compose-promotion-decision-current.md`
 - Right-bottom validation evidence matrix:
-  `captures\right-bottom-compose-evidence-current.md`
+  `captures\current\right-bottom-compose-evidence-current.md`
 - Right-bottom validation patch controlled grid-hit report:
-  `captures\right-bottom-grid-hit-current.md`
+  `captures\current\right-bottom-grid-hit-current.md`
 - Right-bottom validation patch controlled grid-hit probe guard:
-  `captures\right-bottom-grid-hit-probe-guard-current.md`
+  `captures\current\right-bottom-grid-hit-probe-guard-current.md`
 - Right-bottom validation patch promotion decision tests:
-  `captures\right-bottom-compose-promotion-decision-tests-current.md`
+  `captures\current\right-bottom-compose-promotion-decision-tests-current.md`
 - Right-bottom validation evidence matrix tests:
-  `captures\right-bottom-compose-evidence-matrix-tests-current.md`
+  `captures\current\right-bottom-compose-evidence-matrix-tests-current.md`
 - Right-bottom validation patch controlled grid-hit parser tests:
-  `captures\right-bottom-grid-hit-summary-tests-current.md`
+  `captures\current\right-bottom-grid-hit-summary-tests-current.md`
 - Right-bottom validation patch controlled grid-hit probe guard tests:
-  `captures\right-bottom-grid-hit-probe-guard-tests-current.md`
+  `captures\current\right-bottom-grid-hit-probe-guard-tests-current.md`
 - Castle overview baseline recheck:
-  `captures\castle-overview-baseline-recheck-current.md`
+  `captures\current\castle-overview-baseline-recheck-current.md`
 - Castle overview evidence matrix:
-  `captures\castle-overview-evidence-current.md`
+  `captures\current\castle-overview-evidence-current.md`
 - Castle owner records summary tests:
-  `captures\castle-owner-records-summary-tests-current.md`
+  `captures\current\castle-owner-records-summary-tests-current.md`
 - Castle overview evidence matrix tests:
-  `captures\castle-overview-evidence-matrix-tests-current.md`
+  `captures\current\castle-overview-evidence-matrix-tests-current.md`
 - Castle overview gate tests:
-  `captures\castle-overview-gate-tests-current.md`
+  `captures\current\castle-overview-gate-tests-current.md`
 - Castle overview hitbox summary tests:
-  `captures\castle-overview-hitbox-summary-tests-current.md`
+  `captures\current\castle-overview-hitbox-summary-tests-current.md`
 - Castle overview hitmap summary tests:
-  `captures\castle-overview-hitmap-summary-tests-current.md`
+  `captures\current\castle-overview-hitmap-summary-tests-current.md`
 - Castle overview multihit summary tests:
-  `captures\castle-overview-multihit-summary-tests-current.md`
+  `captures\current\castle-overview-multihit-summary-tests-current.md`
 - Castle overview promotion decision:
-  `captures\castle-overview-promotion-decision-current.md`
+  `captures\current\castle-overview-promotion-decision-current.md`
 - Castle overview promotion decision tests:
-  `captures\castle-overview-promotion-decision-tests-current.md`
+  `captures\current\castle-overview-promotion-decision-tests-current.md`
 - Stable stage guard:
-  `captures\stable-stage-guard-current.md`
+  `captures\current\stable-stage-guard-current.md`
 - Executable artifact guard:
-  `captures\exe-artifact-guard-current.md`
+  `captures\current\exe-artifact-guard-current.md`
 - Surface-dump policy guard:
-  `captures\surface-dump-policy-guard-current.md`
+  `captures\current\surface-dump-policy-guard-current.md`
 - No-visible runtime guard:
-  `captures\no-visible-runtime-guard-current.md`
+  `captures\current\no-visible-runtime-guard-current.md`
 - No-visible runtime guard tests:
-  `captures\no-visible-runtime-guard-tests-current.md`
+  `captures\current\no-visible-runtime-guard-tests-current.md`
 - Process hygiene guard:
-  `captures\process-hygiene-guard-current.md`
+  `captures\current\process-hygiene-guard-current.md`
 - No-popup boundary guard:
-  `captures\no-popup-boundary-guard-current.md`
+  `captures\current\no-popup-boundary-guard-current.md`
 - No-popup guard regression tests:
-  `captures\no-popup-guard-tests-current.md`
+  `captures\current\no-popup-guard-tests-current.md`
 - Right-bottom validation patch SHA-256:
   `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`
 - Right-bottom validation patch stage:
@@ -403,24 +403,24 @@ window.
 ```powershell
 & '<USER_HOME>\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' tools\hd_map_smoke_matrix.py `
   --require-pass `
-  --write-json captures\hd-map-smoke-current.json `
-  --write-markdown captures\hd-map-smoke-current.md
+  --write-json captures\current\hd-map-smoke-current.json `
+  --write-markdown captures\current\hd-map-smoke-current.md
 ```
 
 ```powershell
 & '<USER_HOME>\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' tools\patch_manifest_compare.py `
-  captures\patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-20260424.json `
-  captures\patch-stage-mapdraw-partial12-20260424.json `
-  --write-json captures\patch-manifest-compare-current-vs-partial12.json `
-  --write-markdown captures\patch-manifest-compare-current-vs-partial12.md `
+  captures\archive\patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-20260424.json `
+  captures\archive\patch-stage-mapdraw-partial12-20260424.json `
+  --write-json captures\current\patch-manifest-compare-current-vs-partial12.json `
+  --write-markdown captures\current\patch-manifest-compare-current-vs-partial12.md `
   --limit 8
 ```
 
 ```powershell
 & '<USER_HOME>\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' tools\evidence_index_check.py `
-  captures\hd-map-evidence-current.md `
+  captures\current\hd-map-evidence-current.md `
   --require-pass `
-  --write-json captures\hd-map-evidence-current-check.json
+  --write-json captures\current\hd-map-evidence-current-check.json
 ```
 
 ## Interpretation
@@ -431,7 +431,7 @@ not by a remaining 12x9 map loop, present-bounds, minimap, or action-panel
 copyback defect.
 
 The right-bottom owner/action proof is separate from the map-visibility gate:
-`captures\cdb-surface-dump-20260513-112339` uses a hidden-desktop CDB route
+`captures\archive\cdb-surface-dump-20260513-112339` uses a hidden-desktop CDB route
 with map validation skipped to prove the current stage can reach the
 action/status owner setup, draw cluster, action-box redirect, copyback, and
 surface dump without an AV. The composition rows show the current action-box
@@ -441,7 +441,7 @@ panel regions. The remaining visual issue is a native-anchor/composition
 problem, not a failure to enter the route under this proof.
 
 The follow-up debugger composition proof is also separate from the stable stage:
-`captures\cdb-surface-dump-20260513-115303` uses hidden-desktop CDB to
+`captures\archive\cdb-surface-dump-20260513-115303` uses hidden-desktop CDB to
 manually copy the native status rectangle `(401,288,593,357)` to `(586,528)`
 and the native action-box rectangle `(285,350,450,425)` to `(285,524)` on the
 800x600 surface. It passes with no AV rows and proves the native content can be
@@ -453,7 +453,7 @@ stable HD map stage.
 
 The validation patch proof turns that debugger-only composition into an
 isolated patch group named `right-bottom-compose-proof`, still outside the
-stable HD map stage. `captures\cdb-surface-dump-20260513-120712` applies the
+stable HD map stage. `captures\archive\cdb-surface-dump-20260513-120712` applies the
 new validation stage through the hidden-desktop harness with `-SkipMapValidation`
 and the existing owner/action extra probe. It passes the current HD map byte
 gate plus all four right-bottom patch bytes/caves, reaches the same owner/action
@@ -463,9 +463,9 @@ nonblack. This proves the narrow patch shape, but the stable stage remains
 `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`.
 
 The full-start controlled owner/action route for the same validation patch is
-`captures\cdb-surface-dump-20260513-122928`. It uses the same patched SHA,
+`captures\archive\cdb-surface-dump-20260513-122928`. It uses the same patched SHA,
 hidden desktop, `-UseDdrawProxy`, `-NoSkipStartAnims`, `-SkipMapValidation`,
-and `clash95_post_owner_action_extra.cdb`. It passes with `ready=True`,
+and `probes/cdb/map/clash95_post_owner_action_extra.cdb`. It passes with `ready=True`,
 `av_count=0`, `owner_rows=11`, `draw_rows=5`, `13` text rows, and the same
 lower/right recovery: `bottom_right_ui_corner=48.228%`, `r8c10=54.102%`, and
 `r8c11=42.822%` nonblack. This extends the route proof from fast-forwarded
@@ -473,7 +473,7 @@ startup to the full startup/resource path while keeping the stage
 validation-only.
 
 The normal-map safety run for that validation stage is
-`captures\cdb-surface-dump-20260513-121513`. It uses the same patched SHA,
+`captures\archive\cdb-surface-dump-20260513-121513`. It uses the same patched SHA,
 hidden desktop, `-UseDdrawProxy`, full startup animation path
 (`-NoSkipStartAnims`), and map validation enabled. The run passes with an
 800x600 gameplay-like surface, `108` active cells, `13` blank active cells,
@@ -483,8 +483,8 @@ This adds normal map/visibility safety for the validation patch, but still does
 not promote it into the stable HD map stage.
 
 The natural right-bottom UI probe for that validation stage is
-`captures\cdb-surface-dump-20260513-122200`. It runs the existing
-`clash95_right_bottom_ui_extra.cdb` probe on the validation patch through the
+`captures\archive\cdb-surface-dump-20260513-122200`. It runs the existing
+`probes/cdb/ui/clash95_right_bottom_ui_extra.cdb` probe on the validation patch through the
 hidden-desktop launcher. The run passes with the same patched SHA,
 `RBUI_VIEWPORT_SWITCH=1`, `RBUI_DESC_SWITCH=35`, `SURFDUMP_PLAYGAME=1`,
 `SURFDUMP_READY=1`, no owner/action draw rows (`RBUI_PANEL_DRAW=0`,
@@ -493,9 +493,9 @@ route observation while proving the validation patch does not break the
 descriptor/viewport probe path.
 
 The controlled right-bottom grid-hit proof for that validation stage is
-`captures\cdb-surface-dump-20260514-140601`. It uses hidden desktop,
+`captures\archive\cdb-surface-dump-20260514-140601`. It uses hidden desktop,
 `-UseDdrawProxy`, `-FastForwardStartAnims`, `-SkipMapValidation`, and
-`clash95_right_bottom_grid_hit_extra.cdb` to route into the owner/action grid
+`probes/cdb/ui/clash95_right_bottom_grid_hit_extra.cdb` to route into the owner/action grid
 loop with the native coordinate `(450,73)`. The parser records
 `grid_hit_ok=True`, `last_grid_entry=[450, 73]`, `last_grid_result=0`,
 `forced_gate_count=1`, `failure_exit_count=0`, `draw_row_count=5`, and
@@ -504,7 +504,7 @@ stage; it is not manual DirectInput proof and does not promote the patch into
 the stable HD map stage.
 
 The right-bottom route timing guard is
-`captures\right-bottom-route-timing-guard-current.md`. It passes repo-only and
+`captures\current\right-bottom-route-timing-guard-current.md`. It passes repo-only and
 checks the archived validation patch route, full-start owner/action route, and
 controlled grid-hit route for hidden-desktop execution, 800x600 surfaces,
 candidate SHA agreement, no AV/failure-exit rows, and stable marker ordering
@@ -513,7 +513,7 @@ turns the existing broader route/input/timing evidence into a no-popup guard,
 but it remains CDB/proxy evidence rather than manual DirectInput proof.
 
 The right-bottom validation patch promotion decision is
-`captures\right-bottom-compose-promotion-decision-current.md`. It records
+`captures\current\right-bottom-compose-promotion-decision-current.md`. It records
 `decision=defer_stable_promotion` and `stable_stage_should_change=False`
 despite all required right-bottom validation checks passing, because the proof
 class is still repo-only CDB/proxy evidence, no manual/visible DirectInput proof
@@ -522,13 +522,13 @@ and the natural right-bottom UI probe still records `RBUI_PANEL_DRAW=0` and
 `RBUI_ACTION_BOX=0`. The stable HD map stage therefore remains unchanged.
 
 The compact right-bottom validation evidence matrix is
-`captures\right-bottom-compose-evidence-current.md`. It collects the validation
+`captures\current\right-bottom-compose-evidence-current.md`. It collects the validation
 patch proof, full-start controlled owner/action route, normal map gate, natural
 UI probe, controlled grid-hit proof, route timing guard, and promotion decision
 into one repo-only PASS record with `promotion_status=validation_stage_only`
 and `stable_stage_should_change=False`.
 
-The stable stage guard is `captures\stable-stage-guard-current.md`. It passes
+The stable stage guard is `captures\current\stable-stage-guard-current.md`. It passes
 repo-only, confirms the patcher default is still
 `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`,
 and reports no validation-only groups in the stable stage. It also checks that
@@ -539,25 +539,25 @@ focused/multihit proof. It now also checks 11 `mapsurface` stages, with zero
 stages reintroducing the old global `menu-surface` group and zero stages
 missing `map-surface-upgrade-scrollclamp`.
 
-The executable artifact guard is `captures\exe-artifact-guard-current.md`. It
+The executable artifact guard is `captures\current\exe-artifact-guard-current.md`. It
 passes repo-only with `0` filesystem `.exe` files, `0` git-index `.exe` files,
 and the root-level `.exe` ignore rule present. The staged `.exe` removals are
 reported as allowed deletions.
 
 The surface-dump policy guard is
-`captures\surface-dump-policy-guard-current.md`. It passes repo-only and
-checks that `run_cdb_surface_dump.ps1` defaults to `hidden-desktop`, refuses
+`captures\current\surface-dump-policy-guard-current.md`. It passes repo-only and
+checks that `scripts/cdb/scripts\cdb\run_cdb_surface_dump.ps1` defaults to `hidden-desktop`, refuses
 implicit visible fallback after `CreateDesktop` failure, and only uses the
 active desktop from the explicit `-AllowVisibleDesktop` branch. Future summary
 paths now record both `HiddenDesktop` and `AllowVisibleDesktop`.
 
 The visible runtime launcher guard is
-`captures\visible-runtime-launcher-guard-current.md`. It passes repo-only,
+`captures\current\visible-runtime-launcher-guard-current.md`. It passes repo-only,
 checks 12 legacy visible launchers/helpers, and requires
 `-AllowVisibleRuntime` before any risky `Start-Process`, window-focus, cursor,
 SendInput, PostMessage, or `CopyFromScreen` call. Guarded child helpers must
 receive the same switch. Its test report
-`captures\visible-runtime-launcher-guard-tests-current.md` passes with
+`captures\current\visible-runtime-launcher-guard-tests-current.md` passes with
 `test_count=10` and covers gated launchers, gated foreground helpers, gated
 screen-capture helpers, guarded child-helper forwarding, missing switches,
 missing approval wording, late guards, unclassified risky root scripts,
@@ -567,46 +567,46 @@ with risky runtime/window/input/capture calls, `12` guarded scripts, `3`
 documented exemptions, and `0` unclassified scripts.
 
 The no-popup map evidence matrix is
-`captures\no-popup-map-evidence-current.md`. It passes repo-only by pairing
+`captures\current\no-popup-map-evidence-current.md`. It passes repo-only by pairing
 the stable normal visibility-explained run
-`captures\cdb-surface-dump-20260429-140916` with the stable forced-visible
-edge proof `captures\cdb-surface-dump-20260429-135242`, keeping the map
+`captures\archive\cdb-surface-dump-20260429-140916` with the stable forced-visible
+edge proof `captures\archive\cdb-surface-dump-20260429-135242`, keeping the map
 baseline visible in the one-command refresh.
 
 The no-popup map evidence matrix tests are
-`captures\no-popup-map-evidence-tests-current.md`. They pass repo-only and
+`captures\current\no-popup-map-evidence-tests-current.md`. They pass repo-only and
 cover explicit normal/forced inputs, latest passing-run selection, normal
 visibility-gate regressions, forced-visible gate regressions, and CLI
 `--require-pass` fail-closed behavior.
 
 The no-visible runtime guard is
-`captures\no-visible-runtime-guard-current.md`. It passes repo-only with `19`
+`captures\current\no-visible-runtime-guard-current.md`. It passes repo-only with `19`
 referenced CDB surface-dump runs and `19` hidden-desktop runs. This makes the
 current no-popup evidence policy explicit: any current evidence run that used
 visible fallback would fail the refresh.
 
 The no-visible runtime guard tests are
-`captures\no-visible-runtime-guard-tests-current.md`. They pass repo-only and
+`captures\current\no-visible-runtime-guard-tests-current.md`. They pass repo-only and
 cover hidden-desktop summaries, weak runtime policy text, visible runtime
 summary regressions, missing run summaries, and CLI `--require-pass`
 fail-closed behavior.
 
-The process hygiene guard is `captures\process-hygiene-guard-current.md`. It
+The process hygiene guard is `captures\current\process-hygiene-guard-current.md`. It
 uses a Windows Toolhelp process snapshot, launches no game/debugger/window, and
 passes with `0` matching `cdb.exe` or `clash95*` runtime processes. This catches
 stale debugger/game processes before another evidence refresh is treated as
 clean.
 
 The promotion override guard is
-`captures\promotion-override-guard-current.md`. It passes repo-only and verifies
+`captures\current\promotion-override-guard-current.md`. It passes repo-only and verifies
 that the current right-bottom compose promotion decision, castle overview
 promotion decision, and manual DirectInput checklist all keep
 `allow_cdb_only_promotion=False`, proof-valid flags false, and stable-stage
 change flags false. The fixture tests in
-`captures\promotion-override-guard-tests-current.md` cover unexpected override,
+`captures\current\promotion-override-guard-tests-current.md` cover unexpected override,
 manual-proof, promotion-ready, missing-JSON, and CLI fail-closed cases.
 
-The no-popup boundary guard is `captures\no-popup-boundary-guard-current.md`.
+The no-popup boundary guard is `captures\current\no-popup-boundary-guard-current.md`.
 It passes repo-only and verifies that the current refresh includes the six
 core boundary guards: stable stage, executable artifact, surface-dump policy,
 visible-runtime launcher, no-visible runtime, and process hygiene. It records
@@ -630,62 +630,62 @@ report as supporting reports, and checks that this evidence index links every
 report.
 
 The no-popup guard regression report is
-`captures\no-popup-guard-tests-current.md`. It passes repo-only and records the
+`captures\current\no-popup-guard-tests-current.md`. It passes repo-only and records the
 fixture tests that cover each missing evidence-index report link,
 missing/failing core refresh checks, each missing supporting refresh check, and
 surface-dump launcher policy drift.
 
 The castle overview baseline recheck is
-`captures\castle-overview-baseline-recheck-current.md`. It passes repo-only and
+`captures\current\castle-overview-baseline-recheck-current.md`. It passes repo-only and
 bundles the fixed full-overview visual baseline
-`captures\cdb-surface-dump-20260515-105041`, the barracks controlled-stop
-baseline `captures\cdb-surface-dump-20260512-082418`, and the latest
+`captures\archive\cdb-surface-dump-20260515-105041`, the barracks controlled-stop
+baseline `captures\archive\cdb-surface-dump-20260512-082418`, and the latest
 `castlecenter-all` evidence matrix with visible and dormant target-done
 completion proof.
 
 The castle overview baseline recheck tests are
-`captures\castle-overview-baseline-recheck-tests-current.md`. They pass
+`captures\current\castle-overview-baseline-recheck-tests-current.md`. They pass
 repo-only and cover stale overview visual baselines, stale barracks
 controlled-stop baselines, failing latest castle overview matrices, missing
 visible/dormant target-done completion proof, and JSON/Markdown output writing.
 
 The right-bottom compose promotion decision tests are
-`captures\right-bottom-compose-promotion-decision-tests-current.md`. They pass
+`captures\current\right-bottom-compose-promotion-decision-tests-current.md`. They pass
 repo-only and cover the default defer decision, missing or failing
 route/gate/grid/timing checks, valid manual-proof manifest promotion
 eligibility, placeholder proof rejection, the explicit CDB-only override, and
 the CLI JSON/Markdown output plus `--require-pass` fail-closed path.
 
 The right-bottom compose evidence matrix tests are
-`captures\right-bottom-compose-evidence-matrix-tests-current.md`. They pass
+`captures\current\right-bottom-compose-evidence-matrix-tests-current.md`. They pass
 repo-only and cover all required route, map, UI, grid-hit, timing, and
 promotion-decision gates, candidate SHA agreement, hidden-desktop and
 full-start safety requirements, normal visibility proof, and the CLI
 JSON/Markdown output plus `--require-pass` fail-closed path.
 
 The right-bottom controlled grid-hit probe guard is
-`captures\right-bottom-grid-hit-probe-guard-current.md`. It passes repo-only
-and verifies that `clash95_right_bottom_grid_hit_extra.cdb` still carries the
+`captures\current\right-bottom-grid-hit-probe-guard-current.md`. It passes repo-only
+and verifies that `probes/cdb/ui/clash95_right_bottom_grid_hit_extra.cdb` still carries the
 focused owner/action/grid breakpoints, that the parser recognizes every probe
 row, and that the archived hidden-desktop run proves native coordinate
 `(450,73)` returns grid cell `0` on an 800x600 surface with zero failure-exit
 or AV rows.
 
 The right-bottom controlled grid-hit probe guard tests are
-`captures\right-bottom-grid-hit-probe-guard-tests-current.md`. They pass
+`captures\current\right-bottom-grid-hit-probe-guard-tests-current.md`. They pass
 repo-only and cover missing breakpoints, missing probe/parser markers, visible
 fallback, wrong stage/surface regressions, missing grid proof, failure-exit
 rows, AV rows, and the CLI JSON/Markdown output plus `--require-pass`
 fail-closed path.
 
 The castle owner records summary tests are
-`captures\castle-owner-records-summary-tests-current.md`. They pass repo-only
+`captures\current\castle-owner-records-summary-tests-current.md`. They pass repo-only
 and cover active, retired, nonempty, interesting, and flag-value record
 classification plus no-active, require-interesting, forbid-interesting, and
 truncated raw-dump fail-closed paths.
 
 The castle overview evidence matrix tests are
-`captures\castle-overview-evidence-matrix-tests-current.md`. They pass
+`captures\current\castle-overview-evidence-matrix-tests-current.md`. They pass
 repo-only and cover the all-checks-pass aggregation path, every required
 component-gate failure, required displayed-wrapper proof in the focused
 command `0x86` hitbox gate, target-done completion proof in the
@@ -693,40 +693,40 @@ visible/dormant multi-hit gates, validation-stage-only status, and the CLI
 JSON/Markdown output plus `--require-pass` fail-closed path.
 
 The castle overview gate tests are
-`captures\castle-overview-gate-tests-current.md`. They pass repo-only and
+`captures\current\castle-overview-gate-tests-current.md`. They pass repo-only and
 cover overview readiness, AV, post-draw, surface-size, expected-command, and
 centered-geometry regressions, barracks baseline regressions, and the CLI
 JSON/Markdown output plus `--require-pass` fail-closed path.
 
 The castle overview hitbox summary tests are
-`captures\castle-overview-hitbox-summary-tests-current.md`. They pass
+`captures\current\castle-overview-hitbox-summary-tests-current.md`. They pass
 repo-only and cover focused displayed/native hit rows, descriptor and
 click-gate parsing, callback suppression and callback-entry handling, AV rows,
 ready surface size, and the CLI required-flag fail-closed paths.
 
 The castle overview hitmap summary tests are
-`captures\castle-overview-hitmap-summary-tests-current.md`. They pass
+`captures\current\castle-overview-hitmap-summary-tests-current.md`. They pass
 repo-only and cover raw command IDs, presence/absence, counts, bounding boxes,
 centered displayed coordinates, required present/absent CLI flags, and wrong
 raw-dimension handling.
 
 The castle overview multihit summary tests are
-`captures\castle-overview-multihit-summary-tests-current.md`. They pass
+`captures\current\castle-overview-multihit-summary-tests-current.md`. They pass
 repo-only and cover target-set rows, hit-test results, descriptor and
 click-gate parsing, target-done completion rows, callback-entry handling, AV
 rows, ready surface size, and the CLI required-flag fail-closed paths
 including completion mismatch.
 
 The castle overview probe guard is
-`captures\castle-overview-probe-guard-current.md`. It passes repo-only and
-verifies that `clash95_castle_overview_hitbox_extra.cdb` still carries the
+`captures\current\castle-overview-probe-guard-current.md`. It passes repo-only and
+verifies that `probes/cdb/castle/clash95_castle_overview_hitbox_extra.cdb` still carries the
 focused descriptor-loop breakpoints at `00422544`, `0042257E`, `00422590`, and
 `0042262C`, that the known bad `CASTLECAT_OVERVIEW_DESC_INPUT_WRAPPER_ENTRY`
 path is absent, and that the focused hitbox log still proves the displayed
 coordinate wrapper and click gate with zero AV rows.
 
 The castle overview probe guard tests are
-`captures\castle-overview-probe-guard-tests-current.md`. They pass repo-only
+`captures\current\castle-overview-probe-guard-tests-current.md`. They pass repo-only
 and cover the good focused-probe shape, each missing descriptor-loop
 breakpoint, each missing required probe/parser marker, the old crashing
 overview wrapper markers, AV rows in the focused hitbox log, missing focused
@@ -735,14 +735,14 @@ entry, and the CLI JSON/Markdown output plus `--require-pass` fail-closed
 path.
 
 The castle overview promotion decision tests are
-`captures\castle-overview-promotion-decision-tests-current.md`. They pass
+`captures\current\castle-overview-promotion-decision-tests-current.md`. They pass
 repo-only and cover the default defer decision, a failing matrix fail-closed
 path, missing focused/multihit proof, valid manual-proof manifest promotion
 eligibility, placeholder proof rejection, the explicit CDB-only override, and
 the CLI JSON/Markdown output plus `--require-pass` fail-closed path.
 
 The stable stage guard tests are
-`captures\stable-stage-guard-tests-current.md`. They pass repo-only and cover
+`captures\current\stable-stage-guard-tests-current.md`. They pass repo-only and cover
 patcher-default drift, validation-only group leakage into the stable stage,
 missing `castlecenter-all` validation groups, `mapsurface` stages that
 reintroduce global `menu-surface`, `mapsurface` stages missing the

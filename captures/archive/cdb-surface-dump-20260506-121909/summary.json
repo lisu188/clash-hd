@@ -1,0 +1,103 @@
+{
+    "Passed":  true,
+    "Error":  null,
+    "LaunchMode":  "hidden-desktop",
+    "HiddenDesktop":  true,
+    "DesktopName":  "ClashSurfaceDump_20260506_121909",
+    "RunDir":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909",
+    "Stage":  "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "InputExe":  "C:\\Clash\\clash95.exe",
+    "InputSha256":  "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+    "CandidatePath":  "C:\\ClashTests\\cdb-castle-owner-setup\\clash95_hd_surfdump_20260506_121909.exe",
+    "CandidateDir":  "C:\\ClashTests\\cdb-castle-owner-setup",
+    "CandidateSha256":  "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+    "UseDdrawProxy":  true,
+    "NoSkipStartAnims":  true,
+    "FastForwardStartAnims":  false,
+    "ForceVisibleEdges":  false,
+    "DdrawProxyDll":  "C:\\ClashTests\\cdb-castle-owner-setup\\ddraw.dll",
+    "DdrawProxySha256":  "E8664404CF7483412BF237C28E12F93443A674A93BC46A1D4689D3266B201E13",
+    "DdrawProxyLog":  "C:\\ClashTests\\cdb-castle-owner-setup\\ddraw_surfdump_proxy.log",
+    "DdrawProxyManifest":  "C:\\ClashTests\\cdb-castle-owner-setup\\ddraw_surfdump_proxy.build.json",
+    "Cdb":  "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+    "CdbExitCode":  null,
+    "TimedOut":  false,
+    "StoppedAfterDump":  true,
+    "DumpMethod":  "host-readprocessmemory",
+    "HostDumpedMemory":  true,
+    "HostDumpError":  null,
+    "ProbeTemplate":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_surface_dump_probe.cdb",
+    "ExtraProbeTemplate":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_castle_owner_setup_extra.cdb",
+    "GeneratedProbe":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909\\clash95_surface_dump_probe.generated.cdb",
+    "Log":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909\\cdb-surface-dump.log",
+    "Surface":  {
+                    "RedrawSeq":  4,
+                    "Surface":  "0a1bed90",
+                    "Width":  800,
+                    "Height":  600,
+                    "Base":  "0a460030",
+                    "Bytes":  480000
+                },
+    "RawPath":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909\\surface.raw",
+    "RawBytes":  480000,
+    "PngPath":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909\\surface.png",
+    "PngSha256":  "5f7d4b398800ded8e62688a0e5da26be00d329d57f89e5a70cfd45aaa87ebc3c",
+    "PngMetadata":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909\\surface.png.json",
+    "CoverageJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909\\map-tile-coverage.json",
+    "CoverageText":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909\\map-tile-coverage.txt",
+    "CoverageBlankActiveCells":  [
+                                     "r3c10",
+                                     "r3c11",
+                                     "r4c10",
+                                     "r4c11",
+                                     "r5c10",
+                                     "r5c11",
+                                     "r6c10",
+                                     "r6c11",
+                                     "r7c10",
+                                     "r7c11",
+                                     "r8c0",
+                                     "r8c10",
+                                     "r8c11"
+                                 ],
+    "VisibilityJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909\\visibility-coverage-summary.json",
+    "VisibilityText":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-121909\\visibility-coverage.txt",
+    "VisibilityExitCode":  0,
+    "VisibilityRequireExplained":  true,
+    "VisibilityUnexplainedBlankCells":  [
+
+                                        ],
+    "VisibilityStatusCounts":  {
+                                   "visibility_zero":  13
+                               },
+    "VisibilityExplainedGate":  {
+                                    "Required":  true,
+                                    "Passed":  true,
+                                    "ExitCode":  0,
+                                    "BlankActiveCells":  [
+                                                             "r3c10",
+                                                             "r3c11",
+                                                             "r4c10",
+                                                             "r4c11",
+                                                             "r5c10",
+                                                             "r5c11",
+                                                             "r6c10",
+                                                             "r6c11",
+                                                             "r7c10",
+                                                             "r7c11",
+                                                             "r8c0",
+                                                             "r8c10",
+                                                             "r8c11"
+                                                         ],
+                                    "UnexplainedBlankCells":  [
+
+                                                              ]
+                                },
+    "ForcedVisibleJson":  null,
+    "ForcedVisibleText":  null,
+    "ForcedVisibleExitCode":  null,
+    "ForcedVisibleGate":  null,
+    "ForceVisibleStillBlankCells":  [
+
+                                    ]
+}

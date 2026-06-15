@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-06-15T18:36:11+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "percent_policy": "Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.",
+  "source_artifacts": {
+    "refresh_json": "captures\\current\\current-evidence-refresh-current.json",
+    "battle_json": "captures\\current\\battle-ui-evidence-current.json",
+    "manual_checklist_json": "captures\\current\\manual-directinput-validation-checklist-current.json",
+    "right_bottom_decision_json": "captures\\current\\right-bottom-compose-promotion-decision-current.json"
+  },
+  "percentages": [
+    {
+      "id": "current_repo_evidence_gates",
+      "label": "Current repo evidence gates",
+      "completion_percent": 85.09,
+      "passed": false,
+      "basis": "97/114 refresh checks pass"
+    },
+    {
+      "id": "focused_battle_right_bottom_lane",
+      "label": "Focused battle/right-bottom command lane",
+      "completion_percent": 99.91,
+      "passed": false,
+      "basis": "remaining blocker: real visible click-to-callback proof (command-ready runs: 2; click-consumed runs: 0; invalid runs retained: 1)"
+    },
+    {
+      "id": "right_bottom_promotion_gate",
+      "label": "Right-bottom promotion gate",
+      "completion_percent": 85.71,
+      "passed": false,
+      "basis": "6/7 required promotion checks pass"
+    },
+    {
+      "id": "manual_directinput_validation",
+      "label": "Manual DirectInput validation",
+      "completion_percent": 0.0,
+      "passed": false,
+      "basis": "0/5 manual checklist items have accepted proof"
+    }
+  ],
+  "full_game_complete": false,
+  "full_game_percent_statement": "not 100%; manual DirectInput proof and stable promotion remain blocked",
+  "remaining_blockers": {
+    "manual_directinput_pending_ids": [
+      "stable_menu_load",
+      "stable_hd_map_input",
+      "right_bottom_validation_input",
+      "castle_barracks_centered_input",
+      "castle_overview_centered_input"
+    ],
+    "right_bottom_failures": [
+      "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
+      "right-bottom natural UI probe did not enter owner/action draw rows"
+    ],
+    "battle_open_items": [
+      "real visible click-to-callback proof remains open",
+      "1 invalid visible-input run(s) are retained as negative evidence"
+    ]
+  },
+  "failures": []
+}

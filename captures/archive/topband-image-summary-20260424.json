@@ -1,0 +1,1473 @@
+{
+  "threshold": 12,
+  "black_percent": 5.0,
+  "regions": [
+    {
+      "name": "x608_y16",
+      "logical_rect": [
+        608,
+        16,
+        671,
+        79
+      ]
+    },
+    {
+      "name": "x672_y16",
+      "logical_rect": [
+        672,
+        16,
+        735,
+        79
+      ]
+    },
+    {
+      "name": "x736_y16",
+      "logical_rect": [
+        736,
+        16,
+        799,
+        79
+      ]
+    },
+    {
+      "name": "x608_y80",
+      "logical_rect": [
+        608,
+        80,
+        671,
+        143
+      ]
+    },
+    {
+      "name": "x672_y80",
+      "logical_rect": [
+        672,
+        80,
+        735,
+        143
+      ]
+    },
+    {
+      "name": "x736_y80",
+      "logical_rect": [
+        736,
+        80,
+        799,
+        143
+      ]
+    },
+    {
+      "name": "x608_y144",
+      "logical_rect": [
+        608,
+        144,
+        671,
+        207
+      ]
+    },
+    {
+      "name": "x672_y144",
+      "logical_rect": [
+        672,
+        144,
+        735,
+        207
+      ]
+    },
+    {
+      "name": "x736_y144",
+      "logical_rect": [
+        736,
+        144,
+        799,
+        207
+      ]
+    },
+    {
+      "name": "x608_y208",
+      "logical_rect": [
+        608,
+        208,
+        671,
+        271
+      ]
+    },
+    {
+      "name": "x672_y208",
+      "logical_rect": [
+        672,
+        208,
+        735,
+        271
+      ]
+    },
+    {
+      "name": "x736_y208",
+      "logical_rect": [
+        736,
+        208,
+        799,
+        271
+      ]
+    },
+    {
+      "name": "combined",
+      "logical_rect": [
+        608,
+        16,
+        799,
+        271
+      ]
+    }
+  ],
+  "images": [
+    {
+      "path": "captures\\map-overlay-presentbounds-minimapclip2-frame-loadslot0-20260423.png",
+      "image": {
+        "width": 1200,
+        "height": 900
+      },
+      "logical_size": {
+        "width": 800,
+        "height": 600
+      },
+      "scale": {
+        "x": 1.5,
+        "y": 1.5
+      },
+      "regions": {
+        "x608_y16": {
+          "logical_rect": [
+            608,
+            16,
+            671,
+            79
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 24,
+            "right": 1007,
+            "bottom": 119,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 52.083,
+          "bright_percent": 13.954,
+          "mean_luma": 40.998,
+          "min_luma": 0.0,
+          "max_luma": 181.212,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 71,
+            "rgb": [
+              68,
+              51,
+              41
+            ],
+            "luma": 53.892
+          },
+          "mostly_black": false
+        },
+        "x672_y16": {
+          "logical_rect": [
+            672,
+            16,
+            735,
+            79
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 24,
+            "right": 1103,
+            "bottom": 119,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 0.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.0,
+          "min_luma": 0.0,
+          "max_luma": 0.0,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 71,
+            "rgb": [
+              0,
+              0,
+              0
+            ],
+            "luma": 0.0
+          },
+          "mostly_black": true
+        },
+        "x736_y16": {
+          "logical_rect": [
+            736,
+            16,
+            799,
+            79
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 24,
+            "right": 1199,
+            "bottom": 119,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 0.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.0,
+          "min_luma": 0.0,
+          "max_luma": 0.0,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 71,
+            "rgb": [
+              0,
+              0,
+              0
+            ],
+            "luma": 0.0
+          },
+          "mostly_black": true
+        },
+        "x608_y80": {
+          "logical_rect": [
+            608,
+            80,
+            671,
+            143
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 120,
+            "right": 1007,
+            "bottom": 215,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 52.083,
+          "bright_percent": 26.975,
+          "mean_luma": 50.524,
+          "min_luma": 0.0,
+          "max_luma": 177.352,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 167,
+            "rgb": [
+              130,
+              101,
+              78
+            ],
+            "luma": 105.505
+          },
+          "mostly_black": false
+        },
+        "x672_y80": {
+          "logical_rect": [
+            672,
+            80,
+            735,
+            143
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 120,
+            "right": 1103,
+            "bottom": 215,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 0.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.0,
+          "min_luma": 0.0,
+          "max_luma": 0.0,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 167,
+            "rgb": [
+              0,
+              0,
+              0
+            ],
+            "luma": 0.0
+          },
+          "mostly_black": true
+        },
+        "x736_y80": {
+          "logical_rect": [
+            736,
+            80,
+            799,
+            143
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 120,
+            "right": 1199,
+            "bottom": 215,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 0.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.0,
+          "min_luma": 0.0,
+          "max_luma": 0.0,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 167,
+            "rgb": [
+              0,
+              0,
+              0
+            ],
+            "luma": 0.0
+          },
+          "mostly_black": true
+        },
+        "x608_y144": {
+          "logical_rect": [
+            608,
+            144,
+            671,
+            207
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 216,
+            "right": 1007,
+            "bottom": 311,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 52.083,
+          "bright_percent": 39.258,
+          "mean_luma": 59.183,
+          "min_luma": 0.0,
+          "max_luma": 181.068,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 263,
+            "rgb": [
+              94,
+              74,
+              60
+            ],
+            "luma": 77.241
+          },
+          "mostly_black": false
+        },
+        "x672_y144": {
+          "logical_rect": [
+            672,
+            144,
+            735,
+            207
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 216,
+            "right": 1103,
+            "bottom": 311,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 0.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.068,
+          "min_luma": 0.0,
+          "max_luma": 8.214,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 263,
+            "rgb": [
+              0,
+              0,
+              0
+            ],
+            "luma": 0.0
+          },
+          "mostly_black": true
+        },
+        "x736_y144": {
+          "logical_rect": [
+            736,
+            144,
+            799,
+            207
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 216,
+            "right": 1199,
+            "bottom": 311,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 0.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.071,
+          "min_luma": 0.0,
+          "max_luma": 8.001,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 263,
+            "rgb": [
+              0,
+              0,
+              0
+            ],
+            "luma": 0.0
+          },
+          "mostly_black": true
+        },
+        "x608_y208": {
+          "logical_rect": [
+            608,
+            208,
+            671,
+            271
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 312,
+            "right": 1007,
+            "bottom": 407,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 99.761,
+          "bright_percent": 75.423,
+          "mean_luma": 112.307,
+          "min_luma": 4.643,
+          "max_luma": 247.37,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 359,
+            "rgb": [
+              124,
+              95,
+              73
+            ],
+            "luma": 99.577
+          },
+          "mostly_black": false
+        },
+        "x672_y208": {
+          "logical_rect": [
+            672,
+            208,
+            735,
+            271
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 312,
+            "right": 1103,
+            "bottom": 407,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 99.045,
+          "mean_luma": 124.271,
+          "min_luma": 72.292,
+          "max_luma": 149.373,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 359,
+            "rgb": [
+              97,
+              138,
+              62
+            ],
+            "luma": 123.796
+          },
+          "mostly_black": false
+        },
+        "x736_y208": {
+          "logical_rect": [
+            736,
+            208,
+            799,
+            271
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 312,
+            "right": 1199,
+            "bottom": 407,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 99.881,
+          "bright_percent": 64.54,
+          "mean_luma": 104.965,
+          "min_luma": 0.0,
+          "max_luma": 243.893,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 359,
+            "rgb": [
+              40,
+              68,
+              54
+            ],
+            "luma": 61.036
+          },
+          "mostly_black": false
+        },
+        "combined": {
+          "logical_rect": [
+            608,
+            16,
+            799,
+            271
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 24,
+            "right": 1199,
+            "bottom": 407,
+            "width": 288,
+            "height": 384
+          },
+          "pixels": 110592,
+          "nonblack_percent": 37.991,
+          "bright_percent": 26.6,
+          "mean_luma": 41.032,
+          "min_luma": 0.0,
+          "max_luma": 247.37,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 215,
+            "rgb": [
+              0,
+              0,
+              0
+            ],
+            "luma": 0.0
+          },
+          "mostly_black": false
+        }
+      },
+      "mostly_black_regions": [
+        "x672_y16",
+        "x736_y16",
+        "x672_y80",
+        "x736_y80",
+        "x672_y144",
+        "x736_y144"
+      ]
+    },
+    {
+      "path": "captures\\map-overlay-presentbounds-minimapright-frame-loadslot0-20260423.png",
+      "image": {
+        "width": 1200,
+        "height": 900
+      },
+      "logical_size": {
+        "width": 800,
+        "height": 600
+      },
+      "scale": {
+        "x": 1.5,
+        "y": 1.5
+      },
+      "regions": {
+        "x608_y16": {
+          "logical_rect": [
+            608,
+            16,
+            671,
+            79
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 24,
+            "right": 1007,
+            "bottom": 119,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 89.182,
+          "mean_luma": 137.467,
+          "min_luma": 38.897,
+          "max_luma": 160.303,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 71,
+            "rgb": [
+              0,
+              199,
+              249
+            ],
+            "luma": 160.303
+          },
+          "mostly_black": false
+        },
+        "x672_y16": {
+          "logical_rect": [
+            672,
+            16,
+            735,
+            79
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 24,
+            "right": 1103,
+            "bottom": 119,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 90.582,
+          "mean_luma": 127.115,
+          "min_luma": 59.526,
+          "max_luma": 160.303,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 71,
+            "rgb": [
+              159,
+              144,
+              139
+            ],
+            "luma": 146.828
+          },
+          "mostly_black": false
+        },
+        "x736_y16": {
+          "logical_rect": [
+            736,
+            16,
+            799,
+            79
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 24,
+            "right": 1199,
+            "bottom": 119,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 83.713,
+          "mean_luma": 125.231,
+          "min_luma": 38.404,
+          "max_luma": 154.445,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 71,
+            "rgb": [
+              0,
+              164,
+              0
+            ],
+            "luma": 117.293
+          },
+          "mostly_black": false
+        },
+        "x608_y80": {
+          "logical_rect": [
+            608,
+            80,
+            671,
+            143
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 120,
+            "right": 1007,
+            "bottom": 215,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 92.546,
+          "mean_luma": 139.703,
+          "min_luma": 72.126,
+          "max_luma": 231.606,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 167,
+            "rgb": [
+              30,
+              204,
+              30
+            ],
+            "luma": 154.445
+          },
+          "mostly_black": false
+        },
+        "x672_y80": {
+          "logical_rect": [
+            672,
+            80,
+            735,
+            143
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 120,
+            "right": 1103,
+            "bottom": 215,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 78.733,
+          "mean_luma": 125.787,
+          "min_luma": 72.126,
+          "max_luma": 160.303,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 167,
+            "rgb": [
+              159,
+              144,
+              139
+            ],
+            "luma": 146.828
+          },
+          "mostly_black": false
+        },
+        "x736_y80": {
+          "logical_rect": [
+            736,
+            80,
+            799,
+            143
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 120,
+            "right": 1199,
+            "bottom": 215,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 94.379,
+          "mean_luma": 133.917,
+          "min_luma": 71.923,
+          "max_luma": 170.851,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 167,
+            "rgb": [
+              30,
+              204,
+              30
+            ],
+            "luma": 154.445
+          },
+          "mostly_black": false
+        },
+        "x608_y144": {
+          "logical_rect": [
+            608,
+            144,
+            671,
+            207
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 216,
+            "right": 1007,
+            "bottom": 311,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 92.459,
+          "mean_luma": 138.046,
+          "min_luma": 72.126,
+          "max_luma": 231.606,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 263,
+            "rgb": [
+              30,
+              204,
+              30
+            ],
+            "luma": 154.445
+          },
+          "mostly_black": false
+        },
+        "x672_y144": {
+          "logical_rect": [
+            672,
+            144,
+            735,
+            207
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 216,
+            "right": 1103,
+            "bottom": 311,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 100.0,
+          "mean_luma": 142.995,
+          "min_luma": 117.293,
+          "max_luma": 160.303,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 263,
+            "rgb": [
+              149,
+              114,
+              90
+            ],
+            "luma": 119.708
+          },
+          "mostly_black": false
+        },
+        "x736_y144": {
+          "logical_rect": [
+            736,
+            144,
+            799,
+            207
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 216,
+            "right": 1199,
+            "bottom": 311,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 93.077,
+          "mean_luma": 131.626,
+          "min_luma": 47.467,
+          "max_luma": 249.14,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 263,
+            "rgb": [
+              159,
+              144,
+              139
+            ],
+            "luma": 146.828
+          },
+          "mostly_black": false
+        },
+        "x608_y208": {
+          "logical_rect": [
+            608,
+            208,
+            671,
+            271
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 312,
+            "right": 1007,
+            "bottom": 407,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 98.958,
+          "bright_percent": 85.221,
+          "mean_luma": 114.686,
+          "min_luma": 4.14,
+          "max_luma": 167.351,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 359,
+            "rgb": [
+              129,
+              117,
+              71
+            ],
+            "luma": 116.23
+          },
+          "mostly_black": false
+        },
+        "x672_y208": {
+          "logical_rect": [
+            672,
+            208,
+            735,
+            271
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 312,
+            "right": 1103,
+            "bottom": 407,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 98.958,
+          "bright_percent": 94.444,
+          "mean_luma": 122.098,
+          "min_luma": 4.14,
+          "max_luma": 160.303,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 359,
+            "rgb": [
+              129,
+              117,
+              71
+            ],
+            "luma": 116.23
+          },
+          "mostly_black": false
+        },
+        "x736_y208": {
+          "logical_rect": [
+            736,
+            208,
+            799,
+            271
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 312,
+            "right": 1199,
+            "bottom": 407,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 98.958,
+          "bright_percent": 86.317,
+          "mean_luma": 119.584,
+          "min_luma": 4.213,
+          "max_luma": 249.722,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 359,
+            "rgb": [
+              121,
+              129,
+              69
+            ],
+            "luma": 122.967
+          },
+          "mostly_black": false
+        },
+        "combined": {
+          "logical_rect": [
+            608,
+            16,
+            799,
+            271
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 24,
+            "right": 1199,
+            "bottom": 407,
+            "width": 288,
+            "height": 384
+          },
+          "pixels": 110592,
+          "nonblack_percent": 99.74,
+          "bright_percent": 90.054,
+          "mean_luma": 129.855,
+          "min_luma": 4.14,
+          "max_luma": 249.722,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 215,
+            "rgb": [
+              149,
+              114,
+              90
+            ],
+            "luma": 119.708
+          },
+          "mostly_black": false
+        }
+      },
+      "mostly_black_regions": []
+    },
+    {
+      "path": "captures\\map-viewportbounds-minimapright-dynvswitch-v2-frame-20260424.png",
+      "image": {
+        "width": 1200,
+        "height": 900
+      },
+      "logical_size": {
+        "width": 800,
+        "height": 600
+      },
+      "scale": {
+        "x": 1.5,
+        "y": 1.5
+      },
+      "regions": {
+        "x608_y16": {
+          "logical_rect": [
+            608,
+            16,
+            671,
+            79
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 24,
+            "right": 1007,
+            "bottom": 119,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 89.182,
+          "mean_luma": 137.467,
+          "min_luma": 38.897,
+          "max_luma": 160.303,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 71,
+            "rgb": [
+              0,
+              199,
+              249
+            ],
+            "luma": 160.303
+          },
+          "mostly_black": false
+        },
+        "x672_y16": {
+          "logical_rect": [
+            672,
+            16,
+            735,
+            79
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 24,
+            "right": 1103,
+            "bottom": 119,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 90.582,
+          "mean_luma": 127.115,
+          "min_luma": 59.526,
+          "max_luma": 160.303,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 71,
+            "rgb": [
+              159,
+              144,
+              139
+            ],
+            "luma": 146.828
+          },
+          "mostly_black": false
+        },
+        "x736_y16": {
+          "logical_rect": [
+            736,
+            16,
+            799,
+            79
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 24,
+            "right": 1199,
+            "bottom": 119,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 83.713,
+          "mean_luma": 125.231,
+          "min_luma": 38.404,
+          "max_luma": 154.445,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 71,
+            "rgb": [
+              0,
+              164,
+              0
+            ],
+            "luma": 117.293
+          },
+          "mostly_black": false
+        },
+        "x608_y80": {
+          "logical_rect": [
+            608,
+            80,
+            671,
+            143
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 120,
+            "right": 1007,
+            "bottom": 215,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 92.546,
+          "mean_luma": 139.703,
+          "min_luma": 72.126,
+          "max_luma": 231.606,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 167,
+            "rgb": [
+              30,
+              204,
+              30
+            ],
+            "luma": 154.445
+          },
+          "mostly_black": false
+        },
+        "x672_y80": {
+          "logical_rect": [
+            672,
+            80,
+            735,
+            143
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 120,
+            "right": 1103,
+            "bottom": 215,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 99.87,
+          "bright_percent": 74.653,
+          "mean_luma": 125.944,
+          "min_luma": 2.425,
+          "max_luma": 253.773,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 167,
+            "rgb": [
+              159,
+              144,
+              139
+            ],
+            "luma": 146.828
+          },
+          "mostly_black": false
+        },
+        "x736_y80": {
+          "logical_rect": [
+            736,
+            80,
+            799,
+            143
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 120,
+            "right": 1199,
+            "bottom": 215,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 94.379,
+          "mean_luma": 133.917,
+          "min_luma": 71.923,
+          "max_luma": 170.851,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 167,
+            "rgb": [
+              30,
+              204,
+              30
+            ],
+            "luma": 154.445
+          },
+          "mostly_black": false
+        },
+        "x608_y144": {
+          "logical_rect": [
+            608,
+            144,
+            671,
+            207
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 216,
+            "right": 1007,
+            "bottom": 311,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 92.459,
+          "mean_luma": 138.046,
+          "min_luma": 72.126,
+          "max_luma": 231.606,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 263,
+            "rgb": [
+              30,
+              204,
+              30
+            ],
+            "luma": 154.445
+          },
+          "mostly_black": false
+        },
+        "x672_y144": {
+          "logical_rect": [
+            672,
+            144,
+            735,
+            207
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 216,
+            "right": 1103,
+            "bottom": 311,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 99.566,
+          "mean_luma": 143.504,
+          "min_luma": 10.118,
+          "max_luma": 246.462,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 263,
+            "rgb": [
+              149,
+              114,
+              90
+            ],
+            "luma": 119.708
+          },
+          "mostly_black": false
+        },
+        "x736_y144": {
+          "logical_rect": [
+            736,
+            144,
+            799,
+            207
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 216,
+            "right": 1199,
+            "bottom": 311,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 100.0,
+          "bright_percent": 93.077,
+          "mean_luma": 129.268,
+          "min_luma": 47.467,
+          "max_luma": 172.851,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 263,
+            "rgb": [
+              159,
+              144,
+              139
+            ],
+            "luma": 146.828
+          },
+          "mostly_black": false
+        },
+        "x608_y208": {
+          "logical_rect": [
+            608,
+            208,
+            671,
+            271
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 312,
+            "right": 1007,
+            "bottom": 407,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 98.774,
+          "bright_percent": 41.667,
+          "mean_luma": 91.956,
+          "min_luma": 0.0,
+          "max_luma": 192.368,
+          "center_pixel": {
+            "image_x": 959,
+            "image_y": 359,
+            "rgb": [
+              128,
+              105,
+              0
+            ],
+            "luma": 102.309
+          },
+          "mostly_black": false
+        },
+        "x672_y208": {
+          "logical_rect": [
+            672,
+            208,
+            735,
+            271
+          ],
+          "image_rect": {
+            "x": 1008,
+            "y": 312,
+            "right": 1103,
+            "bottom": 407,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 98.806,
+          "bright_percent": 50.836,
+          "mean_luma": 99.359,
+          "min_luma": 0.0,
+          "max_luma": 192.368,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 359,
+            "rgb": [
+              129,
+              106,
+              0
+            ],
+            "luma": 103.237
+          },
+          "mostly_black": false
+        },
+        "x736_y208": {
+          "logical_rect": [
+            736,
+            208,
+            799,
+            271
+          ],
+          "image_rect": {
+            "x": 1104,
+            "y": 312,
+            "right": 1199,
+            "bottom": 407,
+            "width": 96,
+            "height": 96
+          },
+          "pixels": 9216,
+          "nonblack_percent": 98.817,
+          "bright_percent": 42.578,
+          "mean_luma": 92.613,
+          "min_luma": 0.0,
+          "max_luma": 192.368,
+          "center_pixel": {
+            "image_x": 1151,
+            "image_y": 359,
+            "rgb": [
+              130,
+              107,
+              0
+            ],
+            "luma": 104.164
+          },
+          "mostly_black": false
+        },
+        "combined": {
+          "logical_rect": [
+            608,
+            16,
+            799,
+            271
+          ],
+          "image_rect": {
+            "x": 912,
+            "y": 24,
+            "right": 1199,
+            "bottom": 407,
+            "width": 288,
+            "height": 384
+          },
+          "pixels": 110592,
+          "nonblack_percent": 99.689,
+          "bright_percent": 78.77,
+          "mean_luma": 123.677,
+          "min_luma": 0.0,
+          "max_luma": 253.773,
+          "center_pixel": {
+            "image_x": 1055,
+            "image_y": 215,
+            "rgb": [
+              149,
+              114,
+              90
+            ],
+            "luma": 119.708
+          },
+          "mostly_black": false
+        }
+      },
+      "mostly_black_regions": []
+    }
+  ]
+}

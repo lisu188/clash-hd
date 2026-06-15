@@ -1,0 +1,14 @@
+﻿image: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260430-145646\surface.png (800x600, scale=1.0x1.0) active=108 measurable=99 inactive=0 flagged=13 blank=13 stale_or_solid=0
+  gameplay_frame_likely=True warnings=-
+  edge_coverage: overall=72.711% top=73.539% left=76.328% right_below_minimap=0.0% bottom=50.377%
+  blank_active_cells: r3c10, r3c11, r4c10, r4c11, r5c10, r5c11, r6c10, r6c11, r7c10, r7c11, r8c0, r8c10, r8c11
+  masked_or_insufficient_active_cells: r0c9, r0c10, r0c11, r1c9, r1c10, r1c11, r2c9, r2c10, r2c11
+  lowest_nonblack_active_cells:
+    r3c10: nonblack=0.0% unmasked=65.625% mean_luma=1.0 flags=blank
+    r3c11: nonblack=0.0% unmasked=65.625% mean_luma=1.0 flags=blank
+    r4c10: nonblack=0.0% unmasked=100.0% mean_luma=1.0 flags=blank
+    r4c11: nonblack=0.0% unmasked=100.0% mean_luma=1.0 flags=blank
+    r5c10: nonblack=0.0% unmasked=100.0% mean_luma=1.0 flags=blank
+    r5c11: nonblack=0.0% unmasked=100.0% mean_luma=1.0 flags=blank
+    r6c10: nonblack=0.0% unmasked=100.0% mean_luma=1.0 flags=blank
+    r6c11: nonblack=0.0% unmasked=100.0% mean_luma=1.0 flags=blank

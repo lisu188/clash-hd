@@ -1,0 +1,158 @@
+{
+  "generated_at": "2026-06-15T18:34:59+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "handoff docs must mention the current route timing guard, keep the right-bottom validation stage out of stable until manual proof or explicit CDB-only override, keep the non-promoting manual proof template visible, keep the percentage completion summary visible, keep the right-bottom owner-flag inventory visible, keep the load-slot route-limit boundary visible, keep the load-slot transition readiness matrix visible, preserve the user's no-popup runtime preference, require the visible-runtime launcher approval guard, and avoid stale route/input-safety, legacy visible-capture, or VM/visual-smoke blockers",
+  "files": [
+    {
+      "path": ".codex-loop\\NEXT.md",
+      "exists": true,
+      "passed": true,
+      "stale_failures": []
+    },
+    {
+      "path": ".codex-loop\\STATE.md",
+      "exists": true,
+      "passed": true,
+      "stale_failures": []
+    },
+    {
+      "path": ".codex-loop\\TASKS.md",
+      "exists": true,
+      "passed": true,
+      "stale_failures": []
+    },
+    {
+      "path": "captures\\current\\hd-map-evidence-current.md",
+      "exists": true,
+      "passed": true,
+      "stale_failures": []
+    },
+    {
+      "path": "docs\\hd\\HD_MOD_PROGRESS.md",
+      "exists": true,
+      "passed": true,
+      "stale_failures": []
+    },
+    {
+      "path": "wiki\\questions\\how-should-the-bottom-tooltip-be-recovered.md",
+      "exists": true,
+      "passed": true,
+      "stale_failures": []
+    }
+  ],
+  "phrase_groups": {
+    "route_timing_artifacts": {
+      "passed": true,
+      "required": [
+        "right-bottom-route-timing-guard-current.md",
+        "right-bottom-route-timing-guard-tests-current.md"
+      ],
+      "missing": []
+    },
+    "owner_flag_inventory_artifacts": {
+      "passed": true,
+      "required": [
+        "right-bottom-owner-flag-inventory-current.md",
+        "right-bottom-owner-flag-inventory-tests-current.md",
+        "zero natural owner/action routes"
+      ],
+      "missing": []
+    },
+    "load_slot_route_limit_artifacts": {
+      "passed": true,
+      "required": [
+        "load-slot-route-limit-current.md",
+        "load-slot-route-limit-tests-current.md",
+        "slots 3-5"
+      ],
+      "missing": []
+    },
+    "load_slot_transition_readiness_artifacts": {
+      "passed": true,
+      "required": [
+        "load-slot-transition-readiness-current.md",
+        "load-slot-transition-readiness-tests-current.md",
+        "ready_for_hidden_transition_probe"
+      ],
+      "missing": []
+    },
+    "manual_or_override_blocker": {
+      "passed": true,
+      "required": [
+        "manual/visible DirectInput proof",
+        "explicit CDB-only promotion"
+      ],
+      "missing": []
+    },
+    "no_visible_runtime_warning": {
+      "passed": true,
+      "required": [
+        "Do not run visible/manual",
+        "explicit user approval"
+      ],
+      "missing": []
+    },
+    "no_popup_operator_preference": {
+      "passed": true,
+      "required": [
+        "Do not launch Clash95, CDB, wrappers, PowerShell harnesses",
+        "visible windows unless the user explicitly approves"
+      ],
+      "missing": []
+    },
+    "right_bottom_safety_done": {
+      "passed": true,
+      "required": [
+        "right-bottom route timing guard",
+        "stable-stage promotion"
+      ],
+      "missing": []
+    },
+    "manual_checklist_artifact": {
+      "passed": true,
+      "required": [
+        "manual-directinput-validation-checklist-current.md",
+        "pending_manual_validation"
+      ],
+      "missing": []
+    },
+    "manual_proof_template_artifact": {
+      "passed": true,
+      "required": [
+        "manual-directinput-proof-template-current.md",
+        "template_valid_as_proof=False"
+      ],
+      "missing": []
+    },
+    "completion_summary_artifact": {
+      "passed": true,
+      "required": [
+        "current-completion-summary-current.md",
+        "full-game completion below 100%"
+      ],
+      "missing": []
+    },
+    "visible_runtime_launcher_guard": {
+      "passed": true,
+      "required": [
+        "visible-runtime-launcher-guard-current.md",
+        "visible-runtime-launcher-guard-tests-current.md",
+        "-AllowVisibleRuntime"
+      ],
+      "missing": []
+    }
+  },
+  "loop_phrase_groups": {
+    "loop_load_slot_transition_readiness_artifacts": {
+      "passed": true,
+      "required": [
+        "load-slot-transition-readiness-current.md",
+        "load-slot-transition-readiness-tests-current.md",
+        "ready_for_hidden_transition_probe"
+      ],
+      "missing": []
+    }
+  },
+  "failures": []
+}

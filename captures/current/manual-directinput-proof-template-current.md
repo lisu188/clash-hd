@@ -1,0 +1,61 @@
+# Manual DirectInput Proof Template
+
+- Overall: PASS
+- Generated: `2026-06-15T18:34:58+02:00`
+- Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
+- Guard policy: manual proof template must document the accepted manifest shape while remaining invalid as proof until approved manual evidence replaces every placeholder
+- Template JSON: `captures\current\manual-directinput-proof-template-current.json`
+- Template valid as proof: `False`
+
+## Required Fields
+
+- `evidence_class`
+- `approved_visible_runtime`
+- `approval_record`
+- `candidate_path`
+- `executable_sha256`
+- `no_stale_processes`
+- `checked_items`
+
+## Required Items
+
+- `stable_menu_load`
+- `stable_hd_map_input`
+- `right_bottom_validation_input`
+- `castle_barracks_centered_input`
+- `castle_overview_centered_input`
+
+## Why The Template Fails Closed
+
+- manual DirectInput proof evidence_class must be manual_directinput
+- manual DirectInput proof must record approved_visible_runtime=true
+- manual DirectInput proof must include a non-placeholder approval_record
+- manual DirectInput proof must include a non-placeholder candidate_path
+- manual DirectInput proof must include a 64-hex executable_sha256
+- manual DirectInput proof must record no_stale_processes=true
+- manual DirectInput proof item stable_menu_load must include non-placeholder observed_result
+- manual DirectInput proof item stable_menu_load must include non-placeholder evidence
+- manual DirectInput proof item stable_menu_load must include non-placeholder pass_fail_notes
+- manual DirectInput proof item stable_menu_load must record no_crash=true
+- manual DirectInput proof item stable_menu_load must have status pass/passed
+- manual DirectInput proof item stable_hd_map_input must include non-placeholder observed_result
+- manual DirectInput proof item stable_hd_map_input must include non-placeholder evidence
+- manual DirectInput proof item stable_hd_map_input must include non-placeholder pass_fail_notes
+- manual DirectInput proof item stable_hd_map_input must record no_crash=true
+- manual DirectInput proof item stable_hd_map_input must have status pass/passed
+- manual DirectInput proof item right_bottom_validation_input must include non-placeholder observed_result
+- manual DirectInput proof item right_bottom_validation_input must include non-placeholder evidence
+- manual DirectInput proof item right_bottom_validation_input must include non-placeholder pass_fail_notes
+- manual DirectInput proof item right_bottom_validation_input must record no_crash=true
+- manual DirectInput proof item right_bottom_validation_input must have status pass/passed
+- manual DirectInput proof item castle_barracks_centered_input must include non-placeholder observed_result
+- manual DirectInput proof item castle_barracks_centered_input must include non-placeholder evidence
+- manual DirectInput proof item castle_barracks_centered_input must include non-placeholder pass_fail_notes
+- manual DirectInput proof item castle_barracks_centered_input must record no_crash=true
+- manual DirectInput proof item castle_barracks_centered_input must have status pass/passed
+- manual DirectInput proof item castle_overview_centered_input must include non-placeholder observed_result
+- manual DirectInput proof item castle_overview_centered_input must include non-placeholder evidence
+- manual DirectInput proof item castle_overview_centered_input must include non-placeholder pass_fail_notes
+- manual DirectInput proof item castle_overview_centered_input must record no_crash=true
+- manual DirectInput proof item castle_overview_centered_input must have status pass/passed
+- manual DirectInput proof is missing passing items: ['stable_menu_load', 'stable_hd_map_input', 'right_bottom_validation_input', 'castle_barracks_centered_input', 'castle_overview_centered_input']

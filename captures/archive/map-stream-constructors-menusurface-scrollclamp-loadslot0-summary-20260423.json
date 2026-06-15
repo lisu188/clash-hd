@@ -1,0 +1,277 @@
+{
+  "log": "captures\\cdb-map-stream-constructors-menusurface-scrollclamp-loadslot0-20260423.log",
+  "patch_report": "captures\\patch-stage-dynorigin-menusurface-scrollclamp-20260423.json",
+  "expected_visible_tiles": {
+    "x": 12,
+    "y": 9
+  },
+  "loadsave_rows": 0,
+  "loadmap_rows": 0,
+  "playgame_rows": 1,
+  "redraw_rows": 12,
+  "scroll_rows": 0,
+  "repaint_rows": 12,
+  "copy_pre_rows": 0,
+  "copy_exec_rows": 0,
+  "copy_state_rows": 0,
+  "obj_state_rows": 0,
+  "copy_diff_rows": 0,
+  "stream_rows": 300,
+  "first_stream": [
+    {
+      "line_no": 193,
+      "kind": "B",
+      "seq": 0,
+      "obj": "006bbe90",
+      "surf": "025ac408",
+      "width": 800,
+      "height": 600,
+      "base": "0b220030",
+      "row": 16,
+      "x": 32,
+      "cursor": "0b223250"
+    }
+  ],
+  "last_stream": [
+    {
+      "line_no": 508,
+      "kind": "A",
+      "seq": 299,
+      "obj": "025ad4e0",
+      "surf": "025ac408",
+      "width": 800,
+      "height": 600,
+      "base": "0b220030",
+      "row": 336,
+      "x": 480,
+      "cursor": "0b261c10"
+    }
+  ],
+  "stream_groups": [
+    {
+      "surf": "025ac408",
+      "width": 800,
+      "height": 600,
+      "base": "0b220030",
+      "count": 264,
+      "first_seq": 0,
+      "last_seq": 299,
+      "cursor_min": 186790480,
+      "cursor_max": 187107720,
+      "row_min": 16,
+      "row_max": 412,
+      "x_min": 32,
+      "x_max": 608,
+      "kinds": [
+        {
+          "kind": "A",
+          "count": 82
+        },
+        {
+          "kind": "B",
+          "count": 182
+        }
+      ],
+      "objects": [
+        {
+          "obj": "006bbe90",
+          "count": 182
+        },
+        {
+          "obj": "025ad4e0",
+          "count": 82
+        }
+      ],
+      "cursor_min_hex": "0b223250",
+      "cursor_max_hex": "0b270988"
+    },
+    {
+      "surf": "0b21ff30",
+      "width": 214,
+      "height": 214,
+      "base": "0b2fe6f0",
+      "count": 34,
+      "first_seq": 9,
+      "last_seq": 285,
+      "cursor_min": 187688688,
+      "cursor_max": 187716230,
+      "row_min": 0,
+      "row_max": 128,
+      "x_min": 0,
+      "x_max": 214,
+      "kinds": [
+        {
+          "kind": "A",
+          "count": 34
+        }
+      ],
+      "objects": [
+        {
+          "obj": "025ad4e0",
+          "count": 34
+        }
+      ],
+      "cursor_min_hex": "0b2fe6f0",
+      "cursor_max_hex": "0b305286"
+    },
+    {
+      "surf": "025aa278",
+      "width": 64,
+      "height": 64,
+      "base": "025aa338",
+      "count": 2,
+      "first_seq": 287,
+      "last_seq": 288,
+      "cursor_min": 39494456,
+      "cursor_max": 39494456,
+      "row_min": 0,
+      "row_max": 0,
+      "x_min": 0,
+      "x_max": 0,
+      "kinds": [
+        {
+          "kind": "A",
+          "count": 1
+        },
+        {
+          "kind": "B",
+          "count": 1
+        }
+      ],
+      "objects": [
+        {
+          "obj": "006bbe90",
+          "count": 1
+        },
+        {
+          "obj": "025ad4e0",
+          "count": 1
+        }
+      ],
+      "cursor_min_hex": "025aa338",
+      "cursor_max_hex": "025aa338"
+    }
+  ],
+  "first_copy_pre": [],
+  "last_copy_pre": [],
+  "first_copy_exec": [],
+  "last_copy_exec": [],
+  "last_copy_state": [],
+  "last_obj_state": [],
+  "last_copy_diff": [],
+  "copy_pre_groups": [],
+  "copy_exec_groups": [],
+  "restore_rows": 1,
+  "restore_clamp_rows": 1,
+  "first_restore": [
+    {
+      "line_no": 189,
+      "beforex": 39,
+      "beforey": 42,
+      "maxx": 38,
+      "maxy": 41,
+      "mapw": 50,
+      "maph": 50
+    }
+  ],
+  "first_restore_clamp": [
+    {
+      "line_no": 190,
+      "afterx": 38,
+      "aftery": 41
+    }
+  ],
+  "exception_rows": 0,
+  "first_exception": [],
+  "last_exception": [],
+  "last_exception_address": [],
+  "last_write_address": [],
+  "last_eip": [
+    {
+      "line_no": 85,
+      "eip": "77f38328"
+    }
+  ],
+  "map_entered": true,
+  "redraw_hit": true,
+  "first_loadsave": [],
+  "first_loadmap": [],
+  "first_playgame": [
+    {
+      "line_no": 188,
+      "gd": "03720030",
+      "mapw": 50,
+      "maph": 50,
+      "scrollx": 39,
+      "scrolly": 42,
+      "player": 0,
+      "selected": -1,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "first_redraw": [
+    {
+      "line_no": 191,
+      "seq": 0,
+      "gd": "03720030",
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "end12x": 50,
+      "end12y": 50,
+      "end9x": 47,
+      "end9y": 48,
+      "player": 0,
+      "selected": -1,
+      "fog": 0,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "last_redraw": [
+    {
+      "line_no": 514,
+      "seq": 11,
+      "gd": "03720030",
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "end12x": 50,
+      "end12y": 50,
+      "end9x": 47,
+      "end9y": 48,
+      "player": 0,
+      "selected": -1,
+      "fog": 0,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "scrollx_range": {
+    "min": 38,
+    "max": 38,
+    "unique": 1
+  },
+  "scrolly_range": {
+    "min": 41,
+    "max": 41,
+    "unique": 1
+  },
+  "mapw_range": {
+    "min": 50,
+    "max": 50,
+    "unique": 1
+  },
+  "maph_range": {
+    "min": 50,
+    "max": 50,
+    "unique": 1
+  },
+  "edge_overrun_rows": 0,
+  "first_edge_overrun": [],
+  "last_edge_overrun": [],
+  "static_patch_expects_12x9": true
+}

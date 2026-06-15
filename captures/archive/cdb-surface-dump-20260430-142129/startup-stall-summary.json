@@ -1,0 +1,168 @@
+{
+  "log": "captures\\cdb-surface-dump-20260430-142129\\cdb-surface-dump.log",
+  "marker_counts": {
+    "STARTUP_STARTMENU_ENTRY": 1,
+    "STARTUP_CALL_UI_STARTANIMS": 1,
+    "STARTUP_UI_STARTANIMS_ENTRY": 1,
+    "STARTUP_UI_DD_PUMP_BEFORE_SLEEP": 1,
+    "STARTUP_UI_SLEEP_1200": 1,
+    "STARTUP_UI_AFTER_SLEEP_BEFORE_LOGO": 1,
+    "STARTUP_UI_AVI_CALL": 1,
+    "STARTUP_UI_AVI_RETURN": 0,
+    "STARTUP_UI_ANIMS_AFTER_AVI_BRANCH": 0,
+    "STARTUP_UI_STARTANIMS_RETURN": 0,
+    "STARTUP_AFTER_UI_STARTANIMS": 0,
+    "STARTUP_MAIN_DISPATCH_REACHED": 0,
+    "STARTUP_VIDEO_IN_ENTRY": 1,
+    "STARTUP_VIDEO_AFTER_MODE_BEGIN": 1,
+    "STARTUP_VIDEO_OUT_LOG": 0,
+    "STARTUP_AVI_THREAD_SLEEP": 1,
+    "STARTUP_AUDIO_THREAD_SLEEP": 1,
+    "STARTUP_CSS_ISPLAYING_ENTRY": 0,
+    "STARTUP_SAMPLECACHE_SLEEP": 1,
+    "D526994_OWNER_423760_ENTRY": 0,
+    "D526994_OWNER_423B00_ENTRY": 0,
+    "D526994_OWNER_423B40_ENTRY": 0,
+    "D526994_MIN_CALLBACK_TEST": 0,
+    "SURFDUMP_MAIN_HIT": 0,
+    "SURFDUMP_LOAD_COORD": 0,
+    "SURFDUMP_LOADSAVE": 0,
+    "SURFDUMP_PLAYGAME": 0,
+    "SURFDUMP_READY": 0,
+    "AV_SURFDUMP": 0
+  },
+  "row_counts": {
+    "startup_rows": 12,
+    "d526994_rows": 0,
+    "route_rows": 0,
+    "main_hits": 0,
+    "playgame": 0,
+    "ready": 0,
+    "av": 0,
+    "owner_423760": 0,
+    "owner_423b00": 0,
+    "owner_423b40": 0,
+    "callback_tests": 0
+  },
+  "last_row": {
+    "line_no": 182,
+    "kind": "STARTUP_VIDEO_AFTER_MODE_BEGIN",
+    "raw": "STARTUP_VIDEO_AFTER_MODE_BEGIN ret=000edc90 path_ptr=004fa95e tick=0b6d9670 pixfmt=16",
+    "ret": "000edc90",
+    "path_ptr": "004fa95e",
+    "tick": "0b6d9670",
+    "pixfmt": "16"
+  },
+  "last_startup_row": {
+    "line_no": 182,
+    "kind": "STARTUP_VIDEO_AFTER_MODE_BEGIN",
+    "raw": "STARTUP_VIDEO_AFTER_MODE_BEGIN ret=000edc90 path_ptr=004fa95e tick=0b6d9670 pixfmt=16",
+    "ret": "000edc90",
+    "path_ptr": "004fa95e",
+    "tick": "0b6d9670",
+    "pixfmt": "16"
+  },
+  "last_route_row": null,
+  "rows": [
+    {
+      "line_no": 169,
+      "kind": "STARTUP_AVI_THREAD_SLEEP",
+      "raw": "STARTUP_AVI_THREAD_SLEEP call=0046e4d0 flag54d414=1 divisor=10",
+      "call": "0046e4d0",
+      "flag54d414": "1",
+      "divisor": "10"
+    },
+    {
+      "line_no": 170,
+      "kind": "STARTUP_SAMPLECACHE_SLEEP",
+      "raw": "STARTUP_SAMPLECACHE_SLEEP call=0046fd01 flag54d4b4=1 divisor=30",
+      "call": "0046fd01",
+      "flag54d4b4": "1",
+      "divisor": "30"
+    },
+    {
+      "line_no": 171,
+      "kind": "STARTUP_AUDIO_THREAD_SLEEP",
+      "raw": "STARTUP_AUDIO_THREAD_SLEEP call=0046e6df flag54d45c=1 count=6 divisor=10",
+      "call": "0046e6df",
+      "flag54d45c": "1",
+      "count": "6",
+      "divisor": "10"
+    },
+    {
+      "line_no": 172,
+      "kind": "STARTUP_STARTMENU_ENTRY",
+      "raw": "STARTUP_STARTMENU_ENTRY ret=0040159a surface=00000000 lang=1 choice=0 exit=0",
+      "ret": "0040159a",
+      "surface": "00000000",
+      "lang": "1",
+      "choice": "0",
+      "exit": "0"
+    },
+    {
+      "line_no": 173,
+      "kind": "STARTUP_CALL_UI_STARTANIMS",
+      "raw": "STARTUP_CALL_UI_STARTANIMS ret_after=004479f5 surface=03e9c8b8 lang=1",
+      "ret_after": "004479f5",
+      "surface": "03e9c8b8",
+      "lang": "1"
+    },
+    {
+      "line_no": 174,
+      "kind": "STARTUP_UI_STARTANIMS_ENTRY",
+      "raw": "STARTUP_UI_STARTANIMS_ENTRY ret=004479f5 surface=03e9c8b8 lang=1 renderhook=004617a0",
+      "ret": "004479f5",
+      "surface": "03e9c8b8",
+      "lang": "1",
+      "renderhook": "004617a0"
+    },
+    {
+      "line_no": 175,
+      "kind": "STARTUP_UI_DD_PUMP_BEFORE_SLEEP",
+      "raw": "STARTUP_UI_DD_PUMP_BEFORE_SLEEP ret_after=00447895 dd=00544cd8 surface=03e9c8b8",
+      "ret_after": "00447895",
+      "dd": "00544cd8",
+      "surface": "03e9c8b8"
+    },
+    {
+      "line_no": 176,
+      "kind": "STARTUP_UI_SLEEP_1200",
+      "raw": "STARTUP_UI_SLEEP_1200 ret_after=004478a1 surface=03e9c8b8",
+      "ret_after": "004478a1",
+      "surface": "03e9c8b8"
+    },
+    {
+      "line_no": 177,
+      "kind": "STARTUP_UI_AFTER_SLEEP_BEFORE_LOGO",
+      "raw": "STARTUP_UI_AFTER_SLEEP_BEFORE_LOGO surface=03e9c8b8 lang=1",
+      "surface": "03e9c8b8",
+      "lang": "1"
+    },
+    {
+      "line_no": 178,
+      "kind": "STARTUP_UI_AVI_CALL",
+      "raw": "STARTUP_UI_AVI_CALL tag=logo path_ptr=004fa95e lang=1",
+      "tag": "logo",
+      "path_ptr": "004fa95e",
+      "lang": "1"
+    },
+    {
+      "line_no": 180,
+      "kind": "STARTUP_VIDEO_IN_ENTRY",
+      "raw": "STARTUP_VIDEO_IN_ENTRY ret=004478b8 path_ptr=004fa95e mode_args=(1,0,1) pixfmt=16",
+      "ret": "004478b8",
+      "path_ptr": "004fa95e",
+      "mode_args": "(1,0,1)",
+      "pixfmt": "16"
+    },
+    {
+      "line_no": 182,
+      "kind": "STARTUP_VIDEO_AFTER_MODE_BEGIN",
+      "raw": "STARTUP_VIDEO_AFTER_MODE_BEGIN ret=000edc90 path_ptr=004fa95e tick=0b6d9670 pixfmt=16",
+      "ret": "000edc90",
+      "path_ptr": "004fa95e",
+      "tick": "0b6d9670",
+      "pixfmt": "16"
+    }
+  ]
+}

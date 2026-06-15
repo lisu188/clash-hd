@@ -1,0 +1,200 @@
+{
+  "generated_at": "2026-06-15T18:34:48+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "focused overview hitbox proof must keep the descriptor-loop breakpoints, forbid the old crashing overview descriptor-input wrapper marker, and continue to prove the displayed-coordinate wrapper and click gate with no AV",
+  "required_breakpoints": {
+    "00422544": "raw hit-test result after the overview descriptor hitmap lookup",
+    "0042257E": "descriptor command/callback install row",
+    "00422590": "stock click gate result row",
+    "0042262C": "descriptor callback-call sentinel"
+  },
+  "required_probe_markers": {
+    "CASTLEOV_HITBOX_DISPLAYED_HITTEST_BEGIN": "displayed coordinates are installed before hit-test",
+    "CASTLEOV_HITBOX_DISPLAYED_RESULT": "displayed-coordinate raw hit result is logged",
+    "CASTLEOV_HITBOX_DISPLAYED_WRAPPER_OK": "displayed coordinates reached the target through the binary input wrapper",
+    "CASTLEOV_HITBOX_DESCRIPTOR_INSTALL": "descriptor command/callback is logged",
+    "CASTLEOV_HITBOX_CLICK_GATE": "stock click gate result is logged",
+    "CASTLEOV_HITBOX_CLICK_GATE_OK": "target click gate success is logged",
+    "CASTLEOV_HITBOX_CALLBACK_SUPPRESSED": "target callback is suppressed after proof",
+    "CASTLEOV_HITBOX_CALLBACK_CALL": "unexpected callback entry remains observable",
+    "CASTLEOV_HITBOX_SURFDUMP_READY": "surface dump ready row is emitted"
+  },
+  "forbidden_markers": [
+    "CASTLECAT_OVERVIEW_DESC_INPUT_WRAPPER_ENTRY",
+    "OVERVIEW_DESC_INPUT_WRAPPER_ENTRY"
+  ],
+  "checks": {
+    "probe_script": {
+      "passed": true,
+      "path": "probes\\cdb\\castle\\clash95_castle_overview_hitbox_extra.cdb",
+      "breakpoints": {
+        "00422544": {
+          "present": true,
+          "purpose": "raw hit-test result after the overview descriptor hitmap lookup"
+        },
+        "0042257E": {
+          "present": true,
+          "purpose": "descriptor command/callback install row"
+        },
+        "00422590": {
+          "present": true,
+          "purpose": "stock click gate result row"
+        },
+        "0042262C": {
+          "present": true,
+          "purpose": "descriptor callback-call sentinel"
+        }
+      },
+      "markers": {
+        "CASTLEOV_HITBOX_DISPLAYED_HITTEST_BEGIN": {
+          "present": true,
+          "purpose": "displayed coordinates are installed before hit-test"
+        },
+        "CASTLEOV_HITBOX_DISPLAYED_RESULT": {
+          "present": true,
+          "purpose": "displayed-coordinate raw hit result is logged"
+        },
+        "CASTLEOV_HITBOX_DISPLAYED_WRAPPER_OK": {
+          "present": true,
+          "purpose": "displayed coordinates reached the target through the binary input wrapper"
+        },
+        "CASTLEOV_HITBOX_DESCRIPTOR_INSTALL": {
+          "present": true,
+          "purpose": "descriptor command/callback is logged"
+        },
+        "CASTLEOV_HITBOX_CLICK_GATE": {
+          "present": true,
+          "purpose": "stock click gate result is logged"
+        },
+        "CASTLEOV_HITBOX_CLICK_GATE_OK": {
+          "present": true,
+          "purpose": "target click gate success is logged"
+        },
+        "CASTLEOV_HITBOX_CALLBACK_SUPPRESSED": {
+          "present": true,
+          "purpose": "target callback is suppressed after proof"
+        },
+        "CASTLEOV_HITBOX_CALLBACK_CALL": {
+          "present": true,
+          "purpose": "unexpected callback entry remains observable"
+        },
+        "CASTLEOV_HITBOX_SURFDUMP_READY": {
+          "present": true,
+          "purpose": "surface dump ready row is emitted"
+        }
+      },
+      "forbidden_hits": [],
+      "failures": []
+    },
+    "summary_parser": {
+      "passed": true,
+      "path": "tools\\castle_overview_hitbox_summary.py",
+      "markers": {
+        "CASTLEOV_HITBOX_DISPLAYED_HITTEST_BEGIN": true,
+        "CASTLEOV_HITBOX_DISPLAYED_RESULT": true,
+        "CASTLEOV_HITBOX_DISPLAYED_WRAPPER_OK": true,
+        "CASTLEOV_HITBOX_DESCRIPTOR_INSTALL": true,
+        "CASTLEOV_HITBOX_CLICK_GATE": true,
+        "CASTLEOV_HITBOX_CLICK_GATE_OK": true,
+        "CASTLEOV_HITBOX_CALLBACK_SUPPRESSED": true,
+        "CASTLEOV_HITBOX_CALLBACK_CALL": true,
+        "CASTLEOV_HITBOX_SURFDUMP_READY": true
+      },
+      "forbidden_hits": [],
+      "failures": []
+    },
+    "forbidden_marker_absence": {
+      "passed": true,
+      "paths": [
+        "probes\\cdb\\castle\\clash95_castle_overview_hitbox_extra.cdb",
+        "tools\\castle_overview_hitbox_summary.py",
+        "patch_clash95_hd.py"
+      ],
+      "forbidden_markers": [
+        "CASTLECAT_OVERVIEW_DESC_INPUT_WRAPPER_ENTRY",
+        "OVERVIEW_DESC_INPUT_WRAPPER_ENTRY"
+      ],
+      "hits": [],
+      "failures": []
+    },
+    "focused_hitbox_log": {
+      "passed": true,
+      "run": "captures\\archive\\cdb-surface-dump-20260515-105411",
+      "log": "captures\\archive\\cdb-surface-dump-20260515-105411\\cdb-surface-dump.log",
+      "ready": true,
+      "ready_size": [
+        800,
+        600
+      ],
+      "overview_post_draw": {
+        "main_surface": 171785944,
+        "main_size": [
+          800,
+          600
+        ],
+        "overview_surface": 172162352,
+        "overview_size": [
+          640,
+          480
+        ],
+        "owner_screen": 70240026,
+        "mouse": [
+          371,
+          107
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "displayed_result": {
+        "raw_hit": 248,
+        "adjusted_hit": 0,
+        "mouse": [
+          371,
+          107
+        ],
+        "raw": [
+          23744,
+          6848
+        ],
+        "target_raw": 248
+      },
+      "last_descriptor": {
+        "command": 134,
+        "callback": 4521584,
+        "text": 3,
+        "arg_count": 5171110,
+        "owner_screen": 70240026,
+        "surface": 171785944,
+        "sz": [
+          800,
+          600
+        ],
+        "mouse": [
+          371,
+          107
+        ]
+      },
+      "last_click_gate": {
+        "command": 134,
+        "callback": 4521584,
+        "gate": 1,
+        "mouse": [
+          371,
+          107
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "displayed_hit_ok": true,
+      "displayed_wrapper_ok": true,
+      "descriptor_ok": true,
+      "click_gate_ok": true,
+      "callback_suppressed": true,
+      "callback_called": false,
+      "av_count": 0,
+      "failures": []
+    }
+  },
+  "failures": []
+}

@@ -1,0 +1,355 @@
+{
+  "generated_at": "2026-06-15T18:34:34+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
+  "promotion_status": "validation_stage_only",
+  "stable_stage_should_change": false,
+  "current_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+  "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
+  "checks": {
+    "right_bottom_compose_patch": {
+      "passed": true,
+      "summary": {
+        "surface_dump_passed": true,
+        "hidden_desktop": true,
+        "map_validation_skipped": true,
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+        "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
+        "manifest_patched": 122,
+        "right_bottom_patch_group": {
+          "patched": 4,
+          "total": 4
+        },
+        "current_hd_map_gate": true,
+        "ready": true,
+        "av_count": 0,
+        "owner_rows": 11,
+        "draw_rows": 5,
+        "composition_text_rows": 13,
+        "composition_present_rows": 0,
+        "composition_present_null_rows": 5,
+        "bottom_right_ui_corner_nonblack": 48.228,
+        "bottom_right_ui_corner_delta": 26.798,
+        "bottom_right_tile_r8c10_nonblack": 54.102,
+        "bottom_right_tile_r8c10_delta": 54.102,
+        "bottom_right_tile_r8c11_nonblack": 42.822,
+        "bottom_right_tile_r8c11_delta": 42.822,
+        "bottom_strip_delta": 3.297
+      }
+    },
+    "right_bottom_compose_fullstart_route": {
+      "passed": true,
+      "summary": {
+        "surface_dump_passed": true,
+        "hidden_desktop": true,
+        "map_validation_skipped": true,
+        "no_skip_start_anims": true,
+        "fast_forward_start_anims": false,
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+        "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
+        "manifest_patched": 122,
+        "right_bottom_patch_group": {
+          "patched": 4,
+          "total": 4
+        },
+        "current_hd_map_gate": true,
+        "ready": true,
+        "av_count": 0,
+        "owner_rows": 11,
+        "draw_rows": 5,
+        "composition_text_rows": 13,
+        "composition_present_rows": 0,
+        "composition_present_null_rows": 5,
+        "bottom_right_ui_corner_nonblack": 48.228,
+        "bottom_right_ui_corner_delta": 26.798,
+        "bottom_right_tile_r8c10_nonblack": 54.102,
+        "bottom_right_tile_r8c10_delta": 54.102,
+        "bottom_right_tile_r8c11_nonblack": 42.822,
+        "bottom_right_tile_r8c11_delta": 42.822,
+        "bottom_strip_delta": 3.297
+      }
+    },
+    "right_bottom_compose_normal_gate": {
+      "passed": true,
+      "summary": {
+        "surface_dump_passed": true,
+        "hidden_desktop": true,
+        "map_validation_skipped": false,
+        "no_skip_start_anims": true,
+        "fast_forward_start_anims": false,
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+        "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
+        "surface": [
+          800,
+          600
+        ],
+        "gameplay_frame_likely": true,
+        "active_cells": 108,
+        "blank_active_cells": 13,
+        "visibility_require_explained": true,
+        "visibility_explained_gate": true,
+        "visibility_unexplained_blank_cells": 0,
+        "visibility_zero": 13,
+        "current_hd_map_gate": true,
+        "right_bottom_patch_group": {
+          "patched": 4,
+          "total": 4
+        }
+      }
+    },
+    "right_bottom_compose_ui_probe": {
+      "passed": false,
+      "summary": {
+        "surface_dump_passed": true,
+        "hidden_desktop": true,
+        "map_validation_skipped": false,
+        "no_skip_start_anims": true,
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+        "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
+        "rbui_markers_seen": true,
+        "rbui_desc_switch": 35,
+        "rbui_viewport_switch": 1,
+        "rbui_panel_draw": 0,
+        "rbui_action_box": 0,
+        "surfdump_playgame": 1,
+        "surfdump_ready": 1,
+        "av_count": 0,
+        "current_hd_map_gate": true,
+        "right_bottom_patch_group": {
+          "patched": 4,
+          "total": 4
+        },
+        "bounds": {
+          "minimap_top_right": {
+            "nonblack_percent": 12.936,
+            "black_percent": 87.064,
+            "flags": [
+              "large_black_component",
+              "black_touches_bottom_right"
+            ]
+          },
+          "right_side_total": {
+            "nonblack_percent": 19.688,
+            "black_percent": 80.312,
+            "flags": [
+              "large_black_component",
+              "black_touches_bottom_right"
+            ]
+          },
+          "right_side_below_minimap": {
+            "nonblack_percent": 23.593,
+            "black_percent": 76.407,
+            "flags": [
+              "large_black_component",
+              "black_touches_bottom_right"
+            ]
+          },
+          "bottom_strip": {
+            "nonblack_percent": 51.75,
+            "black_percent": 48.25,
+            "flags": [
+              "large_black_component",
+              "black_touches_bottom_right"
+            ]
+          },
+          "bottom_right_ui_corner": {
+            "nonblack_percent": 21.43,
+            "black_percent": 78.57,
+            "flags": [
+              "large_black_component",
+              "black_touches_bottom_right"
+            ]
+          },
+          "bottom_right_tile_r8c9": {
+            "nonblack_percent": 46.24,
+            "black_percent": 53.76,
+            "flags": [
+              "large_black_component",
+              "black_touches_bottom_right"
+            ]
+          },
+          "bottom_right_tile_r8c10": {
+            "nonblack_percent": 0.0,
+            "black_percent": 100.0,
+            "flags": [
+              "mostly_black",
+              "large_black_component",
+              "black_touches_bottom_right"
+            ]
+          },
+          "bottom_right_tile_r8c11": {
+            "nonblack_percent": 0.0,
+            "black_percent": 100.0,
+            "flags": [
+              "mostly_black",
+              "large_black_component",
+              "black_touches_bottom_right"
+            ]
+          }
+        }
+      }
+    },
+    "right_bottom_grid_hit": {
+      "passed": true,
+      "summary": {
+        "surface_dump_passed": true,
+        "hidden_desktop": true,
+        "allow_visible_desktop": false,
+        "use_ddraw_proxy": true,
+        "map_validation_skipped": true,
+        "no_skip_start_anims": false,
+        "fast_forward_start_anims": true,
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+        "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
+        "surface": [
+          800,
+          600
+        ],
+        "current_hd_map_gate": true,
+        "right_bottom_patch_group": {
+          "patched": 4,
+          "total": 4
+        },
+        "ready": true,
+        "grid_hit_ok": true,
+        "last_grid_entry": [
+          450,
+          73
+        ],
+        "last_grid_result": 0,
+        "forced_gate_count": 1,
+        "failure_exit_count": 0,
+        "draw_row_count": 5,
+        "av_count": 0
+      }
+    },
+    "right_bottom_natural_route_guard": {
+      "passed": true,
+      "summary": {
+        "hidden_desktop": true,
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+        "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+        "owner_entry_flag": "0x00",
+        "owner_flag_test": {
+          "owner_flag": "0x00",
+          "bit2": 0,
+          "bit1": 0,
+          "bit8": 0
+        },
+        "action_descriptor": {
+          "slot": "d1",
+          "x": 1000,
+          "y": 426,
+          "callback": "004338e0"
+        },
+        "descriptor_result": {
+          "result": 0,
+          "owner": "041bc71a",
+          "owner_flag": "0x00",
+          "surface": [
+            800,
+            600
+          ]
+        },
+        "action_route_count": 0,
+        "state_gated_by_owner_flag": true,
+        "av_count": 0
+      }
+    },
+    "right_bottom_route_timing_guard": {
+      "passed": true,
+      "summary": {
+        "guard_policy": "right-bottom validation evidence must keep hidden route/copyback/grid marker ordering, candidate SHA agreement, 800x600 surfaces, and no AV/failure-exit rows",
+        "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+        "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
+        "patch_route_ordered_markers": 29,
+        "fullstart_route_ordered_markers": 29,
+        "grid_route_ordered_markers": 25,
+        "grid_hit_ok": true,
+        "last_grid_entry": [
+          450,
+          73
+        ],
+        "last_grid_result": 0,
+        "failure_exit_count": 0,
+        "av_count": 0
+      }
+    },
+    "right_bottom_compose_promotion_decision": {
+      "passed": false,
+      "summary": {
+        "decision": "defer_stable_promotion",
+        "stable_stage_should_change": false,
+        "current_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+        "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+        "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
+        "manual_input_proof_valid": false
+      }
+    }
+  },
+  "key_evidence": {
+    "patch_group": {
+      "patched": 4,
+      "total": 4
+    },
+    "fullstart_route_ready": true,
+    "fullstart_route_av_count": 0,
+    "bottom_right_ui_corner_nonblack": 48.228,
+    "bottom_right_tile_r8c10_nonblack": 54.102,
+    "bottom_right_tile_r8c11_nonblack": 42.822,
+    "normal_surface": [
+      800,
+      600
+    ],
+    "normal_unexplained_blank_cells": 0,
+    "natural_desc_switch": 35,
+    "natural_panel_draw": 0,
+    "natural_action_box": 0,
+    "controlled_grid_hit_ok": true,
+    "controlled_grid_entry": [
+      450,
+      73
+    ],
+    "controlled_grid_result": 0,
+    "controlled_grid_forced_gate_count": 1,
+    "controlled_grid_failure_exit_count": 0,
+    "natural_route_state_gated": true,
+    "natural_route_owner_entry_flag": "0x00",
+    "natural_route_owner_flag_test": {
+      "owner_flag": "0x00",
+      "bit2": 0,
+      "bit1": 0,
+      "bit8": 0
+    },
+    "natural_route_action_descriptor": {
+      "slot": "d1",
+      "x": 1000,
+      "y": 426,
+      "callback": "004338e0"
+    },
+    "natural_route_descriptor_result": {
+      "result": 0,
+      "owner": "041bc71a",
+      "owner_flag": "0x00",
+      "surface": [
+        800,
+        600
+      ]
+    },
+    "natural_route_action_route_count": 0,
+    "natural_route_av_count": 0,
+    "route_timing_patch_markers": 29,
+    "route_timing_fullstart_markers": 29,
+    "route_timing_grid_markers": 25,
+    "route_timing_failure_exit_count": 0,
+    "route_timing_av_count": 0,
+    "promotion_decision": "defer_stable_promotion"
+  },
+  "failures": [
+    "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
+    "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
+    "right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows",
+    "natural UI probe did not enter owner/action draw rows"
+  ]
+}

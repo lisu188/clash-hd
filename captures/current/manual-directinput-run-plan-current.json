@@ -1,0 +1,106 @@
+{
+  "generated_at": "2026-06-15T18:34:58+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, move the mouse, or open visible windows",
+  "guard_policy": "manual DirectInput commands remain templates until explicit user approval; every visible runtime command must carry -AllowVisibleRuntime and the proof manifest must be validated before promotion",
+  "checklist_json": "captures\\current\\manual-directinput-validation-checklist-current.json",
+  "template_report_json": "captures\\current\\manual-directinput-proof-template-report-current.json",
+  "visible_runtime_guarded_scripts": [
+    "scripts\\smoke\\run_clash_visual_smoke.ps1",
+    "scripts\\cdb\\run_cdb_battle_visible_input_probe.ps1"
+  ],
+  "proof_json_template": "captures\\current\\manual-directinput-proof-current.json",
+  "proof_ready": false,
+  "visible_runtime_requires_approval": true,
+  "manual_target_count": 5,
+  "commands": {
+    "stable_menu_load": {
+      "title": "Stable HD map stage menu load and held-click route",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "script": "scripts\\smoke\\run_clash_visual_smoke.ps1",
+      "candidate_placeholder": "<stable-hd-map-candidate-exe>",
+      "route": "load-slot0",
+      "route_points": "300,218;320,166;400,226",
+      "followup_points": "",
+      "requires_explicit_user_approval": true,
+      "contains_allow_visible_runtime": true,
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'scripts\\smoke\\run_clash_visual_smoke.ps1' -Exe '<stable-hd-map-candidate-exe>' -WorkDir 'C:\\Clash' -Route 'load-slot0' -Points '300,218;320,166;400,226' -MoveMode auto -ClickMode sendinput -ClickHoldMs 300 -ClickRepeat 2 -AllowVisibleRuntime",
+      "notes": "proves the centered menu load route and held-click cadence with real DirectInput"
+    },
+    "stable_hd_map_input": {
+      "title": "Stable HD map edge scroll, minimap, and selection input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "script": "scripts\\smoke\\run_clash_visual_smoke.ps1",
+      "candidate_placeholder": "<stable-hd-map-candidate-exe>",
+      "route": "load-slot0",
+      "route_points": "300,218;320,166;400,226",
+      "followup_points": "400,300;780,300;400,580;760,560",
+      "requires_explicit_user_approval": true,
+      "contains_allow_visible_runtime": true,
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'scripts\\smoke\\run_clash_visual_smoke.ps1' -Exe '<stable-hd-map-candidate-exe>' -WorkDir 'C:\\Clash' -Route 'load-slot0' -Points '300,218;320,166;400,226' -MoveMode auto -ClickMode sendinput -ClickHoldMs 300 -ClickRepeat 2 -AllowVisibleRuntime",
+      "notes": "the command reaches gameplay through the load route; then manually exercise the listed map edge/minimap/selection points"
+    },
+    "right_bottom_validation_input": {
+      "title": "Right-bottom composition validation-stage manual input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+      "script": "scripts\\smoke\\run_clash_visual_smoke.ps1",
+      "candidate_placeholder": "<rightbottomcompose-candidate-exe>",
+      "route": "load-slot0",
+      "route_points": "300,218;320,166;400,226",
+      "followup_points": "588,440;450,73;760,560",
+      "requires_explicit_user_approval": true,
+      "contains_allow_visible_runtime": true,
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'scripts\\smoke\\run_clash_visual_smoke.ps1' -Exe '<rightbottomcompose-candidate-exe>' -WorkDir 'C:\\Clash' -Route 'load-slot0' -Points '300,218;320,166;400,226' -MoveMode auto -ClickMode sendinput -ClickHoldMs 300 -ClickRepeat 2 -AllowVisibleRuntime",
+      "notes": "the command reaches gameplay through the load route; then manually check the recovered lower/right action UI and displayed grid/action positions"
+    },
+    "castle_barracks_centered_input": {
+      "title": "Castle barracks centered manual input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "script": "scripts\\smoke\\run_clash_visual_smoke.ps1",
+      "candidate_placeholder": "<castlecenter-all-candidate-exe>",
+      "route": "load-slot0",
+      "route_points": "300,218;320,166;400,226",
+      "followup_points": "400,300;231,366;180,440",
+      "requires_explicit_user_approval": true,
+      "contains_allow_visible_runtime": true,
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'scripts\\smoke\\run_clash_visual_smoke.ps1' -Exe '<castlecenter-all-candidate-exe>' -WorkDir 'C:\\Clash' -Route 'load-slot0' -Points '300,218;320,166;400,226' -MoveMode auto -ClickMode sendinput -ClickHoldMs 300 -ClickRepeat 2 -AllowVisibleRuntime",
+      "notes": "the command reaches gameplay through the load route; then manually check centered barracks descriptor/action positions"
+    },
+    "castle_overview_centered_input": {
+      "title": "Full castle overview centered manual input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "script": "scripts\\smoke\\run_clash_visual_smoke.ps1",
+      "candidate_placeholder": "<castlecenter-all-candidate-exe>",
+      "route": "load-slot0",
+      "route_points": "300,218;320,166;400,226",
+      "followup_points": "231,366;180,440;503,426",
+      "requires_explicit_user_approval": true,
+      "contains_allow_visible_runtime": true,
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'scripts\\smoke\\run_clash_visual_smoke.ps1' -Exe '<castlecenter-all-candidate-exe>' -WorkDir 'C:\\Clash' -Route 'load-slot0' -Points '300,218;320,166;400,226' -MoveMode auto -ClickMode sendinput -ClickHoldMs 300 -ClickRepeat 2 -AllowVisibleRuntime",
+      "notes": "the command reaches gameplay through the load route; then manually check centered castle overview descriptors and callbacks"
+    }
+  },
+  "proof_validation_command": "python 'tools\\manual_directinput_checklist.py' --manual-proof 'captures\\current\\manual-directinput-proof-current.json' --require-pass --require-promotion-ready",
+  "runtime_prerequisites": [
+    "user explicitly approves a visible/manual DirectInput validation pass",
+    "candidate executable path placeholders are replaced with freshly built, hashed candidates",
+    "stale clash95*/cdb processes are killed and recorded before launching a visible runtime",
+    "each manual target captures observed result, screenshot or notes, pass/fail notes, and no-crash status",
+    "captures/current/manual-directinput-proof-current.json is filled from the approved run and validated before promotion"
+  ],
+  "summary": {
+    "pending_ids": [
+      "stable_menu_load",
+      "stable_hd_map_input",
+      "right_bottom_validation_input",
+      "castle_barracks_centered_input",
+      "castle_overview_centered_input"
+    ],
+    "command_count": 5,
+    "all_commands_have_allow_visible_runtime": true,
+    "template_valid_as_proof": false,
+    "manual_proof_valid": false,
+    "promotion_ready": false
+  },
+  "failures": []
+}

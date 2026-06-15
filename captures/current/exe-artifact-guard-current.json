@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-06-15T19:10:35+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
+  "filesystem_exes": [],
+  "tracked_exes": [],
+  "exe_status_lines": [],
+  "allowed_staged_deletions": [],
+  "disallowed_status_lines": [],
+  "root_exe_ignore_present": true,
+  "gitignore": ".gitignore",
+  "failures": []
+}

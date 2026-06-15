@@ -1,0 +1,117 @@
+{
+  "log": "captures\\cdb-surface-dump-20260430-145646\\cdb-surface-dump.log",
+  "marker_counts": {
+    "D526990_WRITE": 0,
+    "D526990_SETUP_WRITE": 0,
+    "D526994_WRITE": 0,
+    "D526994_OWNER_423760_ENTRY": 0,
+    "D526994_OWNER_423760_SET1": 0,
+    "D526994_OWNER_423760_REDRAW1": 0,
+    "D526994_OWNER_423760_RESTORE": 0,
+    "D526994_OWNER_423760_REDRAW2": 0,
+    "D526994_OWNER_423B00_ENTRY": 0,
+    "D526994_OWNER_423B00_SET1": 0,
+    "D526994_OWNER_423B00_REDRAW": 0,
+    "D526994_OWNER_423B40_ENTRY": 0,
+    "D526994_OWNER_423B40_CLEAR": 0,
+    "D526994_OWNER_423B40_REDRAW": 0,
+    "D526994_SETUP_CALLBACK_TEST": 0,
+    "D526994_SETUP_FALLBACK_START": 0,
+    "D526994_MIN_CALLBACK_TEST": 3,
+    "D526990_FULLREDRAW_ENTER": 0,
+    "D526990_SECOND_PASS_CHECK": 0,
+    "D526990_FALLBACK_LOOP_START": 0,
+    "D526990_FALLBACK_LOOP_DONE": 0,
+    "D526990_CALLBACK_TEST": 0,
+    "D526990_CALLBACK_CALL": 0,
+    "D526990_CALLBACK_AFTER": 0,
+    "SURFDUMP_PLAYGAME": 2,
+    "SURFDUMP_READY": 1,
+    "AV_SURFDUMP": 0
+  },
+  "row_counts": {
+    "d526990_rows": 0,
+    "d526994_rows": 3,
+    "writes": 0,
+    "d526994_writes": 0,
+    "owner_423760_entries": 0,
+    "owner_423b00_entries": 0,
+    "owner_423b40_entries": 0,
+    "fullredraw_entries": 0,
+    "callback_tests": 3,
+    "callback_calls": 0,
+    "fallback_starts": 0,
+    "fallback_done": 0,
+    "surfdump_playgame": 2,
+    "surfdump_ready": 1,
+    "av": 0
+  },
+  "callback_values": [],
+  "callback_nonzero_seen": false,
+  "write_values": [],
+  "flag526994_values": [
+    "00000000"
+  ],
+  "rows": [
+    {
+      "line_no": 222,
+      "kind": "SURFDUMP_PLAYGAME",
+      "raw": "SURFDUMP_PLAYGAME gd=03f90030 map=(100,100) scroll=(10,17) surface=037bc8b8 size=(640,480)",
+      "gd": "03f90030",
+      "map": "(100,100)",
+      "scroll": "(10,17)",
+      "surface": "037bc8b8",
+      "size": "(640,480)"
+    },
+    {
+      "line_no": 223,
+      "kind": "SURFDUMP_PLAYGAME",
+      "raw": "SURFDUMP_PLAYGAME gd=03f90030 map=(100,100) scroll=(10,17) surface=037bc8b8 size=(640,480)",
+      "gd": "03f90030",
+      "map": "(100,100)",
+      "scroll": "(10,17)",
+      "surface": "037bc8b8",
+      "size": "(640,480)"
+    },
+    {
+      "line_no": 224,
+      "kind": "D526994_MIN_CALLBACK_TEST",
+      "raw": "D526994_MIN_CALLBACK_TEST ret=ffffffff callback=00000000 flag526994=00000000 surface=0a2fed70 sz=(800,600)",
+      "ret": "ffffffff",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "surface": "0a2fed70",
+      "sz": "(800,600)"
+    },
+    {
+      "line_no": 225,
+      "kind": "D526994_MIN_CALLBACK_TEST",
+      "raw": "D526994_MIN_CALLBACK_TEST ret=0050ee24 callback=00000000 flag526994=00000000 surface=0a2fed70 sz=(800,600)",
+      "ret": "0050ee24",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "surface": "0a2fed70",
+      "sz": "(800,600)"
+    },
+    {
+      "line_no": 226,
+      "kind": "D526994_MIN_CALLBACK_TEST",
+      "raw": "D526994_MIN_CALLBACK_TEST ret=ffffffff callback=00000000 flag526994=00000000 surface=0a2fed70 sz=(800,600)",
+      "ret": "ffffffff",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "surface": "0a2fed70",
+      "sz": "(800,600)"
+    },
+    {
+      "line_no": 231,
+      "kind": "SURFDUMP_READY",
+      "raw": "SURFDUMP_READY redraw_seq=4 surface=0a2fed70 size=(800,600) base=0a5a0030 bytes=480000",
+      "redraw_seq": "4",
+      "surface": "0a2fed70",
+      "size": "(800,600)",
+      "base": "0a5a0030",
+      "bytes": "480000"
+    }
+  ]
+}

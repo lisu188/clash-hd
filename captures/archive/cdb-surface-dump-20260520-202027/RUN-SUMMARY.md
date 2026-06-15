@@ -1,0 +1,26 @@
+# CDB Surface Dump Run
+
+- Passed: false
+- Error: CDB surface dump timed out after 120 seconds
+- Launch mode: hidden-desktop
+- Timed out: True
+- Stopped after dump: False
+- Dump method: host-readprocessmemory
+- Host dumped memory: False
+- Host dump error: not observed
+- CDB exit code:
+- AV: False
+- Dump invalid: False
+- App_RequestQuit: False
+- App_RequestQuit line: not observed
+- DirectDraw proxy: True
+- No skip start animations: False
+- Fast-forward start animations: True
+- Force visible edges: False
+- Post-owner force visible seven: False
+- Map validation skipped: True
+- DirectDraw proxy DLL: C:\ClashTests\battle-slot-scan\ddraw.dll
+- DirectDraw proxy log: C:\ClashTests\battle-slot-scan\ddraw_surfdump_proxy.log
+- Generated probe: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260520-202027\clash95_surface_dump_probe.generated.cdb
+- Log: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260520-202027\cdb-surface-dump.log
+- Timeout stack: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260520-202027\timeout-stack.log

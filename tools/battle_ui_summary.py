@@ -29,8 +29,19 @@ MARKERS = (
     "BATTLE_COMMAND_RESULT",
     "BATTLE_COMMAND_FORCE_ENABLED_UNIT",
     "BATTLE_COMMAND_CLICK_GATE_FORCE",
+    "BATTLE_COMMAND_CLICK_GATE_OBSERVED",
+    "BATTLE_COMMAND_REARM_PRE_GATES",
+    "BATTLE_COMMAND_PRE_GATES",
     "BATTLE_COMMAND_DESCRIPTOR_CALLBACK",
+    "BATTLE_COMMAND_RENDER_BEGIN_ENTER",
     "BATTLE_COMMAND_RENDER_BEGIN_SKIP",
+    "BATTLE_COMMAND_SYNTHETIC_RELEASE",
+    "BATTLE_RENDER_BEGIN_ENTER",
+    "BATTLE_RENDER_BEGIN_LOOP",
+    "BATTLE_RENDER_BEGIN_SPIN_GUARD",
+    "BATTLE_RENDER_BEGIN_LOST_CHECK",
+    "BATTLE_RENDER_BEGIN_LOST_GUARD",
+    "BATTLE_RENDER_BEGIN_EXIT",
     "BATTLE_COMMAND_CALLBACK_RESULT",
     "BATTLE_COMMAND_CALLBACK",
     "BATTLE_COMMAND_SKIP_TURN_BANNER",
@@ -40,6 +51,18 @@ MARKERS = (
     "BATTLE_GRID_ATTEMPT",
     "BATTLE_GRID_RESULT",
     "BATTLE_GRID_HIT",
+    "BATTLE_POSTREADY_PRESENT",
+    "BATTLE_POSTREADY_COPYBACK",
+    "BATTLE_POSTREADY_GRID_ATTEMPT",
+    "BATTLE_POSTREADY_SUMMARY",
+    "BATTLE_INPUTPROBE_GRID_PRE",
+    "BATTLE_INPUTPROBE_GRID_CAVE_ENTRY",
+    "BATTLE_INPUTPROBE_GRID_INNER",
+    "BATTLE_INPUTPROBE_GRID_POST",
+    "BATTLE_INPUTPROBE_DESCRIPTOR_PRE",
+    "BATTLE_INPUTPROBE_DESCRIPTOR_CAVE_ENTRY",
+    "BATTLE_INPUTPROBE_DESCRIPTOR_INNER",
+    "BATTLE_INPUTPROBE_DESCRIPTOR_POST",
     "BATTLE_MODAL_HIT",
     "BATTLE_MODAL_CLASSIFIED",
     "BATTLE_ROUTE_CANDIDATE",
@@ -157,6 +180,12 @@ def surface_size_from_ready(row: dict[str, Any] | None) -> list[int] | None:
     return None
 
 
+def row_value(row: dict[str, Any] | None, key: str) -> Any:
+    if row is None:
+        return None
+    return row.get("values", {}).get(key)
+
+
 def build_summary(path: Path) -> dict[str, Any]:
     log_path, summary_path, screenshot = capture_paths(path)
     text = ""
@@ -184,10 +213,49 @@ def build_summary(path: Path) -> dict[str, Any]:
     command_callback_ok = marker_counts["BATTLE_COMMAND_CALLBACK"] > 0
     command_callback_result_ok = marker_counts["BATTLE_COMMAND_CALLBACK_RESULT"] > 0
     command_render_begin_skip_seen = marker_counts["BATTLE_COMMAND_RENDER_BEGIN_SKIP"] > 0
+    command_render_begin_enter_seen = marker_counts["BATTLE_COMMAND_RENDER_BEGIN_ENTER"] > 0
+    command_rearm_pre_gates_seen = marker_counts["BATTLE_COMMAND_REARM_PRE_GATES"] > 0
+    command_pre_gates_seen = marker_counts["BATTLE_COMMAND_PRE_GATES"] > 0
+    command_synthetic_release_seen = marker_counts["BATTLE_COMMAND_SYNTHETIC_RELEASE"] > 0
+    render_begin_enter_seen = marker_counts["BATTLE_RENDER_BEGIN_ENTER"] > 0
+    render_begin_guard_seen = (
+        marker_counts["BATTLE_RENDER_BEGIN_SPIN_GUARD"] > 0
+        or marker_counts["BATTLE_RENDER_BEGIN_LOST_GUARD"] > 0
+    )
+    render_begin_exit_seen = marker_counts["BATTLE_RENDER_BEGIN_EXIT"] > 0
     grid_hit_ok = marker_counts["BATTLE_GRID_HIT"] > 0
     modal_hit = marker_counts["BATTLE_MODAL_HIT"] > 0
     modal_classified = marker_counts["BATTLE_MODAL_CLASSIFIED"] > 0
+    post_ready_summary = last_row(rows, "BATTLE_POSTREADY_SUMMARY")
+    post_ready_presents = marker_counts["BATTLE_POSTREADY_PRESENT"]
+    post_ready_copybacks = marker_counts["BATTLE_POSTREADY_COPYBACK"]
+    post_ready_grid_attempts = marker_counts["BATTLE_POSTREADY_GRID_ATTEMPT"]
+    post_ready_redraw_sample_ok = (
+        post_ready_summary is not None
+        and post_ready_presents >= 1
+        and post_ready_grid_attempts >= 1
+        and row_value(post_ready_summary, "presents") == post_ready_presents
+        and row_value(post_ready_summary, "size") == [800, 600]
+    )
     no_av = not av_rows
+
+    last_grid_pre = last_row(rows, "BATTLE_INPUTPROBE_GRID_PRE")
+    last_grid_inner = last_row(rows, "BATTLE_INPUTPROBE_GRID_INNER")
+    last_grid_post = last_row(rows, "BATTLE_INPUTPROBE_GRID_POST")
+    last_descriptor_pre = last_row(rows, "BATTLE_INPUTPROBE_DESCRIPTOR_PRE")
+    last_descriptor_inner = last_row(rows, "BATTLE_INPUTPROBE_DESCRIPTOR_INNER")
+    last_descriptor_post = last_row(rows, "BATTLE_INPUTPROBE_DESCRIPTOR_POST")
+    grid_input_wrapper_ok = (
+        row_value(last_grid_pre, "displayed") == [144, 108]
+        and row_value(last_grid_inner, "mouse") == [64, 48]
+        and row_value(last_grid_post, "mouse") == [144, 108]
+    )
+    descriptor_input_wrapper_ok = (
+        row_value(last_descriptor_pre, "displayed") == [588, 440]
+        and row_value(last_descriptor_inner, "mouse") == [508, 380]
+        and row_value(last_descriptor_post, "mouse") == [588, 440]
+    )
+    centered_input_wrapper_ok = grid_input_wrapper_ok and descriptor_input_wrapper_ok
 
     battle_surface = last_row(rows, "BATTLE_SURFACE")
     surfdump_ready = last_row(rows, "SURFDUMP_READY")
@@ -243,10 +311,35 @@ def build_summary(path: Path) -> dict[str, Any]:
         classification.append("battle command callback proof was not observed")
     if command_render_begin_skip_seen:
         classification.append("battle command callback render-begin skip row observed")
+    elif command_render_begin_enter_seen and render_begin_exit_seen:
+        if render_begin_guard_seen:
+            classification.append("battle command callback render-begin call exited through hidden-harness loop guard")
+        else:
+            classification.append("battle command callback render-begin call entered and exited naturally")
+        if command_synthetic_release_seen:
+            classification.append("synthetic click state was released before render-begin")
+    elif command_render_begin_enter_seen or render_begin_enter_seen:
+        classification.append("battle command callback render-begin call entered but exit was not captured")
+    if command_pre_gates_seen and not command_rearm_pre_gates_seen:
+        classification.append("battle command click survived to pre-gate without rearm")
+    elif command_rearm_pre_gates_seen:
+        classification.append("battle command pre-gate click rearm row observed")
     if grid_hit_ok:
         classification.append("battle tactical-grid hit row observed")
+    elif grid_input_wrapper_ok:
+        classification.append("battle tactical-grid centered input wrapper restored coordinates")
     else:
         classification.append("battle tactical-grid hit proof was not observed")
+    if post_ready_redraw_sample_ok:
+        classification.append("battle post-ready redraw/present sample observed")
+    elif post_ready_presents:
+        classification.append("battle post-ready present rows observed without summary")
+    if centered_input_wrapper_ok:
+        classification.append("battle grid and descriptor centered input wrappers both passed pre/inner/post checks")
+    elif grid_input_wrapper_ok:
+        classification.append("battle grid centered input wrapper passed, descriptor wrapper did not")
+    elif descriptor_input_wrapper_ok:
+        classification.append("battle descriptor centered input wrapper passed, grid wrapper did not")
     if modal_hit:
         classification.append("battle modal hit row observed")
     elif modal_classified:
@@ -287,19 +380,52 @@ def build_summary(path: Path) -> dict[str, Any]:
         "command_callback_ok": command_callback_ok,
         "command_callback_result_ok": command_callback_result_ok,
         "command_render_begin_skip_seen": command_render_begin_skip_seen,
+        "command_render_begin_enter_seen": command_render_begin_enter_seen,
+        "command_rearm_pre_gates_seen": command_rearm_pre_gates_seen,
+        "command_pre_gates_seen": command_pre_gates_seen,
+        "command_synthetic_release_seen": command_synthetic_release_seen,
+        "render_begin_enter_seen": render_begin_enter_seen,
+        "render_begin_guard_seen": render_begin_guard_seen,
+        "render_begin_exit_seen": render_begin_exit_seen,
         "grid_hit_ok": grid_hit_ok,
+        "grid_input_wrapper_ok": grid_input_wrapper_ok,
+        "descriptor_input_wrapper_ok": descriptor_input_wrapper_ok,
+        "centered_input_wrapper_ok": centered_input_wrapper_ok,
+        "post_ready_presents": post_ready_presents,
+        "post_ready_copybacks": post_ready_copybacks,
+        "post_ready_grid_attempts": post_ready_grid_attempts,
+        "post_ready_redraw_sample_ok": post_ready_redraw_sample_ok,
         "modal_hit": modal_hit,
         "modal_classified": modal_classified,
         "no_av": no_av,
         "last_battle_surface": battle_surface,
+        "last_command_attempt": last_row(rows, "BATTLE_COMMAND_ATTEMPT"),
         "last_command_hit": last_row(rows, "BATTLE_COMMAND_HIT"),
         "last_command_native_hit": last_row(rows, "BATTLE_COMMAND_NATIVE_HIT"),
         "last_command_callback": last_row(rows, "BATTLE_COMMAND_CALLBACK"),
+        "last_command_rearm_pre_gates": last_row(rows, "BATTLE_COMMAND_REARM_PRE_GATES"),
+        "last_command_pre_gates": last_row(rows, "BATTLE_COMMAND_PRE_GATES"),
+        "last_command_render_begin_enter": last_row(rows, "BATTLE_COMMAND_RENDER_BEGIN_ENTER"),
         "last_command_render_begin_skip": last_row(rows, "BATTLE_COMMAND_RENDER_BEGIN_SKIP"),
+        "last_command_synthetic_release": last_row(rows, "BATTLE_COMMAND_SYNTHETIC_RELEASE"),
+        "last_render_begin_enter": last_row(rows, "BATTLE_RENDER_BEGIN_ENTER"),
+        "last_render_begin_loop": last_row(rows, "BATTLE_RENDER_BEGIN_LOOP"),
+        "last_render_begin_spin_guard": last_row(rows, "BATTLE_RENDER_BEGIN_SPIN_GUARD"),
+        "last_render_begin_lost_check": last_row(rows, "BATTLE_RENDER_BEGIN_LOST_CHECK"),
+        "last_render_begin_lost_guard": last_row(rows, "BATTLE_RENDER_BEGIN_LOST_GUARD"),
+        "last_render_begin_exit": last_row(rows, "BATTLE_RENDER_BEGIN_EXIT"),
         "last_command_callback_result": last_row(rows, "BATTLE_COMMAND_CALLBACK_RESULT"),
         "last_grid_attempt": last_row(rows, "BATTLE_GRID_ATTEMPT"),
         "last_grid_result": last_row(rows, "BATTLE_GRID_RESULT"),
         "last_grid_hit": last_row(rows, "BATTLE_GRID_HIT"),
+        "last_grid_inputprobe_pre": last_grid_pre,
+        "last_grid_inputprobe_inner": last_grid_inner,
+        "last_grid_inputprobe_post": last_grid_post,
+        "last_descriptor_inputprobe_pre": last_descriptor_pre,
+        "last_descriptor_inputprobe_inner": last_descriptor_inner,
+        "last_descriptor_inputprobe_post": last_descriptor_post,
+        "last_post_ready_grid_attempt": last_row(rows, "BATTLE_POSTREADY_GRID_ATTEMPT"),
+        "last_post_ready_summary": post_ready_summary,
         "last_modal_hit": last_row(rows, "BATTLE_MODAL_HIT"),
         "last_modal_classified": last_row(rows, "BATTLE_MODAL_CLASSIFIED"),
         "classification": classification,
@@ -331,7 +457,20 @@ def write_markdown(path: Path, summary: dict[str, Any]) -> None:
         f"- Command callback ok: `{summary['command_callback_ok']}`",
         f"- Command callback result ok: `{summary['command_callback_result_ok']}`",
         f"- Command render-begin skip seen: `{summary['command_render_begin_skip_seen']}`",
+        f"- Command render-begin enter seen: `{summary['command_render_begin_enter_seen']}`",
+        f"- Command rearm pre-gates seen: `{summary['command_rearm_pre_gates_seen']}`",
+        f"- Command pre-gates seen: `{summary['command_pre_gates_seen']}`",
+        f"- Command synthetic release seen: `{summary['command_synthetic_release_seen']}`",
+        f"- Render-begin guard seen: `{summary['render_begin_guard_seen']}`",
+        f"- Render-begin exit seen: `{summary['render_begin_exit_seen']}`",
         f"- Grid hit ok: `{summary['grid_hit_ok']}`",
+        f"- Grid input wrapper ok: `{summary['grid_input_wrapper_ok']}`",
+        f"- Descriptor input wrapper ok: `{summary['descriptor_input_wrapper_ok']}`",
+        f"- Centered input wrapper ok: `{summary['centered_input_wrapper_ok']}`",
+        f"- Post-ready presents: `{summary['post_ready_presents']}`",
+        f"- Post-ready copybacks: `{summary['post_ready_copybacks']}`",
+        f"- Post-ready grid attempts: `{summary['post_ready_grid_attempts']}`",
+        f"- Post-ready redraw sample ok: `{summary['post_ready_redraw_sample_ok']}`",
         f"- Modal classified: `{summary['modal_hit'] or summary['modal_classified']}`",
         "",
         "## Classification",
@@ -370,6 +509,13 @@ def main() -> int:
     print(f"command-callback-result-ok: {summary['command_callback_result_ok']}")
     print(f"command-render-begin-skip-seen: {summary['command_render_begin_skip_seen']}")
     print(f"grid-hit-ok: {summary['grid_hit_ok']}")
+    print(f"grid-input-wrapper-ok: {summary['grid_input_wrapper_ok']}")
+    print(f"descriptor-input-wrapper-ok: {summary['descriptor_input_wrapper_ok']}")
+    print(f"centered-input-wrapper-ok: {summary['centered_input_wrapper_ok']}")
+    print(f"post-ready-presents: {summary['post_ready_presents']}")
+    print(f"post-ready-copybacks: {summary['post_ready_copybacks']}")
+    print(f"post-ready-grid-attempts: {summary['post_ready_grid_attempts']}")
+    print(f"post-ready-redraw-sample-ok: {summary['post_ready_redraw_sample_ok']}")
     print(f"av-count: {summary['av_count']}")
     if args.write_json:
         args.write_json.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,157 @@
+{
+  "left_path": "captures\\archive\\patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-20260424.json",
+  "right_path": "captures\\archive\\patch-stage-mapdraw-partial12-20260424.json",
+  "left_summary": {
+    "exe": "C:\\Clash\\clash95_hd_mousedynorigin_mapsurface_scrollclamp_presentbounds_minimapright_dynvswitch_20260424.exe",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "exe_sha256": "C98709257AF61E7EF87F1B71650F07A5EC2F6A3EB2B74DA0D708C2D39FE90CCD",
+    "patch_count": 114,
+    "status_counts": {
+      "patched": 114
+    },
+    "current_hd_map_gate_passed": null
+  },
+  "right_summary": {
+    "exe": "C:\\Clash\\clash95_hd_mapdraw_partial12_20260424.exe",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "exe_sha256": "3053BC41079ECBCE6CD91D7ECE3C430666B3361F5DF7CF679042789D5A5A8182",
+    "patch_count": 114,
+    "status_counts": {
+      "patched": 114
+    },
+    "current_hd_map_gate_passed": null
+  },
+  "counts": {
+    "left_records": 114,
+    "right_records": 114,
+    "common_records": 114,
+    "added_records": 0,
+    "removed_records": 0,
+    "changed_records": 3,
+    "metadata_diffs": 2,
+    "group_diffs": 0,
+    "left_nonpatched": 0,
+    "right_nonpatched": 0,
+    "record_diff_count": 3,
+    "structural_diff_count": 5
+  },
+  "metadata_diffs": {
+    "exe": {
+      "left": "C:\\Clash\\clash95_hd_mousedynorigin_mapsurface_scrollclamp_presentbounds_minimapright_dynvswitch_20260424.exe",
+      "right": "C:\\Clash\\clash95_hd_mapdraw_partial12_20260424.exe"
+    },
+    "exe_sha256": {
+      "left": "C98709257AF61E7EF87F1B71650F07A5EC2F6A3EB2B74DA0D708C2D39FE90CCD",
+      "right": "3053BC41079ECBCE6CD91D7ECE3C430666B3361F5DF7CF679042789D5A5A8182"
+    }
+  },
+  "group_diffs": {},
+  "added_records": [],
+  "removed_records": [],
+  "changed_records": [
+    {
+      "offset": "0x017DFF",
+      "left": {
+        "offset": "0x017DFF",
+        "group": "full-redraw-12x9",
+        "status": "patched",
+        "old": "06",
+        "new": "09",
+        "actual": "09",
+        "note": "0x418700 clipped bottom row columns 6 -> 9"
+      },
+      "right": {
+        "offset": "0x017DFF",
+        "group": "full-redraw-12x9",
+        "status": "patched",
+        "old": "06",
+        "new": "0C",
+        "actual": "0C",
+        "note": "0x418700 clipped bottom row columns 6 -> 12"
+      },
+      "changes": {
+        "new": {
+          "left": "09",
+          "right": "0C"
+        },
+        "actual": {
+          "left": "09",
+          "right": "0C"
+        },
+        "note": {
+          "left": "0x418700 clipped bottom row columns 6 -> 9",
+          "right": "0x418700 clipped bottom row columns 6 -> 12"
+        }
+      }
+    },
+    {
+      "offset": "0x017EDB",
+      "left": {
+        "offset": "0x017EDB",
+        "group": "helpers",
+        "status": "patched",
+        "old": "06",
+        "new": "09",
+        "actual": "09",
+        "note": "single-tile repaint last-row X cutoff 6 -> 9"
+      },
+      "right": {
+        "offset": "0x017EDB",
+        "group": "helpers",
+        "status": "patched",
+        "old": "06",
+        "new": "0C",
+        "actual": "0C",
+        "note": "single-tile repaint last-row X cutoff 6 -> 12"
+      },
+      "changes": {
+        "new": {
+          "left": "09",
+          "right": "0C"
+        },
+        "actual": {
+          "left": "09",
+          "right": "0C"
+        },
+        "note": {
+          "left": "single-tile repaint last-row X cutoff 6 -> 9",
+          "right": "single-tile repaint last-row X cutoff 6 -> 12"
+        }
+      }
+    },
+    {
+      "offset": "0x0E8DC0",
+      "left": {
+        "offset": "0x0E8DC0",
+        "group": "viewport-switch-dynamic-surface",
+        "status": "patched",
+        "old": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "new": "81 FA A0 96 51 00 74 0A 68 E0 01 00 00 B9 80 02 00 00 EB 0A 68 58 02 00 00 B9 20 03 00 00 8B 46 3C 31 DB 31 D2 C7 40 20 00 00 00 00 89 F0 E8 2D 71 F7 FF E9 3F 74 F7 FF 00 00 00 00 00 00 00 00",
+        "actual": "81 FA A0 96 51 00 74 0A 68 E0 01 00 00 B9 80 02 00 00 EB 0A 68 58 02 00 00 B9 20 03 00 00 8B 46 3C 31 DB 31 D2 C7 40 20 00 00 00 00 89 F0 E8 2D 71 F7 FF E9 3F 74 F7 FF 00 00 00 00 00 00 00 00",
+        "note": "0x4E99C0 code cave: use 800x600 for map metadata 005196A0, else native 640x480"
+      },
+      "right": {
+        "offset": "0x0E8DC0",
+        "group": "viewport-switch-dynamic-surface",
+        "status": "patched",
+        "old": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+        "new": "81 FA A0 96 51 00 74 0C 68 E0 01 00 00 B9 80 02 00 00 EB 0A 68 58 02 00 00 B9 20 03 00 00 8B 46 3C 31 DB 31 D2 C7 40 20 00 00 00 00 89 F0 E8 2D 71 F7 FF E9 3F 74 F7 FF 00 00 00 00 00 00 00 00",
+        "actual": "81 FA A0 96 51 00 74 0C 68 E0 01 00 00 B9 80 02 00 00 EB 0A 68 58 02 00 00 B9 20 03 00 00 8B 46 3C 31 DB 31 D2 C7 40 20 00 00 00 00 89 F0 E8 2D 71 F7 FF E9 3F 74 F7 FF 00 00 00 00 00 00 00 00",
+        "note": "0x4E99C0 code cave: use 800x600 for map metadata 005196A0, else native 640x480"
+      },
+      "changes": {
+        "new": {
+          "left": "81 FA A0 96 51 00 74 0A 68 E0 01 00 00 B9 80 02 00 00 EB 0A 68 58 02 00 00 B9 20 03 00 00 8B 46 3C 31 DB 31 D2 C7 40 20 00 00 00 00 89 F0 E8 2D 71 F7 FF E9 3F 74 F7 FF 00 00 00 00 00 00 00 00",
+          "right": "81 FA A0 96 51 00 74 0C 68 E0 01 00 00 B9 80 02 00 00 EB 0A 68 58 02 00 00 B9 20 03 00 00 8B 46 3C 31 DB 31 D2 C7 40 20 00 00 00 00 89 F0 E8 2D 71 F7 FF E9 3F 74 F7 FF 00 00 00 00 00 00 00 00"
+        },
+        "actual": {
+          "left": "81 FA A0 96 51 00 74 0A 68 E0 01 00 00 B9 80 02 00 00 EB 0A 68 58 02 00 00 B9 20 03 00 00 8B 46 3C 31 DB 31 D2 C7 40 20 00 00 00 00 89 F0 E8 2D 71 F7 FF E9 3F 74 F7 FF 00 00 00 00 00 00 00 00",
+          "right": "81 FA A0 96 51 00 74 0C 68 E0 01 00 00 B9 80 02 00 00 EB 0A 68 58 02 00 00 B9 20 03 00 00 8B 46 3C 31 DB 31 D2 C7 40 20 00 00 00 00 89 F0 E8 2D 71 F7 FF E9 3F 74 F7 FF 00 00 00 00 00 00 00 00"
+        }
+      }
+    }
+  ],
+  "left_nonpatched_records": [],
+  "right_nonpatched_records": [],
+  "passed": false
+}

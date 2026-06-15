@@ -1,0 +1,253 @@
+{
+  "log": "C:\\Clash\\hd-cdb-harnesscheck-mouse-state-20260422.log",
+  "mouse_rows": 416,
+  "menuhit_rows": 0,
+  "ranges": {
+    "x": {
+      "min": 0,
+      "max": 1303,
+      "unique": 191
+    },
+    "y": {
+      "min": 0,
+      "max": 923,
+      "unique": 179
+    },
+    "dx": {
+      "min": 0,
+      "max": 2220,
+      "unique": 265
+    },
+    "dy": {
+      "min": 0,
+      "max": 1509,
+      "unique": 262
+    },
+    "rawx": {
+      "min": 0,
+      "max": 83440,
+      "unique": 267
+    },
+    "rawy": {
+      "min": 0,
+      "max": 59108,
+      "unique": 265
+    },
+    "buttons": {
+      "min": 0,
+      "max": 3,
+      "unique": 4
+    },
+    "lbtn": {
+      "min": 0,
+      "max": 128,
+      "unique": 2
+    },
+    "rbtn": {
+      "min": 0,
+      "max": 128,
+      "unique": 2
+    }
+  },
+  "objects": [
+    "00544cd8"
+  ],
+  "max_bounds_seen": {
+    "x": 628,
+    "y": 463
+  },
+  "final_max_bounds": {
+    "x": 610,
+    "y": 452
+  },
+  "preclamp_over_bounds": 373,
+  "preclamp_at_final_max": 39,
+  "zero_delta_rows": 41,
+  "button_rows": 44,
+  "left_button_rows": 38,
+  "right_button_rows": 35,
+  "first_rows": [
+    {
+      "obj": "00544cd8",
+      "x": 0,
+      "y": 0,
+      "dx": 0,
+      "dy": 0,
+      "shift": 6,
+      "speed": 64,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 628,
+      "maxy": 463,
+      "rawx": 0,
+      "rawy": 0,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "obj": "00544cd8",
+      "x": 1,
+      "y": 1,
+      "dx": 0,
+      "dy": 0,
+      "shift": 6,
+      "speed": 64,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 628,
+      "maxy": 463,
+      "rawx": 64,
+      "rawy": 64,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "obj": "00544cd8",
+      "x": 70,
+      "y": 47,
+      "dx": 221,
+      "dy": 150,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 4484,
+      "rawy": 3064,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "obj": "00544cd8",
+      "x": 413,
+      "y": 282,
+      "dx": 1100,
+      "dy": 750,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 26484,
+      "rawy": 18064,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "obj": "00544cd8",
+      "x": 1102,
+      "y": 750,
+      "dx": 2204,
+      "dy": 1499,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 70564,
+      "rawy": 48044,
+      "lbtn": 0,
+      "rbtn": 0
+    }
+  ],
+  "last_rows": [
+    {
+      "obj": "00544cd8",
+      "x": 922,
+      "y": 710,
+      "dx": 999,
+      "dy": 828,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 59020,
+      "rawy": 45488,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "obj": "00544cd8",
+      "x": 995,
+      "y": 772,
+      "dx": 1233,
+      "dy": 1024,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 63700,
+      "rawy": 49408,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "obj": "00544cd8",
+      "x": 686,
+      "y": 515,
+      "dx": 245,
+      "dy": 204,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 43940,
+      "rawy": 33008,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "obj": "00544cd8",
+      "x": 760,
+      "y": 577,
+      "dx": 480,
+      "dy": 403,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 48640,
+      "rawy": 36988,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "obj": "00544cd8",
+      "x": 610,
+      "y": 452,
+      "dx": 0,
+      "dy": 0,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 39040,
+      "rawy": 28928,
+      "lbtn": 0,
+      "rbtn": 0
+    }
+  ]
+}

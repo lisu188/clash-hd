@@ -1,6 +1,6 @@
 # Action Panel Route Summary
 
-- Log: `captures\cdb-surface-dump-20260506-190037\cdb-surface-dump.log`
+- Log: `captures\archive\cdb-surface-dump-20260506-190037\cdb-surface-dump.log`
 - Ready: True
 - AV rows: 0
 - Owner/global rows: 11

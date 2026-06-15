@@ -1,0 +1,107 @@
+{
+  "log": "captures\\cdb-surface-dump-20260527-160111\\cdb-surface-dump.log",
+  "expected_slot": 5,
+  "target_slot": 5,
+  "target_slot_values": [
+    5,
+    5
+  ],
+  "target_slot_unique_values": [
+    5
+  ],
+  "target_slot_consistent": true,
+  "target_slot_expected_match": true,
+  "loadsave_slot_match": null,
+  "playgame_slot_match": null,
+  "expected_slot_match": true,
+  "row_count": 2,
+  "marker_counts": {
+    "LSTRANS_LOAD_CALLBACK_ENTRY": 1,
+    "LSTRANS_AFTER_MAIN_CALLBACK": 0,
+    "LSTRANS_MAIN_WAIT_GATE": 1,
+    "LSTRANS_MAIN_SWITCH_DISPATCH": 0,
+    "LSTRANS_MAIN_DISPATCH_POLL": 0,
+    "LSTRANS_LOAD_MENU_ENTRY": 0,
+    "LSTRANS_LATE_MOUSE_SET": 0,
+    "LSTRANS_LOAD_SLOT_DRAW": 0,
+    "LSTRANS_LOAD_MENU_LOOP": 0,
+    "LSTRANS_LATE_FORCE_SELECT": 0,
+    "LSTRANS_LATE_FORCE_ACCEPT": 0,
+    "LSTRANS_LOAD_ACCEPT_CALL": 0,
+    "LSTRANS_LOADSAVE": 0,
+    "LSTRANS_PLAYGAME": 0
+  },
+  "av_count": 0,
+  "av_rows": [],
+  "last_late_mouse": null,
+  "last_callback_entry": {
+    "choice_before": 0,
+    "exit_before": 0,
+    "target_slot": 5,
+    "mouse": [
+      300,
+      218
+    ],
+    "lbtn": 128
+  },
+  "last_wait_gate": {
+    "seq": 0,
+    "choice": 0,
+    "exit": 0,
+    "target_slot": 5,
+    "selected": 0,
+    "accept": 0,
+    "mouse": [
+      1,
+      1
+    ],
+    "lbtn": 0
+  },
+  "last_switch_dispatch": null,
+  "loadsave": null,
+  "playgame": null,
+  "selected_arg": null,
+  "rows": [
+    {
+      "line": 187,
+      "marker": "LSTRANS_MAIN_WAIT_GATE",
+      "values": {
+        "seq": 0,
+        "choice": 0,
+        "exit": 0,
+        "target_slot": 5,
+        "selected": 0,
+        "accept": 0,
+        "mouse": [
+          1,
+          1
+        ],
+        "lbtn": 0
+      },
+      "text": "LSTRANS_MAIN_WAIT_GATE seq=0 choice=0 exit=0 target_slot=5 selected=0 accept=0 mouse=(1,1) lbtn=0x00"
+    },
+    {
+      "line": 191,
+      "marker": "LSTRANS_LOAD_CALLBACK_ENTRY",
+      "values": {
+        "choice_before": 0,
+        "exit_before": 0,
+        "target_slot": 5,
+        "mouse": [
+          300,
+          218
+        ],
+        "lbtn": 128
+      },
+      "text": "LSTRANS_LOAD_CALLBACK_ENTRY choice_before=0 exit_before=0 target_slot=5 mouse=(300,218) lbtn=0x80"
+    }
+  ],
+  "status": "stalled_before_load_menu_entry",
+  "classification": [
+    "all observed target_slot values match expected slot 5",
+    "main Load callback entry was observed",
+    "main Load callback handoff was not observed",
+    "main dispatch wait-gate rows were observed before the case switch",
+    "real 0044895A load-menu entry was not reached"
+  ]
+}

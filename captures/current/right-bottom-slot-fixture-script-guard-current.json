@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-06-15T18:34:33+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only source inspection; does not run PowerShell, copy saves, launch Clash95, CDB, wrappers, or visible windows",
+  "guard_policy": "the fixture preparation script must default to dry-run, copy only after -Execute, optionally seed a non-save isolated workdir, refuse repository and live C:\\Clash\\save outputs, and avoid visible-runtime APIs",
+  "script": "scripts\\smoke\\prepare_right_bottom_slot_fixture.ps1",
+  "markers": {
+    "default_source_slot5": true,
+    "default_source_workdir": true,
+    "default_fixture_root": true,
+    "target_load_slot_zero": true,
+    "seed_workdir_switch": true,
+    "execute_switch": true,
+    "repo_escape_switch": true,
+    "repo_guard": true,
+    "live_save_guard": true,
+    "source_workdir_guard": true,
+    "source_overwrite_guard": true,
+    "non_promoting_proof_class": true,
+    "promotion_ready_false": true,
+    "stable_stage_false": true,
+    "seed_excludes_save_dir": true,
+    "seed_workdir_copy": true,
+    "copy_item_literal": true
+  },
+  "dry_run_exit_line": 122,
+  "seed_copy_line": 144,
+  "copy_line": 149,
+  "risky_visible_lines": [],
+  "failures": []
+}

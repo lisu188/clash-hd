@@ -22,7 +22,7 @@ from typing import Any, Callable
 
 RUN_RE = re.compile(r"^cdb-surface-dump-(\d{8})-(\d{6})$")
 EXTRA_PROBE_NAME = "probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb"
-LEGACY_EXTRA_PROBE_NAME = "clash95_post_owner_tile_visibility_extra.cdb"
+LEGACY_EXTRA_PROBE_NAME = "probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb"
 TARGET_CELLS = ("r6c10", "r6c11", "r7c10", "r7c11", "r8c0", "r8c10", "r8c11")
 
 

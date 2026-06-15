@@ -12,3 +12,7 @@ PowerShell entrypoints are grouped by purpose so the repository root stays focus
 | `scripts/smoke/` | Visual smoke tests, sandbox runs, and candidate-preparation entrypoints. |
 
 Run scripts from the repository root with `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\<group>\<script>.ps1 ...` unless a workflow documents a more specific working directory.
+
+Moved root variants that could not be byte-for-byte reconciled are kept under
+`scripts/cdb/legacy-root/` for inspection. Prefer the non-legacy grouped
+entrypoints for new runs.

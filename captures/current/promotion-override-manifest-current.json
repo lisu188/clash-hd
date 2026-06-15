@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-06-15T18:34:58+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only manifest validation; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "CDB-only promotion requires an explicit valid override manifest; absence of a manifest keeps current evidence override-inactive",
+  "override_active": false,
+  "override_manifest": {
+    "path": null,
+    "supplied": false,
+    "valid": false,
+    "summary": {
+      "target_scope": null,
+      "candidate_stage": null,
+      "candidate_sha256": null,
+      "evidence_ref_count": 0
+    },
+    "failures": []
+  },
+  "failures": []
+}

@@ -1,0 +1,142 @@
+{
+    "Passed":  true,
+    "Error":  null,
+    "LaunchMode":  "hidden-desktop",
+    "HiddenDesktop":  true,
+    "DesktopName":  "ClashSurfaceDump_20260429_135242",
+    "RunDir":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242",
+    "Stage":  "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "InputExe":  "C:\\Clash\\clash95.exe",
+    "InputSha256":  "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+    "CandidatePath":  "C:\\ClashTests\\cdb-surface-dump\\clash95_hd_surfdump_20260429_135242.exe",
+    "CandidateDir":  "C:\\ClashTests\\cdb-surface-dump",
+    "CandidateSha256":  "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+    "UseDdrawProxy":  true,
+    "NoSkipStartAnims":  false,
+    "FastForwardStartAnims":  true,
+    "ForceVisibleEdges":  true,
+    "DdrawProxyDll":  "C:\\ClashTests\\cdb-surface-dump\\ddraw.dll",
+    "DdrawProxySha256":  "AB25C131E878DB4BF44AB40ACBE69395BEC0EBF2F02E1BECB5435A3B14CC57BD",
+    "DdrawProxyLog":  "C:\\ClashTests\\cdb-surface-dump\\ddraw_surfdump_proxy.log",
+    "DdrawProxyManifest":  "C:\\ClashTests\\cdb-surface-dump\\ddraw_surfdump_proxy.build.json",
+    "Cdb":  "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+    "CdbExitCode":  null,
+    "TimedOut":  false,
+    "StoppedAfterDump":  true,
+    "DumpMethod":  "host-readprocessmemory",
+    "HostDumpedMemory":  true,
+    "HostDumpError":  null,
+    "ProbeTemplate":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_surface_dump_probe.cdb",
+    "GeneratedProbe":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\clash95_surface_dump_probe.generated.cdb",
+    "Log":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\cdb-surface-dump.log",
+    "Surface":  {
+                    "RedrawSeq":  4,
+                    "Surface":  "0a2fed90",
+                    "Width":  800,
+                    "Height":  600,
+                    "Base":  "0a5a0030",
+                    "Bytes":  480000
+                },
+    "RawPath":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\surface.raw",
+    "RawBytes":  480000,
+    "PngPath":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\surface.png",
+    "PngSha256":  "6e6966e4913929d0438fedae688e4241bec6ae263e14d4155970b45b0bafda39",
+    "PngMetadata":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\surface.png.json",
+    "CoverageJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\map-tile-coverage.json",
+    "CoverageText":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\map-tile-coverage.txt",
+    "CoverageBlankActiveCells":  [
+
+                                 ],
+    "VisibilityJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\visibility-coverage-summary.json",
+    "VisibilityText":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\visibility-coverage.txt",
+    "VisibilityUnexplainedBlankCells":  [
+
+                                        ],
+    "VisibilityStatusCounts":  {
+
+                               },
+    "ForcedVisibleJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\forced-visible-summary.json",
+    "ForcedVisibleText":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\forced-visible-summary.txt",
+    "ForcedVisibleExitCode":  0,
+    "ForcedVisibleGate":  {
+                              "coverage_json":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\map-tile-coverage.json",
+                              "log":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-135242\\cdb-surface-dump.log",
+                              "expect_map0":  [
+                                                  10,
+                                                  17
+                                              ],
+                              "expect_vedge_visret":  54,
+                              "expect_vedge_post":  54,
+                              "gameplay_frame_likely":  true,
+                              "blank_active_cells":  [
+
+                                                     ],
+                              "possible_stale_or_solid_active_cells":  [
+
+                                                                       ],
+                              "active_cells":  108,
+                              "measurable_active_cells":  99,
+                              "ready_count":  1,
+                              "visdump_count":  1,
+                              "latest_visdump":  {
+                                                     "line_no":  427,
+                                                     "player":  0,
+                                                     "screen0":  [
+                                                                     32,
+                                                                     16
+                                                                 ],
+                                                     "map0":  [
+                                                                  10,
+                                                                  17
+                                                              ],
+                                                     "rows":  9,
+                                                     "cols":  12,
+                                                     "tile":  [
+                                                                  64,
+                                                                  64
+                                                              ]
+                                                 },
+                              "force_visible_edges_rows":  2,
+                              "force_viewport_rows":  4,
+                              "vedge_visret_count":  54,
+                              "vedge_post_count":  54,
+                              "vedge_visret_unique_seq_count":  54,
+                              "vedge_post_unique_seq_count":  54,
+                              "vedge_visret_nonzero_count":  54,
+                              "vedge_post_nonblack_count":  54,
+                              "first_vedge_visret":  [
+                                                         {
+                                                             "line_no":  204,
+                                                             "seq":  0,
+                                                             "screen":  [
+                                                                            32,
+                                                                            208
+                                                                        ],
+                                                             "center":  [
+                                                                            10,
+                                                                            20
+                                                                        ],
+                                                             "vis":  -1
+                                                         }
+                                                     ],
+                              "first_vedge_post":  [
+                                                       {
+                                                           "line_no":  205,
+                                                           "seq":  0,
+                                                           "ret":  "0041876b",
+                                                           "screen":  [
+                                                                          32,
+                                                                          208
+                                                                      ],
+                                                           "sample":  "a7"
+                                                       }
+                                                   ],
+                              "failures":  [
+
+                                           ],
+                              "passed":  true
+                          },
+    "ForceVisibleStillBlankCells":  [
+
+                                    ]
+}

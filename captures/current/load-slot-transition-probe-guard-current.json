@@ -1,0 +1,237 @@
+{
+  "generated_at": "2026-06-15T18:34:33+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "the focused transition extra probe must avoid early 00419B80 coordinate forcing, late-arm load-row selection only after 0044895A, keep select/accept conditions parameterized by __LOAD_SLOT__, and the surface-dump harness must replace load-slot placeholders in extra probe templates",
+  "required_breakpoints": {
+    "00447780": "main Load callback entry before state write",
+    "00419C60": "post-main-callback descriptor return state",
+    "00447BF1": "main dispatch wait gate before case switch",
+    "00447C0D": "main wait-loop pump call before case switch",
+    "00447C1E": "main wait-loop compare after descriptor walker",
+    "00447C26": "main wait-loop exit before case switch",
+    "00447C3A": "main switch dispatch choice read",
+    "00447D61": "main dispatch poll before case entry",
+    "0044895A": "real case-5 load-menu entry",
+    "0044A140": "load-slot row draw after case entry",
+    "00448A45": "load-menu loop after entry",
+    "00448A68": "late force-select inside load-menu loop",
+    "00448AE3": "late force-accept inside load-menu loop",
+    "0044A110": "load accept helper",
+    "00444490": "LOADSAVE after accepted slot",
+    "0040B660": "PlayGame after LOADSAVE"
+  },
+  "required_markers": {
+    "LSTRANS_LOAD_CALLBACK_ENTRY": "callback pre-write state row",
+    "LSTRANS_AFTER_MAIN_CALLBACK": "post callback state row",
+    "LSTRANS_MAIN_WAIT_GATE": "pre-switch wait-gate row",
+    "LSTRANS_WAIT_LOOP_PUMP": "pre-switch wait-loop pump row",
+    "LSTRANS_WAIT_LOOP_COMPARE": "pre-switch wait-loop compare row",
+    "LSTRANS_WAIT_LOOP_EXIT": "pre-switch wait-loop exit row",
+    "LSTRANS_MAIN_SWITCH_DISPATCH": "switch-dispatch row before case jump",
+    "LSTRANS_MAIN_DISPATCH_POLL": "main dispatch polling row",
+    "LSTRANS_LOAD_MENU_ENTRY": "real load-menu entry row",
+    "LSTRANS_LATE_MOUSE_SET": "late mouse placement after load-menu entry",
+    "LSTRANS_LOAD_SLOT_DRAW": "load-slot draw row",
+    "LSTRANS_LOAD_MENU_LOOP": "load-loop row",
+    "LSTRANS_LATE_FORCE_SELECT": "late select force row",
+    "LSTRANS_LATE_FORCE_ACCEPT": "late accept force row",
+    "LSTRANS_LOAD_ACCEPT_CALL": "load accept helper row",
+    "LSTRANS_LOADSAVE": "save load row",
+    "LSTRANS_PLAYGAME": "gameplay transition row"
+  },
+  "required_placeholders": [
+    "__LOAD_SLOT__",
+    "__LOAD_MOUSE_RAW_X__",
+    "__LOAD_MOUSE_RAW_Y__"
+  ],
+  "checks": {
+    "transition_extra_probe": {
+      "path": "probes\\cdb\\menu\\clash95_load_slot_entry_transition_extra.cdb",
+      "exists": true,
+      "passed": true,
+      "breakpoints": {
+        "00447780": {
+          "present": true,
+          "purpose": "main Load callback entry before state write"
+        },
+        "00419C60": {
+          "present": true,
+          "purpose": "post-main-callback descriptor return state"
+        },
+        "00447BF1": {
+          "present": true,
+          "purpose": "main dispatch wait gate before case switch"
+        },
+        "00447C0D": {
+          "present": true,
+          "purpose": "main wait-loop pump call before case switch"
+        },
+        "00447C1E": {
+          "present": true,
+          "purpose": "main wait-loop compare after descriptor walker"
+        },
+        "00447C26": {
+          "present": true,
+          "purpose": "main wait-loop exit before case switch"
+        },
+        "00447C3A": {
+          "present": true,
+          "purpose": "main switch dispatch choice read"
+        },
+        "00447D61": {
+          "present": true,
+          "purpose": "main dispatch poll before case entry"
+        },
+        "0044895A": {
+          "present": true,
+          "purpose": "real case-5 load-menu entry"
+        },
+        "0044A140": {
+          "present": true,
+          "purpose": "load-slot row draw after case entry"
+        },
+        "00448A45": {
+          "present": true,
+          "purpose": "load-menu loop after entry"
+        },
+        "00448A68": {
+          "present": true,
+          "purpose": "late force-select inside load-menu loop"
+        },
+        "00448AE3": {
+          "present": true,
+          "purpose": "late force-accept inside load-menu loop"
+        },
+        "0044A110": {
+          "present": true,
+          "purpose": "load accept helper"
+        },
+        "00444490": {
+          "present": true,
+          "purpose": "LOADSAVE after accepted slot"
+        },
+        "0040B660": {
+          "present": true,
+          "purpose": "PlayGame after LOADSAVE"
+        }
+      },
+      "markers": {
+        "LSTRANS_LOAD_CALLBACK_ENTRY": {
+          "present": true,
+          "purpose": "callback pre-write state row"
+        },
+        "LSTRANS_AFTER_MAIN_CALLBACK": {
+          "present": true,
+          "purpose": "post callback state row"
+        },
+        "LSTRANS_MAIN_WAIT_GATE": {
+          "present": true,
+          "purpose": "pre-switch wait-gate row"
+        },
+        "LSTRANS_WAIT_LOOP_PUMP": {
+          "present": true,
+          "purpose": "pre-switch wait-loop pump row"
+        },
+        "LSTRANS_WAIT_LOOP_COMPARE": {
+          "present": true,
+          "purpose": "pre-switch wait-loop compare row"
+        },
+        "LSTRANS_WAIT_LOOP_EXIT": {
+          "present": true,
+          "purpose": "pre-switch wait-loop exit row"
+        },
+        "LSTRANS_MAIN_SWITCH_DISPATCH": {
+          "present": true,
+          "purpose": "switch-dispatch row before case jump"
+        },
+        "LSTRANS_MAIN_DISPATCH_POLL": {
+          "present": true,
+          "purpose": "main dispatch polling row"
+        },
+        "LSTRANS_LOAD_MENU_ENTRY": {
+          "present": true,
+          "purpose": "real load-menu entry row"
+        },
+        "LSTRANS_LATE_MOUSE_SET": {
+          "present": true,
+          "purpose": "late mouse placement after load-menu entry"
+        },
+        "LSTRANS_LOAD_SLOT_DRAW": {
+          "present": true,
+          "purpose": "load-slot draw row"
+        },
+        "LSTRANS_LOAD_MENU_LOOP": {
+          "present": true,
+          "purpose": "load-loop row"
+        },
+        "LSTRANS_LATE_FORCE_SELECT": {
+          "present": true,
+          "purpose": "late select force row"
+        },
+        "LSTRANS_LATE_FORCE_ACCEPT": {
+          "present": true,
+          "purpose": "late accept force row"
+        },
+        "LSTRANS_LOAD_ACCEPT_CALL": {
+          "present": true,
+          "purpose": "load accept helper row"
+        },
+        "LSTRANS_LOADSAVE": {
+          "present": true,
+          "purpose": "save load row"
+        },
+        "LSTRANS_PLAYGAME": {
+          "present": true,
+          "purpose": "gameplay transition row"
+        }
+      },
+      "placeholders": {
+        "__LOAD_SLOT__": true,
+        "__LOAD_MOUSE_RAW_X__": true,
+        "__LOAD_MOUSE_RAW_Y__": true
+      },
+      "slot_conditions": {
+        "00448A68": {
+          "present": true,
+          "purpose": "late force-select must be target-row parameterized"
+        },
+        "00448AE3": {
+          "present": true,
+          "purpose": "late force-accept must be target-row parameterized"
+        }
+      },
+      "has_early_descriptor_breakpoint": false,
+      "has_standalone_go": false,
+      "invalid_temp_registers": [],
+      "callback_skip_preserved": true,
+      "failures": []
+    },
+    "surface_dump_runner": {
+      "path": "scripts\\cdb\\run_cdb_surface_dump.ps1",
+      "exists": true,
+      "passed": true,
+      "extra_placeholder_replacements": {
+        "$extraProbeText = $extraProbeText.Replace('__LOAD_SLOT__'": true,
+        "$extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_X__'": true,
+        "$extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_Y__'": true
+      },
+      "late_load_slot_forcing_only_support": {
+        "[switch]$LateLoadSlotForcingOnly": true,
+        "__PRE_ENTRY_LOAD_COORD_ACTION__": true,
+        "SURFDUMP_PRE_ENTRY_SLOT_DEFERRED": true
+      },
+      "failures": []
+    }
+  },
+  "summary": {
+    "probe": "probes\\cdb\\menu\\clash95_load_slot_entry_transition_extra.cdb",
+    "surface_dump_script": "scripts\\cdb\\run_cdb_surface_dump.ps1",
+    "late_entry_breakpoint": "0044895A",
+    "early_descriptor_breakpoint_avoided": true,
+    "slot_conditions_parameterized": true,
+    "extra_probe_placeholders_replaced": true,
+    "late_load_slot_forcing_only_supported": true
+  },
+  "failures": []
+}

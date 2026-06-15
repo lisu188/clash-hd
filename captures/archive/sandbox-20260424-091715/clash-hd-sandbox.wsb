@@ -1,0 +1,24 @@
+<Configuration>
+  <VGpu>Enable</VGpu>
+  <Networking>Default</Networking>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>C:\Users\andrz\OneDrive\Pulpit\git\clash-hd</HostFolder>
+      <SandboxFolder>C:\Repo</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>C:\Clash</HostFolder>
+      <SandboxFolder>C:\HostClash</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python</HostFolder>
+      <SandboxFolder>C:\HostPython</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+  </MappedFolders>
+  <LogonCommand>
+    <Command>powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;C:\Repo\captures\sandbox-20260424-091715\sandbox-entry.ps1&quot;</Command>
+  </LogonCommand>
+</Configuration>
