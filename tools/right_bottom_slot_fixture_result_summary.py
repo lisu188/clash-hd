@@ -115,6 +115,8 @@ MARKERS = (
     "NOWNER_SOURCEHOLD_608F0B_PRE",
     "NOWNER_SOURCEHOLD_608F0A_COORDS_PRE",
     "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE",
+    "NOWNER_SOURCEHOLD_4612E0_ENTRY",
+    "NOWNER_SOURCEHOLD_4612E0_RETURN",
     "NOWNER_SOURCEHOLD_4612E0_DIRECT",
     "NOWNER_SOURCEHOLD_4612E0_DIRECT_POST",
     "NOWNER_SOURCEHOLD_4612E0_AFTER_X",
@@ -257,6 +259,21 @@ SOURCEHOLD_MARKERS = (
     "NOWNER_SOURCEHOLD_608F0B_PRE",
     "NOWNER_SOURCEHOLD_608F0A_COORDS_PRE",
     "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE",
+    "NOWNER_SOURCEHOLD_4612E0_ENTRY",
+    "NOWNER_SOURCEHOLD_4612E0_RETURN",
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT",
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT_POST",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_X",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_Y",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_BUTTON",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_REFRESH",
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE",
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE_POST",
+)
+
+SOURCEHOLD_4612E0_MARKERS = (
+    "NOWNER_SOURCEHOLD_4612E0_ENTRY",
+    "NOWNER_SOURCEHOLD_4612E0_RETURN",
     "NOWNER_SOURCEHOLD_4612E0_DIRECT",
     "NOWNER_SOURCEHOLD_4612E0_DIRECT_POST",
     "NOWNER_SOURCEHOLD_4612E0_AFTER_X",
@@ -395,6 +412,27 @@ def first_row(rows: list[dict[str, Any]], marker: str) -> dict[str, Any] | None:
 def last_row(rows: list[dict[str, Any]], marker: str) -> dict[str, Any] | None:
     matches = rows_for(rows, marker)
     return matches[-1] if matches else None
+
+
+def first_marker_index(rows: list[dict[str, Any]], markers: tuple[str, ...]) -> int | None:
+    for index, row in enumerate(rows):
+        if row["marker"] in markers:
+            return index
+    return None
+
+
+def last_marker_row(rows: list[dict[str, Any]], marker: str) -> dict[str, Any] | None:
+    for row in reversed(rows):
+        if row["marker"] == marker:
+            return row
+    return None
+
+
+def first_marker_row(rows: list[dict[str, Any]], marker: str) -> dict[str, Any] | None:
+    for row in rows:
+        if row["marker"] == marker:
+            return row
+    return None
 
 
 def unique_preserving_order(values: list[Any]) -> list[Any]:
@@ -637,7 +675,23 @@ def build_classification(summary: dict[str, Any]) -> list[str]:
             )
         )
     if summary["sourcehold_marker_count"]:
-        lines.append(f"source-hold markers were observed: {summary['sourcehold_marker_count']}")
+        lines.append(
+            "source-hold markers were observed: {total} callsite={callsite} inner_4612e0={inner}".format(
+                total=summary["sourcehold_marker_count"],
+                callsite=summary["sourcehold_callsite_marker_count"],
+                inner=summary["sourcehold_4612e0_marker_count"],
+            )
+        )
+    if summary["input_source_cb14_4612e0_seen"]:
+        lines.append(
+            "stock pump cb14 was 004612e0; inner 004612E0 source-copy offsets "
+            f"seen={summary['sourcehold_4612e0_marker_count']}"
+        )
+    if summary["debugger_forced_click_only"]:
+        lines.append("action-button callback/copyback proof is debugger-forced, not real input-source proof")
+    elif summary["real_input_click_proven"]:
+        lines.append("action-button callback reached without debugger force markers")
+    lines.append(f"real input-source status: {summary['input_source_status']}")
     if summary["action_click_marker_count"]:
         lines.append(
             "native action-click markers force={force} native_force={native_force} display_force={display_force} desc_entry={entry} desc_callback={callback} "
@@ -660,6 +714,21 @@ def build_classification(summary: dict[str, Any]) -> list[str]:
         lines.append(f"last native action click exit-set row: {summary['last_action_click_exit_set']}")
     if summary["last_owner_435bc0_poll"] is not None:
         lines.append(f"last stock 00435BC0 poll row: {summary['last_owner_435bc0_poll']}")
+    if summary["last_owner_435bc0_poll_before_action_force"] is not None:
+        lines.append(
+            "last stock 00435BC0 poll before action force: "
+            f"{summary['last_owner_435bc0_poll_before_action_force']}"
+        )
+    if summary["first_owner_435bc0_poll_after_action_force"] is not None:
+        lines.append(
+            "first stock 00435BC0 poll after action force: "
+            f"{summary['first_owner_435bc0_poll_after_action_force']}"
+        )
+    if summary["last_owner_435bc0_poll_after_action_force"] is not None:
+        lines.append(
+            "last stock 00435BC0 poll after action force: "
+            f"{summary['last_owner_435bc0_poll_after_action_force']}"
+        )
     if summary["last_owner_435bc0_grid_result"] is not None:
         lines.append(f"last stock 00435BC0 grid result: {summary['last_owner_435bc0_grid_result']}")
     if summary["owner_435bc0_loop_count"]:
@@ -757,6 +826,8 @@ def parse_log(
     stock_loopstate_count = sum(int(counts.get(marker) or 0) for marker in STOCK_LOOPSTATE_MARKERS)
     stock_grid_count = sum(int(counts.get(marker) or 0) for marker in STOCK_GRID_MARKERS)
     sourcehold_count = sum(int(counts.get(marker) or 0) for marker in SOURCEHOLD_MARKERS)
+    sourcehold_4612e0_count = sum(int(counts.get(marker) or 0) for marker in SOURCEHOLD_4612E0_MARKERS)
+    sourcehold_callsite_count = sourcehold_count - sourcehold_4612e0_count
     action_click_count = sum(int(counts.get(marker) or 0) for marker in ACTION_CLICK_MARKERS)
     copyback_path_count = sum(int(counts.get(marker) or 0) for marker in COPYBACK_PATH_MARKERS)
     render_begin_late_armed_count = int(counts.get("NOWNER_RENDER_BEGIN_LATE_ARMED") or 0)
@@ -848,6 +919,21 @@ def parse_log(
     sourcehold_rows = [row for row in rows if row["marker"] in SOURCEHOLD_MARKERS]
     action_click_rows = [row for row in rows if row["marker"] in ACTION_CLICK_MARKERS]
     action_force_rows = [row for row in rows if row["marker"] in ACTION_FORCE_MARKERS]
+    first_action_force_index = first_marker_index(rows, ACTION_FORCE_MARKERS)
+    rows_before_action_force = rows[:first_action_force_index] if first_action_force_index is not None else rows
+    rows_after_action_force = rows[first_action_force_index + 1 :] if first_action_force_index is not None else []
+    last_owner_435bc0_poll_before_action_force = last_marker_row(
+        rows_before_action_force,
+        "NOWNER_435BC0_POLL",
+    )
+    first_owner_435bc0_poll_after_action_force = first_marker_row(
+        rows_after_action_force,
+        "NOWNER_435BC0_POLL",
+    )
+    last_owner_435bc0_poll_after_action_force = last_marker_row(
+        rows_after_action_force,
+        "NOWNER_435BC0_POLL",
+    )
     last_action_descriptor_callback = last_row(rows, "NOWNER_ACTION_DESCRIPTOR_CALLBACK")
     last_action_descriptor_result = last_row(rows, "NOWNER_ACTION_DESCRIPTOR_RESULT")
     last_action_click_exit_set = last_row(rows, "NOWNER_ACTION_CLICK_EXIT_SET")
@@ -863,6 +949,29 @@ def parse_log(
     render_flag_last_value = render_flag_values[-1] if render_flag_values else None
     timeout_stack = classify_timeout_stack(path)
     run_summary = read_run_summary(path)
+    last_cb14_values = (last_owner_435bc0_pump_cb14_call or {}).get("values") if last_owner_435bc0_pump_cb14_call else {}
+    input_source_cb14_4612e0_seen = int((last_cb14_values or {}).get("cb14") or 0) == 0x004612E0
+    real_input_click_proven = bool(
+        action_click_force_count == 0
+        and action_descriptor_callback_count > 0
+        and action_click_435620_entry_count > 0
+        and action_click_exit_set_count > 0
+    )
+    debugger_forced_click_only = bool(
+        action_click_force_count > 0
+        and action_click_435620_entry_count > 0
+        and not real_input_click_proven
+    )
+    if real_input_click_proven:
+        input_source_status = "real_input_action_click_reached"
+    elif debugger_forced_click_only:
+        input_source_status = "debugger_forced_action_click_only"
+    elif input_source_cb14_4612e0_seen and sourcehold_4612e0_count == 0:
+        input_source_status = "cb14_4612e0_callsite_seen_inner_offsets_unverified"
+    elif input_source_cb14_4612e0_seen:
+        input_source_status = "cb14_4612e0_inner_offsets_seen"
+    else:
+        input_source_status = "real_input_source_not_observed"
     render_begin_reached = (
         int(counts.get("NOWNER_419ED0_RENDER_BEGIN") or 0) > 0
         or render_begin_entry_count > 0
@@ -923,6 +1032,12 @@ def parse_log(
         "stock_loopstate_marker_count": stock_loopstate_count,
         "stock_grid_marker_count": stock_grid_count,
         "sourcehold_marker_count": sourcehold_count,
+        "sourcehold_callsite_marker_count": sourcehold_callsite_count,
+        "sourcehold_4612e0_marker_count": sourcehold_4612e0_count,
+        "input_source_cb14_4612e0_seen": input_source_cb14_4612e0_seen,
+        "input_source_status": input_source_status,
+        "real_input_click_proven": real_input_click_proven,
+        "debugger_forced_click_only": debugger_forced_click_only,
         "action_click_marker_count": action_click_count,
         "render_begin_late_armed_count": render_begin_late_armed_count,
         "render_begin_entry_count": render_begin_entry_count,
@@ -998,6 +1113,15 @@ def parse_log(
             last_owner_435bc0_compare or {}
         ).get("values") if last_owner_435bc0_compare else None,
         "last_owner_435bc0_poll": (last_owner_435bc0_poll or {}).get("values") if last_owner_435bc0_poll else None,
+        "last_owner_435bc0_poll_before_action_force": (
+            last_owner_435bc0_poll_before_action_force or {}
+        ).get("values") if last_owner_435bc0_poll_before_action_force else None,
+        "first_owner_435bc0_poll_after_action_force": (
+            first_owner_435bc0_poll_after_action_force or {}
+        ).get("values") if first_owner_435bc0_poll_after_action_force else None,
+        "last_owner_435bc0_poll_after_action_force": (
+            last_owner_435bc0_poll_after_action_force or {}
+        ).get("values") if last_owner_435bc0_poll_after_action_force else None,
         "last_owner_435bc0_grid_gate": (
             last_owner_435bc0_grid_gate or {}
         ).get("values") if last_owner_435bc0_grid_gate else None,
@@ -1151,6 +1275,11 @@ def write_markdown(summary: dict[str, Any], path: Path) -> None:
         f"- 00435BC0 pump cb14 call/return count: `{summary['owner_435bc0_pump_cb14_call_count']}` / `{summary['owner_435bc0_pump_cb14_return_count']}`",
         f"- 00435BC0 pump 608f0b call/return count: `{summary['owner_435bc0_pump_608f0b_call_count']}` / `{summary['owner_435bc0_pump_608f0b_return_count']}`",
         f"- 00435BC0 pump cb04 call/return count: `{summary['owner_435bc0_pump_cb04_call_count']}` / `{summary['owner_435bc0_pump_cb04_return_count']}`",
+        f"- Source-hold callsite/inner-004612E0 marker counts: `{summary['sourcehold_callsite_marker_count']}` / `{summary['sourcehold_4612e0_marker_count']}`",
+        f"- Input-source cb14=004612E0 seen: `{summary['input_source_cb14_4612e0_seen']}`",
+        f"- Real input-source status: `{summary['input_source_status']}`",
+        f"- Real input click proven: `{summary['real_input_click_proven']}`",
+        f"- Debugger-forced click only: `{summary['debugger_forced_click_only']}`",
         f"- Native action force count: `{summary['action_click_force_count']}`",
         f"- Native action native-force count: `{summary['action_click_native_force_count']}`",
         f"- Native action display-force count: `{summary['action_click_display_force_count']}`",
@@ -1176,6 +1305,9 @@ def write_markdown(summary: dict[str, Any], path: Path) -> None:
         f"- First 00435BC0 pump tick-return: `{summary['first_owner_435bc0_pump_tick_return']}`",
         f"- First 00435BC0 pump cb14 call: `{summary['first_owner_435bc0_pump_cb14_call']}`",
         f"- First 00435BC0 pump 608f0b call: `{summary['first_owner_435bc0_pump_608f0b_call']}`",
+        f"- Last 00435BC0 poll before action force: `{summary['last_owner_435bc0_poll_before_action_force']}`",
+        f"- First 00435BC0 poll after action force: `{summary['first_owner_435bc0_poll_after_action_force']}`",
+        f"- Last 00435BC0 poll after action force: `{summary['last_owner_435bc0_poll_after_action_force']}`",
         f"- Last source-hold marker: `{summary['last_sourcehold_marker']}`",
         f"- Last source-hold row: `{summary['last_sourcehold']}`",
         f"- Last native action-click marker: `{summary['last_action_click_marker']}`",
