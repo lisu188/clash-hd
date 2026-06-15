@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:14:10+02:00",
-  "passed": false,
+  "generated_at": "2026-06-15T22:35:47+02:00",
+  "passed": true,
   "runtime_policy": "repo-only source/plan inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when the transition run plan targets rows 3-5 and the surface-dump launcher still replaces extra-probe load-slot mouse placeholders using x=320 and y=166+22*slot shifted into raw mouse globals",
   "promotion_ready": false,
@@ -11,7 +11,7 @@
     "extra_probe": "probes\\cdb\\menu\\clash95_load_slot_entry_transition_extra.cdb"
   },
   "checks": {
-    "run_plan_passed": false,
+    "run_plan_passed": true,
     "target_rows_3_4_5": true,
     "surface_formula_present": true,
     "probe_placeholders_present": true,
@@ -58,7 +58,5 @@
     "run_plan_command_count": 3,
     "run_plan_summary_command_count": 3
   },
-  "failures": [
-    "transition geometry guard failed: run_plan_passed"
-  ]
+  "failures": []
 }

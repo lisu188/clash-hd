@@ -1,7 +1,7 @@
 # HD Soak Report Guard
 
 - Overall: FAIL
-- Generated: `2026-06-15T20:14:55.137398+00:00`
+- Generated: `2026-06-15T20:36:18.108151+00:00`
 - Runtime policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Tier / route: `short2` / `menu-idle`

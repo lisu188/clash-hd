@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T22:14:58+02:00",
+  "generated_at": "2026-06-15T22:36:20+02:00",
   "passed": false,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "checks": {
@@ -851,7 +851,7 @@
       "failures": []
     },
     "load_slot_entry_gap": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\load-slot-entry-gap-current.json",
       "markdown": "captures\\current\\load-slot-entry-gap-current.md",
       "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
@@ -871,9 +871,7 @@
         ],
         "next_non_promoting_route_option": "use an isolated slot fixture or direct-loader probe only if it is labeled non-natural route evidence until the menu transition is proven"
       },
-      "failures": [
-        "cdb_probe: missing marker pre_entry_load_coord_placeholder: __PRE_ENTRY_LOAD_COORD_ACTION__"
-      ]
+      "failures": []
     },
     "load_slot_transition_probe_guard": {
       "passed": true,
@@ -891,7 +889,7 @@
       "failures": []
     },
     "load_slot_transition_run_plan": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\load-slot-transition-run-plan-current.json",
       "markdown": "captures\\current\\load-slot-transition-run-plan-current.md",
       "summary": {
@@ -910,12 +908,10 @@
         "summary_command_count": 3,
         "visible_runtime_allowed": false
       },
-      "failures": [
-        "load-slot entry gap report is not passing"
-      ]
+      "failures": []
     },
     "load_slot_transition_geometry_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\load-slot-transition-geometry-guard-current.json",
       "markdown": "captures\\current\\load-slot-transition-geometry-guard-current.md",
       "summary": {
@@ -957,12 +953,10 @@
         "run_plan_command_count": 3,
         "run_plan_summary_command_count": 3
       },
-      "failures": [
-        "transition geometry guard failed: run_plan_passed"
-      ]
+      "failures": []
     },
     "load_slot_transition_probe_preview": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\load-slot-transition-probe-preview-current.json",
       "markdown": "captures\\current\\load-slot-transition-probe-preview-current.md",
       "summary": {
@@ -1007,10 +1001,7 @@
           }
         ]
       },
-      "failures": [
-        "transition probe preview failed: run_plan_passed",
-        "transition probe preview failed: geometry_guard_passed"
-      ]
+      "failures": []
     },
     "right_bottom_owner_flag_inventory": {
       "passed": true,
@@ -1291,7 +1282,7 @@
       "json": "captures\\current\\load-slot-entry-gap-tests-current.json",
       "markdown": "captures\\current\\load-slot-entry-gap-tests-current.md",
       "summary": {
-        "test_count": 6,
+        "test_count": 7,
         "guard_policy": "proves the load-slot entry-gap report preserves the distinction between early descriptor rows and real load-menu case entry",
         "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
@@ -1353,7 +1344,7 @@
       "failures": []
     },
     "load_slot_transition_readiness": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\load-slot-transition-readiness-current.json",
       "markdown": "captures\\current\\load-slot-transition-readiness-current.md",
       "summary": {
@@ -1383,12 +1374,7 @@
           "promotion remains blocked until natural owner/action proof or approved manual DirectInput proof exists"
         ]
       },
-      "failures": [
-        "transition readiness check failed: entry_gap_passed",
-        "transition readiness check failed: run_plan_passed",
-        "transition readiness check failed: geometry_guard_passed",
-        "transition readiness check failed: probe_preview_passed"
-      ]
+      "failures": []
     },
     "load_slot_transition_readiness_tests": {
       "passed": true,
@@ -2129,7 +2115,7 @@
         "full_game_complete": false,
         "full_game_percent_statement": "not 100%; manual DirectInput proof and stable promotion remain blocked",
         "percentages": {
-          "current_repo_evidence_gates": 85.29,
+          "current_repo_evidence_gates": 88.97,
           "focused_battle_right_bottom_lane": 99.91,
           "right_bottom_promotion_gate": 85.71,
           "manual_directinput_validation": 0.0
@@ -2699,11 +2685,6 @@
       "failures": [
         "stable_stage_guard: refresh check is not passing: stable_stage_guard",
         "right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
-        "load_slot_entry_gap: refresh check is not passing: load_slot_entry_gap",
-        "load_slot_transition_run_plan: refresh check is not passing: load_slot_transition_run_plan",
-        "load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard",
-        "load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview",
-        "load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness",
         "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
         "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
       ]
@@ -2719,11 +2700,7 @@
       },
       "failures": [
         "boundary_counts: no-popup boundary guard is not passing",
-        "validation_only_status: castle validation matrix/decision is not passing",
-        "screenshot_files: normal_post_owner: missing path",
-        "screenshot_files: forced_visible_post_owner: missing path",
-        "docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: None",
-        "docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: None"
+        "validation_only_status: castle validation matrix/decision is not passing"
       ]
     },
     "docs_consistency_guard_tests": {
@@ -2731,7 +2708,7 @@
       "json": "captures\\current\\docs-consistency-tests-current.json",
       "markdown": "captures\\current\\docs-consistency-tests-current.md",
       "summary": {
-        "test_count": 4,
+        "test_count": 7,
         "guard_policy": "proves current docs fail closed when generated counts or promotion-boundary facts go stale",
         "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
@@ -2756,11 +2733,6 @@
     "hd_map_smoke: patch-stage: no candidate executable path was found",
     "hd_map_smoke: post-owner evidence matrix failed",
     "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
-    "load_slot_entry_gap: cdb_probe: missing marker pre_entry_load_coord_placeholder: __PRE_ENTRY_LOAD_COORD_ACTION__",
-    "load_slot_transition_run_plan: load-slot entry gap report is not passing",
-    "load_slot_transition_geometry_guard: transition geometry guard failed: run_plan_passed",
-    "load_slot_transition_probe_preview: transition probe preview failed: run_plan_passed",
-    "load_slot_transition_probe_preview: transition probe preview failed: geometry_guard_passed",
     "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
     "right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows",
     "right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
@@ -2768,10 +2740,6 @@
     "right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows",
     "right_bottom_compose_evidence: natural UI probe did not enter owner/action draw rows",
     "right_bottom_visual_artifact_guard: visual artifact guard failed: blocker_triage_non_promoting",
-    "load_slot_transition_readiness: transition readiness check failed: entry_gap_passed",
-    "load_slot_transition_readiness: transition readiness check failed: run_plan_passed",
-    "load_slot_transition_readiness: transition readiness check failed: geometry_guard_passed",
-    "load_slot_transition_readiness: transition readiness check failed: probe_preview_passed",
     "castle_overview_evidence: patch_stage: candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe",
     "castle_overview_promotion_decision: castle overview evidence matrix is not passing",
     "castle_overview_baseline_recheck: latest_castle_overview_matrix: patch_stage: candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe",
@@ -2798,18 +2766,9 @@
     "hd_endurance_release_checklist: campaign_routes: campaign-route proof is absent",
     "no_popup_boundary_guard: stable_stage_guard: refresh check is not passing: stable_stage_guard",
     "no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
-    "no_popup_boundary_guard: load_slot_entry_gap: refresh check is not passing: load_slot_entry_gap",
-    "no_popup_boundary_guard: load_slot_transition_run_plan: refresh check is not passing: load_slot_transition_run_plan",
-    "no_popup_boundary_guard: load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard",
-    "no_popup_boundary_guard: load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview",
-    "no_popup_boundary_guard: load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness",
     "no_popup_boundary_guard: castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
     "no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard",
     "docs_consistency_guard: boundary_counts: no-popup boundary guard is not passing",
-    "docs_consistency_guard: validation_only_status: castle validation matrix/decision is not passing",
-    "docs_consistency_guard: screenshot_files: normal_post_owner: missing path",
-    "docs_consistency_guard: screenshot_files: forced_visible_post_owner: missing path",
-    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: None",
-    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: None"
+    "docs_consistency_guard: validation_only_status: castle validation matrix/decision is not passing"
   ]
 }

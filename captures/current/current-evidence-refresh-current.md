@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-06-15T22:14:58+02:00`
+- Generated: `2026-06-15T22:36:20+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -393,7 +393,7 @@
 
 ### Load Slot Entry Gap
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\load-slot-entry-gap-current.json`
 - Markdown: `captures\current\load-slot-entry-gap-current.md`
 - current_gap: `Rows 3-5 are stopped in the transition after the forced main Load callback and before 0044895A load-menu entry. They are not yet evidence of invalid save rows because 0044A110/sub_444750, LOADSAVE, and PlayGame are never reached.`
@@ -402,8 +402,6 @@
 - recent_slot5_same_gap: `True`
 - next_probe_targets: `['add a CDB transition row between 00447780 and 0044895A to prove when case 5 is dispatched', 'late-arm row forcing only after 0044895A instead of relying on early 00419B80 descriptor hits', 'log dword_543D7C and dword_543D78 immediately before and after the main dispatch consumes the load callback']`
 - next_non_promoting_route_option: `use an isolated slot fixture or direct-loader probe only if it is labeled non-natural route evidence until the menu transition is proven`
-- Failures:
-  - cdb_probe: missing marker pre_entry_load_coord_placeholder: __PRE_ENTRY_LOAD_COORD_ACTION__
 
 ### Load Slot Transition Probe Guard
 
@@ -420,7 +418,7 @@
 
 ### Load Slot Transition Run Plan
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\load-slot-transition-run-plan-current.json`
 - Markdown: `captures\current\load-slot-transition-run-plan-current.md`
 - target_rows: `[3, 4, 5]`
@@ -433,12 +431,10 @@
 - command_count: `3`
 - summary_command_count: `3`
 - visible_runtime_allowed: `False`
-- Failures:
-  - load-slot entry gap report is not passing
 
 ### Load Slot Transition Geometry Guard
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\load-slot-transition-geometry-guard-current.json`
 - Markdown: `captures\current\load-slot-transition-geometry-guard-current.md`
 - target_rows: `[3, 4, 5]`
@@ -446,21 +442,16 @@
 - formula: `mouse_x=320; mouse_y=166+22*slot; raw=logical<<6`
 - run_plan_command_count: `3`
 - run_plan_summary_command_count: `3`
-- Failures:
-  - transition geometry guard failed: run_plan_passed
 
 ### Load Slot Transition Probe Preview
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\load-slot-transition-probe-preview-current.json`
 - Markdown: `captures\current\load-slot-transition-probe-preview-current.md`
 - target_rows: `[3, 4, 5]`
 - preview_count: `3`
 - preview_sha256: `{'3': 'C64A3D0796E9A4000DA5D8DE27D5B4DA307BD2EBDE98FE7F8F45DC454A26F8C6', '4': '697C8481B5C0FA1FA109E4A85E8502FF2A57E723AF05E4F8B390C7C806826CD7', '5': '3864C049BB9E6CD91E7FB995163E999BDADEEFB8411CC4308756ECF87EB54509'}`
 - row_geometry: `[{'slot': 3, 'mouse_x': 320, 'mouse_y': 232, 'raw_x': 20480, 'raw_y': 14848, 'raw_x_hex': '00005000', 'raw_y_hex': '00003a00'}, {'slot': 4, 'mouse_x': 320, 'mouse_y': 254, 'raw_x': 20480, 'raw_y': 16256, 'raw_x_hex': '00005000', 'raw_y_hex': '00003f80'}, {'slot': 5, 'mouse_x': 320, 'mouse_y': 276, 'raw_x': 20480, 'raw_y': 17664, 'raw_x_hex': '00005000', 'raw_y_hex': '00004500'}]`
-- Failures:
-  - transition probe preview failed: run_plan_passed
-  - transition probe preview failed: geometry_guard_passed
 
 ### Right Bottom Owner Flag Inventory
 
@@ -687,7 +678,7 @@
 - Status: PASS
 - JSON: `captures\current\load-slot-entry-gap-tests-current.json`
 - Markdown: `captures\current\load-slot-entry-gap-tests-current.md`
-- test_count: `6`
+- test_count: `7`
 - guard_policy: `proves the load-slot entry-gap report preserves the distinction between early descriptor rows and real load-menu case entry`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -738,7 +729,7 @@
 
 ### Load Slot Transition Readiness
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\load-slot-transition-readiness-current.json`
 - Markdown: `captures\current\load-slot-transition-readiness-current.md`
 - target_rows: `[3, 4, 5]`
@@ -749,11 +740,6 @@
 - summary_command_count: `3`
 - preview_sha256: `{'3': 'C64A3D0796E9A4000DA5D8DE27D5B4DA307BD2EBDE98FE7F8F45DC454A26F8C6', '4': '697C8481B5C0FA1FA109E4A85E8502FF2A57E723AF05E4F8B390C7C806826CD7', '5': '3864C049BB9E6CD91E7FB995163E999BDADEEFB8411CC4308756ECF87EB54509'}`
 - result_acceptance: `['entry proof: load_slot_transition_summary.py --require-entry --require-slot-match passes for each row with consistent target_slot values', 'success proof: if LOADSAVE/PlayGame appear, rerun the same summary with --require-success and require those slot rows to match before treating it as load success', 'slot forcing proof: pre-0044895A load-slot coordinate forcing stays disabled; slot selection is armed only at or after the load-menu entry', 'promotion remains blocked until natural owner/action proof or approved manual DirectInput proof exists']`
-- Failures:
-  - transition readiness check failed: entry_gap_passed
-  - transition readiness check failed: run_plan_passed
-  - transition readiness check failed: geometry_guard_passed
-  - transition readiness check failed: probe_preview_passed
 
 ### Load Slot Transition Readiness Tests
 
@@ -1329,7 +1315,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof and stable promotion remain blocked`
-- percentages: `{'current_repo_evidence_gates': 85.29, 'focused_battle_right_bottom_lane': 99.91, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 88.97, 'focused_battle_right_bottom_lane': 99.91, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1617,11 +1603,6 @@
 - Failures:
   - stable_stage_guard: refresh check is not passing: stable_stage_guard
   - right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
-  - load_slot_entry_gap: refresh check is not passing: load_slot_entry_gap
-  - load_slot_transition_run_plan: refresh check is not passing: load_slot_transition_run_plan
-  - load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard
-  - load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview
-  - load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness
   - castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck
   - docs_consistency_guard: refresh check is not passing: docs_consistency_guard
 
@@ -1636,17 +1617,13 @@
 - Failures:
   - boundary_counts: no-popup boundary guard is not passing
   - validation_only_status: castle validation matrix/decision is not passing
-  - screenshot_files: normal_post_owner: missing path
-  - screenshot_files: forced_visible_post_owner: missing path
-  - docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: None
-  - docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: None
 
 ### Docs Consistency Guard Tests
 
 - Status: PASS
 - JSON: `captures\current\docs-consistency-tests-current.json`
 - Markdown: `captures\current\docs-consistency-tests-current.md`
-- test_count: `4`
+- test_count: `7`
 - guard_policy: `proves current docs fail closed when generated counts or promotion-boundary facts go stale`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1667,11 +1644,6 @@
 - hd_map_smoke: patch-stage: no candidate executable path was found
 - hd_map_smoke: post-owner evidence matrix failed
 - right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-- load_slot_entry_gap: cdb_probe: missing marker pre_entry_load_coord_placeholder: __PRE_ENTRY_LOAD_COORD_ACTION__
-- load_slot_transition_run_plan: load-slot entry gap report is not passing
-- load_slot_transition_geometry_guard: transition geometry guard failed: run_plan_passed
-- load_slot_transition_probe_preview: transition probe preview failed: run_plan_passed
-- load_slot_transition_probe_preview: transition probe preview failed: geometry_guard_passed
 - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
 - right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
 - right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
@@ -1679,10 +1651,6 @@
 - right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
 - right_bottom_compose_evidence: natural UI probe did not enter owner/action draw rows
 - right_bottom_visual_artifact_guard: visual artifact guard failed: blocker_triage_non_promoting
-- load_slot_transition_readiness: transition readiness check failed: entry_gap_passed
-- load_slot_transition_readiness: transition readiness check failed: run_plan_passed
-- load_slot_transition_readiness: transition readiness check failed: geometry_guard_passed
-- load_slot_transition_readiness: transition readiness check failed: probe_preview_passed
 - castle_overview_evidence: patch_stage: candidate executable does not exist: C:\ClashTests\cdb-castle-overview-nativerender-flags1f-multihit\clash95_hd_surfdump_20260515_105557.exe
 - castle_overview_promotion_decision: castle overview evidence matrix is not passing
 - castle_overview_baseline_recheck: latest_castle_overview_matrix: patch_stage: candidate executable does not exist: C:\ClashTests\cdb-castle-overview-nativerender-flags1f-multihit\clash95_hd_surfdump_20260515_105557.exe
@@ -1709,16 +1677,7 @@
 - hd_endurance_release_checklist: campaign_routes: campaign-route proof is absent
 - no_popup_boundary_guard: stable_stage_guard: refresh check is not passing: stable_stage_guard
 - no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
-- no_popup_boundary_guard: load_slot_entry_gap: refresh check is not passing: load_slot_entry_gap
-- no_popup_boundary_guard: load_slot_transition_run_plan: refresh check is not passing: load_slot_transition_run_plan
-- no_popup_boundary_guard: load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard
-- no_popup_boundary_guard: load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview
-- no_popup_boundary_guard: load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness
 - no_popup_boundary_guard: castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck
 - no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard
 - docs_consistency_guard: boundary_counts: no-popup boundary guard is not passing
 - docs_consistency_guard: validation_only_status: castle validation matrix/decision is not passing
-- docs_consistency_guard: screenshot_files: normal_post_owner: missing path
-- docs_consistency_guard: screenshot_files: forced_visible_post_owner: missing path
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: None
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: None

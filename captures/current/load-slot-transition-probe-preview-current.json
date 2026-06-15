@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:14:10+02:00",
-  "passed": false,
+  "generated_at": "2026-06-15T22:35:47+02:00",
+  "passed": true,
   "runtime_policy": "repo-only generated-probe preview; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when generated row 3-5 transition probes have no placeholders, carry row-specific raw mouse values, and keep late select/accept conditions targeted at the requested slot",
   "promotion_ready": false,
@@ -11,8 +11,8 @@
     "extra_probe": "probes\\cdb\\menu\\clash95_load_slot_entry_transition_extra.cdb"
   },
   "checks": {
-    "run_plan_passed": false,
-    "geometry_guard_passed": false,
+    "run_plan_passed": true,
+    "geometry_guard_passed": true,
     "target_rows_3_4_5": true,
     "geometry_rows_match_target_rows": true,
     "non_promoting": true,
@@ -149,8 +149,5 @@
       "failures": []
     }
   ],
-  "failures": [
-    "transition probe preview failed: run_plan_passed",
-    "transition probe preview failed: geometry_guard_passed"
-  ]
+  "failures": []
 }

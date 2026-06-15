@@ -1,7 +1,7 @@
 # Manual DirectInput Proof Template
 
 - Overall: PASS
-- Generated: `2026-06-15T22:14:53+02:00`
+- Generated: `2026-06-15T22:36:16+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: manual proof template must document the accepted manifest shape while remaining invalid as proof until approved manual evidence replaces every placeholder
 - Template JSON: `captures\current\manual-directinput-proof-template-current.json`

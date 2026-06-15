@@ -1,7 +1,7 @@
 # HD Soak Report Guard Tests
 
 - Status: PASS
-- Generated: `2026-06-15T22:14:55+02:00`
+- Generated: `2026-06-15T22:36:18+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves executed soak reports must carry protected-stage patch evidence, base/candidate SHA-256s, external artifact locations, stable frame metrics, clean process stop, and non-promoting input status
 

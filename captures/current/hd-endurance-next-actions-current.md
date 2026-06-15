@@ -1,7 +1,7 @@
 # HD Endurance Next Actions
 
 - Overall: PASS
-- Generated: `2026-06-15T20:14:55.591565+00:00`
+- Generated: `2026-06-15T20:36:18.607483+00:00`
 - Runtime policy: repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Status: `waiting_for_explicit_visible_runtime_approval`
 - Full game complete: `False`

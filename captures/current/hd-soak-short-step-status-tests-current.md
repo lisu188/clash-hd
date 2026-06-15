@@ -1,7 +1,7 @@
 # HD Soak Short-Step Status Tests
 
 - Status: PASS
-- Generated: `2026-06-15T22:14:56+02:00`
+- Generated: `2026-06-15T22:36:19+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves per-step soak status stays repo-only, advances only after guarded passing output, and demands triage for failed canonical runtime reports
 

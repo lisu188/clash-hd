@@ -1,7 +1,7 @@
 # HD Soak Failure Triage
 
 - Overall: FAIL
-- Generated: `2026-06-15T20:14:55.179401+00:00`
+- Generated: `2026-06-15T20:36:18.144672+00:00`
 - Runtime policy: repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Source report: `captures\current\hd-soak-short-current.json`
 - Classification: `not_executed_pending_approval`
