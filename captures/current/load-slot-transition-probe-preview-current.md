@@ -1,7 +1,7 @@
 # Load Slot Transition Probe Preview
 
 - Status: FAIL
-- Generated: `2026-06-15T20:46:32+02:00`
+- Generated: `2026-06-15T22:14:10+02:00`
 - Runtime policy: repo-only generated-probe preview; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when generated row 3-5 transition probes have no placeholders, carry row-specific raw mouse values, and keep late select/accept conditions targeted at the requested slot
 - Promotion ready: `False`

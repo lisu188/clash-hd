@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-06-15T20:14:56.369072+00:00",
+  "passed": true,
+  "runtime_policy": "repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "status": "ready_for_explicit_approval",
+  "source_artifacts": {
+    "next_actions": "captures\\current\\hd-endurance-next-actions-current.json",
+    "step_status": "captures\\current\\hd-soak-short-step-status-current.json",
+    "harness_guard": "captures\\current\\hd-soak-harness-guard-current.json",
+    "visible_runtime_guard": "captures\\current\\visible-runtime-launcher-guard-current.json",
+    "process_hygiene": "captures\\current\\process-hygiene-guard-current.json",
+    "exe_artifact": "captures\\current\\exe-artifact-guard-current.json"
+  },
+  "current_step": {
+    "id": "short2_menu_idle",
+    "tier": "short2",
+    "route": "menu-idle",
+    "status": "pending_approval_legacy_compat",
+    "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+  },
+  "approval_prompt": "Approve the first short2 menu-idle visible-runtime soak using the exact approval-gated command in this report. It will generate a patched candidate under C:\\ClashTests\\hd-soak and raw frame artifacts under C:\\ClashCaptures\\hd-soak; it must not modify C:\\Clash\\clash95.exe.",
+  "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Json",
+  "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json",
+  "post_run_validation": [
+    "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_soak_report.py captures\\current\\hd-soak-short2-menu-idle-current.json --write-json captures\\current\\hd-soak-short2-menu-idle-guard-current.json --write-markdown captures\\current\\hd-soak-short2-menu-idle-guard-current.md --require-pass",
+    "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_soak_failure_triage.py captures\\current\\hd-soak-short2-menu-idle-current.json --write-json captures\\current\\hd-soak-short2-menu-idle-triage-current.json --write-markdown captures\\current\\hd-soak-short2-menu-idle-triage-current.md",
+    "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\current_evidence_refresh.py --write-json captures\\current\\current-evidence-refresh-current.json --write-markdown captures\\current\\current-evidence-refresh-current.md",
+    "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\evidence_index_check.py captures\\current\\hd-map-evidence-current.md --require-pass",
+    "git diff --check"
+  ],
+  "writes_outside_repo": [
+    "C:\\ClashCaptures\\hd-soak",
+    "C:\\ClashTests\\hd-soak"
+  ],
+  "must_not_modify": [
+    "C:\\Clash\\clash95.exe"
+  ],
+  "guards": {
+    "harness_guard_passed": true,
+    "visible_runtime_guard_passed": true,
+    "process_hygiene_passed": true,
+    "exe_artifact_guard_passed": true
+  },
+  "locks": {
+    "stable_stage_should_change": false,
+    "right_bottom_promotion_blocked": true,
+    "long_tiers_locked": true,
+    "future_lanes_locked": true
+  },
+  "failures": []
+}

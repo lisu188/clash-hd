@@ -1,7 +1,7 @@
 # Right-Bottom Natural Route Candidate Matrix Tests
 
 - Status: PASS
-- Generated: `2026-06-15T20:46:37+02:00`
+- Generated: `2026-06-15T22:14:16+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the right-bottom natural-route candidate matrix is a non-promoting repo-only classifier for save-state route candidates and current harness blockers
 

@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-06-15T20:47:40+02:00",
+  "generated_at": "2026-06-15T22:14:57+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures",
-  "artifact_count": 622,
-  "current_reference_count": 143,
+  "artifact_count": 660,
+  "current_reference_count": 160,
   "archived_reference_count": 508,
   "missing_current_refs": [],
   "reference_status_counts": {
     "archived_referenced": 283,
-    "current_referenced": 113,
-    "stale_unreferenced": 226
+    "current_referenced": 130,
+    "stale_unreferenced": 247
   },
   "era_counts": {
     "cdb_surface_dump_unverified": 55,
     "hidden_cdb_surface_dump": 118,
-    "other_capture_artifact": 433,
+    "other_capture_artifact": 471,
     "visible_era": 16
   },
   "stale_visible_or_sandbox_count": 16,
@@ -719,6 +719,26 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/current/hd-endurance-next-actions-current.md": {
+      "ref": "captures/current/hd-endurance-next-actions-current.md",
+      "entry": "current/hd-endurance-next-actions-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-endurance-release-checklist-current.md": {
+      "ref": "captures/current/hd-endurance-release-checklist-current.md",
+      "entry": "current/hd-endurance-release-checklist-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/current/hd-map-evidence-current-check.json": {
       "ref": "captures/current/hd-map-evidence-current-check.json",
       "entry": "current/hd-map-evidence-current-check.json",
@@ -732,6 +752,46 @@
     "captures/current/hd-map-smoke-current.md": {
       "ref": "captures/current/hd-map-smoke-current.md",
       "entry": "current/hd-map-smoke-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-approval-preflight-current.md": {
+      "ref": "captures/current/hd-soak-approval-preflight-current.md",
+      "entry": "current/hd-soak-approval-preflight-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-approval-preflight-tests-current.md": {
+      "ref": "captures/current/hd-soak-approval-preflight-tests-current.md",
+      "entry": "current/hd-soak-approval-preflight-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-failure-triage-current.md": {
+      "ref": "captures/current/hd-soak-failure-triage-current.md",
+      "entry": "current/hd-soak-failure-triage-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-failure-triage-tests-current.md": {
+      "ref": "captures/current/hd-soak-failure-triage-tests-current.md",
+      "entry": "current/hd-soak-failure-triage-tests-current.md",
       "reference_class": "current_referenced",
       "sources": [
         "captures/current/hd-map-evidence-current.md"
@@ -769,9 +829,119 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/current/hd-soak-report-guard-tests-current.md": {
+      "ref": "captures/current/hd-soak-report-guard-tests-current.md",
+      "entry": "current/hd-soak-report-guard-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-route-coverage-current.md": {
+      "ref": "captures/current/hd-soak-route-coverage-current.md",
+      "entry": "current/hd-soak-route-coverage-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-route-coverage-tests-current.md": {
+      "ref": "captures/current/hd-soak-route-coverage-tests-current.md",
+      "entry": "current/hd-soak-route-coverage-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short-artifact-manifest-current.md": {
+      "ref": "captures/current/hd-soak-short-artifact-manifest-current.md",
+      "entry": "current/hd-soak-short-artifact-manifest-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short-artifact-manifest-tests-current.md": {
+      "ref": "captures/current/hd-soak-short-artifact-manifest-tests-current.md",
+      "entry": "current/hd-soak-short-artifact-manifest-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/current/hd-soak-short-current.md": {
       "ref": "captures/current/hd-soak-short-current.md",
       "entry": "current/hd-soak-short-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short-step-status-current.md": {
+      "ref": "captures/current/hd-soak-short-step-status-current.md",
+      "entry": "current/hd-soak-short-step-status-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short-step-status-tests-current.md": {
+      "ref": "captures/current/hd-soak-short-step-status-tests-current.md",
+      "entry": "current/hd-soak-short-step-status-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short-tier-ladder-current.md": {
+      "ref": "captures/current/hd-soak-short-tier-ladder-current.md",
+      "entry": "current/hd-soak-short-tier-ladder-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short-tier-ladder-tests-current.md": {
+      "ref": "captures/current/hd-soak-short-tier-ladder-tests-current.md",
+      "entry": "current/hd-soak-short-tier-ladder-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short-validation-refresh-current.md": {
+      "ref": "captures/current/hd-soak-short-validation-refresh-current.md",
+      "entry": "current/hd-soak-short-validation-refresh-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short-validation-refresh-tests-current.md": {
+      "ref": "captures/current/hd-soak-short-validation-refresh-tests-current.md",
+      "entry": "current/hd-soak-short-validation-refresh-tests-current.md",
       "reference_class": "current_referenced",
       "sources": [
         "captures/current/hd-map-evidence-current.md"
@@ -11358,6 +11528,86 @@
       "has_run_summary": false
     },
     {
+      "name": "current/hd-endurance-next-actions-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-next-actions-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-endurance-next-actions-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-next-actions-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-endurance-next-actions-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-next-actions-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-endurance-next-actions-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-next-actions-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-endurance-release-checklist-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-release-checklist-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-endurance-release-checklist-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-release-checklist-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-endurance-release-checklist-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-release-checklist-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-endurance-release-checklist-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-release-checklist-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/hd-map-evidence-current-check.json",
       "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-map-evidence-current-check.json",
       "artifact_kind": "file",
@@ -11390,6 +11640,86 @@
     {
       "name": "current/hd-map-smoke-current.md",
       "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-map-smoke-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-approval-preflight-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-approval-preflight-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-approval-preflight-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-approval-preflight-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-approval-preflight-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-approval-preflight-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-approval-preflight-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-approval-preflight-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-failure-triage-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-failure-triage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-failure-triage-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-failure-triage-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-failure-triage-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-failure-triage-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-failure-triage-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-failure-triage-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
       "era": "other_capture_artifact",
@@ -11458,6 +11788,106 @@
       "has_run_summary": false
     },
     {
+      "name": "current/hd-soak-report-guard-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-report-guard-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-report-guard-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-report-guard-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-route-coverage-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-route-coverage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-route-coverage-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-route-coverage-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-route-coverage-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-route-coverage-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-route-coverage-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-route-coverage-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-artifact-manifest-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-artifact-manifest-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-artifact-manifest-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-artifact-manifest-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-artifact-manifest-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-artifact-manifest-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-artifact-manifest-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-artifact-manifest-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/hd-soak-short-current.json",
       "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-current.json",
       "artifact_kind": "file",
@@ -11470,6 +11900,126 @@
     {
       "name": "current/hd-soak-short-current.md",
       "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-step-status-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-step-status-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-step-status-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-step-status-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-step-status-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-step-status-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-step-status-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-step-status-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-tier-ladder-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-tier-ladder-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-tier-ladder-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-tier-ladder-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-tier-ladder-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-tier-ladder-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-tier-ladder-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-tier-ladder-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-validation-refresh-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-validation-refresh-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-validation-refresh-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-validation-refresh-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-validation-refresh-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-validation-refresh-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short-validation-refresh-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-validation-refresh-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
       "era": "other_capture_artifact",

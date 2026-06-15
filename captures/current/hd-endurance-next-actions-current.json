@@ -1,0 +1,136 @@
+{
+  "generated_at": "2026-06-15T20:14:55.591565+00:00",
+  "passed": true,
+  "runtime_policy": "repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "checklist": "captures\\current\\hd-endurance-release-checklist-current.json",
+  "full_game_complete": false,
+  "release_counts": {
+    "total": 14,
+    "passed": 4,
+    "blocked": 6,
+    "missing": 4
+  },
+  "status": "waiting_for_explicit_visible_runtime_approval",
+  "next_milestone": {
+    "id": "short2_menu_idle_soak",
+    "title": "First short2 menu-idle soak passes",
+    "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage"
+  },
+  "next_action": {
+    "id": "run_short2_menu_idle_soak",
+    "status": "approval_required",
+    "requires_visible_runtime": true,
+    "requires_explicit_user_approval": true,
+    "why": "The release checklist cannot progress until one protected-stage short2 menu-idle soak produces frame/process evidence.",
+    "exact_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json",
+    "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Json",
+    "writes_outside_repo": [
+      "C:\\ClashTests\\hd-soak",
+      "C:\\ClashCaptures\\hd-soak"
+    ],
+    "must_not_modify": [
+      "C:\\Clash\\clash95.exe"
+    ],
+    "post_run_validation": [
+      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_soak_report.py captures\\current\\hd-soak-short2-menu-idle-current.json --write-json captures\\current\\hd-soak-short2-menu-idle-guard-current.json --write-markdown captures\\current\\hd-soak-short2-menu-idle-guard-current.md --require-pass",
+      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_soak_failure_triage.py captures\\current\\hd-soak-short2-menu-idle-current.json --write-json captures\\current\\hd-soak-short2-menu-idle-triage-current.json --write-markdown captures\\current\\hd-soak-short2-menu-idle-triage-current.md",
+      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\current_evidence_refresh.py --write-json captures\\current\\current-evidence-refresh-current.json --write-markdown captures\\current\\current-evidence-refresh-current.md",
+      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\evidence_index_check.py captures\\current\\hd-map-evidence-current.md --require-pass",
+      "git diff --check"
+    ]
+  },
+  "open_requirement_count": 10,
+  "open_requirement_groups": {
+    "endurance": [
+      "short2_menu_idle_soak",
+      "long_soak_representative_routes"
+    ],
+    "manual input": [
+      "stable_menu_real_input",
+      "stable_hd_map_real_input"
+    ],
+    "screen route": [
+      "right_bottom_action_menu",
+      "castle_and_barracks_centered_input",
+      "tactical_battle_entry_return"
+    ],
+    "state continuity": [
+      "save_load_roundtrip",
+      "turn_advancement",
+      "campaign_routes"
+    ]
+  },
+  "open_requirements": [
+    {
+      "id": "short2_menu_idle_soak",
+      "status": "blocked",
+      "category": "endurance",
+      "summary": "short2 visible-runtime soak has not produced passing frame/process evidence",
+      "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage"
+    },
+    {
+      "id": "long_soak_representative_routes",
+      "status": "missing",
+      "category": "endurance",
+      "summary": "no 2h+ representative-route soak report is present",
+      "next_probe": "add long-tier reports only after short2/short10/short30 are stable"
+    },
+    {
+      "id": "stable_menu_real_input",
+      "status": "blocked",
+      "category": "manual input",
+      "summary": "menu-load proof remains pending manual DirectInput validation",
+      "next_probe": "collect approved manual menu-load proof or keep promotion blocked"
+    },
+    {
+      "id": "stable_hd_map_real_input",
+      "status": "blocked",
+      "category": "manual input",
+      "summary": "HD map input proof remains pending manual DirectInput validation",
+      "next_probe": "collect approved manual map input proof after short soak is stable"
+    },
+    {
+      "id": "right_bottom_action_menu",
+      "status": "blocked",
+      "category": "screen route",
+      "summary": "right-bottom action/menu remains validation-only or manual-proof blocked",
+      "next_probe": "replace debugger-forced action-click proof with natural or approved manual input proof"
+    },
+    {
+      "id": "castle_and_barracks_centered_input",
+      "status": "blocked",
+      "category": "screen route",
+      "summary": "castle/barracks centered input remains validation-only or manual-proof blocked",
+      "next_probe": "collect approved centered castle/barracks input proof"
+    },
+    {
+      "id": "tactical_battle_entry_return",
+      "status": "blocked",
+      "category": "screen route",
+      "summary": "battle evidence remains validation-only or missing visible click-to-callback proof",
+      "next_probe": "prove battle entry, UI use, return, and post-return map health on an approved route"
+    },
+    {
+      "id": "save_load_roundtrip",
+      "status": "missing",
+      "category": "state continuity",
+      "summary": "save/load continuity proof is absent",
+      "next_probe": "add safe test-save roundtrip evidence after short-tier stability"
+    },
+    {
+      "id": "turn_advancement",
+      "status": "missing",
+      "category": "state continuity",
+      "summary": "turn-advancement proof is absent",
+      "next_probe": "add deterministic turn-advance route evidence after save/load is safe"
+    },
+    {
+      "id": "campaign_routes",
+      "status": "missing",
+      "category": "state continuity",
+      "summary": "campaign-route proof is absent",
+      "next_probe": "add representative campaign route soaks after short/medium tiers are stable"
+    }
+  ],
+  "failures": []
+}

@@ -1,7 +1,7 @@
 # Load Slot Transition Readiness Matrix
 
 - Overall: FAIL
-- Generated: `2026-06-15T20:46:41+02:00`
+- Generated: `2026-06-15T22:14:19+02:00`
 - Runtime policy: repo-only transition readiness matrix; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when rows 3-5 are still classified as pre-0044895A blockers, the late-entry probe, row geometry, generated previews, and summary parser are all passing, every future command is hidden-desktop, target-slot acceptance is strict, and the result acceptance remains non-promoting
 - Classification: `transition_readiness_incomplete_or_stale`

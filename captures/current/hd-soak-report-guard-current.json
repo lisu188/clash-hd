@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T18:47:22.596946+00:00",
+  "generated_at": "2026-06-15T20:14:55.137398+00:00",
   "runtime_policy": "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "overall": false,
   "source_report": "captures/current/hd-soak-short-current.json",
@@ -24,6 +24,23 @@
         "stable_stage_should_change": false
       },
       "failures": []
+    },
+    "patch_evidence": {
+      "passed": false,
+      "summary": {
+        "input_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+        "expected_base_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+        "candidate_sha256": null,
+        "patch_stage_report": null,
+        "patch_stage": null,
+        "patch_count": null,
+        "patch_status_counts": null,
+        "current_hd_map_gate": null
+      },
+      "failures": [
+        "candidate_sha256 is missing or is not a SHA-256 hex digest",
+        "patch_stage_report path is missing"
+      ]
     },
     "promotion_boundary": {
       "passed": true,
@@ -96,6 +113,8 @@
   },
   "failures": [
     "soak report was not produced by an execution run",
+    "candidate_sha256 is missing or is not a SHA-256 hex digest",
+    "patch_stage_report path is missing",
     "frame sample count 0 is below 2",
     "minimum nonblack percent 0.0 is below 10.0",
     "minimum unique sampled colors 0.0 is below 8",

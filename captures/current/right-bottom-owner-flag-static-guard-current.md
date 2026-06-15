@@ -1,7 +1,7 @@
 # Right-Bottom Owner-Flag Static Guard
 
 - Overall: PASS
-- Generated: `2026-06-15T20:46:42+02:00`
+- Generated: `2026-06-15T22:14:19+02:00`
 - Runtime policy: local original-executable byte inspection only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: the natural right-bottom action route must retain the command-99 owner-loop callback, owner-global writes, 004338E0 owner flag bit-2 early-return gate, and 00433C20 owner-loop bit gates before the current owner-flag blocker can be treated as understood evidence
 - Executable: `C:\Clash\clash95.exe`
