@@ -1,7 +1,7 @@
 # Post-Owner Visibility Evidence Matrix
 
 - Overall: PASS
-- Captures root: `captures`
+- Captures root: `captures\archive`
 
 ## Normal Visibility-Zero Proof
 

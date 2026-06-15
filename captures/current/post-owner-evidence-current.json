@@ -1,11 +1,11 @@
 {
-  "captures_root": "captures",
+  "captures_root": "captures\\archive",
   "normal": {
     "kind": "normal-post-owner",
     "present": true,
     "passed": true,
     "run": "captures\\archive\\cdb-surface-dump-20260506-190037",
-    "mtime": "2026-05-06T19:01:16+02:00",
+    "mtime": "2026-05-15T11:23:48+02:00",
     "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
     "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
     "surface": {
@@ -60,7 +60,7 @@
     "present": true,
     "passed": true,
     "run": "captures\\archive\\cdb-surface-dump-20260506-201114",
-    "mtime": "2026-05-06T20:12:01+02:00",
+    "mtime": "2026-05-15T11:23:48+02:00",
     "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
     "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
     "surface": {
@@ -81,8 +81,8 @@
     "zero_hit_cells": [],
     "still_blank_cells": [],
     "post_owner_forced_visible_gate": {
-      "coverage_json": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\map-tile-coverage.json",
-      "log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\cdb-surface-dump.log",
+      "coverage_json": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-201114\\map-tile-coverage.json",
+      "log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-201114\\cdb-surface-dump.log",
       "required_cells": [
         "r6c10",
         "r6c11",

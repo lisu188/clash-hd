@@ -1,38 +1,357 @@
 {
-  "generated_at": "2026-06-15T18:34:28+02:00",
-  "captures_root": "captures",
-  "patch_report_json": null,
-  "passed": false,
+  "generated_at": "2026-06-15T19:25:10+02:00",
+  "captures_root": "captures\\archive",
+  "patch_report_json": "captures\\current\\patch-stage-current-hd-map.json",
+  "passed": true,
   "patch_stage": {
-    "passed": false,
-    "exe": null,
+    "passed": true,
+    "exe": "C:\\ClashTests\\hd-map-smoke\\clash95_hd_smoke_20260515_103606.exe",
+    "source": "captures\\current\\patch-stage-current-hd-map.json",
+    "archived": true,
     "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-    "failures": [
-      "no candidate executable path was found"
-    ]
+    "sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+    "patches": {
+      "patched": 118,
+      "original": 0,
+      "unexpected": 0,
+      "total": 118
+    },
+    "map": {
+      "stage_groups": [
+        "input-bounds",
+        "viewport-init",
+        "viewport-switch-dynamic-surface",
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "helpers",
+        "map-surface-upgrade-scrollclamp"
+      ],
+      "visible_tiles": {
+        "x": 12,
+        "y": 9
+      },
+      "main_loops_12x9": true,
+      "full_redraw_12x9": true,
+      "full_redraw_present_bounds_800": true,
+      "minimap_right_clip": true,
+      "minimap_hd_right_anchor": true,
+      "helpers_12x9": true,
+      "input_bounds_800x600": true,
+      "viewport_init_800x600": true,
+      "viewport_switch_800x600": true,
+      "viewport_switch_dynamic_surface": true,
+      "menu_safe_viewport_switch": false,
+      "saved_scroll_restore_clamp": true,
+      "map_surface_upgrade_after_menu": true
+    },
+    "current_hd_map_gate": {
+      "passed": true,
+      "failures": [],
+      "checks": {
+        "visible_tiles_12x9": {
+          "expected": {
+            "x": 12,
+            "y": 9
+          },
+          "actual": {
+            "x": 12,
+            "y": 9
+          },
+          "passed": true
+        },
+        "main_loops_12x9": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "full_redraw_12x9": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "full_redraw_present_bounds_800": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "minimap_right_clip": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "minimap_hd_right_anchor": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "helpers_12x9": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "input_bounds_800x600": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "viewport_init_800x600": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "viewport_switch_800x600": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "viewport_switch_dynamic_surface": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "saved_scroll_restore_clamp": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "map_surface_upgrade_after_menu": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        }
+      }
+    },
+    "failures": []
   },
   "post_owner_evidence": {
-    "captures_root": "captures",
+    "captures_root": "captures\\archive",
     "normal": {
       "kind": "normal-post-owner",
-      "present": false,
-      "passed": false,
-      "failures": [
-        "no passing normal post-owner run found"
-      ]
+      "present": true,
+      "passed": true,
+      "run": "captures\\archive\\cdb-surface-dump-20260506-190037",
+      "mtime": "2026-05-15T11:23:48+02:00",
+      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "surface": {
+        "RedrawSeq": 951,
+        "Surface": "03a9e540",
+        "Width": 800,
+        "Height": 600,
+        "Base": "03aa0030",
+        "Bytes": 480000
+      },
+      "blank_active_cells": [
+        "r6c10",
+        "r6c11",
+        "r7c10",
+        "r7c11",
+        "r8c0",
+        "r8c10",
+        "r8c11"
+      ],
+      "target_blank_cells": [
+        "r6c10",
+        "r6c11",
+        "r7c10",
+        "r7c11",
+        "r8c0",
+        "r8c10",
+        "r8c11"
+      ],
+      "visibility_status_counts": {
+        "visibility_zero": 7
+      },
+      "visibility_gate": {
+        "Required": true,
+        "Passed": true,
+        "Skipped": false,
+        "ExitCode": 0,
+        "BlankActiveCells": [
+          "r6c10",
+          "r6c11",
+          "r7c10",
+          "r7c11",
+          "r8c0",
+          "r8c10",
+          "r8c11"
+        ],
+        "UnexplainedBlankCells": []
+      },
+      "failures": []
     },
     "forced_visible": {
       "kind": "post-owner-forced-visible",
-      "present": false,
-      "passed": false,
-      "failures": [
-        "no passing post-owner forced-visible run found"
-      ]
+      "present": true,
+      "passed": true,
+      "run": "captures\\archive\\cdb-surface-dump-20260506-201114",
+      "mtime": "2026-05-15T11:23:48+02:00",
+      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "surface": {
+        "RedrawSeq": 951,
+        "Surface": "0a2fedd0",
+        "Width": 800,
+        "Height": 600,
+        "Base": "0a5a0030",
+        "Bytes": 480000
+      },
+      "blank_active_cells": [],
+      "post_owner_forced_visible_exit_code": 0,
+      "force_rows": 1,
+      "force_done_rows": 1,
+      "action_rows": 1,
+      "ready_rows": 1,
+      "missing_cells": [],
+      "zero_hit_cells": [],
+      "still_blank_cells": [],
+      "post_owner_forced_visible_gate": {
+        "coverage_json": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-201114\\map-tile-coverage.json",
+        "log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260506-201114\\cdb-surface-dump.log",
+        "required_cells": [
+          "r6c10",
+          "r6c11",
+          "r7c10",
+          "r7c11",
+          "r8c0",
+          "r8c10",
+          "r8c11"
+        ],
+        "gameplay_frame_likely": true,
+        "active_cells": 108,
+        "measurable_active_cells": 99,
+        "blank_active_cells": [],
+        "possible_stale_or_solid_active_cells": [],
+        "force_rows": 1,
+        "force_done_rows": 1,
+        "action_rows": 1,
+        "ready_rows": 1,
+        "apvis_cells": {
+          "r6c10": {
+            "line_no": 224,
+            "screen": [
+              672,
+              400
+            ],
+            "map": [
+              20,
+              23
+            ],
+            "byte": "80",
+            "mask": "80",
+            "hit": "80",
+            "sample": "c1",
+            "center_sample": "c0"
+          },
+          "r6c11": {
+            "line_no": 225,
+            "screen": [
+              736,
+              400
+            ],
+            "map": [
+              21,
+              23
+            ],
+            "byte": "80",
+            "mask": "80",
+            "hit": "80",
+            "sample": "c1",
+            "center_sample": "c1"
+          },
+          "r7c10": {
+            "line_no": 226,
+            "screen": [
+              672,
+              464
+            ],
+            "map": [
+              20,
+              24
+            ],
+            "byte": "03",
+            "mask": "01",
+            "hit": "01",
+            "sample": "c1",
+            "center_sample": "29"
+          },
+          "r7c11": {
+            "line_no": 227,
+            "screen": [
+              736,
+              464
+            ],
+            "map": [
+              21,
+              24
+            ],
+            "byte": "03",
+            "mask": "01",
+            "hit": "01",
+            "sample": "c1",
+            "center_sample": "22"
+          },
+          "r8c0": {
+            "line_no": 228,
+            "screen": [
+              32,
+              528
+            ],
+            "map": [
+              10,
+              25
+            ],
+            "byte": "02",
+            "mask": "02",
+            "hit": "02",
+            "sample": "a7",
+            "center_sample": "7f"
+          },
+          "r8c10": {
+            "line_no": 229,
+            "screen": [
+              672,
+              528
+            ],
+            "map": [
+              20,
+              25
+            ],
+            "byte": "03",
+            "mask": "02",
+            "hit": "02",
+            "sample": "c1",
+            "center_sample": "c1"
+          },
+          "r8c11": {
+            "line_no": 230,
+            "screen": [
+              736,
+              528
+            ],
+            "map": [
+              21,
+              25
+            ],
+            "byte": "03",
+            "mask": "02",
+            "hit": "02",
+            "sample": "c1",
+            "center_sample": "c0"
+          }
+        },
+        "missing_cells": [],
+        "zero_hit_cells": [],
+        "still_blank_cells": [],
+        "failures": [],
+        "passed": true
+      },
+      "failures": []
     },
-    "passed": false
+    "passed": true
   },
-  "failures": [
-    "patch-stage: no candidate executable path was found",
-    "post-owner evidence matrix failed"
-  ]
+  "failures": []
 }

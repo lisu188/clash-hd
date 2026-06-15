@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-06-15T18:36:11+02:00",
+  "generated_at": "2026-06-15T19:26:51+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures",
-  "artifact_count": 613,
+  "artifact_count": 614,
   "current_reference_count": 139,
   "archived_reference_count": 505,
   "missing_current_refs": [],
   "reference_status_counts": {
-    "archived_referenced": 281,
+    "archived_referenced": 282,
     "current_referenced": 109,
     "stale_unreferenced": 223
   },
   "era_counts": {
-    "cdb_surface_dump_unverified": 54,
+    "cdb_surface_dump_unverified": 55,
     "hidden_cdb_surface_dump": 118,
     "other_capture_artifact": 425,
     "visible_era": 16
@@ -1802,8 +1802,8 @@
       "sources": [
         "README.md"
       ],
-      "exists": false,
-      "entry_exists": false
+      "exists": true,
+      "entry_exists": true
     },
     "captures/archive/patch-stage-right-bottom-compose-20260513.json": {
       "ref": "captures/archive/patch-stage-right-bottom-compose-20260513.json",
@@ -4192,8 +4192,8 @@
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
       ],
-      "exists": false,
-      "entry_exists": false
+      "exists": true,
+      "entry_exists": true
     },
     "captures/archive/cdb-surface-dump-20260614-101240": {
       "ref": "captures/archive/cdb-surface-dump-20260614-101240",
@@ -9196,6 +9196,16 @@
       "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
       "has_surface_png": false,
       "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260527-193512",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260527-193512",
+      "artifact_kind": "directory",
+      "reference_status": "archived_referenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": false
     },
     {
       "name": "archive/cdb-surface-dump-20260615-100407",
