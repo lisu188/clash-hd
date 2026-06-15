@@ -1,7 +1,7 @@
 # Load Slot Timeout Phase Tests
 
 - Status: PASS
-- Generated: `2026-06-15T18:34:38+02:00`
+- Generated: `2026-06-15T20:46:40+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the load-slot timeout phase classifier preserves the current pre-load-menu-loop blocker shape for rows 3-5
 

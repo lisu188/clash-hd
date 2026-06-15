@@ -1,0 +1,104 @@
+{
+  "generated_at": "2026-06-15T18:47:22.596946+00:00",
+  "runtime_policy": "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "overall": false,
+  "source_report": "captures/current/hd-soak-short-current.json",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "tier": "short2",
+  "route": "menu-idle",
+  "duration_sec": 120,
+  "checks": {
+    "executed": {
+      "passed": false,
+      "summary": {
+        "executed": false
+      },
+      "failures": [
+        "soak report was not produced by an execution run"
+      ]
+    },
+    "protected_stage": {
+      "passed": true,
+      "summary": {
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+        "stable_stage_should_change": false
+      },
+      "failures": []
+    },
+    "promotion_boundary": {
+      "passed": true,
+      "summary": {
+        "runtime_policy": "opt-in visible runtime soak; raw frames stay outside the repository by default",
+        "input_proof_class": "not_run_visible_runtime_approval_required_not_manual_directinput_release_proof",
+        "right_bottom_promotion_blocked": true
+      },
+      "failures": []
+    },
+    "artifact_locations": {
+      "passed": true,
+      "summary": {
+        "candidate": "C:\\ClashTests\\hd-soak\\pending-approval.exe",
+        "output_directory": "C:\\ClashCaptures\\hd-soak\\pending-approval"
+      },
+      "failures": []
+    },
+    "frame_inventory": {
+      "passed": false,
+      "summary": {
+        "frame_sample_count": 0,
+        "expected_size": [
+          800,
+          600
+        ]
+      },
+      "failures": [
+        "frame sample count 0 is below 2"
+      ]
+    },
+    "render_metrics": {
+      "passed": false,
+      "summary": {
+        "min_nonblack_percent": 0.0,
+        "min_unique_sample_colors": 0.0
+      },
+      "failures": [
+        "minimum nonblack percent 0.0 is below 10.0",
+        "minimum unique sampled colors 0.0 is below 8"
+      ]
+    },
+    "process_liveness": {
+      "passed": false,
+      "summary": {
+        "process_exited_unexpectedly": false,
+        "exit_code": null,
+        "clean_stop": false
+      },
+      "failures": [
+        "process was not stopped cleanly by the harness"
+      ]
+    },
+    "input_responsiveness": {
+      "passed": true,
+      "summary": {
+        "route_result_count": 0,
+        "route_failure_count": 0
+      },
+      "failures": []
+    },
+    "artifact_budget": {
+      "passed": true,
+      "summary": {
+        "artifact_bytes": 0,
+        "artifact_limit_bytes": 262144000
+      },
+      "failures": []
+    }
+  },
+  "failures": [
+    "soak report was not produced by an execution run",
+    "frame sample count 0 is below 2",
+    "minimum nonblack percent 0.0 is below 10.0",
+    "minimum unique sampled colors 0.0 is below 8",
+    "process was not stopped cleanly by the harness"
+  ]
+}

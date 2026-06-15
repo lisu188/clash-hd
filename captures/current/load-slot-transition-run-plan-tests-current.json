@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T18:34:39+02:00",
+  "generated_at": "2026-06-15T20:46:40+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the transition command plan stays hidden, targets the current rows 3-5 pre-entry blocker, and remains non-promoting",

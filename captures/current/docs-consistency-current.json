@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:18:40+02:00",
+  "generated_at": "2026-06-15T20:47:23+02:00",
   "passed": false,
   "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries",
@@ -38,8 +38,8 @@
     "visible_runtime_requires_approval": true,
     "visible_runtime_guard": {
       "passed": true,
-      "script_count": 7,
-      "passing_script_count": 7,
+      "script_count": 8,
+      "passing_script_count": 8,
       "guard_policy": "legacy visible-runtime launchers/helpers must fail closed unless -AllowVisibleRuntime is explicitly supplied after user approval; guarded child helpers must receive the same switch; root PowerShell risky-call inventory must be guarded or explicitly exempt",
       "inventory_risky_script_count": 0,
       "inventory_unclassified_risky_script_count": 0
@@ -61,7 +61,7 @@
     },
     "no_popup_map": {
       "passed": true,
-      "normal_run": "captures\\archive\\cdb-surface-dump-20260517-171559",
+      "normal_run": "captures\\archive\\cdb-surface-dump-20260429-140916",
       "normal_blank_active_count": 13,
       "normal_unexplained_blank_count": 0,
       "normal_visibility_zero": 13,
@@ -107,8 +107,8 @@
       "dormant_target_count": 4
     },
     "screenshots": {
-      "normal_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
-      "forced_visible_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+      "normal_post_owner": null,
+      "forced_visible_post_owner": null,
       "right_bottom_owner_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
       "right_bottom_compose_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
       "right_bottom_compose_patch": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
@@ -185,8 +185,8 @@
       "summary": {
         "no_popup_preference": "Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.",
         "visible_runtime_requires_approval": true,
-        "visible_script_count": 7,
-        "visible_passing_script_count": 7,
+        "visible_script_count": 8,
+        "visible_passing_script_count": 8,
         "no_visible_run_count": 19,
         "no_visible_hidden_run_count": 19
       },
@@ -213,7 +213,7 @@
       "summary": {
         "no_popup": {
           "passed": true,
-          "normal_run": "captures\\archive\\cdb-surface-dump-20260517-171559",
+          "normal_run": "captures\\archive\\cdb-surface-dump-20260429-140916",
           "normal_blank_active_count": 13,
           "normal_unexplained_blank_count": 0,
           "normal_visibility_zero": 13,
@@ -274,11 +274,11 @@
       ]
     },
     "screenshot_files": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "screenshots": {
-          "normal_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
-          "forced_visible_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+          "normal_post_owner": null,
+          "forced_visible_post_owner": null,
           "right_bottom_owner_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
           "right_bottom_compose_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
           "right_bottom_compose_patch": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
@@ -288,7 +288,10 @@
           "right_bottom_grid_hit": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png"
         }
       },
-      "failures": []
+      "failures": [
+        "normal_post_owner: missing path",
+        "forced_visible_post_owner: missing path"
+      ]
     },
     "docs_codex_loop": {
       "passed": true,
@@ -356,12 +359,12 @@
       "failures": []
     },
     "docs_current_screenshot_paths": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "evidence_index": "captures\\current\\hd-map-evidence-current.md",
         "screenshots": {
-          "normal_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
-          "forced_visible_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+          "normal_post_owner": null,
+          "forced_visible_post_owner": null,
           "right_bottom_owner_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
           "right_bottom_compose_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
           "right_bottom_compose_patch": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
@@ -370,13 +373,23 @@
           "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\surface.png",
           "right_bottom_grid_hit": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png"
         },
-        "missing": []
+        "missing": [
+          "normal_post_owner: None",
+          "forced_visible_post_owner: None"
+        ]
       },
-      "failures": []
+      "failures": [
+        "evidence index missing current screenshot path normal_post_owner: None",
+        "evidence index missing current screenshot path forced_visible_post_owner: None"
+      ]
     }
   },
   "failures": [
     "boundary_counts: no-popup boundary guard is not passing",
-    "validation_only_status: castle validation matrix/decision is not passing"
+    "validation_only_status: castle validation matrix/decision is not passing",
+    "screenshot_files: normal_post_owner: missing path",
+    "screenshot_files: forced_visible_post_owner: missing path",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: None",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: None"
   ]
 }

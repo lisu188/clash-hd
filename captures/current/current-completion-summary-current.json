@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:18:18+02:00",
+  "generated_at": "2026-06-15T20:47:24+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "percent_policy": "Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.",
@@ -13,9 +13,9 @@
     {
       "id": "current_repo_evidence_gates",
       "label": "Current repo evidence gates",
-      "completion_percent": 85.09,
+      "completion_percent": 84.62,
       "passed": false,
-      "basis": "97/114 refresh checks pass"
+      "basis": "99/117 refresh checks pass"
     },
     {
       "id": "focused_battle_right_bottom_lane",

@@ -117,6 +117,24 @@ def test_transition_run_placeholder_is_not_current_reference(fixture: Path) -> N
     assert index["current_reference_count"] == 0, index
 
 
+def test_windows_clashcaptures_path_is_not_repo_capture_reference(fixture: Path) -> None:
+    write(
+        fixture / "current.md",
+        "\n".join(
+            [
+                r"`C:\ClashCaptures\hd-soak\pending-approval`",
+                r"Raw output is written outside the repo under `C:\ClashCaptures\hd-soak`.",
+                "",
+            ]
+        ),
+    )
+    write(fixture / "archive.md", "")
+    (fixture / "captures").mkdir(parents=True)
+    index = capture_corpus_index.build_index(args_for(fixture))
+    assert index["passed"] is True, index
+    assert index["current_reference_count"] == 0, index
+
+
 def test_stale_visible_artifacts_do_not_fail(fixture: Path) -> None:
     (fixture / "captures" / "clicktest-20260422-155046").mkdir(parents=True)
     (fixture / "captures" / "visual-smoke-20260423-112320").mkdir(parents=True)
@@ -179,6 +197,7 @@ def run_tests() -> None:
         test_missing_current_reference_fails(fixture / "missing")
         test_fixture_run_placeholder_is_not_current_reference(fixture / "fixture-run-placeholder")
         test_transition_run_placeholder_is_not_current_reference(fixture / "transition-run-placeholder")
+        test_windows_clashcaptures_path_is_not_repo_capture_reference(fixture / "windows-clashcaptures")
         test_stale_visible_artifacts_do_not_fail(fixture / "stale-visible")
         test_current_visible_or_sandbox_reference_fails(fixture / "current-visible")
         test_visible_fallback_cdb_reference_fails(fixture / "visible-fallback")

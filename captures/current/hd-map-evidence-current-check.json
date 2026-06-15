@@ -1,9 +1,9 @@
 {
   "index": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-map-evidence-current.md",
   "counts": {
-    "links": 122,
+    "links": 126,
     "images": 9,
-    "local_records": 131,
+    "local_records": 135,
     "missing": 0,
     "image_missing": 0,
     "image_wrong_extension": 0
@@ -50,6 +50,42 @@
       "target": "current-completion-summary-tests-current.md",
       "cleaned": "current-completion-summary-tests-current.md",
       "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\current-completion-summary-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-short-current.md",
+      "cleaned": "hd-soak-short-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-harness-guard-current.md",
+      "cleaned": "hd-soak-harness-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-harness-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-harness-guard-tests-current.md",
+      "cleaned": "hd-soak-harness-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-harness-guard-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-report-guard-current.md",
+      "cleaned": "hd-soak-report-guard-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-report-guard-current.md",
       "exists": true,
       "extension": ".md",
       "is_image_extension": false

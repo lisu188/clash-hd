@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T18:34:33+02:00",
+  "generated_at": "2026-06-15T20:46:32+02:00",
   "passed": false,
   "runtime_policy": "repo-only source/plan inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when the transition run plan targets rows 3-5 and the surface-dump launcher still replaces extra-probe load-slot mouse placeholders using x=320 and y=166+22*slot shifted into raw mouse globals",

@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-06-15T20:50:58+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "guard_policy": "HD soak harness must stay opt-in, protected-stage, non-promoting, and artifact-safe",
+  "script": "scripts\\smoke\\run_hd_soak.ps1",
+  "checks": {
+    "safe_defaults": {
+      "passed": true,
+      "summary": {
+        "CandidateDir": "C:\\ClashTests\\hd-soak",
+        "OutputRoot": "C:\\ClashCaptures\\hd-soak",
+        "ReportJson": "captures\\current\\hd-soak-short-current.json",
+        "ReportMarkdown": "captures\\current\\hd-soak-short-current.md",
+        "Stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch"
+      },
+      "failures": []
+    },
+    "protected_stage_boundary": {
+      "passed": true,
+      "summary": {
+        "stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+        "protected_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch"
+      },
+      "failures": []
+    },
+    "short_tiers": {
+      "passed": true,
+      "summary": {
+        "required_tiers": [
+          "short2",
+          "short10",
+          "short30",
+          "custom"
+        ],
+        "durations_sec": {
+          "short2": 120,
+          "short10": 600,
+          "short30": 1800
+        }
+      },
+      "failures": []
+    },
+    "short_routes": {
+      "passed": true,
+      "summary": {
+        "required_routes": [
+          "menu-idle",
+          "map-idle",
+          "map-pan",
+          "custom"
+        ],
+        "required_markers": [
+          "load-button",
+          "load-slot0",
+          "confirm-load",
+          "pan-path"
+        ]
+      },
+      "failures": []
+    },
+    "visible_runtime_opt_in": {
+      "passed": true,
+      "summary": {
+        "execute_switch_line": 32,
+        "allow_visible_runtime_switch_line": 33,
+        "dry_run_branch_line": 415,
+        "runtime_guard_line": 439
+      },
+      "failures": []
+    },
+    "artifact_policy": {
+      "passed": true,
+      "summary": {
+        "candidate_dir_default": "C:\\ClashTests\\hd-soak",
+        "output_root_default": "C:\\ClashCaptures\\hd-soak"
+      },
+      "failures": []
+    },
+    "patch_manifest_verification": {
+      "passed": true,
+      "summary": {},
+      "failures": []
+    },
+    "required_metrics": {
+      "passed": true,
+      "summary": {
+        "required_metric_count": 12,
+        "required_metrics": [
+          "frame_sample_count",
+          "frame_hash_unique_count",
+          "nonblack_percent_min",
+          "mean_luma_min",
+          "unique_sample_colors_min",
+          "process_sample_count",
+          "working_set_growth_bytes",
+          "handle_growth",
+          "artifact_bytes",
+          "process_exited_unexpectedly",
+          "clean_stop",
+          "final_route_marker"
+        ]
+      },
+      "failures": []
+    },
+    "promotion_boundary": {
+      "passed": true,
+      "summary": {},
+      "failures": []
+    }
+  },
+  "failures": []
+}

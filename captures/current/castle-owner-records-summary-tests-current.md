@@ -1,7 +1,7 @@
 # Castle Owner Records Summary Tests
 
 - Status: PASS
-- Generated: `2026-06-15T18:34:42+02:00`
+- Generated: `2026-06-15T20:46:48+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for parser CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the castle owner-record parser recognizes active, retired, nonempty, interesting, and flag-value records, and fails closed for no-active, require-interesting, forbid-interesting, and truncated raw-dump cases
 

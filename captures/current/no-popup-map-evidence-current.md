@@ -1,19 +1,19 @@
 # No-Popup Map Evidence
 
 - Overall: PASS
-- Captures root: `captures\archive`
+- Captures root: `captures`
 
 ## Normal Visibility-Explained Run
 
 - Status: PASS
-- Run: `captures\archive\cdb-surface-dump-20260517-171559`
-- Candidate SHA-256: `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`
+- Run: `captures\archive\cdb-surface-dump-20260429-140916`
+- Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
 - Blank active cells: 13
 - Unexplained blank cells: 0
 - Visibility status counts: `{'visibility_zero': 13}`
-- Screenshot: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260517-171559\surface.png`
+- Screenshot: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260429-140916\surface.png`
 
-![normal no-popup surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260517-171559/surface.png)
+![normal no-popup surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260429-140916/surface.png)
 
 ## Forced-Visible Edge Run
 

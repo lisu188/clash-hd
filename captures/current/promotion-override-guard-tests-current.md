@@ -1,7 +1,7 @@
 # Promotion Override Guard Tests
 
 - Status: PASS
-- Generated: `2026-06-15T18:34:59+02:00`
+- Generated: `2026-06-15T20:47:21+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the current evidence fails closed if CDB-only promotion overrides, manual proof, or promotion-ready states become active unexpectedly
 

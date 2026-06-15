@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-06-15T18:35:00+02:00`
+- Generated: `2026-06-15T20:47:24+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -1108,8 +1108,8 @@
 - Status: PASS
 - JSON: `captures\current\visible-runtime-launcher-guard-current.json`
 - Markdown: `captures\current\visible-runtime-launcher-guard-current.md`
-- script_count: `7`
-- passing_script_count: `7`
+- script_count: `8`
+- passing_script_count: `8`
 - inventory_risky_script_count: `0`
 - inventory_unclassified_risky_script_count: `0`
 - guard_policy: `legacy visible-runtime launchers/helpers must fail closed unless -AllowVisibleRuntime is explicitly supplied after user approval; guarded child helpers must receive the same switch; root PowerShell risky-call inventory must be guarded or explicitly exempt`
@@ -1128,8 +1128,8 @@
 - Status: PASS
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
-- risky_file_count: `78`
-- classification_counts: `{'safe': 99, 'exempt': 15, 'manual_visible_runtime_gated': 2, 'test_fixture': 61}`
+- risky_file_count: `79`
+- classification_counts: `{'safe': 102, 'exempt': 15, 'manual_visible_runtime_gated': 2, 'test_fixture': 62}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1329,18 +1329,56 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof and stable promotion remain blocked`
-- percentages: `{'current_repo_evidence_gates': 85.09, 'focused_battle_right_bottom_lane': 99.91, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 84.62, 'focused_battle_right_bottom_lane': 99.91, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+
+### Hd Soak Harness Guard
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-harness-guard-current.json`
+- Markdown: `captures\current\hd-soak-harness-guard-current.md`
+- script: `scripts\smoke\run_hd_soak.ps1`
+- guard_policy: `HD soak harness must stay opt-in, protected-stage, non-promoting, and artifact-safe`
+- runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Harness Guard Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-harness-guard-tests-current.json`
+- Markdown: `captures\current\hd-soak-harness-guard-tests-current.md`
+- test_count: `6`
+- guard_policy: `proves the opt-in soak harness stays protected-stage, approval-gated, non-promoting, and artifact-safe`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Report Guard
+
+- Status: FAIL
+- JSON: `captures\current\hd-soak-report-guard-current.json`
+- Markdown: `captures\current\hd-soak-report-guard-current.md`
+- source_report: `captures\current\hd-soak-short-current.json`
+- stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
+- tier: `short2`
+- route: `menu-idle`
+- duration_sec: `120`
+- executed: `False`
+- right_bottom_promotion_blocked: `True`
+- runtime_policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - soak report was not produced by an execution run
+  - frame sample count 0 is below 2
+  - minimum nonblack percent 0.0 is below 10.0
+  - minimum unique sampled colors 0.0 is below 8
+  - process was not stopped cleanly by the harness
 
 ### Capture Corpus Index
 
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `613`
-- current_reference_count: `139`
+- artifact_count: `622`
+- current_reference_count: `143`
 - stale_visible_or_sandbox_count: `16`
-- reference_status_counts: `{'archived_referenced': 281, 'current_referenced': 109, 'stale_unreferenced': 223}`
-- era_counts: `{'cdb_surface_dump_unverified': 54, 'hidden_cdb_surface_dump': 118, 'other_capture_artifact': 425, 'visible_era': 16}`
+- reference_status_counts: `{'archived_referenced': 283, 'current_referenced': 113, 'stale_unreferenced': 226}`
+- era_counts: `{'cdb_surface_dump_unverified': 55, 'hidden_cdb_surface_dump': 118, 'other_capture_artifact': 433, 'visible_era': 16}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1349,7 +1387,7 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-tests-current.json`
 - Markdown: `captures\current\capture-corpus-index-tests-current.md`
-- test_count: `8`
+- test_count: `9`
 - guard_policy: `proves capture references resolve, synthetic fixture/transition placeholders stay non-current, and stale visible-era artifacts cannot become active evidence silently`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1407,9 +1445,9 @@
 - Status: PASS
 - JSON: `captures\current\hd-map-evidence-current-check.json`
 - Index: `captures\current\hd-map-evidence-current.md`
-- links: `122`
+- links: `126`
 - images: `9`
-- local_records: `131`
+- local_records: `135`
 - missing: `0`
 - image_missing: `0`
 - image_wrong_extension: `0`
@@ -1441,6 +1479,11 @@
 - battle_ui_evidence_matrix: stable_smoke: stable HD-map smoke did not pass
 - stable_stage_guard: castle_overview_promotion_decision: castle overview promotion decision is not passing
 - stable_stage_guard: castle_overview_evidence_matrix: castle overview evidence matrix is not passing
+- hd_soak_report_guard: soak report was not produced by an execution run
+- hd_soak_report_guard: frame sample count 0 is below 2
+- hd_soak_report_guard: minimum nonblack percent 0.0 is below 10.0
+- hd_soak_report_guard: minimum unique sampled colors 0.0 is below 8
+- hd_soak_report_guard: process was not stopped cleanly by the harness
 - no_popup_boundary_guard: stable_stage_guard: refresh check is not passing: stable_stage_guard
 - no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
 - no_popup_boundary_guard: load_slot_entry_gap: refresh check is not passing: load_slot_entry_gap

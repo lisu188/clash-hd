@@ -1,7 +1,7 @@
 # Load Slot Transition Run Plan Tests
 
 - Status: PASS
-- Generated: `2026-06-15T18:34:39+02:00`
+- Generated: `2026-06-15T20:46:40+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the transition command plan stays hidden, targets the current rows 3-5 pre-entry blocker, and remains non-promoting
 

@@ -31,7 +31,7 @@ ARCHIVED_REFERENCE_SOURCES = [
     Path("wiki/syntheses/current-clash95-hd-state.md"),
 ]
 
-CAPTURE_REF_RE = re.compile(r"captures[\\/][^\s\]\)>'\"`,]+", re.IGNORECASE)
+CAPTURE_REF_RE = re.compile(r"(?<![A-Za-z0-9_])captures[\\/][^\s\]\)>'\"`,]+", re.IGNORECASE)
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 IMAGE_RE = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
 EXTERNAL_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
