@@ -3487,3 +3487,72 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   recognize proof class
   `natural_slot5_right_bottom_action_click_centered_input`, but the runtime
   evidence run is still pending.
+
+## Natural Right-Bottom v17b Input-Source Classification Refresh, 2026-06-15
+
+- Reran the repo-only v17b summary parser against
+  `captures\archive\cdb-surface-dump-20260615-100407\cdb-surface-dump.log` and
+  regenerated
+  `captures\archive\cdb-surface-dump-20260615-100407\right-bottom-natural-slot5-summary.md`.
+  The evidence still reaches `owner_action_copyback_reached` with no AV rows,
+  but the parser now separates source observation from debugger-forced action
+  click proof.
+- The refreshed summary reports source-hold markers `callsite=4` and
+  `inner_4612e0=0`: stock `00435BC0` calls the vtable `cb14=004612e0`, but
+  the guessed inner `NOWNER_SOURCEHOLD_4612E0_*` offsets did not hit. The last
+  natural pre-force poll still shows native mouse `(180,440)`, raw
+  `(0x2d00,0x6e00)`, `d544d04=0`, and `button0=0`.
+- The successful action-button route remains explicitly classified as
+  `debugger_forced_action_click_only`: `NOWNER_ACTION_FORCE_NATIVE` sets native
+  `(81,441)`, raw `(0x1440,0x6e40)`, `d544d04=1`, and `button0=0x80`, then the
+  stock descriptor `0051519a` reaches callback `00435620`, modal exit state,
+  stock return, and wrapper copyback.
+- Regenerated
+  `captures\current\right-bottom-blocker-triage-current.md` with the new
+  fields. Triage remains `controlled_recovered_but_natural_route_nonpromoting`;
+  `stable_stage_should_change=False`, `real_input_click_proven=False`, and
+  `DEFAULT_STAGE` remains unchanged.
+- Refined
+  `probes\cdb\castle\clash95_castle_cmd99_owner_action_slot5_sourcehold_extra.cdb`
+  to add exact `NOWNER_SOURCEHOLD_4612E0_ENTRY` and
+  `NOWNER_SOURCEHOLD_4612E0_RETURN` markers around the observed
+  `cb14=004612e0` call. Parser tests now recognize the future
+  `cb14_4612e0_inner_offsets_seen` state; no new CDB runtime has been launched
+  for this marker pair yet.
+- Next proof: run the refined hidden/no-popup probe and inspect
+  `00519620`, `00519622`, raw/displayed/native coordinates, `d544d04`,
+  `button0`, `d543d78`, and `d543d7c` before and after the source copy. Do not
+  promote `rightbottomaction-nativecenter` or any other validation-only group
+  until a natural input-source or approved manual DirectInput proof passes.
+
+## HD Endurance Road Start, 2026-06-15
+
+- Added `docs\hd\HD_SOAK_TEST_ROADMAP.md` as the endurance validation plan for
+  moving beyond narrow route proofs. The release horizon now explicitly covers
+  menu load, HD map input, castle overview, barracks/castle centered input,
+  right-bottom action menu, tactical battle entry/return, save/load, turn
+  advancement, campaign routes, long 800x600 rendering, and artifact/memory
+  stability.
+- Added the opt-in short-tier harness
+  `scripts\smoke\run_hd_soak.ps1`. It dry-runs by default, builds candidates
+  only under `C:\ClashTests\...`, writes raw frame artifacts outside the repo
+  under `C:\ClashCaptures\hd-soak`, samples process/frame state, and requires
+  `-Execute -AllowVisibleRuntime` before launching or capturing the visible
+  game.
+- Extended `scripts\capture\capture_clash_client_frame.ps1` to report
+  `UniqueSampleColors`, giving soak reports a cheap palette/artifact signal in
+  addition to frame hash, size, nonblack percent, and mean luminance.
+- Added `tools\hd_soak_report.py` and `tools\test_hd_soak_report.py` so short
+  soak reports can be checked by fast repo-only tests without launching
+  Clash95.
+- First runtime target: run `short2` / `menu-idle` on the protected stable
+  stage and validate `captures\current\hd-soak-short-current.json` with
+  `tools\hd_soak_report.py --require-pass`. This is an endurance smoke gate
+  only. It does not promote right-bottom, castle, battle, or other
+  validation-only groups, and `DEFAULT_STAGE` remains unchanged.
+- Dry-run validation of the soak harness passed and verified
+  `C:\Clash\clash95.exe` against SHA-256
+  `500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae`. The
+  first `short2` visible runtime execution is still pending explicit approval;
+  `captures\current\hd-soak-short-current.md` records this as a deliberate
+  non-pass rather than simulated soak evidence.

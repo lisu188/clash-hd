@@ -1,7 +1,7 @@
 # Right-Bottom Blocker Triage
 
 - Overall: PASS
-- Generated: `2026-06-15T18:34:34+02:00`
+- Generated: `2026-06-15T20:19:22+02:00`
 - Runtime policy: repo-only evidence triage; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only while the current blocker is explicitly classified as non-promoting: controlled composition is recovered, natural owner/action rows are absent, the natural route is either owner-flag gated, blocked inside the slot5 Render_Begin/DD_Pump/copyback lane, blocked by the documented loop-state/input-resample/source-hold lane, or has only debugger-forced native action-click copyback proof; the next proof path remains hidden diagnosis or approved manual input
 - Classification: `controlled_recovered_but_natural_route_nonpromoting`
@@ -39,9 +39,14 @@
 - Natural slot5 wrapper copyback count: `1`
 - Natural slot5 copyback path marker count: `74`
 - Natural slot5 native action-click marker count: `10`
-- Natural slot5 native/display force counts: `None` / `None`
+- Natural slot5 native/display force counts: `1` / `0`
 - Natural slot5 native action force/callback/00435620/exit counts: `1` / `1` / `1` / `1`
-- Natural slot5 last native action force marker: `None`
+- Natural slot5 source-hold callsite/inner-004612E0 counts: `4` / `0`
+- Natural slot5 input-source cb14=004612E0 seen: `True`
+- Natural slot5 input-source status: `debugger_forced_action_click_only`
+- Natural slot5 real input click proven: `False`
+- Natural slot5 debugger-forced click only: `True`
+- Natural slot5 last native action force marker: `NOWNER_ACTION_FORCE_NATIVE`
 - Natural slot5 last native action force: `{'target': 'bottom-left-action', 'pass_index': 1, 'native': [81, 441], 'raw': [5184, 28224], 'click_flag': 1, 'button0': 128, 'selected_index': 0, 'hover_slot': -1, 'action_state': 0}`
 - Natural slot5 last native action descriptor callback: `{'desc': 5329306, 'callback': 4412960, 'desc_xy': [41, 425], 'state': 1, 'mouse': [81, 441], 'action_state': 0}`
 - Natural slot5 last native action click exit-set: `{'pass_index': 1, 'action_state': 1, 'selected_index': 0, 'hover_slot': -1}`
@@ -49,6 +54,9 @@
 - Natural slot5 00435BC0 poll/limit count: `16` / `1`
 - Natural slot5 00435BC0 grid route/fail/selection-update count: `0` / `0` / `0`
 - Natural slot5 last 00435BC0 poll: `{'count': 16, 'd532210': 1, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 441], 'raw': [256, 28224], 'd544d04': 0, 'button0': 109, 'surface': 61287224, 'size': [640, 480]}`
+- Natural slot5 last 00435BC0 poll before action force: `{'count': 1, 'd532210': 0, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [180, 440], 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0, 'surface': 61287224, 'size': [640, 480]}`
+- Natural slot5 first 00435BC0 poll after action force: `{'count': 2, 'd532210': 0, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [81, 441], 'raw': [5184, 28224], 'd544d04': 1, 'button0': 128, 'surface': 61287224, 'size': [640, 480]}`
+- Natural slot5 last 00435BC0 poll after action force: `{'count': 16, 'd532210': 1, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 441], 'raw': [256, 28224], 'd544d04': 0, 'button0': 109, 'surface': 61287224, 'size': [640, 480]}`
 - Natural slot5 last 00435BC0 grid gate: `None`
 - Natural slot5 last 00435BC0 pump tick-return: `{'iter': 1, 'ret': 4414942, 'eax': 92018356, 'render': 5524696, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}`
 - Natural slot5 last 00435BC0 pump cb14 call: `{'iter': 1, 'ret': 4414942, 'vtable': 5304836, 'cb14': 4592352, 'render': 5524696, 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0}`
@@ -65,6 +73,7 @@
 
 ## Next Proof Options
 
+- run the refined exact entry/return markers around the cb14=004612e0 call so the 00519620/00519622 source-copy path is directly proven
 - prove the real input-source path through 00519620/00519622 or 004612E0 that naturally supplies the action-button click without debugger-forced native coordinates
 - finish interpreting the stock 00435BC0 grid route/selection-update behavior now that v17b proves the native action-button exit/copyback path
 - decide whether the HD wrapper should drive a native-modal input transform or preserve the stock modal loop while copying back only after exit
