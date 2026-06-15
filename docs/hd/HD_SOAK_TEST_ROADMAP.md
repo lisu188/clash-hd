@@ -47,6 +47,49 @@ Validate a generated report without launching the game:
 python tools\hd_soak_report.py captures\current\hd-soak-short-current.json --require-pass
 ```
 
+Classify a pending or failed soak report without launching the game:
+
+```powershell
+python tools\hd_soak_failure_triage.py captures\current\hd-soak-short-current.json
+```
+
+Inventory route coverage without launching the game:
+
+```powershell
+python tools\hd_soak_route_coverage.py --require-pass
+```
+
+Refresh the ordered short-tier ladder without launching the game:
+
+```powershell
+python tools\hd_soak_short_tier_ladder.py --require-pass
+```
+
+Refresh the durable per-step short-soak artifact manifest without launching the
+game:
+
+```powershell
+python tools\hd_soak_short_artifact_manifest.py --require-pass
+```
+
+Refresh the per-step short-soak status without launching the game:
+
+```powershell
+python tools\hd_soak_short_step_status.py --require-pass
+```
+
+Refresh the repo-only release-horizon checklist without launching the game:
+
+```powershell
+python tools\hd_endurance_release_checklist.py
+```
+
+Refresh the repo-only next-action handoff without launching the game:
+
+```powershell
+python tools\hd_endurance_next_actions.py
+```
+
 ## Short Tiers
 
 | Tier | Duration | Initial routes | Promotion meaning |
@@ -57,6 +100,55 @@ python tools\hd_soak_report.py captures\current\hd-soak-short-current.json --req
 
 The first required milestone is one passing `short2` run on the protected
 default stage. Longer tiers stay opt-in and should not enter default tests.
+
+The compact route coverage inventory is generated at
+`captures/current/hd-soak-route-coverage-current.md`. The current harness
+implements `3/10` release lanes: `menu-idle`, `map-idle`, and `map-pan`.
+Castle, barracks, right-bottom, battle, save/load, turn-advancement, and
+campaign lanes remain planned/non-promoting until their prerequisite short
+soaks, natural/manual input proof, and continuity gates exist.
+
+The ordered short-tier ladder is generated at
+`captures/current/hd-soak-short-tier-ladder-current.md`. It keeps the current
+step at `short2` `menu-idle` until that approval-gated visible-runtime run
+passes, then advances to `short2` `map-idle`, `short10` `map-idle`,
+`short10` `map-pan`, and `short30` `map-pan`. The ladder is a planning guard:
+it passes as a repo-only artifact while `ladder_complete=false`, and keeps
+2h+ tiers and future screen/state lanes locked until the short ladder has real
+evidence.
+
+The durable short-soak artifact manifest is generated at
+`captures/current/hd-soak-short-artifact-manifest-current.md`. It assigns each
+short ladder step its own current report, guard, and triage paths, for example
+`captures/current/hd-soak-short2-menu-idle-current.json` for the first runtime
+step. The existing `captures/current/hd-soak-short-current.json` remains a
+compatibility report for the current short-soak guard.
+
+The short validation refresh is generated at
+`captures/current/hd-soak-short-validation-refresh-current.md`. It is repo-only
+post-processing: when a canonical short-step report appears, it writes that
+step's guard and failure-triage outputs before the status reader runs. If no
+canonical runtime report exists yet, it stays in a passing pending state and
+does not launch the game.
+
+The per-step short-soak status is generated at
+`captures/current/hd-soak-short-step-status-current.md`. It reports each short
+step as pending, locked, failed/classified, needing guard output, or passing.
+It intentionally passes as a repo-only status artifact while no canonical
+runtime report exists, but fails closed if a canonical runtime report appears
+without its guard output or without triage for a failed run.
+
+The approval preflight packet is generated at
+`captures/current/hd-soak-approval-preflight-current.md`. It is repo-only and
+does not launch the game. It verifies that the first `short2` `menu-idle`
+runtime command is still explicit-approval gated, uses the canonical per-step
+report paths, keeps the dry-run command non-executing, preserves the protected
+stage and right-bottom promotion locks, and requires clean harness/runtime,
+process-hygiene, and executable-artifact guards before asking for approval:
+
+```powershell
+python tools\hd_soak_approval_preflight.py --require-pass
+```
 
 ## Route Expansion
 
@@ -91,9 +183,13 @@ Each soak report must track:
 - working-set and handle growth when available
 - artifact bytes and artifact root
 - final route marker
+- expected original base SHA-256, candidate SHA-256, and the per-run
+  `patch_stage_report.py` manifest proving the protected stage bytes are
+  patched with zero `original` or `unexpected` selected bytes
 
 A nonblack frame alone is not enough. A passing report needs process liveness,
-clean stop, route/input evidence for the chosen route, and stable frame metrics.
+clean stop, route/input evidence for the chosen route, stable frame metrics, and
+passing patch-stage evidence for the protected default stage.
 
 ## Failure Report
 
@@ -106,6 +202,12 @@ When a soak fails, the compact report should record:
 - process state, exit code, working set, handle count, and clean-stop status
 - crash, hang, capture, artifact-budget, or input-response classification
 - next probe or harness refinement
+
+`tools/hd_soak_failure_triage.py` turns the raw soak report into the compact
+failure record. It separates `not_executed_pending_approval` from real runtime
+failures and classifies AV crashes, unexpected exits, render/palette regressions,
+route/input failures, capture harness failures, artifact-budget failures,
+missing frame progress, cleanup failures, and unclassified failures.
 
 ## Release Horizon Checklist
 
@@ -127,10 +229,47 @@ Release completion needs all of these, not just a short soak:
   outside the documented threshold
 - no raw captures, binaries, saves, dumps, or local artifacts committed
 
+The compact current checklist is generated at
+`captures/current/hd-endurance-release-checklist-current.md`. It intentionally
+fails closed until every release-horizon item has current proof. As of the
+current checklist, `4/14` requirements pass and the next milestone is a passing
+`short2` `menu-idle` soak for the protected stable stage.
+
+The compact next-action handoff is generated at
+`captures/current/hd-endurance-next-actions-current.md`. It keeps the safe
+dry-run command separate from the exact approval-gated visible-runtime command
+and lists the post-run validation sequence.
+
+The short-tier ladder is generated at
+`captures/current/hd-soak-short-tier-ladder-current.md`. It records the same
+approval-gated first runtime command and prevents skipping directly to
+long-tier, castle, battle, right-bottom, save/load, turn, or campaign lanes.
+
+The short artifact manifest is generated at
+`captures/current/hd-soak-short-artifact-manifest-current.md`. It records the
+canonical per-step report outputs so future short soak results can accumulate
+without overwriting the generic compatibility report.
+
+The short validation refresh is generated at
+`captures/current/hd-soak-short-validation-refresh-current.md`. It regenerates
+per-step guard and triage artifacts for any canonical report that already
+exists, then lets the short-step status report consume those outputs.
+
+The short-step status report is generated at
+`captures/current/hd-soak-short-step-status-current.md`. It is the compact
+reader for those per-step outputs and names the current next command or missing
+validation step.
+
+The approval preflight report is generated at
+`captures/current/hd-soak-approval-preflight-current.md`. It is the final
+repo-only packet before requesting the visible-runtime `short2` `menu-idle`
+approval and should pass before any execution approval is requested.
+
 ## Current Status
 
 Current evidence still shows the right-bottom action/menu lane as
 non-promoting: v17b proves copyback only after a debugger-forced native action
 click. The next short soak road must not mask that blocker. The first soak
 milestone is a `short2` `menu-idle` run on the protected default stage, followed
-by `map-idle` and `map-pan`.
+by `short2` `map-idle`, `short10` `map-idle`, `short10` `map-pan`, and
+`short30` `map-pan`.
