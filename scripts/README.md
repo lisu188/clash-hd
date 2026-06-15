@@ -13,6 +13,10 @@ PowerShell entrypoints are grouped by purpose so the repository root stays focus
 
 Run scripts from the repository root with `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\<group>\<script>.ps1 ...` unless a workflow documents a more specific working directory.
 
+`scripts/smoke/run_hd_soak.ps1` is the opt-in endurance harness. It dry-runs by
+default and requires `-Execute -AllowVisibleRuntime` before launching Clash95 or
+capturing visible frames.
+
 Moved root variants that could not be byte-for-byte reconciled are kept under
 `scripts/cdb/legacy-root/` for inspection. Prefer the non-legacy grouped
 entrypoints for new runs.

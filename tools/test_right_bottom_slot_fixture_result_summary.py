@@ -201,6 +201,13 @@ COPYBACK_TRACE_INPUT_RESAMPLE_LOG = COPYBACK_TRACE_LOOPSTATE_LOG.replace(
     "NOWNER_435BC0_POLL count=1 d532210=0 d532218=041bc71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000001 button0=0x93 surface=0b100030 size=(640,480)",
 )
 
+COPYBACK_TRACE_4612E0_ENTRY_RETURN_LOG = COPYBACK_TRACE_INPUT_RESAMPLE_LOG.replace(
+    "NOWNER_435BC0_PUMP_608F0B_CALL iter=1 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x93\n",
+    "NOWNER_SOURCEHOLD_4612E0_ENTRY iter=1 ret=00460611 source=(0x2d00,0x6e00) prev=(0x2d00,0x6e00) flag=0x01 raw=(00002d00,00006e00) d544d04=00000000 button0=0x00 d543d78=00000001 d543d7c=00000005\n"
+    "NOWNER_SOURCEHOLD_4612E0_RETURN iter=1 ret=00435dde eax=00000000 source=(0x0100,0x6e00) prev=(0x2d00,0x6e00) flag=0x01 raw=(00000100,00006e00) d544d04=00000001 button0=0x93 d543d78=00000001 d543d7c=00000005\n"
+    "NOWNER_435BC0_PUMP_608F0B_CALL iter=1 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x93\n",
+)
+
 COPYBACK_TRACE_SOURCEHOLD_CALLSITE_LOG = COPYBACK_TRACE_INPUT_RESAMPLE_LOG.replace(
     "NOWNER_435BC0_PUMP_608F0B_CALL iter=1 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x93\n",
     "NOWNER_SOURCEHOLD_608F0A_PRE iter=1 source=(0x2d00,0x6e00) prev=(0x2d00,0x6e00) flag=0x01 raw=(00002d00,00006e00) d544d04=00000001 button0=0x80\n"
@@ -423,6 +430,11 @@ def test_owner_action_input_resample_trace_fields() -> None:
     assert report["owner_435bc0_pump_cb14_call_count"] == 1
     assert report["owner_435bc0_pump_608f0b_call_count"] == 1
     assert report["sourcehold_marker_count"] == 1
+    assert report["sourcehold_callsite_marker_count"] == 1
+    assert report["sourcehold_4612e0_marker_count"] == 0
+    assert report["input_source_cb14_4612e0_seen"] is True
+    assert report["input_source_status"] == "cb14_4612e0_callsite_seen_inner_offsets_unverified"
+    assert report["real_input_click_proven"] is False
     assert report["last_sourcehold"]["source"] == [0x2D00, 0x6E00]
     assert report["first_owner_435bc0_pump_tick_return"]["raw"] == [0x2D00, 0x6E00]
     assert report["first_owner_435bc0_pump_cb14_call"]["raw"] == [0x2D00, 0x6E00]
@@ -431,6 +443,26 @@ def test_owner_action_input_resample_trace_fields() -> None:
     assert report["last_owner_435bc0_pump_cb14_call"]["cb14"] == 0x004612E0
     assert report["last_owner_435bc0_pump_608f0b_call"]["raw"] == [0x0100, 0x6E00]
     assert report["last_owner_435bc0_poll"]["mouse"] == [4, 440]
+
+
+def test_owner_action_4612e0_entry_return_trace_fields() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        report = summary.parse_log(
+            write_log(Path(tmp), COPYBACK_TRACE_4612E0_ENTRY_RETURN_LOG),
+            expected_slot=0,
+            proof_class="natural_slot5_right_bottom_input_resample",
+        )
+    assert report["status"] == "owner_action_435bc0_loop_stalled", report
+    assert report["sourcehold_marker_count"] == 3
+    assert report["sourcehold_callsite_marker_count"] == 1
+    assert report["sourcehold_4612e0_marker_count"] == 2
+    assert report["input_source_cb14_4612e0_seen"] is True
+    assert report["input_source_status"] == "cb14_4612e0_inner_offsets_seen"
+    assert report["real_input_click_proven"] is False
+    assert report["last_sourcehold_marker"] == "NOWNER_SOURCEHOLD_4612E0_RETURN"
+    assert report["last_sourcehold"]["source"] == [0x0100, 0x6E00]
+    assert report["last_sourcehold"]["d544d04"] == 1
+    assert report["last_sourcehold"]["button0"] == 0x93
 
 
 def test_owner_action_callsite_sourcehold_trace_fields() -> None:
@@ -442,6 +474,9 @@ def test_owner_action_callsite_sourcehold_trace_fields() -> None:
         )
     assert report["status"] == "owner_action_435bc0_loop_stalled", report
     assert report["sourcehold_marker_count"] == 3
+    assert report["sourcehold_callsite_marker_count"] == 3
+    assert report["sourcehold_4612e0_marker_count"] == 0
+    assert report["input_source_status"] == "cb14_4612e0_callsite_seen_inner_offsets_unverified"
     assert report["last_sourcehold_marker"] == "NOWNER_SOURCEHOLD_608F0B_PRE"
     assert report["last_sourcehold"]["raw"] == [0x2D00, 0x6E00]
     assert report["owner_435bc0_pump_608f0a_call_count"] == 1
@@ -457,6 +492,9 @@ def test_owner_action_coords_callsite_sourcehold_trace_fields() -> None:
         )
     assert report["status"] == "owner_action_435bc0_loop_stalled", report
     assert report["sourcehold_marker_count"] == 3
+    assert report["sourcehold_callsite_marker_count"] == 3
+    assert report["sourcehold_4612e0_marker_count"] == 0
+    assert report["input_source_status"] == "cb14_4612e0_callsite_seen_inner_offsets_unverified"
     assert report["last_sourcehold_marker"] == "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE"
     assert report["last_sourcehold"]["raw"] == [0x2D00, 0x6E00]
     assert report["last_sourcehold"]["d544d04"] == 0
@@ -475,6 +513,9 @@ def test_owner_action_native_click_trace_fields() -> None:
     assert report["status"] == "owner_action_copyback_reached", report
     assert report["action_click_marker_count"] == 10
     assert report["action_click_force_count"] == 1
+    assert report["input_source_status"] == "debugger_forced_action_click_only"
+    assert report["real_input_click_proven"] is False
+    assert report["debugger_forced_click_only"] is True
     assert report["action_descriptor_entry_count"] == 1
     assert report["action_widget_click_gate_ret_count"] == 1
     assert report["action_descriptor_callback_count"] == 1
@@ -500,6 +541,9 @@ def test_owner_action_display_click_transform_trace_fields() -> None:
     assert report["status"] == "owner_action_copyback_reached", report
     assert report["action_click_marker_count"] == 10
     assert report["action_click_force_count"] == 1
+    assert report["input_source_status"] == "debugger_forced_action_click_only"
+    assert report["real_input_click_proven"] is False
+    assert report["debugger_forced_click_only"] is True
     assert report["action_click_native_force_count"] == 0
     assert report["action_click_display_force_count"] == 1
     assert report["last_action_force_marker"] == "NOWNER_ACTION_FORCE_DISPLAY"
@@ -705,6 +749,7 @@ def run_tests() -> None:
     test_owner_action_copyback_trace_loop_stalled()
     test_owner_action_loopstate_trace_fields()
     test_owner_action_input_resample_trace_fields()
+    test_owner_action_4612e0_entry_return_trace_fields()
     test_owner_action_callsite_sourcehold_trace_fields()
     test_owner_action_coords_callsite_sourcehold_trace_fields()
     test_timeout_stack_classification()

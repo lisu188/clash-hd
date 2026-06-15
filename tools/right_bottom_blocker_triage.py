@@ -335,6 +335,14 @@ def build_triage(
         "reduce the v17b diagnostic into a patch-stage decision that excludes debugger-only coordinate injection",
         "collect approved visible/manual DirectInput proof and validate the manual proof manifest",
     ]
+    if (
+        natural_slot5.get("input_source_cb14_4612e0_seen") is True
+        and int(natural_slot5.get("sourcehold_4612e0_marker_count") or 0) == 0
+    ):
+        next_proof_options.insert(
+            0,
+            "run the refined exact entry/return markers around the cb14=004612e0 call so the 00519620/00519622 source-copy path is directly proven",
+        )
 
     return {
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
@@ -392,6 +400,18 @@ def build_triage(
                 "action_click_435620_entry_count"
             ),
             "natural_slot5_action_click_exit_set_count": natural_slot5.get("action_click_exit_set_count"),
+            "natural_slot5_sourcehold_callsite_marker_count": natural_slot5.get(
+                "sourcehold_callsite_marker_count"
+            ),
+            "natural_slot5_sourcehold_4612e0_marker_count": natural_slot5.get(
+                "sourcehold_4612e0_marker_count"
+            ),
+            "natural_slot5_input_source_cb14_4612e0_seen": natural_slot5.get(
+                "input_source_cb14_4612e0_seen"
+            ),
+            "natural_slot5_input_source_status": natural_slot5.get("input_source_status"),
+            "natural_slot5_real_input_click_proven": natural_slot5.get("real_input_click_proven"),
+            "natural_slot5_debugger_forced_click_only": natural_slot5.get("debugger_forced_click_only"),
             "natural_slot5_last_action_force_marker": natural_slot5.get("last_action_force_marker"),
             "natural_slot5_last_action_force": natural_slot5.get("last_action_force"),
             "natural_slot5_last_action_descriptor_callback": natural_slot5.get(
@@ -406,6 +426,15 @@ def build_triage(
             "natural_slot5_435bc0_grid_fail_count": natural_slot5.get("owner_435bc0_grid_fail_count"),
             "natural_slot5_435bc0_selection_update_count": natural_slot5.get("owner_435bc0_selection_update_count"),
             "natural_slot5_last_435bc0_poll": natural_slot5.get("last_owner_435bc0_poll"),
+            "natural_slot5_last_435bc0_poll_before_action_force": natural_slot5.get(
+                "last_owner_435bc0_poll_before_action_force"
+            ),
+            "natural_slot5_first_435bc0_poll_after_action_force": natural_slot5.get(
+                "first_owner_435bc0_poll_after_action_force"
+            ),
+            "natural_slot5_last_435bc0_poll_after_action_force": natural_slot5.get(
+                "last_owner_435bc0_poll_after_action_force"
+            ),
             "natural_slot5_last_435bc0_grid_gate": natural_slot5.get("last_owner_435bc0_grid_gate"),
             "natural_slot5_last_sourcehold_marker": natural_slot5.get("last_sourcehold_marker"),
             "natural_slot5_last_sourcehold": natural_slot5.get("last_sourcehold"),
@@ -493,6 +522,11 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
             f"- Natural slot5 native action-click marker count: `{observations.get('natural_slot5_action_click_marker_count')}`",
             f"- Natural slot5 native/display force counts: `{observations.get('natural_slot5_action_click_native_force_count')}` / `{observations.get('natural_slot5_action_click_display_force_count')}`",
             f"- Natural slot5 native action force/callback/00435620/exit counts: `{observations.get('natural_slot5_action_click_force_count')}` / `{observations.get('natural_slot5_action_descriptor_callback_count')}` / `{observations.get('natural_slot5_action_click_435620_entry_count')}` / `{observations.get('natural_slot5_action_click_exit_set_count')}`",
+            f"- Natural slot5 source-hold callsite/inner-004612E0 counts: `{observations.get('natural_slot5_sourcehold_callsite_marker_count')}` / `{observations.get('natural_slot5_sourcehold_4612e0_marker_count')}`",
+            f"- Natural slot5 input-source cb14=004612E0 seen: `{observations.get('natural_slot5_input_source_cb14_4612e0_seen')}`",
+            f"- Natural slot5 input-source status: `{observations.get('natural_slot5_input_source_status')}`",
+            f"- Natural slot5 real input click proven: `{observations.get('natural_slot5_real_input_click_proven')}`",
+            f"- Natural slot5 debugger-forced click only: `{observations.get('natural_slot5_debugger_forced_click_only')}`",
             f"- Natural slot5 last native action force marker: `{observations.get('natural_slot5_last_action_force_marker')}`",
             f"- Natural slot5 last native action force: `{observations.get('natural_slot5_last_action_force')}`",
             f"- Natural slot5 last native action descriptor callback: `{observations.get('natural_slot5_last_action_descriptor_callback')}`",
@@ -501,6 +535,9 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
             f"- Natural slot5 00435BC0 poll/limit count: `{observations.get('natural_slot5_435bc0_poll_count')}` / `{observations.get('natural_slot5_435bc0_poll_limit_count')}`",
             f"- Natural slot5 00435BC0 grid route/fail/selection-update count: `{observations.get('natural_slot5_435bc0_grid_route_count')}` / `{observations.get('natural_slot5_435bc0_grid_fail_count')}` / `{observations.get('natural_slot5_435bc0_selection_update_count')}`",
             f"- Natural slot5 last 00435BC0 poll: `{observations.get('natural_slot5_last_435bc0_poll')}`",
+            f"- Natural slot5 last 00435BC0 poll before action force: `{observations.get('natural_slot5_last_435bc0_poll_before_action_force')}`",
+            f"- Natural slot5 first 00435BC0 poll after action force: `{observations.get('natural_slot5_first_435bc0_poll_after_action_force')}`",
+            f"- Natural slot5 last 00435BC0 poll after action force: `{observations.get('natural_slot5_last_435bc0_poll_after_action_force')}`",
             f"- Natural slot5 last 00435BC0 grid gate: `{observations.get('natural_slot5_last_435bc0_grid_gate')}`",
             f"- Natural slot5 last 00435BC0 pump tick-return: `{observations.get('natural_slot5_last_435bc0_pump_tick_return')}`",
             f"- Natural slot5 last 00435BC0 pump cb14 call: `{observations.get('natural_slot5_last_435bc0_pump_cb14_call')}`",

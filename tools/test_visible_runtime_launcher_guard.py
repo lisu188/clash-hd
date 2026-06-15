@@ -252,6 +252,13 @@ def test_cli_writes_outputs_and_fails_closed(fixture: Path) -> None:
     assert json.loads((fixture / "bad.json").read_text(encoding="utf-8"))["passed"] is False
 
 
+def test_default_inventory_includes_soak_harness() -> None:
+    guard = visible_runtime_launcher_guard.build_guard(argparse.Namespace(script=None))
+    scripts = {Path(row["script"]).as_posix() for row in guard["scripts"]}
+    assert "scripts/smoke/run_hd_soak.ps1" in scripts, guard
+    assert guard["passed"] is True, guard
+
+
 def run_tests() -> None:
     fixture = ROOT / ".codex-loop" / "tmp-tests" / "visible-runtime-launcher-guard-fixture"
     shutil.rmtree(fixture, ignore_errors=True)
@@ -267,6 +274,7 @@ def run_tests() -> None:
         test_inventory_rejects_unclassified_risky_root_scripts(fixture / "inventory-unclassified")
         test_inventory_allows_documented_exempt_risky_scripts(fixture / "inventory-exempt")
         test_cli_writes_outputs_and_fails_closed(fixture / "cli")
+        test_default_inventory_includes_soak_harness()
     finally:
         shutil.rmtree(fixture, ignore_errors=True)
 

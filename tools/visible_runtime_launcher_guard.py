@@ -22,6 +22,7 @@ APPROVAL_PHRASE = "explicit user approval"
 
 DEFAULT_SCRIPTS = [
     Path("scripts/smoke/run_clash_visual_smoke.ps1"),
+    Path("scripts/smoke/run_hd_soak.ps1"),
     Path("scripts/cdb/run_cdb_map_probe.ps1"),
     Path("scripts/cdb/run_cdb_python_mouse_map.ps1"),
     Path("scripts/cdb/run_cdb_viewport_bounds_probe.ps1"),

@@ -128,6 +128,7 @@ function Get-FrameSampleStats {
         $samples = 0
         $nonblack = 0
         $lumaSum = 0.0
+        $uniqueColors = New-Object 'System.Collections.Generic.HashSet[string]'
         $minX = $bitmap.Width
         $minY = $bitmap.Height
         $maxX = -1
@@ -138,6 +139,7 @@ function Get-FrameSampleStats {
                 $luma = (0.2126 * $pixel.R) + (0.7152 * $pixel.G) + (0.0722 * $pixel.B)
                 $samples++
                 $lumaSum += $luma
+                [void]$uniqueColors.Add(('{0:X2}{1:X2}{2:X2}' -f $pixel.R, $pixel.G, $pixel.B))
                 if ([math]::Max($pixel.R, [math]::Max($pixel.G, $pixel.B)) -gt 12) {
                     $nonblack++
                     $minX = [math]::Min($minX, $x)
@@ -152,6 +154,7 @@ function Get-FrameSampleStats {
             NonblackSamples = $nonblack
             NonblackPercent = if ($samples) { [math]::Round(($nonblack * 100.0) / $samples, 3) } else { 0.0 }
             MeanLuma = if ($samples) { [math]::Round($lumaSum / $samples, 3) } else { 0.0 }
+            UniqueSampleColors = $uniqueColors.Count
             NonblackBounds = if ($nonblack) {
                 [pscustomobject]@{
                     X = $minX
@@ -318,6 +321,7 @@ $result = [pscustomobject]@{
     CenterRootHwnd = ("0x{0}" -f $centerRoot.ToInt64().ToString('X'))
     NonblackPercent = $stats.NonblackPercent
     MeanLuma = $stats.MeanLuma
+    UniqueSampleColors = $stats.UniqueSampleColors
     NonblackBounds = $stats.NonblackBounds
 }
 
