@@ -21,8 +21,9 @@ from typing import Any, Callable
 
 
 RUN_RE = re.compile(r"^cdb-surface-dump-(\d{8})-(\d{6})$")
+DEFAULT_CAPTURES_ROOT = Path("captures/archive")
 EXTRA_PROBE_NAME = "probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb"
-LEGACY_EXTRA_PROBE_NAME = "probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb"
+LEGACY_EXTRA_PROBE_NAME = "clash95_post_owner_tile_visibility_extra.cdb"
 TARGET_CELLS = ("r6c10", "r6c11", "r7c10", "r7c11", "r8c0", "r8c10", "r8c11")
 
 
@@ -98,6 +99,16 @@ def load_run(path: Path) -> Run:
     except OSError:
         mtime = 0.0
     return Run(path=run_dir, summary=load_json(summary_path), mtime=mtime)
+
+
+def screenshot_path(run: Run, summary: dict[str, Any]) -> str | None:
+    png = summary.get("PngPath")
+    if png and Path(png).exists():
+        return str(Path(png).resolve())
+    archived_png = run.path / "surface.png"
+    if archived_png.exists():
+        return str(archived_png.resolve())
+    return png
 
 
 def scan_runs(captures_root: Path) -> list[Run]:
@@ -185,7 +196,7 @@ def summarize_normal(run: Run | None) -> dict[str, Any]:
         "passed": not failures,
         "run": str(run.path),
         "mtime": iso_mtime(run.mtime),
-        "screenshot": summary.get("PngPath"),
+        "screenshot": screenshot_path(run, summary),
         "candidate_sha256": summary.get("CandidateSha256"),
         "surface": summary.get("Surface"),
         "blank_active_cells": blank,
@@ -226,7 +237,7 @@ def summarize_forced(run: Run | None) -> dict[str, Any]:
         "passed": not failures,
         "run": str(run.path),
         "mtime": iso_mtime(run.mtime),
-        "screenshot": summary.get("PngPath"),
+        "screenshot": screenshot_path(run, summary),
         "candidate_sha256": summary.get("CandidateSha256"),
         "surface": summary.get("Surface"),
         "blank_active_cells": blank,
@@ -344,7 +355,7 @@ def write_markdown(path: Path, matrix: dict[str, Any]) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--captures-root", type=Path, default=Path("captures"))
+    parser.add_argument("--captures-root", type=Path, default=DEFAULT_CAPTURES_ROOT)
     parser.add_argument("--normal-run", type=Path)
     parser.add_argument("--forced-run", type=Path)
     parser.add_argument("--write-json", type=Path)
