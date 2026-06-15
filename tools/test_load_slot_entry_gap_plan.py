@@ -41,7 +41,7 @@ dword_543D78 = 1;
 """
 
 CDB_TEXT = """
-bp 00419B80 "__PRE_ENTRY_LOAD_COORD_ACTION__; gc"
+bp 00419B80 ".printf \\"SURFDUMP_LOAD_COORD\\"; gc"
 bp 00447780 ".printf \\"SURFDUMP_SKIP_MAIN_LOAD_CALLBACK\\"; gc"
 bp 00447D61 ".printf \\"SURFDUMP_MAIN_DISPATCH_POLL\\"; gc"
 bp 0044895A ".printf \\"SURFDUMP_LOAD_MENU_ENTRY\\"; gc"
@@ -142,6 +142,18 @@ def test_fails_without_probe_load_menu_entry_breakpoint() -> None:
     assert any("load_menu_entry_breakpoint" in failure for failure in report["failures"])
 
 
+def test_fails_without_pre_entry_load_coord_log() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        report = build(
+            write_fixture(
+                Path(tmp),
+                cdb_text=CDB_TEXT.replace("SURFDUMP_LOAD_COORD", "SURFDUMP_COORD_MISSING"),
+            )
+        )
+    assert not report["passed"]
+    assert any("pre_entry_load_coord_log" in failure for failure in report["failures"])
+
+
 def test_fails_when_blocked_row_reaches_entry() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         report = build(write_fixture(Path(tmp), phase_report=phase(slot3_entry_count=1)))
@@ -191,6 +203,7 @@ def run_tests() -> None:
     test_passes_current_gap_shape()
     test_fails_without_static_case5_row_loop()
     test_fails_without_probe_load_menu_entry_breakpoint()
+    test_fails_without_pre_entry_load_coord_log()
     test_fails_when_blocked_row_reaches_entry()
     test_fails_when_slot2_no_longer_reaches_loadsave()
     test_cli_writes_outputs_and_requires_pass()
