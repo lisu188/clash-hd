@@ -2,10 +2,10 @@ param(
     [string]$Exe = 'C:\Clash\clash95_hd_mouseabsq_20260422.exe',
     [string]$WorkDir = 'C:\Clash',
     [string]$Cdb = 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe',
-    [string]$Probe = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes/cdb/mouse/clash95_mouse_menu_dynamic_probe.cdb'),
-    [string]$Log = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\cdb-python-mouse-map.log'),
+    [string]$Probe = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes\cdb\mouse\clash95_mouse_menu_dynamic_probe.cdb'),
+    [string]$Log = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\archive\cdb-python-mouse-map.log'),
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
-    [string]$OutJson = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\mouseclickmap-cdb-python.json'),
+    [string]$OutJson = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\archive\mouseclickmap-cdb-python.json'),
     [string]$Points = '239,196;265,264;320,285;437,196;468,264',
     [ValidateSet('sendinput', 'postmessage', 'both')]
     [string]$ClickMode = 'sendinput',
@@ -16,10 +16,16 @@ param(
     [int]$SkipPulses = 4,
     [int]$SkipIntervalMs = 500,
     [int]$MoveWindowX = 80,
-    [int]$MoveWindowY = 80
+    [int]$MoveWindowY = 80,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
+
+if (-not $AllowVisibleRuntime) {
+    throw "This legacy harness launches a visible Clash95 runtime. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
 
 function Stop-ProbeProcesses {
     Get-Process -ErrorAction SilentlyContinue |
@@ -62,7 +68,7 @@ foreach ($path in @($Exe, $WorkDir, $Cdb, $Probe, $Python)) {
     }
 }
 
-$mouseTool = Join-Path (Join-Path $PSScriptRoot '..\..') 'tools\mouse_path_probe.py'
+$mouseTool = Join-Path $RepoRoot 'tools\mouse_path_probe.py'
 if (-not (Test-Path -LiteralPath $mouseTool)) {
     throw "Mouse path probe was not found: $mouseTool"
 }

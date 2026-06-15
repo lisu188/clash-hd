@@ -1,0 +1,6 @@
+.echo === Clash95 castle owner records dump probe ===
+.echo CDB-only dump of loaded castle owner records for overview state selection
+r @$t8=3
+r @$t18=0
+
+bp /1 0040B660 ".if ((poi(005202e4) != 0) & (@$t18 == 0)) { r @$t18=1; r @$t11=poi(005202e4)+0x7c6ea; .printf \"CASTLE_OWNER_RECORDS_DUMP gd=%p base=%p bytes=29888 current_player=%d surface=%p sz=(%d,%d)\n\", poi(005202e4), @$t11, poi(005202ec), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); .writemem castle-owner-records-current.raw @$t11 L0n29888; .printf \"CASTLE_OWNER_RECORDS_DUMPED path=castle-owner-records-current.raw bytes=29888\n\"; r @$t12=poi(005202e0); r @$t13=wo(@$t12); r @$t15=wo(@$t12+2); r @$t16=poi(@$t12+4); .printf \"SURFDUMP_READY redraw_seq=991 surface=%p size=(%d,%d) base=%p bytes=%d\n\", @$t12, @$t13, @$t15, @$t16, @$t13*@$t15; .echo SURFDUMP_HOST_READY; } .else { gc }"

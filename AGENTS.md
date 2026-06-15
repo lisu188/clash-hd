@@ -76,7 +76,7 @@ CDB / WinDbg:
 - Use CDB for repeatable crash logs and scripted evidence.
 - Current active workflow is CDB-only. Use host CDB, hidden-desktop CDB,
   local CDB probes, and CDB-only harnesses for new validation.
-- For no-popup runtime evidence, prefer `run_cdb_surface_dump.ps1`, hidden
+- For no-popup runtime evidence, prefer `scripts/cdb/run_cdb_surface_dump.ps1`, hidden
   desktop CDB launches, local CDB probes, and CDB-only harnesses.
 - Avoid semicolons in CDB `.echo` lines. CDB command files are
   semicolon-sensitive, and a semicolon inside an echo message can stop the probe
@@ -228,22 +228,22 @@ Preferred headless debugger:
 Useful commands:
 
 ```powershell
-.\run_cdb_menu_probe.ps1 `
+.\scripts\cdb\run_cdb_menu_probe.ps1 `
   -Exe 'C:\Clash\clash95_hdmap12_novswitch_relinput.exe' `
-  -Probe .\clash95_hd_crash_probe.cdb `
+  -Probe .\probes\cdb\startup\clash95_hd_crash_probe.cdb `
   -Log 'C:\Clash\hd-cdb-menu.log' `
   -RunSeconds 10
 ```
 
 ```powershell
-.\run_cdb_mouse_probe.ps1 `
+.\scripts\cdb\run_cdb_mouse_probe.ps1 `
   -Exe 'C:\Clash\clash95_hdcentered_hitboxes.exe' `
   -Log 'C:\Clash\hd-cdb-mouse-probe.log' `
   -NoWait
 ```
 
 ```powershell
-.\run_clash_test.ps1 `
+.\scripts\smoke\run_clash_test.ps1 `
   -Exe 'C:\Clash\clash95_hddisplay_absinput.exe' `
   -Probe `
   -MenuWaitSec 8 `
@@ -337,7 +337,7 @@ How to use Ghidra results for the HD mod:
   section headers or an offset helper, then verify expected original bytes before
   writing a patch.
 - Record function names, Ghidra addresses, file offsets, original bytes, patched
-  bytes, and rationale in `CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md`.
+  bytes, and rationale in `docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md`.
 - For each candidate patch, connect the evidence chain: Ghidra decompilation
   suggests the constant/global, CDB proves it is reached at runtime, frame dumps
   prove the visual/input effect.
@@ -438,7 +438,7 @@ Frame dumping limitations:
   `GetCursorPos`, use `-MoveMode none -ClickMode postmessage` only as a
   fallback liveness/menu-flow check; it is not DirectInput proof and may not
   enter gameplay.
-- `capture_clash_client_frame.ps1` may report
+- `scripts/capture/capture_clash_client_frame.ps1` may report
   `CaptureMode=windowdc-contaminated-fallback` when another top-level window
   covers the target center. Treat that as weaker visual evidence than
   `CaptureMode=screen`; inspect the PNG and nonblack bounds before drawing
@@ -456,17 +456,17 @@ Frame dumping limitations:
   observations using `vis_base + player*1423 + map_x*13 + (map_y >> 3)`.
   Treat `visibility_zero` rows as fog/unexplored-state evidence, not as tile
   draw failure.
-- Use `run_cdb_python_mouse_map.ps1` when the question is whether those exact
+- Use `scripts/cdb/run_cdb_python_mouse_map.ps1` when the question is whether those exact
   Python-forced clicks line up with the engine's `MOUSE`/`MENUHIT` rows. Held
   clicks are better evidence than instantaneous down/up pairs because the game
   can miss a click between DirectInput polling frames.
 - Common HD/windowed mouse bug procedure: if the cursor snaps to a corner/edge
-  or clicks work while movement is wrong, run `run_cdb_python_mouse_map.ps1`
+  or clicks work while movement is wrong, run `scripts/cdb/run_cdb_python_mouse_map.ps1`
   with `-ClickHoldMs 250 -ClickRepeat 2` and compare Python
   `actual_screen`/`actual_client` with CDB `MOUSE dx/dy` and logical `x/y`.
   A typical wrapper failure is `DirectInputSample ~= screen / 4` instead of
   client coordinates. Confirm the live game HWND at `0x005452DC` with
-  `clash95_hwnd_origin_probe.cdb`, then use or refine the
+  `probes/cdb/mouse/clash95_hwnd_origin_probe.cdb`, then use or refine the
   `gameplay-menu640-centered-map12-dynorigin` stage. A good mouse validation
   has exact Python path coordinates, `MOUSE` rows matching requested client
   points, `MENUHIT` button rows, and zero menu-hit out-of-bounds rows.
@@ -479,7 +479,7 @@ Frame dumping limitations:
   mouse reaches the lower/right client edge, treat the probe as suspect before
   blaming the HD map patch.
 - Common DirectInput bug procedure under the current CDB-only workflow: run
-  `clash95_directinput_probe.cdb` only through a host or hidden-desktop CDB
+  `probes/cdb/mouse/clash95_directinput_probe.cdb` only through a host or hidden-desktop CDB
   harness. Compare exclusive and nonexclusive stages. `Acquire=0x80070005`
   means the mouse device was not enabled; a successful `Acquire` plus
   `button0=0x80` but `raw=(0,0,0)` means injected button state reached
@@ -492,9 +492,9 @@ Frame dumping limitations:
   Treat it as debugger evidence, not proof that manual mouse movement works.
 - Key-scroll boundary proof procedure: do not write `gameData+140008` or
   `gameData+140012` when proving input-driven map clamps. First use
-  `clash95_key_scroll_probe.cdb` to prove `sub_407D20` accepts key-state rows
+  `probes/cdb/key-scroll/clash95_key_scroll_probe.cdb` to prove `sub_407D20` accepts key-state rows
   for at least one real game scroll step. For boundary proof, use
-  `clash95_key_scroll_boundary_probe.cdb`, which repeatedly invokes the
+  `probes/cdb/key-scroll/clash95_key_scroll_boundary_probe.cdb`, which repeatedly invokes the
   patched key-scroll helper under a CDB-only harness while keeping right/down
   key-state bytes active. Validate with
   `tools\key_scroll_summary.py --require-hd-boundary`. If the final lower-right
@@ -517,9 +517,9 @@ Frame dumping limitations:
 
 ## Clash95 No-Popup CDB Surface Dumps
 
-Use `run_cdb_surface_dump.ps1` when the goal is to test a no-popup capture path
+Use `scripts/cdb/run_cdb_surface_dump.ps1` when the goal is to test a no-popup capture path
 without placing a Clash95 window on the active desktop.
-The harness creates a timestamped `captures/cdb-surface-dump-*/` folder, builds
+The harness creates a timestamped `captures/archive/cdb-surface-dump-*/` folder, builds
 a uniquely named candidate outside the repo, generates a per-run CDB script,
 starts x86 CDB on a separate hidden Windows desktop with `CreateDesktop` /
 `CreateProcessW`, and refuses visible-desktop fallback unless
@@ -528,7 +528,7 @@ starts x86 CDB on a separate hidden Windows desktop with `CreateDesktop` /
 Preferred no-popup map-surface command:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts/cdb/run_cdb_surface_dump.ps1 `
   -UseDdrawProxy `
   -NoSkipStartAnims `
   -Stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch `
@@ -537,7 +537,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.p
 ```
 
 Use `-UseDdrawProxy` for hidden-desktop map dumps. It builds a process-local
-32-bit fake DirectDraw `ddraw.dll` from `ddraw_surfdump_proxy/` into the
+32-bit fake DirectDraw `ddraw.dll` from `src/ddraw_surfdump_proxy/` into the
 isolated candidate directory. The proxy owns simple dumpable 8-bit surface
 memory and logs DirectDraw surface creation, palette attachment, locks, blits,
 and flips to `C:\ClashTests\cdb-surface-dump\ddraw_surfdump_proxy.log`.
@@ -570,7 +570,7 @@ Do not patch tile drawing for a dark cell until this gate says the blank is not
 explained by fog/unexplored state.
 
 For post-owner action captures, use
-`clash95_post_owner_tile_visibility_extra.cdb` through the hidden-desktop
+`probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb` through the hidden-desktop
 surface-dump harness when the right/bottom cells look like missing UI or tile
 draw. It logs focused `APVIS_CELL` rows for the current seven blank cells and
 emits a `SCROLL_VISDUMP` before the post-owner dump. A good fog/visibility
@@ -581,20 +581,20 @@ action-box copyback for those cells while same-run visibility evidence says
 they are unexplored/fogged.
 
 Use `-PostOwnerForceVisibleSeven` only as a debugger proof switch with
-`clash95_post_owner_tile_visibility_extra.cdb`. The switch injects exact
+`probes/cdb/map/clash95_post_owner_tile_visibility_extra.cdb`. The switch injects exact
 visibility bytes for `r6c10`, `r6c11`, `r7c10`, `r7c11`, `r8c0`, `r8c10`, and
 `r8c11` through the base PlayGame CDB breakpoint before the HD redraw; it must
 not become a normal gameplay patch. Validate archived proof with:
 
 ```powershell
 python tools\post_owner_forced_visible_summary.py `
-  captures\cdb-surface-dump-20260506-200426\map-tile-coverage.json `
-  --log captures\cdb-surface-dump-20260506-200426\cdb-surface-dump.log `
+  captures\archive\cdb-surface-dump-20260506-200426\map-tile-coverage.json `
+  --log captures\archive\cdb-surface-dump-20260506-200426\cdb-surface-dump.log `
   --require-post-owner-forced-visible
 ```
 
 Current post-owner forced-visible evidence:
-`captures\cdb-surface-dump-20260506-201114\RUN-SUMMARY.md` passed with no
+`captures\archive\cdb-surface-dump-20260506-201114\RUN-SUMMARY.md` passed with no
 visible desktop window, `PostOwnerForceVisibleSeven=True`, `blank_active_cells`
 empty, and the harness-reported `Post-owner forced-visible gate: passed`. The
 focused rows show nonzero hits for all seven cells, for example `r8c11` has
@@ -605,16 +605,16 @@ Use `tools\post_owner_evidence_matrix.py --require-pass` as the compact
 post-owner dark-cell gate. It pairs the latest normal visibility-zero proof
 with the latest seven-cell forced-visible proof and prints both screenshot
 paths. The current passing report is
-`captures\post-owner-evidence-current.md`, pairing
-`captures\cdb-surface-dump-20260506-190037` with
-`captures\cdb-surface-dump-20260506-201114`.
+`captures\current\post-owner-evidence-current.md`, pairing
+`captures\archive\cdb-surface-dump-20260506-190037` with
+`captures\archive\cdb-surface-dump-20260506-201114`.
 
 Use `tools\hd_map_smoke_matrix.py --require-pass` as the current repo-only HD
 map smoke gate. It combines `tools\patch_stage_report.py
 --require-current-hd-map` for the candidate recorded by the evidence captures
 with `tools\post_owner_evidence_matrix.py --require-pass`. Current passing
-outputs are `captures\hd-map-smoke-current.json` and
-`captures\hd-map-smoke-current.md`. This command does not launch CDB or the
+outputs are `captures\current\hd-map-smoke-current.json` and
+`captures\current\hd-map-smoke-current.md`. This command does not launch CDB or the
 game.
 
 Fresh-base reproduction for that gate is documented in `README.md` under
@@ -623,12 +623,12 @@ Fresh-base reproduction for that gate is documented in `README.md` under
 `500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae`, build a
 unique candidate under `C:\ClashTests\hd-map-smoke`, run
 `tools\patch_stage_report.py --require-current-hd-map --write-json
-captures\patch-stage-current-hd-map.json` to create the old/new byte manifest,
+captures\current\patch-stage-current-hd-map.json` to create the old/new byte manifest,
 then run `tools\hd_map_smoke_matrix.py --patch-exe <candidate> --normal-run
-captures\cdb-surface-dump-20260506-190037 --forced-run
-captures\cdb-surface-dump-20260506-201114 --require-pass`. Do not commit the
+captures\archive\cdb-surface-dump-20260506-190037 --forced-run
+captures\archive\cdb-surface-dump-20260506-201114 --require-pass`. Do not commit the
 generated candidate executable.
-Use `prepare_hd_map_smoke_candidate.ps1` as the dry-run launcher for this path.
+Use `scripts/smoke/prepare_hd_map_smoke_candidate.ps1` as the dry-run launcher for this path.
 Default mode only prints the plan, verifies the base SHA when accessible, and
 refuses candidate output inside the repository. Use `-Execute` only from a
 normal Windows shell when writing to `C:\ClashTests\hd-map-smoke` is allowed.
@@ -636,16 +636,16 @@ Use `tools\patch_manifest_compare.py` to compare two
 `tools\patch_stage_report.py --write-json` outputs. It is repo-only and
 highlights changed offsets, groups, expected old/new bytes, actual bytes,
 status transitions, and any `original` / `unexpected` records. The current
-example report is `captures\patch-manifest-compare-current-vs-partial12.md`.
-Use `captures\hd-map-evidence-current.md` as the compact front page for current
+example report is `captures\current\patch-manifest-compare-current-vs-partial12.md`.
+Use `captures\current\hd-map-evidence-current.md` as the compact front page for current
 HD map evidence. It links the smoke matrix, post-owner evidence matrix,
 patch-manifest comparison, and current screenshot artifacts.
-Use `tools\evidence_index_check.py captures\hd-map-evidence-current.md
+Use `tools\evidence_index_check.py captures\current\hd-map-evidence-current.md
 --require-pass` after editing that index. It verifies local Markdown links and
 referenced screenshot artifacts without launching CDB or reading executables.
 
 Current successful evidence:
-`captures\cdb-surface-dump-20260429-111340\RUN-SUMMARY.md` reports a hidden
+`captures\archive\cdb-surface-dump-20260429-111340\RUN-SUMMARY.md` reports a hidden
 desktop DirectDraw-proxy run that dumped an 800x600 `dword_5202E0` surface with
 host-side `ReadProcessMemory` and reconstructed `surface.png`. The CDB log
 shows `SURFDUMP_PLAYGAME`, `SURFDUMP_READY`, `SCROLL_VISDUMP`, and
@@ -659,7 +659,7 @@ if the log lacks visibility evidence. The reconstructed PNG is a required
 screenshot artifact for no-popup progress reports.
 
 Fresh normal-gate evidence:
-`captures\cdb-surface-dump-20260429-140916\RUN-SUMMARY.md` reran the normal
+`captures\archive\cdb-surface-dump-20260429-140916\RUN-SUMMARY.md` reran the normal
 hidden-desktop route with `-UseDdrawProxy -NoSkipStartAnims -RequireGameplay`.
 It passed with `VisibilityRequireExplained=True`,
 `VisibilityExplainedGate.Passed=True`, 13 active blank cells, zero unexplained
@@ -670,13 +670,13 @@ Use `tools\no_popup_map_evidence_matrix.py --require-pass` as the compact
 no-popup HD map smoke gate. It selects the freshest normal
 `VisibilityExplainedGate` pass and freshest forced-visible `ForcedVisibleGate`
 pass, then prints both screenshot paths and key counts. The current matrix pairs
-`captures\cdb-surface-dump-20260429-140916` with
-`captures\cdb-surface-dump-20260429-135242` and passes.
-Use `--write-markdown captures\no-popup-map-evidence-current.md` when a durable
+`captures\archive\cdb-surface-dump-20260429-140916` with
+`captures\archive\cdb-surface-dump-20260429-135242` and passes.
+Use `--write-markdown captures\current\no-popup-map-evidence-current.md` when a durable
 human-readable report with embedded screenshot links is needed.
 
-Use `clash95_castle_owner_setup_extra.cdb`,
-`clash95_castle_screen_invoke_extra.cdb`, and
+Use `probes/cdb/castle/clash95_castle_owner_setup_extra.cdb`,
+`probes/cdb/castle/clash95_castle_screen_invoke_extra.cdb`, and
 `tools\castle_owner_setup_summary.py` when investigating the missing
 right-bottom castle/action owner UI. The full castle screen routine starts at
 `00422180` and installs render hook `00422020`; `00422020` is the render hook,
@@ -684,9 +684,9 @@ not the full screen entry. The owner setup route is command `0x63` descriptor
 setup at `00422709` -> callback `00433C20`, which writes `dword_532150`,
 `dword_53214C`, and `dword_532154`; the later action route enters
 `004338E0 -> 00433914 -> sub_435BC0`. A normal hidden-desktop load-slot run at
-`captures\cdb-surface-dump-20260506-121909` reached `SURFDUMP_READY` but did
+`captures\archive\cdb-surface-dump-20260506-121909` reached `SURFDUMP_READY` but did
 not observe castle setup. A controlled hidden-desktop run at
-`captures\cdb-surface-dump-20260506-141239` used
+`captures\archive\cdb-surface-dump-20260506-141239` used
 `-FastForwardStartAnims -SkipMapValidation`, invoked castle index `0`, proved
 command `0x63` installs `00433C20`, observed all three owner-global writes, and
 dumped a 640x480 castle screen PNG. This proves the owner setup path is native
@@ -700,7 +700,7 @@ For centered castle/barracks UI input work, prefer the
 stage and validate with hidden-desktop CDB probes. The key coordinate proof is
 displayed `(530,133)` over the top-left barracks grid cell, which must map to
 native `(450,73)` while the owner-poll and `00435A17 -> 00435580` grid helper
-wrappers run. Use `clash95_castle_barracks_click_extra.cdb` plus
+wrappers run. Use `probes/cdb/castle/clash95_castle_barracks_click_extra.cdb` plus
 `tools\castle_barracks_hitbox_summary.py` with `--require-ready`,
 `--require-raw-gate`, `--forbid-forced-gate`, and `--require-grid-hit` when
 proving the click path. This
@@ -709,21 +709,21 @@ probe may set the click-state byte at `00544D04`, but it must not rewrite
 `APBARRACKS_HITBOX_GRID_GATE raw_result=1 forced_result=none`.
 
 For centered castle/barracks action-button probes, use
-`clash95_castle_barracks_click_consume_trace_extra.cdb` or a successor probe
+`probes/cdb/castle/clash95_castle_barracks_click_consume_trace_extra.cdb` or a successor probe
 that does not perform descriptor-local click rearm. The shared
-`clash95_surface_dump_probe.cdb` `00419B80` post-gameplay cleanup is guarded
+`probes/cdb/render/clash95_surface_dump_probe.cdb` `00419B80` post-gameplay cleanup is guarded
 with `@$t18 == 0`; this prevents the base harness from clearing `005451C0` and
 `00544D04` after an extra UI probe has entered its active phase. If a future
 probe sees `click_flag=1` immediately after injection but `click_flag=0` at
 descriptor `0051519a`, inspect the generated CDB script before blaming the game
 or the centered-input patch. The current clean action-button proof is
-`captures\cdb-surface-dump-20260511-162846`, where `0051519a` reaches callback
+`captures\archive\cdb-surface-dump-20260511-162846`, where `0051519a` reaches callback
 `00435620` and sets `dword_532210=1` without descriptor-local rearm.
 For a second bottom action-button proof, use
-`clash95_castle_barracks_second_action_extra.cdb` with
+`probes/cdb/castle/clash95_castle_barracks_second_action_extra.cdb` with
 `tools\castle_barracks_action_click_summary.py --expect-desc 0x005151cf
 --expect-callback 0x004356c0`. Current evidence
-`captures\cdb-surface-dump-20260511-163846` proves centered `(276,501)` maps
+`captures\archive\cdb-surface-dump-20260511-163846` proves centered `(276,501)` maps
 to native `(196,441)`, stock gate returns `1`, and callback `004356c0` is
 entered. That callback currently returns through its availability-failed path
 for `selected_addon=0`; proving the success branch requires selecting a
@@ -746,14 +746,14 @@ loop redraw call route through wrapper `0051316F`. Do not remove the loop hook
 when fixing castle UI echo; the screenshot can look native-origin even if the
 initial present callback is wrapped correctly.
 
-Use `clash95_castle_interior_catalog_extra.cdb` with
+Use `probes/cdb/castle/clash95_castle_interior_catalog_extra.cdb` with
 `tools\castle_interior_catalog_summary.py` to enumerate castle-screen
 descriptors reachable from the current save. Current full-overview evidence
-`captures\cdb-surface-dump-20260512-101803` found commands `0x63`, `0x86`,
+`captures\archive\cdb-surface-dump-20260512-101803` found commands `0x63`, `0x86`,
 `0x87`, `0x99`, `0x9C`, `0x9F`, and `0xA6` with no AV rows, logged
 `CASTLECAT_OVERVIEW_POST_DRAW` on an 800x600 main surface, and passed
 `tools\castle_overview_gate.py` with the barracks baseline
-`captures\cdb-surface-dump-20260512-082418`.
+`captures\archive\cdb-surface-dump-20260512-082418`.
 
 Current `castlecenter-all` full-overview visual patch is
 `castle-overview-center-present-wrapper`: `0042232E` and `00422674` route the
@@ -772,13 +772,13 @@ gate must fail native-origin echo: top/left margins outside the centered
 `--max-echo-percent 5.0`.
 
 Current `castlecenter-all` barracks no-echo evidence is
-`captures\cdb-surface-dump-20260512-082418`. It passed hidden-desktop CDB,
+`captures\archive\cdb-surface-dump-20260512-082418`. It passed hidden-desktop CDB,
 dumped an 800x600 surface, and passed
 `centered_gate=PASS image=800x600 centered_nonblack=71.228%
 max_margin_nonblack=0.0%`. The selected-index-1 action probe is intentionally
 controlled at `004356C0` for this screenshot and should be checked with
 `--require-4356c0-controlled-stop`; the older
-`captures\cdb-surface-dump-20260511-170759` remains the success-branch
+`captures\archive\cdb-surface-dump-20260511-170759` remains the success-branch
 reference, but it also demonstrates the native-origin echo that the stricter
 geometry gate now rejects.
 
@@ -800,7 +800,7 @@ current baseline is:
 Experimental visible-edge proof command:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_cdb_surface_dump.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts/cdb/run_cdb_surface_dump.ps1 `
   -UseDdrawProxy `
   -FastForwardStartAnims `
   -ForceVisibleEdges `
@@ -821,7 +821,7 @@ viewport. A passing proof should have no target cells in
 evidence, and a fresh screenshot artifact.
 
 Current forced-visible evidence:
-`captures\cdb-surface-dump-20260429-135242\RUN-SUMMARY.md` passed on the hidden
+`captures\archive\cdb-surface-dump-20260429-135242\RUN-SUMMARY.md` passed on the hidden
 desktop with `-FastForwardStartAnims -ForceVisibleEdges`. It dumped an 800x600
 surface, `map_tile_coverage.py` reported `gameplay_frame_likely=True`,
 `active=108`, `measurable=99`, `blank=0`, and
@@ -837,8 +837,8 @@ forced-visible evidence:
 
 ```powershell
 python tools\forced_visible_summary.py `
-  captures\cdb-surface-dump-20260429-135242\map-tile-coverage.json `
-  --log captures\cdb-surface-dump-20260429-135242\cdb-surface-dump.log `
+  captures\archive\cdb-surface-dump-20260429-135242\map-tile-coverage.json `
+  --log captures\archive\cdb-surface-dump-20260429-135242\cdb-surface-dump.log `
   --require-forced-visible
 ```
 
@@ -874,18 +874,18 @@ host desktop. This implements the preferred disposable UI test route:
 Dry-run/config generation:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_clash_windows_sandbox.ps1 -NoLaunch
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_clash_windows_sandbox.ps1 -NoLaunch
 ```
 
 Launch a sandbox run:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\run_clash_windows_sandbox.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_clash_windows_sandbox.ps1
 ```
 
 If `WindowsSandbox.exe` is missing, enable the Windows feature
 `Containers-DisposableClientVM` from an elevated shell, reboot, then rerun the
-script. Use hidden-desktop testing only through `run_cdb_surface_dump.ps1` and
+script. Use hidden-desktop testing only through `scripts/cdb/run_cdb_surface_dump.ps1` and
 treat a hidden-desktop DirectDraw failure as evidence, not as a reason to fall
 back to a visible host-window run.
 
@@ -966,7 +966,7 @@ High-value automated tests:
   `tools\right_bottom_ui_bounds.py` on screenshots such as
   `captures\map-minimapaction-minimapright-dynvswitch-v2-frame-20260424.png`
   to measure the minimap, right-side panel, bottom strip, and bottom-right
-  12x9 cells. Use `clash95_right_bottom_ui_probe.cdb` only through a CDB-only
+  12x9 cells. Use `probes/cdb/ui/clash95_right_bottom_ui_probe.cdb` only through a CDB-only
   launcher or hidden-desktop harness when changing action-panel or bottom-right
   UI constants; it late-arms `UI_DrawActionBox`, `UI_GetGridIndexFromMouse`,
   action-panel draw functions, `sub_460D80`, and `Render_BlitSurface` after
@@ -998,7 +998,7 @@ Development notes for future agents:
   check that the surface is still 640 pixels wide before applying the 80,60
   centering offset.
 - Record original bytes, patched bytes, addresses, and rationale in
-  `CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md` whenever a patch changes.
+  `docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md` whenever a patch changes.
 - When a test fails, preserve the exact executable, frame directory, CDB log, and
   command used. The failure artifact is often more valuable than another manual
   run.

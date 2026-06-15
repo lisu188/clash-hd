@@ -11,10 +11,15 @@ param(
     [string]$ClickMode = 'sendinput',
     [int]$RunSeconds = 10,
     [int]$PostIntroWaitSec = 4,
-    [switch]$NoLaunch
+    [switch]$NoLaunch,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $NoLaunch -and -not $AllowVisibleRuntime) {
+    throw "This harness opens Windows Sandbox for a visible Clash95 runtime. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
 
 function ConvertTo-XmlText {
     param([string]$Value)
@@ -39,13 +44,13 @@ $pythonDir = Split-Path -Parent $python
 $pythonName = Split-Path -Leaf $python
 
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$runHostDir = Join-Path $repo "captures\sandbox-$stamp"
+$runHostDir = Join-Path $repo "captures\archive\sandbox-$stamp"
 New-Item -ItemType Directory -Path $runHostDir -Force | Out-Null
 
 $entryHostPath = Join-Path $runHostDir 'sandbox-entry.ps1'
 $wsbHostPath = Join-Path $runHostDir 'clash-hd-sandbox.wsb'
 $summaryHostPath = Join-Path $runHostDir 'host-summary.json'
-$runRel = "captures\sandbox-$stamp"
+$runRel = "captures\archive\sandbox-$stamp"
 $runSandboxDir = "C:\Repo\$runRel"
 $entrySandboxPath = "$runSandboxDir\sandbox-entry.ps1"
 $sandboxPython = "C:\HostPython\$pythonName"

@@ -32,11 +32,11 @@ Relevant capture evidence:
   is the current color UI reference, target-owned at `1200x900`.
 - `captures/map-minimapaction-minimapright-dynvswitch-v2-frame-20260424.png.json`
   reports the same image hash and `NonblackPercent=95.317`.
-- `captures/right-bottom-ui-bounds-baseline-20260429.json` measures the current
+- `captures/archive/right-bottom-ui-bounds-baseline-20260429.json` measures the current
   black lower/right UI regions. In that baseline, `bottom_right_ui_corner`
   is only `10.704%` nonblack, and the bottom-right logical cells `r8c10` and
   `r8c11` are about `1%` nonblack.
-- `captures/no-popup-map-evidence-current.md` proves the HD 12x9 map drawing
+- `captures/current/no-popup-map-evidence-current.md` proves the HD 12x9 map drawing
   path itself is valid under CDB-only no-popup evidence: normal dark cells are
   explained by visibility/fog, and a forced-visible CDB proof draws the same
   right/bottom map cells when visibility permits.
@@ -101,7 +101,7 @@ File offsets below use the repo note formula for code in `AUTO`:
 - VA: `0x00418700`
 - File offset: `0x017B00`
 - Local evidence: `C:\Clash\clash95.c`, `patch_clash95_hd.py`,
-  `CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md`
+  `docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md`
 
 This is the highest-value border-frame lead. Decompilation shows it:
 

@@ -4,10 +4,15 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Path,
     [string]$Json,
-    [int]$WindowTimeoutSec = 5
+    [int]$WindowTimeoutSec = 5,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $AllowVisibleRuntime) {
+    throw "This capture helper touches a visible Clash95 window. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
 
 Add-Type -AssemblyName System.Drawing
 Add-Type @'

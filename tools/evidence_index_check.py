@@ -138,7 +138,7 @@ def parse_args() -> argparse.Namespace:
         "index",
         nargs="?",
         type=Path,
-        default=Path("captures/hd-map-evidence-current.md"),
+        default=Path("captures/current/hd-map-evidence-current.md"),
         help="Markdown evidence index to check",
     )
     parser.add_argument("--write-json", type=Path, help="write full check report")

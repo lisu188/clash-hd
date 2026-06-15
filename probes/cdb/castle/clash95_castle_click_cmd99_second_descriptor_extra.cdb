@@ -1,0 +1,33 @@
+.echo === Clash95 castle command99 second descriptor probe ===
+.echo CDB-only route from natural castle click through command 0x63 then one right-bottom descriptor click
+
+r @$t18=0
+r @$t1=0
+r @$t2=0
+r @$t3=0
+r @$t4=0
+
+bp 0040B0C3 ".if ((poi(005202e4) != 0) & (@$t18 == 0)) { r @$t18=1; r @$t1=0; r @$t2=0; r @$t3=0; r @$t4=0; .printf \"N2DESC_HEADER gd=%p player=%d scroll=(%d,%d) surface=%p size=(%d,%d)\n\", poi(005202e4), poi(005202ec), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 0040B233 ".if ((@$t18 == 1) & (@$t1 == 0)) { r @$t1=1; ed 00511b58 ffffffff; ed 00514194 ffffffff; ed 00544cfc (0n352 << by(0054512c)); ed 00544d00 (0n272 << by(0054512c)); eb 005451c0 80; ed 00544d04 1; .printf \"N2DESC_FORCE_MAP_CASTLE_CLICK screen=(352,272) raw=(%p,%p)\n\", poi(00544cfc), poi(00544d00); }; gc"
+bp 00408517 ".if (@$t18 != 0) { .printf \"N2DESC_MAP_TILE map=(%d,%d) mouse=(%d,%d) selected=%d current=%d\n\", @ebp, poi(@esp+0n84), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00511b58), poi(005202ec); }; gc"
+bp 004087D7 ".if ((@$t18 != 0) & (@$t1 != 0)) { eb 005451c0 80; ed 00544d04 1; .printf \"N2DESC_REARM_MAP_COMMIT map=(%d,%d) mouse=(%d,%d)\n\", @ebp, poi(@esp+0n84), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+bp 0040948D ".if (@$t18 != 0) { r @$t5=poi(005202e4); r @$t6=wo(@$t5+0n556374+(@ebp*0n200)+(poi(@esp+0n84)*2)); r @$t7=@$t6-0n32768; r @$t8=@$t5+0n509674+(@$t7*0n467); .printf \"N2DESC_BUILDING_TILE map=(%d,%d) tile=%d index=%d owner=%d mode=%d active=%d flags=0x%02x\n\", @ebp, poi(@esp+0n84), @$t6, @$t7, by(@$t8+2), by(@$t8+4), wo(@$t8+16), by(@$t8+0n416); }; gc"
+bp 00422180 ".if (@$t18 == 1) { r @$t18=2; r @$t2=0; .printf \"N2DESC_CASTLE_OVERVIEW_ENTRY ret=%p castle_index=%d main_surface=%p size=(%d,%d)\n\", poi(@esp), @eax, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00422333 ".if (@$t18 == 2) { .printf \"N2DESC_CASTLE_OVERVIEW_POST_DRAW overview_surface=%p size=(%d,%d) owner_screen=%p\n\", poi(00526a68), wo(poi(00526a68)), wo(poi(00526a68)+2), poi(00526a64); }; gc"
+bp 00422520 ".if ((@$t18 == 2) & (@$t2 == 0)) { r @$t2=1; ed 00544cfc 000039c0; ed 00544d00 00005b80; eb 005451c0 80; ed 00544d04 1; .printf \"N2DESC_CASTLE_CMD99_TARGET displayed=(231,366) raw=(%p,%p)\n\", poi(00544cfc), poi(00544d00); }; gc"
+bp 00422544 ".if (@$t18 == 2) { .printf \"N2DESC_CASTLE_HIT raw_hit=%d adjusted=%d expected_raw=254\n\", @eax, @eax-0n248; }; gc"
+bp 0042257E ".if (@$t18 == 2) { .printf \"N2DESC_CASTLE_DESCRIPTOR command=%d callback=%p owner_screen=%p\n\", @esi, @ecx, poi(00526a64); }; gc"
+bp 00422590 ".if ((@$t18 == 2) & (@esi == 0n99) & (@ecx == 00433c20)) { .printf \"N2DESC_CASTLE_CMD99_GATE gate_before=%d forced_gate=1\n\", @eax; r eax=1; }; gc"
+bp 0042262C ".if (@$t18 == 2) { .printf \"N2DESC_CASTLE_CALLBACK callback=%p eax_arg=%p command=%d\n\", @ecx, @eax, @esi; }; gc"
+bp 00433C20 ".if (@$t18 != 0) { .printf \"N2DESC_433C20_ENTRY ret=%p owner_arg=%p owner_flag=0x%02x d532150_before=%p\n\", poi(@esp), @eax, by(@eax+0n416), poi(00532150); }; gc"
+bp 00433D5F ".if (@$t18 == 2) { .printf \"N2DESC_WRITE_532154 short_ret=%p d532150=%p d53214c=%p d532154=%p owner_flag=0x%02x\n\", poi(@esp+0n24), poi(00532150), poi(0053214c), poi(00532154), by(poi(00532150)+0n416); r @$t18=3; r @$t3=0; ed 00526e80 1; eb 005451c0 00; ed 00544d04 0; r eip=poi(@esp+0n24); r esp=@esp+0n28; gc } .else { gc }"
+
+bp 0040A460 ".if ((@$t18 == 3) & (@$t3 == 0)) { r @$t3=1; ed 00544cfc (0n448 << by(0054512c)); ed 00544d00 (0n416 << by(0054512c)); eb 005451c0 80; ed 00544d04 1; .printf \"N2DESC_FORCE_RB_DESCRIPTOR_CLICK target=(448,416) raw=(%p,%p) desc0=(%d,%d) owner=%p owner_flag=0x%02x\n\", poi(00544cfc), poi(00544d00), poi(00511d40), poi(00511d44), poi(00532150), by(poi(00532150)+0n416); }; gc"
+bp 0040A474 ".if (@$t18 == 3) { .printf \"N2DESC_RB_DESCRIPTOR_RESULT result=%d mouse=(%d,%d) click=%p button0=0x%02x owner=%p owner_flag=0x%02x\n\", @eax, poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04), by(005451c0), poi(00532150), by(poi(00532150)+0n416); r @$t18=4; }; gc"
+bp 0040A479 ".if (@$t18 == 4) { r @$t11=poi(005202e0); r @$t12=wo(@$t11); r @$t15=wo(@$t11+2); r @$t16=poi(@$t11+4); r @$t17=@$t12*@$t15; .printf \"N2DESC_RB_DESCRIPTOR_NO_HIT_SURFDUMP_READY surface=%p size=(%d,%d) base=%p bytes=%d d532150=%p d532218=%p\n\", @$t11, @$t12, @$t15, @$t16, @$t17, poi(00532150), poi(00532218); .printf \"SURFDUMP_READY redraw_seq=996 surface=%p size=(%d,%d) base=%p bytes=%d\n\", @$t11, @$t12, @$t15, @$t16, @$t17; .echo SURFDUMP_HOST_READY; r @$t18=6; }; gc"
+bp 0040A47C ".if (@$t18 == 4) { r @$t18=5; .printf \"N2DESC_RB_DESCRIPTOR_HIT_CALL_406980 mouse=(%d,%d) owner=%p owner_flag=0x%02x\n\", poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00532150), by(poi(00532150)+0n416); }; gc"
+
+bp 004338E0 ".if (@$t18 != 0) { .printf \"N2DESC_ACTION_4338E0_ENTRY state=%d ret=%p eax_desc=%p owner=%p owner_flag=0x%02x d532218=%p d5322c8=%d surface=%p size=(%d,%d)\n\", @$t18, poi(@esp), @eax, poi(00532150), by(poi(00532150)+0n416), poi(00532218), poi(005322c8), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00433914 ".if (@$t18 != 0) { .printf \"N2DESC_ACTION_CALL_WRAPPER state=%d ret=%p owner_arg=%p owner_flag=0x%02x\n\", @$t18, poi(@esp), @eax, by(poi(00532150)+0n416); }; gc"
+bp 00435BC0 ".if (@$t18 != 0) { .printf \"N2DESC_OWNER_435BC0_ENTRY state=%d ret=%p owner_arg=%p d532218=%p d5322c8=%d surface=%p size=(%d,%d)\n\", @$t18, poi(@esp), @eax, poi(00532218), poi(005322c8), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 0051B86D ".if (@$t18 != 0) { r @$t11=poi(005202e0); r @$t12=wo(@$t11); r @$t15=wo(@$t11+2); r @$t16=poi(@$t11+4); r @$t17=@$t12*@$t15; .printf \"N2DESC_WRAPPER_COPYBACK_DONE surface=%p size=(%d,%d) base=%p bytes=%d d532150=%p d532218=%p d5322c8=%d\n\", @$t11, @$t12, @$t15, @$t16, @$t17, poi(00532150), poi(00532218), poi(005322c8); .printf \"SURFDUMP_READY redraw_seq=997 surface=%p size=(%d,%d) base=%p bytes=%d\n\", @$t11, @$t12, @$t15, @$t16, @$t17; .echo SURFDUMP_HOST_READY; r @$t18=6; } .else { gc }"

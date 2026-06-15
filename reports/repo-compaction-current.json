@@ -1,0 +1,2509 @@
+{
+  "generated_at": "2026-06-15T18:36:20+02:00",
+  "passed": true,
+  "executed": true,
+  "runtime_policy": "repo-only dry-run by default; execute mode moves stale generated captures to the requested archive root and deletes only ignored cache directories; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "guard_policy": "archive/delete candidates must be untracked, unmodified, inside approved generated-output areas, outside raw/.git, and must not include current or preserved HD evidence",
+  "root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd",
+  "archive_root": "C:\\ClashCaptures\\repo-compaction-20260615-183619",
+  "git_status_count": 2623,
+  "tracked_count": 485,
+  "modified_count": 287,
+  "untracked_count": 2336,
+  "active_capture_entries": [
+    "archive/battle-visible-input-loaderonly-20260521-233400",
+    "archive/battle-visible-input-minimal-20260521-232626",
+    "archive/battle-visible-input-quiet-20260521-231521",
+    "archive/battle-visible-input-rawsend-20260521-233247",
+    "archive/castle-overview-hitmap-flags1f.md",
+    "archive/cdb-map-minimapaction-minimapright-vswitch-20260423.log",
+    "archive/cdb-map-minimapaction-minimapright-vswitch-minimapclamp-20260423.log",
+    "archive/cdb-map-minimapclick-minimapright-20260423.log",
+    "archive/cdb-map-minimapclick-minimapright-v2-20260423.log",
+    "archive/cdb-map-minimapclick-minimapright-vswitch-rerun-20260423.log",
+    "archive/cdb-map-overlay-presentbounds-20260423.log",
+    "archive/cdb-map-overlay-presentbounds-minimapclip2-20260423.log",
+    "archive/cdb-map-overlay-presentbounds-minimapright-20260423.log",
+    "archive/cdb-map-redraw-rect-fullonly-presentbounds-20260423.log",
+    "archive/cdb-map-redraw-rect-fullonly-presentbounds-minimapclip2-20260423.log",
+    "archive/cdb-map-runtime-loadslot0-v2-20260422.log",
+    "archive/cdb-map-stream-constructors-menusurface-scrollclamp-loadslot0-20260423.log",
+    "archive/cdb-map-topband-minimapclip2-20260423.log",
+    "archive/cdb-python-dynorigin-boundguard-map-20260422.log",
+    "archive/cdb-python-mouse-map-20260422.log",
+    "archive/cdb-python-mouseorigin-skip0-map-20260422.log",
+    "archive/cdb-static-fullscreen-blit-fill-20260423.log",
+    "archive/cdb-static-mapsurface-scrollclamp-640blit-caves-20260423.log",
+    "archive/cdb-static-playgame-scroll-restore-20260423.log",
+    "archive/cdb-static-scrollclamp-candidate-20260423.log",
+    "archive/cdb-static-stream-constructors-20260423.log",
+    "archive/cdb-static-sub418700-fullredraw12-20260423.log",
+    "archive/cdb-surface-dump-20260428-105423",
+    "archive/cdb-surface-dump-20260428-123224",
+    "archive/cdb-surface-dump-20260429-111340",
+    "archive/cdb-surface-dump-20260429-115600",
+    "archive/cdb-surface-dump-20260429-120508",
+    "archive/cdb-surface-dump-20260429-124928",
+    "archive/cdb-surface-dump-20260429-125308",
+    "archive/cdb-surface-dump-20260429-125735",
+    "archive/cdb-surface-dump-20260429-130246",
+    "archive/cdb-surface-dump-20260429-133504",
+    "archive/cdb-surface-dump-20260429-133917",
+    "archive/cdb-surface-dump-20260429-135242",
+    "archive/cdb-surface-dump-20260429-140916",
+    "archive/cdb-surface-dump-20260430-111545",
+    "archive/cdb-surface-dump-20260430-112121",
+    "archive/cdb-surface-dump-20260430-113904",
+    "archive/cdb-surface-dump-20260430-114459",
+    "archive/cdb-surface-dump-20260430-115605",
+    "archive/cdb-surface-dump-20260430-121113",
+    "archive/cdb-surface-dump-20260430-132217",
+    "archive/cdb-surface-dump-20260430-133012",
+    "archive/cdb-surface-dump-20260430-142129",
+    "archive/cdb-surface-dump-20260430-145646",
+    "archive/cdb-surface-dump-20260430-224749",
+    "archive/cdb-surface-dump-20260506-092608",
+    "archive/cdb-surface-dump-20260506-093846",
+    "archive/cdb-surface-dump-20260506-094226",
+    "archive/cdb-surface-dump-20260506-094449",
+    "archive/cdb-surface-dump-20260506-100556",
+    "archive/cdb-surface-dump-20260506-100727",
+    "archive/cdb-surface-dump-20260506-100922",
+    "archive/cdb-surface-dump-20260506-102113",
+    "archive/cdb-surface-dump-20260506-111052",
+    "archive/cdb-surface-dump-20260506-111214",
+    "archive/cdb-surface-dump-20260506-121909",
+    "archive/cdb-surface-dump-20260506-140452",
+    "archive/cdb-surface-dump-20260506-141239",
+    "archive/cdb-surface-dump-20260506-150744",
+    "archive/cdb-surface-dump-20260506-151242",
+    "archive/cdb-surface-dump-20260506-160614",
+    "archive/cdb-surface-dump-20260506-160758",
+    "archive/cdb-surface-dump-20260506-175108",
+    "archive/cdb-surface-dump-20260506-180501",
+    "archive/cdb-surface-dump-20260506-180755",
+    "archive/cdb-surface-dump-20260506-185203",
+    "archive/cdb-surface-dump-20260506-185450",
+    "archive/cdb-surface-dump-20260506-185733",
+    "archive/cdb-surface-dump-20260506-190037",
+    "archive/cdb-surface-dump-20260506-191042",
+    "archive/cdb-surface-dump-20260506-191408",
+    "archive/cdb-surface-dump-20260506-200426",
+    "archive/cdb-surface-dump-20260506-201114",
+    "archive/cdb-surface-dump-20260511-084202",
+    "archive/cdb-surface-dump-20260511-134458",
+    "archive/cdb-surface-dump-20260511-134746",
+    "archive/cdb-surface-dump-20260511-134947",
+    "archive/cdb-surface-dump-20260511-141143",
+    "archive/cdb-surface-dump-20260511-141708",
+    "archive/cdb-surface-dump-20260511-142147",
+    "archive/cdb-surface-dump-20260511-142304",
+    "archive/cdb-surface-dump-20260511-143741",
+    "archive/cdb-surface-dump-20260511-144739",
+    "archive/cdb-surface-dump-20260511-144934",
+    "archive/cdb-surface-dump-20260511-145141",
+    "archive/cdb-surface-dump-20260511-150643",
+    "archive/cdb-surface-dump-20260511-151705",
+    "archive/cdb-surface-dump-20260511-155526",
+    "archive/cdb-surface-dump-20260511-155739",
+    "archive/cdb-surface-dump-20260511-155910",
+    "archive/cdb-surface-dump-20260511-160114",
+    "archive/cdb-surface-dump-20260511-160221",
+    "archive/cdb-surface-dump-20260511-160850",
+    "archive/cdb-surface-dump-20260511-161212",
+    "archive/cdb-surface-dump-20260511-162607",
+    "archive/cdb-surface-dump-20260511-162846",
+    "archive/cdb-surface-dump-20260511-163718",
+    "archive/cdb-surface-dump-20260511-163846",
+    "archive/cdb-surface-dump-20260511-164536",
+    "archive/cdb-surface-dump-20260511-170708",
+    "archive/cdb-surface-dump-20260511-170759",
+    "archive/cdb-surface-dump-20260512-080906",
+    "archive/cdb-surface-dump-20260512-081214",
+    "archive/cdb-surface-dump-20260512-081628",
+    "archive/cdb-surface-dump-20260512-082001",
+    "archive/cdb-surface-dump-20260512-082120",
+    "archive/cdb-surface-dump-20260512-082418",
+    "archive/cdb-surface-dump-20260512-082606",
+    "archive/cdb-surface-dump-20260513-095307",
+    "archive/cdb-surface-dump-20260513-095443",
+    "archive/cdb-surface-dump-20260513-104200",
+    "archive/cdb-surface-dump-20260513-104954",
+    "archive/cdb-surface-dump-20260513-105411",
+    "archive/cdb-surface-dump-20260513-111559",
+    "archive/cdb-surface-dump-20260513-112024",
+    "archive/cdb-surface-dump-20260513-112339",
+    "archive/cdb-surface-dump-20260513-114720",
+    "archive/cdb-surface-dump-20260513-115101",
+    "archive/cdb-surface-dump-20260513-115303",
+    "archive/cdb-surface-dump-20260513-120712",
+    "archive/cdb-surface-dump-20260513-121513",
+    "archive/cdb-surface-dump-20260513-122200",
+    "archive/cdb-surface-dump-20260513-122928",
+    "archive/cdb-surface-dump-20260514-140601",
+    "archive/cdb-surface-dump-20260515-105041",
+    "archive/cdb-surface-dump-20260515-105411",
+    "archive/cdb-surface-dump-20260515-105458",
+    "archive/cdb-surface-dump-20260515-105557",
+    "archive/cdb-surface-dump-20260515-114101",
+    "archive/cdb-surface-dump-20260515-130121",
+    "archive/cdb-surface-dump-20260515-130619",
+    "archive/cdb-surface-dump-20260515-130736",
+    "archive/cdb-surface-dump-20260515-130940",
+    "archive/cdb-surface-dump-20260515-131514",
+    "archive/cdb-surface-dump-20260515-131648",
+    "archive/cdb-surface-dump-20260515-140535",
+    "archive/cdb-surface-dump-20260515-140702",
+    "archive/cdb-surface-dump-20260515-141804",
+    "archive/cdb-surface-dump-20260517-163116",
+    "archive/cdb-surface-dump-20260517-163734",
+    "archive/cdb-surface-dump-20260517-171559",
+    "archive/cdb-surface-dump-20260517-172014",
+    "archive/cdb-surface-dump-20260517-172447",
+    "archive/cdb-surface-dump-20260517-172611",
+    "archive/cdb-surface-dump-20260518-092756",
+    "archive/cdb-surface-dump-20260518-100917",
+    "archive/cdb-surface-dump-20260518-213106",
+    "archive/cdb-surface-dump-20260518-213418",
+    "archive/cdb-surface-dump-20260518-214535",
+    "archive/cdb-surface-dump-20260518-221018",
+    "archive/cdb-surface-dump-20260520-094032",
+    "archive/cdb-surface-dump-20260520-100717",
+    "archive/cdb-surface-dump-20260520-101859",
+    "archive/cdb-surface-dump-20260520-103155",
+    "archive/cdb-surface-dump-20260520-103714",
+    "archive/cdb-surface-dump-20260520-111115",
+    "archive/cdb-surface-dump-20260520-195244",
+    "archive/cdb-surface-dump-20260520-202027",
+    "archive/cdb-surface-dump-20260520-202424",
+    "archive/cdb-surface-dump-20260520-202504",
+    "archive/cdb-surface-dump-20260520-202640",
+    "archive/cdb-surface-dump-20260520-202810",
+    "archive/cdb-surface-dump-20260520-210816",
+    "archive/cdb-surface-dump-20260520-211442",
+    "archive/cdb-surface-dump-20260520-212108",
+    "archive/cdb-surface-dump-20260520-213147",
+    "archive/cdb-surface-dump-20260520-213820",
+    "archive/cdb-surface-dump-20260520-214344",
+    "archive/cdb-surface-dump-20260520-220459",
+    "archive/cdb-surface-dump-20260523-000931",
+    "archive/cdb-surface-dump-20260523-001159",
+    "archive/cdb-surface-dump-20260527-092117",
+    "archive/cdb-surface-dump-20260527-093348",
+    "archive/cdb-surface-dump-20260527-100641",
+    "archive/cdb-surface-dump-20260527-101402",
+    "archive/cdb-surface-dump-20260527-101727",
+    "archive/cdb-surface-dump-20260527-111658",
+    "archive/cdb-surface-dump-20260527-114559",
+    "archive/cdb-surface-dump-20260527-120235",
+    "archive/cdb-surface-dump-20260527-120522",
+    "archive/cdb-surface-dump-20260527-120753",
+    "archive/cdb-surface-dump-20260527-121204",
+    "archive/cdb-surface-dump-20260527-121458",
+    "archive/cdb-surface-dump-20260527-121823",
+    "archive/cdb-surface-dump-20260527-160111",
+    "archive/cdb-surface-dump-20260527-160557",
+    "archive/cdb-surface-dump-20260527-160717",
+    "archive/cdb-surface-dump-20260527-161047",
+    "archive/cdb-surface-dump-20260527-163809",
+    "archive/cdb-surface-dump-20260527-164350",
+    "archive/cdb-surface-dump-20260527-165455",
+    "archive/cdb-surface-dump-20260527-165909",
+    "archive/cdb-surface-dump-20260527-173354",
+    "archive/cdb-surface-dump-20260527-193159",
+    "archive/cdb-surface-dump-20260527-193512",
+    "archive/cdb-surface-dump-20260614-101240",
+    "archive/cdb-surface-dump-20260614-102802",
+    "archive/cdb-surface-dump-20260614-103936",
+    "archive/cdb-surface-dump-20260614-104534",
+    "archive/cdb-surface-dump-20260614-105016",
+    "archive/cdb-surface-dump-20260615-092035",
+    "archive/cdb-surface-dump-20260615-092629",
+    "archive/cdb-surface-dump-20260615-093414",
+    "archive/cdb-surface-dump-20260615-094322",
+    "archive/cdb-surface-dump-20260615-100407",
+    "archive/cdb-viewport-bounds-minimapright-20260423.log",
+    "archive/cdb-viewport-bounds-minimapright-dynvswitch-bottom12-20260424.log",
+    "archive/cdb-viewport-bounds-minimapright-vswitch-20260423.log",
+    "archive/clicktest-20260422-121137",
+    "archive/clicktest-20260422-163904",
+    "archive/clicktest-20260422-182440",
+    "archive/clicktest-20260422-211114",
+    "archive/ddraw-geometry-callsite-probe-20260422.log",
+    "archive/hwnd-origin-probe-createhwnd-20260422.log",
+    "archive/map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json",
+    "archive/map-copy-sampler-enabled-frame-sharedscratch-loadslot0-20260422.png",
+    "archive/map-copy-sampler-enabled-sharedscratch-loadslot0-summary-20260422.json",
+    "archive/map-crash-object-detail-sharedscratch-loadslot0-summary-20260423.json",
+    "archive/map-minimapaction-minimapright-dynvswitch-v2-summary-20260424.json",
+    "archive/map-minimapaction-minimapright-vswitch-minimapclamp-summary-20260423.json",
+    "archive/map-minimapaction-minimapright-vswitch-summary-20260423.json",
+    "archive/map-minimapclick-minimapright-frame-20260423.png",
+    "archive/map-minimapclick-minimapright-frame-v2-20260423.png",
+    "archive/map-minimapclick-minimapright-summary-v2-20260423.json",
+    "archive/map-minimapclick-minimapright-vswitch-rerun-frame-20260423.png",
+    "archive/map-minimapclick-minimapright-vswitch-rerun-mouse-20260423.json",
+    "archive/map-minimapclick-minimapright-vswitch-rerun-summary-20260423.json",
+    "archive/map-overlay-presentbounds-frame-loadslot0-20260423.png",
+    "archive/map-overlay-presentbounds-minimapclip2-frame-loadslot0-20260423.png",
+    "archive/map-overlay-presentbounds-minimapright-frame-loadslot0-20260423.png",
+    "archive/map-redraw-copy-extent-sharedscratch-loadslot0-summary-20260422.json",
+    "archive/map-redraw-rect-fullonly-presentbounds-frame-loadslot0-20260423.png",
+    "archive/map-runtime-clamp-crash-loadslot0-summary-20260422.json",
+    "archive/map-runtime-clamp-loadslot0-summary-20260422.json",
+    "archive/map-runtime-loadslot0-v2-summary-20260422.json",
+    "archive/map-runtime-mouse-loadslot0-v2-20260422.json",
+    "archive/map-runtime-sharedscratch-clamp-crash-loadslot0-summary-20260422.json",
+    "archive/map-stream-constructors-frame-menusurface-loadslot0-20260423.png",
+    "archive/map-stream-constructors-frame-menusurface-scrollclamp-loadslot0-20260423.png",
+    "archive/map-stream-constructors-fullredraw12-loadslot0-summary-20260423.json",
+    "archive/map-stream-constructors-mapsurface-scrollclamp-640blit-loadslot0-summary-20260423.json",
+    "archive/map-stream-constructors-menusurface-loadslot0-summary-20260423.json",
+    "archive/map-stream-constructors-menusurface-scrollclamp-loadslot0-summary-20260423.json",
+    "archive/map-stream-constructors-mouse-menusurface-loadslot0-20260423.json",
+    "archive/map-stream-constructors-mouse-menusurface-scrollclamp-loadslot0-20260423.json",
+    "archive/map-stream-constructors-sharedscratch-loadslot0-summary-20260423.json",
+    "archive/map-tile-coverage-v2-bottom12-20260424.json",
+    "archive/map-topband-minimapclip2-summary-20260424.json",
+    "archive/map-viewportbounds-minimapright-dynvswitch-v2-frame-20260424.png",
+    "archive/mouseclickmap-20260422-absquarter-sendinput-v2.json",
+    "archive/mouseclickmap-cdb-python-20260422.json",
+    "archive/mouseclickmap-cdb-python-dynorigin-boundguard-20260422.json",
+    "archive/mouseclickmap-cdb-python-mouseorigin-skip0-20260422.json",
+    "archive/mousemenuprobe-20260422-cdb-python-map-summary.json",
+    "archive/mousemenuprobe-20260422-dynorigin-boundguard-summary.json",
+    "archive/mousemenuprobe-20260422-mouseorigin-skip0-summary.json",
+    "archive/mousemenuprobe-20260422-sample-summary.json",
+    "archive/mouseprobe-20260422-183513-summary.json",
+    "archive/patch-stage-boundary-clamp-20260424.json",
+    "archive/patch-stage-dynorigin-boundguard-20260422.json",
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-20260423.json",
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-20260423.json",
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip2-20260423.json",
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-20260423.json",
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-20260424.json",
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-bottom12-20260424.json",
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-v2-20260424.json",
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch-20260423.json",
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch-minimapclamp-20260423.json",
+    "archive/patch-stage-dynorigin-menusurface-20260423.json",
+    "archive/patch-stage-dynorigin-menusurface-scrollclamp-20260423.json",
+    "archive/patch-stage-dynorigin-sharedscratch-20260422.json",
+    "archive/patch-stage-keyscroll-20260424.json",
+    "archive/patch-stage-mapdraw-partial12-20260424.json",
+    "archive/patch-stage-right-bottom-action-nativecenter-20260515.json",
+    "archive/patch-stage-right-bottom-compose-20260513.json",
+    "archive/patch-stage-unit-selection-actionbar-postredraw-20260527.json",
+    "archive/right-bottom-ui-bounds-baseline-20260429.json",
+    "archive/sandbox-20260424-091715",
+    "archive/topband-image-summary-20260424.json",
+    "archive/viewport-bounds-compare-20260423.json",
+    "archive/viewport-bounds-minimapright-dynvswitch-bottom12-20260424.json",
+    "archive/viewport-bounds-minimapright-dynvswitch-v2-20260424.json",
+    "archive/visual-smoke-20260423-113427",
+    "archive/visual-smoke-20260423-121409",
+    "archive/visual-smoke-20260423-135516",
+    "archive/visual-smoke-20260423-140044",
+    "archive/visual-smoke-20260423-145622",
+    "archive/visual-smoke-20260424-073707",
+    "archive/visual-smoke-20260424-073924",
+    "archive/visual-smoke-20260424-074102",
+    "archive/visual-smoke-20260424-074212",
+    "archive/visual-smoke-20260424-074428",
+    "archive/visual-smoke-20260424-074630",
+    "archive/win32-geometry-ddraw-disasm-20260422.log",
+    "archive/win32-geometry-entry-probe-20260422.log",
+    "cdb-surface-dump-20260429-111340",
+    "cdb-surface-dump-20260506-190037",
+    "cdb-surface-dump-20260506-201114",
+    "cdb-surface-dump-20260515-105041",
+    "cdb-surface-dump-20260515-105411",
+    "cdb-surface-dump-20260515-105458",
+    "cdb-surface-dump-20260515-105557",
+    "cdb-surface-dump-20260615-100407",
+    "current",
+    "map-runtime-frame-loadslot0-v2-20260422.png",
+    "scroll-clamp-matrix-20260424-182200",
+    "scroll-clamp-matrix-boundary-20260424-184556",
+    "virtualbox-20260424-092646",
+    "virtualbox-20260424-094358",
+    "virtualbox-20260424-115422",
+    "virtualbox-20260424-123115",
+    "virtualbox-20260424-131350",
+    "virtualbox-20260424-131928",
+    "virtualbox-20260424-133414",
+    "virtualbox-20260424-133602",
+    "virtualbox-20260424-134608",
+    "virtualbox-20260424-140900",
+    "virtualbox-20260424-141101",
+    "virtualbox-20260424-143904",
+    "virtualbox-20260424-145225",
+    "virtualbox-20260424-145701",
+    "virtualbox-20260424-150155",
+    "virtualbox-20260424-150526",
+    "virtualbox-20260424-154231",
+    "virtualbox-20260424-160439",
+    "virtualbox-20260424-165923",
+    "virtualbox-20260424-171531",
+    "virtualbox-20260424-172414",
+    "virtualbox-20260424-173727",
+    "virtualbox-20260424-175039",
+    "virtualbox-20260424-175829",
+    "virtualbox-20260424-181025",
+    "virtualbox-20260424-182200",
+    "virtualbox-20260424-182449",
+    "virtualbox-20260424-182746",
+    "virtualbox-20260424-182941",
+    "virtualbox-20260424-191245",
+    "virtualbox-20260424-192702",
+    "virtualbox-20260424-195126",
+    "virtualbox-20260424-200039",
+    "virtualbox-20260424-202503",
+    "virtualbox-20260425-084252",
+    "virtualbox-20260425-084507",
+    "virtualbox-20260425-164135",
+    "virtualbox-20260425-180452",
+    "virtualbox-20260425-201750",
+    "virtualbox-20260425-202837",
+    "virtualbox-connect-20260424-ready",
+    "virtualbox-diagnostics-20260425-085938"
+  ],
+  "active_capture_entry_sources": {
+    "current": [
+      "current-evidence-directory",
+      "captures/current/battle-constructed-fixture-command-callback-current.md",
+      "captures/current/battle-slot-scan-current.md",
+      "captures/current/battle-slot-scan-current.md",
+      "captures/current/battle-ui-centered-input-current.md",
+      "captures/current/battle-ui-command-callback-current.md",
+      "captures/current/battle-ui-command-enabled-callback-current.md",
+      "captures/current/battle-ui-command-hit-current.md",
+      "captures/current/battle-ui-force-entry-current.md",
+      "captures/current/battle-ui-grid-hit-current.md",
+      "captures/current/battle-ui-modal-classified-current.md",
+      "captures/current/battle-ui-post-ready-redraw-current.md",
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/castle-overview-flags1f-multihit-current.md",
+      "captures/current/castle-overview-hitbox-current.md",
+      "captures/current/castle-overview-hitmap-current.md",
+      "captures/current/castle-overview-multihit-current.md",
+      "captures/current/castle-overview-promotion-decision-current.md",
+      "captures/current/castle-owner-records-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/handoff-freshness-guard-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/manual-directinput-proof-template-current.md",
+      "captures/current/manual-directinput-run-plan-current.json",
+      "captures/current/manual-directinput-run-plan-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/no-popup-boundary-guard-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-natural-route-candidate-matrix-current.md",
+      "captures/current/right-bottom-slot-fixture-plan-current.md",
+      "captures/current/right-bottom-slot-fixture-plan-current.md",
+      "captures/current/right-bottom-slot-fixture-runtime-plan-current.md",
+      "captures/current/right-bottom-slot-fixture-runtime-plan-current.md"
+    ],
+    "cdb-surface-dump-20260506-201114": [
+      "preserved-proof-set"
+    ],
+    "archive/cdb-surface-dump-20260506-201114": [
+      "preserved-proof-set",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/hd-map-evidence-current-check.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/post-owner-evidence-current.md",
+      "captures/current/post-owner-evidence-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260515-105458": [
+      "preserved-proof-set",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/castle-overview-evidence-current.md",
+      "captures/current/castle-overview-multihit-current.md",
+      "captures/current/castle-overview-multihit-current.md",
+      "captures/current/no-visible-runtime-guard-current.md"
+    ],
+    "cdb-surface-dump-20260515-105458": [
+      "preserved-proof-set"
+    ],
+    "archive/cdb-surface-dump-20260515-105041": [
+      "preserved-proof-set",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/castle-overview-baseline-recheck-current.md",
+      "captures/current/castle-overview-baseline-recheck-current.md",
+      "captures/current/castle-overview-evidence-current.md",
+      "captures/current/castle-overview-evidence-current.md",
+      "captures/current/castle-overview-gate-current.md",
+      "captures/current/castle-overview-gate-current.md",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md"
+    ],
+    "cdb-surface-dump-20260515-105041": [
+      "preserved-proof-set"
+    ],
+    "cdb-surface-dump-20260615-100407": [
+      "preserved-proof-set"
+    ],
+    "archive/cdb-surface-dump-20260615-100407": [
+      "preserved-proof-set",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-111340": [
+      "preserved-proof-set",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "cdb-surface-dump-20260429-111340": [
+      "preserved-proof-set"
+    ],
+    "cdb-surface-dump-20260515-105557": [
+      "preserved-proof-set"
+    ],
+    "archive/cdb-surface-dump-20260515-105557": [
+      "preserved-proof-set",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/castle-overview-evidence-current.md",
+      "captures/current/castle-overview-flags1f-multihit-current.md",
+      "captures/current/castle-overview-flags1f-multihit-current.md",
+      "captures/current/no-visible-runtime-guard-current.md"
+    ],
+    "cdb-surface-dump-20260506-190037": [
+      "preserved-proof-set"
+    ],
+    "archive/cdb-surface-dump-20260506-190037": [
+      "preserved-proof-set",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/hd-map-evidence-current-check.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/post-owner-evidence-current.md",
+      "captures/current/post-owner-evidence-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260515-105411": [
+      "preserved-proof-set",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/castle-overview-evidence-current.md",
+      "captures/current/castle-overview-hitbox-current.md",
+      "captures/current/castle-overview-hitbox-current.md",
+      "captures/current/castle-overview-probe-guard-current.md",
+      "captures/current/castle-overview-probe-guard-current.md",
+      "captures/current/no-visible-runtime-guard-current.md"
+    ],
+    "cdb-surface-dump-20260515-105411": [
+      "preserved-proof-set"
+    ],
+    "archive/cdb-surface-dump-20260520-195244": [
+      "captures/current/battle-command-availability-current.md",
+      "captures/current/battle-slot-scan-current.md",
+      "captures/current/battle-ui-evidence-current.md",
+      "captures/current/battle-ui-post-ready-redraw-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-220459": [
+      "captures/current/battle-constructed-fixture-command-callback-current.md",
+      "captures/current/battle-ui-evidence-current.md",
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-210816": [
+      "captures/current/battle-constructed-fixture-unit-scan-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-202027": [
+      "captures/current/battle-slot-scan-current.md"
+    ],
+    "archive/cdb-surface-dump-20260520-202424": [
+      "captures/current/battle-slot-scan-current.md",
+      "captures/current/load-slot-entry-gap-current.md",
+      "captures/current/load-slot-route-limit-current.md",
+      "captures/current/load-slot-route-limit-current.md",
+      "captures/current/load-slot-timeout-phase-current.md",
+      "captures/current/no-visible-runtime-guard-current.md"
+    ],
+    "archive/cdb-surface-dump-20260520-202504": [
+      "captures/current/battle-slot-scan-current.md",
+      "captures/current/load-slot-route-limit-current.md",
+      "captures/current/load-slot-route-limit-current.md"
+    ],
+    "archive/cdb-surface-dump-20260520-202640": [
+      "captures/current/battle-slot-scan-current.md",
+      "captures/current/load-slot-route-limit-current.md",
+      "captures/current/load-slot-route-limit-current.md"
+    ],
+    "archive/cdb-surface-dump-20260520-202810": [
+      "captures/current/battle-slot-scan-current.md",
+      "captures/current/load-slot-route-limit-current.md",
+      "captures/current/load-slot-route-limit-current.md"
+    ],
+    "archive/cdb-surface-dump-20260520-111115": [
+      "captures/current/battle-ui-centered-input-current.md",
+      "captures/current/battle-ui-evidence-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-100717": [
+      "captures/current/battle-ui-command-callback-current.md",
+      "captures/current/battle-ui-evidence-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-101859": [
+      "captures/current/battle-ui-command-enabled-callback-current.md",
+      "captures/current/battle-ui-evidence-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-094032": [
+      "captures/current/battle-ui-command-hit-current.md",
+      "captures/current/battle-ui-evidence-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260518-221018": [
+      "captures/current/battle-ui-evidence-current.md",
+      "captures/current/battle-ui-force-entry-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-103155": [
+      "captures/current/battle-ui-evidence-current.md",
+      "captures/current/battle-ui-grid-hit-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-103714": [
+      "captures/current/battle-ui-evidence-current.md",
+      "captures/current/battle-ui-modal-classified-current.md",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/battle-visible-input-loaderonly-20260521-233400": [
+      "captures/current/battle-visible-input-current.md"
+    ],
+    "archive/battle-visible-input-minimal-20260521-232626": [
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/battle-visible-input-summary-current.md"
+    ],
+    "archive/battle-visible-input-quiet-20260521-231521": [
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/battle-visible-input-summary-current.md"
+    ],
+    "archive/battle-visible-input-rawsend-20260521-233247": [
+      "captures/current/battle-visible-input-current.md",
+      "captures/current/battle-visible-input-summary-current.md"
+    ],
+    "archive/cdb-surface-dump-20260527-100641": [
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/unit-selection-action-bar-current.md",
+      "captures/current/unit-selection-action-bar-current.md"
+    ],
+    "archive/cdb-surface-dump-20260527-101402": [
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/bottom-tooltip-current.md"
+    ],
+    "archive/cdb-surface-dump-20260527-101727": [
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/bottom-tooltip-current.md"
+    ],
+    "archive/cdb-surface-dump-20260527-111658": [
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/bottom-tooltip-current.md"
+    ],
+    "archive/cdb-surface-dump-20260527-114559": [
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/bottom-tooltip-current.md",
+      "captures/current/unit-selection-action-bar-current.md",
+      "captures/current/unit-selection-action-bar-current.md",
+      "captures/current/unit-selection-action-bar-current.md",
+      "captures/current/unit-selection-tooltip-current.md",
+      "captures/current/unit-selection-tooltip-current.md",
+      "captures/current/unit-selection-tooltip-current.md",
+      "captures/current/unit-selection-tooltip-current.md",
+      "captures/current/unit-selection-tooltip-current.md",
+      "captures/current/unit-selection-tooltip-current.md"
+    ],
+    "archive/castle-overview-hitmap-flags1f.md": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-minimapaction-minimapright-vswitch-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-minimapaction-minimapright-vswitch-minimapclamp-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-minimapclick-minimapright-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-minimapclick-minimapright-v2-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-minimapclick-minimapright-vswitch-rerun-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-overlay-presentbounds-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-overlay-presentbounds-minimapclip2-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-overlay-presentbounds-minimapright-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-redraw-rect-fullonly-presentbounds-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-redraw-rect-fullonly-presentbounds-minimapclip2-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-runtime-loadslot0-v2-20260422.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-stream-constructors-menusurface-scrollclamp-loadslot0-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-map-topband-minimapclip2-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-python-dynorigin-boundguard-map-20260422.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-python-mouse-map-20260422.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-python-mouseorigin-skip0-map-20260422.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-static-fullscreen-blit-fill-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-static-mapsurface-scrollclamp-640blit-caves-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-static-playgame-scroll-restore-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-static-scrollclamp-candidate-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-static-stream-constructors-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-static-sub418700-fullredraw12-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260428-105423": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260428-123224": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-115600": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-120508": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-124928": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-125308": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-125735": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-130246": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-133504": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-133917": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260429-135242": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-popup-map-evidence-current.md",
+      "captures/current/no-popup-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md"
+    ],
+    "archive/cdb-surface-dump-20260429-140916": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/current-evidence-refresh-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-popup-map-evidence-current.md",
+      "captures/current/no-popup-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md"
+    ],
+    "archive/cdb-surface-dump-20260430-111545": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-112121": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-113904": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-114459": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-115605": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-121113": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-132217": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-133012": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-142129": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-145646": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260430-224749": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-092608": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-093846": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-094226": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-094449": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-100556": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-100727": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-100922": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-102113": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-111052": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-111214": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-121909": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-140452": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-141239": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-175108": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260506-180501": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260506-180755": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260506-185450": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-185733": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-191042": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260506-191408": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260506-200426": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-084202": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-134458": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-134746": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-134947": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-141143": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-141708": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260511-142147": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-142304": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-143741": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-145141": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-150643": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-155910": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-160221": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-160850": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260511-161212": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260511-162607": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260511-162846": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260511-163846": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260511-170708": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260511-170759": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260512-080906": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260512-082001": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260512-082120": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260512-082418": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/castle-overview-baseline-recheck-current.md",
+      "captures/current/castle-overview-gate-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260512-082606": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-095307": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-095443": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-104200": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260513-112339": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/docs-consistency-current.md",
+      "captures/current/hd-map-evidence-current-check.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-115303": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/docs-consistency-current.md",
+      "captures/current/hd-map-evidence-current-check.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-120712": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/docs-consistency-current.md",
+      "captures/current/hd-map-evidence-current-check.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-route-timing-guard-current.md"
+    ],
+    "archive/cdb-surface-dump-20260513-121513": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/docs-consistency-current.md",
+      "captures/current/hd-map-evidence-current-check.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md"
+    ],
+    "archive/cdb-surface-dump-20260513-122200": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/docs-consistency-current.md",
+      "captures/current/hd-map-evidence-current-check.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-122928": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/docs-consistency-current.md",
+      "captures/current/hd-map-evidence-current-check.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-route-timing-guard-current.md"
+    ],
+    "archive/cdb-surface-dump-20260514-140601": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/docs-consistency-current.md",
+      "captures/current/hd-map-evidence-current-check.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-grid-hit-current.md",
+      "captures/current/right-bottom-grid-hit-current.md",
+      "captures/current/right-bottom-grid-hit-current.md",
+      "captures/current/right-bottom-grid-hit-probe-guard-current.md",
+      "captures/current/right-bottom-grid-hit-probe-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-route-timing-guard-current.md"
+    ],
+    "archive/cdb-surface-dump-20260515-114101": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260517-163116": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-action-nativecenter-current.md"
+    ],
+    "archive/cdb-surface-dump-20260517-163734": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md"
+    ],
+    "archive/cdb-surface-dump-20260517-171559": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-action-nativecenter-current.md"
+    ],
+    "archive/cdb-surface-dump-20260517-172014": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260517-172611": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260518-092756": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md"
+    ],
+    "archive/cdb-surface-dump-20260518-100917": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md"
+    ],
+    "archive/cdb-surface-dump-20260518-213418": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/hd-map-evidence-current.md",
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-natural-route-candidate-matrix-current.md",
+      "captures/current/right-bottom-natural-route-guard-current.md",
+      "captures/current/right-bottom-natural-route-guard-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260518-214535": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-211442": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-212108": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-213147": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-213820": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260520-214344": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-120235": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-120522": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-120753": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-121823": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-160111": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-160557": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-161047": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-163809": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-165909": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-173354": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-193159": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-193512": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260614-101240": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260614-102802": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260614-103936": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260614-104534": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260614-105016": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260615-092035": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260615-092629": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260615-093414": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-surface-dump-20260615-094322": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-viewport-bounds-minimapright-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-viewport-bounds-minimapright-dynvswitch-bottom12-20260424.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/cdb-viewport-bounds-minimapright-vswitch-20260423.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/clicktest-20260422-163904": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/clicktest-20260422-182440": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/clicktest-20260422-211114": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/ddraw-geometry-callsite-probe-20260422.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/hwnd-origin-probe-createhwnd-20260422.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-copy-sampler-enabled-frame-sharedscratch-loadslot0-20260422.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-copy-sampler-enabled-sharedscratch-loadslot0-summary-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-crash-object-detail-sharedscratch-loadslot0-summary-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-minimapaction-minimapright-dynvswitch-v2-summary-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-minimapaction-minimapright-vswitch-minimapclamp-summary-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-minimapaction-minimapright-vswitch-summary-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-minimapclick-minimapright-frame-20260423.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-minimapclick-minimapright-frame-v2-20260423.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-minimapclick-minimapright-summary-v2-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-minimapclick-minimapright-vswitch-rerun-frame-20260423.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-minimapclick-minimapright-vswitch-rerun-mouse-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-minimapclick-minimapright-vswitch-rerun-summary-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-overlay-presentbounds-frame-loadslot0-20260423.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-overlay-presentbounds-minimapclip2-frame-loadslot0-20260423.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-overlay-presentbounds-minimapright-frame-loadslot0-20260423.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-redraw-copy-extent-sharedscratch-loadslot0-summary-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-redraw-rect-fullonly-presentbounds-frame-loadslot0-20260423.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-runtime-clamp-crash-loadslot0-summary-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-runtime-clamp-loadslot0-summary-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-runtime-loadslot0-v2-summary-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-runtime-mouse-loadslot0-v2-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-runtime-sharedscratch-clamp-crash-loadslot0-summary-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-stream-constructors-frame-menusurface-loadslot0-20260423.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-stream-constructors-frame-menusurface-scrollclamp-loadslot0-20260423.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-stream-constructors-fullredraw12-loadslot0-summary-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-stream-constructors-mapsurface-scrollclamp-640blit-loadslot0-summary-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-stream-constructors-menusurface-loadslot0-summary-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-stream-constructors-menusurface-scrollclamp-loadslot0-summary-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-stream-constructors-mouse-menusurface-loadslot0-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-stream-constructors-mouse-menusurface-scrollclamp-loadslot0-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-stream-constructors-sharedscratch-loadslot0-summary-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-tile-coverage-v2-bottom12-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-topband-minimapclip2-summary-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/map-viewportbounds-minimapright-dynvswitch-v2-frame-20260424.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/mouseclickmap-20260422-absquarter-sendinput-v2.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/mouseclickmap-cdb-python-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/mouseclickmap-cdb-python-dynorigin-boundguard-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/mouseclickmap-cdb-python-mouseorigin-skip0-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/mousemenuprobe-20260422-cdb-python-map-summary.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/mousemenuprobe-20260422-dynorigin-boundguard-summary.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/mousemenuprobe-20260422-mouseorigin-skip0-summary.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/mousemenuprobe-20260422-sample-summary.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/mouseprobe-20260422-183513-summary.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-boundary-clamp-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-boundguard-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip2-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-20260424.json": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/patch-manifest-compare-current-vs-partial12.md"
+    ],
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-bottom12-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-v2-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch-minimapclamp-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-menusurface-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-menusurface-scrollclamp-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-dynorigin-sharedscratch-20260422.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-keyscroll-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/patch-stage-mapdraw-partial12-20260424.json": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/patch-manifest-compare-current-vs-partial12.md"
+    ],
+    "archive/patch-stage-right-bottom-compose-20260513.json": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/hd-map-evidence-current.md"
+    ],
+    "archive/right-bottom-ui-bounds-baseline-20260429.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/sandbox-20260424-091715": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/topband-image-summary-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/viewport-bounds-compare-20260423.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/viewport-bounds-minimapright-dynvswitch-bottom12-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/viewport-bounds-minimapright-dynvswitch-v2-20260424.json": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/visual-smoke-20260423-113427": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260423-121409": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260423-135516": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260423-145622": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260424-073707": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260424-073924": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260424-074428": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260424-074630": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/win32-geometry-ddraw-disasm-20260422.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/win32-geometry-entry-probe-20260422.log": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "map-runtime-frame-loadslot0-v2-20260422.png": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "scroll-clamp-matrix-20260424-182200": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "scroll-clamp-matrix-boundary-20260424-184556": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-092646": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-094358": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-115422": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-123115": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-131350": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-131928": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-133414": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-133602": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-134608": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-140900": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-141101": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-143904": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-145225": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-145701": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-150155": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-150526": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-154231": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-160439": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-165923": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-171531": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-172414": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-173727": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-175039": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-175829": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-181025": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-182200": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-182449": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-182746": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-182941": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-191245": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-192702": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-195126": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-200039": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260424-202503": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260425-084252": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260425-084507": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260425-164135": [
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json",
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260425-180452": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260425-201750": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-20260425-202837": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-connect-20260424-ready": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "virtualbox-diagnostics-20260425-085938": [
+      "captures/current/capture-corpus-index-current.json"
+    ],
+    "archive/clicktest-20260422-121137": [
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260423-140044": [
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260424-074102": [
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/visual-smoke-20260424-074212": [
+      "captures/current/capture-corpus-index-current.md"
+    ],
+    "archive/cdb-surface-dump-20260523-000931": [
+      "captures/current/load-slot-route-limit-current.md",
+      "captures/current/load-slot-route-limit-current.md",
+      "captures/current/right-bottom-natural-route-candidate-matrix-current.md"
+    ],
+    "archive/cdb-surface-dump-20260523-001159": [
+      "captures/current/no-visible-runtime-guard-current.md",
+      "captures/current/right-bottom-natural-route-candidate-matrix-current.md",
+      "captures/current/right-bottom-natural-route-candidate-matrix-current.md"
+    ],
+    "archive/cdb-surface-dump-20260515-131514": [
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260515-131648": [
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260515-140535": [
+      "captures/current/right-bottom-action-nativecenter-current.md"
+    ],
+    "archive/cdb-surface-dump-20260515-141804": [
+      "captures/current/right-bottom-action-nativecenter-current.md",
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/patch-stage-right-bottom-action-nativecenter-20260515.json": [
+      "captures/current/right-bottom-action-nativecenter-current.md"
+    ],
+    "archive/cdb-surface-dump-20260506-150744": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260506-151242": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260506-160614": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260506-160758": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260506-185203": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-144739": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-144934": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-151705": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-155526": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-155739": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-160114": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260511-163718": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260511-164536": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260512-081214": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260512-081628": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-104954": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-105411": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-111559": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-112024": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-114720": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260513-115101": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260515-130121": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260515-130619": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260515-130736": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260515-130940": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260515-140702": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260517-172447": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260518-213106": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-121204": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json",
+      "captures/current/right-bottom-owner-flag-inventory-current.md"
+    ],
+    "archive/cdb-surface-dump-20260527-121458": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-160717": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-164350": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-165455": [
+      "captures/current/right-bottom-owner-flag-inventory-current.json"
+    ],
+    "archive/cdb-surface-dump-20260527-092117": [
+      "captures/current/unit-selection-action-bar-current.md"
+    ],
+    "archive/cdb-surface-dump-20260527-093348": [
+      "captures/current/unit-selection-action-bar-current.md"
+    ],
+    "archive/patch-stage-unit-selection-actionbar-postredraw-20260527.json": [
+      "captures/current/unit-selection-action-bar-current.md",
+      "captures/current/unit-selection-tooltip-current.md"
+    ]
+  },
+  "preserved_capture_entries_present": [
+    "cdb-surface-dump-20260429-111340",
+    "cdb-surface-dump-20260506-190037",
+    "cdb-surface-dump-20260506-201114",
+    "cdb-surface-dump-20260515-105041",
+    "cdb-surface-dump-20260515-105411",
+    "cdb-surface-dump-20260515-105458",
+    "cdb-surface-dump-20260515-105557",
+    "cdb-surface-dump-20260615-100407"
+  ],
+  "preserved_capture_entries_missing": [],
+  "forbidden_repo_artifacts": [],
+  "archive_candidate_count": 0,
+  "archive_candidate_bytes": 0,
+  "delete_candidate_count": 4,
+  "delete_candidate_bytes": 2349505,
+  "archive_candidates": [],
+  "delete_candidates": [
+    {
+      "path": "__pycache__",
+      "action": "delete",
+      "reason": "ignored cache directory __pycache__",
+      "size": 1439
+    },
+    {
+      "path": "captures/tmp-tests-probe",
+      "action": "delete",
+      "reason": "ignored temporary test directory",
+      "size": 0
+    },
+    {
+      "path": "src/patcher/__pycache__",
+      "action": "delete",
+      "reason": "ignored cache directory __pycache__",
+      "size": 69394
+    },
+    {
+      "path": "tools/__pycache__",
+      "action": "delete",
+      "reason": "ignored cache directory __pycache__",
+      "size": 2278672
+    }
+  ],
+  "moved_files": [],
+  "archive_root_file_manifest": [],
+  "deleted_paths": [
+    {
+      "path": "src/patcher/__pycache__",
+      "size": 69394,
+      "reason": "ignored cache directory __pycache__"
+    },
+    {
+      "path": "tools/__pycache__",
+      "size": 2278672,
+      "reason": "ignored cache directory __pycache__"
+    }
+  ],
+  "warnings": [
+    "delete skipped for __pycache__: [WinError 5] Access is denied: 'C:\\\\Users\\\\andrz\\\\OneDrive\\\\Pulpit\\\\git\\\\clash-hd\\\\__pycache__'",
+    "delete skipped for captures/tmp-tests-probe: [WinError 5] Access is denied: 'C:\\\\Users\\\\andrz\\\\OneDrive\\\\Pulpit\\\\git\\\\clash-hd\\\\captures\\\\tmp-tests-probe\\\\child'"
+  ],
+  "failures": []
+}

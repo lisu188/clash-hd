@@ -36,6 +36,12 @@ MARKERS = (
     "TOOLTIP_TEXTFMT",
     "BORDER_TOOLTIP_PRESENT",
     "BORDER_TOOLTIP_PRESENT_NULLPTR",
+    "APCOMP_ACTION_BOX_ENTRY",
+    "APCOMP_COPYBACK_SAMPLES",
+    "APCOMPOSE_STATUS_SHIFT_CALL",
+    "APCOMPOSE_STATUS_SHIFT_DONE",
+    "APCOMPOSE_ACTION_SHIFT_CALL",
+    "APCOMPOSE_ACTION_SHIFT_DONE",
     "SURFDUMP_PLAYGAME",
     "SURFDUMP_READY",
 )
@@ -60,6 +66,18 @@ PRESENT_RE = re.compile(
     r"ltrb=\((?P<left>-?\d+),(?P<top>-?\d+),(?P<right>-?\d+),(?P<bottom>-?\d+)\) "
     r"dxy=\((?P<dx>-?\d+),(?P<dy>-?\d+)\) d5202e0=(?P<surface>\S+) "
     r"mouse=\((?P<mousex>-?\d+),(?P<mousey>-?\d+)\)"
+)
+PRESENT_NULL_RE = re.compile(
+    r"BORDER_TOOLTIP_PRESENT_NULLPTR ret=(?P<ret>\S+) call=(?P<call>\S+) "
+    r"src=(?P<src>\S+) dst=(?P<dst>\S+) "
+    r"ltrb=\((?P<left>-?\d+),(?P<top>-?\d+),(?P<right>-?\d+),(?P<bottom>-?\d+)\) "
+    r"dxy=\((?P<dx>-?\d+),(?P<dy>-?\d+)\) d5202e0=(?P<surface>\S+) "
+    r"mouse=\((?P<mousex>-?\d+),(?P<mousey>-?\d+)\)"
+)
+SAMPLE_RE = re.compile(
+    r"(?P<kind>APCOMP_ACTION_BOX_ENTRY|APCOMP_COPYBACK_SAMPLES|"
+    r"APCOMPOSE_STATUS_SHIFT_CALL|APCOMPOSE_STATUS_SHIFT_DONE|"
+    r"APCOMPOSE_ACTION_SHIFT_CALL|APCOMPOSE_ACTION_SHIFT_DONE)\b(?P<body>.*)"
 )
 ENTRY_RES = {
     "unitinfo": re.compile(r"TOOLTIP_UNITINFO_ENTRY\b"),
@@ -117,6 +135,8 @@ def parse_log(path: Path) -> dict[str, Any]:
         "fullredraw": [],
         "text": [],
         "present": [],
+        "present_null": [],
+        "samples": [],
         "entries": [],
         "av": [],
         "surfdump_playgame": [],
@@ -140,6 +160,21 @@ def parse_log(path: Path) -> dict[str, Any]:
             row["regions"] = intersecting_regions(row)
             row["native_clip_flags"] = native_clip_flags(row)
             rows["present"].append(row)
+        present_null = PRESENT_NULL_RE.search(line)
+        if present_null:
+            row = convert(present_null, line_no, "BORDER_TOOLTIP_PRESENT_NULLPTR")
+            row["regions"] = intersecting_regions(row)
+            row["native_clip_flags"] = native_clip_flags(row)
+            rows["present_null"].append(row)
+        sample = SAMPLE_RE.search(line)
+        if sample:
+            rows["samples"].append(
+                {
+                    "kind": sample.group("kind"),
+                    "line_no": line_no,
+                    "line": line.strip(),
+                }
+            )
 
         for name, pattern in ENTRY_RES.items():
             if pattern.search(line):
@@ -245,12 +280,19 @@ def summarize(log: Path, png: Path | None, args: argparse.Namespace) -> dict[str
     parsed = parse_log(log)
     rows = parsed["rows"]
     present_by_region = {name: 0 for name in REGIONS}
+    null_present_by_region = {name: 0 for name in REGIONS}
     native_clip_rows = []
     for row in rows["present"]:
         for region in row["regions"]:
             present_by_region[region] += 1
         if row["native_clip_flags"]:
             native_clip_rows.append(row)
+    null_native_clip_rows = []
+    for row in rows["present_null"]:
+        for region in row["regions"]:
+            null_present_by_region[region] += 1
+        if row["native_clip_flags"]:
+            null_native_clip_rows.append(row)
 
     d526990_values = sorted({row.get("d526990") for row in rows["fullredraw"] if row.get("d526990")})
     surface_sizes = sorted({f"{row.get('width')}x{row.get('height')}" for row in rows["fullredraw"]})
@@ -264,8 +306,11 @@ def summarize(log: Path, png: Path | None, args: argparse.Namespace) -> dict[str
         "d526990_values": d526990_values,
         "d526990_nonzero_seen": any(value not in {None, "00000000", "0"} for value in d526990_values),
         "present_by_region": present_by_region,
+        "null_present_by_region": null_present_by_region,
         "native_clip_row_count": len(native_clip_rows),
         "native_clip_rows": native_clip_rows[:20],
+        "null_native_clip_row_count": len(null_native_clip_rows),
+        "null_native_clip_rows": null_native_clip_rows[:20],
         "text_rows": rows["text"][:40],
         "entry_rows": rows["entries"][:40],
         "fullredraw_rows": rows["fullredraw"][:20],
@@ -282,7 +327,9 @@ def print_summary(summary: dict[str, Any]) -> None:
     print(f"d526990_values: {summary['d526990_values']}")
     print(f"d526990_nonzero_seen: {summary['d526990_nonzero_seen']}")
     print(f"present_by_region: {summary['present_by_region']}")
+    print(f"null_present_by_region: {summary['null_present_by_region']}")
     print(f"native_clip_row_count: {summary['native_clip_row_count']}")
+    print(f"null_native_clip_row_count: {summary['null_native_clip_row_count']}")
     print(f"av_rows: {len(summary['av_rows'])}")
     if summary.get("png"):
         print("png_regions:")
@@ -303,7 +350,9 @@ def write_markdown(summary: dict[str, Any], path: Path) -> None:
         f"- `dword_526990` values: `{summary['d526990_values']}`",
         f"- Nonzero `dword_526990` seen: `{summary['d526990_nonzero_seen']}`",
         f"- Present rows by region: `{summary['present_by_region']}`",
+        f"- Null-destination present rows by region: `{summary['null_present_by_region']}`",
         f"- Native clip row count: `{summary['native_clip_row_count']}`",
+        f"- Null-destination native clip row count: `{summary['null_native_clip_row_count']}`",
         f"- AV rows: `{len(summary['av_rows'])}`",
     ]
     if summary.get("png"):

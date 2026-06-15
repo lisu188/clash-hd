@@ -8,14 +8,16 @@ param(
     [int]$RunSeconds = 150,
     [switch]$ForceVisibleEdges,
     [switch]$FastForwardStartAnims,
-    [switch]$AllowVisibleDesktop
+    [switch]$AllowVisibleDesktop,
+    [switch]$AllowDescriptorOnly
 )
 
 $ErrorActionPreference = 'Stop'
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 
 function Get-LatestRun {
     param([DateTime]$After)
-    Get-ChildItem -LiteralPath (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures') -Directory -Filter 'cdb-surface-dump-*' |
+    Get-ChildItem -LiteralPath (Join-Path $RepoRoot 'captures\archive') -Directory -Filter 'cdb-surface-dump-*' |
         Where-Object { $_.LastWriteTime -ge $After.AddSeconds(-2) } |
         Sort-Object LastWriteTime -Descending |
         Select-Object -First 1
@@ -34,8 +36,8 @@ function Count-Markers {
     [pscustomobject]$counts
 }
 
-$surfaceRunner = Join-Path $PSScriptRoot 'run_cdb_surface_dump.ps1'
-$extraProbe = Join-Path (Join-Path $PSScriptRoot '..\..') 'probes/cdb/ui/clash95_right_bottom_ui_extra.cdb'
+$surfaceRunner = Join-Path $RepoRoot 'scripts\cdb\run_cdb_surface_dump.ps1'
+$extraProbe = Join-Path $RepoRoot 'probes\cdb\ui\clash95_right_bottom_ui_extra.cdb'
 foreach ($path in @($surfaceRunner, $extraProbe, $InputExe, $WorkDir, $Cdb, $Python)) {
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Required path was not found: $path"
@@ -78,7 +80,7 @@ if ($AllowVisibleDesktop) {
 & powershell.exe @args
 $surfaceExit = $LASTEXITCODE
 if ($surfaceExit -ne 0) {
-    throw "run_cdb_surface_dump.ps1 failed with exit code $surfaceExit"
+    throw "scripts\cdb\run_cdb_surface_dump.ps1 failed with exit code $surfaceExit"
 }
 
 $run = Get-LatestRun -After $start
@@ -113,11 +115,33 @@ foreach ($property in $counts.PSObject.Properties) {
         $rbuiSeen = $true
     }
 }
+$ownerActionMarkers = @(
+    'RBUI_PANEL_DRAW',
+    'RBUI_GRID_DRAW',
+    'RBUI_STATUS_DRAW',
+    'RBUI_ACTION_BOX',
+    'RBUI_GRID_HIT_ENTRY',
+    'RBUI_GRID_HIT_OK',
+    'RBUI_GRID_HIT_FAIL',
+    'RBUI_CLICK_DISPATCH'
+)
+$ownerActionRowsSeen = $false
+foreach ($marker in $ownerActionMarkers) {
+    if ([int]$counts.$marker -gt 0) {
+        $ownerActionRowsSeen = $true
+    }
+}
+$descriptorOrViewportSeen = ([int]$counts.RBUI_DESC_SWITCH -gt 0 -or [int]$counts.RBUI_VIEWPORT_SWITCH -gt 0)
+$requiresOwnerActionRows = -not [bool]$AllowDescriptorOnly
 
 $rbuiSummary = [pscustomobject]@{
-    Passed = ([bool]$summary.Passed -and $rbuiSeen)
+    Passed = ([bool]$summary.Passed -and $rbuiSeen -and ($ownerActionRowsSeen -or $AllowDescriptorOnly))
     SurfaceDumpPassed = [bool]$summary.Passed
     RbuiMarkersSeen = $rbuiSeen
+    DescriptorOrViewportSeen = $descriptorOrViewportSeen
+    OwnerActionRowsSeen = $ownerActionRowsSeen
+    RequiresOwnerActionRows = $requiresOwnerActionRows
+    AllowDescriptorOnly = [bool]$AllowDescriptorOnly
     MarkerCounts = $counts
     RunDir = $run.FullName
     Log = $logPath
@@ -138,6 +162,10 @@ $rbuiTextPath = Join-Path $run.FullName 'right-bottom-ui-summary.txt'
     "passed=$($rbuiSummary.Passed)"
     "surface_dump_passed=$($rbuiSummary.SurfaceDumpPassed)"
     "rbui_markers_seen=$rbuiSeen"
+    "descriptor_or_viewport_seen=$descriptorOrViewportSeen"
+    "owner_action_rows_seen=$ownerActionRowsSeen"
+    "requires_owner_action_rows=$requiresOwnerActionRows"
+    "allow_descriptor_only=$([bool]$AllowDescriptorOnly)"
     "markers=$countText"
     "run_dir=$($run.FullName)"
     "png=$($summary.PngPath)"
@@ -152,13 +180,22 @@ if (Test-Path -LiteralPath $runSummary) {
         ''
         "- Passed: $($rbuiSummary.Passed)"
         "- RBUI markers seen: $rbuiSeen"
+        "- Descriptor or viewport rows seen: $descriptorOrViewportSeen"
+        "- Owner/action rows seen: $ownerActionRowsSeen"
+        "- Requires owner/action rows: $requiresOwnerActionRows"
         "- Marker counts: $countText"
         "- Summary: $rbuiSummaryPath"
     )
 }
 
 if (-not $rbuiSummary.Passed) {
-    throw "Right-bottom UI CDB probe did not see RBUI markers. See $rbuiSummaryPath"
+    if (-not $rbuiSeen) {
+        throw "Right-bottom UI CDB probe did not see RBUI markers. See $rbuiSummaryPath"
+    }
+    if ($requiresOwnerActionRows -and -not $ownerActionRowsSeen) {
+        throw "Right-bottom UI CDB probe did not see owner/action rows. See $rbuiSummaryPath"
+    }
+    throw "Right-bottom UI CDB probe failed. See $rbuiSummaryPath"
 }
 
 Write-Host "CDB right-bottom UI probe passed: $($run.FullName)"

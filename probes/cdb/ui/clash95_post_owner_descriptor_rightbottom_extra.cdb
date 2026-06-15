@@ -1,0 +1,4 @@
+.echo === Clash95 post-owner descriptor right-bottom experiment ===
+.echo Includes the proven owner/action route plus the dword_511D40 +160,+120 descriptor shift and 800-wide draw clip
+$$$$><C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\clash95_post_owner_action_extra.cdb
+$$$$><C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\clash95_descriptor_rightbottom_shift_extra.cdb
