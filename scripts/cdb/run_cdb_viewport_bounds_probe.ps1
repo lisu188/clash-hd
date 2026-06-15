@@ -2,15 +2,20 @@ param(
     [string]$Exe = 'C:\Clash\clash95_hd_mousedynorigin_mapsurface_scrollclamp_presentbounds_minimapright_vswitch_20260423.exe',
     [string]$WorkDir = 'C:\Clash',
     [string]$Cdb = 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe',
-    [string]$Probe = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes/cdb/render/clash95_viewport_bounds_probe.cdb'),
-    [string]$Log = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\cdb-viewport-bounds-20260423.log'),
+    [string]$Probe = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes\cdb\render\clash95_viewport_bounds_probe.cdb'),
+    [string]$Log = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\archive\cdb-viewport-bounds-20260423.log'),
     [int]$RunSeconds = 10,
     [int]$WindowTimeoutSec = 8,
     [int]$SpacePulses = 4,
-    [int]$SpaceIntervalMs = 500
+    [int]$SpaceIntervalMs = 500,
+    [switch]$AllowVisibleRuntime
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $AllowVisibleRuntime) {
+    throw "This legacy harness launches a visible Clash95 runtime. Re-run with -AllowVisibleRuntime only after explicit user approval."
+}
 
 Add-Type @'
 using System;

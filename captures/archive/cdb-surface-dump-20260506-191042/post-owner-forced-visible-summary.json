@@ -1,0 +1,171 @@
+{
+  "coverage_json": "captures\\cdb-surface-dump-20260506-191042\\map-tile-coverage.json",
+  "log": "captures\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log",
+  "required_cells": [
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "gameplay_frame_likely": true,
+  "active_cells": 108,
+  "measurable_active_cells": 99,
+  "blank_active_cells": [
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "possible_stale_or_solid_active_cells": [],
+  "force_rows": 0,
+  "force_done_rows": 0,
+  "action_rows": 1,
+  "ready_rows": 1,
+  "apvis_cells": {
+    "r6c10": {
+      "line_no": 223,
+      "screen": [
+        672,
+        400
+      ],
+      "map": [
+        20,
+        23
+      ],
+      "byte": "00",
+      "mask": "80",
+      "hit": "00",
+      "sample": "01",
+      "center_sample": "01"
+    },
+    "r6c11": {
+      "line_no": 224,
+      "screen": [
+        736,
+        400
+      ],
+      "map": [
+        21,
+        23
+      ],
+      "byte": "00",
+      "mask": "80",
+      "hit": "00",
+      "sample": "01",
+      "center_sample": "01"
+    },
+    "r7c10": {
+      "line_no": 225,
+      "screen": [
+        672,
+        464
+      ],
+      "map": [
+        20,
+        24
+      ],
+      "byte": "00",
+      "mask": "01",
+      "hit": "00",
+      "sample": "01",
+      "center_sample": "01"
+    },
+    "r7c11": {
+      "line_no": 226,
+      "screen": [
+        736,
+        464
+      ],
+      "map": [
+        21,
+        24
+      ],
+      "byte": "00",
+      "mask": "01",
+      "hit": "00",
+      "sample": "01",
+      "center_sample": "01"
+    },
+    "r8c0": {
+      "line_no": 227,
+      "screen": [
+        32,
+        528
+      ],
+      "map": [
+        10,
+        25
+      ],
+      "byte": "00",
+      "mask": "02",
+      "hit": "00",
+      "sample": "01",
+      "center_sample": "01"
+    },
+    "r8c10": {
+      "line_no": 228,
+      "screen": [
+        672,
+        528
+      ],
+      "map": [
+        20,
+        25
+      ],
+      "byte": "00",
+      "mask": "02",
+      "hit": "00",
+      "sample": "01",
+      "center_sample": "01"
+    },
+    "r8c11": {
+      "line_no": 229,
+      "screen": [
+        736,
+        528
+      ],
+      "map": [
+        21,
+        25
+      ],
+      "byte": "00",
+      "mask": "02",
+      "hit": "00",
+      "sample": "01",
+      "center_sample": "01"
+    }
+  },
+  "missing_cells": [],
+  "zero_hit_cells": [
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "still_blank_cells": [
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "failures": [
+    "APPOST_FORCE_VISIBLE_SEVEN was not logged",
+    "APPOST_FORCE_VISIBLE_SEVEN_DONE was not logged",
+    "forced cells still have zero visibility hits: r6c10, r6c11, r7c10, r7c11, r8c0, r8c10, r8c11",
+    "forced cells still blank in coverage: r6c10, r6c11, r7c10, r7c11, r8c0, r8c10, r8c11",
+    "blank active cells remain: r6c10, r6c11, r7c10, r7c11, r8c0, r8c10, r8c11"
+  ],
+  "passed": false
+}

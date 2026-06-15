@@ -1,0 +1,278 @@
+{
+  "log": "captures\\cdb-surface-dump-20260506-100922\\cdb-surface-dump.log",
+  "marker_counts": {
+    "HOVSEL_FORCE_STATE": 4,
+    "HOVSEL_REDRAW_ENTRY": 16,
+    "HOVSEL_UNITINFO_ENTRY": 0,
+    "HOVSEL_UNITINFO_CALL": 0,
+    "HOVSEL_PANEL_DRAW": 0,
+    "HOVSEL_GRID_DRAW": 0,
+    "HOVSEL_STATUS_DRAW": 0,
+    "HOVSEL_ACTION_BOX": 0,
+    "HOVSEL_STATE_HELPER": 0,
+    "HOVSEL_HOVER_HANDLER": 0,
+    "HOVSEL_ACTION_UI_ENTRY": 0,
+    "HOVSEL_TEXT": 0,
+    "HOVSEL_TEXTFMT": 0,
+    "HOVSEL_PRESENT": 0,
+    "HOVSEL_PRESENT_NULL": 0,
+    "SURFDUMP_PLAYGAME": 2,
+    "SURFDUMP_REDRAW": 16,
+    "SURFDUMP_READY": 1,
+    "AV_SURFDUMP": 0
+  },
+  "force_states": [
+    {
+      "kind": "HOVSEL_FORCE_STATE",
+      "line_no": 206,
+      "seq": 0,
+      "mode": "map_hover",
+      "mousex": 320,
+      "mousey": 300,
+      "selected": 0,
+      "action": 0,
+      "d532218": "00000000",
+      "d532220": 0
+    },
+    {
+      "kind": "HOVSEL_FORCE_STATE",
+      "line_no": 209,
+      "seq": 1,
+      "mode": "action_grid_hover",
+      "mousex": 474,
+      "mousey": 114,
+      "selected": 0,
+      "action": 0,
+      "d532218": "00000000",
+      "d532220": 0
+    },
+    {
+      "kind": "HOVSEL_FORCE_STATE",
+      "line_no": 212,
+      "seq": 2,
+      "mode": "action_box_hover",
+      "mousex": 320,
+      "mousey": 388,
+      "selected": 0,
+      "action": 0,
+      "d532218": "00000000",
+      "d532220": 0
+    },
+    {
+      "kind": "HOVSEL_FORCE_STATE",
+      "line_no": 215,
+      "seq": 3,
+      "mode": "safe_center_hold",
+      "mousex": 320,
+      "mousey": 300,
+      "selected": 0,
+      "action": 0,
+      "d532218": "00000000",
+      "d532220": 0
+    }
+  ],
+  "redraws": [
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 207,
+      "seq": 0,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 235,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 210,
+      "seq": 1,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 235,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 213,
+      "seq": 2,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 235,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 216,
+      "seq": 3,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 231,
+      "seq": 4,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 233,
+      "seq": 5,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 235,
+      "seq": 6,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 237,
+      "seq": 7,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 239,
+      "seq": 8,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 241,
+      "seq": 9,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 243,
+      "seq": 10,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 245,
+      "seq": 11,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 247,
+      "seq": 12,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 249,
+      "seq": 13,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 251,
+      "seq": 14,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    },
+    {
+      "kind": "HOVSEL_REDRAW_ENTRY",
+      "line_no": 253,
+      "seq": 15,
+      "surface": "0a07ed90",
+      "width": 800,
+      "height": 600,
+      "bottom_sample": 1,
+      "right_sample": 1
+    }
+  ],
+  "entries": [],
+  "presents": [],
+  "null_presents": [],
+  "region_counts": {
+    "frame_left": 0,
+    "frame_top": 0,
+    "right_frame_under_minimap": 0,
+    "bottom_tooltip": 0,
+    "bottom_right_panel": 0,
+    "bottom_frame": 0
+  },
+  "native_clip_row_count": 0,
+  "native_clip_rows": [],
+  "surfdump_redraw_lines": [
+    208,
+    211,
+    214,
+    217,
+    232,
+    234,
+    236,
+    238,
+    240,
+    242,
+    244,
+    246,
+    248,
+    250,
+    252,
+    254
+  ],
+  "last_redraw_line": 254,
+  "ready_line": 218,
+  "entries_after_last_redraw": [],
+  "presents_after_last_redraw": [],
+  "classification": [
+    "surface dump reached gameplay ready state",
+    "debugger forced four hover states: map_hover, action_grid_hover, action_box_hover, safe_center_hold",
+    "target UI functions were not reached under the observed hover sequence"
+  ],
+  "ready": true,
+  "av_count": 0
+}

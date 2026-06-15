@@ -1,0 +1,145 @@
+{
+  "log": "captures\\cdb-map-copy-extent-sharedscratch-skipclick-loadslot0-20260422.log",
+  "patch_report": "captures\\patch-stage-dynorigin-sharedscratch-20260422.json",
+  "expected_visible_tiles": {
+    "x": 12,
+    "y": 9
+  },
+  "loadsave_rows": 0,
+  "loadmap_rows": 0,
+  "playgame_rows": 1,
+  "redraw_rows": 0,
+  "scroll_rows": 0,
+  "repaint_rows": 0,
+  "copy_pre_rows": 512,
+  "copy_exec_rows": 512,
+  "first_copy_pre": [
+    {
+      "line_no": 192,
+      "seq": 0,
+      "ebp": "000edc26",
+      "obj": "027d9be0",
+      "objvt": "0050ed94",
+      "srcbase": "0b63d27b",
+      "dst_eax": "0b210030",
+      "src_esi": "0b63d27b",
+      "len_ebx": 127,
+      "copy_ecx": 127,
+      "dst_end": "0b2100af",
+      "src_end": "0b63d2fa",
+      "scratchvt": "0050ef24",
+      "scratchobj": "0051d4c0"
+    }
+  ],
+  "last_copy_pre": [
+    {
+      "line_no": 1215,
+      "seq": 511,
+      "ebp": "000edc26",
+      "obj": "027d9be0",
+      "objvt": "0050ed94",
+      "srcbase": "0b643544",
+      "dst_eax": "0b230f90",
+      "src_esi": "0b643544",
+      "len_ebx": 32,
+      "copy_ecx": 32,
+      "dst_end": "0b230fb0",
+      "src_end": "0b643564",
+      "scratchvt": "0050ef24",
+      "scratchobj": "0051d4c0"
+    }
+  ],
+  "first_copy_exec": [
+    {
+      "line_no": 193,
+      "seq": 0,
+      "ebp": "000edc26",
+      "obj": "027d9be0",
+      "objvt": "0050ed94",
+      "dst_edi": "0b210030",
+      "src_esi": "0b63d27b",
+      "len_eax": 127,
+      "dwords_ecx": 31,
+      "dst_end": "0b2100af",
+      "src_end": "0b63d2fa",
+      "scratchvt": "0050ef24",
+      "scratchobj": "0051d4c0"
+    }
+  ],
+  "last_copy_exec": [
+    {
+      "line_no": 723,
+      "seq": 511,
+      "ebp": "000edc26",
+      "obj": "027d9be0",
+      "objvt": "0050ed94",
+      "dst_edi": "0b210ff7",
+      "src_esi": "0b63dab1",
+      "len_eax": 127,
+      "dwords_ecx": 13,
+      "dst_end": "0b211076",
+      "src_end": "0b63db30",
+      "scratchvt": "0050ef24",
+      "scratchobj": "0051d4c0"
+    }
+  ],
+  "restore_rows": 1,
+  "restore_clamp_rows": 1,
+  "first_restore": [
+    {
+      "line_no": 190,
+      "beforex": 39,
+      "beforey": 42,
+      "maxx": 38,
+      "maxy": 41,
+      "mapw": 50,
+      "maph": 50
+    }
+  ],
+  "first_restore_clamp": [
+    {
+      "line_no": 191,
+      "afterx": 38,
+      "aftery": 41
+    }
+  ],
+  "exception_rows": 0,
+  "first_exception": [],
+  "last_exception": [],
+  "last_exception_address": [],
+  "last_write_address": [],
+  "last_eip": [
+    {
+      "line_no": 86,
+      "eip": "77f38328"
+    }
+  ],
+  "map_entered": true,
+  "redraw_hit": false,
+  "first_loadsave": [],
+  "first_loadmap": [],
+  "first_playgame": [
+    {
+      "line_no": 189,
+      "gd": "03230030",
+      "mapw": 50,
+      "maph": 50,
+      "scrollx": 39,
+      "scrolly": 42,
+      "player": 0,
+      "selected": -1,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "first_redraw": [],
+  "last_redraw": [],
+  "scrollx_range": null,
+  "scrolly_range": null,
+  "mapw_range": null,
+  "maph_range": null,
+  "edge_overrun_rows": 0,
+  "first_edge_overrun": [],
+  "last_edge_overrun": [],
+  "static_patch_expects_12x9": true
+}

@@ -1,0 +1,87 @@
+{
+    "Passed":  true,
+    "Error":  null,
+    "LaunchMode":  "hidden-desktop",
+    "HiddenDesktop":  true,
+    "AllowVisibleDesktop":  false,
+    "DesktopName":  "ClashSurfaceDump_20260520_111115",
+    "RunDir":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115",
+    "Stage":  "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
+    "InputExe":  "C:\\Clash\\clash95.exe",
+    "InputSha256":  "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+    "CandidatePath":  "C:\\ClashTests\\battle-inputprobe-runtime\\clash95_hd_surfdump_20260520_111115.exe",
+    "CandidateDir":  "C:\\ClashTests\\battle-inputprobe-runtime",
+    "CandidateSha256":  "F84933776944E2B616F6BBCCF7708ABBF06498D5438FA8DF7B7AF1BB56CD180A",
+    "UseDdrawProxy":  true,
+    "NoSkipStartAnims":  false,
+    "FastForwardStartAnims":  true,
+    "ForceVisibleEdges":  false,
+    "PostOwnerForceVisibleSeven":  false,
+    "SkipMapValidation":  true,
+    "DdrawProxyDll":  "C:\\ClashTests\\battle-inputprobe-runtime\\ddraw.dll",
+    "DdrawProxySha256":  "14422BF084A6F7A134FB767CD063A97B846E47F179288E5AA38AA9ED914D7A60",
+    "DdrawProxyLog":  "C:\\ClashTests\\battle-inputprobe-runtime\\ddraw_surfdump_proxy.log",
+    "DdrawProxyPalette":  "C:\\ClashTests\\battle-inputprobe-runtime\\ddraw_surfdump_palette.bin",
+    "DdrawProxyManifest":  "C:\\ClashTests\\battle-inputprobe-runtime\\ddraw_surfdump_proxy.build.json",
+    "Cdb":  "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+    "CdbExitCode":  null,
+    "TimedOut":  false,
+    "StoppedAfterDump":  true,
+    "DumpMethod":  "host-readprocessmemory",
+    "HostDumpedMemory":  true,
+    "HostDumpError":  null,
+    "ProbeTemplate":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_surface_dump_probe.cdb",
+    "ExtraProbeTemplate":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\probes\\cdb\\battle\\clash95_battle_centered_input_wrapper_extra.cdb",
+    "GeneratedProbe":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115\\clash95_surface_dump_probe.generated.cdb",
+    "Log":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115\\cdb-surface-dump.log",
+    "Surface":  {
+                    "RedrawSeq":  5,
+                    "Surface":  "0a2bb478",
+                    "Width":  800,
+                    "Height":  600,
+                    "Base":  "0a5a0030",
+                    "Bytes":  480000
+                },
+    "RawPath":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115\\surface.raw",
+    "RawBytes":  480000,
+    "PngPath":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115\\surface.png",
+    "PngSha256":  "9576707c674ce99a7b576b1fe74f3a4a27a975bc87dc8ea3ae852e8fc1992729",
+    "PngMetadata":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115\\surface.png.json",
+    "PngPaletteMode":  "directdraw-palette",
+    "CoverageJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115\\map-tile-coverage.json",
+    "CoverageText":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115\\map-tile-coverage.txt",
+    "CoverageBlankActiveCells":  [
+
+                                 ],
+    "VisibilityJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115\\visibility-coverage-summary.json",
+    "VisibilityText":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-111115\\visibility-coverage.txt",
+    "VisibilityExitCode":  null,
+    "VisibilityRequireExplained":  false,
+    "VisibilityUnexplainedBlankCells":  [
+
+                                        ],
+    "VisibilityStatusCounts":  null,
+    "VisibilityExplainedGate":  {
+                                    "Required":  false,
+                                    "Passed":  true,
+                                    "Skipped":  true,
+                                    "ExitCode":  null,
+                                    "BlankActiveCells":  [
+
+                                                         ],
+                                    "UnexplainedBlankCells":  [
+
+                                                              ]
+                                },
+    "ForcedVisibleJson":  null,
+    "ForcedVisibleText":  null,
+    "ForcedVisibleExitCode":  null,
+    "ForcedVisibleGate":  null,
+    "ForceVisibleStillBlankCells":  [
+
+                                    ],
+    "PostOwnerForcedVisibleJson":  null,
+    "PostOwnerForcedVisibleText":  null,
+    "PostOwnerForcedVisibleExitCode":  null,
+    "PostOwnerForcedVisibleGate":  null
+}

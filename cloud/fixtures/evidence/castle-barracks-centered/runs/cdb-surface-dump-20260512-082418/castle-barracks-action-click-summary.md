@@ -1,6 +1,6 @@
 # Castle Barracks Centered Action Click Probe
 
-- Log: `captures\cdb-surface-dump-20260512-082418\cdb-surface-dump.log`
+- Log: `captures\archive\cdb-surface-dump-20260512-082418\cdb-surface-dump.log`
 - Expected descriptor: `005151cf`
 - Expected callback: `004356c0`
 - Rows parsed: 13
@@ -29,7 +29,7 @@
 
 ## Screenshot
 
-![castle barracks action click](.\captures\cdb-surface-dump-20260512-082418\surface.png)
+![castle barracks action click](.\captures\archive\cdb-surface-dump-20260512-082418\surface.png)
 
 ## Key Rows
 

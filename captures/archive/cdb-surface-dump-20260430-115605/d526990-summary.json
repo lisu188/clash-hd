@@ -1,0 +1,245 @@
+{
+  "log": "captures\\cdb-surface-dump-20260430-115605\\cdb-surface-dump.log",
+  "marker_counts": {
+    "D526990_WRITE": 0,
+    "D526990_FULLREDRAW_ENTER": 3,
+    "D526990_SECOND_PASS_CHECK": 3,
+    "D526990_FALLBACK_LOOP_START": 3,
+    "D526990_FALLBACK_LOOP_DONE": 3,
+    "D526990_CALLBACK_TEST": 3,
+    "D526990_CALLBACK_CALL": 0,
+    "D526990_CALLBACK_AFTER": 3,
+    "SURFDUMP_PLAYGAME": 1,
+    "SURFDUMP_READY": 1,
+    "AV_SURFDUMP": 0
+  },
+  "row_counts": {
+    "d526990_rows": 18,
+    "writes": 0,
+    "fullredraw_entries": 3,
+    "callback_tests": 3,
+    "callback_calls": 0,
+    "fallback_starts": 3,
+    "fallback_done": 3,
+    "surfdump_playgame": 1,
+    "surfdump_ready": 1,
+    "av": 0
+  },
+  "callback_values": [],
+  "callback_nonzero_seen": false,
+  "write_values": [],
+  "flag526994_values": [
+    "00000000"
+  ],
+  "rows": [
+    {
+      "line_no": 184,
+      "kind": "SURFDUMP_PLAYGAME",
+      "raw": "SURFDUMP_PLAYGAME gd=044a0030 map=(100,100) scroll=(10,17) surface=0411c890 size=(640,480)",
+      "gd": "044a0030",
+      "map": "(100,100)",
+      "scroll": "(10,17)",
+      "surface": "0411c890",
+      "size": "(640,480)"
+    },
+    {
+      "line_no": 185,
+      "kind": "D526990_FULLREDRAW_ENTER",
+      "raw": "D526990_FULLREDRAW_ENTER ret=0040b79d arg_eax=00000001 callback=00000000 flag526994=00000000 surface=0a07ed70 sz=(800,600) scroll=(10,17)",
+      "ret": "0040b79d",
+      "arg_eax": "00000001",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "surface": "0a07ed70",
+      "sz": "(800,600)",
+      "scroll": "(10,17)"
+    },
+    {
+      "line_no": 186,
+      "kind": "D526990_SECOND_PASS_CHECK",
+      "raw": "D526990_SECOND_PASS_CHECK ret=ffffffff flag526994=00000000 callback=00000000 edi=8 ecx=12 surface=0a07ed70 sz=(800,600)",
+      "ret": "ffffffff",
+      "flag526994": "00000000",
+      "callback": "00000000",
+      "edi": "8",
+      "ecx": "12",
+      "surface": "0a07ed70",
+      "sz": "(800,600)"
+    },
+    {
+      "line_no": 187,
+      "kind": "D526990_FALLBACK_LOOP_START",
+      "raw": "D526990_FALLBACK_LOOP_START ret=ffffffff flag526994=00000000 callback=00000000 edi=8 edx=0",
+      "ret": "ffffffff",
+      "flag526994": "00000000",
+      "callback": "00000000",
+      "edi": "8",
+      "edx": "0"
+    },
+    {
+      "line_no": 188,
+      "kind": "D526990_FALLBACK_LOOP_DONE",
+      "raw": "D526990_FALLBACK_LOOP_DONE ret=ffffffff flag526994=00000000 callback=00000000 edi=8 ecx=12",
+      "ret": "ffffffff",
+      "flag526994": "00000000",
+      "callback": "00000000",
+      "edi": "8",
+      "ecx": "12"
+    },
+    {
+      "line_no": 189,
+      "kind": "D526990_CALLBACK_TEST",
+      "raw": "D526990_CALLBACK_TEST ret=ffffffff callback=00000000 flag526994=00000000 surface=0a07ed70 sz=(800,600)",
+      "ret": "ffffffff",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "surface": "0a07ed70",
+      "sz": "(800,600)"
+    },
+    {
+      "line_no": 190,
+      "kind": "D526990_CALLBACK_AFTER",
+      "raw": "D526990_CALLBACK_AFTER ret=ffffffff callback=00000000 flag526994=00000000 ebp=00000001",
+      "ret": "ffffffff",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "ebp": "00000001"
+    },
+    {
+      "line_no": 191,
+      "kind": "D526990_FULLREDRAW_ENTER",
+      "raw": "D526990_FULLREDRAW_ENTER ret=0040a431 arg_eax=00000001 callback=00000000 flag526994=00000000 surface=0a07ed70 sz=(800,600) scroll=(10,17)",
+      "ret": "0040a431",
+      "arg_eax": "00000001",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "surface": "0a07ed70",
+      "sz": "(800,600)",
+      "scroll": "(10,17)"
+    },
+    {
+      "line_no": 192,
+      "kind": "D526990_SECOND_PASS_CHECK",
+      "raw": "D526990_SECOND_PASS_CHECK ret=0050ee24 flag526994=00000000 callback=00000000 edi=8 ecx=12 surface=0a07ed70 sz=(800,600)",
+      "ret": "0050ee24",
+      "flag526994": "00000000",
+      "callback": "00000000",
+      "edi": "8",
+      "ecx": "12",
+      "surface": "0a07ed70",
+      "sz": "(800,600)"
+    },
+    {
+      "line_no": 193,
+      "kind": "D526990_FALLBACK_LOOP_START",
+      "raw": "D526990_FALLBACK_LOOP_START ret=0050ee24 flag526994=00000000 callback=00000000 edi=8 edx=0",
+      "ret": "0050ee24",
+      "flag526994": "00000000",
+      "callback": "00000000",
+      "edi": "8",
+      "edx": "0"
+    },
+    {
+      "line_no": 194,
+      "kind": "D526990_FALLBACK_LOOP_DONE",
+      "raw": "D526990_FALLBACK_LOOP_DONE ret=0050ee24 flag526994=00000000 callback=00000000 edi=8 ecx=12",
+      "ret": "0050ee24",
+      "flag526994": "00000000",
+      "callback": "00000000",
+      "edi": "8",
+      "ecx": "12"
+    },
+    {
+      "line_no": 195,
+      "kind": "D526990_CALLBACK_TEST",
+      "raw": "D526990_CALLBACK_TEST ret=0050ee24 callback=00000000 flag526994=00000000 surface=0a07ed70 sz=(800,600)",
+      "ret": "0050ee24",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "surface": "0a07ed70",
+      "sz": "(800,600)"
+    },
+    {
+      "line_no": 196,
+      "kind": "D526990_CALLBACK_AFTER",
+      "raw": "D526990_CALLBACK_AFTER ret=0050ee24 callback=00000000 flag526994=00000000 ebp=00000001",
+      "ret": "0050ee24",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "ebp": "00000001"
+    },
+    {
+      "line_no": 197,
+      "kind": "D526990_FULLREDRAW_ENTER",
+      "raw": "D526990_FULLREDRAW_ENTER ret=0040b7e1 arg_eax=00000001 callback=00000000 flag526994=00000000 surface=0a07ed70 sz=(800,600) scroll=(10,17)",
+      "ret": "0040b7e1",
+      "arg_eax": "00000001",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "surface": "0a07ed70",
+      "sz": "(800,600)",
+      "scroll": "(10,17)"
+    },
+    {
+      "line_no": 198,
+      "kind": "D526990_SECOND_PASS_CHECK",
+      "raw": "D526990_SECOND_PASS_CHECK ret=ffffffff flag526994=00000000 callback=00000000 edi=8 ecx=12 surface=0a07ed70 sz=(800,600)",
+      "ret": "ffffffff",
+      "flag526994": "00000000",
+      "callback": "00000000",
+      "edi": "8",
+      "ecx": "12",
+      "surface": "0a07ed70",
+      "sz": "(800,600)"
+    },
+    {
+      "line_no": 199,
+      "kind": "D526990_FALLBACK_LOOP_START",
+      "raw": "D526990_FALLBACK_LOOP_START ret=ffffffff flag526994=00000000 callback=00000000 edi=8 edx=0",
+      "ret": "ffffffff",
+      "flag526994": "00000000",
+      "callback": "00000000",
+      "edi": "8",
+      "edx": "0"
+    },
+    {
+      "line_no": 200,
+      "kind": "D526990_FALLBACK_LOOP_DONE",
+      "raw": "D526990_FALLBACK_LOOP_DONE ret=ffffffff flag526994=00000000 callback=00000000 edi=8 ecx=12",
+      "ret": "ffffffff",
+      "flag526994": "00000000",
+      "callback": "00000000",
+      "edi": "8",
+      "ecx": "12"
+    },
+    {
+      "line_no": 201,
+      "kind": "D526990_CALLBACK_TEST",
+      "raw": "D526990_CALLBACK_TEST ret=ffffffff callback=00000000 flag526994=00000000 surface=0a07ed70 sz=(800,600)",
+      "ret": "ffffffff",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "surface": "0a07ed70",
+      "sz": "(800,600)"
+    },
+    {
+      "line_no": 202,
+      "kind": "D526990_CALLBACK_AFTER",
+      "raw": "D526990_CALLBACK_AFTER ret=ffffffff callback=00000000 flag526994=00000000 ebp=00000001",
+      "ret": "ffffffff",
+      "callback": "00000000",
+      "flag526994": "00000000",
+      "ebp": "00000001"
+    },
+    {
+      "line_no": 207,
+      "kind": "SURFDUMP_READY",
+      "raw": "SURFDUMP_READY redraw_seq=4 surface=0a07ed70 size=(800,600) base=0a320030 bytes=480000",
+      "redraw_seq": "4",
+      "surface": "0a07ed70",
+      "size": "(800,600)",
+      "base": "0a320030",
+      "bytes": "480000"
+    }
+  ]
+}

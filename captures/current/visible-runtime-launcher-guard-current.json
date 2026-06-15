@@ -1,0 +1,161 @@
+{
+  "generated_at": "2026-06-15T18:34:51+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "legacy visible-runtime launchers/helpers must fail closed unless -AllowVisibleRuntime is explicitly supplied after user approval; guarded child helpers must receive the same switch; root PowerShell risky-call inventory must be guarded or explicitly exempt",
+  "script_count": 7,
+  "passing_script_count": 7,
+  "inventory": {
+    "checked": true,
+    "root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd",
+    "risky_script_count": 0,
+    "guarded_risky_script_count": 0,
+    "exempt_risky_script_count": 0,
+    "unclassified_risky_script_count": 0,
+    "scripts": [],
+    "failures": []
+  },
+  "scripts": [
+    {
+      "script": "scripts\\smoke\\run_clash_visual_smoke.ps1",
+      "passed": true,
+      "exists": true,
+      "allow_visible_runtime_lines": [
+        29
+      ],
+      "guard_lines": [
+        35
+      ],
+      "approval_phrase_lines": [
+        36
+      ],
+      "throw_lines": [
+        36
+      ],
+      "first_risky_line": 178,
+      "child_visible_runtime_invocation_lines": [],
+      "failures": []
+    },
+    {
+      "script": "scripts\\cdb\\run_cdb_map_probe.ps1",
+      "passed": true,
+      "exists": true,
+      "allow_visible_runtime_lines": [
+        26
+      ],
+      "guard_lines": [
+        32
+      ],
+      "approval_phrase_lines": [
+        33
+      ],
+      "throw_lines": [
+        33
+      ],
+      "first_risky_line": 222,
+      "child_visible_runtime_invocation_lines": [],
+      "failures": []
+    },
+    {
+      "script": "scripts\\cdb\\run_cdb_python_mouse_map.ps1",
+      "passed": true,
+      "exists": true,
+      "allow_visible_runtime_lines": [
+        20
+      ],
+      "guard_lines": [
+        26
+      ],
+      "approval_phrase_lines": [
+        27
+      ],
+      "throw_lines": [
+        27
+      ],
+      "first_risky_line": 94,
+      "child_visible_runtime_invocation_lines": [],
+      "failures": []
+    },
+    {
+      "script": "scripts\\cdb\\run_cdb_viewport_bounds_probe.ps1",
+      "passed": true,
+      "exists": true,
+      "allow_visible_runtime_lines": [
+        11
+      ],
+      "guard_lines": [
+        16
+      ],
+      "approval_phrase_lines": [
+        17
+      ],
+      "throw_lines": [
+        17
+      ],
+      "first_risky_line": 109,
+      "child_visible_runtime_invocation_lines": [],
+      "failures": []
+    },
+    {
+      "script": "scripts\\cdb\\run_cdb_battle_visible_input_probe.ps1",
+      "passed": true,
+      "exists": true,
+      "allow_visible_runtime_lines": [
+        25
+      ],
+      "guard_lines": [
+        31
+      ],
+      "approval_phrase_lines": [
+        32
+      ],
+      "throw_lines": [
+        32
+      ],
+      "first_risky_line": 156,
+      "child_visible_runtime_invocation_lines": [],
+      "failures": []
+    },
+    {
+      "script": "scripts\\smoke\\run_clash_windows_sandbox.ps1",
+      "passed": true,
+      "exists": true,
+      "allow_visible_runtime_lines": [
+        15
+      ],
+      "guard_lines": [
+        20
+      ],
+      "approval_phrase_lines": [
+        21
+      ],
+      "throw_lines": [
+        21
+      ],
+      "first_risky_line": 224,
+      "child_visible_runtime_invocation_lines": [],
+      "failures": []
+    },
+    {
+      "script": "scripts\\capture\\capture_clash_client_frame.ps1",
+      "passed": true,
+      "exists": true,
+      "allow_visible_runtime_lines": [
+        8
+      ],
+      "guard_lines": [
+        13
+      ],
+      "approval_phrase_lines": [
+        14
+      ],
+      "throw_lines": [
+        14
+      ],
+      "first_risky_line": 227,
+      "child_visible_runtime_invocation_lines": [],
+      "failures": []
+    }
+  ],
+  "failures": []
+}

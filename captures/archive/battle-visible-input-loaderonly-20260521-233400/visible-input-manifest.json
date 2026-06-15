@@ -1,0 +1,10 @@
+{
+    "stamp":  "20260521-233400",
+    "run_dir":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\battle-visible-input-loaderonly-20260521-233400",
+    "candidate":  "C:\\ClashTests\\battle-visible-input-proxy-20260521-221704\\candidate\\clash95_hd_battle_visible_input_proxy_20260521-221704.exe",
+    "work_dir":  "C:\\ClashTests\\battle-enabled-fixture-20260520-210728\\game",
+    "probe":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\battle-visible-input-loaderonly-20260521-233400\\battle-visible-loaderonly.generated.cdb",
+    "log":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\battle-visible-input-loaderonly-20260521-233400\\cdb-visible-input.log",
+    "mouse_json":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\battle-visible-input-loaderonly-20260521-233400\\mouse-visible-input.json",
+    "purpose":  "visible loader-only control without battle extra"
+}

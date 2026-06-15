@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-06-15T18:34:51+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "proves legacy visible-runtime launchers/helpers require -AllowVisibleRuntime before any risky Start-Process, window-focus, cursor, SendInput, PostMessage, or CopyFromScreen call, requires guarded child helpers to receive the same switch, and proves root risky-call inventory rejects unclassified scripts while allowing documented exemptions",
+  "tests": [
+    "visible_runtime_launcher_guard passes for gated launchers",
+    "visible_runtime_launcher_guard passes for gated foreground helpers",
+    "visible_runtime_launcher_guard passes for gated screen-capture helpers",
+    "visible_runtime_launcher_guard requires -AllowVisibleRuntime forwarding to guarded child helpers",
+    "visible_runtime_launcher_guard rejects missing AllowVisibleRuntime switches",
+    "visible_runtime_launcher_guard rejects missing explicit-approval text",
+    "visible_runtime_launcher_guard rejects guards that appear after risky runtime calls",
+    "visible_runtime_launcher_guard rejects unclassified risky root scripts",
+    "visible_runtime_launcher_guard allows documented exempt risky root scripts",
+    "visible_runtime_launcher_guard CLI writes JSON/Markdown and fails closed under --require-pass"
+  ],
+  "failures": []
+}

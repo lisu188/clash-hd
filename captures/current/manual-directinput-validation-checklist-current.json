@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-06-15T18:34:58+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "checklist_policy": "manual DirectInput evidence is tracked separately from CDB/proxy proof; visible/manual validation requires explicit user approval; Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.",
+  "no_popup_operator_preference": "Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.",
+  "status": "pending_manual_validation",
+  "visible_runtime_requires_approval": true,
+  "stable_stage_should_change": false,
+  "manual_proof": null,
+  "manual_proof_supplied": false,
+  "manual_proof_valid": false,
+  "manual_proof_summary": {
+    "executable_sha256": null,
+    "checked_item_count": 0
+  },
+  "allow_cdb_only_promotion": false,
+  "promotion_ready": false,
+  "items": [
+    {
+      "id": "stable_menu_load",
+      "title": "Stable HD map stage menu load and held-click route",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "input_route": "real mouse movement plus held left-clicks on the active desktop",
+      "expected_observation": "startup reaches the menu, centered 640x480 menu hitboxes respond, and held clicks are not missed by DirectInput polling",
+      "current_cdb_evidence": "dynamic-origin/menu CDB and route evidence only",
+      "status": "pending_manual",
+      "promotion_relevance": "blocks treating synthetic input proof as manual menu proof"
+    },
+    {
+      "id": "stable_hd_map_input",
+      "title": "Stable HD map edge scroll, minimap, and selection input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "input_route": "real mouse movement near map edges plus held clicks on map/minimap targets",
+      "expected_observation": "map cursor movement, edge scrolling, minimap/action-panel clicks, and right/bottom tile selection align with the 800x600 presentation",
+      "current_cdb_evidence": "hidden CDB/proxy map and grid-hit evidence only",
+      "status": "pending_manual",
+      "promotion_relevance": "blocks broader stable HD input promotion"
+    },
+    {
+      "id": "right_bottom_validation_input",
+      "title": "Right-bottom composition validation-stage manual input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+      "input_route": "real mouse movement and held clicks around the recovered lower/right UI",
+      "expected_observation": "status/action UI remains recovered while owner/action hit-tests and grid selection still respond at the expected displayed positions",
+      "current_cdb_evidence": "right-bottom composition matrix, route timing guard, and controlled native (450,73) grid-hit proof",
+      "status": "pending_manual",
+      "promotion_relevance": "blocks promoting rightbottomcompose into the stable stage"
+    },
+    {
+      "id": "castle_barracks_centered_input",
+      "title": "Castle barracks centered manual input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "input_route": "real mouse movement and held clicks on centered barracks descriptors/actions",
+      "expected_observation": "barracks descriptor and action callbacks remain reachable through the centered 80,60 presentation",
+      "current_cdb_evidence": "barracks controlled-stop descriptor/action CDB proof",
+      "status": "pending_manual",
+      "promotion_relevance": "blocks treating barracks CDB proof as real input proof"
+    },
+    {
+      "id": "castle_overview_centered_input",
+      "title": "Full castle overview centered manual input",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "input_route": "real mouse movement and held clicks on visible overview descriptors",
+      "expected_observation": "visible overview commands such as 0x86, 0x63, and 0x87 respond at displayed centered coordinates without using debugger-forced state",
+      "current_cdb_evidence": "focused overview hitbox, visible multi-hit, dormant multi-hit, and castle overview probe guard evidence",
+      "status": "pending_manual",
+      "promotion_relevance": "blocks promoting castlecenter-all into the stable stage"
+    }
+  ],
+  "summary": {
+    "item_count": 5,
+    "pending_count": 5,
+    "pending_ids": [
+      "stable_menu_load",
+      "stable_hd_map_input",
+      "right_bottom_validation_input",
+      "castle_barracks_centered_input",
+      "castle_overview_centered_input"
+    ],
+    "promotion_ready": false,
+    "stable_stage_should_change": false
+  },
+  "failures": []
+}

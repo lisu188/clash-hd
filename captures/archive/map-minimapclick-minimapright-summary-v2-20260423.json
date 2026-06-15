@@ -1,0 +1,238 @@
+{
+  "log": "captures\\cdb-map-minimapclick-minimapright-v2-20260423.log",
+  "init_rows": 1,
+  "box_rows": 1,
+  "test_rows": 240,
+  "true_rows": 120,
+  "button_true_rows": 48,
+  "old_only_test_rows": 127,
+  "old_only_true_rows": 0,
+  "new_box_true_rows": 120,
+  "redraw_rows": 120,
+  "scrollhelper_rows": 0,
+  "mouse_rows": 66,
+  "av_rows": 0,
+  "minimap_left_values": [
+    586
+  ],
+  "minimap_right_values": [
+    799
+  ],
+  "scroll_values": [
+    {
+      "x": 38,
+      "y": 41,
+      "count": 120
+    }
+  ],
+  "true_scroll_values": [
+    {
+      "x": 38,
+      "y": 41,
+      "count": 120
+    }
+  ],
+  "mouse_x_range": {
+    "min": 300,
+    "max": 448,
+    "unique": 4
+  },
+  "mouse_y_range": {
+    "min": 49,
+    "max": 301,
+    "unique": 8
+  },
+  "first_init": [
+    {
+      "line_no": 193,
+      "kind": "MINIMAP_INIT",
+      "left": 586,
+      "top": 16,
+      "width": 214,
+      "height": 214,
+      "right": 799,
+      "bottom": 229,
+      "scale": 4
+    }
+  ],
+  "first_old_only_test": [
+    {
+      "line_no": 196,
+      "kind": "MINIMAP_TEST",
+      "seq": 1,
+      "x": 416,
+      "y": 79,
+      "left": 586,
+      "top": 16,
+      "width": 214,
+      "height": 214,
+      "right": 799,
+      "bottom": 229,
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 300,
+      "mousey": 217,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_old_only_true": [],
+  "first_new_box_true": [
+    {
+      "line_no": 200,
+      "kind": "MINIMAP_TRUE",
+      "seq": 0,
+      "x": 608,
+      "y": 79,
+      "left": 586,
+      "top": 16,
+      "width": 214,
+      "height": 214,
+      "right": 799,
+      "bottom": 229,
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 300,
+      "mousey": 217,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "last_new_box_true": [
+    {
+      "line_no": 708,
+      "kind": "MINIMAP_TRUE",
+      "seq": 119,
+      "x": 672,
+      "y": 143,
+      "left": 586,
+      "top": 16,
+      "width": 214,
+      "height": 214,
+      "right": 799,
+      "bottom": 229,
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 400,
+      "mousey": 301,
+      "lbtn": 0,
+      "rbtn": 0
+    }
+  ],
+  "first_button_true": [
+    {
+      "line_no": 200,
+      "kind": "MINIMAP_TRUE",
+      "seq": 0,
+      "x": 608,
+      "y": 79,
+      "left": 586,
+      "top": 16,
+      "width": 214,
+      "height": 214,
+      "right": 799,
+      "bottom": 229,
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 300,
+      "mousey": 217,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "last_button_true": [
+    {
+      "line_no": 682,
+      "kind": "MINIMAP_TRUE",
+      "seq": 95,
+      "x": 608,
+      "y": 79,
+      "left": 586,
+      "top": 16,
+      "width": 214,
+      "height": 214,
+      "right": 799,
+      "bottom": 229,
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 400,
+      "mousey": 301,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_redraw": [
+    {
+      "line_no": 286,
+      "kind": "MAP_REDRAW",
+      "seq": 0,
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 300,
+      "mousey": 217,
+      "lbtn": 0,
+      "rbtn": 0
+    }
+  ],
+  "last_redraw": [
+    {
+      "line_no": 449,
+      "kind": "MAP_REDRAW",
+      "seq": 119,
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 300,
+      "mousey": 217,
+      "lbtn": 0,
+      "rbtn": 0
+    }
+  ],
+  "first_mouse": [
+    {
+      "line_no": 285,
+      "kind": "MOUSE",
+      "seq": 0,
+      "x": 300,
+      "y": 217,
+      "lbtn": 0,
+      "rbtn": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452
+    }
+  ],
+  "last_mouse": [
+    {
+      "line_no": 740,
+      "kind": "MOUSE",
+      "seq": 65,
+      "x": 448,
+      "y": 121,
+      "lbtn": 0,
+      "rbtn": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452
+    }
+  ],
+  "hd_anchor_seen": true,
+  "old_anchor_rejected": true,
+  "new_anchor_accepted": true,
+  "scroll_changed": false
+}

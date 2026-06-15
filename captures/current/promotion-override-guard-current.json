@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-06-15T18:34:58+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "current evidence must keep CDB-only promotion overrides inactive until manual proof or an explicit override decision is intentionally supplied",
+  "checks": {
+    "right_bottom_compose_promotion_decision": {
+      "passed": true,
+      "path": "captures\\current\\right-bottom-compose-promotion-decision-current.json",
+      "summary": {
+        "decision": "defer_stable_promotion",
+        "passed": false,
+        "allow_cdb_only_promotion": false,
+        "stable_stage_should_change": false,
+        "manual_input_proof_supplied": false,
+        "manual_input_proof_valid": false,
+        "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose"
+      },
+      "failures": []
+    },
+    "castle_overview_promotion_decision": {
+      "passed": true,
+      "path": "captures\\current\\castle-overview-promotion-decision-current.json",
+      "summary": {
+        "decision": "defer_stable_promotion",
+        "passed": false,
+        "allow_cdb_only_promotion": false,
+        "stable_stage_should_change": false,
+        "manual_input_proof_supplied": false,
+        "manual_input_proof_valid": false,
+        "validation_stage": "castlecenter-all"
+      },
+      "failures": []
+    },
+    "manual_directinput_checklist": {
+      "passed": true,
+      "path": "captures\\current\\manual-directinput-validation-checklist-current.json",
+      "summary": {
+        "passed": true,
+        "status": "pending_manual_validation",
+        "allow_cdb_only_promotion": false,
+        "promotion_ready": false,
+        "manual_proof_supplied": false,
+        "manual_proof_valid": false,
+        "stable_stage_should_change": false
+      },
+      "failures": []
+    }
+  },
+  "failures": []
+}

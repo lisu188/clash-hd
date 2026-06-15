@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-06-15T18:34:34+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "passes only while the current natural right-bottom visual artifact remains explicitly blocked from promotion: controlled composition is recovered, natural owner/action rows are absent, and the lower/right natural regions still show the known black/striped incomplete state",
+  "visual_status": "visual_artifact_guard_stale",
+  "promotion_ready": false,
+  "stable_stage_should_change": false,
+  "source_artifacts": {
+    "compose_evidence_json": "captures\\current\\right-bottom-compose-evidence-current.json",
+    "blocker_triage_json": "captures\\current\\right-bottom-blocker-triage-current.json"
+  },
+  "checks": {
+    "controlled_composition_recovered": true,
+    "natural_owner_action_rows_absent": true,
+    "natural_visual_artifact_present": true,
+    "controlled_vs_natural_visual_gap": true,
+    "blocker_triage_non_promoting": false,
+    "compose_matrix_non_promoting": true
+  },
+  "observations": {
+    "controlled_bottom_right_ui_corner_nonblack": 48.228,
+    "controlled_r8c10_nonblack": 54.102,
+    "controlled_r8c11_nonblack": 42.822,
+    "natural_owner_action_rows": 0,
+    "natural_bottom_right_corner_black": 78.57,
+    "natural_r8c10_black": 100.0,
+    "natural_r8c11_black": 100.0,
+    "natural_right_side_below_minimap_black": 76.407,
+    "natural_corner_flags": [
+      "large_black_component",
+      "black_touches_bottom_right"
+    ],
+    "natural_r8c10_flags": [
+      "mostly_black",
+      "large_black_component",
+      "black_touches_bottom_right"
+    ],
+    "natural_r8c11_flags": [
+      "mostly_black",
+      "large_black_component",
+      "black_touches_bottom_right"
+    ]
+  },
+  "conclusion": "The striped/out-of-place right-bottom action-menu view is still a blocked natural UI artifact, not stable evidence. Controlled composition proves the lower/right UI can be drawn, but natural gameplay has not entered the owner/action draw path.",
+  "failures": [
+    "visual artifact guard failed: blocker_triage_non_promoting"
+  ]
+}

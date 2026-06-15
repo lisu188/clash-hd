@@ -1,0 +1,14 @@
+{
+    "RunDirectory":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\sandbox-20260424-091715",
+    "Wsb":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\sandbox-20260424-091715\\clash-hd-sandbox.wsb",
+    "EntryScript":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\sandbox-20260424-091715\\sandbox-entry.ps1",
+    "RepoMappedAs":  "C:\\Repo",
+    "GameMappedReadOnlyAs":  "C:\\HostClash",
+    "SandboxGameWorkDir":  "C:\\Clash",
+    "PythonMappedAs":  "C:\\HostPython\\python.exe",
+    "CandidateName":  "clash95_hd_sandbox_candidate.exe",
+    "Stage":  "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "MoveMode":  "auto",
+    "ClickMode":  "sendinput",
+    "NoLaunch":  true
+}

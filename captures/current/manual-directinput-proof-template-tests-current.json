@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-06-15T18:34:58+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only fixture tests; launches only Python child processes for template CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "proves the manual DirectInput proof template documents the proof shape, stays invalid until placeholders are replaced, and can become valid only after all required manual proof fields are supplied",
+  "tests": [
+    "manual_directinput_proof_template remains invalid as proof until placeholders are replaced",
+    "manual_directinput_proof_template reports every required manual target id",
+    "manual_directinput_proof_template can become valid after all proof fields are replaced",
+    "manual_directinput_proof_template CLI writes template JSON, report JSON, and Markdown"
+  ],
+  "failures": []
+}

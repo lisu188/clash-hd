@@ -1,0 +1,3192 @@
+[
+    {
+        "old":  "captures/archive/battle-visible-input-loaderonly-20260521-233400",
+        "new":  "captures/archive/battle-visible-input-loaderonly-20260521-233400",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/battle-visible-input-minimal-20260521-232626",
+        "new":  "captures/archive/battle-visible-input-minimal-20260521-232626",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/battle-visible-input-quiet-20260521-231521",
+        "new":  "captures/archive/battle-visible-input-quiet-20260521-231521",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/battle-visible-input-rawsend-20260521-233247",
+        "new":  "captures/archive/battle-visible-input-rawsend-20260521-233247",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260428-105423",
+        "new":  "captures/archive/cdb-surface-dump-20260428-105423",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260428-123224",
+        "new":  "captures/archive/cdb-surface-dump-20260428-123224",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-111340",
+        "new":  "captures/archive/cdb-surface-dump-20260429-111340",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-115600",
+        "new":  "captures/archive/cdb-surface-dump-20260429-115600",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-120508",
+        "new":  "captures/archive/cdb-surface-dump-20260429-120508",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-124928",
+        "new":  "captures/archive/cdb-surface-dump-20260429-124928",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-125308",
+        "new":  "captures/archive/cdb-surface-dump-20260429-125308",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-125735",
+        "new":  "captures/archive/cdb-surface-dump-20260429-125735",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-130246",
+        "new":  "captures/archive/cdb-surface-dump-20260429-130246",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-133504",
+        "new":  "captures/archive/cdb-surface-dump-20260429-133504",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-133917",
+        "new":  "captures/archive/cdb-surface-dump-20260429-133917",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-135242",
+        "new":  "captures/archive/cdb-surface-dump-20260429-135242",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260429-140916",
+        "new":  "captures/archive/cdb-surface-dump-20260429-140916",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-111545",
+        "new":  "captures/archive/cdb-surface-dump-20260430-111545",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-112121",
+        "new":  "captures/archive/cdb-surface-dump-20260430-112121",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-113904",
+        "new":  "captures/archive/cdb-surface-dump-20260430-113904",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-114459",
+        "new":  "captures/archive/cdb-surface-dump-20260430-114459",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-115605",
+        "new":  "captures/archive/cdb-surface-dump-20260430-115605",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-121113",
+        "new":  "captures/archive/cdb-surface-dump-20260430-121113",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-132217",
+        "new":  "captures/archive/cdb-surface-dump-20260430-132217",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-133012",
+        "new":  "captures/archive/cdb-surface-dump-20260430-133012",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-142129",
+        "new":  "captures/archive/cdb-surface-dump-20260430-142129",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-145646",
+        "new":  "captures/archive/cdb-surface-dump-20260430-145646",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260430-224749",
+        "new":  "captures/archive/cdb-surface-dump-20260430-224749",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-092608",
+        "new":  "captures/archive/cdb-surface-dump-20260506-092608",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-093846",
+        "new":  "captures/archive/cdb-surface-dump-20260506-093846",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-094226",
+        "new":  "captures/archive/cdb-surface-dump-20260506-094226",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-094449",
+        "new":  "captures/archive/cdb-surface-dump-20260506-094449",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-100556",
+        "new":  "captures/archive/cdb-surface-dump-20260506-100556",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-100727",
+        "new":  "captures/archive/cdb-surface-dump-20260506-100727",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-100922",
+        "new":  "captures/archive/cdb-surface-dump-20260506-100922",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-102113",
+        "new":  "captures/archive/cdb-surface-dump-20260506-102113",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-111052",
+        "new":  "captures/archive/cdb-surface-dump-20260506-111052",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-111214",
+        "new":  "captures/archive/cdb-surface-dump-20260506-111214",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-121909",
+        "new":  "captures/archive/cdb-surface-dump-20260506-121909",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-140452",
+        "new":  "captures/archive/cdb-surface-dump-20260506-140452",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-141239",
+        "new":  "captures/archive/cdb-surface-dump-20260506-141239",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-150744",
+        "new":  "captures/archive/cdb-surface-dump-20260506-150744",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-151242",
+        "new":  "captures/archive/cdb-surface-dump-20260506-151242",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-160614",
+        "new":  "captures/archive/cdb-surface-dump-20260506-160614",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-160758",
+        "new":  "captures/archive/cdb-surface-dump-20260506-160758",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-175108",
+        "new":  "captures/archive/cdb-surface-dump-20260506-175108",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-180501",
+        "new":  "captures/archive/cdb-surface-dump-20260506-180501",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-180755",
+        "new":  "captures/archive/cdb-surface-dump-20260506-180755",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-185203",
+        "new":  "captures/archive/cdb-surface-dump-20260506-185203",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-185450",
+        "new":  "captures/archive/cdb-surface-dump-20260506-185450",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-185733",
+        "new":  "captures/archive/cdb-surface-dump-20260506-185733",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-190037",
+        "new":  "captures/archive/cdb-surface-dump-20260506-190037",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-191042",
+        "new":  "captures/archive/cdb-surface-dump-20260506-191042",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-191408",
+        "new":  "captures/archive/cdb-surface-dump-20260506-191408",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-200426",
+        "new":  "captures/archive/cdb-surface-dump-20260506-200426",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260506-201114",
+        "new":  "captures/archive/cdb-surface-dump-20260506-201114",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-084202",
+        "new":  "captures/archive/cdb-surface-dump-20260511-084202",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-134458",
+        "new":  "captures/archive/cdb-surface-dump-20260511-134458",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-134746",
+        "new":  "captures/archive/cdb-surface-dump-20260511-134746",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-134947",
+        "new":  "captures/archive/cdb-surface-dump-20260511-134947",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-141143",
+        "new":  "captures/archive/cdb-surface-dump-20260511-141143",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-141708",
+        "new":  "captures/archive/cdb-surface-dump-20260511-141708",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-142147",
+        "new":  "captures/archive/cdb-surface-dump-20260511-142147",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-142304",
+        "new":  "captures/archive/cdb-surface-dump-20260511-142304",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-143741",
+        "new":  "captures/archive/cdb-surface-dump-20260511-143741",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-144739",
+        "new":  "captures/archive/cdb-surface-dump-20260511-144739",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-144934",
+        "new":  "captures/archive/cdb-surface-dump-20260511-144934",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-145141",
+        "new":  "captures/archive/cdb-surface-dump-20260511-145141",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-150643",
+        "new":  "captures/archive/cdb-surface-dump-20260511-150643",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-151705",
+        "new":  "captures/archive/cdb-surface-dump-20260511-151705",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-155526",
+        "new":  "captures/archive/cdb-surface-dump-20260511-155526",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-155739",
+        "new":  "captures/archive/cdb-surface-dump-20260511-155739",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-155910",
+        "new":  "captures/archive/cdb-surface-dump-20260511-155910",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-160114",
+        "new":  "captures/archive/cdb-surface-dump-20260511-160114",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-160221",
+        "new":  "captures/archive/cdb-surface-dump-20260511-160221",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-160850",
+        "new":  "captures/archive/cdb-surface-dump-20260511-160850",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-161212",
+        "new":  "captures/archive/cdb-surface-dump-20260511-161212",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-162607",
+        "new":  "captures/archive/cdb-surface-dump-20260511-162607",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-162846",
+        "new":  "captures/archive/cdb-surface-dump-20260511-162846",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-163718",
+        "new":  "captures/archive/cdb-surface-dump-20260511-163718",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-163846",
+        "new":  "captures/archive/cdb-surface-dump-20260511-163846",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-164536",
+        "new":  "captures/archive/cdb-surface-dump-20260511-164536",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-170708",
+        "new":  "captures/archive/cdb-surface-dump-20260511-170708",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260511-170759",
+        "new":  "captures/archive/cdb-surface-dump-20260511-170759",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260512-080906",
+        "new":  "captures/archive/cdb-surface-dump-20260512-080906",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260512-081214",
+        "new":  "captures/archive/cdb-surface-dump-20260512-081214",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260512-081628",
+        "new":  "captures/archive/cdb-surface-dump-20260512-081628",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260512-082001",
+        "new":  "captures/archive/cdb-surface-dump-20260512-082001",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260512-082120",
+        "new":  "captures/archive/cdb-surface-dump-20260512-082120",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260512-082418",
+        "new":  "captures/archive/cdb-surface-dump-20260512-082418",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260512-082606",
+        "new":  "captures/archive/cdb-surface-dump-20260512-082606",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-095307",
+        "new":  "captures/archive/cdb-surface-dump-20260513-095307",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-095443",
+        "new":  "captures/archive/cdb-surface-dump-20260513-095443",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-104200",
+        "new":  "captures/archive/cdb-surface-dump-20260513-104200",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-104954",
+        "new":  "captures/archive/cdb-surface-dump-20260513-104954",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-105411",
+        "new":  "captures/archive/cdb-surface-dump-20260513-105411",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-111559",
+        "new":  "captures/archive/cdb-surface-dump-20260513-111559",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-112024",
+        "new":  "captures/archive/cdb-surface-dump-20260513-112024",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-112339",
+        "new":  "captures/archive/cdb-surface-dump-20260513-112339",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-114720",
+        "new":  "captures/archive/cdb-surface-dump-20260513-114720",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-115101",
+        "new":  "captures/archive/cdb-surface-dump-20260513-115101",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-115303",
+        "new":  "captures/archive/cdb-surface-dump-20260513-115303",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-120712",
+        "new":  "captures/archive/cdb-surface-dump-20260513-120712",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-121513",
+        "new":  "captures/archive/cdb-surface-dump-20260513-121513",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-122200",
+        "new":  "captures/archive/cdb-surface-dump-20260513-122200",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260513-122928",
+        "new":  "captures/archive/cdb-surface-dump-20260513-122928",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260514-140601",
+        "new":  "captures/archive/cdb-surface-dump-20260514-140601",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-105041",
+        "new":  "captures/archive/cdb-surface-dump-20260515-105041",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-105411",
+        "new":  "captures/archive/cdb-surface-dump-20260515-105411",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-105458",
+        "new":  "captures/archive/cdb-surface-dump-20260515-105458",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-105557",
+        "new":  "captures/archive/cdb-surface-dump-20260515-105557",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-114101",
+        "new":  "captures/archive/cdb-surface-dump-20260515-114101",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-130121",
+        "new":  "captures/archive/cdb-surface-dump-20260515-130121",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-130619",
+        "new":  "captures/archive/cdb-surface-dump-20260515-130619",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-130736",
+        "new":  "captures/archive/cdb-surface-dump-20260515-130736",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-130940",
+        "new":  "captures/archive/cdb-surface-dump-20260515-130940",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-131514",
+        "new":  "captures/archive/cdb-surface-dump-20260515-131514",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-131648",
+        "new":  "captures/archive/cdb-surface-dump-20260515-131648",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-140535",
+        "new":  "captures/archive/cdb-surface-dump-20260515-140535",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-140702",
+        "new":  "captures/archive/cdb-surface-dump-20260515-140702",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260515-141804",
+        "new":  "captures/archive/cdb-surface-dump-20260515-141804",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260517-163116",
+        "new":  "captures/archive/cdb-surface-dump-20260517-163116",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260517-163734",
+        "new":  "captures/archive/cdb-surface-dump-20260517-163734",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260517-171559",
+        "new":  "captures/archive/cdb-surface-dump-20260517-171559",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260517-172014",
+        "new":  "captures/archive/cdb-surface-dump-20260517-172014",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260517-172447",
+        "new":  "captures/archive/cdb-surface-dump-20260517-172447",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260517-172611",
+        "new":  "captures/archive/cdb-surface-dump-20260517-172611",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260518-092756",
+        "new":  "captures/archive/cdb-surface-dump-20260518-092756",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260518-100917",
+        "new":  "captures/archive/cdb-surface-dump-20260518-100917",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260518-213106",
+        "new":  "captures/archive/cdb-surface-dump-20260518-213106",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260518-213418",
+        "new":  "captures/archive/cdb-surface-dump-20260518-213418",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260518-214535",
+        "new":  "captures/archive/cdb-surface-dump-20260518-214535",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260518-221018",
+        "new":  "captures/archive/cdb-surface-dump-20260518-221018",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-094032",
+        "new":  "captures/archive/cdb-surface-dump-20260520-094032",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-100717",
+        "new":  "captures/archive/cdb-surface-dump-20260520-100717",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-101859",
+        "new":  "captures/archive/cdb-surface-dump-20260520-101859",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-103155",
+        "new":  "captures/archive/cdb-surface-dump-20260520-103155",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-103714",
+        "new":  "captures/archive/cdb-surface-dump-20260520-103714",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-111115",
+        "new":  "captures/archive/cdb-surface-dump-20260520-111115",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-195244",
+        "new":  "captures/archive/cdb-surface-dump-20260520-195244",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-202027",
+        "new":  "captures/archive/cdb-surface-dump-20260520-202027",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-202424",
+        "new":  "captures/archive/cdb-surface-dump-20260520-202424",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-202504",
+        "new":  "captures/archive/cdb-surface-dump-20260520-202504",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-202640",
+        "new":  "captures/archive/cdb-surface-dump-20260520-202640",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-202810",
+        "new":  "captures/archive/cdb-surface-dump-20260520-202810",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-210816",
+        "new":  "captures/archive/cdb-surface-dump-20260520-210816",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-211442",
+        "new":  "captures/archive/cdb-surface-dump-20260520-211442",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-212108",
+        "new":  "captures/archive/cdb-surface-dump-20260520-212108",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-213147",
+        "new":  "captures/archive/cdb-surface-dump-20260520-213147",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-213820",
+        "new":  "captures/archive/cdb-surface-dump-20260520-213820",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-214344",
+        "new":  "captures/archive/cdb-surface-dump-20260520-214344",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260520-220459",
+        "new":  "captures/archive/cdb-surface-dump-20260520-220459",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260523-000931",
+        "new":  "captures/archive/cdb-surface-dump-20260523-000931",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260523-001159",
+        "new":  "captures/archive/cdb-surface-dump-20260523-001159",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-092117",
+        "new":  "captures/archive/cdb-surface-dump-20260527-092117",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-093348",
+        "new":  "captures/archive/cdb-surface-dump-20260527-093348",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-100641",
+        "new":  "captures/archive/cdb-surface-dump-20260527-100641",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-101402",
+        "new":  "captures/archive/cdb-surface-dump-20260527-101402",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-101727",
+        "new":  "captures/archive/cdb-surface-dump-20260527-101727",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-111658",
+        "new":  "captures/archive/cdb-surface-dump-20260527-111658",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-114559",
+        "new":  "captures/archive/cdb-surface-dump-20260527-114559",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-120235",
+        "new":  "captures/archive/cdb-surface-dump-20260527-120235",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-120522",
+        "new":  "captures/archive/cdb-surface-dump-20260527-120522",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-120753",
+        "new":  "captures/archive/cdb-surface-dump-20260527-120753",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-121204",
+        "new":  "captures/archive/cdb-surface-dump-20260527-121204",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-121458",
+        "new":  "captures/archive/cdb-surface-dump-20260527-121458",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-121823",
+        "new":  "captures/archive/cdb-surface-dump-20260527-121823",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-160111",
+        "new":  "captures/archive/cdb-surface-dump-20260527-160111",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-160557",
+        "new":  "captures/archive/cdb-surface-dump-20260527-160557",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-160717",
+        "new":  "captures/archive/cdb-surface-dump-20260527-160717",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-161047",
+        "new":  "captures/archive/cdb-surface-dump-20260527-161047",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-163809",
+        "new":  "captures/archive/cdb-surface-dump-20260527-163809",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-164350",
+        "new":  "captures/archive/cdb-surface-dump-20260527-164350",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-165455",
+        "new":  "captures/archive/cdb-surface-dump-20260527-165455",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260527-165909",
+        "new":  "captures/archive/cdb-surface-dump-20260527-165909",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/cdb-surface-dump-20260615-100407",
+        "new":  "captures/archive/cdb-surface-dump-20260615-100407",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-121137",
+        "new":  "captures/archive/clicktest-20260422-121137",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-121202",
+        "new":  "captures/archive/clicktest-20260422-121202",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-121419",
+        "new":  "captures/archive/clicktest-20260422-121419",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-121511",
+        "new":  "captures/archive/clicktest-20260422-121511",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-121556",
+        "new":  "captures/archive/clicktest-20260422-121556",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-121821",
+        "new":  "captures/archive/clicktest-20260422-121821",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-122310",
+        "new":  "captures/archive/clicktest-20260422-122310",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-123115",
+        "new":  "captures/archive/clicktest-20260422-123115",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-123235",
+        "new":  "captures/archive/clicktest-20260422-123235",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-123522",
+        "new":  "captures/archive/clicktest-20260422-123522",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-123627",
+        "new":  "captures/archive/clicktest-20260422-123627",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-124415",
+        "new":  "captures/archive/clicktest-20260422-124415",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-124947",
+        "new":  "captures/archive/clicktest-20260422-124947",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-125357",
+        "new":  "captures/archive/clicktest-20260422-125357",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-131211",
+        "new":  "captures/archive/clicktest-20260422-131211",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-135410",
+        "new":  "captures/archive/clicktest-20260422-135410",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-135723",
+        "new":  "captures/archive/clicktest-20260422-135723",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-141508",
+        "new":  "captures/archive/clicktest-20260422-141508",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-142007",
+        "new":  "captures/archive/clicktest-20260422-142007",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-142908",
+        "new":  "captures/archive/clicktest-20260422-142908",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-144756",
+        "new":  "captures/archive/clicktest-20260422-144756",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-145855",
+        "new":  "captures/archive/clicktest-20260422-145855",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-151033",
+        "new":  "captures/archive/clicktest-20260422-151033",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-163904",
+        "new":  "captures/archive/clicktest-20260422-163904",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-182440",
+        "new":  "captures/archive/clicktest-20260422-182440",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/clicktest-20260422-211114",
+        "new":  "captures/archive/clicktest-20260422-211114",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/sandbox-20260424-091715",
+        "new":  "captures/archive/sandbox-20260424-091715",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260423-113427",
+        "new":  "captures/archive/visual-smoke-20260423-113427",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260423-121409",
+        "new":  "captures/archive/visual-smoke-20260423-121409",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260423-135516",
+        "new":  "captures/archive/visual-smoke-20260423-135516",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260423-140044",
+        "new":  "captures/archive/visual-smoke-20260423-140044",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260423-145622",
+        "new":  "captures/archive/visual-smoke-20260423-145622",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260424-073707",
+        "new":  "captures/archive/visual-smoke-20260424-073707",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260424-073924",
+        "new":  "captures/archive/visual-smoke-20260424-073924",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260424-074102",
+        "new":  "captures/archive/visual-smoke-20260424-074102",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260424-074212",
+        "new":  "captures/archive/visual-smoke-20260424-074212",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260424-074428",
+        "new":  "captures/archive/visual-smoke-20260424-074428",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/archive/visual-smoke-20260424-074630",
+        "new":  "captures/archive/visual-smoke-20260424-074630",
+        "kind":  "directory"
+    },
+    {
+        "old":  "captures/current/battle-command-availability-current.json",
+        "new":  "captures/current/battle-command-availability-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-command-availability-current.md",
+        "new":  "captures/current/battle-command-availability-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-constructed-fixture-command-callback-current.json",
+        "new":  "captures/current/battle-constructed-fixture-command-callback-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-constructed-fixture-command-callback-current.md",
+        "new":  "captures/current/battle-constructed-fixture-command-callback-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-constructed-fixture-unit-scan-current.json",
+        "new":  "captures/current/battle-constructed-fixture-unit-scan-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-constructed-fixture-unit-scan-current.md",
+        "new":  "captures/current/battle-constructed-fixture-unit-scan-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-constructed-save-fixture-current.json",
+        "new":  "captures/current/battle-constructed-save-fixture-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-constructed-save-fixture-current.md",
+        "new":  "captures/current/battle-constructed-save-fixture-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-save-unit-inventory-current.json",
+        "new":  "captures/current/battle-save-unit-inventory-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-save-unit-inventory-current.md",
+        "new":  "captures/current/battle-save-unit-inventory-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-slot-scan-current.json",
+        "new":  "captures/current/battle-slot-scan-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-slot-scan-current.md",
+        "new":  "captures/current/battle-slot-scan-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/battle-ui-catalog-summary-20260515-114101.json",
+        "new":  "captures/archive/battle-ui-catalog-summary-20260515-114101.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/battle-ui-catalog-summary-20260515-114101.md",
+        "new":  "captures/archive/battle-ui-catalog-summary-20260515-114101.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-centered-input-current.json",
+        "new":  "captures/current/battle-ui-centered-input-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-centered-input-current.md",
+        "new":  "captures/current/battle-ui-centered-input-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-command-callback-current.json",
+        "new":  "captures/current/battle-ui-command-callback-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-command-callback-current.md",
+        "new":  "captures/current/battle-ui-command-callback-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-command-enabled-callback-current.json",
+        "new":  "captures/current/battle-ui-command-enabled-callback-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-command-enabled-callback-current.md",
+        "new":  "captures/current/battle-ui-command-enabled-callback-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-command-hit-current.json",
+        "new":  "captures/current/battle-ui-command-hit-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-command-hit-current.md",
+        "new":  "captures/current/battle-ui-command-hit-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-evidence-current.json",
+        "new":  "captures/current/battle-ui-evidence-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-evidence-current.md",
+        "new":  "captures/current/battle-ui-evidence-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-evidence-matrix-tests-current.json",
+        "new":  "captures/current/battle-ui-evidence-matrix-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-evidence-matrix-tests-current.md",
+        "new":  "captures/current/battle-ui-evidence-matrix-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-force-entry-current.json",
+        "new":  "captures/current/battle-ui-force-entry-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-force-entry-current.md",
+        "new":  "captures/current/battle-ui-force-entry-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/battle-ui-gate-20260515-114101.json",
+        "new":  "captures/archive/battle-ui-gate-20260515-114101.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/battle-ui-gate-20260515-114101.md",
+        "new":  "captures/archive/battle-ui-gate-20260515-114101.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-gate-tests-current.json",
+        "new":  "captures/current/battle-ui-gate-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-gate-tests-current.md",
+        "new":  "captures/current/battle-ui-gate-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-grid-hit-current.json",
+        "new":  "captures/current/battle-ui-grid-hit-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-grid-hit-current.md",
+        "new":  "captures/current/battle-ui-grid-hit-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-modal-classified-current.json",
+        "new":  "captures/current/battle-ui-modal-classified-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-modal-classified-current.md",
+        "new":  "captures/current/battle-ui-modal-classified-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-post-ready-redraw-current.json",
+        "new":  "captures/current/battle-ui-post-ready-redraw-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-post-ready-redraw-current.md",
+        "new":  "captures/current/battle-ui-post-ready-redraw-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-summary-tests-current.json",
+        "new":  "captures/current/battle-ui-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-ui-summary-tests-current.md",
+        "new":  "captures/current/battle-ui-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-visible-harness-guard-current.json",
+        "new":  "captures/current/battle-visible-harness-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-visible-harness-guard-current.md",
+        "new":  "captures/current/battle-visible-harness-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-visible-harness-guard-tests-current.json",
+        "new":  "captures/current/battle-visible-harness-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-visible-harness-guard-tests-current.md",
+        "new":  "captures/current/battle-visible-harness-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-visible-input-current.json",
+        "new":  "captures/current/battle-visible-input-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-visible-input-current.md",
+        "new":  "captures/current/battle-visible-input-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-visible-input-summary-current.md",
+        "new":  "captures/current/battle-visible-input-summary-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-visible-input-summary-tests-current.json",
+        "new":  "captures/current/battle-visible-input-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/battle-visible-input-summary-tests-current.md",
+        "new":  "captures/current/battle-visible-input-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/bottom-tooltip-current.md",
+        "new":  "captures/current/bottom-tooltip-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/capture-corpus-index-current.json",
+        "new":  "captures/current/capture-corpus-index-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/capture-corpus-index-current.md",
+        "new":  "captures/current/capture-corpus-index-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/capture-corpus-index-tests-current.json",
+        "new":  "captures/current/capture-corpus-index-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/capture-corpus-index-tests-current.md",
+        "new":  "captures/current/capture-corpus-index-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-baseline-recheck-current.json",
+        "new":  "captures/current/castle-overview-baseline-recheck-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-baseline-recheck-current.md",
+        "new":  "captures/current/castle-overview-baseline-recheck-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-baseline-recheck-tests-current.json",
+        "new":  "captures/current/castle-overview-baseline-recheck-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-baseline-recheck-tests-current.md",
+        "new":  "captures/current/castle-overview-baseline-recheck-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-evidence-current.json",
+        "new":  "captures/current/castle-overview-evidence-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-evidence-current.md",
+        "new":  "captures/current/castle-overview-evidence-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-evidence-matrix-tests-current.json",
+        "new":  "captures/current/castle-overview-evidence-matrix-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-evidence-matrix-tests-current.md",
+        "new":  "captures/current/castle-overview-evidence-matrix-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-flags1f-multihit-current.json",
+        "new":  "captures/current/castle-overview-flags1f-multihit-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-flags1f-multihit-current.md",
+        "new":  "captures/current/castle-overview-flags1f-multihit-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-gate-current.json",
+        "new":  "captures/current/castle-overview-gate-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-gate-current.md",
+        "new":  "captures/current/castle-overview-gate-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-gate-tests-current.json",
+        "new":  "captures/current/castle-overview-gate-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-gate-tests-current.md",
+        "new":  "captures/current/castle-overview-gate-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-hitbox-current.json",
+        "new":  "captures/current/castle-overview-hitbox-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-hitbox-current.md",
+        "new":  "captures/current/castle-overview-hitbox-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-hitbox-summary-tests-current.json",
+        "new":  "captures/current/castle-overview-hitbox-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-hitbox-summary-tests-current.md",
+        "new":  "captures/current/castle-overview-hitbox-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-hitmap-current.json",
+        "new":  "captures/current/castle-overview-hitmap-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-hitmap-current.md",
+        "new":  "captures/current/castle-overview-hitmap-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-hitmap-current.raw",
+        "new":  "captures/current/castle-overview-hitmap-current.raw",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/castle-overview-hitmap-flags1f.md",
+        "new":  "captures/archive/castle-overview-hitmap-flags1f.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/castle-overview-hitmap-flags1f.raw",
+        "new":  "captures/archive/castle-overview-hitmap-flags1f.raw",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/castle-overview-hitmap-index1.raw",
+        "new":  "captures/archive/castle-overview-hitmap-index1.raw",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-hitmap-summary-tests-current.json",
+        "new":  "captures/current/castle-overview-hitmap-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-hitmap-summary-tests-current.md",
+        "new":  "captures/current/castle-overview-hitmap-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-multihit-current.json",
+        "new":  "captures/current/castle-overview-multihit-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-multihit-current.md",
+        "new":  "captures/current/castle-overview-multihit-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-multihit-summary-tests-current.json",
+        "new":  "captures/current/castle-overview-multihit-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-multihit-summary-tests-current.md",
+        "new":  "captures/current/castle-overview-multihit-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-probe-guard-current.json",
+        "new":  "captures/current/castle-overview-probe-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-probe-guard-current.md",
+        "new":  "captures/current/castle-overview-probe-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-probe-guard-tests-current.json",
+        "new":  "captures/current/castle-overview-probe-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-probe-guard-tests-current.md",
+        "new":  "captures/current/castle-overview-probe-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-promotion-decision-current.json",
+        "new":  "captures/current/castle-overview-promotion-decision-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-promotion-decision-current.md",
+        "new":  "captures/current/castle-overview-promotion-decision-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-promotion-decision-tests-current.json",
+        "new":  "captures/current/castle-overview-promotion-decision-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-overview-promotion-decision-tests-current.md",
+        "new":  "captures/current/castle-overview-promotion-decision-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-owner-records-current.json",
+        "new":  "captures/current/castle-owner-records-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-owner-records-current.md",
+        "new":  "captures/current/castle-owner-records-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-owner-records-current.raw",
+        "new":  "captures/current/castle-owner-records-current.raw",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-owner-records-summary-tests-current.json",
+        "new":  "captures/current/castle-owner-records-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-owner-records-summary-tests-current.md",
+        "new":  "captures/current/castle-owner-records-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-save-owner-flag-scan-current.json",
+        "new":  "captures/current/castle-save-owner-flag-scan-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-save-owner-flag-scan-current.md",
+        "new":  "captures/current/castle-save-owner-flag-scan-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-save-owner-flag-scan-tests-current.json",
+        "new":  "captures/current/castle-save-owner-flag-scan-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/castle-save-owner-flag-scan-tests-current.md",
+        "new":  "captures/current/castle-save-owner-flag-scan-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-blit-rect-hdaware-20260423.log",
+        "new":  "captures/archive/cdb-map-blit-rect-hdaware-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-bottom12-frame-20260424.log",
+        "new":  "captures/archive/cdb-map-bottom12-frame-20260424.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-bottom12-frame-postmessage-20260424.log",
+        "new":  "captures/archive/cdb-map-bottom12-frame-postmessage-20260424.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-copy-extent-sharedscratch-gated-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-copy-extent-sharedscratch-gated-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-copy-extent-sharedscratch-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-copy-extent-sharedscratch-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-copy-extent-sharedscratch-skipclick-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-copy-extent-sharedscratch-skipclick-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-copy-sampler-enabled-sharedscratch-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-copy-sampler-enabled-sharedscratch-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-copy-sampler-sharedscratch-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-copy-sampler-sharedscratch-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-crash-object-detail-sharedscratch-loadslot0-20260423.log",
+        "new":  "captures/archive/cdb-map-crash-object-detail-sharedscratch-loadslot0-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-minimapaction-minimapright-dynvswitch-v2-20260424.log",
+        "new":  "captures/archive/cdb-map-minimapaction-minimapright-dynvswitch-v2-20260424.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-minimapaction-minimapright-vswitch-20260423.log",
+        "new":  "captures/archive/cdb-map-minimapaction-minimapright-vswitch-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-minimapaction-minimapright-vswitch-minimapclamp-20260423.log",
+        "new":  "captures/archive/cdb-map-minimapaction-minimapright-vswitch-minimapclamp-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-minimapclick-minimapright-20260423.log",
+        "new":  "captures/archive/cdb-map-minimapclick-minimapright-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-minimapclick-minimapright-v2-20260423.log",
+        "new":  "captures/archive/cdb-map-minimapclick-minimapright-v2-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-minimapclick-minimapright-vswitch-20260423.log",
+        "new":  "captures/archive/cdb-map-minimapclick-minimapright-vswitch-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-minimapclick-minimapright-vswitch-rerun-20260423.log",
+        "new":  "captures/archive/cdb-map-minimapclick-minimapright-vswitch-rerun-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-overlay-presentbounds-20260423.log",
+        "new":  "captures/archive/cdb-map-overlay-presentbounds-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-overlay-presentbounds-minimapclip-20260423.log",
+        "new":  "captures/archive/cdb-map-overlay-presentbounds-minimapclip-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-overlay-presentbounds-minimapclip2-20260423.log",
+        "new":  "captures/archive/cdb-map-overlay-presentbounds-minimapclip2-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-overlay-presentbounds-minimapright-20260423.log",
+        "new":  "captures/archive/cdb-map-overlay-presentbounds-minimapright-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-redraw-copy-extent-sharedscratch-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-redraw-copy-extent-sharedscratch-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-redraw-rect-focus-20260423.log",
+        "new":  "captures/archive/cdb-map-redraw-rect-focus-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-redraw-rect-fullonly-20260423.log",
+        "new":  "captures/archive/cdb-map-redraw-rect-fullonly-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-redraw-rect-fullonly-presentbounds-20260423.log",
+        "new":  "captures/archive/cdb-map-redraw-rect-fullonly-presentbounds-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-redraw-rect-fullonly-presentbounds-minimapclip2-20260423.log",
+        "new":  "captures/archive/cdb-map-redraw-rect-fullonly-presentbounds-minimapclip2-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-runtime-clamp-crash-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-runtime-clamp-crash-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-runtime-clamp-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-runtime-clamp-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-runtime-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-runtime-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-runtime-loadslot0-v2-20260422.log",
+        "new":  "captures/archive/cdb-map-runtime-loadslot0-v2-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-runtime-sharedscratch-clamp-crash-loadslot0-20260422.log",
+        "new":  "captures/archive/cdb-map-runtime-sharedscratch-clamp-crash-loadslot0-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-stream-constructors-fullredraw12-20260423.log",
+        "new":  "captures/archive/cdb-map-stream-constructors-fullredraw12-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-stream-constructors-mapsurface-scrollclamp-20260423.log",
+        "new":  "captures/archive/cdb-map-stream-constructors-mapsurface-scrollclamp-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-stream-constructors-mapsurface-scrollclamp-640blit-20260423.log",
+        "new":  "captures/archive/cdb-map-stream-constructors-mapsurface-scrollclamp-640blit-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-stream-constructors-mapsurface-scrollclamp-hdaware-20260423.log",
+        "new":  "captures/archive/cdb-map-stream-constructors-mapsurface-scrollclamp-hdaware-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-stream-constructors-menusurface-loadslot0-20260423.log",
+        "new":  "captures/archive/cdb-map-stream-constructors-menusurface-loadslot0-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-stream-constructors-menusurface-scrollclamp-loadslot0-20260423.log",
+        "new":  "captures/archive/cdb-map-stream-constructors-menusurface-scrollclamp-loadslot0-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-stream-constructors-sharedscratch-loadslot0-20260423.log",
+        "new":  "captures/archive/cdb-map-stream-constructors-sharedscratch-loadslot0-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-topband-minimapclip2-20260423.log",
+        "new":  "captures/archive/cdb-map-topband-minimapclip2-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-viewportbounds-minimapright-dynvswitch-20260423.log",
+        "new":  "captures/archive/cdb-map-viewportbounds-minimapright-dynvswitch-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-viewportbounds-minimapright-dynvswitch-20260424.log",
+        "new":  "captures/archive/cdb-map-viewportbounds-minimapright-dynvswitch-20260424.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-map-viewportbounds-minimapright-dynvswitch-v2-20260424.log",
+        "new":  "captures/archive/cdb-map-viewportbounds-minimapright-dynvswitch-v2-20260424.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-python-dynorigin-boundguard-centerexit-allmenu-20260422.log",
+        "new":  "captures/archive/cdb-python-dynorigin-boundguard-centerexit-allmenu-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-python-dynorigin-boundguard-map-20260422.log",
+        "new":  "captures/archive/cdb-python-dynorigin-boundguard-map-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-python-dynorigin-exitonly-20260422.log",
+        "new":  "captures/archive/cdb-python-dynorigin-exitonly-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-python-dynorigin-guard-map-20260422.log",
+        "new":  "captures/archive/cdb-python-dynorigin-guard-map-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-python-dynorigin-map-20260422.log",
+        "new":  "captures/archive/cdb-python-dynorigin-map-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-python-mouse-map-20260422.log",
+        "new":  "captures/archive/cdb-python-mouse-map-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-python-mouseorigin-map-20260422.log",
+        "new":  "captures/archive/cdb-python-mouseorigin-map-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-python-mouseorigin-skip0-map-20260422.log",
+        "new":  "captures/archive/cdb-python-mouseorigin-skip0-map-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-fullscreen-blit-fill-20260423.log",
+        "new":  "captures/archive/cdb-static-fullscreen-blit-fill-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-mapsurface-scrollclamp-640blit-caves-20260423.log",
+        "new":  "captures/archive/cdb-static-mapsurface-scrollclamp-640blit-caves-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-mapsurface-scrollclamp-cave-20260423.log",
+        "new":  "captures/archive/cdb-static-mapsurface-scrollclamp-cave-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-mapsurface-scrollclamp-hdaware-blit-caves-20260423.log",
+        "new":  "captures/archive/cdb-static-mapsurface-scrollclamp-hdaware-blit-caves-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-menu-surface-flow-20260423.log",
+        "new":  "captures/archive/cdb-static-menu-surface-flow-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-playgame-scroll-restore-20260423.log",
+        "new":  "captures/archive/cdb-static-playgame-scroll-restore-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-render-vtable-20260423.log",
+        "new":  "captures/archive/cdb-static-render-vtable-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-scrollclamp-candidate-20260423.log",
+        "new":  "captures/archive/cdb-static-scrollclamp-candidate-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-stream-constructors-20260423.log",
+        "new":  "captures/archive/cdb-static-stream-constructors-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-sub418700-fullredraw12-20260423.log",
+        "new":  "captures/archive/cdb-static-sub418700-fullredraw12-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-sub418700-fullredraw12-bounds-20260423.log",
+        "new":  "captures/archive/cdb-static-sub418700-fullredraw12-bounds-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-sub418700-hdaware-20260423.log",
+        "new":  "captures/archive/cdb-static-sub418700-hdaware-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-sub418a90-hdaware-20260423.log",
+        "new":  "captures/archive/cdb-static-sub418a90-hdaware-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-static-vtable-xrefs-20260423.log",
+        "new":  "captures/archive/cdb-static-vtable-xrefs-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-viewport-bounds-minimapright-20260423.log",
+        "new":  "captures/archive/cdb-viewport-bounds-minimapright-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-viewport-bounds-minimapright-dynvswitch-20260423.log",
+        "new":  "captures/archive/cdb-viewport-bounds-minimapright-dynvswitch-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-viewport-bounds-minimapright-dynvswitch-bottom12-20260424.log",
+        "new":  "captures/archive/cdb-viewport-bounds-minimapright-dynvswitch-bottom12-20260424.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/cdb-viewport-bounds-minimapright-vswitch-20260423.log",
+        "new":  "captures/archive/cdb-viewport-bounds-minimapright-vswitch-20260423.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/clash95-user32-iat-xrefs-20260422.log",
+        "new":  "captures/archive/clash95-user32-iat-xrefs-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/current-completion-summary-current.json",
+        "new":  "captures/current/current-completion-summary-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/current-completion-summary-current.md",
+        "new":  "captures/current/current-completion-summary-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/current-completion-summary-tests-current.json",
+        "new":  "captures/current/current-completion-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/current-completion-summary-tests-current.md",
+        "new":  "captures/current/current-completion-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/current-evidence-refresh-current.json",
+        "new":  "captures/current/current-evidence-refresh-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/current-evidence-refresh-current.md",
+        "new":  "captures/current/current-evidence-refresh-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/ddraw-geometry-callsite-probe-20260422.log",
+        "new":  "captures/archive/ddraw-geometry-callsite-probe-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/ddraw-geometry-callsite-probe-repeat-20260422.log",
+        "new":  "captures/archive/ddraw-geometry-callsite-probe-repeat-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/docs-consistency-current.json",
+        "new":  "captures/current/docs-consistency-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/docs-consistency-current.md",
+        "new":  "captures/current/docs-consistency-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/docs-consistency-tests-current.json",
+        "new":  "captures/current/docs-consistency-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/docs-consistency-tests-current.md",
+        "new":  "captures/current/docs-consistency-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/exe-artifact-guard-current.json",
+        "new":  "captures/current/exe-artifact-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/exe-artifact-guard-current.md",
+        "new":  "captures/current/exe-artifact-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/handoff-freshness-guard-current.json",
+        "new":  "captures/current/handoff-freshness-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/handoff-freshness-guard-current.md",
+        "new":  "captures/current/handoff-freshness-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/handoff-freshness-guard-tests-current.json",
+        "new":  "captures/current/handoff-freshness-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/handoff-freshness-guard-tests-current.md",
+        "new":  "captures/current/handoff-freshness-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/hd-map-evidence-current-check.json",
+        "new":  "captures/current/hd-map-evidence-current-check.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/hd-map-evidence-current.md",
+        "new":  "captures/current/hd-map-evidence-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/hd-map-smoke-current.json",
+        "new":  "captures/current/hd-map-smoke-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/hd-map-smoke-current.md",
+        "new":  "captures/current/hd-map-smoke-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/hwnd-origin-probe-20260422.log",
+        "new":  "captures/archive/hwnd-origin-probe-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/hwnd-origin-probe-createhwnd-20260422.log",
+        "new":  "captures/archive/hwnd-origin-probe-createhwnd-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/hwnd-origin-probe-dgroup-20260422.log",
+        "new":  "captures/archive/hwnd-origin-probe-dgroup-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-entry-gap-current.json",
+        "new":  "captures/current/load-slot-entry-gap-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-entry-gap-current.md",
+        "new":  "captures/current/load-slot-entry-gap-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-entry-gap-tests-current.json",
+        "new":  "captures/current/load-slot-entry-gap-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-entry-gap-tests-current.md",
+        "new":  "captures/current/load-slot-entry-gap-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-route-limit-current.json",
+        "new":  "captures/current/load-slot-route-limit-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-route-limit-current.md",
+        "new":  "captures/current/load-slot-route-limit-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-route-limit-tests-current.json",
+        "new":  "captures/current/load-slot-route-limit-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-route-limit-tests-current.md",
+        "new":  "captures/current/load-slot-route-limit-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-timeout-phase-current.json",
+        "new":  "captures/current/load-slot-timeout-phase-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-timeout-phase-current.md",
+        "new":  "captures/current/load-slot-timeout-phase-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-timeout-phase-tests-current.json",
+        "new":  "captures/current/load-slot-timeout-phase-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-timeout-phase-tests-current.md",
+        "new":  "captures/current/load-slot-timeout-phase-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-geometry-guard-current.json",
+        "new":  "captures/current/load-slot-transition-geometry-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-geometry-guard-current.md",
+        "new":  "captures/current/load-slot-transition-geometry-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-geometry-guard-tests-current.json",
+        "new":  "captures/current/load-slot-transition-geometry-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-geometry-guard-tests-current.md",
+        "new":  "captures/current/load-slot-transition-geometry-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-probe-guard-current.json",
+        "new":  "captures/current/load-slot-transition-probe-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-probe-guard-current.md",
+        "new":  "captures/current/load-slot-transition-probe-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-probe-guard-tests-current.json",
+        "new":  "captures/current/load-slot-transition-probe-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-probe-guard-tests-current.md",
+        "new":  "captures/current/load-slot-transition-probe-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-probe-preview-current.json",
+        "new":  "captures/current/load-slot-transition-probe-preview-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-probe-preview-current.md",
+        "new":  "captures/current/load-slot-transition-probe-preview-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-probe-preview-tests-current.json",
+        "new":  "captures/current/load-slot-transition-probe-preview-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-probe-preview-tests-current.md",
+        "new":  "captures/current/load-slot-transition-probe-preview-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-readiness-current.json",
+        "new":  "captures/current/load-slot-transition-readiness-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-readiness-current.md",
+        "new":  "captures/current/load-slot-transition-readiness-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-readiness-tests-current.json",
+        "new":  "captures/current/load-slot-transition-readiness-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-readiness-tests-current.md",
+        "new":  "captures/current/load-slot-transition-readiness-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-run-plan-current.json",
+        "new":  "captures/current/load-slot-transition-run-plan-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-run-plan-current.md",
+        "new":  "captures/current/load-slot-transition-run-plan-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-run-plan-tests-current.json",
+        "new":  "captures/current/load-slot-transition-run-plan-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-run-plan-tests-current.md",
+        "new":  "captures/current/load-slot-transition-run-plan-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-summary-tests-current.json",
+        "new":  "captures/current/load-slot-transition-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/load-slot-transition-summary-tests-current.md",
+        "new":  "captures/current/load-slot-transition-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-proof-template-current.json",
+        "new":  "captures/current/manual-directinput-proof-template-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-proof-template-current.md",
+        "new":  "captures/current/manual-directinput-proof-template-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-proof-template-report-current.json",
+        "new":  "captures/current/manual-directinput-proof-template-report-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-proof-template-tests-current.json",
+        "new":  "captures/current/manual-directinput-proof-template-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-proof-template-tests-current.md",
+        "new":  "captures/current/manual-directinput-proof-template-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-run-plan-current.json",
+        "new":  "captures/current/manual-directinput-run-plan-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-run-plan-current.md",
+        "new":  "captures/current/manual-directinput-run-plan-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-run-plan-tests-current.json",
+        "new":  "captures/current/manual-directinput-run-plan-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-run-plan-tests-current.md",
+        "new":  "captures/current/manual-directinput-run-plan-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-validation-checklist-current.json",
+        "new":  "captures/current/manual-directinput-validation-checklist-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-validation-checklist-current.md",
+        "new":  "captures/current/manual-directinput-validation-checklist-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-validation-checklist-tests-current.json",
+        "new":  "captures/current/manual-directinput-validation-checklist-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/manual-directinput-validation-checklist-tests-current.md",
+        "new":  "captures/current/manual-directinput-validation-checklist-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json",
+        "new":  "captures/archive/map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-copy-sampler-enabled-frame-sharedscratch-loadslot0-20260422.png",
+        "new":  "captures/archive/map-copy-sampler-enabled-frame-sharedscratch-loadslot0-20260422.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-copy-sampler-enabled-sharedscratch-loadslot0-summary-20260422.json",
+        "new":  "captures/archive/map-copy-sampler-enabled-sharedscratch-loadslot0-summary-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-crash-object-detail-sharedscratch-loadslot0-summary-20260423.json",
+        "new":  "captures/archive/map-crash-object-detail-sharedscratch-loadslot0-summary-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-minimapaction-minimapright-dynvswitch-v2-summary-20260424.json",
+        "new":  "captures/archive/map-minimapaction-minimapright-dynvswitch-v2-summary-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-minimapaction-minimapright-vswitch-minimapclamp-summary-20260423.json",
+        "new":  "captures/archive/map-minimapaction-minimapright-vswitch-minimapclamp-summary-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-minimapaction-minimapright-vswitch-summary-20260423.json",
+        "new":  "captures/archive/map-minimapaction-minimapright-vswitch-summary-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-minimapclick-minimapright-frame-20260423.png",
+        "new":  "captures/archive/map-minimapclick-minimapright-frame-20260423.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-minimapclick-minimapright-frame-v2-20260423.png",
+        "new":  "captures/archive/map-minimapclick-minimapright-frame-v2-20260423.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-minimapclick-minimapright-summary-v2-20260423.json",
+        "new":  "captures/archive/map-minimapclick-minimapright-summary-v2-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-minimapclick-minimapright-vswitch-rerun-frame-20260423.png",
+        "new":  "captures/archive/map-minimapclick-minimapright-vswitch-rerun-frame-20260423.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-minimapclick-minimapright-vswitch-rerun-mouse-20260423.json",
+        "new":  "captures/archive/map-minimapclick-minimapright-vswitch-rerun-mouse-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-minimapclick-minimapright-vswitch-rerun-summary-20260423.json",
+        "new":  "captures/archive/map-minimapclick-minimapright-vswitch-rerun-summary-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-overlay-presentbounds-frame-loadslot0-20260423.png",
+        "new":  "captures/archive/map-overlay-presentbounds-frame-loadslot0-20260423.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-overlay-presentbounds-minimapclip2-frame-loadslot0-20260423.png",
+        "new":  "captures/archive/map-overlay-presentbounds-minimapclip2-frame-loadslot0-20260423.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-overlay-presentbounds-minimapright-frame-loadslot0-20260423.png",
+        "new":  "captures/archive/map-overlay-presentbounds-minimapright-frame-loadslot0-20260423.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-redraw-copy-extent-sharedscratch-loadslot0-summary-20260422.json",
+        "new":  "captures/archive/map-redraw-copy-extent-sharedscratch-loadslot0-summary-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-redraw-rect-fullonly-presentbounds-frame-loadslot0-20260423.png",
+        "new":  "captures/archive/map-redraw-rect-fullonly-presentbounds-frame-loadslot0-20260423.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-runtime-clamp-crash-loadslot0-summary-20260422.json",
+        "new":  "captures/archive/map-runtime-clamp-crash-loadslot0-summary-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-runtime-clamp-loadslot0-summary-20260422.json",
+        "new":  "captures/archive/map-runtime-clamp-loadslot0-summary-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-runtime-loadslot0-v2-summary-20260422.json",
+        "new":  "captures/archive/map-runtime-loadslot0-v2-summary-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-runtime-mouse-loadslot0-v2-20260422.json",
+        "new":  "captures/archive/map-runtime-mouse-loadslot0-v2-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-runtime-sharedscratch-clamp-crash-loadslot0-summary-20260422.json",
+        "new":  "captures/archive/map-runtime-sharedscratch-clamp-crash-loadslot0-summary-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-stream-constructors-frame-menusurface-loadslot0-20260423.png",
+        "new":  "captures/archive/map-stream-constructors-frame-menusurface-loadslot0-20260423.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-stream-constructors-frame-menusurface-scrollclamp-loadslot0-20260423.png",
+        "new":  "captures/archive/map-stream-constructors-frame-menusurface-scrollclamp-loadslot0-20260423.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-stream-constructors-fullredraw12-loadslot0-summary-20260423.json",
+        "new":  "captures/archive/map-stream-constructors-fullredraw12-loadslot0-summary-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-stream-constructors-mapsurface-scrollclamp-640blit-loadslot0-summary-20260423.json",
+        "new":  "captures/archive/map-stream-constructors-mapsurface-scrollclamp-640blit-loadslot0-summary-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-stream-constructors-menusurface-loadslot0-summary-20260423.json",
+        "new":  "captures/archive/map-stream-constructors-menusurface-loadslot0-summary-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-stream-constructors-menusurface-scrollclamp-loadslot0-summary-20260423.json",
+        "new":  "captures/archive/map-stream-constructors-menusurface-scrollclamp-loadslot0-summary-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-stream-constructors-mouse-menusurface-loadslot0-20260423.json",
+        "new":  "captures/archive/map-stream-constructors-mouse-menusurface-loadslot0-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-stream-constructors-mouse-menusurface-scrollclamp-loadslot0-20260423.json",
+        "new":  "captures/archive/map-stream-constructors-mouse-menusurface-scrollclamp-loadslot0-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-stream-constructors-sharedscratch-loadslot0-summary-20260423.json",
+        "new":  "captures/archive/map-stream-constructors-sharedscratch-loadslot0-summary-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-tile-coverage-v2-bottom12-20260424.json",
+        "new":  "captures/archive/map-tile-coverage-v2-bottom12-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-topband-minimapclip2-summary-20260424.json",
+        "new":  "captures/archive/map-topband-minimapclip2-summary-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/map-viewportbounds-minimapright-dynvswitch-v2-frame-20260424.png",
+        "new":  "captures/archive/map-viewportbounds-minimapright-dynvswitch-v2-frame-20260424.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/mouseclickmap-20260422-absquarter-sendinput-v2.json",
+        "new":  "captures/archive/mouseclickmap-20260422-absquarter-sendinput-v2.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/mouseclickmap-cdb-python-20260422.json",
+        "new":  "captures/archive/mouseclickmap-cdb-python-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/mouseclickmap-cdb-python-dynorigin-boundguard-20260422.json",
+        "new":  "captures/archive/mouseclickmap-cdb-python-dynorigin-boundguard-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/mouseclickmap-cdb-python-mouseorigin-skip0-20260422.json",
+        "new":  "captures/archive/mouseclickmap-cdb-python-mouseorigin-skip0-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/mousemenuprobe-20260422-cdb-python-map-summary.json",
+        "new":  "captures/archive/mousemenuprobe-20260422-cdb-python-map-summary.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/mousemenuprobe-20260422-dynorigin-boundguard-summary.json",
+        "new":  "captures/archive/mousemenuprobe-20260422-dynorigin-boundguard-summary.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/mousemenuprobe-20260422-mouseorigin-skip0-summary.json",
+        "new":  "captures/archive/mousemenuprobe-20260422-mouseorigin-skip0-summary.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/mousemenuprobe-20260422-sample-summary.json",
+        "new":  "captures/archive/mousemenuprobe-20260422-sample-summary.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/mouseprobe-20260422-183513-summary.json",
+        "new":  "captures/archive/mouseprobe-20260422-183513-summary.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-popup-boundary-guard-current.json",
+        "new":  "captures/current/no-popup-boundary-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-popup-boundary-guard-current.md",
+        "new":  "captures/current/no-popup-boundary-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-popup-guard-tests-current.json",
+        "new":  "captures/current/no-popup-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-popup-guard-tests-current.md",
+        "new":  "captures/current/no-popup-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-popup-map-evidence-current.json",
+        "new":  "captures/current/no-popup-map-evidence-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-popup-map-evidence-current.md",
+        "new":  "captures/current/no-popup-map-evidence-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-popup-map-evidence-tests-current.json",
+        "new":  "captures/current/no-popup-map-evidence-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-popup-map-evidence-tests-current.md",
+        "new":  "captures/current/no-popup-map-evidence-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-visible-runtime-guard-current.json",
+        "new":  "captures/current/no-visible-runtime-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-visible-runtime-guard-current.md",
+        "new":  "captures/current/no-visible-runtime-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-visible-runtime-guard-tests-current.json",
+        "new":  "captures/current/no-visible-runtime-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/no-visible-runtime-guard-tests-current.md",
+        "new":  "captures/current/no-visible-runtime-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/original_menu.png",
+        "new":  "captures/archive/original_menu.png",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-definition-current.json",
+        "new":  "captures/current/patch-definition-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-definition-current.md",
+        "new":  "captures/current/patch-definition-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-definition-tests-current.json",
+        "new":  "captures/current/patch-definition-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-definition-tests-current.md",
+        "new":  "captures/current/patch-definition-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-manifest-compare-current-vs-partial12.json",
+        "new":  "captures/current/patch-manifest-compare-current-vs-partial12.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-manifest-compare-current-vs-partial12.md",
+        "new":  "captures/current/patch-manifest-compare-current-vs-partial12.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-stage-battlecenter-current.json",
+        "new":  "captures/current/patch-stage-battlecenter-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-stage-battlecenter-inputprobe-current.json",
+        "new":  "captures/current/patch-stage-battlecenter-inputprobe-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-stage-battlecenter-inputprobe-patched-current.json",
+        "new":  "captures/current/patch-stage-battlecenter-inputprobe-patched-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-boundary-clamp-20260424.json",
+        "new":  "captures/archive/patch-stage-boundary-clamp-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/patch-stage-current-hd-map.json",
+        "new":  "captures/current/patch-stage-current-hd-map.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-boundguard-20260422.json",
+        "new":  "captures/archive/patch-stage-dynorigin-boundguard-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-20260423.json",
+        "new":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-20260423.json",
+        "new":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip2-20260423.json",
+        "new":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip2-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-20260423.json",
+        "new":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-20260424.json",
+        "new":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-bottom12-20260424.json",
+        "new":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-bottom12-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-v2-20260424.json",
+        "new":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-v2-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch-20260423.json",
+        "new":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch-minimapclamp-20260423.json",
+        "new":  "captures/archive/patch-stage-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch-minimapclamp-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-menusurface-20260423.json",
+        "new":  "captures/archive/patch-stage-dynorigin-menusurface-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-menusurface-scrollclamp-20260423.json",
+        "new":  "captures/archive/patch-stage-dynorigin-menusurface-scrollclamp-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-dynorigin-sharedscratch-20260422.json",
+        "new":  "captures/archive/patch-stage-dynorigin-sharedscratch-20260422.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-keyscroll-20260424.json",
+        "new":  "captures/archive/patch-stage-keyscroll-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-mapdraw-partial12-20260424.json",
+        "new":  "captures/archive/patch-stage-mapdraw-partial12-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-right-bottom-action-nativecenter-20260515.json",
+        "new":  "captures/archive/patch-stage-right-bottom-action-nativecenter-20260515.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-right-bottom-compose-20260513.json",
+        "new":  "captures/archive/patch-stage-right-bottom-compose-20260513.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/patch-stage-unit-selection-actionbar-postredraw-20260527.json",
+        "new":  "captures/archive/patch-stage-unit-selection-actionbar-postredraw-20260527.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/post-owner-evidence-current.json",
+        "new":  "captures/current/post-owner-evidence-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/post-owner-evidence-current.md",
+        "new":  "captures/current/post-owner-evidence-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/process-hygiene-guard-current.json",
+        "new":  "captures/current/process-hygiene-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/process-hygiene-guard-current.md",
+        "new":  "captures/current/process-hygiene-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/process-hygiene-guard-tests-current.json",
+        "new":  "captures/current/process-hygiene-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/process-hygiene-guard-tests-current.md",
+        "new":  "captures/current/process-hygiene-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/promotion-override-guard-current.json",
+        "new":  "captures/current/promotion-override-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/promotion-override-guard-current.md",
+        "new":  "captures/current/promotion-override-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/promotion-override-guard-tests-current.json",
+        "new":  "captures/current/promotion-override-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/promotion-override-guard-tests-current.md",
+        "new":  "captures/current/promotion-override-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/promotion-override-manifest-current.json",
+        "new":  "captures/current/promotion-override-manifest-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/promotion-override-manifest-current.md",
+        "new":  "captures/current/promotion-override-manifest-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/promotion-override-manifest-tests-current.json",
+        "new":  "captures/current/promotion-override-manifest-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/promotion-override-manifest-tests-current.md",
+        "new":  "captures/current/promotion-override-manifest-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/python-runtime-safety-current.json",
+        "new":  "captures/current/python-runtime-safety-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/python-runtime-safety-current.md",
+        "new":  "captures/current/python-runtime-safety-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/python-runtime-safety-tests-current.json",
+        "new":  "captures/current/python-runtime-safety-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/python-runtime-safety-tests-current.md",
+        "new":  "captures/current/python-runtime-safety-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-action-nativecenter-current.md",
+        "new":  "captures/current/right-bottom-action-nativecenter-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-blocker-triage-current.json",
+        "new":  "captures/current/right-bottom-blocker-triage-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-blocker-triage-current.md",
+        "new":  "captures/current/right-bottom-blocker-triage-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-blocker-triage-tests-current.json",
+        "new":  "captures/current/right-bottom-blocker-triage-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-blocker-triage-tests-current.md",
+        "new":  "captures/current/right-bottom-blocker-triage-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-compose-evidence-current.json",
+        "new":  "captures/current/right-bottom-compose-evidence-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-compose-evidence-current.md",
+        "new":  "captures/current/right-bottom-compose-evidence-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-compose-evidence-matrix-tests-current.json",
+        "new":  "captures/current/right-bottom-compose-evidence-matrix-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-compose-evidence-matrix-tests-current.md",
+        "new":  "captures/current/right-bottom-compose-evidence-matrix-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-compose-promotion-decision-current.json",
+        "new":  "captures/current/right-bottom-compose-promotion-decision-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-compose-promotion-decision-current.md",
+        "new":  "captures/current/right-bottom-compose-promotion-decision-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-compose-promotion-decision-tests-current.json",
+        "new":  "captures/current/right-bottom-compose-promotion-decision-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-compose-promotion-decision-tests-current.md",
+        "new":  "captures/current/right-bottom-compose-promotion-decision-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-grid-hit-current.json",
+        "new":  "captures/current/right-bottom-grid-hit-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-grid-hit-current.md",
+        "new":  "captures/current/right-bottom-grid-hit-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-grid-hit-probe-guard-current.json",
+        "new":  "captures/current/right-bottom-grid-hit-probe-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-grid-hit-probe-guard-current.md",
+        "new":  "captures/current/right-bottom-grid-hit-probe-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-grid-hit-probe-guard-tests-current.json",
+        "new":  "captures/current/right-bottom-grid-hit-probe-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-grid-hit-probe-guard-tests-current.md",
+        "new":  "captures/current/right-bottom-grid-hit-probe-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-grid-hit-summary-tests-current.json",
+        "new":  "captures/current/right-bottom-grid-hit-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-grid-hit-summary-tests-current.md",
+        "new":  "captures/current/right-bottom-grid-hit-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-natural-route-candidate-matrix-current.json",
+        "new":  "captures/current/right-bottom-natural-route-candidate-matrix-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-natural-route-candidate-matrix-current.md",
+        "new":  "captures/current/right-bottom-natural-route-candidate-matrix-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-natural-route-candidate-matrix-tests-current.json",
+        "new":  "captures/current/right-bottom-natural-route-candidate-matrix-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-natural-route-candidate-matrix-tests-current.md",
+        "new":  "captures/current/right-bottom-natural-route-candidate-matrix-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-natural-route-guard-current.json",
+        "new":  "captures/current/right-bottom-natural-route-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-natural-route-guard-current.md",
+        "new":  "captures/current/right-bottom-natural-route-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-natural-route-guard-tests-current.json",
+        "new":  "captures/current/right-bottom-natural-route-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-natural-route-guard-tests-current.md",
+        "new":  "captures/current/right-bottom-natural-route-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-owner-flag-inventory-current.json",
+        "new":  "captures/current/right-bottom-owner-flag-inventory-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-owner-flag-inventory-current.md",
+        "new":  "captures/current/right-bottom-owner-flag-inventory-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-owner-flag-inventory-tests-current.json",
+        "new":  "captures/current/right-bottom-owner-flag-inventory-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-owner-flag-inventory-tests-current.md",
+        "new":  "captures/current/right-bottom-owner-flag-inventory-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-owner-flag-static-guard-current.json",
+        "new":  "captures/current/right-bottom-owner-flag-static-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-owner-flag-static-guard-current.md",
+        "new":  "captures/current/right-bottom-owner-flag-static-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-owner-flag-static-guard-tests-current.json",
+        "new":  "captures/current/right-bottom-owner-flag-static-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-owner-flag-static-guard-tests-current.md",
+        "new":  "captures/current/right-bottom-owner-flag-static-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-route-timing-guard-current.json",
+        "new":  "captures/current/right-bottom-route-timing-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-route-timing-guard-current.md",
+        "new":  "captures/current/right-bottom-route-timing-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-route-timing-guard-tests-current.json",
+        "new":  "captures/current/right-bottom-route-timing-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-route-timing-guard-tests-current.md",
+        "new":  "captures/current/right-bottom-route-timing-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-plan-current.json",
+        "new":  "captures/current/right-bottom-slot-fixture-plan-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-plan-current.md",
+        "new":  "captures/current/right-bottom-slot-fixture-plan-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-plan-tests-current.json",
+        "new":  "captures/current/right-bottom-slot-fixture-plan-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-plan-tests-current.md",
+        "new":  "captures/current/right-bottom-slot-fixture-plan-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-result-summary-tests-current.json",
+        "new":  "captures/current/right-bottom-slot-fixture-result-summary-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-result-summary-tests-current.md",
+        "new":  "captures/current/right-bottom-slot-fixture-result-summary-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-runtime-plan-current.json",
+        "new":  "captures/current/right-bottom-slot-fixture-runtime-plan-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-runtime-plan-current.md",
+        "new":  "captures/current/right-bottom-slot-fixture-runtime-plan-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-runtime-plan-tests-current.json",
+        "new":  "captures/current/right-bottom-slot-fixture-runtime-plan-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-runtime-plan-tests-current.md",
+        "new":  "captures/current/right-bottom-slot-fixture-runtime-plan-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-script-guard-current.json",
+        "new":  "captures/current/right-bottom-slot-fixture-script-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-script-guard-current.md",
+        "new":  "captures/current/right-bottom-slot-fixture-script-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-script-guard-tests-current.json",
+        "new":  "captures/current/right-bottom-slot-fixture-script-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-slot-fixture-script-guard-tests-current.md",
+        "new":  "captures/current/right-bottom-slot-fixture-script-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/right-bottom-ui-bounds-baseline-20260429.json",
+        "new":  "captures/archive/right-bottom-ui-bounds-baseline-20260429.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-visual-artifact-guard-current.json",
+        "new":  "captures/current/right-bottom-visual-artifact-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-visual-artifact-guard-current.md",
+        "new":  "captures/current/right-bottom-visual-artifact-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-visual-artifact-guard-tests-current.json",
+        "new":  "captures/current/right-bottom-visual-artifact-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/right-bottom-visual-artifact-guard-tests-current.md",
+        "new":  "captures/current/right-bottom-visual-artifact-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/stable-stage-guard-current.json",
+        "new":  "captures/current/stable-stage-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/stable-stage-guard-current.md",
+        "new":  "captures/current/stable-stage-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/stable-stage-guard-tests-current.json",
+        "new":  "captures/current/stable-stage-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/stable-stage-guard-tests-current.md",
+        "new":  "captures/current/stable-stage-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/surface-dump-policy-guard-current.json",
+        "new":  "captures/current/surface-dump-policy-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/surface-dump-policy-guard-current.md",
+        "new":  "captures/current/surface-dump-policy-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/topband-image-summary-20260424.json",
+        "new":  "captures/archive/topband-image-summary-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/unit-selection-action-bar-current.md",
+        "new":  "captures/current/unit-selection-action-bar-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/unit-selection-tooltip-current.md",
+        "new":  "captures/current/unit-selection-tooltip-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/viewport-bounds-compare-20260423.json",
+        "new":  "captures/archive/viewport-bounds-compare-20260423.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/viewport-bounds-minimapright-dynvswitch-bottom12-20260424.json",
+        "new":  "captures/archive/viewport-bounds-minimapright-dynvswitch-bottom12-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/viewport-bounds-minimapright-dynvswitch-v2-20260424.json",
+        "new":  "captures/archive/viewport-bounds-minimapright-dynvswitch-v2-20260424.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/visible-runtime-launcher-guard-current.json",
+        "new":  "captures/current/visible-runtime-launcher-guard-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/visible-runtime-launcher-guard-current.md",
+        "new":  "captures/current/visible-runtime-launcher-guard-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/visible-runtime-launcher-guard-tests-current.json",
+        "new":  "captures/current/visible-runtime-launcher-guard-tests-current.json",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/current/visible-runtime-launcher-guard-tests-current.md",
+        "new":  "captures/current/visible-runtime-launcher-guard-tests-current.md",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/win32-geometry-ddraw-disasm-20260422.log",
+        "new":  "captures/archive/win32-geometry-ddraw-disasm-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/win32-geometry-entry-probe-20260422.log",
+        "new":  "captures/archive/win32-geometry-entry-probe-20260422.log",
+        "kind":  "file"
+    },
+    {
+        "old":  "captures/archive/win32-geometry-probe-20260422.log",
+        "new":  "captures/archive/win32-geometry-probe-20260422.log",
+        "kind":  "file"
+    }
+]

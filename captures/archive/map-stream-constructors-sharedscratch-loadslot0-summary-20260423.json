@@ -1,0 +1,294 @@
+{
+  "log": "captures\\cdb-map-stream-constructors-sharedscratch-loadslot0-20260423.log",
+  "patch_report": "captures\\patch-stage-dynorigin-sharedscratch-20260422.json",
+  "expected_visible_tiles": {
+    "x": 12,
+    "y": 9
+  },
+  "loadsave_rows": 0,
+  "loadmap_rows": 0,
+  "playgame_rows": 1,
+  "redraw_rows": 12,
+  "scroll_rows": 0,
+  "repaint_rows": 12,
+  "copy_pre_rows": 0,
+  "copy_exec_rows": 0,
+  "copy_state_rows": 1,
+  "obj_state_rows": 1,
+  "copy_diff_rows": 1,
+  "stream_rows": 300,
+  "first_stream": [
+    {
+      "line_no": 192,
+      "kind": "B",
+      "seq": 0,
+      "obj": "00fbbe58",
+      "surf": "028bc3c8",
+      "width": 640,
+      "height": 480,
+      "base": "0b210030",
+      "row": 16,
+      "x": 32,
+      "cursor": "0b212850"
+    }
+  ],
+  "last_stream": [
+    {
+      "line_no": 507,
+      "kind": "B",
+      "seq": 299,
+      "obj": "00fbbe58",
+      "surf": "028bc3c8",
+      "width": 640,
+      "height": 480,
+      "base": "0b210030",
+      "row": 400,
+      "x": 416,
+      "cursor": "0b24e9d0"
+    }
+  ],
+  "stream_groups": [
+    {
+      "surf": "028bc3c8",
+      "width": 640,
+      "height": 480,
+      "base": "0b210030",
+      "count": 266,
+      "first_seq": 0,
+      "last_seq": 299,
+      "cursor_min": 186722384,
+      "cursor_max": 186976264,
+      "row_min": 16,
+      "row_max": 412,
+      "x_min": 32,
+      "x_max": 608,
+      "kinds": [
+        {
+          "kind": "A",
+          "count": 82
+        },
+        {
+          "kind": "B",
+          "count": 184
+        }
+      ],
+      "objects": [
+        {
+          "obj": "00fbbe58",
+          "count": 184
+        },
+        {
+          "obj": "028ba220",
+          "count": 82
+        }
+      ],
+      "cursor_min_hex": "0b212850",
+      "cursor_max_hex": "0b250808"
+    },
+    {
+      "surf": "0b20ff30",
+      "width": 214,
+      "height": 214,
+      "base": "0b68e6f0",
+      "count": 34,
+      "first_seq": 9,
+      "last_seq": 285,
+      "cursor_min": 191424240,
+      "cursor_max": 191451782,
+      "row_min": 0,
+      "row_max": 128,
+      "x_min": 0,
+      "x_max": 214,
+      "kinds": [
+        {
+          "kind": "A",
+          "count": 34
+        }
+      ],
+      "objects": [
+        {
+          "obj": "028ba220",
+          "count": 34
+        }
+      ],
+      "cursor_min_hex": "0b68e6f0",
+      "cursor_max_hex": "0b695286"
+    }
+  ],
+  "first_copy_pre": [],
+  "last_copy_pre": [],
+  "first_copy_exec": [],
+  "last_copy_exec": [],
+  "last_copy_state": [
+    {
+      "line_no": 528,
+      "ebp": "000edaca",
+      "dst_edi": "0b25c1d0",
+      "src_esi": "0c310612",
+      "len_eax": 64,
+      "dwords_ecx": 16,
+      "edx": "0050ed94",
+      "obj_local": "00fbbe58",
+      "src_local": "0c310612"
+    }
+  ],
+  "last_obj_state": [
+    {
+      "line_no": 529,
+      "obj": "00fbbe58",
+      "objvt": "0050ed94",
+      "obj_cursor": "0b25c1d0",
+      "obj_aux": "00000280",
+      "scratch_obj": "0051d4b8",
+      "scratchvt": "0050ef24",
+      "scratch_p4": "00000000",
+      "scratch_p8": "02580320"
+    }
+  ],
+  "last_copy_diff": [
+    {
+      "line_no": 530,
+      "dst_minus_obj_cursor": 0,
+      "dst_minus_scratch_p4": 187023824,
+      "dst_minus_scratch_p8": 147701424
+    }
+  ],
+  "copy_pre_groups": [],
+  "copy_exec_groups": [],
+  "restore_rows": 1,
+  "restore_clamp_rows": 1,
+  "first_restore": [
+    {
+      "line_no": 188,
+      "beforex": 39,
+      "beforey": 42,
+      "maxx": 38,
+      "maxy": 41,
+      "mapw": 50,
+      "maph": 50
+    }
+  ],
+  "first_restore_clamp": [
+    {
+      "line_no": 189,
+      "afterx": 38,
+      "aftery": 41
+    }
+  ],
+  "exception_rows": 1,
+  "first_exception": [
+    {
+      "line_no": 514,
+      "code": "c0000005",
+      "chance": "first chance"
+    }
+  ],
+  "last_exception": [
+    {
+      "line_no": 514,
+      "code": "c0000005",
+      "chance": "first chance"
+    }
+  ],
+  "last_exception_address": [
+    {
+      "line_no": 516,
+      "address": "00403582",
+      "symbol": "clash95+0x00003582"
+    }
+  ],
+  "last_write_address": [
+    {
+      "line_no": 522,
+      "address": "0b25c1d0"
+    }
+  ],
+  "last_eip": [
+    {
+      "line_no": 524,
+      "eip": "00403582"
+    }
+  ],
+  "map_entered": true,
+  "redraw_hit": true,
+  "first_loadsave": [],
+  "first_loadmap": [],
+  "first_playgame": [
+    {
+      "line_no": 187,
+      "gd": "03150030",
+      "mapw": 50,
+      "maph": 50,
+      "scrollx": 39,
+      "scrolly": 42,
+      "player": 0,
+      "selected": -1,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "first_redraw": [
+    {
+      "line_no": 190,
+      "seq": 0,
+      "gd": "03150030",
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "end12x": 50,
+      "end12y": 50,
+      "end9x": 47,
+      "end9y": 48,
+      "player": 0,
+      "selected": -1,
+      "fog": 0,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "last_redraw": [
+    {
+      "line_no": 513,
+      "seq": 11,
+      "gd": "03150030",
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "end12x": 50,
+      "end12y": 50,
+      "end9x": 47,
+      "end9y": 48,
+      "player": 0,
+      "selected": -1,
+      "fog": 0,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "scrollx_range": {
+    "min": 38,
+    "max": 38,
+    "unique": 1
+  },
+  "scrolly_range": {
+    "min": 41,
+    "max": 41,
+    "unique": 1
+  },
+  "mapw_range": {
+    "min": 50,
+    "max": 50,
+    "unique": 1
+  },
+  "maph_range": {
+    "min": 50,
+    "max": 50,
+    "unique": 1
+  },
+  "edge_overrun_rows": 0,
+  "first_edge_overrun": [],
+  "last_edge_overrun": [],
+  "static_patch_expects_12x9": true
+}

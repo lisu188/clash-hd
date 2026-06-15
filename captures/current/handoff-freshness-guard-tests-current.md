@@ -1,0 +1,25 @@
+# Handoff Freshness Guard Tests
+
+- Status: PASS
+- Generated: `2026-06-15T18:34:59+02:00`
+- Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
+- Guard policy: proves the handoff freshness guard rejects stale route/input blockers, missing route timing links, stale legacy outside-debugger or visible-capture tasks, stale VM/visual-smoke tasks, missing owner-flag inventory artifacts, missing load-slot transition readiness artifacts, missing loop-handoff load-slot transition readiness artifacts, missing manual-proof or explicit CDB-only promotion blockers, missing manual DirectInput checklist artifacts, missing manual proof template artifacts, missing completion summary artifacts, missing no-popup operator preference text, and missing visible runtime launcher guard artifacts
+
+## Tests
+
+- `handoff_freshness_guard passes with current route timing and promotion-blocker wording`
+- `handoff_freshness_guard fails when stale broader route/input safety wording returns`
+- `handoff_freshness_guard fails when stale legacy outside-debugger or visible-capture tasks return`
+- `handoff_freshness_guard fails when stale VM/visual-smoke task wording returns`
+- `handoff_freshness_guard fails when route timing guard links are missing`
+- `handoff_freshness_guard fails when owner-flag inventory artifacts are missing`
+- `handoff_freshness_guard fails when load-slot route-limit artifacts are missing`
+- `handoff_freshness_guard fails when load-slot transition readiness artifacts are missing`
+- `handoff_freshness_guard fails when loop handoff misses load-slot transition readiness artifacts`
+- `handoff_freshness_guard fails when manual proof or explicit CDB-only override wording is missing`
+- `handoff_freshness_guard fails when the manual DirectInput checklist artifact is missing`
+- `handoff_freshness_guard fails when the manual DirectInput proof template artifact is missing`
+- `handoff_freshness_guard fails when the current completion summary artifact is missing`
+- `handoff_freshness_guard fails when the no-popup operator preference is missing`
+- `handoff_freshness_guard fails when the visible runtime launcher guard artifact is missing`
+- `handoff_freshness_guard CLI writes JSON/Markdown and returns 2 on --require-pass failure`

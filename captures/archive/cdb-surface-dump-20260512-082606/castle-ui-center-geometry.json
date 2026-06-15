@@ -1,0 +1,130 @@
+{
+  "path": "captures\\cdb-surface-dump-20260512-082606\\surface.png",
+  "image": {
+    "width": 800,
+    "height": 600
+  },
+  "threshold": 12,
+  "regions": {
+    "full": {
+      "rect": [
+        0,
+        0,
+        799,
+        599
+      ],
+      "clipped_rect": [
+        0,
+        0,
+        799,
+        599
+      ],
+      "pixels": 480000,
+      "nonblack_pixels": 0,
+      "nonblack_percent": 0.0,
+      "nonblack_bounds": null
+    },
+    "centered_640x480": {
+      "rect": [
+        80,
+        60,
+        719,
+        539
+      ],
+      "clipped_rect": [
+        80,
+        60,
+        719,
+        539
+      ],
+      "pixels": 307200,
+      "nonblack_pixels": 0,
+      "nonblack_percent": 0.0,
+      "nonblack_bounds": null
+    },
+    "native_top_left_640x480": {
+      "rect": [
+        0,
+        0,
+        639,
+        479
+      ],
+      "clipped_rect": [
+        0,
+        0,
+        639,
+        479
+      ],
+      "pixels": 307200,
+      "nonblack_pixels": 0,
+      "nonblack_percent": 0.0,
+      "nonblack_bounds": null
+    },
+    "top_left_margin_80x60": {
+      "rect": [
+        0,
+        0,
+        79,
+        59
+      ],
+      "clipped_rect": [
+        0,
+        0,
+        79,
+        59
+      ],
+      "pixels": 4800,
+      "nonblack_pixels": 0,
+      "nonblack_percent": 0.0,
+      "nonblack_bounds": null
+    },
+    "left_margin_80x480": {
+      "rect": [
+        0,
+        60,
+        79,
+        539
+      ],
+      "clipped_rect": [
+        0,
+        60,
+        79,
+        539
+      ],
+      "pixels": 38400,
+      "nonblack_pixels": 0,
+      "nonblack_percent": 0.0,
+      "nonblack_bounds": null
+    },
+    "top_margin_640x60": {
+      "rect": [
+        80,
+        0,
+        719,
+        59
+      ],
+      "clipped_rect": [
+        80,
+        0,
+        719,
+        59
+      ],
+      "pixels": 38400,
+      "nonblack_pixels": 0,
+      "nonblack_percent": 0.0,
+      "nonblack_bounds": null
+    }
+  },
+  "gate": {
+    "passed": false,
+    "checks": {
+      "image_size_800x600": true,
+      "centered_region_has_content": false,
+      "centered_region_dominates_margins": false,
+      "native_origin_echo_absent": true
+    },
+    "centered_nonblack_percent": 0.0,
+    "max_margin_nonblack_percent": 0.0,
+    "max_allowed_echo_percent": 5.0
+  }
+}

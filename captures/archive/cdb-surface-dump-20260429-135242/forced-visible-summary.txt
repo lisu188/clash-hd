@@ -1,0 +1,8 @@
+﻿coverage: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260429-135242\map-tile-coverage.json
+log: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260429-135242\cdb-surface-dump.log
+passed: True
+gameplay_frame_likely: True
+blank_active_cells: -
+latest_visdump: {'line_no': 427, 'player': 0, 'screen0': [32, 16], 'map0': [10, 17], 'rows': 9, 'cols': 12, 'tile': [64, 64]}
+vedge: visret=54/54 post=54/54 visret_nonzero=54 post_nonblack=54
+markers: force_visible_edges=2 force_viewport=4

@@ -1,0 +1,89 @@
+{
+  "generated_at": "2026-06-15T18:34:51+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "surface-dump harness must default to hidden desktop and require -AllowVisibleDesktop for active-desktop fallback",
+  "script": "scripts\\cdb\\run_cdb_surface_dump.ps1",
+  "checks": {
+    "allow_visible_desktop_is_switch": {
+      "name": "allow_visible_desktop_is_switch",
+      "passed": true,
+      "summary": {
+        "lines": [
+          21
+        ]
+      },
+      "failures": []
+    },
+    "default_launch_mode_hidden": {
+      "name": "default_launch_mode_hidden",
+      "passed": true,
+      "summary": {
+        "lines": [
+          592
+        ]
+      },
+      "failures": []
+    },
+    "createdesktop_failure_refuses_visible_fallback": {
+      "name": "createdesktop_failure_refuses_visible_fallback",
+      "passed": true,
+      "summary": {
+        "lines": [
+          201
+        ]
+      },
+      "failures": []
+    },
+    "visible_branch_requires_explicit_switch": {
+      "name": "visible_branch_requires_explicit_switch",
+      "passed": true,
+      "summary": {
+        "visible_branch_line": [
+          599
+        ],
+        "visible_launch_lines": [
+          600
+        ],
+        "start_process_lines": [
+          601
+        ]
+      },
+      "failures": []
+    },
+    "hidden_branch_uses_createdesktop": {
+      "name": "hidden_branch_uses_createdesktop",
+      "passed": true,
+      "summary": {
+        "hidden_branch_lines": [
+          189,
+          611
+        ]
+      },
+      "failures": []
+    },
+    "summary_records_hidden_desktop": {
+      "name": "summary_records_hidden_desktop",
+      "passed": true,
+      "summary": {
+        "lines": [
+          710,
+          937
+        ]
+      },
+      "failures": []
+    },
+    "summary_records_allow_visible_desktop": {
+      "name": "summary_records_allow_visible_desktop",
+      "passed": true,
+      "summary": {
+        "lines": [
+          711,
+          938
+        ]
+      },
+      "failures": []
+    }
+  },
+  "failures": []
+}

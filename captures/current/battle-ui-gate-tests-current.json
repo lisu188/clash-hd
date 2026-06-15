@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-06-15T18:34:49+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only fixture tests; launches only Python child processes for gate CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "proves the battle UI gate is fail-closed across runtime evidence, patch-stage, candidate-location, and stable-regression boundaries before any battle patch group exists",
+  "tests": [
+    "battle_ui_gate passes only when centered battle evidence, command hit, grid hit, modal classification, clean patch stage, and stable smoke proof are present",
+    "battle_ui_gate fails closed for missing battle reachability, command hit, grid hit, modal classification, visual classification, and AV rows",
+    "battle_ui_gate fails closed for candidates outside C:\\ClashTests, wrong stages, base-SHA drift, original/unexpected bytes, and failing stable-smoke evidence",
+    "battle_ui_gate CLI writes JSON/Markdown and returns 2 on --require-pass failure"
+  ],
+  "failures": []
+}

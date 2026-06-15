@@ -30,7 +30,7 @@
   },
   "entries": [
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/RUN-SUMMARY.md",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/RUN-SUMMARY.md",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/RUN-SUMMARY.md",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "8b128feaf9a580e1418e95f489400be50e64fe42ee3027401cc534991b96bffd",
@@ -38,7 +38,7 @@
       "bytes": 1924
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.json",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.json",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "2848af31b6373165967f7fdb73375794cb89cc61561f1f5cb155ef5145599a68",
@@ -46,7 +46,7 @@
       "bytes": 11854
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.md",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.md",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/castle-barracks-action-click-summary.md",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "dad75a478b398e137b69f454e0bbd9b3c60d8112ee9b372836f0c56db134cfd6",
@@ -54,7 +54,7 @@
       "bytes": 3825
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/castle-ui-center-geometry.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/castle-ui-center-geometry.json",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/castle-ui-center-geometry.json",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "605bb714eb380eeadae72ed315ec3a54abbd55066a96fca51310950769952db9",
@@ -62,7 +62,7 @@
       "bytes": 2851
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/cdb-surface-dump.log",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/cdb-surface-dump.log",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/cdb-surface-dump.log",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "e89817e6bd6f181042be24deab92e6ca644dac3b80d28fb6197cfba137dff183",
@@ -70,7 +70,7 @@
       "bytes": 17517
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/map-tile-coverage.txt",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/map-tile-coverage.txt",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/map-tile-coverage.txt",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "d51cd2e8bf742352f5b30f2a854f1b56f7c92c518cbae3b2f8a6a0996d6593d4",
@@ -78,7 +78,7 @@
       "bytes": 144
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/patch-stage-report.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/patch-stage-report.json",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/patch-stage-report.json",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "c07dd9c4296517a26f9d2e9deb8c64d5cd2d21df5aac546b0b2c12e088d391b1",
@@ -86,7 +86,7 @@
       "bytes": 63919
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/summary.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/summary.json",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/summary.json",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "2a201853320509e2d7fd4044a34d60a2ab209f80251d87a644c566eeca00c5f5",
@@ -94,7 +94,7 @@
       "bytes": 4352
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/surface.png",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/surface.png",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/surface.png",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "1dcb731619cc8cbb2e7130d8f2e3815acaa741b6a5acd2cb8d43d5290664259e",
@@ -102,7 +102,7 @@
       "bytes": 156713
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/surface.png.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/surface.png.json",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/surface.png.json",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "1cac37680502b7dc1ac8e7efeced6c1553b2238d263ea7140d44b7ae0167ae44",
@@ -110,7 +110,7 @@
       "bytes": 674
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260512-082418/visibility-coverage.txt",
+      "source": "repo:captures/archive/cdb-surface-dump-20260512-082418/visibility-coverage.txt",
       "target": "evidence/castle-barracks-centered/runs/cdb-surface-dump-20260512-082418/visibility-coverage.txt",
       "reason": "Current castle/barracks centered UI proof.",
       "source_sha256": "bd34e7a77b0b0421c1578a8f26d1c3e6e7798047a37fd9f3d4155b069f632753",
@@ -118,7 +118,7 @@
       "bytes": 114
     },
     {
-      "source": "repo:captures/hd-map-evidence-current-check.json",
+      "source": "repo:captures/current/hd-map-evidence-current-check.json",
       "target": "evidence/hd-map/hd-map-evidence-current-check.json",
       "reason": "Evidence-index link check result.",
       "source_sha256": "7069b5e6fb288162a64d40ccb6b61c30a3f825d15529e90f816822b0c71a1316",
@@ -126,7 +126,7 @@
       "bytes": 32436
     },
     {
-      "source": "repo:captures/hd-map-evidence-current.md",
+      "source": "repo:captures/current/hd-map-evidence-current.md",
       "target": "evidence/hd-map/hd-map-evidence-current.md",
       "reason": "Current human-readable evidence index.",
       "source_sha256": "276eb89f536120247cf2510fd4071d7e52556f53cfa2523d5046a97a166cec8b",
@@ -134,7 +134,7 @@
       "bytes": 44554
     },
     {
-      "source": "repo:captures/hd-map-smoke-current.json",
+      "source": "repo:captures/current/hd-map-smoke-current.json",
       "target": "evidence/hd-map/hd-map-smoke-current.json",
       "reason": "Current HD map smoke matrix output.",
       "source_sha256": "de228fd5337297d56909d3d0c0ff11695590e3fee3684d1279c3aff2bab97102",
@@ -142,7 +142,7 @@
       "bytes": 9333
     },
     {
-      "source": "repo:captures/hd-map-smoke-current.md",
+      "source": "repo:captures/current/hd-map-smoke-current.md",
       "target": "evidence/hd-map/hd-map-smoke-current.md",
       "reason": "Current HD map smoke matrix summary.",
       "source_sha256": "a80bc22d2bf158c969c7d4847393fa5acd415c4312764a363286bb8555fda673",
@@ -150,7 +150,7 @@
       "bytes": 859
     },
     {
-      "source": "repo:captures/patch-manifest-compare-current-vs-partial12.json",
+      "source": "repo:captures/current/patch-manifest-compare-current-vs-partial12.json",
       "target": "evidence/hd-map/patch-manifest-compare-current-vs-partial12.json",
       "reason": "Current-vs-partial12 patch manifest comparison.",
       "source_sha256": "d762614e646fea0c76ff12016d158e688a7283f5512b06decf717fed14c2051d",
@@ -158,7 +158,7 @@
       "bytes": 6645
     },
     {
-      "source": "repo:captures/patch-manifest-compare-current-vs-partial12.md",
+      "source": "repo:captures/current/patch-manifest-compare-current-vs-partial12.md",
       "target": "evidence/hd-map/patch-manifest-compare-current-vs-partial12.md",
       "reason": "Readable current-vs-partial12 patch manifest comparison.",
       "source_sha256": "e71c3454f11e2e7cc02d9f1ae7470429f7ef5c81562795b2f2c8552fceaa616c",
@@ -166,7 +166,7 @@
       "bytes": 3029
     },
     {
-      "source": "repo:captures/hd-map-smoke-current.json",
+      "source": "repo:captures/current/hd-map-smoke-current.json",
       "target": "evidence/hd-map/patch-stage-report.json",
       "reason": "Archived current HD map patch-byte report for cloud smoke checks.",
       "json_key": "patch_stage",
@@ -175,7 +175,7 @@
       "bytes": 2981
     },
     {
-      "source": "repo:captures/post-owner-evidence-current.json",
+      "source": "repo:captures/current/post-owner-evidence-current.json",
       "target": "evidence/hd-map/post-owner-evidence-current.json",
       "reason": "Paired normal/forced-visible post-owner evidence matrix.",
       "source_sha256": "cf28aa4c88be554b6f376329a7ec6a7ead3460e8a8e76b2764f75c12ab8547b6",
@@ -183,7 +183,7 @@
       "bytes": 5372
     },
     {
-      "source": "repo:captures/post-owner-evidence-current.md",
+      "source": "repo:captures/current/post-owner-evidence-current.md",
       "target": "evidence/hd-map/post-owner-evidence-current.md",
       "reason": "Readable paired post-owner evidence matrix.",
       "source_sha256": "8be6b0836c60b0fa6622b9b3b10d6bdebb47d04213859f83d908e361263d522e",
@@ -191,7 +191,7 @@
       "bytes": 718
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/POST-OWNER-TILE-VISIBILITY.md",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/POST-OWNER-TILE-VISIBILITY.md",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/POST-OWNER-TILE-VISIBILITY.md",
       "reason": "Focused normal post-owner tile visibility details.",
       "source_sha256": "df4b46005691fd0484798ebedd755260323f94d1ecbf50939d91de4e6bb4d28f",
@@ -199,7 +199,7 @@
       "bytes": 5889
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/RUN-SUMMARY.md",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "4874e9f8686124a739f023a07187d3d075657f395ca536f92c813b78f900e7df",
@@ -207,7 +207,7 @@
       "bytes": 1828
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/cdb-surface-dump.log",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/cdb-surface-dump.log",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/cdb-surface-dump.log",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "162c099edae9bd6f0074b088527f838491bbd3e4d8c10fd0c8bd79c4dfe7556c",
@@ -215,7 +215,7 @@
       "bytes": 18689
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/map-tile-coverage.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/map-tile-coverage.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/map-tile-coverage.json",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "9352247905f9b3f61567f45565dd9eba9f2ca5902327bf3237c68d7ea50206fd",
@@ -223,7 +223,7 @@
       "bytes": 93386
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/map-tile-coverage.txt",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/map-tile-coverage.txt",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/map-tile-coverage.txt",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "1f728bdc24e9abfd545d16db45704946b6402a94b43b884f12ae2d2a29a8e06e",
@@ -231,7 +231,7 @@
       "bytes": 1063
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/post-owner-tile-visibility-action-summary.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/post-owner-tile-visibility-action-summary.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/post-owner-tile-visibility-action-summary.json",
       "reason": "Focused normal post-owner tile visibility details.",
       "source_sha256": "06229106619a03d17703f6bec6c15a064758fa638eb774b6da80eedfc99a1761",
@@ -239,7 +239,7 @@
       "bytes": 27912
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/post-owner-ui-bounds.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/post-owner-ui-bounds.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/post-owner-ui-bounds.json",
       "reason": "Focused normal post-owner tile visibility details.",
       "source_sha256": "b820b6ac0850bc5f7bdd0c29893f36271716276bc22620e1def20c15e5c32fb3",
@@ -247,7 +247,7 @@
       "bytes": 28339
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/summary.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/summary.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/summary.json",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "b3c0018a5020b4f3beb10a5014a0723de08973018572fedba2eff7310f01d1a6",
@@ -255,7 +255,7 @@
       "bytes": 5030
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/surface.png",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/surface.png",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/surface.png",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "28f9c1d5e6798a4cee43d7fba73dcaab5f151024065599541b03c6f2e3b4fac9",
@@ -263,7 +263,7 @@
       "bytes": 207691
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/surface.png.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/surface.png.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/surface.png.json",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "fb72db375e6814d460bf50522617cc3189f0bcd92566304ab5a10273f2781da5",
@@ -271,7 +271,7 @@
       "bytes": 674
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/visibility-coverage-summary.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/visibility-coverage-summary.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/visibility-coverage-summary.json",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "351b5d009a2ec3585329dbb2dd094dc5d94f5212897f25d96dcee5596a6d99fc",
@@ -279,7 +279,7 @@
       "bytes": 6242
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-190037/visibility-coverage.txt",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-190037/visibility-coverage.txt",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-190037/visibility-coverage.txt",
       "reason": "Normal post-owner visibility-zero proof.",
       "source_sha256": "8c0acc0f29d1e7d5a11ad95ee8497834e6128c03a03939597d738ad2da2bca39",
@@ -287,7 +287,7 @@
       "bytes": 735
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/RUN-SUMMARY.md",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/RUN-SUMMARY.md",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/RUN-SUMMARY.md",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "b377fdadc68a8a9beb1bb804c29e6bee10bfa1553a3af5a3463d0079efa8c18b",
@@ -295,7 +295,7 @@
       "bytes": 2007
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/cdb-surface-dump.log",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/cdb-surface-dump.log",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/cdb-surface-dump.log",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "40d906815e071374f851323fb342466a100cf4fed0f810cc9eae200bd288d118",
@@ -303,7 +303,7 @@
       "bytes": 18433
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/map-tile-coverage.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/map-tile-coverage.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/map-tile-coverage.json",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "e1ffdb7115552954faf29da44ebd6419ad1a4bec7e4a5ada5ddbd45d1de86b16",
@@ -311,7 +311,7 @@
       "bytes": 92856
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/map-tile-coverage.txt",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/map-tile-coverage.txt",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/map-tile-coverage.txt",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "6c1077dba1d97ccabf8e00b9e7dff3b1ff14c90176e0670ddde009e773bf19c8",
@@ -319,7 +319,7 @@
       "bytes": 1002
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/post-owner-forced-visible-summary.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/post-owner-forced-visible-summary.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/post-owner-forced-visible-summary.json",
       "reason": "Focused seven-cell forced-visible proof details.",
       "source_sha256": "cf33f3952285f380faa01a3a5c61f48cb5da48c18b073dd3050a3a96acf4eeb1",
@@ -327,7 +327,7 @@
       "bytes": 2566
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/post-owner-forced-visible-summary.txt",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/post-owner-forced-visible-summary.txt",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/post-owner-forced-visible-summary.txt",
       "reason": "Focused seven-cell forced-visible proof details.",
       "source_sha256": "10066b0f63a0c42a3b93bb80ae3aa6be653b80a73e326f7eac2c1f1ffdb8e3c5",
@@ -335,7 +335,7 @@
       "bytes": 324
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/summary.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/summary.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/summary.json",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "5f1ce051ea876b48c4585640d8dd4fa5ba9a0e73a3ea6edece450ba4fe0b1832",
@@ -343,7 +343,7 @@
       "bytes": 16705
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/surface.png",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/surface.png",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/surface.png",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "c7e4eeaa3275f2c6d6d3b5fbc6bac75f517fb81e82946dbfdefd4466f4050eba",
@@ -351,7 +351,7 @@
       "bytes": 219055
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/surface.png.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/surface.png.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/surface.png.json",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "0fe82e238e8cc240940bf14ca12e52a3a8a629942fdf73be975b8193b3f57d2f",
@@ -359,7 +359,7 @@
       "bytes": 674
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/visibility-coverage-summary.json",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/visibility-coverage-summary.json",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/visibility-coverage-summary.json",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "d46c0c00433f81baa289bb7f3c5120f6ff6aa38a255374dbb7c5101d5796d1fe",
@@ -367,7 +367,7 @@
       "bytes": 383
     },
     {
-      "source": "repo:captures/cdb-surface-dump-20260506-201114/visibility-coverage.txt",
+      "source": "repo:captures/archive/cdb-surface-dump-20260506-201114/visibility-coverage.txt",
       "target": "evidence/hd-map/runs/cdb-surface-dump-20260506-201114/visibility-coverage.txt",
       "reason": "Seven-cell forced-visible proof.",
       "source_sha256": "88b4c4491113c040b32d8c6ff428382f0a0c7adc8e2518e07e77c895172b7c0a",

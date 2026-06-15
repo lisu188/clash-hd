@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-06-15T19:27:46+02:00",
+  "passed": true,
+  "runtime_policy": "local process inspection only; does not launch Clash95, CDB, wrappers, or visible windows",
+  "guard_policy": "no cdb.exe or clash95*.exe process may be running after evidence refresh",
+  "inspection_source": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS)",
+  "inspection_returncode": 0,
+  "inspection_error": "",
+  "target_exact_names": [
+    "cdb.exe"
+  ],
+  "target_prefixes": [
+    "clash95"
+  ],
+  "matching_processes": [],
+  "matching_process_count": 0,
+  "failures": []
+}

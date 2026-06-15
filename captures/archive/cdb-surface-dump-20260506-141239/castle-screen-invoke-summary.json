@@ -1,0 +1,332 @@
+{
+  "path": "captures\\cdb-surface-dump-20260506-141239\\cdb-surface-dump.log",
+  "line_count": 229,
+  "marker_counts": {
+    "CASTLE_INVOKE_PLAYGAME": 1,
+    "CASTLE_SCREEN_FULL_ENTRY_422180": 0,
+    "CASTLE_SCREEN_OWNER_SET_422207": 1,
+    "CASTLE_SCREEN_READY_422674": 0,
+    "CASTLE_SCREEN_ENTRY_422020": 0,
+    "CASTLE_RENDERHOOK_DRAW_422020": 1,
+    "CASTLE_FORCE_HITTEST_254": 1,
+    "CASTLE_CMD99_SETUP_422709": 2,
+    "CASTLE_DESCRIPTOR_INSTALL_42257E": 1,
+    "CASTLE_FORCE_COMMAND99_CLICK": 1,
+    "CASTLE_CALLBACK_CALL_42262C": 1,
+    "CASTLE_OWNER_SETUP_433C20": 1,
+    "CASTLE_WRITE_532150": 1,
+    "CASTLE_WRITE_53214C": 1,
+    "CASTLE_WRITE_532154": 1,
+    "CASTLE_ACTION_4338E0_ENTRY": 0,
+    "CASTLE_ACTION_CALL_435BC0": 0,
+    "CASTLE_OWNER_435BC0_ENTRY": 0,
+    "CASTLE_SURFDUMP_READY": 1,
+    "SURFDUMP_PLAYGAME": 1,
+    "SURFDUMP_REDRAW": 0,
+    "SURFDUMP_READY": 1,
+    "SURFDUMP_HOST_READY": 1,
+    "SURFDUMP_DONE": 0,
+    "AV_SURFDUMP": 0
+  },
+  "rows": [
+    {
+      "line_no": 208,
+      "marker": "CASTLE_INVOKE_PLAYGAME",
+      "line": "CASTLE_INVOKE_PLAYGAME castle_index=0 gd=044b0030 current_player=0 surface=038fc8d8 sz=(640,480)",
+      "values": {
+        "castle_index": "0",
+        "current_player": "0",
+        "surface": "038fc8d8"
+      },
+      "surface_size": [
+        640,
+        480
+      ]
+    },
+    {
+      "line_no": 209,
+      "marker": "SURFDUMP_PLAYGAME",
+      "line": "SURFDUMP_PLAYGAME gd=044b0030 map=(100,100) scroll=(10,17) surface=038fc8d8 size=(640,480)",
+      "values": {
+        "surface": "038fc8d8"
+      }
+    },
+    {
+      "line_no": 210,
+      "marker": "CASTLE_SCREEN_OWNER_SET_422207",
+      "line": "CASTLE_SCREEN_OWNER_SET_422207 castle_index=0 owner_screen=0452c71a owner=0 flags=0x00 pos=(14,20)",
+      "values": {
+        "castle_index": "0",
+        "owner_screen": "0452c71a",
+        "owner": "0",
+        "flags": "0x00"
+      }
+    },
+    {
+      "line_no": 211,
+      "marker": "CASTLE_RENDERHOOK_DRAW_422020",
+      "line": "CASTLE_RENDERHOOK_DRAW_422020 ret=00422333 owner_screen=0452c71a surface=038fc8d8 sz=(640,480)",
+      "values": {
+        "ret": "00422333",
+        "owner_screen": "0452c71a",
+        "surface": "038fc8d8"
+      },
+      "surface_size": [
+        640,
+        480
+      ]
+    },
+    {
+      "line_no": 212,
+      "marker": "CASTLE_FORCE_HITTEST_254",
+      "line": "CASTLE_FORCE_HITTEST_254 old=17 mouse=(4,166) owner_screen=0452c71a",
+      "values": {
+        "owner_screen": "0452c71a"
+      }
+    },
+    {
+      "line_no": 213,
+      "marker": "CASTLE_CMD99_SETUP_422709",
+      "line": "CASTLE_CMD99_SETUP_422709 ret=656d617a esi=0 ecx_pre=00000000 owner_screen=0452c71a owner_flag=0x00",
+      "values": {
+        "ret": "656d617a",
+        "esi": "0",
+        "owner_screen": "0452c71a",
+        "owner_flag": "0x00"
+      }
+    },
+    {
+      "line_no": 214,
+      "marker": "CASTLE_CMD99_SETUP_422709",
+      "line": "CASTLE_CMD99_SETUP_422709 ret=656d617a esi=0 ecx_pre=00000000 owner_screen=0452c71a owner_flag=0x00",
+      "values": {
+        "ret": "656d617a",
+        "esi": "0",
+        "owner_screen": "0452c71a",
+        "owner_flag": "0x00"
+      }
+    },
+    {
+      "line_no": 215,
+      "marker": "CASTLE_DESCRIPTOR_INSTALL_42257E",
+      "line": "CASTLE_DESCRIPTOR_INSTALL_42257E ret=00000003 esi=99 callback=00433c20 owner_screen=0452c71a text=004ee862",
+      "values": {
+        "ret": "00000003",
+        "esi": "99",
+        "callback": "00433c20",
+        "owner_screen": "0452c71a"
+      }
+    },
+    {
+      "line_no": 216,
+      "marker": "CASTLE_FORCE_COMMAND99_CLICK",
+      "line": "CASTLE_FORCE_COMMAND99_CLICK ret=656d617a callback=00433c20 esi=99 eax_before=0",
+      "values": {
+        "ret": "656d617a",
+        "callback": "00433c20",
+        "esi": "99"
+      }
+    },
+    {
+      "line_no": 217,
+      "marker": "CASTLE_CALLBACK_CALL_42262C",
+      "line": "CASTLE_CALLBACK_CALL_42262C ret=656d617a callback=00433c20 eax_arg=0452c71a esi=99",
+      "values": {
+        "ret": "656d617a",
+        "callback": "00433c20",
+        "eax_arg": "0452c71a",
+        "esi": "99"
+      }
+    },
+    {
+      "line_no": 218,
+      "marker": "CASTLE_OWNER_SETUP_433C20",
+      "line": "CASTLE_OWNER_SETUP_433C20 ret=0042262e owner_arg=0452c71a owner_flag=0x00 d532150_before=00000000 d53214c_before=00000000 d532154_before=00000000",
+      "values": {
+        "ret": "0042262e",
+        "owner_arg": "0452c71a",
+        "owner_flag": "0x00",
+        "d532150_before": "00000000",
+        "d53214c_before": "00000000",
+        "d532154_before": "00000000"
+      }
+    },
+    {
+      "line_no": 219,
+      "marker": "CASTLE_WRITE_532150",
+      "line": "CASTLE_WRITE_532150 eip=00433c2b ret=00422020 new=0452c71a owner_flag=0x00 d526a64=0452c71a",
+      "values": {
+        "eip": "00433c2b",
+        "ret": "00422020",
+        "new": "0452c71a",
+        "owner_flag": "0x00",
+        "d526a64": "0452c71a"
+      }
+    },
+    {
+      "line_no": 220,
+      "marker": "CASTLE_WRITE_53214C",
+      "line": "CASTLE_WRITE_53214C eip=00433c50 ret=00422020 new=00000001 d532150=0452c71a d526a64=0452c71a",
+      "values": {
+        "eip": "00433c50",
+        "ret": "00422020",
+        "new": "00000001",
+        "d532150": "0452c71a",
+        "d526a64": "0452c71a"
+      }
+    },
+    {
+      "line_no": 221,
+      "marker": "CASTLE_WRITE_532154",
+      "line": "CASTLE_WRITE_532154 eip=00433d5f ret=00422020 new=03b21180 d532150=0452c71a d53214c=00000001",
+      "values": {
+        "eip": "00433d5f",
+        "ret": "00422020",
+        "new": "03b21180",
+        "d532150": "0452c71a",
+        "d53214c": "00000001"
+      }
+    },
+    {
+      "line_no": 222,
+      "marker": "CASTLE_SURFDUMP_READY",
+      "line": "CASTLE_SURFDUMP_READY after_owner_global=1 surface=038fc8d8 size=(640,480) base=09fb0030 bytes=307200 d532150=0452c71a d53214c=00000001 d532154=03b21180",
+      "values": {
+        "surface": "038fc8d8",
+        "base": "09fb0030",
+        "bytes": "307200",
+        "d532150": "0452c71a",
+        "d53214c": "00000001",
+        "d532154": "03b21180"
+      }
+    },
+    {
+      "line_no": 223,
+      "marker": "SURFDUMP_READY",
+      "line": "SURFDUMP_READY redraw_seq=901 surface=038fc8d8 size=(640,480) base=09fb0030 bytes=307200",
+      "values": {
+        "surface": "038fc8d8",
+        "base": "09fb0030",
+        "bytes": "307200"
+      }
+    },
+    {
+      "line_no": 224,
+      "marker": "SURFDUMP_HOST_READY",
+      "line": "SURFDUMP_HOST_READY",
+      "values": {}
+    }
+  ],
+  "setup_rows": [
+    {
+      "line_no": 213,
+      "marker": "CASTLE_CMD99_SETUP_422709",
+      "line": "CASTLE_CMD99_SETUP_422709 ret=656d617a esi=0 ecx_pre=00000000 owner_screen=0452c71a owner_flag=0x00",
+      "values": {
+        "ret": "656d617a",
+        "esi": "0",
+        "owner_screen": "0452c71a",
+        "owner_flag": "0x00"
+      }
+    },
+    {
+      "line_no": 214,
+      "marker": "CASTLE_CMD99_SETUP_422709",
+      "line": "CASTLE_CMD99_SETUP_422709 ret=656d617a esi=0 ecx_pre=00000000 owner_screen=0452c71a owner_flag=0x00",
+      "values": {
+        "ret": "656d617a",
+        "esi": "0",
+        "owner_screen": "0452c71a",
+        "owner_flag": "0x00"
+      }
+    },
+    {
+      "line_no": 215,
+      "marker": "CASTLE_DESCRIPTOR_INSTALL_42257E",
+      "line": "CASTLE_DESCRIPTOR_INSTALL_42257E ret=00000003 esi=99 callback=00433c20 owner_screen=0452c71a text=004ee862",
+      "values": {
+        "ret": "00000003",
+        "esi": "99",
+        "callback": "00433c20",
+        "owner_screen": "0452c71a"
+      }
+    },
+    {
+      "line_no": 218,
+      "marker": "CASTLE_OWNER_SETUP_433C20",
+      "line": "CASTLE_OWNER_SETUP_433C20 ret=0042262e owner_arg=0452c71a owner_flag=0x00 d532150_before=00000000 d53214c_before=00000000 d532154_before=00000000",
+      "values": {
+        "ret": "0042262e",
+        "owner_arg": "0452c71a",
+        "owner_flag": "0x00",
+        "d532150_before": "00000000",
+        "d53214c_before": "00000000",
+        "d532154_before": "00000000"
+      }
+    }
+  ],
+  "owner_global_rows": [
+    {
+      "line_no": 218,
+      "marker": "CASTLE_OWNER_SETUP_433C20",
+      "line": "CASTLE_OWNER_SETUP_433C20 ret=0042262e owner_arg=0452c71a owner_flag=0x00 d532150_before=00000000 d53214c_before=00000000 d532154_before=00000000",
+      "values": {
+        "ret": "0042262e",
+        "owner_arg": "0452c71a",
+        "owner_flag": "0x00",
+        "d532150_before": "00000000",
+        "d53214c_before": "00000000",
+        "d532154_before": "00000000"
+      }
+    },
+    {
+      "line_no": 219,
+      "marker": "CASTLE_WRITE_532150",
+      "line": "CASTLE_WRITE_532150 eip=00433c2b ret=00422020 new=0452c71a owner_flag=0x00 d526a64=0452c71a",
+      "values": {
+        "eip": "00433c2b",
+        "ret": "00422020",
+        "new": "0452c71a",
+        "owner_flag": "0x00",
+        "d526a64": "0452c71a"
+      }
+    },
+    {
+      "line_no": 220,
+      "marker": "CASTLE_WRITE_53214C",
+      "line": "CASTLE_WRITE_53214C eip=00433c50 ret=00422020 new=00000001 d532150=0452c71a d526a64=0452c71a",
+      "values": {
+        "eip": "00433c50",
+        "ret": "00422020",
+        "new": "00000001",
+        "d532150": "0452c71a",
+        "d526a64": "0452c71a"
+      }
+    },
+    {
+      "line_no": 221,
+      "marker": "CASTLE_WRITE_532154",
+      "line": "CASTLE_WRITE_532154 eip=00433d5f ret=00422020 new=03b21180 d532150=0452c71a d53214c=00000001",
+      "values": {
+        "eip": "00433d5f",
+        "ret": "00422020",
+        "new": "03b21180",
+        "d532150": "0452c71a",
+        "d53214c": "00000001"
+      }
+    }
+  ],
+  "action_rows": [],
+  "av_rows": [],
+  "ready_line": 222,
+  "playgame_line": 209,
+  "classification": [
+    "surface dump reached ready state",
+    "controlled castle-screen invocation was attempted",
+    "full castle screen body was observed",
+    "castle screen render/dispatcher entry was observed",
+    "command-99 owner setup route was observed",
+    "owner globals dword_532150/dword_53214C/dword_532154 were touched",
+    "right-bottom castle action owner path was not observed"
+  ]
+}

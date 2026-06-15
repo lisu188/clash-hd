@@ -1,0 +1,134 @@
+{
+  "path": "captures\\cdb-surface-dump-20260511-170759\\surface.png",
+  "image": {
+    "width": 800,
+    "height": 600
+  },
+  "threshold": 12,
+  "regions": {
+    "full": {
+      "rect": [
+        0,
+        0,
+        799,
+        599
+      ],
+      "pixels": 480000,
+      "nonblack_pixels": 240449,
+      "nonblack_percent": 50.094,
+      "nonblack_bounds": {
+        "x": 40,
+        "y": 28,
+        "right": 719,
+        "bottom": 539,
+        "width": 680,
+        "height": 512
+      }
+    },
+    "centered_640x480": {
+      "rect": [
+        80,
+        60,
+        719,
+        539
+      ],
+      "pixels": 307200,
+      "nonblack_pixels": 228752,
+      "nonblack_percent": 74.464,
+      "nonblack_bounds": {
+        "x": 80,
+        "y": 60,
+        "right": 719,
+        "bottom": 539,
+        "width": 640,
+        "height": 480
+      }
+    },
+    "native_top_left_640x480": {
+      "rect": [
+        0,
+        0,
+        639,
+        479
+      ],
+      "pixels": 307200,
+      "nonblack_pixels": 186326,
+      "nonblack_percent": 60.653,
+      "nonblack_bounds": {
+        "x": 40,
+        "y": 28,
+        "right": 639,
+        "bottom": 479,
+        "width": 600,
+        "height": 452
+      }
+    },
+    "top_left_margin_80x60": {
+      "rect": [
+        0,
+        0,
+        79,
+        59
+      ],
+      "pixels": 4800,
+      "nonblack_pixels": 1199,
+      "nonblack_percent": 24.979,
+      "nonblack_bounds": {
+        "x": 40,
+        "y": 28,
+        "right": 79,
+        "bottom": 59,
+        "width": 40,
+        "height": 32
+      }
+    },
+    "left_margin_80x480": {
+      "rect": [
+        0,
+        60,
+        79,
+        539
+      ],
+      "pixels": 38400,
+      "nonblack_pixels": 3751,
+      "nonblack_percent": 9.768,
+      "nonblack_bounds": {
+        "x": 40,
+        "y": 60,
+        "right": 79,
+        "bottom": 301,
+        "width": 40,
+        "height": 242
+      }
+    },
+    "top_margin_640x60": {
+      "rect": [
+        80,
+        0,
+        719,
+        59
+      ],
+      "pixels": 38400,
+      "nonblack_pixels": 6747,
+      "nonblack_percent": 17.57,
+      "nonblack_bounds": {
+        "x": 80,
+        "y": 28,
+        "right": 299,
+        "bottom": 59,
+        "width": 220,
+        "height": 32
+      }
+    }
+  },
+  "gate": {
+    "passed": true,
+    "checks": {
+      "image_size_800x600": true,
+      "centered_region_has_content": true,
+      "centered_region_dominates_margins": true
+    },
+    "centered_nonblack_percent": 74.464,
+    "max_margin_nonblack_percent": 24.979
+  }
+}

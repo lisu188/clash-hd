@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-06-15T18:34:33+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, copy saves, launch Clash95, CDB, wrappers, or visible windows",
+  "guard_policy": "passes only when the right-bottom slot fixture remains non-promoting, the dry-run preparation helper is source-guarded, and the future CDB command stays hidden-desktop with an isolated workdir/candidate dir",
+  "fixture_plan_json": "captures\\current\\right-bottom-slot-fixture-plan-current.json",
+  "script_guard_json": "captures\\current\\right-bottom-slot-fixture-script-guard-current.json",
+  "surface_dump_script": "scripts\\cdb\\run_cdb_surface_dump.ps1",
+  "extra_probe": "probes\\cdb\\castle\\clash95_castle_cmd99_owner_action_descriptor_extra.cdb",
+  "result_parser": "tools\\right_bottom_slot_fixture_result_summary.py",
+  "summary": {
+    "proof_class": "non_natural_isolated_fixture",
+    "promotion_ready": false,
+    "stable_stage_should_change": false,
+    "fixture_root": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture",
+    "fixture_save": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\save\\0.dat",
+    "candidate_dir": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate",
+    "target_load_slot": 0,
+    "prepare_seed_workdir": true,
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+    "run_seconds": 120,
+    "result_log_template": "captures\\cdb-surface-dump-FIXTURE-RUN\\cdb-surface-dump.log",
+    "result_json_template": "captures\\cdb-surface-dump-FIXTURE-RUN\\right-bottom-slot-fixture-result-summary.json",
+    "result_md_template": "captures\\cdb-surface-dump-FIXTURE-RUN\\right-bottom-slot-fixture-result-summary.md"
+  },
+  "commands": {
+    "prepare_dry_run": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'scripts\\smoke\\prepare_right_bottom_slot_fixture.ps1' -SeedWorkDir -Json",
+    "prepare_execute": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'scripts\\smoke\\prepare_right_bottom_slot_fixture.ps1' -SeedWorkDir -Execute",
+    "hidden_fixture_probe": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'scripts\\cdb\\run_cdb_surface_dump.ps1' -UseDdrawProxy -FastForwardStartAnims -SkipMapValidation -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter' -WorkDir 'C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture' -CandidateDir 'C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate' -LoadSlot 0 -ExtraProbeTemplate 'probes\\cdb\\castle\\clash95_castle_cmd99_owner_action_descriptor_extra.cdb' -RunSeconds 120",
+    "summarize_fixture_result": "python 'tools\\right_bottom_slot_fixture_result_summary.py' 'captures\\cdb-surface-dump-FIXTURE-RUN\\cdb-surface-dump.log' --expected-slot 0 --write-json 'captures\\cdb-surface-dump-FIXTURE-RUN\\right-bottom-slot-fixture-result-summary.json' --write-md 'captures\\cdb-surface-dump-FIXTURE-RUN\\right-bottom-slot-fixture-result-summary.md' --require-load-success --require-slot-match --require-owner-bit2 --require-owner-action"
+  },
+  "runtime_prerequisites": [
+    "fixture root must be a complete isolated Clash95 working directory seeded outside the repository",
+    "scripts/smoke/prepare_right_bottom_slot_fixture.ps1 seeds non-save children from C:\\Clash, then overlays only the route-compatible save as save\\0.dat",
+    "scripts/cdb/run_cdb_surface_dump.ps1 must use the fixture root as -WorkDir so save\\0.dat is local to the fixture",
+    "scripts/cdb/run_cdb_surface_dump.ps1 must use a child -CandidateDir so the DirectDraw proxy is not placed directly in the workdir",
+    "right_bottom_slot_fixture_result_summary.py must keep selected_arg and selected_global consistent with expected slot 0",
+    "the result remains non-natural fixture evidence until rows 3-5 naturally enter the load menu and LOADSAVE"
+  ],
+  "expected_success_markers": [
+    "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0",
+    "SURFDUMP_PLAYGAME",
+    "NOWNER_OWNER_FLAG_TEST owner_flag has bit2 set",
+    "NOWNER_4338E0_ENTRY or owner/action renderer rows",
+    "fixture result summary status=owner_action_reached",
+    "no AV_SURFDUMP rows"
+  ],
+  "failures": []
+}

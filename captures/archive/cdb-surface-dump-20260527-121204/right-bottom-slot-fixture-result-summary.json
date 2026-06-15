@@ -1,0 +1,447 @@
+{
+  "log": "captures\\cdb-surface-dump-20260527-121204\\cdb-surface-dump.log",
+  "expected_slot": 0,
+  "selected_arg": 0,
+  "selected_global": 0,
+  "loadsave_rows": [
+    {
+      "line": 201,
+      "marker": "SURFDUMP_LOADSAVE",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": 156368944
+      },
+      "text": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=09520030"
+    },
+    {
+      "line": 202,
+      "marker": "SURFDUMP_LOADSAVE",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": 156368944
+      },
+      "text": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=09520030"
+    }
+  ],
+  "loadsave_slot_values": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "loadsave_slot_unique_values": [
+    0
+  ],
+  "loadsave_slot_consistent": true,
+  "loadsave_slot_expected_match": true,
+  "expected_slot_match": true,
+  "row_count": 15,
+  "marker_counts": {
+    "SURFDUMP_LOADSAVE": 2,
+    "SURFDUMP_PLAYGAME": 2,
+    "SURFDUMP_READY": 1,
+    "SURFDUMP_HOST_READY": 1,
+    "NOWNER_HEADER": 1,
+    "NOWNER_FORCE_MAP_CASTLE_CLICK": 1,
+    "NOWNER_MAP_TILE": 7,
+    "NOWNER_BUILDING_TILE": 0,
+    "NOWNER_CASTLE_OVERVIEW_ENTRY": 0,
+    "NOWNER_CASTLE_CMD99_GATE": 0,
+    "NOWNER_CASTLE_CALLBACK": 0,
+    "NOWNER_433C20_ENTRY": 0,
+    "NOWNER_OWNER_FLAG_TEST": 0,
+    "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
+    "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
+    "NOWNER_4338E0_ENTRY": 0,
+    "NOWNER_4338E0_OWNER_FLAG_BLOCKED": 0,
+    "NOWNER_ACTION_CALL_WRAPPER": 0,
+    "NOWNER_OWNER_435BC0_ENTRY": 0,
+    "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+    "AV_SURFDUMP": 0
+  },
+  "av_count": 0,
+  "av_rows": [],
+  "load_success": true,
+  "owner_loop_reached": false,
+  "owner_entry": null,
+  "owner_flag_test": {},
+  "owner_bit2_set": false,
+  "owner_action_route_count": 0,
+  "loadsave": {
+    "selected_arg": 0,
+    "selected_global": 0,
+    "accept": 1,
+    "choice": 5,
+    "gd": 156368944
+  },
+  "playgame": {
+    "gd": 156368944,
+    "map": [
+      100,
+      100
+    ],
+    "scroll": [
+      11,
+      17
+    ],
+    "surface": 136366496,
+    "size": [
+      640,
+      480
+    ]
+  },
+  "rows": [
+    {
+      "line": 201,
+      "marker": "SURFDUMP_LOADSAVE",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": 156368944
+      },
+      "text": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=09520030"
+    },
+    {
+      "line": 202,
+      "marker": "SURFDUMP_LOADSAVE",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": 156368944
+      },
+      "text": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=09520030"
+    },
+    {
+      "line": 203,
+      "marker": "SURFDUMP_PLAYGAME",
+      "values": {
+        "gd": 156368944,
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          11,
+          17
+        ],
+        "surface": 136366496,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "SURFDUMP_PLAYGAME gd=09520030 map=(100,100) scroll=(11,17) surface=0820c9a0 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "SURFDUMP_PLAYGAME",
+      "values": {
+        "gd": 156368944,
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          11,
+          17
+        ],
+        "surface": 136366496,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "SURFDUMP_PLAYGAME gd=09520030 map=(100,100) scroll=(11,17) surface=0820c9a0 size=(640,480)"
+    },
+    {
+      "line": 205,
+      "marker": "NOWNER_HEADER",
+      "values": {
+        "gd": 156368944,
+        "player": 0,
+        "scroll": [
+          11,
+          17
+        ],
+        "surface": 173535280,
+        "size": [
+          800,
+          600
+        ],
+        "seq": 0,
+        "end12": [
+          23,
+          26
+        ],
+        "map": [
+          100,
+          100
+        ]
+      },
+      "text": "NOWNER_HEADER gd=09520030 player=0 scroll=(11,17) surface=0a57f030 size=(800,600) SURFDUMP_REDRAW seq=0 scroll=(11,17) end12=(23,26) map=(100,100) surface=0a57f030 size=(800,600)"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_FORCE_MAP_CASTLE_CLICK",
+      "values": {
+        "screen": [
+          352,
+          272
+        ],
+        "raw": [
+          22528,
+          17408
+        ]
+      },
+      "text": "NOWNER_FORCE_MAP_CASTLE_CLICK screen=(352,272) raw=(00005800,00004400)"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_MAP_TILE",
+      "values": {
+        "map": [
+          100,
+          100
+        ],
+        "mouse": [
+          352,
+          272
+        ],
+        "selected": -1,
+        "current": 0,
+        "seq": 1,
+        "scroll": [
+          11,
+          17
+        ],
+        "end12": [
+          23,
+          26
+        ],
+        "surface": 173535280,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_MAP_TILE map=(16,21) mouse=(352,272) selected=-1 current=0 NOWNER_REARM_MAP_COMMIT map=(16,21) mouse=(352,272) SURFDUMP_REDRAW seq=1 scroll=(11,17) end12=(23,26) map=(100,100) surface=0a57f030 size=(800,600)"
+    },
+    {
+      "line": 207,
+      "marker": "NOWNER_MAP_TILE",
+      "values": {
+        "map": [
+          100,
+          100
+        ],
+        "mouse": [
+          352,
+          272
+        ],
+        "selected": -1,
+        "current": 0,
+        "seq": 2,
+        "scroll": [
+          11,
+          17
+        ],
+        "end12": [
+          23,
+          26
+        ],
+        "surface": 173535280,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_MAP_TILE map=(16,21) mouse=(352,272) selected=-1 current=0 NOWNER_REARM_MAP_COMMIT map=(16,21) mouse=(352,272) SURFDUMP_REDRAW seq=2 scroll=(11,17) end12=(23,26) map=(100,100) surface=0a57f030 size=(800,600)"
+    },
+    {
+      "line": 208,
+      "marker": "NOWNER_MAP_TILE",
+      "values": {
+        "map": [
+          100,
+          100
+        ],
+        "mouse": [
+          352,
+          272
+        ],
+        "selected": -1,
+        "current": 0,
+        "seq": 3,
+        "scroll": [
+          11,
+          17
+        ],
+        "end12": [
+          23,
+          26
+        ],
+        "surface": 173535280,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_MAP_TILE map=(16,21) mouse=(352,272) selected=-1 current=0 NOWNER_REARM_MAP_COMMIT map=(16,21) mouse=(352,272) SURFDUMP_REDRAW seq=3 scroll=(11,17) end12=(23,26) map=(100,100) surface=0a57f030 size=(800,600)"
+    },
+    {
+      "line": 209,
+      "marker": "SURFDUMP_READY",
+      "values": {
+        "redraw_seq": 4,
+        "surface": 173535280,
+        "size": [
+          800,
+          600
+        ],
+        "base": 176291888,
+        "bytes": 480000
+      },
+      "text": "SURFDUMP_READY redraw_seq=4 surface=0a57f030 size=(800,600) base=0a820030 bytes=480000"
+    },
+    {
+      "line": 221,
+      "marker": "SURFDUMP_HOST_READY",
+      "values": {},
+      "text": "SURFDUMP_HOST_READY"
+    },
+    {
+      "line": 222,
+      "marker": "NOWNER_MAP_TILE",
+      "values": {
+        "map": [
+          100,
+          100
+        ],
+        "mouse": [
+          352,
+          272
+        ],
+        "selected": -1,
+        "current": 0,
+        "seq": 4,
+        "scroll": [
+          11,
+          17
+        ],
+        "end12": [
+          23,
+          26
+        ],
+        "surface": 173535280,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_MAP_TILE map=(16,21) mouse=(352,272) selected=-1 current=0 NOWNER_REARM_MAP_COMMIT map=(16,21) mouse=(352,272) SURFDUMP_REDRAW seq=4 scroll=(11,17) end12=(23,26) map=(100,100) surface=0a57f030 size=(800,600)"
+    },
+    {
+      "line": 223,
+      "marker": "NOWNER_MAP_TILE",
+      "values": {
+        "map": [
+          100,
+          100
+        ],
+        "mouse": [
+          352,
+          272
+        ],
+        "selected": -1,
+        "current": 0,
+        "seq": 5,
+        "scroll": [
+          11,
+          17
+        ],
+        "end12": [
+          23,
+          26
+        ],
+        "surface": 173535280,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_MAP_TILE map=(16,21) mouse=(352,272) selected=-1 current=0 NOWNER_REARM_MAP_COMMIT map=(16,21) mouse=(352,272) SURFDUMP_REDRAW seq=5 scroll=(11,17) end12=(23,26) map=(100,100) surface=0a57f030 size=(800,600)"
+    },
+    {
+      "line": 224,
+      "marker": "NOWNER_MAP_TILE",
+      "values": {
+        "map": [
+          100,
+          100
+        ],
+        "mouse": [
+          352,
+          272
+        ],
+        "selected": -1,
+        "current": 0,
+        "seq": 6,
+        "scroll": [
+          11,
+          17
+        ],
+        "end12": [
+          23,
+          26
+        ],
+        "surface": 173535280,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_MAP_TILE map=(16,21) mouse=(352,272) selected=-1 current=0 NOWNER_REARM_MAP_COMMIT map=(16,21) mouse=(352,272) SURFDUMP_REDRAW seq=6 scroll=(11,17) end12=(23,26) map=(100,100) surface=0a57f030 size=(800,600)"
+    },
+    {
+      "line": 225,
+      "marker": "NOWNER_MAP_TILE",
+      "values": {
+        "map": [
+          16,
+          21
+        ],
+        "mouse": [
+          352,
+          272
+        ],
+        "selected": -1,
+        "current": 0,
+        "eax": 5316116,
+        "ebx": 5316116,
+        "ecx": 0,
+        "edx": 5316116,
+        "esi": 416,
+        "edi": 480
+      },
+      "text": "NOWNER_MAP_TILE map=(16,21) mouse=(352,272) selected=-1 current=0 NOWNER_REARM_MAP_COMMIT map=(16,21) mouse=(352,272) eax=00511e14 ebx=00511e14 ecx=00000000 edx=00511e14 esi=000001a0 edi=000001e0"
+    }
+  ],
+  "status": "castle_route_not_reached",
+  "classification": [
+    "LOADSAVE and PlayGame were reached",
+    "observed load slot matches the expected fixture slot",
+    "castle command-99 owner loop was not fully reached",
+    "owner flag bit 0x02 was not set",
+    "owner/action renderer route markers were not observed"
+  ]
+}

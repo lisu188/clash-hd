@@ -177,6 +177,76 @@ COPYBACK_TRACE_LOOP_STALL_LOG = COPYBACK_TRACE_SUCCESS_LOG.replace(
     "NOWNER_435BC0_LOOP_LIMIT iter=8 ebx=0 d532210=1 d532218=041bc71a d5322c8=-1",
 )
 
+COPYBACK_TRACE_LOOPSTATE_LOG = COPYBACK_TRACE_LOOP_STALL_LOG.replace(
+    "NOWNER_435BC0_LOOP_LIMIT iter=8 ebx=0 d532210=1 d532218=041bc71a d5322c8=-1",
+    "NOWNER_435BC0_POLL count=1 d532210=0 d532218=041bc71a d532220=0 d5322c8=-1 mouse=(180,440) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00 surface=0b100030 size=(640,480)\n"
+    "NOWNER_435BC0_WRITE_532218 ret=0051b837 new=041bc71a selected_index=0 hover_slot=-1 surface=0b100030 size=(640,480)\n"
+    "NOWNER_435BC0_WRITE_5322C8 ret=0051b837 new=-1 d532218=041bc71a selected_index=0 surface=0b100030 size=(640,480)\n"
+    "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(180,440) raw=(00002d00,00006e00)\n"
+    "NOWNER_435BC0_GRID_GATE raw_result=0 mouse=(180,440) raw=(00002d00,00006e00)\n"
+    "NOWNER_435BC0_GRID_RESULT result=-1 mouse=(180,440) selected_index=0 hover_slot=-1\n"
+    "NOWNER_435BC0_POLL_LIMIT count=16 d532210=0 d532218=041bc71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00)\n"
+    "NOWNER_HITTEST_COMPARE desc=00514ff5 xy=(180,426) flags=0x00 callback=004338e0 mouse=(180,440) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00 eax=00000000\n"
+    "NOWNER_435BC0_LOOP_LIMIT iter=8 ebx=0 d532210=1 d532218=041bc71a d5322c8=-1",
+)
+
+COPYBACK_TRACE_INPUT_RESAMPLE_LOG = COPYBACK_TRACE_LOOPSTATE_LOG.replace(
+    "NOWNER_435BC0_POLL count=1 d532210=0 d532218=041bc71a d532220=0 d5322c8=-1 mouse=(180,440) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00 surface=0b100030 size=(640,480)",
+    "NOWNER_435BC0_LOOP_PUMP_CALL iter=1 d532210=0 d532218=041bc71a d532220=0 d5322c8=-1 raw=(00002d00,00006e00) d544d04=00000000 button0=0x00\n"
+    "NOWNER_435BC0_PUMP_TICK_RETURN iter=1 ret=00435dde eax=00000000 render=00544cd8 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000000 d543d7c=00000000\n"
+    "NOWNER_SOURCEHOLD_CB14_PRE iter=1 source=(0x2d00,0x6e00) prev=(0x2d00,0x6e00) flag=0x01 raw=(00002d00,00006e00)\n"
+    "NOWNER_435BC0_PUMP_CB14_CALL iter=1 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00002d00,00006e00) d544d04=00000000 button0=0x00\n"
+    "NOWNER_435BC0_PUMP_608F0B_CALL iter=1 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x93\n"
+    "NOWNER_435BC0_PUMP_CB04_CALL iter=1 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x93\n"
+    "NOWNER_435BC0_POLL count=1 d532210=0 d532218=041bc71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000001 button0=0x93 surface=0b100030 size=(640,480)",
+)
+
+COPYBACK_TRACE_SOURCEHOLD_CALLSITE_LOG = COPYBACK_TRACE_INPUT_RESAMPLE_LOG.replace(
+    "NOWNER_435BC0_PUMP_608F0B_CALL iter=1 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x93\n",
+    "NOWNER_SOURCEHOLD_608F0A_PRE iter=1 source=(0x2d00,0x6e00) prev=(0x2d00,0x6e00) flag=0x01 raw=(00002d00,00006e00) d544d04=00000001 button0=0x80\n"
+    "NOWNER_435BC0_PUMP_608F0A_CALL iter=1 ret=00435dde render=00544cd8 raw=(00002d00,00006e00) d544d04=00000001 button0=0x80\n"
+    "NOWNER_SOURCEHOLD_608F0B_PRE iter=1 source=(0x2d00,0x6e00) prev=(0x2d00,0x6e00) flag=0x01 raw=(00002d00,00006e00) d544d04=00000001 button0=0x80\n"
+    "NOWNER_435BC0_PUMP_608F0B_CALL iter=1 ret=00435dde render=00544cd8 raw=(00002d00,00006e00) d544d04=00000001 button0=0x80\n",
+)
+
+COPYBACK_TRACE_SOURCEHOLD_COORDS_CALLSITE_LOG = COPYBACK_TRACE_INPUT_RESAMPLE_LOG.replace(
+    "NOWNER_435BC0_PUMP_608F0B_CALL iter=1 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x93\n",
+    "NOWNER_SOURCEHOLD_608F0A_COORDS_PRE iter=1 source=(0x2d00,0x6e00) prev=(0x2d00,0x6e00) flag=0x01 raw=(00002d00,00006e00) d544d04=00000000 button0=0x00\n"
+    "NOWNER_435BC0_PUMP_608F0A_CALL iter=1 ret=00435dde render=00544cd8 raw=(00002d00,00006e00) d544d04=00000000 button0=0x00\n"
+    "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE iter=1 source=(0x2d00,0x6e00) prev=(0x2d00,0x6e00) flag=0x01 raw=(00002d00,00006e00) d544d04=00000000 button0=0x00\n"
+    "NOWNER_435BC0_PUMP_608F0B_CALL iter=1 ret=00435dde render=00544cd8 raw=(00002d00,00006e00) d544d04=00000000 button0=0x00\n",
+)
+
+COPYBACK_TRACE_ACTION_CLICK_NATIVE_LOG = COPYBACK_TRACE_SUCCESS_LOG.replace(
+    "NOWNER_435BC0_LOOP_HEAD iter=1 ebx=0 d532210=0 d532218=041bc71a d5322c8=-1 surface=0b100030 size=(640,480) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00",
+    "NOWNER_435BC0_LOOP_HEAD iter=1 ebx=0 d532210=0 d532218=041bc71a d5322c8=-1 surface=0b100030 size=(640,480) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00\n"
+    "NOWNER_ACTION_FORCE_NATIVE target=bottom-left-action pass_index=1 native=(81,441) raw=(00001440,00006e40) click_flag=00000001 button0=0x80 selected_index=0 hover_slot=-1 action_state=0\n"
+    "NOWNER_ACTION_DESCRIPTOR_ENTRY desc=0051519a mouse=(81,441) raw=(00001440,00006e40) click_flag=00000001 button0=0x80 selected_index=0 hover_slot=-1 action_state=0\n"
+    "NOWNER_ACTION_WIDGET_PRE_GATES desc=0051519a reason=native_action_rearm click_flag=00000001 button0=0x80 mouse=(81,441)\n"
+    "NOWNER_ACTION_WIDGET_CLICK_GATE desc=0051519a desc_xy=(81,441) state=0x00 hover_cb=00435610 click_cb=00435620 type=0x00 mouse=(81,441) click_flag=00000001 button0=0x80\n"
+    "NOWNER_ACTION_WIDGET_CLICK_GATE_RET desc=0051519a click_gate=1 click_cb=00435620 state=0x00 mouse=(81,441) click_flag=00000001\n"
+    "NOWNER_ACTION_DESCRIPTOR_CALLBACK desc=0051519a callback=00435620 desc_xy=(81,441) state=0x00 mouse=(81,441) action_state=0\n"
+    "NOWNER_ACTION_DESCRIPTOR_RESULT result=1 pass_index=1 mouse=(81,441) action_state=0\n"
+    "NOWNER_ACTION_CLICK_435620_ENTRY desc=0051519a mouse=(81,441) action_state_before=0 selected_index=0 hover_slot=-1\n"
+    "NOWNER_ACTION_CLICK_435620_BEFORE_SET edx=1 action_state_before=0\n"
+    "NOWNER_ACTION_CLICK_EXIT_SET pass_index=1 action_state=1 selected_index=0 hover_slot=-1",
+)
+
+COPYBACK_TRACE_ACTION_CLICK_DISPLAY_LOG = COPYBACK_TRACE_SUCCESS_LOG.replace(
+    "NOWNER_435BC0_LOOP_HEAD iter=1 ebx=0 d532210=0 d532218=041bc71a d5322c8=-1 surface=0b100030 size=(640,480) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00",
+    "NOWNER_435BC0_LOOP_HEAD iter=1 ebx=0 d532210=0 d532218=041bc71a d5322c8=-1 surface=0b100030 size=(640,480) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00\n"
+    "NOWNER_ACTION_FORCE_DISPLAY target=bottom-left-action pass_index=1 displayed=(161,501) expected_native=(81,441) raw=(00002840,00007d40) click_flag=00000001 button0=0x80 selected_index=0 hover_slot=-1 action_state=0\n"
+    "NOWNER_ACTION_DESCRIPTOR_ENTRY desc=0051519a mouse=(81,441) raw=(00001440,00006e40) click_flag=00000001 button0=0x80 selected_index=0 hover_slot=-1 action_state=0\n"
+    "NOWNER_ACTION_WIDGET_PRE_GATES desc=0051519a reason=centered_input_display_click click_flag=00000001 button0=0x80 mouse=(81,441)\n"
+    "NOWNER_ACTION_WIDGET_CLICK_GATE desc=0051519a desc_xy=(41,425) state=0x01 hover_cb=00419770 click_cb=00435620 type=0x02 mouse=(81,441) click_flag=00000001 button0=0x80\n"
+    "NOWNER_ACTION_WIDGET_CLICK_GATE_RET desc=0051519a click_gate=1 click_cb=00435620 state=0x01 mouse=(81,441) click_flag=00000001\n"
+    "NOWNER_ACTION_DESCRIPTOR_CALLBACK desc=0051519a callback=00435620 desc_xy=(41,425) state=0x01 mouse=(81,441) action_state=0\n"
+    "NOWNER_ACTION_DESCRIPTOR_RESULT result=3 pass_index=1 mouse=(4,441) action_state=1\n"
+    "NOWNER_ACTION_CLICK_435620_ENTRY desc=0051519a mouse=(81,441) action_state_before=0 selected_index=0 hover_slot=-1\n"
+    "NOWNER_ACTION_CLICK_435620_BEFORE_SET edx=1 action_state_before=0\n"
+    "NOWNER_ACTION_CLICK_EXIT_SET pass_index=1 action_state=1 selected_index=0 hover_slot=-1",
+)
+
 LOADSAVE_CONFLICT_LOG = SUCCESS_LOG.replace(
     "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0",
     "SURFDUMP_LOADSAVE selected_arg=0 selected_global=1",
@@ -323,6 +393,125 @@ def test_owner_action_copyback_trace_loop_stalled() -> None:
     assert report["wrapper_copyback_count"] == 0
 
 
+def test_owner_action_loopstate_trace_fields() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        report = summary.parse_log(write_log(Path(tmp), COPYBACK_TRACE_LOOPSTATE_LOG), expected_slot=0)
+    assert report["status"] == "owner_action_435bc0_loop_stalled", report
+    assert report["stock_loopstate_marker_count"] >= 4
+    assert report["stock_grid_marker_count"] >= 3
+    assert report["descriptor_hittest_marker_count"] == 1
+    assert report["owner_435bc0_poll_count"] == 1
+    assert report["owner_435bc0_poll_limit_count"] == 1
+    assert report["owner_435bc0_write_532218_count"] == 1
+    assert report["owner_435bc0_write_5322c8_count"] == 1
+    assert report["owner_435bc0_grid_route_count"] == 1
+    assert report["owner_435bc0_grid_gate_count"] == 1
+    assert report["owner_435bc0_grid_result_count"] == 1
+    assert report["last_owner_435bc0_poll"]["mouse"] == [180, 440]
+    assert report["last_owner_435bc0_grid_result"]["result"] == -1
+
+
+def test_owner_action_input_resample_trace_fields() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        report = summary.parse_log(
+            write_log(Path(tmp), COPYBACK_TRACE_INPUT_RESAMPLE_LOG),
+            expected_slot=0,
+            proof_class="natural_slot5_right_bottom_input_resample",
+        )
+    assert report["status"] == "owner_action_435bc0_loop_stalled", report
+    assert report["owner_435bc0_pump_tick_return_count"] == 1
+    assert report["owner_435bc0_pump_cb14_call_count"] == 1
+    assert report["owner_435bc0_pump_608f0b_call_count"] == 1
+    assert report["sourcehold_marker_count"] == 1
+    assert report["last_sourcehold"]["source"] == [0x2D00, 0x6E00]
+    assert report["first_owner_435bc0_pump_tick_return"]["raw"] == [0x2D00, 0x6E00]
+    assert report["first_owner_435bc0_pump_cb14_call"]["raw"] == [0x2D00, 0x6E00]
+    assert report["first_owner_435bc0_pump_608f0b_call"]["raw"] == [0x0100, 0x6E00]
+    assert report["last_owner_435bc0_pump_tick_return"]["raw"] == [0x2D00, 0x6E00]
+    assert report["last_owner_435bc0_pump_cb14_call"]["cb14"] == 0x004612E0
+    assert report["last_owner_435bc0_pump_608f0b_call"]["raw"] == [0x0100, 0x6E00]
+    assert report["last_owner_435bc0_poll"]["mouse"] == [4, 440]
+
+
+def test_owner_action_callsite_sourcehold_trace_fields() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        report = summary.parse_log(
+            write_log(Path(tmp), COPYBACK_TRACE_SOURCEHOLD_CALLSITE_LOG),
+            expected_slot=0,
+            proof_class="natural_slot5_right_bottom_sourcehold_callsite",
+        )
+    assert report["status"] == "owner_action_435bc0_loop_stalled", report
+    assert report["sourcehold_marker_count"] == 3
+    assert report["last_sourcehold_marker"] == "NOWNER_SOURCEHOLD_608F0B_PRE"
+    assert report["last_sourcehold"]["raw"] == [0x2D00, 0x6E00]
+    assert report["owner_435bc0_pump_608f0a_call_count"] == 1
+    assert report["last_owner_435bc0_pump_608f0b_call"]["raw"] == [0x2D00, 0x6E00]
+
+
+def test_owner_action_coords_callsite_sourcehold_trace_fields() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        report = summary.parse_log(
+            write_log(Path(tmp), COPYBACK_TRACE_SOURCEHOLD_COORDS_CALLSITE_LOG),
+            expected_slot=0,
+            proof_class="natural_slot5_right_bottom_sourcehold_coords_callsite",
+        )
+    assert report["status"] == "owner_action_435bc0_loop_stalled", report
+    assert report["sourcehold_marker_count"] == 3
+    assert report["last_sourcehold_marker"] == "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE"
+    assert report["last_sourcehold"]["raw"] == [0x2D00, 0x6E00]
+    assert report["last_sourcehold"]["d544d04"] == 0
+    assert report["last_sourcehold"]["button0"] == 0
+    assert report["last_owner_435bc0_pump_608f0b_call"]["raw"] == [0x2D00, 0x6E00]
+    assert report["last_owner_435bc0_pump_608f0b_call"]["d544d04"] == 0
+
+
+def test_owner_action_native_click_trace_fields() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        report = summary.parse_log(
+            write_log(Path(tmp), COPYBACK_TRACE_ACTION_CLICK_NATIVE_LOG),
+            expected_slot=0,
+            proof_class="natural_slot5_right_bottom_action_click_native",
+        )
+    assert report["status"] == "owner_action_copyback_reached", report
+    assert report["action_click_marker_count"] == 10
+    assert report["action_click_force_count"] == 1
+    assert report["action_descriptor_entry_count"] == 1
+    assert report["action_widget_click_gate_ret_count"] == 1
+    assert report["action_descriptor_callback_count"] == 1
+    assert report["action_descriptor_result_count"] == 1
+    assert report["action_click_435620_entry_count"] == 1
+    assert report["action_click_exit_set_count"] == 1
+    assert report["last_action_click_marker"] == "NOWNER_ACTION_CLICK_EXIT_SET"
+    assert report["last_action_force"]["raw"] == [0x1440, 0x6E40]
+    assert report["last_action_force"]["native"] == [81, 441]
+    assert report["last_action_descriptor_callback"]["callback"] == 0x00435620
+    assert report["last_action_descriptor_result"]["result"] == 1
+    assert report["last_action_click_exit_set"]["action_state"] == 1
+    assert report["wrapper_copyback_count"] == 1
+
+
+def test_owner_action_display_click_transform_trace_fields() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        report = summary.parse_log(
+            write_log(Path(tmp), COPYBACK_TRACE_ACTION_CLICK_DISPLAY_LOG),
+            expected_slot=0,
+            proof_class="natural_slot5_right_bottom_action_click_centered_input",
+        )
+    assert report["status"] == "owner_action_copyback_reached", report
+    assert report["action_click_marker_count"] == 10
+    assert report["action_click_force_count"] == 1
+    assert report["action_click_native_force_count"] == 0
+    assert report["action_click_display_force_count"] == 1
+    assert report["last_action_force_marker"] == "NOWNER_ACTION_FORCE_DISPLAY"
+    assert report["last_action_force"]["displayed"] == [161, 501]
+    assert report["last_action_force"]["expected_native"] == [81, 441]
+    assert report["last_action_force"]["raw"] == [0x2840, 0x7D40]
+    assert report["last_action_descriptor_callback"]["callback"] == 0x00435620
+    assert report["last_action_descriptor_callback"]["mouse"] == [81, 441]
+    assert report["last_action_click_exit_set"]["action_state"] == 1
+    assert report["wrapper_copyback_count"] == 1
+
+
 def test_timeout_stack_classification() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
@@ -335,6 +524,20 @@ def test_timeout_stack_classification() -> None:
         )
         report = summary.parse_log(log, expected_slot=0)
     assert report["timeout_stack_classification"] == "peekmessage_dd_pump", report
+
+
+def test_descriptor_hit_scan_timeout_stack_classification() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        log = write_log(root, COPYBACK_TRACE_LOOPSTATE_LOG)
+        (root / "timeout-stack.log").write_text(
+            "eax=ffffed00 ebx=0051526e\n"
+            "eip=00419b8d\n"
+            "000edb28 00419dd9\n",
+            encoding="utf-8",
+        )
+        report = summary.parse_log(log, expected_slot=0)
+    assert report["timeout_stack_classification"] == "descriptor_hit_scan", report
 
 
 def test_av_fails_closed() -> None:
@@ -500,7 +703,12 @@ def run_tests() -> None:
     test_owner_action_copyback_trace_reached_classification()
     test_owner_action_copyback_trace_stalled_after_stock_return()
     test_owner_action_copyback_trace_loop_stalled()
+    test_owner_action_loopstate_trace_fields()
+    test_owner_action_input_resample_trace_fields()
+    test_owner_action_callsite_sourcehold_trace_fields()
+    test_owner_action_coords_callsite_sourcehold_trace_fields()
     test_timeout_stack_classification()
+    test_descriptor_hit_scan_timeout_stack_classification()
     test_av_fails_closed()
     test_loadsave_conflict_fails_closed()
     test_loadsave_wrong_slot_fails_closed()

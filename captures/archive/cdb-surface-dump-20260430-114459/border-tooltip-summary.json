@@ -1,0 +1,161 @@
+{
+  "log": "captures\\cdb-surface-dump-20260430-114459\\cdb-surface-dump.log",
+  "marker_counts": {
+    "BORDER_FULLREDRAW_ENTER": 0,
+    "TOOLTIP_UNITINFO_ENTRY": 0,
+    "BORDER_PANEL_DRAW": 0,
+    "TOOLTIP_STATUS_DRAW": 0,
+    "TOOLTIP_ACTION_BOX": 0,
+    "BORDER_PANEL_SPRITE_ENTRY": 0,
+    "BORDER_INFO_WINDOW_ENTRY": 0,
+    "BORDER_NOTIFY_TEXT_ENTRY": 0,
+    "BORDER_MISSION_STATUS_ENTRY": 0,
+    "TOOLTIP_TEXT": 0,
+    "TOOLTIP_TEXTFMT": 0,
+    "BORDER_TOOLTIP_PRESENT": 0,
+    "BORDER_TOOLTIP_PRESENT_NULLPTR": 0,
+    "SURFDUMP_PLAYGAME": 1,
+    "SURFDUMP_READY": 1
+  },
+  "row_counts": {
+    "fullredraw": 0,
+    "text": 0,
+    "present": 0,
+    "entries": 0,
+    "av": 0,
+    "surfdump_playgame": 1,
+    "surfdump_ready": 1
+  },
+  "surface_sizes": [],
+  "d526990_values": [],
+  "d526990_nonzero_seen": false,
+  "present_by_region": {
+    "frame_left": 0,
+    "frame_top": 0,
+    "right_frame_under_minimap": 0,
+    "bottom_tooltip": 0,
+    "bottom_right_panel": 0,
+    "bottom_frame": 0
+  },
+  "native_clip_row_count": 0,
+  "native_clip_rows": [],
+  "text_rows": [],
+  "entry_rows": [],
+  "fullredraw_rows": [],
+  "surfdump_ready_rows": [
+    {
+      "line_no": 189,
+      "line": "SURFDUMP_READY redraw_seq=4 surface=0a07ed90 size=(800,600) base=0a320030 bytes=480000"
+    }
+  ],
+  "av_rows": [],
+  "png": {
+    "path": "captures\\cdb-surface-dump-20260430-114459\\surface.png",
+    "image_size": {
+      "width": 800,
+      "height": 600
+    },
+    "logical_size": {
+      "width": 800,
+      "height": 600
+    },
+    "regions": {
+      "frame_left": {
+        "logical_rect": [
+          0,
+          0,
+          31,
+          599
+        ],
+        "image_rect": [
+          0,
+          0,
+          31,
+          599
+        ],
+        "nonblack_percent": 76.328,
+        "black_percent": 23.672
+      },
+      "frame_top": {
+        "logical_rect": [
+          0,
+          0,
+          799,
+          15
+        ],
+        "image_rect": [
+          0,
+          0,
+          799,
+          15
+        ],
+        "nonblack_percent": 73.539,
+        "black_percent": 26.461
+      },
+      "right_frame_under_minimap": {
+        "logical_rect": [
+          586,
+          230,
+          799,
+          527
+        ],
+        "image_rect": [
+          586,
+          230,
+          799,
+          527
+        ],
+        "nonblack_percent": 24.116,
+        "black_percent": 75.884
+      },
+      "bottom_tooltip": {
+        "logical_rect": [
+          32,
+          528,
+          585,
+          599
+        ],
+        "image_rect": [
+          32,
+          528,
+          585,
+          599
+        ],
+        "nonblack_percent": 66.451,
+        "black_percent": 33.549
+      },
+      "bottom_right_panel": {
+        "logical_rect": [
+          586,
+          528,
+          799,
+          599
+        ],
+        "image_rect": [
+          586,
+          528,
+          799,
+          599
+        ],
+        "nonblack_percent": 21.43,
+        "black_percent": 78.57
+      },
+      "bottom_frame": {
+        "logical_rect": [
+          0,
+          580,
+          799,
+          599
+        ],
+        "image_rect": [
+          0,
+          580,
+          799,
+          599
+        ],
+        "nonblack_percent": 32.306,
+        "black_percent": 67.694
+      }
+    }
+  }
+}

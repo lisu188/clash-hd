@@ -1,0 +1,53 @@
+{
+    "Passed":  true,
+    "LaunchMode":  "hidden-desktop",
+    "HiddenDesktop":  true,
+    "DesktopName":  "ClashSurfaceDump_20260429_111340",
+    "RunDir":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340",
+    "Stage":  "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "InputExe":  "C:\\Clash\\clash95.exe",
+    "InputSha256":  "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+    "CandidatePath":  "C:\\ClashTests\\cdb-surface-dump\\clash95_hd_surfdump_20260429_111340.exe",
+    "CandidateDir":  "C:\\ClashTests\\cdb-surface-dump",
+    "CandidateSha256":  "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+    "UseDdrawProxy":  true,
+    "NoSkipStartAnims":  true,
+    "FastForwardStartAnims":  false,
+    "DdrawProxyDll":  "C:\\ClashTests\\cdb-surface-dump\\ddraw.dll",
+    "DdrawProxySha256":  "3CEAE251C81253EC2DFA33D73D6AD420138535839D87C2F7DC5A0918C37C53AB",
+    "DdrawProxyLog":  "C:\\ClashTests\\cdb-surface-dump\\ddraw_surfdump_proxy.log",
+    "DdrawProxyManifest":  "C:\\ClashTests\\cdb-surface-dump\\ddraw_surfdump_proxy.build.json",
+    "Cdb":  "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+    "CdbExitCode":  null,
+    "TimedOut":  false,
+    "StoppedAfterDump":  true,
+    "DumpMethod":  "host-readprocessmemory",
+    "HostDumpedMemory":  true,
+    "HostDumpError":  null,
+    "ProbeTemplate":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_surface_dump_probe.cdb",
+    "GeneratedProbe":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340\\clash95_surface_dump_probe.generated.cdb",
+    "Log":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340\\cdb-surface-dump.log",
+    "Surface":  {
+                    "RedrawSeq":  4,
+                    "Surface":  "0a07ed90",
+                    "Width":  800,
+                    "Height":  600,
+                    "Base":  "0a320030",
+                    "Bytes":  480000
+                },
+    "RawPath":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340\\surface.raw",
+    "RawBytes":  480000,
+    "PngPath":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340\\surface.png",
+    "PngSha256":  "0f989b85671be733914098b3a33a74a5ab4afadfe1c3fa6471d1665b4bf1a34f",
+    "PngMetadata":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340\\surface.png.json",
+    "CoverageJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340\\map-tile-coverage.json",
+    "CoverageText":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340\\map-tile-coverage.txt",
+    "VisibilityJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340\\visibility-coverage-summary.json",
+    "VisibilityText":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260429-111340\\visibility-coverage.txt",
+    "VisibilityUnexplainedBlankCells":  [
+
+                                        ],
+    "VisibilityStatusCounts":  {
+                                   "visibility_zero":  13
+                               }
+}

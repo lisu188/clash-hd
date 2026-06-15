@@ -1,0 +1,904 @@
+{
+  "generated_at": "2026-06-15T18:34:42+02:00",
+  "passed": false,
+  "stage": "castlecenter-all",
+  "promotion_status": "validation_stage_only",
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
+  "checks": {
+    "patch_stage": {
+      "passed": false,
+      "exe": "C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe",
+      "stage": "castlecenter-all",
+      "resolved_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "failures": [
+        "candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe"
+      ]
+    },
+    "overview_visual": {
+      "generated_at": "2026-06-15T18:34:42+02:00",
+      "run_dir": "captures\\archive\\cdb-surface-dump-20260515-105041",
+      "log": "captures\\archive\\cdb-surface-dump-20260515-105041\\cdb-surface-dump.log",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",
+      "passed": true,
+      "failures": [],
+      "expected_commands": [
+        "0x63",
+        "0x86",
+        "0x87",
+        "0x99",
+        "0x9C",
+        "0x9F",
+        "0xA6"
+      ],
+      "catalog": {
+        "ready": true,
+        "av_count": 0,
+        "commands": [
+          "0x63",
+          "0x86",
+          "0x87",
+          "0x99",
+          "0x9C",
+          "0x9F",
+          "0xA6"
+        ],
+        "descriptors": [
+          {
+            "command": 134,
+            "command_hex": "0x86",
+            "callback": 4521584,
+            "callback_hex": "0x0044FE70",
+            "text": 3,
+            "owner_flag": 0,
+            "first_line": 207
+          },
+          {
+            "command": 153,
+            "command_hex": "0x99",
+            "callback": 4447456,
+            "callback_hex": "0x0043DCE0",
+            "text": 3,
+            "owner_flag": 0,
+            "first_line": 207
+          },
+          {
+            "command": 156,
+            "command_hex": "0x9C",
+            "callback": 4446432,
+            "callback_hex": "0x0043D8E0",
+            "text": 3,
+            "owner_flag": 0,
+            "first_line": 207
+          },
+          {
+            "command": 159,
+            "command_hex": "0x9F",
+            "callback": 4447968,
+            "callback_hex": "0x0043DEE0",
+            "text": 3,
+            "owner_flag": 0,
+            "first_line": 207
+          },
+          {
+            "command": 166,
+            "command_hex": "0xA6",
+            "callback": 4446944,
+            "callback_hex": "0x0043DAE0",
+            "text": 3,
+            "owner_flag": 0,
+            "first_line": 207
+          },
+          {
+            "command": 99,
+            "command_hex": "0x63",
+            "callback": 4406304,
+            "callback_hex": "0x00433C20",
+            "text": 3,
+            "owner_flag": 0,
+            "first_line": 207
+          },
+          {
+            "command": 135,
+            "command_hex": "0x87",
+            "callback": 4370592,
+            "callback_hex": "0x0042B0A0",
+            "text": 3,
+            "owner_flag": 0,
+            "first_line": 207
+          }
+        ],
+        "last_surface": {
+          "redraw_seq": 992,
+          "surface": 167853784,
+          "size": [
+            800,
+            600
+          ],
+          "base": 169214000,
+          "bytes": 480000
+        },
+        "last_overview_post_draw": {
+          "ret": 1701667194,
+          "main_surface": 167853784,
+          "main_size": [
+            800,
+            600
+          ],
+          "overview_surface": 168230160,
+          "overview_size": [
+            640,
+            480
+          ],
+          "owner_screen": 69715738
+        },
+        "classification": [
+          "controlled castle-screen invocation was attempted",
+          "cataloged 7 unique castle descriptor callbacks",
+          "surface dump reached ready state",
+          "overview redraw finished on main surface size [800, 600]",
+          "catalog finished on an 800x600 surface"
+        ]
+      },
+      "geometry": {
+        "path": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",
+        "image": {
+          "width": 800,
+          "height": 600
+        },
+        "threshold": 12,
+        "regions": {
+          "full": {
+            "rect": [
+              0,
+              0,
+              799,
+              599
+            ],
+            "clipped_rect": [
+              0,
+              0,
+              799,
+              599
+            ],
+            "pixels": 480000,
+            "nonblack_pixels": 307088,
+            "nonblack_percent": 63.977,
+            "nonblack_bounds": {
+              "x": 80,
+              "y": 60,
+              "right": 719,
+              "bottom": 539,
+              "width": 640,
+              "height": 480
+            }
+          },
+          "centered_640x480": {
+            "rect": [
+              80,
+              60,
+              719,
+              539
+            ],
+            "clipped_rect": [
+              80,
+              60,
+              719,
+              539
+            ],
+            "pixels": 307200,
+            "nonblack_pixels": 307088,
+            "nonblack_percent": 99.964,
+            "nonblack_bounds": {
+              "x": 80,
+              "y": 60,
+              "right": 719,
+              "bottom": 539,
+              "width": 640,
+              "height": 480
+            }
+          },
+          "native_top_left_640x480": {
+            "rect": [
+              0,
+              0,
+              639,
+              479
+            ],
+            "clipped_rect": [
+              0,
+              0,
+              639,
+              479
+            ],
+            "pixels": 307200,
+            "nonblack_pixels": 235141,
+            "nonblack_percent": 76.543,
+            "nonblack_bounds": {
+              "x": 80,
+              "y": 60,
+              "right": 639,
+              "bottom": 479,
+              "width": 560,
+              "height": 420
+            }
+          },
+          "top_left_margin_80x60": {
+            "rect": [
+              0,
+              0,
+              79,
+              59
+            ],
+            "clipped_rect": [
+              0,
+              0,
+              79,
+              59
+            ],
+            "pixels": 4800,
+            "nonblack_pixels": 0,
+            "nonblack_percent": 0.0,
+            "nonblack_bounds": null
+          },
+          "left_margin_80x480": {
+            "rect": [
+              0,
+              60,
+              79,
+              539
+            ],
+            "clipped_rect": [
+              0,
+              60,
+              79,
+              539
+            ],
+            "pixels": 38400,
+            "nonblack_pixels": 0,
+            "nonblack_percent": 0.0,
+            "nonblack_bounds": null
+          },
+          "top_margin_640x60": {
+            "rect": [
+              80,
+              0,
+              719,
+              59
+            ],
+            "clipped_rect": [
+              80,
+              0,
+              719,
+              59
+            ],
+            "pixels": 38400,
+            "nonblack_pixels": 0,
+            "nonblack_percent": 0.0,
+            "nonblack_bounds": null
+          }
+        },
+        "gate": {
+          "passed": true,
+          "checks": {
+            "image_size_800x600": true,
+            "centered_region_has_content": true,
+            "centered_region_dominates_margins": true,
+            "native_origin_echo_absent": true
+          },
+          "centered_nonblack_percent": 99.964,
+          "max_margin_nonblack_percent": 0.0,
+          "max_allowed_echo_percent": 25.0
+        }
+      },
+      "visual_integrity": {
+        "passed": true,
+        "rect": [
+          80,
+          60,
+          719,
+          539
+        ],
+        "diff_threshold": 40.0,
+        "vertical_high_percent": 0.0,
+        "horizontal_high_percent": 0.835,
+        "vertical_stripe_excess_percent": 0.0,
+        "vertical_mean_diff": 8.108,
+        "horizontal_mean_diff": 11.081,
+        "mean_diff_ratio": 0.732,
+        "max_vertical_high_percent": 12.0,
+        "max_vertical_stripe_excess_percent": 8.0
+      },
+      "barracks_baseline": {
+        "run_dir": "captures\\archive\\cdb-surface-dump-20260512-082418",
+        "passed": true,
+        "failures": [],
+        "action": {
+          "ready": true,
+          "descriptor_click_ok": true,
+          "controlled_4356c0_ok": true,
+          "av_count": 0
+        },
+        "geometry": {
+          "path": "captures\\archive\\cdb-surface-dump-20260512-082418\\surface.png",
+          "image": {
+            "width": 800,
+            "height": 600
+          },
+          "threshold": 12,
+          "regions": {
+            "full": {
+              "rect": [
+                0,
+                0,
+                799,
+                599
+              ],
+              "clipped_rect": [
+                0,
+                0,
+                799,
+                599
+              ],
+              "pixels": 480000,
+              "nonblack_pixels": 218811,
+              "nonblack_percent": 45.586,
+              "nonblack_bounds": {
+                "x": 80,
+                "y": 60,
+                "right": 719,
+                "bottom": 539,
+                "width": 640,
+                "height": 480
+              }
+            },
+            "centered_640x480": {
+              "rect": [
+                80,
+                60,
+                719,
+                539
+              ],
+              "clipped_rect": [
+                80,
+                60,
+                719,
+                539
+              ],
+              "pixels": 307200,
+              "nonblack_pixels": 218811,
+              "nonblack_percent": 71.228,
+              "nonblack_bounds": {
+                "x": 80,
+                "y": 60,
+                "right": 719,
+                "bottom": 539,
+                "width": 640,
+                "height": 480
+              }
+            },
+            "native_top_left_640x480": {
+              "rect": [
+                0,
+                0,
+                639,
+                479
+              ],
+              "clipped_rect": [
+                0,
+                0,
+                639,
+                479
+              ],
+              "pixels": 307200,
+              "nonblack_pixels": 164688,
+              "nonblack_percent": 53.609,
+              "nonblack_bounds": {
+                "x": 80,
+                "y": 60,
+                "right": 639,
+                "bottom": 479,
+                "width": 560,
+                "height": 420
+              }
+            },
+            "top_left_margin_80x60": {
+              "rect": [
+                0,
+                0,
+                79,
+                59
+              ],
+              "clipped_rect": [
+                0,
+                0,
+                79,
+                59
+              ],
+              "pixels": 4800,
+              "nonblack_pixels": 0,
+              "nonblack_percent": 0.0,
+              "nonblack_bounds": null
+            },
+            "left_margin_80x480": {
+              "rect": [
+                0,
+                60,
+                79,
+                539
+              ],
+              "clipped_rect": [
+                0,
+                60,
+                79,
+                539
+              ],
+              "pixels": 38400,
+              "nonblack_pixels": 0,
+              "nonblack_percent": 0.0,
+              "nonblack_bounds": null
+            },
+            "top_margin_640x60": {
+              "rect": [
+                80,
+                0,
+                719,
+                59
+              ],
+              "clipped_rect": [
+                80,
+                0,
+                719,
+                59
+              ],
+              "pixels": 38400,
+              "nonblack_pixels": 0,
+              "nonblack_percent": 0.0,
+              "nonblack_bounds": null
+            }
+          },
+          "gate": {
+            "passed": true,
+            "checks": {
+              "image_size_800x600": true,
+              "centered_region_has_content": true,
+              "centered_region_dominates_margins": true,
+              "native_origin_echo_absent": true
+            },
+            "centered_nonblack_percent": 71.228,
+            "max_margin_nonblack_percent": 0.0,
+            "max_allowed_echo_percent": 25.0
+          }
+        }
+      }
+    },
+    "focused_hitbox": {
+      "passed": true,
+      "run": "captures\\archive\\cdb-surface-dump-20260515-105411",
+      "log": "captures\\archive\\cdb-surface-dump-20260515-105411\\cdb-surface-dump.log",
+      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260515-105411\\surface.png",
+      "ready": true,
+      "ready_size": [
+        800,
+        600
+      ],
+      "displayed_result": {
+        "raw_hit": 248,
+        "adjusted_hit": 0,
+        "mouse": [
+          371,
+          107
+        ],
+        "raw": [
+          23744,
+          6848
+        ],
+        "target_raw": 248
+      },
+      "displayed_wrapper_ok": true,
+      "last_descriptor": {
+        "command": 134,
+        "callback": 4521584,
+        "text": 3,
+        "arg_count": 5171110,
+        "owner_screen": 70240026,
+        "surface": 171785944,
+        "sz": [
+          800,
+          600
+        ],
+        "mouse": [
+          371,
+          107
+        ]
+      },
+      "last_click_gate": {
+        "command": 134,
+        "callback": 4521584,
+        "gate": 1,
+        "mouse": [
+          371,
+          107
+        ],
+        "click_flag": 1,
+        "button0": 128
+      },
+      "av_count": 0,
+      "classification": [
+        "displayed coordinate 371,107 was installed",
+        "displayed coordinate hit the target overview command",
+        "debugger-side native transform was not installed",
+        "native coordinate did not prove target raw hit 0xF8",
+        "displayed coordinate reached the target through the binary input wrapper",
+        "descriptor command 0x86 callback 0x0044FE70 was installed",
+        "stock click gate returned 1 for the target descriptor",
+        "target callback was suppressed after gate proof",
+        "surface dump reached ready state"
+      ],
+      "failures": []
+    },
+    "visible_multihit": {
+      "passed": true,
+      "label": "visible-command multi-hit",
+      "run": "captures\\archive\\cdb-surface-dump-20260515-105458",
+      "log": "captures\\archive\\cdb-surface-dump-20260515-105458\\cdb-surface-dump.log",
+      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260515-105458\\surface.png",
+      "ready": true,
+      "ready_size": [
+        800,
+        600
+      ],
+      "all_targets_ok": true,
+      "callback_called": false,
+      "av_count": 0,
+      "targets": [
+        {
+          "index": 0,
+          "raw": 248,
+          "command": 134,
+          "callback": 4521584,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 1,
+          "raw": 254,
+          "command": 99,
+          "callback": 4406304,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 2,
+          "raw": 255,
+          "command": 135,
+          "callback": 4370592,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        }
+      ],
+      "classification": [
+        "target 0 raw 0xF8 command 0x86 gate 1: ok",
+        "target 1 raw 0xFE command 0x63 gate 1: ok",
+        "target 2 raw 0xFF command 0x87 gate 1: ok",
+        "surface dump reached ready state"
+      ],
+      "failures": []
+    },
+    "owner_records": {
+      "passed": true,
+      "raw": "captures\\current\\castle-owner-records-current.raw",
+      "record_count": 64,
+      "active_records": 4,
+      "nonempty_records": 64,
+      "interesting_records": 0,
+      "flag_1a0_values": [
+        0
+      ],
+      "flag_1a4_values": [
+        0
+      ],
+      "failures": []
+    },
+    "forced_hitmap": {
+      "passed": true,
+      "raw": "captures\\archive\\castle-overview-hitmap-flags1f.raw",
+      "present_raw_ids": [
+        "0xF8",
+        "0xF9",
+        "0xFA",
+        "0xFB",
+        "0xFC",
+        "0xFD",
+        "0xFE",
+        "0xFF"
+      ],
+      "visible_command_raws": [
+        "0xF8",
+        "0xFE",
+        "0xFF"
+      ],
+      "dormant_command_raws": [
+        "0xFA",
+        "0xFB",
+        "0xFC",
+        "0xFD"
+      ],
+      "values": {
+        "0xF8": {
+          "raw": 248,
+          "command": 134,
+          "count": 18356,
+          "present": true,
+          "bbox": [
+            181,
+            47,
+            457,
+            223
+          ],
+          "first_native": [
+            291,
+            47
+          ],
+          "first_displayed": [
+            371,
+            107
+          ],
+          "mean_native": [
+            328.9163216387012,
+            153.1588581390281
+          ]
+        },
+        "0xF9": {
+          "raw": 249,
+          "command": null,
+          "count": 7524,
+          "present": true,
+          "bbox": [
+            31,
+            89,
+            602,
+            171
+          ],
+          "first_native": [
+            57,
+            89
+          ],
+          "first_displayed": [
+            137,
+            149
+          ],
+          "mean_native": [
+            449.0717703349282,
+            126.20162147793727
+          ]
+        },
+        "0xFA": {
+          "raw": 250,
+          "command": 153,
+          "count": 19447,
+          "present": true,
+          "bbox": [
+            24,
+            74,
+            375,
+            277
+          ],
+          "first_native": [
+            90,
+            74
+          ],
+          "first_displayed": [
+            170,
+            134
+          ],
+          "mean_native": [
+            202.6916233866406,
+            191.68956651411528
+          ]
+        },
+        "0xFB": {
+          "raw": 251,
+          "command": 156,
+          "count": 13545,
+          "present": true,
+          "bbox": [
+            458,
+            163,
+            639,
+            277
+          ],
+          "first_native": [
+            465,
+            163
+          ],
+          "first_displayed": [
+            545,
+            223
+          ],
+          "mean_native": [
+            549.7182724252492,
+            216.6076042820229
+          ]
+        },
+        "0xFC": {
+          "raw": 252,
+          "command": 159,
+          "count": 4859,
+          "present": true,
+          "bbox": [
+            224,
+            269,
+            340,
+            340
+          ],
+          "first_native": [
+            270,
+            269
+          ],
+          "first_displayed": [
+            350,
+            329
+          ],
+          "mean_native": [
+            271.9164437126981,
+            304.5575221238938
+          ]
+        },
+        "0xFD": {
+          "raw": 253,
+          "command": 166,
+          "count": 6265,
+          "present": true,
+          "bbox": [
+            476,
+            255,
+            623,
+            319
+          ],
+          "first_native": [
+            519,
+            255
+          ],
+          "first_displayed": [
+            599,
+            315
+          ],
+          "mean_native": [
+            545.7575418994413,
+            286.1980845969673
+          ]
+        },
+        "0xFE": {
+          "raw": 254,
+          "command": 99,
+          "count": 43533,
+          "present": true,
+          "bbox": [
+            18,
+            153,
+            233,
+            426
+          ],
+          "first_native": [
+            147,
+            153
+          ],
+          "first_displayed": [
+            227,
+            213
+          ],
+          "mean_native": [
+            130.11460271518158,
+            300.6902809363012
+          ]
+        },
+        "0xFF": {
+          "raw": 255,
+          "command": 135,
+          "count": 13307,
+          "present": true,
+          "bbox": [
+            458,
+            345,
+            639,
+            479
+          ],
+          "first_native": [
+            555,
+            345
+          ],
+          "first_displayed": [
+            635,
+            405
+          ],
+          "mean_native": [
+            551.8748778838205,
+            418.7637333734125
+          ]
+        }
+      },
+      "failures": []
+    },
+    "dormant_multihit": {
+      "passed": true,
+      "label": "dormant-command multi-hit",
+      "run": "captures\\archive\\cdb-surface-dump-20260515-105557",
+      "log": "captures\\archive\\cdb-surface-dump-20260515-105557\\cdb-surface-dump.log",
+      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260515-105557\\surface.png",
+      "ready": true,
+      "ready_size": [
+        800,
+        600
+      ],
+      "all_targets_ok": true,
+      "callback_called": false,
+      "av_count": 0,
+      "targets": [
+        {
+          "index": 0,
+          "raw": 250,
+          "command": 153,
+          "callback": 4447456,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 1,
+          "raw": 251,
+          "command": 156,
+          "callback": 4446432,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 2,
+          "raw": 252,
+          "command": 159,
+          "callback": 4447968,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 3,
+          "raw": 253,
+          "command": 166,
+          "callback": 4446944,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        }
+      ],
+      "classification": [
+        "target 0 raw 0xFA command 0x99 gate 1: ok",
+        "target 1 raw 0xFB command 0x9C gate 1: ok",
+        "target 2 raw 0xFC command 0x9F gate 1: ok",
+        "target 3 raw 0xFD command 0xA6 gate 1: ok",
+        "surface dump reached ready state"
+      ],
+      "failures": []
+    }
+  },
+  "failures": [
+    "patch_stage: candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe"
+  ]
+}

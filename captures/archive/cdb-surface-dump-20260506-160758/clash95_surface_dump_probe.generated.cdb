@@ -1,0 +1,89 @@
+.echo === Clash95 CDB surface dump probe ===
+.echo route-injects load slot 0, waits for gameplay redraw, then dumps dword_5202E0
+sxe -c ".echo AV_SURFDUMP; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+bc *
+r @$t0 = 0
+r @$t1 = 0
+r @$t2 = 0
+r @$t3 = 0
+r @$t4 = 0
+r @$t5 = 0
+r @$t6 = 0
+r @$t7 = 0
+r @$t8 = 0
+r @$t9 = 0
+r @$t10 = 0
+r @$t11 = 0
+r @$t12 = 0
+r @$t13 = 0
+r @$t14 = 0
+r @$t15 = 0
+r @$t16 = 0
+r @$t17 = 0
+r @$t18 = 0
+r @$t19 = 0
+
+bp 00416850 ".if (@$t14 != 0) { .if (@$t3 < 0n96) { .if (((poi(@esp) == 0041876b) | (poi(@esp) == 004189fa)) & ((@eax == 0n32) | (@eax == 0n672) | (@eax == 0n736)) & ((@edx == 0n208) | (@edx == 0n272) | (@edx == 0n336) | (@edx == 0n400) | (@edx == 0n464) | (@edx == 0n528))) { r @$t6 = 1; r @$t15 = @eax; r @$t16 = @edx; r @$t17 = poi(@esp); r @$t10 = poi(poi(005202e0)+4); .printf \"SURFDUMP_VEDGE_PRE seq=%d ret=%p screen=(%d,%d) tile=%p sample=%02x\\n\", @$t3, @$t17, @$t15, @$t16, @ebx, by(@$t10+@$t16*0n800+@$t15); }; }; }; gc"
+bp 004169bc ".if (@$t6 != 0) { r @$t18 = @eax; r @$t19 = @edx; .printf \"SURFDUMP_VEDGE_VISCALL seq=%d screen=(%d,%d) center=(%d,%d) player=%d byte=%02x mask=%02x hit=%02x\\n\", @$t3, @$t15, @$t16, @$t18, @$t19, @ebx, by(poi(005202e4)+0n140081+(@ebx*0n1423)+(@eax*0n13)+(@edx>>3)), (1 << (@edx & 7)), by(poi(005202e4)+0n140081+(@ebx*0n1423)+(@eax*0n13)+(@edx>>3)) & (1 << (@edx & 7)); }; gc"
+bp 004169c1 ".if (@$t6 != 0) { .printf \"SURFDUMP_VEDGE_VISRET seq=%d screen=(%d,%d) center=(%d,%d) vis=%d\\n\", @$t3, @$t15, @$t16, @$t18, @$t19, @eax; }; gc"
+bp 00417a98 ".if (@$t6 != 0) { .printf \"SURFDUMP_VEDGE_CLEAR seq=%d screen=(%d,%d) reason=vis_zero fill=1\\n\", @$t3, @$t15, @$t16; }; gc"
+bp 004169e6 ".if (@$t6 != 0) { .printf \"SURFDUMP_VEDGE_DRAW seq=%d screen=(%d,%d) reason=vis_nonzero\\n\", @$t3, @$t15, @$t16; }; gc"
+bp 0041876b ".if (@$t6 != 0) { .if (@$t17 == 0041876b) { r @$t10 = poi(poi(005202e0)+4); .printf \"SURFDUMP_VEDGE_POST seq=%d ret=%p screen=(%d,%d) sample=%02x\\n\", @$t3, @$t17, @$t15, @$t16, by(@$t10+@$t16*0n800+@$t15); r @$t6 = 0; r @$t3 = @$t3 + 1; }; }; gc"
+bp 004189fa ".if (@$t6 != 0) { .if (@$t17 == 004189fa) { r @$t10 = poi(poi(005202e0)+4); .printf \"SURFDUMP_VEDGE_POST seq=%d ret=%p screen=(%d,%d) sample=%02x\\n\", @$t3, @$t17, @$t15, @$t16, by(@$t10+@$t16*0n800+@$t15); r @$t6 = 0; r @$t3 = @$t3 + 1; }; }; gc"
+bd 0
+bd 1
+bd 2
+bd 3
+bd 4
+bd 5
+bd 6
+
+bp 00401DDA ".printf \"SURFDUMP_APP_REQUEST_QUIT text_ptr=%p caption_ptr=%p\n\", poi(@esp+4), poi(@esp+8); da poi(@esp+4); da poi(@esp+8); kb; q"
+bp 0047BD66 ".printf \"SURFDUMP_BYPASS_MOUSE_ACQUIRE hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+8); r eax=0; r eip=0047bd73; gc"
+bp 0047BDAE ".printf \"SURFDUMP_BYPASS_KEYBOARD_ACQUIRE hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+4); r eax=0; r eip=0047bdbf; gc"
+.echo SURFDUMP_START_ANIMS_SLEEP_FAST_FORWARD_ENABLED
+bp 0044789a ".printf \"SURFDUMP_SKIP_START_SLEEP ret=004478a1\\n\"; r eip=004478a1; r esp=@esp+4; gc"
+bp 0046e4d0 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046e4d7; r esp=@esp+4; gc } .else { gc }"
+bp 0046e6df ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046e6e6; r esp=@esp+4; gc } .else { gc }"
+bp 0046fd01 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046fd01 next=0046fd08\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046fd08; r esp=@esp+4; gc } .else { gc }"
+bp 0047BFD0 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_TIME_SLEEP ret=%p\\n\", poi(@esp); r @$t12 = @$t12 + 1; }; r eax=0; r eip=poi(@esp); r esp=@esp+4; gc } .else { gc }"
+
+bp 00419B80 ".if (@$t14 == 0) { .if (poi(00543d7c) != 5) { ed 00544cfc 00004b00; ed 00544d00 00003680; eb 005451c0 80; ed 00544d04 1; .if (@$t0 < 0n16) { .printf \"SURFDUMP_MAIN_HIT seq=%d choice=%d entry=0x%08x ex=%d ey=%d mouse=(%d,%d)\\n\", @$t0, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t0 = @$t0 + 1; }; } .else { ed 00544cfc 00005000; ed 00544d00 00002980; eb 005451c0 80; ed 00544d04 1; .if (@$t1 < 0n16) { .printf \"SURFDUMP_LOAD_COORD seq=%d choice=%d entry=0x%08x ex=%d ey=%d mouse=(%d,%d) selected=%d accept=%d\\n\", @$t1, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(005441e0), poi(00544190); r @$t1 = @$t1 + 1; }; }; } .else { eb 005451c0 00; ed 00544d04 0; }; gc"
+bp 00419C51 ".if (@$t14 == 0) { .if (poi(00543d7c) != 5) { r eax=1; .if (@$t2 < 0n8) { .printf \"SURFDUMP_FORCE_MAIN_CLICK seq=%d desc=0x%08x mouse=(%d,%d)\\n\", @$t2, @ebx, poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t2 = @$t2 + 1; }; }; }; gc"
+bp 00447780 ".printf \"SURFDUMP_SKIP_MAIN_LOAD_CALLBACK ret=%p choice_before=%d exit_before=%d mouse=(%d,%d)\\n\", poi(@esp), poi(00543d7c), poi(00543d78), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); ed 00543d7c 5; ed 00543d78 1; r eip=poi(@esp); r esp=@esp+4; gc"
+bp 00447D61 ".if (@$t8 < 0n12) { .printf \"SURFDUMP_MAIN_DISPATCH_POLL seq=%d choice=%d exit=%d aux=%d accept=%d selected=%d\\n\", @$t8, poi(00543d7c), poi(00543d78), poi(00544184), poi(00544190), poi(005441e0); r @$t8 = @$t8 + 1; }; gc"
+bp 0044895A ".if (@$t14 == 0) { .printf \"SURFDUMP_LOAD_MENU_ENTRY choice=%d exit=%d selected=%d accept=%d mouse=(%d,%d)\\n\", poi(00543d7c), poi(00543d78), poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+bp 00448A45 ".if (@$t14 == 0) { .if (@$t9 < 0n12) { .printf \"SURFDUMP_LOAD_MENU_LOOP seq=%d exit=%d selected=%d accept=%d mouse=(%d,%d) lbtn=0x%02x\\n\", @$t9, poi(00543d78), poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0); r @$t9 = @$t9 + 1; }; }; gc"
+bp 00448A68 ".if (@$t14 == 0) { .if (poi(00543d7c) == 5) { ed 00544cfc 00005000; ed 00544d00 00002980; eb 005451c0 80; ed 00544d04 1; r eax=1; .if (@$t4 < 0n8) { .printf \"SURFDUMP_FORCE_LOAD_SELECT seq=%d mouse=(%d,%d) selected=%d accept=%d\\n\", @$t4, poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(005441e0), poi(00544190); r @$t4 = @$t4 + 1; }; }; }; gc"
+bp 00448AE3 ".if (@$t14 == 0) { .if (poi(00543d7c) == 5) { r eax=1; .if (@$t5 < 0n8) { .printf \"SURFDUMP_FORCE_LOAD_ACCEPT seq=%d selected=%d accept=%d mouse=(%d,%d)\\n\", @$t5, poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t5 = @$t5 + 1; }; }; }; gc"
+bp 0044A110 ".if (@$t14 == 0) { .printf \"SURFDUMP_LOAD_ACCEPT_CALL arg=%d selected=%d accept_before=%d mouse=(%d,%d)\\n\", @eax, poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+bp 00444490 ".printf \"SURFDUMP_LOADSAVE selected_arg=%d selected_global=%d accept=%d choice=%d gd=%p\\n\", @eax, poi(005441e0), poi(00544190), poi(00543d7c), poi(005202e4); gc"
+
+.echo === Clash95 post-owner action route extra probe ===
+.echo CDB-only controlled owner setup and action route on the HD gameplay surface
+
+bp 00433C2B ".if (@$t18 != 0) { .if (poi(00532150) != 0) { .printf \"APPOST_WRITE_532150 eip=00433c26 ret=%p new=%p owner_flag=0x%02x surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00532150), by(poi(00532150)+0n416), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); } .else { .printf \"APPOST_WRITE_532150 eip=00433c26 ret=%p new=00000000 owner_flag=0x00 surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; }; gc"
+bp 00433D5F ".if (@$t18 == 1) { .printf \"APPOST_WRITE_532154 eip=00433d5a ret=%p new=%p d532150=%p d53214c=%p surface=%p sz=(%d,%d) short_return=1\\n\", poi(@esp+0n24), poi(00532154), poi(00532150), poi(0053214c), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r eip=poi(@esp+0n24); r esp=@esp+0n28; gc } .else { .if (@$t18 != 0) { .printf \"APPOST_WRITE_532154 eip=00433d5a ret=%p new=%p d532150=%p d53214c=%p surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00532154), poi(00532150), poi(0053214c), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc }"
+bp 00435BCA ".if (@$t18 != 0) { .printf \"APPOST_WRITE_532218 eip=00435bc5 ret=%p new=%p d532220=%d d5322c8=%d surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00532218), poi(00532220), poi(005322c8), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00433C50 ".if (@$t18 != 0) { .printf \"APPOST_WRITE_53214C eip=00433c4b ret=%p new=%p d532150=%p surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(0053214c), poi(00532150), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00435C3E ".if (@$t18 != 0) { .printf \"APPOST_WRITE_5322C8 eip=00435c38 ret=%p new=%d d532218=%p d532220=%d surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(005322c8), poi(00532218), poi(00532220), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+
+bp 0040AE16 ".if (@$t14 == 0) { gc } .else { .if ((@$t18 == 0) & (wo(poi(005202e0)) == 0n800) & (wo(poi(005202e0)+2) == 0n600)) { r @$t18=1; r @$t17=poi(005202e4)+0n509674; r @$t16=by(@$t17+0n416); .printf \"APPOST_OWNER_SETUP_CALL owner=%p owner_flag_old=0x%02x scroll=(%d,%d) surface=%p sz=(%d,%d)\\n\", @$t17, @$t16, poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); .if ((@$t16 & 2) == 0) { eb @$t17+0n416 @$t16+2; }; .printf \"APPOST_OWNER_FLAG_FORCED owner=%p owner_flag_new=0x%02x\\n\", @$t17, by(@$t17+0n416); r esp=@esp-4; ed @esp 0040ae16; r eax=@$t17; r eip=00433c20; gc } .else { .if (@$t18 == 1) { r @$t18=2; .printf \"APPOST_ACTION_CALL desc=00511d40 owner=%p owner_flag=0x%02x d532150=%p d53214c=%p d532154=%p surface=%p sz=(%d,%d)\\n\", poi(00532150), by(poi(00532150)+0n416), poi(00532150), poi(0053214c), poi(00532154), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r esp=@esp-4; ed @esp 0040ae16; r eax=00511d40; r eip=004338e0; gc } .else { .if (@$t18 == 2) { r @$t18=3; r @$t11=poi(005202e0); r @$t12=wo(@$t11); r @$t15=wo(@$t11+2); r @$t16=poi(@$t11+4); r @$t17=@$t12*@$t15; .printf \"APPOST_SURFDUMP_READY after_action=1 surface=%p size=(%d,%d) base=%p bytes=%d d532150=%p d532218=%p d532220=%d d5322c8=%d scroll=(%d,%d)\\n\", @$t11, @$t12, @$t15, @$t16, @$t17, poi(00532150), poi(00532218), poi(00532220), poi(005322c8), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012); .printf \"SURFDUMP_READY redraw_seq=950 surface=%p size=(%d,%d) base=%p bytes=%d\\n\", @$t11, @$t12, @$t15, @$t16, @$t17; .echo SURFDUMP_HOST_READY } .else { gc } } } }"
+
+bp 00433C20 ".if (@$t18 != 0) { .printf \"APPOST_433C20_ENTRY ret=%p owner_arg=%p owner_flag=0x%02x d532150_before=%p d53214c_before=%p d532154_before=%p surface=%p sz=(%d,%d)\\n\", poi(@esp), @eax, by(@eax+0n416), poi(00532150), poi(0053214c), poi(00532154), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 004338E0 ".if (@$t18 != 0) { .printf \"APPOST_4338E0_ENTRY ret=%p eax_desc=%p owner=%p owner_flag=0x%02x d532218=%p d5322c8=%d surface=%p sz=(%d,%d)\\n\", poi(@esp), @eax, poi(00532150), by(poi(00532150)+0n416), poi(00532218), poi(005322c8), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00433914 ".if (@$t18 != 0) { .printf \"APPOST_433914_CALL_435BC0 ret=%p owner_arg=%p owner_global=%p owner_flag=0x%02x d532218=%p d5322c8=%d surface=%p sz=(%d,%d)\\n\", poi(@esp), @eax, poi(00532150), by(poi(00532150)+0n416), poi(00532218), poi(005322c8), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00433919 ".if (@$t18 != 0) { .printf \"APPOST_4338E0_AFTER_435BC0 ret=%p d532218=%p d532220=%d d5322c8=%d surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00532218), poi(00532220), poi(005322c8), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); .if (@$t18 == 2) { r @$t18=3; r @$t11=poi(005202e0); r @$t12=wo(@$t11); r @$t15=wo(@$t11+2); r @$t16=poi(@$t11+4); r @$t17=@$t12*@$t15; .printf \"APPOST_SURFDUMP_READY after_action=1 surface=%p size=(%d,%d) base=%p bytes=%d d532150=%p d532218=%p d532220=%d d5322c8=%d scroll=(%d,%d)\\n\", @$t11, @$t12, @$t15, @$t16, @$t17, poi(00532150), poi(00532218), poi(00532220), poi(005322c8), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012); .printf \"SURFDUMP_READY redraw_seq=951 surface=%p size=(%d,%d) base=%p bytes=%d\\n\", @$t11, @$t12, @$t15, @$t16, @$t17; .echo SURFDUMP_HOST_READY } .else { gc } } .else { gc }"
+bp 00435BC0 ".if (@$t18 != 0) { .printf \"APPOST_OWNER_435BC0_ENTRY ret=%p owner_arg=%p d532218_before=%p d5322c8_before=%d d532210_before=%d surface=%p sz=(%d,%d) mouse=(%d,%d)\\n\", poi(@esp), @eax, poi(00532218), poi(005322c8), poi(00532210), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+bp 00435B90 ".if (@$t18 != 0) { .if (@$t19 == 0) { r @$t19=1; ed 00532210 1; .printf \"APPOST_OWNER_POLL_EXIT_ARM ret=%p d532218=%p d532220=%d d5322c8=%d d532210=%d mouse=(%d,%d)\\n\", poi(@esp), poi(00532218), poi(00532220), poi(005322c8), poi(00532210), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); } .else { .printf \"APPOST_OWNER_POLL_435B90 ret=%p d532218=%p d532220=%d d5322c8=%d d532210=%d mouse=(%d,%d)\\n\", poi(@esp), poi(00532218), poi(00532220), poi(005322c8), poi(00532210), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; }; gc"
+
+bp 004347A0 ".if (@$t18 != 0) { .printf \"APPOST_PANEL_DRAW_4347A0 ret=%p d532218=%p d532220=%d d5322c8=%d render=%p map_surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00532218), poi(00532220), poi(005322c8), poi(00511230), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00434E20 ".if (@$t18 != 0) { .printf \"APPOST_GRID_DRAW_434E20 ret=%p d532218=%p d532220=%d d5322c8=%d render=%p map_surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00532218), poi(00532220), poi(005322c8), poi(00511230), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+bp 00435280 ".if (@$t18 != 0) { .printf \"APPOST_STATUS_DRAW_435280 ret=%p d532218=%p d532220=%d d5322c8=%d mouse=(%d,%d) render=%p map_surface=%p\\n\", poi(@esp), poi(00532218), poi(00532220), poi(005322c8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00511230), poi(005202e0); }; gc"
+bp 00435500 ".if (@$t18 != 0) { .printf \"APPOST_ACTION_BOX_435500 ret=%p d532218=%p d532220=%d d5322c8=%d mouse=(%d,%d) render=%p map_surface=%p\\n\", poi(@esp), poi(00532218), poi(00532220), poi(005322c8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00511230), poi(005202e0); }; gc"
+
+bp 0040B660 ".if (poi(005202e4) != 0) { r @$t14 = 1; eb 005451c0 00; ed 00544d04 0;  .printf \"SURFDUMP_PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) surface=%p size=(%d,%d)\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); } .else { .echo SURFDUMP_PLAYGAME gd=00000000; }; gc"
+
+bp 00406FA0 ".if (@$t14 != 0) { r @$t10 = poi(005202e4);  .if (@$t13 < 0n16) { .printf \"SURFDUMP_REDRAW seq=%d scroll=(%d,%d) end12=(%d,%d) map=(%d,%d) surface=%p size=(%d,%d)\\n\", @$t13, poi(@$t10+0n140008), poi(@$t10+0n140012), poi(@$t10+0n140008)+0n12, poi(@$t10+0n140012)+0n9, poi(@$t10+0n140000), poi(@$t10+0n140004), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r @$t13 = @$t13 + 1; }; .if ((@$t7 == 0) & (@$t13 >= 0n4)) { r @$t7 = 1; r @$t11 = poi(005202e0); r @$t12 = wo(@$t11); r @$t15 = wo(@$t11+2); r @$t16 = poi(@$t11+4); r @$t17 = @$t12 * @$t15; .printf \"SURFDUMP_READY redraw_seq=%d surface=%p size=(%d,%d) base=%p bytes=%d\\n\", @$t13, @$t11, @$t12, @$t15, @$t16, @$t17; .if ((@$t11 == 0) | (@$t16 == 0) | (@$t12 < 0n320) | (@$t15 < 0n200) | (@$t12 > 0n2048) | (@$t15 > 0n2048) | (@$t17 <= 0)) { .echo SURFDUMP_INVALID; q } .else { .printf \"SCROLL_VISDUMP player=0 screen0=(32,16) map0=(%d,%d) rows=9 cols=12 tile=(64,64) vis_base=%p dump_start=%p count=160\\n\", poi(@$t10+0n140008), poi(@$t10+0n140012), @$t10+0n140081, @$t10+0n140081+(poi(@$t10+0n140008)*0n13)+(poi(@$t10+0n140012)>>3); db @$t10+0n140081+(poi(@$t10+0n140008)*0n13)+(poi(@$t10+0n140012)>>3) L0n160; .echo SURFDUMP_HOST_READY; gc }; } .else { gc }; } .else { gc }"
+
+g

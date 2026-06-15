@@ -1,0 +1,14 @@
+{
+  "raw_path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260512-082418\\surface.raw",
+  "png_path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260512-082418\\surface.png",
+  "log_path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260512-082418\\cdb-surface-dump.log",
+  "width": 800,
+  "height": 600,
+  "pitch": 800,
+  "palette_mode": "grayscale-index",
+  "raw_bytes": 480000,
+  "used_bytes": 480000,
+  "raw_sha256": "2451ce10437b8b7d7f61ac7b5c2a0ca6ee517a2b837213682e1d9a768c9a8552",
+  "used_sha256": "2451ce10437b8b7d7f61ac7b5c2a0ca6ee517a2b837213682e1d9a768c9a8552",
+  "png_sha256": "1dcb731619cc8cbb2e7130d8f2e3815acaa741b6a5acd2cb8d43d5290664259e"
+}

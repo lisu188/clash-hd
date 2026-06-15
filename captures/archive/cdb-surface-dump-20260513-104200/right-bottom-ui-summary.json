@@ -1,0 +1,28 @@
+{
+    "Passed":  true,
+    "SurfaceDumpPassed":  true,
+    "RbuiMarkersSeen":  true,
+    "MarkerCounts":  {
+                         "RBUI_PANEL_DRAW":  0,
+                         "RBUI_GRID_DRAW":  0,
+                         "RBUI_STATUS_DRAW":  0,
+                         "RBUI_ACTION_BOX":  0,
+                         "RBUI_GRID_HIT_ENTRY":  0,
+                         "RBUI_GRID_HIT_OK":  0,
+                         "RBUI_GRID_HIT_FAIL":  0,
+                         "RBUI_CLICK_DISPATCH":  0,
+                         "RBUI_DESC_SWITCH":  26,
+                         "RBUI_VIEWPORT_SWITCH":  1,
+                         "SURFDUMP_PLAYGAME":  1,
+                         "SURFDUMP_READY":  1
+                     },
+    "RunDir":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260513-104200",
+    "Log":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260513-104200\\cdb-surface-dump.log",
+    "PngPath":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260513-104200\\surface.png",
+    "SummaryJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260513-104200\\summary.json",
+    "Stage":  "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "CandidatePath":  "C:\\ClashTests\\cdb-right-bottom-ui\\clash95_hd_surfdump_20260513_104200.exe",
+    "CandidateSha256":  "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+    "ExtraProbeTemplate":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_right_bottom_ui_extra.cdb",
+    "ForceVisibleEdges":  false
+}

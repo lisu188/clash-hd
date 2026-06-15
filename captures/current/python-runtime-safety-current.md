@@ -1,0 +1,174 @@
+# Python Runtime Safety Guard
+
+- Overall: PASS
+- Generated: `2026-06-15T18:36:12+02:00`
+- Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
+- Guard policy: Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt
+- Python files scanned: `177`
+- Risky files: `78`
+
+## Classification Counts
+
+- `exempt`: `15`
+- `manual_visible_runtime_gated`: `2`
+- `safe`: `99`
+- `test_fixture`: `61`
+
+## Risky Helpers
+
+- `tools/battle_ui_evidence_matrix.py`: `exempt` risks=`['process_launch']`
+  - repo-only evidence matrix; process-launch text is a type annotation or fixture reference
+- `tools/battle_visible_input_summary.py`: `exempt` risks=`['sendinput']`
+  - repo-only log parser; SendInput text appears in artifact names or evidence prose
+- `tools/build_cloud_fixtures.py`: `exempt` risks=`['win32_user32']`
+  - cloud fixture builder; risky text is source material/path filtering, not runtime window or input calls
+- `tools/cloud_check.py`: `exempt` risks=`['process_launch', 'subprocess']`
+  - cloud-safe validation runner; subprocess is limited to repo tests and does not launch Clash95 or CDB
+- `tools/current_evidence_refresh.py`: `exempt` risks=`['postmessage', 'sendinput']`
+  - repo-only evidence coordinator; risky API text appears in policy/test descriptions
+- `tools/exe_artifact_guard.py`: `exempt` risks=`['process_launch', 'subprocess']`
+  - uses git subprocess read-only for artifact inventory
+- `tools/load_slot_timeout_phase.py`: `exempt` risks=`['win32_user32']`
+  - repo-only CDB log parser; Win32 text appears only in timeout-stack classification labels
+- `tools/manual_directinput_run_plan.py`: `exempt` risks=`['sendinput']`
+  - repo-only command planner; visible-runtime and input text appears only in gated command templates
+- `tools/mouse_path_probe.py`: `manual_visible_runtime_gated` risks=`['ctypes', 'cursor_window_input', 'postmessage', 'process_launch', 'sendinput', 'subprocess', 'win32_user32']`
+  - manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked
+- `tools/process_hygiene_guard.py`: `exempt` risks=`['ctypes']`
+  - uses Toolhelp32 read-only process enumeration and does not launch or focus windows
+- `tools/python_runtime_safety_guard.py`: `exempt` risks=`['ctypes', 'cursor_window_input', 'postmessage', 'sendinput', 'shell_launch', 'subprocess', 'win32_user32']`
+  - this scanner names risky APIs without calling them
+- `tools/raw_sendinput_click.py`: `manual_visible_runtime_gated` risks=`['ctypes', 'cursor_window_input', 'sendinput', 'win32_user32']`
+  - manual/visible-runtime evidence helper; it sends OS input only when explicitly invoked by a guarded harness
+- `tools/repo_compaction_cleanup.py`: `exempt` risks=`['process_launch', 'subprocess']`
+  - repo cleanup planner/executor; moves only classified untracked capture artifacts when --execute is supplied
+- `tools/repo_structure.py`: `exempt` risks=`['process_launch', 'subprocess']`
+  - repo-only structure guard; subprocess is limited to read-only git inventory
+- `tools/right_bottom_slot_fixture_result_summary.py`: `exempt` risks=`['win32_user32']`
+  - repo-only CDB log parser; Win32/input text appears in evidence markers
+- `tools/right_bottom_slot_fixture_script_guard.py`: `exempt` risks=`['cursor_window_input', 'postmessage', 'sendinput']`
+  - repo-only source scanner; risky API names appear as patterns, not runtime calls
+- `tools/test_battle_ui_evidence_matrix.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_battle_ui_gate.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_battle_ui_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_battle_visible_harness_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_battle_visible_input_summary.py`: `test_fixture` risks=`['process_launch', 'sendinput', 'subprocess', 'win32_user32']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_capture_corpus_index.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_castle_overview_evidence_matrix.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_castle_overview_gate.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_castle_overview_hitbox_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_castle_overview_hitmap_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_castle_overview_multihit_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_castle_overview_probe_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_castle_overview_promotion_decision.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_castle_owner_records_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_castle_save_owner_flag_scan.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_current_completion_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_docs_consistency_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_evidence_index_check.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_handoff_freshness_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_load_slot_entry_gap_plan.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_load_slot_route_limit_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_load_slot_timeout_phase.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_load_slot_transition_geometry_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_load_slot_transition_probe_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_load_slot_transition_probe_preview.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_load_slot_transition_readiness_matrix.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_load_slot_transition_run_plan.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_load_slot_transition_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_manual_directinput_checklist.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_manual_directinput_proof_template.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_manual_directinput_run_plan.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_mouse_edge_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_no_popup_guards.py`: `test_fixture` risks=`['process_launch', 'subprocess', 'win32_user32']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_no_popup_map_evidence_matrix.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_no_visible_runtime_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_patch_definition_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_patch_manifest_compare.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_process_hygiene_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_promotion_override_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_promotion_override_manifest.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_python_runtime_safety_guard.py`: `test_fixture` risks=`['ctypes', 'postmessage', 'process_launch', 'sendinput', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_raw_sendinput_click.py`: `test_fixture` risks=`['process_launch', 'sendinput', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_repo_compaction_cleanup.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_repo_structure.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_blocker_triage.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_compose_evidence_matrix.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_compose_promotion_decision.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_grid_hit_probe_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_grid_hit_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_natural_route_candidate_matrix.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_owner_flag_inventory.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_owner_flag_static_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_route_timing_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_slot_fixture_plan.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_slot_fixture_result_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess', 'win32_user32']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_slot_fixture_runtime_plan.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_slot_fixture_script_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_right_bottom_visual_artifact_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_stable_stage_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_unit_selection_action_bar_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_visible_runtime_launcher_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/visible_runtime_launcher_guard.py`: `exempt` risks=`['cursor_window_input', 'postmessage', 'sendinput']`
+  - repo-only source scanner; risky API names appear as patterns, not runtime calls

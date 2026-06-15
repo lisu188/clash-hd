@@ -1,0 +1,3372 @@
+{
+  "hwnd": 6162442,
+  "client_size": [
+    800,
+    600
+  ],
+  "client_origin_screen": [
+    83,
+    106
+  ],
+  "points": [
+    {
+      "index": 0,
+      "client": [
+        400,
+        300
+      ],
+      "move_mode": "none",
+      "move_method": "none",
+      "requested_screen": [
+        483,
+        406
+      ],
+      "actual_screen": null,
+      "actual_client": null,
+      "error": [
+        999999,
+        999999
+      ],
+      "client_error": [
+        999999,
+        999999
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 0
+        },
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "client": [
+        400,
+        300
+      ],
+      "move_mode": "none",
+      "move_method": "none",
+      "requested_screen": [
+        483,
+        406
+      ],
+      "actual_screen": null,
+      "actual_client": null,
+      "error": [
+        999999,
+        999999
+      ],
+      "client_error": [
+        999999,
+        999999
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 0
+        },
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "client": [
+        400,
+        300
+      ],
+      "move_mode": "none",
+      "move_method": "none",
+      "requested_screen": [
+        483,
+        406
+      ],
+      "actual_screen": null,
+      "actual_client": null,
+      "error": [
+        999999,
+        999999
+      ],
+      "client_error": [
+        999999,
+        999999
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 0
+        },
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "client": [
+        400,
+        300
+      ],
+      "move_mode": "none",
+      "move_method": "none",
+      "requested_screen": [
+        483,
+        406
+      ],
+      "actual_screen": null,
+      "actual_client": null,
+      "error": [
+        999999,
+        999999
+      ],
+      "client_error": [
+        999999,
+        999999
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 0
+        },
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "client": [
+        400,
+        300
+      ],
+      "move_mode": "none",
+      "move_method": "none",
+      "requested_screen": [
+        483,
+        406
+      ],
+      "actual_screen": null,
+      "actual_client": null,
+      "error": [
+        999999,
+        999999
+      ],
+      "client_error": [
+        999999,
+        999999
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 0
+        },
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "client": [
+        400,
+        300
+      ],
+      "move_mode": "none",
+      "move_method": "none",
+      "requested_screen": [
+        483,
+        406
+      ],
+      "actual_screen": null,
+      "actual_client": null,
+      "error": [
+        999999,
+        999999
+      ],
+      "client_error": [
+        999999,
+        999999
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 0
+        },
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "client": [
+        400,
+        300
+      ],
+      "move_mode": "none",
+      "move_method": "none",
+      "requested_screen": [
+        483,
+        406
+      ],
+      "actual_screen": null,
+      "actual_client": null,
+      "error": [
+        999999,
+        999999
+      ],
+      "client_error": [
+        999999,
+        999999
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 0
+        },
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "client": [
+        400,
+        300
+      ],
+      "move_mode": "none",
+      "move_method": "none",
+      "requested_screen": [
+        483,
+        406
+      ],
+      "actual_screen": null,
+      "actual_client": null,
+      "error": [
+        999999,
+        999999
+      ],
+      "client_error": [
+        999999,
+        999999
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_postmessage_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": null,
+          "actual_client": null,
+          "screen_error": [
+            999999,
+            999999
+          ],
+          "client_error": [
+            999999,
+            999999
+          ],
+          "cursor_error": "[WinError 5] GetCursorPos"
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 0
+        },
+        {
+          "mode": "postmessage",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_postmessage_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": null,
+              "actual_client": null,
+              "screen_error": [
+                999999,
+                999999
+              ],
+              "client_error": [
+                999999,
+                999999
+              ],
+              "cursor_error": "[WinError 5] GetCursorPos"
+            }
+          ],
+          "postmessage_down": true,
+          "postmessage_up": true,
+          "repeat_index": 1
+        }
+      ]
+    }
+  ],
+  "max_abs_error": 999999,
+  "max_sample_abs_error": 999999,
+  "click_event_count": 16,
+  "path_verified": false,
+  "click_path_verified": false,
+  "pid": 43296,
+  "exe": null
+}

@@ -14,9 +14,9 @@
 ## Post-Owner Evidence
 
 - Status: PASS
-- Normal run: `captures\cdb-surface-dump-20260506-190037`
-- Forced-visible run: `captures\cdb-surface-dump-20260506-201114`
+- Normal run: `captures\archive\cdb-surface-dump-20260506-190037`
+- Forced-visible run: `captures\archive\cdb-surface-dump-20260506-201114`
 
-![normal post-owner surface](<CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\surface.png)
+![normal post-owner surface](<CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-190037\surface.png)
 
-![forced-visible post-owner surface](<CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\surface.png)
+![forced-visible post-owner surface](<CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-201114\surface.png)

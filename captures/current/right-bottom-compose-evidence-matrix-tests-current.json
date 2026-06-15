@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-06-15T18:34:35+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only fixture tests; launches only Python child processes for matrix CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "proves the right-bottom compose evidence matrix requires all route gates, hidden-desktop/full-start safety, normal map/visibility proof, natural UI routing, controlled grid-hit proof, route timing/order proof, candidate SHA agreement, and deferred promotion status",
+  "tests": [
+    "right_bottom_compose_evidence_matrix passes when all required route, map, UI, grid-hit, natural-route, timing, and decision checks pass",
+    "right_bottom_compose_evidence_matrix fails when any required check is missing or failing",
+    "right_bottom_compose_evidence_matrix rejects route, startup, hidden-desktop, AV, visibility, grid-hit, natural-route, timing, and decision regressions",
+    "right_bottom_compose_evidence_matrix rejects nested natural-route owner flag, descriptor, and result regressions",
+    "right_bottom_compose_evidence_matrix rejects candidate SHA disagreement",
+    "right_bottom_compose_evidence_matrix CLI writes JSON/Markdown and returns 2 on --require-pass failure"
+  ],
+  "failures": []
+}

@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-06-15T18:34:50+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "script": "scripts\\cdb\\run_cdb_battle_visible_input_probe.ps1",
+  "wait_log_pattern_lines": [
+    70
+  ],
+  "checks": [
+    {
+      "name": "visible runtime guard",
+      "passed": true,
+      "detail": "scripts\\cdb\\run_cdb_battle_visible_input_probe.ps1 must keep the explicit AllowVisibleRuntime approval gate"
+    },
+    {
+      "name": "raw screen input mode",
+      "passed": true,
+      "detail": "scripts\\cdb\\run_cdb_battle_visible_input_probe.ps1 must keep the raw-screen input path for HWND-free clicks"
+    },
+    {
+      "name": "wait log function",
+      "passed": true,
+      "detail": "scripts\\cdb\\run_cdb_battle_visible_input_probe.ps1 must define Wait-LogPattern"
+    },
+    {
+      "name": "fatal CDB pattern: Unable to insert breakpoint",
+      "passed": true,
+      "detail": "Wait-LogPattern must detect fatal CDB log pattern: Unable to insert breakpoint"
+    },
+    {
+      "name": "fatal CDB pattern: Unable to remove breakpoint",
+      "passed": true,
+      "detail": "Wait-LogPattern must detect fatal CDB log pattern: Unable to remove breakpoint"
+    },
+    {
+      "name": "fatal CDB pattern: Break instruction exception - code 80000003",
+      "passed": true,
+      "detail": "Wait-LogPattern must detect fatal CDB log pattern: Break instruction exception - code 80000003"
+    },
+    {
+      "name": "post-g break exception gate",
+      "passed": true,
+      "detail": "Wait-LogPattern must gate 80000003 break-instruction failures behind the post-g CDB state"
+    },
+    {
+      "name": "incremental log scan",
+      "passed": true,
+      "detail": "Wait-LogPattern must process only new log lines so the initial loader break is not reclassified after g"
+    },
+    {
+      "name": "fatal wait failure throws",
+      "passed": true,
+      "detail": "Wait-LogPattern must throw a clear failure when CDB becomes invalid before readiness"
+    }
+  ],
+  "failures": []
+}

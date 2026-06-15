@@ -15,8 +15,8 @@ tags:
 - Source updated: `[source: tools/current_evidence_refresh.py]`,
   `[source: tools/right_bottom_compose_evidence_matrix.py]`,
   `[source: tools/right_bottom_compose_promotion_decision.py]`,
-  `[source: captures/right-bottom-compose-evidence-current.md]`, and
-  `[source: captures/right-bottom-compose-promotion-decision-current.md]`.
+  `[source: captures/current/right-bottom-compose-evidence-current.md]`, and
+  `[source: captures/current/right-bottom-compose-promotion-decision-current.md]`.
 - Pages updated: [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
 - Contradictions: previous right-bottom reports treated controlled CDB/proxy
@@ -33,8 +33,8 @@ tags:
 
 - Source updated: `[source: tools/manual_directinput_checklist.py]`,
   `[source: tools/manual_directinput_proof_template.py]`,
-  `[source: captures/manual-directinput-validation-checklist-tests-current.md]`,
-  and `[source: captures/manual-directinput-proof-template-current.md]`.
+  `[source: captures/current/manual-directinput-validation-checklist-tests-current.md]`,
+  and `[source: captures/current/manual-directinput-proof-template-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
 - Contradictions: none recorded.
@@ -50,8 +50,8 @@ tags:
 
 - Source updated: `[source: tools/no_popup_boundary_guard.py]`,
   `[source: tools/test_no_popup_guards.py]`,
-  `[source: captures/no-popup-boundary-guard-current.md]`, and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/no-popup-boundary-guard-current.md]`, and
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[Clash95 HD Mod Progress]], and [[Log]].
 - Contradictions: none recorded.
@@ -67,8 +67,8 @@ tags:
 
 - Source updated: `[source: tools/visible_runtime_launcher_guard.py]`,
   `[source: tools/test_visible_runtime_launcher_guard.py]`,
-  `[source: captures/visible-runtime-launcher-guard-current.md]`, and
-  `[source: captures/visible-runtime-launcher-guard-tests-current.md]`.
+  `[source: captures/current/visible-runtime-launcher-guard-current.md]`, and
+  `[source: captures/current/visible-runtime-launcher-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[No-Popup Surface Dump]], [[What Manual DirectInput Validation Remains]],
   [[Clash95 Engine Viewport Patch Notes]], [[Clash95 HD Mod Progress]], and
@@ -99,8 +99,8 @@ tags:
 
 - Source updated: `[source: tools/manual_directinput_proof_template.py]`,
   `[source: tools/test_manual_directinput_proof_template.py]`,
-  `[source: captures/manual-directinput-proof-template-current.md]`, and
-  `[source: captures/manual-directinput-proof-template-tests-current.md]`.
+  `[source: captures/current/manual-directinput-proof-template-current.md]`, and
+  `[source: captures/current/manual-directinput-proof-template-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[What Manual DirectInput Validation Remains]],
   [[Clash95 Engine Viewport Patch Notes]], [[Clash95 HD Mod Progress]], and
@@ -124,8 +124,8 @@ tags:
 
 - Source updated: `[source: tools/promotion_override_guard.py]`,
   `[source: tools/test_promotion_override_guard.py]`,
-  `[source: captures/promotion-override-guard-current.md]`, and
-  `[source: captures/promotion-override-guard-tests-current.md]`.
+  `[source: captures/current/promotion-override-guard-current.md]`, and
+  `[source: captures/current/promotion-override-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[What Manual DirectInput Validation Remains]],
   [[Clash95 Engine Viewport Patch Notes]], [[Clash95 HD Mod Progress]], and
@@ -150,7 +150,7 @@ tags:
   `[source: tools/castle_overview_promotion_decision.py]`,
   `[source: tools/test_right_bottom_compose_promotion_decision.py]`,
   `[source: tools/test_castle_overview_promotion_decision.py]`, and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[What Manual DirectInput Validation Remains]],
   [[Clash95 Engine Viewport Patch Notes]], [[Clash95 HD Mod Progress]], and
@@ -168,8 +168,8 @@ tags:
 
 - Source updated: `[source: tools/manual_directinput_checklist.py]`,
   `[source: tools/test_manual_directinput_checklist.py]`,
-  `[source: captures/manual-directinput-validation-checklist-current.md]`, and
-  `[source: captures/manual-directinput-validation-checklist-tests-current.md]`.
+  `[source: captures/current/manual-directinput-validation-checklist-current.md]`, and
+  `[source: captures/current/manual-directinput-validation-checklist-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[What Manual DirectInput Validation Remains]], [[Clash95 HD Mod Progress]],
   and [[Log]].
@@ -193,7 +193,7 @@ tags:
 ## [2026-05-14] maintenance | Process hygiene guard tests
 
 - Source updated: `[source: tools/test_process_hygiene_guard.py]` and
-  `[source: captures/process-hygiene-guard-tests-current.md]`.
+  `[source: captures/current/process-hygiene-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[No-Popup Surface Dump]], [[Clash95 HD Mod Progress]], and [[Log]].
 - Contradictions: none recorded.
@@ -211,8 +211,8 @@ tags:
 
 - Source updated: `[source: tools/handoff_freshness_guard.py]`,
   `[source: tools/test_handoff_freshness_guard.py]`,
-  `[source: captures/handoff-freshness-guard-current.md]`, and
-  `[source: captures/handoff-freshness-guard-tests-current.md]`.
+  `[source: captures/current/handoff-freshness-guard-current.md]`, and
+  `[source: captures/current/handoff-freshness-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[No-Popup Surface Dump]], [[How Should The Bottom Tooltip Be Recovered]],
   and [[Log]].
@@ -238,8 +238,8 @@ tags:
 
 - Source updated: `[source: tools/right_bottom_route_timing_guard.py]`,
   `[source: tools/test_right_bottom_route_timing_guard.py]`,
-  `[source: captures/right-bottom-route-timing-guard-current.md]`, and
-  `[source: captures/right-bottom-route-timing-guard-tests-current.md]`.
+  `[source: captures/current/right-bottom-route-timing-guard-current.md]`, and
+  `[source: captures/current/right-bottom-route-timing-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
@@ -260,8 +260,8 @@ tags:
 
 - Source updated: `[source: tools/stable_stage_guard.py]`,
   `[source: tools/test_stable_stage_guard.py]`,
-  `[source: captures/stable-stage-guard-current.md]`, and
-  `[source: captures/stable-stage-guard-tests-current.md]`.
+  `[source: captures/current/stable-stage-guard-current.md]`, and
+  `[source: captures/current/stable-stage-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
   [[Log]].
@@ -279,8 +279,8 @@ tags:
 
 - Source updated: `[source: tools/right_bottom_grid_hit_probe_guard.py]`,
   `[source: tools/test_right_bottom_grid_hit_probe_guard.py]`,
-  `[source: captures/right-bottom-grid-hit-probe-guard-current.md]`,
-  and `[source: captures/right-bottom-grid-hit-probe-guard-tests-current.md]`.
+  `[source: captures/current/right-bottom-grid-hit-probe-guard-current.md]`,
+  and `[source: captures/current/right-bottom-grid-hit-probe-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
@@ -299,10 +299,10 @@ tags:
 
 ## [2026-05-14] evidence | Right-bottom controlled grid-hit proof
 
-- Source updated: `[source: clash95_right_bottom_grid_hit_extra.cdb]`,
+- Source updated: `[source: probes/cdb/ui/clash95_right_bottom_grid_hit_extra.cdb]`,
   `[source: tools/right_bottom_grid_hit_summary.py]`,
-  `[source: captures/cdb-surface-dump-20260514-140601/right-bottom-grid-hit-summary.md]`,
-  and `[source: captures/right-bottom-grid-hit-current.md]`.
+  `[source: captures/archive/cdb-surface-dump-20260514-140601/right-bottom-grid-hit-summary.md]`,
+  and `[source: captures/current/right-bottom-grid-hit-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
@@ -310,7 +310,7 @@ tags:
 - Open questions: manual/visible DirectInput proof remains unsupplied and
   should not run without explicit approval.
 - Notes: hidden-desktop CDB/proxy run
-  `captures/cdb-surface-dump-20260514-140601` passed with native
+  `captures/archive/cdb-surface-dump-20260514-140601` passed with native
   `(450,73)`, grid result `0`, `draw_row_count=5`, `failure_exit_count=0`,
   and `av_count=0`.
 - Notes: `tools/current_evidence_refresh.py --require-pass` now includes
@@ -321,8 +321,8 @@ tags:
 
 - Source updated: `[source: tools/test_no_popup_guards.py]`,
   `[source: tools/current_evidence_refresh.py]`,
-  `[source: captures/no-popup-guard-tests-current.md]`, and
-  `[source: captures/surface-dump-policy-guard-current.md]`.
+  `[source: captures/current/no-popup-guard-tests-current.md]`, and
+  `[source: captures/current/surface-dump-policy-guard-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
 - Contradictions: none recorded.
@@ -330,7 +330,7 @@ tags:
 - Notes: the failing surface-dump policy CLI fixture now writes
   `bad-surface-policy.json/md` under
   `.codex-loop\tmp-tests\no-popup-guards-fixture`, so it cannot overwrite the
-  current `captures/surface-dump-policy-guard-current.md/json` reports.
+  current `captures/current/surface-dump-policy-guard-current.md/json` reports.
 - Notes: the regression tests pass without launching Clash95, CDB, wrappers,
   PowerShell, or any visible window.
 
@@ -339,7 +339,7 @@ tags:
 - Source updated: `[source: tools/test_no_visible_runtime_guard.py]`,
   `[source: tools/current_evidence_refresh.py]`,
   `[source: tools/no_popup_boundary_guard.py]`, and
-  `[source: captures/no-visible-runtime-guard-tests-current.md]`.
+  `[source: captures/current/no-visible-runtime-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
   [[Log]].
@@ -361,7 +361,7 @@ tags:
 - Source updated: `[source: tools/test_no_popup_map_evidence_matrix.py]`,
   `[source: tools/current_evidence_refresh.py]`,
   `[source: tools/no_popup_boundary_guard.py]`, and
-  `[source: captures/no-popup-map-evidence-tests-current.md]`.
+  `[source: captures/current/no-popup-map-evidence-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
   [[Log]].
@@ -382,8 +382,8 @@ tags:
 
 - Source updated: `[source: tools/current_evidence_refresh.py]`,
   `[source: tools/no_popup_boundary_guard.py]`,
-  `[source: captures/no-popup-map-evidence-current.md]`, and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/no-popup-map-evidence-current.md]`, and
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
   [[Log]].
@@ -392,10 +392,10 @@ tags:
   approved runtime proof before changing the stable baseline.
 - Notes: `tools/current_evidence_refresh.py --require-pass` now includes
   `no_popup_map_evidence: PASS` and writes
-  `captures/no-popup-map-evidence-current.md` plus `.json`.
+  `captures/current/no-popup-map-evidence-current.md` plus `.json`.
 - Notes: the no-popup map evidence baseline pairs
-  `captures/cdb-surface-dump-20260429-140916` with
-  `captures/cdb-surface-dump-20260429-135242`; the normal run has `13`
+  `captures/archive/cdb-surface-dump-20260429-140916` with
+  `captures/archive/cdb-surface-dump-20260429-135242`; the normal run has `13`
   blank active cells, `0` unexplained blanks, and `visibility_zero=13`, while
   the forced-visible run has `0` blank active cells and `54` nonzero
   visibility/nonblack post rows.
@@ -410,8 +410,8 @@ tags:
 - Source updated:
   `[source: tools/test_right_bottom_compose_promotion_decision.py]`,
   `[source: tools/test_right_bottom_compose_evidence_matrix.py]`,
-  `[source: captures/right-bottom-compose-promotion-decision-tests-current.md]`,
-  and `[source: captures/right-bottom-compose-evidence-matrix-tests-current.md]`.
+  `[source: captures/current/right-bottom-compose-promotion-decision-tests-current.md]`,
+  and `[source: captures/current/right-bottom-compose-evidence-matrix-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
   [[Log]].
@@ -436,7 +436,7 @@ tags:
 
 - Source updated: `[source: tools/castle_overview_multihit_summary.py]`,
   `[source: tools/test_castle_overview_multihit_summary.py]`, and
-  `[source: captures/castle-overview-multihit-summary-tests-current.md]`.
+  `[source: captures/current/castle-overview-multihit-summary-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
@@ -457,7 +457,7 @@ tags:
 
 - Source updated: `[source: tools/castle_overview_evidence_matrix.py]`,
   `[source: tools/test_castle_overview_evidence_matrix.py]`, and
-  `[source: captures/castle-overview-evidence-matrix-tests-current.md]`.
+  `[source: captures/current/castle-overview-evidence-matrix-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
@@ -478,7 +478,7 @@ tags:
 
 - Source updated: `[source: tools/castle_overview_probe_guard.py]`,
   `[source: tools/test_castle_overview_probe_guard.py]`, and
-  `[source: captures/castle-overview-probe-guard-current.md]`.
+  `[source: captures/current/castle-overview-probe-guard-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
@@ -498,7 +498,7 @@ tags:
 ## [2026-05-14] maintenance | Castle overview probe guard focused-log tests
 
 - Source updated: `[source: tools/test_castle_overview_probe_guard.py]`
-  and `[source: captures/castle-overview-probe-guard-tests-current.md]`.
+  and `[source: captures/current/castle-overview-probe-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
@@ -517,7 +517,7 @@ tags:
 ## [2026-05-14] maintenance | Castle owner records summary tests
 
 - Source updated: `[source: tools/test_castle_owner_records_summary.py]`
-  and `[source: captures/castle-owner-records-summary-tests-current.md]`.
+  and `[source: captures/current/castle-owner-records-summary-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -538,7 +538,7 @@ tags:
 ## [2026-05-14] maintenance | Castle overview hitmap summary tests
 
 - Source updated: `[source: tools/test_castle_overview_hitmap_summary.py]`
-  and `[source: captures/castle-overview-hitmap-summary-tests-current.md]`.
+  and `[source: captures/current/castle-overview-hitmap-summary-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -559,7 +559,7 @@ tags:
 ## [2026-05-14] maintenance | Castle overview multihit summary tests
 
 - Source updated: `[source: tools/test_castle_overview_multihit_summary.py]`
-  and `[source: captures/castle-overview-multihit-summary-tests-current.md]`.
+  and `[source: captures/current/castle-overview-multihit-summary-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -580,7 +580,7 @@ tags:
 ## [2026-05-14] maintenance | Castle overview hitbox summary tests
 
 - Source updated: `[source: tools/test_castle_overview_hitbox_summary.py]`
-  and `[source: captures/castle-overview-hitbox-summary-tests-current.md]`.
+  and `[source: captures/current/castle-overview-hitbox-summary-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -601,7 +601,7 @@ tags:
 ## [2026-05-14] maintenance | Castle overview gate tests
 
 - Source updated: `[source: tools/test_castle_overview_gate.py]` and
-  `[source: captures/castle-overview-gate-tests-current.md]`.
+  `[source: captures/current/castle-overview-gate-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -622,7 +622,7 @@ tags:
 ## [2026-05-14] maintenance | Castle overview evidence matrix tests
 
 - Source updated: `[source: tools/test_castle_overview_evidence_matrix.py]`
-  and `[source: captures/castle-overview-evidence-matrix-tests-current.md]`.
+  and `[source: captures/current/castle-overview-evidence-matrix-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -643,7 +643,7 @@ tags:
 ## [2026-05-14] maintenance | Castle overview promotion decision tests
 
 - Source updated: `[source: tools/test_castle_overview_promotion_decision.py]`
-  and `[source: captures/castle-overview-promotion-decision-tests-current.md]`.
+  and `[source: captures/current/castle-overview-promotion-decision-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -666,7 +666,7 @@ tags:
 ## [2026-05-14] maintenance | Castle overview baseline recheck tests
 
 - Source updated: `[source: tools/test_castle_overview_baseline_recheck.py]`
-  and `[source: captures/castle-overview-baseline-recheck-tests-current.md]`.
+  and `[source: captures/current/castle-overview-baseline-recheck-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -687,7 +687,7 @@ tags:
 ## [2026-05-14] maintenance | Stable stage guard tests
 
 - Source updated: `[source: tools/test_stable_stage_guard.py]` and
-  `[source: captures/stable-stage-guard-tests-current.md]`.
+  `[source: captures/current/stable-stage-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -709,7 +709,7 @@ tags:
 ## [2026-05-14] maintenance | Castle overview baseline recheck
 
 - Source updated: `[source: tools/castle_overview_baseline_recheck.py]` and
-  `[source: captures/castle-overview-baseline-recheck-current.md]`.
+  `[source: captures/current/castle-overview-baseline-recheck-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[Clash95 HD Mod Progress]],
   [[Clash95 Engine Viewport Patch Notes]], and [[Log]].
@@ -717,8 +717,8 @@ tags:
 - Open questions: manual/real DirectInput proof remains opt-in and should not
   run on the active desktop without explicit approval.
 - Notes: `tools/castle_overview_baseline_recheck.py` passes repo-only and
-  checks `captures/cdb-surface-dump-20260512-101803`,
-  `captures/cdb-surface-dump-20260512-082418`, and the latest
+  checks `captures/archive/cdb-surface-dump-20260512-101803`,
+  `captures/archive/cdb-surface-dump-20260512-082418`, and the latest
   `castlecenter-all` matrix.
 - Notes: `tools/current_evidence_refresh.py --require-pass` now includes
   `castle_overview_baseline_recheck: PASS`.
@@ -728,7 +728,7 @@ tags:
 ## [2026-05-14] maintenance | No-popup guard regression tests
 
 - Source updated: `[source: tools/test_no_popup_guards.py]` and
-  `[source: captures/no-popup-guard-tests-current.md]`.
+  `[source: captures/current/no-popup-guard-tests-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]],
   [[Clash95 HD Mod Progress]], [[Clash95 Engine Viewport Patch Notes]], and
@@ -748,7 +748,7 @@ tags:
 
 ## [2026-05-14] maintenance | No-popup boundary guard
 
-- Source updated: `[source: captures/no-popup-boundary-guard-current.md]`.
+- Source updated: `[source: captures/current/no-popup-boundary-guard-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]], and [[Log]].
 - Contradictions: none recorded.
@@ -766,23 +766,23 @@ tags:
 
 ## [2026-05-14] maintenance | Surface dump policy guard
 
-- Source updated: `[source: captures/surface-dump-policy-guard-current.md]`.
+- Source updated: `[source: captures/current/surface-dump-policy-guard-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]], and [[Log]].
 - Contradictions: none recorded.
 - Open questions: none for this guard; broader right-bottom route/input safety
   remains separate and should stay no-popup unless explicitly approved.
 - Notes: `tools/surface_dump_policy_guard.py` now passes repo-only and checks
-  that `run_cdb_surface_dump.ps1` defaults to hidden desktop and requires
+  that `scripts/cdb/run_cdb_surface_dump.ps1` defaults to hidden desktop and requires
   explicit `-AllowVisibleDesktop` for active-desktop fallback.
-- Notes: `run_cdb_surface_dump.ps1` now records `HiddenDesktop` and
+- Notes: `scripts/cdb/run_cdb_surface_dump.ps1` now records `HiddenDesktop` and
   `AllowVisibleDesktop` in early failure and final summaries.
 - Notes: no visible Clash window was used; `raw/` was not edited or
   reorganized.
 
 ## [2026-05-14] maintenance | Process hygiene guard
 
-- Source updated: `[source: captures/process-hygiene-guard-current.md]`.
+- Source updated: `[source: captures/current/process-hygiene-guard-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], [[No-Popup Surface Dump]], and [[Log]].
 - Contradictions: none recorded.
@@ -797,7 +797,7 @@ tags:
 
 ## [2026-05-14] maintenance | No-visible runtime guard
 
-- Source updated: `[source: captures/no-visible-runtime-guard-current.md]`.
+- Source updated: `[source: captures/current/no-visible-runtime-guard-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], and [[Log]].
 - Contradictions: none recorded.
@@ -811,7 +811,7 @@ tags:
 
 ## [2026-05-14] maintenance | Executable artifact guard
 
-- Source updated: `[source: captures/exe-artifact-guard-current.md]`.
+- Source updated: `[source: captures/current/exe-artifact-guard-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], and [[Log]].
 - Contradictions: none recorded.
@@ -825,7 +825,7 @@ tags:
 
 ## [2026-05-13] maintenance | Stable stage guard
 
-- Source updated: `[source: captures/stable-stage-guard-current.md]`.
+- Source updated: `[source: captures/current/stable-stage-guard-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Active HD Map Stage]],
   [[Current Clash95 HD State]], and [[Log]].
 - Contradictions: none recorded.
@@ -841,8 +841,8 @@ tags:
 
 - Source updated: `[source: reports/border-tooltip-cdb-validation.md]`,
   `[source: reports/bottom-tooltip-recovery.md]`,
-  `[source: captures/hd-map-evidence-current.md]`, and
-  `[source: captures/right-bottom-compose-evidence-current.md]`.
+  `[source: captures/current/hd-map-evidence-current.md]`, and
+  `[source: captures/current/right-bottom-compose-evidence-current.md]`.
 - Pages updated: [[Current HD Map Evidence]],
   [[Border And Bottom Tooltip Recovery Reports]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]],
@@ -863,8 +863,8 @@ tags:
 
 - Source updated: `[source: reports/border-tooltip-cdb-validation.md]`,
   `[source: reports/bottom-tooltip-recovery.md]`,
-  `[source: captures/hd-map-evidence-current.md]`, and
-  `[source: captures/right-bottom-compose-promotion-decision-current.md]`.
+  `[source: captures/current/hd-map-evidence-current.md]`, and
+  `[source: captures/current/right-bottom-compose-promotion-decision-current.md]`.
 - Pages updated: [[Current HD Map Evidence]],
   [[Border And Bottom Tooltip Recovery Reports]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]],
@@ -884,8 +884,8 @@ tags:
 
 - Source updated: `[source: reports/border-tooltip-cdb-validation.md]`,
   `[source: reports/bottom-tooltip-recovery.md]`,
-  `[source: captures/hd-map-evidence-current.md]`, and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/hd-map-evidence-current.md]`, and
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Current HD Map Evidence]],
   [[Border And Bottom Tooltip Recovery Reports]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]],
@@ -895,7 +895,7 @@ tags:
 - Contradictions: none recorded.
 - Open questions: broader route/input safety still blocks stable-stage
   promotion of the right-bottom validation patch.
-- Notes: hidden-desktop run `captures/cdb-surface-dump-20260513-122928`
+- Notes: hidden-desktop run `captures/archive/cdb-surface-dump-20260513-122928`
   passed the full-start controlled owner/action route on the
   `rightbottomcompose` validation stage with candidate SHA
   `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`,
@@ -908,8 +908,8 @@ tags:
 
 - Source updated: `[source: reports/border-tooltip-cdb-validation.md]`,
   `[source: reports/bottom-tooltip-recovery.md]`,
-  `[source: captures/hd-map-evidence-current.md]`, and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/hd-map-evidence-current.md]`, and
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Current HD Map Evidence]],
   [[Border And Bottom Tooltip Recovery Reports]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]],
@@ -919,7 +919,7 @@ tags:
 - Contradictions: none recorded.
 - Open questions: final promotion still needs broader route/input timing safety
   because natural gameplay routing does not enter the owner/action draw rows.
-- Notes: hidden-desktop run `captures/cdb-surface-dump-20260513-122200`
+- Notes: hidden-desktop run `captures/archive/cdb-surface-dump-20260513-122200`
   passed the right-bottom UI launcher on the `rightbottomcompose` validation
   stage with `RBUI_DESC_SWITCH=35`, `RBUI_VIEWPORT_SWITCH=1`,
   `RBUI_PANEL_DRAW=0`, `RBUI_ACTION_BOX=0`, and candidate SHA
@@ -931,8 +931,8 @@ tags:
 
 - Source updated: `[source: reports/border-tooltip-cdb-validation.md]`,
   `[source: reports/bottom-tooltip-recovery.md]`,
-  `[source: captures/hd-map-evidence-current.md]`, and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/hd-map-evidence-current.md]`, and
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Current HD Map Evidence]],
   [[Border And Bottom Tooltip Recovery Reports]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]],
@@ -942,7 +942,7 @@ tags:
 - Contradictions: none recorded.
 - Open questions: route/input safety still blocks stable-stage promotion of
   the validation patch.
-- Notes: hidden-desktop run `captures/cdb-surface-dump-20260513-121513`
+- Notes: hidden-desktop run `captures/archive/cdb-surface-dump-20260513-121513`
   passed the normal map/visibility gate for `rightbottomcompose` with candidate
   SHA `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`,
   an 800x600 gameplay-like surface, `108` active cells, `13` visibility-zero
@@ -954,8 +954,8 @@ tags:
 
 - Source updated: `[source: reports/border-tooltip-cdb-validation.md]`,
   `[source: reports/bottom-tooltip-recovery.md]`,
-  `[source: captures/hd-map-evidence-current.md]`, and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/hd-map-evidence-current.md]`, and
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Current HD Map Evidence]],
   [[Border And Bottom Tooltip Recovery Reports]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]],
@@ -965,7 +965,7 @@ tags:
 - Open questions: broader safety and route/input coverage are still needed
   before promoting the right-bottom validation patch into the stable HD map
   stage.
-- Notes: hidden-desktop run `captures/cdb-surface-dump-20260513-120712`
+- Notes: hidden-desktop run `captures/archive/cdb-surface-dump-20260513-120712`
   passed with the validation-only `rightbottomcompose` stage,
   `right-bottom-compose-proof=4/4`, candidate SHA
   `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`,
@@ -977,8 +977,8 @@ tags:
 
 - Source updated: `[source: reports/border-tooltip-cdb-validation.md]`,
   `[source: reports/bottom-tooltip-recovery.md]`,
-  `[source: captures/hd-map-evidence-current.md]`, and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/hd-map-evidence-current.md]`, and
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Current HD Map Evidence]],
   [[Border And Bottom Tooltip Recovery Reports]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]],
@@ -988,7 +988,7 @@ tags:
 - Contradictions: none recorded.
 - Open questions: implement the proven final-copy strategy as a narrow
   validation-stage binary patch before considering any stable-stage promotion.
-- Notes: hidden-desktop run `captures/cdb-surface-dump-20260513-115303`
+- Notes: hidden-desktop run `captures/archive/cdb-surface-dump-20260513-115303`
   passed with `-SkipMapValidation`, all `APCOMPOSE_*` markers, `av_count=0`,
   and bottom-right recovery from `21.43%` to `48.228%` nonblack.
 - Notes: no visible Clash window was used; `raw/` was not edited or
@@ -998,7 +998,7 @@ tags:
 
 - Source updated: `[source: reports/border-tooltip-cdb-validation.md]`,
   `[source: reports/bottom-tooltip-recovery.md]`, and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Border And Bottom Tooltip Recovery Reports]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]],
   [[How Should The Bottom Tooltip Be Recovered]],
@@ -1008,7 +1008,7 @@ tags:
 - Contradictions: none recorded.
 - Open questions: right-bottom recovery now needs a narrow native-anchor or
   final-composition strategy around `00435280` / `00435500`.
-- Notes: hidden-desktop run `captures/cdb-surface-dump-20260513-112339`
+- Notes: hidden-desktop run `captures/archive/cdb-surface-dump-20260513-112339`
   passed with `-SkipMapValidation`, reached the owner/action route, logged
   native-positioned action/status rows, recorded `13` text rows, `0` final
   present rows, `5` null-destination present rows, `2` composition sample rows,
@@ -1019,7 +1019,7 @@ tags:
 ## [2026-05-13] maintenance | Right-bottom owner route proof
 
 - Source updated: `[source: reports/border-tooltip-cdb-validation.md]` and
-  `[source: captures/current-evidence-refresh-current.md]`.
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Border And Bottom Tooltip Recovery Reports]],
   [[Right-Bottom UI And Bottom Tooltip Recovery]],
   [[How Should The Bottom Tooltip Be Recovered]],
@@ -1028,7 +1028,7 @@ tags:
 - Contradictions: none recorded.
 - Open questions: right-bottom panel composition still needs
   render-target/copyback, anchor, or final-present proof.
-- Notes: hidden-desktop run `captures/cdb-surface-dump-20260513-105411`
+- Notes: hidden-desktop run `captures/archive/cdb-surface-dump-20260513-105411`
   passed with `-SkipMapValidation`, reached the action/status draw cluster,
   action-box redirect, copyback, and `SURFDUMP_READY`, and recorded
   `av_count=0`.
@@ -1046,15 +1046,15 @@ tags:
 - Contradictions: none recorded.
 - Open questions: route/state activation for the `004347A0..00435500`
   action/status owner path remains.
-- Notes: hidden-desktop run `captures/cdb-surface-dump-20260513-104200`
+- Notes: hidden-desktop run `captures/archive/cdb-surface-dump-20260513-104200`
   reached gameplay, `RBUI_DESC_SWITCH=26`, and `RBUI_VIEWPORT_SWITCH=1`, but
   `RBUI_PANEL_DRAW=0` and `RBUI_ACTION_BOX=0`.
 - Notes: `raw/` was not edited or reorganized.
 
 ## [2026-05-13] maintenance | Current evidence refresh
 
-- Source updated: `[source: captures/hd-map-evidence-current.md]` and
-  `[source: captures/current-evidence-refresh-current.md]`.
+- Source updated: `[source: captures/current/hd-map-evidence-current.md]` and
+  `[source: captures/current/current-evidence-refresh-current.md]`.
 - Pages updated: [[Current HD Map Evidence]], [[Current Clash95 HD State]],
   [[HD Map Evidence Chain]], and [[Log]].
 - Contradictions: none recorded.
@@ -1087,7 +1087,7 @@ tags:
 
 ## [2026-05-14] maintenance | Castle overview focused hitbox refresh
 
-- Source updated: `[source: captures/cdb-surface-dump-20260514-130015]`.
+- Source updated: `[source: captures/archive/cdb-surface-dump-20260514-130015]`.
 - Pages updated: [[Log]], [[Current Clash95 HD State]].
 - Contradictions: none recorded.
 - Open questions: keep castle overview wrappers scoped to `castlecenter-all`
@@ -1138,11 +1138,11 @@ tags:
 
 ## [2026-05-12] maintenance | Clash95 knowledge-base synthesis
 
-- Sources summarized: `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`,
-  `[source: HD_MOD_PROGRESS.md]`, `[source: CLASH95_MENU_LOAD_ROUTE_NOTES.md]`,
-  `[source: captures/hd-map-evidence-current.md]`,
-  `[source: captures/hd-map-smoke-current.md]`,
-  `[source: captures/post-owner-evidence-current.md]`,
+- Sources summarized: `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`,
+  `[source: docs/hd/HD_MOD_PROGRESS.md]`, `[source: docs/hd/CLASH95_MENU_LOAD_ROUTE_NOTES.md]`,
+  `[source: captures/current/hd-map-evidence-current.md]`,
+  `[source: captures/current/hd-map-smoke-current.md]`,
+  `[source: captures/current/post-owner-evidence-current.md]`,
   `[source: reports/border-frame-recovery.md]`,
   `[source: reports/border-tooltip-cdb-validation.md]`,
   `[source: reports/bottom-tooltip-recovery.md]`, and
@@ -1177,7 +1177,7 @@ tags:
 
 ## [2026-05-17] maintenance | Right-bottom action native-center strict probe
 
-- Source updated: `[source: captures/right-bottom-action-nativecenter-current.md]`.
+- Source updated: `[source: captures/current/right-bottom-action-nativecenter-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: natural route/input proof still must enter the owner/action
@@ -1186,54 +1186,54 @@ tags:
   visual fix and candidate SHA
   `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`.
 - Notes: the strict fast-forward natural UI run
-  `captures/cdb-surface-dump-20260517-163734` passed the hidden map dump and
+  `captures/archive/cdb-surface-dump-20260517-163734` passed the hidden map dump and
   visibility gate, but failed the right-bottom UI gate with
   `OwnerActionRowsSeen=false`, `RBUI_PANEL_DRAW=0`, and `RBUI_ACTION_BOX=0`.
 - Notes: wrapper-aware controlled run
-  `captures/cdb-surface-dump-20260517-172611` passed with
-  `clash95_post_owner_action_nativecenter_extra.cdb`; it proves stock
+  `captures/archive/cdb-surface-dump-20260517-172611` passed with
+  `probes/cdb/map/clash95_post_owner_action_nativecenter_extra.cdb`; it proves stock
   `00435BC0` drew on a temporary 640x480 surface and the wrapper copied the
   native action screen back to an 800x600 surface at `0051B86D`.
 - Notes: unit-selection evidence at
-  `captures/cdb-surface-dump-20260517-171559` is tracked as a separate
+  `captures/archive/cdb-surface-dump-20260517-171559` is tracked as a separate
   selected-unit info/action route, not as right-bottom owner/action proof.
-- Notes: `run_cdb_right_bottom_ui_probe.ps1` now requires owner/action rows by
+- Notes: `scripts/cdb/run_cdb_right_bottom_ui_probe.ps1` now requires owner/action rows by
   default; descriptor-only diagnostics require `-AllowDescriptorOnly`.
 - Notes: `raw/` was not edited or reorganized.
 
 ## [2026-05-18] maintenance | Natural castle-click route split
 
-- Source updated: `[source: captures/right-bottom-action-nativecenter-current.md]`.
+- Source updated: `[source: captures/current/right-bottom-action-nativecenter-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: the natural route still must drive castle overview command
   `0x63` or equivalent owner setup into `004338E0 -> 00435BC0` before the
   right-bottom action-menu visual fix can be promoted.
 - Notes: focused hidden-desktop run
-  `captures/cdb-surface-dump-20260518-092756` passed with candidate SHA
+  `captures/archive/cdb-surface-dump-20260518-092756` passed with candidate SHA
   `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`.
-- Notes: `clash95_building_click_route_extra.cdb` forces the live
+- Notes: `probes/cdb/ui/clash95_building_click_route_extra.cdb` forces the live
   map-handler call site at `0040B233` to screen `(352,272)` / map `(15,21)`,
   reaches castle tile `32768`, building index `0`, owner `0`, mode `2`,
   active `0`, and follows
   `sub_4084A0 -> Building_GetInto -> 00422180`.
 - Notes: the run dumps a 640x480 castle overview surface at
-  `captures/cdb-surface-dump-20260518-092756/surface.png`; it does not produce
+  `captures/archive/cdb-surface-dump-20260518-092756/surface.png`; it does not produce
   owner/action rows for `004338E0`, `00433914`, or `00435BC0`.
 - Notes: `raw/` was not edited or reorganized.
 
 ## [2026-05-18] maintenance | Castle command 0x63 owner setup split
 
-- Source updated: `[source: captures/right-bottom-action-nativecenter-current.md]`.
+- Source updated: `[source: captures/current/right-bottom-action-nativecenter-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: the natural route still needs the second right-bottom
   descriptor input after command `0x63` to enter `004338E0 -> 00433914 ->
   0051B7E0`.
 - Notes: focused hidden-desktop run
-  `captures/cdb-surface-dump-20260518-100917` passed with candidate SHA
+  `captures/archive/cdb-surface-dump-20260518-100917` passed with candidate SHA
   `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`.
-- Notes: `clash95_castle_click_cmd99_to_action_extra.cdb` drives the natural
+- Notes: `probes/cdb/castle/clash95_castle_click_cmd99_to_action_extra.cdb` drives the natural
   castle-click route through overview raw hit `254`, command `99`, callback
   `00433C20`, and verifies writes to `dword_532150`, `dword_53214C`, and
   `dword_532154`.
@@ -1245,7 +1245,7 @@ tags:
 
 ## [2026-05-18] maintenance | Battle UI force-entry and initial centering
 
-- Source updated: `[source: captures/battle-ui-force-entry-current.md]`.
+- Source updated: `[source: captures/current/battle-ui-force-entry-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: battle command-button hits, tactical-grid hits,
@@ -1254,11 +1254,11 @@ tags:
 - Notes: the user-visible stripey/right-bottom button screenshot was traced to
   the battle UI lane, not the castle owner/action menu lane.
 - Notes: baseline hidden-desktop run
-  `captures/cdb-surface-dump-20260518-214535` reaches forced `Unit_Attack`,
+  `captures/archive/cdb-surface-dump-20260518-214535` reaches forced `Unit_Attack`,
   `BATTLE_OWNER_ENTRY source=BattleRunner`, and the bad uncentered 800x600
   battle composition.
 - Notes: patched hidden-desktop run
-  `captures/cdb-surface-dump-20260518-221018` uses CDB `.writemem`, logs
+  `captures/archive/cdb-surface-dump-20260518-221018` uses CDB `.writemem`, logs
   wrapper return `0051ba63`, has no access violations, and classifies the
   initial battle frame as `centered-native-640x480` at offset `[80, 60]`.
 - Notes: `battle-ui-center-present-wrapper` patches only initial battle
@@ -1269,14 +1269,14 @@ tags:
 
 ## [2026-05-20] evidence | Battle UI command descriptor hit
 
-- Source updated: `[source: captures/battle-ui-command-hit-current.md]`.
+- Source updated: `[source: captures/current/battle-ui-command-hit-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: command callback/manual cadence, tactical-grid hits,
   modal/dialog routing, and later battle-loop redraw centering still need
   runtime proof.
 - Notes: hidden-desktop run
-  `captures/cdb-surface-dump-20260520-094032` extends the forced battle route
+  `captures/archive/cdb-surface-dump-20260520-094032` extends the forced battle route
   with controlled command descriptor probing.
 - Notes: the run logs `BATTLE_COMMAND_HIT coord_mode=visual result=2` for the
   displayed command coordinate and `BATTLE_COMMAND_NATIVE_HIT
@@ -1288,14 +1288,14 @@ tags:
 
 ## [2026-05-20] evidence | Battle UI command callback entry
 
-- Source updated: `[source: captures/battle-ui-command-callback-current.md]`.
+- Source updated: `[source: captures/current/battle-ui-command-callback-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: enabled-command state change, manual input cadence,
   tactical-grid hits, modal/dialog routing, and later battle-loop redraw
   centering still need runtime proof.
 - Notes: hidden-desktop run
-  `captures/cdb-surface-dump-20260520-100717` extends the forced battle route
+  `captures/archive/cdb-surface-dump-20260520-100717` extends the forced battle route
   with a command callback probe.
 - Notes: the run reaches descriptor `00514b78`, forces the descriptor click
   gate, enters callback `0042d4e0`, and records
@@ -1307,14 +1307,14 @@ tags:
 
 ## [2026-05-20] evidence | Battle UI enabled command callback result
 
-- Source updated: `[source: captures/battle-ui-command-enabled-callback-current.md]`.
+- Source updated: `[source: captures/current/battle-ui-command-enabled-callback-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: natural/manual enabled-command cadence, tactical-grid hits,
   modal/dialog routing, and later battle-loop redraw centering still need
   runtime proof.
 - Notes: hidden-desktop run
-  `captures/cdb-surface-dump-20260520-101859` extends the forced battle route
+  `captures/archive/cdb-surface-dump-20260520-101859` extends the forced battle route
   with an enabled-command callback proof.
 - Notes: the probe temporarily changes selected unit type `5` to `8`, records
   `avail=10`, `enabled=3`, skips the callback render-begin lock under CDB, and
@@ -1324,14 +1324,14 @@ tags:
 
 ## [2026-05-20] evidence | Battle UI tactical-grid coordinate classification
 
-- Source updated: `[source: captures/battle-ui-grid-hit-current.md]`.
+- Source updated: `[source: captures/current/battle-ui-grid-hit-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: natural/manual enabled-command cadence, actual grid-input
   transform, modal/dialog routing, and later battle-loop redraw centering still
   need runtime proof.
 - Notes: hidden-desktop run
-  `captures/cdb-surface-dump-20260520-103155` extends the forced battle route
+  `captures/archive/cdb-surface-dump-20260520-103155` extends the forced battle route
   with tactical-grid hit-test probing.
 - Notes: the probe reaches `0042CB50`, records displayed `(144,108)` landing
   in cell `(1,1)`, records native `(64,48)` landing in cell `(0,0)`, and has no
@@ -1343,14 +1343,14 @@ tags:
 
 ## [2026-05-20] evidence | Battle UI modal input path classification
 
-- Source updated: `[source: captures/battle-ui-modal-classified-current.md]`.
+- Source updated: `[source: captures/current/battle-ui-modal-classified-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: natural/manual enabled-command cadence, actual centered
   input transforms, and post-ready battle-loop redraw centering still need
   runtime proof.
 - Notes: hidden-desktop run
-  `captures/cdb-surface-dump-20260520-103714` extends the forced battle route
+  `captures/archive/cdb-surface-dump-20260520-103714` extends the forced battle route
   with modal/input path classification.
 - Notes: the probe reaches battle loop input updater `004605D0`, records
   `BATTLE_MODAL_CLASSIFIED status=input_update_seen_no_modal`, and has no AV
@@ -1361,7 +1361,7 @@ tags:
 
 ## [2026-05-20] evidence | Battle UI combined evidence matrix
 
-- Source updated: `[source: captures/battle-ui-evidence-current.md]`.
+- Source updated: `[source: captures/current/battle-ui-evidence-current.md]`.
 - Pages updated: [[Log]].
 - Contradictions: none recorded.
 - Open questions: natural/manual enabled-command cadence, centered-input
@@ -1372,13 +1372,13 @@ tags:
 
 ## [2026-05-20] evidence | Battle UI centered input wrappers
 
-- Source updated: `[source: captures/battle-ui-centered-input-current.md]`.
-- Related source: `[source: captures/cdb-surface-dump-20260520-111115/RUN-SUMMARY.md]`.
+- Source updated: `[source: captures/current/battle-ui-centered-input-current.md]`.
+- Related source: `[source: captures/archive/cdb-surface-dump-20260520-111115/RUN-SUMMARY.md]`.
 - Claim: the validation-only `battlecenter-inputprobe` stage proves the battle
   grid and descriptor centered-input wrappers transform visual mouse
   coordinates to native coordinates and restore them afterward.
 - Evidence:
-  `captures/cdb-surface-dump-20260520-111115` passed hidden-desktop with
+  `captures/archive/cdb-surface-dump-20260520-111115` passed hidden-desktop with
   candidate SHA
   `F84933776944E2B616F6BBCCF7708ABBF06498D5438FA8DF7B7AF1BB56CD180A`,
   `SURFDUMP_READY`, no AV rows, and a fresh 800x600 surface dump.
@@ -1386,7 +1386,7 @@ tags:
   cave `0051BAA0`; `battle-ui-centered-input` wraps `0042E501 -> 00419DC0`
   through cave `0051BAF0`. The focused probe skips helper bodies after entry,
   so natural/manual input cadence remains open.
-- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+- Follow-up: refreshed `[source: captures/current/battle-ui-evidence-current.md]` so
   the combined matrix includes the inputprobe summary and inputprobe
   patch-stage bytes.
 - Notes: the matrix passes with no failures and combines force-entry
@@ -1399,19 +1399,19 @@ tags:
 
 ## [2026-05-20] evidence | Battle UI post-ready redraw
 
-- Source updated: `[source: captures/battle-ui-post-ready-redraw-current.md]`.
-- Related source: `[source: captures/cdb-surface-dump-20260520-195244/RUN-SUMMARY.md]`.
+- Source updated: `[source: captures/current/battle-ui-post-ready-redraw-current.md]`.
+- Related source: `[source: captures/archive/cdb-surface-dump-20260520-195244/RUN-SUMMARY.md]`.
 - Claim: the forced hidden-desktop battle route keeps producing centered
   800x600 post-ready present/copyback activity after the initial battle
   present.
 - Evidence:
-  `captures/cdb-surface-dump-20260520-195244` passed hidden-desktop with
+  `captures/archive/cdb-surface-dump-20260520-195244` passed hidden-desktop with
   candidate SHA
   `F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF`,
   `BATTLE_READY`, 9 post-ready presents, 6 post-ready copybacks, one forced
   grid point `(144,108)->(64,48)`, final present return `0042CB46`, no AV
   rows, and a fresh 800x600 surface dump.
-- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+- Follow-up: refreshed `[source: captures/current/battle-ui-evidence-current.md]` so
   the combined matrix includes `post_ready_redraw: PASS`.
 - Open questions: natural/manual enabled-command cadence and stable-stage
   battle promotion remain open.
@@ -1421,8 +1421,8 @@ tags:
 
 ## [2026-05-20] evidence | Battle command availability scan
 
-- Source updated: `[source: captures/battle-command-availability-current.md]`.
-- Related source: `[source: captures/cdb-surface-dump-20260520-195244/RUN-SUMMARY.md]`.
+- Source updated: `[source: captures/current/battle-command-availability-current.md]`.
+- Related source: `[source: captures/archive/cdb-surface-dump-20260520-195244/RUN-SUMMARY.md]`.
 - Claim: the current forced battle fixture does not contain a naturally enabled
   command unit, which explains why the enabled callback proof requires the CDB
   type-8 override.
@@ -1432,7 +1432,7 @@ tags:
   enabled unit types to hunt for in a richer fixture: Dragon cavalry, Archer,
   Crossbower, Musketeer, Catapult, Cannon, Forester, Cyklop, Wizard, Winger,
   and Dragon.
-- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+- Follow-up: refreshed `[source: captures/current/battle-ui-evidence-current.md]` so
   the combined matrix includes `availability_scan: PASS`.
 - Open questions: find a richer natural battle state with enabled commands, or
   capture manual cadence in a state that naturally exposes one.
@@ -1440,9 +1440,9 @@ tags:
 
 ## [2026-05-20] evidence | Battle save-slot command-state scan
 
-- Source updated: `[source: captures/battle-slot-scan-current.md]`.
-- Related sources: `[source: run_cdb_surface_dump.ps1]`,
-  `[source: clash95_surface_dump_probe.cdb]`,
+- Source updated: `[source: captures/current/battle-slot-scan-current.md]`.
+- Related sources: `[source: scripts/cdb/run_cdb_surface_dump.ps1]`,
+  `[source: probes/cdb/render/clash95_surface_dump_probe.cdb]`,
   `[source: probes/cdb/battle/clash95_battle_unit_scan_extra.cdb]`,
   `[source: tools/battle_slot_scan_summary.py]`.
 - Claim: the current local save slots do not contain a naturally enabled
@@ -1451,7 +1451,7 @@ tags:
   routed far enough to expose unit rows, with natural enabled command unit
   count `0`; slots `3`, `4`, and `5` timed out before unit scan under the
   current hidden CDB route.
-- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+- Follow-up: refreshed `[source: captures/current/battle-ui-evidence-current.md]` so
   the combined matrix includes `slot_scan: PASS`.
 - Open questions: find or construct a richer battle state with enabled command
   units, or capture manual cadence in such a state.
@@ -1459,7 +1459,7 @@ tags:
 
 ## [2026-05-20] evidence | Battle save-file unit inventory
 
-- Source updated: `[source: captures/battle-save-unit-inventory-current.md]`.
+- Source updated: `[source: captures/current/battle-save-unit-inventory-current.md]`.
 - Related source: `[source: tools/battle_save_unit_inventory.py]`.
 - Claim: direct save-file parsing confirms the current local saves do not
   contain naturally enabled battle command units.
@@ -1468,7 +1468,7 @@ tags:
   `C:\Clash\save\*.dat` files, parses 63 units, and reports
   `natural_enabled_unit_count=0`. The decoded local-save unit types are
   Peasant, Light infantry, Light cavalry, Highlander, and Builder.
-- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+- Follow-up: refreshed `[source: captures/current/battle-ui-evidence-current.md]` so
   the combined matrix includes `save_inventory: PASS`.
 - Open questions: obtain or construct a richer battle state with enabled unit
   types, then replace the current type-8 CDB override with natural/manual
@@ -1477,10 +1477,10 @@ tags:
 
 ## [2026-05-20] evidence | Battle constructed save fixture
 
-- Source updated: `[source: captures/battle-constructed-save-fixture-current.md]`.
+- Source updated: `[source: captures/current/battle-constructed-save-fixture-current.md]`.
 - Related sources: `[source: tools/battle_constructed_save_fixture.py]`,
-  `[source: captures/battle-constructed-fixture-unit-scan-current.md]`, and
-  `[source: captures/cdb-surface-dump-20260520-210816/RUN-SUMMARY.md]`.
+  `[source: captures/current/battle-constructed-fixture-unit-scan-current.md]`, and
+  `[source: captures/archive/cdb-surface-dump-20260520-210816/RUN-SUMMARY.md]`.
 - Claim: an isolated copied-save fixture can load a naturally enabled battle
   command unit without editing `C:\Clash\save`.
 - Evidence: unit index `0` in `C:\Clash\save\0.dat` has type offset
@@ -1491,15 +1491,15 @@ tags:
   `C:\ClashTests\battle-enabled-fixture-20260520-210728\game\save\0.dat`.
   Hidden CDB loaded slot `0` from that isolated work dir and parsed one
   naturally enabled Dragon cavalry unit with `availability=10`, `enabled=3`.
-- Follow-up: refreshed `[source: captures/battle-ui-evidence-current.md]` so
+- Follow-up: refreshed `[source: captures/current/battle-ui-evidence-current.md]` so
   the combined matrix includes `constructed_fixture_plan: PASS` and
   `constructed_fixture_unit_scan: PASS`.
 - Follow-up evidence:
-  `[source: captures/battle-constructed-fixture-command-callback-current.md]`
+  `[source: captures/current/battle-constructed-fixture-command-callback-current.md]`
   reaches `0042D4E0` from the isolated fixture with `unit_type=8`, `avail=10`,
   `enabled=3`, click gate `eax=1`, `branch=state1`, and zero
   `BATTLE_COMMAND_FORCE_ENABLED_UNIT` or `BATTLE_COMMAND_CLICK_GATE_FORCE`
-  rows. The refreshed hidden CDB run `captures\cdb-surface-dump-20260520-220459`
+  rows. The refreshed hidden CDB run `captures\archive\cdb-surface-dump-20260520-220459`
   uses the battlecenter inputprobe stage, starts the attempt at displayed
   `(588,440)`, reaches `BATTLE_COMMAND_PRE_GATES` as native `(508,380)`,
   removes the descriptor-local pre-gate rearm, the direct render-begin skip,
@@ -1512,14 +1512,14 @@ tags:
 ## [2026-05-27] evidence | Load-slot transition and slot5 fixture probe
 
 - Source updated:
-  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
 - Related sources:
-  `[source: captures/cdb-surface-dump-20260527-120235/load-slot-transition-summary.md]`,
-  `[source: captures/cdb-surface-dump-20260527-120522/load-slot-transition-summary.md]`,
-  `[source: captures/cdb-surface-dump-20260527-120753/load-slot-transition-summary.md]`,
-  `[source: captures/cdb-surface-dump-20260527-121823/right-bottom-slot-fixture-result-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-120235/load-slot-transition-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-120522/load-slot-transition-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-120753/load-slot-transition-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-121823/right-bottom-slot-fixture-result-summary.md]`,
   and
-  `[source: clash95_castle_cmd99_owner_action_slot5_fixture_extra.cdb]`.
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_fixture_extra.cdb]`.
 - Claim: slot `5` still does not reach the natural right-bottom owner/action
   acceptance route under hidden CDB, and the isolated fixture remains
   diagnostic rather than promotion-ready.
@@ -1539,13 +1539,13 @@ tags:
 ## [2026-05-27] evidence | Slot5 load gap rows and fixture native command target
 
 - Source updated:
-  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
 - Related sources:
-  `[source: captures/cdb-surface-dump-20260527-160111/load-slot-transition-summary.md]`,
-  `[source: captures/cdb-surface-dump-20260527-160557/right-bottom-slot-fixture-result-summary.md]`,
-  `[source: captures/cdb-surface-dump-20260527-161047/right-bottom-slot-fixture-result-summary.md]`,
-  `[source: clash95_load_slot_entry_transition_extra.cdb]`, and
-  `[source: clash95_castle_cmd99_owner_action_slot5_fixture_extra.cdb]`.
+  `[source: captures/archive/cdb-surface-dump-20260527-160111/load-slot-transition-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-160557/right-bottom-slot-fixture-result-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-161047/right-bottom-slot-fixture-result-summary.md]`,
+  `[source: probes/cdb/menu/clash95_load_slot_entry_transition_extra.cdb]`, and
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_fixture_extra.cdb]`.
 - Claim: natural slot `5` still does not reach the load-menu entry, but the
   isolated fixture now explains and corrects the command `0x63` click target.
 - Evidence: the hidden slot `5` transition run observed callback entry and the
@@ -1565,19 +1565,19 @@ tags:
 ## [2026-05-27] evidence | Slot5 natural load success and right-bottom Render_Begin stall
 
 - Source updated:
-  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
 - Related sources:
-  `[source: captures/cdb-surface-dump-20260527-163809/load-slot-transition-summary.md]`,
-  `[source: captures/cdb-surface-dump-20260527-165909/right-bottom-natural-slot5-summary.md]`,
-  `[source: captures/cdb-surface-dump-20260527-165909/timeout-stack.log]`,
-  `[source: clash95_load_slot_entry_transition_extra.cdb]`, and
-  `[source: clash95_castle_cmd99_owner_action_slot5_natural_extra.cdb]`.
+  `[source: captures/archive/cdb-surface-dump-20260527-163809/load-slot-transition-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-165909/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-165909/timeout-stack.log]`,
+  `[source: probes/cdb/menu/clash95_load_slot_entry_transition_extra.cdb]`, and
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_natural_extra.cdb]`.
 - Claim: natural slot `5` now reaches `0044895A`, `LOADSAVE`, and `PlayGame`,
   but strict right-bottom promotion is still blocked inside the owner/action
   prelude before draw/copyback rows.
-- Evidence: hidden run `captures/cdb-surface-dump-20260527-163809` used
+- Evidence: hidden run `captures/archive/cdb-surface-dump-20260527-163809` used
   late-only slot forcing and produced strict `late_entry_load_success` for slot
-  `5` with no AV rows. Hidden run `captures/cdb-surface-dump-20260527-165909`
+  `5` with no AV rows. Hidden run `captures/archive/cdb-surface-dump-20260527-165909`
   then reached slot `5`, map tile `(14,20)`, overview raw hit `254`, command
   `99`, owner flag `0x0b` with bit `0x02`, descriptor
   `d1=(155,426 cb=004338e0)`, and `NOWNER_4338E0_ENTRY`. It reached
@@ -1594,17 +1594,17 @@ tags:
 ## [2026-05-27] evidence | Right-bottom Render_Begin/DD_Pump blocker classified
 
 - Source updated:
-  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
 - Related sources:
-  `[source: captures/cdb-surface-dump-20260527-173354/right-bottom-natural-slot5-summary.md]`,
-  `[source: captures/cdb-surface-dump-20260527-173354/summary.json]`,
-  `[source: captures/cdb-surface-dump-20260527-173354/timeout-stack.log]`,
-  `[source: clash95_castle_cmd99_owner_action_slot5_natural_extra.cdb]`, and
+  `[source: captures/archive/cdb-surface-dump-20260527-173354/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-173354/summary.json]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-173354/timeout-stack.log]`,
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_natural_extra.cdb]`, and
   `[source: tools/right_bottom_slot_fixture_result_summary.py]`.
 - Claim: natural slot `5` right-bottom routing now has a precise non-AV
   `Render_Begin` / DirectDraw wait blocker, not a load-route or owner-bit
   blocker.
-- Evidence: hidden run `captures/cdb-surface-dump-20260527-173354` used
+- Evidence: hidden run `captures/archive/cdb-surface-dump-20260527-173354` used
   isolated candidate dir `C:\ClashTests\right-bottom-natural-slot5\v5-renderbegin`
   and candidate SHA-256
   `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`. The
@@ -1622,12 +1622,12 @@ tags:
 ## [2026-05-27] evidence | Right-bottom render flag clears and copyback remains blocked
 
 - Source updated:
-  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
 - Related sources:
-  `[source: captures/cdb-surface-dump-20260527-193159/right-bottom-natural-slot5-summary.md]`,
-  `[source: captures/cdb-surface-dump-20260527-193512/right-bottom-natural-slot5-summary.md]`,
-  `[source: captures/right-bottom-blocker-triage-current.md]`, and
-  `[source: clash95_castle_cmd99_owner_action_slot5_natural_release_extra.cdb]`.
+  `[source: captures/archive/cdb-surface-dump-20260527-193159/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260527-193512/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/current/right-bottom-blocker-triage-current.md]`, and
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_natural_release_extra.cdb]`.
 - Claim: the natural slot `5` owner/action route is no longer blocked inside
   `Render_Begin`; the current hidden blocker is missing wrapper copyback after
   owner/action draw entry.
@@ -1648,12 +1648,12 @@ tags:
 ## [2026-05-28] tooling | Right-bottom copyback trace prepared
 
 - Source updated:
-  `[source: CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`.
 - Related sources:
-  `[source: clash95_castle_cmd99_owner_action_slot5_natural_extra.cdb]`,
-  `[source: clash95_castle_cmd99_owner_action_slot5_natural_release_extra.cdb]`,
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_natural_extra.cdb]`,
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_natural_release_extra.cdb]`,
   `[source: tools/right_bottom_slot_fixture_result_summary.py]`, and
-  `[source: captures/right-bottom-blocker-triage-current.md]`.
+  `[source: captures/current/right-bottom-blocker-triage-current.md]`.
 - Claim: the next hidden slot `5` right-bottom run can now distinguish whether
   the native-centering wrapper enters, stock `00435BC0` loops or returns, and
   whether wrapper copyback/present reaches `0051B86D`.
@@ -1662,6 +1662,162 @@ tags:
   older evidence status.
 - Notes: no runtime proof, visible/manual validation, patch bytes, stable-stage
   change, or promotion was added in this tooling step.
+
+## [2026-06-14] evidence | Right-bottom v8 copyback trace classifies stock-loop stall
+
+- Source updated:
+  `[source: docs/hd/HD_MOD_PROGRESS.md]`,
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`, and
+  `[source: captures/current/right-bottom-blocker-triage-current.md]`.
+- Related sources:
+  `[source: captures/archive/cdb-surface-dump-20260614-101240/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260614-101240/summary.json]`,
+  `[source: captures/archive/cdb-surface-dump-20260614-101240/cdb-surface-dump.log]`,
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_natural_release_extra.cdb]`,
+  and `[source: tools/right_bottom_slot_fixture_result_summary.py]`.
+- Claim: the natural slot `5` right-bottom route reaches the native-centering
+  wrapper and stock `00435BC0`, then stalls inside the stock owner/action loop
+  before stock return and wrapper copyback.
+- Evidence: hidden run `captures/archive/cdb-surface-dump-20260614-101240` used
+  isolated candidate dir `C:\ClashTests\right-bottom-natural-slot5\v8-copyback-trace`
+  and candidate SHA-256
+  `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`. The
+  strict summary reports `status=owner_action_435bc0_loop_stalled`, matching
+  slot `5`, `LOADSAVE`, `PlayGame`, owner flag bit `0x02`, click-release,
+  `Render_Begin` exit, wrapper entry, temp-surface allocation, stock
+  `00435BC0` entry, `NOWNER_435BC0_LOOP_HEAD=8`, `NOWNER_435BC0_LOOP_LIMIT=1`,
+  and `NOWNER_435BC0_RETURN=0`.
+- Follow-up: diagnose why `00435BC0` keeps `d532210=0` with repeated `eax=0`
+  hit results and raw mouse drift before attempting promotion or visible/manual
+  proof.
+- Notes: `raw/` was not edited or reorganized. `DEFAULT_STAGE` remains
+  unchanged, no validation-only group was promoted, and no visible/manual
+  runtime was run.
+
+## [2026-06-14] evidence | Right-bottom v9 loop-state trace isolates coordinate drift
+- Source updated:
+  `[source: docs/hd/HD_MOD_PROGRESS.md]`,
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`, and
+  `[source: captures/current/right-bottom-blocker-triage-current.md]`.
+- Related sources:
+  `[source: captures/archive/cdb-surface-dump-20260614-102802/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260614-102802/summary.json]`,
+  `[source: captures/archive/cdb-surface-dump-20260614-102802/timeout-stack.log]`,
+  `[source: captures/archive/cdb-surface-dump-20260614-102802/cdb-surface-dump.log]`,
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_natural_release_extra.cdb]`,
+  `[source: tools/right_bottom_slot_fixture_result_summary.py]`, and
+  `[source: tools/right_bottom_blocker_triage.py]`.
+- Claim: the natural slot `5` right-bottom route reaches the native-centering
+  wrapper, stock `00435BC0`, and stock grid-route rows, then stalls because the
+  stock action screen polls a drifted mouse coordinate.
+- Evidence: hidden run `captures/archive/cdb-surface-dump-20260614-102802` used
+  isolated candidate dir `C:\ClashTests\right-bottom-natural-slot5\v9-loopstate`
+  and candidate SHA-256
+  `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`. The
+  strict summary reports `status=owner_action_435bc0_loop_stalled`,
+  `NOWNER_435BC0_POLL=16`, `NOWNER_435BC0_GRID_ROUTE_ENTRY=26`,
+  `NOWNER_435BC0_GRID_FAIL=10`, `NOWNER_435BC0_SELECTION_UPDATE=0`,
+  `NOWNER_435BC0_RETURN=0`, and `NOWNER_WRAPPER_COPYBACK_DONE=0`.
+- Follow-up: diagnose the `00435BC0` mouse transform from owner-action
+  `raw=(0x2d00,0x6e00)` to stock poll `mouse=(4,440)` and grid-helper
+  `mouse=(-76,380)` before attempting promotion or visible/manual proof.
+- Notes: `raw/` was not edited or reorganized. `DEFAULT_STAGE` remains
+  unchanged, no validation-only group was promoted, and no visible/manual
+  runtime was run.
+
+## [2026-06-14] evidence | Right-bottom v12 trace isolates stock input resample
+- Source updated:
+  `[source: docs/hd/HD_MOD_PROGRESS.md]`,
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`, and
+  `[source: captures/current/right-bottom-blocker-triage-current.md]`.
+- Related sources:
+  `[source: captures/archive/cdb-surface-dump-20260614-103936/cdb-surface-dump.log]`,
+  `[source: captures/archive/cdb-surface-dump-20260614-104534/cdb-surface-dump.log]`,
+  `[source: captures/archive/cdb-surface-dump-20260614-105016/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260614-105016/summary.json]`,
+  `[source: captures/archive/cdb-surface-dump-20260614-105016/cdb-surface-dump.log]`,
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_natural_release_extra.cdb]`,
+  `[source: tools/right_bottom_slot_fixture_result_summary.py]`, and
+  `[source: tools/right_bottom_blocker_triage.py]`.
+- Claim: the current hidden natural slot `5` right-bottom proof is blocked by
+  stock input resampling inside the modal `00435BC0` pump path, not by the
+  castle-centered input shim alone.
+- Evidence: v10 no-castleinput evidence removes the extra `-80,-60` grid
+  helper adjustment but still leaves stock poll `mouse=(4,440)`. v12 evidence
+  reaches `NOWNER_435BC0_PUMP_CB14_CALL` with callback `004612E0`, then later
+  observes raw `(0x0100,0x6e00)` from the stock input source. Static
+  disassembly shows `004612E0` copies `00519620/00519622` into
+  `00544cfc/00544d00`.
+- Follow-up: seed or hold `00519620/00519622` through `004612E0`, or prove a
+  per-loop native-center copyback/present route while `00435BC0` remains
+  modal, before any promotion or visible/manual proof claim.
+- Notes: `raw/` was not edited or reorganized. `DEFAULT_STAGE` remains
+  unchanged, no validation-only group was promoted, and no visible/manual
+  runtime was run.
+
+## [2026-06-15] progress | Clash95 right-bottom source-hold diagnostics v13-v16
+- Source: hidden CDB surface-dump runs and updated blocker triage.
+- Pages updated:
+  `[source: docs/hd/HD_MOD_PROGRESS.md]`,
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`, and
+  `[source: captures/current/right-bottom-blocker-triage-current.md]`.
+- Related sources:
+  `[source: captures/archive/cdb-surface-dump-20260615-092035/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260615-092629/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260615-093414/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260615-094322/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260615-094322/cdb-surface-dump.log]`,
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_sourcehold_extra.cdb]`,
+  `[source: tools/right_bottom_slot_fixture_result_summary.py]`, and
+  `[source: tools/right_bottom_blocker_triage.py]`.
+- Claim: debugger-only caller-side coordinate holding can keep the modal
+  `00435BC0` loop at native `mouse=(180,440)`, but the stock loop still does
+  not return or copy back the action surface.
+- Evidence: v13/v14 source-word and inner-`004612E0` attempts did not stop the
+  post-callback collapse; v15 caller-side holds at `0046061C`/`0046062B` kept
+  raw `(0x2d00,0x6e00)` but stalled with the click held; v16b repeated the
+  caller-side coordinate hold with `d544d04=0` and `button0=0`, then saw
+  grid route/gate rows (`60` each), no selection update, no stock return, and
+  no wrapper copyback.
+- Follow-up: prove a real `00519620/00519622` or `004612E0` input-source fix
+  without debugger-only caller injection, and inspect why the stock grid route
+  at `(180,440)` never produces a grid result or selection update.
+- Notes: `raw/` was not edited or reorganized. `DEFAULT_STAGE` remains
+  unchanged, no validation-only group was promoted, and no visible/manual
+  runtime was run.
+
+## [2026-06-15] progress | Clash95 right-bottom native action-click copyback v17b
+- Source: hidden CDB surface-dump run and regenerated right-bottom triage.
+- Pages updated:
+  `[source: docs/hd/HD_MOD_PROGRESS.md]`,
+  `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`, and
+  `[source: captures/current/right-bottom-blocker-triage-current.md]`.
+- Related sources:
+  `[source: captures/archive/cdb-surface-dump-20260615-100407/right-bottom-natural-slot5-summary.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260615-100407/RUN-SUMMARY.md]`,
+  `[source: captures/archive/cdb-surface-dump-20260615-100407/surface.png]`,
+  `[source: probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_sourcehold_extra.cdb]`,
+  `[source: tools/right_bottom_slot_fixture_result_summary.py]`,
+  `[source: tools/right_bottom_blocker_triage.py]`, and
+  `[source: captures/current/current-completion-summary-current.md]`.
+- Claim: the natural slot `5` right-bottom wrapper and copyback path can return
+  successfully when stock `00435BC0` receives a native action-button click at
+  `(81,441)` / raw `(0x1440,0x6e40)`.
+- Evidence: v17b loaded slot `5` on a hidden desktop, reached descriptor
+  `0051519a`, callback `00435620`, `NOWNER_ACTION_CLICK_EXIT_SET`,
+  stock return, `NOWNER_WRAPPER_STOCK_RETURN`, `NOWNER_WRAPPER_COPYBACK_DONE`,
+  and `SURFDUMP_READY` with no AV rows.
+- Status: this supersedes the older "copyback absent" interpretation, but it
+  remains debugger-forced diagnostic evidence. Stable promotion still requires
+  a real input-source/transform proof and approved visible/manual DirectInput
+  validation.
+- Follow-up prepared: `probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_displayclick_extra.cdb`
+  targets the full `rightbottomaction-nativecenter` stage by forcing displayed
+  `(161,501)` and expecting the centered-input hook to deliver native
+  `(81,441)` to descriptor `0051519a` / callback `00435620`. Parser and triage
+  support for proof class
+  `natural_slot5_right_bottom_action_click_centered_input` is in place, but the
+  runtime evidence run is still pending.
 
 Future entries should be appended using this shape:
 

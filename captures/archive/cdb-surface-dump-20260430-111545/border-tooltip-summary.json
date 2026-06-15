@@ -1,0 +1,68 @@
+{
+  "log": "captures\\cdb-surface-dump-20260430-111545\\cdb-surface-dump.log",
+  "marker_counts": {
+    "BORDER_FULLREDRAW_ENTER": 1,
+    "TOOLTIP_UNITINFO_ENTRY": 0,
+    "BORDER_PANEL_DRAW": 0,
+    "TOOLTIP_STATUS_DRAW": 0,
+    "TOOLTIP_ACTION_BOX": 0,
+    "BORDER_PANEL_SPRITE_ENTRY": 0,
+    "BORDER_INFO_WINDOW_ENTRY": 0,
+    "BORDER_NOTIFY_TEXT_ENTRY": 0,
+    "BORDER_MISSION_STATUS_ENTRY": 0,
+    "TOOLTIP_TEXT": 0,
+    "TOOLTIP_TEXTFMT": 0,
+    "BORDER_TOOLTIP_PRESENT": 1,
+    "BORDER_TOOLTIP_PRESENT_NULLPTR": 0,
+    "SURFDUMP_PLAYGAME": 1,
+    "SURFDUMP_READY": 0
+  },
+  "row_counts": {
+    "fullredraw": 1,
+    "text": 0,
+    "present": 0,
+    "entries": 0,
+    "av": 0,
+    "surfdump_playgame": 1,
+    "surfdump_ready": 0
+  },
+  "surface_sizes": [
+    "800x600"
+  ],
+  "d526990_values": [
+    "00000000"
+  ],
+  "d526990_nonzero_seen": false,
+  "present_by_region": {
+    "frame_left": 0,
+    "frame_top": 0,
+    "right_frame_under_minimap": 0,
+    "bottom_tooltip": 0,
+    "bottom_right_panel": 0,
+    "bottom_frame": 0
+  },
+  "native_clip_row_count": 0,
+  "native_clip_rows": [],
+  "text_rows": [],
+  "entry_rows": [],
+  "fullredraw_rows": [
+    {
+      "kind": "BORDER_FULLREDRAW_ENTER",
+      "line_no": 185,
+      "ret": "0040b79d",
+      "gd": "03a20030",
+      "d526990": "00000000",
+      "surface": "09f3ed90",
+      "width": 800,
+      "height": 600,
+      "scrollx": 10,
+      "scrolly": 17,
+      "mousex": 320,
+      "mousey": 166,
+      "lbtn": 0
+    }
+  ],
+  "surfdump_ready_rows": [],
+  "av_rows": [],
+  "png": null
+}

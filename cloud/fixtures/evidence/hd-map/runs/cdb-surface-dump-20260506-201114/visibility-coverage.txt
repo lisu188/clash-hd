@@ -1,4 +1,4 @@
-coverage: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-201114\map-tile-coverage.json
+coverage: <CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-201114\map-tile-coverage.json
 logs: 1
 observation_points: 108
 blank_cells: -

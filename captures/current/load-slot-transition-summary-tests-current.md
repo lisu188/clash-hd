@@ -1,0 +1,18 @@
+# Load Slot Transition Summary Tests
+
+- Status: PASS
+- Generated: `2026-06-15T18:34:39+02:00`
+- Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
+- Guard policy: proves future LSTRANS logs can be classified as pre-entry stalls, entry-without-LOADSAVE blockers, or late-entry load success, and fails closed on target-slot drift
+
+## Tests
+
+- `load_slot_transition_summary classifies late-entry LOADSAVE/PlayGame success`
+- `load_slot_transition_summary classifies pre-entry stalls before 0044895A`
+- `load_slot_transition_summary classifies load-menu entry without LOADSAVE`
+- `load_slot_transition_summary fails closed on AV evidence`
+- `load_slot_transition_summary fails closed on conflicting target_slot rows`
+- `load_slot_transition_summary fails closed on LOADSAVE slot mismatch`
+- `load_slot_transition_summary CLI writes JSON/Markdown and honors success requirements`
+- `load_slot_transition_summary CLI fails when entry is required but absent`
+- `load_slot_transition_summary CLI fails when slot match is required but target_slot conflicts`

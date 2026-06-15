@@ -1,0 +1,257 @@
+{
+  "log": "captures\\cdb-surface-dump-20260506-092608\\cdb-surface-dump.log",
+  "marker_counts": {
+    "DESC_40A400_ENTRY": 1,
+    "DESC_40A400_CALL_419D80": 1,
+    "DESC_40A400_AFTER_419D80": 1,
+    "DESC_SINGLE_419D60_ENTRY": 0,
+    "DESC_419D80_ENTRY": 1,
+    "DESC_SCAN": 6,
+    "DESC_SKIP_X640": 0,
+    "DESC_DRAW": 6,
+    "DESC_DRAWCALL_4191F0": 6,
+    "DESC_DRAWCALL_4191F0_PRESENT1": 6,
+    "DESC_DRAWCALL_4191F0_PRESENT2": 0,
+    "DESC_PRESENT_4191F0": 0,
+    "DESC_419DC0_ENTRY": 18,
+    "DESC_419DC0_SWITCH_TO_MAP": 0,
+    "DESC_419DC0_RESTORE_META": 0,
+    "SURFDUMP_PLAYGAME": 1,
+    "SURFDUMP_READY": 1,
+    "AV_SURFDUMP": 0
+  },
+  "scans": [
+    {
+      "line_no": 208,
+      "ptr": "00511d40",
+      "x": 416,
+      "y": 400,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "00409d80",
+      "data": "0052030c",
+      "next": "00511d75",
+      "is511d40": 1
+    },
+    {
+      "line_no": 212,
+      "ptr": "00511d75",
+      "x": 480,
+      "y": 400,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "00409df0",
+      "data": "0052030c",
+      "next": "00511daa",
+      "is511d40": 1
+    },
+    {
+      "line_no": 216,
+      "ptr": "00511daa",
+      "x": 544,
+      "y": 400,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "00409f00",
+      "data": "0052030c",
+      "next": "00511ddf",
+      "is511d40": 1
+    },
+    {
+      "line_no": 220,
+      "ptr": "00511ddf",
+      "x": 416,
+      "y": 432,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "0040a040",
+      "data": "0052030c",
+      "next": "00511e14",
+      "is511d40": 1
+    },
+    {
+      "line_no": 224,
+      "ptr": "00511e14",
+      "x": 480,
+      "y": 432,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "0040a0e0",
+      "data": "0052030c",
+      "next": "00511e49",
+      "is511d40": 1
+    },
+    {
+      "line_no": 228,
+      "ptr": "00511e49",
+      "x": 544,
+      "y": 432,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "0040a000",
+      "data": "0052030c",
+      "next": "00511e7e",
+      "is511d40": 1
+    }
+  ],
+  "draws": [
+    {
+      "line_no": 209,
+      "ptr": "00511d40",
+      "x": 416,
+      "y": 400,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "00409d80",
+      "is511d40": 1
+    },
+    {
+      "line_no": 213,
+      "ptr": "00511d75",
+      "x": 480,
+      "y": 400,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "00409df0",
+      "is511d40": 1
+    },
+    {
+      "line_no": 217,
+      "ptr": "00511daa",
+      "x": 544,
+      "y": 400,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "00409f00",
+      "is511d40": 1
+    },
+    {
+      "line_no": 221,
+      "ptr": "00511ddf",
+      "x": 416,
+      "y": 432,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "0040a040",
+      "is511d40": 1
+    },
+    {
+      "line_no": 225,
+      "ptr": "00511e14",
+      "x": 480,
+      "y": 432,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "0040a0e0",
+      "is511d40": 1
+    },
+    {
+      "line_no": 229,
+      "ptr": "00511e49",
+      "x": 544,
+      "y": 432,
+      "flags": 1,
+      "draw": "004191f0",
+      "hit": "0040a000",
+      "is511d40": 1
+    }
+  ],
+  "drawcalls": [
+    {
+      "line_no": 210,
+      "ret": "00419daa",
+      "desc": "00511d40",
+      "x": 416,
+      "y": 400,
+      "flags": 1,
+      "sprite": "0052030c",
+      "draw_index": 0,
+      "alt_index": 14,
+      "render": "0a07edb0",
+      "map_surface": "0a07edb0"
+    },
+    {
+      "line_no": 214,
+      "ret": "00419daa",
+      "desc": "00511d75",
+      "x": 480,
+      "y": 400,
+      "flags": 1,
+      "sprite": "0052030c",
+      "draw_index": 2,
+      "alt_index": 14,
+      "render": "0a07edb0",
+      "map_surface": "0a07edb0"
+    },
+    {
+      "line_no": 218,
+      "ret": "00419daa",
+      "desc": "00511daa",
+      "x": 544,
+      "y": 400,
+      "flags": 1,
+      "sprite": "0052030c",
+      "draw_index": 4,
+      "alt_index": 14,
+      "render": "0a07edb0",
+      "map_surface": "0a07edb0"
+    },
+    {
+      "line_no": 222,
+      "ret": "00419daa",
+      "desc": "00511ddf",
+      "x": 416,
+      "y": 432,
+      "flags": 1,
+      "sprite": "0052030c",
+      "draw_index": 6,
+      "alt_index": 14,
+      "render": "0a07edb0",
+      "map_surface": "0a07edb0"
+    },
+    {
+      "line_no": 226,
+      "ret": "00419daa",
+      "desc": "00511e14",
+      "x": 480,
+      "y": 432,
+      "flags": 1,
+      "sprite": "0052030c",
+      "draw_index": 8,
+      "alt_index": 14,
+      "render": "0a07edb0",
+      "map_surface": "0a07edb0"
+    },
+    {
+      "line_no": 230,
+      "ret": "00419daa",
+      "desc": "00511e49",
+      "x": 544,
+      "y": 432,
+      "flags": 1,
+      "sprite": "0052030c",
+      "draw_index": 10,
+      "alt_index": 14,
+      "render": "0a07edb0",
+      "map_surface": "0a07edb0"
+    }
+  ],
+  "skip_lines": [],
+  "scanned_511d40_count": 6,
+  "drawn_511d40_count": 6,
+  "skipped_511d40_count": 0,
+  "draw_callbacks": {
+    "004191f0": 6
+  },
+  "drawn_callbacks": {
+    "004191f0": 6
+  },
+  "classification": [
+    "sub_40A400 reached descriptor drawer",
+    "dword_511D40 entries were scanned without x>=640 skips",
+    "dword_511D40 entries reached their draw callbacks",
+    "generic descriptor draw ran but no direct 004024E0 helper call was observed"
+  ],
+  "ready": true,
+  "av_count": 0
+}

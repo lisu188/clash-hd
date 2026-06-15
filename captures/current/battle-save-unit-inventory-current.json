@@ -1,0 +1,889 @@
+{
+  "generated_at": "2026-05-20T20:44:42+02:00",
+  "runtime_policy": "read-only save/exe parser; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "save_dir": "C:\\Clash\\save",
+  "exe": "C:\\Clash\\clash95.exe",
+  "memory_unit_base_offset": 147174,
+  "save_unit_base_offset": 147190,
+  "save_memory_delta": 16,
+  "unit_record_stride": 725,
+  "slot_count": 6,
+  "total_unit_count": 63,
+  "natural_enabled_unit_count": 0,
+  "natural_enabled_units": [],
+  "unit_types": [
+    {
+      "unit_type": 0,
+      "availability": 1,
+      "enabled": 0,
+      "availability_va": "0x0051257E",
+      "enabled_va": "0x00512582",
+      "availability_raw": "0x0011077E",
+      "enabled_raw": "0x00110782",
+      "record_va": "0x00512560",
+      "name_table_va": "0x005123CC",
+      "name_pl": "Posp. ruszenie",
+      "name_en": "Peasant",
+      "name_de": "Bauern",
+      "name_pointer_vas": [
+        "0x004ED56D",
+        "0x004ED57C",
+        "0x004ED584"
+      ],
+      "asset_key": "peon",
+      "asset_key_va": "0x004ED917"
+    },
+    {
+      "unit_type": 1,
+      "availability": 5,
+      "enabled": 0,
+      "availability_va": "0x005125D6",
+      "enabled_va": "0x005125DA",
+      "availability_raw": "0x001107D6",
+      "enabled_raw": "0x001107DA",
+      "record_va": "0x005125B8",
+      "name_table_va": "0x005123F0",
+      "name_pl": "Lekka piechota",
+      "name_en": "Light infantry",
+      "name_de": "Leichte Infanterie",
+      "name_pointer_vas": [
+        "0x004ED5C6",
+        "0x004ED5D5",
+        "0x004ED5E4"
+      ],
+      "asset_key": "infl",
+      "asset_key_va": "0x004ED92B"
+    },
+    {
+      "unit_type": 5,
+      "availability": 8,
+      "enabled": 0,
+      "availability_va": "0x00512736",
+      "enabled_va": "0x0051273A",
+      "availability_raw": "0x00110936",
+      "enabled_raw": "0x0011093A",
+      "record_va": "0x00512718",
+      "name_table_va": "0x0051248C",
+      "name_pl": "Lekka jazda",
+      "name_en": "Light cavalry",
+      "name_de": "Leichte Kavallerie",
+      "name_pointer_vas": [
+        "0x004ED757",
+        "0x004ED763",
+        "0x004ED771"
+      ],
+      "asset_key": "cavl",
+      "asset_key_va": "0x004ED973"
+    },
+    {
+      "unit_type": 16,
+      "availability": 8,
+      "enabled": 0,
+      "availability_va": "0x00512AFE",
+      "enabled_va": "0x00512B02",
+      "availability_raw": "0x00110CFE",
+      "enabled_raw": "0x00110D02",
+      "record_va": "0x00512AE0",
+      "name_table_va": "0x005123E4",
+      "name_pl": "G\u02d8ral",
+      "name_en": "Highlander",
+      "name_de": "Bergbewohner",
+      "name_pointer_vas": [
+        "0x004ED5A8",
+        "0x004ED5AE",
+        "0x004ED5B9"
+      ],
+      "asset_key": "goral",
+      "asset_key_va": "0x004EDA25"
+    },
+    {
+      "unit_type": 17,
+      "availability": 1,
+      "enabled": 0,
+      "availability_va": "0x00512B56",
+      "enabled_va": "0x00512B5A",
+      "availability_raw": "0x00110D56",
+      "enabled_raw": "0x00110D5A",
+      "record_va": "0x00512B38",
+      "name_table_va": "0x0051245C",
+      "name_pl": "Budowniczy",
+      "name_en": "Builder",
+      "name_de": "Pioniere",
+      "name_pointer_vas": [
+        "0x004ED6FE",
+        "0x004ED709",
+        "0x004ED711"
+      ],
+      "asset_key": "budow",
+      "asset_key_va": "0x004EDA39"
+    }
+  ],
+  "slots": [
+    {
+      "slot": 0,
+      "path": "C:\\Clash\\save\\0.dat",
+      "unit_count": 18,
+      "unit_types": [
+        0,
+        1,
+        5,
+        16,
+        17
+      ],
+      "units": [
+        {
+          "idx": 0,
+          "save_offset": "0x00023EF6",
+          "owner": 0,
+          "x": 14,
+          "y": 22,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 1,
+          "save_offset": "0x000241CB",
+          "owner": 0,
+          "x": 15,
+          "y": 22,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 2,
+          "save_offset": "0x000244A0",
+          "owner": 0,
+          "x": 15,
+          "y": 23,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 3,
+          "save_offset": "0x00024775",
+          "owner": 0,
+          "x": 16,
+          "y": 19,
+          "unit_type": 16,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 4,
+          "save_offset": "0x00024A4A",
+          "owner": 1,
+          "x": 90,
+          "y": 9,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 5,
+          "save_offset": "0x00024D1F",
+          "owner": 1,
+          "x": 91,
+          "y": 9,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 6,
+          "save_offset": "0x00024FF4",
+          "owner": 1,
+          "x": 91,
+          "y": 10,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 7,
+          "save_offset": "0x000252C9",
+          "owner": 1,
+          "x": 89,
+          "y": 6,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 8,
+          "save_offset": "0x0002559E",
+          "owner": 2,
+          "x": 60,
+          "y": 48,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 9,
+          "save_offset": "0x00025873",
+          "owner": 2,
+          "x": 61,
+          "y": 48,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 10,
+          "save_offset": "0x00025B48",
+          "owner": 2,
+          "x": 61,
+          "y": 49,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 11,
+          "save_offset": "0x00025E1D",
+          "owner": 2,
+          "x": 59,
+          "y": 45,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 12,
+          "save_offset": "0x000260F2",
+          "owner": 2,
+          "x": 62,
+          "y": 45,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 13,
+          "save_offset": "0x000263C7",
+          "owner": 3,
+          "x": 90,
+          "y": 74,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 14,
+          "save_offset": "0x0002669C",
+          "owner": 3,
+          "x": 91,
+          "y": 74,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 15,
+          "save_offset": "0x00026971",
+          "owner": 3,
+          "x": 91,
+          "y": 75,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 16,
+          "save_offset": "0x00026C46",
+          "owner": 3,
+          "x": 89,
+          "y": 71,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 17,
+          "save_offset": "0x00026F1B",
+          "owner": 3,
+          "x": 92,
+          "y": 71,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        }
+      ]
+    },
+    {
+      "slot": 1,
+      "path": "C:\\Clash\\save\\1.dat",
+      "unit_count": 18,
+      "unit_types": [
+        0,
+        1,
+        5,
+        16,
+        17
+      ],
+      "units": [
+        {
+          "idx": 0,
+          "save_offset": "0x00023EF6",
+          "owner": 0,
+          "x": 14,
+          "y": 22,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 1,
+          "save_offset": "0x000241CB",
+          "owner": 0,
+          "x": 15,
+          "y": 22,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 2,
+          "save_offset": "0x000244A0",
+          "owner": 0,
+          "x": 15,
+          "y": 23,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 3,
+          "save_offset": "0x00024775",
+          "owner": 0,
+          "x": 16,
+          "y": 19,
+          "unit_type": 16,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 4,
+          "save_offset": "0x00024A4A",
+          "owner": 1,
+          "x": 90,
+          "y": 9,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 5,
+          "save_offset": "0x00024D1F",
+          "owner": 1,
+          "x": 91,
+          "y": 9,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 6,
+          "save_offset": "0x00024FF4",
+          "owner": 1,
+          "x": 91,
+          "y": 10,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 7,
+          "save_offset": "0x000252C9",
+          "owner": 1,
+          "x": 89,
+          "y": 6,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 8,
+          "save_offset": "0x0002559E",
+          "owner": 2,
+          "x": 60,
+          "y": 48,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 9,
+          "save_offset": "0x00025873",
+          "owner": 2,
+          "x": 61,
+          "y": 48,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 10,
+          "save_offset": "0x00025B48",
+          "owner": 2,
+          "x": 61,
+          "y": 49,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 11,
+          "save_offset": "0x00025E1D",
+          "owner": 2,
+          "x": 59,
+          "y": 45,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 12,
+          "save_offset": "0x000260F2",
+          "owner": 2,
+          "x": 62,
+          "y": 45,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 13,
+          "save_offset": "0x000263C7",
+          "owner": 3,
+          "x": 90,
+          "y": 74,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 14,
+          "save_offset": "0x0002669C",
+          "owner": 3,
+          "x": 91,
+          "y": 74,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 15,
+          "save_offset": "0x00026971",
+          "owner": 3,
+          "x": 91,
+          "y": 75,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 16,
+          "save_offset": "0x00026C46",
+          "owner": 3,
+          "x": 89,
+          "y": 71,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 17,
+          "save_offset": "0x00026F1B",
+          "owner": 3,
+          "x": 92,
+          "y": 71,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        }
+      ]
+    },
+    {
+      "slot": 2,
+      "path": "C:\\Clash\\save\\2.dat",
+      "unit_count": 1,
+      "unit_types": [
+        0
+      ],
+      "units": [
+        {
+          "idx": 4,
+          "save_offset": "0x00024A4A",
+          "owner": 1,
+          "x": 12,
+          "y": 0,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        }
+      ]
+    },
+    {
+      "slot": 3,
+      "path": "C:\\Clash\\save\\3.dat",
+      "unit_count": 1,
+      "unit_types": [
+        0
+      ],
+      "units": [
+        {
+          "idx": 4,
+          "save_offset": "0x00024A4A",
+          "owner": 1,
+          "x": 12,
+          "y": 0,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        }
+      ]
+    },
+    {
+      "slot": 4,
+      "path": "C:\\Clash\\save\\4.dat",
+      "unit_count": 16,
+      "unit_types": [
+        0,
+        1,
+        5,
+        17
+      ],
+      "units": [
+        {
+          "idx": 0,
+          "save_offset": "0x00023EF6",
+          "owner": 0,
+          "x": 14,
+          "y": 22,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 1,
+          "save_offset": "0x000241CB",
+          "owner": 0,
+          "x": 15,
+          "y": 22,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 4,
+          "save_offset": "0x00024A4A",
+          "owner": 1,
+          "x": 90,
+          "y": 9,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 5,
+          "save_offset": "0x00024D1F",
+          "owner": 1,
+          "x": 91,
+          "y": 9,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 6,
+          "save_offset": "0x00024FF4",
+          "owner": 1,
+          "x": 91,
+          "y": 10,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 7,
+          "save_offset": "0x000252C9",
+          "owner": 1,
+          "x": 89,
+          "y": 6,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 8,
+          "save_offset": "0x0002559E",
+          "owner": 2,
+          "x": 60,
+          "y": 48,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 9,
+          "save_offset": "0x00025873",
+          "owner": 2,
+          "x": 61,
+          "y": 48,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 10,
+          "save_offset": "0x00025B48",
+          "owner": 2,
+          "x": 61,
+          "y": 49,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 11,
+          "save_offset": "0x00025E1D",
+          "owner": 2,
+          "x": 59,
+          "y": 45,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 12,
+          "save_offset": "0x000260F2",
+          "owner": 2,
+          "x": 62,
+          "y": 45,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 13,
+          "save_offset": "0x000263C7",
+          "owner": 3,
+          "x": 90,
+          "y": 74,
+          "unit_type": 5,
+          "status720": 0,
+          "availability": 8,
+          "enabled": 0
+        },
+        {
+          "idx": 14,
+          "save_offset": "0x0002669C",
+          "owner": 3,
+          "x": 91,
+          "y": 74,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 15,
+          "save_offset": "0x00026971",
+          "owner": 3,
+          "x": 91,
+          "y": 75,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 16,
+          "save_offset": "0x00026C46",
+          "owner": 3,
+          "x": 89,
+          "y": 71,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 17,
+          "save_offset": "0x00026F1B",
+          "owner": 3,
+          "x": 92,
+          "y": 71,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        }
+      ]
+    },
+    {
+      "slot": 5,
+      "path": "C:\\Clash\\save\\5.dat",
+      "unit_count": 9,
+      "unit_types": [
+        0,
+        1,
+        17
+      ],
+      "units": [
+        {
+          "idx": 2,
+          "save_offset": "0x000244A0",
+          "owner": 1,
+          "x": 90,
+          "y": 9,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 3,
+          "save_offset": "0x00024775",
+          "owner": 2,
+          "x": 60,
+          "y": 48,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 4,
+          "save_offset": "0x00024A4A",
+          "owner": 3,
+          "x": 90,
+          "y": 74,
+          "unit_type": 17,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 5,
+          "save_offset": "0x00024D1F",
+          "owner": 0,
+          "x": 33,
+          "y": 87,
+          "unit_type": 1,
+          "status720": 0,
+          "availability": 5,
+          "enabled": 0
+        },
+        {
+          "idx": 7,
+          "save_offset": "0x000252C9",
+          "owner": 1,
+          "x": 89,
+          "y": 6,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 11,
+          "save_offset": "0x00025E1D",
+          "owner": 2,
+          "x": 59,
+          "y": 45,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 12,
+          "save_offset": "0x000260F2",
+          "owner": 2,
+          "x": 61,
+          "y": 45,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 16,
+          "save_offset": "0x00026C46",
+          "owner": 3,
+          "x": 89,
+          "y": 71,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        },
+        {
+          "idx": 17,
+          "save_offset": "0x00026F1B",
+          "owner": 3,
+          "x": 91,
+          "y": 71,
+          "unit_type": 0,
+          "status720": 0,
+          "availability": 1,
+          "enabled": 0
+        }
+      ]
+    }
+  ]
+}

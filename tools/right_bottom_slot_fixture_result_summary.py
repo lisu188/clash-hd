@@ -36,13 +36,17 @@ MARKERS = (
     "NOWNER_OWNER_FLAG_TEST",
     "NOWNER_OWNER_SCREEN_DESC_DRAW",
     "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY",
+    "NOWNER_HITTEST_ENTRY",
+    "NOWNER_HITTEST_COMPARE",
+    "NOWNER_HITTEST_SCAN_TAIL",
+    "NOWNER_DESCRIPTOR_CALLBACK",
     "NOWNER_4338E0_ENTRY",
     "NOWNER_419ED0_ENTRY",
     "NOWNER_419ED0_SOUND_PREP",
     "NOWNER_419ED0_SOUND_RETURN",
     "NOWNER_419ED0_STATE6_READY",
-    "NOWNER_419ED0_RENDER_BEGIN",
     "NOWNER_419ED0_RENDER_BEGIN_RETURN",
+    "NOWNER_419ED0_RENDER_BEGIN",
     "NOWNER_419ED0_STATE5_DONE",
     "NOWNER_RENDER_BEGIN_LATE_ARMED",
     "NOWNER_RELEASE_OWNER_DESC_CLICK",
@@ -75,8 +79,61 @@ MARKERS = (
     "NOWNER_OWNER_435BC0_ENTRY",
     "NOWNER_435BC0_ALLOC_RESULT",
     "NOWNER_435BC0_MODEL_CHECK",
+    "NOWNER_435BC0_POLL_LIMIT",
+    "NOWNER_435BC0_POLL",
+    "NOWNER_435BC0_WRITE_532218",
+    "NOWNER_435BC0_WRITE_5322C8",
+    "NOWNER_435BC0_PANEL_DRAW",
+    "NOWNER_435BC0_GRID_DRAW",
+    "NOWNER_435BC0_STATUS_DRAW",
+    "NOWNER_435BC0_ACTION_BOX",
+    "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+    "NOWNER_435BC0_GRID_GATE",
+    "NOWNER_435BC0_GRID_CALL",
+    "NOWNER_435BC0_GRID_ENTRY",
+    "NOWNER_435BC0_GRID_RESULT",
+    "NOWNER_435BC0_GRID_FAIL",
+    "NOWNER_435BC0_SELECTION_UPDATE",
+    "NOWNER_435BC0_SELECTION_AFTER",
     "NOWNER_435BC0_LOOP_HEAD",
     "NOWNER_435BC0_LOOP_PUMP_CALL",
+    "NOWNER_435BC0_PUMP_ENTRY",
+    "NOWNER_435BC0_PUMP_MSG_CALL",
+    "NOWNER_435BC0_PUMP_MSG_RETURN",
+    "NOWNER_435BC0_PUMP_TICK_RETURN",
+    "NOWNER_435BC0_PUMP_CB14_CALL",
+    "NOWNER_435BC0_PUMP_CB14_RETURN",
+    "NOWNER_435BC0_PUMP_608F0A_CALL",
+    "NOWNER_435BC0_PUMP_608F0A_RETURN",
+    "NOWNER_435BC0_PUMP_608F0B_CALL",
+    "NOWNER_435BC0_PUMP_608F0B_RETURN",
+    "NOWNER_435BC0_PUMP_CB04_CALL",
+    "NOWNER_435BC0_PUMP_CB04_RETURN",
+    "NOWNER_SOURCEHOLD_LOOP_PUMP",
+    "NOWNER_SOURCEHOLD_CB14_PRE",
+    "NOWNER_SOURCEHOLD_608F0A_PRE",
+    "NOWNER_SOURCEHOLD_608F0B_PRE",
+    "NOWNER_SOURCEHOLD_608F0A_COORDS_PRE",
+    "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE",
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT",
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT_POST",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_X",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_Y",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_BUTTON",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_REFRESH",
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE",
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE_POST",
+    "NOWNER_ACTION_FORCE_NATIVE",
+    "NOWNER_ACTION_FORCE_DISPLAY",
+    "NOWNER_ACTION_DESCRIPTOR_ENTRY",
+    "NOWNER_ACTION_WIDGET_PRE_GATES",
+    "NOWNER_ACTION_WIDGET_CLICK_GATE_RET",
+    "NOWNER_ACTION_WIDGET_CLICK_GATE",
+    "NOWNER_ACTION_DESCRIPTOR_CALLBACK",
+    "NOWNER_ACTION_DESCRIPTOR_RESULT",
+    "NOWNER_ACTION_CLICK_435620_BEFORE_SET",
+    "NOWNER_ACTION_CLICK_435620_ENTRY",
+    "NOWNER_ACTION_CLICK_EXIT_SET",
     "NOWNER_435BC0_LOOP_DRAW_CALL",
     "NOWNER_435BC0_LOOP_DRAW_RETURN",
     "NOWNER_435BC0_LOOP_HIT_RESULT",
@@ -164,6 +221,71 @@ DD_PUMP_MARKERS = (
     "NOWNER_DD_PUMP_MSG_PUMP_RETURN",
 )
 
+DESCRIPTOR_HITTEST_MARKERS = (
+    "NOWNER_HITTEST_ENTRY",
+    "NOWNER_HITTEST_COMPARE",
+    "NOWNER_HITTEST_SCAN_TAIL",
+    "NOWNER_DESCRIPTOR_CALLBACK",
+)
+
+STOCK_LOOPSTATE_MARKERS = (
+    "NOWNER_435BC0_POLL_LIMIT",
+    "NOWNER_435BC0_POLL",
+    "NOWNER_435BC0_WRITE_532218",
+    "NOWNER_435BC0_WRITE_5322C8",
+    "NOWNER_435BC0_PANEL_DRAW",
+    "NOWNER_435BC0_GRID_DRAW",
+    "NOWNER_435BC0_STATUS_DRAW",
+    "NOWNER_435BC0_ACTION_BOX",
+)
+
+STOCK_GRID_MARKERS = (
+    "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+    "NOWNER_435BC0_GRID_GATE",
+    "NOWNER_435BC0_GRID_CALL",
+    "NOWNER_435BC0_GRID_ENTRY",
+    "NOWNER_435BC0_GRID_RESULT",
+    "NOWNER_435BC0_GRID_FAIL",
+    "NOWNER_435BC0_SELECTION_UPDATE",
+    "NOWNER_435BC0_SELECTION_AFTER",
+)
+
+SOURCEHOLD_MARKERS = (
+    "NOWNER_SOURCEHOLD_LOOP_PUMP",
+    "NOWNER_SOURCEHOLD_CB14_PRE",
+    "NOWNER_SOURCEHOLD_608F0A_PRE",
+    "NOWNER_SOURCEHOLD_608F0B_PRE",
+    "NOWNER_SOURCEHOLD_608F0A_COORDS_PRE",
+    "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE",
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT",
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT_POST",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_X",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_Y",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_BUTTON",
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_REFRESH",
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE",
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE_POST",
+)
+
+ACTION_CLICK_MARKERS = (
+    "NOWNER_ACTION_FORCE_NATIVE",
+    "NOWNER_ACTION_FORCE_DISPLAY",
+    "NOWNER_ACTION_DESCRIPTOR_ENTRY",
+    "NOWNER_ACTION_WIDGET_PRE_GATES",
+    "NOWNER_ACTION_WIDGET_CLICK_GATE_RET",
+    "NOWNER_ACTION_WIDGET_CLICK_GATE",
+    "NOWNER_ACTION_DESCRIPTOR_CALLBACK",
+    "NOWNER_ACTION_DESCRIPTOR_RESULT",
+    "NOWNER_ACTION_CLICK_435620_BEFORE_SET",
+    "NOWNER_ACTION_CLICK_435620_ENTRY",
+    "NOWNER_ACTION_CLICK_EXIT_SET",
+)
+
+ACTION_FORCE_MARKERS = (
+    "NOWNER_ACTION_FORCE_NATIVE",
+    "NOWNER_ACTION_FORCE_DISPLAY",
+)
+
 COPYBACK_PATH_MARKERS = (
     "NOWNER_WRAPPER_ENTRY",
     "NOWNER_WRAPPER_ALLOC_RESULT",
@@ -171,8 +293,24 @@ COPYBACK_PATH_MARKERS = (
     "NOWNER_WRAPPER_CALL_STOCK_435BC0",
     "NOWNER_435BC0_ALLOC_RESULT",
     "NOWNER_435BC0_MODEL_CHECK",
+    *STOCK_LOOPSTATE_MARKERS,
+    *STOCK_GRID_MARKERS,
     "NOWNER_435BC0_LOOP_HEAD",
     "NOWNER_435BC0_LOOP_PUMP_CALL",
+    "NOWNER_435BC0_PUMP_ENTRY",
+    "NOWNER_435BC0_PUMP_MSG_CALL",
+    "NOWNER_435BC0_PUMP_MSG_RETURN",
+    "NOWNER_435BC0_PUMP_TICK_RETURN",
+    "NOWNER_435BC0_PUMP_CB14_CALL",
+    "NOWNER_435BC0_PUMP_CB14_RETURN",
+    "NOWNER_435BC0_PUMP_608F0A_CALL",
+    "NOWNER_435BC0_PUMP_608F0A_RETURN",
+    "NOWNER_435BC0_PUMP_608F0B_CALL",
+    "NOWNER_435BC0_PUMP_608F0B_RETURN",
+    "NOWNER_435BC0_PUMP_CB04_CALL",
+    "NOWNER_435BC0_PUMP_CB04_RETURN",
+    *SOURCEHOLD_MARKERS,
+    *ACTION_CLICK_MARKERS,
     "NOWNER_435BC0_LOOP_DRAW_CALL",
     "NOWNER_435BC0_LOOP_DRAW_RETURN",
     "NOWNER_435BC0_LOOP_HIT_RESULT",
@@ -249,6 +387,11 @@ def rows_for(rows: list[dict[str, Any]], marker: str) -> list[dict[str, Any]]:
     return [row for row in rows if row["marker"] == marker]
 
 
+def first_row(rows: list[dict[str, Any]], marker: str) -> dict[str, Any] | None:
+    matches = rows_for(rows, marker)
+    return matches[0] if matches else None
+
+
 def last_row(rows: list[dict[str, Any]], marker: str) -> dict[str, Any] | None:
     matches = rows_for(rows, marker)
     return matches[-1] if matches else None
@@ -285,6 +428,13 @@ def classify_timeout_stack(log_path: Path) -> dict[str, Any]:
         classification = "peekmessage_dd_pump"
     elif "004609" in lowered or "+0x609" in lowered:
         classification = "render_begin"
+    elif (
+        "00419b8d" in lowered
+        or "00419dd9" in lowered
+        or "+0x19b8d" in lowered
+        or "+0x19dd9" in lowered
+    ):
+        classification = "descriptor_hit_scan"
     elif "wake debugger" in lowered:
         classification = "timeout_other"
     else:
@@ -463,6 +613,55 @@ def build_classification(summary: dict[str, Any]) -> list[str]:
                 fallback=summary["wrapper_alloc_failed_fallback_count"],
             )
         )
+    if summary["descriptor_hittest_marker_count"]:
+        lines.append(f"descriptor hit-test markers were observed: {summary['descriptor_hittest_marker_count']}")
+    if summary["stock_loopstate_marker_count"]:
+        lines.append(
+            "stock 00435BC0 loop-state markers poll={poll} poll_limit={poll_limit} "
+            "write_owner={write_owner} write_hover={write_hover}".format(
+                poll=summary["owner_435bc0_poll_count"],
+                poll_limit=summary["owner_435bc0_poll_limit_count"],
+                write_owner=summary["owner_435bc0_write_532218_count"],
+                write_hover=summary["owner_435bc0_write_5322c8_count"],
+            )
+        )
+    if summary["stock_grid_marker_count"]:
+        lines.append(
+            "stock 00435BC0 grid markers route={route} gate={gate} result={result} "
+            "fail={fail} selection_update={selection_update}".format(
+                route=summary["owner_435bc0_grid_route_count"],
+                gate=summary["owner_435bc0_grid_gate_count"],
+                result=summary["owner_435bc0_grid_result_count"],
+                fail=summary["owner_435bc0_grid_fail_count"],
+                selection_update=summary["owner_435bc0_selection_update_count"],
+            )
+        )
+    if summary["sourcehold_marker_count"]:
+        lines.append(f"source-hold markers were observed: {summary['sourcehold_marker_count']}")
+    if summary["action_click_marker_count"]:
+        lines.append(
+            "native action-click markers force={force} native_force={native_force} display_force={display_force} desc_entry={entry} desc_callback={callback} "
+            "result={result} cb435620={cb435620} exit_set={exit_set}".format(
+                force=summary["action_click_force_count"],
+                native_force=summary["action_click_native_force_count"],
+                display_force=summary["action_click_display_force_count"],
+                entry=summary["action_descriptor_entry_count"],
+                callback=summary["action_descriptor_callback_count"],
+                result=summary["action_descriptor_result_count"],
+                cb435620=summary["action_click_435620_entry_count"],
+                exit_set=summary["action_click_exit_set_count"],
+            )
+        )
+    if summary["last_action_force"] is not None:
+        lines.append(f"last native action force row: {summary['last_action_force']}")
+    if summary["last_action_descriptor_callback"] is not None:
+        lines.append(f"last native action descriptor callback row: {summary['last_action_descriptor_callback']}")
+    if summary["last_action_click_exit_set"] is not None:
+        lines.append(f"last native action click exit-set row: {summary['last_action_click_exit_set']}")
+    if summary["last_owner_435bc0_poll"] is not None:
+        lines.append(f"last stock 00435BC0 poll row: {summary['last_owner_435bc0_poll']}")
+    if summary["last_owner_435bc0_grid_result"] is not None:
+        lines.append(f"last stock 00435BC0 grid result: {summary['last_owner_435bc0_grid_result']}")
     if summary["owner_435bc0_loop_count"]:
         lines.append(
             "stock 00435BC0 loop markers head={head} pump_call={pump} draw_call={draw_call} "
@@ -479,6 +678,27 @@ def build_classification(summary: dict[str, Any]) -> list[str]:
                 ret=summary["owner_435bc0_return_count"],
             )
         )
+    if summary["owner_435bc0_pump_cb14_call_count"] or summary["owner_435bc0_pump_608f0b_call_count"]:
+        lines.append(
+            "stock 00435BC0 pump callback markers entry={entry} tick_return={tick} "
+            "cb14_call={cb14_call} cb14_return={cb14_return} 608f0b_call={call_608f0b} "
+            "cb04_call={cb04_call}".format(
+                entry=summary["owner_435bc0_pump_entry_count"],
+                tick=summary["owner_435bc0_pump_tick_return_count"],
+                cb14_call=summary["owner_435bc0_pump_cb14_call_count"],
+                cb14_return=summary["owner_435bc0_pump_cb14_return_count"],
+                call_608f0b=summary["owner_435bc0_pump_608f0b_call_count"],
+                cb04_call=summary["owner_435bc0_pump_cb04_call_count"],
+            )
+        )
+    if summary["last_owner_435bc0_pump_cb14_call"] is not None:
+        lines.append(f"last stock 00435BC0 pump cb14 call: {summary['last_owner_435bc0_pump_cb14_call']}")
+    if summary["last_owner_435bc0_pump_608f0b_call"] is not None:
+        lines.append(f"last stock 00435BC0 pump 608f0b call: {summary['last_owner_435bc0_pump_608f0b_call']}")
+    if summary["first_owner_435bc0_pump_cb14_call"] is not None:
+        lines.append(f"first stock 00435BC0 pump cb14 call: {summary['first_owner_435bc0_pump_cb14_call']}")
+    if summary["first_owner_435bc0_pump_608f0b_call"] is not None:
+        lines.append(f"first stock 00435BC0 pump 608f0b call: {summary['first_owner_435bc0_pump_608f0b_call']}")
     if summary["wrapper_entry_count"] and summary["wrapper_copyback_count"] <= 0:
         lines.append("wrapper copyback completion was not observed after wrapper entry")
     if counts["NOWNER_4338E0_SURFDUMP_READY"]:
@@ -533,6 +753,11 @@ def parse_log(
     action_prelude_count = sum(int(counts.get(marker) or 0) for marker in OWNER_ACTION_PRELUDE_MARKERS)
     render_begin_count = sum(int(counts.get(marker) or 0) for marker in RENDER_BEGIN_MARKERS)
     dd_pump_count = sum(int(counts.get(marker) or 0) for marker in DD_PUMP_MARKERS)
+    descriptor_hittest_count = sum(int(counts.get(marker) or 0) for marker in DESCRIPTOR_HITTEST_MARKERS)
+    stock_loopstate_count = sum(int(counts.get(marker) or 0) for marker in STOCK_LOOPSTATE_MARKERS)
+    stock_grid_count = sum(int(counts.get(marker) or 0) for marker in STOCK_GRID_MARKERS)
+    sourcehold_count = sum(int(counts.get(marker) or 0) for marker in SOURCEHOLD_MARKERS)
+    action_click_count = sum(int(counts.get(marker) or 0) for marker in ACTION_CLICK_MARKERS)
     copyback_path_count = sum(int(counts.get(marker) or 0) for marker in COPYBACK_PATH_MARKERS)
     render_begin_late_armed_count = int(counts.get("NOWNER_RENDER_BEGIN_LATE_ARMED") or 0)
     render_begin_entry_count = int(counts.get("NOWNER_RENDER_BEGIN_ENTRY") or 0)
@@ -557,6 +782,15 @@ def parse_log(
     wrapper_alloc_failed_fallback_count = int(counts.get("NOWNER_WRAPPER_ALLOC_FAILED_FALLBACK") or 0)
     owner_435bc0_alloc_result_count = int(counts.get("NOWNER_435BC0_ALLOC_RESULT") or 0)
     owner_435bc0_model_check_count = int(counts.get("NOWNER_435BC0_MODEL_CHECK") or 0)
+    owner_435bc0_poll_count = int(counts.get("NOWNER_435BC0_POLL") or 0)
+    owner_435bc0_poll_limit_count = int(counts.get("NOWNER_435BC0_POLL_LIMIT") or 0)
+    owner_435bc0_write_532218_count = int(counts.get("NOWNER_435BC0_WRITE_532218") or 0)
+    owner_435bc0_write_5322c8_count = int(counts.get("NOWNER_435BC0_WRITE_5322C8") or 0)
+    owner_435bc0_grid_route_count = int(counts.get("NOWNER_435BC0_GRID_ROUTE_ENTRY") or 0)
+    owner_435bc0_grid_gate_count = int(counts.get("NOWNER_435BC0_GRID_GATE") or 0)
+    owner_435bc0_grid_result_count = int(counts.get("NOWNER_435BC0_GRID_RESULT") or 0)
+    owner_435bc0_grid_fail_count = int(counts.get("NOWNER_435BC0_GRID_FAIL") or 0)
+    owner_435bc0_selection_update_count = int(counts.get("NOWNER_435BC0_SELECTION_UPDATE") or 0)
     owner_435bc0_loop_count = int(counts.get("NOWNER_435BC0_LOOP_HEAD") or 0)
     owner_435bc0_pump_call_count = int(counts.get("NOWNER_435BC0_LOOP_PUMP_CALL") or 0)
     owner_435bc0_draw_call_count = int(counts.get("NOWNER_435BC0_LOOP_DRAW_CALL") or 0)
@@ -567,6 +801,27 @@ def parse_log(
     owner_435bc0_loop_exit_count = int(counts.get("NOWNER_435BC0_LOOP_EXIT") or 0)
     owner_435bc0_no_hit_update_count = int(counts.get("NOWNER_435BC0_NO_HIT_UPDATE") or 0)
     owner_435bc0_return_count = int(counts.get("NOWNER_435BC0_RETURN") or 0)
+    owner_435bc0_pump_entry_count = int(counts.get("NOWNER_435BC0_PUMP_ENTRY") or 0)
+    owner_435bc0_pump_msg_call_count = int(counts.get("NOWNER_435BC0_PUMP_MSG_CALL") or 0)
+    owner_435bc0_pump_msg_return_count = int(counts.get("NOWNER_435BC0_PUMP_MSG_RETURN") or 0)
+    owner_435bc0_pump_tick_return_count = int(counts.get("NOWNER_435BC0_PUMP_TICK_RETURN") or 0)
+    owner_435bc0_pump_cb14_call_count = int(counts.get("NOWNER_435BC0_PUMP_CB14_CALL") or 0)
+    owner_435bc0_pump_cb14_return_count = int(counts.get("NOWNER_435BC0_PUMP_CB14_RETURN") or 0)
+    owner_435bc0_pump_608f0a_call_count = int(counts.get("NOWNER_435BC0_PUMP_608F0A_CALL") or 0)
+    owner_435bc0_pump_608f0a_return_count = int(counts.get("NOWNER_435BC0_PUMP_608F0A_RETURN") or 0)
+    owner_435bc0_pump_608f0b_call_count = int(counts.get("NOWNER_435BC0_PUMP_608F0B_CALL") or 0)
+    owner_435bc0_pump_608f0b_return_count = int(counts.get("NOWNER_435BC0_PUMP_608F0B_RETURN") or 0)
+    owner_435bc0_pump_cb04_call_count = int(counts.get("NOWNER_435BC0_PUMP_CB04_CALL") or 0)
+    owner_435bc0_pump_cb04_return_count = int(counts.get("NOWNER_435BC0_PUMP_CB04_RETURN") or 0)
+    action_click_force_count = sum(int(counts.get(marker) or 0) for marker in ACTION_FORCE_MARKERS)
+    action_click_native_force_count = int(counts.get("NOWNER_ACTION_FORCE_NATIVE") or 0)
+    action_click_display_force_count = int(counts.get("NOWNER_ACTION_FORCE_DISPLAY") or 0)
+    action_descriptor_entry_count = int(counts.get("NOWNER_ACTION_DESCRIPTOR_ENTRY") or 0)
+    action_widget_click_gate_ret_count = int(counts.get("NOWNER_ACTION_WIDGET_CLICK_GATE_RET") or 0)
+    action_descriptor_callback_count = int(counts.get("NOWNER_ACTION_DESCRIPTOR_CALLBACK") or 0)
+    action_descriptor_result_count = int(counts.get("NOWNER_ACTION_DESCRIPTOR_RESULT") or 0)
+    action_click_435620_entry_count = int(counts.get("NOWNER_ACTION_CLICK_435620_ENTRY") or 0)
+    action_click_exit_set_count = int(counts.get("NOWNER_ACTION_CLICK_EXIT_SET") or 0)
     dd_pump_entry_count = int(counts.get("NOWNER_DD_PUMP_ENTRY") or 0)
     dd_pump_msg_pump_call_count = int(counts.get("NOWNER_DD_PUMP_MSG_PUMP_CALL") or 0)
     dd_pump_msg_pump_return_count = int(counts.get("NOWNER_DD_PUMP_MSG_PUMP_RETURN") or 0)
@@ -579,6 +834,23 @@ def parse_log(
     last_owner_435bc0_loop = last_row(rows, "NOWNER_435BC0_LOOP_HEAD")
     last_owner_435bc0_hit_result = last_row(rows, "NOWNER_435BC0_LOOP_HIT_RESULT")
     last_owner_435bc0_compare = last_row(rows, "NOWNER_435BC0_LOOP_COMPARE")
+    last_owner_435bc0_poll = last_row(rows, "NOWNER_435BC0_POLL")
+    last_owner_435bc0_grid_gate = last_row(rows, "NOWNER_435BC0_GRID_GATE")
+    last_owner_435bc0_grid_result = last_row(rows, "NOWNER_435BC0_GRID_RESULT")
+    last_owner_435bc0_pump_call = last_row(rows, "NOWNER_435BC0_LOOP_PUMP_CALL")
+    last_owner_435bc0_pump_tick_return = last_row(rows, "NOWNER_435BC0_PUMP_TICK_RETURN")
+    last_owner_435bc0_pump_cb14_call = last_row(rows, "NOWNER_435BC0_PUMP_CB14_CALL")
+    last_owner_435bc0_pump_608f0b_call = last_row(rows, "NOWNER_435BC0_PUMP_608F0B_CALL")
+    last_owner_435bc0_pump_cb04_call = last_row(rows, "NOWNER_435BC0_PUMP_CB04_CALL")
+    first_owner_435bc0_pump_tick_return = first_row(rows, "NOWNER_435BC0_PUMP_TICK_RETURN")
+    first_owner_435bc0_pump_cb14_call = first_row(rows, "NOWNER_435BC0_PUMP_CB14_CALL")
+    first_owner_435bc0_pump_608f0b_call = first_row(rows, "NOWNER_435BC0_PUMP_608F0B_CALL")
+    sourcehold_rows = [row for row in rows if row["marker"] in SOURCEHOLD_MARKERS]
+    action_click_rows = [row for row in rows if row["marker"] in ACTION_CLICK_MARKERS]
+    action_force_rows = [row for row in rows if row["marker"] in ACTION_FORCE_MARKERS]
+    last_action_descriptor_callback = last_row(rows, "NOWNER_ACTION_DESCRIPTOR_CALLBACK")
+    last_action_descriptor_result = last_row(rows, "NOWNER_ACTION_DESCRIPTOR_RESULT")
+    last_action_click_exit_set = last_row(rows, "NOWNER_ACTION_CLICK_EXIT_SET")
     flag_markers = set(RENDER_BEGIN_MARKERS + DD_PUMP_MARKERS + ("NOWNER_419ED0_RENDER_BEGIN", "NOWNER_4338E0_ENTRY"))
     render_flag_values = [
         row["values"]["d544d04"]
@@ -647,6 +919,11 @@ def parse_log(
         "copyback_path_marker_count": copyback_path_count,
         "render_begin_marker_count": render_begin_count,
         "dd_pump_marker_count": dd_pump_count,
+        "descriptor_hittest_marker_count": descriptor_hittest_count,
+        "stock_loopstate_marker_count": stock_loopstate_count,
+        "stock_grid_marker_count": stock_grid_count,
+        "sourcehold_marker_count": sourcehold_count,
+        "action_click_marker_count": action_click_count,
         "render_begin_late_armed_count": render_begin_late_armed_count,
         "render_begin_entry_count": render_begin_entry_count,
         "render_begin_loop_count": render_begin_loop_count,
@@ -671,6 +948,15 @@ def parse_log(
         "wrapper_alloc_failed_fallback_count": wrapper_alloc_failed_fallback_count,
         "owner_435bc0_alloc_result_count": owner_435bc0_alloc_result_count,
         "owner_435bc0_model_check_count": owner_435bc0_model_check_count,
+        "owner_435bc0_poll_count": owner_435bc0_poll_count,
+        "owner_435bc0_poll_limit_count": owner_435bc0_poll_limit_count,
+        "owner_435bc0_write_532218_count": owner_435bc0_write_532218_count,
+        "owner_435bc0_write_5322c8_count": owner_435bc0_write_5322c8_count,
+        "owner_435bc0_grid_route_count": owner_435bc0_grid_route_count,
+        "owner_435bc0_grid_gate_count": owner_435bc0_grid_gate_count,
+        "owner_435bc0_grid_result_count": owner_435bc0_grid_result_count,
+        "owner_435bc0_grid_fail_count": owner_435bc0_grid_fail_count,
+        "owner_435bc0_selection_update_count": owner_435bc0_selection_update_count,
         "owner_435bc0_loop_count": owner_435bc0_loop_count,
         "owner_435bc0_pump_call_count": owner_435bc0_pump_call_count,
         "owner_435bc0_draw_call_count": owner_435bc0_draw_call_count,
@@ -681,6 +967,27 @@ def parse_log(
         "owner_435bc0_loop_exit_count": owner_435bc0_loop_exit_count,
         "owner_435bc0_no_hit_update_count": owner_435bc0_no_hit_update_count,
         "owner_435bc0_return_count": owner_435bc0_return_count,
+        "owner_435bc0_pump_entry_count": owner_435bc0_pump_entry_count,
+        "owner_435bc0_pump_msg_call_count": owner_435bc0_pump_msg_call_count,
+        "owner_435bc0_pump_msg_return_count": owner_435bc0_pump_msg_return_count,
+        "owner_435bc0_pump_tick_return_count": owner_435bc0_pump_tick_return_count,
+        "owner_435bc0_pump_cb14_call_count": owner_435bc0_pump_cb14_call_count,
+        "owner_435bc0_pump_cb14_return_count": owner_435bc0_pump_cb14_return_count,
+        "owner_435bc0_pump_608f0a_call_count": owner_435bc0_pump_608f0a_call_count,
+        "owner_435bc0_pump_608f0a_return_count": owner_435bc0_pump_608f0a_return_count,
+        "owner_435bc0_pump_608f0b_call_count": owner_435bc0_pump_608f0b_call_count,
+        "owner_435bc0_pump_608f0b_return_count": owner_435bc0_pump_608f0b_return_count,
+        "owner_435bc0_pump_cb04_call_count": owner_435bc0_pump_cb04_call_count,
+        "owner_435bc0_pump_cb04_return_count": owner_435bc0_pump_cb04_return_count,
+        "action_click_force_count": action_click_force_count,
+        "action_click_native_force_count": action_click_native_force_count,
+        "action_click_display_force_count": action_click_display_force_count,
+        "action_descriptor_entry_count": action_descriptor_entry_count,
+        "action_widget_click_gate_ret_count": action_widget_click_gate_ret_count,
+        "action_descriptor_callback_count": action_descriptor_callback_count,
+        "action_descriptor_result_count": action_descriptor_result_count,
+        "action_click_435620_entry_count": action_click_435620_entry_count,
+        "action_click_exit_set_count": action_click_exit_set_count,
         "last_wrapper_entry": (last_wrapper_entry or {}).get("values") if last_wrapper_entry else None,
         "last_wrapper_stock_return": (last_wrapper_stock_return or {}).get("values") if last_wrapper_stock_return else None,
         "last_owner_435bc0_loop": (last_owner_435bc0_loop or {}).get("values") if last_owner_435bc0_loop else None,
@@ -690,6 +997,53 @@ def parse_log(
         "last_owner_435bc0_compare": (
             last_owner_435bc0_compare or {}
         ).get("values") if last_owner_435bc0_compare else None,
+        "last_owner_435bc0_poll": (last_owner_435bc0_poll or {}).get("values") if last_owner_435bc0_poll else None,
+        "last_owner_435bc0_grid_gate": (
+            last_owner_435bc0_grid_gate or {}
+        ).get("values") if last_owner_435bc0_grid_gate else None,
+        "last_owner_435bc0_grid_result": (
+            last_owner_435bc0_grid_result or {}
+        ).get("values") if last_owner_435bc0_grid_result else None,
+        "last_owner_435bc0_pump_call": (
+            last_owner_435bc0_pump_call or {}
+        ).get("values") if last_owner_435bc0_pump_call else None,
+        "last_owner_435bc0_pump_tick_return": (
+            last_owner_435bc0_pump_tick_return or {}
+        ).get("values") if last_owner_435bc0_pump_tick_return else None,
+        "last_owner_435bc0_pump_cb14_call": (
+            last_owner_435bc0_pump_cb14_call or {}
+        ).get("values") if last_owner_435bc0_pump_cb14_call else None,
+        "last_owner_435bc0_pump_608f0b_call": (
+            last_owner_435bc0_pump_608f0b_call or {}
+        ).get("values") if last_owner_435bc0_pump_608f0b_call else None,
+        "last_owner_435bc0_pump_cb04_call": (
+            last_owner_435bc0_pump_cb04_call or {}
+        ).get("values") if last_owner_435bc0_pump_cb04_call else None,
+        "first_owner_435bc0_pump_tick_return": (
+            first_owner_435bc0_pump_tick_return or {}
+        ).get("values") if first_owner_435bc0_pump_tick_return else None,
+        "first_owner_435bc0_pump_cb14_call": (
+            first_owner_435bc0_pump_cb14_call or {}
+        ).get("values") if first_owner_435bc0_pump_cb14_call else None,
+        "first_owner_435bc0_pump_608f0b_call": (
+            first_owner_435bc0_pump_608f0b_call or {}
+        ).get("values") if first_owner_435bc0_pump_608f0b_call else None,
+        "last_sourcehold_marker": sourcehold_rows[-1]["marker"] if sourcehold_rows else None,
+        "last_sourcehold": (sourcehold_rows[-1] if sourcehold_rows else {}).get("values") if sourcehold_rows else None,
+        "last_action_click_marker": action_click_rows[-1]["marker"] if action_click_rows else None,
+        "last_action_force_marker": action_force_rows[-1]["marker"] if action_force_rows else None,
+        "last_action_force": (
+            action_force_rows[-1] if action_force_rows else {}
+        ).get("values") if action_force_rows else None,
+        "last_action_descriptor_callback": (
+            last_action_descriptor_callback or {}
+        ).get("values") if last_action_descriptor_callback else None,
+        "last_action_descriptor_result": (
+            last_action_descriptor_result or {}
+        ).get("values") if last_action_descriptor_result else None,
+        "last_action_click_exit_set": (
+            last_action_click_exit_set or {}
+        ).get("values") if last_action_click_exit_set else None,
         "render_flag_values": render_flag_values,
         "render_flag_unique_values": render_flag_unique_values,
         "render_flag_bit01_count": render_flag_bit01_count,
@@ -758,6 +1112,11 @@ def write_markdown(summary: dict[str, Any], path: Path) -> None:
         f"- Owner/action Render_Begin stalled: `{summary['owner_action_render_begin_stalled']}`",
         f"- Owner/action DD_Pump wait stalled: `{summary['owner_action_ddraw_wait_stalled']}`",
         f"- Render_Begin marker count: `{summary['render_begin_marker_count']}`",
+        f"- Descriptor hit-test marker count: `{summary['descriptor_hittest_marker_count']}`",
+        f"- Stock loop-state marker count: `{summary['stock_loopstate_marker_count']}`",
+        f"- Stock grid marker count: `{summary['stock_grid_marker_count']}`",
+        f"- Source-hold marker count: `{summary['sourcehold_marker_count']}`",
+        f"- Native action-click marker count: `{summary['action_click_marker_count']}`",
         f"- Render_Begin late-armed count: `{summary['render_begin_late_armed_count']}`",
         f"- Render_Begin entry count: `{summary['render_begin_entry_count']}`",
         f"- Render_Begin loop count: `{summary['render_begin_loop_count']}`",
@@ -776,14 +1135,55 @@ def write_markdown(summary: dict[str, Any], path: Path) -> None:
         f"- Wrapper copyback-call count: `{summary['wrapper_copyback_call_count']}`",
         f"- Wrapper copyback-return count: `{summary['wrapper_copyback_return_count']}`",
         f"- Wrapper alloc-failed fallback count: `{summary['wrapper_alloc_failed_fallback_count']}`",
+        f"- 00435BC0 poll count: `{summary['owner_435bc0_poll_count']}`",
+        f"- 00435BC0 poll limit count: `{summary['owner_435bc0_poll_limit_count']}`",
+        f"- 00435BC0 write d532218 count: `{summary['owner_435bc0_write_532218_count']}`",
+        f"- 00435BC0 write d5322c8 count: `{summary['owner_435bc0_write_5322c8_count']}`",
+        f"- 00435BC0 grid route count: `{summary['owner_435bc0_grid_route_count']}`",
+        f"- 00435BC0 grid gate count: `{summary['owner_435bc0_grid_gate_count']}`",
+        f"- 00435BC0 grid result count: `{summary['owner_435bc0_grid_result_count']}`",
+        f"- 00435BC0 grid fail count: `{summary['owner_435bc0_grid_fail_count']}`",
+        f"- 00435BC0 selection update count: `{summary['owner_435bc0_selection_update_count']}`",
         f"- 00435BC0 loop head count: `{summary['owner_435bc0_loop_count']}`",
         f"- 00435BC0 loop limit count: `{summary['owner_435bc0_loop_limit_count']}`",
         f"- 00435BC0 return count: `{summary['owner_435bc0_return_count']}`",
+        f"- 00435BC0 pump tick-return count: `{summary['owner_435bc0_pump_tick_return_count']}`",
+        f"- 00435BC0 pump cb14 call/return count: `{summary['owner_435bc0_pump_cb14_call_count']}` / `{summary['owner_435bc0_pump_cb14_return_count']}`",
+        f"- 00435BC0 pump 608f0b call/return count: `{summary['owner_435bc0_pump_608f0b_call_count']}` / `{summary['owner_435bc0_pump_608f0b_return_count']}`",
+        f"- 00435BC0 pump cb04 call/return count: `{summary['owner_435bc0_pump_cb04_call_count']}` / `{summary['owner_435bc0_pump_cb04_return_count']}`",
+        f"- Native action force count: `{summary['action_click_force_count']}`",
+        f"- Native action native-force count: `{summary['action_click_native_force_count']}`",
+        f"- Native action display-force count: `{summary['action_click_display_force_count']}`",
+        f"- Native action descriptor entry count: `{summary['action_descriptor_entry_count']}`",
+        f"- Native action widget click-gate return count: `{summary['action_widget_click_gate_ret_count']}`",
+        f"- Native action descriptor callback count: `{summary['action_descriptor_callback_count']}`",
+        f"- Native action descriptor result count: `{summary['action_descriptor_result_count']}`",
+        f"- Native action 00435620 entry count: `{summary['action_click_435620_entry_count']}`",
+        f"- Native action exit-set count: `{summary['action_click_exit_set_count']}`",
         f"- Last wrapper entry: `{summary['last_wrapper_entry']}`",
         f"- Last wrapper stock return: `{summary['last_wrapper_stock_return']}`",
         f"- Last 00435BC0 loop row: `{summary['last_owner_435bc0_loop']}`",
         f"- Last 00435BC0 hit result: `{summary['last_owner_435bc0_hit_result']}`",
         f"- Last 00435BC0 compare: `{summary['last_owner_435bc0_compare']}`",
+        f"- Last 00435BC0 poll: `{summary['last_owner_435bc0_poll']}`",
+        f"- Last 00435BC0 grid gate: `{summary['last_owner_435bc0_grid_gate']}`",
+        f"- Last 00435BC0 grid result: `{summary['last_owner_435bc0_grid_result']}`",
+        f"- Last 00435BC0 pump call: `{summary['last_owner_435bc0_pump_call']}`",
+        f"- Last 00435BC0 pump tick-return: `{summary['last_owner_435bc0_pump_tick_return']}`",
+        f"- Last 00435BC0 pump cb14 call: `{summary['last_owner_435bc0_pump_cb14_call']}`",
+        f"- Last 00435BC0 pump 608f0b call: `{summary['last_owner_435bc0_pump_608f0b_call']}`",
+        f"- Last 00435BC0 pump cb04 call: `{summary['last_owner_435bc0_pump_cb04_call']}`",
+        f"- First 00435BC0 pump tick-return: `{summary['first_owner_435bc0_pump_tick_return']}`",
+        f"- First 00435BC0 pump cb14 call: `{summary['first_owner_435bc0_pump_cb14_call']}`",
+        f"- First 00435BC0 pump 608f0b call: `{summary['first_owner_435bc0_pump_608f0b_call']}`",
+        f"- Last source-hold marker: `{summary['last_sourcehold_marker']}`",
+        f"- Last source-hold row: `{summary['last_sourcehold']}`",
+        f"- Last native action-click marker: `{summary['last_action_click_marker']}`",
+        f"- Last native action force marker: `{summary['last_action_force_marker']}`",
+        f"- Last native action force: `{summary['last_action_force']}`",
+        f"- Last native action descriptor callback: `{summary['last_action_descriptor_callback']}`",
+        f"- Last native action descriptor result: `{summary['last_action_descriptor_result']}`",
+        f"- Last native action click exit-set: `{summary['last_action_click_exit_set']}`",
         f"- Render flag values: `{summary['render_flag_values']}`",
         f"- Render flag unique values: `{summary['render_flag_unique_values']}`",
         f"- Render flag bit01 count: `{summary['render_flag_bit01_count']}`",
@@ -848,6 +1248,7 @@ def main(argv: list[str] | None = None) -> int:
         "owner_action_rows={owner_action_route_count} render_begin_exit={render_begin_exit_count} "
         "release_rows={owner_desc_release_count} render_flag_last={render_flag_last_value} "
         "render_flag_held={render_flag_held_during_spin} dd_pump_entries={dd_pump_entry_count} "
+        "stock_poll={owner_435bc0_poll_count} stock_grid={stock_grid_marker_count} "
         "copyback_path={copyback_path_marker_count} wrapper_copyback={wrapper_copyback_count} "
         "timeout_stack={timeout_stack_classification} "
         "candidate_sha={candidate_sha256} av={av_count}".format(**summary)

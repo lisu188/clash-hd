@@ -1,0 +1,139 @@
+{
+  "path": "captures\\castle-overview-hitmap-current.raw",
+  "width": 640,
+  "height": 480,
+  "values": {
+    "0xF8": {
+      "raw": 248,
+      "command": 134,
+      "count": 21906,
+      "present": true,
+      "bbox": [
+        175,
+        47,
+        455,
+        223
+      ],
+      "first_native": [
+        291,
+        47
+      ],
+      "first_displayed": [
+        371,
+        107
+      ],
+      "mean_native": [
+        315.4464986761618,
+        160.54779512462338
+      ]
+    },
+    "0xF9": {
+      "raw": 249,
+      "command": null,
+      "count": 15973,
+      "present": true,
+      "bbox": [
+        31,
+        89,
+        602,
+        202
+      ],
+      "first_native": [
+        57,
+        89
+      ],
+      "first_displayed": [
+        137,
+        149
+      ],
+      "mean_native": [
+        311.43698741626497,
+        142.1083077693608
+      ]
+    },
+    "0xFA": {
+      "raw": 250,
+      "command": 153,
+      "count": 0,
+      "present": false
+    },
+    "0xFB": {
+      "raw": 251,
+      "command": 156,
+      "count": 0,
+      "present": false
+    },
+    "0xFC": {
+      "raw": 252,
+      "command": 159,
+      "count": 0,
+      "present": false
+    },
+    "0xFD": {
+      "raw": 253,
+      "command": 166,
+      "count": 0,
+      "present": false
+    },
+    "0xFE": {
+      "raw": 254,
+      "command": 99,
+      "count": 13338,
+      "present": true,
+      "bbox": [
+        77,
+        306,
+        237,
+        426
+      ],
+      "first_native": [
+        151,
+        306
+      ],
+      "first_displayed": [
+        231,
+        366
+      ],
+      "mean_native": [
+        154.5925176188334,
+        367.59424201529464
+      ]
+    },
+    "0xFF": {
+      "raw": 255,
+      "command": 135,
+      "count": 13307,
+      "present": true,
+      "bbox": [
+        458,
+        345,
+        639,
+        479
+      ],
+      "first_native": [
+        555,
+        345
+      ],
+      "first_displayed": [
+        635,
+        405
+      ],
+      "mean_native": [
+        551.8748778838205,
+        418.7637333734125
+      ]
+    }
+  },
+  "present_raw_ids": [
+    "0xF8",
+    "0xF9",
+    "0xFE",
+    "0xFF"
+  ],
+  "absent_catalog_raw_ids": [
+    "0xFA",
+    "0xFB",
+    "0xFC",
+    "0xFD"
+  ]
+}

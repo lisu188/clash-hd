@@ -1,0 +1,274 @@
+{
+  "log": "captures\\cdb-map-minimapaction-minimapright-dynvswitch-v2-20260424.log",
+  "playgame_rows": 1,
+  "entry_rows": 160,
+  "active_entry_rows": 160,
+  "computed_rows": 120,
+  "accept_rows": 33,
+  "clamp_x_rows": 31,
+  "write_x_rows": 2,
+  "clamp_y_rows": 31,
+  "final_rows": 33,
+  "active_toggle_rows": 0,
+  "active_set_rows": 0,
+  "active_toggle_on_rows": 0,
+  "active_set_on_rows": 0,
+  "av_rows": 0,
+  "entry_active_values": [
+    1
+  ],
+  "toggle_active_values": [],
+  "set_active_values": [],
+  "computed_target_values": [
+    {
+      "x": -68,
+      "y": 35,
+      "count": 63
+    },
+    {
+      "x": -48,
+      "y": 50,
+      "count": 47
+    },
+    {
+      "x": -48,
+      "y": 69,
+      "count": 10
+    }
+  ],
+  "accepted_target_values": [
+    {
+      "x": 13,
+      "y": 6,
+      "count": 1
+    },
+    {
+      "x": 26,
+      "y": 24,
+      "count": 1
+    },
+    {
+      "x": 41,
+      "y": 44,
+      "count": 31
+    }
+  ],
+  "final_scroll_values": [
+    {
+      "x": 13,
+      "y": 6,
+      "count": 1
+    },
+    {
+      "x": 26,
+      "y": 24,
+      "count": 1
+    },
+    {
+      "x": 38,
+      "y": 41,
+      "count": 31
+    }
+  ],
+  "computed_target_x_range": {
+    "min": -68,
+    "max": -48,
+    "unique": 2
+  },
+  "computed_target_y_range": {
+    "min": 35,
+    "max": 69,
+    "unique": 3
+  },
+  "entry_mouse_x_range": {
+    "min": 400,
+    "max": 400,
+    "unique": 1
+  },
+  "entry_mouse_y_range": {
+    "min": 225,
+    "max": 225,
+    "unique": 1
+  },
+  "first_playgame": [
+    {
+      "line_no": 199,
+      "kind": "PLAYGAME",
+      "gd": "03610030",
+      "mapw": 50,
+      "maph": 50,
+      "scrollx": 39,
+      "scrolly": 42,
+      "mousex": 300,
+      "mousey": 217,
+      "left": 586,
+      "top": 16,
+      "right": 799,
+      "bottom": 229,
+      "player": 0,
+      "active": 1,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_entry": [
+    {
+      "line_no": 263,
+      "kind": "ACTION_ENTRY",
+      "seq": 0,
+      "flip": 1,
+      "active": 1,
+      "player": 0,
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 400,
+      "mousey": 225,
+      "left": 586,
+      "top": 16,
+      "right": 799,
+      "bottom": 229,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_computed": [
+    {
+      "line_no": 200,
+      "kind": "ACTION_COMPUTED",
+      "seq": 0,
+      "targetx": -68,
+      "targety": 35,
+      "scrollx": 38,
+      "scrolly": 41,
+      "active": 1,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 320,
+      "mousey": 165,
+      "left": 586,
+      "top": 16,
+      "right": 799,
+      "bottom": 229,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_accept": [
+    {
+      "line_no": 480,
+      "kind": "ACTION_ACCEPT",
+      "seq": 0,
+      "targetx": 13,
+      "targety": 6,
+      "scrollx": 38,
+      "scrolly": 41,
+      "maxx": 41,
+      "maxy": 43,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 648,
+      "mousey": 49,
+      "active": 1,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_clamp_x": [
+    {
+      "line_no": 484,
+      "kind": "ACTION_CLAMP_X",
+      "seq": 0,
+      "targetx": 41,
+      "clampx": 38,
+      "targety": 44,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 760,
+      "mousey": 201,
+      "active": 1,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_write_x": [
+    {
+      "line_no": 481,
+      "kind": "ACTION_WRITE_X",
+      "seq": 0,
+      "writex": 13,
+      "targety": 6,
+      "scrollx": 38,
+      "scrolly": 41,
+      "maxx": 41,
+      "maxy": 43,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 648,
+      "mousey": 49,
+      "active": 1,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_clamp_y": [
+    {
+      "line_no": 485,
+      "kind": "ACTION_CLAMP_Y",
+      "seq": 0,
+      "requestedy": 44,
+      "clampy": 41,
+      "currentx": 38,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 760,
+      "mousey": 201,
+      "active": 1,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_final": [
+    {
+      "line_no": 482,
+      "kind": "ACTION_FINAL",
+      "seq": 0,
+      "scrollx": 13,
+      "scrolly": 6,
+      "maxx": 41,
+      "maxy": 43,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 648,
+      "mousey": 49,
+      "active": 1,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "first_active_toggle": [],
+  "first_active_set": [],
+  "last_final": [
+    {
+      "line_no": 609,
+      "kind": "ACTION_FINAL",
+      "seq": 32,
+      "scrollx": 26,
+      "scrolly": 24,
+      "maxx": 41,
+      "maxy": 43,
+      "mapw": 50,
+      "maph": 50,
+      "mousex": 700,
+      "mousey": 121,
+      "active": 1,
+      "lbtn": 128,
+      "rbtn": 0
+    }
+  ],
+  "action_path_reached": true,
+  "write_path_reached": true,
+  "scroll_changed": true,
+  "any_final_diff_from_first_entry": true
+}

@@ -1,0 +1,150 @@
+{
+  "log": "captures\\cdb-map-runtime-sharedscratch-clamp-crash-loadslot0-20260422.log",
+  "patch_report": "captures\\patch-stage-dynorigin-sharedscratch-20260422.json",
+  "expected_visible_tiles": {
+    "x": 12,
+    "y": 9
+  },
+  "loadsave_rows": 0,
+  "loadmap_rows": 0,
+  "playgame_rows": 1,
+  "redraw_rows": 12,
+  "scroll_rows": 0,
+  "repaint_rows": 12,
+  "restore_rows": 1,
+  "restore_clamp_rows": 1,
+  "first_restore": [
+    {
+      "line_no": 228,
+      "beforex": 39,
+      "beforey": 42,
+      "maxx": 38,
+      "maxy": 41,
+      "mapw": 50,
+      "maph": 50
+    }
+  ],
+  "first_restore_clamp": [
+    {
+      "line_no": 229,
+      "afterx": 38,
+      "aftery": 41
+    }
+  ],
+  "exception_rows": 1,
+  "first_exception": [
+    {
+      "line_no": 254,
+      "code": "c0000005",
+      "chance": "first chance"
+    }
+  ],
+  "last_exception": [
+    {
+      "line_no": 254,
+      "code": "c0000005",
+      "chance": "first chance"
+    }
+  ],
+  "last_exception_address": [
+    {
+      "line_no": 256,
+      "address": "00403582",
+      "symbol": "clash95+0x00003582"
+    }
+  ],
+  "last_write_address": [
+    {
+      "line_no": 262,
+      "address": "0b3bc1d0"
+    }
+  ],
+  "last_eip": [
+    {
+      "line_no": 88,
+      "eip": "77f38328"
+    }
+  ],
+  "map_entered": true,
+  "redraw_hit": true,
+  "first_loadsave": [],
+  "first_loadmap": [],
+  "first_playgame": [
+    {
+      "line_no": 227,
+      "gd": "035c0030",
+      "mapw": 50,
+      "maph": 50,
+      "scrollx": 39,
+      "scrolly": 42,
+      "player": 0,
+      "selected": -1,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "first_redraw": [
+    {
+      "line_no": 230,
+      "seq": 0,
+      "gd": "035c0030",
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "end12x": 50,
+      "end12y": 50,
+      "end9x": 47,
+      "end9y": 48,
+      "player": 0,
+      "selected": -1,
+      "fog": 0,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "last_redraw": [
+    {
+      "line_no": 253,
+      "seq": 11,
+      "gd": "035c0030",
+      "scrollx": 38,
+      "scrolly": 41,
+      "mapw": 50,
+      "maph": 50,
+      "end12x": 50,
+      "end12y": 50,
+      "end9x": 47,
+      "end9y": 48,
+      "player": 0,
+      "selected": -1,
+      "fog": 0,
+      "mission": 1,
+      "turn": 34
+    }
+  ],
+  "scrollx_range": {
+    "min": 38,
+    "max": 38,
+    "unique": 1
+  },
+  "scrolly_range": {
+    "min": 41,
+    "max": 41,
+    "unique": 1
+  },
+  "mapw_range": {
+    "min": 50,
+    "max": 50,
+    "unique": 1
+  },
+  "maph_range": {
+    "min": 50,
+    "max": 50,
+    "unique": 1
+  },
+  "edge_overrun_rows": 0,
+  "first_edge_overrun": [],
+  "last_edge_overrun": [],
+  "static_patch_expects_12x9": true
+}

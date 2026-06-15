@@ -1,0 +1,2052 @@
+{
+  "hwnd": 11013294,
+  "client_size": [
+    2554,
+    1411
+  ],
+  "client_origin_screen": [
+    83,
+    106
+  ],
+  "points": [
+    {
+      "index": 0,
+      "client": [
+        400,
+        300
+      ],
+      "requested_screen": [
+        483,
+        406
+      ],
+      "actual_screen": [
+        483,
+        406
+      ],
+      "actual_client": [
+        400,
+        300
+      ],
+      "error": [
+        0,
+        0
+      ],
+      "client_error": [
+        0,
+        0
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": [
+            483,
+            406
+          ],
+          "actual_client": [
+            400,
+            300
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": [
+            483,
+            406
+          ],
+          "actual_client": [
+            400,
+            300
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_sendinput_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": [
+            429,
+            446
+          ],
+          "actual_client": [
+            346,
+            340
+          ],
+          "screen_error": [
+            -54,
+            40
+          ],
+          "client_error": [
+            -54,
+            40
+          ]
+        },
+        {
+          "phase": "after_sendinput_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": [
+            429,
+            446
+          ],
+          "actual_client": [
+            346,
+            340
+          ],
+          "screen_error": [
+            -54,
+            40
+          ],
+          "client_error": [
+            -54,
+            40
+          ]
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": [
+            429,
+            446
+          ],
+          "actual_client": [
+            346,
+            340
+          ],
+          "screen_error": [
+            -54,
+            40
+          ],
+          "client_error": [
+            -54,
+            40
+          ]
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": [
+            429,
+            446
+          ],
+          "actual_client": [
+            346,
+            340
+          ],
+          "screen_error": [
+            -54,
+            40
+          ],
+          "client_error": [
+            -54,
+            40
+          ]
+        },
+        {
+          "phase": "after_sendinput_down",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": [
+            771,
+            817
+          ],
+          "actual_client": [
+            688,
+            711
+          ],
+          "screen_error": [
+            288,
+            411
+          ],
+          "client_error": [
+            288,
+            411
+          ]
+        },
+        {
+          "phase": "after_sendinput_up",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": [
+            769,
+            813
+          ],
+          "actual_client": [
+            686,
+            707
+          ],
+          "screen_error": [
+            286,
+            407
+          ],
+          "client_error": [
+            286,
+            407
+          ]
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            300
+          ],
+          "requested_screen": [
+            483,
+            406
+          ],
+          "actual_screen": [
+            769,
+            813
+          ],
+          "actual_client": [
+            686,
+            707
+          ],
+          "screen_error": [
+            286,
+            407
+          ],
+          "client_error": [
+            286,
+            407
+          ]
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "sendinput",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": [
+                483,
+                406
+              ],
+              "actual_client": [
+                400,
+                300
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_sendinput_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": [
+                429,
+                446
+              ],
+              "actual_client": [
+                346,
+                340
+              ],
+              "screen_error": [
+                -54,
+                40
+              ],
+              "client_error": [
+                -54,
+                40
+              ]
+            },
+            {
+              "phase": "after_sendinput_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": [
+                429,
+                446
+              ],
+              "actual_client": [
+                346,
+                340
+              ],
+              "screen_error": [
+                -54,
+                40
+              ],
+              "client_error": [
+                -54,
+                40
+              ]
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": [
+                429,
+                446
+              ],
+              "actual_client": [
+                346,
+                340
+              ],
+              "screen_error": [
+                -54,
+                40
+              ],
+              "client_error": [
+                -54,
+                40
+              ]
+            }
+          ],
+          "sendinput_down": 1,
+          "sendinput_up": 1,
+          "repeat_index": 0
+        },
+        {
+          "mode": "sendinput",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": [
+                429,
+                446
+              ],
+              "actual_client": [
+                346,
+                340
+              ],
+              "screen_error": [
+                -54,
+                40
+              ],
+              "client_error": [
+                -54,
+                40
+              ]
+            },
+            {
+              "phase": "after_sendinput_down",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": [
+                771,
+                817
+              ],
+              "actual_client": [
+                688,
+                711
+              ],
+              "screen_error": [
+                288,
+                411
+              ],
+              "client_error": [
+                288,
+                411
+              ]
+            },
+            {
+              "phase": "after_sendinput_up",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": [
+                769,
+                813
+              ],
+              "actual_client": [
+                686,
+                707
+              ],
+              "screen_error": [
+                286,
+                407
+              ],
+              "client_error": [
+                286,
+                407
+              ]
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                300
+              ],
+              "requested_screen": [
+                483,
+                406
+              ],
+              "actual_screen": [
+                769,
+                813
+              ],
+              "actual_client": [
+                686,
+                707
+              ],
+              "screen_error": [
+                286,
+                407
+              ],
+              "client_error": [
+                286,
+                407
+              ]
+            }
+          ],
+          "sendinput_down": 1,
+          "sendinput_up": 1,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "client": [
+        300,
+        218
+      ],
+      "requested_screen": [
+        383,
+        324
+      ],
+      "actual_screen": [
+        369,
+        319
+      ],
+      "actual_client": [
+        286,
+        213
+      ],
+      "error": [
+        -14,
+        -5
+      ],
+      "client_error": [
+        -14,
+        -5
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            300,
+            218
+          ],
+          "requested_screen": [
+            383,
+            324
+          ],
+          "actual_screen": [
+            369,
+            319
+          ],
+          "actual_client": [
+            286,
+            213
+          ],
+          "screen_error": [
+            -14,
+            -5
+          ],
+          "client_error": [
+            -14,
+            -5
+          ]
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            300,
+            218
+          ],
+          "requested_screen": [
+            383,
+            324
+          ],
+          "actual_screen": [
+            369,
+            319
+          ],
+          "actual_client": [
+            286,
+            213
+          ],
+          "screen_error": [
+            -14,
+            -5
+          ],
+          "client_error": [
+            -14,
+            -5
+          ]
+        },
+        {
+          "phase": "after_sendinput_down",
+          "requested_client": [
+            300,
+            218
+          ],
+          "requested_screen": [
+            383,
+            324
+          ],
+          "actual_screen": [
+            575,
+            535
+          ],
+          "actual_client": [
+            492,
+            429
+          ],
+          "screen_error": [
+            192,
+            211
+          ],
+          "client_error": [
+            192,
+            211
+          ]
+        },
+        {
+          "phase": "after_sendinput_up",
+          "requested_client": [
+            300,
+            218
+          ],
+          "requested_screen": [
+            383,
+            324
+          ],
+          "actual_screen": [
+            617,
+            555
+          ],
+          "actual_client": [
+            534,
+            449
+          ],
+          "screen_error": [
+            234,
+            231
+          ],
+          "client_error": [
+            234,
+            231
+          ]
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            300,
+            218
+          ],
+          "requested_screen": [
+            383,
+            324
+          ],
+          "actual_screen": [
+            617,
+            555
+          ],
+          "actual_client": [
+            534,
+            449
+          ],
+          "screen_error": [
+            234,
+            231
+          ],
+          "client_error": [
+            234,
+            231
+          ]
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            300,
+            218
+          ],
+          "requested_screen": [
+            383,
+            324
+          ],
+          "actual_screen": [
+            618,
+            555
+          ],
+          "actual_client": [
+            535,
+            449
+          ],
+          "screen_error": [
+            235,
+            231
+          ],
+          "client_error": [
+            235,
+            231
+          ]
+        },
+        {
+          "phase": "after_sendinput_down",
+          "requested_client": [
+            300,
+            218
+          ],
+          "requested_screen": [
+            383,
+            324
+          ],
+          "actual_screen": [
+            610,
+            555
+          ],
+          "actual_client": [
+            527,
+            449
+          ],
+          "screen_error": [
+            227,
+            231
+          ],
+          "client_error": [
+            227,
+            231
+          ]
+        },
+        {
+          "phase": "after_sendinput_up",
+          "requested_client": [
+            300,
+            218
+          ],
+          "requested_screen": [
+            383,
+            324
+          ],
+          "actual_screen": [
+            610,
+            555
+          ],
+          "actual_client": [
+            527,
+            449
+          ],
+          "screen_error": [
+            227,
+            231
+          ],
+          "client_error": [
+            227,
+            231
+          ]
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            300,
+            218
+          ],
+          "requested_screen": [
+            383,
+            324
+          ],
+          "actual_screen": [
+            610,
+            555
+          ],
+          "actual_client": [
+            527,
+            449
+          ],
+          "screen_error": [
+            227,
+            231
+          ],
+          "client_error": [
+            227,
+            231
+          ]
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "sendinput",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                300,
+                218
+              ],
+              "requested_screen": [
+                383,
+                324
+              ],
+              "actual_screen": [
+                369,
+                319
+              ],
+              "actual_client": [
+                286,
+                213
+              ],
+              "screen_error": [
+                -14,
+                -5
+              ],
+              "client_error": [
+                -14,
+                -5
+              ]
+            },
+            {
+              "phase": "after_sendinput_down",
+              "requested_client": [
+                300,
+                218
+              ],
+              "requested_screen": [
+                383,
+                324
+              ],
+              "actual_screen": [
+                575,
+                535
+              ],
+              "actual_client": [
+                492,
+                429
+              ],
+              "screen_error": [
+                192,
+                211
+              ],
+              "client_error": [
+                192,
+                211
+              ]
+            },
+            {
+              "phase": "after_sendinput_up",
+              "requested_client": [
+                300,
+                218
+              ],
+              "requested_screen": [
+                383,
+                324
+              ],
+              "actual_screen": [
+                617,
+                555
+              ],
+              "actual_client": [
+                534,
+                449
+              ],
+              "screen_error": [
+                234,
+                231
+              ],
+              "client_error": [
+                234,
+                231
+              ]
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                300,
+                218
+              ],
+              "requested_screen": [
+                383,
+                324
+              ],
+              "actual_screen": [
+                617,
+                555
+              ],
+              "actual_client": [
+                534,
+                449
+              ],
+              "screen_error": [
+                234,
+                231
+              ],
+              "client_error": [
+                234,
+                231
+              ]
+            }
+          ],
+          "sendinput_down": 1,
+          "sendinput_up": 1,
+          "repeat_index": 0
+        },
+        {
+          "mode": "sendinput",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                300,
+                218
+              ],
+              "requested_screen": [
+                383,
+                324
+              ],
+              "actual_screen": [
+                618,
+                555
+              ],
+              "actual_client": [
+                535,
+                449
+              ],
+              "screen_error": [
+                235,
+                231
+              ],
+              "client_error": [
+                235,
+                231
+              ]
+            },
+            {
+              "phase": "after_sendinput_down",
+              "requested_client": [
+                300,
+                218
+              ],
+              "requested_screen": [
+                383,
+                324
+              ],
+              "actual_screen": [
+                610,
+                555
+              ],
+              "actual_client": [
+                527,
+                449
+              ],
+              "screen_error": [
+                227,
+                231
+              ],
+              "client_error": [
+                227,
+                231
+              ]
+            },
+            {
+              "phase": "after_sendinput_up",
+              "requested_client": [
+                300,
+                218
+              ],
+              "requested_screen": [
+                383,
+                324
+              ],
+              "actual_screen": [
+                610,
+                555
+              ],
+              "actual_client": [
+                527,
+                449
+              ],
+              "screen_error": [
+                227,
+                231
+              ],
+              "client_error": [
+                227,
+                231
+              ]
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                300,
+                218
+              ],
+              "requested_screen": [
+                383,
+                324
+              ],
+              "actual_screen": [
+                610,
+                555
+              ],
+              "actual_client": [
+                527,
+                449
+              ],
+              "screen_error": [
+                227,
+                231
+              ],
+              "client_error": [
+                227,
+                231
+              ]
+            }
+          ],
+          "sendinput_down": 1,
+          "sendinput_up": 1,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "client": [
+        320,
+        166
+      ],
+      "requested_screen": [
+        403,
+        272
+      ],
+      "actual_screen": [
+        403,
+        272
+      ],
+      "actual_client": [
+        320,
+        166
+      ],
+      "error": [
+        0,
+        0
+      ],
+      "client_error": [
+        0,
+        0
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            320,
+            166
+          ],
+          "requested_screen": [
+            403,
+            272
+          ],
+          "actual_screen": [
+            403,
+            272
+          ],
+          "actual_client": [
+            320,
+            166
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            320,
+            166
+          ],
+          "requested_screen": [
+            403,
+            272
+          ],
+          "actual_screen": [
+            403,
+            272
+          ],
+          "actual_client": [
+            320,
+            166
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_sendinput_down",
+          "requested_client": [
+            320,
+            166
+          ],
+          "requested_screen": [
+            403,
+            272
+          ],
+          "actual_screen": [
+            403,
+            272
+          ],
+          "actual_client": [
+            320,
+            166
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_sendinput_up",
+          "requested_client": [
+            320,
+            166
+          ],
+          "requested_screen": [
+            403,
+            272
+          ],
+          "actual_screen": [
+            403,
+            272
+          ],
+          "actual_client": [
+            320,
+            166
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            320,
+            166
+          ],
+          "requested_screen": [
+            403,
+            272
+          ],
+          "actual_screen": [
+            403,
+            272
+          ],
+          "actual_client": [
+            320,
+            166
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            320,
+            166
+          ],
+          "requested_screen": [
+            403,
+            272
+          ],
+          "actual_screen": [
+            403,
+            272
+          ],
+          "actual_client": [
+            320,
+            166
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_sendinput_down",
+          "requested_client": [
+            320,
+            166
+          ],
+          "requested_screen": [
+            403,
+            272
+          ],
+          "actual_screen": [
+            403,
+            272
+          ],
+          "actual_client": [
+            320,
+            166
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_sendinput_up",
+          "requested_client": [
+            320,
+            166
+          ],
+          "requested_screen": [
+            403,
+            272
+          ],
+          "actual_screen": [
+            403,
+            272
+          ],
+          "actual_client": [
+            320,
+            166
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            320,
+            166
+          ],
+          "requested_screen": [
+            403,
+            272
+          ],
+          "actual_screen": [
+            403,
+            272
+          ],
+          "actual_client": [
+            320,
+            166
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "sendinput",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                320,
+                166
+              ],
+              "requested_screen": [
+                403,
+                272
+              ],
+              "actual_screen": [
+                403,
+                272
+              ],
+              "actual_client": [
+                320,
+                166
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_sendinput_down",
+              "requested_client": [
+                320,
+                166
+              ],
+              "requested_screen": [
+                403,
+                272
+              ],
+              "actual_screen": [
+                403,
+                272
+              ],
+              "actual_client": [
+                320,
+                166
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_sendinput_up",
+              "requested_client": [
+                320,
+                166
+              ],
+              "requested_screen": [
+                403,
+                272
+              ],
+              "actual_screen": [
+                403,
+                272
+              ],
+              "actual_client": [
+                320,
+                166
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                320,
+                166
+              ],
+              "requested_screen": [
+                403,
+                272
+              ],
+              "actual_screen": [
+                403,
+                272
+              ],
+              "actual_client": [
+                320,
+                166
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            }
+          ],
+          "sendinput_down": 1,
+          "sendinput_up": 1,
+          "repeat_index": 0
+        },
+        {
+          "mode": "sendinput",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                320,
+                166
+              ],
+              "requested_screen": [
+                403,
+                272
+              ],
+              "actual_screen": [
+                403,
+                272
+              ],
+              "actual_client": [
+                320,
+                166
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_sendinput_down",
+              "requested_client": [
+                320,
+                166
+              ],
+              "requested_screen": [
+                403,
+                272
+              ],
+              "actual_screen": [
+                403,
+                272
+              ],
+              "actual_client": [
+                320,
+                166
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_sendinput_up",
+              "requested_client": [
+                320,
+                166
+              ],
+              "requested_screen": [
+                403,
+                272
+              ],
+              "actual_screen": [
+                403,
+                272
+              ],
+              "actual_client": [
+                320,
+                166
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                320,
+                166
+              ],
+              "requested_screen": [
+                403,
+                272
+              ],
+              "actual_screen": [
+                403,
+                272
+              ],
+              "actual_client": [
+                320,
+                166
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            }
+          ],
+          "sendinput_down": 1,
+          "sendinput_up": 1,
+          "repeat_index": 1
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "client": [
+        400,
+        226
+      ],
+      "requested_screen": [
+        483,
+        332
+      ],
+      "actual_screen": [
+        483,
+        332
+      ],
+      "actual_client": [
+        400,
+        226
+      ],
+      "error": [
+        0,
+        0
+      ],
+      "client_error": [
+        0,
+        0
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            400,
+            226
+          ],
+          "requested_screen": [
+            483,
+            332
+          ],
+          "actual_screen": [
+            483,
+            332
+          ],
+          "actual_client": [
+            400,
+            226
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            226
+          ],
+          "requested_screen": [
+            483,
+            332
+          ],
+          "actual_screen": [
+            483,
+            332
+          ],
+          "actual_client": [
+            400,
+            226
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_sendinput_down",
+          "requested_client": [
+            400,
+            226
+          ],
+          "requested_screen": [
+            483,
+            332
+          ],
+          "actual_screen": [
+            483,
+            332
+          ],
+          "actual_client": [
+            400,
+            226
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_sendinput_up",
+          "requested_client": [
+            400,
+            226
+          ],
+          "requested_screen": [
+            483,
+            332
+          ],
+          "actual_screen": [
+            483,
+            332
+          ],
+          "actual_client": [
+            400,
+            226
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            226
+          ],
+          "requested_screen": [
+            483,
+            332
+          ],
+          "actual_screen": [
+            483,
+            332
+          ],
+          "actual_client": [
+            400,
+            226
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "before_click",
+          "requested_client": [
+            400,
+            226
+          ],
+          "requested_screen": [
+            483,
+            332
+          ],
+          "actual_screen": [
+            483,
+            332
+          ],
+          "actual_client": [
+            400,
+            226
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_sendinput_down",
+          "requested_client": [
+            400,
+            226
+          ],
+          "requested_screen": [
+            483,
+            332
+          ],
+          "actual_screen": [
+            483,
+            332
+          ],
+          "actual_client": [
+            400,
+            226
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_sendinput_up",
+          "requested_client": [
+            400,
+            226
+          ],
+          "requested_screen": [
+            483,
+            332
+          ],
+          "actual_screen": [
+            483,
+            332
+          ],
+          "actual_client": [
+            400,
+            226
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "after_click",
+          "requested_client": [
+            400,
+            226
+          ],
+          "requested_screen": [
+            483,
+            332
+          ],
+          "actual_screen": [
+            483,
+            332
+          ],
+          "actual_client": [
+            400,
+            226
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        }
+      ],
+      "clicks": [
+        {
+          "mode": "sendinput",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                226
+              ],
+              "requested_screen": [
+                483,
+                332
+              ],
+              "actual_screen": [
+                483,
+                332
+              ],
+              "actual_client": [
+                400,
+                226
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_sendinput_down",
+              "requested_client": [
+                400,
+                226
+              ],
+              "requested_screen": [
+                483,
+                332
+              ],
+              "actual_screen": [
+                483,
+                332
+              ],
+              "actual_client": [
+                400,
+                226
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_sendinput_up",
+              "requested_client": [
+                400,
+                226
+              ],
+              "requested_screen": [
+                483,
+                332
+              ],
+              "actual_screen": [
+                483,
+                332
+              ],
+              "actual_client": [
+                400,
+                226
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                226
+              ],
+              "requested_screen": [
+                483,
+                332
+              ],
+              "actual_screen": [
+                483,
+                332
+              ],
+              "actual_client": [
+                400,
+                226
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            }
+          ],
+          "sendinput_down": 1,
+          "sendinput_up": 1,
+          "repeat_index": 0
+        },
+        {
+          "mode": "sendinput",
+          "hold_ms": 300,
+          "events": [
+            {
+              "phase": "before_click",
+              "requested_client": [
+                400,
+                226
+              ],
+              "requested_screen": [
+                483,
+                332
+              ],
+              "actual_screen": [
+                483,
+                332
+              ],
+              "actual_client": [
+                400,
+                226
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_sendinput_down",
+              "requested_client": [
+                400,
+                226
+              ],
+              "requested_screen": [
+                483,
+                332
+              ],
+              "actual_screen": [
+                483,
+                332
+              ],
+              "actual_client": [
+                400,
+                226
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_sendinput_up",
+              "requested_client": [
+                400,
+                226
+              ],
+              "requested_screen": [
+                483,
+                332
+              ],
+              "actual_screen": [
+                483,
+                332
+              ],
+              "actual_client": [
+                400,
+                226
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            },
+            {
+              "phase": "after_click",
+              "requested_client": [
+                400,
+                226
+              ],
+              "requested_screen": [
+                483,
+                332
+              ],
+              "actual_screen": [
+                483,
+                332
+              ],
+              "actual_client": [
+                400,
+                226
+              ],
+              "screen_error": [
+                0,
+                0
+              ],
+              "client_error": [
+                0,
+                0
+              ]
+            }
+          ],
+          "sendinput_down": 1,
+          "sendinput_up": 1,
+          "repeat_index": 1
+        }
+      ]
+    }
+  ],
+  "max_abs_error": 14,
+  "max_sample_abs_error": 411,
+  "click_event_count": 8,
+  "path_verified": false,
+  "click_path_verified": false,
+  "pid": 40144,
+  "exe": null
+}

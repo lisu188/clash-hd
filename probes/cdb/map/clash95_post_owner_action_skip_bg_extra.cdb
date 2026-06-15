@@ -1,0 +1,5 @@
+.echo === Clash95 post-owner action background-skip experiment ===
+.echo Includes pre-clear route and skips the 00435C80 background resource draw once
+$$$$><C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\clash95_post_owner_action_clear_before_extra.cdb
+
+bp 00435C80 ".if ((@$t18 != 0) & (@$t7 == 0)) { r @$t7=1; .printf \"APSKIP_BG_435C80 ret=%p surface=%p base=%p resource_arg_edx=%p samples=(%02x,%02x,%02x)\\n\", poi(@esp), poi(005202e0), poi(poi(005202e0)+4), @edx, by(poi(poi(005202e0)+4)), by(poi(poi(005202e0)+4)+0n120*0n800+0n400), by(poi(poi(005202e0)+4)+0n340*0n800+0n400); r eip=00435c83; gc } .else { gc }"

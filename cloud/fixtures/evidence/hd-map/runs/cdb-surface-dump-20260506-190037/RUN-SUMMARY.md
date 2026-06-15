@@ -19,17 +19,17 @@
 - DirectDraw proxy DLL: C:\ClashTests\cdb-post-owner-visibility\ddraw.dll
 - DirectDraw proxy log: C:\ClashTests\cdb-post-owner-visibility\ddraw_surfdump_proxy.log
 - Surface: 800x600, base=03aa0030, bytes=480000
-- Raw: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\surface.raw
-- PNG: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\surface.png
-- Coverage JSON: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\map-tile-coverage.json
+- Raw: <CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-190037\surface.raw
+- PNG: <CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-190037\surface.png
+- Coverage JSON: <CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-190037\map-tile-coverage.json
 - Coverage blank active cells: r6c10, r6c11, r7c10, r7c11, r8c0, r8c10, r8c11
-- Visibility JSON: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\visibility-coverage-summary.json
+- Visibility JSON: <CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-190037\visibility-coverage-summary.json
 - Visibility require explained: True
 - Visibility explained gate: passed
 - Visibility unexplained blanks: none
 - Visibility status counts: visibility_zero=7
 - Forced-visible gate: not used
 - Forced-visible JSON: not used
-- Log: <CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\cdb-surface-dump.log
+- Log: <CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-190037\cdb-surface-dump.log
 
-![surface dump](<CLOUD_WORKTREE>\captures\cdb-surface-dump-20260506-190037\surface.png)
+![surface dump](<CLOUD_WORKTREE>\captures\archive\cdb-surface-dump-20260506-190037\surface.png)

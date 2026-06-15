@@ -1,0 +1,151 @@
+{
+  "generated_at": "2026-06-15T18:34:48+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "checks": {
+    "overview_visual_baseline": {
+      "passed": true,
+      "run": "captures\\archive\\cdb-surface-dump-20260515-105041",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",
+      "commands": [
+        "0x63",
+        "0x86",
+        "0x87",
+        "0x99",
+        "0x9C",
+        "0x9F",
+        "0xA6"
+      ],
+      "surface_size": [
+        800,
+        600
+      ],
+      "overview_post_draw_size": [
+        800,
+        600
+      ],
+      "centered_geometry_passed": true,
+      "barracks_baseline_passed": true,
+      "failures": []
+    },
+    "barracks_controlled_stop": {
+      "passed": true,
+      "run": "captures\\archive\\cdb-surface-dump-20260512-082418",
+      "log": "captures\\archive\\cdb-surface-dump-20260512-082418\\cdb-surface-dump.log",
+      "ready": true,
+      "descriptor_click_ok": true,
+      "controlled_4356c0_ok": true,
+      "failure_exit_count": 0,
+      "av_count": 0,
+      "classification": [
+        "centered action coordinate was installed",
+        "selected barracks addon was forced before action-panel draw",
+        "descriptor 005151cf callback resolved to 004356c0",
+        "00435620 action click dispatch was not entered",
+        "004356c0 action callback was entered",
+        "004356c0 action callback stopped at the controlled dump point",
+        "action click did not prove dword_532210 exit state",
+        "dword_544D04 trace was armed after centered click injection",
+        "action descriptor 005151cf saw click_flag=1 before stock gates",
+        "surface dump reached ready state"
+      ],
+      "failures": []
+    },
+    "latest_castle_overview_matrix": {
+      "passed": false,
+      "stage": "castlecenter-all",
+      "promotion_status": "validation_stage_only",
+      "candidate_sha256": null,
+      "patches": null,
+      "visible_multihit_targets": [
+        {
+          "index": 0,
+          "raw": 248,
+          "command": 134,
+          "callback": 4521584,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 1,
+          "raw": 254,
+          "command": 99,
+          "callback": 4406304,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 2,
+          "raw": 255,
+          "command": 135,
+          "callback": 4370592,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        }
+      ],
+      "dormant_multihit_targets": [
+        {
+          "index": 0,
+          "raw": 250,
+          "command": 153,
+          "callback": 4447456,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 1,
+          "raw": 251,
+          "command": 156,
+          "callback": 4446432,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 2,
+          "raw": 252,
+          "command": 159,
+          "callback": 4447968,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        },
+        {
+          "index": 3,
+          "raw": 253,
+          "command": 166,
+          "callback": 4446944,
+          "raw_ok": true,
+          "descriptor_ok": true,
+          "gate_ok": true,
+          "completion_ok": true,
+          "ok": true
+        }
+      ],
+      "failures": [
+        "patch_stage: candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe"
+      ],
+      "visible_multihit_completion_ok": true,
+      "dormant_multihit_completion_ok": true
+    }
+  },
+  "failures": [
+    "latest_castle_overview_matrix: patch_stage: candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe"
+  ]
+}

@@ -1,0 +1,32 @@
+.echo === Clash95 startup-stall plus dword_526994 setup probe ===
+.echo CDB-only no-popup probe for hidden-desktop surface-dump route
+
+bp /1 004479C0 ".printf \"STARTUP_STARTMENU_ENTRY ret=%p surface=%p lang=%d choice=%d exit=%d\\n\", poi(@esp), poi(005202e0), by(00511130), poi(00543d7c), poi(00543d78); gc"
+bp /1 004479F0 ".printf \"STARTUP_CALL_UI_STARTANIMS ret_after=004479f5 surface=%p lang=%d\\n\", poi(005202e0), by(00511130); gc"
+bp /1 00447840 ".printf \"STARTUP_UI_STARTANIMS_ENTRY ret=%p surface=%p lang=%d renderhook=%p\\n\", poi(@esp), poi(005202e0), by(00511130), poi(005199d8); gc"
+bp /1 00447890 ".printf \"STARTUP_UI_DD_PUMP_BEFORE_SLEEP ret_after=00447895 dd=%p surface=%p\\n\", 00544cd8, poi(005202e0); gc"
+bp /1 0044789A ".printf \"STARTUP_UI_SLEEP_1200 ret_after=004478a1 surface=%p\\n\", poi(005202e0); gc"
+bp /1 004478A1 ".printf \"STARTUP_UI_AFTER_SLEEP_BEFORE_LOGO surface=%p lang=%d\\n\", poi(005202e0), by(00511130); gc"
+bp /1 004478B3 ".printf \"STARTUP_UI_AVI_CALL tag=logo path_ptr=%p lang=%d\\n\", @eax, by(00511130); da @eax; gc"
+bp /1 004478B8 ".printf \"STARTUP_UI_AVI_RETURN tag=logo lang=%d\\n\", by(00511130); gc"
+bp /1 0044792E ".printf \"STARTUP_UI_AVI_CALL tag=soft2000 path_ptr=%p lang=%d\\n\", @eax, by(00511130); da @eax; gc"
+bp /1 00447947 ".printf \"STARTUP_UI_AVI_CALL tag=int_a path_ptr=%p lang=%d\\n\", @eax, by(00511130); da @eax; gc"
+bp /1 00447960 ".printf \"STARTUP_UI_AVI_CALL tag=int_alt path_ptr=%p lang=%d\\n\", @eax, by(00511130); da @eax; gc"
+bp /1 0044797C ".printf \"STARTUP_UI_AVI_CALL tag=int_g path_ptr=%p lang=%d\\n\", @eax, by(00511130); da @eax; gc"
+bp /1 004478D5 ".printf \"STARTUP_UI_ANIMS_AFTER_AVI_BRANCH lang=%d surface=%p\\n\", by(00511130), poi(005202e0); gc"
+bp /1 00447914 ".printf \"STARTUP_UI_STARTANIMS_RETURN ret=%p surface=%p renderhook=%p\\n\", poi(@esp), poi(005202e0), poi(005199d8); gc"
+bp /1 00447A02 ".printf \"STARTUP_AFTER_UI_STARTANIMS surface=%p lang=%d choice=%d exit=%d\\n\", poi(005202e0), by(00511130), poi(00543d7c), poi(00543d78); gc"
+bp /1 00447D61 ".printf \"STARTUP_MAIN_DISPATCH_REACHED choice=%d exit=%d surface=%p\\n\", poi(00543d7c), poi(00543d78), poi(005202e0); gc"
+
+bp /1 00461E20 ".printf \"STARTUP_VIDEO_IN_ENTRY ret=%p path_ptr=%p mode_args=(%d,%d,%d) pixfmt=%d\\n\", poi(@esp), @eax, @ecx, @ebx, poi(@esp+4), poi(0051d594); da @eax; gc"
+bp /1 00461F6A ".printf \"STARTUP_VIDEO_AFTER_MODE_BEGIN ret=%p path_ptr=%p tick=%p pixfmt=%d\\n\", poi(@esp), @ebp, poi(005452e4), poi(0051d594); gc"
+bp /1 00462017 ".printf \"STARTUP_VIDEO_OUT_LOG ret=%p savedhook=%p tick=%p pixfmt=%d\\n\", poi(@esp), poi(005199d8), poi(005452e4), poi(0051d594); gc"
+bp /1 0046E4D0 ".printf \"STARTUP_AVI_THREAD_SLEEP call=0046e4d0 flag54d414=%d divisor=%d\\n\", poi(0054d414), poi(00519cb0); gc"
+bp /1 0046E6DF ".printf \"STARTUP_AUDIO_THREAD_SLEEP call=0046e6df flag54d45c=%d count=%d divisor=%d\\n\", poi(0054d45c), poi(0054d3c8), poi(00519cb0); gc"
+bp /1 0046F8F0 ".printf \"STARTUP_CSS_ISPLAYING_ENTRY arg=%p streams=%d active54d414=%d active54d45c=%d\\n\", poi(@esp+4), poi(0054d3c8), poi(0054d414), poi(0054d45c); gc"
+bp /1 0046FD01 ".printf \"STARTUP_SAMPLECACHE_SLEEP call=0046fd01 flag54d4b4=%d divisor=%d\\n\", poi(0054d4b4), poi(00519cf4); gc"
+
+bp 00423760 ".printf \"D526994_OWNER_423760_ENTRY ret=%p arg_eax=%p callback=%p flag526994=%p gd=%p gameplay=%d\\n\", poi(@esp), @eax, poi(00526990), poi(00526994), poi(005202e4), @$t14; gc"
+bp 00423B00 ".printf \"D526994_OWNER_423B00_ENTRY ret=%p callback=%p flag526994=%p gd=%p gameplay=%d\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e4), @$t14; gc"
+bp 00423B40 ".printf \"D526994_OWNER_423B40_ENTRY ret=%p callback=%p flag526994=%p gd=%p gameplay=%d\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e4), @$t14; gc"
+bp 004187A0 ".if (@$t14 != 0) { .printf \"D526994_MIN_CALLBACK_TEST ret=%p callback=%p flag526994=%p surface=%p sz=(%d,%d)\\n\", poi(@esp), poi(00526990), poi(00526994), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"

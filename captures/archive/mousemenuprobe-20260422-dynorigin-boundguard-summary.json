@@ -1,0 +1,583 @@
+{
+  "log": "captures\\cdb-python-dynorigin-boundguard-map-20260422.log",
+  "mouse_rows": 40,
+  "menuhit_rows": 21,
+  "ranges": {
+    "x": {
+      "min": 0,
+      "max": 468,
+      "unique": 7
+    },
+    "y": {
+      "min": 0,
+      "max": 285,
+      "unique": 5
+    },
+    "dx": {
+      "min": 0,
+      "max": 32523,
+      "unique": 7
+    },
+    "dy": {
+      "min": 0,
+      "max": 18212,
+      "unique": 5
+    },
+    "rawx": {
+      "min": 0,
+      "max": 29952,
+      "unique": 7
+    },
+    "rawy": {
+      "min": 0,
+      "max": 18240,
+      "unique": 5
+    },
+    "buttons": {
+      "min": 0,
+      "max": 1,
+      "unique": 2
+    },
+    "lbtn": {
+      "min": 0,
+      "max": 128,
+      "unique": 2
+    },
+    "rbtn": {
+      "min": 0,
+      "max": 0,
+      "unique": 1
+    }
+  },
+  "objects": [
+    "00544cd8"
+  ],
+  "max_bounds_seen": {
+    "x": 628,
+    "y": 463
+  },
+  "final_max_bounds": {
+    "x": 610,
+    "y": 452
+  },
+  "preclamp_over_bounds": 0,
+  "preclamp_at_final_max": 0,
+  "zero_delta_rows": 20,
+  "button_rows": 19,
+  "left_button_rows": 19,
+  "right_button_rows": 0,
+  "first_rows": [
+    {
+      "kind": "MOUSE",
+      "line_no": 153,
+      "obj": "00544cd8",
+      "x": 0,
+      "y": 0,
+      "dx": 32523,
+      "dy": 18212,
+      "shift": 6,
+      "speed": 64,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 628,
+      "maxy": 463,
+      "rawx": 0,
+      "rawy": 0,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "kind": "MOUSE",
+      "line_no": 154,
+      "obj": "00544cd8",
+      "x": 1,
+      "y": 1,
+      "dx": 0,
+      "dy": 0,
+      "shift": 6,
+      "speed": 64,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 628,
+      "maxy": 463,
+      "rawx": 64,
+      "rawy": 64,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "kind": "MOUSE",
+      "line_no": 188,
+      "obj": "00544cd8",
+      "x": 240,
+      "y": 197,
+      "dx": 280,
+      "dy": 151,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 1,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 15360,
+      "rawy": 12608,
+      "lbtn": 128,
+      "rbtn": 0
+    },
+    {
+      "kind": "MOUSE",
+      "line_no": 190,
+      "obj": "00544cd8",
+      "x": 240,
+      "y": 197,
+      "dx": 0,
+      "dy": 0,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 1,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 15360,
+      "rawy": 12608,
+      "lbtn": 128,
+      "rbtn": 0
+    },
+    {
+      "kind": "MOUSE",
+      "line_no": 191,
+      "obj": "00544cd8",
+      "x": 240,
+      "y": 197,
+      "dx": 280,
+      "dy": 151,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 15360,
+      "rawy": 12608,
+      "lbtn": 0,
+      "rbtn": 0
+    }
+  ],
+  "last_rows": [
+    {
+      "kind": "MOUSE",
+      "line_no": 239,
+      "obj": "00544cd8",
+      "x": 468,
+      "y": 265,
+      "dx": 0,
+      "dy": 0,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 29952,
+      "rawy": 16960,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "kind": "MOUSE",
+      "line_no": 240,
+      "obj": "00544cd8",
+      "x": 468,
+      "y": 265,
+      "dx": 337,
+      "dy": 168,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 1,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 29952,
+      "rawy": 16960,
+      "lbtn": 128,
+      "rbtn": 0
+    },
+    {
+      "kind": "MOUSE",
+      "line_no": 242,
+      "obj": "00544cd8",
+      "x": 468,
+      "y": 265,
+      "dx": 0,
+      "dy": 0,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 1,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 29952,
+      "rawy": 16960,
+      "lbtn": 128,
+      "rbtn": 0
+    },
+    {
+      "kind": "MOUSE",
+      "line_no": 243,
+      "obj": "00544cd8",
+      "x": 468,
+      "y": 265,
+      "dx": 337,
+      "dy": 168,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 29952,
+      "rawy": 16960,
+      "lbtn": 0,
+      "rbtn": 0
+    },
+    {
+      "kind": "MOUSE",
+      "line_no": 245,
+      "obj": "00544cd8",
+      "x": 468,
+      "y": 265,
+      "dx": 0,
+      "dy": 0,
+      "shift": 6,
+      "speed": 20,
+      "buttons": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "rawx": 29952,
+      "rawy": 16960,
+      "lbtn": 0,
+      "rbtn": 0
+    }
+  ],
+  "menuhit_ranges": {
+    "x": {
+      "min": 1,
+      "max": 468,
+      "unique": 6
+    },
+    "y": {
+      "min": 1,
+      "max": 285,
+      "unique": 4
+    },
+    "dx": {
+      "min": 0,
+      "max": 337,
+      "unique": 6
+    },
+    "dy": {
+      "min": 0,
+      "max": 173,
+      "unique": 4
+    },
+    "rawx": {
+      "min": 64,
+      "max": 29952,
+      "unique": 6
+    },
+    "rawy": {
+      "min": 64,
+      "max": 18240,
+      "unique": 4
+    },
+    "lbtn": {
+      "min": 0,
+      "max": 128,
+      "unique": 2
+    },
+    "rbtn": {
+      "min": 0,
+      "max": 0,
+      "unique": 1
+    },
+    "mask": {
+      "min": 0,
+      "max": 1,
+      "unique": 2
+    },
+    "entry": {
+      "min": 981544,
+      "max": 5344712,
+      "unique": 5
+    },
+    "ex": {
+      "min": 31,
+      "max": 329,
+      "unique": 5
+    },
+    "ey": {
+      "min": 196,
+      "max": 452,
+      "unique": 5
+    }
+  },
+  "menuhit_entries": [
+    {
+      "entry": 5344712,
+      "ex": 92,
+      "ey": 362,
+      "count": 7
+    },
+    {
+      "entry": 5324184,
+      "ex": 31,
+      "ey": 432,
+      "count": 6
+    },
+    {
+      "entry": 982184,
+      "ex": 329,
+      "ey": 452,
+      "count": 5
+    },
+    {
+      "entry": 981544,
+      "ex": 239,
+      "ey": 196,
+      "count": 2
+    },
+    {
+      "entry": 981597,
+      "ex": 232,
+      "ey": 228,
+      "count": 1
+    }
+  ],
+  "menuhit_button_rows": 10,
+  "menuhit_over_bounds": 0,
+  "menuhit_first_rows": [
+    {
+      "kind": "MENUHIT",
+      "line_no": 187,
+      "x": 1,
+      "y": 1,
+      "dx": 0,
+      "dy": 0,
+      "shift": 6,
+      "mask": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 239,
+      "ey": 196,
+      "rawx": 64,
+      "rawy": 64,
+      "lbtn": 0,
+      "rbtn": 0,
+      "entry": 981544
+    },
+    {
+      "kind": "MENUHIT",
+      "line_no": 189,
+      "x": 240,
+      "y": 197,
+      "dx": 280,
+      "dy": 151,
+      "shift": 6,
+      "mask": 1,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 239,
+      "ey": 196,
+      "rawx": 15360,
+      "rawy": 12608,
+      "lbtn": 128,
+      "rbtn": 0,
+      "entry": 981544
+    },
+    {
+      "kind": "MENUHIT",
+      "line_no": 192,
+      "x": 240,
+      "y": 197,
+      "dx": 280,
+      "dy": 151,
+      "shift": 6,
+      "mask": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 232,
+      "ey": 228,
+      "rawx": 15360,
+      "rawy": 12608,
+      "lbtn": 0,
+      "rbtn": 0,
+      "entry": 981597
+    },
+    {
+      "kind": "MENUHIT",
+      "line_no": 193,
+      "x": 240,
+      "y": 197,
+      "dx": 280,
+      "dy": 151,
+      "shift": 6,
+      "mask": 1,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 329,
+      "ey": 452,
+      "rawx": 15360,
+      "rawy": 12608,
+      "lbtn": 128,
+      "rbtn": 0,
+      "entry": 982184
+    },
+    {
+      "kind": "MENUHIT",
+      "line_no": 196,
+      "x": 240,
+      "y": 197,
+      "dx": 280,
+      "dy": 151,
+      "shift": 6,
+      "mask": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 329,
+      "ey": 452,
+      "rawx": 15360,
+      "rawy": 12608,
+      "lbtn": 0,
+      "rbtn": 0,
+      "entry": 982184
+    }
+  ],
+  "menuhit_last_rows": [
+    {
+      "kind": "MENUHIT",
+      "line_no": 232,
+      "x": 436,
+      "y": 197,
+      "dx": 329,
+      "dy": 151,
+      "shift": 6,
+      "mask": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 92,
+      "ey": 362,
+      "rawx": 27904,
+      "rawy": 12608,
+      "lbtn": 0,
+      "rbtn": 0,
+      "entry": 5344712
+    },
+    {
+      "kind": "MENUHIT",
+      "line_no": 235,
+      "x": 468,
+      "y": 265,
+      "dx": 337,
+      "dy": 168,
+      "shift": 6,
+      "mask": 1,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 92,
+      "ey": 362,
+      "rawx": 29952,
+      "rawy": 16960,
+      "lbtn": 128,
+      "rbtn": 0,
+      "entry": 5344712
+    },
+    {
+      "kind": "MENUHIT",
+      "line_no": 238,
+      "x": 468,
+      "y": 265,
+      "dx": 337,
+      "dy": 168,
+      "shift": 6,
+      "mask": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 92,
+      "ey": 362,
+      "rawx": 29952,
+      "rawy": 16960,
+      "lbtn": 0,
+      "rbtn": 0,
+      "entry": 5344712
+    },
+    {
+      "kind": "MENUHIT",
+      "line_no": 241,
+      "x": 468,
+      "y": 265,
+      "dx": 337,
+      "dy": 168,
+      "shift": 6,
+      "mask": 1,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 92,
+      "ey": 362,
+      "rawx": 29952,
+      "rawy": 16960,
+      "lbtn": 128,
+      "rbtn": 0,
+      "entry": 5344712
+    },
+    {
+      "kind": "MENUHIT",
+      "line_no": 244,
+      "x": 468,
+      "y": 265,
+      "dx": 337,
+      "dy": 168,
+      "shift": 6,
+      "mask": 0,
+      "minx": 1,
+      "miny": 1,
+      "maxx": 610,
+      "maxy": 452,
+      "ex": 92,
+      "ey": 362,
+      "rawx": 29952,
+      "rawy": 16960,
+      "lbtn": 0,
+      "rbtn": 0,
+      "entry": 5344712
+    }
+  ]
+}

@@ -1,0 +1,457 @@
+{
+  "generated_at": "2026-05-15T10:58:09+02:00",
+  "run_dir": "captures\\archive\\cdb-surface-dump-20260515-105041",
+  "log": "captures\\archive\\cdb-surface-dump-20260515-105041\\cdb-surface-dump.log",
+  "screenshot": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",
+  "passed": true,
+  "failures": [],
+  "expected_commands": [
+    "0x63",
+    "0x86",
+    "0x87",
+    "0x99",
+    "0x9C",
+    "0x9F",
+    "0xA6"
+  ],
+  "catalog": {
+    "ready": true,
+    "av_count": 0,
+    "commands": [
+      "0x63",
+      "0x86",
+      "0x87",
+      "0x99",
+      "0x9C",
+      "0x9F",
+      "0xA6"
+    ],
+    "descriptors": [
+      {
+        "command": 134,
+        "command_hex": "0x86",
+        "callback": 4521584,
+        "callback_hex": "0x0044FE70",
+        "text": 3,
+        "owner_flag": 0,
+        "first_line": 207
+      },
+      {
+        "command": 153,
+        "command_hex": "0x99",
+        "callback": 4447456,
+        "callback_hex": "0x0043DCE0",
+        "text": 3,
+        "owner_flag": 0,
+        "first_line": 207
+      },
+      {
+        "command": 156,
+        "command_hex": "0x9C",
+        "callback": 4446432,
+        "callback_hex": "0x0043D8E0",
+        "text": 3,
+        "owner_flag": 0,
+        "first_line": 207
+      },
+      {
+        "command": 159,
+        "command_hex": "0x9F",
+        "callback": 4447968,
+        "callback_hex": "0x0043DEE0",
+        "text": 3,
+        "owner_flag": 0,
+        "first_line": 207
+      },
+      {
+        "command": 166,
+        "command_hex": "0xA6",
+        "callback": 4446944,
+        "callback_hex": "0x0043DAE0",
+        "text": 3,
+        "owner_flag": 0,
+        "first_line": 207
+      },
+      {
+        "command": 99,
+        "command_hex": "0x63",
+        "callback": 4406304,
+        "callback_hex": "0x00433C20",
+        "text": 3,
+        "owner_flag": 0,
+        "first_line": 207
+      },
+      {
+        "command": 135,
+        "command_hex": "0x87",
+        "callback": 4370592,
+        "callback_hex": "0x0042B0A0",
+        "text": 3,
+        "owner_flag": 0,
+        "first_line": 207
+      }
+    ],
+    "last_surface": {
+      "redraw_seq": 992,
+      "surface": 167853784,
+      "size": [
+        800,
+        600
+      ],
+      "base": 169214000,
+      "bytes": 480000
+    },
+    "last_overview_post_draw": {
+      "ret": 1701667194,
+      "main_surface": 167853784,
+      "main_size": [
+        800,
+        600
+      ],
+      "overview_surface": 168230160,
+      "overview_size": [
+        640,
+        480
+      ],
+      "owner_screen": 69715738
+    },
+    "classification": [
+      "controlled castle-screen invocation was attempted",
+      "cataloged 7 unique castle descriptor callbacks",
+      "surface dump reached ready state",
+      "overview redraw finished on main surface size [800, 600]",
+      "catalog finished on an 800x600 surface"
+    ]
+  },
+  "geometry": {
+    "path": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",
+    "image": {
+      "width": 800,
+      "height": 600
+    },
+    "threshold": 12,
+    "regions": {
+      "full": {
+        "rect": [
+          0,
+          0,
+          799,
+          599
+        ],
+        "clipped_rect": [
+          0,
+          0,
+          799,
+          599
+        ],
+        "pixels": 480000,
+        "nonblack_pixels": 307088,
+        "nonblack_percent": 63.977,
+        "nonblack_bounds": {
+          "x": 80,
+          "y": 60,
+          "right": 719,
+          "bottom": 539,
+          "width": 640,
+          "height": 480
+        }
+      },
+      "centered_640x480": {
+        "rect": [
+          80,
+          60,
+          719,
+          539
+        ],
+        "clipped_rect": [
+          80,
+          60,
+          719,
+          539
+        ],
+        "pixels": 307200,
+        "nonblack_pixels": 307088,
+        "nonblack_percent": 99.964,
+        "nonblack_bounds": {
+          "x": 80,
+          "y": 60,
+          "right": 719,
+          "bottom": 539,
+          "width": 640,
+          "height": 480
+        }
+      },
+      "native_top_left_640x480": {
+        "rect": [
+          0,
+          0,
+          639,
+          479
+        ],
+        "clipped_rect": [
+          0,
+          0,
+          639,
+          479
+        ],
+        "pixels": 307200,
+        "nonblack_pixels": 235141,
+        "nonblack_percent": 76.543,
+        "nonblack_bounds": {
+          "x": 80,
+          "y": 60,
+          "right": 639,
+          "bottom": 479,
+          "width": 560,
+          "height": 420
+        }
+      },
+      "top_left_margin_80x60": {
+        "rect": [
+          0,
+          0,
+          79,
+          59
+        ],
+        "clipped_rect": [
+          0,
+          0,
+          79,
+          59
+        ],
+        "pixels": 4800,
+        "nonblack_pixels": 0,
+        "nonblack_percent": 0.0,
+        "nonblack_bounds": null
+      },
+      "left_margin_80x480": {
+        "rect": [
+          0,
+          60,
+          79,
+          539
+        ],
+        "clipped_rect": [
+          0,
+          60,
+          79,
+          539
+        ],
+        "pixels": 38400,
+        "nonblack_pixels": 0,
+        "nonblack_percent": 0.0,
+        "nonblack_bounds": null
+      },
+      "top_margin_640x60": {
+        "rect": [
+          80,
+          0,
+          719,
+          59
+        ],
+        "clipped_rect": [
+          80,
+          0,
+          719,
+          59
+        ],
+        "pixels": 38400,
+        "nonblack_pixels": 0,
+        "nonblack_percent": 0.0,
+        "nonblack_bounds": null
+      }
+    },
+    "gate": {
+      "passed": true,
+      "checks": {
+        "image_size_800x600": true,
+        "centered_region_has_content": true,
+        "centered_region_dominates_margins": true,
+        "native_origin_echo_absent": true
+      },
+      "centered_nonblack_percent": 99.964,
+      "max_margin_nonblack_percent": 0.0,
+      "max_allowed_echo_percent": 25.0
+    }
+  },
+  "visual_integrity": {
+    "passed": true,
+    "rect": [
+      80,
+      60,
+      719,
+      539
+    ],
+    "diff_threshold": 40.0,
+    "vertical_high_percent": 4.696,
+    "horizontal_high_percent": 3.473,
+    "vertical_stripe_excess_percent": 1.223,
+    "vertical_mean_diff": 10.805,
+    "horizontal_mean_diff": 7.878,
+    "mean_diff_ratio": 1.372,
+    "max_vertical_high_percent": 12.0,
+    "max_vertical_stripe_excess_percent": 8.0
+  },
+  "barracks_baseline": {
+    "run_dir": "captures\\archive\\cdb-surface-dump-20260512-082418",
+    "passed": true,
+    "failures": [],
+    "action": {
+      "ready": true,
+      "descriptor_click_ok": true,
+      "controlled_4356c0_ok": true,
+      "av_count": 0
+    },
+    "geometry": {
+      "path": "captures\\archive\\cdb-surface-dump-20260512-082418\\surface.png",
+      "image": {
+        "width": 800,
+        "height": 600
+      },
+      "threshold": 12,
+      "regions": {
+        "full": {
+          "rect": [
+            0,
+            0,
+            799,
+            599
+          ],
+          "clipped_rect": [
+            0,
+            0,
+            799,
+            599
+          ],
+          "pixels": 480000,
+          "nonblack_pixels": 218811,
+          "nonblack_percent": 45.586,
+          "nonblack_bounds": {
+            "x": 80,
+            "y": 60,
+            "right": 719,
+            "bottom": 539,
+            "width": 640,
+            "height": 480
+          }
+        },
+        "centered_640x480": {
+          "rect": [
+            80,
+            60,
+            719,
+            539
+          ],
+          "clipped_rect": [
+            80,
+            60,
+            719,
+            539
+          ],
+          "pixels": 307200,
+          "nonblack_pixels": 218811,
+          "nonblack_percent": 71.228,
+          "nonblack_bounds": {
+            "x": 80,
+            "y": 60,
+            "right": 719,
+            "bottom": 539,
+            "width": 640,
+            "height": 480
+          }
+        },
+        "native_top_left_640x480": {
+          "rect": [
+            0,
+            0,
+            639,
+            479
+          ],
+          "clipped_rect": [
+            0,
+            0,
+            639,
+            479
+          ],
+          "pixels": 307200,
+          "nonblack_pixels": 164688,
+          "nonblack_percent": 53.609,
+          "nonblack_bounds": {
+            "x": 80,
+            "y": 60,
+            "right": 639,
+            "bottom": 479,
+            "width": 560,
+            "height": 420
+          }
+        },
+        "top_left_margin_80x60": {
+          "rect": [
+            0,
+            0,
+            79,
+            59
+          ],
+          "clipped_rect": [
+            0,
+            0,
+            79,
+            59
+          ],
+          "pixels": 4800,
+          "nonblack_pixels": 0,
+          "nonblack_percent": 0.0,
+          "nonblack_bounds": null
+        },
+        "left_margin_80x480": {
+          "rect": [
+            0,
+            60,
+            79,
+            539
+          ],
+          "clipped_rect": [
+            0,
+            60,
+            79,
+            539
+          ],
+          "pixels": 38400,
+          "nonblack_pixels": 0,
+          "nonblack_percent": 0.0,
+          "nonblack_bounds": null
+        },
+        "top_margin_640x60": {
+          "rect": [
+            80,
+            0,
+            719,
+            59
+          ],
+          "clipped_rect": [
+            80,
+            0,
+            719,
+            59
+          ],
+          "pixels": 38400,
+          "nonblack_pixels": 0,
+          "nonblack_percent": 0.0,
+          "nonblack_bounds": null
+        }
+      },
+      "gate": {
+        "passed": true,
+        "checks": {
+          "image_size_800x600": true,
+          "centered_region_has_content": true,
+          "centered_region_dominates_margins": true,
+          "native_origin_echo_absent": true
+        },
+        "centered_nonblack_percent": 71.228,
+        "max_margin_nonblack_percent": 0.0,
+        "max_allowed_echo_percent": 25.0
+      }
+    }
+  }
+}

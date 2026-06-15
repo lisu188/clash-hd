@@ -208,7 +208,7 @@ def parse_log(path: Path) -> dict[str, Any]:
         classification.append("surface dump reached gameplay ready state")
     if len(force_states) >= 4:
         modes = ", ".join(row.get("mode", "unknown") for row in force_states)
-        classification.append(f"debugger forced four hover states: {modes}")
+        classification.append(f"debugger forced {len(force_states)} hover states: {modes}")
     elif force_states:
         classification.append("debugger forced partial hover position sequence")
     if entry_count == 0:

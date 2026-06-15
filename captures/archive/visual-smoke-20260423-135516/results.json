@@ -1,0 +1,61 @@
+{
+    "Exe":  "C:\\Clash\\clash95_hd_mousedynorigin_mapsurface_scrollclamp_20260423.exe",
+    "ExeSha256":  "435218DA425C9F3C5E35C9374778FB2E0427C7EB510257A05209086C416A7E87",
+    "ProcessId":  31204,
+    "OutputDirectory":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\visual-smoke-20260423-135516",
+    "MenuMouseJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\visual-smoke-20260423-135516\\menu-path.json",
+    "MapMouseJson":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\visual-smoke-20260423-135516\\map-path.json",
+    "MenuFrame":  {
+                      "Path":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\visual-smoke-20260423-135516\\menu.png",
+                      "Hash":  "A5258177032A7D69299893C108E642F6AFCAB508E717D7954F32FFAAF7E339ED",
+                      "Width":  1200,
+                      "Height":  900,
+                      "OriginX":  1320,
+                      "OriginY":  611,
+                      "CenterWindowMatchesTarget":  true,
+                      "CenterWindowHwnd":  "0x1B20C8E",
+                      "CenterRootHwnd":  "0x1B20C8E",
+                      "NonblackPercent":  61.791,
+                      "MeanLuma":  50.401,
+                      "NonblackBounds":  {
+                                             "X":  0,
+                                             "Y":  0,
+                                             "Right":  1196,
+                                             "Bottom":  896,
+                                             "Width":  1197,
+                                             "Height":  897
+                                         }
+                  },
+    "MapFrame":  {
+                     "Path":  "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\visual-smoke-20260423-135516\\after-map-path.png",
+                     "Hash":  "CAE8B5DA850819932ABDD766D7BB9863DB99D88A5070B5E37E5ABD9B654FC7F2",
+                     "Width":  1200,
+                     "Height":  900,
+                     "OriginX":  125,
+                     "OriginY":  159,
+                     "CenterWindowMatchesTarget":  true,
+                     "CenterWindowHwnd":  "0x1B20C8E",
+                     "CenterRootHwnd":  "0x1B20C8E",
+                     "NonblackPercent":  79.939,
+                     "MeanLuma":  86.579,
+                     "NonblackBounds":  {
+                                            "X":  0,
+                                            "Y":  0,
+                                            "Right":  1196,
+                                            "Bottom":  896,
+                                            "Width":  1197,
+                                            "Height":  897
+                                        }
+                 },
+    "MenuPathVerified":  true,
+    "MenuClickPathVerified":  true,
+    "MenuProbeExitCode":  0,
+    "MapPathVerified":  true,
+    "MapClickPathVerified":  true,
+    "MapProbeExitCode":  0,
+    "Points":  "400,300;300,218;320,166;400,226",
+    "IntroSkipClicks":  20,
+    "RunSeconds":  12,
+    "ProcessExitedBeforeCleanup":  false,
+    "ExitCode":  null
+}
