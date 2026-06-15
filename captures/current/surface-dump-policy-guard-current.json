@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T18:34:51+02:00",
+  "generated_at": "2026-06-15T20:47:03+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "surface-dump harness must default to hidden desktop and require -AllowVisibleDesktop for active-desktop fallback",

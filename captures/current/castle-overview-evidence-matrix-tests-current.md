@@ -1,7 +1,7 @@
 # Castle Overview Evidence Matrix Tests
 
 - Status: PASS
-- Generated: `2026-06-15T18:34:42+02:00`
+- Generated: `2026-06-15T20:46:48+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for matrix CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the castle overview evidence matrix aggregates every required component gate, fails when any required gate fails, requires displayed-wrapper proof in the focused hitbox gate, reports target-done completion proof in multi-hit gates, preserves validation-stage-only status, and its CLI fails closed under --require-pass
 

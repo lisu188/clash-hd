@@ -1,7 +1,7 @@
 # Docs Consistency Guard
 
 - Overall: FAIL
-- Generated: `2026-06-15T20:18:40+02:00`
+- Generated: `2026-06-15T20:47:23+02:00`
 - Runtime policy: repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Manual target IDs: `['stable_menu_load', 'stable_hd_map_input', 'right_bottom_validation_input', 'castle_barracks_centered_input', 'castle_overview_centered_input']`
@@ -20,17 +20,21 @@
 - `map_boundary_counts`: `PASS`
 - `validation_only_status`: `FAIL`
   - castle validation matrix/decision is not passing
-- `screenshot_files`: `PASS`
+- `screenshot_files`: `FAIL`
+  - normal_post_owner: missing path
+  - forced_visible_post_owner: missing path
 - `docs_codex_loop`: `PASS`
 - `docs_readme_progress`: `PASS`
 - `docs_evidence_index`: `PASS`
 - `docs_wiki_summaries`: `PASS`
-- `docs_current_screenshot_paths`: `PASS`
+- `docs_current_screenshot_paths`: `FAIL`
+  - evidence index missing current screenshot path normal_post_owner: None
+  - evidence index missing current screenshot path forced_visible_post_owner: None
 
 ## Current Screenshot Paths
 
-- `normal_post_owner`: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260506-190037\surface.png`
-- `forced_visible_post_owner`: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260506-201114\surface.png`
+- `normal_post_owner`: `None`
+- `forced_visible_post_owner`: `None`
 - `right_bottom_owner_route`: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260513-112339\surface.png`
 - `right_bottom_compose_probe`: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260513-115303\surface.png`
 - `right_bottom_compose_patch`: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260513-120712\surface.png`
@@ -43,3 +47,7 @@
 
 - boundary_counts: no-popup boundary guard is not passing
 - validation_only_status: castle validation matrix/decision is not passing
+- screenshot_files: normal_post_owner: missing path
+- screenshot_files: forced_visible_post_owner: missing path
+- docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: None
+- docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: None

@@ -1,7 +1,7 @@
 # Castle Overview Probe Guard
 
 - Overall: PASS
-- Generated: `2026-06-15T18:34:48+02:00`
+- Generated: `2026-06-15T20:46:58+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: focused overview hitbox proof must keep the descriptor-loop breakpoints, forbid the old crashing overview descriptor-input wrapper marker, and continue to prove the displayed-coordinate wrapper and click gate with no AV
 

@@ -1,7 +1,7 @@
 # Right-Bottom Slot Fixture Plan
 
 - Status: PASS
-- Generated: `2026-06-15T18:34:33+02:00`
+- Generated: `2026-06-15T20:46:32+02:00`
 - Runtime policy: repo-only fixture planner; reads generated evidence JSON and writes only JSON/Markdown reports; does not copy saves, launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only while the slot-5 route-compatible save remains blocked before LOADSAVE, the row-0 natural route remains proven, and the proposed copied save stays isolated and non-promoting
 - Candidate matrix: `captures\current\right-bottom-natural-route-candidate-matrix-current.json`

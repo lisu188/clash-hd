@@ -1,7 +1,7 @@
 # Castle Overview Hitmap Summary Tests
 
 - Status: PASS
-- Generated: `2026-06-15T18:34:43+02:00`
+- Generated: `2026-06-15T20:46:49+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for parser CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the castle overview hitmap parser recognizes raw command IDs, counts, bounding boxes, centered displayed coordinates, required present/absent flags, and wrong raw dimensions
 
