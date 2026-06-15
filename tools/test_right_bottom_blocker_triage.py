@@ -296,6 +296,12 @@ def test_slot5_input_resample_blocker_passes(fixture: Path) -> None:
         "owner_435bc0_selection_update_count": 0,
         "owner_435bc0_pump_cb14_call_count": 1,
         "owner_435bc0_pump_608f0b_call_count": 1,
+        "sourcehold_callsite_marker_count": 1,
+        "sourcehold_4612e0_marker_count": 0,
+        "input_source_cb14_4612e0_seen": True,
+        "input_source_status": "cb14_4612e0_callsite_seen_inner_offsets_unverified",
+        "real_input_click_proven": False,
+        "debugger_forced_click_only": False,
         "first_owner_435bc0_pump_cb14_call": {"cb14": 0x004612E0, "raw": [0x2D00, 0x6E00]},
         "first_owner_435bc0_pump_608f0b_call": {"raw": [0x0100, 0x6E00], "button0": 0x93},
         "last_owner_435bc0_pump_cb14_call": {"cb14": 0x004612E0, "raw": [0x2D00, 0x6E00]},
@@ -309,6 +315,12 @@ def test_slot5_input_resample_blocker_passes(fixture: Path) -> None:
     assert report["observations"]["natural_slot5_proof_class"] == "natural_slot5_right_bottom_input_resample", report
     assert report["observations"]["natural_slot5_first_435bc0_pump_cb14_call"]["raw"] == [0x2D00, 0x6E00], report
     assert report["observations"]["natural_slot5_last_435bc0_pump_cb14_call"]["cb14"] == 0x004612E0, report
+    assert report["observations"]["natural_slot5_input_source_cb14_4612e0_seen"] is True, report
+    assert report["observations"]["natural_slot5_sourcehold_4612e0_marker_count"] == 0, report
+    assert report["observations"]["natural_slot5_input_source_status"] == (
+        "cb14_4612e0_callsite_seen_inner_offsets_unverified"
+    ), report
+    assert "exact entry/return markers" in report["next_proof_options"][0], report
     assert any("00519620" in item for item in report["next_proof_options"]), report
 
 
@@ -341,6 +353,12 @@ def test_slot5_sourcehold_coords_blocker_passes(fixture: Path) -> None:
         "owner_435bc0_selection_update_count": 0,
         "owner_435bc0_pump_cb14_call_count": 7,
         "owner_435bc0_pump_608f0b_call_count": 61,
+        "sourcehold_callsite_marker_count": 3,
+        "sourcehold_4612e0_marker_count": 0,
+        "input_source_cb14_4612e0_seen": True,
+        "input_source_status": "cb14_4612e0_callsite_seen_inner_offsets_unverified",
+        "real_input_click_proven": False,
+        "debugger_forced_click_only": False,
         "last_sourcehold_marker": "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE",
         "last_sourcehold": {"raw": [0x2D00, 0x6E00], "d544d04": 0, "button0": 0},
         "last_owner_435bc0_poll": {"mouse": [180, 440], "raw": [0x2D00, 0x6E00]},
@@ -368,6 +386,8 @@ def test_slot5_sourcehold_coords_blocker_passes(fixture: Path) -> None:
         "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE"
     ), report
     assert report["observations"]["natural_slot5_last_sourcehold"]["button0"] == 0, report
+    assert report["observations"]["natural_slot5_sourcehold_callsite_marker_count"] == 3, report
+    assert report["observations"]["natural_slot5_sourcehold_4612e0_marker_count"] == 0, report
     assert any("grid route" in item for item in report["next_proof_options"]), report
 
 
@@ -401,6 +421,22 @@ def test_slot5_action_click_native_copyback_diagnostic_passes(fixture: Path) -> 
         "action_descriptor_callback_count": 1,
         "action_click_435620_entry_count": 1,
         "action_click_exit_set_count": 1,
+        "input_source_status": "debugger_forced_action_click_only",
+        "real_input_click_proven": False,
+        "debugger_forced_click_only": True,
+        "last_owner_435bc0_poll_before_action_force": {"mouse": [180, 440], "raw": [0x2D00, 0x6E00]},
+        "first_owner_435bc0_poll_after_action_force": {
+            "mouse": [81, 441],
+            "raw": [0x1440, 0x6E40],
+            "d544d04": 1,
+            "button0": 0x80,
+        },
+        "last_owner_435bc0_poll_after_action_force": {
+            "mouse": [4, 441],
+            "raw": [0x0100, 0x6E40],
+            "d544d04": 0,
+            "button0": 0x6D,
+        },
         "last_action_force": {
             "target": "bottom-left-action",
             "native": [81, 441],
@@ -421,6 +457,12 @@ def test_slot5_action_click_native_copyback_diagnostic_passes(fixture: Path) -> 
     assert report["classification"] == "controlled_recovered_but_natural_route_nonpromoting", report
     assert report["observations"]["natural_slot5_proof_class"] == "natural_slot5_right_bottom_action_click_native", report
     assert report["observations"]["natural_slot5_action_click_435620_entry_count"] == 1, report
+    assert report["observations"]["natural_slot5_input_source_status"] == "debugger_forced_action_click_only", report
+    assert report["observations"]["natural_slot5_real_input_click_proven"] is False, report
+    assert report["observations"]["natural_slot5_debugger_forced_click_only"] is True, report
+    assert report["observations"]["natural_slot5_last_435bc0_poll_before_action_force"]["mouse"] == [180, 440], report
+    assert report["observations"]["natural_slot5_first_435bc0_poll_after_action_force"]["button0"] == 0x80, report
+    assert report["observations"]["natural_slot5_last_435bc0_poll_after_action_force"]["mouse"] == [4, 441], report
     assert report["observations"]["natural_slot5_last_action_descriptor_callback"]["callback"] == 0x00435620, report
     assert any("debugger-forced" in item for item in report["next_proof_options"]), report
 

@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-15T18:34:51+02:00",
+  "generated_at": "2026-06-15T20:26:56+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "legacy visible-runtime launchers/helpers must fail closed unless -AllowVisibleRuntime is explicitly supplied after user approval; guarded child helpers must receive the same switch; root PowerShell risky-call inventory must be guarded or explicitly exempt",
-  "script_count": 7,
-  "passing_script_count": 7,
+  "script_count": 8,
+  "passing_script_count": 8,
   "inventory": {
     "checked": true,
     "root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd",
@@ -33,6 +33,27 @@
         36
       ],
       "first_risky_line": 178,
+      "child_visible_runtime_invocation_lines": [],
+      "failures": []
+    },
+    {
+      "script": "scripts\\smoke\\run_hd_soak.ps1",
+      "passed": true,
+      "exists": true,
+      "allow_visible_runtime_lines": [
+        33
+      ],
+      "guard_lines": [
+        439
+      ],
+      "approval_phrase_lines": [
+        386,
+        440
+      ],
+      "throw_lines": [
+        440
+      ],
+      "first_risky_line": 498,
       "child_visible_runtime_invocation_lines": [],
       "failures": []
     },
@@ -152,7 +173,7 @@
       "throw_lines": [
         14
       ],
-      "first_risky_line": 227,
+      "first_risky_line": 230,
       "child_visible_runtime_invocation_lines": [],
       "failures": []
     }

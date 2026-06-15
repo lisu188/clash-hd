@@ -1,8 +1,9 @@
 # Current HD Map Evidence
 
-- Updated: `2026-05-14`
+- Updated: `2026-06-15`
 - Scope: current 800x600 Clash95 HD map patch-stage evidence.
-- Runtime policy: CDB-only evidence.
+- Runtime policy: current no-popup evidence remains CDB-only; the endurance
+  soak road is opt-in visible-runtime evidence and is tracked separately.
 - Binary policy: generated executables stay outside the repository.
 
 ## Status
@@ -16,6 +17,8 @@
   non-promoting and keep full-game completion below 100%
 - Current completion summary tests: PASS, fixture coverage is included in the
   refresh
+- HD short soak report: FAIL-closed pending explicit visible-runtime approval;
+  no frame/process endurance evidence has been collected yet
 - Patch-stage byte gate: PASS, `118/118` selected current HD map bytes patched
 - Post-owner visibility evidence: PASS
 - Normal dark right/bottom cells: explained by visibility/fog state
@@ -192,6 +195,7 @@
 - [No-popup map evidence matrix tests](no-popup-map-evidence-tests-current.md)
 - [Current completion summary](current-completion-summary-current.md)
 - [Current completion summary tests](current-completion-summary-tests-current.md)
+- [HD short soak report](hd-soak-short-current.md)
 - [No-popup boundary guard](no-popup-boundary-guard-current.md)
 - [No-popup guard regression tests](no-popup-guard-tests-current.md)
 - [Visible runtime launcher guard](visible-runtime-launcher-guard-current.md)
@@ -446,6 +450,16 @@ Right-bottom validation patch controlled grid-hit surface:
   all seven cells are `visibility_zero`
 - Forced-visible classification:
   no blank active cells remain
+
+## Endurance Soak Road
+
+The first short-tier endurance report is
+`captures\current\hd-soak-short-current.md`. It currently fails closed because
+the opt-in visible-runtime soak was not approved/executed. This is the intended
+state until `scripts\smoke\run_hd_soak.ps1 -Tier short2 -Route menu-idle
+-Execute -AllowVisibleRuntime` collects real frame/process samples under
+`C:\ClashCaptures\hd-soak`. The pending soak report is not CDB evidence, not
+manual DirectInput proof, and not a promotion signal.
 
 ## Patch Manifest Highlights
 

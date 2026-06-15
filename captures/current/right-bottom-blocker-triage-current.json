@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T18:34:34+02:00",
+  "generated_at": "2026-06-15T20:19:22+02:00",
   "passed": true,
   "runtime_policy": "repo-only evidence triage; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only while the current blocker is explicitly classified as non-promoting: controlled composition is recovered, natural owner/action rows are absent, the natural route is either owner-flag gated, blocked inside the slot5 Render_Begin/DD_Pump/copyback lane, blocked by the documented loop-state/input-resample/source-hold lane, or has only debugger-forced native action-click copyback proof; the next proof path remains hidden diagnosis or approved manual input",
@@ -91,12 +91,18 @@
     "natural_slot5_copyback_path_marker_count": 74,
     "natural_slot5_action_click_marker_count": 10,
     "natural_slot5_action_click_force_count": 1,
-    "natural_slot5_action_click_native_force_count": null,
-    "natural_slot5_action_click_display_force_count": null,
+    "natural_slot5_action_click_native_force_count": 1,
+    "natural_slot5_action_click_display_force_count": 0,
     "natural_slot5_action_descriptor_callback_count": 1,
     "natural_slot5_action_click_435620_entry_count": 1,
     "natural_slot5_action_click_exit_set_count": 1,
-    "natural_slot5_last_action_force_marker": null,
+    "natural_slot5_sourcehold_callsite_marker_count": 4,
+    "natural_slot5_sourcehold_4612e0_marker_count": 0,
+    "natural_slot5_input_source_cb14_4612e0_seen": true,
+    "natural_slot5_input_source_status": "debugger_forced_action_click_only",
+    "natural_slot5_real_input_click_proven": false,
+    "natural_slot5_debugger_forced_click_only": true,
+    "natural_slot5_last_action_force_marker": "NOWNER_ACTION_FORCE_NATIVE",
     "natural_slot5_last_action_force": {
       "target": "bottom-left-action",
       "pass_index": 1,
@@ -142,6 +148,72 @@
     "natural_slot5_435bc0_grid_fail_count": 0,
     "natural_slot5_435bc0_selection_update_count": 0,
     "natural_slot5_last_435bc0_poll": {
+      "count": 16,
+      "d532210": 1,
+      "d532218": 68929306,
+      "d532220": 0,
+      "d5322c8": -1,
+      "mouse": [
+        4,
+        441
+      ],
+      "raw": [
+        256,
+        28224
+      ],
+      "d544d04": 0,
+      "button0": 109,
+      "surface": 61287224,
+      "size": [
+        640,
+        480
+      ]
+    },
+    "natural_slot5_last_435bc0_poll_before_action_force": {
+      "count": 1,
+      "d532210": 0,
+      "d532218": 68929306,
+      "d532220": 0,
+      "d5322c8": -1,
+      "mouse": [
+        180,
+        440
+      ],
+      "raw": [
+        11520,
+        28160
+      ],
+      "d544d04": 0,
+      "button0": 0,
+      "surface": 61287224,
+      "size": [
+        640,
+        480
+      ]
+    },
+    "natural_slot5_first_435bc0_poll_after_action_force": {
+      "count": 2,
+      "d532210": 0,
+      "d532218": 68929306,
+      "d532220": 0,
+      "d5322c8": -1,
+      "mouse": [
+        81,
+        441
+      ],
+      "raw": [
+        5184,
+        28224
+      ],
+      "d544d04": 1,
+      "button0": 128,
+      "surface": 61287224,
+      "size": [
+        640,
+        480
+      ]
+    },
+    "natural_slot5_last_435bc0_poll_after_action_force": {
       "count": 16,
       "d532210": 1,
       "d532218": 68929306,
@@ -293,6 +365,7 @@
   },
   "conclusion": "The right-bottom action/menu surface is not stable-promotable yet. Controlled composition recovers the lower/right UI, and the v17b natural slot-5 diagnostic proves the right-bottom wrapper can allocate the native surface, enter stock 00435BC0, force a native action-button click at (81,441), reach descriptor 0051519a and callback 00435620, set the modal exit state, return from stock, and copy the native surface back into the 800x600 HD surface without an AV. That is debugger-forced proof, not a real input-source or manual DirectInput proof, so stable promotion remains deferred.",
   "next_proof_options": [
+    "run the refined exact entry/return markers around the cb14=004612e0 call so the 00519620/00519622 source-copy path is directly proven",
     "prove the real input-source path through 00519620/00519622 or 004612E0 that naturally supplies the action-button click without debugger-forced native coordinates",
     "finish interpreting the stock 00435BC0 grid route/selection-update behavior now that v17b proves the native action-button exit/copyback path",
     "decide whether the HD wrapper should drive a native-modal input transform or preserve the stock modal loop while copying back only after exit",

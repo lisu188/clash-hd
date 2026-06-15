@@ -1,6 +1,6 @@
 # Right-Bottom Slot Fixture Result Summary
 
-- Log: `captures\cdb-surface-dump-20260615-100407\cdb-surface-dump.log`
+- Log: `captures\archive\cdb-surface-dump-20260615-100407\cdb-surface-dump.log`
 - Proof class: `natural_slot5_right_bottom_action_click_native`
 - Status: `owner_action_copyback_reached`
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput`
@@ -67,7 +67,14 @@
 - 00435BC0 pump cb14 call/return count: `1` / `0`
 - 00435BC0 pump 608f0b call/return count: `1` / `1`
 - 00435BC0 pump cb04 call/return count: `1` / `1`
+- Source-hold callsite/inner-004612E0 marker counts: `4` / `0`
+- Input-source cb14=004612E0 seen: `True`
+- Real input-source status: `debugger_forced_action_click_only`
+- Real input click proven: `False`
+- Debugger-forced click only: `True`
 - Native action force count: `1`
+- Native action native-force count: `1`
+- Native action display-force count: `0`
 - Native action descriptor entry count: `1`
 - Native action widget click-gate return count: `1`
 - Native action descriptor callback count: `1`
@@ -90,9 +97,13 @@
 - First 00435BC0 pump tick-return: `{'iter': 1, 'ret': 4414942, 'eax': 92018356, 'render': 5524696, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}`
 - First 00435BC0 pump cb14 call: `{'iter': 1, 'ret': 4414942, 'vtable': 5304836, 'cb14': 4592352, 'render': 5524696, 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0}`
 - First 00435BC0 pump 608f0b call: `{'iter': 1, 'ret': 4414942, 'render': 5524696, 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0}`
+- Last 00435BC0 poll before action force: `{'count': 1, 'd532210': 0, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [180, 440], 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0, 'surface': 61287224, 'size': [640, 480]}`
+- First 00435BC0 poll after action force: `{'count': 2, 'd532210': 0, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [81, 441], 'raw': [5184, 28224], 'd544d04': 1, 'button0': 128, 'surface': 61287224, 'size': [640, 480]}`
+- Last 00435BC0 poll after action force: `{'count': 16, 'd532210': 1, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 441], 'raw': [256, 28224], 'd544d04': 0, 'button0': 109, 'surface': 61287224, 'size': [640, 480]}`
 - Last source-hold marker: `NOWNER_SOURCEHOLD_608F0B_COORDS_PRE`
 - Last source-hold row: `{'iter': 1, 'source': [11520, 28160], 'prev': [11520, 28160], 'flag': 1, 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0}`
 - Last native action-click marker: `NOWNER_ACTION_DESCRIPTOR_RESULT`
+- Last native action force marker: `NOWNER_ACTION_FORCE_NATIVE`
 - Last native action force: `{'target': 'bottom-left-action', 'pass_index': 1, 'native': [81, 441], 'raw': [5184, 28224], 'click_flag': 1, 'button0': 128, 'selected_index': 0, 'hover_slot': -1, 'action_state': 0}`
 - Last native action descriptor callback: `{'desc': 5329306, 'callback': 4412960, 'desc_xy': [41, 425], 'state': 1, 'mouse': [81, 441], 'action_state': 0}`
 - Last native action descriptor result: `{'result': 3, 'pass_index': 1, 'mouse': [4, 441], 'action_state': 1}`
@@ -110,7 +121,7 @@
 - Last Render_Begin lost result: `{'iter': 7, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 109, 'raw': [256, 28224], 'd543d78': 1, 'd543d7c': 5}`
 - Last Render_Begin DD_Pump return: `{'iter': 6, 'eax': 4, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 109, 'raw': [256, 28224], 'd543d78': 1, 'd543d7c': 5}`
 - Timeout stack classification: `not_found`
-- Timeout stack: `captures\cdb-surface-dump-20260615-100407\timeout-stack.log`
+- Timeout stack: `captures\archive\cdb-surface-dump-20260615-100407\timeout-stack.log`
 - Castle hitmap sample: `{'surface': 62315816, 'size': [640, 480], 'base': 174915632, 'displayed': [231, 366], 'displayed_sample': 12, 'native': [151, 306], 'native_sample': 254, 'bbox_min': [77, 306], 'bbox_min_sample': 254, 'bbox_max': [237, 426], 'bbox_max_sample': 53, 'expected_raw': 254}`
 - Castle command-99 target: `{'native': [151, 306], 'displayed_hint': [231, 366], 'raw': [9664, 19584]}`
 - Castle hit count: `1`
@@ -225,6 +236,7 @@
 - `NOWNER_SOURCEHOLD_4612E0_INTERPOLATE`: `0`
 - `NOWNER_SOURCEHOLD_4612E0_INTERPOLATE_POST`: `0`
 - `NOWNER_ACTION_FORCE_NATIVE`: `1`
+- `NOWNER_ACTION_FORCE_DISPLAY`: `0`
 - `NOWNER_ACTION_DESCRIPTOR_ENTRY`: `1`
 - `NOWNER_ACTION_WIDGET_PRE_GATES`: `1`
 - `NOWNER_ACTION_WIDGET_CLICK_GATE_RET`: `1`
@@ -275,12 +287,18 @@
 - copyback path markers wrapper_entry=1 call_stock=1 stock_return=1 copyback_call=1 copyback_return=1 done=1 alloc_fallback=0
 - descriptor hit-test markers were observed: 3
 - stock 00435BC0 loop-state markers poll=16 poll_limit=1 write_owner=1 write_hover=1
-- source-hold markers were observed: 4
-- native action-click markers force=1 desc_entry=1 desc_callback=1 result=1 cb435620=1 exit_set=1
+- source-hold markers were observed: 4 callsite=4 inner_4612e0=0
+- stock pump cb14 was 004612e0; inner 004612E0 source-copy offsets seen=0
+- action-button callback/copyback proof is debugger-forced, not real input-source proof
+- real input-source status: debugger_forced_action_click_only
+- native action-click markers force=1 native_force=1 display_force=0 desc_entry=1 desc_callback=1 result=1 cb435620=1 exit_set=1
 - last native action force row: {'target': 'bottom-left-action', 'pass_index': 1, 'native': [81, 441], 'raw': [5184, 28224], 'click_flag': 1, 'button0': 128, 'selected_index': 0, 'hover_slot': -1, 'action_state': 0}
 - last native action descriptor callback row: {'desc': 5329306, 'callback': 4412960, 'desc_xy': [41, 425], 'state': 1, 'mouse': [81, 441], 'action_state': 0}
 - last native action click exit-set row: {'pass_index': 1, 'action_state': 1, 'selected_index': 0, 'hover_slot': -1}
 - last stock 00435BC0 poll row: {'count': 16, 'd532210': 1, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 441], 'raw': [256, 28224], 'd544d04': 0, 'button0': 109, 'surface': 61287224, 'size': [640, 480]}
+- last stock 00435BC0 poll before action force: {'count': 1, 'd532210': 0, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [180, 440], 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0, 'surface': 61287224, 'size': [640, 480]}
+- first stock 00435BC0 poll after action force: {'count': 2, 'd532210': 0, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [81, 441], 'raw': [5184, 28224], 'd544d04': 1, 'button0': 128, 'surface': 61287224, 'size': [640, 480]}
+- last stock 00435BC0 poll after action force: {'count': 16, 'd532210': 1, 'd532218': 68929306, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 441], 'raw': [256, 28224], 'd544d04': 0, 'button0': 109, 'surface': 61287224, 'size': [640, 480]}
 - stock 00435BC0 loop markers head=1 pump_call=1 draw_call=1 draw_return=1 hit=1 compare=1 limit=0 loop_exit=1 return=1
 - stock 00435BC0 pump callback markers entry=1 tick_return=1 cb14_call=1 cb14_return=0 608f0b_call=1 cb04_call=1
 - last stock 00435BC0 pump cb14 call: {'iter': 1, 'ret': 4414942, 'vtable': 5304836, 'cb14': 4592352, 'render': 5524696, 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0}
