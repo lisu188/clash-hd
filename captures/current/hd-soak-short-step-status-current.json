@@ -1,0 +1,171 @@
+{
+  "generated_at": "2026-06-15T20:14:56.163067+00:00",
+  "passed": true,
+  "runtime_policy": "repo-only short-soak step status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "manifest": "captures\\current\\hd-soak-short-artifact-manifest-current.json",
+  "legacy_report": "captures\\current\\hd-soak-short-current.json",
+  "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "ladder_complete": false,
+  "counts": {
+    "total": 5,
+    "passed": 0,
+    "pending_or_missing": 1,
+    "locked": 4,
+    "failed_or_invalid": 0
+  },
+  "current_step": {
+    "id": "short2_menu_idle",
+    "tier": "short2",
+    "route": "menu-idle",
+    "status": "pending_approval_legacy_compat",
+    "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+  },
+  "steps": [
+    {
+      "id": "short2_menu_idle",
+      "index": 1,
+      "tier": "short2",
+      "route": "menu-idle",
+      "duration_sec": 120,
+      "prerequisites": [],
+      "prerequisites_passed": true,
+      "status": "pending_approval_legacy_compat",
+      "passed": false,
+      "paths": {
+        "report_json": "captures\\current\\hd-soak-short2-menu-idle-current.json",
+        "report_markdown": "captures\\current\\hd-soak-short2-menu-idle-current.md",
+        "guard_json": "captures\\current\\hd-soak-short2-menu-idle-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short2-menu-idle-guard-current.md",
+        "triage_json": "captures\\current\\hd-soak-short2-menu-idle-triage-current.json",
+        "triage_markdown": "captures\\current\\hd-soak-short2-menu-idle-triage-current.md"
+      },
+      "summary": {
+        "canonical_report_present": false,
+        "legacy_report_matches": true,
+        "legacy_report_pending_approval": true,
+        "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+      },
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+    },
+    {
+      "id": "short2_map_idle",
+      "index": 2,
+      "tier": "short2",
+      "route": "map-idle",
+      "duration_sec": 120,
+      "prerequisites": [
+        "short2_menu_idle"
+      ],
+      "prerequisites_passed": false,
+      "status": "locked_by_prerequisite",
+      "passed": false,
+      "paths": {
+        "report_json": "captures\\current\\hd-soak-short2-map-idle-current.json",
+        "report_markdown": "captures\\current\\hd-soak-short2-map-idle-current.md",
+        "guard_json": "captures\\current\\hd-soak-short2-map-idle-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short2-map-idle-guard-current.md",
+        "triage_json": "captures\\current\\hd-soak-short2-map-idle-triage-current.json",
+        "triage_markdown": "captures\\current\\hd-soak-short2-map-idle-triage-current.md"
+      },
+      "summary": {
+        "canonical_report_present": false,
+        "legacy_report_matches": false,
+        "next_command": null
+      },
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+    },
+    {
+      "id": "short10_map_idle",
+      "index": 3,
+      "tier": "short10",
+      "route": "map-idle",
+      "duration_sec": 600,
+      "prerequisites": [
+        "short2_map_idle"
+      ],
+      "prerequisites_passed": false,
+      "status": "locked_by_prerequisite",
+      "passed": false,
+      "paths": {
+        "report_json": "captures\\current\\hd-soak-short10-map-idle-current.json",
+        "report_markdown": "captures\\current\\hd-soak-short10-map-idle-current.md",
+        "guard_json": "captures\\current\\hd-soak-short10-map-idle-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short10-map-idle-guard-current.md",
+        "triage_json": "captures\\current\\hd-soak-short10-map-idle-triage-current.json",
+        "triage_markdown": "captures\\current\\hd-soak-short10-map-idle-triage-current.md"
+      },
+      "summary": {
+        "canonical_report_present": false,
+        "legacy_report_matches": false,
+        "next_command": null
+      },
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+    },
+    {
+      "id": "short10_map_pan",
+      "index": 4,
+      "tier": "short10",
+      "route": "map-pan",
+      "duration_sec": 600,
+      "prerequisites": [
+        "short10_map_idle"
+      ],
+      "prerequisites_passed": false,
+      "status": "locked_by_prerequisite",
+      "passed": false,
+      "paths": {
+        "report_json": "captures\\current\\hd-soak-short10-map-pan-current.json",
+        "report_markdown": "captures\\current\\hd-soak-short10-map-pan-current.md",
+        "guard_json": "captures\\current\\hd-soak-short10-map-pan-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short10-map-pan-guard-current.md",
+        "triage_json": "captures\\current\\hd-soak-short10-map-pan-triage-current.json",
+        "triage_markdown": "captures\\current\\hd-soak-short10-map-pan-triage-current.md"
+      },
+      "summary": {
+        "canonical_report_present": false,
+        "legacy_report_matches": false,
+        "next_command": null
+      },
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+    },
+    {
+      "id": "short30_map_pan",
+      "index": 5,
+      "tier": "short30",
+      "route": "map-pan",
+      "duration_sec": 1800,
+      "prerequisites": [
+        "short10_map_pan"
+      ],
+      "prerequisites_passed": false,
+      "status": "locked_by_prerequisite",
+      "passed": false,
+      "paths": {
+        "report_json": "captures\\current\\hd-soak-short30-map-pan-current.json",
+        "report_markdown": "captures\\current\\hd-soak-short30-map-pan-current.md",
+        "guard_json": "captures\\current\\hd-soak-short30-map-pan-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short30-map-pan-guard-current.md",
+        "triage_json": "captures\\current\\hd-soak-short30-map-pan-triage-current.json",
+        "triage_markdown": "captures\\current\\hd-soak-short30-map-pan-triage-current.md"
+      },
+      "summary": {
+        "canonical_report_present": false,
+        "legacy_report_matches": false,
+        "next_command": null
+      },
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+    }
+  ],
+  "locks": {
+    "stable_stage_should_change": false,
+    "right_bottom_promotion_blocked": true,
+    "long_tiers_locked": true,
+    "future_lanes_locked": true
+  },
+  "failures": []
+}

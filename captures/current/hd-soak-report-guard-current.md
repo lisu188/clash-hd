@@ -1,7 +1,7 @@
 # HD Soak Report Guard
 
 - Overall: FAIL
-- Generated: `2026-06-15T18:47:22.596946+00:00`
+- Generated: `2026-06-15T20:14:55.137398+00:00`
 - Runtime policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Tier / route: `short2` / `menu-idle`
@@ -11,6 +11,7 @@
 
 - `executed`: `FAIL`
 - `protected_stage`: `PASS`
+- `patch_evidence`: `FAIL`
 - `promotion_boundary`: `PASS`
 - `artifact_locations`: `PASS`
 - `frame_inventory`: `FAIL`
@@ -22,6 +23,8 @@
 ## Failures
 
 - soak report was not produced by an execution run
+- candidate_sha256 is missing or is not a SHA-256 hex digest
+- patch_stage_report path is missing
 - frame sample count 0 is below 2
 - minimum nonblack percent 0.0 is below 10.0
 - minimum unique sampled colors 0.0 is below 8

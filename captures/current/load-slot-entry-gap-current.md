@@ -1,7 +1,7 @@
 # Load Slot Entry Gap
 
 - Status: FAIL
-- Generated: `2026-06-15T20:46:32+02:00`
+- Generated: `2026-06-15T22:14:10+02:00`
 - Runtime policy: repo-only; reads decompilation text, CDB probe text, and generated timeout phase JSON; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when static code still places the real load-row loop after the main Load callback, the current probe spans both sides of that transition, slot 2 reaches the post-entry accept path, and slots 3-5 still stop before 0044895A load-menu entry
 - Promotion ready: `False`

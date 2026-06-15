@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:47:20+02:00",
+  "generated_at": "2026-06-15T22:14:53+02:00",
   "passed": true,
   "runtime_policy": "repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, move the mouse, or open visible windows",
   "guard_policy": "manual DirectInput commands remain templates until explicit user approval; every visible runtime command must carry -AllowVisibleRuntime and the proof manifest must be validated before promotion",

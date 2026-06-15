@@ -18,7 +18,30 @@
 - Current completion summary tests: PASS, fixture coverage is included in the
   refresh
 - HD short soak report: FAIL-closed pending explicit visible-runtime approval;
-  no frame/process endurance evidence has been collected yet
+  no frame/process endurance evidence has been collected yet, and the guard now
+  requires per-run patch-stage evidence before any soak can count
+- HD soak failure triage: FAIL-closed as `not_executed_pending_approval`;
+  the next probe is the exact approval-gated `short2` visible-runtime soak
+- HD soak route coverage: PASS as route inventory; `3/10` release lanes are
+  implemented in the opt-in harness and future lanes remain planned/non-promoting
+- HD endurance release checklist: FAIL-closed; `4/14` release-horizon
+  requirements pass and the next milestone is `short2_menu_idle_soak`
+- HD endurance next actions: PASS as repo-only triage; the next action is
+  `run_short2_menu_idle_soak` and requires explicit visible-runtime approval
+- HD soak short-tier ladder: PASS as repo-only planning guard; current step is
+  `short2_menu_idle`, `ladder_complete=false`, and long/future lanes remain
+  locked
+- HD soak short artifact manifest: PASS as repo-only command/output manifest;
+  each short ladder step has durable current report, guard, and triage paths
+- HD soak short validation refresh: PASS as repo-only post-processing; no
+  canonical short-step runtime report exists yet, so no guard/triage artifacts
+  were regenerated
+- HD soak short-step status: PASS as repo-only status reader; current step is
+  `short2_menu_idle` pending approval/compatible legacy evidence, with long
+  and future lanes locked
+- HD soak approval preflight: PASS as repo-only approval packet; the exact
+  first `short2` visible-runtime command is canonical and guarded, with no
+  runtime launched
 - Patch-stage byte gate: PASS, `118/118` selected current HD map bytes patched
 - Post-owner visibility evidence: PASS
 - Normal dark right/bottom cells: explained by visibility/fog state
@@ -196,9 +219,26 @@
 - [Current completion summary](current-completion-summary-current.md)
 - [Current completion summary tests](current-completion-summary-tests-current.md)
 - [HD short soak report](hd-soak-short-current.md)
+- [HD soak failure triage](hd-soak-failure-triage-current.md)
+- [HD soak failure triage tests](hd-soak-failure-triage-tests-current.md)
+- [HD soak route coverage](hd-soak-route-coverage-current.md)
+- [HD soak route coverage tests](hd-soak-route-coverage-tests-current.md)
+- [HD endurance release checklist](hd-endurance-release-checklist-current.md)
+- [HD endurance next actions](hd-endurance-next-actions-current.md)
+- [HD soak short-tier ladder](hd-soak-short-tier-ladder-current.md)
+- [HD soak short-tier ladder tests](hd-soak-short-tier-ladder-tests-current.md)
+- [HD soak short artifact manifest](hd-soak-short-artifact-manifest-current.md)
+- [HD soak short artifact manifest tests](hd-soak-short-artifact-manifest-tests-current.md)
+- [HD soak short validation refresh](hd-soak-short-validation-refresh-current.md)
+- [HD soak short validation refresh tests](hd-soak-short-validation-refresh-tests-current.md)
+- [HD soak short-step status](hd-soak-short-step-status-current.md)
+- [HD soak short-step status tests](hd-soak-short-step-status-tests-current.md)
+- [HD soak approval preflight](hd-soak-approval-preflight-current.md)
+- [HD soak approval preflight tests](hd-soak-approval-preflight-tests-current.md)
 - [HD soak harness guard](hd-soak-harness-guard-current.md)
 - [HD soak harness guard tests](hd-soak-harness-guard-tests-current.md)
 - [HD soak report guard](hd-soak-report-guard-current.md)
+- [HD soak report guard tests](hd-soak-report-guard-tests-current.md)
 - [No-popup boundary guard](no-popup-boundary-guard-current.md)
 - [No-popup guard regression tests](no-popup-guard-tests-current.md)
 - [Visible runtime launcher guard](visible-runtime-launcher-guard-current.md)

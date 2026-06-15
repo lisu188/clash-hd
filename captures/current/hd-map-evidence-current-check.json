@@ -1,9 +1,9 @@
 {
   "index": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-map-evidence-current.md",
   "counts": {
-    "links": 126,
+    "links": 143,
     "images": 9,
-    "local_records": 135,
+    "local_records": 152,
     "missing": 0,
     "image_missing": 0,
     "image_wrong_extension": 0
@@ -65,6 +65,150 @@
     },
     {
       "kind": "link",
+      "target": "hd-soak-failure-triage-current.md",
+      "cleaned": "hd-soak-failure-triage-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-failure-triage-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-failure-triage-tests-current.md",
+      "cleaned": "hd-soak-failure-triage-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-failure-triage-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-route-coverage-current.md",
+      "cleaned": "hd-soak-route-coverage-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-route-coverage-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-route-coverage-tests-current.md",
+      "cleaned": "hd-soak-route-coverage-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-route-coverage-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-endurance-release-checklist-current.md",
+      "cleaned": "hd-endurance-release-checklist-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-release-checklist-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-endurance-next-actions-current.md",
+      "cleaned": "hd-endurance-next-actions-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-endurance-next-actions-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-short-tier-ladder-current.md",
+      "cleaned": "hd-soak-short-tier-ladder-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-tier-ladder-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-short-tier-ladder-tests-current.md",
+      "cleaned": "hd-soak-short-tier-ladder-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-tier-ladder-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-short-artifact-manifest-current.md",
+      "cleaned": "hd-soak-short-artifact-manifest-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-artifact-manifest-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-short-artifact-manifest-tests-current.md",
+      "cleaned": "hd-soak-short-artifact-manifest-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-artifact-manifest-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-short-validation-refresh-current.md",
+      "cleaned": "hd-soak-short-validation-refresh-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-validation-refresh-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-short-validation-refresh-tests-current.md",
+      "cleaned": "hd-soak-short-validation-refresh-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-validation-refresh-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-short-step-status-current.md",
+      "cleaned": "hd-soak-short-step-status-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-step-status-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-short-step-status-tests-current.md",
+      "cleaned": "hd-soak-short-step-status-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short-step-status-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-approval-preflight-current.md",
+      "cleaned": "hd-soak-approval-preflight-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-approval-preflight-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-approval-preflight-tests-current.md",
+      "cleaned": "hd-soak-approval-preflight-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-approval-preflight-tests-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
       "target": "hd-soak-harness-guard-current.md",
       "cleaned": "hd-soak-harness-guard-current.md",
       "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-harness-guard-current.md",
@@ -86,6 +230,15 @@
       "target": "hd-soak-report-guard-current.md",
       "cleaned": "hd-soak-report-guard-current.md",
       "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-report-guard-current.md",
+      "exists": true,
+      "extension": ".md",
+      "is_image_extension": false
+    },
+    {
+      "kind": "link",
+      "target": "hd-soak-report-guard-tests-current.md",
+      "cleaned": "hd-soak-report-guard-tests-current.md",
+      "resolved": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-report-guard-tests-current.md",
       "exists": true,
       "extension": ".md",
       "is_image_extension": false

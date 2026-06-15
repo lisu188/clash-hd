@@ -1,0 +1,239 @@
+{
+  "generated_at": "2026-06-15T20:14:55.331401+00:00",
+  "passed": false,
+  "runtime_policy": "repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "source_artifacts": {
+    "stable_stage": "captures\\current\\stable-stage-guard-current.json",
+    "no_popup_map": "captures\\current\\no-popup-map-evidence-current.json",
+    "short_soak": "captures\\current\\hd-soak-report-guard-current.json",
+    "long_soak": "captures\\current\\hd-soak-long-report-guard-current.json",
+    "manual_directinput": "captures\\current\\manual-directinput-validation-checklist-current.json",
+    "right_bottom": "captures\\current\\right-bottom-compose-promotion-decision-current.json",
+    "castle_overview": "captures\\current\\castle-overview-promotion-decision-current.json",
+    "battle_ui": "captures\\current\\battle-ui-evidence-current.json",
+    "current_completion": "captures\\current\\current-completion-summary-current.json",
+    "continuity": "captures\\current\\hd-continuity-current.json",
+    "exe_artifact": "captures\\current\\exe-artifact-guard-current.json",
+    "process_hygiene": "captures\\current\\process-hygiene-guard-current.json"
+  },
+  "source_states": {
+    "stable_stage": "present",
+    "no_popup_map": "present",
+    "short_soak": "present",
+    "long_soak": "missing",
+    "manual_directinput": "present",
+    "right_bottom": "present",
+    "castle_overview": "present",
+    "battle_ui": "present",
+    "current_completion": "present",
+    "continuity": "missing",
+    "exe_artifact": "present",
+    "process_hygiene": "present"
+  },
+  "counts": {
+    "total": 14,
+    "passed": 4,
+    "blocked": 6,
+    "missing": 4
+  },
+  "next_milestone": {
+    "id": "short2_menu_idle_soak",
+    "title": "First short2 menu-idle soak passes",
+    "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage"
+  },
+  "requirements": [
+    {
+      "id": "protected_stable_stage",
+      "title": "Protected default HD stage remains clean",
+      "category": "patch boundary",
+      "status": "pass",
+      "passed": true,
+      "evidence": [
+        "captures\\current\\stable-stage-guard-current.json"
+      ],
+      "summary": "default stage and validation-only group boundary are intact",
+      "next_probe": "fix stable-stage guard failures before considering any soak result"
+    },
+    {
+      "id": "current_no_popup_map",
+      "title": "Current no-popup HD map evidence remains valid",
+      "category": "render baseline",
+      "status": "pass",
+      "passed": true,
+      "evidence": [
+        "captures\\current\\no-popup-map-evidence-current.json"
+      ],
+      "summary": "hidden/no-popup map evidence still passes",
+      "next_probe": "refresh no-popup map evidence before runtime endurance claims"
+    },
+    {
+      "id": "short2_menu_idle_soak",
+      "title": "First short2 menu-idle soak passes",
+      "category": "endurance",
+      "status": "blocked",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\hd-soak-report-guard-current.json"
+      ],
+      "summary": "short2 visible-runtime soak has not produced passing frame/process evidence",
+      "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage"
+    },
+    {
+      "id": "long_soak_representative_routes",
+      "title": "2h+ representative-route soak passes",
+      "category": "endurance",
+      "status": "missing",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\hd-soak-long-report-guard-current.json"
+      ],
+      "summary": "no 2h+ representative-route soak report is present",
+      "next_probe": "add long-tier reports only after short2/short10/short30 are stable"
+    },
+    {
+      "id": "stable_menu_real_input",
+      "title": "Stable menu load has real input proof",
+      "category": "manual input",
+      "status": "blocked",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\manual-directinput-validation-checklist-current.json"
+      ],
+      "summary": "menu-load proof remains pending manual DirectInput validation",
+      "next_probe": "collect approved manual menu-load proof or keep promotion blocked"
+    },
+    {
+      "id": "stable_hd_map_real_input",
+      "title": "HD map input has no drift under real input",
+      "category": "manual input",
+      "status": "blocked",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\manual-directinput-validation-checklist-current.json"
+      ],
+      "summary": "HD map input proof remains pending manual DirectInput validation",
+      "next_probe": "collect approved manual map input proof after short soak is stable"
+    },
+    {
+      "id": "right_bottom_action_menu",
+      "title": "Right-bottom action/menu is naturally or manually proven",
+      "category": "screen route",
+      "status": "blocked",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\right-bottom-compose-promotion-decision-current.json",
+        "captures\\current\\manual-directinput-validation-checklist-current.json"
+      ],
+      "summary": "right-bottom action/menu remains validation-only or manual-proof blocked",
+      "next_probe": "replace debugger-forced action-click proof with natural or approved manual input proof"
+    },
+    {
+      "id": "castle_and_barracks_centered_input",
+      "title": "Castle overview and barracks centered input are proven",
+      "category": "screen route",
+      "status": "blocked",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\castle-overview-promotion-decision-current.json",
+        "captures\\current\\manual-directinput-validation-checklist-current.json"
+      ],
+      "summary": "castle/barracks centered input remains validation-only or manual-proof blocked",
+      "next_probe": "collect approved centered castle/barracks input proof"
+    },
+    {
+      "id": "tactical_battle_entry_return",
+      "title": "Tactical battle entry/use/return is proven",
+      "category": "screen route",
+      "status": "blocked",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\battle-ui-evidence-current.json"
+      ],
+      "summary": "battle evidence remains validation-only or missing visible click-to-callback proof",
+      "next_probe": "prove battle entry, UI use, return, and post-return map health on an approved route"
+    },
+    {
+      "id": "save_load_roundtrip",
+      "title": "Safe save/load roundtrip continuity is proven",
+      "category": "state continuity",
+      "status": "missing",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\hd-continuity-current.json"
+      ],
+      "summary": "save/load continuity proof is absent",
+      "next_probe": "add safe test-save roundtrip evidence after short-tier stability"
+    },
+    {
+      "id": "turn_advancement",
+      "title": "Turn advancement avoids state desync",
+      "category": "state continuity",
+      "status": "missing",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\hd-continuity-current.json"
+      ],
+      "summary": "turn-advancement proof is absent",
+      "next_probe": "add deterministic turn-advance route evidence after save/load is safe"
+    },
+    {
+      "id": "campaign_routes",
+      "title": "Campaign routes remain stable",
+      "category": "state continuity",
+      "status": "missing",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\hd-continuity-current.json"
+      ],
+      "summary": "campaign-route proof is absent",
+      "next_probe": "add representative campaign route soaks after short/medium tiers are stable"
+    },
+    {
+      "id": "artifact_and_process_hygiene",
+      "title": "No prohibited artifacts or stale processes",
+      "category": "repo hygiene",
+      "status": "pass",
+      "passed": true,
+      "evidence": [
+        "captures\\current\\exe-artifact-guard-current.json",
+        "captures\\current\\process-hygiene-guard-current.json"
+      ],
+      "summary": "artifact and process hygiene guards pass",
+      "next_probe": "clear hygiene guard failures before accepting runtime evidence"
+    },
+    {
+      "id": "no_speculative_promotion",
+      "title": "No validation-only promotion is hidden by endurance work",
+      "category": "patch boundary",
+      "status": "pass",
+      "passed": true,
+      "evidence": [
+        "captures\\current\\stable-stage-guard-current.json",
+        "captures\\current\\right-bottom-compose-promotion-decision-current.json",
+        "captures\\current\\castle-overview-promotion-decision-current.json",
+        "captures\\current\\battle-ui-evidence-current.json"
+      ],
+      "summary": "stable-stage boundary remains unchanged while validation-only lanes stay non-promoting",
+      "next_probe": "keep DEFAULT_STAGE unchanged until strict natural/manual/input and soak gates pass"
+    }
+  ],
+  "full_game_complete": false,
+  "full_game_percent_statement": "not 100%; endurance, manual input, state continuity, or validation-route gates remain open",
+  "current_completion_summary": {
+    "full_game_complete": false,
+    "full_game_percent_statement": "not 100%; manual DirectInput proof and stable promotion remain blocked"
+  },
+  "failures": [
+    "short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence",
+    "long_soak_representative_routes: no 2h+ representative-route soak report is present",
+    "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
+    "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
+    "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
+    "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
+    "tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof",
+    "save_load_roundtrip: save/load continuity proof is absent",
+    "turn_advancement: turn-advancement proof is absent",
+    "campaign_routes: campaign-route proof is absent"
+  ]
+}

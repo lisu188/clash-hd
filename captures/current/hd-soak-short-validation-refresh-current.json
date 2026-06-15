@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-06-15T20:14:55.918572+00:00",
+  "passed": true,
+  "runtime_policy": "repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "manifest": "captures\\current\\hd-soak-short-artifact-manifest-current.json",
+  "status": "pending_no_reports",
+  "counts": {
+    "steps": 5,
+    "reports_found": 0,
+    "guards_written": 0,
+    "triage_written": 0,
+    "validated_failed": 0
+  },
+  "steps": [
+    {
+      "id": "short2_menu_idle",
+      "tier": "short2",
+      "route": "menu-idle",
+      "report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
+      "guard_json": "captures\\current\\hd-soak-short2-menu-idle-guard-current.json",
+      "triage_json": "captures\\current\\hd-soak-short2-menu-idle-triage-current.json",
+      "report_exists": false,
+      "guard_written": false,
+      "triage_written": false,
+      "status": "no_report"
+    },
+    {
+      "id": "short2_map_idle",
+      "tier": "short2",
+      "route": "map-idle",
+      "report": "captures\\current\\hd-soak-short2-map-idle-current.json",
+      "guard_json": "captures\\current\\hd-soak-short2-map-idle-guard-current.json",
+      "triage_json": "captures\\current\\hd-soak-short2-map-idle-triage-current.json",
+      "report_exists": false,
+      "guard_written": false,
+      "triage_written": false,
+      "status": "no_report"
+    },
+    {
+      "id": "short10_map_idle",
+      "tier": "short10",
+      "route": "map-idle",
+      "report": "captures\\current\\hd-soak-short10-map-idle-current.json",
+      "guard_json": "captures\\current\\hd-soak-short10-map-idle-guard-current.json",
+      "triage_json": "captures\\current\\hd-soak-short10-map-idle-triage-current.json",
+      "report_exists": false,
+      "guard_written": false,
+      "triage_written": false,
+      "status": "no_report"
+    },
+    {
+      "id": "short10_map_pan",
+      "tier": "short10",
+      "route": "map-pan",
+      "report": "captures\\current\\hd-soak-short10-map-pan-current.json",
+      "guard_json": "captures\\current\\hd-soak-short10-map-pan-guard-current.json",
+      "triage_json": "captures\\current\\hd-soak-short10-map-pan-triage-current.json",
+      "report_exists": false,
+      "guard_written": false,
+      "triage_written": false,
+      "status": "no_report"
+    },
+    {
+      "id": "short30_map_pan",
+      "tier": "short30",
+      "route": "map-pan",
+      "report": "captures\\current\\hd-soak-short30-map-pan-current.json",
+      "guard_json": "captures\\current\\hd-soak-short30-map-pan-guard-current.json",
+      "triage_json": "captures\\current\\hd-soak-short30-map-pan-triage-current.json",
+      "report_exists": false,
+      "guard_written": false,
+      "triage_written": false,
+      "status": "no_report"
+    }
+  ],
+  "failures": []
+}

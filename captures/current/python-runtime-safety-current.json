@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-15T20:47:05+02:00",
+  "generated_at": "2026-06-15T22:14:39+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
   "root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd",
-  "file_count": 181,
-  "risky_file_count": 79,
+  "file_count": 199,
+  "risky_file_count": 88,
   "classification_counts": {
-    "safe": 102,
+    "safe": 111,
     "exempt": 15,
     "manual_visible_runtime_gated": 2,
-    "test_fixture": 62
+    "test_fixture": 71
   },
   "gated_helpers": {
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
@@ -342,10 +342,10 @@
       ],
       "risk_lines": {
         "sendinput": [
-          3855
+          3942
         ],
         "postmessage": [
-          3855
+          3942
         ]
       },
       "failures": []
@@ -427,7 +427,39 @@
       "failures": []
     },
     {
+      "path": "tools/hd_endurance_next_actions.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_endurance_release_checklist.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/hd_map_smoke_matrix.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_soak_approval_preflight.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_soak_failure_triage.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
@@ -444,6 +476,46 @@
     },
     {
       "path": "tools/hd_soak_report.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_soak_route_coverage.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_soak_short_artifact_manifest.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_soak_short_step_status.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_soak_short_tier_ladder.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_soak_short_validation_refresh.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
@@ -1775,6 +1847,82 @@
       "failures": []
     },
     {
+      "path": "tools/test_hd_endurance_next_actions.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          8,
+          108
+        ],
+        "process_launch": [
+          108
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_endurance_release_checklist.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          8,
+          226
+        ],
+        "process_launch": [
+          226
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_soak_approval_preflight.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          8,
+          166
+        ],
+        "process_launch": [
+          166
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_soak_failure_triage.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          7,
+          150
+        ],
+        "process_launch": [
+          150
+        ]
+      },
+      "failures": []
+    },
+    {
       "path": "tools/test_hd_soak_harness_guard.py",
       "classification": "test_fixture",
       "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
@@ -1802,6 +1950,101 @@
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
       "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_soak_route_coverage.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          6,
+          64
+        ],
+        "process_launch": [
+          64
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_soak_short_artifact_manifest.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          7,
+          74
+        ],
+        "process_launch": [
+          74
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_soak_short_step_status.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          8,
+          154
+        ],
+        "process_launch": [
+          154
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_soak_short_tier_ladder.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          8,
+          167
+        ],
+        "process_launch": [
+          167
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_soak_short_validation_refresh.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          8,
+          209
+        ],
+        "process_launch": [
+          209
+        ]
+      },
       "failures": []
     },
     {

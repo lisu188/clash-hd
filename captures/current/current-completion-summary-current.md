@@ -1,7 +1,7 @@
 # Current Completion Summary
 
 - Overall: PASS
-- Generated: `2026-06-15T20:47:24+02:00`
+- Generated: `2026-06-15T22:14:58+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Percent policy: Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.
 - Full game complete: `False`
@@ -9,8 +9,8 @@
 
 ## Percentages
 
-- Current repo evidence gates: `84.62%`
-  Basis: 99/117 refresh checks pass
+- Current repo evidence gates: `85.29%`
+  Basis: 116/136 refresh checks pass
 - Focused battle/right-bottom command lane: `99.91%`
   Basis: remaining blocker: real visible click-to-callback proof (command-ready runs: 2; click-consumed runs: 0; invalid runs retained: 1)
 - Right-bottom promotion gate: `85.71%`

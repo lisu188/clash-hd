@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-06-15T20:14:55.179401+00:00",
+  "passed": false,
+  "runtime_policy": "repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "source_report": "captures\\current\\hd-soak-short-current.json",
+  "classification": "not_executed_pending_approval",
+  "next_probe": "obtain explicit approval for the exact short2 visible-runtime command, then rerun the soak",
+  "tier": "short2",
+  "route": "menu-idle",
+  "duration_sec": 120,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "candidate": "C:\\ClashTests\\hd-soak\\pending-approval.exe",
+  "candidate_sha256": null,
+  "output_directory": "C:\\ClashCaptures\\hd-soak\\pending-approval",
+  "final_route_marker": "pending_approval",
+  "executed": false,
+  "report_passed": false,
+  "process_exited_unexpectedly": false,
+  "exit_code": null,
+  "clean_stop": false,
+  "frame_metrics": {
+    "frame_sample_count": 0,
+    "frame_hash_unique_count": 0,
+    "nonblack_percent_min": 0.0,
+    "nonblack_percent_max": 0.0,
+    "mean_luma_min": 0.0,
+    "mean_luma_max": 0.0,
+    "unique_sample_colors_min": 0,
+    "unique_sample_colors_max": 0
+  },
+  "process_metrics": {
+    "process_sample_count": 0,
+    "working_set_growth_bytes": null,
+    "handle_growth": null,
+    "artifact_bytes": 0
+  },
+  "last_route_result": null,
+  "last_frame_sample": null,
+  "last_process_sample": null,
+  "failures": [
+    "short2 menu-idle soak was not executed because visible-runtime escalation was not approved"
+  ]
+}

@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-06-15T20:47:24+02:00`
+- Generated: `2026-06-15T22:14:58+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -1128,8 +1128,8 @@
 - Status: PASS
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
-- risky_file_count: `79`
-- classification_counts: `{'safe': 102, 'exempt': 15, 'manual_visible_runtime_gated': 2, 'test_fixture': 62}`
+- risky_file_count: `88`
+- classification_counts: `{'safe': 111, 'exempt': 15, 'manual_visible_runtime_gated': 2, 'test_fixture': 71}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1329,7 +1329,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof and stable promotion remain blocked`
-- percentages: `{'current_repo_evidence_gates': 84.62, 'focused_battle_right_bottom_lane': 99.91, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 85.29, 'focused_battle_right_bottom_lane': 99.91, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1349,6 +1349,27 @@
 - guard_policy: `proves the opt-in soak harness stays protected-stage, approval-gated, non-promoting, and artifact-safe`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
+### Hd Soak Route Coverage
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-route-coverage-current.json`
+- Markdown: `captures\current\hd-soak-route-coverage-current.md`
+- implemented_routes: `['menu-idle', 'map-idle', 'map-pan', 'custom']`
+- implemented_tiers: `['short2', 'short10', 'short30', 'custom']`
+- counts: `{'release_lane_count': 10, 'implemented_lane_count': 3, 'planned_lane_count': 7, 'required_short_route_count': 3}`
+- coverage_complete: `False`
+- next_runtime_route: `menu-idle`
+- runtime_policy: `repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Route Coverage Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-route-coverage-tests-current.json`
+- Markdown: `captures\current\hd-soak-route-coverage-tests-current.md`
+- test_count: `5`
+- guard_policy: `proves the soak harness exposes the required short routes and tiers while future castle, battle, right-bottom, save/load, turn, and campaign lanes stay planned/non-promoting`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
 ### Hd Soak Report Guard
 
 - Status: FAIL
@@ -1364,21 +1385,210 @@
 - runtime_policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Failures:
   - soak report was not produced by an execution run
+  - candidate_sha256 is missing or is not a SHA-256 hex digest
+  - patch_stage_report path is missing
   - frame sample count 0 is below 2
   - minimum nonblack percent 0.0 is below 10.0
   - minimum unique sampled colors 0.0 is below 8
   - process was not stopped cleanly by the harness
+
+### Hd Soak Report Guard Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-report-guard-tests-current.json`
+- Markdown: `captures\current\hd-soak-report-guard-tests-current.md`
+- test_count: `6`
+- guard_policy: `proves executed soak reports must carry protected-stage patch evidence, base/candidate SHA-256s, external artifact locations, stable frame metrics, clean process stop, and non-promoting input status`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Failure Triage
+
+- Status: FAIL
+- JSON: `captures\current\hd-soak-failure-triage-current.json`
+- Markdown: `captures\current\hd-soak-failure-triage-current.md`
+- classification: `not_executed_pending_approval`
+- next_probe: `obtain explicit approval for the exact short2 visible-runtime command, then rerun the soak`
+- route: `menu-idle`
+- final_route_marker: `pending_approval`
+- runtime_policy: `repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - short2 menu-idle soak was not executed because visible-runtime escalation was not approved
+
+### Hd Soak Failure Triage Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-failure-triage-tests-current.json`
+- Markdown: `captures\current\hd-soak-failure-triage-tests-current.md`
+- test_count: `6`
+- guard_policy: `proves soak failures are classified into approval, crash, render/palette, input-route, capture, artifact-budget, cleanup, or unclassified buckets with next probes`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Endurance Release Checklist
+
+- Status: FAIL
+- JSON: `captures\current\hd-endurance-release-checklist-current.json`
+- Markdown: `captures\current\hd-endurance-release-checklist-current.md`
+- full_game_complete: `False`
+- counts: `{'total': 14, 'passed': 4, 'blocked': 6, 'missing': 4}`
+- next_milestone: `{'id': 'short2_menu_idle_soak', 'title': 'First short2 menu-idle soak passes', 'next_probe': 'run the approval-gated short2 menu-idle soak on the protected stage'}`
+- runtime_policy: `repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence
+  - long_soak_representative_routes: no 2h+ representative-route soak report is present
+  - stable_menu_real_input: menu-load proof remains pending manual DirectInput validation
+  - stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation
+  - right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
+  - castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
+  - tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
+  - save_load_roundtrip: save/load continuity proof is absent
+  - turn_advancement: turn-advancement proof is absent
+  - campaign_routes: campaign-route proof is absent
+
+### Hd Endurance Release Checklist Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-endurance-release-checklist-tests-current.json`
+- Markdown: `captures\current\hd-endurance-release-checklist-tests-current.md`
+- test_count: `5`
+- guard_policy: `proves the release-horizon checklist only passes when short/long soak, manual input, screen-route, continuity, hygiene, and promotion-boundary evidence are all current`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Endurance Next Actions
+
+- Status: PASS
+- JSON: `captures\current\hd-endurance-next-actions-current.json`
+- Markdown: `captures\current\hd-endurance-next-actions-current.md`
+- status: `waiting_for_explicit_visible_runtime_approval`
+- next_action: `run_short2_menu_idle_soak`
+- requires_explicit_user_approval: `True`
+- runtime_policy: `repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Endurance Next Actions Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-endurance-next-actions-tests-current.json`
+- Markdown: `captures\current\hd-endurance-next-actions-tests-current.md`
+- test_count: `4`
+- guard_policy: `proves the next-action report stays repo-only, separates safe dry-run commands from approval-gated visible runtime commands, pins canonical short2 report outputs, and records post-run validation steps`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Short Tier Ladder
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-tier-ladder-current.json`
+- Markdown: `captures\current\hd-soak-short-tier-ladder-current.md`
+- ladder_complete: `False`
+- current_step: `short2_menu_idle`
+- current_step_status: `approval_required`
+- long_tiers_locked: `True`
+- future_lanes_locked: `True`
+- right_bottom_promotion_blocked: `True`
+- runtime_policy: `repo-only short-tier soak ladder; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Short Tier Ladder Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-tier-ladder-tests-current.json`
+- Markdown: `captures\current\hd-soak-short-tier-ladder-tests-current.md`
+- test_count: `5`
+- guard_policy: `proves the short soak ladder is ordered, approval-gated, non-promoting, and keeps long/future lanes locked until prerequisite soak evidence exists`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Short Artifact Manifest
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-artifact-manifest-current.json`
+- Markdown: `captures\current\hd-soak-short-artifact-manifest-current.md`
+- step_count: `5`
+- existing_step_report_count: `0`
+- legacy_report_exists: `True`
+- long_tiers_locked: `True`
+- future_lanes_locked: `True`
+- right_bottom_promotion_blocked: `True`
+- runtime_policy: `repo-only short-soak artifact manifest; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Short Artifact Manifest Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-artifact-manifest-tests-current.json`
+- Markdown: `captures\current\hd-soak-short-artifact-manifest-tests-current.md`
+- test_count: `5`
+- guard_policy: `proves each short soak ladder step has durable current report, guard, and triage paths, with execution commands gated by -Execute -AllowVisibleRuntime`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Short Validation Refresh
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-validation-refresh-current.json`
+- Markdown: `captures\current\hd-soak-short-validation-refresh-current.md`
+- status: `pending_no_reports`
+- counts: `{'steps': 5, 'reports_found': 0, 'guards_written': 0, 'triage_written': 0, 'validated_failed': 0}`
+- runtime_policy: `repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Short Validation Refresh Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-validation-refresh-tests-current.json`
+- Markdown: `captures\current\hd-soak-short-validation-refresh-tests-current.md`
+- test_count: `6`
+- guard_policy: `proves canonical short soak reports are automatically guarded and triaged before step-status evaluation, while missing reports remain a safe pending repo-only state`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Short Step Status
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-step-status-current.json`
+- Markdown: `captures\current\hd-soak-short-step-status-current.md`
+- ladder_complete: `False`
+- counts: `{'total': 5, 'passed': 0, 'pending_or_missing': 1, 'locked': 4, 'failed_or_invalid': 0}`
+- current_step: `short2_menu_idle`
+- current_step_status: `pending_approval_legacy_compat`
+- long_tiers_locked: `True`
+- future_lanes_locked: `True`
+- right_bottom_promotion_blocked: `True`
+- runtime_policy: `repo-only short-soak step status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Short Step Status Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-step-status-tests-current.json`
+- Markdown: `captures\current\hd-soak-short-step-status-tests-current.md`
+- test_count: `5`
+- guard_policy: `proves per-step soak status stays repo-only, advances only after guarded passing output, and demands triage for failed canonical runtime reports`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Approval Preflight
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-approval-preflight-current.json`
+- Markdown: `captures\current\hd-soak-approval-preflight-current.md`
+- status: `ready_for_explicit_approval`
+- current_step: `short2_menu_idle`
+- current_step_status: `pending_approval_legacy_compat`
+- writes_outside_repo: `['C:\\ClashCaptures\\hd-soak', 'C:\\ClashTests\\hd-soak']`
+- stable_stage_should_change: `False`
+- right_bottom_promotion_blocked: `True`
+- runtime_policy: `repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Approval Preflight Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-approval-preflight-tests-current.json`
+- Markdown: `captures\current\hd-soak-approval-preflight-tests-current.md`
+- test_count: `7`
+- guard_policy: `proves the first short2 visible-runtime soak remains explicit-approval gated, pins canonical per-step report paths, keeps dry-runs non-executing, and requires clean harness/runtime/process/executable guards before requesting approval`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Capture Corpus Index
 
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `622`
-- current_reference_count: `143`
+- artifact_count: `660`
+- current_reference_count: `160`
 - stale_visible_or_sandbox_count: `16`
-- reference_status_counts: `{'archived_referenced': 283, 'current_referenced': 113, 'stale_unreferenced': 226}`
-- era_counts: `{'cdb_surface_dump_unverified': 55, 'hidden_cdb_surface_dump': 118, 'other_capture_artifact': 433, 'visible_era': 16}`
+- reference_status_counts: `{'archived_referenced': 283, 'current_referenced': 130, 'stale_unreferenced': 247}`
+- era_counts: `{'cdb_surface_dump_unverified': 55, 'hidden_cdb_surface_dump': 118, 'other_capture_artifact': 471, 'visible_era': 16}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1445,9 +1655,9 @@
 - Status: PASS
 - JSON: `captures\current\hd-map-evidence-current-check.json`
 - Index: `captures\current\hd-map-evidence-current.md`
-- links: `126`
+- links: `143`
 - images: `9`
-- local_records: `135`
+- local_records: `152`
 - missing: `0`
 - image_missing: `0`
 - image_wrong_extension: `0`
@@ -1480,10 +1690,23 @@
 - stable_stage_guard: castle_overview_promotion_decision: castle overview promotion decision is not passing
 - stable_stage_guard: castle_overview_evidence_matrix: castle overview evidence matrix is not passing
 - hd_soak_report_guard: soak report was not produced by an execution run
+- hd_soak_report_guard: candidate_sha256 is missing or is not a SHA-256 hex digest
+- hd_soak_report_guard: patch_stage_report path is missing
 - hd_soak_report_guard: frame sample count 0 is below 2
 - hd_soak_report_guard: minimum nonblack percent 0.0 is below 10.0
 - hd_soak_report_guard: minimum unique sampled colors 0.0 is below 8
 - hd_soak_report_guard: process was not stopped cleanly by the harness
+- hd_soak_failure_triage: short2 menu-idle soak was not executed because visible-runtime escalation was not approved
+- hd_endurance_release_checklist: short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence
+- hd_endurance_release_checklist: long_soak_representative_routes: no 2h+ representative-route soak report is present
+- hd_endurance_release_checklist: stable_menu_real_input: menu-load proof remains pending manual DirectInput validation
+- hd_endurance_release_checklist: stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation
+- hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
+- hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
+- hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
+- hd_endurance_release_checklist: save_load_roundtrip: save/load continuity proof is absent
+- hd_endurance_release_checklist: turn_advancement: turn-advancement proof is absent
+- hd_endurance_release_checklist: campaign_routes: campaign-route proof is absent
 - no_popup_boundary_guard: stable_stage_guard: refresh check is not passing: stable_stage_guard
 - no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
 - no_popup_boundary_guard: load_slot_entry_gap: refresh check is not passing: load_slot_entry_gap

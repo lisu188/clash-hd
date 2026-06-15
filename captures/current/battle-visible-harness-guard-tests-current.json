@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:47:02+02:00",
+  "generated_at": "2026-06-15T22:14:37+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the visible battle input harness keeps explicit approval, fatal CDB log detection, post-g gating, and incremental log scanning before any future manual run",

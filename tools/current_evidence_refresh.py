@@ -32,8 +32,17 @@ import docs_consistency_guard
 import evidence_index_check
 import exe_artifact_guard
 import handoff_freshness_guard
+import hd_endurance_release_checklist
+import hd_endurance_next_actions
 import hd_soak_harness_guard
+import hd_soak_failure_triage
 import hd_soak_report
+import hd_soak_route_coverage
+import hd_soak_short_artifact_manifest
+import hd_soak_short_step_status
+import hd_soak_short_tier_ladder
+import hd_soak_approval_preflight
+import hd_soak_short_validation_refresh
 import hd_map_smoke_matrix
 import load_slot_entry_gap_plan
 import load_slot_route_limit_guard
@@ -114,7 +123,17 @@ import test_process_hygiene_guard
 import test_python_runtime_safety_guard
 import test_stable_stage_guard
 import test_handoff_freshness_guard
+import test_hd_endurance_release_checklist
+import test_hd_endurance_next_actions
+import test_hd_soak_failure_triage
 import test_hd_soak_harness_guard
+import test_hd_soak_report
+import test_hd_soak_route_coverage
+import test_hd_soak_short_artifact_manifest
+import test_hd_soak_short_step_status
+import test_hd_soak_short_tier_ladder
+import test_hd_soak_approval_preflight
+import test_hd_soak_short_validation_refresh
 import test_load_slot_entry_gap_plan
 import test_load_slot_route_limit_guard
 import test_load_slot_timeout_phase
@@ -498,6 +517,74 @@ DEFAULT_HD_SOAK_HARNESS_GUARD_TESTS_MD = Path("captures/current/hd-soak-harness-
 DEFAULT_HD_SOAK_REPORT = Path("captures/current/hd-soak-short-current.json")
 DEFAULT_HD_SOAK_REPORT_GUARD_JSON = Path("captures/current/hd-soak-report-guard-current.json")
 DEFAULT_HD_SOAK_REPORT_GUARD_MD = Path("captures/current/hd-soak-report-guard-current.md")
+DEFAULT_HD_SOAK_REPORT_GUARD_TESTS_JSON = Path("captures/current/hd-soak-report-guard-tests-current.json")
+DEFAULT_HD_SOAK_REPORT_GUARD_TESTS_MD = Path("captures/current/hd-soak-report-guard-tests-current.md")
+DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
+DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
+DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
+DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_MD = Path("captures/current/hd-soak-failure-triage-tests-current.md")
+DEFAULT_HD_SOAK_ROUTE_COVERAGE_JSON = hd_soak_route_coverage.DEFAULT_JSON
+DEFAULT_HD_SOAK_ROUTE_COVERAGE_MD = hd_soak_route_coverage.DEFAULT_MD
+DEFAULT_HD_SOAK_ROUTE_COVERAGE_TESTS_JSON = Path("captures/current/hd-soak-route-coverage-tests-current.json")
+DEFAULT_HD_SOAK_ROUTE_COVERAGE_TESTS_MD = Path("captures/current/hd-soak-route-coverage-tests-current.md")
+DEFAULT_HD_SOAK_SHORT_TIER_LADDER_JSON = hd_soak_short_tier_ladder.DEFAULT_JSON
+DEFAULT_HD_SOAK_SHORT_TIER_LADDER_MD = hd_soak_short_tier_ladder.DEFAULT_MD
+DEFAULT_HD_SOAK_SHORT_TIER_LADDER_TESTS_JSON = Path(
+    "captures/current/hd-soak-short-tier-ladder-tests-current.json"
+)
+DEFAULT_HD_SOAK_SHORT_TIER_LADDER_TESTS_MD = Path(
+    "captures/current/hd-soak-short-tier-ladder-tests-current.md"
+)
+DEFAULT_HD_SOAK_SHORT_ARTIFACT_MANIFEST_JSON = hd_soak_short_artifact_manifest.DEFAULT_JSON
+DEFAULT_HD_SOAK_SHORT_ARTIFACT_MANIFEST_MD = hd_soak_short_artifact_manifest.DEFAULT_MD
+DEFAULT_HD_SOAK_SHORT_ARTIFACT_MANIFEST_TESTS_JSON = Path(
+    "captures/current/hd-soak-short-artifact-manifest-tests-current.json"
+)
+DEFAULT_HD_SOAK_SHORT_ARTIFACT_MANIFEST_TESTS_MD = Path(
+    "captures/current/hd-soak-short-artifact-manifest-tests-current.md"
+)
+DEFAULT_HD_SOAK_SHORT_VALIDATION_REFRESH_JSON = hd_soak_short_validation_refresh.DEFAULT_JSON
+DEFAULT_HD_SOAK_SHORT_VALIDATION_REFRESH_MD = hd_soak_short_validation_refresh.DEFAULT_MD
+DEFAULT_HD_SOAK_SHORT_VALIDATION_REFRESH_TESTS_JSON = Path(
+    "captures/current/hd-soak-short-validation-refresh-tests-current.json"
+)
+DEFAULT_HD_SOAK_SHORT_VALIDATION_REFRESH_TESTS_MD = Path(
+    "captures/current/hd-soak-short-validation-refresh-tests-current.md"
+)
+DEFAULT_HD_SOAK_SHORT_STEP_STATUS_JSON = hd_soak_short_step_status.DEFAULT_JSON
+DEFAULT_HD_SOAK_SHORT_STEP_STATUS_MD = hd_soak_short_step_status.DEFAULT_MD
+DEFAULT_HD_SOAK_SHORT_STEP_STATUS_TESTS_JSON = Path(
+    "captures/current/hd-soak-short-step-status-tests-current.json"
+)
+DEFAULT_HD_SOAK_SHORT_STEP_STATUS_TESTS_MD = Path(
+    "captures/current/hd-soak-short-step-status-tests-current.md"
+)
+DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_JSON = hd_soak_approval_preflight.DEFAULT_JSON
+DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_MD = hd_soak_approval_preflight.DEFAULT_MD
+DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_TESTS_JSON = Path(
+    "captures/current/hd-soak-approval-preflight-tests-current.json"
+)
+DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_TESTS_MD = Path(
+    "captures/current/hd-soak-approval-preflight-tests-current.md"
+)
+DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_JSON = hd_endurance_release_checklist.DEFAULT_JSON
+DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_MD = hd_endurance_release_checklist.DEFAULT_MD
+DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_TESTS_JSON = Path(
+    "captures/current/hd-endurance-release-checklist-tests-current.json"
+)
+DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_TESTS_MD = Path(
+    "captures/current/hd-endurance-release-checklist-tests-current.md"
+)
+DEFAULT_HD_ENDURANCE_NEXT_ACTIONS_JSON = hd_endurance_next_actions.DEFAULT_JSON
+DEFAULT_HD_ENDURANCE_NEXT_ACTIONS_MD = hd_endurance_next_actions.DEFAULT_MD
+DEFAULT_HD_ENDURANCE_NEXT_ACTIONS_TESTS_JSON = Path(
+    "captures/current/hd-endurance-next-actions-tests-current.json"
+)
+DEFAULT_HD_ENDURANCE_NEXT_ACTIONS_TESTS_MD = Path(
+    "captures/current/hd-endurance-next-actions-tests-current.md"
+)
+DEFAULT_HD_LONG_SOAK_REPORT_GUARD_JSON = hd_endurance_release_checklist.DEFAULT_LONG_SOAK_JSON
+DEFAULT_HD_CONTINUITY_JSON = hd_endurance_release_checklist.DEFAULT_CONTINUITY_JSON
 DEFAULT_PROMOTION_OVERRIDE_MANIFEST_JSON = Path("captures/current/promotion-override-manifest-current.json")
 DEFAULT_PROMOTION_OVERRIDE_MANIFEST_MD = Path("captures/current/promotion-override-manifest-current.md")
 DEFAULT_PROMOTION_OVERRIDE_MANIFEST_TESTS_JSON = Path(
@@ -4691,6 +4778,471 @@ def build_hd_soak_report_guard(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def build_hd_soak_report_guard_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_report,
+        tests=[
+            "hd_soak_report accepts only executed protected-stage reports with passing patch evidence",
+            "hd_soak_report rejects unexpected process exits",
+            "hd_soak_report rejects repository-local candidates and raw artifacts",
+            "hd_soak_report rejects weak render/palette metrics",
+            "hd_soak_report rejects patch-stage manifests with original/unexpected bytes or failed HD gate",
+            "hd_soak_report rejects missing patch-stage manifests",
+        ],
+        title="HD Soak Report Guard Tests",
+        json_path=args.hd_soak_report_guard_tests_json,
+        md_path=args.hd_soak_report_guard_tests_md,
+        guard_policy=(
+            "proves executed soak reports must carry protected-stage patch evidence, base/candidate SHA-256s, "
+            "external artifact locations, stable frame metrics, clean process stop, and non-promoting input status"
+        ),
+    )
+
+
+def build_hd_soak_failure_triage(args: argparse.Namespace) -> dict[str, Any]:
+    if args.hd_soak_report.exists():
+        triage = hd_soak_failure_triage.build_triage(
+            hd_soak_failure_triage.load_json(args.hd_soak_report),
+            args.hd_soak_report,
+        )
+    else:
+        triage = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "passed": False,
+            "runtime_policy": hd_soak_failure_triage.RUNTIME_POLICY,
+            "source_report": str(args.hd_soak_report),
+            "classification": "missing_report",
+            "next_probe": "run or regenerate the short-tier soak report before triage",
+            "failures": [f"soak report does not exist: {args.hd_soak_report}"],
+        }
+    hd_soak_failure_triage.write_outputs(
+        triage,
+        args.hd_soak_failure_triage_json,
+        args.hd_soak_failure_triage_md,
+    )
+    return {
+        "passed": bool(triage.get("passed")),
+        "json": str(args.hd_soak_failure_triage_json),
+        "markdown": str(args.hd_soak_failure_triage_md),
+        "summary": {
+            "classification": triage.get("classification"),
+            "next_probe": triage.get("next_probe"),
+            "route": triage.get("route"),
+            "final_route_marker": triage.get("final_route_marker"),
+            "runtime_policy": triage.get("runtime_policy"),
+        },
+        "failures": triage.get("failures", []),
+    }
+
+
+def build_hd_soak_failure_triage_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_failure_triage,
+        tests=[
+            "hd_soak_failure_triage classifies pending visible-runtime approval separately from a game failure",
+            "hd_soak_failure_triage classifies AV crashes from exit code 0xC0000005",
+            "hd_soak_failure_triage classifies render/palette metric regressions",
+            "hd_soak_failure_triage classifies route/input probe failures",
+            "hd_soak_failure_triage classifies passing runs without failure",
+            "hd_soak_failure_triage CLI writes JSON/Markdown and fails closed for failed reports",
+        ],
+        title="HD Soak Failure Triage Tests",
+        json_path=args.hd_soak_failure_triage_tests_json,
+        md_path=args.hd_soak_failure_triage_tests_md,
+        guard_policy=(
+            "proves soak failures are classified into approval, crash, render/palette, "
+            "input-route, capture, artifact-budget, cleanup, or unclassified buckets with next probes"
+        ),
+    )
+
+
+def build_hd_soak_route_coverage(args: argparse.Namespace) -> dict[str, Any]:
+    report = hd_soak_route_coverage.build_report(args.hd_soak_harness_script)
+    hd_soak_route_coverage.write_outputs(
+        report,
+        args.hd_soak_route_coverage_json,
+        args.hd_soak_route_coverage_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_soak_route_coverage_json),
+        "markdown": str(args.hd_soak_route_coverage_md),
+        "summary": {
+            "implemented_routes": report.get("implemented_routes"),
+            "implemented_tiers": report.get("implemented_tiers"),
+            "counts": report.get("counts"),
+            "coverage_complete": report.get("coverage_complete"),
+            "next_runtime_route": report.get("next_runtime_route"),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_soak_route_coverage_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_route_coverage,
+        tests=[
+            "hd_soak_route_coverage passes the current short-route harness contract",
+            "hd_soak_route_coverage keeps future release lanes non-promoting",
+            "hd_soak_route_coverage fails closed when a required route is missing",
+            "hd_soak_route_coverage fails closed when a short-tier duration drifts",
+            "hd_soak_route_coverage CLI writes JSON/Markdown and respects --require-pass",
+        ],
+        title="HD Soak Route Coverage Tests",
+        json_path=args.hd_soak_route_coverage_tests_json,
+        md_path=args.hd_soak_route_coverage_tests_md,
+        guard_policy=(
+            "proves the soak harness exposes the required short routes and tiers while "
+            "future castle, battle, right-bottom, save/load, turn, and campaign lanes stay planned/non-promoting"
+        ),
+    )
+
+
+def build_hd_endurance_release_checklist(args: argparse.Namespace) -> dict[str, Any]:
+    checklist_args = argparse.Namespace(
+        stable_stage_json=args.stable_stage_guard_json,
+        no_popup_json=args.no_popup_map_evidence_json,
+        short_soak_json=args.hd_soak_report_guard_json,
+        long_soak_json=args.hd_long_soak_report_guard_json,
+        manual_json=args.manual_directinput_checklist_json,
+        right_bottom_json=args.right_bottom_compose_decision_json,
+        castle_json=args.castle_decision_json,
+        battle_json=args.battle_ui_evidence_json,
+        completion_json=args.current_completion_summary_json,
+        continuity_json=args.hd_continuity_json,
+        exe_artifact_json=args.exe_artifact_guard_json,
+        process_hygiene_json=args.process_hygiene_guard_json,
+    )
+    report = hd_endurance_release_checklist.build_checklist(checklist_args)
+    hd_endurance_release_checklist.write_outputs(
+        report,
+        args.hd_endurance_release_checklist_json,
+        args.hd_endurance_release_checklist_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_endurance_release_checklist_json),
+        "markdown": str(args.hd_endurance_release_checklist_md),
+        "summary": {
+            "full_game_complete": report.get("full_game_complete"),
+            "counts": report.get("counts"),
+            "next_milestone": report.get("next_milestone"),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_endurance_release_checklist_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_endurance_release_checklist,
+        tests=[
+            "hd_endurance_release_checklist can pass a fully proven future release fixture",
+            "hd_endurance_release_checklist keeps pending short soaks as the next milestone",
+            "hd_endurance_release_checklist keeps pending manual DirectInput items blocked",
+            "hd_endurance_release_checklist keeps validation-only right-bottom evidence blocked",
+            "hd_endurance_release_checklist CLI writes JSON/Markdown and fails closed",
+        ],
+        title="HD Endurance Release Checklist Tests",
+        json_path=args.hd_endurance_release_checklist_tests_json,
+        md_path=args.hd_endurance_release_checklist_tests_md,
+        guard_policy=(
+            "proves the release-horizon checklist only passes when short/long soak, manual input, "
+            "screen-route, continuity, hygiene, and promotion-boundary evidence are all current"
+        ),
+    )
+
+
+def build_hd_endurance_next_actions(args: argparse.Namespace) -> dict[str, Any]:
+    action_args = argparse.Namespace(checklist_json=args.hd_endurance_release_checklist_json)
+    report = hd_endurance_next_actions.build_report(action_args)
+    hd_endurance_next_actions.write_outputs(
+        report,
+        args.hd_endurance_next_actions_json,
+        args.hd_endurance_next_actions_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_endurance_next_actions_json),
+        "markdown": str(args.hd_endurance_next_actions_md),
+        "summary": {
+            "status": report.get("status"),
+            "next_action": (report.get("next_action") or {}).get("id"),
+            "requires_explicit_user_approval": (
+                (report.get("next_action") or {}).get("requires_explicit_user_approval")
+            ),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_endurance_next_actions_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_endurance_next_actions,
+        tests=[
+            "hd_endurance_next_actions emits the exact approval-gated short2 runtime command with canonical report paths",
+            "hd_endurance_next_actions fails closed when the release checklist is missing",
+            "hd_endurance_next_actions switches complete fixtures to release-audit mode",
+            "hd_endurance_next_actions CLI writes JSON/Markdown and passes as a triage artifact",
+        ],
+        title="HD Endurance Next Actions Tests",
+        json_path=args.hd_endurance_next_actions_tests_json,
+        md_path=args.hd_endurance_next_actions_tests_md,
+        guard_policy=(
+            "proves the next-action report stays repo-only, separates safe dry-run commands from "
+            "approval-gated visible runtime commands, pins canonical short2 report outputs, "
+            "and records post-run validation steps"
+        ),
+    )
+
+
+def build_hd_soak_short_tier_ladder(args: argparse.Namespace) -> dict[str, Any]:
+    ladder_args = argparse.Namespace(
+        route_coverage_json=args.hd_soak_route_coverage_json,
+        next_actions_json=args.hd_endurance_next_actions_json,
+        soak_report_json=args.hd_soak_report_guard_json,
+    )
+    report = hd_soak_short_tier_ladder.build_report(ladder_args)
+    hd_soak_short_tier_ladder.write_outputs(
+        report,
+        args.hd_soak_short_tier_ladder_json,
+        args.hd_soak_short_tier_ladder_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_soak_short_tier_ladder_json),
+        "markdown": str(args.hd_soak_short_tier_ladder_md),
+        "summary": {
+            "ladder_complete": report.get("ladder_complete"),
+            "current_step": (report.get("current_step") or {}).get("id"),
+            "current_step_status": (report.get("current_step") or {}).get("status"),
+            "long_tiers_locked": (report.get("locks") or {}).get("long_tiers_locked"),
+            "future_lanes_locked": (report.get("locks") or {}).get("future_lanes_locked"),
+            "right_bottom_promotion_blocked": (report.get("locks") or {}).get("right_bottom_promotion_blocked"),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_soak_short_tier_ladder_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_short_tier_ladder,
+        tests=[
+            "hd_soak_short_tier_ladder passes as a repo-only plan while current short2 menu-idle is approval-gated",
+            "hd_soak_short_tier_ladder advances to short2 map-idle after a passing short2 menu-idle fixture",
+            "hd_soak_short_tier_ladder fails closed when a required harness route is missing",
+            "hd_soak_short_tier_ladder catches a mismatched first-step next-action command",
+            "hd_soak_short_tier_ladder CLI writes JSON/Markdown and respects --require-pass",
+        ],
+        title="HD Soak Short-Tier Ladder Tests",
+        json_path=args.hd_soak_short_tier_ladder_tests_json,
+        md_path=args.hd_soak_short_tier_ladder_tests_md,
+        guard_policy=(
+            "proves the short soak ladder is ordered, approval-gated, non-promoting, "
+            "and keeps long/future lanes locked until prerequisite soak evidence exists"
+        ),
+    )
+
+
+def build_hd_soak_short_artifact_manifest(args: argparse.Namespace) -> dict[str, Any]:
+    manifest_args = argparse.Namespace(
+        legacy_report_json=args.hd_soak_report,
+        legacy_report_md=Path(str(args.hd_soak_report).replace(".json", ".md")),
+    )
+    report = hd_soak_short_artifact_manifest.build_report(manifest_args)
+    hd_soak_short_artifact_manifest.write_outputs(
+        report,
+        args.hd_soak_short_artifact_manifest_json,
+        args.hd_soak_short_artifact_manifest_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_soak_short_artifact_manifest_json),
+        "markdown": str(args.hd_soak_short_artifact_manifest_md),
+        "summary": {
+            "step_count": report.get("step_count"),
+            "existing_step_report_count": report.get("existing_step_report_count"),
+            "legacy_report_exists": (report.get("legacy_default_report") or {}).get("json_exists"),
+            "long_tiers_locked": (report.get("locks") or {}).get("long_tiers_locked_until_step_reports_pass"),
+            "future_lanes_locked": (report.get("locks") or {}).get("future_lanes_locked_until_step_reports_pass"),
+            "right_bottom_promotion_blocked": (report.get("locks") or {}).get("right_bottom_promotion_blocked"),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_soak_short_artifact_manifest_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_short_artifact_manifest,
+        tests=[
+            "hd_soak_short_artifact_manifest emits unique canonical report paths for every short ladder step",
+            "hd_soak_short_artifact_manifest pins report outputs and keeps execution approval-gated",
+            "hd_soak_short_artifact_manifest fails closed on duplicate canonical paths",
+            "hd_soak_short_artifact_manifest fails closed when outputs leave captures/current",
+            "hd_soak_short_artifact_manifest CLI writes JSON/Markdown and respects --require-pass",
+        ],
+        title="HD Soak Short Artifact Manifest Tests",
+        json_path=args.hd_soak_short_artifact_manifest_tests_json,
+        md_path=args.hd_soak_short_artifact_manifest_tests_md,
+        guard_policy=(
+            "proves each short soak ladder step has durable current report, guard, and triage paths, "
+            "with execution commands gated by -Execute -AllowVisibleRuntime"
+        ),
+    )
+
+
+def build_hd_soak_short_validation_refresh(args: argparse.Namespace) -> dict[str, Any]:
+    refresh_args = argparse.Namespace(manifest_json=args.hd_soak_short_artifact_manifest_json)
+    report = hd_soak_short_validation_refresh.build_report(refresh_args)
+    hd_soak_short_validation_refresh.write_outputs(
+        report,
+        args.hd_soak_short_validation_refresh_json,
+        args.hd_soak_short_validation_refresh_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_soak_short_validation_refresh_json),
+        "markdown": str(args.hd_soak_short_validation_refresh_md),
+        "summary": {
+            "status": report.get("status"),
+            "counts": report.get("counts"),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_soak_short_validation_refresh_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_short_validation_refresh,
+        tests=[
+            "hd_soak_short_validation_refresh passes as pending when no canonical reports exist",
+            "hd_soak_short_validation_refresh writes guard and triage artifacts for passing canonical reports",
+            "hd_soak_short_validation_refresh writes failed guard and classified triage for failed canonical reports",
+            "hd_soak_short_validation_refresh fails closed when a canonical report mismatches its step",
+            "hd_soak_short_validation_refresh fails closed when the manifest is missing",
+            "hd_soak_short_validation_refresh CLI writes JSON/Markdown and respects --require-pass",
+        ],
+        title="HD Soak Short Validation Refresh Tests",
+        json_path=args.hd_soak_short_validation_refresh_tests_json,
+        md_path=args.hd_soak_short_validation_refresh_tests_md,
+        guard_policy=(
+            "proves canonical short soak reports are automatically guarded and triaged before "
+            "step-status evaluation, while missing reports remain a safe pending repo-only state"
+        ),
+    )
+
+
+def build_hd_soak_short_step_status(args: argparse.Namespace) -> dict[str, Any]:
+    status_args = argparse.Namespace(
+        manifest_json=args.hd_soak_short_artifact_manifest_json,
+        legacy_report_json=args.hd_soak_report,
+    )
+    report = hd_soak_short_step_status.build_report(status_args)
+    hd_soak_short_step_status.write_outputs(
+        report,
+        args.hd_soak_short_step_status_json,
+        args.hd_soak_short_step_status_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_soak_short_step_status_json),
+        "markdown": str(args.hd_soak_short_step_status_md),
+        "summary": {
+            "ladder_complete": report.get("ladder_complete"),
+            "counts": report.get("counts"),
+            "current_step": (report.get("current_step") or {}).get("id"),
+            "current_step_status": (report.get("current_step") or {}).get("status"),
+            "long_tiers_locked": (report.get("locks") or {}).get("long_tiers_locked"),
+            "future_lanes_locked": (report.get("locks") or {}).get("future_lanes_locked"),
+            "right_bottom_promotion_blocked": (report.get("locks") or {}).get("right_bottom_promotion_blocked"),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_soak_short_step_status_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_short_step_status,
+        tests=[
+            "hd_soak_short_step_status passes for the current pending approval state",
+            "hd_soak_short_step_status advances after a guarded passing first-step fixture",
+            "hd_soak_short_step_status fails closed when a canonical report lacks guard output",
+            "hd_soak_short_step_status accepts classified failed reports with triage output",
+            "hd_soak_short_step_status CLI writes JSON/Markdown and respects --require-pass",
+        ],
+        title="HD Soak Short-Step Status Tests",
+        json_path=args.hd_soak_short_step_status_tests_json,
+        md_path=args.hd_soak_short_step_status_tests_md,
+        guard_policy=(
+            "proves per-step soak status stays repo-only, advances only after guarded passing output, "
+            "and demands triage for failed canonical runtime reports"
+        ),
+    )
+
+
+def build_hd_soak_approval_preflight(args: argparse.Namespace) -> dict[str, Any]:
+    preflight_args = argparse.Namespace(
+        next_actions_json=args.hd_endurance_next_actions_json,
+        step_status_json=args.hd_soak_short_step_status_json,
+        hd_soak_harness_guard_json=args.hd_soak_harness_guard_json,
+        visible_runtime_guard_json=args.visible_runtime_launcher_guard_json,
+        process_hygiene_json=args.process_hygiene_guard_json,
+        exe_artifact_json=args.exe_artifact_guard_json,
+    )
+    report = hd_soak_approval_preflight.build_report(preflight_args)
+    hd_soak_approval_preflight.write_outputs(
+        report,
+        args.hd_soak_approval_preflight_json,
+        args.hd_soak_approval_preflight_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_soak_approval_preflight_json),
+        "markdown": str(args.hd_soak_approval_preflight_md),
+        "summary": {
+            "status": report.get("status"),
+            "current_step": (report.get("current_step") or {}).get("id"),
+            "current_step_status": (report.get("current_step") or {}).get("status"),
+            "writes_outside_repo": report.get("writes_outside_repo"),
+            "stable_stage_should_change": (report.get("locks") or {}).get("stable_stage_should_change"),
+            "right_bottom_promotion_blocked": (report.get("locks") or {}).get(
+                "right_bottom_promotion_blocked"
+            ),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_soak_approval_preflight_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_approval_preflight,
+        tests=[
+            "hd_soak_approval_preflight passes with a canonical first-step approval packet",
+            "hd_soak_approval_preflight fails closed when runtime command approval flags or paths drift",
+            "hd_soak_approval_preflight fails closed when dry-run command can execute",
+            "hd_soak_approval_preflight catches next-actions and short-step command mismatches",
+            "hd_soak_approval_preflight fails closed when the current short-step status is not pending",
+            "hd_soak_approval_preflight fails closed when source guards are not passing",
+            "hd_soak_approval_preflight CLI writes JSON/Markdown and respects --require-pass",
+        ],
+        title="HD Soak Approval Preflight Tests",
+        json_path=args.hd_soak_approval_preflight_tests_json,
+        md_path=args.hd_soak_approval_preflight_tests_md,
+        guard_policy=(
+            "proves the first short2 visible-runtime soak remains explicit-approval gated, "
+            "pins canonical per-step report paths, keeps dry-runs non-executing, and requires "
+            "clean harness/runtime/process/executable guards before requesting approval"
+        ),
+    )
+
+
 def build_promotion_override_manifest(args: argparse.Namespace) -> dict[str, Any]:
     report_args = argparse.Namespace(
         manifest=args.promotion_override_manifest,
@@ -5983,7 +6535,26 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["current_completion_summary"] = build_current_completion_summary(args, checks)
     checks["hd_soak_harness_guard"] = build_hd_soak_harness_guard(args)
     checks["hd_soak_harness_guard_tests"] = build_hd_soak_harness_guard_tests(args)
+    checks["hd_soak_route_coverage"] = build_hd_soak_route_coverage(args)
+    checks["hd_soak_route_coverage_tests"] = build_hd_soak_route_coverage_tests(args)
     checks["hd_soak_report_guard"] = build_hd_soak_report_guard(args)
+    checks["hd_soak_report_guard_tests"] = build_hd_soak_report_guard_tests(args)
+    checks["hd_soak_failure_triage"] = build_hd_soak_failure_triage(args)
+    checks["hd_soak_failure_triage_tests"] = build_hd_soak_failure_triage_tests(args)
+    checks["hd_endurance_release_checklist"] = build_hd_endurance_release_checklist(args)
+    checks["hd_endurance_release_checklist_tests"] = build_hd_endurance_release_checklist_tests(args)
+    checks["hd_endurance_next_actions"] = build_hd_endurance_next_actions(args)
+    checks["hd_endurance_next_actions_tests"] = build_hd_endurance_next_actions_tests(args)
+    checks["hd_soak_short_tier_ladder"] = build_hd_soak_short_tier_ladder(args)
+    checks["hd_soak_short_tier_ladder_tests"] = build_hd_soak_short_tier_ladder_tests(args)
+    checks["hd_soak_short_artifact_manifest"] = build_hd_soak_short_artifact_manifest(args)
+    checks["hd_soak_short_artifact_manifest_tests"] = build_hd_soak_short_artifact_manifest_tests(args)
+    checks["hd_soak_short_validation_refresh"] = build_hd_soak_short_validation_refresh(args)
+    checks["hd_soak_short_validation_refresh_tests"] = build_hd_soak_short_validation_refresh_tests(args)
+    checks["hd_soak_short_step_status"] = build_hd_soak_short_step_status(args)
+    checks["hd_soak_short_step_status_tests"] = build_hd_soak_short_step_status_tests(args)
+    checks["hd_soak_approval_preflight"] = build_hd_soak_approval_preflight(args)
+    checks["hd_soak_approval_preflight_tests"] = build_hd_soak_approval_preflight_tests(args)
     checks["capture_corpus_index"] = build_capture_corpus_index(args)
     checks["capture_corpus_index_tests"] = build_capture_corpus_index_tests(args)
     checks["no_popup_boundary_guard"] = build_no_popup_boundary_guard(args, checks)
@@ -7057,9 +7628,185 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=DEFAULT_HD_SOAK_HARNESS_GUARD_TESTS_MD,
     )
+    parser.add_argument("--hd-soak-route-coverage-json", type=Path, default=DEFAULT_HD_SOAK_ROUTE_COVERAGE_JSON)
+    parser.add_argument("--hd-soak-route-coverage-md", type=Path, default=DEFAULT_HD_SOAK_ROUTE_COVERAGE_MD)
+    parser.add_argument(
+        "--hd-soak-route-coverage-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_ROUTE_COVERAGE_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-route-coverage-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_ROUTE_COVERAGE_TESTS_MD,
+    )
     parser.add_argument("--hd-soak-report", type=Path, default=DEFAULT_HD_SOAK_REPORT)
     parser.add_argument("--hd-soak-report-guard-json", type=Path, default=DEFAULT_HD_SOAK_REPORT_GUARD_JSON)
     parser.add_argument("--hd-soak-report-guard-md", type=Path, default=DEFAULT_HD_SOAK_REPORT_GUARD_MD)
+    parser.add_argument(
+        "--hd-soak-report-guard-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_REPORT_GUARD_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-report-guard-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_REPORT_GUARD_TESTS_MD,
+    )
+    parser.add_argument("--hd-soak-failure-triage-json", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON)
+    parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)
+    parser.add_argument(
+        "--hd-soak-failure-triage-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-failure-triage-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-endurance-release-checklist-json",
+        type=Path,
+        default=DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_JSON,
+    )
+    parser.add_argument(
+        "--hd-endurance-release-checklist-md",
+        type=Path,
+        default=DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_MD,
+    )
+    parser.add_argument(
+        "--hd-endurance-release-checklist-tests-json",
+        type=Path,
+        default=DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-endurance-release-checklist-tests-md",
+        type=Path,
+        default=DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-endurance-next-actions-json",
+        type=Path,
+        default=DEFAULT_HD_ENDURANCE_NEXT_ACTIONS_JSON,
+    )
+    parser.add_argument(
+        "--hd-endurance-next-actions-md",
+        type=Path,
+        default=DEFAULT_HD_ENDURANCE_NEXT_ACTIONS_MD,
+    )
+    parser.add_argument(
+        "--hd-endurance-next-actions-tests-json",
+        type=Path,
+        default=DEFAULT_HD_ENDURANCE_NEXT_ACTIONS_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-endurance-next-actions-tests-md",
+        type=Path,
+        default=DEFAULT_HD_ENDURANCE_NEXT_ACTIONS_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-short-tier-ladder-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_TIER_LADDER_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-short-tier-ladder-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_TIER_LADDER_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-short-tier-ladder-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_TIER_LADDER_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-short-tier-ladder-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_TIER_LADDER_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-short-artifact-manifest-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_ARTIFACT_MANIFEST_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-short-artifact-manifest-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_ARTIFACT_MANIFEST_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-short-artifact-manifest-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_ARTIFACT_MANIFEST_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-short-artifact-manifest-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_ARTIFACT_MANIFEST_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-short-validation-refresh-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_VALIDATION_REFRESH_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-short-validation-refresh-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_VALIDATION_REFRESH_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-short-validation-refresh-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_VALIDATION_REFRESH_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-short-validation-refresh-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_VALIDATION_REFRESH_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-short-step-status-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_STEP_STATUS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-short-step-status-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_STEP_STATUS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-short-step-status-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_STEP_STATUS_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-short-step-status-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_SHORT_STEP_STATUS_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-approval-preflight-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-approval-preflight-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-approval-preflight-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-approval-preflight-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_TESTS_MD,
+    )
+    parser.add_argument("--hd-long-soak-report-guard-json", type=Path, default=DEFAULT_HD_LONG_SOAK_REPORT_GUARD_JSON)
+    parser.add_argument("--hd-continuity-json", type=Path, default=DEFAULT_HD_CONTINUITY_JSON)
     parser.add_argument("--docs-consistency-json", type=Path, default=DEFAULT_DOCS_CONSISTENCY_JSON)
     parser.add_argument("--docs-consistency-md", type=Path, default=DEFAULT_DOCS_CONSISTENCY_MD)
     parser.add_argument("--docs-consistency-tests-json", type=Path, default=DEFAULT_DOCS_CONSISTENCY_TESTS_JSON)

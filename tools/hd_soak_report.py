@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,6 +17,7 @@ PROTECTED_STABLE_STAGE = (
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-"
     "minimapright-dynvswitch"
 )
+EXPECTED_BASE_SHA256 = "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
 RUNTIME_POLICY = (
     "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, "
     "PowerShell harnesses, or visible windows"
@@ -56,6 +58,35 @@ def numbers(values: list[Any]) -> list[float]:
     return result
 
 
+def normalize_sha(value: Any) -> str:
+    return str(value or "").strip().lower()
+
+
+def is_sha256(value: Any) -> bool:
+    return bool(re.fullmatch(r"[0-9a-fA-F]{64}", str(value or "")))
+
+
+def resolve_path(path_text: str | None) -> Path | None:
+    if not path_text:
+        return None
+    path = Path(path_text)
+    if path.is_absolute():
+        return path
+    return REPO_ROOT / path
+
+
+def load_optional_json(path_text: str | None) -> tuple[dict[str, Any] | None, str | None]:
+    path = resolve_path(path_text)
+    if path is None:
+        return None, "patch_stage_report path is missing"
+    if not path.exists():
+        return None, f"patch_stage_report does not exist: {path}"
+    try:
+        return load_json(path), None
+    except (OSError, json.JSONDecodeError) as exc:
+        return None, f"patch_stage_report could not be read: {exc}"
+
+
 def evaluate_report(
     report: dict[str, Any],
     *,
@@ -91,6 +122,50 @@ def evaluate_report(
         {
             "stage": report.get("stage"),
             "stable_stage_should_change": report.get("stable_stage_should_change"),
+        },
+        failures,
+    )
+
+    failures = []
+    input_sha = normalize_sha(report.get("input_sha256"))
+    candidate_sha = normalize_sha(report.get("candidate_sha256"))
+    patch_report, patch_error = load_optional_json(report.get("patch_stage_report"))
+    if input_sha != EXPECTED_BASE_SHA256:
+        failures.append("input_sha256 does not match the expected original Clash95 base SHA-256")
+    if not is_sha256(candidate_sha):
+        failures.append("candidate_sha256 is missing or is not a SHA-256 hex digest")
+    if patch_error:
+        failures.append(patch_error)
+    if patch_report is not None:
+        status_counts = patch_report.get("status_counts") or {}
+        patch_count = int(patch_report.get("patch_count") or 0)
+        patched_count = int(status_counts.get("patched") or 0)
+        original_count = int(status_counts.get("original") or 0)
+        unexpected_count = int(status_counts.get("unexpected") or 0)
+        gate = patch_report.get("current_hd_map_gate") or {}
+        if patch_report.get("stage") != PROTECTED_STABLE_STAGE:
+            failures.append("patch_stage_report stage does not match the protected stable stage")
+        if normalize_sha(patch_report.get("expected_base_sha256")) != EXPECTED_BASE_SHA256:
+            failures.append("patch_stage_report expected_base_sha256 does not match the protected base")
+        if normalize_sha(patch_report.get("exe_sha256")) != candidate_sha:
+            failures.append("patch_stage_report exe_sha256 does not match candidate_sha256")
+        if patch_count <= 0 or patched_count != patch_count:
+            failures.append("patch_stage_report does not show every selected byte patched")
+        if original_count or unexpected_count:
+            failures.append("patch_stage_report has original or unexpected selected bytes")
+        if gate.get("passed") is not True:
+            failures.append("patch_stage_report current_hd_map_gate is not passing")
+    checks["patch_evidence"] = check_record(
+        not failures,
+        {
+            "input_sha256": report.get("input_sha256"),
+            "expected_base_sha256": EXPECTED_BASE_SHA256,
+            "candidate_sha256": report.get("candidate_sha256"),
+            "patch_stage_report": report.get("patch_stage_report"),
+            "patch_stage": (patch_report or {}).get("stage"),
+            "patch_count": (patch_report or {}).get("patch_count"),
+            "patch_status_counts": (patch_report or {}).get("status_counts"),
+            "current_hd_map_gate": (patch_report or {}).get("current_hd_map_gate"),
         },
         failures,
     )
