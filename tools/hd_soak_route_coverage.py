@@ -19,6 +19,7 @@ from typing import Any
 DEFAULT_SCRIPT = Path("scripts/smoke/run_hd_soak.ps1")
 DEFAULT_JSON = Path("captures/current/hd-soak-route-coverage-current.json")
 DEFAULT_MD = Path("captures/current/hd-soak-route-coverage-current.md")
+DEFAULT_RELEASE_CHECKLIST_JSON = Path("captures/current/hd-endurance-release-checklist-current.json")
 RUNTIME_POLICY = (
     "repo-only soak route coverage inventory; does not launch Clash95, CDB, "
     "wrappers, PowerShell harnesses, or visible windows"
@@ -38,6 +39,7 @@ RELEASE_LANES = [
         "status": "implemented_pending_first_soak",
         "proof_class": "approval_gated_visible_runtime",
         "promotion_scope": "non_promoting_short_soak",
+        "release_requirement_ids": ["short2_menu_idle_soak", "stable_menu_real_input"],
         "next_probe": "run short2 menu-idle after explicit visible-runtime approval",
     },
     {
@@ -46,6 +48,7 @@ RELEASE_LANES = [
         "status": "implemented_waiting_on_short2_menu",
         "proof_class": "approval_gated_visible_runtime",
         "promotion_scope": "non_promoting_short_soak",
+        "release_requirement_ids": ["short2_menu_idle_soak", "stable_hd_map_real_input"],
         "next_probe": "run short2 map-idle after menu-idle passes",
     },
     {
@@ -54,6 +57,7 @@ RELEASE_LANES = [
         "status": "implemented_waiting_on_map_idle",
         "proof_class": "approval_gated_visible_runtime",
         "promotion_scope": "non_promoting_short_soak",
+        "release_requirement_ids": ["long_soak_representative_routes", "stable_hd_map_real_input"],
         "next_probe": "run short10/short30 map-pan after map-idle passes",
     },
     {
@@ -62,6 +66,7 @@ RELEASE_LANES = [
         "status": "planned_not_implemented",
         "proof_class": "future_visible_or_manual_input",
         "promotion_scope": "blocked_until_manual_or_strict_natural_proof",
+        "release_requirement_ids": ["castle_and_barracks_centered_input"],
         "next_probe": "add a non-promoting castle overview route only after short map routes stabilize",
     },
     {
@@ -70,6 +75,7 @@ RELEASE_LANES = [
         "status": "planned_not_implemented",
         "proof_class": "future_visible_or_manual_input",
         "promotion_scope": "blocked_until_manual_or_strict_natural_proof",
+        "release_requirement_ids": ["castle_and_barracks_centered_input"],
         "next_probe": "add centered castle/barracks enter-exit route after castle baseline is approval-ready",
     },
     {
@@ -78,6 +84,7 @@ RELEASE_LANES = [
         "status": "planned_blocked_by_manual_or_natural_proof",
         "proof_class": "future_visible_or_manual_input",
         "promotion_scope": "blocked; forced coordinates remain diagnostic only",
+        "release_requirement_ids": ["right_bottom_action_menu"],
         "next_probe": "replace debugger-forced action-click proof with natural or approved manual input proof",
     },
     {
@@ -86,6 +93,7 @@ RELEASE_LANES = [
         "status": "planned_not_implemented",
         "proof_class": "future_visible_or_manual_input",
         "promotion_scope": "blocked_until_battle_entry_return_and_click_to_callback_proof",
+        "release_requirement_ids": ["tactical_battle_entry_return"],
         "next_probe": "add battle entry/use/return route after representative map/castle routes are stable",
     },
     {
@@ -94,6 +102,7 @@ RELEASE_LANES = [
         "status": "planned_not_implemented",
         "proof_class": "future_safe_test_save_continuity",
         "promotion_scope": "blocked_until_safe_save_roundtrip_evidence",
+        "release_requirement_ids": ["save_load_roundtrip"],
         "next_probe": "define safe isolated save/load continuity evidence after short tiers pass",
     },
     {
@@ -102,6 +111,7 @@ RELEASE_LANES = [
         "status": "planned_not_implemented",
         "proof_class": "future_state_continuity",
         "promotion_scope": "blocked_until_turn_state_evidence",
+        "release_requirement_ids": ["turn_advancement"],
         "next_probe": "add deterministic turn-advance route after save/load continuity is safe",
     },
     {
@@ -110,6 +120,7 @@ RELEASE_LANES = [
         "status": "planned_not_implemented",
         "proof_class": "future_long_visible_runtime",
         "promotion_scope": "blocked_until_long_soak_and_campaign_continuity",
+        "release_requirement_ids": ["long_soak_representative_routes", "campaign_routes"],
         "next_probe": "add representative campaign route only after short and medium tiers are stable",
     },
 ]
@@ -164,15 +175,107 @@ def implemented_route_steps(text: str, route: str) -> list[str]:
     return re.findall(r"Name\s*=\s*['\"]([^'\"]+)['\"]", route_match.group("body"))
 
 
-def build_report(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
+def load_release_requirements(path: Path | None, failures: list[str]) -> tuple[dict[str, Any], dict[str, Any]]:
+    meta: dict[str, Any] = {
+        "path": str(path) if path else None,
+        "state": "not_configured" if path is None else "missing",
+        "present": False,
+        "generated_at": None,
+        "passed": None,
+        "requirement_count": 0,
+    }
+    if path is None or not path.exists():
+        return {}, meta
+
+    meta["present"] = True
+    try:
+        data = json.loads(read_text(path))
+    except json.JSONDecodeError as exc:
+        meta["state"] = "invalid_json"
+        meta["error"] = f"{exc.msg} at line {exc.lineno} column {exc.colno}"
+        failures.append(f"release checklist JSON is invalid: {path}: {meta['error']}")
+        return {}, meta
+
+    requirements = data.get("requirements")
+    if not isinstance(requirements, list):
+        meta["state"] = "missing_requirements"
+        failures.append(f"release checklist lacks requirements array: {path}")
+        return {}, meta
+
+    by_id: dict[str, Any] = {}
+    for requirement in requirements:
+        if isinstance(requirement, dict) and requirement.get("id"):
+            by_id[str(requirement["id"])] = requirement
+
+    meta.update(
+        {
+            "state": "present",
+            "generated_at": data.get("generated_at"),
+            "passed": data.get("passed"),
+            "requirement_count": len(by_id),
+        }
+    )
+    return by_id, meta
+
+
+def compact_requirement(requirement: dict[str, Any]) -> dict[str, Any]:
+    evidence = requirement.get("evidence")
+    if not isinstance(evidence, list):
+        evidence = []
+    return {
+        "id": str(requirement.get("id", "")),
+        "title": str(requirement.get("title", "")),
+        "category": str(requirement.get("category", "")),
+        "status": str(requirement.get("status", "unknown")),
+        "passed": bool(requirement.get("passed")),
+        "summary": str(requirement.get("summary", "")),
+        "next_probe": str(requirement.get("next_probe", "")),
+        "evidence": [str(item) for item in evidence],
+    }
+
+
+def missing_requirement_blocker(requirement_id: str) -> dict[str, Any]:
+    return {
+        "id": requirement_id,
+        "title": requirement_id,
+        "category": "release checklist",
+        "status": "missing_from_checklist",
+        "passed": False,
+        "summary": "route coverage references a release requirement that is absent from the checklist",
+        "next_probe": "restore or rename the linked release checklist requirement",
+        "evidence": [],
+    }
+
+
+def requirement_blocks(requirement: dict[str, Any]) -> bool:
+    return requirement.get("passed") is not True or requirement.get("status") != "pass"
+
+
+def readiness_status(lane: dict[str, Any], checklist_state: str) -> str:
+    if checklist_state != "present":
+        return f"unknown_release_checklist_{checklist_state}"
+    if lane["current_blockers"]:
+        prefix = "implemented" if lane["implemented_in_harness"] else "planned"
+        return f"{prefix}_blocked_by_current_requirements"
+    if lane["implemented_in_harness"]:
+        return "implemented_requirements_clear"
+    return "planned_requirements_clear_not_scripted"
+
+
+def build_report(
+    script: Path = DEFAULT_SCRIPT,
+    release_checklist_json: Path | None = DEFAULT_RELEASE_CHECKLIST_JSON,
+) -> dict[str, Any]:
     failures: list[str] = []
+    release_requirements, release_checklist = load_release_requirements(release_checklist_json, failures)
     if not script.exists():
         return {
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "passed": False,
             "runtime_policy": RUNTIME_POLICY,
             "script": str(script),
-            "failures": [f"missing soak harness script: {script}"],
+            "release_checklist": release_checklist,
+            "failures": failures + [f"missing soak harness script: {script}"],
         }
 
     text = read_text(script)
@@ -201,15 +304,30 @@ def build_report(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
         lane_record["implemented_in_harness"] = bool(route and route in route_values)
         lane_record["route_steps"] = route_steps.get(str(route), []) if route else []
         lane_record["stable_stage_should_change"] = False
+        lane_record["current_blockers"] = []
+        if release_checklist["state"] == "present":
+            for requirement_id in lane_record.get("release_requirement_ids", []):
+                requirement = release_requirements.get(requirement_id)
+                if requirement is None:
+                    lane_record["current_blockers"].append(missing_requirement_blocker(requirement_id))
+                    failures.append(
+                        f"release checklist missing requirement {requirement_id} for lane {lane_record['id']}"
+                    )
+                elif requirement_blocks(requirement):
+                    lane_record["current_blockers"].append(compact_requirement(requirement))
+        lane_record["current_blocker_count"] = len(lane_record["current_blockers"])
+        lane_record["readiness_status"] = readiness_status(lane_record, str(release_checklist["state"]))
         lanes.append(lane_record)
 
     implemented_lane_count = sum(1 for lane in lanes if lane["implemented_in_harness"])
     planned_lane_count = len(lanes) - implemented_lane_count
+    blocked_lane_count = sum(1 for lane in lanes if lane["current_blocker_count"])
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "passed": not failures,
         "runtime_policy": RUNTIME_POLICY,
         "script": str(script),
+        "release_checklist": release_checklist,
         "implemented_routes": route_values,
         "implemented_tiers": tier_values,
         "tier_seconds": tier_seconds,
@@ -219,6 +337,7 @@ def build_report(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
             "release_lane_count": len(lanes),
             "implemented_lane_count": implemented_lane_count,
             "planned_lane_count": planned_lane_count,
+            "blocked_lane_count": blocked_lane_count,
             "required_short_route_count": len(REQUIRED_SHORT_ROUTES),
         },
         "coverage_complete": planned_lane_count == 0,
@@ -236,9 +355,11 @@ def to_markdown(report: dict[str, Any]) -> str:
         f"- Generated: `{report['generated_at']}`",
         f"- Runtime policy: {report['runtime_policy']}",
         f"- Harness script: `{report['script']}`",
+        f"- Release checklist: `{report['release_checklist']['path']}` state=`{report['release_checklist']['state']}`",
         f"- Implemented routes: `{', '.join(report.get('implemented_routes') or [])}`",
         f"- Implemented tiers: `{', '.join(report.get('implemented_tiers') or [])}`",
         f"- Release lanes implemented: `{report['counts']['implemented_lane_count']}/{report['counts']['release_lane_count']}`",
+        f"- Release lanes with current blockers: `{report['counts']['blocked_lane_count']}`",
         f"- Coverage complete: `{report['coverage_complete']}`",
         f"- Next runtime route: `{report['next_runtime_route']}`",
         "",
@@ -249,8 +370,13 @@ def to_markdown(report: dict[str, Any]) -> str:
         route = lane.get("route") or "not-yet-scripted"
         lines.append(
             f"- `{lane['id']}`: status=`{lane['status']}` route=`{route}` "
-            f"implemented=`{lane['implemented_in_harness']}` proof=`{lane['proof_class']}`"
+            f"implemented=`{lane['implemented_in_harness']}` proof=`{lane['proof_class']}` "
+            f"readiness=`{lane['readiness_status']}` blockers=`{lane['current_blocker_count']}`"
         )
+        for blocker in lane.get("current_blockers", []):
+            lines.append(
+                f"  - blocker `{blocker['id']}`: status=`{blocker['status']}` summary={blocker['summary']}"
+            )
     if report.get("failures"):
         lines.extend(["", "## Failures", ""])
         lines.extend(f"- {failure}" for failure in report["failures"])
@@ -270,16 +396,19 @@ def write_outputs(report: dict[str, Any], json_path: Path | None, md_path: Path 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--script", type=Path, default=DEFAULT_SCRIPT)
+    parser.add_argument("--release-checklist-json", type=Path, default=DEFAULT_RELEASE_CHECKLIST_JSON)
     parser.add_argument("--write-json", type=Path, default=DEFAULT_JSON)
     parser.add_argument("--write-markdown", "--write-md", dest="write_markdown", type=Path, default=DEFAULT_MD)
     parser.add_argument("--require-pass", action="store_true")
     args = parser.parse_args()
 
-    report = build_report(args.script)
+    report = build_report(args.script, args.release_checklist_json)
     write_outputs(report, args.write_json, args.write_markdown)
     print(f"overall: {status_text(bool(report['passed']))}")
     print(f"runtime-policy: {report['runtime_policy']}")
+    print(f"release-checklist: {report.get('release_checklist', {}).get('state')}")
     print(f"implemented-lanes: {report.get('counts', {}).get('implemented_lane_count')}/{report.get('counts', {}).get('release_lane_count')}")
+    print(f"blocked-lanes: {report.get('counts', {}).get('blocked_lane_count')}")
     print(f"coverage-complete: {report.get('coverage_complete')}")
     if report["failures"]:
         print("failures:")

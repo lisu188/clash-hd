@@ -83,6 +83,7 @@ def args_for(fixture: Path) -> argparse.Namespace:
     return argparse.Namespace(
         stage="castlecenter-all",
         patch_exe=fixture / "fixture.exe",
+        patch_report_json=None,
         overview_run=fixture / "overview",
         barracks_run=fixture / "barracks",
         focused_hitbox_run=fixture / "focused",
@@ -150,6 +151,34 @@ def test_matrix_fails_when_each_required_check_fails(fixture: Path) -> None:
             assert any(f"{name}: intentional {name} fixture failure" in failure for failure in matrix["failures"]), matrix
 
         with_fake_gates(name, assertions)
+
+
+def test_archived_patch_report_gate_accepts_matching_report(fixture: Path) -> None:
+    report = {
+        "exe": r"C:\ClashTests\castle\candidate.exe",
+        "stage": castle_overview_evidence_matrix.resolve_stage("castlecenter-all"),
+        "exe_sha256": "1" * 64,
+        "patch_count": 134,
+        "status_counts": {"patched": 134},
+        "current_hd_map_gate": {"passed": True, "failures": []},
+    }
+    gate = castle_overview_evidence_matrix.patch_stage_gate_from_report(
+        report,
+        "castlecenter-all",
+        fixture / "patch-stage.json",
+    )
+    assert gate["passed"] is True, gate
+    assert gate["archived"] is True, gate
+    assert gate["patches"]["patched"] == 134, gate
+
+    report["stage"] = "wrong-stage"
+    mismatch = castle_overview_evidence_matrix.patch_stage_gate_from_report(
+        report,
+        "castlecenter-all",
+        fixture / "patch-stage.json",
+    )
+    assert mismatch["passed"] is False, mismatch
+    assert any("stage mismatch" in failure for failure in mismatch["failures"]), mismatch
 
 
 def test_cli_writes_outputs_and_fails_closed(fixture: Path) -> None:
@@ -238,6 +267,7 @@ def run_tests() -> None:
     try:
         test_matrix_passes_with_all_checks(fixture / "pass")
         test_matrix_fails_when_each_required_check_fails(fixture / "failures")
+        test_archived_patch_report_gate_accepts_matching_report(fixture / "archived-report")
         test_cli_writes_outputs_and_fails_closed(fixture / "cli")
         test_focused_hitbox_gate_requires_displayed_wrapper_proof(fixture / "focused-wrapper")
         test_multihit_gate_reports_completion_proof(fixture / "multi-completion")

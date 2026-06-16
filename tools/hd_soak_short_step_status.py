@@ -59,6 +59,30 @@ def is_pending_approval(report: dict[str, Any] | None) -> bool:
     )
 
 
+def normalized_path_text(value: Any) -> str:
+    return str(value or "").replace("/", "\\").rstrip("\\").casefold()
+
+
+def artifact_mismatch_failures(
+    artifact: dict[str, Any],
+    step: dict[str, Any],
+    report_path: Path,
+    artifact_name: str,
+) -> list[str]:
+    failures: list[str] = []
+    if artifact.get("stage") != PROTECTED_STABLE_STAGE:
+        failures.append(f"{step['id']} {artifact_name} stage does not match protected stable stage")
+    if artifact.get("tier") != step.get("tier"):
+        failures.append(f"{step['id']} {artifact_name} tier does not match expected step tier")
+    if artifact.get("route") != step.get("route"):
+        failures.append(f"{step['id']} {artifact_name} route does not match expected step route")
+    source_report = normalized_path_text(artifact.get("source_report"))
+    expected_report = normalized_path_text(report_path)
+    if source_report != expected_report:
+        failures.append(f"{step['id']} {artifact_name} source_report does not match canonical report")
+    return failures
+
+
 def step_status(
     step: dict[str, Any],
     *,
@@ -137,6 +161,23 @@ def step_status(
             },
         )
 
+    guard_mismatches = artifact_mismatch_failures(guard, step, report_path, "guard")
+    if guard_mismatches:
+        failures.extend(guard_mismatches)
+        return (
+            "invalid_guard_mismatch",
+            False,
+            failures,
+            {
+                "canonical_report_present": True,
+                "guard_present": True,
+                "guard_overall": guard.get("overall"),
+                "guard_source_report": guard.get("source_report"),
+                "expected_source_report": str(report_path),
+                "triage_present": triage is not None,
+            },
+        )
+
     guard_passed = bool(guard.get("overall"))
     if report.get("passed") is True and guard_passed:
         return (
@@ -169,6 +210,25 @@ def step_status(
                 "next_command": step.get("triage_command"),
             },
         )
+
+    if triage is not None:
+        triage_mismatches = artifact_mismatch_failures(triage, step, report_path, "triage")
+        if triage_mismatches:
+            failures.extend(triage_mismatches)
+            return (
+                "invalid_triage_mismatch",
+                False,
+                failures,
+                {
+                    "canonical_report_present": True,
+                    "guard_present": True,
+                    "guard_overall": guard.get("overall"),
+                    "triage_present": True,
+                    "triage_source_report": triage.get("source_report"),
+                    "expected_source_report": str(report_path),
+                    "classification": triage.get("classification"),
+                },
+            )
 
     return (
         f"failed_classified_{triage.get('classification')}",

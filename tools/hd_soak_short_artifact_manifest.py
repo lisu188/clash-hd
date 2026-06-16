@@ -25,6 +25,7 @@ DEFAULT_JSON = Path("captures/current/hd-soak-short-artifact-manifest-current.js
 DEFAULT_MD = Path("captures/current/hd-soak-short-artifact-manifest-current.md")
 DEFAULT_LEGACY_REPORT_JSON = Path("captures/current/hd-soak-short-current.json")
 DEFAULT_LEGACY_REPORT_MD = Path("captures/current/hd-soak-short-current.md")
+MAX_INPUT_DRIFT_PX = 1
 
 
 def status_text(passed: bool) -> str:
@@ -69,6 +70,8 @@ def harness_command(step: dict[str, Any], paths: dict[str, str], *, execute: boo
         paths["report_json"],
         "-ReportMarkdown",
         paths["report_markdown"],
+        "-MaxInputDriftPx",
+        str(MAX_INPUT_DRIFT_PX),
     ]
     if execute:
         parts.extend(["-Execute", "-AllowVisibleRuntime", "-RequirePass"])
@@ -85,6 +88,8 @@ def guard_command(paths: dict[str, str], *, require_pass: bool = True) -> str:
         paths["guard_json"],
         "--write-markdown",
         paths["guard_markdown"],
+        "--max-input-drift-px",
+        str(MAX_INPUT_DRIFT_PX),
     ]
     if require_pass:
         parts.append("--require-pass")
@@ -149,6 +154,12 @@ def validate_records(records: list[dict[str, Any]]) -> list[str]:
             failures.append(f"{record['id']} runtime command is not visibly approval-gated")
         if "-ReportJson" not in command or "-ReportMarkdown" not in command:
             failures.append(f"{record['id']} runtime command does not pin report outputs")
+        if f"-MaxInputDriftPx {MAX_INPUT_DRIFT_PX}" not in command:
+            failures.append(f"{record['id']} runtime command does not pin max input drift")
+        if f"-MaxInputDriftPx {MAX_INPUT_DRIFT_PX}" not in record["safe_dry_run_command"]:
+            failures.append(f"{record['id']} safe dry-run command does not pin max input drift")
+        if f"--max-input-drift-px {MAX_INPUT_DRIFT_PX}" not in record["guard_command"]:
+            failures.append(f"{record['id']} guard command does not pin max input drift")
         if "-Execute" in record["safe_dry_run_command"]:
             failures.append(f"{record['id']} safe dry-run command includes -Execute")
         if record["stable_stage_should_change"] is not False:

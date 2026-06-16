@@ -23,9 +23,13 @@ param(
     [string]$ClickMode = 'sendinput',
     [int]$ClickHoldMs = 250,
     [int]$ClickRepeat = 1,
+    [int]$MaxInputDriftPx = 1,
     [double]$MinNonblackPercent = 10.0,
     [int]$MinUniqueSampleColors = 8,
     [int]$MaxArtifactMB = 250,
+    [int]$MaxWorkingSetGrowthMB = 64,
+    [int]$MaxPrivateMemoryGrowthMB = 64,
+    [int]$MaxHandleGrowth = 128,
     [string]$OutputRoot = 'C:\ClashCaptures\hd-soak',
     [string]$ReportJson = 'captures\current\hd-soak-short-current.json',
     [string]$ReportMarkdown = 'captures\current\hd-soak-short-current.md',
@@ -279,6 +283,14 @@ function Select-NumberMax {
     return [double](($numbers | Measure-Object -Maximum).Maximum)
 }
 
+function Convert-NullableInt {
+    param([object]$Value)
+    if ($null -eq $Value) {
+        return $null
+    }
+    return [int]$Value
+}
+
 function Write-SoakMarkdown {
     param(
         [object]$Report,
@@ -299,9 +311,15 @@ function Write-SoakMarkdown {
         "- Output directory: $($Report.output_directory)",
         "- Frame samples: $($Report.frame_sample_count)",
         "- Unique frame hashes: $($Report.frame_hash_unique_count)",
+        "- Frame stability class: $($Report.frame_stability_class)",
+        "- Frame progress expected: $($Report.frame_progress_expected)",
         "- Nonblack min/max: $($Report.nonblack_percent_min) / $($Report.nonblack_percent_max)",
         "- Unique sampled colors min/max: $($Report.unique_sample_colors_min) / $($Report.unique_sample_colors_max)",
+        "- Input max move drift px: $($Report.input_max_abs_error)",
+        "- Input max sampled drift px: $($Report.input_max_sample_abs_error)",
+        "- Input drift limit px: $($Report.max_input_drift_px)",
         "- Working-set growth bytes: $($Report.working_set_growth_bytes)",
+        "- Private-memory growth bytes: $($Report.private_memory_growth_bytes)",
         "- Handle growth: $($Report.handle_growth)",
         "- Artifact bytes: $($Report.artifact_bytes)",
         "- Unexpected exit: $($Report.process_exited_unexpectedly)",
@@ -373,12 +391,21 @@ $patchCommand = @(
 $executeCommand = @(
     'powershell.exe -NoProfile -ExecutionPolicy Bypass -File',
     (Quote-Arg (Join-Path $RepoRoot 'scripts\smoke\run_hd_soak.ps1')),
+    '-InputExe', (Quote-Arg $InputExeFull),
+    '-WorkDir', (Quote-Arg $WorkDirFull),
+    '-Stage', (Quote-Arg $Stage),
     '-Tier', (Quote-Arg $Tier),
     '-Route', (Quote-Arg $Route),
     '-CandidateDir', (Quote-Arg $CandidateDirFull),
     '-CandidateName', (Quote-Arg $CandidateName),
+    '-OutputRoot', (Quote-Arg $OutputRootFull),
+    '-ReportJson', (Quote-Arg $ReportJsonFull),
+    '-ReportMarkdown', (Quote-Arg $ReportMarkdownFull),
+    '-MaxInputDriftPx', (Quote-Arg ([string]$MaxInputDriftPx)),
     '-Execute',
-    '-AllowVisibleRuntime'
+    '-AllowVisibleRuntime',
+    '-RequirePass',
+    '-Json'
 ) -join ' '
 
 $plan = [ordered]@{
@@ -404,6 +431,15 @@ $plan = [ordered]@{
     output_root = $OutputRootFull
     report_json = $ReportJsonFull
     report_markdown = $ReportMarkdownFull
+    growth_limits = [ordered]@{
+        max_working_set_growth_mb = $MaxWorkingSetGrowthMB
+        max_private_memory_growth_mb = $MaxPrivateMemoryGrowthMB
+        max_handle_growth = $MaxHandleGrowth
+        max_artifact_mb = $MaxArtifactMB
+    }
+    input_limits = [ordered]@{
+        max_input_drift_px = $MaxInputDriftPx
+    }
     raw_artifacts_policy = 'raw PNG frames and per-step logs stay outside the repository by default'
     right_bottom_promotion_blocked = $true
     commands = [ordered]@{
@@ -506,6 +542,9 @@ try {
         Click = $true
         PathVerified = [bool]$introResult.path_verified
         ClickPathVerified = [bool]$introResult.click_path_verified
+        MaxAbsError = Convert-NullableInt $introResult.max_abs_error
+        MaxSampleAbsError = Convert-NullableInt $introResult.max_sample_abs_error
+        ClickEventCount = Convert-NullableInt $introResult.click_event_count
         ProbeExitCode = $introResult.ProbeExitCode
         Json = $introJson
         Log = $introResult.ProbeLog
@@ -525,6 +564,9 @@ try {
             Click = [bool]$step.Click
             PathVerified = [bool]$stepResult.path_verified
             ClickPathVerified = [bool]$stepResult.click_path_verified
+            MaxAbsError = Convert-NullableInt $stepResult.max_abs_error
+            MaxSampleAbsError = Convert-NullableInt $stepResult.max_sample_abs_error
+            ClickEventCount = Convert-NullableInt $stepResult.click_event_count
             ProbeExitCode = $stepResult.ProbeExitCode
             Json = $stepJson
             Log = $stepResult.ProbeLog
@@ -578,13 +620,31 @@ $artifactBytes = Get-DirectorySizeBytes -Path $outDir
 $artifactLimitBytes = [int64]$MaxArtifactMB * 1024L * 1024L
 $frameHashes = @($frameSamples | ForEach-Object { $_.Hash } | Where-Object { $_ })
 $uniqueFrameHashes = @($frameHashes | Sort-Object -Unique)
+$frameProgressExpected = ($Route -eq 'map-pan')
+$frameStabilityClass = if (@($frameSamples).Count -eq 0) {
+    'no_frames'
+} elseif (@($uniqueFrameHashes).Count -le 1) {
+    'stable_idle'
+} else {
+    'progressing'
+}
 $nonblackValues = @($frameSamples | ForEach-Object { $_.NonblackPercent })
 $lumaValues = @($frameSamples | ForEach-Object { $_.MeanLuma })
 $uniqueColorValues = @($frameSamples | ForEach-Object { $_.UniqueSampleColors })
 $widthValues = @($frameSamples | ForEach-Object { $_.Width })
 $heightValues = @($frameSamples | ForEach-Object { $_.Height })
 $workingSetValues = @($processSamples | ForEach-Object { $_.WorkingSet64 } | Where-Object { $_ -ne $null })
+$privateMemoryValues = @($processSamples | ForEach-Object { $_.PrivateMemorySize64 } | Where-Object { $_ -ne $null })
 $handleValues = @($processSamples | ForEach-Object { $_.HandleCount } | Where-Object { $_ -ne $null })
+$workingSetGrowthBytes = if (@($workingSetValues).Count -ge 2) { [int64](@($workingSetValues)[-1] - @($workingSetValues)[0]) } else { $null }
+$privateMemoryGrowthBytes = if (@($privateMemoryValues).Count -ge 2) { [int64](@($privateMemoryValues)[-1] - @($privateMemoryValues)[0]) } else { $null }
+$handleGrowth = if (@($handleValues).Count -ge 2) { [int](@($handleValues)[-1] - @($handleValues)[0]) } else { $null }
+$workingSetLimitBytes = [int64]$MaxWorkingSetGrowthMB * 1024L * 1024L
+$privateMemoryLimitBytes = [int64]$MaxPrivateMemoryGrowthMB * 1024L * 1024L
+$inputMaxAbsValues = @($routeResults | ForEach-Object { $_.MaxAbsError } | Where-Object { $_ -ne $null })
+$inputMaxSampleAbsValues = @($routeResults | ForEach-Object { $_.MaxSampleAbsError } | Where-Object { $_ -ne $null })
+$inputMaxAbsError = if (@($inputMaxAbsValues).Count -gt 0) { [int](Select-NumberMax -Values $inputMaxAbsValues) } else { $null }
+$inputMaxSampleAbsError = if (@($inputMaxSampleAbsValues).Count -gt 0) { [int](Select-NumberMax -Values $inputMaxSampleAbsValues) } else { $null }
 $unexpectedExit = $false
 $exitCode = $null
 if ($process) {
@@ -602,11 +662,20 @@ if ($process) {
 $routeFailures = @($routeResults | Where-Object {
     (-not $_.PathVerified) -or ($_.Click -and -not $_.ClickPathVerified) -or ($_.ProbeExitCode -notin @(0, 2))
 })
+$routeDriftFailures = @($routeResults | Where-Object {
+    ($null -eq $_.MaxAbsError) -or
+    ([int]$_.MaxAbsError -gt $MaxInputDriftPx) -or
+    ($_.Click -and (($null -eq $_.MaxSampleAbsError) -or ([int]$_.MaxSampleAbsError -gt $MaxInputDriftPx)))
+})
 $failures = @()
 if ($scriptError) { $failures += $scriptError.Exception.Message }
 if ($unexpectedExit) { $failures += "process exited unexpectedly with code $exitCode" }
 if (@($captureErrors).Count -gt 0) { $failures += "capture errors: $(@($captureErrors).Count)" }
 if (@($frameSamples).Count -lt 2) { $failures += "expected at least 2 frame samples" }
+if ($frameProgressExpected -and @($uniqueFrameHashes).Count -lt 2) {
+    $failures += 'frame progression required for map-pan route'
+}
+if (@($processSamples).Count -lt 2) { $failures += "expected at least 2 process samples" }
 if (@($widthValues | Where-Object { $_ -ne 800 }).Count -gt 0 -or @($heightValues | Where-Object { $_ -ne 600 }).Count -gt 0) {
     $failures += 'one or more frame samples were not 800x600'
 }
@@ -618,6 +687,24 @@ if ((Select-NumberMin -Values $uniqueColorValues) -lt $MinUniqueSampleColors) {
 }
 if (@($routeFailures).Count -gt 0) {
     $failures += "route/input probe failures: $(@($routeFailures).Count)"
+}
+if (@($routeDriftFailures).Count -gt 0) {
+    $failures += "input drift exceeded ${MaxInputDriftPx}px or metric missing: $(@($routeDriftFailures).Count)"
+}
+if ($null -eq $workingSetGrowthBytes) {
+    $failures += 'working-set growth metric unavailable'
+} elseif ($workingSetGrowthBytes -gt $workingSetLimitBytes) {
+    $failures += "working-set growth exceeded ${MaxWorkingSetGrowthMB}MB"
+}
+if ($null -eq $privateMemoryGrowthBytes) {
+    $failures += 'private-memory growth metric unavailable'
+} elseif ($privateMemoryGrowthBytes -gt $privateMemoryLimitBytes) {
+    $failures += "private-memory growth exceeded ${MaxPrivateMemoryGrowthMB}MB"
+}
+if ($null -eq $handleGrowth) {
+    $failures += 'handle growth metric unavailable'
+} elseif ($handleGrowth -gt $MaxHandleGrowth) {
+    $failures += "handle growth exceeded $MaxHandleGrowth"
 }
 if ($artifactBytes -gt $artifactLimitBytes) {
     $failures += "artifact size exceeded ${MaxArtifactMB}MB"
@@ -631,6 +718,7 @@ $report = [ordered]@{
     failures = @($failures)
     tier = $Tier
     duration_sec = $DurationResolvedSec
+    sample_interval_sec = $SampleIntervalSec
     route = $Route
     final_route_marker = if (@($routeResults).Count -gt 0) { @($routeResults)[-1].Name } else { $Route }
     stage = $Stage
@@ -647,15 +735,26 @@ $report = [ordered]@{
     report_markdown = $ReportMarkdownFull
     frame_sample_count = @($frameSamples).Count
     frame_hash_unique_count = @($uniqueFrameHashes).Count
+    frame_progress_expected = $frameProgressExpected
+    frame_stability_class = $frameStabilityClass
     nonblack_percent_min = Select-NumberMin -Values $nonblackValues
     nonblack_percent_max = Select-NumberMax -Values $nonblackValues
     mean_luma_min = Select-NumberMin -Values $lumaValues
     mean_luma_max = Select-NumberMax -Values $lumaValues
     unique_sample_colors_min = [int](Select-NumberMin -Values $uniqueColorValues)
     unique_sample_colors_max = [int](Select-NumberMax -Values $uniqueColorValues)
+    input_max_abs_error = $inputMaxAbsError
+    input_max_sample_abs_error = $inputMaxSampleAbsError
+    max_input_drift_px = $MaxInputDriftPx
     process_sample_count = @($processSamples).Count
-    working_set_growth_bytes = if (@($workingSetValues).Count -ge 2) { [int64](@($workingSetValues)[-1] - @($workingSetValues)[0]) } else { $null }
-    handle_growth = if (@($handleValues).Count -ge 2) { [int](@($handleValues)[-1] - @($handleValues)[0]) } else { $null }
+    working_set_growth_bytes = $workingSetGrowthBytes
+    private_memory_growth_bytes = $privateMemoryGrowthBytes
+    handle_growth = $handleGrowth
+    max_working_set_growth_mb = $MaxWorkingSetGrowthMB
+    max_private_memory_growth_mb = $MaxPrivateMemoryGrowthMB
+    max_handle_growth = $MaxHandleGrowth
+    working_set_growth_limit_bytes = $workingSetLimitBytes
+    private_memory_growth_limit_bytes = $privateMemoryLimitBytes
     artifact_bytes = $artifactBytes
     process_exited_unexpectedly = $unexpectedExit
     exit_code = $exitCode

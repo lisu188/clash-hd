@@ -29,11 +29,15 @@ HD map stage until hidden-desktop evidence proves it broadly.
 ``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar``
 adds a validation-only first-mission selected-unit proof: the 00406980
 text/morale action panel route renders natively first, then a narrow copyback
-places that panel on the 800x600 map surface for hidden-desktop evidence.
+places that panel in the 800x600 bottom strip for hidden-desktop evidence.
 ``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw``
 extends that validation lane by re-running the selected-unit panel after the
 full map redraw exits, so the final dumped surface can prove the action bar
-survives the normal redraw cadence.
+survives the normal redraw cadence at the bottom of the screen.
+``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw``
+combines those validation lanes so a first-mission dump can show which right,
+bottom, and minimap black patches remain after the controlled bottom-strip
+composition hooks and the fixed selected-unit bottom redraw both run.
 ``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter``
 adds a narrow castle/barracks presentation proof that recenters the native
 640x480 castle UI layer inside the 800x600 surface after the action-panel draw.
@@ -595,20 +599,6 @@ PATCHES: tuple[Patch, ...] = (
     ),
     Patch(
         "unit-selection-action-bar-map-surface",
-        0x005FA8,
-        "e833b9ffff",
-        "e8b34f1100",
-        "0x406BA8 selected-unit native bar copy helper -> map-surface target wrapper",
-    ),
-    Patch(
-        "unit-selection-action-bar-map-surface",
-        0x119D60,
-        "00" * 16,
-        "8b15e0025200e97569eeff0000000000",
-        "0x51BB60 DGROUP cave: force copy helper destination to dword_5202E0 before jumping to 0x4024E0",
-    ),
-    Patch(
-        "unit-selection-action-bar-map-surface",
         0x005E24,
         "e877bf0100",
         "e847511100",
@@ -619,13 +609,13 @@ PATCHES: tuple[Patch, ...] = (
         0x119D70,
         "00" * 96,
         (
-            "ff74240cff74240cff74240ce81f6ef0ff83c40c608b15e002"
+            "bbc0d45100ff74240cff74240cff74240ce81a6ef0ff83c40c608b15e002"
             "520085d2743866813a2003723131c031db31c98b3d006f5200"
-            "2b3df86e52008b35046f52002b35fc6e5200ff35fc6e5200"
-            "ff35f86e52005657e81969eeff61c3"
-            + "00" * 7
+            "2b3df86e5200be1300000090909090909090684402000068d7"
+            "00000090905657e81469eeff61c3"
+            + "00" * 2
         ),
-        "0x51BB70 DGROUP cave: call stock 0x4229A0, then copy its native text panel from the default surface to dword_5202E0",
+        "0x51BB70 DGROUP cave: draw stock 0x4229A0 to the default surface, then crop source rows 0..19 and copy its native text panel to dword_5202E0 at centered bottom-edge destination 215,580",
     ),
     Patch(
         "unit-selection-action-bar-post-redraw",
@@ -1375,6 +1365,25 @@ STAGE_GROUPS = {
         "unit-selection-action-bar-map-surface",
         "unit-selection-action-bar-post-redraw",
     ),
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw": (
+        "display",
+        "shared-surface",
+        "gameplay-surface",
+        *DYNAMIC_VIEWPORT_GROUPS,
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "helpers",
+        "surface-blit-hd-aware",
+        "menu-center-hitboxes",
+        "mouse-dynamic-origin",
+        "map-surface-upgrade-scrollclamp",
+        "right-bottom-compose-proof",
+        "unit-selection-action-bar-map-surface",
+        "unit-selection-action-bar-post-redraw",
+    ),
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter": (
         "display",
         "shared-surface",
@@ -1626,7 +1635,8 @@ def parse_args() -> argparse.Namespace:
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch makes the later sub_460D80 viewport switch use 800x600 for the map metadata object; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose adds validation-only status/action composition copies into the HD bottom strip; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar adds a validation-only first-mission selected-unit text/morale action-panel copyback to the HD map surface; "
-            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw reruns that selected-unit panel after sub_40ADF0 full-redraw exits; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw reruns that selected-unit panel after sub_40ADF0 full-redraw exits and expects the panel in the bottom strip; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw combines those validation lanes for first-mission black-patch inspection without changing the stable stage; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction moves the live 00515130 action descriptors by +160,+120 and widens their draw clip to 800 as a validation replacement for the bad copyback layout; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter runs the live action owner on a temporary native 640x480 surface, center-copies it to the HD map surface, and reuses centered castle/action input wrappers; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput is a diagnostic comparison stage that keeps the native-center action wrapper but omits castle/action centered input wrappers; "

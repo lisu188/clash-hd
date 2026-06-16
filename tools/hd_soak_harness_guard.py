@@ -58,6 +58,15 @@ def line_number(text: str, pattern: str) -> int | None:
     return None
 
 
+def assignment_array_block(text: str, name: str) -> str:
+    pattern = re.compile(
+        rf"\${re.escape(name)}\s*=\s*@\((?P<body>.*?)\)\s*-join\s+['\"]\s+['\"]",
+        re.IGNORECASE | re.DOTALL,
+    )
+    match = pattern.search(text)
+    return match.group("body") if match else ""
+
+
 def check_record(passed: bool, summary: dict[str, Any], failures: list[str] | None = None) -> dict[str, Any]:
     return {"passed": passed, "summary": summary, "failures": failures or []}
 
@@ -152,6 +161,13 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
         approval_failures.append("missing explicit user approval phrase")
     if "-Execute" not in text or "-AllowVisibleRuntime" not in text:
         approval_failures.append("dry-run plan does not show explicit execute/visible flags")
+    execute_command_block = assignment_array_block(text, "executeCommand")
+    execute_command_fragments = ["-Execute", "-AllowVisibleRuntime", "-RequirePass", "-Json"]
+    if not execute_command_block:
+        approval_failures.append("dry-run execute command block is missing")
+    for fragment in execute_command_fragments:
+        if fragment not in execute_command_block:
+            approval_failures.append(f"dry-run execute command does not include {fragment}")
     checks["visible_runtime_opt_in"] = check_record(
         not approval_failures,
         {
@@ -159,6 +175,7 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
             "allow_visible_runtime_switch_line": allow_line,
             "dry_run_branch_line": dry_run_line,
             "runtime_guard_line": guard_line,
+            "execute_command_fragments": execute_command_fragments,
         },
         approval_failures,
     )
@@ -190,16 +207,36 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
     required_metrics = [
         "frame_sample_count",
         "frame_hash_unique_count",
+        "frame_progress_expected",
+        "frame_stability_class",
+        "sample_interval_sec",
         "nonblack_percent_min",
+        "nonblack_percent_max",
         "mean_luma_min",
+        "mean_luma_max",
         "unique_sample_colors_min",
+        "unique_sample_colors_max",
+        "input_max_abs_error",
+        "input_max_sample_abs_error",
+        "max_input_drift_px",
         "process_sample_count",
         "working_set_growth_bytes",
+        "private_memory_growth_bytes",
         "handle_growth",
+        "max_working_set_growth_mb",
+        "max_private_memory_growth_mb",
+        "max_handle_growth",
+        "working_set_growth_limit_bytes",
+        "private_memory_growth_limit_bytes",
         "artifact_bytes",
         "process_exited_unexpectedly",
+        "exit_code",
         "clean_stop",
         "final_route_marker",
+        "route_results",
+        "process_samples",
+        "frame_samples",
+        "capture_errors",
     ]
     for metric in required_metrics:
         if metric not in text:

@@ -25,6 +25,7 @@ def fixture_args(tmp: Path) -> argparse.Namespace:
         stable_stage_json=tmp / "stable.json",
         no_popup_json=tmp / "no-popup.json",
         short_soak_json=tmp / "short-soak.json",
+        short_step_status_json=tmp / "short-step-status.json",
         long_soak_json=tmp / "long-soak.json",
         manual_json=tmp / "manual.json",
         right_bottom_json=tmp / "right-bottom.json",
@@ -51,6 +52,22 @@ def write_complete_fixture(args: argparse.Namespace) -> None:
     )
     write_json(args.no_popup_json, {"passed": True})
     write_json(args.short_soak_json, {"overall": True, "tier": "short2", "route": "menu-idle", "duration_sec": 120})
+    write_json(
+        args.short_step_status_json,
+        {
+            "passed": True,
+            "steps": [
+                {
+                    "id": "short2_menu_idle",
+                    "status": "pass",
+                    "passed": True,
+                    "tier": "short2",
+                    "route": "menu-idle",
+                    "summary": {"guard_present": True, "guard_overall": True, "executed": True},
+                }
+            ],
+        },
+    )
     write_json(args.long_soak_json, {"overall": True, "tier": "custom", "route": "map-pan", "duration_sec": 7200})
     manual_items = [
         "stable_menu_load",
@@ -131,11 +148,99 @@ def test_pending_short_soak_blocks_next_milestone() -> None:
     with tempfile.TemporaryDirectory() as directory:
         args = fixture_args(Path(directory))
         write_complete_fixture(args)
-        write_json(args.short_soak_json, {"overall": False, "tier": "short2", "duration_sec": 120})
+        write_json(
+            args.short_soak_json,
+            {
+                "overall": False,
+                "tier": "short2",
+                "duration_sec": 120,
+                "source_report_selection": "legacy_compatibility",
+                "canonical_first_step_report": r"captures\current\hd-soak-short2-menu-idle-current.json",
+                "canonical_first_step_present": False,
+                "canonical_runtime_report_missing": True,
+                "failures": ["soak report was not produced by an execution run"],
+            },
+        )
+        write_json(
+            args.short_step_status_json,
+            {
+                "passed": True,
+                "ladder_complete": False,
+                "current_step": {"id": "short2_menu_idle", "status": "pending_approval_legacy_compat"},
+                "steps": [
+                    {
+                        "id": "short2_menu_idle",
+                        "status": "pending_approval_legacy_compat",
+                        "passed": False,
+                        "tier": "short2",
+                        "route": "menu-idle",
+                        "paths": {
+                            "report_json": r"captures\current\hd-soak-short2-menu-idle-current.json",
+                            "guard_json": r"captures\current\hd-soak-short2-menu-idle-guard-current.json",
+                            "triage_json": r"captures\current\hd-soak-short2-menu-idle-triage-current.json",
+                        },
+                        "summary": {
+                            "canonical_report_present": False,
+                            "guard_present": False,
+                            "triage_present": False,
+                        },
+                    }
+                ],
+            },
+        )
         report = checklist.build_checklist(args)
-        assert report["passed"] is False
-        assert req(report, "short2_menu_idle_soak")["status"] == "blocked"
-        assert report["next_milestone"]["id"] == "short2_menu_idle_soak"
+    first_soak = req(report, "short2_menu_idle_soak")
+    assert report["passed"] is False
+    assert first_soak["status"] == "blocked"
+    assert "canonical report is missing" in first_soak["summary"]
+    assert first_soak["details"]["global_report_guard"]["canonical_runtime_report_missing"] is True
+    assert first_soak["details"]["canonical_outputs"]["report_json"] == (
+        r"captures\current\hd-soak-short2-menu-idle-current.json"
+    )
+    assert first_soak["details"]["canonical_outputs"]["guard_json"] == (
+        r"captures\current\hd-soak-short2-menu-idle-guard-current.json"
+    )
+    assert first_soak["details"]["canonical_outputs"]["triage_json"] == (
+        r"captures\current\hd-soak-short2-menu-idle-triage-current.json"
+    )
+    assert first_soak["details"]["short_step_status"]["current_step_status"] == "pending_approval_legacy_compat"
+    assert first_soak["details"]["short_step_status"]["canonical_report_present"] is False
+    assert first_soak["details"]["short_step_status"]["guard_present"] is False
+    assert first_soak["details"]["short_step_status"]["triage_present"] is False
+    assert report["next_milestone"]["id"] == "short2_menu_idle_soak"
+
+
+def test_canonical_short_step_status_satisfies_first_soak() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        args = fixture_args(Path(directory))
+        write_complete_fixture(args)
+        write_json(args.short_soak_json, {"overall": False, "tier": "short2", "duration_sec": 120})
+        write_json(
+            args.short_step_status_json,
+            {
+                "passed": True,
+                "steps": [
+                    {
+                        "id": "short2_menu_idle",
+                        "status": "pass",
+                        "passed": True,
+                        "tier": "short2",
+                        "route": "menu-idle",
+                        "summary": {
+                            "guard_present": True,
+                            "guard_overall": True,
+                            "executed": True,
+                            "candidate_sha256": "a" * 64,
+                        },
+                    }
+                ],
+            },
+        )
+        report = checklist.build_checklist(args)
+    assert report["passed"] is True, report["failures"]
+    first_soak = req(report, "short2_menu_idle_soak")
+    assert first_soak["passed"] is True
+    assert first_soak["summary"] == "canonical short2 menu-idle step status passes"
 
 
 def test_pending_manual_input_blocks_menu_and_map() -> None:
@@ -199,6 +304,8 @@ def test_cli_writes_outputs_and_fails_closed() -> None:
             str(args.no_popup_json),
             "--short-soak-json",
             str(args.short_soak_json),
+            "--short-step-status-json",
+            str(args.short_step_status_json),
             "--long-soak-json",
             str(args.long_soak_json),
             "--manual-json",
@@ -234,6 +341,7 @@ def test_cli_writes_outputs_and_fails_closed() -> None:
 def run_tests() -> None:
     test_complete_fixture_passes()
     test_pending_short_soak_blocks_next_milestone()
+    test_canonical_short_step_status_satisfies_first_soak()
     test_pending_manual_input_blocks_menu_and_map()
     test_validation_only_right_bottom_blocks_release()
     test_cli_writes_outputs_and_fails_closed()

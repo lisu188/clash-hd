@@ -27,6 +27,15 @@ GUARD_POLICY = (
 REQUIRED_FIELDS = [
     *manual_directinput_checklist.REQUIRED_MANUAL_PROOF_FIELDS,
 ]
+CANDIDATE_PATH_TEMPLATE = (
+    manual_directinput_checklist.EXPECTED_CANDIDATE_ROOT
+    + "\\manual-directinput\\REPLACE_WITH_CANDIDATE_EXE"
+)
+CANDIDATE_PATH_POLICY = (
+    "candidate_path must be a freshly built, hashed executable under "
+    f"{manual_directinput_checklist.EXPECTED_CANDIDATE_ROOT}; never use "
+    f"{manual_directinput_checklist.FORBIDDEN_LIVE_ORIGINAL} or a repository-local executable"
+)
 
 
 def status_text(passed: bool) -> str:
@@ -42,7 +51,8 @@ def build_template() -> dict[str, Any]:
         "evidence_class": "manual_directinput_template",
         "approved_visible_runtime": False,
         "approval_record": "REPLACE_WITH_APPROVAL_NOTE_OR_LINK",
-        "candidate_path": "REPLACE_WITH_CANDIDATE_EXE_PATH",
+        "candidate_path_policy": CANDIDATE_PATH_POLICY,
+        "candidate_path": CANDIDATE_PATH_TEMPLATE,
         "executable_sha256": "REPLACE_WITH_64_HEX_SHA256",
         "no_stale_processes": False,
         "checked_items": [
@@ -85,6 +95,8 @@ def build_report(template_json: Path, template: dict[str, Any] | None = None) ->
         "passed": not failures,
         "runtime_policy": RUNTIME_POLICY,
         "guard_policy": GUARD_POLICY,
+        "candidate_path_policy": CANDIDATE_PATH_POLICY,
+        "candidate_path_template": template_data.get("candidate_path"),
         "template_json": str(template_json),
         "template_valid_as_proof": template_valid_as_proof,
         "template_validation_failures": template_failures,
@@ -99,6 +111,7 @@ def print_report(report: dict[str, Any]) -> None:
     print(f"overall: {status_text(bool(report['passed']))}")
     print(f"runtime-policy: {report['runtime_policy']}")
     print(f"guard-policy: {report['guard_policy']}")
+    print(f"candidate-path-policy: {report['candidate_path_policy']}")
     print(f"template-json: {report['template_json']}")
     print(f"template-valid-as-proof: {report['template_valid_as_proof']}")
     print(f"required-id-count: {len(report['required_ids'])}")
@@ -116,6 +129,8 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Generated: `{report['generated_at']}`",
         f"- Runtime policy: {report['runtime_policy']}",
         f"- Guard policy: {report['guard_policy']}",
+        f"- Candidate path policy: {report['candidate_path_policy']}",
+        f"- Candidate path template: `{report['candidate_path_template']}`",
         f"- Template JSON: `{report['template_json']}`",
         f"- Template valid as proof: `{report['template_valid_as_proof']}`",
         "",

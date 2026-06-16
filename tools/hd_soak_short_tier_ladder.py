@@ -87,6 +87,7 @@ FUTURE_LANE_IDS = [
     "turn_advancement",
     "campaign_route",
 ]
+MAX_INPUT_DRIFT_PX = 1
 
 
 def status_text(passed: bool) -> str:
@@ -132,6 +133,8 @@ def command_for_step(step: dict[str, Any], *, execute: bool) -> str:
         paths["report_json"],
         "-ReportMarkdown",
         paths["report_markdown"],
+        "-MaxInputDriftPx",
+        str(MAX_INPUT_DRIFT_PX),
     ]
     if execute:
         parts.extend(["-Execute", "-AllowVisibleRuntime", "-RequirePass"])
@@ -276,13 +279,22 @@ def next_action_alignment(next_actions: dict[str, Any] | None, step: dict[str, A
     action = (next_actions or {}).get("next_action") or {}
     expected = step.get("approval_gated_runtime_command") if step else None
     reported = action.get("exact_runtime_command")
+    legacy = action.get("legacy_step_runtime_command")
+    plan_verified = action.get("plan_verified_execute_command")
+    step_match = bool(reported and expected and reported == expected)
+    legacy_match = bool(legacy and expected and legacy == expected)
+    plan_verified_match = bool(reported and plan_verified and reported == plan_verified)
     return {
         "next_actions_report_present": next_actions is not None,
         "next_actions_passed": bool(next_actions and next_actions.get("passed")),
         "reported_next_action": action.get("id"),
         "reported_runtime_command": reported,
+        "legacy_step_runtime_command": legacy,
+        "plan_verified_execute_command": plan_verified,
         "expected_runtime_command": expected,
-        "matches_expected_current_step": bool(reported and expected and reported == expected),
+        "matches_expected_current_step": step_match or legacy_match,
+        "legacy_matches_expected_current_step": legacy_match,
+        "reported_matches_plan_verified": plan_verified_match,
     }
 
 
