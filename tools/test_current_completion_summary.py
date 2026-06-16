@@ -40,6 +40,7 @@ def args_for(fixture: Path) -> argparse.Namespace:
         battle_json=fixture / "battle.json",
         manual_checklist_json=fixture / "manual.json",
         right_bottom_decision_json=fixture / "right-bottom.json",
+        repo_test_sweep_json=fixture / "repo-test-sweep.json",
     )
 
 
@@ -101,6 +102,15 @@ def write_fixture_files(fixture: Path) -> argparse.Namespace:
             "failures": ["right-bottom natural UI probe did not enter owner/action draw rows"],
         },
     )
+    write_json(
+        fixture / "repo-test-sweep.json",
+        {
+            "passed": True,
+            "test_count": 82,
+            "passed_count": 82,
+            "failed_count": 0,
+        },
+    )
     return args_for(fixture)
 
 
@@ -110,6 +120,8 @@ def test_summary_computes_percentages(fixture: Path) -> None:
     rows = {row["id"]: row for row in summary["percentages"]}
     assert summary["passed"] is True, summary
     assert rows["current_repo_evidence_gates"]["completion_percent"] == 50.0, summary
+    assert rows["repo_test_sweep"]["completion_percent"] == 100.0, summary
+    assert rows["repo_test_sweep"]["passed"] is True, summary
     assert rows["focused_battle_right_bottom_lane"]["completion_percent"] == 99.91, summary
     assert rows["right_bottom_promotion_gate"]["completion_percent"] == 75.0, summary
     assert rows["manual_directinput_validation"]["completion_percent"] == 0.0, summary
@@ -129,6 +141,37 @@ def test_summary_reports_missing_focused_completion(fixture: Path) -> None:
     assert any("focused completion percent" in failure for failure in summary["failures"]), summary
 
 
+def test_summary_fails_closed_when_repo_test_sweep_missing(fixture: Path) -> None:
+    args = write_fixture_files(fixture)
+    args.repo_test_sweep_json.unlink()
+    summary = current_completion_summary.build_summary(args)
+    rows = {row["id"]: row for row in summary["percentages"]}
+    assert summary["passed"] is False, summary
+    assert rows["repo_test_sweep"]["passed"] is False, summary
+    assert any("repo test sweep artifact is missing" in failure for failure in summary["failures"]), summary
+
+
+def test_summary_fails_closed_when_repo_test_sweep_failed(fixture: Path) -> None:
+    args = write_fixture_files(fixture)
+    write_json(
+        args.repo_test_sweep_json,
+        {
+            "passed": False,
+            "test_count": 82,
+            "passed_count": 81,
+            "failed_count": 1,
+            "failures": ["test_probe.py exited 1"],
+        },
+    )
+    summary = current_completion_summary.build_summary(args)
+    rows = {row["id"]: row for row in summary["percentages"]}
+    assert summary["passed"] is False, summary
+    assert rows["repo_test_sweep"]["completion_percent"] < 100.0, summary
+    assert rows["repo_test_sweep"]["passed"] is False, summary
+    assert "repo test sweep is not passing" in summary["failures"], summary
+    assert "test_probe.py exited 1" in summary["failures"], summary
+
+
 def test_cli_writes_outputs(fixture: Path) -> None:
     args = write_fixture_files(fixture)
     out_json = fixture / "out" / "summary.json"
@@ -142,6 +185,8 @@ def test_cli_writes_outputs(fixture: Path) -> None:
         str(args.manual_checklist_json),
         "--right-bottom-decision-json",
         str(args.right_bottom_decision_json),
+        "--repo-test-sweep-json",
+        str(args.repo_test_sweep_json),
         "--write-json",
         str(out_json),
         "--write-markdown",
@@ -160,6 +205,8 @@ def run_tests() -> None:
     try:
         test_summary_computes_percentages(fixture / "percentages")
         test_summary_reports_missing_focused_completion(fixture / "missing-focused")
+        test_summary_fails_closed_when_repo_test_sweep_missing(fixture / "missing-sweep")
+        test_summary_fails_closed_when_repo_test_sweep_failed(fixture / "failed-sweep")
         test_cli_writes_outputs(fixture / "cli")
     finally:
         shutil.rmtree(fixture, ignore_errors=True)

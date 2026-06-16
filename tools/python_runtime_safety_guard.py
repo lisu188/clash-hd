@@ -45,6 +45,7 @@ EXEMPT_HELPERS = {
     "build_cloud_fixtures.py": "cloud fixture builder; risky text is source material/path filtering, not runtime window or input calls",
     "cloud_check.py": "cloud-safe validation runner; subprocess is limited to repo tests and does not launch Clash95 or CDB",
     "exe_artifact_guard.py": "uses git subprocess read-only for artifact inventory",
+    "hd_soak_dry_run_plan.py": "repo-only dry-run handoff guard; subprocess is limited to the soak harness without -Execute and does not launch Clash95, CDB, wrappers, or visible windows",
     "load_slot_timeout_phase.py": "repo-only CDB log parser; Win32 text appears only in timeout-stack classification labels",
     "process_hygiene_guard.py": "uses Toolhelp32 read-only process enumeration and does not launch or focus windows",
     "current_evidence_refresh.py": "repo-only evidence coordinator; risky API text appears in policy/test descriptions",
@@ -55,6 +56,7 @@ EXEMPT_HELPERS = {
     "repo_structure.py": "repo-only structure guard; subprocess is limited to read-only git inventory",
     "right_bottom_slot_fixture_result_summary.py": "repo-only CDB log parser; Win32/input text appears in evidence markers",
     "python_runtime_safety_guard.py": "this scanner names risky APIs without calling them",
+    "repo_test_sweep.py": "repo-only validation runner; subprocess is limited to tools/test_*.py Python children",
 }
 
 

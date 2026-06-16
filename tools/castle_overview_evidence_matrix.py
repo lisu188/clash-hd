@@ -70,6 +70,49 @@ def resolve_stage(stage: str) -> str:
     return STAGE_ALIASES.get(stage, stage)
 
 
+def patch_counts(report: dict[str, Any]) -> dict[str, int]:
+    status_counts = report.get("status_counts") or {}
+    patched = int(status_counts.get("patched", 0))
+    original = int(status_counts.get("original", 0))
+    unexpected = int(status_counts.get("unexpected", 0))
+    total = int(report.get("patch_count") or patched + original + unexpected)
+    return {
+        "patched": patched,
+        "original": original,
+        "unexpected": unexpected,
+        "total": total,
+    }
+
+
+def patch_stage_gate_from_report(report: dict[str, Any], stage: str, source: Path) -> dict[str, Any]:
+    resolved_stage = resolve_stage(stage)
+    failures: list[str] = []
+    report_stage = str(report.get("stage") or "")
+    if report_stage != resolved_stage:
+        failures.append(f"archived patch report stage mismatch: expected {resolved_stage}, got {report_stage}")
+    counts = patch_counts(report)
+    if counts["original"]:
+        failures.append(f"{counts['original']} selected patch bytes are still original")
+    if counts["unexpected"]:
+        failures.append(f"{counts['unexpected']} selected patch bytes are unexpected")
+    current_gate = report.get("current_hd_map_gate") or {}
+    if current_gate and not current_gate.get("passed"):
+        for failure in current_gate.get("failures") or ["current HD map gate did not pass"]:
+            failures.append(f"current_hd_map_gate: {failure}")
+    return {
+        "passed": not failures,
+        "exe": report.get("exe"),
+        "source": str(source),
+        "archived": True,
+        "stage": stage,
+        "resolved_stage": report_stage or resolved_stage,
+        "sha256": report.get("exe_sha256") or report.get("sha256"),
+        "patches": counts,
+        "groups": report.get("groups", {}),
+        "failures": failures,
+    }
+
+
 def patch_stage_gate(exe: Path | None, stage: str) -> dict[str, Any]:
     resolved_stage = resolve_stage(stage)
     if exe is None:
@@ -282,8 +325,11 @@ def build_matrix(args: argparse.Namespace) -> dict[str, Any]:
         args.overview_run,
         args.barracks_run,
     ]
-    patch_exe = args.patch_exe or first_existing_candidate(runs)
-    patch_stage = patch_stage_gate(patch_exe, args.stage)
+    if getattr(args, "patch_report_json", None):
+        patch_stage = patch_stage_gate_from_report(load_json(args.patch_report_json), args.stage, args.patch_report_json)
+    else:
+        patch_exe = args.patch_exe or first_existing_candidate(runs)
+        patch_stage = patch_stage_gate(patch_exe, args.stage)
     overview_visual = castle_overview_gate.build_gate(
         run_dir=args.overview_run,
         expected_commands=castle_overview_gate.DEFAULT_COMMANDS,
@@ -332,6 +378,8 @@ def print_matrix(matrix: dict[str, Any]) -> None:
         print(f"{name}: {'PASS' if check.get('passed') else 'FAIL'}")
         if name == "patch_stage":
             print(f"  exe: {check.get('exe')}")
+            if check.get("archived"):
+                print(f"  archived_report: {check.get('source')}")
             print(f"  resolved-stage: {check.get('resolved_stage')}")
             print(f"  sha256: {check.get('sha256')}")
             patches = check.get("patches") or {}
@@ -411,6 +459,8 @@ def write_markdown(path: Path, matrix: dict[str, Any]) -> None:
         "",
         f"- Status: {'PASS' if patch_stage['passed'] else 'FAIL'}",
         f"- Executable: `{patch_stage.get('exe')}`",
+        f"- Source: `{patch_stage.get('source')}`",
+        f"- Archived report: `{bool(patch_stage.get('archived'))}`",
         f"- Resolved stage: `{patch_stage.get('resolved_stage')}`",
         f"- SHA-256: `{patch_stage.get('sha256')}`",
         "- Patches: patched={patched} original={original} unexpected={unexpected} total={total}".format(
@@ -468,6 +518,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--stage", default=DEFAULT_STAGE)
     parser.add_argument("--patch-exe", type=Path)
+    parser.add_argument(
+        "--patch-report-json",
+        type=Path,
+        help="use an archived tools/patch_stage_report.py JSON report instead of reading a local executable",
+    )
     parser.add_argument("--overview-run", type=Path, default=DEFAULT_OVERVIEW_RUN)
     parser.add_argument("--barracks-run", type=Path, default=DEFAULT_BARRACKS_RUN)
     parser.add_argument("--focused-hitbox-run", type=Path, default=DEFAULT_FOCUSED_HITBOX_RUN)

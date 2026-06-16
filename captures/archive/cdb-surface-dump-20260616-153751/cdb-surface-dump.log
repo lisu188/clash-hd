@@ -1,0 +1,684 @@
+Opened log file 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-153751\cdb-surface-dump.log'
+
+************* Preparing the environment for Debugger Extensions Gallery repositories **************
+   ExtensionRepository : Implicit
+   UseExperimentalFeatureForNugetShare : true
+   AllowNugetExeUpdate : true
+   NonInteractiveNuget : true
+   AllowNugetMSCredentialProviderInstall : true
+   AllowParallelInitializationOfLocalRepositories : true
+
+   EnableRedirectToV8JsProvider : false
+
+   -- Configuring repositories
+      ----> Repository : LocalInstalled, Enabled: true
+      ----> Repository : UserExtensions, Enabled: true
+
+>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.016 seconds
+
+************* Waiting for Debugger Extensions Gallery to Initialize **************
+
+>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds
+   ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29
+
+Microsoft (R) Windows Debugger Version 10.0.26100.8038 X86
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+CommandLine: C:\ClashTests\first-mission-bottom-centered-actionbar\clash95_hd_surfdump_20260616_153751.exe
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\atlmfc.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\ObjectiveC.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\concurrency.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\cpp_rest.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\stl.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Data.Json.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Geolocation.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Sensors.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Media.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\windows.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\winrt.natvis'
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Symbol search path is: srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Executable search path is:
+ModLoad: 00400000 00562000   clash95.exe
+ModLoad: 76ed0000 7708f000   ntdll.dll
+ModLoad: 74a20000 74b10000   C:\WINDOWS\SysWOW64\KERNEL32.DLL
+ModLoad: 75880000 75b4d000   C:\WINDOWS\SysWOW64\KERNELBASE.dll
+ModLoad: 67ed0000 67f7e000   C:\WINDOWS\SysWOW64\apphelp.dll
+ModLoad: 75ba0000 75bc2000   C:\WINDOWS\SysWOW64\GDI32.dll
+ModLoad: 75b80000 75b9b000   C:\WINDOWS\SysWOW64\win32u.dll
+ModLoad: 762e0000 763cc000   C:\WINDOWS\SysWOW64\gdi32full.dll
+ModLoad: 765c0000 76645000   C:\WINDOWS\SysWOW64\msvcp_win.dll
+ModLoad: 74ce0000 74df0000   C:\WINDOWS\SysWOW64\ucrtbase.dll
+ModLoad: 763d0000 765a6000   C:\WINDOWS\SysWOW64\USER32.dll
+ModLoad: 66630000 66663000   C:\WINDOWS\SysWOW64\WINMM.dll
+ModLoad: 658b0000 65926000   C:\WINDOWS\SysWOW64\DSOUND.dll
+ModLoad: 66500000 66527000   C:\WINDOWS\SysWOW64\DINPUT.dll
+ModLoad: 664d0000 664f5000   C:\ClashTests\first-mission-bottom-centered-actionbar\DDRAW.dll
+ModLoad: 66ac0000 66adc000   C:\WINDOWS\SysWOW64\AVIFIL32.dll
+ModLoad: 75bd0000 75c52000   C:\WINDOWS\SysWOW64\advapi32.dll
+ModLoad: 00c80000 00d02000   C:\WINDOWS\SysWOW64\ADVAPI32.dll
+ModLoad: 65c10000 65c34000   C:\WINDOWS\SysWOW64\MSVFW32.dll
+ModLoad: 74c10000 74cd7000   C:\WINDOWS\SysWOW64\msvcrt.dll
+ModLoad: 753c0000 75653000   C:\WINDOWS\SysWOW64\combase.dll
+ModLoad: 76650000 7670c000   C:\WINDOWS\SysWOW64\RPCRT4.dll
+ModLoad: 74320000 743a3000   C:\WINDOWS\SysWOW64\sechost.dll
+ModLoad: 743c0000 74a03000   C:\WINDOWS\SysWOW64\SHELL32.dll
+ModLoad: 65810000 658aa000   C:\WINDOWS\SysWOW64\ResampleDmo.DLL
+ModLoad: 75260000 753b3000   C:\WINDOWS\SysWOW64\ole32.dll
+ModLoad: 75660000 756ff000   C:\WINDOWS\SysWOW64\OLEAUT32.dll
+ModLoad: 64c30000 64cc1000   C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.26100.8328_none_cf9c156c8ea8f6e3\COMCTL32.dll
+ModLoad: 65520000 6553a000   C:\WINDOWS\SysWOW64\MSACM32.dll
+ModLoad: 742c0000 74315000   C:\WINDOWS\SysWOW64\powrprof.dll
+ModLoad: 64c00000 64c25000   C:\WINDOWS\SysWOW64\winmmbase.dll
+ModLoad: 00c80000 00cd5000   C:\WINDOWS\SysWOW64\powrprof.dll
+ModLoad: 757a0000 75871000   C:\WINDOWS\SysWOW64\shcore.dll
+ModLoad: 664c0000 664c9000   C:\WINDOWS\SysWOW64\msdmo.dll
+(8f1c.84cc): Break instruction exception - code 80000003 (first chance)
+eax=00000000 ebx=00000000 ecx=bc790000 edx=00000000 esi=006e6720 edi=00282000
+eip=76fe8498 esp=000efa54 ebp=000efa80 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+ntdll!LdrpDoDebuggerBreak+0x2b:
+76fe8498 cc              int     3
+0:000> $$><C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-153751\clash95_surface_dump_probe.generated.cdb
+=== Clash95 CDB surface dump probe ===
+route-injects load slot 0, waits for gameplay redraw, then dumps dword_5202E0
+SURFDUMP_START_ANIMS_SLEEP_FAST_FORWARD_ENABLED
+=== Clash95 first-mission minimap surface probe ===
+Selects a visible mission-1 unit, then samples minimap backing and HD map-surface black-patch regions
+ModLoad: 75b50000 75b75000   C:\WINDOWS\SysWOW64\IMM32.DLL
+ModLoad: 734b0000 734be000   C:\WINDOWS\SysWOW64\UMPDC.dll
+ModLoad: 681e0000 68352000   C:\WINDOWS\SysWOW64\inputhost.dll
+ModLoad: 68100000 681dd000   C:\WINDOWS\SysWOW64\CoreMessaging.dll
+ModLoad: 66430000 664b0000   C:\WINDOWS\SysWOW64\uxtheme.dll
+ModLoad: 750d0000 751e7000   C:\WINDOWS\SysWOW64\MSCTF.dll
+ModLoad: 73230000 73245000   C:\WINDOWS\SysWOW64\kernel.appcore.dll
+ModLoad: 74b20000 74b97000   C:\WINDOWS\SysWOW64\bcryptPrimitives.dll
+ModLoad: 64b50000 64b66000   C:\WINDOWS\SysWOW64\msctfmonitor.dll
+ModLoad: 64b00000 64b40000   C:\WINDOWS\SysWOW64\MSUTB.dll
+ModLoad: 6d7b0000 6d8b2000   C:\WINDOWS\SysWOW64\textinputframework.dll
+ModLoad: 6fe50000 6fe5a000   C:\WINDOWS\SysWOW64\CRYPTBASE.DLL
+ModLoad: 6d320000 6d32b000   C:\WINDOWS\SysWOW64\HID.DLL
+ModLoad: 75d00000 76151000   C:\WINDOWS\SysWOW64\SETUPAPI.DLL
+ModLoad: 734f0000 7352e000   C:\WINDOWS\SysWOW64\cfgmgr32.DLL
+ModLoad: 6df90000 6dfb4000   C:\WINDOWS\SysWOW64\DEVOBJ.dll
+ModLoad: 75060000 750c7000   C:\WINDOWS\SysWOW64\WINTRUST.dll
+ModLoad: 74ef0000 74ff9000   C:\WINDOWS\SysWOW64\CRYPT32.dll
+ModLoad: 72920000 7292e000   C:\WINDOWS\SysWOW64\MSASN1.dll
+ModLoad: 66fd0000 67005000   C:\WINDOWS\SysWOW64\MLANG.DLL
+SURFDUMP_BYPASS_MOUSE_ACQUIRE hwnd=*** WARNING: Unable to verify checksum for clash95.exe
+0f610dc4 device=0073d9dc
+SURFDUMP_BYPASS_KEYBOARD_ACQUIRE hwnd=0f610dc4 device=0072bed4
+ModLoad: 74e00000 74e86000   C:\WINDOWS\SysWOW64\clbcatq.dll
+ModLoad: 64a50000 64afc000   C:\Windows\SysWOW64\InputSwitch.dll
+ModLoad: 64350000 644b8000   C:\Windows\SysWOW64\DUI70.dll
+ModLoad: 6e3f0000 6e619000   C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.8328_none_85b54f03f7b0df7e\Comctl32.dll
+ModLoad: 671b0000 67234000   C:\Windows\SysWOW64\DUser.dll
+ModLoad: 551b0000 55772000   C:\WINDOWS\SysWOW64\windowsudk.shellcommon.dll
+ModLoad: 70930000 70a29000   C:\WINDOWS\SysWOW64\wintypes.dll
+ModLoad: 03ff0000 040e9000   C:\WINDOWS\SysWOW64\wintypes.dll
+ModLoad: 6da50000 6dc3d000   C:\Windows\SysWOW64\twinapi.appcore.dll
+ModLoad: 64230000 64346000   C:\Windows\SysWOW64\Windows.UI.Core.TextInput.dll
+ModLoad: 66be0000 66e72000   C:\WINDOWS\SysWOW64\CoreUIComponents.dll
+(8f1c.5860): C++ EH exception - code e06d7363 (first chance)
+(8f1c.5860): C++ EH exception - code e06d7363 (first chance)
+(8f1c.5860): C++ EH exception - code e06d7363 (first chance)
+(8f1c.5860): C++ EH exception - code e06d7363 (first chance)
+ModLoad: 641e0000 6422c000   C:\Windows\SysWOW64\Bcp47Langs.dll
+pcshell\shell\inputswitch\switch\ctfhandler.cpp(2651)\InputSwitch.dll!64A67BF5: (caller: 64A64AAF) LogHr(1) tid(5860) 80004005 Unspecified error
+
+    CallContext:[\Startup]
+ModLoad: 67a20000 67a52000   C:\WINDOWS\SysWOW64\xmllite.dll
+ModLoad: 6a3d0000 6a5e3000   C:\WINDOWS\SysWOW64\dwrite.dll
+ModLoad: 767d0000 76eb6000   C:\WINDOWS\SysWOW64\Windows.Storage.dll
+ModLoad: 64190000 641d3000   C:\WINDOWS\SysWOW64\UIAnimation.dll
+ModLoad: 6abd0000 6adc1000   C:\Windows\SysWOW64\d3d11.dll
+ModLoad: 6aac0000 6abc9000   C:\Windows\SysWOW64\dxgi.dll
+ModLoad: 54ae0000 551a3000   C:\WINDOWS\SysWOW64\D3D10Warp.dll
+ModLoad: 6a0c0000 6a0f8000   C:\WINDOWS\SysWOW64\dxcore.dll
+ModLoad: 67d30000 67d40000   C:\WINDOWS\SysWOW64\resourcepolicyclient.dll
+ModLoad: 69640000 6968f000   C:\WINDOWS\SysWOW64\directxdatabasehelper.dll
+ModLoad: 696a0000 6982a000   C:\WINDOWS\SysWOW64\dcomp.dll
+ModLoad: 6e1e0000 6e1f2000   C:\WINDOWS\SysWOW64\Microsoft.Internal.WarpPal.dll
+ModLoad: 53fc0000 54065000   C:\WINDOWS\SysWOW64\TextShaping.dll
+ModLoad: 6de10000 6de8e000   C:\WINDOWS\SysWOW64\MMDevApi.dll
+ModLoad: 64a50000 64afc000   C:\Windows\SysWOW64\InputSwitch.dll
+ModLoad: 67d50000 67ebe000   C:\WINDOWS\SysWOW64\AUDIOSES.DLL
+ModLoad: 64350000 644b8000   C:\Windows\SysWOW64\DUI70.dll
+ModLoad: 671b0000 67234000   C:\Windows\SysWOW64\DUser.dll
+ModLoad: 67d30000 67d40000   C:\WINDOWS\SysWOW64\resourcepolicyclient.dll
+ModLoad: 641e0000 6422c000   C:\Windows\SysWOW64\Bcp47Langs.dll
+pcshell\shell\inputswitch\switch\ctfhandler.cpp(2651)\InputSwitch.dll!64A67BF5: (caller: 64A64AAF) LogHr(1) tid(9e08) 80004005 Unspecified error
+
+    CallContext:[\Startup]
+ModLoad: 67a20000 67a52000   C:\WINDOWS\SysWOW64\xmllite.dll
+ModLoad: 6abd0000 6adc1000   C:\Windows\SysWOW64\d3d11.dll
+ModLoad: 6aac0000 6abc9000   C:\Windows\SysWOW64\dxgi.dll
+ModLoad: 54ae0000 551a3000   C:\WINDOWS\SysWOW64\D3D10Warp.dll
+ModLoad: 69640000 6968f000   C:\WINDOWS\SysWOW64\directxdatabasehelper.dll
+ModLoad: 696a0000 6982a000   C:\WINDOWS\SysWOW64\dcomp.dll
+ModLoad: 6e1e0000 6e1f2000   C:\WINDOWS\SysWOW64\Microsoft.Internal.WarpPal.dll
+ModLoad: 6dc40000 6dd51000   C:\Windows\SysWOW64\Windows.UI.dll
+ModLoad: 65c00000 65c09000   C:\WINDOWS\SysWOW64\avrt.dll
+SURFDUMP_SKIP_AVI_SLEEP call=0046fd01 next=0046fd08
+SURFDUMP_SKIP_AVI_SLEEP call=0046fd01 next=0046fd08
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046fd01 next=0046fd08
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046fd01 next=0046fd08
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_START_SLEEP ret=004478a1
+SURFDUMP_MAIN_HIT seq=0 choice=0 entry=0x000efa28 ex=239 ey=196 mouse=(300,218)
+SURFDUMP_FORCE_MAIN_CLICK seq=0 desc=0x000efa28 mouse=(300,218)
+SURFDUMP_SKIP_MAIN_LOAD_CALLBACK ret=00419c60 choice_before=0 exit_before=0 mouse=(300,218)
+SURFDUMP_LOAD_COORD seq=0 choice=5 entry=0x000efa5d ex=232 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=1 choice=5 entry=0x000efa5d ex=232 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=2 choice=5 entry=0x000efa92 ex=265 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=3 choice=5 entry=0x000efac7 ex=437 ey=196 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=4 choice=5 entry=0x000efac7 ex=437 ey=196 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=5 choice=5 entry=0x000efafc ex=424 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=6 choice=5 entry=0x000efb31 ex=468 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=7 choice=5 entry=0x000efb31 ex=468 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=8 choice=5 entry=0x000efb31 ex=468 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_MENU_ENTRY choice=5 exit=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_MENU_ENTRY choice=5 exit=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_MENU_ENTRY choice=5 exit=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_MENU_LOOP seq=0 exit=0 selected=-1 accept=0 mouse=(320,166) lbtn=0x80
+SURFDUMP_LOAD_MENU_LOOP seq=1 exit=0 selected=-1 accept=0 mouse=(320,166) lbtn=0x80
+SURFDUMP_FORCE_LOAD_SELECT seq=0 mouse=(320,166) selected=-1 accept=0
+SURFDUMP_FORCE_LOAD_ACCEPT seq=0 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_FORCE_LOAD_ACCEPT seq=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_FORCE_LOAD_ACCEPT seq=2 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_ACCEPT_CALL arg=0 selected=0 accept_before=0 mouse=(320,166)
+SURFDUMP_LOAD_COORD seq=9 choice=5 entry=0x000efca8 ex=329 ey=452 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOAD_COORD seq=10 choice=5 entry=0x000efcdd ex=409 ey=468 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOAD_COORD seq=11 choice=5 entry=0x000efcdd ex=409 ey=468 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=03a10030
+FMMS_MINIMAP_INIT left=586 top=16 width=214 height=214 right=799 bottom=229 backing=00000000 backing_sz=(0,0) backing_base=00000000 scale=2
+SURFDUMP_PLAYGAME gd=03a10030 map=(100,100) scroll=(10,17) surface=038bc960 size=(640,480)
+FMMS_MINIMAP_DIRTY_ENTRY seq=0 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(00,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=1 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(00,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=2 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(00,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=3 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(00,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=4 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(00,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=5 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(00,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=6 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(00,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=7 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(00,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=8 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(c1,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=9 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=10 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=11 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=12 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=13 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=14 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=15 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=16 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=17 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=18 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=19 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=20 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=21 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=22 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,00,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=23 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=24 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=25 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=26 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=27 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=28 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=29 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=30 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=31 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=32 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=33 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=34 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=35 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,00,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=36 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=37 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=38 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=39 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=40 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=41 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=42 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=43 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=44 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=45 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,00,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=46 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=47 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=48 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=49 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=50 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=51 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=52 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=53 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=54 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=55 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=56 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=57 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=58 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=59 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=60 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=61 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=62 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=63 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=64 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=65 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=66 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=67 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=68 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=69 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=70 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=71 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=72 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=73 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=74 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=75 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=76 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=77 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=78 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=79 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=80 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=81 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=82 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=83 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=84 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=85 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=86 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=87 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=88 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=89 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=90 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=91 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=92 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=93 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=94 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_MINIMAP_DIRTY_ENTRY seq=95 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,00,00)
+FMMS_FULLREDRAW_AFTER_LOWER redraw=0 surface=0a57ee30 size=(800,600) minimap_samples=(01,01,01,01) right_panel_samples=(01,01,01) bottom_samples=(c1,01,01)
+FMMS_FULLREDRAW_AFTER_LOWER redraw=0 surface=0a57ee30 size=(800,600) minimap_samples=(01,01,01,01) right_panel_samples=(01,01,01) bottom_samples=(c1,01,01)
+FMMS_FULLREDRAW_AFTER_LOWER redraw=0 surface=0a57ee30 size=(800,600) minimap_samples=(01,01,01,01) right_panel_samples=(01,01,01) bottom_samples=(c1,01,01)
+FMMS_UNITSEL_ROUTE_START gd=03a10030 player=0 scroll=(10,17) map=(100,100) selected=-1 prior=-1 shift=6 surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_INVOKE screen=(448,176) raw=(0x00007000,0x00002c00) select_return=00406980 update_return=0040b0c3
+FMMS_UNITSEL_SELECT_TILE map=(16,19) tile=3 selected_before=-1 current=0
+FMMS_UNITSEL_SELECT_SUCCESS eax=1 selected_after=3
+FMMS_MINIMAP_DIRTY_ENTRY seq=0 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=1 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=2 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=3 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=4 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=5 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=6 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=7 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=8 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(c1,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=9 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=10 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=11 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,4f,10) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=12 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=13 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=14 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=15 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=16 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=17 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=18 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=19 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=20 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=21 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=22 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=23 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,8f,50) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=24 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=25 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=26 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=27 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=28 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=29 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=30 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=31 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=32 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=33 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=34 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=35 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,cf,90) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=36 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=37 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=38 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=39 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=40 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=41 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=42 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=43 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=44 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=45 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=46 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=47 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,10f,d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=48 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=49 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=50 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=51 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=52 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=53 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=54 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=55 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=56 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=57 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=58 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=59 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,14f,110) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=60 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=61 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=62 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=63 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=64 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=65 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=66 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=67 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=68 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=69 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=70 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=71 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,18f,150) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=72 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=73 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=74 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=75 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=76 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=77 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=78 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=79 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=80 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=81 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=82 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=83 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,1cf,190) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=84 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(20,5f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=85 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(60,9f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=86 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(a0,df,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=87 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(e0,11f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=88 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(120,15f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=89 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(160,19f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=90 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1a0,1df,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=91 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(1e0,21f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=92 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(220,25f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=93 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(260,29f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=94 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2a0,2df,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_MINIMAP_DIRTY_ENTRY seq=95 ret=004169a1 bounds=(586,16,799,229) backing=0801f738 backing_sz=(214,214) backing_base=0a570030 map_surface=0a57ee30 map_sz=(800,600) regs=(2e0,31f,20f,1d0) backing_samples=(01,01,01,01,01,21) map_samples=(01,01,01,01,c1,01)
+FMMS_FULLREDRAW_AFTER_LOWER redraw=0 surface=0a57ee30 size=(800,600) minimap_samples=(01,01,01,01) right_panel_samples=(01,01,01) bottom_samples=(c1,01,01)
+FMMS_UNITSEL_DONE selected=3 prior=3 d526994=1 surface=0a57ee30 size=(800,600)
+SURFDUMP_REDRAW seq=0 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=0040b0e0 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_FULLREDRAW_AFTER_LOWER redraw=1 surface=0a57ee30 size=(800,600) minimap_samples=(01,01,01,01) right_panel_samples=(01,01,01) bottom_samples=(c1,01,01)
+SURFDUMP_REDRAW seq=1 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=2 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=3 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+SURFDUMP_READY redraw_seq=4 surface=0a57ee30 size=(800,600) base=0a820030 bytes=480000
+SCROLL_VISDUMP player=0 screen0=(32,16) map0=(10,17) rows=9 cols=12 tile=(64,64) vis_base=03a32361 dump_start=03a323e5 count=160
+03a323e5  7c 00 00 00 00 00 00 00-00 00 00 00 00 fe 00 00  |...............
+03a323f5  00 00 00 00 00 00 00 00-00 00 ff 01 00 00 00 00  ................
+03a32405  00 00 00 00 00 00 00 ff-03 00 00 00 00 00 00 00  ................
+03a32415  00 00 00 00 ff 03 00 00-00 00 00 00 00 00 00 00  ................
+03a32425  00 ff 03 00 00 00 00 00-00 00 00 00 00 00 ff 03  ................
+03a32435  00 00 00 00 00 00 00 00-00 00 00 ff 03 00 00 00  ................
+03a32445  00 00 00 00 00 00 00 00-fe 03 00 00 00 00 00 00  ................
+03a32455  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+03a32465  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+03a32475  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+SURFDUMP_HOST_READY
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=4 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=5 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=6 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=7 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=8 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=9 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=10 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=11 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=12 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=13 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=14 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+SURFDUMP_REDRAW seq=15 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_RETURN selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)
+FMMS_UNITSEL_POST_REDRAW_CAVE_ENTRY caller_ret=00423851 selected=3 prior=3 d526994=1 d5202e0=0a57ee30 sz=(800,600) render=0a57ee30 mouse=(448,176)

@@ -12,11 +12,11 @@ from typing import Any
 import border_tooltip_summary
 import hover_selection_ui_summary
 import unit_selection_action_bar_summary
-from capture_geometry import read_png
+from capture_geometry import luminance, read_png
 
 
 TOOLTIP_STRIP = (32, 528, 585, 599)
-ACTION_BAR_REGION = (150, 455, 520, 500)
+ACTION_BAR_REGION = (215, 580, 585, 599)
 REQUIRED_HOVER_MODES = {
     "selected_unit_hover",
     "bottom_tooltip_hover",
@@ -59,10 +59,13 @@ def analyze_region(
     )
     total = 0
     nonblack = 0
+    luma_sum = 0.0
     for y in range(y0, y1 + 1):
         for x in range(x0, x1 + 1):
             total += 1
-            if max(image.rgb_at(x, y)) > args.threshold:
+            rgb = image.rgb_at(x, y)
+            luma_sum += luminance(rgb)
+            if max(rgb) > args.threshold:
                 nonblack += 1
     black = total - nonblack
     return {
@@ -70,6 +73,7 @@ def analyze_region(
         "image_rect": [x0, y0, x1, y1],
         "nonblack_percent": round(nonblack * 100.0 / total, 3) if total else 0.0,
         "black_percent": round(black * 100.0 / total, 3) if total else 0.0,
+        "mean_luma": round(luma_sum / total, 3) if total else 0.0,
     }
 
 
@@ -110,6 +114,8 @@ def summarize(log: Path, png: Path | None, args: argparse.Namespace) -> dict[str
         action_bar_visible = (
             png_regions["selected_unit_action_bar"]["nonblack_percent"]
             >= args.action_bar_min_nonblack
+            and png_regions["selected_unit_action_bar"]["mean_luma"]
+            <= args.action_bar_max_mean_luma
         )
         tooltip_strip_nonblack_visible = (
             png_regions["bottom_tooltip_strip"]["nonblack_percent"]
@@ -158,7 +164,7 @@ def summarize(log: Path, png: Path | None, args: argparse.Namespace) -> dict[str
     else:
         classification.append("native tooltip/status owner evidence was not observed")
     if action_bar_visible is True:
-        classification.append("selected-unit action-bar visual regression gate passed")
+        classification.append("selected-unit action-bar visual regression gate passed at the expected bottom strip")
     elif action_bar_visible is False:
         classification.append("selected-unit action-bar visual regression gate failed")
     if tooltip_strip_nonblack_visible is True and tooltip_owner_evidence:
@@ -236,7 +242,8 @@ def write_markdown(path: Path, summary: dict[str, Any]) -> None:
         for name, region in summary["png_regions"].items():
             lines.append(
                 f"- `{name}`: nonblack `{region['nonblack_percent']}%`, "
-                f"black `{region['black_percent']}%`, rect `{region['logical_rect']}`"
+                f"black `{region['black_percent']}%`, mean_luma `{region['mean_luma']}`, "
+                f"rect `{region['logical_rect']}`"
             )
     lines.extend(["", "## First Tooltip Entries"])
     for row in summary["hover"]["entries"][:20]:
@@ -278,6 +285,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--logical-height", type=int, default=600)
     parser.add_argument("--threshold", type=int, default=12)
     parser.add_argument("--action-bar-min-nonblack", type=float, default=40.0)
+    parser.add_argument("--action-bar-max-mean-luma", type=float, default=98.0)
     parser.add_argument("--tooltip-min-nonblack", type=float, default=1.0)
     parser.add_argument("--require-evidence-pass", action="store_true")
     parser.add_argument("--require-tooltip-owner", action="store_true")

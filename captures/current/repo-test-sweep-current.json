@@ -1,0 +1,810 @@
+{
+  "generated_at": "2026-06-16T13:51:41.787912+00:00",
+  "passed": true,
+  "runtime_policy": "repo-only Python test sweep; launches only Python child processes for tools/test_*.py and does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd",
+  "tools_dir": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\tools",
+  "pattern": "test_*.py",
+  "python": "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+  "per_test_timeout_sec": 120,
+  "test_count": 88,
+  "passed_count": 88,
+  "failed_count": 0,
+  "duration_sec": 79.25,
+  "excluded_tests": [],
+  "tests": [
+    {
+      "name": "test_battle_command_availability.py",
+      "path": "tools\\test_battle_command_availability.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.109,
+      "stdout": "battle command availability tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_battle_constructed_save_fixture.py",
+      "path": "tools\\test_battle_constructed_save_fixture.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.141,
+      "stdout": "battle constructed save fixture tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_battle_save_unit_inventory.py",
+      "path": "tools\\test_battle_save_unit_inventory.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.14,
+      "stdout": "battle save unit inventory tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_battle_slot_scan_summary.py",
+      "path": "tools\\test_battle_slot_scan_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.11,
+      "stdout": "battle slot scan summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_battle_ui_evidence_matrix.py",
+      "path": "tools\\test_battle_ui_evidence_matrix.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 2.0,
+      "stdout": "battle UI evidence matrix tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_battle_ui_gate.py",
+      "path": "tools\\test_battle_ui_gate.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.562,
+      "stdout": "battle UI gate tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_battle_ui_probes.py",
+      "path": "tools\\test_battle_ui_probes.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.062,
+      "stdout": "battle UI probe tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_battle_ui_summary.py",
+      "path": "tools\\test_battle_ui_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.516,
+      "stdout": "battle UI summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_battle_visible_harness_guard.py",
+      "path": "tools\\test_battle_visible_harness_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.406,
+      "stdout": "battle visible harness guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_battle_visible_input_summary.py",
+      "path": "tools\\test_battle_visible_input_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.297,
+      "stdout": "battle visible input summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_border_tooltip_summary.py",
+      "path": "tools\\test_border_tooltip_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.141,
+      "stdout": "border tooltip summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_capture_corpus_index.py",
+      "path": "tools\\test_capture_corpus_index.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.328,
+      "stdout": "capture corpus index tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_overview_baseline_recheck.py",
+      "path": "tools\\test_castle_overview_baseline_recheck.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.172,
+      "stdout": "castle overview baseline recheck tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_overview_evidence_matrix.py",
+      "path": "tools\\test_castle_overview_evidence_matrix.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.39,
+      "stdout": "castle overview evidence matrix tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_overview_gate.py",
+      "path": "tools\\test_castle_overview_gate.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.391,
+      "stdout": "castle overview gate tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_overview_hitbox_summary.py",
+      "path": "tools\\test_castle_overview_hitbox_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 1.422,
+      "stdout": "castle overview hitbox summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_overview_hitmap_summary.py",
+      "path": "tools\\test_castle_overview_hitmap_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.515,
+      "stdout": "castle overview hitmap summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_overview_multihit_summary.py",
+      "path": "tools\\test_castle_overview_multihit_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 1.36,
+      "stdout": "castle overview multihit summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_overview_probe_guard.py",
+      "path": "tools\\test_castle_overview_probe_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 1.234,
+      "stdout": "castle overview probe guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_overview_promotion_decision.py",
+      "path": "tools\\test_castle_overview_promotion_decision.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.844,
+      "stdout": "castle overview promotion decision tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_owner_records_summary.py",
+      "path": "tools\\test_castle_owner_records_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.641,
+      "stdout": "castle owner records summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_castle_save_owner_flag_scan.py",
+      "path": "tools\\test_castle_save_owner_flag_scan.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.546,
+      "stdout": "castle save owner-flag scan tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_current_completion_summary.py",
+      "path": "tools\\test_current_completion_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.469,
+      "stdout": "current completion summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_current_evidence_refresh.py",
+      "path": "tools\\test_current_evidence_refresh.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.469,
+      "stdout": "current_evidence_refresh tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_docs_consistency_guard.py",
+      "path": "tools\\test_docs_consistency_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 1.219,
+      "stdout": "docs consistency guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_evidence_index_check.py",
+      "path": "tools\\test_evidence_index_check.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.328,
+      "stdout": "evidence_index_check tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_first_mission_minimap_surface_summary.py",
+      "path": "tools\\test_first_mission_minimap_surface_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.265,
+      "stdout": "first mission minimap surface summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_first_mission_visual_audit.py",
+      "path": "tools\\test_first_mission_visual_audit.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 12.454,
+      "stdout": "first mission visual audit tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_handoff_freshness_guard.py",
+      "path": "tools\\test_handoff_freshness_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.953,
+      "stdout": "handoff freshness guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_continuity_status.py",
+      "path": "tools\\test_hd_continuity_status.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.562,
+      "stdout": "hd continuity status tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_endurance_next_actions.py",
+      "path": "tools\\test_hd_endurance_next_actions.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.578,
+      "stdout": "hd_endurance_next_actions tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_endurance_release_checklist.py",
+      "path": "tools\\test_hd_endurance_release_checklist.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.61,
+      "stdout": "hd_endurance_release_checklist tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_approval_preflight.py",
+      "path": "tools\\test_hd_soak_approval_preflight.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 1.25,
+      "stdout": "hd_soak_approval_preflight tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_dry_run_plan.py",
+      "path": "tools\\test_hd_soak_dry_run_plan.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.406,
+      "stdout": "hd_soak_dry_run_plan tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_failure_triage.py",
+      "path": "tools\\test_hd_soak_failure_triage.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.344,
+      "stdout": "hd_soak_failure_triage tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_harness_guard.py",
+      "path": "tools\\test_hd_soak_harness_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.562,
+      "stdout": "hd_soak_harness_guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_long_report_guard.py",
+      "path": "tools\\test_hd_soak_long_report_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.422,
+      "stdout": "hd soak long report guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_report.py",
+      "path": "tools\\test_hd_soak_report.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.547,
+      "stdout": "hd_soak_report tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_route_coverage.py",
+      "path": "tools\\test_hd_soak_route_coverage.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.391,
+      "stdout": "hd_soak_route_coverage tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_short_artifact_manifest.py",
+      "path": "tools\\test_hd_soak_short_artifact_manifest.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.343,
+      "stdout": "hd_soak_short_artifact_manifest tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_short_step_status.py",
+      "path": "tools\\test_hd_soak_short_step_status.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.469,
+      "stdout": "hd_soak_short_step_status tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_short_tier_ladder.py",
+      "path": "tools\\test_hd_soak_short_tier_ladder.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.297,
+      "stdout": "hd_soak_short_tier_ladder tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_hd_soak_short_validation_refresh.py",
+      "path": "tools\\test_hd_soak_short_validation_refresh.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.484,
+      "stdout": "hd_soak_short_validation_refresh tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_load_slot_entry_gap_plan.py",
+      "path": "tools\\test_load_slot_entry_gap_plan.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.328,
+      "stdout": "load_slot_entry_gap_plan tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_load_slot_route_limit_guard.py",
+      "path": "tools\\test_load_slot_route_limit_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.719,
+      "stdout": "load_slot_route_limit_guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_load_slot_timeout_phase.py",
+      "path": "tools\\test_load_slot_timeout_phase.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.594,
+      "stdout": "load slot timeout phase tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_load_slot_transition_geometry_guard.py",
+      "path": "tools\\test_load_slot_transition_geometry_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.375,
+      "stdout": "load_slot_transition_geometry_guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_load_slot_transition_probe_guard.py",
+      "path": "tools\\test_load_slot_transition_probe_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.375,
+      "stdout": "load_slot_transition_probe_guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_load_slot_transition_probe_preview.py",
+      "path": "tools\\test_load_slot_transition_probe_preview.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.328,
+      "stdout": "load_slot_transition_probe_preview tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_load_slot_transition_readiness_matrix.py",
+      "path": "tools\\test_load_slot_transition_readiness_matrix.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.516,
+      "stdout": "load-slot transition readiness matrix tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_load_slot_transition_run_plan.py",
+      "path": "tools\\test_load_slot_transition_run_plan.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.375,
+      "stdout": "load_slot_transition_run_plan tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_load_slot_transition_summary.py",
+      "path": "tools\\test_load_slot_transition_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.547,
+      "stdout": "load_slot_transition_summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_manual_directinput_checklist.py",
+      "path": "tools\\test_manual_directinput_checklist.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.531,
+      "stdout": "manual DirectInput checklist tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_manual_directinput_proof_template.py",
+      "path": "tools\\test_manual_directinput_proof_template.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.25,
+      "stdout": "manual DirectInput proof template tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_manual_directinput_run_plan.py",
+      "path": "tools\\test_manual_directinput_run_plan.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.437,
+      "stdout": "manual DirectInput run plan tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_mouse_edge_summary.py",
+      "path": "tools\\test_mouse_edge_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.36,
+      "stdout": "mouse_edge_summary tests: ok\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_no_popup_guards.py",
+      "path": "tools\\test_no_popup_guards.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 9.984,
+      "stdout": "no-popup guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_no_popup_map_evidence_matrix.py",
+      "path": "tools\\test_no_popup_map_evidence_matrix.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.641,
+      "stdout": "no-popup map evidence matrix tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_no_visible_runtime_guard.py",
+      "path": "tools\\test_no_visible_runtime_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.468,
+      "stdout": "no-visible runtime guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_patch_definition_guard.py",
+      "path": "tools\\test_patch_definition_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.438,
+      "stdout": "patch definition guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_patch_manifest_compare.py",
+      "path": "tools\\test_patch_manifest_compare.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.547,
+      "stdout": "patch_manifest_compare tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_process_hygiene_guard.py",
+      "path": "tools\\test_process_hygiene_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.469,
+      "stdout": "process hygiene guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_promotion_override_guard.py",
+      "path": "tools\\test_promotion_override_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.64,
+      "stdout": "promotion override guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_promotion_override_manifest.py",
+      "path": "tools\\test_promotion_override_manifest.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.313,
+      "stdout": "promotion override manifest tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_python_runtime_safety_guard.py",
+      "path": "tools\\test_python_runtime_safety_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.328,
+      "stdout": "python runtime safety guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_raw_sendinput_click.py",
+      "path": "tools\\test_raw_sendinput_click.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.312,
+      "stdout": "raw SendInput click helper tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_repo_compaction_cleanup.py",
+      "path": "tools\\test_repo_compaction_cleanup.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 3.516,
+      "stdout": "repo compaction cleanup tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_repo_structure.py",
+      "path": "tools\\test_repo_structure.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 4.219,
+      "stdout": "repo_structure tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_repo_test_sweep.py",
+      "path": "tools\\test_repo_test_sweep.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.406,
+      "stdout": "repo test sweep tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_blocker_triage.py",
+      "path": "tools\\test_right_bottom_blocker_triage.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.609,
+      "stdout": "right-bottom blocker triage tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_compose_evidence_matrix.py",
+      "path": "tools\\test_right_bottom_compose_evidence_matrix.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.469,
+      "stdout": "right-bottom compose evidence matrix tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_compose_promotion_decision.py",
+      "path": "tools\\test_right_bottom_compose_promotion_decision.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.75,
+      "stdout": "right-bottom compose promotion decision tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_grid_hit_probe_guard.py",
+      "path": "tools\\test_right_bottom_grid_hit_probe_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 2.031,
+      "stdout": "right-bottom grid hit probe guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_grid_hit_summary.py",
+      "path": "tools\\test_right_bottom_grid_hit_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.953,
+      "stdout": "right-bottom grid hit summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_natural_route_candidate_matrix.py",
+      "path": "tools\\test_right_bottom_natural_route_candidate_matrix.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.5,
+      "stdout": "right_bottom_natural_route_candidate_matrix tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_natural_route_guard.py",
+      "path": "tools\\test_right_bottom_natural_route_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.204,
+      "stdout": "right_bottom_natural_route_guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_owner_flag_inventory.py",
+      "path": "tools\\test_right_bottom_owner_flag_inventory.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.468,
+      "stdout": "right_bottom_owner_flag_inventory tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_owner_flag_static_guard.py",
+      "path": "tools\\test_right_bottom_owner_flag_static_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.547,
+      "stdout": "right-bottom owner-flag static guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_route_timing_guard.py",
+      "path": "tools\\test_right_bottom_route_timing_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.875,
+      "stdout": "right-bottom route timing guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_slot_fixture_plan.py",
+      "path": "tools\\test_right_bottom_slot_fixture_plan.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.297,
+      "stdout": "right_bottom_slot_fixture_plan tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_slot_fixture_result_summary.py",
+      "path": "tools\\test_right_bottom_slot_fixture_result_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 1.063,
+      "stdout": "right_bottom_slot_fixture_result_summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_slot_fixture_runtime_plan.py",
+      "path": "tools\\test_right_bottom_slot_fixture_runtime_plan.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.343,
+      "stdout": "right_bottom_slot_fixture_runtime_plan tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_slot_fixture_script_guard.py",
+      "path": "tools\\test_right_bottom_slot_fixture_script_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.375,
+      "stdout": "right_bottom_slot_fixture_script_guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_right_bottom_visual_artifact_guard.py",
+      "path": "tools\\test_right_bottom_visual_artifact_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.375,
+      "stdout": "right-bottom visual artifact guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_stable_stage_guard.py",
+      "path": "tools\\test_stable_stage_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.719,
+      "stdout": "stable stage guard tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_unit_selection_action_bar_summary.py",
+      "path": "tools\\test_unit_selection_action_bar_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 1.266,
+      "stdout": "unit selection action bar summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_unit_selection_tooltip_summary.py",
+      "path": "tools\\test_unit_selection_tooltip_summary.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 3.031,
+      "stdout": "unit selection tooltip summary tests passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "test_visible_runtime_launcher_guard.py",
+      "path": "tools\\test_visible_runtime_launcher_guard.py",
+      "passed": true,
+      "exit_code": 0,
+      "duration_sec": 0.594,
+      "stdout": "visible runtime launcher guard tests passed\n",
+      "stderr": ""
+    }
+  ],
+  "failures": []
+}

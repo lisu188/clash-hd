@@ -1,0 +1,266 @@
+{
+  "generated": "2026-06-16T13:40:15.248977+00:00",
+  "log": "captures\\archive\\cdb-surface-dump-20260616-153751\\cdb-surface-dump.log",
+  "coverage_json": "captures\\archive\\cdb-surface-dump-20260616-153751\\map-tile-coverage-full.json",
+  "visibility_json": "captures\\archive\\cdb-surface-dump-20260616-153751\\visibility-coverage-full.json",
+  "passed": true,
+  "counts": {
+    "init": 1,
+    "dirty": 192,
+    "dirty_unavailable": 0,
+    "full": 5,
+    "select": 1,
+    "done": 1,
+    "ready": 1,
+    "av": 0
+  },
+  "ready_seen": true,
+  "av_free": true,
+  "unit_selected": true,
+  "selected_values": [
+    3
+  ],
+  "minimap_anchor_ok": true,
+  "backing_size_ok": true,
+  "map_surface_ok": true,
+  "minimap_bounds": [
+    [
+      586,
+      16,
+      799,
+      229
+    ]
+  ],
+  "backing_sizes": [
+    [
+      214,
+      214
+    ]
+  ],
+  "map_sizes": [
+    [
+      800,
+      600
+    ]
+  ],
+  "backing_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 960
+    },
+    {
+      "value": "0x21",
+      "count": 192
+    }
+  ],
+  "dirty_map_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 749
+    },
+    {
+      "value": "0x00",
+      "count": 305
+    },
+    {
+      "value": "0xc1",
+      "count": 98
+    }
+  ],
+  "full_minimap_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 20
+    }
+  ],
+  "full_right_panel_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 15
+    }
+  ],
+  "full_bottom_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 10
+    },
+    {
+      "value": "0xc1",
+      "count": 5
+    }
+  ],
+  "backing_black_like_percent": 83.333,
+  "full_minimap_black_like_percent": 100.0,
+  "right_panel_black_like_percent": 100.0,
+  "bottom_black_like_percent": 66.667,
+  "coverage_available": true,
+  "coverage_gameplay_frame_likely": true,
+  "coverage_flagged_active_cells": 13,
+  "coverage_measurable_active_cells": 99,
+  "coverage_edge_coverage": {
+    "overall_nonblack_percent": 73.9,
+    "top_border_nonblack_percent": 80.0,
+    "left_border_nonblack_percent": 80.0,
+    "right_edge_below_minimap_nonblack_percent": 0.0,
+    "bottom_edge_nonblack_percent": 55.795
+  },
+  "blank_active_cells": [
+    "r3c10",
+    "r3c11",
+    "r4c10",
+    "r4c11",
+    "r5c10",
+    "r5c11",
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "visibility_available": true,
+  "visibility_blank_cells": [
+    "r3c10",
+    "r3c11",
+    "r4c10",
+    "r4c11",
+    "r5c10",
+    "r5c11",
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "visibility_explained_blank_cells": [
+    "r3c10",
+    "r3c11",
+    "r4c10",
+    "r4c11",
+    "r5c10",
+    "r5c11",
+    "r6c10",
+    "r6c11",
+    "r7c10",
+    "r7c11",
+    "r8c0",
+    "r8c10",
+    "r8c11"
+  ],
+  "visibility_unexplained_blank_cells": [],
+  "visibility_status_counts": {
+    "visibility_zero": 13
+  },
+  "all_blank_cells_visibility_explained": true,
+  "last_fullredraw_sample": {
+    "line_no": 411,
+    "kind": "FMMS_FULLREDRAW_AFTER_LOWER",
+    "redraw": 1,
+    "surface": "0a57ee30",
+    "width": 800,
+    "height": 600,
+    "minimap_samples": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "right_panel_samples": [
+      1,
+      1,
+      1
+    ],
+    "bottom_samples": [
+      193,
+      1,
+      1
+    ]
+  },
+  "first_dirty": [
+    {
+      "line_no": 207,
+      "kind": "FMMS_MINIMAP_DIRTY_ENTRY",
+      "seq": 0,
+      "ret": "004169a1",
+      "left": 586,
+      "top": 16,
+      "right": 799,
+      "bottom": 229,
+      "backing": "0801f738",
+      "backing_width": 214,
+      "backing_height": 214,
+      "backing_base": "0a570030",
+      "map_surface": "0a57ee30",
+      "map_width": 800,
+      "map_height": 600,
+      "regs": [
+        32,
+        95,
+        79,
+        16
+      ],
+      "backing_samples": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        33
+      ],
+      "map_samples": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "last_dirty": [
+    {
+      "line_no": 405,
+      "kind": "FMMS_MINIMAP_DIRTY_ENTRY",
+      "seq": 95,
+      "ret": "004169a1",
+      "left": 586,
+      "top": 16,
+      "right": 799,
+      "bottom": 229,
+      "backing": "0801f738",
+      "backing_width": 214,
+      "backing_height": 214,
+      "backing_base": "0a570030",
+      "map_surface": "0a57ee30",
+      "map_width": 800,
+      "map_height": 600,
+      "regs": [
+        736,
+        799,
+        527,
+        464
+      ],
+      "backing_samples": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        33
+      ],
+      "map_samples": [
+        1,
+        1,
+        1,
+        1,
+        193,
+        1
+      ]
+    }
+  ],
+  "interpretation": "minimap backing is already mostly black-like before final HD surface sampling",
+  "blocker": "right/bottom map blanks are visibility-zero explained; remaining UI work is tooltip/status owner-state and natural panel composition"
+}

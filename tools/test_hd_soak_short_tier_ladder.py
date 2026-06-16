@@ -118,6 +118,8 @@ def test_current_pending_approval_ladder_passes_as_plan() -> None:
     assert "-Execute -AllowVisibleRuntime" in report["current_step"]["approval_gated_runtime_command"]
     assert "-ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json" in report["current_step"]["approval_gated_runtime_command"]
     assert "-ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MaxInputDriftPx 1" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MaxInputDriftPx 1" in report["current_step"]["safe_dry_run_command"]
     assert report["locks"]["stable_stage_should_change"] is False
     assert report["locks"]["right_bottom_promotion_blocked"] is True
     assert report["locks"]["long_tiers_locked"] is True
@@ -135,6 +137,7 @@ def test_first_pass_advances_to_short2_map_idle() -> None:
     assert report["current_step"]["status"] == "approval_required"
     assert "-Route map-idle" in report["current_step"]["approval_gated_runtime_command"]
     assert "hd-soak-short2-map-idle-current.json" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MaxInputDriftPx 1" in report["current_step"]["approval_gated_runtime_command"]
 
 
 def test_missing_harness_route_fails_closed() -> None:

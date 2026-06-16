@@ -20,6 +20,10 @@ DEFAULT_COMPOSE_EVIDENCE_JSON = Path("captures/current/right-bottom-compose-evid
 DEFAULT_BLOCKER_TRIAGE_JSON = Path("captures/current/right-bottom-blocker-triage-current.json")
 DEFAULT_JSON = Path("captures/current/right-bottom-visual-artifact-guard-current.json")
 DEFAULT_MD = Path("captures/current/right-bottom-visual-artifact-guard-current.md")
+NON_PROMOTING_TRIAGE_CLASSIFICATIONS = {
+    "controlled_recovered_but_natural_route_blocked",
+    "controlled_recovered_but_natural_route_nonpromoting",
+}
 
 RUNTIME_POLICY = (
     "repo-only visual artifact guard; reads generated JSON reports and does not "
@@ -129,7 +133,7 @@ def build_guard(
     )
     triage_non_promoting = bool(
         triage.get("passed")
-        and triage.get("classification") == "controlled_recovered_but_natural_route_blocked"
+        and triage.get("classification") in NON_PROMOTING_TRIAGE_CLASSIFICATIONS
         and triage.get("promotion_ready") is False
         and triage.get("stable_stage_should_change") is False
     )
@@ -184,6 +188,7 @@ def build_guard(
             "natural_corner_flags": corner.get("flags") or [],
             "natural_r8c10_flags": r8c10.get("flags") or [],
             "natural_r8c11_flags": r8c11.get("flags") or [],
+            "triage_classification": triage.get("classification"),
         },
         "conclusion": conclusion,
         "failures": failures,
@@ -219,6 +224,7 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
             f"- Natural corner flags: `{observations.get('natural_corner_flags')}`",
             f"- Natural r8c10 flags: `{observations.get('natural_r8c10_flags')}`",
             f"- Natural r8c11 flags: `{observations.get('natural_r8c11_flags')}`",
+            f"- Triage classification: `{observations.get('triage_classification')}`",
         ]
     )
     if report["failures"]:

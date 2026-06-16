@@ -5,7 +5,9 @@ from __future__ import annotations
 
 import argparse
 import shutil
+import struct
 import sys
+import zlib
 from pathlib import Path
 
 
@@ -58,6 +60,7 @@ def args() -> argparse.Namespace:
         logical_height=600,
         threshold=12,
         action_bar_min_nonblack=40.0,
+        action_bar_max_mean_luma=98.0,
         tooltip_min_nonblack=1.0,
     )
 
@@ -66,6 +69,42 @@ def write_log(path: Path, text: str) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
     return path
+
+
+def write_rgb_png(path: Path, pixels: list[tuple[int, int, int]], width: int, height: int) -> Path:
+    def chunk(kind: bytes, payload: bytes) -> bytes:
+        return (
+            struct.pack(">I", len(payload))
+            + kind
+            + payload
+            + struct.pack(">I", zlib.crc32(kind + payload) & 0xFFFFFFFF)
+        )
+
+    rows = bytearray()
+    for y in range(height):
+        rows.append(0)
+        start = y * width
+        for r, g, b in pixels[start : start + width]:
+            rows.extend((r, g, b))
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(
+        b"\x89PNG\r\n\x1a\n"
+        + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
+        + chunk(b"IDAT", zlib.compress(bytes(rows)))
+        + chunk(b"IEND", b"")
+    )
+    return path
+
+
+def action_bar_png(path: Path, fill: tuple[int, int, int]) -> Path:
+    width = 800
+    height = 600
+    pixels = [(0, 0, 0)] * (width * height)
+    for y in range(580, 600):
+        for x in range(215, 586):
+            pixels[y * width + x] = fill
+    return write_rgb_png(path, pixels, width, height)
 
 
 def test_no_owner_stops_before_patch(fixture: Path) -> None:
@@ -94,6 +133,27 @@ def test_missing_post_redraw_action_bar_fails_evidence(fixture: Path) -> None:
     assert summary["decision"] == "BASIC_EVIDENCE_FAILED", summary
 
 
+def test_bright_terrain_in_bottom_strip_does_not_pass_action_bar(fixture: Path) -> None:
+    log = write_log(fixture / "bright-terrain.log", base_log_text())
+    png = action_bar_png(fixture / "bright-terrain.png", (100, 140, 20))
+    summary = unit_selection_tooltip_summary.summarize(log, png, args())
+    assert not summary["evidence_pass"], summary
+    assert summary["action_bar_visible"] is False, summary
+    assert summary["png_regions"]["selected_unit_action_bar"]["nonblack_percent"] == 100.0
+    assert summary["png_regions"]["selected_unit_action_bar"]["mean_luma"] > 98.0
+    assert summary["decision"] == "BASIC_EVIDENCE_FAILED", summary
+
+
+def test_dark_panel_in_bottom_strip_passes_action_bar_gate(fixture: Path) -> None:
+    log = write_log(fixture / "dark-panel.log", base_log_text())
+    png = action_bar_png(fixture / "dark-panel.png", (70, 48, 24))
+    summary = unit_selection_tooltip_summary.summarize(log, png, args())
+    assert summary["evidence_pass"], summary
+    assert summary["action_bar_visible"] is True, summary
+    assert not summary["tooltip_owner_evidence"], summary
+    assert summary["decision"] == "NO_PATCH_OWNER_NOT_REACHED", summary
+
+
 def run_tests() -> None:
     fixture = ROOT / ".codex-loop" / "tmp-tests" / "unit-selection-tooltip-summary-fixture"
     shutil.rmtree(fixture, ignore_errors=True)
@@ -102,6 +162,8 @@ def run_tests() -> None:
         test_no_owner_stops_before_patch(fixture / "no-owner")
         test_owner_rows_allow_patch_candidate(fixture / "owner")
         test_missing_post_redraw_action_bar_fails_evidence(fixture / "missing-post-redraw")
+        test_bright_terrain_in_bottom_strip_does_not_pass_action_bar(fixture / "bright-terrain")
+        test_dark_panel_in_bottom_strip_passes_action_bar_gate(fixture / "dark-panel")
     finally:
         shutil.rmtree(fixture, ignore_errors=True)
 

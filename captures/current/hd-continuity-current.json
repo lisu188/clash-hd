@@ -1,0 +1,104 @@
+{
+  "generated_at": "2026-06-16T12:13:31+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only continuity status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "guard_policy": "save/load, turn, and campaign continuity remain blocked until a compact approved proof manifest documents an isolated test-save workflow, stable stage/candidate identity shared by every continuity lane, state hashes, route observations, and no live save mutation",
+  "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "proof_manifest": {
+    "path": "captures\\current\\hd-continuity-proof-current.json",
+    "present": false,
+    "valid_json": false
+  },
+  "candidate_sha256s": [],
+  "checks": {
+    "save_load_roundtrip": {
+      "id": "save_load_roundtrip",
+      "title": "Safe save/load roundtrip continuity",
+      "passed": false,
+      "status": "blocked_missing_proof",
+      "summary": "continuity proof is missing or not sufficient for release",
+      "next_probe": "run an approved isolated save/load roundtrip after short-tier stability",
+      "required_true": [
+        "roundtrip_completed",
+        "safe_test_save",
+        "isolated_workdir"
+      ],
+      "required_false": [
+        "live_save_mutated",
+        "state_desync_detected"
+      ],
+      "required_sha": [
+        "before_state_sha256",
+        "after_state_sha256"
+      ],
+      "minimum_duration_sec": 0,
+      "proof_summary": {},
+      "failures": [
+        "save_load_roundtrip: compact proof is missing"
+      ]
+    },
+    "turn_advancement": {
+      "id": "turn_advancement",
+      "title": "Turn advancement without state desync",
+      "passed": false,
+      "status": "blocked_missing_proof",
+      "summary": "continuity proof is missing or not sufficient for release",
+      "next_probe": "run an approved deterministic turn-advance route after save/load is safe",
+      "required_true": [
+        "turn_advanced",
+        "safe_test_save",
+        "isolated_workdir"
+      ],
+      "required_false": [
+        "live_save_mutated",
+        "state_desync_detected"
+      ],
+      "required_sha": [
+        "before_state_sha256",
+        "after_state_sha256"
+      ],
+      "minimum_duration_sec": 0,
+      "proof_summary": {},
+      "failures": [
+        "turn_advancement: compact proof is missing"
+      ]
+    },
+    "campaign_routes": {
+      "id": "campaign_routes",
+      "title": "Representative campaign route continuity",
+      "passed": false,
+      "status": "blocked_missing_proof",
+      "summary": "continuity proof is missing or not sufficient for release",
+      "next_probe": "run a representative campaign route after short and medium tiers are stable",
+      "required_true": [
+        "route_completed",
+        "safe_test_save",
+        "isolated_workdir"
+      ],
+      "required_false": [
+        "live_save_mutated",
+        "state_desync_detected",
+        "palette_corruption_detected"
+      ],
+      "required_sha": [
+        "before_state_sha256",
+        "after_state_sha256"
+      ],
+      "minimum_duration_sec": 600,
+      "proof_summary": {},
+      "failures": [
+        "campaign_routes: compact proof is missing"
+      ]
+    }
+  },
+  "counts": {
+    "total": 3,
+    "passed": 0,
+    "blocked": 3
+  },
+  "failures": [
+    "save_load_roundtrip: compact proof is missing",
+    "turn_advancement: compact proof is missing",
+    "campaign_routes: compact proof is missing"
+  ]
+}

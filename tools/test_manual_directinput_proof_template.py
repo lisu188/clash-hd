@@ -30,6 +30,9 @@ def run_script(*args: str) -> subprocess.CompletedProcess[str]:
 
 def test_template_fails_as_proof() -> None:
     template = manual_directinput_proof_template.build_template()
+    assert template["candidate_path"].startswith("C:\\ClashTests\\manual-directinput\\"), template
+    assert "C:\\ClashTests" in template["candidate_path_policy"], template
+    assert "C:\\Clash\\clash95.exe" in template["candidate_path_policy"], template
     failures = manual_directinput_checklist.validate_manual_proof_data(template)
     assert failures, template
     assert any("evidence_class" in failure for failure in failures), failures
@@ -48,6 +51,9 @@ def test_report_shape() -> None:
     )
     assert report["passed"] is True, report
     assert report["template_valid_as_proof"] is False, report
+    assert report["candidate_path_template"].startswith("C:\\ClashTests\\"), report
+    assert "C:\\ClashTests" in report["candidate_path_policy"], report
+    assert "repository-local" in report["candidate_path_policy"], report
     assert report["required_ids"] == manual_directinput_checklist.REQUIRED_IDS, report
     assert report["checked_template_ids"] == manual_directinput_checklist.REQUIRED_IDS, report
 
@@ -87,8 +93,11 @@ def test_cli_writes_outputs(fixture: Path) -> None:
     template = json.loads(out_template.read_text(encoding="utf-8"))
     report = json.loads(out_json.read_text(encoding="utf-8"))
     assert template["evidence_class"] == "manual_directinput_template", template
+    assert template["candidate_path"].startswith("C:\\ClashTests\\"), template
+    assert "candidate_path_policy" in template, template
     assert report["passed"] is True, report
     assert report["template_valid_as_proof"] is False, report
+    assert "- Candidate path policy:" in out_md.read_text(encoding="utf-8")
     assert "- Template valid as proof: `False`" in out_md.read_text(encoding="utf-8")
 
 

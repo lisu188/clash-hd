@@ -19,6 +19,7 @@ DEFAULT_REFRESH_JSON = Path("captures/current/current-evidence-refresh-current.j
 DEFAULT_BATTLE_JSON = Path("captures/current/battle-ui-evidence-current.json")
 DEFAULT_MANUAL_CHECKLIST_JSON = Path("captures/current/manual-directinput-validation-checklist-current.json")
 DEFAULT_RIGHT_BOTTOM_DECISION_JSON = Path("captures/current/right-bottom-compose-promotion-decision-current.json")
+DEFAULT_REPO_TEST_SWEEP_JSON = Path("captures/current/repo-test-sweep-current.json")
 DEFAULT_JSON = Path("captures/current/current-completion-summary-current.json")
 DEFAULT_MD = Path("captures/current/current-completion-summary-current.md")
 RUNTIME_POLICY = "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
@@ -26,6 +27,29 @@ RUNTIME_POLICY = "repo-only; does not launch Clash95, CDB, wrappers, PowerShell,
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def load_repo_test_sweep(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {
+            "passed": False,
+            "test_count": 0,
+            "passed_count": 0,
+            "failed_count": 0,
+            "failures": [f"repo test sweep artifact is missing: {path}"],
+        }
+    try:
+        return load_json(path)
+    except json.JSONDecodeError as exc:
+        return {
+            "passed": False,
+            "test_count": 0,
+            "passed_count": 0,
+            "failed_count": 0,
+            "failures": [
+                f"repo test sweep artifact is invalid JSON: {path}: {exc.msg} at line {exc.lineno} column {exc.colno}"
+            ],
+        }
 
 
 def percent(numerator: int | float, denominator: int | float) -> float:
@@ -73,6 +97,7 @@ def build_summary_from_data(
     battle: dict[str, Any],
     checklist: dict[str, Any],
     right_bottom: dict[str, Any],
+    repo_test_sweep: dict[str, Any],
     source_artifacts: dict[str, str],
 ) -> dict[str, Any]:
     failures: list[str] = []
@@ -106,6 +131,16 @@ def build_summary_from_data(
     rb_percent = percent(rb_passed, rb_total)
     rb_blockers = list(right_bottom.get("failures") or [])
 
+    sweep_total = int(repo_test_sweep.get("test_count") or 0)
+    sweep_passed = int(repo_test_sweep.get("passed_count") or 0)
+    sweep_failed = int(repo_test_sweep.get("failed_count") or 0)
+    sweep_percent = percent(sweep_passed, sweep_total)
+    if not sweep_total:
+        failures.append("repo test sweep has no tests")
+    if repo_test_sweep.get("passed") is not True or sweep_failed:
+        failures.append("repo test sweep is not passing")
+    failures.extend(str(failure) for failure in repo_test_sweep.get("failures") or [])
+
     manual_proof_valid = bool(checklist.get("manual_proof_valid"))
     promotion_ready = bool(checklist.get("promotion_ready"))
     stable_stage_should_change = bool(right_bottom.get("stable_stage_should_change"))
@@ -129,6 +164,13 @@ def build_summary_from_data(
             "completion_percent": refresh_percent,
             "passed": bool(refresh.get("passed")),
             "basis": f"{refresh_passed}/{refresh_total} refresh checks pass",
+        },
+        {
+            "id": "repo_test_sweep",
+            "label": "Repo-only Python test sweep",
+            "completion_percent": sweep_percent,
+            "passed": bool(repo_test_sweep.get("passed")) and sweep_failed == 0,
+            "basis": f"{sweep_passed}/{sweep_total} tools/test_*.py files pass",
         },
         {
             "id": "focused_battle_right_bottom_lane",
@@ -180,11 +222,13 @@ def build_summary(args: argparse.Namespace) -> dict[str, Any]:
         battle=load_json(args.battle_json),
         checklist=load_json(args.manual_checklist_json),
         right_bottom=load_json(args.right_bottom_decision_json),
+        repo_test_sweep=load_repo_test_sweep(args.repo_test_sweep_json),
         source_artifacts={
             "refresh_json": str(args.refresh_json),
             "battle_json": str(args.battle_json),
             "manual_checklist_json": str(args.manual_checklist_json),
             "right_bottom_decision_json": str(args.right_bottom_decision_json),
+            "repo_test_sweep_json": str(args.repo_test_sweep_json),
         },
     )
 
@@ -248,6 +292,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--battle-json", type=Path, default=DEFAULT_BATTLE_JSON)
     parser.add_argument("--manual-checklist-json", type=Path, default=DEFAULT_MANUAL_CHECKLIST_JSON)
     parser.add_argument("--right-bottom-decision-json", type=Path, default=DEFAULT_RIGHT_BOTTOM_DECISION_JSON)
+    parser.add_argument("--repo-test-sweep-json", type=Path, default=DEFAULT_REPO_TEST_SWEEP_JSON)
     parser.add_argument("--write-json", type=Path, default=DEFAULT_JSON)
     parser.add_argument("--write-markdown", type=Path, default=DEFAULT_MD)
     parser.add_argument("--require-pass", action="store_true")

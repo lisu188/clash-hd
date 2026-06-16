@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-06-16T12:13:31+02:00",
+  "passed": false,
+  "overall": false,
+  "runtime_policy": "repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "guard_policy": "2h+ representative-route soak evidence remains locked until the short ladder passes and approved opt-in long-run soak report guards prove clean process, frame, input, artifact, and patch evidence",
+  "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "status": "locked_short_ladder_incomplete",
+  "tier": "long2h",
+  "route": "representative-routes",
+  "duration_sec": 0,
+  "minimum_duration_sec": 7200,
+  "required_routes": [
+    "map-idle",
+    "map-pan"
+  ],
+  "short_ladder": {
+    "path": "captures\\current\\hd-soak-short-step-status-current.json",
+    "present": true,
+    "ladder_complete": false,
+    "current_step": {
+      "id": "short2_menu_idle",
+      "tier": "short2",
+      "route": "menu-idle",
+      "status": "pending_approval_legacy_compat",
+      "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json"
+    }
+  },
+  "proof_manifest": {
+    "path": "captures\\current\\hd-soak-long-proof-current.json",
+    "present": false,
+    "report_guard_count": 0
+  },
+  "route_records": {},
+  "report_records": [],
+  "counts": {
+    "required_routes": 2,
+    "passing_routes": 0,
+    "missing_routes": 2
+  },
+  "summary": "2h+ representative-route soak evidence is locked or missing",
+  "next_probe": "complete the short-tier ladder first",
+  "failures": [
+    "short ladder is not complete; long tiers remain locked",
+    "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
+    "missing passing 2h+ representative route: map-idle",
+    "missing passing 2h+ representative route: map-pan"
+  ]
+}

@@ -1,0 +1,42 @@
+# CDB Surface Dump Run
+
+- Passed: True
+- Error: not observed
+- Launch mode: hidden-desktop
+- Hidden desktop: True
+- Stopped after dump: True
+- Dump method: host-readprocessmemory
+- Host dumped memory: True
+- Stage: gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw
+- Candidate: C:\ClashTests\first-mission-bottom-edge-actionbar2\clash95_hd_surfdump_20260616_152538.exe
+- Candidate SHA-256: 553FAA740004C07D3D14611ADD16836691DC1B0F53C32C7B936EEE337B64E336
+- Load slot: 0
+- DirectDraw proxy: True
+- No skip start animations: False
+- Fast-forward start animations: True
+- Force visible edges: False
+- Post-owner force visible seven: False
+- Map validation skipped: True
+- Late load-slot forcing only: False
+- Extra probe template: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\probes\cdb\map\clash95_first_mission_minimap_surface_extra.cdb
+- DirectDraw proxy DLL: C:\ClashTests\first-mission-bottom-edge-actionbar2\ddraw.dll
+- DirectDraw proxy log: C:\ClashTests\first-mission-bottom-edge-actionbar2\ddraw_surfdump_proxy.log
+- DirectDraw proxy palette: C:\ClashTests\first-mission-bottom-edge-actionbar2\ddraw_surfdump_palette.bin
+- Surface: 800x600, base=0a820030, bytes=480000
+- Raw: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-152538\surface.raw
+- PNG: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-152538\surface.png
+- PNG palette mode: directdraw-palette
+- Coverage JSON: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-152538\map-tile-coverage.json
+- Coverage blank active cells: none
+- Visibility JSON: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-152538\visibility-coverage-summary.json
+- Visibility require explained: False
+- Visibility explained gate: not required
+- Visibility unexplained blanks: none
+- Visibility status counts: none
+- Forced-visible gate: not used
+- Forced-visible JSON: not used
+- Post-owner forced-visible gate: not used
+- Post-owner forced-visible JSON: not used
+- Log: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-152538\cdb-surface-dump.log
+
+![surface dump](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-152538\surface.png)

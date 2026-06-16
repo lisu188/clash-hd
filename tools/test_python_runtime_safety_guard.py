@@ -46,6 +46,8 @@ def test_gated_and_exempt_helpers_pass(fixture: Path) -> None:
     write(fixture / "tools" / "raw_sendinput_click.py", "import ctypes\nuser32.SendInput(1, None, 0)\n")
     write(fixture / "tools" / "battle_visible_input_summary.py", "SENDINPUT_NAME = 'raw-sendinput-click.json'\n")
     write(fixture / "tools" / "process_hygiene_guard.py", "import ctypes\nctypes.WinDLL('kernel32')\n")
+    write(fixture / "tools" / "repo_test_sweep.py", "import subprocess\nsubprocess.run(['python', 'test_probe.py'])\n")
+    write(fixture / "tools" / "hd_soak_dry_run_plan.py", "import subprocess\nsubprocess.run(['powershell.exe', '-File', 'run_hd_soak.ps1'])\n")
     write(fixture / "tools" / "right_bottom_slot_fixture_script_guard.py", "PATTERN = 'Start-Process SendInput'\n")
     write(fixture / "tools" / "test_probe.py", "import subprocess\nsubprocess.run(['x'])\n")
     args = type("Args", (), {"root": fixture, "tools_dir": Path("tools")})()
@@ -56,6 +58,8 @@ def test_gated_and_exempt_helpers_pass(fixture: Path) -> None:
     assert classes["tools/raw_sendinput_click.py"] == "manual_visible_runtime_gated", classes
     assert classes["tools/battle_visible_input_summary.py"] == "exempt", classes
     assert classes["tools/process_hygiene_guard.py"] == "exempt", classes
+    assert classes["tools/repo_test_sweep.py"] == "exempt", classes
+    assert classes["tools/hd_soak_dry_run_plan.py"] == "exempt", classes
     assert classes["tools/right_bottom_slot_fixture_script_guard.py"] == "exempt", classes
     assert classes["tools/test_probe.py"] == "test_fixture", classes
 
