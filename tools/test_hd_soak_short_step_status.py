@@ -65,6 +65,7 @@ def soak_report(step: dict[str, Any], *, passed: bool, executed: bool = True) ->
 def guard_report(step: dict[str, Any], *, overall: bool) -> dict[str, Any]:
     return {
         "overall": overall,
+        "source_report": step["paths"]["report_json"],
         "stage": status.PROTECTED_STABLE_STAGE,
         "tier": step["tier"],
         "route": step["route"],
@@ -75,6 +76,7 @@ def guard_report(step: dict[str, Any], *, overall: bool) -> dict[str, Any]:
 def triage_report(step: dict[str, Any]) -> dict[str, Any]:
     return {
         "passed": False,
+        "source_report": step["paths"]["report_json"],
         "classification": "hang_or_no_frame_progress",
         "next_probe": "inspect process samples",
         "stage": status.PROTECTED_STABLE_STAGE,
@@ -131,6 +133,21 @@ def test_canonical_report_without_guard_fails_closed() -> None:
     assert any("no guard output" in failure for failure in report["failures"])
 
 
+def test_canonical_report_with_mismatched_guard_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        manifest_data = manifest_fixture(tmp)
+        first = manifest_data["step_reports"][0]
+        guard = guard_report(first, overall=True)
+        guard["source_report"] = str(tmp / "captures" / "current" / "wrong-report.json")
+        write_json(Path(first["paths"]["report_json"]), soak_report(first, passed=True))
+        write_json(Path(first["paths"]["guard_json"]), guard)
+        report = status.build_report(args_for(tmp, manifest_data))
+    assert report["passed"] is False
+    assert report["current_step"]["status"] == "invalid_guard_mismatch"
+    assert any("guard source_report does not match" in failure for failure in report["failures"])
+
+
 def test_failed_report_with_triage_is_classified_status() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -143,6 +160,22 @@ def test_failed_report_with_triage_is_classified_status() -> None:
     assert report["passed"] is True, report["failures"]
     assert report["current_step"]["id"] == "short2_menu_idle"
     assert report["current_step"]["status"] == "failed_classified_hang_or_no_frame_progress"
+
+
+def test_failed_report_with_mismatched_triage_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        manifest_data = manifest_fixture(tmp)
+        first = manifest_data["step_reports"][0]
+        triage = triage_report(first)
+        triage["route"] = "map-idle"
+        write_json(Path(first["paths"]["report_json"]), soak_report(first, passed=False))
+        write_json(Path(first["paths"]["guard_json"]), guard_report(first, overall=False))
+        write_json(Path(first["paths"]["triage_json"]), triage)
+        report = status.build_report(args_for(tmp, manifest_data))
+    assert report["passed"] is False
+    assert report["current_step"]["status"] == "invalid_triage_mismatch"
+    assert any("triage route does not match" in failure for failure in report["failures"])
 
 
 def test_cli_writes_outputs() -> None:
@@ -174,7 +207,9 @@ def run_tests() -> None:
     test_current_pending_status_passes()
     test_passing_first_step_advances_current_step()
     test_canonical_report_without_guard_fails_closed()
+    test_canonical_report_with_mismatched_guard_fails_closed()
     test_failed_report_with_triage_is_classified_status()
+    test_failed_report_with_mismatched_triage_fails_closed()
     test_cli_writes_outputs()
 
 

@@ -18,6 +18,10 @@ PROTECTED_STABLE_STAGE = (
     "minimapright-dynvswitch"
 )
 EXPECTED_BASE_SHA256 = "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+EXPECTED_INPUT_EXE = r"C:\Clash\clash95.exe"
+EXPECTED_WORKDIR = r"C:\Clash"
+EXPECTED_CANDIDATE_ROOT = r"C:\ClashTests\hd-soak"
+EXPECTED_OUTPUT_ROOT = r"C:\ClashCaptures\hd-soak"
 RUNTIME_POLICY = (
     "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, "
     "PowerShell harnesses, or visible windows"
@@ -49,6 +53,16 @@ def is_under_repo(path_text: str | None) -> bool:
         return False
 
 
+def normalized_path_text(value: Any) -> str:
+    return str(value or "").replace("/", "\\").rstrip("\\").casefold()
+
+
+def is_same_or_under(path_text: Any, root_text: str) -> bool:
+    path = normalized_path_text(path_text)
+    root = normalized_path_text(root_text)
+    return bool(path and (path == root or path.startswith(root + "\\")))
+
+
 def numbers(values: list[Any]) -> list[float]:
     result: list[float] = []
     for value in values:
@@ -56,6 +70,56 @@ def numbers(values: list[Any]) -> list[float]:
             continue
         result.append(float(value))
     return result
+
+
+def integer_or_none(value: Any) -> int | None:
+    if value is None or value == "":
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def float_or_none(value: Any) -> float | None:
+    if value is None or value == "":
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def parse_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = value.strip()
+    match = re.match(r"^(?P<head>.+?\.)(?P<fraction>\d{6})\d+(?P<tail>Z|[+-]\d{2}:?\d{2})?$", text)
+    if match:
+        text = f"{match.group('head')}{match.group('fraction')}{match.group('tail') or ''}"
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def timestamp_span_seconds(rows: list[Any]) -> tuple[float | None, int]:
+    parsed: list[datetime] = []
+    invalid_count = 0
+    for row in rows:
+        timestamp = parse_timestamp(row.get("Timestamp") if isinstance(row, dict) else None)
+        if timestamp is None:
+            invalid_count += 1
+        else:
+            parsed.append(timestamp)
+    if len(parsed) < 2:
+        return None, invalid_count
+    return (max(parsed) - min(parsed)).total_seconds(), invalid_count
 
 
 def normalize_sha(value: Any) -> str:
@@ -87,6 +151,12 @@ def load_optional_json(path_text: str | None) -> tuple[dict[str, Any] | None, st
         return None, f"patch_stage_report could not be read: {exc}"
 
 
+def mismatched_number(reported: int | float | None, computed: int | float | None, *, tolerance: float = 0.001) -> bool:
+    if reported is None or computed is None:
+        return reported is not computed
+    return abs(float(reported) - float(computed)) > tolerance
+
+
 def evaluate_report(
     report: dict[str, Any],
     *,
@@ -94,11 +164,17 @@ def evaluate_report(
     min_nonblack_percent: float = 10.0,
     min_unique_sample_colors: int = 8,
     max_artifact_mb: int = 250,
+    max_working_set_growth_mb: int = 64,
+    max_private_memory_growth_mb: int = 64,
+    max_handle_growth: int = 128,
+    max_input_drift_px: int = 1,
     expected_width: int = 800,
     expected_height: int = 600,
 ) -> dict[str, Any]:
     frame_samples = list(report.get("frame_samples") or [])
     route_results = list(report.get("route_results") or [])
+    process_samples = list(report.get("process_samples") or [])
+    capture_errors = list(report.get("capture_errors") or [])
     artifact_bytes = int(report.get("artifact_bytes") or 0)
     artifact_limit_bytes = int(max_artifact_mb) * 1024 * 1024
 
@@ -109,6 +185,19 @@ def evaluate_report(
     if not executed:
         failures.append("soak report was not produced by an execution run")
     checks["executed"] = check_record(executed, {"executed": report.get("executed")}, failures)
+
+    failures = []
+    source_failures = list(report.get("failures") or [])
+    source_passed = report.get("passed") is True
+    if executed and not source_passed:
+        failures.append("source soak report did not mark itself passed")
+    if executed and source_failures:
+        failures.append(f"source soak report contains {len(source_failures)} failure(s)")
+    checks["source_status"] = check_record(
+        not failures,
+        {"reported_passed": report.get("passed"), "source_failure_count": len(source_failures)},
+        failures,
+    )
 
     failures = []
     stage_ok = report.get("stage") == PROTECTED_STABLE_STAGE
@@ -127,15 +216,42 @@ def evaluate_report(
     )
 
     failures = []
+    tier = str(report.get("tier") or "")
+    route = str(report.get("route") or "")
+    duration = integer_or_none(report.get("duration_sec"))
+    sample_interval_sec = integer_or_none(report.get("sample_interval_sec"))
+    fixed_tier_durations = {"short2": 120, "short10": 600, "short30": 1800}
+    allowed_routes = {"menu-idle", "map-idle", "map-pan", "custom"}
+    if tier in fixed_tier_durations:
+        expected_duration = fixed_tier_durations[tier]
+        if duration != expected_duration:
+            failures.append(f"{tier} duration_sec is {duration}, expected {expected_duration}")
+    elif tier == "custom":
+        if duration is None or duration <= 0:
+            failures.append("custom tier requires positive duration_sec")
+    else:
+        failures.append(f"unknown tier: {tier!r}")
+    if route not in allowed_routes:
+        failures.append(f"unknown route: {route!r}")
+    checks["tier_route"] = check_record(
+        not failures,
+        {"tier": tier, "route": route, "duration_sec": duration, "sample_interval_sec": sample_interval_sec},
+        failures,
+    )
+
+    failures = []
     input_sha = normalize_sha(report.get("input_sha256"))
     candidate_sha = normalize_sha(report.get("candidate_sha256"))
-    patch_report, patch_error = load_optional_json(report.get("patch_stage_report"))
-    if input_sha != EXPECTED_BASE_SHA256:
-        failures.append("input_sha256 does not match the expected original Clash95 base SHA-256")
-    if not is_sha256(candidate_sha):
-        failures.append("candidate_sha256 is missing or is not a SHA-256 hex digest")
-    if patch_error:
-        failures.append(patch_error)
+    patch_report: dict[str, Any] | None = None
+    patch_error: str | None = None
+    if executed:
+        patch_report, patch_error = load_optional_json(report.get("patch_stage_report"))
+        if input_sha != EXPECTED_BASE_SHA256:
+            failures.append("input_sha256 does not match the expected original Clash95 base SHA-256")
+        if not is_sha256(candidate_sha):
+            failures.append("candidate_sha256 is missing or is not a SHA-256 hex digest")
+        if patch_error:
+            failures.append(patch_error)
     if patch_report is not None:
         status_counts = patch_report.get("status_counts") or {}
         patch_count = int(patch_report.get("patch_count") or 0)
@@ -166,6 +282,7 @@ def evaluate_report(
             "patch_count": (patch_report or {}).get("patch_count"),
             "patch_status_counts": (patch_report or {}).get("status_counts"),
             "current_hd_map_gate": (patch_report or {}).get("current_hd_map_gate"),
+            "checked": executed,
         },
         failures,
     )
@@ -195,72 +312,399 @@ def evaluate_report(
     failures = []
     candidate_outside_repo = not is_under_repo(report.get("candidate"))
     output_outside_repo = not is_under_repo(report.get("output_directory"))
+    input_matches = normalized_path_text(report.get("input_exe")) == normalized_path_text(EXPECTED_INPUT_EXE)
+    workdir_matches = normalized_path_text(report.get("workdir")) == normalized_path_text(EXPECTED_WORKDIR)
+    candidate_under_expected = is_same_or_under(report.get("candidate"), EXPECTED_CANDIDATE_ROOT)
+    output_under_expected = is_same_or_under(report.get("output_directory"), EXPECTED_OUTPUT_ROOT)
     if not candidate_outside_repo:
         failures.append("candidate path is inside the repository")
     if not output_outside_repo:
         failures.append("raw output directory is inside the repository")
+    if not input_matches:
+        failures.append(f"input_exe is not {EXPECTED_INPUT_EXE}")
+    if not workdir_matches:
+        failures.append(f"workdir is not {EXPECTED_WORKDIR}")
+    if not candidate_under_expected:
+        failures.append(f"candidate path is not under {EXPECTED_CANDIDATE_ROOT}")
+    if not output_under_expected:
+        failures.append(f"raw output directory is not under {EXPECTED_OUTPUT_ROOT}")
     checks["artifact_locations"] = check_record(
-        candidate_outside_repo and output_outside_repo,
-        {"candidate": report.get("candidate"), "output_directory": report.get("output_directory")},
+        (
+            candidate_outside_repo
+            and output_outside_repo
+            and input_matches
+            and workdir_matches
+            and candidate_under_expected
+            and output_under_expected
+        ),
+        {
+            "input_exe": report.get("input_exe"),
+            "expected_input_exe": EXPECTED_INPUT_EXE,
+            "workdir": report.get("workdir"),
+            "expected_workdir": EXPECTED_WORKDIR,
+            "candidate": report.get("candidate"),
+            "expected_candidate_root": EXPECTED_CANDIDATE_ROOT,
+            "output_directory": report.get("output_directory"),
+            "expected_output_root": EXPECTED_OUTPUT_ROOT,
+        },
         failures,
     )
 
     failures = []
+    if executed and capture_errors:
+        failures.append(f"capture_errors contains {len(capture_errors)} row(s)")
+    checks["capture_integrity"] = check_record(
+        not failures,
+        {"capture_error_count": len(capture_errors)},
+        failures,
+    )
+
+    raw_frame_hashes = [str(frame.get("Hash")) for frame in frame_samples if frame.get("Hash")]
+    computed_frame_hash_unique_count = len(set(raw_frame_hashes))
+    computed_process_sample_count = len(process_samples)
+    process_working_set_values = [integer_or_none(row.get("WorkingSet64")) for row in process_samples]
+    process_working_set_values = [value for value in process_working_set_values if value is not None]
+    process_private_values = [integer_or_none(row.get("PrivateMemorySize64")) for row in process_samples]
+    process_private_values = [value for value in process_private_values if value is not None]
+    process_handle_values = [integer_or_none(row.get("HandleCount")) for row in process_samples]
+    process_handle_values = [value for value in process_handle_values if value is not None]
+    computed_working_set_growth = (
+        int(process_working_set_values[-1] - process_working_set_values[0])
+        if len(process_working_set_values) >= 2
+        else None
+    )
+    computed_private_memory_growth = (
+        int(process_private_values[-1] - process_private_values[0]) if len(process_private_values) >= 2 else None
+    )
+    computed_handle_growth = (
+        int(process_handle_values[-1] - process_handle_values[0]) if len(process_handle_values) >= 2 else None
+    )
+
+    failures = []
     frame_count = int(report.get("frame_sample_count") or len(frame_samples))
-    if frame_count < min_frames:
-        failures.append(f"frame sample count {frame_count} is below {min_frames}")
     size_bad = [
         frame
         for frame in frame_samples
         if int(frame.get("Width") or 0) != expected_width or int(frame.get("Height") or 0) != expected_height
     ]
-    if size_bad:
-        failures.append(f"{len(size_bad)} frame samples were not {expected_width}x{expected_height}")
+    bad_hashes = [frame for frame in frame_samples if not is_sha256(frame.get("Hash"))]
+    if executed:
+        if frame_count < min_frames:
+            failures.append(f"frame sample count {frame_count} is below {min_frames}")
+        if size_bad:
+            failures.append(f"{len(size_bad)} frame samples were not {expected_width}x{expected_height}")
+        if bad_hashes:
+            failures.append(f"{len(bad_hashes)} frame samples have missing or invalid SHA-256 hashes")
     checks["frame_inventory"] = check_record(
-        frame_count >= min_frames and not size_bad,
-        {"frame_sample_count": frame_count, "expected_size": [expected_width, expected_height]},
+        (not executed) or (frame_count >= min_frames and not size_bad and not bad_hashes),
+        {
+            "frame_sample_count": frame_count,
+            "expected_size": [expected_width, expected_height],
+            "invalid_hash_count": len(bad_hashes),
+            "checked": executed,
+        },
         failures,
     )
 
     failures = []
     nonblack_values = numbers([frame.get("NonblackPercent") for frame in frame_samples])
+    luma_values = numbers([frame.get("MeanLuma") for frame in frame_samples])
     unique_values = numbers([frame.get("UniqueSampleColors") for frame in frame_samples])
     min_nonblack = min(nonblack_values) if nonblack_values else 0.0
     min_unique = min(unique_values) if unique_values else 0.0
-    if min_nonblack < min_nonblack_percent:
-        failures.append(f"minimum nonblack percent {min_nonblack} is below {min_nonblack_percent}")
-    if min_unique < min_unique_sample_colors:
-        failures.append(f"minimum unique sampled colors {min_unique} is below {min_unique_sample_colors}")
+    if executed:
+        if min_nonblack < min_nonblack_percent:
+            failures.append(f"minimum nonblack percent {min_nonblack} is below {min_nonblack_percent}")
+        if min_unique < min_unique_sample_colors:
+            failures.append(f"minimum unique sampled colors {min_unique} is below {min_unique_sample_colors}")
     checks["render_metrics"] = check_record(
-        min_nonblack >= min_nonblack_percent and min_unique >= min_unique_sample_colors,
-        {"min_nonblack_percent": min_nonblack, "min_unique_sample_colors": min_unique},
+        (not executed) or (min_nonblack >= min_nonblack_percent and min_unique >= min_unique_sample_colors),
+        {"min_nonblack_percent": min_nonblack, "min_unique_sample_colors": min_unique, "checked": executed},
+        failures,
+    )
+
+    failures = []
+    frame_hash_unique_count = int(report.get("frame_hash_unique_count") or 0)
+    route = str(report.get("route") or "")
+    frame_progress_expected = bool(report.get("frame_progress_expected"))
+    if "frame_progress_expected" not in report:
+        frame_progress_expected = route == "map-pan"
+    stability_class = str(report.get("frame_stability_class") or "")
+    if not stability_class:
+        if frame_count <= 0:
+            stability_class = "no_frames"
+        elif frame_hash_unique_count <= 1:
+            stability_class = "stable_idle"
+        else:
+            stability_class = "progressing"
+    if frame_progress_expected and frame_hash_unique_count < 2:
+        failures.append("frame progression required for this route but fewer than 2 unique frame hashes were recorded")
+    if not frame_progress_expected and frame_count >= min_frames and stability_class not in {"stable_idle", "progressing"}:
+        failures.append(f"frame_stability_class is {stability_class!r}, expected stable_idle or progressing")
+    checks["frame_progression"] = check_record(
+        not failures,
+        {
+            "route": route,
+            "frame_progress_expected": frame_progress_expected,
+            "frame_stability_class": stability_class,
+            "frame_hash_unique_count": frame_hash_unique_count,
+        },
         failures,
     )
 
     failures = []
     unexpected_exit = report.get("process_exited_unexpectedly") is True
     clean_stop = report.get("clean_stop") is True
-    if unexpected_exit:
-        failures.append(f"process exited unexpectedly with code {report.get('exit_code')}")
-    if not clean_stop:
-        failures.append("process was not stopped cleanly by the harness")
+    exited_samples = [row for row in process_samples if row.get("HasExited") is True]
+    if executed:
+        if unexpected_exit:
+            failures.append(f"process exited unexpectedly with code {report.get('exit_code')}")
+        if not clean_stop:
+            failures.append("process was not stopped cleanly by the harness")
+        if exited_samples:
+            failures.append(f"{len(exited_samples)} process samples reported HasExited=True")
     checks["process_liveness"] = check_record(
-        not unexpected_exit and clean_stop,
-        {"process_exited_unexpectedly": unexpected_exit, "exit_code": report.get("exit_code"), "clean_stop": clean_stop},
+        (not executed) or not failures,
+        {
+            "process_exited_unexpectedly": unexpected_exit,
+            "exit_code": report.get("exit_code"),
+            "clean_stop": clean_stop,
+            "exited_sample_count": len(exited_samples),
+            "checked": executed,
+        },
         failures,
     )
 
     failures = []
+    process_sample_count = int(report.get("process_sample_count") or computed_process_sample_count)
+    working_set_growth = integer_or_none(report.get("working_set_growth_bytes"))
+    private_memory_growth = integer_or_none(report.get("private_memory_growth_bytes"))
+    handle_growth = integer_or_none(report.get("handle_growth"))
+    working_set_limit_bytes = int(max_working_set_growth_mb) * 1024 * 1024
+    private_memory_limit_bytes = int(max_private_memory_growth_mb) * 1024 * 1024
+    if executed:
+        if process_sample_count < 2:
+            failures.append(f"process sample count {process_sample_count} is below 2")
+        if working_set_growth is None:
+            failures.append("working_set_growth_bytes is missing")
+        elif working_set_growth > working_set_limit_bytes:
+            failures.append(f"working_set_growth_bytes {working_set_growth} exceeds limit {working_set_limit_bytes}")
+        if private_memory_growth is None:
+            failures.append("private_memory_growth_bytes is missing")
+        elif private_memory_growth > private_memory_limit_bytes:
+            failures.append(
+                f"private_memory_growth_bytes {private_memory_growth} exceeds limit {private_memory_limit_bytes}"
+            )
+        if handle_growth is None:
+            failures.append("handle_growth is missing")
+        elif handle_growth > max_handle_growth:
+            failures.append(f"handle_growth {handle_growth} exceeds limit {max_handle_growth}")
+    checks["process_growth"] = check_record(
+        (not executed) or not failures,
+        {
+            "process_sample_count": process_sample_count,
+            "working_set_growth_bytes": working_set_growth,
+            "working_set_growth_limit_bytes": working_set_limit_bytes,
+            "private_memory_growth_bytes": private_memory_growth,
+            "private_memory_growth_limit_bytes": private_memory_limit_bytes,
+            "handle_growth": handle_growth,
+            "handle_growth_limit": max_handle_growth,
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    frame_elapsed_sec, invalid_frame_timestamps = timestamp_span_seconds(frame_samples)
+    process_elapsed_sec, invalid_process_timestamps = timestamp_span_seconds(process_samples)
+    if executed and sample_interval_sec is None:
+        failures.append("sample_interval_sec is missing")
+    elif executed and sample_interval_sec <= 0:
+        failures.append("sample_interval_sec must be positive")
+    required_elapsed_sec = None
+    if duration is not None and sample_interval_sec is not None and sample_interval_sec > 0:
+        required_elapsed_sec = max(0, duration - sample_interval_sec - 2)
+    if executed and invalid_frame_timestamps:
+        failures.append(f"{invalid_frame_timestamps} frame samples have missing or invalid timestamps")
+    if executed and invalid_process_timestamps:
+        failures.append(f"{invalid_process_timestamps} process samples have missing or invalid timestamps")
+    if executed and required_elapsed_sec is not None:
+        if frame_elapsed_sec is None:
+            failures.append("frame sample elapsed coverage could not be computed")
+        elif frame_elapsed_sec < required_elapsed_sec:
+            failures.append(
+                f"frame sample elapsed coverage {frame_elapsed_sec:.3f}s is below required {required_elapsed_sec:.3f}s"
+            )
+        if process_elapsed_sec is None:
+            failures.append("process sample elapsed coverage could not be computed")
+        elif process_elapsed_sec < required_elapsed_sec:
+            failures.append(
+                f"process sample elapsed coverage {process_elapsed_sec:.3f}s is below required {required_elapsed_sec:.3f}s"
+            )
+    checks["elapsed_coverage"] = check_record(
+        not failures,
+        {
+            "duration_sec": duration,
+            "sample_interval_sec": sample_interval_sec,
+            "required_elapsed_sec": required_elapsed_sec,
+            "frame_elapsed_sec": frame_elapsed_sec,
+            "process_elapsed_sec": process_elapsed_sec,
+            "invalid_frame_timestamps": invalid_frame_timestamps,
+            "invalid_process_timestamps": invalid_process_timestamps,
+        },
+        failures,
+    )
+
+    failures = []
+    if executed and not route_results:
+        failures.append("route/input row inventory is empty")
     route_failures = [
         row
         for row in route_results
         if row.get("PathVerified") is False or (row.get("Click") is True and row.get("ClickPathVerified") is False)
     ]
-    if route_failures:
-        failures.append(f"{len(route_failures)} route/input rows did not verify")
+    route_drift_failures = []
+    computed_max_abs_errors: list[int] = []
+    computed_max_sample_abs_errors: list[int] = []
+    for row in route_results:
+        max_abs_error = integer_or_none(row.get("MaxAbsError"))
+        max_sample_abs_error = integer_or_none(row.get("MaxSampleAbsError"))
+        probe_exit_code = integer_or_none(row.get("ProbeExitCode"))
+        row_drift_failed = False
+        if probe_exit_code not in {0, 2}:
+            row_drift_failed = True
+        if max_abs_error is None:
+            row_drift_failed = True
+        else:
+            computed_max_abs_errors.append(max_abs_error)
+            if max_abs_error > max_input_drift_px:
+                row_drift_failed = True
+        if row.get("Click") is True:
+            if max_sample_abs_error is None:
+                row_drift_failed = True
+            else:
+                computed_max_sample_abs_errors.append(max_sample_abs_error)
+                if max_sample_abs_error > max_input_drift_px:
+                    row_drift_failed = True
+        elif max_sample_abs_error is not None:
+            computed_max_sample_abs_errors.append(max_sample_abs_error)
+        if row_drift_failed:
+            route_drift_failures.append(row)
+
+    reported_max_abs_error = integer_or_none(report.get("input_max_abs_error"))
+    reported_max_sample_abs_error = integer_or_none(report.get("input_max_sample_abs_error"))
+    if executed:
+        if route_failures:
+            failures.append(f"{len(route_failures)} route/input rows did not verify")
+        if route_drift_failures:
+            failures.append(
+                f"{len(route_drift_failures)} route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes"
+            )
     checks["input_responsiveness"] = check_record(
-        not route_failures,
-        {"route_result_count": len(route_results), "route_failure_count": len(route_failures)},
+        (not executed) or not failures,
+        {
+            "route_result_count": len(route_results),
+            "route_failure_count": len(route_failures),
+            "route_drift_failure_count": len(route_drift_failures),
+            "max_input_drift_px": max_input_drift_px,
+            "reported_input_max_abs_error": reported_max_abs_error,
+            "reported_input_max_sample_abs_error": reported_max_sample_abs_error,
+            "computed_input_max_abs_error": max(computed_max_abs_errors) if computed_max_abs_errors else None,
+            "computed_input_max_sample_abs_error": (
+                max(computed_max_sample_abs_errors) if computed_max_sample_abs_errors else None
+            ),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    consistency_pairs: list[tuple[str, int | float | None, int | float | None, float]] = []
+    if executed:
+        consistency_pairs = [
+            ("frame_sample_count", integer_or_none(report.get("frame_sample_count")), len(frame_samples), 0.0),
+            (
+                "frame_hash_unique_count",
+                integer_or_none(report.get("frame_hash_unique_count")),
+                computed_frame_hash_unique_count,
+                0.0,
+            ),
+            (
+                "nonblack_percent_min",
+                float_or_none(report.get("nonblack_percent_min")),
+                min_nonblack if nonblack_values else None,
+                0.001,
+            ),
+            (
+                "nonblack_percent_max",
+                float_or_none(report.get("nonblack_percent_max")),
+                max(nonblack_values) if nonblack_values else None,
+                0.001,
+            ),
+            (
+                "unique_sample_colors_min",
+                integer_or_none(report.get("unique_sample_colors_min")),
+                int(min_unique) if unique_values else None,
+                0.0,
+            ),
+            (
+            "unique_sample_colors_max",
+            integer_or_none(report.get("unique_sample_colors_max")),
+            int(max(unique_values)) if unique_values else None,
+            0.0,
+        ),
+            (
+                "mean_luma_min",
+                float_or_none(report.get("mean_luma_min")),
+                min(luma_values) if luma_values else None,
+                0.001,
+            ),
+            (
+                "mean_luma_max",
+                float_or_none(report.get("mean_luma_max")),
+                max(luma_values) if luma_values else None,
+                0.001,
+            ),
+            (
+                "process_sample_count",
+                integer_or_none(report.get("process_sample_count")),
+                computed_process_sample_count,
+                0.0,
+            ),
+            ("working_set_growth_bytes", working_set_growth, computed_working_set_growth, 0.0),
+            ("private_memory_growth_bytes", private_memory_growth, computed_private_memory_growth, 0.0),
+            ("handle_growth", handle_growth, computed_handle_growth, 0.0),
+            (
+                "input_max_abs_error",
+                reported_max_abs_error,
+                max(computed_max_abs_errors) if computed_max_abs_errors else None,
+                0.0,
+            ),
+            (
+                "input_max_sample_abs_error",
+                reported_max_sample_abs_error,
+                max(computed_max_sample_abs_errors) if computed_max_sample_abs_errors else None,
+                0.0,
+            ),
+        ]
+        for field, reported, computed, tolerance in consistency_pairs:
+            if mismatched_number(reported, computed, tolerance=tolerance):
+                failures.append(f"{field} summary {reported!r} does not match detailed rows {computed!r}")
+    checks["summary_consistency"] = check_record(
+        not failures,
+        {
+            "checked": executed,
+            "frame_sample_count": len(frame_samples),
+            "frame_hash_unique_count": computed_frame_hash_unique_count,
+            "process_sample_count": computed_process_sample_count,
+            "working_set_growth_bytes": computed_working_set_growth,
+            "private_memory_growth_bytes": computed_private_memory_growth,
+            "handle_growth": computed_handle_growth,
+            "input_max_abs_error": max(computed_max_abs_errors) if computed_max_abs_errors else None,
+            "input_max_sample_abs_error": (
+                max(computed_max_sample_abs_errors) if computed_max_sample_abs_errors else None
+            ),
+        },
         failures,
     )
 
@@ -283,6 +727,7 @@ def evaluate_report(
         "tier": report.get("tier"),
         "route": report.get("route"),
         "duration_sec": report.get("duration_sec"),
+        "sample_interval_sec": report.get("sample_interval_sec"),
         "checks": checks,
         "failures": all_failures,
     }
@@ -295,13 +740,31 @@ def to_markdown(evaluation: dict[str, Any]) -> str:
         f"- Overall: {status_text(bool(evaluation['overall']))}",
         f"- Generated: `{evaluation['generated_at']}`",
         f"- Runtime policy: `{evaluation['runtime_policy']}`",
-        f"- Stage: `{evaluation.get('stage')}`",
-        f"- Tier / route: `{evaluation.get('tier')}` / `{evaluation.get('route')}`",
-        f"- Duration seconds: `{evaluation.get('duration_sec')}`",
-        "",
-        "## Checks",
-        "",
     ]
+    if evaluation.get("source_report") is not None:
+        lines.append(f"- Source report: `{evaluation.get('source_report')}`")
+    if evaluation.get("source_report_selection") is not None:
+        lines.append(f"- Source selection: `{evaluation.get('source_report_selection')}`")
+    if "canonical_first_step_report" in evaluation:
+        lines.extend(
+            [
+                f"- Canonical first-step report: `{evaluation.get('canonical_first_step_report')}`",
+                f"- Canonical first-step present: `{evaluation.get('canonical_first_step_present')}`",
+                f"- Legacy report: `{evaluation.get('legacy_report')}`",
+                f"- Canonical runtime report missing: `{evaluation.get('canonical_runtime_report_missing')}`",
+            ]
+        )
+    lines.extend(
+        [
+            f"- Stage: `{evaluation.get('stage')}`",
+            f"- Tier / route: `{evaluation.get('tier')}` / `{evaluation.get('route')}`",
+            f"- Duration seconds: `{evaluation.get('duration_sec')}`",
+            f"- Sample interval seconds: `{evaluation.get('sample_interval_sec')}`",
+            "",
+            "## Checks",
+            "",
+        ]
+    )
     for name, check in evaluation["checks"].items():
         lines.append(f"- `{name}`: `{status_text(bool(check['passed']))}`")
     if evaluation["failures"]:
@@ -317,10 +780,12 @@ def main() -> int:
     parser.add_argument("report", type=Path)
     parser.add_argument("--write-json", type=Path)
     parser.add_argument("--write-markdown", "--write-md", dest="write_markdown", type=Path)
+    parser.add_argument("--max-input-drift-px", type=int, default=1)
     parser.add_argument("--require-pass", action="store_true")
     args = parser.parse_args()
 
-    evaluation = evaluate_report(load_json(args.report))
+    evaluation = evaluate_report(load_json(args.report), max_input_drift_px=args.max_input_drift_px)
+    evaluation.setdefault("source_report", str(args.report))
     if args.write_json:
         args.write_json.parent.mkdir(parents=True, exist_ok=True)
         args.write_json.write_text(json.dumps(evaluation, indent=2), encoding="ascii")

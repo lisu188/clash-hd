@@ -133,6 +133,27 @@ def test_manual_proof_requires_observations_crash_and_process_hygiene(fixture: P
     assert any("no_crash=true" in failure for failure in checklist["failures"]), checklist
 
 
+def test_manual_proof_rejects_live_or_repo_candidate_paths(fixture: Path) -> None:
+    live_proof = fixture / "live-original-proof.json"
+    write_valid_manual_proof(live_proof)
+    live_payload = json.loads(live_proof.read_text(encoding="utf-8"))
+    live_payload["candidate_path"] = "C:\\Clash\\clash95.exe"
+    live_proof.write_text(json.dumps(live_payload, indent=2) + "\n", encoding="utf-8")
+    live_checklist = manual_directinput_checklist.build_checklist(args_for(manual_proof=live_proof))
+
+    repo_proof = fixture / "repo-candidate-proof.json"
+    write_valid_manual_proof(repo_proof)
+    repo_payload = json.loads(repo_proof.read_text(encoding="utf-8"))
+    repo_payload["candidate_path"] = str(ROOT / "clash95_hd_manual.exe")
+    repo_proof.write_text(json.dumps(repo_payload, indent=2) + "\n", encoding="utf-8")
+    repo_checklist = manual_directinput_checklist.build_checklist(args_for(manual_proof=repo_proof))
+
+    assert live_checklist["manual_proof_valid"] is False, live_checklist
+    assert repo_checklist["manual_proof_valid"] is False, repo_checklist
+    assert any("must not be the live original" in failure for failure in live_checklist["failures"]), live_checklist
+    assert any("must be under C:\\ClashTests" in failure for failure in repo_checklist["failures"]), repo_checklist
+
+
 def test_explicit_cdb_only_override_marks_promotion_ready() -> None:
     checklist = manual_directinput_checklist.build_checklist(
         args_for(allow_cdb_only_promotion=True)
@@ -194,6 +215,7 @@ def run_tests() -> None:
         test_manual_proof_path_marks_promotion_ready(fixture)
         test_placeholder_manual_proof_fails_closed(fixture)
         test_manual_proof_requires_observations_crash_and_process_hygiene(fixture)
+        test_manual_proof_rejects_live_or_repo_candidate_paths(fixture)
         test_explicit_cdb_only_override_marks_promotion_ready()
         test_cli_writes_outputs_and_fails_promotion_ready(fixture)
     finally:

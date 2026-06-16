@@ -144,6 +144,7 @@ def build_latest_matrix(args: argparse.Namespace) -> dict[str, Any]:
     matrix_args = argparse.Namespace(
         stage=args.stage,
         patch_exe=args.patch_exe,
+        patch_report_json=getattr(args, "patch_report_json", None),
         overview_run=args.latest_overview_run,
         barracks_run=args.barracks_run,
         focused_hitbox_run=args.focused_hitbox_run,
@@ -324,6 +325,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--barracks-run", type=Path, default=DEFAULT_BARRACKS_BASELINE_RUN)
     parser.add_argument("--stage", default=castle_overview_evidence_matrix.DEFAULT_STAGE)
     parser.add_argument("--patch-exe", type=Path)
+    parser.add_argument("--patch-report-json", type=Path)
     parser.add_argument("--latest-overview-run", type=Path, default=castle_overview_evidence_matrix.DEFAULT_OVERVIEW_RUN)
     parser.add_argument("--focused-hitbox-run", type=Path, default=castle_overview_evidence_matrix.DEFAULT_FOCUSED_HITBOX_RUN)
     parser.add_argument("--visible-multihit-run", type=Path, default=castle_overview_evidence_matrix.DEFAULT_VISIBLE_MULTI_RUN)

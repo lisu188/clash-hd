@@ -64,6 +64,8 @@ REQUIRED_MANUAL_PROOF_ITEM_FIELDS = [
     "pass_fail_notes",
     "no_crash",
 ]
+EXPECTED_CANDIDATE_ROOT = "C:\\ClashTests"
+FORBIDDEN_LIVE_ORIGINAL = "C:\\Clash\\clash95.exe"
 
 CHECKLIST_ITEMS: list[dict[str, str]] = [
     {
@@ -179,6 +181,16 @@ def _real_text(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip()) and not PLACEHOLDER_RE.search(value)
 
 
+def _normalized_path_text(value: Any) -> str:
+    return str(value or "").replace("/", "\\").rstrip("\\").casefold()
+
+
+def _is_same_or_under(path_text: Any, root_text: str) -> bool:
+    path = _normalized_path_text(path_text)
+    root = _normalized_path_text(root_text)
+    return bool(path and (path == root or path.startswith(root + "\\")))
+
+
 def validate_manual_proof_data(proof: Any) -> list[str]:
     failures: list[str] = []
     if not isinstance(proof, dict):
@@ -189,8 +201,13 @@ def validate_manual_proof_data(proof: Any) -> list[str]:
         failures.append("manual DirectInput proof must record approved_visible_runtime=true")
     if not _real_text(proof.get("approval_record")):
         failures.append("manual DirectInput proof must include a non-placeholder approval_record")
-    if not _real_text(proof.get("candidate_path")):
+    candidate_path = proof.get("candidate_path")
+    if not _real_text(candidate_path):
         failures.append("manual DirectInput proof must include a non-placeholder candidate_path")
+    elif _normalized_path_text(candidate_path) == _normalized_path_text(FORBIDDEN_LIVE_ORIGINAL):
+        failures.append(f"manual DirectInput proof candidate_path must not be the live original {FORBIDDEN_LIVE_ORIGINAL}")
+    elif not _is_same_or_under(candidate_path, EXPECTED_CANDIDATE_ROOT):
+        failures.append(f"manual DirectInput proof candidate_path must be under {EXPECTED_CANDIDATE_ROOT}")
     sha = proof.get("executable_sha256")
     if not isinstance(sha, str) or not SHA256_RE.match(sha):
         failures.append("manual DirectInput proof must include a 64-hex executable_sha256")
