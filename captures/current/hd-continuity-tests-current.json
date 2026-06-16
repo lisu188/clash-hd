@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-06-16T12:13:31+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "proves save/load, turn, and campaign continuity remain blocked until a compact approved proof manifest documents isolated test-save evidence, route markers, before/after observations, one shared candidate SHA-256, and no live-save mutation or forbidden repo artifacts",
+  "tests": [
+    "hd_continuity_status fails closed when no compact proof manifest exists",
+    "hd_continuity_status accepts a valid future continuity proof fixture",
+    "hd_continuity_status rejects mixed candidate SHA-256s across continuity lanes",
+    "hd_continuity_status rejects live C:\\Clash\\save and forbidden repo artifact references",
+    "hd_continuity_status rejects short or palette-corrupt campaign proofs",
+    "hd_continuity_status rejects bad stage, SHA, and approval fields",
+    "hd_continuity_status requires route markers and before/after observations",
+    "hd_continuity_status CLI writes JSON/Markdown and respects --require-pass"
+  ],
+  "failures": []
+}

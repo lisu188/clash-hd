@@ -30,6 +30,58 @@ That checkout contains a single older `clash.c` and is useful for historical
 logic comparison. The Windows target should be driven from `C:\Clash\clash95.c`
 and the map/Ghidra metadata.
 
+## 2026-06-16 First Mission Bottom Bar And Black Patches
+
+The selected-unit action bar correction is validation-only and keeps the stable
+stage unchanged. The accepted visual target is the centered screen bottom edge
+at `x=215..585`, `y=580..599`; the old `y=455..500` placement is a
+middle-screen artifact, the intermediate `y=528..573` placement is still too
+high, and the `x=150..520` bottom-edge placement is too far left.
+
+Fresh hidden-desktop evidence:
+
+- `captures\archive\cdb-surface-dump-20260616-133855\surface.png` and
+  `captures\archive\cdb-surface-dump-20260616-135148\surface.png` prove the
+  selected-unit route and a lower placement, but that `y=528..573` target is now
+  superseded because it still floats above the bottom edge.
+- `captures\archive\cdb-surface-dump-20260616-152538\surface.png` is rejected:
+  pushing the uncropped copy to the bottom edge produced horizontal map
+  artifacts. `captures\archive\cdb-surface-dump-20260616-152935\RUN-SUMMARY.md`
+  is also rejected because the attempted cropped gauge wrapper AVed inside the
+  copy helper.
+- `captures\archive\cdb-surface-dump-20260616-153155\surface.png` proves the
+  panel can be placed at the bottom edge without the earlier overrun artifacts,
+  but user review found `x=150..520` too far left.
+- `captures\archive\cdb-surface-dump-20260616-153751\surface.png` is the
+  current first-mission audit primary. It keeps the selected-unit panel at the
+  centered target `x=215..585`, `y=580..599`, has no stripe failures, and the
+  image-only audit still flags
+  `right_below_minimap`, `bottom_right_panel`, and `minimap_interior` as black
+  regions that need explanation before promotion.
+- The validation-only gauge wrapper at `0x51BC10` was removed from this lane
+  after the bottom-edge attempt showed it could inherit an unsafe tall source
+  rectangle. The current bottom-edge proof is panel-only; recovering the gauge
+  should use a separately proven source rectangle.
+- `captures\current\first-mission-minimap-surface-current.md` summarizes the
+  focused `FMMS_*` CDB rows: minimap bounds are `586,16..799,229`, backing size
+  is `214x214`, the map surface is `800x600`, and backing samples are already
+  mostly black-like before final HD surface sampling.
+- The same run's full map coverage reports 13 blank active cells:
+  `r3c10`, `r3c11`, `r4c10`, `r4c11`, `r5c10`, `r5c11`, `r6c10`, `r6c11`,
+  `r7c10`, `r7c11`, `r8c0`, `r8c10`, and `r8c11`.
+  `captures\archive\cdb-surface-dump-20260616-153751\visibility-coverage-full.json`
+  classifies all 13 as `visibility_zero` with no unexplained blank cells.
+
+Interpretation: the selected-unit panel now belongs at the centered bottom-edge
+`x=215..585`, `y=580..599` target. The current minimap black interior is not
+explained by a broken HD anchor or read-past copy path in this run, and the
+current right/bottom map blank cells are same-run visibility/fog state rather
+than a tile rendering failure. The remaining first-mission work is native
+tooltip/status owner-state, natural panel composition, optional top/left edge
+frame fill, the separately cropped gauge copy, and deciding whether the mostly
+black minimap content is normal mission fog or a separate minimap population
+issue.
+
 ## 2026-05-15 Right-Bottom Visual Correction
 
 The controlled right-bottom grid-hit screenshot is not a visual pass. It is a
@@ -4036,16 +4088,23 @@ right-bottom action native-center proof, 2026-05-15:
   `unit_info_route=True`, `present_helper=True`, `action_update=True`, and
   `av_count=0`; the patch manifest reports 124/124 expected bytes patched and
   `unit-selection-action-bar-map-surface: 6/6`.
-- Visual status: the bottom selected-unit text/morale action panel now appears
-  on the 800x600 map surface in the pre-redraw validation capture. A later
-  combined probe proved that the same route was still overwritten by the normal
-  full-redraw cadence, so the post-redraw lane below became the next target.
+- Visual status correction, 2026-06-16: the original pre-redraw copyback put
+  the selected-unit text/morale action panel at the stock lower-map placement
+  around `x=150..520`, `y=455..500`. That proves the `00406980` route and
+  source rectangle, but it is not accepted as the HD bottom-strip placement.
+  The `x=150..520`, `y=528..573` run
+  `captures\archive\cdb-surface-dump-20260616-133855` proved a lower route but
+  was still too high; the current centered bottom-edge validation target is
+  `x=215..585`, `y=580..599`, proved by
+  `captures\archive\cdb-surface-dump-20260616-153751`.
 
 ## Bottom Tooltip Strip, 2026-05-27
 
 - Refreshed the bottom-tooltip lane after the selected-unit action-bar pass.
-  The selected-unit copyback restores a panel around `y=455..500`; it does not
-  recover the persistent bottom tooltip strip at `x=32..585`, `y=528..599`.
+  The historical selected-unit copyback restored a panel around `y=455..500`;
+  2026-06-16 review classifies that as the wrong lower-map placement, not the
+  HD bottom strip. It also does not recover the persistent bottom tooltip strip
+  at `x=32..585`, `y=528..599`.
 - Hidden CDB run `captures\archive\cdb-surface-dump-20260527-101402` used
   `probes\cdb\ui\clash95_border_tooltip_extra.cdb` with the same
   `unitselectactionbar` validation stage. It reports `fullredraw=4`, `text=0`,
@@ -4086,11 +4145,11 @@ right-bottom action native-center proof, 2026-05-15:
   nonblack pixels, but the parser treats that as non-owner-backed coverage
   because tooltip owner row count, text rows, and non-null bottom-strip present
   rows are all zero.
-- The selected-unit action-bar regression gate fails in the combined
-  post-redraw dump: `selected_unit_action_bar` at `x=150..520`, `y=455..500`
-  is `0.0%` nonblack. This does not invalidate the earlier pre-redraw
-  `00406980` route proof, but it means the route is not yet persistent across
-  the later redraw cadence.
+- The historical selected-unit action-bar regression gate fails in the combined
+  post-redraw dump: the then-used `selected_unit_action_bar` region at
+  `x=150..520`, `y=455..500` is `0.0%` nonblack. This does not invalidate the
+  earlier pre-redraw `00406980` route proof, but it means the route is not yet
+  persistent across the later redraw cadence in that pre-post-redraw stage.
 - No native tooltip/status binary patch was added. The agreed rule is to add
   the validation-only bottom-strip patch only after native owner rows fire. The
   next useful target is the missing owner/state trigger for `x=32..585`,
@@ -4113,7 +4172,10 @@ right-bottom action native-center proof, 2026-05-15:
   `UNITSEL_406980_POST_REDRAW_RETURN` markers. Extended
   `tools\unit_selection_action_bar_summary.py` and
   `tools\unit_selection_tooltip_summary.py` so action-bar success requires the
-  post-redraw route plus final PNG coverage in `x=150..520`, `y=455..500`.
+  post-redraw route plus final PNG coverage in the selected-unit panel region.
+  2026-06-16 correction: that region is now the HD bottom-strip target
+  `x=150..520`, `y=528..573`, not the historical lower-map
+  `x=150..520`, `y=455..500` target.
 - Patch manifest `captures\archive\patch-stage-unit-selection-actionbar-postredraw-20260527.json`
   reports candidate SHA-256
   `85BC35640196192020598C6E9EFCCCDFA3D1997B22A1A995FF14DBA134351ADE`,
@@ -4124,14 +4186,49 @@ right-bottom action native-center proof, 2026-05-15:
   `SURFDUMP_READY` with no AV rows. The strict action-bar summary reports
   `slot_match=True`, `selection_success=True`, `unit_info_route=True`,
   `post_redraw_route=True`, `present_helper=True`, and `action_update=True`.
-- The combined tooltip/action summary reports `evidence_pass=True`,
+- The combined tooltip/action summary originally reported `evidence_pass=True`,
   `hover_sequence_observed=True`, `action_bar_visible=True`,
   `tooltip_owner_evidence=False`, `tooltip_strip_visible=False`, and
-  `decision=NO_PATCH_OWNER_NOT_REACHED`. The final PNG action-bar region is
-  `99.982%` nonblack.
+  `decision=NO_PATCH_OWNER_NOT_REACHED`. 2026-06-16 review demotes the archived
+  final PNG visual result to route evidence only because the `99.982%`
+  nonblack panel was at the legacy lower-map region, not the accepted
+  bottom-strip region.
+- Current bottom-placement correction: the validation-only
+  `unit-selection-action-bar-map-surface` cave now copies the stock
+  selected-unit text/morale panel to `x=150`, `y=528` after forcing stock
+  `0x4229A0` to draw on the default surface, preventing an extra lower-map
+  copy. The validation-only `0x51BC10` gauge-strip wrapper also redirects the
+  black/red selected-unit gauge from its lower-map destination to bottom-strip
+  destination `x=363`, `y=541`.
+- Fresh hidden CDB run `captures\archive\cdb-surface-dump-20260616-133855`
+  reached `SURFDUMP_READY` with no AV rows using candidate SHA-256
+  `1E778769F5DC5E99DF09278EA53107CA2FF7165C4699FCD6CA25F7999F51A5FF`.
+  `captures\current\first-mission-visual-audit-current.md` now reports
+  `selected_action_bar_visible=True`,
+  `legacy_middle_action_bar_visible=False`, no stripe failures, and remaining
+  black patch blockers in `right_below_minimap`, `bottom_right_panel`, and
+  `minimap_interior`.
 - No native tooltip/status binary patch was added in this pass. The bottom
   strip still has no owner/text/non-null present rows, so tooltip recovery
   remains an owner/state-discovery task rather than an action-bar copyback task.
+- Combined validation-stage inspection added
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw`
+  without changing `DEFAULT_STAGE`. Hidden CDB natural selected-unit run
+  `captures\archive\cdb-surface-dump-20260616-135148` produced candidate
+  SHA-256 `F1B11E22C9CFB0AAA1CCC325526FC08B952CA6323739CEED3D279B7CB07FB440`,
+  kept the selected-unit action bar in the bottom strip
+  (`action_bar_visible=True`, `96.461%` nonblack, mean luma `85.071`), and
+  had no natural-frame stripe failures. The same frame still blocks
+  first-mission playability on `right_below_minimap`, `bottom_right_panel`, and
+  `minimap_interior`.
+- Paired controlled post-owner run
+  `captures\archive\cdb-surface-dump-20260616-135432` used the same combined
+  candidate and reached APPOST/APCOMPOSE rows including
+  `APCOMPOSE_STATUS_SHIFT_DONE` and `APCOMPOSE_ACTION_SHIFT_DONE`, but the
+  dumped image is stripe-heavy (`stripe_pass=False`) and lacks the
+  selected-unit bottom-bar visual gate. Treat it as diagnostic proof that the
+  controlled right/bottom route can still fire, not as playable first-mission
+  evidence.
 
 ## Load-Slot Transition And Slot5 Fixture Probe, 2026-05-27
 

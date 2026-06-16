@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-06-16T10:13:31.094068+00:00",
+  "passed": true,
+  "runtime_policy": "repo-only soak dry-run plan guard; invokes the PowerShell harness only without -Execute unless --read-plan-json is supplied; does not launch Clash95, CDB, wrappers, or visible windows",
+  "status": "ready_for_explicit_approval",
+  "source_artifacts": {
+    "step_status_json": "captures\\current\\hd-soak-short-step-status-current.json",
+    "script": "scripts\\smoke\\run_hd_soak.ps1",
+    "read_plan_json": null
+  },
+  "current_step": {
+    "id": "short2_menu_idle",
+    "status": "pending_approval_legacy_compat",
+    "tier": "short2",
+    "route": "menu-idle",
+    "duration_sec": 120,
+    "paths": {
+      "report_json": "captures\\current\\hd-soak-short2-menu-idle-current.json",
+      "report_markdown": "captures\\current\\hd-soak-short2-menu-idle-current.md",
+      "guard_json": "captures\\current\\hd-soak-short2-menu-idle-guard-current.json",
+      "guard_markdown": "captures\\current\\hd-soak-short2-menu-idle-guard-current.md",
+      "triage_json": "captures\\current\\hd-soak-short2-menu-idle-triage-current.json",
+      "triage_markdown": "captures\\current\\hd-soak-short2-menu-idle-triage-current.md"
+    }
+  },
+  "invocation": {
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -MaxInputDriftPx 1 -Json",
+    "exit_code": 0,
+    "stderr": "",
+    "used_fixture_plan": false
+  },
+  "plan": {
+    "dry_run": true,
+    "runtime_policy": "opt-in visible runtime soak; use -Execute -AllowVisibleRuntime only after explicit user approval",
+    "repo_root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd",
+    "input_exe": "C:\\Clash\\clash95.exe",
+    "input_exists": true,
+    "expected_base_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "input_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "base_sha_status": "ok",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "stable_stage_should_change": false,
+    "tier": "short2",
+    "duration_sec": 120,
+    "route": "menu-idle",
+    "route_steps": [],
+    "sample_interval_sec": 15,
+    "candidate_dir": "C:\\ClashTests\\hd-soak",
+    "candidate_path": "C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260616_121330.exe",
+    "workdir": "C:\\Clash",
+    "output_root": "C:\\ClashCaptures\\hd-soak",
+    "report_json": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short2-menu-idle-current.json",
+    "report_markdown": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short2-menu-idle-current.md",
+    "growth_limits": {
+      "max_working_set_growth_mb": 64,
+      "max_private_memory_growth_mb": 64,
+      "max_handle_growth": 128,
+      "max_artifact_mb": 250
+    },
+    "input_limits": {
+      "max_input_drift_px": 1
+    },
+    "raw_artifacts_policy": "raw PNG frames and per-step logs stay outside the repository by default",
+    "right_bottom_promotion_blocked": true,
+    "commands": {
+      "patch": "& 'C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe' 'C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\patch_clash95_hd.py' --input 'C:\\Clash\\clash95.exe' --output 'C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260616_121330.exe' --stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch'",
+      "execute": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\scripts\\smoke\\run_hd_soak.ps1' -InputExe 'C:\\Clash\\clash95.exe' -WorkDir 'C:\\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'menu-idle' -CandidateDir 'C:\\ClashTests\\hd-soak' -CandidateName 'clash95_hd_soak_20260616_121330.exe' -OutputRoot 'C:\\ClashCaptures\\hd-soak' -ReportJson 'C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short2-menu-idle-current.json' -ReportMarkdown 'C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short2-menu-idle-current.md' -MaxInputDriftPx '1' -Execute -AllowVisibleRuntime -RequirePass -Json"
+    }
+  },
+  "approval_gated_execute_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\scripts\\smoke\\run_hd_soak.ps1' -InputExe 'C:\\Clash\\clash95.exe' -WorkDir 'C:\\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'menu-idle' -CandidateDir 'C:\\ClashTests\\hd-soak' -CandidateName 'clash95_hd_soak_20260616_121330.exe' -OutputRoot 'C:\\ClashCaptures\\hd-soak' -ReportJson 'C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short2-menu-idle-current.json' -ReportMarkdown 'C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-short2-menu-idle-current.md' -MaxInputDriftPx '1' -Execute -AllowVisibleRuntime -RequirePass -Json",
+  "locks": {
+    "stable_stage_should_change": false,
+    "right_bottom_promotion_blocked": true,
+    "long_tiers_locked": true,
+    "future_lanes_locked": true
+  },
+  "failures": []
+}

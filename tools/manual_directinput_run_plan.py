@@ -37,11 +37,16 @@ GUARD_POLICY = (
     "runtime command must carry -AllowVisibleRuntime and the proof manifest must be validated "
     "before promotion"
 )
+CANDIDATE_PATH_POLICY = (
+    "candidate placeholders must resolve to freshly built, hashed executables under "
+    f"{manual_directinput_checklist.EXPECTED_CANDIDATE_ROOT}; never use "
+    f"{manual_directinput_checklist.FORBIDDEN_LIVE_ORIGINAL} or a repository-local executable"
+)
 
 
 COMMAND_SPECS: dict[str, dict[str, Any]] = {
     "stable_menu_load": {
-        "candidate": "<stable-hd-map-candidate-exe>",
+        "candidate": r"C:\ClashTests\manual-directinput\<stable-hd-map-candidate-exe>",
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
@@ -49,7 +54,7 @@ COMMAND_SPECS: dict[str, dict[str, Any]] = {
         "notes": "proves the centered menu load route and held-click cadence with real DirectInput",
     },
     "stable_hd_map_input": {
-        "candidate": "<stable-hd-map-candidate-exe>",
+        "candidate": r"C:\ClashTests\manual-directinput\<stable-hd-map-candidate-exe>",
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
@@ -57,7 +62,7 @@ COMMAND_SPECS: dict[str, dict[str, Any]] = {
         "notes": "the command reaches gameplay through the load route; then manually exercise the listed map edge/minimap/selection points",
     },
     "right_bottom_validation_input": {
-        "candidate": "<rightbottomcompose-candidate-exe>",
+        "candidate": r"C:\ClashTests\manual-directinput\<rightbottomcompose-candidate-exe>",
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
@@ -65,7 +70,7 @@ COMMAND_SPECS: dict[str, dict[str, Any]] = {
         "notes": "the command reaches gameplay through the load route; then manually check the recovered lower/right action UI and displayed grid/action positions",
     },
     "castle_barracks_centered_input": {
-        "candidate": "<castlecenter-all-candidate-exe>",
+        "candidate": r"C:\ClashTests\manual-directinput\<castlecenter-all-candidate-exe>",
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
@@ -73,7 +78,7 @@ COMMAND_SPECS: dict[str, dict[str, Any]] = {
         "notes": "the command reaches gameplay through the load route; then manually check centered barracks descriptor/action positions",
     },
     "castle_overview_centered_input": {
-        "candidate": "<castlecenter-all-candidate-exe>",
+        "candidate": r"C:\ClashTests\manual-directinput\<castlecenter-all-candidate-exe>",
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
@@ -162,6 +167,7 @@ def build_commands() -> dict[str, dict[str, Any]]:
             "stage": checklist_by_id[item_id]["stage"],
             "script": str(spec["script"]),
             "candidate_placeholder": spec["candidate"],
+            "candidate_path_policy": CANDIDATE_PATH_POLICY,
             "route": spec["route"],
             "route_points": spec["route_points"],
             "followup_points": spec["followup_points"],
@@ -234,11 +240,30 @@ def build_plan(
             failures.append(f"missing command template for manual target: {item_id}")
         elif "-AllowVisibleRuntime" not in command:
             failures.append(f"manual target command lacks -AllowVisibleRuntime: {item_id}")
+        candidate_placeholder = commands.get(item_id, {}).get("candidate_placeholder", "")
+        if not manual_directinput_checklist._is_same_or_under(
+            candidate_placeholder,
+            manual_directinput_checklist.EXPECTED_CANDIDATE_ROOT,
+        ):
+            failures.append(
+                f"manual target candidate placeholder is not under "
+                f"{manual_directinput_checklist.EXPECTED_CANDIDATE_ROOT}: {item_id}"
+            )
+        if (
+            manual_directinput_checklist._normalized_path_text(candidate_placeholder)
+            == manual_directinput_checklist._normalized_path_text(
+                manual_directinput_checklist.FORBIDDEN_LIVE_ORIGINAL
+            )
+        ):
+            failures.append(
+                f"manual target candidate placeholder points at the live original: {item_id}"
+            )
 
     proof_validation = validate_proof_command(checklist_script, proof_json)
     prerequisites = [
         "user explicitly approves a visible/manual DirectInput validation pass",
         "candidate executable path placeholders are replaced with freshly built, hashed candidates",
+        CANDIDATE_PATH_POLICY,
         "stale clash95*/cdb processes are killed and recorded before launching a visible runtime",
         "each manual target captures observed result, screenshot or notes, pass/fail notes, and no-crash status",
         "captures/current/manual-directinput-proof-current.json is filled from the approved run and validated before promotion",
@@ -249,6 +274,8 @@ def build_plan(
         "passed": not failures,
         "runtime_policy": RUNTIME_POLICY,
         "guard_policy": GUARD_POLICY,
+        "candidate_path_policy": CANDIDATE_PATH_POLICY,
+        "candidate_root": manual_directinput_checklist.EXPECTED_CANDIDATE_ROOT,
         "checklist_json": str(checklist_json),
         "template_report_json": str(template_report_json),
         "visible_runtime_guarded_scripts": [str(visual_smoke_script), str(battle_visible_script)],
@@ -283,6 +310,8 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Generated: `{report['generated_at']}`",
         f"- Runtime policy: {report['runtime_policy']}",
         f"- Guard policy: {report['guard_policy']}",
+        f"- Candidate path policy: {report['candidate_path_policy']}",
+        f"- Candidate root: `{report['candidate_root']}`",
         f"- Visible runtime requires approval: `{report['visible_runtime_requires_approval']}`",
         f"- Proof ready: `{report['proof_ready']}`",
         f"- Manual target count: `{report['manual_target_count']}`",
@@ -301,6 +330,7 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
                 f"- ID: `{item_id}`",
                 f"- Stage: `{item['stage']}`",
                 f"- Candidate placeholder: `{item['candidate_placeholder']}`",
+                f"- Candidate path policy: {item['candidate_path_policy']}",
                 f"- Route: `{item['route']}`",
                 f"- Load-route points: `{item['route_points']}`",
                 f"- Follow-up manual points: `{item['followup_points'] or 'n/a'}`",

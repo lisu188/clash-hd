@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the approval preflight packet for the first short HD soak.
+"""Build the approval preflight packet for the current short HD soak step.
 
 This report is repo-only. It does not launch the game. It verifies that the
 next visible-runtime command is canonical, approval-gated, non-promoting, and
@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -22,6 +22,7 @@ RUNTIME_POLICY = (
 DEFAULT_NEXT_ACTIONS_JSON = Path("captures/current/hd-endurance-next-actions-current.json")
 DEFAULT_STEP_STATUS_JSON = Path("captures/current/hd-soak-short-step-status-current.json")
 DEFAULT_HARNESS_GUARD_JSON = Path("captures/current/hd-soak-harness-guard-current.json")
+DEFAULT_DRY_RUN_PLAN_JSON = Path("captures/current/hd-soak-dry-run-plan-current.json")
 DEFAULT_VISIBLE_RUNTIME_GUARD_JSON = Path("captures/current/visible-runtime-launcher-guard-current.json")
 DEFAULT_PROCESS_HYGIENE_JSON = Path("captures/current/process-hygiene-guard-current.json")
 DEFAULT_EXE_ARTIFACT_JSON = Path("captures/current/exe-artifact-guard-current.json")
@@ -35,6 +36,12 @@ EXPECTED_GUARD_JSON = r"captures\current\hd-soak-short2-menu-idle-guard-current.
 EXPECTED_TRIAGE_JSON = r"captures\current\hd-soak-short2-menu-idle-triage-current.json"
 EXPECTED_WRITES = {r"C:\ClashTests\hd-soak", r"C:\ClashCaptures\hd-soak"}
 MUST_NOT_MODIFY = r"C:\Clash\clash95.exe"
+EXPECTED_MAX_INPUT_DRIFT_PX = 1
+MAX_DRY_RUN_PLAN_AGE_HOURS = 12
+PYTHON_EXE = (
+    r"C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime"
+    r"\dependencies\python\python.exe"
+)
 
 
 def status_text(passed: bool) -> str:
@@ -47,14 +54,109 @@ def load_json(path: Path) -> dict[str, Any] | None:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def command_has_required_shape(command: str) -> list[str]:
+def step_slug(step: dict[str, Any]) -> str:
+    return str(step.get("id") or f"{step.get('tier')}_{step.get('route')}")
+
+
+def normalized_text(value: Any) -> str:
+    return str(value or "").replace("/", "\\").rstrip("\\").casefold()
+
+
+def artifact_path_exists(value: Any) -> bool:
+    if not value:
+        return False
+    return Path(str(value).replace("\\", "/")).exists()
+
+
+def current_step_artifact_inventory(paths: dict[str, str]) -> dict[str, Any]:
+    report_json = paths.get("report_json")
+    report_markdown = paths.get("report_markdown")
+    guard_json = paths.get("guard_json")
+    guard_markdown = paths.get("guard_markdown")
+    triage_json = paths.get("triage_json")
+    triage_markdown = paths.get("triage_markdown")
+    report_exists = artifact_path_exists(report_json)
+    guard_exists = artifact_path_exists(guard_json)
+    triage_exists = artifact_path_exists(triage_json)
+    return {
+        "report_json": report_json,
+        "report_json_exists": report_exists,
+        "report_markdown": report_markdown,
+        "report_markdown_exists": artifact_path_exists(report_markdown),
+        "guard_json": guard_json,
+        "guard_json_exists": guard_exists,
+        "guard_markdown": guard_markdown,
+        "guard_markdown_exists": artifact_path_exists(guard_markdown),
+        "triage_json": triage_json,
+        "triage_json_exists": triage_exists,
+        "triage_markdown": triage_markdown,
+        "triage_markdown_exists": artifact_path_exists(triage_markdown),
+        "canonical_runtime_report_missing": bool(report_json) and not report_exists,
+        "post_run_guard_missing": bool(guard_json) and not guard_exists,
+        "post_run_triage_missing": bool(triage_json) and not triage_exists,
+    }
+
+
+def text_contains_path(text: str, path_text: str | None) -> bool:
+    if not path_text:
+        return False
+    needle = normalized_text(path_text)
+    haystack = normalized_text(text)
+    return needle in haystack or haystack.endswith(needle)
+
+
+def parse_datetime(value: Any) -> datetime | None:
+    if not value:
+        return None
+    try:
+        text = str(value).replace("Z", "+00:00")
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def dry_run_plan_freshness(
+    dry_run_plan: dict[str, Any],
+    *,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    generated_at = parse_datetime(dry_run_plan.get("generated_at"))
+    current_time = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    max_age = timedelta(hours=MAX_DRY_RUN_PLAN_AGE_HOURS)
+    failures: list[str] = []
+    age_seconds: float | None = None
+    if generated_at is None:
+        failures.append("dry-run plan generated_at is missing or invalid")
+    else:
+        age = current_time - generated_at
+        age_seconds = age.total_seconds()
+        if age < timedelta(minutes=-5):
+            failures.append("dry-run plan generated_at is in the future")
+        if age > max_age:
+            failures.append(
+                f"dry-run plan is older than {MAX_DRY_RUN_PLAN_AGE_HOURS} hours; regenerate before approval"
+            )
+    return {
+        "generated_at": dry_run_plan.get("generated_at"),
+        "age_seconds": age_seconds,
+        "max_age_hours": MAX_DRY_RUN_PLAN_AGE_HOURS,
+        "passed": not failures,
+        "failures": failures,
+    }
+
+
+def command_has_required_shape(command: str, step: dict[str, Any], paths: dict[str, str]) -> list[str]:
     failures: list[str] = []
     required_fragments = [
         r".\scripts\smoke\run_hd_soak.ps1",
-        "-Tier short2",
-        "-Route menu-idle",
-        f"-ReportJson {EXPECTED_REPORT_JSON}",
-        f"-ReportMarkdown {EXPECTED_REPORT_MD}",
+        f"-Tier {step.get('tier')}",
+        f"-Route {step.get('route')}",
+        f"-ReportJson {paths.get('report_json')}",
+        f"-ReportMarkdown {paths.get('report_markdown')}",
+        f"-MaxInputDriftPx {EXPECTED_MAX_INPUT_DRIFT_PX}",
         "-Execute -AllowVisibleRuntime -RequirePass",
         "-Json",
     ]
@@ -64,16 +166,17 @@ def command_has_required_shape(command: str) -> list[str]:
     return failures
 
 
-def dry_run_has_required_shape(command: str) -> list[str]:
+def dry_run_has_required_shape(command: str, step: dict[str, Any], paths: dict[str, str]) -> list[str]:
     failures: list[str] = []
     if "-Execute" in command or "-AllowVisibleRuntime" in command:
         failures.append("safe dry-run command includes execution/visible-runtime flags")
     for fragment in (
         r".\scripts\smoke\run_hd_soak.ps1",
-        "-Tier short2",
-        "-Route menu-idle",
-        f"-ReportJson {EXPECTED_REPORT_JSON}",
-        f"-ReportMarkdown {EXPECTED_REPORT_MD}",
+        f"-Tier {step.get('tier')}",
+        f"-Route {step.get('route')}",
+        f"-ReportJson {paths.get('report_json')}",
+        f"-ReportMarkdown {paths.get('report_markdown')}",
+        f"-MaxInputDriftPx {EXPECTED_MAX_INPUT_DRIFT_PX}",
         "-Json",
     ):
         if fragment not in command:
@@ -81,11 +184,149 @@ def dry_run_has_required_shape(command: str) -> list[str]:
     return failures
 
 
+def dry_run_plan_failures(
+    dry_run_plan: dict[str, Any],
+    current_step: dict[str, Any],
+    step: dict[str, Any],
+    paths: dict[str, str],
+) -> list[str]:
+    failures: list[str] = []
+    plan = dry_run_plan.get("plan") or {}
+    plan_step = dry_run_plan.get("current_step") or {}
+    execute_command = str(dry_run_plan.get("approval_gated_execute_command") or (plan.get("commands") or {}).get("execute") or "")
+    freshness = dry_run_plan_freshness(dry_run_plan)
+    if not dry_run_plan.get("passed"):
+        failures.append("dry-run plan report is not passing")
+    failures.extend(freshness["failures"])
+    if dry_run_plan.get("status") != "ready_for_explicit_approval":
+        failures.append(f"dry-run plan status is {dry_run_plan.get('status')!r}")
+    if plan_step.get("id") != current_step.get("id"):
+        failures.append("dry-run plan current step does not match step-status current step")
+    if plan_step.get("status") != current_step.get("status"):
+        failures.append("dry-run plan current-step status does not match step-status current step")
+    if plan.get("dry_run") is not True:
+        failures.append("dry-run plan payload is not marked as a dry run")
+    if plan.get("stage") and plan.get("stage") != plan.get("protected_stable_stage"):
+        failures.append("dry-run plan stage does not match its protected stable stage")
+    if plan.get("stable_stage_should_change") is not False:
+        failures.append("dry-run plan would change the stable stage")
+    if plan.get("right_bottom_promotion_blocked") is not True:
+        failures.append("dry-run plan does not keep right-bottom promotion blocked")
+    if plan.get("tier") != step.get("tier") or plan.get("route") != step.get("route"):
+        failures.append("dry-run plan tier/route do not match the current step")
+    if (plan.get("input_limits") or {}).get("max_input_drift_px") != EXPECTED_MAX_INPUT_DRIFT_PX:
+        failures.append("dry-run plan does not pin max input drift to 1 px")
+    if normalized_text(plan.get("candidate_dir")) != normalized_text(r"C:\ClashTests\hd-soak"):
+        failures.append("dry-run plan candidate_dir is not C:\\ClashTests\\hd-soak")
+    if normalized_text(plan.get("output_root")) != normalized_text(r"C:\ClashCaptures\hd-soak"):
+        failures.append("dry-run plan output_root is not C:\\ClashCaptures\\hd-soak")
+    if plan.get("input_exists") is not True:
+        failures.append("dry-run plan input_exe does not exist or was not confirmed readable")
+    if str(plan.get("base_sha_status") or "") != "ok":
+        failures.append(f"dry-run plan base_sha_status is {plan.get('base_sha_status')!r}, expected 'ok'")
+    for fragment in (
+        "-InputExe",
+        r"C:\Clash\clash95.exe",
+        "-WorkDir",
+        r"C:\Clash",
+        "-Stage",
+        str(plan.get("protected_stable_stage") or ""),
+        "-OutputRoot",
+        r"C:\ClashCaptures\hd-soak",
+        "-Execute",
+        "-AllowVisibleRuntime",
+        "-RequirePass",
+        "-Json",
+        "-MaxInputDriftPx",
+    ):
+        if fragment not in execute_command:
+            failures.append(f"dry-run plan execute command missing fragment: {fragment}")
+    if not text_contains_path(execute_command, paths.get("report_json")):
+        failures.append("dry-run plan execute command does not include the canonical report JSON path")
+    if not text_contains_path(execute_command, paths.get("report_markdown")):
+        failures.append("dry-run plan execute command does not include the canonical report Markdown path")
+    return failures
+
+
+def current_step_record(step_status: dict[str, Any]) -> dict[str, Any] | None:
+    current = step_status.get("current_step") or {}
+    current_id = current.get("id")
+    for step in step_status.get("steps") or []:
+        if step.get("id") == current_id:
+            return step
+    return None
+
+
+def post_run_validation_for_step(step: dict[str, Any]) -> list[str]:
+    return [
+        (
+            f"{PYTHON_EXE} tools\\hd_soak_short_validation_refresh.py "
+            "--write-json captures\\current\\hd-soak-short-validation-refresh-current.json "
+            "--write-markdown captures\\current\\hd-soak-short-validation-refresh-current.md "
+            "--require-pass"
+        ),
+        (
+            f"{PYTHON_EXE} tools\\hd_soak_short_step_status.py "
+            "--write-json captures\\current\\hd-soak-short-step-status-current.json "
+            "--write-markdown captures\\current\\hd-soak-short-step-status-current.md "
+            "--require-pass"
+        ),
+        "git diff --check",
+    ]
+
+
+def post_run_handoff_refresh_for_step(_step: dict[str, Any]) -> list[str]:
+    return [
+        (
+            f"{PYTHON_EXE} tools\\hd_soak_dry_run_plan.py "
+            "--write-json captures\\current\\hd-soak-dry-run-plan-current.json "
+            "--write-markdown captures\\current\\hd-soak-dry-run-plan-current.md "
+            "--require-pass"
+        ),
+        (
+            f"{PYTHON_EXE} tools\\hd_endurance_release_checklist.py "
+            "--write-json captures\\current\\hd-endurance-release-checklist-current.json "
+            "--write-markdown captures\\current\\hd-endurance-release-checklist-current.md"
+        ),
+        (
+            f"{PYTHON_EXE} tools\\hd_endurance_next_actions.py "
+            "--write-json captures\\current\\hd-endurance-next-actions-current.json "
+            "--write-markdown captures\\current\\hd-endurance-next-actions-current.md "
+            "--require-pass"
+        ),
+        (
+            f"{PYTHON_EXE} tools\\hd_soak_approval_preflight.py "
+            "--write-json captures\\current\\hd-soak-approval-preflight-current.json "
+            "--write-markdown captures\\current\\hd-soak-approval-preflight-current.md "
+            "--require-pass"
+        ),
+    ]
+
+
+def post_run_evidence_refresh_commands() -> list[str]:
+    return [
+        (
+            f"{PYTHON_EXE} tools\\current_evidence_refresh.py "
+            "--write-json captures\\current\\current-evidence-refresh-current.json "
+            "--write-markdown captures\\current\\current-evidence-refresh-current.md"
+        ),
+        f"{PYTHON_EXE} tools\\evidence_index_check.py captures\\current\\hd-map-evidence-current.md --require-pass",
+        (
+            f"{PYTHON_EXE} tools\\current_completion_summary.py "
+            "--write-json captures\\current\\current-completion-summary-current.json "
+            "--write-markdown captures\\current\\current-completion-summary-current.md "
+            "--require-pass"
+        ),
+        "git diff --check",
+    ]
+
+
 def build_report(args: argparse.Namespace) -> dict[str, Any]:
     sources = {
         "next_actions": args.next_actions_json,
         "step_status": args.step_status_json,
         "harness_guard": args.hd_soak_harness_guard_json,
+        "dry_run_plan": args.hd_soak_dry_run_plan_json,
         "visible_runtime_guard": args.visible_runtime_guard_json,
         "process_hygiene": args.process_hygiene_json,
         "exe_artifact": args.exe_artifact_json,
@@ -98,51 +339,160 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
     next_actions = loaded.get("next_actions") or {}
     step_status = loaded.get("step_status") or {}
+    dry_run_plan = loaded.get("dry_run_plan") or {}
+    dry_run_plan_payload = dry_run_plan.get("plan") or {}
+    dry_run_plan_execute_command = str(
+        dry_run_plan.get("approval_gated_execute_command")
+        or (dry_run_plan_payload.get("commands") or {}).get("execute")
+        or ""
+    )
     action = next_actions.get("next_action") or {}
     current_step = step_status.get("current_step") or {}
-    runtime_command = str(action.get("exact_runtime_command") or "")
-    dry_run_command = str(action.get("safe_dry_run_command") or "")
-    post_run_validation = [str(row) for row in action.get("post_run_validation") or []]
+    step = current_step_record(step_status) or {}
+    paths = step.get("paths") or {}
+    runtime_command = str(current_step.get("next_command") or step.get("approval_gated_runtime_command") or "")
+    approval_command = dry_run_plan_execute_command or runtime_command
+    dry_run_command = str(step.get("safe_dry_run_command") or "")
+    post_run_validation = post_run_validation_for_step(step) if step else []
+    post_run_handoff_refresh = post_run_handoff_refresh_for_step(step) if step else []
+    post_run_evidence_refresh = post_run_evidence_refresh_commands()
+    artifacts = current_step_artifact_inventory(paths)
+    action_artifacts = action.get("current_step_artifacts")
+    artifact_mismatch_keys: list[str] = []
+    action_plan_mismatch_keys: list[str] = []
+    approval_step_pending = current_step.get("status") in {
+        "pending_approval_legacy_compat",
+        "missing_pending_approval",
+    }
 
     if next_actions and not next_actions.get("passed"):
         failures.append("next-actions report is not passing")
-    if next_actions.get("status") != "waiting_for_explicit_visible_runtime_approval":
-        failures.append(f"next-actions status is {next_actions.get('status')!r}")
-    if action.get("id") != "run_short2_menu_idle_soak":
-        failures.append(f"next action id is {action.get('id')!r}")
-    if action.get("requires_explicit_user_approval") is not True:
-        failures.append("next action is not marked as requiring explicit user approval")
-    if action.get("requires_visible_runtime") is not True:
-        failures.append("next action is not marked as visible runtime")
+    if not step:
+        failures.append(f"current short-step record is missing for {current_step.get('id')!r}")
 
-    failures.extend(command_has_required_shape(runtime_command))
-    failures.extend(dry_run_has_required_shape(dry_run_command))
-    if current_step.get("id") != EXPECTED_FIRST_STEP:
-        failures.append(f"current short-step id is {current_step.get('id')!r}")
+    first_step_next_action = current_step.get("id") == EXPECTED_FIRST_STEP and action.get("id") == "run_short2_menu_idle_soak"
+    if first_step_next_action:
+        if next_actions.get("status") != "waiting_for_explicit_visible_runtime_approval":
+            failures.append(f"next-actions status is {next_actions.get('status')!r}")
+
+    if approval_step_pending:
+        expected_action_id = f"run_{current_step.get('id')}_soak"
+        if action.get("id") != expected_action_id:
+            failures.append(f"next-actions id is {action.get('id')!r}, expected {expected_action_id!r}")
+        if action.get("status") != "approval_required":
+            failures.append(f"next-action status is {action.get('status')!r}, expected 'approval_required'")
+        if action.get("short_step_id") not in {None, current_step.get("id")}:
+            failures.append(
+                f"next-action short_step_id is {action.get('short_step_id')!r}, expected {current_step.get('id')!r}"
+            )
+        if action.get("tier") not in {None, step.get("tier")}:
+            failures.append(f"next-action tier is {action.get('tier')!r}, expected {step.get('tier')!r}")
+        if action.get("route") not in {None, step.get("route")}:
+            failures.append(f"next-action route is {action.get('route')!r}, expected {step.get('route')!r}")
+        if action.get("requires_explicit_user_approval") is not True:
+            failures.append("next action is not marked as requiring explicit user approval")
+        if action.get("requires_visible_runtime") is not True:
+            failures.append("next action is not marked as visible runtime")
+        if action.get("exact_runtime_command") != approval_command:
+            failures.append("next-actions runtime command does not match the approval command")
+        action_legacy_command = action.get("legacy_step_runtime_command")
+        if action_legacy_command not in {None, runtime_command}:
+            failures.append("next-actions legacy step runtime command does not match step-status runtime command")
+        if action.get("safe_dry_run_command") != dry_run_command:
+            failures.append("next-actions dry-run command does not match step-status dry-run command")
+        if action.get("post_run_validation") and action.get("post_run_validation") != post_run_validation:
+            failures.append("next-actions post-run validation does not match current-step validation")
+        if action.get("post_run_handoff_refresh") != post_run_handoff_refresh:
+            failures.append("next-actions post-run handoff refresh does not match current-step handoff refresh")
+        if action.get("post_run_evidence_refresh") != post_run_evidence_refresh:
+            failures.append("next-actions post-run evidence refresh does not match current evidence refresh")
+        if action.get("plan_verified_execute_command") != dry_run_plan_execute_command:
+            failures.append("next-actions plan-verified execute command does not match the dry-run plan")
+        if not action_artifacts:
+            failures.append("next-actions current-step artifact inventory is missing")
+        else:
+            artifact_mismatch_keys = [
+                key
+                for key, value in artifacts.items()
+                if action_artifacts.get(key) != value
+            ]
+            if artifact_mismatch_keys:
+                failures.append(
+                    "next-actions current-step artifact inventory does not match approval preflight: "
+                    + ", ".join(artifact_mismatch_keys)
+                )
+        action_plan = action.get("dry_run_plan") or {}
+        if action_plan.get("current_step") != current_step.get("id"):
+            failures.append("next-actions dry-run plan summary does not match the current short step")
+        if normalized_text(action_plan.get("candidate_dir")) != normalized_text(r"C:\ClashTests\hd-soak"):
+            failures.append("next-actions dry-run plan summary does not pin C:\\ClashTests\\hd-soak")
+        if normalized_text(action_plan.get("output_root")) != normalized_text(r"C:\ClashCaptures\hd-soak"):
+            failures.append("next-actions dry-run plan summary does not pin C:\\ClashCaptures\\hd-soak")
+        dry_run_plan_summary = {
+            "candidate_path": dry_run_plan_payload.get("candidate_path"),
+            "candidate_dir": dry_run_plan_payload.get("candidate_dir"),
+            "output_root": dry_run_plan_payload.get("output_root"),
+            "report_json": dry_run_plan_payload.get("report_json"),
+            "report_markdown": dry_run_plan_payload.get("report_markdown"),
+            "input_sha256": dry_run_plan_payload.get("input_sha256"),
+            "base_sha_status": dry_run_plan_payload.get("base_sha_status"),
+            "execute_command": dry_run_plan_execute_command,
+        }
+        for key, expected in dry_run_plan_summary.items():
+            actual = action_plan.get(key)
+            if key in {"candidate_path", "candidate_dir", "output_root", "report_json", "report_markdown"}:
+                matches = normalized_text(actual) == normalized_text(expected)
+            else:
+                matches = actual == expected
+            if not matches:
+                action_plan_mismatch_keys.append(key)
+        if action_plan_mismatch_keys:
+            failures.append(
+                "next-actions dry-run plan summary does not match the current dry-run plan: "
+                + ", ".join(action_plan_mismatch_keys)
+            )
+
+    failures.extend(command_has_required_shape(runtime_command, step, paths))
+    failures.extend(dry_run_has_required_shape(dry_run_command, step, paths))
+    if dry_run_plan:
+        failures.extend(dry_run_plan_failures(dry_run_plan, current_step, step, paths))
     if current_step.get("status") not in {"pending_approval_legacy_compat", "missing_pending_approval"}:
         failures.append(f"current short-step status is {current_step.get('status')!r}")
-    if current_step.get("next_command") and current_step.get("next_command") != runtime_command:
-        failures.append("step-status next command does not match next-actions runtime command")
     if step_status and step_status.get("ladder_complete") is True:
-        failures.append("short ladder is already complete; approval preflight should not request first soak")
+        failures.append("short ladder is already complete; approval preflight should not request another short soak")
 
-    writes = set(action.get("writes_outside_repo") or [])
+    writes = set(step.get("writes_outside_repo") or action.get("writes_outside_repo") or [])
     if writes != EXPECTED_WRITES:
         failures.append(f"writes_outside_repo is {sorted(writes)!r}, expected {sorted(EXPECTED_WRITES)!r}")
-    if MUST_NOT_MODIFY not in set(action.get("must_not_modify") or []):
+    must_not_modify = step.get("must_not_modify") or action.get("must_not_modify") or []
+    if MUST_NOT_MODIFY not in set(must_not_modify):
         failures.append(f"must_not_modify does not include {MUST_NOT_MODIFY}")
-    if not any(EXPECTED_GUARD_JSON in command for command in post_run_validation):
-        failures.append("post-run validation does not write the canonical first-step guard")
-    if not any(EXPECTED_TRIAGE_JSON in command for command in post_run_validation):
-        failures.append("post-run validation does not write the canonical first-step triage")
-    if not any("current_evidence_refresh.py" in command for command in post_run_validation):
-        failures.append("post-run validation does not refresh current evidence")
-    if not any("evidence_index_check.py" in command for command in post_run_validation):
-        failures.append("post-run validation does not check evidence links")
+    if not paths.get("guard_json"):
+        failures.append("current-step artifact inventory does not identify the canonical guard output")
+    if not paths.get("triage_json"):
+        failures.append("current-step artifact inventory does not identify the canonical triage output")
+    if not post_run_validation or "hd_soak_short_validation_refresh.py" not in post_run_validation[0]:
+        failures.append("post-run validation must start with the short-soak guard/triage refresh")
+    if not any("hd_soak_short_validation_refresh.py" in command for command in post_run_validation):
+        failures.append("post-run validation does not refresh short-soak guard/triage outputs")
+    if any("hd_soak_report.py" in command and "--require-pass" in command for command in post_run_validation):
+        failures.append("post-run validation must not run a direct require-pass guard before failure triage")
+    if not any("hd_soak_short_step_status.py" in command for command in post_run_validation):
+        failures.append("post-run validation does not refresh short-step status")
     if "git diff --check" not in post_run_validation:
         failures.append("post-run validation does not include git diff --check")
+    if not any("hd_soak_dry_run_plan.py" in command for command in post_run_handoff_refresh):
+        failures.append("post-run handoff refresh does not rebuild the dry-run plan")
+    if not any("hd_endurance_next_actions.py" in command for command in post_run_handoff_refresh):
+        failures.append("post-run handoff refresh does not rebuild next actions")
+    if not any("hd_soak_approval_preflight.py" in command for command in post_run_handoff_refresh):
+        failures.append("post-run handoff refresh does not rebuild approval preflight")
+    if not any("current_evidence_refresh.py" in command for command in post_run_evidence_refresh):
+        failures.append("post-run evidence refresh does not refresh current evidence")
+    if not any("evidence_index_check.py" in command for command in post_run_evidence_refresh):
+        failures.append("post-run evidence refresh does not check evidence links")
 
-    for guard_name in ("harness_guard", "visible_runtime_guard", "process_hygiene", "exe_artifact"):
+    for guard_name in ("harness_guard", "dry_run_plan", "visible_runtime_guard", "process_hygiene", "exe_artifact"):
         report = loaded.get(guard_name) or {}
         if report and not report.get("passed"):
             failures.append(f"{guard_name} is not passing")
@@ -152,10 +502,11 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         failures.append("exe artifact guard reports tracked executables")
 
     approval_prompt = (
-        "Approve the first short2 menu-idle visible-runtime soak using the exact "
+        f"Approve the {step_slug(step)} visible-runtime soak using the exact "
         "approval-gated command in this report. It will generate a patched candidate "
         r"under C:\ClashTests\hd-soak and raw frame artifacts under C:\ClashCaptures\hd-soak; "
-        r"it must not modify C:\Clash\clash95.exe."
+        rf"it must not modify C:\Clash\clash95.exe, and it enforces input drift <= "
+        rf"{EXPECTED_MAX_INPUT_DRIFT_PX}px."
     )
 
     return {
@@ -165,14 +516,55 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "status": "ready_for_explicit_approval" if not failures else "not_ready",
         "source_artifacts": {name: str(path) for name, path in sources.items()},
         "current_step": current_step,
+        "step": {
+            "id": step.get("id"),
+            "tier": step.get("tier"),
+            "route": step.get("route"),
+            "paths": paths,
+        },
+        "current_step_artifacts": artifacts,
         "approval_prompt": approval_prompt,
         "safe_dry_run_command": dry_run_command,
-        "approval_gated_runtime_command": runtime_command,
+        "approval_gated_runtime_command": approval_command,
+        "legacy_step_runtime_command": runtime_command,
         "post_run_validation": post_run_validation,
+        "post_run_handoff_refresh": post_run_handoff_refresh,
+        "post_run_evidence_refresh": post_run_evidence_refresh,
+        "dry_run_plan_consistency": {
+            "path": str(args.hd_soak_dry_run_plan_json),
+            "passed": bool((loaded.get("dry_run_plan") or {}).get("passed")),
+            "status": (loaded.get("dry_run_plan") or {}).get("status"),
+            "current_step": ((loaded.get("dry_run_plan") or {}).get("current_step") or {}).get("id"),
+            "candidate_path": dry_run_plan_payload.get("candidate_path"),
+            "candidate_dir": dry_run_plan_payload.get("candidate_dir"),
+            "output_root": dry_run_plan_payload.get("output_root"),
+            "execute_command": (loaded.get("dry_run_plan") or {}).get("approval_gated_execute_command"),
+            "freshness": dry_run_plan_freshness(loaded.get("dry_run_plan") or {}),
+        },
+        "next_action_consistency": {
+            "approval_step_pending": approval_step_pending,
+            "next_action_id": action.get("id"),
+            "runtime_command_matches": action.get("exact_runtime_command") == approval_command,
+            "legacy_step_runtime_command_matches": action.get("legacy_step_runtime_command") in {None, runtime_command},
+            "dry_run_command_matches": action.get("safe_dry_run_command") == dry_run_command,
+            "post_run_validation_matches": action.get("post_run_validation") == post_run_validation,
+            "post_run_handoff_refresh_matches": action.get("post_run_handoff_refresh")
+            == post_run_handoff_refresh,
+            "post_run_evidence_refresh_matches": action.get("post_run_evidence_refresh")
+            == post_run_evidence_refresh,
+            "plan_verified_execute_command_matches": action.get("plan_verified_execute_command")
+            == dry_run_plan_execute_command,
+            "dry_run_plan_summary_matches": not action_plan_mismatch_keys,
+            "dry_run_plan_summary_mismatch_keys": action_plan_mismatch_keys,
+            "current_step_artifacts_match": bool(action_artifacts) and not artifact_mismatch_keys,
+            "current_step_artifact_mismatch_keys": artifact_mismatch_keys,
+            "approval_command_uses_dry_run_plan": approval_command == dry_run_plan_execute_command,
+        },
         "writes_outside_repo": sorted(writes),
-        "must_not_modify": action.get("must_not_modify") or [],
+        "must_not_modify": must_not_modify,
         "guards": {
             "harness_guard_passed": bool((loaded.get("harness_guard") or {}).get("passed")),
+            "dry_run_plan_passed": bool((loaded.get("dry_run_plan") or {}).get("passed")),
             "visible_runtime_guard_passed": bool((loaded.get("visible_runtime_guard") or {}).get("passed")),
             "process_hygiene_passed": bool((loaded.get("process_hygiene") or {}).get("passed")),
             "exe_artifact_guard_passed": bool((loaded.get("exe_artifact") or {}).get("passed")),
@@ -197,8 +589,15 @@ def to_markdown(report: dict[str, Any]) -> str:
         f"- Status: `{report['status']}`",
         f"- Current step: `{(report.get('current_step') or {}).get('id')}`",
         f"- Current step status: `{(report.get('current_step') or {}).get('status')}`",
+        f"- Canonical runtime report missing: `{(report.get('current_step_artifacts') or {}).get('canonical_runtime_report_missing')}`",
         f"- Stable stage should change: `{report['locks']['stable_stage_should_change']}`",
         f"- Right-bottom promotion blocked: `{report['locks']['right_bottom_promotion_blocked']}`",
+        "",
+        "## Current Step Artifacts",
+        "",
+        f"- Report JSON: `{(report.get('current_step_artifacts') or {}).get('report_json')}` exists=`{(report.get('current_step_artifacts') or {}).get('report_json_exists')}`",
+        f"- Guard JSON: `{(report.get('current_step_artifacts') or {}).get('guard_json')}` exists=`{(report.get('current_step_artifacts') or {}).get('guard_json_exists')}`",
+        f"- Triage JSON: `{(report.get('current_step_artifacts') or {}).get('triage_json')}` exists=`{(report.get('current_step_artifacts') or {}).get('triage_json_exists')}`",
         "",
         "## Approval Prompt",
         "",
@@ -216,11 +615,35 @@ def to_markdown(report: dict[str, Any]) -> str:
         report["approval_gated_runtime_command"],
         "```",
         "",
-        "## Post-Run Validation",
+        "## Dry-Run Plan",
+        "",
+        f"- Plan: `{(report.get('dry_run_plan_consistency') or {}).get('path')}`",
+        f"- Status: `{(report.get('dry_run_plan_consistency') or {}).get('status')}`",
+        f"- Current step: `{(report.get('dry_run_plan_consistency') or {}).get('current_step')}`",
+        f"- Candidate path: `{(report.get('dry_run_plan_consistency') or {}).get('candidate_path')}`",
+        f"- Passing: `{(report.get('dry_run_plan_consistency') or {}).get('passed')}`",
+        f"- Freshness passing: `{((report.get('dry_run_plan_consistency') or {}).get('freshness') or {}).get('passed')}`",
+        f"- Max age hours: `{((report.get('dry_run_plan_consistency') or {}).get('freshness') or {}).get('max_age_hours')}`",
+        "",
+        "Plan-emitted execute command:",
+        "",
+        "```powershell",
+        str((report.get("dry_run_plan_consistency") or {}).get("execute_command") or ""),
+        "```",
+        "",
+        "## Focused Post-Run Validation",
         "",
     ]
     for command in report.get("post_run_validation") or []:
         lines.append(f"- `{command}`")
+    if report.get("post_run_handoff_refresh"):
+        lines.extend(["", "## Post-Run Handoff Refresh", ""])
+        for command in report.get("post_run_handoff_refresh") or []:
+            lines.append(f"- `{command}`")
+    if report.get("post_run_evidence_refresh"):
+        lines.extend(["", "## Broad Evidence Refresh", ""])
+        for command in report.get("post_run_evidence_refresh") or []:
+            lines.append(f"- `{command}`")
     if report.get("failures"):
         lines.extend(["", "## Failures", ""])
         lines.extend(f"- {failure}" for failure in report["failures"])
@@ -242,6 +665,7 @@ def main() -> int:
     parser.add_argument("--next-actions-json", type=Path, default=DEFAULT_NEXT_ACTIONS_JSON)
     parser.add_argument("--step-status-json", type=Path, default=DEFAULT_STEP_STATUS_JSON)
     parser.add_argument("--hd-soak-harness-guard-json", type=Path, default=DEFAULT_HARNESS_GUARD_JSON)
+    parser.add_argument("--hd-soak-dry-run-plan-json", type=Path, default=DEFAULT_DRY_RUN_PLAN_JSON)
     parser.add_argument("--visible-runtime-guard-json", type=Path, default=DEFAULT_VISIBLE_RUNTIME_GUARD_JSON)
     parser.add_argument("--process-hygiene-json", type=Path, default=DEFAULT_PROCESS_HYGIENE_JSON)
     parser.add_argument("--exe-artifact-json", type=Path, default=DEFAULT_EXE_ARTIFACT_JSON)

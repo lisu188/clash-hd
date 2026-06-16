@@ -1,0 +1,593 @@
+{
+  "log": "captures\\archive\\cdb-surface-dump-20260616-153751\\cdb-surface-dump.log",
+  "png": "captures\\archive\\cdb-surface-dump-20260616-153751\\surface.png",
+  "expected_slot": 0,
+  "unit": {
+    "log": "captures\\archive\\cdb-surface-dump-20260616-153751\\cdb-surface-dump.log",
+    "expected_slot": 0,
+    "marker_counts": {
+      "UNITSEL_ROUTE_START": 0,
+      "UNITSEL_INVOKE_408030_THEN_406980": 0,
+      "UNITSEL_SELECT_ENTRY": 0,
+      "UNITSEL_SELECT_TILE": 0,
+      "UNITSEL_SELECT_SUCCESS": 0,
+      "UNITSEL_SELECT_FAIL": 0,
+      "UNITSEL_WRITE_511B58": 0,
+      "UNITSEL_WRITE_514194": 0,
+      "UNITSEL_406980_ENTRY": 0,
+      "UNITSEL_406980_POST_REDRAW_ENTRY": 0,
+      "UNITSEL_406980_PRESENT_HELPER": 0,
+      "UNITSEL_406980_RENDER_PRESENT": 0,
+      "UNITSEL_POST_REDRAW_CAVE_ENTRY": 0,
+      "UNITSEL_406980_POST_REDRAW_RETURN": 0,
+      "UNITSEL_406980_RETURN_DUMP": 0,
+      "UNITSEL_40A490_ENTRY": 0,
+      "UNITSEL_40A500_ENTRY": 0,
+      "UNITSEL_40A500_CALL_423B00": 0,
+      "UNITSEL_423B00_ENTRY": 0,
+      "SURFDUMP_LOADSAVE": 1,
+      "SURFDUMP_PLAYGAME": 1,
+      "SURFDUMP_REDRAW": 16,
+      "SURFDUMP_READY": 1,
+      "SURFDUMP_HOST_READY": 1,
+      "AV_SURFDUMP": 0
+    },
+    "rows": [
+      {
+        "line_no": 204,
+        "marker": "SURFDUMP_LOADSAVE",
+        "raw_marker": "SURFDUMP_LOADSAVE",
+        "line": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=03a10030",
+        "values": {
+          "selected_arg": 0,
+          "selected_global": 0,
+          "accept": 1,
+          "choice": 5,
+          "gd": "03a10030"
+        }
+      },
+      {
+        "line_no": 206,
+        "marker": "SURFDUMP_PLAYGAME",
+        "raw_marker": "SURFDUMP_PLAYGAME",
+        "line": "SURFDUMP_PLAYGAME gd=03a10030 map=(100,100) scroll=(10,17) surface=038bc960 size=(640,480)",
+        "values": {
+          "gd": "03a10030",
+          "surface": "038bc960"
+        }
+      },
+      {
+        "line_no": 408,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=0 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 0,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 412,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=1 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 1,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 415,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=2 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 2,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 418,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=3 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 3,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 419,
+        "marker": "SURFDUMP_READY",
+        "raw_marker": "SURFDUMP_READY",
+        "line": "SURFDUMP_READY redraw_seq=4 surface=0a57ee30 size=(800,600) base=0a820030 bytes=480000",
+        "values": {
+          "redraw_seq": 4,
+          "surface": "0a57ee30",
+          "base": "0a820030",
+          "bytes": 480000
+        }
+      },
+      {
+        "line_no": 431,
+        "marker": "SURFDUMP_HOST_READY",
+        "raw_marker": "SURFDUMP_HOST_READY",
+        "line": "SURFDUMP_HOST_READY",
+        "values": {}
+      },
+      {
+        "line_no": 434,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=4 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 4,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 437,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=5 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 5,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 440,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=6 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 6,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 443,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=7 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 7,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 446,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=8 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 8,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 449,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=9 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 9,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 452,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=10 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 10,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 455,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=11 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 11,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 458,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=12 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 12,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 461,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=13 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 13,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 464,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=14 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 14,
+          "surface": "0a57ee30"
+        }
+      },
+      {
+        "line_no": 467,
+        "marker": "SURFDUMP_REDRAW",
+        "raw_marker": "SURFDUMP_REDRAW",
+        "line": "SURFDUMP_REDRAW seq=15 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a57ee30 size=(800,600)",
+        "values": {
+          "seq": 15,
+          "surface": "0a57ee30"
+        }
+      }
+    ],
+    "loadsave_rows": [
+      {
+        "line_no": 204,
+        "selected_arg": 0,
+        "selected_global": 0
+      }
+    ],
+    "load_slot_match": true,
+    "ready": true,
+    "first_ready_line": 419,
+    "first_redraw_line": 408,
+    "pre_redraw_dump": false,
+    "selection_success": false,
+    "unit_info_route": false,
+    "post_redraw_route": false,
+    "present_helper": false,
+    "render_present": false,
+    "action_update": false,
+    "av_count": 0,
+    "av_rows": [],
+    "classification": [
+      "load route used expected slot 0",
+      "unit selection success was not observed",
+      "selected-unit info/action updater 00406980 did not run",
+      "surface dump happened after the normal redraw cadence"
+    ]
+  },
+  "hover": {
+    "log": "captures\\archive\\cdb-surface-dump-20260616-153751\\cdb-surface-dump.log",
+    "marker_counts": {
+      "HOVSEL_FORCE_STATE": 0,
+      "HOVSEL_REDRAW_ENTRY": 0,
+      "HOVSEL_UNITINFO_ENTRY": 0,
+      "HOVSEL_UNITINFO_CALL": 0,
+      "HOVSEL_PANEL_DRAW": 0,
+      "HOVSEL_GRID_DRAW": 0,
+      "HOVSEL_STATUS_DRAW": 0,
+      "HOVSEL_ACTION_BOX": 0,
+      "HOVSEL_STATE_HELPER": 0,
+      "HOVSEL_HOVER_HANDLER": 0,
+      "HOVSEL_ACTION_UI_ENTRY": 0,
+      "HOVSEL_TEXT": 0,
+      "HOVSEL_TEXTFMT": 0,
+      "HOVSEL_PRESENT": 0,
+      "HOVSEL_PRESENT_NULL": 0,
+      "SURFDUMP_PLAYGAME": 1,
+      "SURFDUMP_REDRAW": 16,
+      "SURFDUMP_READY": 1,
+      "AV_SURFDUMP": 0
+    },
+    "force_states": [],
+    "redraws": [],
+    "entries": [],
+    "presents": [],
+    "null_presents": [],
+    "region_counts": {
+      "frame_left": 0,
+      "frame_top": 0,
+      "right_frame_under_minimap": 0,
+      "bottom_tooltip": 0,
+      "bottom_right_panel": 0,
+      "bottom_frame": 0
+    },
+    "native_clip_row_count": 0,
+    "native_clip_rows": [],
+    "surfdump_redraw_lines": [
+      408,
+      412,
+      415,
+      418,
+      434,
+      437,
+      440,
+      443,
+      446,
+      449,
+      452,
+      455,
+      458,
+      461,
+      464,
+      467
+    ],
+    "last_redraw_line": 467,
+    "ready_line": 419,
+    "entries_after_last_redraw": [],
+    "presents_after_last_redraw": [],
+    "classification": [
+      "surface dump reached gameplay ready state",
+      "target UI functions were not reached under the observed hover sequence"
+    ],
+    "ready": true,
+    "av_count": 0
+  },
+  "border": {
+    "log": "captures\\archive\\cdb-surface-dump-20260616-153751\\cdb-surface-dump.log",
+    "marker_counts": {
+      "BORDER_FULLREDRAW_ENTER": 0,
+      "TOOLTIP_UNITINFO_ENTRY": 0,
+      "BORDER_PANEL_DRAW": 0,
+      "TOOLTIP_STATUS_DRAW": 0,
+      "TOOLTIP_ACTION_BOX": 0,
+      "BORDER_PANEL_SPRITE_ENTRY": 0,
+      "BORDER_INFO_WINDOW_ENTRY": 0,
+      "BORDER_NOTIFY_TEXT_ENTRY": 0,
+      "BORDER_MISSION_STATUS_ENTRY": 0,
+      "TOOLTIP_TEXT": 0,
+      "TOOLTIP_TEXTFMT": 0,
+      "BORDER_TOOLTIP_PRESENT": 0,
+      "BORDER_TOOLTIP_PRESENT_NULLPTR": 0,
+      "APCOMP_ACTION_BOX_ENTRY": 0,
+      "APCOMP_COPYBACK_SAMPLES": 0,
+      "APCOMPOSE_STATUS_SHIFT_CALL": 0,
+      "APCOMPOSE_STATUS_SHIFT_DONE": 0,
+      "APCOMPOSE_ACTION_SHIFT_CALL": 0,
+      "APCOMPOSE_ACTION_SHIFT_DONE": 0,
+      "SURFDUMP_PLAYGAME": 1,
+      "SURFDUMP_READY": 1
+    },
+    "row_counts": {
+      "fullredraw": 0,
+      "text": 0,
+      "present": 0,
+      "present_null": 0,
+      "samples": 0,
+      "entries": 0,
+      "av": 0,
+      "surfdump_playgame": 1,
+      "surfdump_ready": 1
+    },
+    "surface_sizes": [],
+    "d526990_values": [],
+    "d526990_nonzero_seen": false,
+    "present_by_region": {
+      "frame_left": 0,
+      "frame_top": 0,
+      "right_frame_under_minimap": 0,
+      "bottom_tooltip": 0,
+      "bottom_right_panel": 0,
+      "bottom_frame": 0
+    },
+    "null_present_by_region": {
+      "frame_left": 0,
+      "frame_top": 0,
+      "right_frame_under_minimap": 0,
+      "bottom_tooltip": 0,
+      "bottom_right_panel": 0,
+      "bottom_frame": 0
+    },
+    "native_clip_row_count": 0,
+    "native_clip_rows": [],
+    "null_native_clip_row_count": 0,
+    "null_native_clip_rows": [],
+    "text_rows": [],
+    "entry_rows": [],
+    "fullredraw_rows": [],
+    "surfdump_ready_rows": [
+      {
+        "line_no": 419,
+        "line": "SURFDUMP_READY redraw_seq=4 surface=0a57ee30 size=(800,600) base=0a820030 bytes=480000"
+      }
+    ],
+    "av_rows": [],
+    "png": {
+      "path": "captures\\archive\\cdb-surface-dump-20260616-153751\\surface.png",
+      "image_size": {
+        "width": 800,
+        "height": 600
+      },
+      "logical_size": {
+        "width": 800,
+        "height": 600
+      },
+      "regions": {
+        "frame_left": {
+          "logical_rect": [
+            0,
+            0,
+            31,
+            599
+          ],
+          "image_rect": [
+            0,
+            0,
+            31,
+            599
+          ],
+          "nonblack_percent": 80.0,
+          "black_percent": 20.0
+        },
+        "frame_top": {
+          "logical_rect": [
+            0,
+            0,
+            799,
+            15
+          ],
+          "image_rect": [
+            0,
+            0,
+            799,
+            15
+          ],
+          "nonblack_percent": 80.0,
+          "black_percent": 20.0
+        },
+        "right_frame_under_minimap": {
+          "logical_rect": [
+            586,
+            230,
+            799,
+            527
+          ],
+          "image_rect": [
+            586,
+            230,
+            799,
+            527
+          ],
+          "nonblack_percent": 24.116,
+          "black_percent": 75.884
+        },
+        "bottom_tooltip": {
+          "logical_rect": [
+            32,
+            528,
+            585,
+            599
+          ],
+          "image_rect": [
+            32,
+            528,
+            585,
+            599
+          ],
+          "nonblack_percent": 73.406,
+          "black_percent": 26.594
+        },
+        "bottom_right_panel": {
+          "logical_rect": [
+            586,
+            528,
+            799,
+            599
+          ],
+          "image_rect": [
+            586,
+            528,
+            799,
+            599
+          ],
+          "nonblack_percent": 21.43,
+          "black_percent": 78.57
+        },
+        "bottom_frame": {
+          "logical_rect": [
+            0,
+            580,
+            799,
+            599
+          ],
+          "image_rect": [
+            0,
+            580,
+            799,
+            599
+          ],
+          "nonblack_percent": 47.962,
+          "black_percent": 52.038
+        }
+      }
+    }
+  },
+  "hover_modes": [],
+  "missing_hover_modes": [
+    "action_box_hover",
+    "action_grid_hover",
+    "bottom_tooltip_hover",
+    "safe_center_hold",
+    "selected_unit_hover"
+  ],
+  "hover_sequence_observed": false,
+  "tooltip_owner_row_count": 0,
+  "tooltip_owner_evidence": false,
+  "tooltip_present_by_region": {
+    "frame_left": 0,
+    "frame_top": 0,
+    "right_frame_under_minimap": 0,
+    "bottom_tooltip": 0,
+    "bottom_right_panel": 0,
+    "bottom_frame": 0
+  },
+  "tooltip_null_present_by_region": {
+    "frame_left": 0,
+    "frame_top": 0,
+    "right_frame_under_minimap": 0,
+    "bottom_tooltip": 0,
+    "bottom_right_panel": 0,
+    "bottom_frame": 0
+  },
+  "png_regions": {
+    "selected_unit_action_bar": {
+      "logical_rect": [
+        215,
+        580,
+        585,
+        599
+      ],
+      "image_rect": [
+        215,
+        580,
+        585,
+        599
+      ],
+      "nonblack_percent": 91.954,
+      "black_percent": 8.046,
+      "mean_luma": 66.995
+    },
+    "bottom_tooltip_strip": {
+      "logical_rect": [
+        32,
+        528,
+        585,
+        599
+      ],
+      "image_rect": [
+        32,
+        528,
+        585,
+        599
+      ],
+      "nonblack_percent": 73.406,
+      "black_percent": 26.594,
+      "mean_luma": 70.503
+    }
+  },
+  "action_bar_visible": true,
+  "tooltip_strip_nonblack_visible": true,
+  "tooltip_strip_visible": false,
+  "unit_basic_pass": false,
+  "no_av": true,
+  "av_count": 0,
+  "evidence_pass": false,
+  "tooltip_recovered": false,
+  "overall_pass": false,
+  "decision": "BASIC_EVIDENCE_FAILED",
+  "classification": [
+    "first-mission selection/post-redraw action-bar route failed one or more gates",
+    "tooltip/action hover sequence was incomplete",
+    "native tooltip/status owner evidence was not observed",
+    "selected-unit action-bar visual regression gate passed at the expected bottom strip",
+    "native bottom tooltip strip has nonblack pixels without owner evidence",
+    "no AV rows were observed"
+  ]
+}

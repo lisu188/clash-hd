@@ -1,12 +1,12 @@
 # Stable Stage Guard
 
-- Overall: FAIL
-- Generated: `2026-06-15T22:36:06+02:00`
+- Overall: PASS
+- Generated: `2026-06-16T15:52:07+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
 - Current stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Patcher default stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Validation-only groups in stable stage: `[]`
-- Mapsurface stages checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
+- Mapsurface stages checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
 - Mapsurface stages with menu-surface: `[]`
 - Mapsurface stages missing upgrade: `[]`
 
@@ -24,16 +24,14 @@
 - `menu_surface_replaced_by_map_surface_upgrade`: `PASS`
 - `right_bottom_promotion_decision`: `PASS`
 - `right_bottom_evidence_matrix`: `PASS`
-- `castle_overview_promotion_decision`: `FAIL`
+- `castle_overview_promotion_decision`: `PASS`
   - `focused_displayed_wrapper_ok`: `True`
   - `visible_multihit_completion_ok`: `True`
   - `dormant_multihit_completion_ok`: `True`
-  - castle overview promotion decision is not passing
-- `castle_overview_evidence_matrix`: `FAIL`
+- `castle_overview_evidence_matrix`: `PASS`
   - `focused_displayed_wrapper_ok`: `True`
   - `visible_multihit_completion_ok`: `True`
   - `dormant_multihit_completion_ok`: `True`
-  - castle overview evidence matrix is not passing
 
 ## Validation-Only Groups
 
@@ -55,8 +53,3 @@
 - `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all`: `['castle-ui-center-present-wrapper', 'castle-ui-centered-input', 'castle-overview-center-present-wrapper', 'castle-overview-centered-input']`
 - `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter`: `['castle-ui-center-present-wrapper', 'castle-ui-centered-input', 'castle-overview-center-present-wrapper', 'castle-overview-centered-input', 'battle-ui-center-present-wrapper']`
 - `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe`: `['castle-ui-center-present-wrapper', 'castle-ui-centered-input', 'castle-overview-center-present-wrapper', 'castle-overview-centered-input', 'battle-ui-center-present-wrapper', 'battle-grid-centered-input', 'battle-ui-centered-input']`
-
-## Failures
-
-- castle_overview_promotion_decision: castle overview promotion decision is not passing
-- castle_overview_evidence_matrix: castle overview evidence matrix is not passing

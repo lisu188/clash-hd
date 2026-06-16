@@ -85,7 +85,7 @@ def good_payloads() -> dict[str, dict]:
     }
     triage = {
         "passed": True,
-        "classification": "controlled_recovered_but_natural_route_blocked",
+        "classification": "controlled_recovered_but_natural_route_nonpromoting",
         "promotion_ready": False,
         "stable_stage_should_change": False,
     }
@@ -120,6 +120,14 @@ def test_missing_triage_fails(fixture: Path) -> None:
     report = build_from_paths(paths)
     assert report["passed"] is False, report
     assert any("missing right-bottom blocker triage" in failure for failure in report["failures"]), report
+
+
+def test_legacy_blocked_classification_is_still_accepted(fixture: Path) -> None:
+    payloads = good_payloads()
+    payloads["triage"]["classification"] = "controlled_recovered_but_natural_route_blocked"
+    report = build_from_paths(write_payloads(fixture, payloads))
+    assert report["passed"] is True, report
+    assert report["promotion_ready"] is False, report
 
 
 def test_natural_owner_rows_make_guard_stale(fixture: Path) -> None:
@@ -177,6 +185,7 @@ def run_tests() -> None:
     try:
         test_good_visual_blocker_passes(fixture / "good")
         test_missing_triage_fails(fixture / "missing-triage")
+        test_legacy_blocked_classification_is_still_accepted(fixture / "legacy-classification")
         test_natural_owner_rows_make_guard_stale(fixture / "owner-rows")
         test_visual_no_longer_black_fails_closed(fixture / "visual-fixed")
         test_controlled_recovery_regression_fails(fixture / "controlled-regression")

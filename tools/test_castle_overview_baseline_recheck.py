@@ -22,6 +22,7 @@ def good_args(fixture: Path) -> argparse.Namespace:
         barracks_run=fixture / "barracks",
         stage="castlecenter-all",
         patch_exe=None,
+        patch_report_json=None,
         latest_overview_run=fixture / "latest-overview",
         focused_hitbox_run=fixture / "focused-hitbox",
         visible_multihit_run=fixture / "visible-multihit",

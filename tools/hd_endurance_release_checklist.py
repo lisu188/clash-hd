@@ -28,6 +28,7 @@ DEFAULT_MD = Path("captures/current/hd-endurance-release-checklist-current.md")
 DEFAULT_STABLE_STAGE_JSON = Path("captures/current/stable-stage-guard-current.json")
 DEFAULT_NO_POPUP_JSON = Path("captures/current/no-popup-map-evidence-current.json")
 DEFAULT_SHORT_SOAK_JSON = Path("captures/current/hd-soak-report-guard-current.json")
+DEFAULT_SHORT_STEP_STATUS_JSON = Path("captures/current/hd-soak-short-step-status-current.json")
 DEFAULT_LONG_SOAK_JSON = Path("captures/current/hd-soak-long-report-guard-current.json")
 DEFAULT_MANUAL_JSON = Path("captures/current/manual-directinput-validation-checklist-current.json")
 DEFAULT_RIGHT_BOTTOM_JSON = Path("captures/current/right-bottom-compose-promotion-decision-current.json")
@@ -95,6 +96,138 @@ def continuity_check_passed(continuity: dict[str, Any] | None, check_id: str) ->
     return bool(value)
 
 
+def continuity_check_summary(
+    continuity: dict[str, Any] | None,
+    check_id: str,
+    label: str,
+    passed: bool,
+) -> str:
+    if passed:
+        return f"{label} proof passes"
+    if continuity is None:
+        return f"{label} proof is absent"
+    value = (continuity.get("checks") or {}).get(check_id)
+    if isinstance(value, dict):
+        status = value.get("status") or "blocked"
+        summary = value.get("summary") or "proof is not sufficient for release"
+        return f"{label} proof blocked ({status}): {summary}"
+    return f"{label} proof is blocked"
+
+
+def long_soak_summary(long_soak: dict[str, Any] | None, passed: bool) -> str:
+    if passed:
+        return "2h+ soak evidence exists and passes"
+    if long_soak is None:
+        return "no 2h+ representative-route soak report is present"
+    status = long_soak.get("status") or "blocked"
+    summary = long_soak.get("summary") or "2h+ representative-route soak evidence is not sufficient for release"
+    return f"2h+ representative-route soak blocked ({status}): {summary}"
+
+
+def short_step_by_id(short_step_status: dict[str, Any] | None, step_id: str) -> dict[str, Any] | None:
+    for step in (short_step_status or {}).get("steps") or []:
+        if step.get("id") == step_id:
+            return step
+    return None
+
+
+def canonical_short_step_passed(short_step_status: dict[str, Any] | None, step_id: str) -> bool:
+    step = short_step_by_id(short_step_status, step_id)
+    if not step:
+        return False
+    summary = step.get("summary") or {}
+    return (
+        bool(short_step_status and short_step_status.get("passed"))
+        and step.get("status") == "pass"
+        and step.get("passed") is True
+        and step.get("tier") == "short2"
+        and step.get("route") == "menu-idle"
+        and summary.get("guard_present") is True
+        and summary.get("guard_overall") is True
+        and summary.get("executed") is True
+    )
+
+
+def artifact_path_exists(value: Any) -> bool:
+    if not value:
+        return False
+    return Path(str(value).replace("\\", "/")).exists()
+
+
+def summary_bool_or_path_exists(summary: dict[str, Any], key: str, paths: dict[str, Any], path_key: str) -> bool:
+    if key in summary:
+        return bool(summary.get(key))
+    return artifact_path_exists(paths.get(path_key))
+
+
+def short_soak_requirement_details(
+    short_soak: dict[str, Any] | None,
+    short_step_status: dict[str, Any] | None,
+    step_id: str,
+) -> dict[str, Any]:
+    current_step = (short_step_status or {}).get("current_step") or {}
+    step = short_step_by_id(short_step_status, step_id) or {}
+    summary = step.get("summary") or {}
+    paths = step.get("paths") or {}
+    return {
+        "global_report_guard": {
+            "source_report": (short_soak or {}).get("source_report"),
+            "source_report_selection": (short_soak or {}).get("source_report_selection"),
+            "canonical_first_step_report": (short_soak or {}).get("canonical_first_step_report"),
+            "canonical_first_step_present": (short_soak or {}).get("canonical_first_step_present"),
+            "canonical_runtime_report_missing": (short_soak or {}).get("canonical_runtime_report_missing"),
+            "overall": (short_soak or {}).get("overall"),
+            "failure_count": len((short_soak or {}).get("failures") or []),
+        },
+        "short_step_status": {
+            "current_step": current_step.get("id"),
+            "current_step_status": current_step.get("status"),
+            "ladder_complete": (short_step_status or {}).get("ladder_complete"),
+            "canonical_report_present": summary_bool_or_path_exists(
+                summary, "canonical_report_present", paths, "report_json"
+            ),
+            "guard_present": summary_bool_or_path_exists(summary, "guard_present", paths, "guard_json"),
+            "triage_present": summary_bool_or_path_exists(summary, "triage_present", paths, "triage_json"),
+            "guard_overall": summary.get("guard_overall"),
+            "executed": summary.get("executed"),
+        },
+        "canonical_outputs": {
+            "report_json": paths.get("report_json"),
+            "guard_json": paths.get("guard_json"),
+            "triage_json": paths.get("triage_json"),
+        },
+    }
+
+
+def short_soak_requirement_summary(
+    short_soak: dict[str, Any] | None,
+    short_step_status: dict[str, Any] | None,
+    short_soak_ok: bool,
+    canonical_short_soak_ok: bool,
+) -> str:
+    if short_soak_ok:
+        return (
+            "canonical short2 menu-idle step status passes"
+            if canonical_short_soak_ok
+            else "short2 menu-idle soak report guard passes"
+        )
+    details = short_soak_requirement_details(short_soak, short_step_status, "short2_menu_idle")
+    canonical_path = (details["global_report_guard"].get("canonical_first_step_report") or "")
+    canonical_missing = details["global_report_guard"].get("canonical_runtime_report_missing")
+    current_status = details["short_step_status"].get("current_step_status")
+    if canonical_missing is True and canonical_path:
+        return (
+            "short2 visible-runtime soak has not produced passing frame/process evidence; "
+            f"canonical report is missing: {canonical_path}"
+        )
+    if current_status:
+        return (
+            "short2 visible-runtime soak has not produced passing frame/process evidence; "
+            f"current short-step status is {current_status}"
+        )
+    return "short2 visible-runtime soak has not produced passing frame/process evidence"
+
+
 def requirement(
     requirement_id: str,
     title: str,
@@ -103,8 +236,9 @@ def requirement(
     summary: str,
     next_probe: str,
     category: str,
+    details: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    return {
+    row = {
         "id": requirement_id,
         "title": title,
         "category": category,
@@ -114,6 +248,9 @@ def requirement(
         "summary": summary,
         "next_probe": next_probe,
     }
+    if details is not None:
+        row["details"] = details
+    return row
 
 
 def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
@@ -121,6 +258,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         "stable_stage": args.stable_stage_json,
         "no_popup_map": args.no_popup_json,
         "short_soak": args.short_soak_json,
+        "short_step_status": args.short_step_status_json,
         "long_soak": args.long_soak_json,
         "manual_directinput": args.manual_json,
         "right_bottom": args.right_bottom_json,
@@ -134,6 +272,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
     stable = load_json(args.stable_stage_json)
     no_popup = load_json(args.no_popup_json)
     short_soak = load_json(args.short_soak_json)
+    short_step_status = load_json(args.short_step_status_json)
     long_soak = load_json(args.long_soak_json)
     manual = load_json(args.manual_json)
     right_bottom = load_json(args.right_bottom_json)
@@ -153,7 +292,10 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         and nested(stable_checks, "stable_stage_validation_groups_absent", "passed") is True
     )
     no_popup_ok = bool(no_popup and no_popup.get("passed"))
-    short_soak_ok = bool(short_soak and short_soak.get("overall") and short_soak.get("tier") == "short2")
+    legacy_short_soak_ok = bool(short_soak and short_soak.get("overall") and short_soak.get("tier") == "short2")
+    canonical_short_soak_ok = canonical_short_step_passed(short_step_status, "short2_menu_idle")
+    short_soak_ok = legacy_short_soak_ok or canonical_short_soak_ok
+    short_soak_status = "pass" if short_soak_ok else ("missing" if not short_soak and not short_step_status else "blocked")
     long_soak_ok = bool(
         long_soak
         and long_soak.get("overall")
@@ -214,22 +356,19 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         requirement(
             "short2_menu_idle_soak",
             "First short2 menu-idle soak passes",
-            "pass" if short_soak_ok else source_state(short_soak),
-            [str(args.short_soak_json)],
-            "short2 menu-idle soak report guard passes"
-            if short_soak_ok
-            else "short2 visible-runtime soak has not produced passing frame/process evidence",
+            short_soak_status,
+            [str(args.short_soak_json), str(args.short_step_status_json)],
+            short_soak_requirement_summary(short_soak, short_step_status, short_soak_ok, canonical_short_soak_ok),
             "run the approval-gated short2 menu-idle soak on the protected stage",
             "endurance",
+            short_soak_requirement_details(short_soak, short_step_status, "short2_menu_idle"),
         ),
         requirement(
             "long_soak_representative_routes",
             "2h+ representative-route soak passes",
             "pass" if long_soak_ok else source_state(long_soak),
             [str(args.long_soak_json)],
-            "2h+ soak evidence exists and passes"
-            if long_soak_ok
-            else "no 2h+ representative-route soak report is present",
+            long_soak_summary(long_soak, long_soak_ok),
             "add long-tier reports only after short2/short10/short30 are stable",
             "endurance",
         ),
@@ -299,7 +438,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             "Safe save/load roundtrip continuity is proven",
             "pass" if save_load_ok else missing_or_blocked(continuity),
             [str(args.continuity_json)],
-            "save/load continuity proof passes" if save_load_ok else "save/load continuity proof is absent",
+            continuity_check_summary(continuity, "save_load_roundtrip", "save/load continuity", save_load_ok),
             "add safe test-save roundtrip evidence after short-tier stability",
             "state continuity",
         ),
@@ -308,7 +447,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             "Turn advancement avoids state desync",
             "pass" if turn_ok else missing_or_blocked(continuity),
             [str(args.continuity_json)],
-            "turn advancement proof passes" if turn_ok else "turn-advancement proof is absent",
+            continuity_check_summary(continuity, "turn_advancement", "turn advancement", turn_ok),
             "add deterministic turn-advance route evidence after save/load is safe",
             "state continuity",
         ),
@@ -317,7 +456,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             "Campaign routes remain stable",
             "pass" if campaign_ok else missing_or_blocked(continuity),
             [str(args.continuity_json)],
-            "campaign route proof passes" if campaign_ok else "campaign-route proof is absent",
+            continuity_check_summary(continuity, "campaign_routes", "campaign route", campaign_ok),
             "add representative campaign route soaks after short/medium tiers are stable",
             "state continuity",
         ),
@@ -435,6 +574,18 @@ def to_markdown(report: dict[str, Any]) -> str:
         lines.append(
             f"- `{row['id']}`: `{row['status']}` - {row['summary']}"
         )
+        details = row.get("details") or {}
+        canonical_outputs = details.get("canonical_outputs") or {}
+        short_status = details.get("short_step_status") or {}
+        global_guard = details.get("global_report_guard") or {}
+        if row["id"] == "short2_menu_idle_soak" and details:
+            lines.append(
+                "  "
+                f"Canonical report: `{canonical_outputs.get('report_json') or global_guard.get('canonical_first_step_report')}` "
+                f"present=`{global_guard.get('canonical_first_step_present') or short_status.get('canonical_report_present')}`; "
+                f"guard: `{canonical_outputs.get('guard_json')}` present=`{short_status.get('guard_present')}`; "
+                f"triage: `{canonical_outputs.get('triage_json')}` present=`{short_status.get('triage_present')}`"
+            )
 
     if report["failures"]:
         lines.extend(["", "## Open Items", ""])
@@ -458,6 +609,7 @@ def add_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--stable-stage-json", type=Path, default=DEFAULT_STABLE_STAGE_JSON)
     parser.add_argument("--no-popup-json", type=Path, default=DEFAULT_NO_POPUP_JSON)
     parser.add_argument("--short-soak-json", type=Path, default=DEFAULT_SHORT_SOAK_JSON)
+    parser.add_argument("--short-step-status-json", type=Path, default=DEFAULT_SHORT_STEP_STATUS_JSON)
     parser.add_argument("--long-soak-json", type=Path, default=DEFAULT_LONG_SOAK_JSON)
     parser.add_argument("--manual-json", type=Path, default=DEFAULT_MANUAL_JSON)
     parser.add_argument("--right-bottom-json", type=Path, default=DEFAULT_RIGHT_BOTTOM_JSON)

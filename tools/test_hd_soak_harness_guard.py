@@ -68,12 +68,41 @@ def test_guard_rejects_missing_explicit_approval(fixture: Path) -> None:
     assert any("explicit user approval" in failure for failure in guard["failures"]), guard
 
 
+def test_guard_rejects_dry_run_execute_command_without_require_pass(fixture: Path) -> None:
+    bad = harness_text().replace("    '-RequirePass',\n", "")
+    script = write_fixture(fixture / "missing-require-pass.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert any("dry-run execute command does not include -RequirePass" in failure for failure in guard["failures"]), guard
+
+
+def test_guard_rejects_dry_run_execute_command_without_json(fixture: Path) -> None:
+    bad = harness_text().replace("    '-Json'\n", "")
+    script = write_fixture(fixture / "missing-json.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert any("dry-run execute command does not include -Json" in failure for failure in guard["failures"]), guard
+
+
 def test_guard_rejects_missing_metric(fixture: Path) -> None:
     bad = harness_text().replace("unique_sample_colors_min", "unique_sample_colors_low")
     script = write_fixture(fixture / "missing-metric.ps1", bad)
     guard = hd_soak_harness_guard.build_guard(script)
     assert guard["passed"] is False, guard
     assert any("unique_sample_colors_min" in failure for failure in guard["failures"]), guard
+
+
+def test_guard_rejects_missing_render_range_and_inventory_metrics(fixture: Path) -> None:
+    bad = harness_text()
+    bad = bad.replace("sample_interval_sec", "sample_period_sec")
+    bad = bad.replace("mean_luma_max", "mean_luma_high")
+    bad = bad.replace("capture_errors", "capture_issue_rows")
+    script = write_fixture(fixture / "missing-range-inventory.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert any("sample_interval_sec" in failure for failure in guard["failures"]), guard
+    assert any("mean_luma_max" in failure for failure in guard["failures"]), guard
+    assert any("capture_errors" in failure for failure in guard["failures"]), guard
 
 
 def test_cli_writes_outputs_and_fails_closed(fixture: Path) -> None:
@@ -104,7 +133,10 @@ def run_tests() -> None:
         test_guard_rejects_stage_drift(fixture / "stage")
         test_guard_rejects_repo_candidate_default(fixture / "repo-candidate")
         test_guard_rejects_missing_explicit_approval(fixture / "approval")
+        test_guard_rejects_dry_run_execute_command_without_require_pass(fixture / "require-pass")
+        test_guard_rejects_dry_run_execute_command_without_json(fixture / "json")
         test_guard_rejects_missing_metric(fixture / "metric")
+        test_guard_rejects_missing_render_range_and_inventory_metrics(fixture / "range-inventory")
         test_cli_writes_outputs_and_fails_closed(fixture / "cli")
     finally:
         shutil.rmtree(fixture, ignore_errors=True)

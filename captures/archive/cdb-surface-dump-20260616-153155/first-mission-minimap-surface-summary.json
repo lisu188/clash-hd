@@ -1,0 +1,216 @@
+{
+  "generated": "2026-06-16T13:33:15.627568+00:00",
+  "log": "captures\\archive\\cdb-surface-dump-20260616-153155\\cdb-surface-dump.log",
+  "coverage_json": "captures\\archive\\cdb-surface-dump-20260616-153155\\map-tile-coverage-full.json",
+  "visibility_json": "captures\\archive\\cdb-surface-dump-20260616-153155\\visibility-coverage-full.json",
+  "passed": true,
+  "counts": {
+    "init": 4,
+    "dirty": 192,
+    "dirty_unavailable": 0,
+    "full": 5,
+    "select": 1,
+    "done": 1,
+    "ready": 1,
+    "av": 0
+  },
+  "ready_seen": true,
+  "av_free": true,
+  "unit_selected": true,
+  "selected_values": [
+    3
+  ],
+  "minimap_anchor_ok": true,
+  "backing_size_ok": true,
+  "map_surface_ok": true,
+  "minimap_bounds": [
+    [
+      586,
+      16,
+      799,
+      229
+    ]
+  ],
+  "backing_sizes": [
+    [
+      214,
+      214
+    ]
+  ],
+  "map_sizes": [
+    [
+      800,
+      600
+    ]
+  ],
+  "backing_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 960
+    },
+    {
+      "value": "0x21",
+      "count": 192
+    }
+  ],
+  "dirty_map_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 749
+    },
+    {
+      "value": "0x00",
+      "count": 305
+    },
+    {
+      "value": "0xc1",
+      "count": 98
+    }
+  ],
+  "full_minimap_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 20
+    }
+  ],
+  "full_right_panel_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 15
+    }
+  ],
+  "full_bottom_sample_counts": [
+    {
+      "value": "0x01",
+      "count": 10
+    },
+    {
+      "value": "0xc1",
+      "count": 5
+    }
+  ],
+  "backing_black_like_percent": 83.333,
+  "full_minimap_black_like_percent": 100.0,
+  "right_panel_black_like_percent": 100.0,
+  "bottom_black_like_percent": 66.667,
+  "coverage_available": false,
+  "coverage_gameplay_frame_likely": null,
+  "coverage_flagged_active_cells": null,
+  "coverage_measurable_active_cells": null,
+  "coverage_edge_coverage": {},
+  "blank_active_cells": [],
+  "visibility_available": false,
+  "visibility_blank_cells": [],
+  "visibility_explained_blank_cells": [],
+  "visibility_unexplained_blank_cells": [],
+  "visibility_status_counts": {},
+  "all_blank_cells_visibility_explained": false,
+  "last_fullredraw_sample": {
+    "line_no": 424,
+    "kind": "FMMS_FULLREDRAW_AFTER_LOWER",
+    "redraw": 1,
+    "surface": "0a2fee30",
+    "width": 800,
+    "height": 600,
+    "minimap_samples": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "right_panel_samples": [
+      1,
+      1,
+      1
+    ],
+    "bottom_samples": [
+      193,
+      1,
+      1
+    ]
+  },
+  "first_dirty": [
+    {
+      "line_no": 220,
+      "kind": "FMMS_MINIMAP_DIRTY_ENTRY",
+      "seq": 0,
+      "ret": "004169a1",
+      "left": 586,
+      "top": 16,
+      "right": 799,
+      "bottom": 229,
+      "backing": "0801f758",
+      "backing_width": 214,
+      "backing_height": 214,
+      "backing_base": "0a2f0030",
+      "map_surface": "0a2fee30",
+      "map_width": 800,
+      "map_height": 600,
+      "regs": [
+        32,
+        95,
+        79,
+        16
+      ],
+      "backing_samples": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        33
+      ],
+      "map_samples": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "last_dirty": [
+    {
+      "line_no": 418,
+      "kind": "FMMS_MINIMAP_DIRTY_ENTRY",
+      "seq": 95,
+      "ret": "004169a1",
+      "left": 586,
+      "top": 16,
+      "right": 799,
+      "bottom": 229,
+      "backing": "0801f758",
+      "backing_width": 214,
+      "backing_height": 214,
+      "backing_base": "0a2f0030",
+      "map_surface": "0a2fee30",
+      "map_width": 800,
+      "map_height": 600,
+      "regs": [
+        736,
+        799,
+        527,
+        464
+      ],
+      "backing_samples": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        33
+      ],
+      "map_samples": [
+        1,
+        1,
+        1,
+        1,
+        193,
+        1
+      ]
+    }
+  ],
+  "interpretation": "minimap backing is already mostly black-like before final HD surface sampling",
+  "blocker": "right/bottom panel samples remain mostly black-like"
+}
