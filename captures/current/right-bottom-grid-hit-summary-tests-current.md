@@ -1,7 +1,7 @@
 # Right-Bottom Grid Hit Summary Tests
 
 - Status: PASS
-- Generated: `2026-06-15T22:35:49+02:00`
+- Generated: `2026-06-16T18:04:47+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for parser CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the right-bottom grid-hit parser requires ready rows, native coordinate (450,73), expected grid result 0, draw rows, no failure-exit rows, and no AV rows
 

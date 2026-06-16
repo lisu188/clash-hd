@@ -1,7 +1,7 @@
 # Load Slot Transition Run Plan
 
 - Status: PASS
-- Generated: `2026-06-15T22:35:47+02:00`
+- Generated: `2026-06-16T18:04:44+02:00`
 - Runtime policy: repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: passes only when rows 3-5 remain blocked before 0044895A, the transition probe guard is passing, and every future command stays hidden-desktop and non-promoting
 - Promotion ready: `False`

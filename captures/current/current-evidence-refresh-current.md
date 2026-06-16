@@ -1,22 +1,21 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-06-15T22:36:20+02:00`
+- Generated: `2026-06-16T18:05:34+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
 
 ### Hd Map Smoke
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-map-smoke-current.json`
 - Markdown: `captures\current\hd-map-smoke-current.md`
-- patch_stage_passed: `False`
-- post_owner_passed: `False`
-- candidate_sha256: `None`
-- Failures:
-  - patch-stage: no candidate executable path was found
-  - post-owner evidence matrix failed
+- patch_stage_passed: `True`
+- post_owner_passed: `True`
+- candidate_sha256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
+- captures_root: `captures\archive`
+- patch_report_json: `captures\current\patch-stage-current-hd-map.json`
 
 ### No Popup Map Evidence
 
@@ -458,11 +457,11 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-owner-flag-inventory-current.json`
 - Markdown: `captures\current\right-bottom-owner-flag-inventory-current.md`
-- scanned_log_count: `172`
-- relevant_run_count: `80`
-- classification_counts: `{'forced_owner_action_route': 64, 'natural_state_gated': 1, 'natural_ui_descriptor_only': 2, 'non_natural_isolated_fixture': 10, 'right_bottom_related': 3}`
+- scanned_log_count: `188`
+- relevant_run_count: `81`
+- classification_counts: `{'forced_owner_action_route': 65, 'natural_state_gated': 1, 'natural_ui_descriptor_only': 2, 'non_natural_isolated_fixture': 10, 'right_bottom_related': 3}`
 - natural_state_gated_count: `1`
-- forced_owner_action_route_count: `64`
+- forced_owner_action_route_count: `65`
 - natural_action_route_count: `0`
 - guard_policy: `right-bottom owner/action evidence must keep at least one controlled forced owner route, at least one current natural owner-flag-gated route, and no non-fixture archived natural route that already reaches the owner/action renderer without an explicit forced owner flag`
 - runtime_policy: `repo-only; scans existing CDB logs and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
@@ -532,10 +531,10 @@
 
 ### Right Bottom Visual Artifact Guard
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\right-bottom-visual-artifact-guard-current.json`
 - Markdown: `captures\current\right-bottom-visual-artifact-guard-current.md`
-- visual_status: `visual_artifact_guard_stale`
+- visual_status: `natural_ui_visual_artifact_blocked`
 - promotion_ready: `False`
 - stable_stage_should_change: `False`
 - natural_owner_action_rows: `0`
@@ -544,8 +543,6 @@
 - natural_r8c11_black: `100.0`
 - guard_policy: `passes only while the current natural right-bottom visual artifact remains explicitly blocked from promotion: controlled composition is recovered, natural owner/action rows are absent, and the lower/right natural regions still show the known black/striped incomplete state`
 - runtime_policy: `repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-- Failures:
-  - visual artifact guard failed: blocker_triage_non_promoting
 
 ### Right Bottom Compose Promotion Decision Tests
 
@@ -579,7 +576,7 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-visual-artifact-guard-tests-current.json`
 - Markdown: `captures\current\right-bottom-visual-artifact-guard-tests-current.md`
-- test_count: `6`
+- test_count: `7`
 - guard_policy: `proves the right-bottom visual artifact guard blocks the current stripy/out-of-place natural UI state from promotion and fails closed if the artifact or route state changes`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -795,14 +792,12 @@
 
 ### Castle Overview Evidence
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\castle-overview-evidence-current.json`
 - Markdown: `captures\current\castle-overview-evidence-current.md`
 - promotion_status: `validation_stage_only`
-- candidate_sha256: `None`
-- patches: `None`
-- Failures:
-  - patch_stage: candidate executable does not exist: C:\ClashTests\cdb-castle-overview-nativerender-flags1f-multihit\clash95_hd_surfdump_20260515_105557.exe
+- candidate_sha256: `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6`
+- patches: `{'patched': 134, 'original': 0, 'unexpected': 0, 'total': 134}`
 
 ### Castle Owner Records Summary Tests
 
@@ -827,8 +822,8 @@
 - Status: PASS
 - JSON: `captures\current\castle-overview-evidence-matrix-tests-current.json`
 - Markdown: `captures\current\castle-overview-evidence-matrix-tests-current.md`
-- test_count: `5`
-- guard_policy: `proves the castle overview evidence matrix aggregates every required component gate, fails when any required gate fails, requires displayed-wrapper proof in the focused hitbox gate, reports target-done completion proof in multi-hit gates, preserves validation-stage-only status, and its CLI fails closed under --require-pass`
+- test_count: `6`
+- guard_policy: `proves the castle overview evidence matrix aggregates every required component gate, fails when any required gate fails, accepts archived patch-stage reports when live candidate executables are absent, requires displayed-wrapper proof in the focused hitbox gate, reports target-done completion proof in multi-hit gates, preserves validation-stage-only status, and its CLI fails closed under --require-pass`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for matrix CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Castle Overview Gate Tests
@@ -869,7 +864,7 @@
 
 ### Castle Overview Promotion Decision
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\castle-overview-promotion-decision-current.json`
 - Markdown: `captures\current\castle-overview-promotion-decision-current.md`
 - decision: `defer_stable_promotion`
@@ -879,8 +874,6 @@
 - visible_multihit_completion_ok: `True`
 - dormant_multihit_completion_ok: `True`
 - manual_input_proof_valid: `False`
-- Failures:
-  - castle overview evidence matrix is not passing
 
 ### Castle Overview Promotion Decision Tests
 
@@ -893,7 +886,7 @@
 
 ### Castle Overview Baseline Recheck
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\castle-overview-baseline-recheck-current.json`
 - Markdown: `captures\current\castle-overview-baseline-recheck-current.md`
 - overview_baseline_run: `captures\archive\cdb-surface-dump-20260515-105041`
@@ -902,11 +895,9 @@
 - barracks_descriptor_click: `True`
 - barracks_controlled_4356c0: `True`
 - latest_matrix_promotion_status: `validation_stage_only`
-- candidate_sha256: `None`
+- candidate_sha256: `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6`
 - visible_multihit_completion_ok: `True`
 - dormant_multihit_completion_ok: `True`
-- Failures:
-  - latest_castle_overview_matrix: patch_stage: candidate executable does not exist: C:\ClashTests\cdb-castle-overview-nativerender-flags1f-multihit\clash95_hd_surfdump_20260515_105557.exe
 
 ### Castle Overview Baseline Recheck Tests
 
@@ -982,7 +973,7 @@
 
 ### Battle Ui Evidence Matrix
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\battle-ui-evidence-current.json`
 - Markdown: `captures\current\battle-ui-evidence-current.md`
 - focused_completion_percent: `99.91`
@@ -994,8 +985,6 @@
 - promotion_status: `validation_stage_only`
 - stable_stage_should_change: `False`
 - open_items: `['real visible click-to-callback proof remains open', '1 invalid visible-input run(s) are retained as negative evidence']`
-- Failures:
-  - stable_smoke: stable HD-map smoke did not pass
 
 ### Battle Ui Evidence Matrix Tests
 
@@ -1030,9 +1019,9 @@
 - JSON: `captures\current\patch-definition-current.json`
 - Markdown: `captures\current\patch-definition-current.md`
 - patcher_default_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
-- patch_count: `191`
+- patch_count: `189`
 - patch_group_count: `43`
-- stage_count: `55`
+- stage_count: `56`
 - validation_groups_in_stable: `[]`
 - overlap_failure_count: `0`
 - guard_policy: `patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps`
@@ -1049,18 +1038,15 @@
 
 ### Stable Stage Guard
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\stable-stage-guard-current.json`
 - Markdown: `captures\current\stable-stage-guard-current.md`
 - current_stable_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - patcher_default_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - validation_only_groups_in_stable: `[]`
-- mapsurface_stages_checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
+- mapsurface_stages_checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
 - mapsurface_with_menu_surface: `[]`
 - mapsurface_missing_upgrade: `[]`
-- Failures:
-  - castle_overview_promotion_decision: castle overview promotion decision is not passing
-  - castle_overview_evidence_matrix: castle overview evidence matrix is not passing
 
 ### Stable Stage Guard Tests
 
@@ -1114,8 +1100,8 @@
 - Status: PASS
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
-- risky_file_count: `88`
-- classification_counts: `{'safe': 111, 'exempt': 15, 'manual_visible_runtime_gated': 2, 'test_fixture': 71}`
+- risky_file_count: `105`
+- classification_counts: `{'safe': 109, 'exempt': 24, 'manual_visible_runtime_gated': 2, 'test_fixture': 79}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1133,8 +1119,8 @@
 - Status: PASS
 - JSON: `captures\current\no-visible-runtime-guard-current.json`
 - Markdown: `captures\current\no-visible-runtime-guard-current.md`
-- run_count: `19`
-- hidden_run_count: `19`
+- run_count: `21`
+- hidden_run_count: `21`
 - guard_policy: `all referenced CDB surface-dump runs must be hidden-desktop evidence`
 
 ### No Visible Runtime Guard Tests
@@ -1192,8 +1178,8 @@
 - Status: PASS
 - JSON: `captures\current\manual-directinput-validation-checklist-tests-current.json`
 - Markdown: `captures\current\manual-directinput-validation-checklist-tests-current.md`
-- test_count: `9`
-- guard_policy: `proves the manual DirectInput checklist enumerates the remaining manual targets, keeps promotion blocked without valid proof, validates manual proof manifests including candidate/stage, observation, no-crash, and process-hygiene records, records the no-popup operator preference, and fails closed for incomplete checklist data`
+- test_count: `10`
+- guard_policy: `proves the manual DirectInput checklist enumerates the remaining manual targets, keeps promotion blocked without valid proof, validates manual proof manifests including isolated C:\ClashTests candidate path, stage, observation, no-crash, and process-hygiene records, records the no-popup operator preference, and fails closed for incomplete checklist data`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for checklist CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Manual Directinput Proof Template
@@ -1213,8 +1199,8 @@
 - Status: PASS
 - JSON: `captures\current\manual-directinput-proof-template-tests-current.json`
 - Markdown: `captures\current\manual-directinput-proof-template-tests-current.md`
-- test_count: `4`
-- guard_policy: `proves the manual DirectInput proof template documents the proof shape, stays invalid until placeholders are replaced, and can become valid only after all required manual proof fields are supplied`
+- test_count: `5`
+- guard_policy: `proves the manual DirectInput proof template documents the proof shape, pins candidate placeholders under C:\ClashTests, stays invalid until placeholders are replaced, and can become valid only after all required manual proof fields are supplied`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for template CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Manual Directinput Run Plan
@@ -1236,8 +1222,8 @@
 - Status: PASS
 - JSON: `captures\current\manual-directinput-run-plan-tests-current.json`
 - Markdown: `captures\current\manual-directinput-run-plan-tests-current.md`
-- test_count: `5`
-- guard_policy: `proves the manual DirectInput run plan remains repo-only, keeps visible commands approval-gated with -AllowVisibleRuntime, and cannot substitute for a valid manual proof manifest`
+- test_count: `6`
+- guard_policy: `proves the manual DirectInput run plan remains repo-only, keeps visible commands approval-gated with -AllowVisibleRuntime, keeps candidate placeholders under C:\ClashTests, and cannot substitute for a valid manual proof manifest`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Promotion Override Manifest
@@ -1304,7 +1290,7 @@
 - Status: PASS
 - JSON: `captures\current\current-completion-summary-tests-current.json`
 - Markdown: `captures\current\current-completion-summary-tests-current.md`
-- test_count: `3`
+- test_count: `5`
 - guard_policy: `proves the generated percentage summary stays machine-checkable and does not claim full-game completion while manual proof is absent`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1315,7 +1301,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof and stable promotion remain blocked`
-- percentages: `{'current_repo_evidence_gates': 88.97, 'focused_battle_right_bottom_lane': 99.91, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 94.44, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.91, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1331,8 +1317,277 @@
 - Status: PASS
 - JSON: `captures\current\hd-soak-harness-guard-tests-current.json`
 - Markdown: `captures\current\hd-soak-harness-guard-tests-current.md`
+- test_count: `9`
+- guard_policy: `proves the opt-in soak harness stays protected-stage, approval-gated, non-promoting, artifact-safe, and preserves full render-range plus sample-interval, route/process/frame/capture inventory metrics`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Report Guard
+
+- Status: FAIL
+- JSON: `captures\current\hd-soak-report-guard-current.json`
+- Markdown: `captures\current\hd-soak-report-guard-current.md`
+- source_report: `captures\current\hd-soak-short2-menu-idle-current.json`
+- source_report_selection: `canonical_first_short_step`
+- canonical_first_step_report: `captures\current\hd-soak-short2-menu-idle-current.json`
+- canonical_first_step_present: `True`
+- legacy_report: `captures\current\hd-soak-short-current.json`
+- legacy_report_present: `True`
+- canonical_runtime_report_missing: `False`
+- stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
+- tier: `short2`
+- route: `menu-idle`
+- duration_sec: `120`
+- executed: `True`
+- right_bottom_promotion_blocked: `True`
+- runtime_policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - source soak report did not mark itself passed
+  - source soak report contains 8 failure(s)
+  - frame sample count 1 is below 2
+  - minimum nonblack percent 9.697 is below 10.0
+  - process exited unexpectedly with code 1
+  - process was not stopped cleanly by the harness
+  - 2 process samples reported HasExited=True
+  - working_set_growth_bytes is missing
+  - private_memory_growth_bytes is missing
+  - handle_growth is missing
+  - frame sample elapsed coverage could not be computed
+  - process sample elapsed coverage 16.606s is below required 103.000s
+  - 1 route/input rows did not verify
+  - 1 route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes
+
+### Hd Soak Report Guard Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-report-guard-tests-current.json`
+- Markdown: `captures\current\hd-soak-report-guard-tests-current.md`
+- test_count: `17`
+- guard_policy: `proves executed soak reports must carry protected-stage patch evidence, base/candidate SHA-256s, a passing source status, external artifact locations, stable/progressing frame metrics, clean process stop, elapsed frame/process sample coverage, valid route/input probe rows, and non-promoting input status with bounded working-set, private-memory, handle growth, valid capture/frame inventories, and consistent raw/sample summary metrics`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Failure Triage
+
+- Status: FAIL
+- JSON: `captures\current\hd-soak-failure-triage-current.json`
+- Markdown: `captures\current\hd-soak-failure-triage-current.md`
+- source_report: `captures\current\hd-soak-short2-menu-idle-current.json`
+- source_report_selection: `canonical_first_short_step`
+- canonical_first_step_report: `captures\current\hd-soak-short2-menu-idle-current.json`
+- canonical_first_step_present: `True`
+- legacy_report: `captures\current\hd-soak-short-current.json`
+- legacy_report_present: `True`
+- canonical_runtime_report_missing: `False`
+- classification: `intro_skip_input_drift_exit`
+- next_probe: `fix or verify intro-skip harness input mode before rerunning; use postmessage/space-only harness prep, then rerun visible soak only after explicit visible-window approval`
+- route: `menu-idle`
+- final_route_marker: `intro-skip`
+- runtime_policy: `repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - process exited unexpectedly with code 1
+  - expected at least 2 frame samples
+  - nonblack percent dropped below 10
+  - route/input probe failures: 1
+  - input drift exceeded 1px or metric missing: 1
+  - working-set growth metric unavailable
+  - private-memory growth metric unavailable
+  - handle growth metric unavailable
+
+### Hd Soak Failure Triage Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-failure-triage-tests-current.json`
+- Markdown: `captures\current\hd-soak-failure-triage-tests-current.md`
+- test_count: `15`
+- guard_policy: `proves soak failures are classified into approval, crash, render/palette, input-route, frame-progression, process-growth, capture, artifact-budget, insufficient-sample hang, elapsed-coverage, cleanup, or unclassified buckets with next probes`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Short Artifact Manifest
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-artifact-manifest-current.json`
+- Markdown: `captures\current\hd-soak-short-artifact-manifest-current.md`
+- step_count: `5`
+- existing_step_report_count: `1`
+- legacy_report_exists: `True`
+- long_tiers_locked: `True`
+- future_lanes_locked: `True`
+- right_bottom_promotion_blocked: `True`
+- runtime_policy: `repo-only short-soak artifact manifest; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Short Artifact Manifest Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-artifact-manifest-tests-current.json`
+- Markdown: `captures\current\hd-soak-short-artifact-manifest-tests-current.md`
+- test_count: `5`
+- guard_policy: `proves each short soak ladder step has durable current report, guard, and triage paths, with execution commands gated by -Execute -AllowVisibleRuntime`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Short Validation Refresh
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-validation-refresh-current.json`
+- Markdown: `captures\current\hd-soak-short-validation-refresh-current.md`
+- status: `validated_reports`
+- counts: `{'steps': 5, 'reports_found': 1, 'guards_written': 1, 'triage_written': 1, 'validated_failed': 1}`
+- runtime_policy: `repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Short Validation Refresh Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-validation-refresh-tests-current.json`
+- Markdown: `captures\current\hd-soak-short-validation-refresh-tests-current.md`
 - test_count: `6`
-- guard_policy: `proves the opt-in soak harness stays protected-stage, approval-gated, non-promoting, and artifact-safe`
+- guard_policy: `proves canonical short soak reports are automatically guarded and triaged before step-status evaluation, while missing reports remain a safe pending repo-only state`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Short Step Status
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-step-status-current.json`
+- Markdown: `captures\current\hd-soak-short-step-status-current.md`
+- ladder_complete: `False`
+- counts: `{'total': 5, 'passed': 0, 'pending_or_missing': 0, 'locked': 4, 'failed_or_invalid': 1}`
+- current_step: `short2_menu_idle`
+- current_step_status: `failed_classified_intro_skip_input_drift_exit`
+- long_tiers_locked: `True`
+- future_lanes_locked: `True`
+- right_bottom_promotion_blocked: `True`
+- runtime_policy: `repo-only short-soak step status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Short Step Status Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-short-step-status-tests-current.json`
+- Markdown: `captures\current\hd-soak-short-step-status-tests-current.md`
+- test_count: `7`
+- guard_policy: `proves per-step soak status stays repo-only, advances only after guarded passing output, rejects stale guard/triage artifacts that do not match the canonical report, and demands triage for failed canonical runtime reports`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Dry Run Plan
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-dry-run-plan-current.json`
+- Markdown: `captures\current\hd-soak-dry-run-plan-current.md`
+- status: `ready_for_explicit_approval`
+- current_step: `short2_menu_idle`
+- current_step_status: `failed_classified_intro_skip_input_drift_exit`
+- dry_run: `True`
+- candidate_dir: `C:\ClashTests\hd-soak`
+- output_root: `C:\ClashCaptures\hd-soak`
+- stable_stage_should_change: `False`
+- right_bottom_promotion_blocked: `True`
+- focused_post_run_validation_count: `0`
+- handoff_refresh_count: `0`
+- broad_evidence_refresh_count: `0`
+- runtime_policy: `repo-only soak dry-run plan guard; invokes the PowerShell harness only without -Execute unless --read-plan-json is supplied; does not launch Clash95, CDB, wrappers, or visible windows`
+
+### Hd Soak Dry Run Plan Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-dry-run-plan-tests-current.json`
+- Markdown: `captures\current\hd-soak-dry-run-plan-tests-current.md`
+- test_count: `8`
+- guard_policy: `proves the current short-soak dry-run handoff is machine-readable, non-executing, protected-stage, canonical-path, outside-repo, and fails closed unless copied execute commands include -RequirePass -Json and the base executable exists with the expected SHA`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Intro Skip Rerun Readiness
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-intro-skip-rerun-readiness-current.json`
+- Markdown: `captures\current\hd-soak-intro-skip-rerun-readiness-current.md`
+- status: `ready_for_explicit_visible_rerun_approval`
+- current_step: `short2_menu_idle`
+- current_step_status: `failed_classified_intro_skip_input_drift_exit`
+- triage_classification: `intro_skip_input_drift_exit`
+- approval_boundary: `The next runtime run will open a visible Clash95 game window and still requires explicit user approval.`
+- runtime_policy: `repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+
+### Hd Soak Intro Skip Rerun Readiness Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-intro-skip-rerun-readiness-tests-current.json`
+- Markdown: `captures\current\hd-soak-intro-skip-rerun-readiness-tests-current.md`
+- test_count: `4`
+- guard_policy: `proves a classified intro-skip input-drift failure can become a rerun approval packet only after repo-only harness, dry-run, visible-runtime, process, and exe-artifact guards pass`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Continuity Status
+
+- Status: FAIL
+- JSON: `captures\current\hd-continuity-current.json`
+- Markdown: `captures\current\hd-continuity-current.md`
+- counts: `{'total': 3, 'passed': 0, 'blocked': 3}`
+- proof_manifest: `{'path': 'captures\\current\\hd-continuity-proof-current.json', 'present': False, 'valid_json': False}`
+- runtime_policy: `repo-only continuity status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - save_load_roundtrip: compact proof is missing
+  - turn_advancement: compact proof is missing
+  - campaign_routes: compact proof is missing
+
+### Hd Continuity Status Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-continuity-tests-current.json`
+- Markdown: `captures\current\hd-continuity-tests-current.md`
+- test_count: `8`
+- guard_policy: `proves save/load, turn, and campaign continuity remain blocked until a compact approved proof manifest documents isolated test-save evidence, route markers, before/after observations, one shared candidate SHA-256, and no live-save mutation or forbidden repo artifacts`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Soak Long Report Guard
+
+- Status: FAIL
+- JSON: `captures\current\hd-soak-long-report-guard-current.json`
+- Markdown: `captures\current\hd-soak-long-report-guard-current.md`
+- status: `locked_short_ladder_incomplete`
+- duration_sec: `0`
+- counts: `{'required_routes': 2, 'passing_routes': 0, 'missing_routes': 2}`
+- short_ladder: `{'path': 'captures\\current\\hd-soak-short-step-status-current.json', 'present': True, 'ladder_complete': False, 'current_step': {'id': 'short2_menu_idle', 'tier': 'short2', 'route': 'menu-idle', 'status': 'failed_classified_intro_skip_input_drift_exit', 'next_command': None}}`
+- proof_manifest: `{'path': 'captures\\current\\hd-soak-long-proof-current.json', 'present': False, 'report_guard_count': 0}`
+- runtime_policy: `repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - short ladder is not complete; long tiers remain locked
+  - long soak proof manifest is missing: captures\current\hd-soak-long-proof-current.json
+  - missing passing 2h+ representative route: map-idle
+  - missing passing 2h+ representative route: map-pan
+
+### Hd Soak Long Report Guard Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-soak-long-report-guard-tests-current.json`
+- Markdown: `captures\current\hd-soak-long-report-guard-tests-current.md`
+- test_count: `8`
+- guard_policy: `proves 2h+ representative-route soak evidence remains locked until the short ladder passes and approved long map-idle/map-pan soak report guards pass for the same candidate SHA-256`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Endurance Release Checklist
+
+- Status: FAIL
+- JSON: `captures\current\hd-endurance-release-checklist-current.json`
+- Markdown: `captures\current\hd-endurance-release-checklist-current.md`
+- full_game_complete: `False`
+- counts: `{'total': 14, 'passed': 4, 'blocked': 10, 'missing': 0}`
+- next_milestone: `{'id': 'short2_menu_idle_soak', 'title': 'First short2 menu-idle soak passes', 'next_probe': 'run the approval-gated short2 menu-idle soak on the protected stage'}`
+- runtime_policy: `repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit
+  - long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing
+  - stable_menu_real_input: menu-load proof remains pending manual DirectInput validation
+  - stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation
+  - right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
+  - castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
+  - tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
+  - save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
+  - turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
+  - campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
+
+### Hd Endurance Release Checklist Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-endurance-release-checklist-tests-current.json`
+- Markdown: `captures\current\hd-endurance-release-checklist-tests-current.md`
+- test_count: `7`
+- guard_policy: `proves the release-horizon checklist only passes when short/long soak, manual input, screen-route, continuity, hygiene, and promotion-boundary evidence are all current`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Hd Soak Route Coverage
@@ -1342,7 +1597,7 @@
 - Markdown: `captures\current\hd-soak-route-coverage-current.md`
 - implemented_routes: `['menu-idle', 'map-idle', 'map-pan', 'custom']`
 - implemented_tiers: `['short2', 'short10', 'short30', 'custom']`
-- counts: `{'release_lane_count': 10, 'implemented_lane_count': 3, 'planned_lane_count': 7, 'required_short_route_count': 3}`
+- counts: `{'release_lane_count': 10, 'implemented_lane_count': 3, 'planned_lane_count': 7, 'blocked_lane_count': 10, 'required_short_route_count': 3}`
 - coverage_complete: `False`
 - next_runtime_route: `menu-idle`
 - runtime_policy: `repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
@@ -1352,91 +1607,8 @@
 - Status: PASS
 - JSON: `captures\current\hd-soak-route-coverage-tests-current.json`
 - Markdown: `captures\current\hd-soak-route-coverage-tests-current.md`
-- test_count: `5`
-- guard_policy: `proves the soak harness exposes the required short routes and tiers while future castle, battle, right-bottom, save/load, turn, and campaign lanes stay planned/non-promoting`
-- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-
-### Hd Soak Report Guard
-
-- Status: FAIL
-- JSON: `captures\current\hd-soak-report-guard-current.json`
-- Markdown: `captures\current\hd-soak-report-guard-current.md`
-- source_report: `captures\current\hd-soak-short-current.json`
-- stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
-- tier: `short2`
-- route: `menu-idle`
-- duration_sec: `120`
-- executed: `False`
-- right_bottom_promotion_blocked: `True`
-- runtime_policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - soak report was not produced by an execution run
-  - candidate_sha256 is missing or is not a SHA-256 hex digest
-  - patch_stage_report path is missing
-  - frame sample count 0 is below 2
-  - minimum nonblack percent 0.0 is below 10.0
-  - minimum unique sampled colors 0.0 is below 8
-  - process was not stopped cleanly by the harness
-
-### Hd Soak Report Guard Tests
-
-- Status: PASS
-- JSON: `captures\current\hd-soak-report-guard-tests-current.json`
-- Markdown: `captures\current\hd-soak-report-guard-tests-current.md`
-- test_count: `6`
-- guard_policy: `proves executed soak reports must carry protected-stage patch evidence, base/candidate SHA-256s, external artifact locations, stable frame metrics, clean process stop, and non-promoting input status`
-- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-
-### Hd Soak Failure Triage
-
-- Status: FAIL
-- JSON: `captures\current\hd-soak-failure-triage-current.json`
-- Markdown: `captures\current\hd-soak-failure-triage-current.md`
-- classification: `not_executed_pending_approval`
-- next_probe: `obtain explicit approval for the exact short2 visible-runtime command, then rerun the soak`
-- route: `menu-idle`
-- final_route_marker: `pending_approval`
-- runtime_policy: `repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - short2 menu-idle soak was not executed because visible-runtime escalation was not approved
-
-### Hd Soak Failure Triage Tests
-
-- Status: PASS
-- JSON: `captures\current\hd-soak-failure-triage-tests-current.json`
-- Markdown: `captures\current\hd-soak-failure-triage-tests-current.md`
-- test_count: `6`
-- guard_policy: `proves soak failures are classified into approval, crash, render/palette, input-route, capture, artifact-budget, cleanup, or unclassified buckets with next probes`
-- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-
-### Hd Endurance Release Checklist
-
-- Status: FAIL
-- JSON: `captures\current\hd-endurance-release-checklist-current.json`
-- Markdown: `captures\current\hd-endurance-release-checklist-current.md`
-- full_game_complete: `False`
-- counts: `{'total': 14, 'passed': 4, 'blocked': 6, 'missing': 4}`
-- next_milestone: `{'id': 'short2_menu_idle_soak', 'title': 'First short2 menu-idle soak passes', 'next_probe': 'run the approval-gated short2 menu-idle soak on the protected stage'}`
-- runtime_policy: `repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence
-  - long_soak_representative_routes: no 2h+ representative-route soak report is present
-  - stable_menu_real_input: menu-load proof remains pending manual DirectInput validation
-  - stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation
-  - right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
-  - castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
-  - tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
-  - save_load_roundtrip: save/load continuity proof is absent
-  - turn_advancement: turn-advancement proof is absent
-  - campaign_routes: campaign-route proof is absent
-
-### Hd Endurance Release Checklist Tests
-
-- Status: PASS
-- JSON: `captures\current\hd-endurance-release-checklist-tests-current.json`
-- Markdown: `captures\current\hd-endurance-release-checklist-tests-current.md`
-- test_count: `5`
-- guard_policy: `proves the release-horizon checklist only passes when short/long soak, manual input, screen-route, continuity, hygiene, and promotion-boundary evidence are all current`
+- test_count: `8`
+- guard_policy: `proves the soak harness exposes the required short routes and tiers while future castle, battle, right-bottom, save/load, turn, and campaign lanes stay planned/non-promoting with current blocker annotations from the release checklist`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Hd Endurance Next Actions
@@ -1445,8 +1617,13 @@
 - JSON: `captures\current\hd-endurance-next-actions-current.json`
 - Markdown: `captures\current\hd-endurance-next-actions-current.md`
 - status: `waiting_for_explicit_visible_runtime_approval`
-- next_action: `run_short2_menu_idle_soak`
+- next_action: `rerun_short2_menu_idle_soak`
 - requires_explicit_user_approval: `True`
+- has_plan_verified_execute_command: `True`
+- focused_post_run_validation_count: `3`
+- handoff_refresh_count: `5`
+- broad_evidence_refresh_count: `4`
+- current_step_artifacts: `{'report_json': 'captures\\current\\hd-soak-short2-menu-idle-current.json', 'report_json_exists': True, 'guard_json': 'captures\\current\\hd-soak-short2-menu-idle-guard-current.json', 'guard_json_exists': True, 'triage_json': 'captures\\current\\hd-soak-short2-menu-idle-triage-current.json', 'triage_json_exists': True, 'canonical_runtime_report_missing': False, 'post_run_guard_missing': False, 'post_run_triage_missing': False}`
 - runtime_policy: `repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 
 ### Hd Endurance Next Actions Tests
@@ -1454,8 +1631,8 @@
 - Status: PASS
 - JSON: `captures\current\hd-endurance-next-actions-tests-current.json`
 - Markdown: `captures\current\hd-endurance-next-actions-tests-current.md`
-- test_count: `4`
-- guard_policy: `proves the next-action report stays repo-only, separates safe dry-run commands from approval-gated visible runtime commands, pins canonical short2 report outputs, and records post-run validation steps`
+- test_count: `14`
+- guard_policy: `proves the next-action report stays repo-only, separates safe dry-run commands from approval-gated visible runtime commands, pins canonical short-step report outputs, starts focused post-run validation with the failure-safe guard/triage refresh, keeps broad evidence refresh separate, keeps the short ladder ahead of later manual milestones, preserves classified failure triage, records current-step artifact inventory, records post-run validation steps, and requires the dry-run plan to verify the base executable`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Hd Soak Short Tier Ladder
@@ -1480,69 +1657,6 @@
 - guard_policy: `proves the short soak ladder is ordered, approval-gated, non-promoting, and keeps long/future lanes locked until prerequisite soak evidence exists`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
-### Hd Soak Short Artifact Manifest
-
-- Status: PASS
-- JSON: `captures\current\hd-soak-short-artifact-manifest-current.json`
-- Markdown: `captures\current\hd-soak-short-artifact-manifest-current.md`
-- step_count: `5`
-- existing_step_report_count: `0`
-- legacy_report_exists: `True`
-- long_tiers_locked: `True`
-- future_lanes_locked: `True`
-- right_bottom_promotion_blocked: `True`
-- runtime_policy: `repo-only short-soak artifact manifest; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-
-### Hd Soak Short Artifact Manifest Tests
-
-- Status: PASS
-- JSON: `captures\current\hd-soak-short-artifact-manifest-tests-current.json`
-- Markdown: `captures\current\hd-soak-short-artifact-manifest-tests-current.md`
-- test_count: `5`
-- guard_policy: `proves each short soak ladder step has durable current report, guard, and triage paths, with execution commands gated by -Execute -AllowVisibleRuntime`
-- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-
-### Hd Soak Short Validation Refresh
-
-- Status: PASS
-- JSON: `captures\current\hd-soak-short-validation-refresh-current.json`
-- Markdown: `captures\current\hd-soak-short-validation-refresh-current.md`
-- status: `pending_no_reports`
-- counts: `{'steps': 5, 'reports_found': 0, 'guards_written': 0, 'triage_written': 0, 'validated_failed': 0}`
-- runtime_policy: `repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-
-### Hd Soak Short Validation Refresh Tests
-
-- Status: PASS
-- JSON: `captures\current\hd-soak-short-validation-refresh-tests-current.json`
-- Markdown: `captures\current\hd-soak-short-validation-refresh-tests-current.md`
-- test_count: `6`
-- guard_policy: `proves canonical short soak reports are automatically guarded and triaged before step-status evaluation, while missing reports remain a safe pending repo-only state`
-- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-
-### Hd Soak Short Step Status
-
-- Status: PASS
-- JSON: `captures\current\hd-soak-short-step-status-current.json`
-- Markdown: `captures\current\hd-soak-short-step-status-current.md`
-- ladder_complete: `False`
-- counts: `{'total': 5, 'passed': 0, 'pending_or_missing': 1, 'locked': 4, 'failed_or_invalid': 0}`
-- current_step: `short2_menu_idle`
-- current_step_status: `pending_approval_legacy_compat`
-- long_tiers_locked: `True`
-- future_lanes_locked: `True`
-- right_bottom_promotion_blocked: `True`
-- runtime_policy: `repo-only short-soak step status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-
-### Hd Soak Short Step Status Tests
-
-- Status: PASS
-- JSON: `captures\current\hd-soak-short-step-status-tests-current.json`
-- Markdown: `captures\current\hd-soak-short-step-status-tests-current.md`
-- test_count: `5`
-- guard_policy: `proves per-step soak status stays repo-only, advances only after guarded passing output, and demands triage for failed canonical runtime reports`
-- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-
 ### Hd Soak Approval Preflight
 
 - Status: PASS
@@ -1550,7 +1664,9 @@
 - Markdown: `captures\current\hd-soak-approval-preflight-current.md`
 - status: `ready_for_explicit_approval`
 - current_step: `short2_menu_idle`
-- current_step_status: `pending_approval_legacy_compat`
+- current_step_status: `failed_classified_intro_skip_input_drift_exit`
+- dry_run_plan_status: `ready_for_explicit_approval`
+- dry_run_plan_passed: `True`
 - writes_outside_repo: `['C:\\ClashCaptures\\hd-soak', 'C:\\ClashTests\\hd-soak']`
 - stable_stage_should_change: `False`
 - right_bottom_promotion_blocked: `True`
@@ -1561,8 +1677,8 @@
 - Status: PASS
 - JSON: `captures\current\hd-soak-approval-preflight-tests-current.json`
 - Markdown: `captures\current\hd-soak-approval-preflight-tests-current.md`
-- test_count: `7`
-- guard_policy: `proves the first short2 visible-runtime soak remains explicit-approval gated, pins canonical per-step report paths, keeps dry-runs non-executing, and requires clean harness/runtime/process/executable guards before requesting approval`
+- test_count: `22`
+- guard_policy: `proves the first short2 visible-runtime soak remains explicit-approval gated, pins canonical per-step report paths, keeps dry-runs non-executing, can advance to later short steps, starts focused post-run validation with the failure-safe guard/triage refresh, keeps broad evidence refresh separate, requires next-action artifact inventory to match the preflight state, requires the actual harness dry-run plan and embedded next-action summary to match, requires verified base-executable input, and requires clean harness/runtime/process/executable guards before requesting approval`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Capture Corpus Index
@@ -1570,11 +1686,11 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `660`
-- current_reference_count: `160`
+- artifact_count: `704`
+- current_reference_count: `164`
 - stale_visible_or_sandbox_count: `16`
-- reference_status_counts: `{'archived_referenced': 283, 'current_referenced': 130, 'stale_unreferenced': 247}`
-- era_counts: `{'cdb_surface_dump_unverified': 55, 'hidden_cdb_surface_dump': 118, 'other_capture_artifact': 471, 'visible_era': 16}`
+- reference_status_counts: `{'archived_referenced': 283, 'current_referenced': 134, 'stale_unreferenced': 287}`
+- era_counts: `{'cdb_surface_dump_unverified': 60, 'hidden_cdb_surface_dump': 129, 'other_capture_artifact': 499, 'visible_era': 16}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1589,7 +1705,7 @@
 
 ### No Popup Boundary Guard
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\no-popup-boundary-guard-current.json`
 - Markdown: `captures\current\no-popup-boundary-guard-current.md`
 - required_guard_count: `6`
@@ -1600,23 +1716,15 @@
 - required_reports: `['stable_stage_guard', 'exe_artifact_guard', 'surface_dump_policy_guard', 'visible_runtime_launcher_guard', 'no_visible_runtime_guard', 'process_hygiene_guard', 'no_popup_map_evidence', 'no_popup_map_evidence_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
 - evidence_index: `captures\current\hd-map-evidence-current.md`
 - guard_policy: `current refresh must include all no-popup boundary reports and the evidence index must link each report`
-- Failures:
-  - stable_stage_guard: refresh check is not passing: stable_stage_guard
-  - right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
-  - castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck
-  - docs_consistency_guard: refresh check is not passing: docs_consistency_guard
 
 ### Docs Consistency Guard
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\docs-consistency-current.json`
 - Markdown: `captures\current\docs-consistency-current.md`
 - check_count: `12`
 - guard_policy: `generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries`
 - runtime_policy: `repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - boundary_counts: no-popup boundary guard is not passing
-  - validation_only_status: castle validation matrix/decision is not passing
 
 ### Docs Consistency Guard Tests
 
@@ -1632,17 +1740,15 @@
 - Status: PASS
 - JSON: `captures\current\hd-map-evidence-current-check.json`
 - Index: `captures\current\hd-map-evidence-current.md`
-- links: `143`
+- links: `147`
 - images: `9`
-- local_records: `152`
+- local_records: `156`
 - missing: `0`
 - image_missing: `0`
 - image_wrong_extension: `0`
 
 ## Failures
 
-- hd_map_smoke: patch-stage: no candidate executable path was found
-- hd_map_smoke: post-owner evidence matrix failed
 - right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
 - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
 - right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
@@ -1650,34 +1756,42 @@
 - right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
 - right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
 - right_bottom_compose_evidence: natural UI probe did not enter owner/action draw rows
-- right_bottom_visual_artifact_guard: visual artifact guard failed: blocker_triage_non_promoting
-- castle_overview_evidence: patch_stage: candidate executable does not exist: C:\ClashTests\cdb-castle-overview-nativerender-flags1f-multihit\clash95_hd_surfdump_20260515_105557.exe
-- castle_overview_promotion_decision: castle overview evidence matrix is not passing
-- castle_overview_baseline_recheck: latest_castle_overview_matrix: patch_stage: candidate executable does not exist: C:\ClashTests\cdb-castle-overview-nativerender-flags1f-multihit\clash95_hd_surfdump_20260515_105557.exe
-- battle_ui_evidence_matrix: stable_smoke: stable HD-map smoke did not pass
-- stable_stage_guard: castle_overview_promotion_decision: castle overview promotion decision is not passing
-- stable_stage_guard: castle_overview_evidence_matrix: castle overview evidence matrix is not passing
-- hd_soak_report_guard: soak report was not produced by an execution run
-- hd_soak_report_guard: candidate_sha256 is missing or is not a SHA-256 hex digest
-- hd_soak_report_guard: patch_stage_report path is missing
-- hd_soak_report_guard: frame sample count 0 is below 2
-- hd_soak_report_guard: minimum nonblack percent 0.0 is below 10.0
-- hd_soak_report_guard: minimum unique sampled colors 0.0 is below 8
+- hd_soak_report_guard: source soak report did not mark itself passed
+- hd_soak_report_guard: source soak report contains 8 failure(s)
+- hd_soak_report_guard: frame sample count 1 is below 2
+- hd_soak_report_guard: minimum nonblack percent 9.697 is below 10.0
+- hd_soak_report_guard: process exited unexpectedly with code 1
 - hd_soak_report_guard: process was not stopped cleanly by the harness
-- hd_soak_failure_triage: short2 menu-idle soak was not executed because visible-runtime escalation was not approved
-- hd_endurance_release_checklist: short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence
-- hd_endurance_release_checklist: long_soak_representative_routes: no 2h+ representative-route soak report is present
+- hd_soak_report_guard: 2 process samples reported HasExited=True
+- hd_soak_report_guard: working_set_growth_bytes is missing
+- hd_soak_report_guard: private_memory_growth_bytes is missing
+- hd_soak_report_guard: handle_growth is missing
+- hd_soak_report_guard: frame sample elapsed coverage could not be computed
+- hd_soak_report_guard: process sample elapsed coverage 16.606s is below required 103.000s
+- hd_soak_report_guard: 1 route/input rows did not verify
+- hd_soak_report_guard: 1 route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes
+- hd_soak_failure_triage: process exited unexpectedly with code 1
+- hd_soak_failure_triage: expected at least 2 frame samples
+- hd_soak_failure_triage: nonblack percent dropped below 10
+- hd_soak_failure_triage: route/input probe failures: 1
+- hd_soak_failure_triage: input drift exceeded 1px or metric missing: 1
+- hd_soak_failure_triage: working-set growth metric unavailable
+- hd_soak_failure_triage: private-memory growth metric unavailable
+- hd_soak_failure_triage: handle growth metric unavailable
+- hd_continuity_status: save_load_roundtrip: compact proof is missing
+- hd_continuity_status: turn_advancement: compact proof is missing
+- hd_continuity_status: campaign_routes: compact proof is missing
+- hd_soak_long_report_guard: short ladder is not complete; long tiers remain locked
+- hd_soak_long_report_guard: long soak proof manifest is missing: captures\current\hd-soak-long-proof-current.json
+- hd_soak_long_report_guard: missing passing 2h+ representative route: map-idle
+- hd_soak_long_report_guard: missing passing 2h+ representative route: map-pan
+- hd_endurance_release_checklist: short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit
+- hd_endurance_release_checklist: long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing
 - hd_endurance_release_checklist: stable_menu_real_input: menu-load proof remains pending manual DirectInput validation
 - hd_endurance_release_checklist: stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation
 - hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
-- hd_endurance_release_checklist: save_load_roundtrip: save/load continuity proof is absent
-- hd_endurance_release_checklist: turn_advancement: turn-advancement proof is absent
-- hd_endurance_release_checklist: campaign_routes: campaign-route proof is absent
-- no_popup_boundary_guard: stable_stage_guard: refresh check is not passing: stable_stage_guard
-- no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
-- no_popup_boundary_guard: castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck
-- no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard
-- docs_consistency_guard: boundary_counts: no-popup boundary guard is not passing
-- docs_consistency_guard: validation_only_status: castle validation matrix/decision is not passing
+- hd_endurance_release_checklist: save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
+- hd_endurance_release_checklist: turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
+- hd_endurance_release_checklist: campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release

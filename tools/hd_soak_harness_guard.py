@@ -94,6 +94,7 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
         "OutputRoot": r"C:\ClashCaptures\hd-soak",
         "ReportJson": r"captures\current\hd-soak-short-current.json",
         "ReportMarkdown": r"captures\current\hd-soak-short-current.md",
+        "IntroSkipClickMode": "postmessage",
         "Stage": PROTECTED_STABLE_STAGE,
     }
     default_failures = []
@@ -162,7 +163,15 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
     if "-Execute" not in text or "-AllowVisibleRuntime" not in text:
         approval_failures.append("dry-run plan does not show explicit execute/visible flags")
     execute_command_block = assignment_array_block(text, "executeCommand")
-    execute_command_fragments = ["-Execute", "-AllowVisibleRuntime", "-RequirePass", "-Json"]
+    execute_command_fragments = [
+        "-Execute",
+        "-AllowVisibleRuntime",
+        "-IntroSkipClickMode",
+        "-IntroSkipClicks",
+        "-SkipPulses",
+        "-RequirePass",
+        "-Json",
+    ]
     if not execute_command_block:
         approval_failures.append("dry-run execute command block is missing")
     for fragment in execute_command_fragments:
@@ -178,6 +187,30 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
             "execute_command_fragments": execute_command_fragments,
         },
         approval_failures,
+    )
+
+    intro_failures = []
+    intro_values = ["IntroSkipClickMode", "postmessage", "none", "IntroSkipClicks", "SkipPulses"]
+    if not contains_all(text, intro_values):
+        intro_failures.append("intro skip controls are missing required mode/count/pulse tokens")
+    for marker in [
+        "ClickModeOverride",
+        "ClickRepeatOverride",
+        "EffectiveClickMode",
+        "EffectiveClickRepeat",
+        "intro_skip_harness_prep_not_manual_directinput_release_proof",
+    ]:
+        if marker not in text:
+            intro_failures.append(f"intro skip override/report marker is missing: {marker}")
+    if observed_defaults.get("IntroSkipClickMode") != "postmessage":
+        intro_failures.append("IntroSkipClickMode default must remain postmessage")
+    checks["intro_skip_policy"] = check_record(
+        not intro_failures,
+        {
+            "intro_skip_click_mode_default": observed_defaults.get("IntroSkipClickMode"),
+            "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
+        },
+        intro_failures,
     )
 
     artifact_failures = []

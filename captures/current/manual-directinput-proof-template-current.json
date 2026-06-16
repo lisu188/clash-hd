@@ -3,7 +3,8 @@
   "evidence_class": "manual_directinput_template",
   "approved_visible_runtime": false,
   "approval_record": "REPLACE_WITH_APPROVAL_NOTE_OR_LINK",
-  "candidate_path": "REPLACE_WITH_CANDIDATE_EXE_PATH",
+  "candidate_path_policy": "candidate_path must be a freshly built, hashed executable under C:\\ClashTests; never use C:\\Clash\\clash95.exe or a repository-local executable",
+  "candidate_path": "C:\\ClashTests\\manual-directinput\\REPLACE_WITH_CANDIDATE_EXE",
   "executable_sha256": "REPLACE_WITH_64_HEX_SHA256",
   "no_stale_processes": false,
   "checked_items": [

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T22:35:42+02:00",
+  "generated_at": "2026-06-16T18:04:37+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for matrix CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the no-popup map evidence matrix requires a visibility-explained normal run, a forced-visible edge proof, latest-run selection, and CLI fail-closed behavior",

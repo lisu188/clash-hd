@@ -12,6 +12,8 @@ param(
     [string]$Route = 'menu-idle',
     [string]$CustomPoints = '400,300',
     [int]$SampleIntervalSec = 15,
+    [ValidateSet('sendinput', 'postmessage', 'both', 'none')]
+    [string]$IntroSkipClickMode = 'postmessage',
     [int]$IntroSkipClicks = 8,
     [int]$SkipPulses = 4,
     [int]$RouteStepWaitMs = 1400,
@@ -149,13 +151,19 @@ function Invoke-MousePath {
         [string]$OutputJson,
         [string]$Points,
         [bool]$Click,
-        [int]$SpacePulses = 0
+        [int]$SpacePulses = 0,
+        [string]$MoveModeOverride = '',
+        [string]$ClickModeOverride = '',
+        [int]$ClickRepeatOverride = -1
     )
 
     $mouseTool = Join-Path $RepoRoot 'tools\mouse_path_probe.py'
     if (-not (Test-Path -LiteralPath $mouseTool -PathType Leaf)) {
         throw "Required mouse probe was not found: $mouseTool"
     }
+    $effectiveMoveMode = if ($MoveModeOverride) { $MoveModeOverride } else { $MoveMode }
+    $effectiveClickMode = if ($ClickModeOverride) { $ClickModeOverride } else { $ClickMode }
+    $effectiveClickRepeat = if ($ClickRepeatOverride -ge 0) { $ClickRepeatOverride } else { $ClickRepeat }
     $args = @(
         $mouseTool,
         '--pid', "$($Process.Id)",
@@ -166,12 +174,12 @@ function Invoke-MousePath {
         '--space-pulses', "$SpacePulses",
         '--space-interval-ms', '500',
         '--interval-ms', '300',
-        '--move-mode', $MoveMode,
+        '--move-mode', $effectiveMoveMode,
         '--points', $Points,
         '--json', $OutputJson
     )
     if ($Click) {
-        $args += @('--click', '--click-mode', $ClickMode, '--click-hold-ms', "$ClickHoldMs", '--click-repeat', "$ClickRepeat")
+        $args += @('--click', '--click-mode', $effectiveClickMode, '--click-hold-ms', "$ClickHoldMs", '--click-repeat', "$effectiveClickRepeat")
     }
 
     $probeLog = [System.IO.Path]::ChangeExtension($OutputJson, '.log')
@@ -192,6 +200,9 @@ function Invoke-MousePath {
         $result = Get-Content -LiteralPath $OutputJson -Raw | ConvertFrom-Json
         $result | Add-Member -NotePropertyName ProbeExitCode -NotePropertyValue $exitCode -Force
         $result | Add-Member -NotePropertyName ProbeLog -NotePropertyValue $probeLog -Force
+        $result | Add-Member -NotePropertyName EffectiveMoveMode -NotePropertyValue $effectiveMoveMode -Force
+        $result | Add-Member -NotePropertyName EffectiveClickMode -NotePropertyValue $effectiveClickMode -Force
+        $result | Add-Member -NotePropertyName EffectiveClickRepeat -NotePropertyValue $effectiveClickRepeat -Force
         return $result
     }
 
@@ -201,6 +212,9 @@ function Invoke-MousePath {
         ProbeExitCode = $exitCode
         ProbeLog = $probeLog
         ProbeError = "mouse_path_probe.py did not write JSON"
+        EffectiveMoveMode = $effectiveMoveMode
+        EffectiveClickMode = $effectiveClickMode
+        EffectiveClickRepeat = $effectiveClickRepeat
     }
 }
 
@@ -298,6 +312,13 @@ function Write-SoakMarkdown {
     )
 
     $overallStatus = if ($Report.passed) { 'PASS' } else { 'FAIL' }
+    function Format-NullableMetric {
+        param([object]$Value)
+        if ($null -eq $Value) {
+            return 'n/a'
+        }
+        return "$Value"
+    }
     $lines = @(
         '# HD Soak Short-Tier Report',
         '',
@@ -318,9 +339,11 @@ function Write-SoakMarkdown {
         "- Input max move drift px: $($Report.input_max_abs_error)",
         "- Input max sampled drift px: $($Report.input_max_sample_abs_error)",
         "- Input drift limit px: $($Report.max_input_drift_px)",
-        "- Working-set growth bytes: $($Report.working_set_growth_bytes)",
-        "- Private-memory growth bytes: $($Report.private_memory_growth_bytes)",
-        "- Handle growth: $($Report.handle_growth)",
+        "- Intro skip mode/repeat/pulses: $($Report.intro_skip.click_mode) / $($Report.intro_skip.click_repeat) / $($Report.intro_skip.space_pulses)",
+        "- Intro skip proof class: $($Report.intro_skip.proof_class)",
+        "- Working-set growth bytes: $(Format-NullableMetric $Report.working_set_growth_bytes)",
+        "- Private-memory growth bytes: $(Format-NullableMetric $Report.private_memory_growth_bytes)",
+        "- Handle growth: $(Format-NullableMetric $Report.handle_growth)",
         "- Artifact bytes: $($Report.artifact_bytes)",
         "- Unexpected exit: $($Report.process_exited_unexpectedly)",
         "- Clean stop: $($Report.clean_stop)",
@@ -401,6 +424,9 @@ $executeCommand = @(
     '-OutputRoot', (Quote-Arg $OutputRootFull),
     '-ReportJson', (Quote-Arg $ReportJsonFull),
     '-ReportMarkdown', (Quote-Arg $ReportMarkdownFull),
+    '-IntroSkipClickMode', (Quote-Arg $IntroSkipClickMode),
+    '-IntroSkipClicks', (Quote-Arg ([string]$IntroSkipClicks)),
+    '-SkipPulses', (Quote-Arg ([string]$SkipPulses)),
     '-MaxInputDriftPx', (Quote-Arg ([string]$MaxInputDriftPx)),
     '-Execute',
     '-AllowVisibleRuntime',
@@ -439,6 +465,12 @@ $plan = [ordered]@{
     }
     input_limits = [ordered]@{
         max_input_drift_px = $MaxInputDriftPx
+    }
+    intro_skip = [ordered]@{
+        click_mode = $IntroSkipClickMode
+        click_repeat = $IntroSkipClicks
+        space_pulses = $SkipPulses
+        proof_class = 'intro_skip_harness_prep_not_manual_directinput_release_proof'
     }
     raw_artifacts_policy = 'raw PNG frames and per-step logs stay outside the repository by default'
     right_bottom_promotion_blocked = $true
@@ -535,16 +567,23 @@ try {
     Start-Sleep -Milliseconds 800
 
     $introJson = Join-Path $outDir 'intro-skip.json'
-    $introResult = Invoke-MousePath -Process $process -OutputJson $introJson -Points '400,300' -Click $true -SpacePulses $SkipPulses
+    $introClick = ($IntroSkipClickMode -ne 'none') -and ($IntroSkipClicks -gt 0)
+    $introClickRepeat = if ($introClick) { $IntroSkipClicks } else { 0 }
+    $introResult = Invoke-MousePath -Process $process -OutputJson $introJson -Points '400,300' -Click $introClick -SpacePulses $SkipPulses -ClickModeOverride $IntroSkipClickMode -ClickRepeatOverride $introClickRepeat
     $routeResults += [pscustomobject]@{
         Name = 'intro-skip'
         Points = '400,300'
-        Click = $true
+        Click = $introClick
         PathVerified = [bool]$introResult.path_verified
         ClickPathVerified = [bool]$introResult.click_path_verified
         MaxAbsError = Convert-NullableInt $introResult.max_abs_error
         MaxSampleAbsError = Convert-NullableInt $introResult.max_sample_abs_error
         ClickEventCount = Convert-NullableInt $introResult.click_event_count
+        MoveMode = $introResult.EffectiveMoveMode
+        ClickMode = $introResult.EffectiveClickMode
+        ClickRepeat = $introResult.EffectiveClickRepeat
+        SpacePulses = $SkipPulses
+        InputProofClass = 'intro_skip_harness_prep_not_manual_directinput_release_proof'
         ProbeExitCode = $introResult.ProbeExitCode
         Json = $introJson
         Log = $introResult.ProbeLog
@@ -567,6 +606,11 @@ try {
             MaxAbsError = Convert-NullableInt $stepResult.max_abs_error
             MaxSampleAbsError = Convert-NullableInt $stepResult.max_sample_abs_error
             ClickEventCount = Convert-NullableInt $stepResult.click_event_count
+            MoveMode = $stepResult.EffectiveMoveMode
+            ClickMode = $stepResult.EffectiveClickMode
+            ClickRepeat = $stepResult.EffectiveClickRepeat
+            SpacePulses = 0
+            InputProofClass = 'automated_visible_runtime_diagnostic_not_manual_directinput_release_proof'
             ProbeExitCode = $stepResult.ProbeExitCode
             Json = $stepJson
             Log = $stepResult.ProbeLog
@@ -746,6 +790,12 @@ $report = [ordered]@{
     input_max_abs_error = $inputMaxAbsError
     input_max_sample_abs_error = $inputMaxSampleAbsError
     max_input_drift_px = $MaxInputDriftPx
+    intro_skip = [ordered]@{
+        click_mode = $IntroSkipClickMode
+        click_repeat = $IntroSkipClicks
+        space_pulses = $SkipPulses
+        proof_class = 'intro_skip_harness_prep_not_manual_directinput_release_proof'
+    }
     process_sample_count = @($processSamples).Count
     working_set_growth_bytes = $workingSetGrowthBytes
     private_memory_growth_bytes = $privateMemoryGrowthBytes

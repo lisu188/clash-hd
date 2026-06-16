@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T22:36:17+02:00",
+  "generated_at": "2026-06-16T18:05:27+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "HD soak harness must stay opt-in, protected-stage, non-promoting, and artifact-safe",
@@ -12,6 +12,7 @@
         "OutputRoot": "C:\\ClashCaptures\\hd-soak",
         "ReportJson": "captures\\current\\hd-soak-short-current.json",
         "ReportMarkdown": "captures\\current\\hd-soak-short-current.md",
+        "IntroSkipClickMode": "postmessage",
         "Stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch"
       },
       "failures": []
@@ -62,10 +63,27 @@
     "visible_runtime_opt_in": {
       "passed": true,
       "summary": {
-        "execute_switch_line": 32,
-        "allow_visible_runtime_switch_line": 33,
-        "dry_run_branch_line": 415,
-        "runtime_guard_line": 439
+        "execute_switch_line": 38,
+        "allow_visible_runtime_switch_line": 39,
+        "dry_run_branch_line": 476,
+        "runtime_guard_line": 500,
+        "execute_command_fragments": [
+          "-Execute",
+          "-AllowVisibleRuntime",
+          "-IntroSkipClickMode",
+          "-IntroSkipClicks",
+          "-SkipPulses",
+          "-RequirePass",
+          "-Json"
+        ]
+      },
+      "failures": []
+    },
+    "intro_skip_policy": {
+      "passed": true,
+      "summary": {
+        "intro_skip_click_mode_default": "postmessage",
+        "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof"
       },
       "failures": []
     },
@@ -85,20 +103,40 @@
     "required_metrics": {
       "passed": true,
       "summary": {
-        "required_metric_count": 12,
+        "required_metric_count": 32,
         "required_metrics": [
           "frame_sample_count",
           "frame_hash_unique_count",
+          "frame_progress_expected",
+          "frame_stability_class",
+          "sample_interval_sec",
           "nonblack_percent_min",
+          "nonblack_percent_max",
           "mean_luma_min",
+          "mean_luma_max",
           "unique_sample_colors_min",
+          "unique_sample_colors_max",
+          "input_max_abs_error",
+          "input_max_sample_abs_error",
+          "max_input_drift_px",
           "process_sample_count",
           "working_set_growth_bytes",
+          "private_memory_growth_bytes",
           "handle_growth",
+          "max_working_set_growth_mb",
+          "max_private_memory_growth_mb",
+          "max_handle_growth",
+          "working_set_growth_limit_bytes",
+          "private_memory_growth_limit_bytes",
           "artifact_bytes",
           "process_exited_unexpectedly",
+          "exit_code",
           "clean_stop",
-          "final_route_marker"
+          "final_route_marker",
+          "route_results",
+          "process_samples",
+          "frame_samples",
+          "capture_errors"
         ]
       },
       "failures": []

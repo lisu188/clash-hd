@@ -1,38 +1,59 @@
 # HD Soak Failure Triage
 
 - Overall: FAIL
-- Generated: `2026-06-15T20:36:18.144672+00:00`
+- Generated: `2026-06-16T16:05:28.012954+00:00`
 - Runtime policy: repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
-- Source report: `captures\current\hd-soak-short-current.json`
-- Classification: `not_executed_pending_approval`
-- Next probe: obtain explicit approval for the exact short2 visible-runtime command, then rerun the soak
+- Source report: `captures\current\hd-soak-short2-menu-idle-current.json`
+- Source selection: `canonical_first_short_step`
+- Canonical first-step report: `captures\current\hd-soak-short2-menu-idle-current.json`
+- Canonical first-step present: `True`
+- Legacy report: `captures\current\hd-soak-short-current.json`
+- Canonical runtime report missing: `False`
+- Classification: `intro_skip_input_drift_exit`
+- Next probe: fix or verify intro-skip harness input mode before rerunning; use postmessage/space-only harness prep, then rerun visible soak only after explicit visible-window approval
 - Tier / route: `short2` / `menu-idle`
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
-- Candidate SHA-256: `None`
-- Output directory: `C:\ClashCaptures\hd-soak\pending-approval`
-- Final route marker: `pending_approval`
+- Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
+- Output directory: `C:\ClashCaptures\hd-soak\hd-soak-20260616-172005-short2-menu-idle`
+- Final route marker: `intro-skip`
 
 ## Last Evidence
 
-- Last route: `None` path=`None` click=`None`
-- Last frame: `None` size=`NonexNone` nonblack=`None` luma=`None` colors=`None`
-- Last process: exited=`None` exit_code=`None` working_set=`None` handles=`None`
+- Last route: `intro-skip` path=`True` click=`False` drift=`0` sample_drift=`324` click_mode=`None` repeat=`None`
+- Last frame: `frame-0000` size=`800x600` nonblack=`9.697` luma=`3.126` colors=`249`
+- Last process: exited=`True` exit_code=`1` working_set=`None` handles=`None`
 
 ## Metrics
 
-- `frame_sample_count`: `0`
-- `frame_hash_unique_count`: `0`
-- `nonblack_percent_min`: `0.0`
-- `nonblack_percent_max`: `0.0`
-- `mean_luma_min`: `0.0`
-- `mean_luma_max`: `0.0`
-- `unique_sample_colors_min`: `0`
-- `unique_sample_colors_max`: `0`
-- `process_sample_count`: `0`
+- `frame_sample_count`: `1`
+- `frame_hash_unique_count`: `1`
+- `frame_progress_expected`: `False`
+- `frame_stability_class`: `stable_idle`
+- `nonblack_percent_min`: `9.697`
+- `nonblack_percent_max`: `9.697`
+- `mean_luma_min`: `3.126`
+- `mean_luma_max`: `3.126`
+- `unique_sample_colors_min`: `249`
+- `unique_sample_colors_max`: `249`
+- `input_max_abs_error`: `0`
+- `input_max_sample_abs_error`: `324`
+- `max_input_drift_px`: `1`
+- `process_sample_count`: `3`
 - `working_set_growth_bytes`: `None`
+- `private_memory_growth_bytes`: `None`
 - `handle_growth`: `None`
-- `artifact_bytes`: `0`
+- `artifact_bytes`: `124455`
+- `guard_validation_evaluated`: `False`
+- `guard_validation_overall`: `None`
+- `guard_validation_failure_count`: `0`
 
 ## Source Failures
 
-- short2 menu-idle soak was not executed because visible-runtime escalation was not approved
+- process exited unexpectedly with code 1
+- expected at least 2 frame samples
+- nonblack percent dropped below 10
+- route/input probe failures: 1
+- input drift exceeded 1px or metric missing: 1
+- working-set growth metric unavailable
+- private-memory growth metric unavailable
+- handle growth metric unavailable

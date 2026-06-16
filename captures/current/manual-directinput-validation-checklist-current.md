@@ -1,7 +1,7 @@
 # Manual DirectInput Validation Checklist
 
 - Overall: PASS
-- Generated: `2026-06-15T22:36:16+02:00`
+- Generated: `2026-06-16T18:05:25+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Checklist policy: manual DirectInput evidence is tracked separately from CDB/proxy proof; visible/manual validation requires explicit user approval; Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.
 - No-popup operator preference: Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.

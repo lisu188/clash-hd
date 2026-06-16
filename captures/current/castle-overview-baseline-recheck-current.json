@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:36:03+02:00",
-  "passed": false,
+  "generated_at": "2026-06-16T18:05:06+02:00",
+  "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "checks": {
     "overview_visual_baseline": {
@@ -52,11 +52,16 @@
       "failures": []
     },
     "latest_castle_overview_matrix": {
-      "passed": false,
+      "passed": true,
       "stage": "castlecenter-all",
       "promotion_status": "validation_stage_only",
-      "candidate_sha256": null,
-      "patches": null,
+      "candidate_sha256": "1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6",
+      "patches": {
+        "patched": 134,
+        "original": 0,
+        "unexpected": 0,
+        "total": 134
+      },
       "visible_multihit_targets": [
         {
           "index": 0,
@@ -138,14 +143,10 @@
           "ok": true
         }
       ],
-      "failures": [
-        "patch_stage: candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe"
-      ],
+      "failures": [],
       "visible_multihit_completion_ok": true,
       "dormant_multihit_completion_ok": true
     }
   },
-  "failures": [
-    "latest_castle_overview_matrix: patch_stage: candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe"
-  ]
+  "failures": []
 }

@@ -1,7 +1,7 @@
 # Right-Bottom Visual Artifact Guard Tests
 
 - Status: PASS
-- Generated: `2026-06-15T22:35:49+02:00`
+- Generated: `2026-06-16T18:04:47+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the right-bottom visual artifact guard blocks the current stripy/out-of-place natural UI state from promotion and fails closed if the artifact or route state changes
 
@@ -9,6 +9,7 @@
 
 - `right_bottom_visual_artifact_guard passes for the current blocked natural visual artifact`
 - `right_bottom_visual_artifact_guard fails if blocker triage is missing`
+- `right_bottom_visual_artifact_guard accepts the current and legacy non-promoting triage classifications`
 - `right_bottom_visual_artifact_guard fails if natural owner/action rows appear`
 - `right_bottom_visual_artifact_guard fails if the natural lower/right black artifact changes`
 - `right_bottom_visual_artifact_guard fails if controlled composition recovery regresses`

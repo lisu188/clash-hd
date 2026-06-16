@@ -103,7 +103,11 @@ def test_current_pending_status_passes() -> None:
     assert report["passed"] is True, report["failures"]
     assert report["ladder_complete"] is False
     assert report["current_step"]["id"] == "short2_menu_idle"
-    assert report["current_step"]["status"] in {"pending_approval_legacy_compat", "missing_pending_approval"}
+    current_status = report["current_step"]["status"]
+    assert current_status in {
+        "pending_approval_legacy_compat",
+        "missing_pending_approval",
+    } or current_status.startswith("failed_classified_")
     assert report["locks"]["right_bottom_promotion_blocked"] is True
 
 

@@ -1,21 +1,110 @@
 {
-  "generated_at": "2026-06-15T22:35:56+02:00",
-  "passed": false,
+  "generated_at": "2026-06-16T18:04:57+02:00",
+  "passed": true,
   "stage": "castlecenter-all",
   "promotion_status": "validation_stage_only",
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
   "checks": {
     "patch_stage": {
-      "passed": false,
-      "exe": "C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe",
+      "passed": true,
+      "exe": "C:\\ClashTests\\cdb-castle-overview-nativerender\\clash95_hd_surfdump_20260515_105041.exe",
+      "source": "reports\\castlecenter_all_patch_stage_20260515_105041.json",
+      "archived": true,
       "stage": "castlecenter-all",
       "resolved_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "failures": [
-        "candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe"
-      ]
+      "sha256": "1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6",
+      "patches": {
+        "patched": 134,
+        "original": 0,
+        "unexpected": 0,
+        "total": 134
+      },
+      "groups": {
+        "castle-overview-center-present-wrapper": {
+          "patched": 3,
+          "total": 3
+        },
+        "castle-overview-centered-input": {
+          "patched": 2,
+          "total": 2
+        },
+        "castle-ui-center-present-wrapper": {
+          "patched": 3,
+          "total": 3
+        },
+        "castle-ui-centered-input": {
+          "patched": 8,
+          "total": 8
+        },
+        "display": {
+          "patched": 4,
+          "total": 4
+        },
+        "full-redraw-12x9": {
+          "patched": 3,
+          "total": 3
+        },
+        "full-redraw-present-bounds-800": {
+          "patched": 6,
+          "total": 6
+        },
+        "gameplay-surface": {
+          "patched": 2,
+          "total": 2
+        },
+        "helpers": {
+          "patched": 32,
+          "total": 32
+        },
+        "input-bounds": {
+          "patched": 2,
+          "total": 2
+        },
+        "main-loops": {
+          "patched": 14,
+          "total": 14
+        },
+        "map-surface-upgrade-scrollclamp": {
+          "patched": 2,
+          "total": 2
+        },
+        "menu-center-hitboxes": {
+          "patched": 40,
+          "total": 40
+        },
+        "minimap-hd-right-anchor": {
+          "patched": 1,
+          "total": 1
+        },
+        "minimap-right-clip": {
+          "patched": 2,
+          "total": 2
+        },
+        "mouse-dynamic-origin": {
+          "patched": 2,
+          "total": 2
+        },
+        "shared-surface": {
+          "patched": 2,
+          "total": 2
+        },
+        "surface-blit-hd-aware": {
+          "patched": 2,
+          "total": 2
+        },
+        "viewport-init": {
+          "patched": 2,
+          "total": 2
+        },
+        "viewport-switch-dynamic-surface": {
+          "patched": 2,
+          "total": 2
+        }
+      },
+      "failures": []
     },
     "overview_visual": {
-      "generated_at": "2026-06-15T22:35:56+02:00",
+      "generated_at": "2026-06-16T18:04:57+02:00",
       "run_dir": "captures\\archive\\cdb-surface-dump-20260515-105041",
       "log": "captures\\archive\\cdb-surface-dump-20260515-105041\\cdb-surface-dump.log",
       "screenshot": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",
@@ -898,7 +987,5 @@
       "failures": []
     }
   },
-  "failures": [
-    "patch_stage: candidate executable does not exist: C:\\ClashTests\\cdb-castle-overview-nativerender-flags1f-multihit\\clash95_hd_surfdump_20260515_105557.exe"
-  ]
+  "failures": []
 }

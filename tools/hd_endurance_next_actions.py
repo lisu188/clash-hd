@@ -19,6 +19,7 @@ from typing import Any
 DEFAULT_CHECKLIST_JSON = Path("captures/current/hd-endurance-release-checklist-current.json")
 DEFAULT_SHORT_STEP_STATUS_JSON = Path("captures/current/hd-soak-short-step-status-current.json")
 DEFAULT_DRY_RUN_PLAN_JSON = Path("captures/current/hd-soak-dry-run-plan-current.json")
+DEFAULT_INTRO_SKIP_READINESS_JSON = Path("captures/current/hd-soak-intro-skip-rerun-readiness-current.json")
 DEFAULT_JSON = Path("captures/current/hd-endurance-next-actions-current.json")
 DEFAULT_MD = Path("captures/current/hd-endurance-next-actions-current.md")
 RUNTIME_POLICY = (
@@ -26,6 +27,9 @@ RUNTIME_POLICY = (
     "wrappers, PowerShell harnesses, or visible windows"
 )
 MAX_INPUT_DRIFT_PX = 1
+INTRO_SKIP_CLICK_MODE = "postmessage"
+INTRO_SKIP_CLICKS = 8
+SKIP_PULSES = 4
 MAX_DRY_RUN_PLAN_AGE_HOURS = 12
 
 
@@ -35,6 +39,9 @@ VISIBLE_SHORT2_COMMAND = (
     "-Tier short2 -Route menu-idle "
     "-ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json "
     "-ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md "
+    f"-IntroSkipClickMode {INTRO_SKIP_CLICK_MODE} "
+    f"-IntroSkipClicks {INTRO_SKIP_CLICKS} "
+    f"-SkipPulses {SKIP_PULSES} "
     f"-MaxInputDriftPx {MAX_INPUT_DRIFT_PX} "
     "-Execute -AllowVisibleRuntime -RequirePass -Json"
 )
@@ -43,6 +50,9 @@ DRY_RUN_SHORT2_COMMAND = (
     ".\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle "
     "-ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json "
     "-ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md "
+    f"-IntroSkipClickMode {INTRO_SKIP_CLICK_MODE} "
+    f"-IntroSkipClicks {INTRO_SKIP_CLICKS} "
+    f"-SkipPulses {SKIP_PULSES} "
     f"-MaxInputDriftPx {MAX_INPUT_DRIFT_PX} -Json"
 )
 PYTHON_EXE = (
@@ -192,7 +202,19 @@ def dry_run_plan_for_step(
         failures.append("dry-run plan input_exe does not exist or was not confirmed readable")
     if str(plan.get("base_sha_status") or "") != "ok":
         failures.append(f"dry-run plan base_sha_status is {plan.get('base_sha_status')!r}, expected 'ok'")
-    for fragment in ("-Execute", "-AllowVisibleRuntime", "-RequirePass", "-Json", "-MaxInputDriftPx"):
+    for fragment in (
+        "-Execute",
+        "-AllowVisibleRuntime",
+        "-IntroSkipClickMode",
+        INTRO_SKIP_CLICK_MODE,
+        "-IntroSkipClicks",
+        str(INTRO_SKIP_CLICKS),
+        "-SkipPulses",
+        str(SKIP_PULSES),
+        "-RequirePass",
+        "-Json",
+        "-MaxInputDriftPx",
+    ):
         if fragment not in execute_command:
             failures.append(f"dry-run plan execute command missing fragment: {fragment}")
     if failures:
@@ -210,6 +232,35 @@ def dry_run_plan_for_step(
         "base_sha_status": plan.get("base_sha_status"),
         "execute_command": execute_command,
         "freshness": freshness,
+    }, []
+
+
+def intro_skip_readiness_for_step(
+    intro_skip_readiness: dict[str, Any] | None,
+    step: dict[str, Any],
+) -> tuple[dict[str, Any] | None, list[str]]:
+    if not intro_skip_readiness:
+        return None, []
+    failures: list[str] = []
+    current_step = intro_skip_readiness.get("current_step") or {}
+    if intro_skip_readiness.get("passed") is not True:
+        failures.append("intro-skip rerun readiness is not passing")
+    if intro_skip_readiness.get("status") != "ready_for_explicit_visible_rerun_approval":
+        failures.append(f"intro-skip rerun readiness status is {intro_skip_readiness.get('status')!r}")
+    if current_step.get("id") != step.get("id"):
+        failures.append("intro-skip rerun readiness current step does not match the next short step")
+    if failures:
+        return None, failures
+    triage = intro_skip_readiness.get("triage") or {}
+    dry_run = intro_skip_readiness.get("dry_run_plan") or {}
+    return {
+        "passed": True,
+        "status": intro_skip_readiness.get("status"),
+        "current_step": current_step.get("id"),
+        "classification": triage.get("classification"),
+        "candidate_sha256": triage.get("candidate_sha256"),
+        "approval_boundary": intro_skip_readiness.get("approval_boundary"),
+        "approval_gated_execute_command": dry_run.get("approval_gated_execute_command"),
     }, []
 
 
@@ -243,6 +294,11 @@ def post_run_handoff_refresh_for_step(_step: dict[str, Any]) -> list[str]:
             f"{PYTHON_EXE} tools\\hd_endurance_release_checklist.py "
             "--write-json captures\\current\\hd-endurance-release-checklist-current.json "
             "--write-markdown captures\\current\\hd-endurance-release-checklist-current.md"
+        ),
+        (
+            f"{PYTHON_EXE} tools\\hd_soak_intro_skip_rerun_readiness.py "
+            "--write-json captures\\current\\hd-soak-intro-skip-rerun-readiness-current.json "
+            "--write-markdown captures\\current\\hd-soak-intro-skip-rerun-readiness-current.md"
         ),
         (
             f"{PYTHON_EXE} tools\\hd_endurance_next_actions.py "
@@ -280,6 +336,7 @@ def post_run_evidence_refresh_commands() -> list[str]:
 def next_action_for_short_step(
     step_status: dict[str, Any] | None,
     dry_run_plan: dict[str, Any] | None = None,
+    intro_skip_readiness: dict[str, Any] | None = None,
 ) -> tuple[dict[str, Any] | None, list[str]]:
     current = (step_status or {}).get("current_step") or {}
     step = short_step_record(step_status)
@@ -347,6 +404,37 @@ def next_action_for_short_step(
         }, []
 
     if status.startswith("failed_classified_"):
+        summary = step.get("summary") or {}
+        readiness_summary, readiness_failures = intro_skip_readiness_for_step(intro_skip_readiness, step)
+        if summary.get("classification") == "intro_skip_input_drift_exit" and readiness_summary:
+            legacy_command = str(current.get("next_command") or step.get("approval_gated_runtime_command") or "")
+            plan_summary, plan_failures = dry_run_plan_for_step(dry_run_plan, step)
+            plan_command = (plan_summary or {}).get("execute_command")
+            command = str(plan_command or readiness_summary.get("approval_gated_execute_command") or legacy_command)
+            return {
+                **base,
+                "id": f"rerun_{current.get('id')}_soak",
+                "status": "approval_required",
+                "requires_visible_runtime": True,
+                "requires_explicit_user_approval": True,
+                "why": (
+                    "The previous short2 menu-idle run failed during intro-skip input, "
+                    "and the repo-only rerun readiness gate now proves the harness uses "
+                    "postmessage intro-skip prep. Rerun only after explicit visible-window approval."
+                ),
+                "exact_runtime_command": command,
+                "exact_runtime_command_source": "dry_run_plan" if plan_command else "intro_skip_rerun_readiness",
+                "legacy_step_runtime_command": legacy_command if command != legacy_command else None,
+                "plan_verified_execute_command": plan_command,
+                "dry_run_plan": plan_summary,
+                "intro_skip_rerun_readiness": readiness_summary,
+                "safe_dry_run_command": step.get("safe_dry_run_command"),
+                "post_run_validation": post_run_validation_for_step(step),
+                "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+                "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
+            }, plan_failures
+        if readiness_failures:
+            return None, readiness_failures
         return {
             **base,
             "id": f"inspect_{current.get('id')}_triage",
@@ -441,8 +529,14 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     checklist = load_json(args.checklist_json)
     short_step_status_path = getattr(args, "short_step_status_json", DEFAULT_SHORT_STEP_STATUS_JSON)
     dry_run_plan_path = getattr(args, "dry_run_plan_json", None)
+    intro_skip_readiness_path = getattr(args, "intro_skip_readiness_json", None)
     step_status = load_json(short_step_status_path)
     dry_run_plan = load_json(dry_run_plan_path) if dry_run_plan_path and dry_run_plan_path.exists() else None
+    intro_skip_readiness = (
+        load_json(intro_skip_readiness_path)
+        if intro_skip_readiness_path and intro_skip_readiness_path.exists()
+        else None
+    )
     failures: list[str] = []
     if checklist is None:
         failures.append(f"missing release checklist: {args.checklist_json}")
@@ -457,7 +551,11 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
     open_rows = failing_requirements(checklist)
     milestone = checklist.get("next_milestone")
-    short_step_action, short_step_failures = next_action_for_short_step(step_status, dry_run_plan)
+    short_step_action, short_step_failures = next_action_for_short_step(
+        step_status,
+        dry_run_plan,
+        intro_skip_readiness,
+    )
     failures.extend(short_step_failures)
     next_action = short_step_action or next_action_for_milestone(milestone)
     if checklist.get("full_game_complete"):
@@ -474,6 +572,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "checklist": str(args.checklist_json),
         "short_step_status": str(short_step_status_path),
         "dry_run_plan": str(dry_run_plan_path) if dry_run_plan_path else None,
+        "intro_skip_readiness": str(intro_skip_readiness_path) if intro_skip_readiness_path else None,
         "short_ladder_complete": bool((step_status or {}).get("ladder_complete")),
         "current_short_step": (step_status or {}).get("current_step"),
         "full_game_complete": bool(checklist.get("full_game_complete")),
@@ -644,6 +743,7 @@ def main() -> int:
     parser.add_argument("--checklist-json", type=Path, default=DEFAULT_CHECKLIST_JSON)
     parser.add_argument("--short-step-status-json", type=Path, default=DEFAULT_SHORT_STEP_STATUS_JSON)
     parser.add_argument("--dry-run-plan-json", type=Path, default=DEFAULT_DRY_RUN_PLAN_JSON)
+    parser.add_argument("--intro-skip-readiness-json", type=Path, default=DEFAULT_INTRO_SKIP_READINESS_JSON)
     parser.add_argument("--write-json", type=Path, default=DEFAULT_JSON)
     parser.add_argument("--write-markdown", "--write-md", dest="write_markdown", type=Path, default=DEFAULT_MD)
     parser.add_argument("--require-pass", action="store_true")

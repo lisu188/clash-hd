@@ -210,6 +210,64 @@ def test_pending_short_soak_blocks_next_milestone() -> None:
     assert report["next_milestone"]["id"] == "short2_menu_idle_soak"
 
 
+def test_classified_short_step_status_overrides_stale_global_missing_summary() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        args = fixture_args(Path(directory))
+        write_complete_fixture(args)
+        write_json(
+            args.short_soak_json,
+            {
+                "overall": False,
+                "tier": "short2",
+                "duration_sec": 120,
+                "source_report_selection": "legacy_compatibility",
+                "canonical_first_step_report": r"captures\current\hd-soak-short2-menu-idle-current.json",
+                "canonical_first_step_present": False,
+                "canonical_runtime_report_missing": True,
+                "failures": ["soak report was not produced by an execution run"],
+            },
+        )
+        write_json(
+            args.short_step_status_json,
+            {
+                "passed": True,
+                "ladder_complete": False,
+                "current_step": {
+                    "id": "short2_menu_idle",
+                    "status": "failed_classified_intro_skip_input_drift_exit",
+                },
+                "steps": [
+                    {
+                        "id": "short2_menu_idle",
+                        "status": "failed_classified_intro_skip_input_drift_exit",
+                        "passed": False,
+                        "tier": "short2",
+                        "route": "menu-idle",
+                        "paths": {
+                            "report_json": r"captures\current\hd-soak-short2-menu-idle-current.json",
+                            "guard_json": r"captures\current\hd-soak-short2-menu-idle-guard-current.json",
+                            "triage_json": r"captures\current\hd-soak-short2-menu-idle-triage-current.json",
+                        },
+                        "summary": {
+                            "canonical_report_present": True,
+                            "guard_present": True,
+                            "triage_present": True,
+                            "guard_overall": False,
+                            "classification": "intro_skip_input_drift_exit",
+                        },
+                    }
+                ],
+            },
+        )
+        report = checklist.build_checklist(args)
+    first_soak = req(report, "short2_menu_idle_soak")
+    assert report["passed"] is False
+    assert "current short-step status is failed_classified_intro_skip_input_drift_exit" in first_soak["summary"]
+    assert "canonical report is missing" not in first_soak["summary"]
+    assert first_soak["details"]["short_step_status"]["canonical_report_present"] is True
+    assert first_soak["details"]["short_step_status"]["triage_present"] is True
+
+
 def test_canonical_short_step_status_satisfies_first_soak() -> None:
     with tempfile.TemporaryDirectory() as directory:
         args = fixture_args(Path(directory))
@@ -341,6 +399,7 @@ def test_cli_writes_outputs_and_fails_closed() -> None:
 def run_tests() -> None:
     test_complete_fixture_passes()
     test_pending_short_soak_blocks_next_milestone()
+    test_classified_short_step_status_overrides_stale_global_missing_summary()
     test_canonical_short_step_status_satisfies_first_soak()
     test_pending_manual_input_blocks_menu_and_map()
     test_validation_only_right_bottom_blocks_release()

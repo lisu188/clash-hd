@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-15T22:36:08+02:00",
+  "generated_at": "2026-06-16T18:05:12+02:00",
   "passed": true,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "all referenced CDB surface-dump runs must be hidden-desktop evidence",
-  "run_count": 19,
-  "hidden_run_count": 19,
+  "run_count": 21,
+  "hidden_run_count": 21,
   "runs": [
     {
       "run": "captures\\archive\\cdb-surface-dump-20260429-135242",
@@ -28,6 +28,30 @@
       "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
       "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
       "extra_probe_template": null,
+      "failures": []
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260506-190037",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260506-190037\\summary.json",
+      "passed": true,
+      "launch_mode": "hidden-desktop",
+      "hidden_desktop": true,
+      "desktop_name": "ClashSurfaceDump_20260506_190037",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "extra_probe_template": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_post_owner_tile_visibility_extra.cdb",
+      "failures": []
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260506-201114",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260506-201114\\summary.json",
+      "passed": true,
+      "launch_mode": "hidden-desktop",
+      "hidden_desktop": true,
+      "desktop_name": "ClashSurfaceDump_20260506_201114",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "extra_probe_template": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_post_owner_tile_visibility_extra.cdb",
       "failures": []
     },
     {

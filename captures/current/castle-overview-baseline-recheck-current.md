@@ -1,7 +1,7 @@
 # Castle Overview Baseline Recheck
 
-- Overall: FAIL
-- Generated: `2026-06-15T22:36:03+02:00`
+- Overall: PASS
+- Generated: `2026-06-16T18:05:06+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 
 ## Overview Visual Baseline
@@ -26,17 +26,13 @@
 
 ## Latest Castle Overview Matrix
 
-- Status: FAIL
+- Status: PASS
 - Stage: `castlecenter-all`
 - Promotion status: `validation_stage_only`
-- Candidate SHA-256: `None`
-- Patches: patched=? original=? unexpected=? total=?
+- Candidate SHA-256: `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6`
+- Patches: patched=134 original=0 unexpected=0 total=134
 - Visible target completion: index 0 0x86/0xF8 completion=True, index 1 0x63/0xFE completion=True, index 2 0x87/0xFF completion=True
 - Dormant target completion: index 0 0x99/0xFA completion=True, index 1 0x9C/0xFB completion=True, index 2 0x9F/0xFC completion=True, index 3 0xA6/0xFD completion=True
-
-## Failures
-
-- latest_castle_overview_matrix: patch_stage: candidate executable does not exist: C:\ClashTests\cdb-castle-overview-nativerender-flags1f-multihit\clash95_hd_surfdump_20260515_105557.exe
 
 ## Screenshot
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T12:13:31+02:00",
+  "generated_at": "2026-06-16T18:05:30+02:00",
   "passed": false,
   "overall": false,
   "runtime_policy": "repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
@@ -22,8 +22,8 @@
       "id": "short2_menu_idle",
       "tier": "short2",
       "route": "menu-idle",
-      "status": "pending_approval_legacy_compat",
-      "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json"
+      "status": "failed_classified_intro_skip_input_drift_exit",
+      "next_command": null
     }
   },
   "proof_manifest": {

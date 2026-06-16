@@ -214,8 +214,9 @@ def short_soak_requirement_summary(
     details = short_soak_requirement_details(short_soak, short_step_status, "short2_menu_idle")
     canonical_path = (details["global_report_guard"].get("canonical_first_step_report") or "")
     canonical_missing = details["global_report_guard"].get("canonical_runtime_report_missing")
+    step_report_present = details["short_step_status"].get("canonical_report_present")
     current_status = details["short_step_status"].get("current_step_status")
-    if canonical_missing is True and canonical_path:
+    if canonical_missing is True and canonical_path and step_report_present is not True:
         return (
             "short2 visible-runtime soak has not produced passing frame/process evidence; "
             f"canonical report is missing: {canonical_path}"

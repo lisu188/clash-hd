@@ -38,6 +38,7 @@ import hd_continuity_status
 import hd_soak_harness_guard
 import hd_soak_dry_run_plan
 import hd_soak_failure_triage
+import hd_soak_intro_skip_rerun_readiness
 import hd_soak_long_report_guard
 import hd_soak_report
 import hd_soak_route_coverage
@@ -132,6 +133,7 @@ import test_hd_continuity_status
 import test_hd_soak_failure_triage
 import test_hd_soak_dry_run_plan
 import test_hd_soak_harness_guard
+import test_hd_soak_intro_skip_rerun_readiness
 import test_hd_soak_long_report_guard
 import test_hd_soak_report
 import test_hd_soak_route_coverage
@@ -580,6 +582,14 @@ DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_TESTS_JSON = Path(
 )
 DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_TESTS_MD = Path(
     "captures/current/hd-soak-approval-preflight-tests-current.md"
+)
+DEFAULT_HD_SOAK_INTRO_SKIP_RERUN_READINESS_JSON = hd_soak_intro_skip_rerun_readiness.DEFAULT_JSON
+DEFAULT_HD_SOAK_INTRO_SKIP_RERUN_READINESS_MD = hd_soak_intro_skip_rerun_readiness.DEFAULT_MD
+DEFAULT_HD_SOAK_INTRO_SKIP_RERUN_READINESS_TESTS_JSON = Path(
+    "captures/current/hd-soak-intro-skip-rerun-readiness-tests-current.json"
+)
+DEFAULT_HD_SOAK_INTRO_SKIP_RERUN_READINESS_TESTS_MD = Path(
+    "captures/current/hd-soak-intro-skip-rerun-readiness-tests-current.md"
 )
 DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_JSON = hd_endurance_release_checklist.DEFAULT_JSON
 DEFAULT_HD_ENDURANCE_RELEASE_CHECKLIST_MD = hd_endurance_release_checklist.DEFAULT_MD
@@ -5154,6 +5164,7 @@ def build_hd_endurance_release_checklist_tests(args: argparse.Namespace) -> dict
         tests=[
             "hd_endurance_release_checklist can pass a fully proven future release fixture",
             "hd_endurance_release_checklist keeps pending short soaks as the next milestone with missing artifact details",
+            "hd_endurance_release_checklist prefers classified per-step status over stale global missing-summary state",
             "hd_endurance_release_checklist accepts a guarded canonical short2 menu-idle step",
             "hd_endurance_release_checklist keeps pending manual DirectInput items blocked",
             "hd_endurance_release_checklist keeps validation-only right-bottom evidence blocked",
@@ -5169,11 +5180,63 @@ def build_hd_endurance_release_checklist_tests(args: argparse.Namespace) -> dict
     )
 
 
+def build_hd_soak_intro_skip_rerun_readiness(args: argparse.Namespace) -> dict[str, Any]:
+    readiness_args = argparse.Namespace(
+        triage_json=hd_soak_intro_skip_rerun_readiness.DEFAULT_TRIAGE_JSON,
+        step_status_json=args.hd_soak_short_step_status_json,
+        harness_guard_json=args.hd_soak_harness_guard_json,
+        dry_run_plan_json=args.hd_soak_dry_run_plan_json,
+        visible_runtime_guard_json=args.visible_runtime_launcher_guard_json,
+        process_hygiene_json=args.process_hygiene_guard_json,
+        exe_artifact_json=args.exe_artifact_guard_json,
+    )
+    report = hd_soak_intro_skip_rerun_readiness.build_report(readiness_args)
+    hd_soak_intro_skip_rerun_readiness.write_outputs(
+        report,
+        args.hd_soak_intro_skip_rerun_readiness_json,
+        args.hd_soak_intro_skip_rerun_readiness_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_soak_intro_skip_rerun_readiness_json),
+        "markdown": str(args.hd_soak_intro_skip_rerun_readiness_md),
+        "summary": {
+            "status": report.get("status"),
+            "current_step": (report.get("current_step") or {}).get("id"),
+            "current_step_status": (report.get("current_step") or {}).get("status"),
+            "triage_classification": (report.get("triage") or {}).get("classification"),
+            "approval_boundary": report.get("approval_boundary"),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_soak_intro_skip_rerun_readiness_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_intro_skip_rerun_readiness,
+        tests=[
+            "hd_soak_intro_skip_rerun_readiness passes only when the classified failure and guards support an explicit visible rerun",
+            "hd_soak_intro_skip_rerun_readiness rejects wrong failure classifications",
+            "hd_soak_intro_skip_rerun_readiness rejects approval-command intro-skip drift",
+            "hd_soak_intro_skip_rerun_readiness CLI writes JSON/Markdown and respects --require-pass",
+        ],
+        title="HD Soak Intro-Skip Rerun Readiness Tests",
+        json_path=args.hd_soak_intro_skip_rerun_readiness_tests_json,
+        md_path=args.hd_soak_intro_skip_rerun_readiness_tests_md,
+        guard_policy=(
+            "proves a classified intro-skip input-drift failure can become a rerun approval packet "
+            "only after repo-only harness, dry-run, visible-runtime, process, and exe-artifact guards pass"
+        ),
+    )
+
+
 def build_hd_endurance_next_actions(args: argparse.Namespace) -> dict[str, Any]:
     action_args = argparse.Namespace(
         checklist_json=args.hd_endurance_release_checklist_json,
         short_step_status_json=args.hd_soak_short_step_status_json,
         dry_run_plan_json=args.hd_soak_dry_run_plan_json,
+        intro_skip_readiness_json=args.hd_soak_intro_skip_rerun_readiness_json,
     )
     report = hd_endurance_next_actions.build_report(action_args)
     hd_endurance_next_actions.write_outputs(
@@ -5239,6 +5302,7 @@ def build_hd_endurance_next_actions_tests(args: argparse.Namespace) -> dict[str,
             "hd_endurance_next_actions starts focused post-run validation with the failure-safe guard/triage refresh",
             "hd_endurance_next_actions requests repo-only triage when a failed short-step report lacks triage",
             "hd_endurance_next_actions points classified failed short steps at their next probe",
+            "hd_endurance_next_actions turns a classified intro-skip failure into a rerun approval only after readiness passes",
             "hd_endurance_next_actions CLI writes JSON/Markdown and passes as a triage artifact",
         ],
         title="HD Endurance Next Actions Tests",
@@ -5514,6 +5578,7 @@ def build_hd_soak_approval_preflight(args: argparse.Namespace) -> dict[str, Any]
         step_status_json=args.hd_soak_short_step_status_json,
         hd_soak_harness_guard_json=args.hd_soak_harness_guard_json,
         hd_soak_dry_run_plan_json=args.hd_soak_dry_run_plan_json,
+        intro_skip_readiness_json=args.hd_soak_intro_skip_rerun_readiness_json,
         visible_runtime_guard_json=args.visible_runtime_launcher_guard_json,
         process_hygiene_json=args.process_hygiene_guard_json,
         exe_artifact_json=args.exe_artifact_guard_json,
@@ -5562,6 +5627,7 @@ def build_hd_soak_approval_preflight_tests(args: argparse.Namespace) -> dict[str
             "hd_soak_approval_preflight catches next-actions and dry-run plan execute-command mismatches",
             "hd_soak_approval_preflight catches stale next-actions dry-run plan summaries",
             "hd_soak_approval_preflight fails closed when the current short-step status is not pending",
+            "hd_soak_approval_preflight accepts a classified intro-skip rerun only when readiness passes",
             "hd_soak_approval_preflight fails closed when source guards are not passing",
             "hd_soak_approval_preflight fails closed when the dry-run plan is not passing",
             "hd_soak_approval_preflight fails closed when the dry-run plan is stale",
@@ -6899,6 +6965,8 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["hd_soak_short_step_status_tests"] = build_hd_soak_short_step_status_tests(args)
     checks["hd_soak_dry_run_plan"] = build_hd_soak_dry_run_plan(args)
     checks["hd_soak_dry_run_plan_tests"] = build_hd_soak_dry_run_plan_tests(args)
+    checks["hd_soak_intro_skip_rerun_readiness"] = build_hd_soak_intro_skip_rerun_readiness(args)
+    checks["hd_soak_intro_skip_rerun_readiness_tests"] = build_hd_soak_intro_skip_rerun_readiness_tests(args)
     checks["hd_continuity_status"] = build_hd_continuity_status(args)
     checks["hd_continuity_status_tests"] = build_hd_continuity_status_tests(args)
     checks["hd_soak_long_report_guard"] = build_hd_soak_long_report_guard(args)
@@ -8178,6 +8246,26 @@ def parse_args() -> argparse.Namespace:
         "--hd-soak-approval-preflight-tests-md",
         type=Path,
         default=DEFAULT_HD_SOAK_APPROVAL_PREFLIGHT_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-intro-skip-rerun-readiness-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_INTRO_SKIP_RERUN_READINESS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-intro-skip-rerun-readiness-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_INTRO_SKIP_RERUN_READINESS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-intro-skip-rerun-readiness-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_INTRO_SKIP_RERUN_READINESS_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-intro-skip-rerun-readiness-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_INTRO_SKIP_RERUN_READINESS_TESTS_MD,
     )
     parser.add_argument("--hd-long-soak-report-guard-json", type=Path, default=DEFAULT_HD_LONG_SOAK_REPORT_GUARD_JSON)
     parser.add_argument("--hd-long-soak-report-guard-md", type=Path, default=DEFAULT_HD_LONG_SOAK_REPORT_GUARD_MD)

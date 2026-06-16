@@ -23,6 +23,7 @@ DEFAULT_NEXT_ACTIONS_JSON = Path("captures/current/hd-endurance-next-actions-cur
 DEFAULT_STEP_STATUS_JSON = Path("captures/current/hd-soak-short-step-status-current.json")
 DEFAULT_HARNESS_GUARD_JSON = Path("captures/current/hd-soak-harness-guard-current.json")
 DEFAULT_DRY_RUN_PLAN_JSON = Path("captures/current/hd-soak-dry-run-plan-current.json")
+DEFAULT_INTRO_SKIP_READINESS_JSON = Path("captures/current/hd-soak-intro-skip-rerun-readiness-current.json")
 DEFAULT_VISIBLE_RUNTIME_GUARD_JSON = Path("captures/current/visible-runtime-launcher-guard-current.json")
 DEFAULT_PROCESS_HYGIENE_JSON = Path("captures/current/process-hygiene-guard-current.json")
 DEFAULT_EXE_ARTIFACT_JSON = Path("captures/current/exe-artifact-guard-current.json")
@@ -37,6 +38,9 @@ EXPECTED_TRIAGE_JSON = r"captures\current\hd-soak-short2-menu-idle-triage-curren
 EXPECTED_WRITES = {r"C:\ClashTests\hd-soak", r"C:\ClashCaptures\hd-soak"}
 MUST_NOT_MODIFY = r"C:\Clash\clash95.exe"
 EXPECTED_MAX_INPUT_DRIFT_PX = 1
+EXPECTED_INTRO_SKIP_CLICK_MODE = "postmessage"
+EXPECTED_INTRO_SKIP_CLICKS = 8
+EXPECTED_SKIP_PULSES = 4
 MAX_DRY_RUN_PLAN_AGE_HOURS = 12
 PYTHON_EXE = (
     r"C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime"
@@ -156,6 +160,9 @@ def command_has_required_shape(command: str, step: dict[str, Any], paths: dict[s
         f"-Route {step.get('route')}",
         f"-ReportJson {paths.get('report_json')}",
         f"-ReportMarkdown {paths.get('report_markdown')}",
+        f"-IntroSkipClickMode {EXPECTED_INTRO_SKIP_CLICK_MODE}",
+        f"-IntroSkipClicks {EXPECTED_INTRO_SKIP_CLICKS}",
+        f"-SkipPulses {EXPECTED_SKIP_PULSES}",
         f"-MaxInputDriftPx {EXPECTED_MAX_INPUT_DRIFT_PX}",
         "-Execute -AllowVisibleRuntime -RequirePass",
         "-Json",
@@ -176,6 +183,9 @@ def dry_run_has_required_shape(command: str, step: dict[str, Any], paths: dict[s
         f"-Route {step.get('route')}",
         f"-ReportJson {paths.get('report_json')}",
         f"-ReportMarkdown {paths.get('report_markdown')}",
+        f"-IntroSkipClickMode {EXPECTED_INTRO_SKIP_CLICK_MODE}",
+        f"-IntroSkipClicks {EXPECTED_INTRO_SKIP_CLICKS}",
+        f"-SkipPulses {EXPECTED_SKIP_PULSES}",
         f"-MaxInputDriftPx {EXPECTED_MAX_INPUT_DRIFT_PX}",
         "-Json",
     ):
@@ -216,6 +226,15 @@ def dry_run_plan_failures(
         failures.append("dry-run plan tier/route do not match the current step")
     if (plan.get("input_limits") or {}).get("max_input_drift_px") != EXPECTED_MAX_INPUT_DRIFT_PX:
         failures.append("dry-run plan does not pin max input drift to 1 px")
+    intro_skip = plan.get("intro_skip") or {}
+    if intro_skip.get("click_mode") != EXPECTED_INTRO_SKIP_CLICK_MODE:
+        failures.append("dry-run plan intro_skip click_mode is not postmessage")
+    if int(intro_skip.get("click_repeat") or 0) != EXPECTED_INTRO_SKIP_CLICKS:
+        failures.append(f"dry-run plan intro_skip click_repeat is not {EXPECTED_INTRO_SKIP_CLICKS}")
+    if int(intro_skip.get("space_pulses") or 0) != EXPECTED_SKIP_PULSES:
+        failures.append(f"dry-run plan intro_skip space_pulses is not {EXPECTED_SKIP_PULSES}")
+    if intro_skip.get("proof_class") != "intro_skip_harness_prep_not_manual_directinput_release_proof":
+        failures.append("dry-run plan intro_skip proof_class is missing the non-manual proof boundary")
     if normalized_text(plan.get("candidate_dir")) != normalized_text(r"C:\ClashTests\hd-soak"):
         failures.append("dry-run plan candidate_dir is not C:\\ClashTests\\hd-soak")
     if normalized_text(plan.get("output_root")) != normalized_text(r"C:\ClashCaptures\hd-soak"):
@@ -233,6 +252,12 @@ def dry_run_plan_failures(
         str(plan.get("protected_stable_stage") or ""),
         "-OutputRoot",
         r"C:\ClashCaptures\hd-soak",
+        "-IntroSkipClickMode",
+        EXPECTED_INTRO_SKIP_CLICK_MODE,
+        "-IntroSkipClicks",
+        str(EXPECTED_INTRO_SKIP_CLICKS),
+        "-SkipPulses",
+        str(EXPECTED_SKIP_PULSES),
         "-Execute",
         "-AllowVisibleRuntime",
         "-RequirePass",
@@ -289,6 +314,11 @@ def post_run_handoff_refresh_for_step(_step: dict[str, Any]) -> list[str]:
             "--write-markdown captures\\current\\hd-endurance-release-checklist-current.md"
         ),
         (
+            f"{PYTHON_EXE} tools\\hd_soak_intro_skip_rerun_readiness.py "
+            "--write-json captures\\current\\hd-soak-intro-skip-rerun-readiness-current.json "
+            "--write-markdown captures\\current\\hd-soak-intro-skip-rerun-readiness-current.md"
+        ),
+        (
             f"{PYTHON_EXE} tools\\hd_endurance_next_actions.py "
             "--write-json captures\\current\\hd-endurance-next-actions-current.json "
             "--write-markdown captures\\current\\hd-endurance-next-actions-current.md "
@@ -327,6 +357,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "step_status": args.step_status_json,
         "harness_guard": args.hd_soak_harness_guard_json,
         "dry_run_plan": args.hd_soak_dry_run_plan_json,
+        "intro_skip_readiness": args.intro_skip_readiness_json,
         "visible_runtime_guard": args.visible_runtime_guard_json,
         "process_hygiene": args.process_hygiene_json,
         "exe_artifact": args.exe_artifact_json,
@@ -364,6 +395,13 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "pending_approval_legacy_compat",
         "missing_pending_approval",
     }
+    intro_skip_readiness = loaded.get("intro_skip_readiness") or {}
+    intro_skip_rerun_ready = (
+        current_step.get("status") == "failed_classified_intro_skip_input_drift_exit"
+        and intro_skip_readiness.get("passed") is True
+        and intro_skip_readiness.get("status") == "ready_for_explicit_visible_rerun_approval"
+    )
+    approval_step_ready = approval_step_pending or intro_skip_rerun_ready
 
     if next_actions and not next_actions.get("passed"):
         failures.append("next-actions report is not passing")
@@ -375,10 +413,14 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         if next_actions.get("status") != "waiting_for_explicit_visible_runtime_approval":
             failures.append(f"next-actions status is {next_actions.get('status')!r}")
 
-    if approval_step_pending:
-        expected_action_id = f"run_{current_step.get('id')}_soak"
-        if action.get("id") != expected_action_id:
-            failures.append(f"next-actions id is {action.get('id')!r}, expected {expected_action_id!r}")
+    if approval_step_ready:
+        expected_action_ids = {f"run_{current_step.get('id')}_soak"}
+        if intro_skip_rerun_ready:
+            expected_action_ids.add(f"rerun_{current_step.get('id')}_soak")
+        if action.get("id") not in expected_action_ids:
+            failures.append(
+                f"next-actions id is {action.get('id')!r}, expected one of {sorted(expected_action_ids)!r}"
+            )
         if action.get("status") != "approval_required":
             failures.append(f"next-action status is {action.get('status')!r}, expected 'approval_required'")
         if action.get("short_step_id") not in {None, current_step.get("id")}:
@@ -456,7 +498,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     failures.extend(dry_run_has_required_shape(dry_run_command, step, paths))
     if dry_run_plan:
         failures.extend(dry_run_plan_failures(dry_run_plan, current_step, step, paths))
-    if current_step.get("status") not in {"pending_approval_legacy_compat", "missing_pending_approval"}:
+    if not approval_step_ready:
         failures.append(f"current short-step status is {current_step.get('status')!r}")
     if step_status and step_status.get("ladder_complete") is True:
         failures.append("short ladder is already complete; approval preflight should not request another short soak")
@@ -492,10 +534,18 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     if not any("evidence_index_check.py" in command for command in post_run_evidence_refresh):
         failures.append("post-run evidence refresh does not check evidence links")
 
-    for guard_name in ("harness_guard", "dry_run_plan", "visible_runtime_guard", "process_hygiene", "exe_artifact"):
+    for guard_name in (
+        "harness_guard",
+        "dry_run_plan",
+        "visible_runtime_guard",
+        "process_hygiene",
+        "exe_artifact",
+    ):
         report = loaded.get(guard_name) or {}
         if report and not report.get("passed"):
             failures.append(f"{guard_name} is not passing")
+    if intro_skip_rerun_ready and not intro_skip_readiness.get("passed"):
+        failures.append("intro-skip rerun readiness is not passing")
     if (loaded.get("process_hygiene") or {}).get("matching_process_count") not in {None, 0}:
         failures.append("process hygiene found stale cdb/clash95 processes")
     if (loaded.get("exe_artifact") or {}).get("tracked_exes"):
@@ -503,9 +553,12 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
     approval_prompt = (
         f"Approve the {step_slug(step)} visible-runtime soak using the exact "
-        "approval-gated command in this report. It will generate a patched candidate "
+        "approval-gated command in this report. This will open a visible Clash95 game window. "
+        "It will generate a patched candidate "
         r"under C:\ClashTests\hd-soak and raw frame artifacts under C:\ClashCaptures\hd-soak; "
-        rf"it must not modify C:\Clash\clash95.exe, and it enforces input drift <= "
+        rf"it must not modify C:\Clash\clash95.exe, uses postmessage intro-skip harness prep "
+        rf"({EXPECTED_INTRO_SKIP_CLICKS} clicks plus {EXPECTED_SKIP_PULSES} space pulses), "
+        "does not treat intro skip as manual DirectInput proof, and enforces input drift <= "
         rf"{EXPECTED_MAX_INPUT_DRIFT_PX}px."
     )
 
@@ -543,6 +596,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         },
         "next_action_consistency": {
             "approval_step_pending": approval_step_pending,
+            "intro_skip_rerun_ready": intro_skip_rerun_ready,
             "next_action_id": action.get("id"),
             "runtime_command_matches": action.get("exact_runtime_command") == approval_command,
             "legacy_step_runtime_command_matches": action.get("legacy_step_runtime_command") in {None, runtime_command},
@@ -666,6 +720,7 @@ def main() -> int:
     parser.add_argument("--step-status-json", type=Path, default=DEFAULT_STEP_STATUS_JSON)
     parser.add_argument("--hd-soak-harness-guard-json", type=Path, default=DEFAULT_HARNESS_GUARD_JSON)
     parser.add_argument("--hd-soak-dry-run-plan-json", type=Path, default=DEFAULT_DRY_RUN_PLAN_JSON)
+    parser.add_argument("--intro-skip-readiness-json", type=Path, default=DEFAULT_INTRO_SKIP_READINESS_JSON)
     parser.add_argument("--visible-runtime-guard-json", type=Path, default=DEFAULT_VISIBLE_RUNTIME_GUARD_JSON)
     parser.add_argument("--process-hygiene-json", type=Path, default=DEFAULT_PROCESS_HYGIENE_JSON)
     parser.add_argument("--exe-artifact-json", type=Path, default=DEFAULT_EXE_ARTIFACT_JSON)

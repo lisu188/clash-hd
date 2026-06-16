@@ -1,7 +1,7 @@
 # Battle UI Evidence Matrix
 
-- Overall: FAIL
-- Generated: `2026-06-15T22:36:05+02:00`
+- Overall: PASS
+- Generated: `2026-06-16T18:05:08+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter`
 - Inputprobe stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe`
@@ -36,7 +36,7 @@
 - constructed_fixture_plan: PASS
 - constructed_fixture_unit_scan: PASS
 - constructed_fixture_command: PASS
-- stable_smoke: FAIL
+- stable_smoke: PASS
 - visible_input: PASS
 
 ## Key Evidence
@@ -97,7 +97,7 @@
 
 ## Failures
 
-- stable_smoke: stable HD-map smoke did not pass
+- None
 
 ## Open Items
 

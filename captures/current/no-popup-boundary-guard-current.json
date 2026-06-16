@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:36:20+02:00",
-  "passed": false,
+  "generated_at": "2026-06-16T18:05:34+02:00",
+  "passed": true,
   "runtime_policy": "repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report",
   "evidence_index": "captures\\current\\hd-map-evidence-current.md",
@@ -191,7 +191,7 @@
   ],
   "checks": {
     "stable_stage_guard": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "purpose": "validation-only groups stay out of the stable HD map stage",
         "expected_markdown": "stable-stage-guard-current.md",
@@ -200,9 +200,7 @@
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": [
-        "refresh check is not passing: stable_stage_guard"
-      ]
+      "failures": []
     },
     "exe_artifact_guard": {
       "passed": true,
@@ -625,7 +623,7 @@
       "failures": []
     },
     "right_bottom_visual_artifact_guard": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "purpose": "right-bottom natural UI stripe/layout artifact remains explicitly non-promoting",
         "expected_markdown": "right-bottom-visual-artifact-guard-current.md",
@@ -634,9 +632,7 @@
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": [
-        "refresh check is not passing: right_bottom_visual_artifact_guard"
-      ]
+      "failures": []
     },
     "right_bottom_visual_artifact_guard_tests": {
       "passed": true,
@@ -1083,7 +1079,7 @@
       "failures": []
     },
     "castle_overview_baseline_recheck": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "purpose": "current fixed castle overview and barracks no-popup baselines remain attached",
         "expected_markdown": "castle-overview-baseline-recheck-current.md",
@@ -1092,9 +1088,7 @@
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": [
-        "refresh check is not passing: castle_overview_baseline_recheck"
-      ]
+      "failures": []
     },
     "castle_overview_baseline_recheck_tests": {
       "passed": true,
@@ -1229,7 +1223,7 @@
       "failures": []
     },
     "docs_consistency_guard": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "purpose": "current docs and handoff files match generated stable-stage/no-popup/manual-proof facts",
         "expected_markdown": "docs-consistency-current.md",
@@ -1238,9 +1232,7 @@
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": [
-        "refresh check is not passing: docs_consistency_guard"
-      ]
+      "failures": []
     },
     "docs_consistency_guard_tests": {
       "passed": true,
@@ -1255,10 +1247,5 @@
       "failures": []
     }
   },
-  "failures": [
-    "stable_stage_guard: refresh check is not passing: stable_stage_guard",
-    "right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
-    "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
-    "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
-  ]
+  "failures": []
 }

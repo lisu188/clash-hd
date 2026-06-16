@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:36:18.839899+00:00",
+  "generated_at": "2026-06-16T16:05:28.131490+00:00",
   "passed": true,
   "runtime_policy": "repo-only short-soak artifact manifest; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -11,7 +11,7 @@
     "purpose": "compatibility report used by the existing short-soak guard"
   },
   "step_count": 5,
-  "existing_step_report_count": 0,
+  "existing_step_report_count": 1,
   "step_reports": [
     {
       "index": 1,
@@ -28,10 +28,10 @@
         "triage_json": "captures\\current\\hd-soak-short2-menu-idle-triage-current.json",
         "triage_markdown": "captures\\current\\hd-soak-short2-menu-idle-triage-current.md"
       },
-      "report_exists": false,
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json",
-      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short2-menu-idle-current.json --write-json captures\\current\\hd-soak-short2-menu-idle-guard-current.json --write-markdown captures\\current\\hd-soak-short2-menu-idle-guard-current.md --require-pass",
+      "report_exists": true,
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short2-menu-idle-current.json --write-json captures\\current\\hd-soak-short2-menu-idle-guard-current.json --write-markdown captures\\current\\hd-soak-short2-menu-idle-guard-current.md --max-input-drift-px 1 --require-pass",
       "triage_command": "python tools\\hd_soak_failure_triage.py captures\\current\\hd-soak-short2-menu-idle-current.json --write-json captures\\current\\hd-soak-short2-menu-idle-triage-current.json --write-markdown captures\\current\\hd-soak-short2-menu-idle-triage-current.md",
       "requires_visible_runtime": true,
       "requires_explicit_user_approval": true,
@@ -63,9 +63,9 @@
         "triage_markdown": "captures\\current\\hd-soak-short2-map-idle-triage-current.md"
       },
       "report_exists": false,
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json",
-      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short2-map-idle-current.json --write-json captures\\current\\hd-soak-short2-map-idle-guard-current.json --write-markdown captures\\current\\hd-soak-short2-map-idle-guard-current.md --require-pass",
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short2-map-idle-current.json --write-json captures\\current\\hd-soak-short2-map-idle-guard-current.json --write-markdown captures\\current\\hd-soak-short2-map-idle-guard-current.md --max-input-drift-px 1 --require-pass",
       "triage_command": "python tools\\hd_soak_failure_triage.py captures\\current\\hd-soak-short2-map-idle-current.json --write-json captures\\current\\hd-soak-short2-map-idle-triage-current.json --write-markdown captures\\current\\hd-soak-short2-map-idle-triage-current.md",
       "requires_visible_runtime": true,
       "requires_explicit_user_approval": true,
@@ -97,9 +97,9 @@
         "triage_markdown": "captures\\current\\hd-soak-short10-map-idle-triage-current.md"
       },
       "report_exists": false,
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json",
-      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short10-map-idle-current.json --write-json captures\\current\\hd-soak-short10-map-idle-guard-current.json --write-markdown captures\\current\\hd-soak-short10-map-idle-guard-current.md --require-pass",
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short10-map-idle-current.json --write-json captures\\current\\hd-soak-short10-map-idle-guard-current.json --write-markdown captures\\current\\hd-soak-short10-map-idle-guard-current.md --max-input-drift-px 1 --require-pass",
       "triage_command": "python tools\\hd_soak_failure_triage.py captures\\current\\hd-soak-short10-map-idle-current.json --write-json captures\\current\\hd-soak-short10-map-idle-triage-current.json --write-markdown captures\\current\\hd-soak-short10-map-idle-triage-current.md",
       "requires_visible_runtime": true,
       "requires_explicit_user_approval": true,
@@ -131,9 +131,9 @@
         "triage_markdown": "captures\\current\\hd-soak-short10-map-pan-triage-current.md"
       },
       "report_exists": false,
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -Execute -AllowVisibleRuntime -RequirePass -Json",
-      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short10-map-pan-current.json --write-json captures\\current\\hd-soak-short10-map-pan-guard-current.json --write-markdown captures\\current\\hd-soak-short10-map-pan-guard-current.md --require-pass",
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short10-map-pan-current.json --write-json captures\\current\\hd-soak-short10-map-pan-guard-current.json --write-markdown captures\\current\\hd-soak-short10-map-pan-guard-current.md --max-input-drift-px 1 --require-pass",
       "triage_command": "python tools\\hd_soak_failure_triage.py captures\\current\\hd-soak-short10-map-pan-current.json --write-json captures\\current\\hd-soak-short10-map-pan-triage-current.json --write-markdown captures\\current\\hd-soak-short10-map-pan-triage-current.md",
       "requires_visible_runtime": true,
       "requires_explicit_user_approval": true,
@@ -165,9 +165,9 @@
         "triage_markdown": "captures\\current\\hd-soak-short30-map-pan-triage-current.md"
       },
       "report_exists": false,
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -Execute -AllowVisibleRuntime -RequirePass -Json",
-      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short30-map-pan-current.json --write-json captures\\current\\hd-soak-short30-map-pan-guard-current.json --write-markdown captures\\current\\hd-soak-short30-map-pan-guard-current.md --require-pass",
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "guard_command": "python tools\\hd_soak_report.py captures\\current\\hd-soak-short30-map-pan-current.json --write-json captures\\current\\hd-soak-short30-map-pan-guard-current.json --write-markdown captures\\current\\hd-soak-short30-map-pan-guard-current.md --max-input-drift-px 1 --require-pass",
       "triage_command": "python tools\\hd_soak_failure_triage.py captures\\current\\hd-soak-short30-map-pan-current.json --write-json captures\\current\\hd-soak-short30-map-pan-triage-current.json --write-markdown captures\\current\\hd-soak-short30-map-pan-triage-current.md",
       "requires_visible_runtime": true,
       "requires_explicit_user_approval": true,

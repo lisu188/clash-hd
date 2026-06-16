@@ -15,7 +15,10 @@ Run scripts from the repository root with `powershell.exe -NoProfile -ExecutionP
 
 `scripts/smoke/run_hd_soak.ps1` is the opt-in endurance harness. It dry-runs by
 default and requires `-Execute -AllowVisibleRuntime` before launching Clash95 or
-capturing visible frames.
+capturing visible frames. Approved visible runs open a Clash95 game window; the
+current intro-skip prep is pinned with
+`-IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4` and is not
+manual DirectInput proof.
 
 Moved root variants that could not be byte-for-byte reconciled are kept under
 `scripts/cdb/legacy-root/` for inspection. Prefer the non-legacy grouped
