@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:36:19+02:00",
-  "passed": false,
+  "generated_at": "2026-06-16T18:05:33+02:00",
+  "passed": true,
   "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries",
   "facts": {
@@ -46,12 +46,12 @@
     },
     "no_visible_runtime_guard": {
       "passed": true,
-      "run_count": 19,
-      "hidden_run_count": 19
+      "run_count": 21,
+      "hidden_run_count": 21
     },
     "no_popup_boundary": {
-      "passed": false,
-      "refresh_passed": false,
+      "passed": true,
+      "refresh_passed": true,
       "required_guard_count": 6,
       "required_supporting_report_count": 82,
       "required_report_count": 88,
@@ -92,17 +92,17 @@
       "route_timing_av_count": 0
     },
     "castle": {
-      "matrix_passed": false,
+      "matrix_passed": true,
       "promotion_status": "validation_stage_only",
-      "decision_passed": false,
+      "decision_passed": true,
       "decision": "defer_stable_promotion",
       "decision_stable_stage_should_change": false,
       "stage": "castlecenter-all",
       "resolved_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "patch_total": null,
-      "patch_patched": null,
-      "patch_original": null,
-      "patch_unexpected": null,
+      "patch_total": 134,
+      "patch_patched": 134,
+      "patch_original": 0,
+      "patch_unexpected": 0,
       "visible_target_count": 3,
       "dormant_target_count": 4
     },
@@ -187,16 +187,16 @@
         "visible_runtime_requires_approval": true,
         "visible_script_count": 8,
         "visible_passing_script_count": 8,
-        "no_visible_run_count": 19,
-        "no_visible_hidden_run_count": 19
+        "no_visible_run_count": 21,
+        "no_visible_hidden_run_count": 21
       },
       "failures": []
     },
     "boundary_counts": {
-      "passed": false,
+      "passed": true,
       "summary": {
-        "passed": false,
-        "refresh_passed": false,
+        "passed": true,
+        "refresh_passed": true,
         "required_guard_count": 6,
         "required_supporting_report_count": 82,
         "required_report_count": 88,
@@ -204,9 +204,7 @@
         "summary_required_supporting_report_count": 82,
         "summary_required_report_count": 88
       },
-      "failures": [
-        "no-popup boundary guard is not passing"
-      ]
+      "failures": []
     },
     "map_boundary_counts": {
       "passed": true,
@@ -230,7 +228,7 @@
       "failures": []
     },
     "validation_only_status": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "right_bottom": {
           "matrix_passed": false,
@@ -254,24 +252,22 @@
           "route_timing_av_count": 0
         },
         "castle": {
-          "matrix_passed": false,
+          "matrix_passed": true,
           "promotion_status": "validation_stage_only",
-          "decision_passed": false,
+          "decision_passed": true,
           "decision": "defer_stable_promotion",
           "decision_stable_stage_should_change": false,
           "stage": "castlecenter-all",
           "resolved_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-          "patch_total": null,
-          "patch_patched": null,
-          "patch_original": null,
-          "patch_unexpected": null,
+          "patch_total": 134,
+          "patch_patched": 134,
+          "patch_original": 0,
+          "patch_unexpected": 0,
           "visible_target_count": 3,
           "dormant_target_count": 4
         }
       },
-      "failures": [
-        "castle validation matrix/decision is not passing"
-      ]
+      "failures": []
     },
     "screenshot_files": {
       "passed": true,
@@ -375,8 +371,5 @@
       "failures": []
     }
   },
-  "failures": [
-    "boundary_counts: no-popup boundary guard is not passing",
-    "validation_only_status: castle validation matrix/decision is not passing"
-  ]
+  "failures": []
 }

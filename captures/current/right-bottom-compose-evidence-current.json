@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T22:35:48+02:00",
+  "generated_at": "2026-06-16T18:04:45+02:00",
   "passed": false,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
   "promotion_status": "validation_stage_only",

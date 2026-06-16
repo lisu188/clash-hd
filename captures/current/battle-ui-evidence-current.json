@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:36:05+02:00",
-  "passed": false,
+  "generated_at": "2026-06-16T18:05:08+02:00",
+  "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
   "input_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
@@ -203,12 +203,10 @@
       "failures": []
     },
     "stable_smoke": {
-      "passed": false,
+      "passed": true,
       "path": "captures\\current\\hd-map-smoke-current.json",
-      "candidate_sha256": null,
-      "failures": [
-        "stable HD-map smoke did not pass"
-      ]
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "failures": []
     },
     "visible_input": {
       "passed": true,
@@ -327,7 +325,5 @@
     "real visible click-to-callback proof remains open",
     "1 invalid visible-input run(s) are retained as negative evidence"
   ],
-  "failures": [
-    "stable_smoke: stable HD-map smoke did not pass"
-  ]
+  "failures": []
 }

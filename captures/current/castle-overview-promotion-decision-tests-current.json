@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T22:35:59+02:00",
+  "generated_at": "2026-06-16T18:05:00+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for decision CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the castle overview promotion decision defers stable promotion by default, fails when the evidence matrix fails or when focused displayed-wrapper / visible-dormant multi-hit completion proof is missing, only marks the stable stage as changeable when a valid manual proof manifest or an explicit CDB-only override is supplied, rejects placeholder proof files, and its CLI fails closed under --require-pass",

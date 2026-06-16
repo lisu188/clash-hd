@@ -8,7 +8,9 @@
 
 ## Status
 
-- HD map smoke matrix: PASS
+- HD map smoke matrix: FAIL-closed; no candidate executable path is available
+  for the current patch-stage check and the post-owner evidence matrix is not
+  passing
 - No-popup map evidence matrix: PASS, normal visibility and forced-visible
   baseline
 - No-popup map evidence matrix tests: PASS, fixture coverage is included in
@@ -42,6 +44,10 @@
 - HD soak approval preflight: PASS as repo-only approval packet; the exact
   first `short2` visible-runtime command is canonical and guarded, with no
   runtime launched
+- HD long soak report guard: FAIL-closed; 2h+ representative-route evidence
+  remains locked until the short ladder and approved long-route report guards pass
+- HD continuity status: FAIL-closed; save/load, turn advancement, and campaign
+  continuity require a compact approved proof manifest and remain non-promoting
 - Patch-stage byte gate: PASS, `118/118` selected current HD map bytes patched
 - Post-owner visibility evidence: PASS
 - Normal dark right/bottom cells: explained by visibility/fog state
@@ -89,9 +95,9 @@
   non-promoting
 - Right-bottom action-menu blocker triage tests: PASS, fixture coverage is
   included in the refresh
-- Right-bottom visual artifact guard: PASS, the current stripy/out-of-place
-  natural right-bottom UI state is explicitly non-promoting while controlled
-  composition is the only recovered lower/right draw path
+- Right-bottom visual artifact guard: FAIL-closed; the current
+  stripy/out-of-place natural right-bottom UI state remains non-promoting while
+  controlled composition is the only recovered lower/right draw path
 - Right-bottom visual artifact guard tests: PASS, fixture coverage is included
   in the refresh
 - Load-slot transition run plan: PASS, future rows 3-5 transition probes are
@@ -108,7 +114,8 @@
   included in the refresh
 - Right-bottom controlled grid-hit parser tests: PASS, fixture coverage is
   included in the refresh
-- Castle overview evidence matrix: PASS, validation-stage only
+- Castle overview evidence matrix: FAIL-closed, validation-stage only; the
+  current external candidate path needed by the latest matrix is missing
 - Castle owner records summary tests: PASS, fixture coverage is included in
   the refresh
 - Castle overview evidence matrix tests: PASS, fixture coverage is included in
@@ -120,21 +127,24 @@
   the refresh
 - Castle overview multihit summary tests: PASS, fixture coverage is included
   in the refresh
-- Castle overview baseline recheck: PASS, older visual baseline and barracks
-  controlled-stop baseline still pass
+- Castle overview baseline recheck: FAIL-closed for the latest castle overview
+  matrix because the external candidate path is missing; older visual baseline
+  and barracks controlled-stop baseline evidence remains historical context
 - Castle overview baseline recheck tests: PASS, fixture coverage is included in
   the refresh
 - Castle overview probe guard: PASS, focused descriptor-loop breakpoints remain
   covered and the old crashing overview input-wrapper marker is absent
 - Castle overview probe guard tests: PASS, fixture coverage is included in the
   refresh
-- Castle overview promotion decision: PASS, defer stable promotion,
+- Castle overview promotion decision: FAIL-closed, defer stable promotion,
   `manual_input_proof_valid=False`
 - Castle overview promotion decision tests: PASS, fixture coverage now rejects
   placeholder proof files and requires a valid manual proof manifest for manual
   promotion eligibility
-- Stable stage guard: PASS, validation-only groups absent from the default
-  HD map stage and old `menu-surface` absent from `mapsurface` stages
+- Stable stage guard: FAIL-closed because castle overview validation evidence
+  and promotion decision are not currently passing; validation-only groups
+  remain absent from the default HD map stage and old `menu-surface` remains
+  absent from `mapsurface` stages
 - Stable stage guard tests: PASS, fixture coverage is included in the refresh
 - Executable artifact guard: PASS, no repository `.exe` files present or
   tracked in the index
@@ -191,13 +201,13 @@
   current evidence
 - Promotion override manifest tests: PASS, fixture coverage requires explicit
   approval, scope, stage/SHA, risk, evidence refs, and stale-process proof
-- No-popup boundary guard: PASS, all no-popup boundary reports are present in
-  the refresh and linked from this evidence index
+- No-popup boundary guard: FAIL-closed; required reports are present and linked
+  from this evidence index, but upstream stable-stage, right-bottom visual,
+  castle baseline, and docs-consistency blockers are not passing
 - No-popup guard regression tests: PASS, fixture coverage is included in the
   refresh and the failing surface-policy CLI output stays fixture-local
-- Docs consistency guard: PASS, generated stable-stage/no-popup/manual-proof
-  facts agree with the evidence index, handoff docs, README/progress notes, and
-  wiki summaries
+- Docs consistency guard: FAIL-closed while no-popup boundary counts and
+  validation-only castle status remain failing in generated current evidence
 - Docs consistency guard tests: PASS, fixture coverage catches stale generated
   counts and stale promotion-boundary facts
 - Handoff freshness guard: PASS, current handoff points at the route timing
@@ -218,7 +228,7 @@
 - [No-popup map evidence matrix tests](no-popup-map-evidence-tests-current.md)
 - [Current completion summary](current-completion-summary-current.md)
 - [Current completion summary tests](current-completion-summary-tests-current.md)
-- [HD short soak report](hd-soak-short-current.md)
+- [HD short soak legacy compatibility report](hd-soak-short-current.md)
 - [HD soak failure triage](hd-soak-failure-triage-current.md)
 - [HD soak failure triage tests](hd-soak-failure-triage-tests-current.md)
 - [HD soak route coverage](hd-soak-route-coverage-current.md)
@@ -235,6 +245,10 @@
 - [HD soak short-step status tests](hd-soak-short-step-status-tests-current.md)
 - [HD soak approval preflight](hd-soak-approval-preflight-current.md)
 - [HD soak approval preflight tests](hd-soak-approval-preflight-tests-current.md)
+- [HD long soak report guard](hd-soak-long-report-guard-current.md)
+- [HD long soak report guard tests](hd-soak-long-report-guard-tests-current.md)
+- [HD continuity status](hd-continuity-current.md)
+- [HD continuity status tests](hd-continuity-tests-current.md)
 - [HD soak harness guard](hd-soak-harness-guard-current.md)
 - [HD soak harness guard tests](hd-soak-harness-guard-tests-current.md)
 - [HD soak report guard](hd-soak-report-guard-current.md)
@@ -496,12 +510,13 @@ Right-bottom validation patch controlled grid-hit surface:
 
 ## Endurance Soak Road
 
-The first short-tier endurance report is
+The legacy short-tier compatibility report is
 `captures\current\hd-soak-short-current.md`. It currently fails closed because
-the opt-in visible-runtime soak was not approved/executed. This is the intended
-state until `scripts\smoke\run_hd_soak.ps1 -Tier short2 -Route menu-idle
--Execute -AllowVisibleRuntime` collects real frame/process samples under
-`C:\ClashCaptures\hd-soak`. The pending soak report is not CDB evidence, not
+the opt-in visible-runtime soak was not approved/executed. The first canonical
+per-step report is named in the approval preflight and is not linked from this
+index until the approval-gated command collects real
+frame/process samples under `C:\ClashCaptures\hd-soak` with an explicit
+`-MaxInputDriftPx 1` bound. The pending soak report is not CDB evidence, not
 manual DirectInput proof, and not a promotion signal.
 
 ## Patch Manifest Highlights

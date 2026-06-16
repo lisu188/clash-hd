@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:36:18.323950+00:00",
+  "generated_at": "2026-06-16T16:05:30.464957+00:00",
   "passed": false,
   "runtime_policy": "repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -7,6 +7,7 @@
     "stable_stage": "captures\\current\\stable-stage-guard-current.json",
     "no_popup_map": "captures\\current\\no-popup-map-evidence-current.json",
     "short_soak": "captures\\current\\hd-soak-report-guard-current.json",
+    "short_step_status": "captures\\current\\hd-soak-short-step-status-current.json",
     "long_soak": "captures\\current\\hd-soak-long-report-guard-current.json",
     "manual_directinput": "captures\\current\\manual-directinput-validation-checklist-current.json",
     "right_bottom": "captures\\current\\right-bottom-compose-promotion-decision-current.json",
@@ -21,21 +22,22 @@
     "stable_stage": "present",
     "no_popup_map": "present",
     "short_soak": "present",
-    "long_soak": "missing",
+    "short_step_status": "present",
+    "long_soak": "present",
     "manual_directinput": "present",
     "right_bottom": "present",
     "castle_overview": "present",
     "battle_ui": "present",
     "current_completion": "present",
-    "continuity": "missing",
+    "continuity": "present",
     "exe_artifact": "present",
     "process_hygiene": "present"
   },
   "counts": {
     "total": 14,
     "passed": 4,
-    "blocked": 6,
-    "missing": 4
+    "blocked": 10,
+    "missing": 0
   },
   "next_milestone": {
     "id": "short2_menu_idle_soak",
@@ -74,21 +76,48 @@
       "status": "blocked",
       "passed": false,
       "evidence": [
-        "captures\\current\\hd-soak-report-guard-current.json"
+        "captures\\current\\hd-soak-report-guard-current.json",
+        "captures\\current\\hd-soak-short-step-status-current.json"
       ],
-      "summary": "short2 visible-runtime soak has not produced passing frame/process evidence",
-      "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage"
+      "summary": "short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit",
+      "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage",
+      "details": {
+        "global_report_guard": {
+          "source_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
+          "source_report_selection": "canonical_first_short_step",
+          "canonical_first_step_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
+          "canonical_first_step_present": true,
+          "canonical_runtime_report_missing": false,
+          "overall": false,
+          "failure_count": 14
+        },
+        "short_step_status": {
+          "current_step": "short2_menu_idle",
+          "current_step_status": "failed_classified_intro_skip_input_drift_exit",
+          "ladder_complete": false,
+          "canonical_report_present": true,
+          "guard_present": true,
+          "triage_present": true,
+          "guard_overall": false,
+          "executed": null
+        },
+        "canonical_outputs": {
+          "report_json": "captures\\current\\hd-soak-short2-menu-idle-current.json",
+          "guard_json": "captures\\current\\hd-soak-short2-menu-idle-guard-current.json",
+          "triage_json": "captures\\current\\hd-soak-short2-menu-idle-triage-current.json"
+        }
+      }
     },
     {
       "id": "long_soak_representative_routes",
       "title": "2h+ representative-route soak passes",
       "category": "endurance",
-      "status": "missing",
+      "status": "blocked",
       "passed": false,
       "evidence": [
         "captures\\current\\hd-soak-long-report-guard-current.json"
       ],
-      "summary": "no 2h+ representative-route soak report is present",
+      "summary": "2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
       "next_probe": "add long-tier reports only after short2/short10/short30 are stable"
     },
     {
@@ -157,36 +186,36 @@
       "id": "save_load_roundtrip",
       "title": "Safe save/load roundtrip continuity is proven",
       "category": "state continuity",
-      "status": "missing",
+      "status": "blocked",
       "passed": false,
       "evidence": [
         "captures\\current\\hd-continuity-current.json"
       ],
-      "summary": "save/load continuity proof is absent",
+      "summary": "save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
       "next_probe": "add safe test-save roundtrip evidence after short-tier stability"
     },
     {
       "id": "turn_advancement",
       "title": "Turn advancement avoids state desync",
       "category": "state continuity",
-      "status": "missing",
+      "status": "blocked",
       "passed": false,
       "evidence": [
         "captures\\current\\hd-continuity-current.json"
       ],
-      "summary": "turn-advancement proof is absent",
+      "summary": "turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
       "next_probe": "add deterministic turn-advance route evidence after save/load is safe"
     },
     {
       "id": "campaign_routes",
       "title": "Campaign routes remain stable",
       "category": "state continuity",
-      "status": "missing",
+      "status": "blocked",
       "passed": false,
       "evidence": [
         "captures\\current\\hd-continuity-current.json"
       ],
-      "summary": "campaign-route proof is absent",
+      "summary": "campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
       "next_probe": "add representative campaign route soaks after short/medium tiers are stable"
     },
     {
@@ -225,15 +254,15 @@
     "full_game_percent_statement": "not 100%; manual DirectInput proof and stable promotion remain blocked"
   },
   "failures": [
-    "short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence",
-    "long_soak_representative_routes: no 2h+ representative-route soak report is present",
+    "short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit",
+    "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
     "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
     "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
     "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
     "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
     "tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof",
-    "save_load_roundtrip: save/load continuity proof is absent",
-    "turn_advancement: turn-advancement proof is absent",
-    "campaign_routes: campaign-route proof is absent"
+    "save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
+    "turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
+    "campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release"
   ]
 }

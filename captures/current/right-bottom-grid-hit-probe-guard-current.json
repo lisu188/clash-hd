@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T22:35:47+02:00",
+  "generated_at": "2026-06-16T18:04:44+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "focused right-bottom grid-hit proof must keep the owner/action/grid breakpoints, continue to prove native coordinate (450,73) returns grid cell 0, and stay hidden-desktop with no failure-exit or AV rows",

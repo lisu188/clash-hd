@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:36:19.205329+00:00",
+  "generated_at": "2026-06-16T16:05:28.565666+00:00",
   "passed": true,
   "runtime_policy": "repo-only short-soak step status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "manifest": "captures\\current\\hd-soak-short-artifact-manifest-current.json",
@@ -9,16 +9,16 @@
   "counts": {
     "total": 5,
     "passed": 0,
-    "pending_or_missing": 1,
+    "pending_or_missing": 0,
     "locked": 4,
-    "failed_or_invalid": 0
+    "failed_or_invalid": 1
   },
   "current_step": {
     "id": "short2_menu_idle",
     "tier": "short2",
     "route": "menu-idle",
-    "status": "pending_approval_legacy_compat",
-    "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+    "status": "failed_classified_intro_skip_input_drift_exit",
+    "next_command": null
   },
   "steps": [
     {
@@ -29,7 +29,7 @@
       "duration_sec": 120,
       "prerequisites": [],
       "prerequisites_passed": true,
-      "status": "pending_approval_legacy_compat",
+      "status": "failed_classified_intro_skip_input_drift_exit",
       "passed": false,
       "paths": {
         "report_json": "captures\\current\\hd-soak-short2-menu-idle-current.json",
@@ -40,13 +40,19 @@
         "triage_markdown": "captures\\current\\hd-soak-short2-menu-idle-triage-current.md"
       },
       "summary": {
-        "canonical_report_present": false,
-        "legacy_report_matches": true,
-        "legacy_report_pending_approval": true,
-        "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+        "canonical_report_present": true,
+        "guard_present": true,
+        "guard_overall": false,
+        "triage_present": true,
+        "triage_passed": false,
+        "classification": "intro_skip_input_drift_exit",
+        "next_probe": "fix or verify intro-skip harness input mode before rerunning; use postmessage/space-only harness prep, then rerun visible soak only after explicit visible-window approval",
+        "frame_sample_count": 1,
+        "final_route_marker": "intro-skip",
+        "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33"
       },
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json"
     },
     {
       "id": "short2_map_idle",
@@ -73,8 +79,8 @@
         "legacy_report_matches": false,
         "next_command": null
       },
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json"
     },
     {
       "id": "short10_map_idle",
@@ -101,8 +107,8 @@
         "legacy_report_matches": false,
         "next_command": null
       },
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json"
     },
     {
       "id": "short10_map_pan",
@@ -129,8 +135,8 @@
         "legacy_report_matches": false,
         "next_command": null
       },
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json"
     },
     {
       "id": "short30_map_pan",
@@ -157,8 +163,8 @@
         "legacy_report_matches": false,
         "next_command": null
       },
-      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -Json",
-      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -Execute -AllowVisibleRuntime -RequirePass -Json"
+      "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json",
+      "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json"
     }
   ],
   "locks": {

@@ -64,7 +64,9 @@ def step_status() -> dict[str, Any]:
             "next_command": (
                 r"powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 "
                 rf"-Tier {TIER} -Route {ROUTE} -ReportJson {paths['report_json']} "
-                rf"-ReportMarkdown {paths['report_markdown']} -MaxInputDriftPx 1 "
+                rf"-ReportMarkdown {paths['report_markdown']} "
+                "-IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 "
+                "-MaxInputDriftPx 1 "
                 "-Execute -AllowVisibleRuntime -RequirePass -Json"
             ),
         },
@@ -118,6 +120,12 @@ def valid_plan() -> dict[str, Any]:
             "max_artifact_mb": 250,
         },
         "input_limits": {"max_input_drift_px": 1},
+        "intro_skip": {
+            "click_mode": dry_run_plan.EXPECTED_INTRO_SKIP_CLICK_MODE,
+            "click_repeat": dry_run_plan.EXPECTED_INTRO_SKIP_CLICKS,
+            "space_pulses": dry_run_plan.EXPECTED_SKIP_PULSES,
+            "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
+        },
         "raw_artifacts_policy": "raw PNG frames and per-step logs stay outside the repository by default",
         "right_bottom_promotion_blocked": True,
         "commands": {
@@ -132,7 +140,9 @@ def valid_plan() -> dict[str, Any]:
                 rf"-CandidateDir '{dry_run_plan.EXPECTED_CANDIDATE_DIR}' "
                 rf"-CandidateName 'clash95_hd_soak_fixture.exe' -OutputRoot '{dry_run_plan.EXPECTED_OUTPUT_ROOT}' "
                 rf"-ReportJson '{report_json}' "
-                rf"-ReportMarkdown '{report_md}' -MaxInputDriftPx '1' "
+                rf"-ReportMarkdown '{report_md}' "
+                "-IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' "
+                "-MaxInputDriftPx '1' "
                 "-Execute -AllowVisibleRuntime -RequirePass -Json"
             ),
         },
@@ -188,6 +198,16 @@ def test_rejects_execute_command_without_require_pass_or_json() -> None:
     assert report["passed"] is False, report
     assert any("execute command missing fragment: -RequirePass" in failure for failure in report["failures"])
     assert any("execute command missing fragment: -Json" in failure for failure in report["failures"])
+
+
+def test_rejects_missing_intro_skip_plan_fields() -> None:
+    plan = valid_plan()
+    plan["intro_skip"]["click_mode"] = "sendinput"
+    plan["commands"]["execute"] = plan["commands"]["execute"].replace("-IntroSkipClickMode 'postmessage' ", "")
+    report = build_fixture_report(plan)
+    assert report["passed"] is False, report
+    assert any("intro_skip click_mode" in failure for failure in report["failures"])
+    assert any("execute command missing fragment: -IntroSkipClickMode" in failure for failure in report["failures"])
 
 
 def test_rejects_execute_command_without_explicit_stage_or_io_roots() -> None:
@@ -259,6 +279,7 @@ def run_tests() -> None:
     test_rejects_executed_plan()
     test_rejects_stage_drift()
     test_rejects_execute_command_without_require_pass_or_json()
+    test_rejects_missing_intro_skip_plan_fields()
     test_rejects_execute_command_without_explicit_stage_or_io_roots()
     test_rejects_repo_candidate_path()
     test_rejects_missing_or_unverified_base_input()

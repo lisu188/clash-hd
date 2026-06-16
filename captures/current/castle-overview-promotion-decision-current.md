@@ -1,15 +1,15 @@
 # Castle Overview Promotion Decision
 
-- Decision record: FAIL
+- Decision record: PASS
 - Decision: `defer_stable_promotion`
 - Stable stage should change: `False`
-- Generated: `2026-06-15T22:35:59+02:00`
+- Generated: `2026-06-16T18:04:59+02:00`
 - Current stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Validation stage: `castlecenter-all`
 - Resolved validation stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all`
-- Candidate SHA-256: `None`
+- Candidate SHA-256: `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6`
 - Evidence matrix: `captures\current\castle-overview-evidence-current.json`
-- Matrix status: `False`
+- Matrix status: `True`
 - Matrix promotion status: `validation_stage_only`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
 - Focused displayed-wrapper proof: `True`
@@ -32,7 +32,7 @@
 
 ## Reasons
 
-- castle overview evidence matrix is not passing
+- castle overview evidence matrix is passing
 - focused displayed-wrapper and multi-hit completion proof is present
 - current proof is repo-only CDB/proxy evidence
 - manual/visible DirectInput validation has not been supplied
@@ -45,7 +45,3 @@
 - keep castle overview wrappers scoped to castlecenter-all
 - continue with repo-only or hidden-desktop/CDB evidence only
 - request explicit approval before any visible/manual input validation
-
-## Failures
-
-- castle overview evidence matrix is not passing

@@ -1,8 +1,16 @@
 {
-  "generated_at": "2026-06-15T20:36:17.975033+00:00",
+  "generated_at": "2026-06-16T16:05:30.838419+00:00",
   "passed": true,
   "runtime_policy": "repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "script": "scripts\\smoke\\run_hd_soak.ps1",
+  "release_checklist": {
+    "path": "captures\\current\\hd-endurance-release-checklist-current.json",
+    "state": "present",
+    "present": true,
+    "generated_at": "2026-06-16T16:05:30.464957+00:00",
+    "passed": false,
+    "requirement_count": 14
+  },
   "implemented_routes": [
     "menu-idle",
     "map-idle",
@@ -41,10 +49,43 @@
       "status": "implemented_pending_first_soak",
       "proof_class": "approval_gated_visible_runtime",
       "promotion_scope": "non_promoting_short_soak",
+      "release_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_menu_real_input"
+      ],
       "next_probe": "run short2 menu-idle after explicit visible-runtime approval",
       "implemented_in_harness": true,
       "route_steps": [],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "short2_menu_idle_soak",
+          "title": "First short2 menu-idle soak passes",
+          "category": "endurance",
+          "status": "blocked",
+          "passed": false,
+          "summary": "short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit",
+          "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage",
+          "evidence": [
+            "captures\\current\\hd-soak-report-guard-current.json",
+            "captures\\current\\hd-soak-short-step-status-current.json"
+          ]
+        },
+        {
+          "id": "stable_menu_real_input",
+          "title": "Stable menu load has real input proof",
+          "category": "manual input",
+          "status": "blocked",
+          "passed": false,
+          "summary": "menu-load proof remains pending manual DirectInput validation",
+          "next_probe": "collect approved manual menu-load proof or keep promotion blocked",
+          "evidence": [
+            "captures\\current\\manual-directinput-validation-checklist-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 2,
+      "readiness_status": "implemented_blocked_by_current_requirements"
     },
     {
       "id": "map_idle",
@@ -52,6 +93,10 @@
       "status": "implemented_waiting_on_short2_menu",
       "proof_class": "approval_gated_visible_runtime",
       "promotion_scope": "non_promoting_short_soak",
+      "release_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input"
+      ],
       "next_probe": "run short2 map-idle after menu-idle passes",
       "implemented_in_harness": true,
       "route_steps": [
@@ -59,7 +104,36 @@
         "load-slot0",
         "confirm-load"
       ],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "short2_menu_idle_soak",
+          "title": "First short2 menu-idle soak passes",
+          "category": "endurance",
+          "status": "blocked",
+          "passed": false,
+          "summary": "short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit",
+          "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage",
+          "evidence": [
+            "captures\\current\\hd-soak-report-guard-current.json",
+            "captures\\current\\hd-soak-short-step-status-current.json"
+          ]
+        },
+        {
+          "id": "stable_hd_map_real_input",
+          "title": "HD map input has no drift under real input",
+          "category": "manual input",
+          "status": "blocked",
+          "passed": false,
+          "summary": "HD map input proof remains pending manual DirectInput validation",
+          "next_probe": "collect approved manual map input proof after short soak is stable",
+          "evidence": [
+            "captures\\current\\manual-directinput-validation-checklist-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 2,
+      "readiness_status": "implemented_blocked_by_current_requirements"
     },
     {
       "id": "map_pan",
@@ -67,6 +141,10 @@
       "status": "implemented_waiting_on_map_idle",
       "proof_class": "approval_gated_visible_runtime",
       "promotion_scope": "non_promoting_short_soak",
+      "release_requirement_ids": [
+        "long_soak_representative_routes",
+        "stable_hd_map_real_input"
+      ],
       "next_probe": "run short10/short30 map-pan after map-idle passes",
       "implemented_in_harness": true,
       "route_steps": [
@@ -75,7 +153,35 @@
         "confirm-load",
         "pan-path"
       ],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "long_soak_representative_routes",
+          "title": "2h+ representative-route soak passes",
+          "category": "endurance",
+          "status": "blocked",
+          "passed": false,
+          "summary": "2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+          "next_probe": "add long-tier reports only after short2/short10/short30 are stable",
+          "evidence": [
+            "captures\\current\\hd-soak-long-report-guard-current.json"
+          ]
+        },
+        {
+          "id": "stable_hd_map_real_input",
+          "title": "HD map input has no drift under real input",
+          "category": "manual input",
+          "status": "blocked",
+          "passed": false,
+          "summary": "HD map input proof remains pending manual DirectInput validation",
+          "next_probe": "collect approved manual map input proof after short soak is stable",
+          "evidence": [
+            "captures\\current\\manual-directinput-validation-checklist-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 2,
+      "readiness_status": "implemented_blocked_by_current_requirements"
     },
     {
       "id": "castle_overview_enter_exit",
@@ -83,10 +189,30 @@
       "status": "planned_not_implemented",
       "proof_class": "future_visible_or_manual_input",
       "promotion_scope": "blocked_until_manual_or_strict_natural_proof",
+      "release_requirement_ids": [
+        "castle_and_barracks_centered_input"
+      ],
       "next_probe": "add a non-promoting castle overview route only after short map routes stabilize",
       "implemented_in_harness": false,
       "route_steps": [],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "castle_and_barracks_centered_input",
+          "title": "Castle overview and barracks centered input are proven",
+          "category": "screen route",
+          "status": "blocked",
+          "passed": false,
+          "summary": "castle/barracks centered input remains validation-only or manual-proof blocked",
+          "next_probe": "collect approved centered castle/barracks input proof",
+          "evidence": [
+            "captures\\current\\castle-overview-promotion-decision-current.json",
+            "captures\\current\\manual-directinput-validation-checklist-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 1,
+      "readiness_status": "planned_blocked_by_current_requirements"
     },
     {
       "id": "barracks_castle_centered_input",
@@ -94,10 +220,30 @@
       "status": "planned_not_implemented",
       "proof_class": "future_visible_or_manual_input",
       "promotion_scope": "blocked_until_manual_or_strict_natural_proof",
+      "release_requirement_ids": [
+        "castle_and_barracks_centered_input"
+      ],
       "next_probe": "add centered castle/barracks enter-exit route after castle baseline is approval-ready",
       "implemented_in_harness": false,
       "route_steps": [],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "castle_and_barracks_centered_input",
+          "title": "Castle overview and barracks centered input are proven",
+          "category": "screen route",
+          "status": "blocked",
+          "passed": false,
+          "summary": "castle/barracks centered input remains validation-only or manual-proof blocked",
+          "next_probe": "collect approved centered castle/barracks input proof",
+          "evidence": [
+            "captures\\current\\castle-overview-promotion-decision-current.json",
+            "captures\\current\\manual-directinput-validation-checklist-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 1,
+      "readiness_status": "planned_blocked_by_current_requirements"
     },
     {
       "id": "right_bottom_action_menu",
@@ -105,10 +251,30 @@
       "status": "planned_blocked_by_manual_or_natural_proof",
       "proof_class": "future_visible_or_manual_input",
       "promotion_scope": "blocked; forced coordinates remain diagnostic only",
+      "release_requirement_ids": [
+        "right_bottom_action_menu"
+      ],
       "next_probe": "replace debugger-forced action-click proof with natural or approved manual input proof",
       "implemented_in_harness": false,
       "route_steps": [],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "right_bottom_action_menu",
+          "title": "Right-bottom action/menu is naturally or manually proven",
+          "category": "screen route",
+          "status": "blocked",
+          "passed": false,
+          "summary": "right-bottom action/menu remains validation-only or manual-proof blocked",
+          "next_probe": "replace debugger-forced action-click proof with natural or approved manual input proof",
+          "evidence": [
+            "captures\\current\\right-bottom-compose-promotion-decision-current.json",
+            "captures\\current\\manual-directinput-validation-checklist-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 1,
+      "readiness_status": "planned_blocked_by_current_requirements"
     },
     {
       "id": "tactical_battle_entry_return",
@@ -116,10 +282,29 @@
       "status": "planned_not_implemented",
       "proof_class": "future_visible_or_manual_input",
       "promotion_scope": "blocked_until_battle_entry_return_and_click_to_callback_proof",
+      "release_requirement_ids": [
+        "tactical_battle_entry_return"
+      ],
       "next_probe": "add battle entry/use/return route after representative map/castle routes are stable",
       "implemented_in_harness": false,
       "route_steps": [],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "tactical_battle_entry_return",
+          "title": "Tactical battle entry/use/return is proven",
+          "category": "screen route",
+          "status": "blocked",
+          "passed": false,
+          "summary": "battle evidence remains validation-only or missing visible click-to-callback proof",
+          "next_probe": "prove battle entry, UI use, return, and post-return map health on an approved route",
+          "evidence": [
+            "captures\\current\\battle-ui-evidence-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 1,
+      "readiness_status": "planned_blocked_by_current_requirements"
     },
     {
       "id": "save_load_roundtrip",
@@ -127,10 +312,29 @@
       "status": "planned_not_implemented",
       "proof_class": "future_safe_test_save_continuity",
       "promotion_scope": "blocked_until_safe_save_roundtrip_evidence",
+      "release_requirement_ids": [
+        "save_load_roundtrip"
+      ],
       "next_probe": "define safe isolated save/load continuity evidence after short tiers pass",
       "implemented_in_harness": false,
       "route_steps": [],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "save_load_roundtrip",
+          "title": "Safe save/load roundtrip continuity is proven",
+          "category": "state continuity",
+          "status": "blocked",
+          "passed": false,
+          "summary": "save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
+          "next_probe": "add safe test-save roundtrip evidence after short-tier stability",
+          "evidence": [
+            "captures\\current\\hd-continuity-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 1,
+      "readiness_status": "planned_blocked_by_current_requirements"
     },
     {
       "id": "turn_advancement",
@@ -138,10 +342,29 @@
       "status": "planned_not_implemented",
       "proof_class": "future_state_continuity",
       "promotion_scope": "blocked_until_turn_state_evidence",
+      "release_requirement_ids": [
+        "turn_advancement"
+      ],
       "next_probe": "add deterministic turn-advance route after save/load continuity is safe",
       "implemented_in_harness": false,
       "route_steps": [],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "turn_advancement",
+          "title": "Turn advancement avoids state desync",
+          "category": "state continuity",
+          "status": "blocked",
+          "passed": false,
+          "summary": "turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
+          "next_probe": "add deterministic turn-advance route evidence after save/load is safe",
+          "evidence": [
+            "captures\\current\\hd-continuity-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 1,
+      "readiness_status": "planned_blocked_by_current_requirements"
     },
     {
       "id": "campaign_route",
@@ -149,16 +372,49 @@
       "status": "planned_not_implemented",
       "proof_class": "future_long_visible_runtime",
       "promotion_scope": "blocked_until_long_soak_and_campaign_continuity",
+      "release_requirement_ids": [
+        "long_soak_representative_routes",
+        "campaign_routes"
+      ],
       "next_probe": "add representative campaign route only after short and medium tiers are stable",
       "implemented_in_harness": false,
       "route_steps": [],
-      "stable_stage_should_change": false
+      "stable_stage_should_change": false,
+      "current_blockers": [
+        {
+          "id": "long_soak_representative_routes",
+          "title": "2h+ representative-route soak passes",
+          "category": "endurance",
+          "status": "blocked",
+          "passed": false,
+          "summary": "2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+          "next_probe": "add long-tier reports only after short2/short10/short30 are stable",
+          "evidence": [
+            "captures\\current\\hd-soak-long-report-guard-current.json"
+          ]
+        },
+        {
+          "id": "campaign_routes",
+          "title": "Campaign routes remain stable",
+          "category": "state continuity",
+          "status": "blocked",
+          "passed": false,
+          "summary": "campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
+          "next_probe": "add representative campaign route soaks after short/medium tiers are stable",
+          "evidence": [
+            "captures\\current\\hd-continuity-current.json"
+          ]
+        }
+      ],
+      "current_blocker_count": 2,
+      "readiness_status": "planned_blocked_by_current_requirements"
     }
   ],
   "counts": {
     "release_lane_count": 10,
     "implemented_lane_count": 3,
     "planned_lane_count": 7,
+    "blocked_lane_count": 10,
     "required_short_route_count": 3
   },
   "coverage_complete": false,

@@ -1,7 +1,7 @@
 # Process Hygiene Guard Tests
 
 - Status: PASS
-- Generated: `2026-06-15T22:36:09+02:00`
+- Generated: `2026-06-16T18:05:13+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the process hygiene guard rejects leftover cdb.exe/clash95* processes, snapshot failures, and CLI fail-closed cases
 

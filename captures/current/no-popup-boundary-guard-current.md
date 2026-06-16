@@ -1,7 +1,7 @@
 # No-Popup Boundary Guard
 
-- Overall: FAIL
-- Generated: `2026-06-15T22:36:20+02:00`
+- Overall: PASS
+- Generated: `2026-06-16T18:05:34+02:00`
 - Runtime policy: repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current refresh must include all no-popup boundary reports and the evidence index must link each report
 - Evidence index: `captures\current\hd-map-evidence-current.md`
@@ -11,8 +11,7 @@
 
 ## Required Reports
 
-- `stable_stage_guard`: `FAIL` report=`captures\current\stable-stage-guard-current.md` linked=`True`
-  - refresh check is not passing: stable_stage_guard
+- `stable_stage_guard`: `PASS` report=`captures\current\stable-stage-guard-current.md` linked=`True`
 - `exe_artifact_guard`: `PASS` report=`captures\current\exe-artifact-guard-current.md` linked=`True`
 - `surface_dump_policy_guard`: `PASS` report=`captures\current\surface-dump-policy-guard-current.md` linked=`True`
 - `visible_runtime_launcher_guard`: `PASS` report=`captures\current\visible-runtime-launcher-guard-current.md` linked=`True`
@@ -48,8 +47,7 @@
 - `right_bottom_compose_evidence_matrix_tests`: `PASS` report=`captures\current\right-bottom-compose-evidence-matrix-tests-current.md` linked=`True`
 - `right_bottom_blocker_triage`: `PASS` report=`captures\current\right-bottom-blocker-triage-current.md` linked=`True`
 - `right_bottom_blocker_triage_tests`: `PASS` report=`captures\current\right-bottom-blocker-triage-tests-current.md` linked=`True`
-- `right_bottom_visual_artifact_guard`: `FAIL` report=`captures\current\right-bottom-visual-artifact-guard-current.md` linked=`True`
-  - refresh check is not passing: right_bottom_visual_artifact_guard
+- `right_bottom_visual_artifact_guard`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-current.md` linked=`True`
 - `right_bottom_visual_artifact_guard_tests`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-tests-current.md` linked=`True`
 - `right_bottom_grid_hit`: `PASS` report=`captures\current\right-bottom-grid-hit-current.md` linked=`True`
 - `right_bottom_grid_hit_summary_tests`: `PASS` report=`captures\current\right-bottom-grid-hit-summary-tests-current.md` linked=`True`
@@ -87,8 +85,7 @@
 - `right_bottom_owner_flag_inventory_tests`: `PASS` report=`captures\current\right-bottom-owner-flag-inventory-tests-current.md` linked=`True`
 - `right_bottom_route_timing_guard`: `PASS` report=`captures\current\right-bottom-route-timing-guard-current.md` linked=`True`
 - `right_bottom_route_timing_guard_tests`: `PASS` report=`captures\current\right-bottom-route-timing-guard-tests-current.md` linked=`True`
-- `castle_overview_baseline_recheck`: `FAIL` report=`captures\current\castle-overview-baseline-recheck-current.md` linked=`True`
-  - refresh check is not passing: castle_overview_baseline_recheck
+- `castle_overview_baseline_recheck`: `PASS` report=`captures\current\castle-overview-baseline-recheck-current.md` linked=`True`
 - `castle_overview_baseline_recheck_tests`: `PASS` report=`captures\current\castle-overview-baseline-recheck-tests-current.md` linked=`True`
 - `castle_owner_records_summary_tests`: `PASS` report=`captures\current\castle-owner-records-summary-tests-current.md` linked=`True`
 - `castle_overview_evidence_matrix_tests`: `PASS` report=`captures\current\castle-overview-evidence-matrix-tests-current.md` linked=`True`
@@ -100,13 +97,5 @@
 - `castle_overview_probe_guard`: `PASS` report=`captures\current\castle-overview-probe-guard-current.md` linked=`True`
 - `castle_overview_probe_guard_tests`: `PASS` report=`captures\current\castle-overview-probe-guard-tests-current.md` linked=`True`
 - `stable_stage_guard_tests`: `PASS` report=`captures\current\stable-stage-guard-tests-current.md` linked=`True`
-- `docs_consistency_guard`: `FAIL` report=`captures\current\docs-consistency-current.md` linked=`True`
-  - refresh check is not passing: docs_consistency_guard
+- `docs_consistency_guard`: `PASS` report=`captures\current\docs-consistency-current.md` linked=`True`
 - `docs_consistency_guard_tests`: `PASS` report=`captures\current\docs-consistency-tests-current.md` linked=`True`
-
-## Failures
-
-- stable_stage_guard: refresh check is not passing: stable_stage_guard
-- right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
-- castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck
-- docs_consistency_guard: refresh check is not passing: docs_consistency_guard

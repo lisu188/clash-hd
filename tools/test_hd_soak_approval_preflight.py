@@ -21,6 +21,9 @@ RUNTIME_COMMAND = (
     "-Tier short2 -Route menu-idle "
     f"-ReportJson {preflight.EXPECTED_REPORT_JSON} "
     f"-ReportMarkdown {preflight.EXPECTED_REPORT_MD} "
+    f"-IntroSkipClickMode {preflight.EXPECTED_INTRO_SKIP_CLICK_MODE} "
+    f"-IntroSkipClicks {preflight.EXPECTED_INTRO_SKIP_CLICKS} "
+    f"-SkipPulses {preflight.EXPECTED_SKIP_PULSES} "
     f"-MaxInputDriftPx {preflight.EXPECTED_MAX_INPUT_DRIFT_PX} "
     "-Execute -AllowVisibleRuntime -RequirePass -Json"
 )
@@ -30,6 +33,9 @@ DRY_RUN_COMMAND = (
     "-Tier short2 -Route menu-idle "
     f"-ReportJson {preflight.EXPECTED_REPORT_JSON} "
     f"-ReportMarkdown {preflight.EXPECTED_REPORT_MD} "
+    f"-IntroSkipClickMode {preflight.EXPECTED_INTRO_SKIP_CLICK_MODE} "
+    f"-IntroSkipClicks {preflight.EXPECTED_INTRO_SKIP_CLICKS} "
+    f"-SkipPulses {preflight.EXPECTED_SKIP_PULSES} "
     f"-MaxInputDriftPx {preflight.EXPECTED_MAX_INPUT_DRIFT_PX} "
     "-Json"
 )
@@ -68,6 +74,12 @@ def harness_command(tier: str, route: str, paths: dict[str, str], *, execute: bo
         paths["report_json"],
         "-ReportMarkdown",
         paths["report_markdown"],
+        "-IntroSkipClickMode",
+        preflight.EXPECTED_INTRO_SKIP_CLICK_MODE,
+        "-IntroSkipClicks",
+        str(preflight.EXPECTED_INTRO_SKIP_CLICKS),
+        "-SkipPulses",
+        str(preflight.EXPECTED_SKIP_PULSES),
         "-MaxInputDriftPx",
         str(preflight.EXPECTED_MAX_INPUT_DRIFT_PX),
     ]
@@ -126,6 +138,12 @@ def dry_run_plan_for_step(step: dict[str, Any]) -> dict[str, Any]:
             "report_json": paths["report_json"],
             "report_markdown": paths["report_markdown"],
             "input_limits": {"max_input_drift_px": preflight.EXPECTED_MAX_INPUT_DRIFT_PX},
+            "intro_skip": {
+                "click_mode": preflight.EXPECTED_INTRO_SKIP_CLICK_MODE,
+                "click_repeat": preflight.EXPECTED_INTRO_SKIP_CLICKS,
+                "space_pulses": preflight.EXPECTED_SKIP_PULSES,
+                "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
+            },
             "right_bottom_promotion_blocked": True,
         },
         "approval_gated_execute_command": (
@@ -140,9 +158,42 @@ def dry_run_plan_for_step(step: dict[str, Any]) -> dict[str, Any]:
             r"-OutputRoot C:\ClashCaptures\hd-soak "
             f"-ReportJson {paths['report_json']} "
             f"-ReportMarkdown {paths['report_markdown']} "
+            f"-IntroSkipClickMode {preflight.EXPECTED_INTRO_SKIP_CLICK_MODE} "
+            f"-IntroSkipClicks {preflight.EXPECTED_INTRO_SKIP_CLICKS} "
+            f"-SkipPulses {preflight.EXPECTED_SKIP_PULSES} "
             f"-MaxInputDriftPx {preflight.EXPECTED_MAX_INPUT_DRIFT_PX} "
             "-Execute -AllowVisibleRuntime -RequirePass -Json"
         ),
+    }
+
+
+def intro_skip_readiness_for_step(step: dict[str, Any], *, passed: bool = True) -> dict[str, Any]:
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "passed": passed,
+        "runtime_policy": (
+            "repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, "
+            "wrappers, PowerShell harnesses, or visible windows"
+        ),
+        "status": "ready_for_explicit_visible_rerun_approval" if passed else "not_ready",
+        "current_step": {
+            "id": step["id"],
+            "status": step["status"],
+        },
+        "triage": {
+            "classification": "intro_skip_input_drift_exit",
+            "final_route_marker": "intro-skip",
+            "candidate_sha256": "a" * 64,
+            "next_probe": "rerun only after explicit visible-window approval",
+        },
+        "dry_run_plan": {
+            "approval_gated_execute_command": dry_run_plan_for_step(step)["approval_gated_execute_command"],
+        },
+        "approval_boundary": (
+            "The next runtime run will open a visible Clash95 game window and still "
+            "requires explicit user approval."
+        ),
+        "failures": [] if passed else ["fixture failure"],
     }
 
 
@@ -199,6 +250,7 @@ def source_reports() -> dict[str, dict[str, Any]]:
         },
         "harness_guard": {"passed": True},
         "dry_run_plan": dry_run_plan,
+        "intro_skip_readiness": intro_skip_readiness_for_step(first_step),
         "visible_runtime_guard": {"passed": True},
         "process_hygiene": {"passed": True, "matching_process_count": 0},
         "exe_artifact": {"passed": True, "tracked_exes": []},
@@ -211,6 +263,7 @@ def args_for(tmp: Path, reports: dict[str, dict[str, Any]]) -> argparse.Namespac
         "step_status_json": write_json(tmp / "step-status.json", reports["step_status"]),
         "hd_soak_harness_guard_json": write_json(tmp / "harness-guard.json", reports["harness_guard"]),
         "hd_soak_dry_run_plan_json": write_json(tmp / "dry-run-plan.json", reports["dry_run_plan"]),
+        "intro_skip_readiness_json": write_json(tmp / "intro-skip-readiness.json", reports["intro_skip_readiness"]),
         "visible_runtime_guard_json": write_json(tmp / "visible-runtime-guard.json", reports["visible_runtime_guard"]),
         "process_hygiene_json": write_json(tmp / "process-hygiene.json", reports["process_hygiene"]),
         "exe_artifact_json": write_json(tmp / "exe-artifact.json", reports["exe_artifact"]),
@@ -238,6 +291,8 @@ def test_current_preflight_passes_with_generated_reports() -> None:
     assert "-InputExe" in report["approval_gated_runtime_command"]
     assert r"C:\ClashTests\hd-soak" in report["approval_gated_runtime_command"]
     assert report["dry_run_plan_consistency"]["candidate_path"].endswith("clash95_hd_soak_fixture.exe")
+    assert "visible Clash95 game window" in report["approval_prompt"]
+    assert "postmessage intro-skip" in report["approval_prompt"]
     assert "input drift <= 1px" in report["approval_prompt"]
     assert report["locks"]["stable_stage_should_change"] is False
     assert report["locks"]["right_bottom_promotion_blocked"] is True
@@ -248,14 +303,17 @@ def test_current_preflight_records_current_step_artifact_inventory() -> None:
     report = build_fixture_report(reports)
     artifacts = report["current_step_artifacts"]
     assert artifacts["report_json"] == preflight.EXPECTED_REPORT_JSON
-    assert artifacts["report_json_exists"] is False
+    report_exists = preflight.artifact_path_exists(preflight.EXPECTED_REPORT_JSON)
+    guard_exists = preflight.artifact_path_exists(preflight.EXPECTED_GUARD_JSON)
+    triage_exists = preflight.artifact_path_exists(preflight.EXPECTED_TRIAGE_JSON)
+    assert artifacts["report_json_exists"] is report_exists
     assert artifacts["guard_json"] == preflight.EXPECTED_GUARD_JSON
-    assert artifacts["guard_json_exists"] is False
+    assert artifacts["guard_json_exists"] is guard_exists
     assert artifacts["triage_json"] == preflight.EXPECTED_TRIAGE_JSON
-    assert artifacts["triage_json_exists"] is False
-    assert artifacts["canonical_runtime_report_missing"] is True
-    assert artifacts["post_run_guard_missing"] is True
-    assert artifacts["post_run_triage_missing"] is True
+    assert artifacts["triage_json_exists"] is triage_exists
+    assert artifacts["canonical_runtime_report_missing"] is (not report_exists)
+    assert artifacts["post_run_guard_missing"] is (not guard_exists)
+    assert artifacts["post_run_triage_missing"] is (not triage_exists)
 
 
 def test_runtime_command_requires_visible_runtime_and_canonical_paths() -> None:
@@ -322,7 +380,10 @@ def test_next_actions_post_run_evidence_refresh_must_match_preflight() -> None:
 
 def test_next_actions_artifact_inventory_must_match_preflight() -> None:
     reports = source_reports()
-    reports["next_actions"]["next_action"]["current_step_artifacts"]["report_json_exists"] = True
+    current_inventory = preflight.current_step_artifact_inventory(reports["step_status"]["steps"][0]["paths"])
+    reports["next_actions"]["next_action"]["current_step_artifacts"]["report_json_exists"] = (
+        not current_inventory["report_json_exists"]
+    )
     reports["next_actions"]["next_action"]["current_step_artifacts"]["triage_json"] = r"captures\current\wrong.json"
     report = build_fixture_report(reports)
     assert report["passed"] is False
@@ -362,6 +423,71 @@ def test_step_status_must_be_pending_first_step() -> None:
     report = build_fixture_report(reports)
     assert report["passed"] is False
     assert any("current short-step status" in failure for failure in report["failures"])
+
+
+def test_intro_skip_rerun_preflight_passes_with_readiness_gate() -> None:
+    reports = source_reports()
+    first_step = step_record(
+        "short2_menu_idle",
+        "short2",
+        "menu-idle",
+        status="failed_classified_intro_skip_input_drift_exit",
+    )
+    reports["step_status"] = {
+        "passed": True,
+        "ladder_complete": False,
+        "current_step": {
+            "id": preflight.EXPECTED_FIRST_STEP,
+            "status": "failed_classified_intro_skip_input_drift_exit",
+            "next_command": RUNTIME_COMMAND,
+        },
+        "steps": [first_step],
+    }
+    reports["dry_run_plan"] = dry_run_plan_for_step(first_step)
+    reports["intro_skip_readiness"] = intro_skip_readiness_for_step(first_step)
+    reports["next_actions"]["next_action"].update(
+        {
+            "id": "rerun_short2_menu_idle_soak",
+            "short_step_id": preflight.EXPECTED_FIRST_STEP,
+            "exact_runtime_command": reports["dry_run_plan"]["approval_gated_execute_command"],
+            "legacy_step_runtime_command": RUNTIME_COMMAND,
+            "plan_verified_execute_command": reports["dry_run_plan"]["approval_gated_execute_command"],
+            "safe_dry_run_command": first_step["safe_dry_run_command"],
+            "current_step_artifacts": preflight.current_step_artifact_inventory(first_step["paths"]),
+            "post_run_validation": preflight.post_run_validation_for_step(first_step),
+            "post_run_handoff_refresh": preflight.post_run_handoff_refresh_for_step(first_step),
+            "intro_skip_rerun_readiness": {
+                "passed": True,
+                "status": "ready_for_explicit_visible_rerun_approval",
+                "current_step": preflight.EXPECTED_FIRST_STEP,
+                "classification": "intro_skip_input_drift_exit",
+                "candidate_sha256": "a" * 64,
+                "approval_boundary": reports["intro_skip_readiness"]["approval_boundary"],
+                "approval_gated_execute_command": reports["dry_run_plan"]["approval_gated_execute_command"],
+            },
+        }
+    )
+    reports["next_actions"]["next_action"]["dry_run_plan"].update(
+        {
+            "status": reports["dry_run_plan"]["status"],
+            "current_step": preflight.EXPECTED_FIRST_STEP,
+            "candidate_path": reports["dry_run_plan"]["plan"]["candidate_path"],
+            "candidate_dir": reports["dry_run_plan"]["plan"]["candidate_dir"],
+            "output_root": reports["dry_run_plan"]["plan"]["output_root"],
+            "report_json": reports["dry_run_plan"]["plan"]["report_json"],
+            "report_markdown": reports["dry_run_plan"]["plan"]["report_markdown"],
+            "input_sha256": reports["dry_run_plan"]["plan"]["input_sha256"],
+            "base_sha_status": reports["dry_run_plan"]["plan"]["base_sha_status"],
+            "execute_command": reports["dry_run_plan"]["approval_gated_execute_command"],
+        }
+    )
+
+    report = build_fixture_report(reports)
+    assert report["passed"] is True, report["failures"]
+    assert report["status"] == "ready_for_explicit_approval"
+    assert report["next_action_consistency"]["intro_skip_rerun_ready"] is True
+    assert report["next_action_consistency"]["next_action_id"] == "rerun_short2_menu_idle_soak"
+    assert "visible Clash95 game window" in report["approval_prompt"]
 
 
 def test_guard_source_must_pass() -> None:
@@ -438,6 +564,23 @@ def test_dry_run_plan_execute_command_must_pin_stage_and_roots() -> None:
     assert any("dry-run plan execute command missing fragment: -InputExe" in failure for failure in report["failures"])
     assert any("dry-run plan execute command missing fragment: -Stage" in failure for failure in report["failures"])
     assert any("dry-run plan execute command missing fragment: -OutputRoot" in failure for failure in report["failures"])
+
+
+def test_dry_run_plan_must_pin_intro_skip_contract() -> None:
+    reports = source_reports()
+    reports["dry_run_plan"]["plan"]["intro_skip"]["click_mode"] = "sendinput"
+    bad_command = reports["dry_run_plan"]["approval_gated_execute_command"].replace(
+        f"-IntroSkipClickMode {preflight.EXPECTED_INTRO_SKIP_CLICK_MODE} ",
+        "",
+    )
+    reports["dry_run_plan"]["approval_gated_execute_command"] = bad_command
+    reports["next_actions"]["next_action"]["plan_verified_execute_command"] = bad_command
+    reports["next_actions"]["next_action"]["dry_run_plan"]["execute_command"] = bad_command
+    reports["next_actions"]["next_action"]["exact_runtime_command"] = bad_command
+    report = build_fixture_report(reports)
+    assert report["passed"] is False
+    assert any("intro_skip click_mode" in failure for failure in report["failures"])
+    assert any("execute command missing fragment: -IntroSkipClickMode" in failure for failure in report["failures"])
 
 
 def test_later_short_step_preflight_uses_step_status_without_first_next_action() -> None:
@@ -525,6 +668,8 @@ def test_cli_writes_outputs() -> None:
                 str(args.hd_soak_harness_guard_json),
                 "--hd-soak-dry-run-plan-json",
                 str(args.hd_soak_dry_run_plan_json),
+                "--intro-skip-readiness-json",
+                str(args.intro_skip_readiness_json),
                 "--visible-runtime-guard-json",
                 str(args.visible_runtime_guard_json),
                 "--process-hygiene-json",
@@ -560,12 +705,14 @@ def run_tests() -> None:
     test_next_actions_plan_verified_command_must_match_dry_run_plan()
     test_next_actions_dry_run_plan_summary_must_match_current_dry_run_plan()
     test_step_status_must_be_pending_first_step()
+    test_intro_skip_rerun_preflight_passes_with_readiness_gate()
     test_guard_source_must_pass()
     test_dry_run_plan_source_must_pass()
     test_stale_dry_run_plan_fails_closed()
     test_dry_run_plan_must_match_current_step_and_paths()
     test_dry_run_plan_must_confirm_base_input()
     test_dry_run_plan_execute_command_must_pin_stage_and_roots()
+    test_dry_run_plan_must_pin_intro_skip_contract()
     test_later_short_step_preflight_uses_step_status_without_first_next_action()
     test_cli_writes_outputs()
 

@@ -1,31 +1,52 @@
 # HD Soak Report Guard
 
 - Overall: FAIL
-- Generated: `2026-06-15T20:36:18.108151+00:00`
+- Generated: `2026-06-16T16:05:27.712003+00:00`
 - Runtime policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Source report: `captures\current\hd-soak-short2-menu-idle-current.json`
+- Source selection: `canonical_first_short_step`
+- Canonical first-step report: `captures\current\hd-soak-short2-menu-idle-current.json`
+- Canonical first-step present: `True`
+- Legacy report: `captures\current\hd-soak-short-current.json`
+- Canonical runtime report missing: `False`
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Tier / route: `short2` / `menu-idle`
 - Duration seconds: `120`
+- Sample interval seconds: `15`
 
 ## Checks
 
-- `executed`: `FAIL`
+- `executed`: `PASS`
+- `source_status`: `FAIL`
 - `protected_stage`: `PASS`
-- `patch_evidence`: `FAIL`
+- `tier_route`: `PASS`
+- `patch_evidence`: `PASS`
 - `promotion_boundary`: `PASS`
 - `artifact_locations`: `PASS`
+- `capture_integrity`: `PASS`
 - `frame_inventory`: `FAIL`
 - `render_metrics`: `FAIL`
+- `frame_progression`: `PASS`
 - `process_liveness`: `FAIL`
-- `input_responsiveness`: `PASS`
+- `process_growth`: `FAIL`
+- `elapsed_coverage`: `FAIL`
+- `input_responsiveness`: `FAIL`
+- `summary_consistency`: `PASS`
 - `artifact_budget`: `PASS`
 
 ## Failures
 
-- soak report was not produced by an execution run
-- candidate_sha256 is missing or is not a SHA-256 hex digest
-- patch_stage_report path is missing
-- frame sample count 0 is below 2
-- minimum nonblack percent 0.0 is below 10.0
-- minimum unique sampled colors 0.0 is below 8
+- source soak report did not mark itself passed
+- source soak report contains 8 failure(s)
+- frame sample count 1 is below 2
+- minimum nonblack percent 9.697 is below 10.0
+- process exited unexpectedly with code 1
 - process was not stopped cleanly by the harness
+- 2 process samples reported HasExited=True
+- working_set_growth_bytes is missing
+- private_memory_growth_bytes is missing
+- handle_growth is missing
+- frame sample elapsed coverage could not be computed
+- process sample elapsed coverage 16.606s is below required 103.000s
+- 1 route/input rows did not verify
+- 1 route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes

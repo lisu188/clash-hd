@@ -1,8 +1,10 @@
 {
-  "generated_at": "2026-06-15T22:36:16+02:00",
+  "generated_at": "2026-06-16T18:05:25+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "manual proof template must document the accepted manifest shape while remaining invalid as proof until approved manual evidence replaces every placeholder",
+  "candidate_path_policy": "candidate_path must be a freshly built, hashed executable under C:\\ClashTests; never use C:\\Clash\\clash95.exe or a repository-local executable",
+  "candidate_path_template": "C:\\ClashTests\\manual-directinput\\REPLACE_WITH_CANDIDATE_EXE",
   "template_json": "captures\\current\\manual-directinput-proof-template-current.json",
   "template_valid_as_proof": false,
   "template_validation_failures": [

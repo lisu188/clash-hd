@@ -33,6 +33,9 @@ DEFAULT_SCRIPT = Path("scripts/smoke/run_hd_soak.ps1")
 DEFAULT_JSON = Path("captures/current/hd-soak-dry-run-plan-current.json")
 DEFAULT_MD = Path("captures/current/hd-soak-dry-run-plan-current.md")
 MAX_INPUT_DRIFT_PX = 1
+EXPECTED_INTRO_SKIP_CLICK_MODE = "postmessage"
+EXPECTED_INTRO_SKIP_CLICKS = 8
+EXPECTED_SKIP_PULSES = 4
 EXPECTED_CANDIDATE_DIR = r"C:\ClashTests\hd-soak"
 EXPECTED_OUTPUT_ROOT = r"C:\ClashCaptures\hd-soak"
 EXPECTED_INPUT_EXE = r"C:\Clash\clash95.exe"
@@ -88,6 +91,12 @@ def dry_run_command(script: Path, step: dict[str, Any]) -> list[str]:
         str(paths.get("report_json") or ""),
         "-ReportMarkdown",
         str(paths.get("report_markdown") or ""),
+        "-IntroSkipClickMode",
+        EXPECTED_INTRO_SKIP_CLICK_MODE,
+        "-IntroSkipClicks",
+        str(EXPECTED_INTRO_SKIP_CLICKS),
+        "-SkipPulses",
+        str(EXPECTED_SKIP_PULSES),
         "-MaxInputDriftPx",
         str(MAX_INPUT_DRIFT_PX),
         "-Json",
@@ -167,6 +176,15 @@ def validate_plan(plan: dict[str, Any], step: dict[str, Any]) -> list[str]:
         failures.append("plan report_markdown does not match the canonical current-step report")
     if (plan.get("input_limits") or {}).get("max_input_drift_px") != MAX_INPUT_DRIFT_PX:
         failures.append("plan does not pin max input drift to 1 px")
+    intro_skip = plan.get("intro_skip") or {}
+    if intro_skip.get("click_mode") != EXPECTED_INTRO_SKIP_CLICK_MODE:
+        failures.append("plan intro_skip click_mode is not postmessage")
+    if int(intro_skip.get("click_repeat") or 0) != EXPECTED_INTRO_SKIP_CLICKS:
+        failures.append(f"plan intro_skip click_repeat is not {EXPECTED_INTRO_SKIP_CLICKS}")
+    if int(intro_skip.get("space_pulses") or 0) != EXPECTED_SKIP_PULSES:
+        failures.append(f"plan intro_skip space_pulses is not {EXPECTED_SKIP_PULSES}")
+    if intro_skip.get("proof_class") != "intro_skip_harness_prep_not_manual_directinput_release_proof":
+        failures.append("plan intro_skip proof_class is missing the non-manual proof boundary")
 
     growth = plan.get("growth_limits") or {}
     expected_growth = {
@@ -208,6 +226,12 @@ def validate_plan(plan: dict[str, Any], step: dict[str, Any]) -> list[str]:
         EXPECTED_OUTPUT_ROOT,
         "-ReportJson",
         "-ReportMarkdown",
+        "-IntroSkipClickMode",
+        EXPECTED_INTRO_SKIP_CLICK_MODE,
+        "-IntroSkipClicks",
+        str(EXPECTED_INTRO_SKIP_CLICKS),
+        "-SkipPulses",
+        str(EXPECTED_SKIP_PULSES),
         "-MaxInputDriftPx",
         "1",
     ):
@@ -305,6 +329,7 @@ def to_markdown(report: dict[str, Any]) -> str:
         f"- Output root: `{plan.get('output_root')}`",
         f"- Report JSON: `{plan.get('report_json')}`",
         f"- Max input drift px: `{(plan.get('input_limits') or {}).get('max_input_drift_px')}`",
+        f"- Intro skip: mode=`{(plan.get('intro_skip') or {}).get('click_mode')}` repeat=`{(plan.get('intro_skip') or {}).get('click_repeat')}` pulses=`{(plan.get('intro_skip') or {}).get('space_pulses')}`",
         f"- Stable stage should change: `{report.get('locks', {}).get('stable_stage_should_change')}`",
         f"- Right-bottom promotion blocked: `{report.get('locks', {}).get('right_bottom_promotion_blocked')}`",
         "",

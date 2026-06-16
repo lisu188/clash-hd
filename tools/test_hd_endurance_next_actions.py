@@ -48,6 +48,12 @@ def step_command(tier: str, route: str, paths: dict[str, str], *, execute: bool)
         paths["report_json"],
         "-ReportMarkdown",
         paths["report_markdown"],
+        "-IntroSkipClickMode",
+        next_actions.INTRO_SKIP_CLICK_MODE,
+        "-IntroSkipClicks",
+        str(next_actions.INTRO_SKIP_CLICKS),
+        "-SkipPulses",
+        str(next_actions.SKIP_PULSES),
         "-MaxInputDriftPx",
         str(next_actions.MAX_INPUT_DRIFT_PX),
     ]
@@ -103,6 +109,12 @@ def dry_run_plan_for_step(step: dict[str, Any], *, current_step_id: str | None =
             "input_exists": True,
             "input_sha256": "5" * 64,
             "base_sha_status": "ok",
+            "intro_skip": {
+                "click_mode": next_actions.INTRO_SKIP_CLICK_MODE,
+                "click_repeat": next_actions.INTRO_SKIP_CLICKS,
+                "space_pulses": next_actions.SKIP_PULSES,
+                "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
+            },
             "commands": {
                 "execute": (
                     "powershell.exe -NoProfile -ExecutionPolicy Bypass -File "
@@ -112,6 +124,7 @@ def dry_run_plan_for_step(step: dict[str, Any], *, current_step_id: str | None =
                     "-CandidateName 'clash95_hd_soak_fixture.exe' "
                     f"-ReportJson '{Path(step['paths']['report_json']).resolve()}' "
                     f"-ReportMarkdown '{Path(step['paths']['report_markdown']).resolve()}' "
+                    "-IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' "
                     "-MaxInputDriftPx '1' -Execute -AllowVisibleRuntime -RequirePass -Json"
                 )
             },
@@ -124,6 +137,7 @@ def dry_run_plan_for_step(step: dict[str, Any], *, current_step_id: str | None =
             "-CandidateName 'clash95_hd_soak_fixture.exe' "
             f"-ReportJson '{Path(step['paths']['report_json']).resolve()}' "
             f"-ReportMarkdown '{Path(step['paths']['report_markdown']).resolve()}' "
+            "-IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' "
             "-MaxInputDriftPx '1' -Execute -AllowVisibleRuntime -RequirePass -Json"
         ),
     }
@@ -166,11 +180,47 @@ def checklist_fixture(*, complete: bool = False) -> dict[str, Any]:
     }
 
 
-def args_for(path: Path, step_status_path: Path | None = None, dry_run_plan_path: Path | None = None) -> argparse.Namespace:
+def intro_skip_readiness_for_step(step: dict[str, Any], *, passed: bool = True) -> dict[str, Any]:
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "passed": passed,
+        "runtime_policy": (
+            "repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, "
+            "wrappers, PowerShell harnesses, or visible windows"
+        ),
+        "status": "ready_for_explicit_visible_rerun_approval" if passed else "not_ready",
+        "current_step": {
+            "id": step["id"],
+            "status": step["status"],
+        },
+        "triage": {
+            "classification": "intro_skip_input_drift_exit",
+            "final_route_marker": "intro-skip",
+            "candidate_sha256": "a" * 64,
+            "next_probe": "rerun only after explicit visible-window approval",
+        },
+        "dry_run_plan": {
+            "approval_gated_execute_command": dry_run_plan_for_step(step)["approval_gated_execute_command"],
+        },
+        "approval_boundary": (
+            "The next runtime run will open a visible Clash95 game window and still "
+            "requires explicit user approval."
+        ),
+        "failures": [] if passed else ["fixture failure"],
+    }
+
+
+def args_for(
+    path: Path,
+    step_status_path: Path | None = None,
+    dry_run_plan_path: Path | None = None,
+    intro_skip_readiness_path: Path | None = None,
+) -> argparse.Namespace:
     return argparse.Namespace(
         checklist_json=path,
         short_step_status_json=step_status_path or path.parent / "missing-step-status.json",
         dry_run_plan_json=dry_run_plan_path,
+        intro_skip_readiness_json=intro_skip_readiness_path,
     )
 
 
@@ -188,9 +238,13 @@ def test_short2_next_action_is_visible_approval_gated() -> None:
         assert "-ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json" in action["exact_runtime_command"]
         assert "-ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md" in action["exact_runtime_command"]
         assert "-MaxInputDriftPx 1" in action["exact_runtime_command"]
+        assert "-IntroSkipClickMode postmessage" in action["exact_runtime_command"]
+        assert "-IntroSkipClicks 8" in action["exact_runtime_command"]
+        assert "-SkipPulses 4" in action["exact_runtime_command"]
         assert "-Execute" not in action["safe_dry_run_command"]
         assert "hd-soak-short2-menu-idle-current.json" in action["safe_dry_run_command"]
         assert "-MaxInputDriftPx 1" in action["safe_dry_run_command"]
+        assert "-IntroSkipClickMode postmessage" in action["safe_dry_run_command"]
         artifacts = action["current_step_artifacts"]
         assert artifacts["guard_json"] == r"captures\current\hd-soak-short2-menu-idle-guard-current.json"
         assert artifacts["triage_json"] == r"captures\current\hd-soak-short2-menu-idle-triage-current.json"
@@ -291,6 +345,7 @@ def test_pending_short_step_includes_plan_verified_execute_command() -> None:
     assert action["exact_runtime_command_source"] == "dry_run_plan"
     assert action["legacy_step_runtime_command"] == first["approval_gated_runtime_command"]
     assert r"-CandidateDir 'C:\ClashTests\hd-soak'" in action["plan_verified_execute_command"]
+    assert "-IntroSkipClickMode 'postmessage'" in action["plan_verified_execute_command"]
     assert "-RequirePass -Json" in action["plan_verified_execute_command"]
     assert action["dry_run_plan"]["candidate_path"].endswith("clash95_hd_soak_fixture.exe")
     assert action["dry_run_plan"]["output_root"] == r"C:\ClashCaptures\hd-soak"
@@ -489,6 +544,57 @@ def test_classified_failed_short_step_points_to_next_probe() -> None:
     assert "mouse_path_probe" in action["why"]
 
 
+def test_intro_skip_readiness_turns_classified_failure_into_rerun_approval() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        checklist_path = write_json(tmp / "checklist.json", checklist_fixture())
+        first = step_record(
+            "short2_menu_idle",
+            "short2",
+            "menu-idle",
+            status="failed_classified_intro_skip_input_drift_exit",
+        )
+        first["summary"] = {
+            "classification": "intro_skip_input_drift_exit",
+            "next_probe": "rerun after repo-only intro-skip readiness passes and explicit visible-window approval",
+            "frame_sample_count": 4,
+            "final_route_marker": "intro-skip",
+            "candidate_sha256": "a" * 64,
+        }
+        step_status_path = write_json(
+            tmp / "step-status.json",
+            {
+                "passed": True,
+                "ladder_complete": False,
+                "current_step": {
+                    "id": "short2_menu_idle",
+                    "status": "failed_classified_intro_skip_input_drift_exit",
+                    "next_command": first["approval_gated_runtime_command"],
+                },
+                "steps": [first],
+            },
+        )
+        dry_run_plan_path = write_json(tmp / "dry-run-plan.json", dry_run_plan_for_step(first))
+        readiness_path = write_json(tmp / "intro-skip-readiness.json", intro_skip_readiness_for_step(first))
+        report = next_actions.build_report(
+            args_for(checklist_path, step_status_path, dry_run_plan_path, readiness_path)
+        )
+
+    action = report["next_action"]
+    assert report["passed"] is True, report
+    assert report["status"] == "waiting_for_explicit_visible_runtime_approval"
+    assert action["id"] == "rerun_short2_menu_idle_soak"
+    assert action["requires_visible_runtime"] is True
+    assert action["requires_explicit_user_approval"] is True
+    assert action["exact_runtime_command"] == action["plan_verified_execute_command"]
+    assert action["exact_runtime_command_source"] == "dry_run_plan"
+    assert action["intro_skip_rerun_readiness"]["status"] == "ready_for_explicit_visible_rerun_approval"
+    assert action["intro_skip_rerun_readiness"]["classification"] == "intro_skip_input_drift_exit"
+    assert "visible Clash95 game window" in action["intro_skip_rerun_readiness"]["approval_boundary"]
+    assert "hd_soak_intro_skip_rerun_readiness.py" in " ".join(action["post_run_handoff_refresh"])
+    assert "postmessage intro-skip prep" in action["why"]
+
+
 def test_cli_writes_outputs() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -536,6 +642,7 @@ def run_tests() -> None:
     test_unverified_dry_run_base_fails_closed()
     test_failed_short_step_without_triage_requests_repo_triage_command()
     test_classified_failed_short_step_points_to_next_probe()
+    test_intro_skip_readiness_turns_classified_failure_into_rerun_approval()
     test_cli_writes_outputs()
 
 

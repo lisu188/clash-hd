@@ -1,18 +1,20 @@
 # Castle Overview Evidence Matrix
 
-- Overall: FAIL
-- Generated: `2026-06-15T22:35:56+02:00`
+- Overall: PASS
+- Generated: `2026-06-16T18:04:57+02:00`
 - Stage: `castlecenter-all`
 - Promotion status: `validation_stage_only`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Patch Stage
 
-- Status: FAIL
-- Executable: `C:\ClashTests\cdb-castle-overview-nativerender-flags1f-multihit\clash95_hd_surfdump_20260515_105557.exe`
+- Status: PASS
+- Executable: `C:\ClashTests\cdb-castle-overview-nativerender\clash95_hd_surfdump_20260515_105041.exe`
+- Source: `reports\castlecenter_all_patch_stage_20260515_105041.json`
+- Archived report: `True`
 - Resolved stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all`
-- SHA-256: `None`
-- Patches: patched=? original=? unexpected=? total=?
+- SHA-256: `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6`
+- Patches: patched=134 original=0 unexpected=0 total=134
 
 ## Overview Visual
 
@@ -48,7 +50,3 @@
 ![visible-command overview multi-hit surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260515-105458\surface.png)
 
 ![dormant-command overview multi-hit surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260515-105557\surface.png)
-
-## Failures
-
-- patch_stage: candidate executable does not exist: C:\ClashTests\cdb-castle-overview-nativerender-flags1f-multihit\clash95_hd_surfdump_20260515_105557.exe
