@@ -167,6 +167,28 @@ def test_unexpected_process_exit_classification() -> None:
     assert "CDB crash logging" in result["next_probe"]
 
 
+def test_intro_skip_input_drift_exit_classification() -> None:
+    report = base_report()
+    report["process_exited_unexpectedly"] = True
+    report["exit_code"] = 1
+    report["clean_stop"] = False
+    report["frame_sample_count"] = 1
+    report["input_max_sample_abs_error"] = 324
+    report["failures"] = [
+        "process exited unexpectedly with code 1",
+        "route/input probe failures: 1",
+        "input drift exceeded 1px or metric missing: 1",
+    ]
+    report["route_results"][0]["ClickPathVerified"] = False
+    report["route_results"][0]["MaxSampleAbsError"] = 324
+    report["route_results"][0]["ClickMode"] = "sendinput"
+    report["route_results"][0]["ClickRepeat"] = 1
+    result = triage.build_triage(report)
+    assert result["classification"] == "intro_skip_input_drift_exit"
+    assert "postmessage" in result["next_probe"]
+    assert result["last_route_result"]["click_mode"] == "sendinput"
+
+
 def test_render_regression_classification() -> None:
     report = base_report()
     report["failures"] = [
@@ -334,6 +356,7 @@ def run_tests() -> None:
     test_pending_approval_classification()
     test_av_crash_classification()
     test_unexpected_process_exit_classification()
+    test_intro_skip_input_drift_exit_classification()
     test_render_regression_classification()
     test_input_route_failure_classification()
     test_input_drift_failure_classification()

@@ -30,15 +30,22 @@ Dry-run the first short tier:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 `
   -Tier short2 `
   -Route menu-idle `
+  -IntroSkipClickMode postmessage `
+  -IntroSkipClicks 8 `
+  -SkipPulses 4 `
   -MaxInputDriftPx 1
 ```
 
-Execute the first short tier only after approving visible runtime control:
+Execute the first short tier only after approving visible runtime control. This
+opens a visible Clash95 game window while it captures frames:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 `
   -Tier short2 `
   -Route menu-idle `
+  -IntroSkipClickMode postmessage `
+  -IntroSkipClicks 8 `
+  -SkipPulses 4 `
   -MaxInputDriftPx 1 `
   -Execute `
   -AllowVisibleRuntime `
@@ -176,10 +183,11 @@ The dry-run handoff plan is generated at
 harness without `-Execute`, persists the actual JSON plan emitted by the
 harness, and fails closed if the current short step drifts from the protected
 stage, canonical report paths, outside-repo candidate/output roots,
-`-MaxInputDriftPx 1`, or copied execute-command `-RequirePass -Json` flags. The
-copied execute command must also explicitly pin `-InputExe`, `-WorkDir`,
-`-Stage`, and `-OutputRoot` so the approved run cannot silently fall back to a
-different source executable, working directory, stage, or artifact root.
+`-MaxInputDriftPx 1`, the `postmessage` intro-skip prep settings, or copied
+execute-command `-RequirePass -Json` flags. The copied execute command must also
+explicitly pin `-InputExe`, `-WorkDir`, `-Stage`, and `-OutputRoot` so the
+approved run cannot silently fall back to a different source executable, working
+directory, stage, or artifact root.
 Approval packets treat dry-run plans older than 12 hours as stale and fail
 closed; regenerate `captures/current/hd-soak-dry-run-plan-current.*` before
 approval instead of running an old timestamped command.
@@ -189,7 +197,8 @@ The approval preflight packet is generated at
 does not launch the game. It verifies that the first `short2` `menu-idle`
 runtime command is still explicit-approval gated, consumes the current dry-run
 plan, uses the canonical per-step report paths, pins `-MaxInputDriftPx 1`,
-keeps the dry-run command non-executing, preserves the protected stage and
+pins `-IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4`, keeps
+the dry-run command non-executing, preserves the protected stage and
 right-bottom promotion locks, and requires clean harness/runtime,
 process-hygiene, and executable-artifact guards before asking for approval:
 the same packet also lists whether the current-step report, guard, and triage
