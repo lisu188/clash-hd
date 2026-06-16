@@ -88,6 +88,9 @@ FUTURE_LANE_IDS = [
     "campaign_route",
 ]
 MAX_INPUT_DRIFT_PX = 1
+INTRO_SKIP_CLICK_MODE = "postmessage"
+INTRO_SKIP_CLICKS = 8
+SKIP_PULSES = 4
 
 
 def status_text(passed: bool) -> str:
@@ -133,6 +136,12 @@ def command_for_step(step: dict[str, Any], *, execute: bool) -> str:
         paths["report_json"],
         "-ReportMarkdown",
         paths["report_markdown"],
+        "-IntroSkipClickMode",
+        INTRO_SKIP_CLICK_MODE,
+        "-IntroSkipClicks",
+        str(INTRO_SKIP_CLICKS),
+        "-SkipPulses",
+        str(SKIP_PULSES),
         "-MaxInputDriftPx",
         str(MAX_INPUT_DRIFT_PX),
     ]
@@ -284,6 +293,11 @@ def next_action_alignment(next_actions: dict[str, Any] | None, step: dict[str, A
     step_match = bool(reported and expected and reported == expected)
     legacy_match = bool(legacy and expected and legacy == expected)
     plan_verified_match = bool(reported and plan_verified and reported == plan_verified)
+    repo_only_triage_match = bool(
+        action.get("status") == "triage_followup_required"
+        and str(action.get("id") or "").startswith(f"inspect_{step.get('id') if step else ''}_")
+        and action.get("requires_visible_runtime") is False
+    )
     return {
         "next_actions_report_present": next_actions is not None,
         "next_actions_passed": bool(next_actions and next_actions.get("passed")),
@@ -295,6 +309,7 @@ def next_action_alignment(next_actions: dict[str, Any] | None, step: dict[str, A
         "matches_expected_current_step": step_match or legacy_match,
         "legacy_matches_expected_current_step": legacy_match,
         "reported_matches_plan_verified": plan_verified_match,
+        "repo_only_triage_matches_current_step": repo_only_triage_match,
     }
 
 
@@ -312,7 +327,12 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     steps = build_steps(route_coverage, soak_report, args.route_coverage_json, args.soak_report_json)
     next_step = current_step(steps)
     alignment = next_action_alignment(next_actions, next_step)
-    if next_step and next_step["id"] == "short2_menu_idle" and not alignment["matches_expected_current_step"]:
+    if (
+        next_step
+        and next_step["id"] == "short2_menu_idle"
+        and not alignment["matches_expected_current_step"]
+        and not alignment["repo_only_triage_matches_current_step"]
+    ):
         failures.append("next-action command does not match the first short2 menu-idle ladder step")
 
     ladder_complete = all(step.get("passed") for step in steps)

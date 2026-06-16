@@ -26,6 +26,9 @@ DEFAULT_MD = Path("captures/current/hd-soak-short-artifact-manifest-current.md")
 DEFAULT_LEGACY_REPORT_JSON = Path("captures/current/hd-soak-short-current.json")
 DEFAULT_LEGACY_REPORT_MD = Path("captures/current/hd-soak-short-current.md")
 MAX_INPUT_DRIFT_PX = 1
+INTRO_SKIP_CLICK_MODE = "postmessage"
+INTRO_SKIP_CLICKS = 8
+SKIP_PULSES = 4
 
 
 def status_text(passed: bool) -> str:
@@ -70,6 +73,12 @@ def harness_command(step: dict[str, Any], paths: dict[str, str], *, execute: boo
         paths["report_json"],
         "-ReportMarkdown",
         paths["report_markdown"],
+        "-IntroSkipClickMode",
+        INTRO_SKIP_CLICK_MODE,
+        "-IntroSkipClicks",
+        str(INTRO_SKIP_CLICKS),
+        "-SkipPulses",
+        str(SKIP_PULSES),
         "-MaxInputDriftPx",
         str(MAX_INPUT_DRIFT_PX),
     ]
@@ -158,6 +167,15 @@ def validate_records(records: list[dict[str, Any]]) -> list[str]:
             failures.append(f"{record['id']} runtime command does not pin max input drift")
         if f"-MaxInputDriftPx {MAX_INPUT_DRIFT_PX}" not in record["safe_dry_run_command"]:
             failures.append(f"{record['id']} safe dry-run command does not pin max input drift")
+        for fragment in (
+            f"-IntroSkipClickMode {INTRO_SKIP_CLICK_MODE}",
+            f"-IntroSkipClicks {INTRO_SKIP_CLICKS}",
+            f"-SkipPulses {SKIP_PULSES}",
+        ):
+            if fragment not in command:
+                failures.append(f"{record['id']} runtime command does not pin {fragment}")
+            if fragment not in record["safe_dry_run_command"]:
+                failures.append(f"{record['id']} safe dry-run command does not pin {fragment}")
         if f"--max-input-drift-px {MAX_INPUT_DRIFT_PX}" not in record["guard_command"]:
             failures.append(f"{record['id']} guard command does not pin max input drift")
         if "-Execute" in record["safe_dry_run_command"]:

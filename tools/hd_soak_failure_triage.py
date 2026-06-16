@@ -54,6 +54,15 @@ def int_value(report: dict[str, Any], key: str) -> int:
         return 0
 
 
+def route_int_value(route: dict[str, Any] | None, key: str) -> int:
+    if not isinstance(route, dict):
+        return 0
+    try:
+        return int(route.get(key) or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
 def guard_evaluation_for(report: dict[str, Any]) -> dict[str, Any] | None:
     if report.get("executed") is not True or report.get("passed") is not True:
         return None
@@ -101,6 +110,28 @@ def classify(report: dict[str, Any], guard_evaluation: dict[str, Any] | None = N
             return (
                 "crash_av",
                 "run the crash/CDB probe for the same candidate and compare the patch-stage manifest",
+                False,
+            )
+        last_route = last_item(report.get("route_results"))
+        max_input_drift = int_value(report, "max_input_drift_px") or 1
+        intro_skip_drift = (
+            report.get("final_route_marker") == "intro-skip"
+            and isinstance(last_route, dict)
+            and last_route.get("Name") == "intro-skip"
+            and (
+                last_route.get("PathVerified") is not True
+                or (last_route.get("Click") is True and last_route.get("ClickPathVerified") is not True)
+                or route_int_value(last_route, "MaxAbsError") > max_input_drift
+                or route_int_value(last_route, "MaxSampleAbsError") > max_input_drift
+                or int_value(report, "input_max_sample_abs_error") > max_input_drift
+                or "input drift" in failures
+                or "route/input probe failures" in failures
+            )
+        )
+        if intro_skip_drift:
+            return (
+                "intro_skip_input_drift_exit",
+                "fix or verify intro-skip harness input mode before rerunning; use postmessage/space-only harness prep, then rerun visible soak only after explicit visible-window approval",
                 False,
             )
         return (
@@ -227,6 +258,11 @@ def route_summary(route: dict[str, Any] | None) -> dict[str, Any] | None:
         "max_abs_error": route.get("MaxAbsError"),
         "max_sample_abs_error": route.get("MaxSampleAbsError"),
         "click_event_count": route.get("ClickEventCount"),
+        "move_mode": route.get("MoveMode"),
+        "click_mode": route.get("ClickMode"),
+        "click_repeat": route.get("ClickRepeat"),
+        "space_pulses": route.get("SpacePulses"),
+        "input_proof_class": route.get("InputProofClass"),
         "probe_exit_code": route.get("ProbeExitCode"),
         "json": route.get("Json"),
         "log": route.get("Log"),
@@ -340,7 +376,8 @@ def to_markdown(triage: dict[str, Any]) -> str:
         (
             f"- Last route: `{route.get('name')}` path=`{route.get('path_verified')}` "
             f"click=`{route.get('click_path_verified')}` drift=`{route.get('max_abs_error')}` "
-            f"sample_drift=`{route.get('max_sample_abs_error')}`"
+            f"sample_drift=`{route.get('max_sample_abs_error')}` "
+            f"click_mode=`{route.get('click_mode')}` repeat=`{route.get('click_repeat')}`"
         ),
         (
             "- Last frame: "

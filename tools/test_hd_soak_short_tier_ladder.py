@@ -84,6 +84,20 @@ def next_actions_fixture(command: str | None = None) -> dict[str, Any]:
     }
 
 
+def triage_next_actions_fixture() -> dict[str, Any]:
+    return {
+        "passed": True,
+        "status": "repo_only_followup_available",
+        "next_action": {
+            "id": "inspect_short2_menu_idle_triage",
+            "status": "triage_followup_required",
+            "requires_visible_runtime": False,
+            "requires_explicit_user_approval": False,
+            "exact_runtime_command": None,
+        },
+    }
+
+
 def soak_report_fixture(*, overall: bool, tier: str = "short2", route: str = "menu-idle") -> dict[str, Any]:
     return {
         "overall": overall,
@@ -120,6 +134,10 @@ def test_current_pending_approval_ladder_passes_as_plan() -> None:
     assert "-ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md" in report["current_step"]["approval_gated_runtime_command"]
     assert "-MaxInputDriftPx 1" in report["current_step"]["approval_gated_runtime_command"]
     assert "-MaxInputDriftPx 1" in report["current_step"]["safe_dry_run_command"]
+    assert "-IntroSkipClickMode postmessage" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-IntroSkipClicks 8" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-SkipPulses 4" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-IntroSkipClickMode postmessage" in report["current_step"]["safe_dry_run_command"]
     assert report["locks"]["stable_stage_should_change"] is False
     assert report["locks"]["right_bottom_promotion_blocked"] is True
     assert report["locks"]["long_tiers_locked"] is True
@@ -138,6 +156,7 @@ def test_first_pass_advances_to_short2_map_idle() -> None:
     assert "-Route map-idle" in report["current_step"]["approval_gated_runtime_command"]
     assert "hd-soak-short2-map-idle-current.json" in report["current_step"]["approval_gated_runtime_command"]
     assert "-MaxInputDriftPx 1" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-IntroSkipClickMode postmessage" in report["current_step"]["approval_gated_runtime_command"]
 
 
 def test_missing_harness_route_fails_closed() -> None:
@@ -159,6 +178,19 @@ def test_mismatched_next_action_fails_for_first_step() -> None:
         report = ladder.build_report(args)
     assert report["passed"] is False
     assert any("next-action command" in failure for failure in report["failures"])
+
+
+def test_repo_only_triage_next_action_can_replace_runtime_command() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = argparse.Namespace(
+            route_coverage_json=write_json(tmp / "route.json", route_coverage_fixture()),
+            next_actions_json=write_json(tmp / "next.json", triage_next_actions_fixture()),
+            soak_report_json=write_json(tmp / "soak.json", soak_report_fixture(overall=False)),
+        )
+        report = ladder.build_report(args)
+    assert report["passed"] is True, report["failures"]
+    assert report["next_action_alignment"]["repo_only_triage_matches_current_step"] is True
 
 
 def test_cli_writes_outputs() -> None:
@@ -191,6 +223,7 @@ def run_tests() -> None:
     test_first_pass_advances_to_short2_map_idle()
     test_missing_harness_route_fails_closed()
     test_mismatched_next_action_fails_for_first_step()
+    test_repo_only_triage_next_action_can_replace_runtime_command()
     test_cli_writes_outputs()
 
 
