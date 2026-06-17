@@ -14,6 +14,9 @@ from typing import Any
 
 import hd_soak_approval_preflight as preflight
 
+APPROVAL_TOKEN = "1234567890abcdef"
+APPROVAL_EXPIRES_UTC = "2999-01-01T00:00:00+00:00"
+
 
 RUNTIME_COMMAND = (
     "powershell.exe -NoProfile -ExecutionPolicy Bypass -File "
@@ -24,7 +27,14 @@ RUNTIME_COMMAND = (
     f"-IntroSkipClickMode {preflight.EXPECTED_INTRO_SKIP_CLICK_MODE} "
     f"-IntroSkipClicks {preflight.EXPECTED_INTRO_SKIP_CLICKS} "
     f"-SkipPulses {preflight.EXPECTED_SKIP_PULSES} "
+    f"-SampleIntervalSec {preflight.EXPECTED_SAMPLE_INTERVAL_SEC} "
     f"-MaxInputDriftPx {preflight.EXPECTED_MAX_INPUT_DRIFT_PX} "
+    f"-MinNonblackPercent {preflight.EXPECTED_MIN_NONBLACK_PERCENT_TEXT} "
+    f"-MinUniqueSampleColors {preflight.EXPECTED_MIN_UNIQUE_SAMPLE_COLORS} "
+    f"-MaxArtifactMB {preflight.EXPECTED_MAX_ARTIFACT_MB} "
+    f"-MaxWorkingSetGrowthMB {preflight.EXPECTED_MAX_WORKING_SET_GROWTH_MB} "
+    f"-MaxPrivateMemoryGrowthMB {preflight.EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB} "
+    f"-MaxHandleGrowth {preflight.EXPECTED_MAX_HANDLE_GROWTH} "
     "-Execute -AllowVisibleRuntime -RequirePass -Json"
 )
 DRY_RUN_COMMAND = (
@@ -36,7 +46,14 @@ DRY_RUN_COMMAND = (
     f"-IntroSkipClickMode {preflight.EXPECTED_INTRO_SKIP_CLICK_MODE} "
     f"-IntroSkipClicks {preflight.EXPECTED_INTRO_SKIP_CLICKS} "
     f"-SkipPulses {preflight.EXPECTED_SKIP_PULSES} "
+    f"-SampleIntervalSec {preflight.EXPECTED_SAMPLE_INTERVAL_SEC} "
     f"-MaxInputDriftPx {preflight.EXPECTED_MAX_INPUT_DRIFT_PX} "
+    f"-MinNonblackPercent {preflight.EXPECTED_MIN_NONBLACK_PERCENT_TEXT} "
+    f"-MinUniqueSampleColors {preflight.EXPECTED_MIN_UNIQUE_SAMPLE_COLORS} "
+    f"-MaxArtifactMB {preflight.EXPECTED_MAX_ARTIFACT_MB} "
+    f"-MaxWorkingSetGrowthMB {preflight.EXPECTED_MAX_WORKING_SET_GROWTH_MB} "
+    f"-MaxPrivateMemoryGrowthMB {preflight.EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB} "
+    f"-MaxHandleGrowth {preflight.EXPECTED_MAX_HANDLE_GROWTH} "
     "-Json"
 )
 
@@ -80,8 +97,22 @@ def harness_command(tier: str, route: str, paths: dict[str, str], *, execute: bo
         str(preflight.EXPECTED_INTRO_SKIP_CLICKS),
         "-SkipPulses",
         str(preflight.EXPECTED_SKIP_PULSES),
+        "-SampleIntervalSec",
+        str(preflight.EXPECTED_SAMPLE_INTERVAL_SEC),
         "-MaxInputDriftPx",
         str(preflight.EXPECTED_MAX_INPUT_DRIFT_PX),
+        "-MinNonblackPercent",
+        preflight.EXPECTED_MIN_NONBLACK_PERCENT_TEXT,
+        "-MinUniqueSampleColors",
+        str(preflight.EXPECTED_MIN_UNIQUE_SAMPLE_COLORS),
+        "-MaxArtifactMB",
+        str(preflight.EXPECTED_MAX_ARTIFACT_MB),
+        "-MaxWorkingSetGrowthMB",
+        str(preflight.EXPECTED_MAX_WORKING_SET_GROWTH_MB),
+        "-MaxPrivateMemoryGrowthMB",
+        str(preflight.EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB),
+        "-MaxHandleGrowth",
+        str(preflight.EXPECTED_MAX_HANDLE_GROWTH),
     ]
     if execute:
         parts.extend(["-Execute", "-AllowVisibleRuntime", "-RequirePass"])
@@ -132,17 +163,37 @@ def dry_run_plan_for_step(step: dict[str, Any]) -> dict[str, Any]:
             "tier": step["tier"],
             "duration_sec": 120,
             "route": step["route"],
+            "sample_interval_sec": preflight.EXPECTED_SAMPLE_INTERVAL_SEC,
             "candidate_dir": r"C:\ClashTests\hd-soak",
             "candidate_path": r"C:\ClashTests\hd-soak\clash95_hd_soak_fixture.exe",
             "output_root": r"C:\ClashCaptures\hd-soak",
             "report_json": paths["report_json"],
             "report_markdown": paths["report_markdown"],
+            "growth_limits": {
+                "max_working_set_growth_mb": preflight.EXPECTED_MAX_WORKING_SET_GROWTH_MB,
+                "max_private_memory_growth_mb": preflight.EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB,
+                "max_handle_growth": preflight.EXPECTED_MAX_HANDLE_GROWTH,
+                "max_artifact_mb": preflight.EXPECTED_MAX_ARTIFACT_MB,
+            },
+            "frame_limits": {
+                "min_nonblack_percent": preflight.EXPECTED_MIN_NONBLACK_PERCENT,
+                "min_unique_sample_colors": preflight.EXPECTED_MIN_UNIQUE_SAMPLE_COLORS,
+            },
             "input_limits": {"max_input_drift_px": preflight.EXPECTED_MAX_INPUT_DRIFT_PX},
             "intro_skip": {
                 "click_mode": preflight.EXPECTED_INTRO_SKIP_CLICK_MODE,
                 "click_repeat": preflight.EXPECTED_INTRO_SKIP_CLICKS,
                 "space_pulses": preflight.EXPECTED_SKIP_PULSES,
                 "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
+            },
+            "visible_runtime_approval": {
+                "token": APPROVAL_TOKEN,
+                "token_kind": "sha256-16",
+                "expires_utc": APPROVAL_EXPIRES_UTC,
+                "max_age_hours": 12,
+                "min_ttl_minutes": preflight.MIN_APPROVAL_TTL_MINUTES,
+                "token_fields": ["fixture", APPROVAL_EXPIRES_UTC],
+                "purpose": "copy-exact dry-run approval packet; edited, stale, or hand-typed visible runtime commands fail closed",
             },
             "right_bottom_promotion_blocked": True,
         },
@@ -161,7 +212,16 @@ def dry_run_plan_for_step(step: dict[str, Any]) -> dict[str, Any]:
             f"-IntroSkipClickMode {preflight.EXPECTED_INTRO_SKIP_CLICK_MODE} "
             f"-IntroSkipClicks {preflight.EXPECTED_INTRO_SKIP_CLICKS} "
             f"-SkipPulses {preflight.EXPECTED_SKIP_PULSES} "
+            f"-SampleIntervalSec {preflight.EXPECTED_SAMPLE_INTERVAL_SEC} "
             f"-MaxInputDriftPx {preflight.EXPECTED_MAX_INPUT_DRIFT_PX} "
+            f"-MinNonblackPercent {preflight.EXPECTED_MIN_NONBLACK_PERCENT_TEXT} "
+            f"-MinUniqueSampleColors {preflight.EXPECTED_MIN_UNIQUE_SAMPLE_COLORS} "
+            f"-MaxArtifactMB {preflight.EXPECTED_MAX_ARTIFACT_MB} "
+            f"-MaxWorkingSetGrowthMB {preflight.EXPECTED_MAX_WORKING_SET_GROWTH_MB} "
+            f"-MaxPrivateMemoryGrowthMB {preflight.EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB} "
+            f"-MaxHandleGrowth {preflight.EXPECTED_MAX_HANDLE_GROWTH} "
+            f"-VisibleRuntimeApprovalExpiresUtc {APPROVAL_EXPIRES_UTC} "
+            f"-VisibleRuntimeApprovalToken {APPROVAL_TOKEN} "
             "-Execute -AllowVisibleRuntime -RequirePass -Json"
         ),
     }
@@ -227,6 +287,7 @@ def source_reports() -> dict[str, dict[str, Any]]:
                     "report_markdown": dry_run_plan["plan"]["report_markdown"],
                     "input_sha256": dry_run_plan["plan"]["input_sha256"],
                     "base_sha_status": dry_run_plan["plan"]["base_sha_status"],
+                    "approval_expires_utc": APPROVAL_EXPIRES_UTC,
                     "execute_command": dry_run_plan["approval_gated_execute_command"],
                 },
                 "safe_dry_run_command": DRY_RUN_COMMAND,
@@ -276,6 +337,100 @@ def build_fixture_report(reports: dict[str, dict[str, Any]]) -> dict[str, Any]:
         return preflight.build_report(args_for(Path(directory), reports))
 
 
+def replace_approval_expiry(reports: dict[str, dict[str, Any]], expires_utc: str) -> None:
+    old = APPROVAL_EXPIRES_UTC
+    approval = reports["dry_run_plan"]["plan"]["visible_runtime_approval"]
+    approval["expires_utc"] = expires_utc
+    approval["token_fields"] = ["fixture", expires_utc]
+    reports["dry_run_plan"]["approval_gated_execute_command"] = reports["dry_run_plan"][
+        "approval_gated_execute_command"
+    ].replace(old, expires_utc)
+    action = reports["next_actions"]["next_action"]
+    action["exact_runtime_command"] = action["exact_runtime_command"].replace(old, expires_utc)
+    action["plan_verified_execute_command"] = action["plan_verified_execute_command"].replace(old, expires_utc)
+    action["dry_run_plan"]["approval_expires_utc"] = expires_utc
+    action["dry_run_plan"]["execute_command"] = action["dry_run_plan"]["execute_command"].replace(old, expires_utc)
+    readiness = reports["intro_skip_readiness"]
+    readiness["dry_run_plan"]["approval_gated_execute_command"] = readiness["dry_run_plan"][
+        "approval_gated_execute_command"
+    ].replace(old, expires_utc)
+
+
+def current_failure_fixture() -> dict[str, Any]:
+    return {
+        "classification": "intro_skip_input_drift_exit",
+        "next_probe": "rerun after repo-only intro-skip readiness passes and explicit visible-window approval",
+        "frame_sample_count": 4,
+        "final_route_marker": "intro-skip",
+        "candidate_sha256": "a" * 64,
+        "visual_anomaly_passed": False,
+        "black_patch_risk_count": 1,
+        "palette_or_stripe_risk_count": 0,
+        "missing_nonblack_bounds_count": 0,
+    }
+
+
+def configure_intro_skip_rerun_reports(reports: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    first_step = step_record(
+        "short2_menu_idle",
+        "short2",
+        "menu-idle",
+        status="failed_classified_intro_skip_input_drift_exit",
+    )
+    first_step["summary"] = current_failure_fixture()
+    reports["step_status"] = {
+        "passed": True,
+        "ladder_complete": False,
+        "current_step": {
+            "id": preflight.EXPECTED_FIRST_STEP,
+            "status": "failed_classified_intro_skip_input_drift_exit",
+            "next_command": RUNTIME_COMMAND,
+        },
+        "steps": [first_step],
+    }
+    reports["dry_run_plan"] = dry_run_plan_for_step(first_step)
+    reports["intro_skip_readiness"] = intro_skip_readiness_for_step(first_step)
+    reports["next_actions"]["next_action"].update(
+        {
+            "id": "rerun_short2_menu_idle_soak",
+            "short_step_id": preflight.EXPECTED_FIRST_STEP,
+            "exact_runtime_command": reports["dry_run_plan"]["approval_gated_execute_command"],
+            "legacy_step_runtime_command": RUNTIME_COMMAND,
+            "plan_verified_execute_command": reports["dry_run_plan"]["approval_gated_execute_command"],
+            "safe_dry_run_command": first_step["safe_dry_run_command"],
+            "current_step_artifacts": preflight.current_step_artifact_inventory(first_step["paths"]),
+            "current_failure": current_failure_fixture(),
+            "post_run_validation": preflight.post_run_validation_for_step(first_step),
+            "post_run_handoff_refresh": preflight.post_run_handoff_refresh_for_step(first_step),
+            "intro_skip_rerun_readiness": {
+                "passed": True,
+                "status": "ready_for_explicit_visible_rerun_approval",
+                "current_step": preflight.EXPECTED_FIRST_STEP,
+                "classification": "intro_skip_input_drift_exit",
+                "candidate_sha256": "a" * 64,
+                "approval_boundary": reports["intro_skip_readiness"]["approval_boundary"],
+                "approval_gated_execute_command": reports["dry_run_plan"]["approval_gated_execute_command"],
+            },
+        }
+    )
+    reports["next_actions"]["next_action"]["dry_run_plan"].update(
+        {
+            "status": reports["dry_run_plan"]["status"],
+            "current_step": preflight.EXPECTED_FIRST_STEP,
+            "candidate_path": reports["dry_run_plan"]["plan"]["candidate_path"],
+            "candidate_dir": reports["dry_run_plan"]["plan"]["candidate_dir"],
+            "output_root": reports["dry_run_plan"]["plan"]["output_root"],
+            "report_json": reports["dry_run_plan"]["plan"]["report_json"],
+            "report_markdown": reports["dry_run_plan"]["plan"]["report_markdown"],
+            "input_sha256": reports["dry_run_plan"]["plan"]["input_sha256"],
+            "base_sha_status": reports["dry_run_plan"]["plan"]["base_sha_status"],
+            "approval_expires_utc": APPROVAL_EXPIRES_UTC,
+            "execute_command": reports["dry_run_plan"]["approval_gated_execute_command"],
+        }
+    )
+    return first_step
+
+
 def test_current_preflight_passes_with_generated_reports() -> None:
     reports = source_reports()
     report = build_fixture_report(reports)
@@ -294,6 +449,14 @@ def test_current_preflight_passes_with_generated_reports() -> None:
     assert "visible Clash95 game window" in report["approval_prompt"]
     assert "postmessage intro-skip" in report["approval_prompt"]
     assert "input drift <= 1px" in report["approval_prompt"]
+    assert "artifact budget" in report["approval_prompt"]
+    limits = report["approval_limits"]
+    assert limits["sample_interval_sec"] == preflight.EXPECTED_SAMPLE_INTERVAL_SEC
+    assert limits["max_artifact_mb"] == preflight.EXPECTED_MAX_ARTIFACT_MB
+    assert limits["max_handle_growth"] == preflight.EXPECTED_MAX_HANDLE_GROWTH
+    assert limits["approval_token_kind"] == "sha256-16"
+    assert limits["min_approval_ttl_minutes"] == preflight.MIN_APPROVAL_TTL_MINUTES
+    assert limits["approval_remaining_seconds"] > preflight.MIN_APPROVAL_TTL_MINUTES * 60
     assert report["locks"]["stable_stage_should_change"] is False
     assert report["locks"]["right_bottom_promotion_blocked"] is True
 
@@ -427,67 +590,28 @@ def test_step_status_must_be_pending_first_step() -> None:
 
 def test_intro_skip_rerun_preflight_passes_with_readiness_gate() -> None:
     reports = source_reports()
-    first_step = step_record(
-        "short2_menu_idle",
-        "short2",
-        "menu-idle",
-        status="failed_classified_intro_skip_input_drift_exit",
-    )
-    reports["step_status"] = {
-        "passed": True,
-        "ladder_complete": False,
-        "current_step": {
-            "id": preflight.EXPECTED_FIRST_STEP,
-            "status": "failed_classified_intro_skip_input_drift_exit",
-            "next_command": RUNTIME_COMMAND,
-        },
-        "steps": [first_step],
-    }
-    reports["dry_run_plan"] = dry_run_plan_for_step(first_step)
-    reports["intro_skip_readiness"] = intro_skip_readiness_for_step(first_step)
-    reports["next_actions"]["next_action"].update(
-        {
-            "id": "rerun_short2_menu_idle_soak",
-            "short_step_id": preflight.EXPECTED_FIRST_STEP,
-            "exact_runtime_command": reports["dry_run_plan"]["approval_gated_execute_command"],
-            "legacy_step_runtime_command": RUNTIME_COMMAND,
-            "plan_verified_execute_command": reports["dry_run_plan"]["approval_gated_execute_command"],
-            "safe_dry_run_command": first_step["safe_dry_run_command"],
-            "current_step_artifacts": preflight.current_step_artifact_inventory(first_step["paths"]),
-            "post_run_validation": preflight.post_run_validation_for_step(first_step),
-            "post_run_handoff_refresh": preflight.post_run_handoff_refresh_for_step(first_step),
-            "intro_skip_rerun_readiness": {
-                "passed": True,
-                "status": "ready_for_explicit_visible_rerun_approval",
-                "current_step": preflight.EXPECTED_FIRST_STEP,
-                "classification": "intro_skip_input_drift_exit",
-                "candidate_sha256": "a" * 64,
-                "approval_boundary": reports["intro_skip_readiness"]["approval_boundary"],
-                "approval_gated_execute_command": reports["dry_run_plan"]["approval_gated_execute_command"],
-            },
-        }
-    )
-    reports["next_actions"]["next_action"]["dry_run_plan"].update(
-        {
-            "status": reports["dry_run_plan"]["status"],
-            "current_step": preflight.EXPECTED_FIRST_STEP,
-            "candidate_path": reports["dry_run_plan"]["plan"]["candidate_path"],
-            "candidate_dir": reports["dry_run_plan"]["plan"]["candidate_dir"],
-            "output_root": reports["dry_run_plan"]["plan"]["output_root"],
-            "report_json": reports["dry_run_plan"]["plan"]["report_json"],
-            "report_markdown": reports["dry_run_plan"]["plan"]["report_markdown"],
-            "input_sha256": reports["dry_run_plan"]["plan"]["input_sha256"],
-            "base_sha_status": reports["dry_run_plan"]["plan"]["base_sha_status"],
-            "execute_command": reports["dry_run_plan"]["approval_gated_execute_command"],
-        }
-    )
+    configure_intro_skip_rerun_reports(reports)
 
     report = build_fixture_report(reports)
     assert report["passed"] is True, report["failures"]
     assert report["status"] == "ready_for_explicit_approval"
     assert report["next_action_consistency"]["intro_skip_rerun_ready"] is True
     assert report["next_action_consistency"]["next_action_id"] == "rerun_short2_menu_idle_soak"
+    assert report["next_action_consistency"]["current_failure_matches"] is True
+    assert report["current_failure"]["black_patch_risk_count"] == 1
+    assert report["current_failure"]["palette_or_stripe_risk_count"] == 0
     assert "visible Clash95 game window" in report["approval_prompt"]
+
+
+def test_next_actions_current_failure_must_match_preflight() -> None:
+    reports = source_reports()
+    configure_intro_skip_rerun_reports(reports)
+    reports["next_actions"]["next_action"]["current_failure"]["black_patch_risk_count"] = 0
+    report = build_fixture_report(reports)
+
+    assert report["passed"] is False
+    assert report["next_action_consistency"]["current_failure_matches"] is False
+    assert any("current failure summary" in failure for failure in report["failures"])
 
 
 def test_guard_source_must_pass() -> None:
@@ -521,6 +645,16 @@ def test_stale_dry_run_plan_fails_closed() -> None:
     assert report["passed"] is False
     assert any("dry-run plan is older" in failure for failure in report["failures"])
     assert report["dry_run_plan_consistency"]["freshness"]["passed"] is False
+
+
+def test_nearly_expired_approval_fails_closed() -> None:
+    reports = source_reports()
+    soon = (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
+    replace_approval_expiry(reports, soon)
+    report = build_fixture_report(reports)
+    assert report["passed"] is False
+    assert any("approval expires too soon" in failure for failure in report["failures"])
+    assert report["approval_limits"]["approval_remaining_seconds"] < preflight.MIN_APPROVAL_TTL_MINUTES * 60
 
 
 def test_dry_run_plan_must_match_current_step_and_paths() -> None:
@@ -564,6 +698,40 @@ def test_dry_run_plan_execute_command_must_pin_stage_and_roots() -> None:
     assert any("dry-run plan execute command missing fragment: -InputExe" in failure for failure in report["failures"])
     assert any("dry-run plan execute command missing fragment: -Stage" in failure for failure in report["failures"])
     assert any("dry-run plan execute command missing fragment: -OutputRoot" in failure for failure in report["failures"])
+
+
+def test_dry_run_plan_must_pin_visible_runtime_token() -> None:
+    reports = source_reports()
+    bad_command = reports["dry_run_plan"]["approval_gated_execute_command"].replace(
+        f"-VisibleRuntimeApprovalToken {APPROVAL_TOKEN} ",
+        "",
+    )
+    reports["dry_run_plan"]["approval_gated_execute_command"] = bad_command
+    reports["dry_run_plan"]["plan"]["visible_runtime_approval"]["token"] = ""
+    reports["next_actions"]["next_action"]["plan_verified_execute_command"] = bad_command
+    reports["next_actions"]["next_action"]["dry_run_plan"]["execute_command"] = bad_command
+    reports["next_actions"]["next_action"]["exact_runtime_command"] = bad_command
+    report = build_fixture_report(reports)
+    assert report["passed"] is False
+    assert any("visible runtime approval token" in failure for failure in report["failures"])
+    assert any("execute command missing fragment: -VisibleRuntimeApprovalToken" in failure for failure in report["failures"])
+
+
+def test_dry_run_plan_must_pin_visible_runtime_expiry() -> None:
+    reports = source_reports()
+    bad_command = reports["dry_run_plan"]["approval_gated_execute_command"].replace(
+        f"-VisibleRuntimeApprovalExpiresUtc {APPROVAL_EXPIRES_UTC} ",
+        "",
+    )
+    reports["dry_run_plan"]["approval_gated_execute_command"] = bad_command
+    reports["dry_run_plan"]["plan"]["visible_runtime_approval"]["token_fields"] = ["fixture"]
+    reports["next_actions"]["next_action"]["plan_verified_execute_command"] = bad_command
+    reports["next_actions"]["next_action"]["dry_run_plan"]["execute_command"] = bad_command
+    reports["next_actions"]["next_action"]["exact_runtime_command"] = bad_command
+    report = build_fixture_report(reports)
+    assert report["passed"] is False
+    assert any("expiry is not covered" in failure for failure in report["failures"])
+    assert any("execute command missing fragment: -VisibleRuntimeApprovalExpiresUtc" in failure for failure in report["failures"])
 
 
 def test_dry_run_plan_must_pin_intro_skip_contract() -> None:
@@ -706,12 +874,16 @@ def run_tests() -> None:
     test_next_actions_dry_run_plan_summary_must_match_current_dry_run_plan()
     test_step_status_must_be_pending_first_step()
     test_intro_skip_rerun_preflight_passes_with_readiness_gate()
+    test_next_actions_current_failure_must_match_preflight()
     test_guard_source_must_pass()
     test_dry_run_plan_source_must_pass()
     test_stale_dry_run_plan_fails_closed()
+    test_nearly_expired_approval_fails_closed()
     test_dry_run_plan_must_match_current_step_and_paths()
     test_dry_run_plan_must_confirm_base_input()
     test_dry_run_plan_execute_command_must_pin_stage_and_roots()
+    test_dry_run_plan_must_pin_visible_runtime_token()
+    test_dry_run_plan_must_pin_visible_runtime_expiry()
     test_dry_run_plan_must_pin_intro_skip_contract()
     test_later_short_step_preflight_uses_step_status_without_first_next_action()
     test_cli_writes_outputs()

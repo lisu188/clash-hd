@@ -72,7 +72,23 @@ def route_coverage_fixture(*, missing_route: str | None = None) -> dict[str, Any
 
 
 def next_actions_fixture(command: str | None = None) -> dict[str, Any]:
-    runtime_command = command or ladder.command_for_step(ladder.SHORT_LADDER_STEPS[0], execute=True)
+    runtime_command = command or (
+        "powershell.exe -NoProfile -ExecutionPolicy Bypass -File "
+        r"'.\scripts\smoke\run_hd_soak.ps1' "
+        "-Tier 'short2' -Route 'menu-idle' "
+        r"-CandidateDir 'C:\ClashTests\hd-soak' "
+        "-CandidateName 'clash95_hd_soak_fixture.exe' "
+        "-ReportJson 'captures/current/hd-soak-short2-menu-idle-current.json' "
+        "-ReportMarkdown 'captures/current/hd-soak-short2-menu-idle-current.md' "
+        "-IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' "
+        "-SampleIntervalSec '15' -MaxInputDriftPx '1' "
+        "-MinNonblackPercent '10' -MinUniqueSampleColors '8' "
+        "-MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' "
+        "-MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' "
+        "-VisibleRuntimeApprovalExpiresUtc '2999-01-01T00:00:00+00:00' "
+        "-VisibleRuntimeApprovalToken '1234567890abcdef' "
+        "-Execute -AllowVisibleRuntime -RequirePass -Json"
+    )
     return {
         "passed": True,
         "status": "waiting_for_explicit_visible_runtime_approval",
@@ -80,6 +96,9 @@ def next_actions_fixture(command: str | None = None) -> dict[str, Any]:
             "id": "run_short2_menu_idle_soak",
             "requires_explicit_user_approval": True,
             "exact_runtime_command": runtime_command,
+            "exact_runtime_command_source": "dry_run_plan",
+            "plan_verified_execute_command": runtime_command,
+            "legacy_step_runtime_command": None,
         },
     }
 
@@ -137,11 +156,21 @@ def test_current_pending_approval_ladder_passes_as_plan() -> None:
     assert "-IntroSkipClickMode postmessage" in report["current_step"]["approval_gated_runtime_command"]
     assert "-IntroSkipClicks 8" in report["current_step"]["approval_gated_runtime_command"]
     assert "-SkipPulses 4" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-SampleIntervalSec 15" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MinNonblackPercent 10" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MinUniqueSampleColors 8" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MaxArtifactMB 250" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MaxWorkingSetGrowthMB 64" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MaxPrivateMemoryGrowthMB 64" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MaxHandleGrowth 128" in report["current_step"]["approval_gated_runtime_command"]
     assert "-IntroSkipClickMode postmessage" in report["current_step"]["safe_dry_run_command"]
+    assert "-SampleIntervalSec 15" in report["current_step"]["safe_dry_run_command"]
+    assert "-MaxArtifactMB 250" in report["current_step"]["safe_dry_run_command"]
     assert report["locks"]["stable_stage_should_change"] is False
     assert report["locks"]["right_bottom_promotion_blocked"] is True
     assert report["locks"]["long_tiers_locked"] is True
     assert report["locks"]["future_lanes_locked"] is True
+    assert report["next_action_alignment"]["plan_verified_matches_current_step"] is True
 
 
 def test_first_pass_advances_to_short2_map_idle() -> None:
@@ -157,6 +186,7 @@ def test_first_pass_advances_to_short2_map_idle() -> None:
     assert "hd-soak-short2-map-idle-current.json" in report["current_step"]["approval_gated_runtime_command"]
     assert "-MaxInputDriftPx 1" in report["current_step"]["approval_gated_runtime_command"]
     assert "-IntroSkipClickMode postmessage" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-MaxArtifactMB 250" in report["current_step"]["approval_gated_runtime_command"]
 
 
 def test_missing_harness_route_fails_closed() -> None:

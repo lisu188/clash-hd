@@ -661,9 +661,10 @@ The no-popup boundary guard is
 that the refresh includes the stable-stage, executable-artifact,
 surface-dump-policy, visible-runtime launcher, no-visible-runtime, and
 process-hygiene guards. It records `required_guard_count=6`,
-`required_supporting_report_count=82`, and `required_report_count=88`. It also
+`required_supporting_report_count=84`, and `required_report_count=90`. It also
 requires the no-popup map evidence matrix and its fixture tests, no-popup guard
-regression report, no-visible runtime guard tests, manual DirectInput
+regression report, no-visible runtime guard tests, HD soak execution-boundary
+report and tests, manual DirectInput
 checklist/proof-template/run-plan reports plus tests, right-bottom validation
 guard tests, right-bottom action-menu blocker triage and tests,
 right-bottom visual artifact guard and tests, load-slot transition probe guard

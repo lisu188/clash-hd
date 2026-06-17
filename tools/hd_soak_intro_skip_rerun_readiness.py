@@ -59,6 +59,24 @@ def command_contains_intro_contract(command: str) -> list[str]:
         "8",
         "-SkipPulses",
         "4",
+        "-SampleIntervalSec",
+        "15",
+        "-MaxInputDriftPx",
+        "1",
+        "-MinNonblackPercent",
+        "10",
+        "-MinUniqueSampleColors",
+        "8",
+        "-MaxArtifactMB",
+        "250",
+        "-MaxWorkingSetGrowthMB",
+        "64",
+        "-MaxPrivateMemoryGrowthMB",
+        "64",
+        "-MaxHandleGrowth",
+        "128",
+        "-VisibleRuntimeApprovalExpiresUtc",
+        "-VisibleRuntimeApprovalToken",
         "-Execute",
         "-AllowVisibleRuntime",
         "-RequirePass",
@@ -137,6 +155,20 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         failures.append("dry-run plan does not keep right-bottom promotion blocked")
     failures.extend(intro_skip_failures(plan))
     failures.extend(command_contains_intro_contract(command))
+    approval = plan.get("visible_runtime_approval") or {}
+    token = str(approval.get("token") or "")
+    if len(token) != 16 or not all(ch in "0123456789abcdef" for ch in token):
+        failures.append("dry-run visible runtime approval token is missing or malformed")
+    if token and token not in command:
+        failures.append("approval command does not include the dry-run visible runtime approval token")
+    approval_expires_utc = str(approval.get("expires_utc") or "")
+    if not approval_expires_utc:
+        failures.append("dry-run visible runtime approval expires_utc is missing")
+    elif approval_expires_utc not in command:
+        failures.append("approval command does not include the dry-run visible runtime approval expiry")
+    token_fields = approval.get("token_fields") or []
+    if approval_expires_utc and approval_expires_utc not in token_fields:
+        failures.append("dry-run visible runtime approval expiry is not covered by token_fields")
 
     if visible_runtime_guard.get("passed") is not True:
         failures.append("visible runtime launcher guard is not passing")

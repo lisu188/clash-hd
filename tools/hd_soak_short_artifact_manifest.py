@@ -26,6 +26,13 @@ DEFAULT_MD = Path("captures/current/hd-soak-short-artifact-manifest-current.md")
 DEFAULT_LEGACY_REPORT_JSON = Path("captures/current/hd-soak-short-current.json")
 DEFAULT_LEGACY_REPORT_MD = Path("captures/current/hd-soak-short-current.md")
 MAX_INPUT_DRIFT_PX = 1
+SAMPLE_INTERVAL_SEC = 15
+MIN_NONBLACK_PERCENT = 10
+MIN_UNIQUE_SAMPLE_COLORS = 8
+MAX_ARTIFACT_MB = 250
+MAX_WORKING_SET_GROWTH_MB = 64
+MAX_PRIVATE_MEMORY_GROWTH_MB = 64
+MAX_HANDLE_GROWTH = 128
 INTRO_SKIP_CLICK_MODE = "postmessage"
 INTRO_SKIP_CLICKS = 8
 SKIP_PULSES = 4
@@ -79,8 +86,22 @@ def harness_command(step: dict[str, Any], paths: dict[str, str], *, execute: boo
         str(INTRO_SKIP_CLICKS),
         "-SkipPulses",
         str(SKIP_PULSES),
+        "-SampleIntervalSec",
+        str(SAMPLE_INTERVAL_SEC),
         "-MaxInputDriftPx",
         str(MAX_INPUT_DRIFT_PX),
+        "-MinNonblackPercent",
+        str(MIN_NONBLACK_PERCENT),
+        "-MinUniqueSampleColors",
+        str(MIN_UNIQUE_SAMPLE_COLORS),
+        "-MaxArtifactMB",
+        str(MAX_ARTIFACT_MB),
+        "-MaxWorkingSetGrowthMB",
+        str(MAX_WORKING_SET_GROWTH_MB),
+        "-MaxPrivateMemoryGrowthMB",
+        str(MAX_PRIVATE_MEMORY_GROWTH_MB),
+        "-MaxHandleGrowth",
+        str(MAX_HANDLE_GROWTH),
     ]
     if execute:
         parts.extend(["-Execute", "-AllowVisibleRuntime", "-RequirePass"])
@@ -171,6 +192,13 @@ def validate_records(records: list[dict[str, Any]]) -> list[str]:
             f"-IntroSkipClickMode {INTRO_SKIP_CLICK_MODE}",
             f"-IntroSkipClicks {INTRO_SKIP_CLICKS}",
             f"-SkipPulses {SKIP_PULSES}",
+            f"-SampleIntervalSec {SAMPLE_INTERVAL_SEC}",
+            f"-MinNonblackPercent {MIN_NONBLACK_PERCENT}",
+            f"-MinUniqueSampleColors {MIN_UNIQUE_SAMPLE_COLORS}",
+            f"-MaxArtifactMB {MAX_ARTIFACT_MB}",
+            f"-MaxWorkingSetGrowthMB {MAX_WORKING_SET_GROWTH_MB}",
+            f"-MaxPrivateMemoryGrowthMB {MAX_PRIVATE_MEMORY_GROWTH_MB}",
+            f"-MaxHandleGrowth {MAX_HANDLE_GROWTH}",
         ):
             if fragment not in command:
                 failures.append(f"{record['id']} runtime command does not pin {fragment}")

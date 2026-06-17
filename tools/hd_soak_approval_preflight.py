@@ -38,10 +38,19 @@ EXPECTED_TRIAGE_JSON = r"captures\current\hd-soak-short2-menu-idle-triage-curren
 EXPECTED_WRITES = {r"C:\ClashTests\hd-soak", r"C:\ClashCaptures\hd-soak"}
 MUST_NOT_MODIFY = r"C:\Clash\clash95.exe"
 EXPECTED_MAX_INPUT_DRIFT_PX = 1
+EXPECTED_SAMPLE_INTERVAL_SEC = 15
+EXPECTED_MIN_NONBLACK_PERCENT = 10.0
+EXPECTED_MIN_NONBLACK_PERCENT_TEXT = "10"
+EXPECTED_MIN_UNIQUE_SAMPLE_COLORS = 8
+EXPECTED_MAX_ARTIFACT_MB = 250
+EXPECTED_MAX_WORKING_SET_GROWTH_MB = 64
+EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB = 64
+EXPECTED_MAX_HANDLE_GROWTH = 128
 EXPECTED_INTRO_SKIP_CLICK_MODE = "postmessage"
 EXPECTED_INTRO_SKIP_CLICKS = 8
 EXPECTED_SKIP_PULSES = 4
 MAX_DRY_RUN_PLAN_AGE_HOURS = 12
+MIN_APPROVAL_TTL_MINUTES = 30
 PYTHON_EXE = (
     r"C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime"
     r"\dependencies\python\python.exe"
@@ -101,6 +110,23 @@ def current_step_artifact_inventory(paths: dict[str, str]) -> dict[str, Any]:
     }
 
 
+def current_failure_summary(step: dict[str, Any]) -> dict[str, Any] | None:
+    summary = step.get("summary") or {}
+    if not summary.get("classification"):
+        return None
+    return {
+        "classification": summary.get("classification"),
+        "next_probe": summary.get("next_probe"),
+        "frame_sample_count": summary.get("frame_sample_count"),
+        "final_route_marker": summary.get("final_route_marker"),
+        "candidate_sha256": summary.get("candidate_sha256"),
+        "visual_anomaly_passed": summary.get("visual_anomaly_passed"),
+        "black_patch_risk_count": summary.get("black_patch_risk_count"),
+        "palette_or_stripe_risk_count": summary.get("palette_or_stripe_risk_count"),
+        "missing_nonblack_bounds_count": summary.get("missing_nonblack_bounds_count"),
+    }
+
+
 def text_contains_path(text: str, path_text: str | None) -> bool:
     if not path_text:
         return False
@@ -152,6 +178,51 @@ def dry_run_plan_freshness(
     }
 
 
+def approval_ttl_status(approval_expires_utc: Any, *, now: datetime | None = None) -> dict[str, Any]:
+    expires_at = parse_datetime(approval_expires_utc)
+    current_time = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    failures: list[str] = []
+    remaining_seconds: float | None = None
+    if expires_at is None:
+        failures.append("dry-run plan visible runtime approval expires_utc is missing or invalid")
+    else:
+        remaining = expires_at - current_time
+        remaining_seconds = remaining.total_seconds()
+        if remaining < timedelta(minutes=MIN_APPROVAL_TTL_MINUTES):
+            failures.append(
+                "dry-run plan visible runtime approval expires too soon; "
+                f"regenerate before approval so at least {MIN_APPROVAL_TTL_MINUTES} minutes remain"
+            )
+    return {
+        "expires_utc": approval_expires_utc,
+        "remaining_seconds": remaining_seconds,
+        "min_remaining_minutes": MIN_APPROVAL_TTL_MINUTES,
+        "passed": not failures,
+        "failures": failures,
+    }
+
+
+def approval_limits_from_plan(plan: dict[str, Any], approval_ttl: dict[str, Any]) -> dict[str, Any]:
+    growth = plan.get("growth_limits") or {}
+    frame = plan.get("frame_limits") or {}
+    input_limits = plan.get("input_limits") or {}
+    approval = plan.get("visible_runtime_approval") or {}
+    return {
+        "sample_interval_sec": plan.get("sample_interval_sec"),
+        "max_input_drift_px": input_limits.get("max_input_drift_px"),
+        "min_nonblack_percent": frame.get("min_nonblack_percent"),
+        "min_unique_sample_colors": frame.get("min_unique_sample_colors"),
+        "max_artifact_mb": growth.get("max_artifact_mb"),
+        "max_working_set_growth_mb": growth.get("max_working_set_growth_mb"),
+        "max_private_memory_growth_mb": growth.get("max_private_memory_growth_mb"),
+        "max_handle_growth": growth.get("max_handle_growth"),
+        "approval_token_kind": approval.get("token_kind"),
+        "approval_expires_utc": approval.get("expires_utc"),
+        "approval_remaining_seconds": approval_ttl.get("remaining_seconds"),
+        "min_approval_ttl_minutes": approval_ttl.get("min_remaining_minutes"),
+    }
+
+
 def command_has_required_shape(command: str, step: dict[str, Any], paths: dict[str, str]) -> list[str]:
     failures: list[str] = []
     required_fragments = [
@@ -163,7 +234,14 @@ def command_has_required_shape(command: str, step: dict[str, Any], paths: dict[s
         f"-IntroSkipClickMode {EXPECTED_INTRO_SKIP_CLICK_MODE}",
         f"-IntroSkipClicks {EXPECTED_INTRO_SKIP_CLICKS}",
         f"-SkipPulses {EXPECTED_SKIP_PULSES}",
+        f"-SampleIntervalSec {EXPECTED_SAMPLE_INTERVAL_SEC}",
         f"-MaxInputDriftPx {EXPECTED_MAX_INPUT_DRIFT_PX}",
+        f"-MinNonblackPercent {EXPECTED_MIN_NONBLACK_PERCENT_TEXT}",
+        f"-MinUniqueSampleColors {EXPECTED_MIN_UNIQUE_SAMPLE_COLORS}",
+        f"-MaxArtifactMB {EXPECTED_MAX_ARTIFACT_MB}",
+        f"-MaxWorkingSetGrowthMB {EXPECTED_MAX_WORKING_SET_GROWTH_MB}",
+        f"-MaxPrivateMemoryGrowthMB {EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB}",
+        f"-MaxHandleGrowth {EXPECTED_MAX_HANDLE_GROWTH}",
         "-Execute -AllowVisibleRuntime -RequirePass",
         "-Json",
     ]
@@ -186,7 +264,14 @@ def dry_run_has_required_shape(command: str, step: dict[str, Any], paths: dict[s
         f"-IntroSkipClickMode {EXPECTED_INTRO_SKIP_CLICK_MODE}",
         f"-IntroSkipClicks {EXPECTED_INTRO_SKIP_CLICKS}",
         f"-SkipPulses {EXPECTED_SKIP_PULSES}",
+        f"-SampleIntervalSec {EXPECTED_SAMPLE_INTERVAL_SEC}",
         f"-MaxInputDriftPx {EXPECTED_MAX_INPUT_DRIFT_PX}",
+        f"-MinNonblackPercent {EXPECTED_MIN_NONBLACK_PERCENT_TEXT}",
+        f"-MinUniqueSampleColors {EXPECTED_MIN_UNIQUE_SAMPLE_COLORS}",
+        f"-MaxArtifactMB {EXPECTED_MAX_ARTIFACT_MB}",
+        f"-MaxWorkingSetGrowthMB {EXPECTED_MAX_WORKING_SET_GROWTH_MB}",
+        f"-MaxPrivateMemoryGrowthMB {EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB}",
+        f"-MaxHandleGrowth {EXPECTED_MAX_HANDLE_GROWTH}",
         "-Json",
     ):
         if fragment not in command:
@@ -226,6 +311,23 @@ def dry_run_plan_failures(
         failures.append("dry-run plan tier/route do not match the current step")
     if (plan.get("input_limits") or {}).get("max_input_drift_px") != EXPECTED_MAX_INPUT_DRIFT_PX:
         failures.append("dry-run plan does not pin max input drift to 1 px")
+    if int(plan.get("sample_interval_sec") or 0) != EXPECTED_SAMPLE_INTERVAL_SEC:
+        failures.append(f"dry-run plan sample_interval_sec is not {EXPECTED_SAMPLE_INTERVAL_SEC}")
+    frame_limits = plan.get("frame_limits") or {}
+    if float(frame_limits.get("min_nonblack_percent") or 0.0) != EXPECTED_MIN_NONBLACK_PERCENT:
+        failures.append("dry-run plan does not pin min nonblack percent")
+    if int(frame_limits.get("min_unique_sample_colors") or 0) != EXPECTED_MIN_UNIQUE_SAMPLE_COLORS:
+        failures.append("dry-run plan does not pin min unique sample colors")
+    growth = plan.get("growth_limits") or {}
+    expected_growth = {
+        "max_artifact_mb": EXPECTED_MAX_ARTIFACT_MB,
+        "max_working_set_growth_mb": EXPECTED_MAX_WORKING_SET_GROWTH_MB,
+        "max_private_memory_growth_mb": EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB,
+        "max_handle_growth": EXPECTED_MAX_HANDLE_GROWTH,
+    }
+    for key, expected in expected_growth.items():
+        if int(growth.get(key) or 0) != expected:
+            failures.append(f"dry-run plan growth limit {key} is not {expected}")
     intro_skip = plan.get("intro_skip") or {}
     if intro_skip.get("click_mode") != EXPECTED_INTRO_SKIP_CLICK_MODE:
         failures.append("dry-run plan intro_skip click_mode is not postmessage")
@@ -235,6 +337,23 @@ def dry_run_plan_failures(
         failures.append(f"dry-run plan intro_skip space_pulses is not {EXPECTED_SKIP_PULSES}")
     if intro_skip.get("proof_class") != "intro_skip_harness_prep_not_manual_directinput_release_proof":
         failures.append("dry-run plan intro_skip proof_class is missing the non-manual proof boundary")
+    approval = plan.get("visible_runtime_approval") or {}
+    token = str(approval.get("token") or "")
+    if len(token) != 16 or not all(ch in "0123456789abcdef" for ch in token):
+        failures.append("dry-run plan visible runtime approval token is missing or malformed")
+    if approval.get("token_kind") != "sha256-16":
+        failures.append("dry-run plan visible runtime approval token_kind is not sha256-16")
+    approval_expires_utc = str(approval.get("expires_utc") or "")
+    if not approval_expires_utc:
+        failures.append("dry-run plan visible runtime approval expires_utc is missing")
+    if int(approval.get("min_ttl_minutes") or 0) != MIN_APPROVAL_TTL_MINUTES:
+        failures.append(f"dry-run plan visible runtime approval min_ttl_minutes is not {MIN_APPROVAL_TTL_MINUTES}")
+    token_fields = approval.get("token_fields") or []
+    if approval_expires_utc and approval_expires_utc not in token_fields:
+        failures.append("dry-run plan visible runtime approval expiry is not covered by token_fields")
+    failures.extend(approval_ttl_status(approval_expires_utc)["failures"])
+    if "copy-exact dry-run approval packet" not in str(approval.get("purpose") or ""):
+        failures.append("dry-run plan visible runtime approval purpose is missing")
     if normalized_text(plan.get("candidate_dir")) != normalized_text(r"C:\ClashTests\hd-soak"):
         failures.append("dry-run plan candidate_dir is not C:\\ClashTests\\hd-soak")
     if normalized_text(plan.get("output_root")) != normalized_text(r"C:\ClashCaptures\hd-soak"):
@@ -258,11 +377,22 @@ def dry_run_plan_failures(
         str(EXPECTED_INTRO_SKIP_CLICKS),
         "-SkipPulses",
         str(EXPECTED_SKIP_PULSES),
+        "-VisibleRuntimeApprovalExpiresUtc",
+        approval_expires_utc,
+        "-VisibleRuntimeApprovalToken",
+        token,
         "-Execute",
         "-AllowVisibleRuntime",
         "-RequirePass",
         "-Json",
         "-MaxInputDriftPx",
+        "-SampleIntervalSec",
+        "-MinNonblackPercent",
+        "-MinUniqueSampleColors",
+        "-MaxArtifactMB",
+        "-MaxWorkingSetGrowthMB",
+        "-MaxPrivateMemoryGrowthMB",
+        "-MaxHandleGrowth",
     ):
         if fragment not in execute_command:
             failures.append(f"dry-run plan execute command missing fragment: {fragment}")
@@ -372,6 +502,9 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     step_status = loaded.get("step_status") or {}
     dry_run_plan = loaded.get("dry_run_plan") or {}
     dry_run_plan_payload = dry_run_plan.get("plan") or {}
+    dry_run_approval = dry_run_plan_payload.get("visible_runtime_approval") or {}
+    approval_ttl = approval_ttl_status(dry_run_approval.get("expires_utc"))
+    approval_limits = approval_limits_from_plan(dry_run_plan_payload, approval_ttl)
     dry_run_plan_execute_command = str(
         dry_run_plan.get("approval_gated_execute_command")
         or (dry_run_plan_payload.get("commands") or {}).get("execute")
@@ -389,6 +522,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     post_run_evidence_refresh = post_run_evidence_refresh_commands()
     artifacts = current_step_artifact_inventory(paths)
     action_artifacts = action.get("current_step_artifacts")
+    current_failure = current_failure_summary(step)
+    action_current_failure = action.get("current_failure")
     artifact_mismatch_keys: list[str] = []
     action_plan_mismatch_keys: list[str] = []
     approval_step_pending = current_step.get("status") in {
@@ -463,6 +598,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
                     "next-actions current-step artifact inventory does not match approval preflight: "
                     + ", ".join(artifact_mismatch_keys)
                 )
+        if current_failure and action_current_failure != current_failure:
+            failures.append("next-actions current failure summary does not match approval preflight")
         action_plan = action.get("dry_run_plan") or {}
         if action_plan.get("current_step") != current_step.get("id"):
             failures.append("next-actions dry-run plan summary does not match the current short step")
@@ -559,7 +696,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         rf"it must not modify C:\Clash\clash95.exe, uses postmessage intro-skip harness prep "
         rf"({EXPECTED_INTRO_SKIP_CLICKS} clicks plus {EXPECTED_SKIP_PULSES} space pulses), "
         "does not treat intro skip as manual DirectInput proof, and enforces input drift <= "
-        rf"{EXPECTED_MAX_INPUT_DRIFT_PX}px."
+        rf"{EXPECTED_MAX_INPUT_DRIFT_PX}px, frame thresholds, artifact budget, process-growth "
+        "limits, and a fresh copy-exact approval token."
     )
 
     return {
@@ -576,6 +714,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             "paths": paths,
         },
         "current_step_artifacts": artifacts,
+        "current_failure": current_failure,
+        "approval_limits": approval_limits,
         "approval_prompt": approval_prompt,
         "safe_dry_run_command": dry_run_command,
         "approval_gated_runtime_command": approval_command,
@@ -612,6 +752,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             "dry_run_plan_summary_mismatch_keys": action_plan_mismatch_keys,
             "current_step_artifacts_match": bool(action_artifacts) and not artifact_mismatch_keys,
             "current_step_artifact_mismatch_keys": artifact_mismatch_keys,
+            "current_failure_matches": (not current_failure) or action_current_failure == current_failure,
             "approval_command_uses_dry_run_plan": approval_command == dry_run_plan_execute_command,
         },
         "writes_outside_repo": sorted(writes),
@@ -657,37 +798,76 @@ def to_markdown(report: dict[str, Any]) -> str:
         "",
         report["approval_prompt"],
         "",
-        "## Safe Dry Run",
-        "",
-        "```powershell",
-        report["safe_dry_run_command"],
-        "```",
-        "",
-        "## Approval-Gated Runtime Command",
-        "",
-        "```powershell",
-        report["approval_gated_runtime_command"],
-        "```",
-        "",
-        "## Dry-Run Plan",
-        "",
-        f"- Plan: `{(report.get('dry_run_plan_consistency') or {}).get('path')}`",
-        f"- Status: `{(report.get('dry_run_plan_consistency') or {}).get('status')}`",
-        f"- Current step: `{(report.get('dry_run_plan_consistency') or {}).get('current_step')}`",
-        f"- Candidate path: `{(report.get('dry_run_plan_consistency') or {}).get('candidate_path')}`",
-        f"- Passing: `{(report.get('dry_run_plan_consistency') or {}).get('passed')}`",
-        f"- Freshness passing: `{((report.get('dry_run_plan_consistency') or {}).get('freshness') or {}).get('passed')}`",
-        f"- Max age hours: `{((report.get('dry_run_plan_consistency') or {}).get('freshness') or {}).get('max_age_hours')}`",
-        "",
-        "Plan-emitted execute command:",
-        "",
-        "```powershell",
-        str((report.get("dry_run_plan_consistency") or {}).get("execute_command") or ""),
-        "```",
-        "",
-        "## Focused Post-Run Validation",
-        "",
     ]
+    current_failure = report.get("current_failure") or {}
+    if current_failure:
+        lines.extend(
+            [
+                "## Current Failure",
+                "",
+                f"- Classification: `{current_failure.get('classification')}`",
+                f"- Next probe: {current_failure.get('next_probe')}",
+                f"- Final route marker: `{current_failure.get('final_route_marker')}`",
+                f"- Candidate SHA-256: `{current_failure.get('candidate_sha256')}`",
+                f"- Visual anomaly passed: `{current_failure.get('visual_anomaly_passed')}`",
+                f"- Black/blank patch risk count: `{current_failure.get('black_patch_risk_count')}`",
+                f"- Palette/stripe risk count: `{current_failure.get('palette_or_stripe_risk_count')}`",
+                f"- Missing nonblack bounds count: `{current_failure.get('missing_nonblack_bounds_count')}`",
+                "",
+            ]
+        )
+    lines.extend(["## Approval Limits", ""])
+    limits = report.get("approval_limits") or {}
+    for key in (
+        "sample_interval_sec",
+        "max_input_drift_px",
+        "min_nonblack_percent",
+        "min_unique_sample_colors",
+        "max_artifact_mb",
+        "max_working_set_growth_mb",
+        "max_private_memory_growth_mb",
+        "max_handle_growth",
+        "approval_token_kind",
+        "approval_expires_utc",
+        "approval_remaining_seconds",
+        "min_approval_ttl_minutes",
+    ):
+        lines.append(f"- {key}: `{limits.get(key)}`")
+    lines.extend(
+        [
+            "",
+            "## Safe Dry Run",
+            "",
+            "```powershell",
+            report["safe_dry_run_command"],
+            "```",
+            "",
+            "## Approval-Gated Runtime Command",
+            "",
+            "```powershell",
+            report["approval_gated_runtime_command"],
+            "```",
+            "",
+            "## Dry-Run Plan",
+            "",
+            f"- Plan: `{(report.get('dry_run_plan_consistency') or {}).get('path')}`",
+            f"- Status: `{(report.get('dry_run_plan_consistency') or {}).get('status')}`",
+            f"- Current step: `{(report.get('dry_run_plan_consistency') or {}).get('current_step')}`",
+            f"- Candidate path: `{(report.get('dry_run_plan_consistency') or {}).get('candidate_path')}`",
+            f"- Passing: `{(report.get('dry_run_plan_consistency') or {}).get('passed')}`",
+            f"- Freshness passing: `{((report.get('dry_run_plan_consistency') or {}).get('freshness') or {}).get('passed')}`",
+            f"- Max age hours: `{((report.get('dry_run_plan_consistency') or {}).get('freshness') or {}).get('max_age_hours')}`",
+            "",
+            "Plan-emitted execute command:",
+            "",
+            "```powershell",
+            str((report.get("dry_run_plan_consistency") or {}).get("execute_command") or ""),
+            "```",
+            "",
+            "## Focused Post-Run Validation",
+            "",
+        ]
+    )
     for command in report.get("post_run_validation") or []:
         lines.append(f"- `{command}`")
     if report.get("post_run_handoff_refresh"):

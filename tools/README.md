@@ -24,15 +24,21 @@ Endurance-road helpers worth knowing:
 
 - `tools/hd_soak_report.py`: validates one executed soak report, including
   canonical `C:\Clash`, `C:\ClashTests\hd-soak`, and `C:\ClashCaptures\hd-soak`
-  roots.
+  roots. It also exposes a `visual_anomalies` check for missing nonblack bounds,
+  black/blank patch risk, and palette/stripe risk in sampled frames.
 - `tools/hd_soak_failure_triage.py`: classifies failed short-soak reports and
   refuses raw `passed=true` output when the soak report guard rejects the
-  report contract.
+  report contract. When available, it enriches missing route method fields from
+  the referenced per-route `mouse_path_probe` JSON without launching the game.
 - `tools/hd_soak_harness_guard.py`: source-inspects the opt-in soak harness and
   fails if the dry-run handoff can drift from `-RequirePass -Json`.
+- `tools/hd_soak_execution_boundary.py`: runs negative approval-packet probes
+  with repo-local temp paths and a nonexistent input executable, proving bad
+  visible-runtime packets fail before candidate/output/report side effects.
 - `tools/hd_soak_dry_run_plan.py`: runs the current soak harness in dry-run
   JSON mode and persists the approval handoff plan without launching the game.
-  Approval handoffs treat plans older than 12 hours as stale.
+  Approval handoffs treat plans older than 12 hours as stale and require at
+  least 30 minutes of visible-runtime approval TTL before execution.
 - `tools/hd_endurance_next_actions.py`: summarizes the next endurance action
   and surfaces the dry-run-plan verified execute command when available. It
   keeps focused soak validation separate from broader evidence refresh.

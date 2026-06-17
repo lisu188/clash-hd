@@ -14,6 +14,9 @@ from typing import Any
 
 import hd_endurance_next_actions as next_actions
 
+APPROVAL_TOKEN = "1234567890abcdef"
+APPROVAL_EXPIRES_UTC = "2999-01-01T00:00:00.0000000+00:00"
+
 
 def write_json(path: Path, data: dict[str, Any]) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -54,8 +57,22 @@ def step_command(tier: str, route: str, paths: dict[str, str], *, execute: bool)
         str(next_actions.INTRO_SKIP_CLICKS),
         "-SkipPulses",
         str(next_actions.SKIP_PULSES),
+        "-SampleIntervalSec",
+        str(next_actions.SAMPLE_INTERVAL_SEC),
         "-MaxInputDriftPx",
         str(next_actions.MAX_INPUT_DRIFT_PX),
+        "-MinNonblackPercent",
+        next_actions.MIN_NONBLACK_PERCENT_TEXT,
+        "-MinUniqueSampleColors",
+        str(next_actions.MIN_UNIQUE_SAMPLE_COLORS),
+        "-MaxArtifactMB",
+        str(next_actions.MAX_ARTIFACT_MB),
+        "-MaxWorkingSetGrowthMB",
+        str(next_actions.MAX_WORKING_SET_GROWTH_MB),
+        "-MaxPrivateMemoryGrowthMB",
+        str(next_actions.MAX_PRIVATE_MEMORY_GROWTH_MB),
+        "-MaxHandleGrowth",
+        str(next_actions.MAX_HANDLE_GROWTH),
     ]
     if execute:
         parts.extend(["-Execute", "-AllowVisibleRuntime", "-RequirePass"])
@@ -101,6 +118,7 @@ def dry_run_plan_for_step(step: dict[str, Any], *, current_step_id: str | None =
             "right_bottom_promotion_blocked": True,
             "tier": step["tier"],
             "route": step["route"],
+            "sample_interval_sec": next_actions.SAMPLE_INTERVAL_SEC,
             "candidate_dir": r"C:\ClashTests\hd-soak",
             "candidate_path": r"C:\ClashTests\hd-soak\clash95_hd_soak_fixture.exe",
             "output_root": r"C:\ClashCaptures\hd-soak",
@@ -109,11 +127,30 @@ def dry_run_plan_for_step(step: dict[str, Any], *, current_step_id: str | None =
             "input_exists": True,
             "input_sha256": "5" * 64,
             "base_sha_status": "ok",
+            "growth_limits": {
+                "max_working_set_growth_mb": next_actions.MAX_WORKING_SET_GROWTH_MB,
+                "max_private_memory_growth_mb": next_actions.MAX_PRIVATE_MEMORY_GROWTH_MB,
+                "max_handle_growth": next_actions.MAX_HANDLE_GROWTH,
+                "max_artifact_mb": next_actions.MAX_ARTIFACT_MB,
+            },
+            "frame_limits": {
+                "min_nonblack_percent": next_actions.MIN_NONBLACK_PERCENT,
+                "min_unique_sample_colors": next_actions.MIN_UNIQUE_SAMPLE_COLORS,
+            },
             "intro_skip": {
                 "click_mode": next_actions.INTRO_SKIP_CLICK_MODE,
                 "click_repeat": next_actions.INTRO_SKIP_CLICKS,
                 "space_pulses": next_actions.SKIP_PULSES,
                 "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
+            },
+            "visible_runtime_approval": {
+                "token": APPROVAL_TOKEN,
+                "token_kind": "sha256-16",
+                "expires_utc": APPROVAL_EXPIRES_UTC,
+                "max_age_hours": 12,
+                "min_ttl_minutes": next_actions.MIN_APPROVAL_TTL_MINUTES,
+                "token_fields": ["fixture", APPROVAL_EXPIRES_UTC],
+                "purpose": "copy-exact dry-run approval packet; edited, stale, or hand-typed visible runtime commands fail closed",
             },
             "commands": {
                 "execute": (
@@ -125,7 +162,13 @@ def dry_run_plan_for_step(step: dict[str, Any], *, current_step_id: str | None =
                     f"-ReportJson '{Path(step['paths']['report_json']).resolve()}' "
                     f"-ReportMarkdown '{Path(step['paths']['report_markdown']).resolve()}' "
                     "-IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' "
-                    "-MaxInputDriftPx '1' -Execute -AllowVisibleRuntime -RequirePass -Json"
+                    "-SampleIntervalSec '15' -MaxInputDriftPx '1' "
+                    "-MinNonblackPercent '10' -MinUniqueSampleColors '8' "
+                    "-MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' "
+                    "-MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' "
+                    f"-VisibleRuntimeApprovalExpiresUtc '{APPROVAL_EXPIRES_UTC}' "
+                    f"-VisibleRuntimeApprovalToken '{APPROVAL_TOKEN}' "
+                    "-Execute -AllowVisibleRuntime -RequirePass -Json"
                 )
             },
         },
@@ -138,7 +181,13 @@ def dry_run_plan_for_step(step: dict[str, Any], *, current_step_id: str | None =
             f"-ReportJson '{Path(step['paths']['report_json']).resolve()}' "
             f"-ReportMarkdown '{Path(step['paths']['report_markdown']).resolve()}' "
             "-IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' "
-            "-MaxInputDriftPx '1' -Execute -AllowVisibleRuntime -RequirePass -Json"
+            "-SampleIntervalSec '15' -MaxInputDriftPx '1' "
+            "-MinNonblackPercent '10' -MinUniqueSampleColors '8' "
+            "-MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' "
+            "-MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' "
+            f"-VisibleRuntimeApprovalExpiresUtc '{APPROVAL_EXPIRES_UTC}' "
+            f"-VisibleRuntimeApprovalToken '{APPROVAL_TOKEN}' "
+            "-Execute -AllowVisibleRuntime -RequirePass -Json"
         ),
     }
 
@@ -147,13 +196,13 @@ def checklist_fixture(*, complete: bool = False) -> dict[str, Any]:
     if complete:
         return {
             "full_game_complete": True,
-            "counts": {"total": 14, "passed": 14, "blocked": 0, "missing": 0},
+            "counts": {"total": 15, "passed": 15, "blocked": 0, "missing": 0},
             "next_milestone": None,
             "requirements": [],
         }
     return {
         "full_game_complete": False,
-        "counts": {"total": 14, "passed": 4, "blocked": 6, "missing": 4},
+        "counts": {"total": 15, "passed": 4, "blocked": 7, "missing": 4},
         "next_milestone": {
             "id": "short2_menu_idle_soak",
             "title": "First short2 menu-idle soak passes",
@@ -167,6 +216,14 @@ def checklist_fixture(*, complete: bool = False) -> dict[str, Any]:
                 "category": "endurance",
                 "summary": "short2 visible-runtime soak has not produced passing frame/process evidence",
                 "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage",
+            },
+            {
+                "id": "first_mission_visual_clean",
+                "passed": False,
+                "status": "blocked",
+                "category": "render baseline",
+                "summary": "first-mission visual audit is not clean; black patches remain",
+                "next_probe": "fix right/bottom/minimap black patches before release",
             },
             {
                 "id": "stable_menu_real_input",
@@ -230,17 +287,15 @@ def test_short2_next_action_is_visible_approval_gated() -> None:
         report = next_actions.build_report(args_for(checklist_path))
         action = report["next_action"]
         assert report["passed"] is True
-        assert report["status"] == "waiting_for_explicit_visible_runtime_approval"
-        assert action["id"] == "run_short2_menu_idle_soak"
-        assert action["requires_visible_runtime"] is True
-        assert action["requires_explicit_user_approval"] is True
-        assert "-Execute -AllowVisibleRuntime" in action["exact_runtime_command"]
-        assert "-ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json" in action["exact_runtime_command"]
-        assert "-ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md" in action["exact_runtime_command"]
-        assert "-MaxInputDriftPx 1" in action["exact_runtime_command"]
-        assert "-IntroSkipClickMode postmessage" in action["exact_runtime_command"]
-        assert "-IntroSkipClicks 8" in action["exact_runtime_command"]
-        assert "-SkipPulses 4" in action["exact_runtime_command"]
+        assert report["status"] == "repo_only_followup_available"
+        assert action["id"] == "refresh_short2_menu_idle_dry_run_plan"
+        assert action["status"] == "dry_run_plan_required"
+        assert action["requires_visible_runtime"] is False
+        assert action["requires_explicit_user_approval"] is False
+        assert action["exact_runtime_command"] is None
+        assert action["plan_verified_execute_command"] is None
+        assert action["rejected_legacy_runtime_command"]["safe_to_run"] is False
+        assert "-Execute -AllowVisibleRuntime" in action["rejected_legacy_runtime_command"]["command"]
         assert "-Execute" not in action["safe_dry_run_command"]
         assert "hd-soak-short2-menu-idle-current.json" in action["safe_dry_run_command"]
         assert "-MaxInputDriftPx 1" in action["safe_dry_run_command"]
@@ -248,15 +303,15 @@ def test_short2_next_action_is_visible_approval_gated() -> None:
         artifacts = action["current_step_artifacts"]
         assert artifacts["guard_json"] == r"captures\current\hd-soak-short2-menu-idle-guard-current.json"
         assert artifacts["triage_json"] == r"captures\current\hd-soak-short2-menu-idle-triage-current.json"
-        assert "hd_soak_short_validation_refresh.py" in action["post_run_validation"][0]
-        assert "hd_soak_report.py" not in " ".join(action["post_run_validation"])
-        assert "hd_soak_short_step_status.py" in " ".join(action["post_run_validation"])
-        assert "current_evidence_refresh.py" not in " ".join(action["post_run_validation"])
+        assert action["post_run_validation"] == []
         assert "hd_soak_dry_run_plan.py" in " ".join(action["post_run_handoff_refresh"])
         assert "hd_soak_approval_preflight.py" in " ".join(action["post_run_handoff_refresh"])
-        assert "current_evidence_refresh.py" in " ".join(action["post_run_evidence_refresh"])
-        assert "evidence_index_check.py" in " ".join(action["post_run_evidence_refresh"])
+        assert action["post_run_evidence_refresh"] == []
         assert r"C:\Clash\clash95.exe" in action["must_not_modify"]
+        markdown = next_actions.to_markdown(report)
+        assert "## Open Requirement Details" in markdown
+        assert "`first_mission_visual_clean` (`render baseline`, `blocked`)" in markdown
+        assert "fix right/bottom/minimap black patches before release" in markdown
 
 
 def test_missing_checklist_fails_closed() -> None:
@@ -307,15 +362,16 @@ def test_pending_later_short_step_takes_precedence_over_manual_milestone() -> No
 
     action = report["next_action"]
     assert report["passed"] is True
-    assert report["status"] == "waiting_for_explicit_visible_runtime_approval"
-    assert action["id"] == "run_short2_map_idle_soak"
+    assert report["status"] == "repo_only_followup_available"
+    assert action["id"] == "refresh_short2_map_idle_dry_run_plan"
     assert action["source"] == "short_soak_step_status"
-    assert action["requires_visible_runtime"] is True
-    assert "-Route map-idle" in action["exact_runtime_command"]
+    assert action["requires_visible_runtime"] is False
+    assert action["exact_runtime_command"] is None
+    assert "-Route map-idle" in action["safe_dry_run_command"]
+    assert action["rejected_legacy_runtime_command"]["safe_to_run"] is False
     assert action["current_step_artifacts"]["guard_json"] == r"captures\current\hd-soak-short2-map-idle-guard-current.json"
-    assert "hd_soak_short_validation_refresh.py" in action["post_run_validation"][0]
-    assert "current_evidence_refresh.py" not in " ".join(action["post_run_validation"])
-    assert "current_evidence_refresh.py" in " ".join(action["post_run_evidence_refresh"])
+    assert "hd_soak_dry_run_plan.py" in " ".join(action["post_run_handoff_refresh"])
+    assert action["post_run_evidence_refresh"] == []
 
 
 def test_pending_short_step_includes_plan_verified_execute_command() -> None:
@@ -343,12 +399,17 @@ def test_pending_short_step_includes_plan_verified_execute_command() -> None:
     assert report["passed"] is True, report
     assert action["exact_runtime_command"] == action["plan_verified_execute_command"]
     assert action["exact_runtime_command_source"] == "dry_run_plan"
-    assert action["legacy_step_runtime_command"] == first["approval_gated_runtime_command"]
+    assert action["legacy_step_runtime_command"] is None
+    assert action["rejected_legacy_runtime_command"]["command"] == first["approval_gated_runtime_command"]
+    assert action["rejected_legacy_runtime_command"]["safe_to_run"] is False
     assert r"-CandidateDir 'C:\ClashTests\hd-soak'" in action["plan_verified_execute_command"]
     assert "-IntroSkipClickMode 'postmessage'" in action["plan_verified_execute_command"]
+    assert f"-VisibleRuntimeApprovalExpiresUtc '{APPROVAL_EXPIRES_UTC}'" in action["plan_verified_execute_command"]
+    assert "-VisibleRuntimeApprovalToken '1234567890abcdef'" in action["plan_verified_execute_command"]
     assert "-RequirePass -Json" in action["plan_verified_execute_command"]
     assert action["dry_run_plan"]["candidate_path"].endswith("clash95_hd_soak_fixture.exe")
     assert action["dry_run_plan"]["output_root"] == r"C:\ClashCaptures\hd-soak"
+    assert action["dry_run_plan"]["approval_expires_utc"] == APPROVAL_EXPIRES_UTC
 
 
 def test_pending_short_step_records_current_artifact_inventory() -> None:
@@ -447,6 +508,41 @@ def test_stale_dry_run_plan_fails_closed() -> None:
     assert any("dry-run plan is older" in failure for failure in report["failures"]), report
 
 
+def test_nearly_expired_approval_token_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        checklist_path = write_json(tmp / "checklist.json", checklist_fixture())
+        first = step_record("short2_menu_idle", "short2", "menu-idle", status="pending_approval_legacy_compat")
+        step_status_path = write_json(
+            tmp / "step-status.json",
+            {
+                "passed": True,
+                "ladder_complete": False,
+                "current_step": {
+                    "id": "short2_menu_idle",
+                    "status": "pending_approval_legacy_compat",
+                    "next_command": first["approval_gated_runtime_command"],
+                },
+                "steps": [first],
+            },
+        )
+        plan = dry_run_plan_for_step(first)
+        old_expiry = APPROVAL_EXPIRES_UTC
+        new_expiry = (
+            datetime.now(timezone.utc) + timedelta(minutes=next_actions.MIN_APPROVAL_TTL_MINUTES - 1)
+        ).isoformat()
+        approval = plan["plan"]["visible_runtime_approval"]
+        approval["expires_utc"] = new_expiry
+        approval["token_fields"] = ["fixture", new_expiry]
+        plan["plan"]["commands"]["execute"] = plan["plan"]["commands"]["execute"].replace(old_expiry, new_expiry)
+        plan["approval_gated_execute_command"] = plan["approval_gated_execute_command"].replace(old_expiry, new_expiry)
+        dry_run_plan_path = write_json(tmp / "dry-run-plan.json", plan)
+        report = next_actions.build_report(args_for(checklist_path, step_status_path, dry_run_plan_path))
+
+    assert report["passed"] is False, report
+    assert any("approval expires too soon" in failure for failure in report["failures"]), report
+
+
 def test_unverified_dry_run_base_fails_closed() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -519,6 +615,10 @@ def test_classified_failed_short_step_points_to_next_probe() -> None:
             "frame_sample_count": 3,
             "final_route_marker": "route-input-failed",
             "candidate_sha256": "a" * 64,
+            "visual_anomaly_passed": True,
+            "black_patch_risk_count": 0,
+            "palette_or_stripe_risk_count": 0,
+            "missing_nonblack_bounds_count": 0,
         }
         step_status_path = write_json(
             tmp / "step-status.json",
@@ -541,6 +641,9 @@ def test_classified_failed_short_step_points_to_next_probe() -> None:
     assert action["id"] == "inspect_short2_menu_idle_triage"
     assert action["requires_visible_runtime"] is False
     assert action["triage"]["classification"] == "input_route_failure"
+    assert action["current_failure"]["classification"] == "input_route_failure"
+    assert action["current_failure"]["black_patch_risk_count"] == 0
+    assert action["current_failure"]["palette_or_stripe_risk_count"] == 0
     assert "mouse_path_probe" in action["why"]
 
 
@@ -560,6 +663,10 @@ def test_intro_skip_readiness_turns_classified_failure_into_rerun_approval() -> 
             "frame_sample_count": 4,
             "final_route_marker": "intro-skip",
             "candidate_sha256": "a" * 64,
+            "visual_anomaly_passed": False,
+            "black_patch_risk_count": 1,
+            "palette_or_stripe_risk_count": 0,
+            "missing_nonblack_bounds_count": 0,
         }
         step_status_path = write_json(
             tmp / "step-status.json",
@@ -588,6 +695,11 @@ def test_intro_skip_readiness_turns_classified_failure_into_rerun_approval() -> 
     assert action["requires_explicit_user_approval"] is True
     assert action["exact_runtime_command"] == action["plan_verified_execute_command"]
     assert action["exact_runtime_command_source"] == "dry_run_plan"
+    assert action["legacy_step_runtime_command"] is None
+    assert action["rejected_legacy_runtime_command"]["safe_to_run"] is False
+    assert action["current_failure"]["classification"] == "intro_skip_input_drift_exit"
+    assert action["current_failure"]["visual_anomaly_passed"] is False
+    assert action["current_failure"]["black_patch_risk_count"] == 1
     assert action["intro_skip_rerun_readiness"]["status"] == "ready_for_explicit_visible_rerun_approval"
     assert action["intro_skip_rerun_readiness"]["classification"] == "intro_skip_input_drift_exit"
     assert "visible Clash95 game window" in action["intro_skip_rerun_readiness"]["approval_boundary"]
@@ -627,7 +739,8 @@ def test_cli_writes_outputs() -> None:
         assert json_out.exists()
         assert md_out.exists()
         report = json.loads(json_out.read_text(encoding="ascii"))
-        assert report["next_action"]["id"] == "run_short2_menu_idle_soak"
+        assert report["next_action"]["id"] == "refresh_short2_menu_idle_dry_run_plan"
+        assert report["next_action"]["exact_runtime_command"] is None
 
 
 def run_tests() -> None:
@@ -639,6 +752,7 @@ def run_tests() -> None:
     test_pending_short_step_records_current_artifact_inventory()
     test_mismatched_dry_run_plan_fails_closed()
     test_stale_dry_run_plan_fails_closed()
+    test_nearly_expired_approval_token_fails_closed()
     test_unverified_dry_run_base_fails_closed()
     test_failed_short_step_without_triage_requests_repo_triage_command()
     test_classified_failed_short_step_points_to_next_probe()

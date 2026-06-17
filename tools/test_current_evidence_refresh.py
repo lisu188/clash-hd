@@ -37,6 +37,39 @@ def pending_report() -> dict[str, Any]:
     }
 
 
+def visual_anomaly_report() -> dict[str, Any]:
+    report = pending_report()
+    report.update(
+        {
+            "executed": True,
+            "passed": False,
+            "failures": ["black/blank patch risk"],
+            "frame_sample_count": 1,
+            "frame_hash_unique_count": 1,
+            "nonblack_percent_min": 0.0,
+            "nonblack_percent_max": 0.0,
+            "mean_luma_min": 2.0,
+            "mean_luma_max": 2.0,
+            "unique_sample_colors_min": 249,
+            "unique_sample_colors_max": 249,
+            "frame_samples": [
+                {
+                    "Name": "frame-0000",
+                    "Timestamp": "2026-06-16T12:00:00.0000000+00:00",
+                    "Width": 800,
+                    "Height": 600,
+                    "Hash": "a" * 64,
+                    "NonblackPercent": 0.0,
+                    "MeanLuma": 2.0,
+                    "UniqueSampleColors": 249,
+                    "NonblackBounds": {"X": 20, "Y": 20, "Right": 30, "Bottom": 30, "Width": 11, "Height": 11},
+                }
+            ],
+        }
+    )
+    return report
+
+
 def args_for(tmp: Path, legacy: Path, canonical: Path) -> argparse.Namespace:
     return argparse.Namespace(
         hd_soak_report=legacy,
@@ -103,10 +136,25 @@ def test_report_guard_and_triage_use_canonical_first_step_when_present() -> None
     assert triage["summary"]["classification"] == "not_executed_pending_approval"
 
 
+def test_triage_summary_includes_visual_anomaly_counts() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        legacy = write_json(tmp / "legacy.json", pending_report())
+        canonical = write_json(tmp / "canonical.json", visual_anomaly_report())
+        args = args_for(tmp, legacy, canonical)
+        triage = refresh.build_hd_soak_failure_triage(args)
+    assert triage["summary"]["classification"] == "render_or_palette_regression"
+    assert triage["summary"]["visual_anomaly_passed"] is False
+    assert triage["summary"]["black_patch_risk_count"] == 1
+    assert triage["summary"]["palette_or_stripe_risk_count"] == 0
+    assert triage["summary"]["missing_nonblack_bounds_count"] == 0
+
+
 def run_tests() -> None:
     test_legacy_report_selected_when_canonical_missing()
     test_canonical_first_step_report_selected_when_present()
     test_report_guard_and_triage_use_canonical_first_step_when_present()
+    test_triage_summary_includes_visual_anomaly_counts()
 
 
 if __name__ == "__main__":

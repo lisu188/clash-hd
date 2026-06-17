@@ -67,6 +67,15 @@ def assignment_array_block(text: str, name: str) -> str:
     return match.group("body") if match else ""
 
 
+def assignment_literal_array_block(text: str, name: str) -> str:
+    pattern = re.compile(
+        rf"\${re.escape(name)}\s*=\s*@\((?P<body>.*?)\)\s*\r?\n",
+        re.IGNORECASE | re.DOTALL,
+    )
+    match = pattern.search(text)
+    return match.group("body") if match else ""
+
+
 def check_record(passed: bool, summary: dict[str, Any], failures: list[str] | None = None) -> dict[str, Any]:
     return {"passed": passed, "summary": summary, "failures": failures or []}
 
@@ -95,6 +104,8 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
         "ReportJson": r"captures\current\hd-soak-short-current.json",
         "ReportMarkdown": r"captures\current\hd-soak-short-current.md",
         "IntroSkipClickMode": "postmessage",
+        "VisibleRuntimeApprovalExpiresUtc": "",
+        "VisibleRuntimeApprovalToken": "",
         "Stage": PROTECTED_STABLE_STAGE,
     }
     default_failures = []
@@ -149,19 +160,66 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
     execute_line = line_number(text, r"\[switch\]\$Execute\b")
     allow_line = line_number(text, r"\[switch\]\$AllowVisibleRuntime\b")
     guard_line = line_number(text, r"if\s*\(\s*-not\s+\$AllowVisibleRuntime\s*\)")
+    token_guard_line = line_number(text, r"if\s*\(\s*-not\s+\$VisibleRuntimeApprovalToken\s*\)")
+    expiry_guard_line = line_number(text, r"if\s*\(\s*-not\s+\$VisibleRuntimeApprovalExpiresUtc\s*\)")
+    expiry_parse_line = line_number(text, r"\[System\.DateTimeOffset\]::Parse")
+    expiry_stale_line = line_number(text, r"Visible runtime approval expired")
+    min_ttl_line = line_number(text, r"\$minApprovalTtlMinutes\s*=\s*30\b")
+    ttl_guard_line = line_number(text, r"Visible runtime approval expires too soon")
+    token_match_line = line_number(text, r"\$VisibleRuntimeApprovalToken\s+-ne\s+\$expectedVisibleRuntimeApprovalToken")
     dry_run_line = line_number(text, r"if\s*\(\s*-not\s+\$Execute\s*\)")
+    output_dir_line = line_number(text, r"New-Item\s+-ItemType\s+Directory\s+-Force\s+-Path\s+\$outDir\b")
+    candidate_dir_line = line_number(text, r"New-Item\s+-ItemType\s+Directory\s+-Force\s+-Path\s+\$CandidateDirFull\b")
+    patch_report_line = line_number(text, r"&\s+\$PythonFull\s+@patchArgs\b")
+    start_process_line = line_number(text, r"Start-Process\s+-FilePath\s+\$CandidateFull\b")
     if execute_line is None:
         approval_failures.append("missing -Execute switch")
     if allow_line is None:
         approval_failures.append("missing -AllowVisibleRuntime switch")
     if guard_line is None:
         approval_failures.append("missing execution-time AllowVisibleRuntime guard")
+    if token_guard_line is None:
+        approval_failures.append("missing visible runtime approval token presence guard")
+    if expiry_guard_line is None:
+        approval_failures.append("missing visible runtime approval expiry presence guard")
+    if expiry_parse_line is None:
+        approval_failures.append("missing visible runtime approval expiry parser")
+    if expiry_stale_line is None:
+        approval_failures.append("missing stale visible runtime approval expiry guard")
+    if min_ttl_line is None:
+        approval_failures.append("missing 30-minute visible runtime approval TTL constant")
+    if ttl_guard_line is None or "[System.TimeSpan]::FromMinutes($minApprovalTtlMinutes)" not in text:
+        approval_failures.append("missing visible runtime approval minimum TTL guard")
+    if token_match_line is None:
+        approval_failures.append("missing visible runtime approval token match guard")
     if dry_run_line is None:
         approval_failures.append("missing dry-run branch")
     if "explicit user approval" not in text.lower():
         approval_failures.append("missing explicit user approval phrase")
     if "-Execute" not in text or "-AllowVisibleRuntime" not in text:
         approval_failures.append("dry-run plan does not show explicit execute/visible flags")
+    approval_boundary_lines = {
+        "AllowVisibleRuntime guard": guard_line,
+        "approval token presence guard": token_guard_line,
+        "approval expiry presence guard": expiry_guard_line,
+        "approval expiry stale guard": expiry_stale_line,
+        "approval minimum TTL guard": ttl_guard_line,
+        "approval token match guard": token_match_line,
+    }
+    side_effect_lines = {
+        "output directory creation": output_dir_line,
+        "candidate directory creation": candidate_dir_line,
+        "patch report execution": patch_report_line,
+        "visible process launch": start_process_line,
+    }
+    for boundary_name, boundary_line in approval_boundary_lines.items():
+        if boundary_line is None:
+            continue
+        for side_effect_name, side_effect_line in side_effect_lines.items():
+            if side_effect_line is not None and boundary_line > side_effect_line:
+                approval_failures.append(
+                    f"{boundary_name} must appear before {side_effect_name}"
+                )
     execute_command_block = assignment_array_block(text, "executeCommand")
     execute_command_fragments = [
         "-Execute",
@@ -169,14 +227,57 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
         "-IntroSkipClickMode",
         "-IntroSkipClicks",
         "-SkipPulses",
+        "-SampleIntervalSec",
+        "-MaxInputDriftPx",
+        "-MinNonblackPercent",
+        "-MinUniqueSampleColors",
+        "-MaxArtifactMB",
+        "-MaxWorkingSetGrowthMB",
+        "-MaxPrivateMemoryGrowthMB",
+        "-MaxHandleGrowth",
+        "-VisibleRuntimeApprovalExpiresUtc",
+        "-VisibleRuntimeApprovalToken",
         "-RequirePass",
         "-Json",
+    ]
+    approval_token_block = assignment_literal_array_block(text, "approvalTokenFields")
+    approval_token_markers = [
+        "$InputExeFull",
+        "$WorkDirFull",
+        "$Stage",
+        "$Tier",
+        "$Route",
+        "$DurationResolvedSec",
+        "$CandidateDirFull",
+        "$CandidateName",
+        "$OutputRootFull",
+        "$ReportJsonFull",
+        "$ReportMarkdownFull",
+        "$IntroSkipClickMode",
+        "$IntroSkipClicks",
+        "$SkipPulses",
+        "$MaxInputDriftPx",
+        "$SampleIntervalSec",
+        "$MinNonblackPercent",
+        "$MinUniqueSampleColors",
+        "$MaxArtifactMB",
+        "$MaxWorkingSetGrowthMB",
+        "$MaxPrivateMemoryGrowthMB",
+        "$MaxHandleGrowth",
+        "$approvalExpiresUtc",
     ]
     if not execute_command_block:
         approval_failures.append("dry-run execute command block is missing")
     for fragment in execute_command_fragments:
         if fragment not in execute_command_block:
             approval_failures.append(f"dry-run execute command does not include {fragment}")
+    if not approval_token_block:
+        approval_failures.append("visible runtime approval token source block is missing")
+    for marker in approval_token_markers:
+        if marker not in approval_token_block:
+            approval_failures.append(f"visible runtime approval token source does not include {marker}")
+    if "min_ttl_minutes = $minApprovalTtlMinutes" not in text:
+        approval_failures.append("dry-run visible runtime approval report does not include min_ttl_minutes")
     checks["visible_runtime_opt_in"] = check_record(
         not approval_failures,
         {
@@ -184,7 +285,19 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
             "allow_visible_runtime_switch_line": allow_line,
             "dry_run_branch_line": dry_run_line,
             "runtime_guard_line": guard_line,
+            "token_guard_line": token_guard_line,
+            "expiry_guard_line": expiry_guard_line,
+            "expiry_parse_line": expiry_parse_line,
+            "expiry_stale_line": expiry_stale_line,
+            "min_ttl_line": min_ttl_line,
+            "ttl_guard_line": ttl_guard_line,
+            "token_match_line": token_match_line,
+            "output_dir_line": output_dir_line,
+            "candidate_dir_line": candidate_dir_line,
+            "patch_report_line": patch_report_line,
+            "start_process_line": start_process_line,
             "execute_command_fragments": execute_command_fragments,
+            "approval_token_markers": approval_token_markers,
         },
         approval_failures,
     )
@@ -261,6 +374,8 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
         "max_handle_growth",
         "working_set_growth_limit_bytes",
         "private_memory_growth_limit_bytes",
+        "max_artifact_mb",
+        "artifact_limit_bytes",
         "artifact_bytes",
         "process_exited_unexpectedly",
         "exit_code",
