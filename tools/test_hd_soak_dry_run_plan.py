@@ -8,6 +8,7 @@ import json
 import shutil
 import subprocess
 import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +24,7 @@ STEP_ID = "short2_menu_idle"
 TIER = "short2"
 ROUTE = "menu-idle"
 DURATION = 120
+APPROVAL_EXPIRES_UTC = "2999-01-01T00:00:00.0000000+00:00"
 
 
 def write_json(path: Path, data: dict[str, Any]) -> Path:
@@ -66,7 +68,10 @@ def step_status() -> dict[str, Any]:
                 rf"-Tier {TIER} -Route {ROUTE} -ReportJson {paths['report_json']} "
                 rf"-ReportMarkdown {paths['report_markdown']} "
                 "-IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 "
-                "-MaxInputDriftPx 1 "
+                "-SampleIntervalSec 15 -MaxInputDriftPx 1 "
+                "-MinNonblackPercent 10 -MinUniqueSampleColors 8 "
+                "-MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 "
+                "-MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 "
                 "-Execute -AllowVisibleRuntime -RequirePass -Json"
             ),
         },
@@ -90,6 +95,7 @@ def valid_plan() -> dict[str, Any]:
     candidate = r"C:\ClashTests\hd-soak\clash95_hd_soak_fixture.exe"
     report_json = abs_report_path("report_json")
     report_md = abs_report_path("report_markdown")
+    approval_token = "1234567890abcdef"
     return {
         "dry_run": True,
         "runtime_policy": "opt-in visible runtime soak; use -Execute -AllowVisibleRuntime only after explicit user approval",
@@ -119,12 +125,49 @@ def valid_plan() -> dict[str, Any]:
             "max_handle_growth": 128,
             "max_artifact_mb": 250,
         },
+        "frame_limits": {
+            "min_nonblack_percent": 10.0,
+            "min_unique_sample_colors": 8,
+        },
         "input_limits": {"max_input_drift_px": 1},
         "intro_skip": {
             "click_mode": dry_run_plan.EXPECTED_INTRO_SKIP_CLICK_MODE,
             "click_repeat": dry_run_plan.EXPECTED_INTRO_SKIP_CLICKS,
             "space_pulses": dry_run_plan.EXPECTED_SKIP_PULSES,
             "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
+        },
+        "visible_runtime_approval": {
+            "token": approval_token,
+            "token_kind": "sha256-16",
+            "expires_utc": APPROVAL_EXPIRES_UTC,
+            "max_age_hours": dry_run_plan.APPROVAL_MAX_AGE_HOURS,
+            "min_ttl_minutes": dry_run_plan.MIN_APPROVAL_TTL_MINUTES,
+            "token_fields": [
+                dry_run_plan.EXPECTED_INPUT_EXE,
+                dry_run_plan.EXPECTED_WORKDIR,
+                dry_run_plan.PROTECTED_STABLE_STAGE,
+                TIER,
+                ROUTE,
+                str(DURATION),
+                dry_run_plan.EXPECTED_CANDIDATE_DIR,
+                "clash95_hd_soak_fixture.exe",
+                dry_run_plan.EXPECTED_OUTPUT_ROOT,
+                report_json,
+                report_md,
+                "postmessage",
+                "8",
+                "4",
+                "1",
+                "15",
+                "10",
+                "8",
+                "250",
+                "64",
+                "64",
+                "128",
+                APPROVAL_EXPIRES_UTC,
+            ],
+            "purpose": "copy-exact dry-run approval packet; edited, stale, or hand-typed visible runtime commands fail closed",
         },
         "raw_artifacts_policy": "raw PNG frames and per-step logs stay outside the repository by default",
         "right_bottom_promotion_blocked": True,
@@ -142,7 +185,12 @@ def valid_plan() -> dict[str, Any]:
                 rf"-ReportJson '{report_json}' "
                 rf"-ReportMarkdown '{report_md}' "
                 "-IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' "
-                "-MaxInputDriftPx '1' "
+                "-SampleIntervalSec '15' -MaxInputDriftPx '1' "
+                "-MinNonblackPercent '10' -MinUniqueSampleColors '8' "
+                "-MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' "
+                "-MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' "
+                f"-VisibleRuntimeApprovalExpiresUtc '{APPROVAL_EXPIRES_UTC}' "
+                f"-VisibleRuntimeApprovalToken '{approval_token}' "
                 "-Execute -AllowVisibleRuntime -RequirePass -Json"
             ),
         },
@@ -171,6 +219,8 @@ def test_valid_plan_passes() -> None:
     report = build_fixture_report(valid_plan())
     assert report["passed"] is True, report
     assert report["status"] == "ready_for_explicit_approval"
+    assert report["approval_ttl"]["passed"] is True
+    assert report["approval_ttl"]["min_remaining_minutes"] == dry_run_plan.MIN_APPROVAL_TTL_MINUTES
     assert "-RequirePass -Json" in report["approval_gated_execute_command"]
     assert report["locks"]["right_bottom_promotion_blocked"] is True
 
@@ -198,6 +248,56 @@ def test_rejects_execute_command_without_require_pass_or_json() -> None:
     assert report["passed"] is False, report
     assert any("execute command missing fragment: -RequirePass" in failure for failure in report["failures"])
     assert any("execute command missing fragment: -Json" in failure for failure in report["failures"])
+
+
+def test_rejects_missing_visible_runtime_token() -> None:
+    plan = valid_plan()
+    plan["visible_runtime_approval"]["token"] = ""
+    plan["commands"]["execute"] = plan["commands"]["execute"].replace(
+        "-VisibleRuntimeApprovalToken '1234567890abcdef' ",
+        "",
+    )
+    report = build_fixture_report(plan)
+    assert report["passed"] is False, report
+    assert any("approval token" in failure for failure in report["failures"])
+    assert any("execute command missing fragment: -VisibleRuntimeApprovalToken" in failure for failure in report["failures"])
+
+
+def test_rejects_missing_visible_runtime_expiry() -> None:
+    plan = valid_plan()
+    plan["visible_runtime_approval"]["expires_utc"] = ""
+    plan["visible_runtime_approval"]["max_age_hours"] = 0
+    plan["visible_runtime_approval"]["token_fields"] = [
+        field
+        for field in plan["visible_runtime_approval"]["token_fields"]
+        if field != APPROVAL_EXPIRES_UTC
+    ]
+    plan["commands"]["execute"] = plan["commands"]["execute"].replace(
+        f"-VisibleRuntimeApprovalExpiresUtc '{APPROVAL_EXPIRES_UTC}' ",
+        "",
+    )
+    report = build_fixture_report(plan)
+    assert report["passed"] is False, report
+    assert any("approval expires_utc" in failure for failure in report["failures"])
+    assert any("approval max_age_hours" in failure for failure in report["failures"])
+    assert any("expiry is not covered" in failure for failure in report["failures"])
+    assert any("execute command missing fragment: -VisibleRuntimeApprovalExpiresUtc" in failure for failure in report["failures"])
+
+
+def test_rejects_nearly_expired_visible_runtime_approval() -> None:
+    plan = valid_plan()
+    old_expiry = APPROVAL_EXPIRES_UTC
+    new_expiry = (
+        datetime.now(timezone.utc) + timedelta(minutes=dry_run_plan.MIN_APPROVAL_TTL_MINUTES - 1)
+    ).isoformat()
+    approval = plan["visible_runtime_approval"]
+    approval["expires_utc"] = new_expiry
+    approval["token_fields"] = [new_expiry if field == old_expiry else field for field in approval["token_fields"]]
+    plan["commands"]["execute"] = plan["commands"]["execute"].replace(old_expiry, new_expiry)
+    report = build_fixture_report(plan)
+    assert report["passed"] is False, report
+    assert report["approval_ttl"]["passed"] is False
+    assert any("approval expires too soon" in failure for failure in report["failures"])
 
 
 def test_rejects_missing_intro_skip_plan_fields() -> None:
@@ -269,7 +369,9 @@ def test_cli_writes_outputs() -> None:
         )
         assert result.returncode == 0, result.stdout + result.stderr
         assert json.loads(out_json.read_text(encoding="ascii"))["passed"] is True
-        assert "HD Soak Dry-Run Plan" in out_md.read_text(encoding="ascii")
+        markdown = out_md.read_text(encoding="ascii")
+        assert "HD Soak Dry-Run Plan" in markdown
+        assert "Approval TTL" in markdown
     finally:
         shutil.rmtree(fixture, ignore_errors=True)
 
@@ -279,6 +381,9 @@ def run_tests() -> None:
     test_rejects_executed_plan()
     test_rejects_stage_drift()
     test_rejects_execute_command_without_require_pass_or_json()
+    test_rejects_missing_visible_runtime_token()
+    test_rejects_missing_visible_runtime_expiry()
+    test_rejects_nearly_expired_visible_runtime_approval()
     test_rejects_missing_intro_skip_plan_fields()
     test_rejects_execute_command_without_explicit_stage_or_io_roots()
     test_rejects_repo_candidate_path()

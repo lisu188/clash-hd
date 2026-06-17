@@ -27,10 +27,19 @@ RUNTIME_POLICY = (
     "wrappers, PowerShell harnesses, or visible windows"
 )
 MAX_INPUT_DRIFT_PX = 1
+SAMPLE_INTERVAL_SEC = 15
+MIN_NONBLACK_PERCENT = 10.0
+MIN_NONBLACK_PERCENT_TEXT = "10"
+MIN_UNIQUE_SAMPLE_COLORS = 8
+MAX_ARTIFACT_MB = 250
+MAX_WORKING_SET_GROWTH_MB = 64
+MAX_PRIVATE_MEMORY_GROWTH_MB = 64
+MAX_HANDLE_GROWTH = 128
 INTRO_SKIP_CLICK_MODE = "postmessage"
 INTRO_SKIP_CLICKS = 8
 SKIP_PULSES = 4
 MAX_DRY_RUN_PLAN_AGE_HOURS = 12
+MIN_APPROVAL_TTL_MINUTES = 30
 
 
 VISIBLE_SHORT2_COMMAND = (
@@ -42,7 +51,14 @@ VISIBLE_SHORT2_COMMAND = (
     f"-IntroSkipClickMode {INTRO_SKIP_CLICK_MODE} "
     f"-IntroSkipClicks {INTRO_SKIP_CLICKS} "
     f"-SkipPulses {SKIP_PULSES} "
+    f"-SampleIntervalSec {SAMPLE_INTERVAL_SEC} "
     f"-MaxInputDriftPx {MAX_INPUT_DRIFT_PX} "
+    f"-MinNonblackPercent {MIN_NONBLACK_PERCENT_TEXT} "
+    f"-MinUniqueSampleColors {MIN_UNIQUE_SAMPLE_COLORS} "
+    f"-MaxArtifactMB {MAX_ARTIFACT_MB} "
+    f"-MaxWorkingSetGrowthMB {MAX_WORKING_SET_GROWTH_MB} "
+    f"-MaxPrivateMemoryGrowthMB {MAX_PRIVATE_MEMORY_GROWTH_MB} "
+    f"-MaxHandleGrowth {MAX_HANDLE_GROWTH} "
     "-Execute -AllowVisibleRuntime -RequirePass -Json"
 )
 DRY_RUN_SHORT2_COMMAND = (
@@ -53,7 +69,14 @@ DRY_RUN_SHORT2_COMMAND = (
     f"-IntroSkipClickMode {INTRO_SKIP_CLICK_MODE} "
     f"-IntroSkipClicks {INTRO_SKIP_CLICKS} "
     f"-SkipPulses {SKIP_PULSES} "
-    f"-MaxInputDriftPx {MAX_INPUT_DRIFT_PX} -Json"
+    f"-SampleIntervalSec {SAMPLE_INTERVAL_SEC} "
+    f"-MaxInputDriftPx {MAX_INPUT_DRIFT_PX} "
+    f"-MinNonblackPercent {MIN_NONBLACK_PERCENT_TEXT} "
+    f"-MinUniqueSampleColors {MIN_UNIQUE_SAMPLE_COLORS} "
+    f"-MaxArtifactMB {MAX_ARTIFACT_MB} "
+    f"-MaxWorkingSetGrowthMB {MAX_WORKING_SET_GROWTH_MB} "
+    f"-MaxPrivateMemoryGrowthMB {MAX_PRIVATE_MEMORY_GROWTH_MB} "
+    f"-MaxHandleGrowth {MAX_HANDLE_GROWTH} -Json"
 )
 PYTHON_EXE = (
     r"C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime"
@@ -104,6 +127,30 @@ def dry_run_plan_freshness(dry_run_plan: dict[str, Any]) -> dict[str, Any]:
         "generated_at": dry_run_plan.get("generated_at"),
         "age_seconds": age_seconds,
         "max_age_hours": MAX_DRY_RUN_PLAN_AGE_HOURS,
+        "passed": not failures,
+        "failures": failures,
+    }
+
+
+def approval_ttl_status(approval_expires_utc: Any) -> dict[str, Any]:
+    expires_at = parse_datetime(approval_expires_utc)
+    now = datetime.now(timezone.utc)
+    failures: list[str] = []
+    remaining_seconds: float | None = None
+    if expires_at is None:
+        failures.append("dry-run plan visible runtime approval expires_utc is missing or invalid")
+    else:
+        remaining = expires_at - now
+        remaining_seconds = remaining.total_seconds()
+        if remaining < timedelta(minutes=MIN_APPROVAL_TTL_MINUTES):
+            failures.append(
+                "dry-run plan visible runtime approval expires too soon; "
+                f"regenerate before approval so at least {MIN_APPROVAL_TTL_MINUTES} minutes remain"
+            )
+    return {
+        "expires_utc": approval_expires_utc,
+        "remaining_seconds": remaining_seconds,
+        "min_remaining_minutes": MIN_APPROVAL_TTL_MINUTES,
         "passed": not failures,
         "failures": failures,
     }
@@ -170,6 +217,66 @@ def current_step_artifact_inventory(step: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def current_failure_summary(step: dict[str, Any]) -> dict[str, Any] | None:
+    summary = step.get("summary") or {}
+    if not summary.get("classification"):
+        return None
+    return {
+        "classification": summary.get("classification"),
+        "next_probe": summary.get("next_probe"),
+        "frame_sample_count": summary.get("frame_sample_count"),
+        "final_route_marker": summary.get("final_route_marker"),
+        "candidate_sha256": summary.get("candidate_sha256"),
+        "visual_anomaly_passed": summary.get("visual_anomaly_passed"),
+        "black_patch_risk_count": summary.get("black_patch_risk_count"),
+        "palette_or_stripe_risk_count": summary.get("palette_or_stripe_risk_count"),
+        "missing_nonblack_bounds_count": summary.get("missing_nonblack_bounds_count"),
+    }
+
+
+def rejected_legacy_runtime_command(command: str, reason: str) -> dict[str, Any] | None:
+    if not command:
+        return None
+    return {
+        "command": command,
+        "safe_to_run": False,
+        "reason": reason,
+    }
+
+
+def plan_required_action(
+    base: dict[str, Any],
+    step: dict[str, Any],
+    *,
+    action_id: str,
+    why: str,
+    legacy_command: str = "",
+    dry_run_plan: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    return {
+        **base,
+        "id": action_id,
+        "status": "dry_run_plan_required",
+        "requires_visible_runtime": False,
+        "requires_explicit_user_approval": False,
+        "why": why,
+        "exact_runtime_command": None,
+        "exact_runtime_command_source": None,
+        "legacy_step_runtime_command": None,
+        "rejected_legacy_runtime_command": rejected_legacy_runtime_command(
+            legacy_command,
+            "visible-runtime execution now requires a current dry-run plan command with "
+            "-VisibleRuntimeApprovalExpiresUtc and -VisibleRuntimeApprovalToken",
+        ),
+        "plan_verified_execute_command": None,
+        "dry_run_plan": dry_run_plan,
+        "safe_dry_run_command": step.get("safe_dry_run_command") or DRY_RUN_SHORT2_COMMAND,
+        "post_run_validation": [],
+        "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+        "post_run_evidence_refresh": [],
+    }
+
+
 def dry_run_plan_for_step(
     dry_run_plan: dict[str, Any] | None,
     step: dict[str, Any],
@@ -202,6 +309,35 @@ def dry_run_plan_for_step(
         failures.append("dry-run plan input_exe does not exist or was not confirmed readable")
     if str(plan.get("base_sha_status") or "") != "ok":
         failures.append(f"dry-run plan base_sha_status is {plan.get('base_sha_status')!r}, expected 'ok'")
+    if int(plan.get("sample_interval_sec") or 0) != SAMPLE_INTERVAL_SEC:
+        failures.append(f"dry-run plan sample_interval_sec is not {SAMPLE_INTERVAL_SEC}")
+    frame_limits = plan.get("frame_limits") or {}
+    if float(frame_limits.get("min_nonblack_percent") or 0.0) != MIN_NONBLACK_PERCENT:
+        failures.append("dry-run plan does not pin min nonblack percent")
+    if int(frame_limits.get("min_unique_sample_colors") or 0) != MIN_UNIQUE_SAMPLE_COLORS:
+        failures.append("dry-run plan does not pin min unique sample colors")
+    growth = plan.get("growth_limits") or {}
+    expected_growth = {
+        "max_artifact_mb": MAX_ARTIFACT_MB,
+        "max_working_set_growth_mb": MAX_WORKING_SET_GROWTH_MB,
+        "max_private_memory_growth_mb": MAX_PRIVATE_MEMORY_GROWTH_MB,
+        "max_handle_growth": MAX_HANDLE_GROWTH,
+    }
+    for key, expected in expected_growth.items():
+        if int(growth.get(key) or 0) != expected:
+            failures.append(f"dry-run plan growth limit {key} is not {expected}")
+    approval = plan.get("visible_runtime_approval") or {}
+    approval_token = str(approval.get("token") or "")
+    approval_expires_utc = str(approval.get("expires_utc") or "")
+    if not approval_expires_utc:
+        failures.append("dry-run plan visible runtime approval expires_utc is missing")
+    token_fields = approval.get("token_fields") or []
+    if approval_expires_utc and approval_expires_utc not in token_fields:
+        failures.append("dry-run plan visible runtime approval expiry is not covered by token_fields")
+    approval_ttl = approval_ttl_status(approval_expires_utc)
+    failures.extend(approval_ttl["failures"])
+    if int(approval.get("min_ttl_minutes") or 0) != MIN_APPROVAL_TTL_MINUTES:
+        failures.append(f"dry-run plan visible runtime approval min_ttl_minutes is not {MIN_APPROVAL_TTL_MINUTES}")
     for fragment in (
         "-Execute",
         "-AllowVisibleRuntime",
@@ -211,9 +347,20 @@ def dry_run_plan_for_step(
         str(INTRO_SKIP_CLICKS),
         "-SkipPulses",
         str(SKIP_PULSES),
+        "-VisibleRuntimeApprovalExpiresUtc",
+        approval_expires_utc,
+        "-VisibleRuntimeApprovalToken",
+        approval_token,
         "-RequirePass",
         "-Json",
         "-MaxInputDriftPx",
+        "-SampleIntervalSec",
+        "-MinNonblackPercent",
+        "-MinUniqueSampleColors",
+        "-MaxArtifactMB",
+        "-MaxWorkingSetGrowthMB",
+        "-MaxPrivateMemoryGrowthMB",
+        "-MaxHandleGrowth",
     ):
         if fragment not in execute_command:
             failures.append(f"dry-run plan execute command missing fragment: {fragment}")
@@ -230,6 +377,8 @@ def dry_run_plan_for_step(
         "report_markdown": plan.get("report_markdown"),
         "input_sha256": plan.get("input_sha256"),
         "base_sha_status": plan.get("base_sha_status"),
+        "approval_expires_utc": approval_expires_utc,
+        "approval_ttl": approval_ttl,
         "execute_command": execute_command,
         "freshness": freshness,
     }, []
@@ -353,12 +502,27 @@ def next_action_for_short_step(
         "must_not_modify": step.get("must_not_modify") or [r"C:\Clash\clash95.exe"],
         "current_step_artifacts": current_step_artifact_inventory(step),
     }
+    current_failure = current_failure_summary(step)
+    if current_failure:
+        base["current_failure"] = current_failure
 
     if status in {"pending_approval_legacy_compat", "missing_pending_approval"}:
         legacy_command = str(current.get("next_command") or step.get("approval_gated_runtime_command") or "")
         plan_summary, plan_failures = dry_run_plan_for_step(dry_run_plan, step)
         plan_command = (plan_summary or {}).get("execute_command")
-        command = str(plan_command or legacy_command)
+        if not plan_command:
+            return plan_required_action(
+                base,
+                step,
+                action_id=f"refresh_{current.get('id')}_dry_run_plan",
+                why=(
+                    "A visible-runtime short soak requires the current tokened dry-run packet. "
+                    "Refresh the dry-run plan and approval preflight before requesting approval."
+                ),
+                legacy_command=legacy_command,
+                dry_run_plan=plan_summary,
+            ), plan_failures
+        command = str(plan_command)
         return {
             **base,
             "id": f"run_{current.get('id')}_soak",
@@ -371,8 +535,12 @@ def next_action_for_short_step(
                 "short, long, or future route lanes."
             ),
             "exact_runtime_command": command,
-            "exact_runtime_command_source": "dry_run_plan" if plan_command else "step_status",
-            "legacy_step_runtime_command": legacy_command if command != legacy_command else None,
+            "exact_runtime_command_source": "dry_run_plan",
+            "legacy_step_runtime_command": None,
+            "rejected_legacy_runtime_command": rejected_legacy_runtime_command(
+                legacy_command,
+                "superseded by the current dry-run plan command with visible-runtime approval token",
+            ),
             "plan_verified_execute_command": plan_command,
             "dry_run_plan": plan_summary,
             "safe_dry_run_command": step.get("safe_dry_run_command"),
@@ -410,7 +578,19 @@ def next_action_for_short_step(
             legacy_command = str(current.get("next_command") or step.get("approval_gated_runtime_command") or "")
             plan_summary, plan_failures = dry_run_plan_for_step(dry_run_plan, step)
             plan_command = (plan_summary or {}).get("execute_command")
-            command = str(plan_command or readiness_summary.get("approval_gated_execute_command") or legacy_command)
+            if not plan_command:
+                return plan_required_action(
+                    base,
+                    step,
+                    action_id=f"refresh_{current.get('id')}_dry_run_plan",
+                    why=(
+                        "The intro-skip rerun is ready in principle, but the actual visible-runtime "
+                        "command must come from a current tokened dry-run plan."
+                    ),
+                    legacy_command=str(readiness_summary.get("approval_gated_execute_command") or legacy_command),
+                    dry_run_plan=plan_summary,
+                ), plan_failures
+            command = str(plan_command)
             return {
                 **base,
                 "id": f"rerun_{current.get('id')}_soak",
@@ -423,8 +603,12 @@ def next_action_for_short_step(
                     "postmessage intro-skip prep. Rerun only after explicit visible-window approval."
                 ),
                 "exact_runtime_command": command,
-                "exact_runtime_command_source": "dry_run_plan" if plan_command else "intro_skip_rerun_readiness",
-                "legacy_step_runtime_command": legacy_command if command != legacy_command else None,
+                "exact_runtime_command_source": "dry_run_plan",
+                "legacy_step_runtime_command": None,
+                "rejected_legacy_runtime_command": rejected_legacy_runtime_command(
+                    legacy_command,
+                    "superseded by the current dry-run plan command with visible-runtime approval token",
+                ),
                 "plan_verified_execute_command": plan_command,
                 "dry_run_plan": plan_summary,
                 "intro_skip_rerun_readiness": readiness_summary,
@@ -476,28 +660,27 @@ def next_action_for_milestone(milestone: dict[str, Any] | None) -> dict[str, Any
                 "triage_json": r"captures\current\hd-soak-short2-menu-idle-triage-current.json",
                 "triage_markdown": r"captures\current\hd-soak-short2-menu-idle-triage-current.md",
             },
-        }
-        return {
-            "id": "run_short2_menu_idle_soak",
-            "status": "approval_required",
-            "requires_visible_runtime": True,
-            "requires_explicit_user_approval": True,
-            "why": (
-                "The release checklist cannot progress until one protected-stage "
-                "short2 menu-idle soak produces frame/process evidence."
-            ),
-            "exact_runtime_command": VISIBLE_SHORT2_COMMAND,
             "safe_dry_run_command": DRY_RUN_SHORT2_COMMAND,
+        }
+        base = {
             "writes_outside_repo": [
                 r"C:\ClashTests\hd-soak",
                 r"C:\ClashCaptures\hd-soak",
             ],
             "must_not_modify": [r"C:\Clash\clash95.exe"],
             "current_step_artifacts": current_step_artifact_inventory(step),
-            "post_run_validation": post_run_validation_for_step(step),
-            "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
-            "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
         }
+        return plan_required_action(
+            base,
+            step,
+            action_id="refresh_short2_menu_idle_dry_run_plan",
+            why=(
+                "The release checklist cannot progress until one protected-stage short2 "
+                "menu-idle soak passes, but visible-runtime approval must start from a "
+                "fresh tokened dry-run plan."
+            ),
+            legacy_command=VISIBLE_SHORT2_COMMAND,
+        )
     if milestone:
         return {
             "id": f"resolve_{milestone_id}",
@@ -676,15 +859,16 @@ def to_markdown(report: dict[str, Any]) -> str:
                     "```",
                 ]
             )
-        if action.get("legacy_step_runtime_command"):
+        rejected_legacy = action.get("rejected_legacy_runtime_command") or {}
+        if rejected_legacy:
             lines.extend(
                 [
                     "",
-                    "Legacy step-status runtime command:",
+                    "Rejected legacy runtime command:",
                     "",
-                    "```powershell",
-                    action["legacy_step_runtime_command"],
-                    "```",
+                    f"- Safe to run: `{rejected_legacy.get('safe_to_run')}`",
+                    f"- Reason: {rejected_legacy.get('reason')}",
+                    "- Command body: omitted from Markdown; retained in JSON for audit.",
                 ]
             )
         if action.get("repo_command"):
@@ -700,6 +884,23 @@ def to_markdown(report: dict[str, Any]) -> str:
                     f"- Next probe: {triage.get('next_probe')}",
                     f"- Final route marker: `{triage.get('final_route_marker')}`",
                     f"- Candidate SHA-256: `{triage.get('candidate_sha256')}`",
+                ]
+            )
+        current_failure = action.get("current_failure") or {}
+        if current_failure:
+            lines.extend(
+                [
+                    "",
+                    "Current failure:",
+                    "",
+                    f"- Classification: `{current_failure.get('classification')}`",
+                    f"- Next probe: {current_failure.get('next_probe')}",
+                    f"- Final route marker: `{current_failure.get('final_route_marker')}`",
+                    f"- Candidate SHA-256: `{current_failure.get('candidate_sha256')}`",
+                    f"- Visual anomaly passed: `{current_failure.get('visual_anomaly_passed')}`",
+                    f"- Black/blank patch risk count: `{current_failure.get('black_patch_risk_count')}`",
+                    f"- Palette/stripe risk count: `{current_failure.get('palette_or_stripe_risk_count')}`",
+                    f"- Missing nonblack bounds count: `{current_failure.get('missing_nonblack_bounds_count')}`",
                 ]
             )
         if action.get("post_run_validation"):
@@ -720,6 +921,15 @@ def to_markdown(report: dict[str, Any]) -> str:
         lines.extend(["", "## Open Requirement Groups", ""])
         for category, ids in groups.items():
             lines.append(f"- `{category}`: `{', '.join(ids)}`")
+
+    open_requirements = report.get("open_requirements") or []
+    if open_requirements:
+        lines.extend(["", "## Open Requirement Details", ""])
+        for row in open_requirements:
+            lines.append(
+                f"- `{row.get('id')}` (`{row.get('category')}`, `{row.get('status')}`): "
+                f"{row.get('summary')} Next probe: {row.get('next_probe')}"
+            )
 
     if report.get("failures"):
         lines.extend(["", "## Failures", ""])

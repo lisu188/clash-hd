@@ -46,6 +46,7 @@ EXEMPT_HELPERS = {
     "cloud_check.py": "cloud-safe validation runner; subprocess is limited to repo tests and does not launch Clash95 or CDB",
     "exe_artifact_guard.py": "uses git subprocess read-only for artifact inventory",
     "hd_soak_dry_run_plan.py": "repo-only dry-run handoff guard; subprocess is limited to the soak harness without -Execute and does not launch Clash95, CDB, wrappers, or visible windows",
+    "hd_soak_execution_boundary.py": "repo-local negative approval-boundary probe; subprocess uses invalid visible-runtime approval packets plus a nonexistent input executable and must fail before launch side effects",
     "hd_endurance_next_actions.py": "repo-only command planner; postmessage and runtime text appear only in approval-gated command templates",
     "hd_soak_approval_preflight.py": "repo-only approval packet builder; postmessage and runtime text appear only in non-executing command validation",
     "hd_soak_failure_triage.py": "repo-only report classifier; postmessage text appears only in failure guidance and no runtime APIs are called",

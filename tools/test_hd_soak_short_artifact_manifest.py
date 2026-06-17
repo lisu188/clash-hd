@@ -50,7 +50,16 @@ def test_commands_pin_outputs_and_require_approval_for_execution() -> None:
         assert "-IntroSkipClickMode postmessage" in runtime
         assert "-IntroSkipClicks 8" in runtime
         assert "-SkipPulses 4" in runtime
+        assert "-SampleIntervalSec 15" in runtime
+        assert "-MinNonblackPercent 10" in runtime
+        assert "-MinUniqueSampleColors 8" in runtime
+        assert "-MaxArtifactMB 250" in runtime
+        assert "-MaxWorkingSetGrowthMB 64" in runtime
+        assert "-MaxPrivateMemoryGrowthMB 64" in runtime
+        assert "-MaxHandleGrowth 128" in runtime
         assert "-IntroSkipClickMode postmessage" in dry_run
+        assert "-SampleIntervalSec 15" in dry_run
+        assert "-MaxArtifactMB 250" in dry_run
         assert "--max-input-drift-px 1" in record["guard_command"]
         assert "-Execute -AllowVisibleRuntime -RequirePass" in runtime
         assert "-Execute" not in dry_run

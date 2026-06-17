@@ -88,6 +88,13 @@ FUTURE_LANE_IDS = [
     "campaign_route",
 ]
 MAX_INPUT_DRIFT_PX = 1
+SAMPLE_INTERVAL_SEC = 15
+MIN_NONBLACK_PERCENT = 10
+MIN_UNIQUE_SAMPLE_COLORS = 8
+MAX_ARTIFACT_MB = 250
+MAX_WORKING_SET_GROWTH_MB = 64
+MAX_PRIVATE_MEMORY_GROWTH_MB = 64
+MAX_HANDLE_GROWTH = 128
 INTRO_SKIP_CLICK_MODE = "postmessage"
 INTRO_SKIP_CLICKS = 8
 SKIP_PULSES = 4
@@ -142,8 +149,22 @@ def command_for_step(step: dict[str, Any], *, execute: bool) -> str:
         str(INTRO_SKIP_CLICKS),
         "-SkipPulses",
         str(SKIP_PULSES),
+        "-SampleIntervalSec",
+        str(SAMPLE_INTERVAL_SEC),
         "-MaxInputDriftPx",
         str(MAX_INPUT_DRIFT_PX),
+        "-MinNonblackPercent",
+        str(MIN_NONBLACK_PERCENT),
+        "-MinUniqueSampleColors",
+        str(MIN_UNIQUE_SAMPLE_COLORS),
+        "-MaxArtifactMB",
+        str(MAX_ARTIFACT_MB),
+        "-MaxWorkingSetGrowthMB",
+        str(MAX_WORKING_SET_GROWTH_MB),
+        "-MaxPrivateMemoryGrowthMB",
+        str(MAX_PRIVATE_MEMORY_GROWTH_MB),
+        "-MaxHandleGrowth",
+        str(MAX_HANDLE_GROWTH),
     ]
     if execute:
         parts.extend(["-Execute", "-AllowVisibleRuntime", "-RequirePass"])
@@ -284,6 +305,37 @@ def future_lane_locks(route_coverage: dict[str, Any] | None) -> list[dict[str, A
     return lanes
 
 
+def command_contains_any(command: str, fragments: list[str]) -> bool:
+    normalized = command.replace("/", "\\")
+    return any(fragment.replace("/", "\\") in normalized for fragment in fragments)
+
+
+def plan_command_matches_step(command: str, step: dict[str, Any] | None) -> bool:
+    if not command or not step:
+        return False
+    paths = canonical_report_paths(step)
+    report_json_name = Path(paths["report_json"]).name
+    report_md_name = Path(paths["report_markdown"]).name
+    required_fragments = [
+        "-Execute",
+        "-AllowVisibleRuntime",
+        "-RequirePass",
+        "-Json",
+        "-VisibleRuntimeApprovalExpiresUtc",
+        "-VisibleRuntimeApprovalToken",
+        report_json_name,
+        report_md_name,
+    ]
+    if any(fragment not in command for fragment in required_fragments):
+        return False
+    tier = str(step["tier"])
+    route = str(step["route"])
+    return command_contains_any(command, [f"-Tier '{tier}'", f"-Tier {tier}"]) and command_contains_any(
+        command,
+        [f"-Route '{route}'", f"-Route {route}"],
+    )
+
+
 def next_action_alignment(next_actions: dict[str, Any] | None, step: dict[str, Any] | None) -> dict[str, Any]:
     action = (next_actions or {}).get("next_action") or {}
     expected = step.get("approval_gated_runtime_command") if step else None
@@ -293,6 +345,7 @@ def next_action_alignment(next_actions: dict[str, Any] | None, step: dict[str, A
     step_match = bool(reported and expected and reported == expected)
     legacy_match = bool(legacy and expected and legacy == expected)
     plan_verified_match = bool(reported and plan_verified and reported == plan_verified)
+    plan_verified_step_match = bool(plan_verified_match and plan_command_matches_step(str(plan_verified), step))
     repo_only_triage_match = bool(
         action.get("status") == "triage_followup_required"
         and str(action.get("id") or "").startswith(f"inspect_{step.get('id') if step else ''}_")
@@ -306,9 +359,10 @@ def next_action_alignment(next_actions: dict[str, Any] | None, step: dict[str, A
         "legacy_step_runtime_command": legacy,
         "plan_verified_execute_command": plan_verified,
         "expected_runtime_command": expected,
-        "matches_expected_current_step": step_match or legacy_match,
+        "matches_expected_current_step": step_match or legacy_match or plan_verified_step_match,
         "legacy_matches_expected_current_step": legacy_match,
         "reported_matches_plan_verified": plan_verified_match,
+        "plan_verified_matches_current_step": plan_verified_step_match,
         "repo_only_triage_matches_current_step": repo_only_triage_match,
     }
 

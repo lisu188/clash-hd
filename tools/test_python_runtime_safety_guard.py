@@ -49,6 +49,10 @@ def test_gated_and_exempt_helpers_pass(fixture: Path) -> None:
     write(fixture / "tools" / "repo_test_sweep.py", "import subprocess\nsubprocess.run(['python', 'test_probe.py'])\n")
     write(fixture / "tools" / "hd_soak_dry_run_plan.py", "import subprocess\nsubprocess.run(['powershell.exe', '-File', 'run_hd_soak.ps1'])\n")
     write(
+        fixture / "tools" / "hd_soak_execution_boundary.py",
+        "import subprocess\nsubprocess.run(['powershell.exe', '-Execute', '-AllowVisibleRuntime'])\n",
+    )
+    write(
         fixture / "tools" / "hd_soak_intro_skip_rerun_readiness.py",
         "APPROVAL = 'visible runtime PostMessage intro skip only in command text'\n",
     )
@@ -64,6 +68,7 @@ def test_gated_and_exempt_helpers_pass(fixture: Path) -> None:
     assert classes["tools/process_hygiene_guard.py"] == "exempt", classes
     assert classes["tools/repo_test_sweep.py"] == "exempt", classes
     assert classes["tools/hd_soak_dry_run_plan.py"] == "exempt", classes
+    assert classes["tools/hd_soak_execution_boundary.py"] == "exempt", classes
     assert classes["tools/hd_soak_intro_skip_rerun_readiness.py"] == "exempt", classes
     assert classes["tools/right_bottom_slot_fixture_script_guard.py"] == "exempt", classes
     assert classes["tools/test_probe.py"] == "test_fixture", classes

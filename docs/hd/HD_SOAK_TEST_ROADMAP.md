@@ -36,20 +36,19 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_s
   -MaxInputDriftPx 1
 ```
 
-Execute the first short tier only after approving visible runtime control. This
-opens a visible Clash95 game window while it captures frames:
+Execute the first short tier only after approving visible runtime control and
+only by copying the exact command emitted by the current dry-run/preflight
+artifacts. Do not hand-compose the visible-runtime command: the harness now
+requires a fresh `-VisibleRuntimeApprovalExpiresUtc` and
+`-VisibleRuntimeApprovalToken` packet plus explicit frame, artifact, and process
+growth limits. The copied packet must have at least 30 minutes remaining before
+expiry when execution starts. A valid copied command opens a visible Clash95
+game window while it captures frames and includes at least `-Execute -AllowVisibleRuntime
+-RequirePass -Json`.
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 `
-  -Tier short2 `
-  -Route menu-idle `
-  -IntroSkipClickMode postmessage `
-  -IntroSkipClicks 8 `
-  -SkipPulses 4 `
-  -MaxInputDriftPx 1 `
-  -Execute `
-  -AllowVisibleRuntime `
-  -RequirePass
+python tools\hd_soak_dry_run_plan.py --require-pass
+python tools\hd_soak_approval_preflight.py --require-pass
 ```
 
 Validate a generated report without launching the game:
@@ -146,7 +145,10 @@ The compact route coverage inventory is generated at
 implements `3/10` release lanes: `menu-idle`, `map-idle`, and `map-pan`.
 Castle, barracks, right-bottom, battle, save/load, turn-advancement, and
 campaign lanes remain planned/non-promoting until their prerequisite short
-soaks, natural/manual input proof, and continuity gates exist.
+soaks, natural/manual input proof, and continuity gates exist. The same report
+also records a locked future-route plan with proposed route names, planned step
+contracts, unlock requirements, and `safe_to_execute_now=false` for every
+not-yet-scripted lane; those contracts are inventory only, not harness routes.
 
 The ordered short-tier ladder is generated at
 `captures/current/hd-soak-short-tier-ladder-current.md`. It keeps the current
@@ -187,10 +189,21 @@ stage, canonical report paths, outside-repo candidate/output roots,
 execute-command `-RequirePass -Json` flags. The copied execute command must also
 explicitly pin `-InputExe`, `-WorkDir`, `-Stage`, and `-OutputRoot` so the
 approved run cannot silently fall back to a different source executable, working
-directory, stage, or artifact root.
-Approval packets treat dry-run plans older than 12 hours as stale and fail
-closed; regenerate `captures/current/hd-soak-dry-run-plan-current.*` before
-approval instead of running an old timestamped command.
+directory, stage, or artifact root. The dry-run plan also emits
+`-VisibleRuntimeApprovalExpiresUtc` plus `-VisibleRuntimeApprovalToken`; the
+harness recomputes that token from the critical command fields and expiry, then
+refuses visible execution when the token is missing, mismatched, or expired.
+Approval therefore uses the exact copied packet rather than a hand-edited or
+old timestamped command.
+Approval packets treat dry-run plans older than 12 hours as stale and the
+harness also rejects expired copied commands or copied commands with less than
+30 minutes of approval TTL remaining; regenerate
+`captures/current/hd-soak-dry-run-plan-current.*` before approval instead of
+running an old timestamped command.
+`captures/current/hd-soak-execution-boundary-current.md` is the matching
+negative proof: it sends bad approval packets with repo-local temp paths and a
+nonexistent input executable, then verifies no candidate/output/report side
+effects appear before the harness rejects the command.
 
 The approval preflight packet is generated at
 `captures/current/hd-soak-approval-preflight-current.md`. It is repo-only and
@@ -198,7 +211,8 @@ does not launch the game. It verifies that the first `short2` `menu-idle`
 runtime command is still explicit-approval gated, consumes the current dry-run
 plan, uses the canonical per-step report paths, pins `-MaxInputDriftPx 1`,
 pins `-IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4`, keeps
-the dry-run command non-executing, preserves the protected stage and
+the dry-run command non-executing, requires the visible-runtime approval expiry
+and token from the current dry-run packet, preserves the protected stage and
 right-bottom promotion locks, and requires clean harness/runtime,
 process-hygiene, and executable-artifact guards before asking for approval:
 the same packet also lists whether the current-step report, guard, and triage
@@ -253,7 +267,7 @@ Each soak report must track:
 - documented process-growth thresholds: by default short-tier reports fail if
   working-set growth exceeds 64 MB, private-memory growth exceeds 64 MB, or
   handle growth exceeds 128 handles
-- artifact bytes and artifact root
+- artifact bytes, artifact limit, and artifact root
 - final route marker
 - expected original base SHA-256, candidate SHA-256, and the per-run
   `patch_stage_report.py` manifest proving the protected stage bytes are
@@ -268,6 +282,10 @@ metrics are not allowed to override a failed source report.
 frame, route, and process rows, so a report fails closed if summary counts,
 input drift, memory growth, handle growth, or sampled render metrics disagree
 with the detailed evidence.
+The guard also records a dedicated `visual_anomalies` check: executed reports
+must carry `NonblackBounds`, and frames below the configured nonblack or unique
+color thresholds are labeled as black/blank patch risk or palette/stripe risk
+instead of being buried in generic render metrics.
 It also rejects executed reports with invalid tier/route/duration combinations,
 missing sample intervals, insufficient elapsed frame/process sample coverage,
 capture errors, bad frame hashes, failed probe exit codes, or raw process
@@ -286,8 +304,8 @@ When a soak fails, the compact report should record:
 - last frame hash, size, nonblack percent, mean luminance, and unique colors
 - process state, exit code, working set, handle count, and clean-stop status
 - crash, hang, capture, frame-progression, process-growth, artifact-budget,
-  input-drift, input-response, insufficient-sample, or elapsed-coverage
-  classification
+  visual-anomaly, input-drift, input-response, insufficient-sample, or
+  elapsed-coverage classification
 - next probe or harness refinement
 
 `tools/hd_soak_failure_triage.py` turns the raw soak report into the compact
@@ -297,6 +315,11 @@ route/input failures including input drift, capture harness failures,
 frame-progression failures, process-growth regressions, artifact-budget
 failures, insufficient frame/process samples, elapsed sample-coverage failures,
 missing frame progress, cleanup failures, and unclassified failures.
+When the compact route row lacks method fields, triage may read the referenced
+per-route `mouse_path_probe` JSON and copy over the observed move/click mode,
+sample phase, and click drift details. This is evidence enrichment only; it does
+not launch the game, change the route proof class, or turn an automated visible
+runtime probe into manual DirectInput release proof.
 It also runs the same `tools/hd_soak_report.py` guard semantics before accepting
 a raw `passed=true` report, so a source report that looks successful but has
 bad canonical roots, missing patch evidence, metric mismatches, or other guard
@@ -311,6 +334,7 @@ Release completion needs all of these, not just a short soak:
   passes
 - stable menu load with real input
 - stable HD map input with no drift across long play
+- first-mission selected-unit frame with no stripe or black-patch blockers
 - castle overview centered input and enter/exit
 - barracks/castle centered input and enter/exit
 - right-bottom action/menu natural or approved manual DirectInput proof
@@ -326,7 +350,7 @@ Release completion needs all of these, not just a short soak:
 The compact current checklist is generated at
 `captures/current/hd-endurance-release-checklist-current.md`. It intentionally
 fails closed until every release-horizon item has current proof. As of the
-current checklist, `4/14` requirements pass and the next milestone is a passing
+current checklist, `4/15` requirements pass and the next milestone is a passing
 `short2` `menu-idle` soak for the protected stable stage. The first-soak row
 also records the canonical report, guard, and triage artifact paths that must
 appear after the approved run before later short tiers can advance.
@@ -400,7 +424,8 @@ requested. The focused group must start with the consolidated short validation
 refresh, not a direct `--require-pass` guard that would stop before failure
 triage on a bad runtime report. Preflight also compares the next-action
 artifact inventory with the current report, guard, and triage path/existence
-state, so approval fails closed if the handoff is stale.
+state, and requires the dry-run approval expiry plus token, so approval fails
+closed if the handoff is stale or manually edited.
 
 ## Current Status
 
