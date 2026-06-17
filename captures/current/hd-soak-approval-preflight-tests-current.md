@@ -1,9 +1,9 @@
 # HD Soak Approval Preflight Tests
 
 - Status: PASS
-- Generated: `2026-06-16T18:05:32+02:00`
+- Generated: `2026-06-17T09:48:32+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
-- Guard policy: proves the first short2 visible-runtime soak remains explicit-approval gated, pins canonical per-step report paths, keeps dry-runs non-executing, can advance to later short steps, starts focused post-run validation with the failure-safe guard/triage refresh, keeps broad evidence refresh separate, requires next-action artifact inventory to match the preflight state, requires the actual harness dry-run plan and embedded next-action summary to match, requires verified base-executable input, and requires clean harness/runtime/process/executable guards before requesting approval
+- Guard policy: proves the first short2 visible-runtime soak remains explicit-approval gated, pins canonical per-step report paths, keeps dry-runs non-executing, can advance to later short steps, starts focused post-run validation with the failure-safe guard/triage refresh, keeps broad evidence refresh separate, requires next-action artifact inventory to match the preflight state, requires the actual harness dry-run plan and embedded next-action summary to match, requires visible-runtime approval TTL and limit summaries, requires verified base-executable input, and requires clean harness/runtime/process/executable guards before requesting approval
 
 ## Tests
 
@@ -24,8 +24,11 @@
 - `hd_soak_approval_preflight fails closed when source guards are not passing`
 - `hd_soak_approval_preflight fails closed when the dry-run plan is not passing`
 - `hd_soak_approval_preflight fails closed when the dry-run plan is stale`
+- `hd_soak_approval_preflight fails closed when the visible-runtime approval token expires too soon`
 - `hd_soak_approval_preflight catches dry-run plan current-step and report-path mismatches`
 - `hd_soak_approval_preflight fails closed when the dry-run plan does not verify the base executable`
 - `hd_soak_approval_preflight catches dry-run plan execute commands missing explicit stage/input/root pins`
+- `hd_soak_approval_preflight catches visible-runtime execute commands without the approval token`
+- `hd_soak_approval_preflight catches visible-runtime execute commands without the approval expiry`
 - `hd_soak_approval_preflight can gate the next short step after the first soak passes`
 - `hd_soak_approval_preflight CLI writes JSON/Markdown and respects --require-pass`

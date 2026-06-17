@@ -1,12 +1,12 @@
 # HD Endurance Next Actions
 
 - Overall: PASS
-- Generated: `2026-06-16T16:05:30.994182+00:00`
+- Generated: `2026-06-17T07:48:30.253117+00:00`
 - Runtime policy: repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Status: `waiting_for_explicit_visible_runtime_approval`
 - Current short step: `short2_menu_idle`
 - Full game complete: `False`
-- Open requirements: `10`
+- Open requirements: `11`
 
 ## Next Action
 
@@ -27,24 +27,35 @@ Current step artifacts:
 Safe dry-run command:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\current\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\current\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\current\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\current\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json
 ```
 
 Approval-gated runtime command (plan-verified):
 
 - Dry-run plan status: `ready_for_explicit_approval`
-- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260616_180529.exe`
+- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260617_094828.exe`
 - Output root: `C:\ClashCaptures\hd-soak`
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'menu-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260616_180529.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.json' -ReportMarkdown 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -MaxInputDriftPx '1' -Execute -AllowVisibleRuntime -RequirePass -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'menu-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260617_094828.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.json' -ReportMarkdown 'C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-06-17T19:48:28.4321622+00:00' -VisibleRuntimeApprovalToken 'e0a6d4d17c088eac' -Execute -AllowVisibleRuntime -RequirePass -Json
 ```
 
-Legacy step-status runtime command:
+Rejected legacy runtime command:
 
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\current\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\current\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -MaxInputDriftPx 1 -Execute -AllowVisibleRuntime -RequirePass -Json
-```
+- Safe to run: `False`
+- Reason: superseded by the current dry-run plan command with visible-runtime approval token
+- Command body: omitted from Markdown; retained in JSON for audit.
+
+Current failure:
+
+- Classification: `intro_skip_input_drift_exit`
+- Next probe: previous intro-skip click used sendinput and drifted after button events; rerun only with the current tokenized postmessage/space-pulse intro-skip command after explicit visible-window approval
+- Final route marker: `intro-skip`
+- Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
+- Visual anomaly passed: `False`
+- Black/blank patch risk count: `1`
+- Palette/stripe risk count: `0`
+- Missing nonblack bounds count: `0`
 
 Focused post-run validation:
 
@@ -69,7 +80,22 @@ Broad evidence refresh:
 
 ## Open Requirement Groups
 
+- `render baseline`: `first_mission_visual_clean`
 - `endurance`: `short2_menu_idle_soak, long_soak_representative_routes`
 - `manual input`: `stable_menu_real_input, stable_hd_map_real_input`
 - `screen route`: `right_bottom_action_menu, castle_and_barracks_centered_input, tactical_battle_entry_return`
 - `state continuity`: `save_load_roundtrip, turn_advancement, campaign_routes`
+
+## Open Requirement Details
+
+- `first_mission_visual_clean` (`render baseline`, `blocked`): first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior Next probe: fix right/bottom/minimap black patches before treating first-mission playability as release-ready
+- `short2_menu_idle_soak` (`endurance`, `blocked`): short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit Next probe: run the approval-gated short2 menu-idle soak on the protected stage
+- `long_soak_representative_routes` (`endurance`, `blocked`): 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing Next probe: add long-tier reports only after short2/short10/short30 are stable
+- `stable_menu_real_input` (`manual input`, `blocked`): menu-load proof remains pending manual DirectInput validation Next probe: collect approved manual menu-load proof or keep promotion blocked
+- `stable_hd_map_real_input` (`manual input`, `blocked`): HD map input proof remains pending manual DirectInput validation Next probe: collect approved manual map input proof after short soak is stable
+- `right_bottom_action_menu` (`screen route`, `blocked`): right-bottom action/menu remains validation-only or manual-proof blocked Next probe: replace debugger-forced action-click proof with natural or approved manual input proof
+- `castle_and_barracks_centered_input` (`screen route`, `blocked`): castle/barracks centered input remains validation-only or manual-proof blocked Next probe: collect approved centered castle/barracks input proof
+- `tactical_battle_entry_return` (`screen route`, `blocked`): battle evidence remains validation-only or missing visible click-to-callback proof Next probe: prove battle entry, UI use, return, and post-return map health on an approved route
+- `save_load_roundtrip` (`state continuity`, `blocked`): save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release Next probe: add safe test-save roundtrip evidence after short-tier stability
+- `turn_advancement` (`state continuity`, `blocked`): turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release Next probe: add deterministic turn-advance route evidence after save/load is safe
+- `campaign_routes` (`state continuity`, `blocked`): campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release Next probe: add representative campaign route soaks after short/medium tiers are stable

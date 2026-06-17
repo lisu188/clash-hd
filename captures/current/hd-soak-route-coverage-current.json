@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T16:05:30.838419+00:00",
+  "generated_at": "2026-06-17T07:48:30.072856+00:00",
   "passed": true,
   "runtime_policy": "repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "script": "scripts\\smoke\\run_hd_soak.ps1",
@@ -7,9 +7,9 @@
     "path": "captures\\current\\hd-endurance-release-checklist-current.json",
     "state": "present",
     "present": true,
-    "generated_at": "2026-06-16T16:05:30.464957+00:00",
+    "generated_at": "2026-06-17T07:48:29.614112+00:00",
     "passed": false,
-    "requirement_count": 14
+    "requirement_count": 15
   },
   "implemented_routes": [
     "menu-idle",
@@ -46,6 +46,14 @@
     {
       "id": "menu_idle",
       "route": "menu-idle",
+      "proposed_route": "menu-idle",
+      "route_contract_status": "scripted_current_harness",
+      "planned_route_steps": [],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_menu_real_input"
+      ],
+      "implementation_policy": "already scripted; execute only through explicit visible-runtime approval",
       "status": "implemented_pending_first_soak",
       "proof_class": "approval_gated_visible_runtime",
       "promotion_scope": "non_promoting_short_soak",
@@ -57,6 +65,7 @@
       "implemented_in_harness": true,
       "route_steps": [],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "short2_menu_idle_soak",
@@ -85,17 +94,59 @@
         }
       ],
       "current_blocker_count": 2,
-      "readiness_status": "implemented_blocked_by_current_requirements"
+      "readiness_status": "implemented_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "menu_idle",
+        "route": "menu-idle",
+        "proposed_route": "menu-idle",
+        "route_contract_status": "scripted_current_harness",
+        "planned_route_steps": [],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_menu_real_input"
+        ],
+        "release_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_menu_real_input"
+        ],
+        "implementation_policy": "already scripted; execute only through explicit visible-runtime approval",
+        "readiness_status": "implemented_blocked_by_current_requirements",
+        "current_blocker_count": 2,
+        "blocking_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_menu_real_input"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     },
     {
       "id": "map_idle",
       "route": "map-idle",
+      "proposed_route": "map-idle",
+      "route_contract_status": "scripted_current_harness",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "first_mission_visual_clean"
+      ],
+      "implementation_policy": "already scripted; execute only after menu-idle approval-gated soak passes",
       "status": "implemented_waiting_on_short2_menu",
       "proof_class": "approval_gated_visible_runtime",
       "promotion_scope": "non_promoting_short_soak",
       "release_requirement_ids": [
         "short2_menu_idle_soak",
-        "stable_hd_map_real_input"
+        "stable_hd_map_real_input",
+        "first_mission_visual_clean"
       ],
       "next_probe": "run short2 map-idle after menu-idle passes",
       "implemented_in_harness": true,
@@ -105,6 +156,7 @@
         "confirm-load"
       ],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "short2_menu_idle_soak",
@@ -130,20 +182,82 @@
           "evidence": [
             "captures\\current\\manual-directinput-validation-checklist-current.json"
           ]
+        },
+        {
+          "id": "first_mission_visual_clean",
+          "title": "First mission selected-unit frame has no stripe or black-patch blockers",
+          "category": "render baseline",
+          "status": "blocked",
+          "passed": false,
+          "summary": "first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior",
+          "next_probe": "fix right/bottom/minimap black patches before treating first-mission playability as release-ready",
+          "evidence": [
+            "captures\\current\\first-mission-visual-audit-current.json"
+          ]
         }
       ],
-      "current_blocker_count": 2,
-      "readiness_status": "implemented_blocked_by_current_requirements"
+      "current_blocker_count": 3,
+      "readiness_status": "implemented_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "map_idle",
+        "route": "map-idle",
+        "proposed_route": "map-idle",
+        "route_contract_status": "scripted_current_harness",
+        "planned_route_steps": [
+          "load-button",
+          "load-slot0",
+          "confirm-load"
+        ],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_hd_map_real_input",
+          "first_mission_visual_clean"
+        ],
+        "release_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_hd_map_real_input",
+          "first_mission_visual_clean"
+        ],
+        "implementation_policy": "already scripted; execute only after menu-idle approval-gated soak passes",
+        "readiness_status": "implemented_blocked_by_current_requirements",
+        "current_blocker_count": 3,
+        "blocking_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_hd_map_real_input",
+          "first_mission_visual_clean"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     },
     {
       "id": "map_pan",
       "route": "map-pan",
+      "proposed_route": "map-pan",
+      "route_contract_status": "scripted_current_harness",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load",
+        "pan-path"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "first_mission_visual_clean"
+      ],
+      "implementation_policy": "already scripted; execute only after map-idle approval-gated soak passes",
       "status": "implemented_waiting_on_map_idle",
       "proof_class": "approval_gated_visible_runtime",
       "promotion_scope": "non_promoting_short_soak",
       "release_requirement_ids": [
         "long_soak_representative_routes",
-        "stable_hd_map_real_input"
+        "stable_hd_map_real_input",
+        "first_mission_visual_clean"
       ],
       "next_probe": "run short10/short30 map-pan after map-idle passes",
       "implemented_in_harness": true,
@@ -154,6 +268,7 @@
         "pan-path"
       ],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "long_soak_representative_routes",
@@ -178,14 +293,77 @@
           "evidence": [
             "captures\\current\\manual-directinput-validation-checklist-current.json"
           ]
+        },
+        {
+          "id": "first_mission_visual_clean",
+          "title": "First mission selected-unit frame has no stripe or black-patch blockers",
+          "category": "render baseline",
+          "status": "blocked",
+          "passed": false,
+          "summary": "first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior",
+          "next_probe": "fix right/bottom/minimap black patches before treating first-mission playability as release-ready",
+          "evidence": [
+            "captures\\current\\first-mission-visual-audit-current.json"
+          ]
         }
       ],
-      "current_blocker_count": 2,
-      "readiness_status": "implemented_blocked_by_current_requirements"
+      "current_blocker_count": 3,
+      "readiness_status": "implemented_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "map_pan",
+        "route": "map-pan",
+        "proposed_route": "map-pan",
+        "route_contract_status": "scripted_current_harness",
+        "planned_route_steps": [
+          "load-button",
+          "load-slot0",
+          "confirm-load",
+          "pan-path"
+        ],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_hd_map_real_input",
+          "first_mission_visual_clean"
+        ],
+        "release_requirement_ids": [
+          "long_soak_representative_routes",
+          "stable_hd_map_real_input",
+          "first_mission_visual_clean"
+        ],
+        "implementation_policy": "already scripted; execute only after map-idle approval-gated soak passes",
+        "readiness_status": "implemented_blocked_by_current_requirements",
+        "current_blocker_count": 3,
+        "blocking_requirement_ids": [
+          "long_soak_representative_routes",
+          "stable_hd_map_real_input",
+          "first_mission_visual_clean"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     },
     {
       "id": "castle_overview_enter_exit",
       "route": null,
+      "proposed_route": "castle-overview-enter-exit",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load",
+        "enter-castle-overview",
+        "exit-castle-overview"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "castle_and_barracks_centered_input"
+      ],
+      "implementation_policy": "do not add to run_hd_soak ValidateSet until short map routes pass and castle overview input has natural or approved manual proof",
       "status": "planned_not_implemented",
       "proof_class": "future_visible_or_manual_input",
       "promotion_scope": "blocked_until_manual_or_strict_natural_proof",
@@ -196,6 +374,7 @@
       "implemented_in_harness": false,
       "route_steps": [],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "castle_and_barracks_centered_input",
@@ -212,11 +391,61 @@
         }
       ],
       "current_blocker_count": 1,
-      "readiness_status": "planned_blocked_by_current_requirements"
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "castle_overview_enter_exit",
+        "route": null,
+        "proposed_route": "castle-overview-enter-exit",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+          "load-button",
+          "load-slot0",
+          "confirm-load",
+          "enter-castle-overview",
+          "exit-castle-overview"
+        ],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_hd_map_real_input",
+          "castle_and_barracks_centered_input"
+        ],
+        "release_requirement_ids": [
+          "castle_and_barracks_centered_input"
+        ],
+        "implementation_policy": "do not add to run_hd_soak ValidateSet until short map routes pass and castle overview input has natural or approved manual proof",
+        "readiness_status": "planned_blocked_by_current_requirements",
+        "current_blocker_count": 1,
+        "blocking_requirement_ids": [
+          "castle_and_barracks_centered_input"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     },
     {
       "id": "barracks_castle_centered_input",
       "route": null,
+      "proposed_route": "castle-barracks-enter-exit",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load",
+        "enter-castle-overview",
+        "enter-barracks",
+        "exit-barracks",
+        "exit-castle-overview"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "castle_and_barracks_centered_input"
+      ],
+      "implementation_policy": "do not script barracks routing until castle overview entry/exit is stable and centered input proof exists",
       "status": "planned_not_implemented",
       "proof_class": "future_visible_or_manual_input",
       "promotion_scope": "blocked_until_manual_or_strict_natural_proof",
@@ -227,6 +456,7 @@
       "implemented_in_harness": false,
       "route_steps": [],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "castle_and_barracks_centered_input",
@@ -243,11 +473,62 @@
         }
       ],
       "current_blocker_count": 1,
-      "readiness_status": "planned_blocked_by_current_requirements"
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "barracks_castle_centered_input",
+        "route": null,
+        "proposed_route": "castle-barracks-enter-exit",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+          "load-button",
+          "load-slot0",
+          "confirm-load",
+          "enter-castle-overview",
+          "enter-barracks",
+          "exit-barracks",
+          "exit-castle-overview"
+        ],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_hd_map_real_input",
+          "castle_and_barracks_centered_input"
+        ],
+        "release_requirement_ids": [
+          "castle_and_barracks_centered_input"
+        ],
+        "implementation_policy": "do not script barracks routing until castle overview entry/exit is stable and centered input proof exists",
+        "readiness_status": "planned_blocked_by_current_requirements",
+        "current_blocker_count": 1,
+        "blocking_requirement_ids": [
+          "castle_and_barracks_centered_input"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     },
     {
       "id": "right_bottom_action_menu",
       "route": null,
+      "proposed_route": "right-bottom-action-menu",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load",
+        "pan-to-right-bottom",
+        "natural-select-right-bottom-target",
+        "open-action-menu"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "right_bottom_action_menu"
+      ],
+      "implementation_policy": "keep forced coordinate evidence diagnostic; script only after natural or approved manual right-bottom action-menu proof exists",
       "status": "planned_blocked_by_manual_or_natural_proof",
       "proof_class": "future_visible_or_manual_input",
       "promotion_scope": "blocked; forced coordinates remain diagnostic only",
@@ -258,6 +539,7 @@
       "implemented_in_harness": false,
       "route_steps": [],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "right_bottom_action_menu",
@@ -274,11 +556,61 @@
         }
       ],
       "current_blocker_count": 1,
-      "readiness_status": "planned_blocked_by_current_requirements"
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "right_bottom_action_menu",
+        "route": null,
+        "proposed_route": "right-bottom-action-menu",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+          "load-button",
+          "load-slot0",
+          "confirm-load",
+          "pan-to-right-bottom",
+          "natural-select-right-bottom-target",
+          "open-action-menu"
+        ],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_hd_map_real_input",
+          "right_bottom_action_menu"
+        ],
+        "release_requirement_ids": [
+          "right_bottom_action_menu"
+        ],
+        "implementation_policy": "keep forced coordinate evidence diagnostic; script only after natural or approved manual right-bottom action-menu proof exists",
+        "readiness_status": "planned_blocked_by_current_requirements",
+        "current_blocker_count": 1,
+        "blocking_requirement_ids": [
+          "right_bottom_action_menu"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     },
     {
       "id": "tactical_battle_entry_return",
       "route": null,
+      "proposed_route": "battle-entry-return",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load",
+        "enter-battle",
+        "verify-battle-ui",
+        "return-to-map"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "tactical_battle_entry_return"
+      ],
+      "implementation_policy": "do not script battle routing until representative map and castle routes are stable and battle entry/return proof is available",
       "status": "planned_not_implemented",
       "proof_class": "future_visible_or_manual_input",
       "promotion_scope": "blocked_until_battle_entry_return_and_click_to_callback_proof",
@@ -289,6 +621,7 @@
       "implemented_in_harness": false,
       "route_steps": [],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "tactical_battle_entry_return",
@@ -304,11 +637,59 @@
         }
       ],
       "current_blocker_count": 1,
-      "readiness_status": "planned_blocked_by_current_requirements"
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "tactical_battle_entry_return",
+        "route": null,
+        "proposed_route": "battle-entry-return",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+          "load-button",
+          "load-slot0",
+          "confirm-load",
+          "enter-battle",
+          "verify-battle-ui",
+          "return-to-map"
+        ],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_hd_map_real_input",
+          "tactical_battle_entry_return"
+        ],
+        "release_requirement_ids": [
+          "tactical_battle_entry_return"
+        ],
+        "implementation_policy": "do not script battle routing until representative map and castle routes are stable and battle entry/return proof is available",
+        "readiness_status": "planned_blocked_by_current_requirements",
+        "current_blocker_count": 1,
+        "blocking_requirement_ids": [
+          "tactical_battle_entry_return"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     },
     {
       "id": "save_load_roundtrip",
       "route": null,
+      "proposed_route": "save-load-roundtrip",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "prepare-isolated-save",
+        "save-roundtrip",
+        "load-roundtrip",
+        "compare-continuity-markers"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "save_load_roundtrip"
+      ],
+      "implementation_policy": "do not script save mutation until an isolated disposable save fixture and continuity markers are defined",
       "status": "planned_not_implemented",
       "proof_class": "future_safe_test_save_continuity",
       "promotion_scope": "blocked_until_safe_save_roundtrip_evidence",
@@ -319,6 +700,7 @@
       "implemented_in_harness": false,
       "route_steps": [],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "save_load_roundtrip",
@@ -334,11 +716,57 @@
         }
       ],
       "current_blocker_count": 1,
-      "readiness_status": "planned_blocked_by_current_requirements"
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "save_load_roundtrip",
+        "route": null,
+        "proposed_route": "save-load-roundtrip",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+          "prepare-isolated-save",
+          "save-roundtrip",
+          "load-roundtrip",
+          "compare-continuity-markers"
+        ],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "stable_hd_map_real_input",
+          "save_load_roundtrip"
+        ],
+        "release_requirement_ids": [
+          "save_load_roundtrip"
+        ],
+        "implementation_policy": "do not script save mutation until an isolated disposable save fixture and continuity markers are defined",
+        "readiness_status": "planned_blocked_by_current_requirements",
+        "current_blocker_count": 1,
+        "blocking_requirement_ids": [
+          "save_load_roundtrip"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     },
     {
       "id": "turn_advancement",
       "route": null,
+      "proposed_route": "turn-advancement",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-safe-fixture",
+        "advance-turn",
+        "verify-turn-state-markers",
+        "verify-map-still-renders"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "save_load_roundtrip",
+        "turn_advancement"
+      ],
+      "implementation_policy": "do not script turn advancement until save/load continuity is safe and deterministic state markers exist",
       "status": "planned_not_implemented",
       "proof_class": "future_state_continuity",
       "promotion_scope": "blocked_until_turn_state_evidence",
@@ -349,6 +777,7 @@
       "implemented_in_harness": false,
       "route_steps": [],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "turn_advancement",
@@ -364,11 +793,57 @@
         }
       ],
       "current_blocker_count": 1,
-      "readiness_status": "planned_blocked_by_current_requirements"
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "turn_advancement",
+        "route": null,
+        "proposed_route": "turn-advancement",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+          "load-safe-fixture",
+          "advance-turn",
+          "verify-turn-state-markers",
+          "verify-map-still-renders"
+        ],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "save_load_roundtrip",
+          "turn_advancement"
+        ],
+        "release_requirement_ids": [
+          "turn_advancement"
+        ],
+        "implementation_policy": "do not script turn advancement until save/load continuity is safe and deterministic state markers exist",
+        "readiness_status": "planned_blocked_by_current_requirements",
+        "current_blocker_count": 1,
+        "blocking_requirement_ids": [
+          "turn_advancement"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     },
     {
       "id": "campaign_route",
       "route": null,
+      "proposed_route": "campaign-representative-route",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-campaign-safe-fixture",
+        "route-campaign-objective",
+        "return-to-map",
+        "sample-continuity"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "long_soak_representative_routes",
+        "campaign_routes"
+      ],
+      "implementation_policy": "do not script campaign routing until short/medium soak tiers and continuity gates are already passing",
       "status": "planned_not_implemented",
       "proof_class": "future_long_visible_runtime",
       "promotion_scope": "blocked_until_long_soak_and_campaign_continuity",
@@ -380,6 +855,7 @@
       "implemented_in_harness": false,
       "route_steps": [],
       "stable_stage_should_change": false,
+      "promotion_ready": false,
       "current_blockers": [
         {
           "id": "long_soak_representative_routes",
@@ -407,7 +883,263 @@
         }
       ],
       "current_blocker_count": 2,
-      "readiness_status": "planned_blocked_by_current_requirements"
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "route_contract": {
+        "id": "campaign_route",
+        "route": null,
+        "proposed_route": "campaign-representative-route",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+          "load-campaign-safe-fixture",
+          "route-campaign-objective",
+          "return-to-map",
+          "sample-continuity"
+        ],
+        "unlock_requirement_ids": [
+          "short2_menu_idle_soak",
+          "long_soak_representative_routes",
+          "campaign_routes"
+        ],
+        "release_requirement_ids": [
+          "long_soak_representative_routes",
+          "campaign_routes"
+        ],
+        "implementation_policy": "do not script campaign routing until short/medium soak tiers and continuity gates are already passing",
+        "readiness_status": "planned_blocked_by_current_requirements",
+        "current_blocker_count": 2,
+        "blocking_requirement_ids": [
+          "long_soak_representative_routes",
+          "campaign_routes"
+        ],
+        "stable_stage_should_change": false,
+        "promotion_ready": false,
+        "safe_to_execute_now": false,
+        "ready_to_script": false
+      },
+      "safe_to_execute_now": false,
+      "ready_to_script": false
+    }
+  ],
+  "locked_future_route_plan": [
+    {
+      "id": "castle_overview_enter_exit",
+      "route": null,
+      "proposed_route": "castle-overview-enter-exit",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load",
+        "enter-castle-overview",
+        "exit-castle-overview"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "castle_and_barracks_centered_input"
+      ],
+      "release_requirement_ids": [
+        "castle_and_barracks_centered_input"
+      ],
+      "implementation_policy": "do not add to run_hd_soak ValidateSet until short map routes pass and castle overview input has natural or approved manual proof",
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "current_blocker_count": 1,
+      "blocking_requirement_ids": [
+        "castle_and_barracks_centered_input"
+      ],
+      "stable_stage_should_change": false,
+      "promotion_ready": false,
+      "safe_to_execute_now": false,
+      "ready_to_script": false
+    },
+    {
+      "id": "barracks_castle_centered_input",
+      "route": null,
+      "proposed_route": "castle-barracks-enter-exit",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load",
+        "enter-castle-overview",
+        "enter-barracks",
+        "exit-barracks",
+        "exit-castle-overview"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "castle_and_barracks_centered_input"
+      ],
+      "release_requirement_ids": [
+        "castle_and_barracks_centered_input"
+      ],
+      "implementation_policy": "do not script barracks routing until castle overview entry/exit is stable and centered input proof exists",
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "current_blocker_count": 1,
+      "blocking_requirement_ids": [
+        "castle_and_barracks_centered_input"
+      ],
+      "stable_stage_should_change": false,
+      "promotion_ready": false,
+      "safe_to_execute_now": false,
+      "ready_to_script": false
+    },
+    {
+      "id": "right_bottom_action_menu",
+      "route": null,
+      "proposed_route": "right-bottom-action-menu",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load",
+        "pan-to-right-bottom",
+        "natural-select-right-bottom-target",
+        "open-action-menu"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "right_bottom_action_menu"
+      ],
+      "release_requirement_ids": [
+        "right_bottom_action_menu"
+      ],
+      "implementation_policy": "keep forced coordinate evidence diagnostic; script only after natural or approved manual right-bottom action-menu proof exists",
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "current_blocker_count": 1,
+      "blocking_requirement_ids": [
+        "right_bottom_action_menu"
+      ],
+      "stable_stage_should_change": false,
+      "promotion_ready": false,
+      "safe_to_execute_now": false,
+      "ready_to_script": false
+    },
+    {
+      "id": "tactical_battle_entry_return",
+      "route": null,
+      "proposed_route": "battle-entry-return",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-button",
+        "load-slot0",
+        "confirm-load",
+        "enter-battle",
+        "verify-battle-ui",
+        "return-to-map"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "tactical_battle_entry_return"
+      ],
+      "release_requirement_ids": [
+        "tactical_battle_entry_return"
+      ],
+      "implementation_policy": "do not script battle routing until representative map and castle routes are stable and battle entry/return proof is available",
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "current_blocker_count": 1,
+      "blocking_requirement_ids": [
+        "tactical_battle_entry_return"
+      ],
+      "stable_stage_should_change": false,
+      "promotion_ready": false,
+      "safe_to_execute_now": false,
+      "ready_to_script": false
+    },
+    {
+      "id": "save_load_roundtrip",
+      "route": null,
+      "proposed_route": "save-load-roundtrip",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "prepare-isolated-save",
+        "save-roundtrip",
+        "load-roundtrip",
+        "compare-continuity-markers"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "stable_hd_map_real_input",
+        "save_load_roundtrip"
+      ],
+      "release_requirement_ids": [
+        "save_load_roundtrip"
+      ],
+      "implementation_policy": "do not script save mutation until an isolated disposable save fixture and continuity markers are defined",
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "current_blocker_count": 1,
+      "blocking_requirement_ids": [
+        "save_load_roundtrip"
+      ],
+      "stable_stage_should_change": false,
+      "promotion_ready": false,
+      "safe_to_execute_now": false,
+      "ready_to_script": false
+    },
+    {
+      "id": "turn_advancement",
+      "route": null,
+      "proposed_route": "turn-advancement",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-safe-fixture",
+        "advance-turn",
+        "verify-turn-state-markers",
+        "verify-map-still-renders"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "save_load_roundtrip",
+        "turn_advancement"
+      ],
+      "release_requirement_ids": [
+        "turn_advancement"
+      ],
+      "implementation_policy": "do not script turn advancement until save/load continuity is safe and deterministic state markers exist",
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "current_blocker_count": 1,
+      "blocking_requirement_ids": [
+        "turn_advancement"
+      ],
+      "stable_stage_should_change": false,
+      "promotion_ready": false,
+      "safe_to_execute_now": false,
+      "ready_to_script": false
+    },
+    {
+      "id": "campaign_route",
+      "route": null,
+      "proposed_route": "campaign-representative-route",
+      "route_contract_status": "locked_not_scripted",
+      "planned_route_steps": [
+        "load-campaign-safe-fixture",
+        "route-campaign-objective",
+        "return-to-map",
+        "sample-continuity"
+      ],
+      "unlock_requirement_ids": [
+        "short2_menu_idle_soak",
+        "long_soak_representative_routes",
+        "campaign_routes"
+      ],
+      "release_requirement_ids": [
+        "long_soak_representative_routes",
+        "campaign_routes"
+      ],
+      "implementation_policy": "do not script campaign routing until short/medium soak tiers and continuity gates are already passing",
+      "readiness_status": "planned_blocked_by_current_requirements",
+      "current_blocker_count": 2,
+      "blocking_requirement_ids": [
+        "long_soak_representative_routes",
+        "campaign_routes"
+      ],
+      "stable_stage_should_change": false,
+      "promotion_ready": false,
+      "safe_to_execute_now": false,
+      "ready_to_script": false
     }
   ],
   "counts": {
@@ -415,6 +1147,7 @@
     "implemented_lane_count": 3,
     "planned_lane_count": 7,
     "blocked_lane_count": 10,
+    "locked_future_route_count": 7,
     "required_short_route_count": 3
   },
   "coverage_complete": false,

@@ -1,0 +1,27 @@
+# CDB Surface Dump Run
+
+- Passed: false
+- Error: surface dump was not completed
+- Launch mode: hidden-desktop
+- Timed out: False
+- Stopped after dump: False
+- Dump method: host-readprocessmemory
+- Host dumped memory: False
+- Host dump error: not observed
+- CDB exit code: 
+- AV: True
+- Dump invalid: False
+- App_RequestQuit: False
+- App_RequestQuit line: not observed
+- DirectDraw proxy: True
+- No skip start animations: False
+- Fast-forward start animations: True
+- Force visible edges: False
+- Post-owner force visible seven: False
+- Map validation skipped: True
+- Late load-slot forcing only: False
+- DirectDraw proxy DLL: C:\ClashTests\unit-selection-actionbar-bottom-rerun\ddraw.dll
+- DirectDraw proxy log: C:\ClashTests\unit-selection-actionbar-bottom-rerun\ddraw_surfdump_proxy.log
+- Generated probe: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-133642\clash95_surface_dump_probe.generated.cdb
+- Log: C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260616-133642\cdb-surface-dump.log
+- Timeout stack: not captured

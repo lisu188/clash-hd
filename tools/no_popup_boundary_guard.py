@@ -77,6 +77,14 @@ REQUIRED_SUPPORTING_REPORTS = {
         "markdown": "python-runtime-safety-tests-current.md",
         "purpose": "fixture regression coverage for risky Python helper classification",
     },
+    "hd_soak_execution_boundary": {
+        "markdown": "hd-soak-execution-boundary-current.md",
+        "purpose": "negative soak harness execution-boundary proof for bad visible-runtime approval packets",
+    },
+    "hd_soak_execution_boundary_tests": {
+        "markdown": "hd-soak-execution-boundary-tests-current.md",
+        "purpose": "fixture regression coverage for the soak execution-boundary proof",
+    },
     "patch_definition_guard": {
         "markdown": "patch-definition-current.md",
         "purpose": "patch stage definitions keep stable and validation-only groups separated",
@@ -176,6 +184,18 @@ REQUIRED_SUPPORTING_REPORTS = {
     "right_bottom_visual_artifact_guard_tests": {
         "markdown": "right-bottom-visual-artifact-guard-tests-current.md",
         "purpose": "fixture regression coverage for the right-bottom visual artifact guard",
+    },
+    "first_mission_visual_audit": {
+        "markdown": "first-mission-visual-audit-current.md",
+        "purpose": (
+            "first-mission selected-unit frame keeps bottom action-bar placement and "
+            "surfaces remaining black patch blockers without treating them as fixed"
+        ),
+        "allow_failed": True,
+    },
+    "first_mission_visual_audit_tests": {
+        "markdown": "first-mission-visual-audit-tests-current.md",
+        "purpose": "fixture regression coverage for first-mission stripe and black-patch audit",
     },
     "right_bottom_grid_hit": {
         "markdown": "right-bottom-grid-hit-current.md",
@@ -416,9 +436,10 @@ def build_guard_from_checks(
     for name, requirement in REQUIRED_REPORTS.items():
         check = checks.get(name)
         check_failures: list[str] = []
+        allow_failed = bool(requirement.get("allow_failed"))
         if check is None:
             check_failures.append(f"missing refresh check: {name}")
-        elif not check.get("passed"):
+        elif not check.get("passed") and not allow_failed:
             check_failures.append(f"refresh check is not passing: {name}")
 
         markdown = requirement["markdown"]
@@ -436,6 +457,8 @@ def build_guard_from_checks(
             not check_failures,
             {
                 "purpose": requirement["purpose"],
+                "expected_pass": not allow_failed,
+                "observed_passed": check.get("passed") if check else None,
                 "expected_markdown": markdown,
                 "refresh_markdown": check.get("markdown") if check else None,
                 "refresh_json": check.get("json") if check else None,

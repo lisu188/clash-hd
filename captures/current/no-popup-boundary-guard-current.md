@@ -1,13 +1,13 @@
 # No-Popup Boundary Guard
 
 - Overall: PASS
-- Generated: `2026-06-16T18:05:34+02:00`
+- Generated: `2026-06-17T09:48:33+02:00`
 - Runtime policy: repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current refresh must include all no-popup boundary reports and the evidence index must link each report
 - Evidence index: `captures\current\hd-map-evidence-current.md`
 - Core boundary guards: `6`
-- Supporting reports: `82`
-- Required reports total: `88`
+- Supporting reports: `86`
+- Required reports total: `92`
 
 ## Required Reports
 
@@ -24,6 +24,8 @@
 - `visible_runtime_launcher_guard_tests`: `PASS` report=`captures\current\visible-runtime-launcher-guard-tests-current.md` linked=`True`
 - `python_runtime_safety_guard`: `PASS` report=`captures\current\python-runtime-safety-current.md` linked=`True`
 - `python_runtime_safety_guard_tests`: `PASS` report=`captures\current\python-runtime-safety-tests-current.md` linked=`True`
+- `hd_soak_execution_boundary`: `PASS` report=`captures\current\hd-soak-execution-boundary-current.md` linked=`True`
+- `hd_soak_execution_boundary_tests`: `PASS` report=`captures\current\hd-soak-execution-boundary-tests-current.md` linked=`True`
 - `patch_definition_guard`: `PASS` report=`captures\current\patch-definition-current.md` linked=`True`
 - `patch_definition_guard_tests`: `PASS` report=`captures\current\patch-definition-tests-current.md` linked=`True`
 - `capture_corpus_index`: `PASS` report=`captures\current\capture-corpus-index-current.md` linked=`True`
@@ -49,6 +51,8 @@
 - `right_bottom_blocker_triage_tests`: `PASS` report=`captures\current\right-bottom-blocker-triage-tests-current.md` linked=`True`
 - `right_bottom_visual_artifact_guard`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-current.md` linked=`True`
 - `right_bottom_visual_artifact_guard_tests`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-tests-current.md` linked=`True`
+- `first_mission_visual_audit`: `PASS` report=`captures\current\first-mission-visual-audit-current.md` linked=`True`
+- `first_mission_visual_audit_tests`: `PASS` report=`captures\current\first-mission-visual-audit-tests-current.md` linked=`True`
 - `right_bottom_grid_hit`: `PASS` report=`captures\current\right-bottom-grid-hit-current.md` linked=`True`
 - `right_bottom_grid_hit_summary_tests`: `PASS` report=`captures\current\right-bottom-grid-hit-summary-tests-current.md` linked=`True`
 - `right_bottom_grid_hit_probe_guard`: `PASS` report=`captures\current\right-bottom-grid-hit-probe-guard-current.md` linked=`True`

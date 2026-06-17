@@ -1,7 +1,7 @@
 # Right-Bottom Slot Fixture Script Guard Tests
 
 - Status: PASS
-- Generated: `2026-06-16T18:04:49+02:00`
+- Generated: `2026-06-17T09:47:51+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the right-bottom fixture preparation helper stays dry-run by default, copies only after -Execute, refuses live-save/repo outputs, and avoids visible-runtime APIs
 

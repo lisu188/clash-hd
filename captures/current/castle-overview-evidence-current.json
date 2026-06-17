@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T18:04:57+02:00",
+  "generated_at": "2026-06-17T09:47:58+02:00",
   "passed": true,
   "stage": "castlecenter-all",
   "promotion_status": "validation_stage_only",
@@ -104,7 +104,7 @@
       "failures": []
     },
     "overview_visual": {
-      "generated_at": "2026-06-16T18:04:57+02:00",
+      "generated_at": "2026-06-17T09:47:58+02:00",
       "run_dir": "captures\\archive\\cdb-surface-dump-20260515-105041",
       "log": "captures\\archive\\cdb-surface-dump-20260515-105041\\cdb-surface-dump.log",
       "screenshot": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",

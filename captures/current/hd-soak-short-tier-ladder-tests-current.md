@@ -1,7 +1,7 @@
 # HD Soak Short-Tier Ladder Tests
 
 - Status: PASS
-- Generated: `2026-06-16T18:05:31+02:00`
+- Generated: `2026-06-17T09:48:30+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the short soak ladder is ordered, approval-gated, non-promoting, and keeps long/future lanes locked until prerequisite soak evidence exists
 

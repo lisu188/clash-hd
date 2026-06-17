@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T18:05:33+02:00",
+  "generated_at": "2026-06-17T09:48:32+02:00",
   "passed": true,
   "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries",
@@ -46,18 +46,18 @@
     },
     "no_visible_runtime_guard": {
       "passed": true,
-      "run_count": 21,
-      "hidden_run_count": 21
+      "run_count": 22,
+      "hidden_run_count": 22
     },
     "no_popup_boundary": {
       "passed": true,
       "refresh_passed": true,
       "required_guard_count": 6,
-      "required_supporting_report_count": 82,
-      "required_report_count": 88,
+      "required_supporting_report_count": 86,
+      "required_report_count": 92,
       "summary_required_guard_count": 6,
-      "summary_required_supporting_report_count": 82,
-      "summary_required_report_count": 88
+      "summary_required_supporting_report_count": 86,
+      "summary_required_report_count": 92
     },
     "no_popup_map": {
       "passed": true,
@@ -187,8 +187,8 @@
         "visible_runtime_requires_approval": true,
         "visible_script_count": 8,
         "visible_passing_script_count": 8,
-        "no_visible_run_count": 21,
-        "no_visible_hidden_run_count": 21
+        "no_visible_run_count": 22,
+        "no_visible_hidden_run_count": 22
       },
       "failures": []
     },
@@ -198,11 +198,11 @@
         "passed": true,
         "refresh_passed": true,
         "required_guard_count": 6,
-        "required_supporting_report_count": 82,
-        "required_report_count": 88,
+        "required_supporting_report_count": 86,
+        "required_report_count": 92,
         "summary_required_guard_count": 6,
-        "summary_required_supporting_report_count": 82,
-        "summary_required_report_count": 88
+        "summary_required_supporting_report_count": 86,
+        "summary_required_report_count": 92
       },
       "failures": []
     },
@@ -313,7 +313,7 @@
         "no_popup_approval_found": true,
         "boundary_pass_found": true,
         "strict_boundary_counts_required": false,
-        "strict_boundary_counts_found": true
+        "strict_boundary_counts_found": false
       },
       "failures": []
     },

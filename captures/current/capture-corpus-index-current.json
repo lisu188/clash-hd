@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-06-16T18:05:32+02:00",
+  "generated_at": "2026-06-17T09:48:32+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures",
-  "artifact_count": 704,
-  "current_reference_count": 164,
+  "artifact_count": 711,
+  "current_reference_count": 166,
   "archived_reference_count": 508,
   "missing_current_refs": [],
   "reference_status_counts": {
     "archived_referenced": 283,
-    "current_referenced": 134,
-    "stale_unreferenced": 287
+    "current_referenced": 136,
+    "stale_unreferenced": 292
   },
   "era_counts": {
     "cdb_surface_dump_unverified": 60,
     "hidden_cdb_surface_dump": 129,
-    "other_capture_artifact": 499,
+    "other_capture_artifact": 506,
     "visible_era": 16
   },
   "stale_visible_or_sandbox_count": 16,
@@ -792,6 +792,26 @@
     "captures/current/hd-soak-approval-preflight-tests-current.md": {
       "ref": "captures/current/hd-soak-approval-preflight-tests-current.md",
       "entry": "current/hd-soak-approval-preflight-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-execution-boundary-current.md": {
+      "ref": "captures/current/hd-soak-execution-boundary-current.md",
+      "entry": "current/hd-soak-execution-boundary-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-execution-boundary-tests-current.md": {
+      "ref": "captures/current/hd-soak-execution-boundary-tests-current.md",
+      "entry": "current/hd-soak-execution-boundary-tests-current.md",
       "reference_class": "current_referenced",
       "sources": [
         "captures/current/hd-map-evidence-current.md"
@@ -11728,6 +11748,26 @@
       "has_run_summary": false
     },
     {
+      "name": "current/first-mission-visual-audit-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\first-mission-visual-audit-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/first-mission-visual-audit-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\first-mission-visual-audit-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/handoff-freshness-guard-current.json",
       "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\handoff-freshness-guard-current.json",
       "artifact_kind": "file",
@@ -11908,6 +11948,16 @@
       "has_run_summary": false
     },
     {
+      "name": "current/hd-map-evidence-index-check-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-map-evidence-index-check-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/hd-map-smoke-current.json",
       "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-map-smoke-current.json",
       "artifact_kind": "file",
@@ -12002,6 +12052,46 @@
       "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-dry-run-plan-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-execution-boundary-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-execution-boundary-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-execution-boundary-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-execution-boundary-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-execution-boundary-tests-current.json",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-execution-boundary-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-execution-boundary-tests-current.md",
+      "path": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\current\\hd-soak-execution-boundary-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,

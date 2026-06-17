@@ -125,6 +125,25 @@ def test_black_patch_regions_fail_playability(fixture: Path) -> None:
     report = first_mission_visual_audit.build_report([frame(png)], ns())
     assert report["passed"] is False, report
     assert "right_below_minimap" in report["summary"]["primary_black_patch_regions"], report
+    details = report["summary"]["primary_black_patch_details"]
+    assert set(details[0]) == {
+        "region",
+        "rect",
+        "black_percent",
+        "nonblack_percent",
+        "mean_luma",
+        "quantized_color_bins",
+    }, details
+    assert details[0]["region"] == "right_below_minimap", details
+    assert details[0]["rect"] == [586, 230, 799, 599], details
+    assert details[0]["black_percent"] >= 70.0, details
+    assert details[0]["nonblack_percent"] <= 30.0, details
+    assert details[0]["mean_luma"] >= 0.0, details
+    assert details[0]["quantized_color_bins"] > 0, details
+    assert report["primary_frame_path"] == str(png), report
+    assert report["summary"]["primary_frame_path"] == str(png), report
+    assert "compose or present path" in report["next_probe"], report
+    assert "compose or present path" in report["summary"]["next_probe"], report
 
 
 def test_legacy_middle_action_bar_fails_bottom_gate(fixture: Path) -> None:
@@ -161,7 +180,9 @@ def test_cli_writes_outputs(fixture: Path) -> None:
     assert run.returncode == 0, run.stdout + run.stderr
     payload = json.loads(out_json.read_text(encoding="utf-8"))
     assert payload["passed"] is True, payload
-    assert "First Mission Visual Audit" in out_md.read_text(encoding="utf-8")
+    markdown = out_md.read_text(encoding="utf-8")
+    assert "First Mission Visual Audit" in markdown
+    assert "Next probe:" in markdown
 
 
 def run_tests() -> None:

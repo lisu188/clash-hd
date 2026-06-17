@@ -90,6 +90,10 @@ def float_or_none(value: Any) -> float | None:
         return None
 
 
+def frame_display_name(frame: dict[str, Any], index: int) -> str:
+    return str(frame.get("Name") or f"frame-{index:04d}")
+
+
 def parse_timestamp(value: Any) -> datetime | None:
     if not isinstance(value, str) or not value.strip():
         return None
@@ -176,7 +180,16 @@ def evaluate_report(
     process_samples = list(report.get("process_samples") or [])
     capture_errors = list(report.get("capture_errors") or [])
     artifact_bytes = int(report.get("artifact_bytes") or 0)
-    artifact_limit_bytes = int(max_artifact_mb) * 1024 * 1024
+    reported_max_artifact_mb = integer_or_none(report.get("max_artifact_mb"))
+    reported_artifact_limit_bytes = integer_or_none(report.get("artifact_limit_bytes"))
+    default_artifact_limit_bytes = int(max_artifact_mb) * 1024 * 1024
+    effective_max_artifact_mb = reported_max_artifact_mb if reported_max_artifact_mb is not None else max_artifact_mb
+    expected_artifact_limit_bytes = int(effective_max_artifact_mb) * 1024 * 1024
+    artifact_limit_bytes = (
+        reported_artifact_limit_bytes
+        if reported_artifact_limit_bytes is not None
+        else default_artifact_limit_bytes
+    )
 
     checks: dict[str, Any] = {}
 
@@ -424,6 +437,78 @@ def evaluate_report(
     )
 
     failures = []
+    visual_anomaly_rows: list[dict[str, Any]] = []
+    for index, frame in enumerate(frame_samples):
+        name = frame_display_name(frame, index)
+        frame_flags: list[str] = []
+        frame_nonblack = float_or_none(frame.get("NonblackPercent"))
+        frame_luma = float_or_none(frame.get("MeanLuma"))
+        frame_unique = integer_or_none(frame.get("UniqueSampleColors"))
+        bounds = frame.get("NonblackBounds")
+        if not isinstance(bounds, dict):
+            frame_flags.append("missing_nonblack_bounds")
+        if frame_nonblack is None:
+            frame_flags.append("missing_nonblack_percent")
+        elif frame_nonblack < min_nonblack_percent:
+            frame_flags.append("black_or_blank_patch_risk")
+        if frame_luma is None:
+            frame_flags.append("missing_mean_luma")
+        if frame_unique is None:
+            frame_flags.append("missing_unique_sample_colors")
+        elif frame_unique < min_unique_sample_colors:
+            frame_flags.append("palette_or_stripe_risk")
+        if frame_flags:
+            visual_anomaly_rows.append(
+                {
+                    "name": name,
+                    "flags": frame_flags,
+                    "nonblack_percent": frame_nonblack,
+                    "mean_luma": frame_luma,
+                    "unique_sample_colors": frame_unique,
+                    "nonblack_bounds": bounds if isinstance(bounds, dict) else None,
+                }
+            )
+    missing_bounds_count = len(
+        [row for row in visual_anomaly_rows if "missing_nonblack_bounds" in row["flags"]]
+    )
+    black_patch_risk_count = len(
+        [row for row in visual_anomaly_rows if "black_or_blank_patch_risk" in row["flags"]]
+    )
+    palette_or_stripe_risk_count = len(
+        [row for row in visual_anomaly_rows if "palette_or_stripe_risk" in row["flags"]]
+    )
+    if executed:
+        if missing_bounds_count:
+            failures.append(
+                f"{missing_bounds_count} frame sample(s) are missing NonblackBounds for black-patch inspection"
+            )
+        if black_patch_risk_count:
+            failures.append(f"{black_patch_risk_count} frame sample(s) show black/blank patch risk")
+        if palette_or_stripe_risk_count:
+            failures.append(f"{palette_or_stripe_risk_count} frame sample(s) show palette/stripe risk")
+        missing_metric_count = len(
+            [
+                row
+                for row in visual_anomaly_rows
+                if any(flag.startswith("missing_") and flag != "missing_nonblack_bounds" for flag in row["flags"])
+            ]
+        )
+        if missing_metric_count:
+            failures.append(f"{missing_metric_count} frame sample(s) are missing visual anomaly metrics")
+    checks["visual_anomalies"] = check_record(
+        (not executed) or not failures,
+        {
+            "checked": executed,
+            "frame_sample_count": len(frame_samples),
+            "black_patch_risk_count": black_patch_risk_count,
+            "palette_or_stripe_risk_count": palette_or_stripe_risk_count,
+            "missing_nonblack_bounds_count": missing_bounds_count,
+            "anomaly_rows": visual_anomaly_rows,
+        },
+        failures,
+    )
+
+    failures = []
     frame_hash_unique_count = int(report.get("frame_hash_unique_count") or 0)
     route = str(report.get("route") or "")
     frame_progress_expected = bool(report.get("frame_progress_expected"))
@@ -619,6 +704,36 @@ def evaluate_report(
     )
 
     failures = []
+    route_names = [str(row.get("Name") or "") for row in route_results]
+    missing_route_name_count = len([name for name in route_names if not name])
+    expected_final_route_marker = route_names[-1] if route_names else route
+    final_route_marker = str(report.get("final_route_marker") or "")
+    if executed:
+        if not route_results:
+            failures.append("final_route_marker cannot prove completion without route/input rows")
+        if not final_route_marker:
+            failures.append("final_route_marker is missing")
+        if missing_route_name_count:
+            failures.append(f"{missing_route_name_count} route/input rows are missing Name")
+        if final_route_marker and final_route_marker != expected_final_route_marker:
+            failures.append(
+                f"final_route_marker {final_route_marker!r} does not match last route/input marker "
+                f"{expected_final_route_marker!r}"
+            )
+    checks["route_completion_marker"] = check_record(
+        (not executed) or not failures,
+        {
+            "route": route,
+            "final_route_marker": final_route_marker,
+            "expected_final_route_marker": expected_final_route_marker,
+            "route_markers": route_names,
+            "missing_route_name_count": missing_route_name_count,
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
     consistency_pairs: list[tuple[str, int | float | None, int | float | None, float]] = []
     if executed:
         consistency_pairs = [
@@ -709,11 +824,31 @@ def evaluate_report(
     )
 
     failures = []
-    if artifact_bytes > artifact_limit_bytes:
-        failures.append(f"artifact bytes {artifact_bytes} exceeds limit {artifact_limit_bytes}")
+    if executed:
+        if reported_max_artifact_mb is None:
+            failures.append("max_artifact_mb is missing")
+        elif reported_max_artifact_mb <= 0:
+            failures.append("max_artifact_mb must be positive")
+        if reported_artifact_limit_bytes is None:
+            failures.append("artifact_limit_bytes is missing")
+        elif reported_artifact_limit_bytes != expected_artifact_limit_bytes:
+            failures.append(
+                "artifact_limit_bytes "
+                f"{reported_artifact_limit_bytes} does not match max_artifact_mb-derived limit "
+                f"{expected_artifact_limit_bytes}"
+            )
+        if artifact_bytes > artifact_limit_bytes:
+            failures.append(f"artifact bytes {artifact_bytes} exceeds limit {artifact_limit_bytes}")
     checks["artifact_budget"] = check_record(
-        artifact_bytes <= artifact_limit_bytes,
-        {"artifact_bytes": artifact_bytes, "artifact_limit_bytes": artifact_limit_bytes},
+        (not executed) or not failures,
+        {
+            "artifact_bytes": artifact_bytes,
+            "max_artifact_mb": reported_max_artifact_mb,
+            "artifact_limit_bytes": reported_artifact_limit_bytes,
+            "effective_artifact_limit_bytes": artifact_limit_bytes,
+            "default_artifact_limit_bytes": default_artifact_limit_bytes,
+            "checked": executed,
+        },
         failures,
     )
 

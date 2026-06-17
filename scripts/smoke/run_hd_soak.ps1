@@ -35,6 +35,8 @@ param(
     [string]$OutputRoot = 'C:\ClashCaptures\hd-soak',
     [string]$ReportJson = 'captures\current\hd-soak-short-current.json',
     [string]$ReportMarkdown = 'captures\current\hd-soak-short-current.md',
+    [string]$VisibleRuntimeApprovalExpiresUtc = '',
+    [string]$VisibleRuntimeApprovalToken = '',
     [switch]$Execute,
     [switch]$AllowVisibleRuntime,
     [switch]$AllowRepoCandidateDir,
@@ -97,6 +99,21 @@ function Find-Python {
 function Quote-Arg {
     param([Parameter(Mandatory = $true)][string]$Value)
     return "'" + ($Value -replace "'", "''") + "'"
+}
+
+function Get-VisibleRuntimeApprovalToken {
+    param(
+        [Parameter(Mandatory = $true)][string[]]$Fields
+    )
+    $payload = ($Fields -join "`n")
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($payload)
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        $hash = $sha.ComputeHash($bytes)
+    } finally {
+        $sha.Dispose()
+    }
+    return ([System.BitConverter]::ToString($hash) -replace '-', '').ToLowerInvariant().Substring(0, 16)
 }
 
 function Get-TierDurationSec {
@@ -345,6 +362,7 @@ function Write-SoakMarkdown {
         "- Private-memory growth bytes: $(Format-NullableMetric $Report.private_memory_growth_bytes)",
         "- Handle growth: $(Format-NullableMetric $Report.handle_growth)",
         "- Artifact bytes: $($Report.artifact_bytes)",
+        "- Artifact limit bytes: $(Format-NullableMetric $Report.artifact_limit_bytes)",
         "- Unexpected exit: $($Report.process_exited_unexpectedly)",
         "- Clean stop: $($Report.clean_stop)",
         "- Route marker: $($Report.final_route_marker)",
@@ -411,6 +429,39 @@ $patchCommand = @(
     '--output', (Quote-Arg $CandidateFull),
     '--stage', (Quote-Arg $Stage)
 ) -join ' '
+$approvalExpiryHours = 12
+$minApprovalTtlMinutes = 30
+$approvalExpiresUtc = if ($VisibleRuntimeApprovalExpiresUtc) {
+    $VisibleRuntimeApprovalExpiresUtc
+} else {
+    [System.DateTimeOffset]::UtcNow.AddHours($approvalExpiryHours).ToString('o')
+}
+$approvalTokenFields = @(
+    $InputExeFull,
+    $WorkDirFull,
+    $Stage,
+    $Tier,
+    $Route,
+    [string]$DurationResolvedSec,
+    $CandidateDirFull,
+    $CandidateName,
+    $OutputRootFull,
+    $ReportJsonFull,
+    $ReportMarkdownFull,
+    $IntroSkipClickMode,
+    [string]$IntroSkipClicks,
+    [string]$SkipPulses,
+    [string]$MaxInputDriftPx,
+    [string]$SampleIntervalSec,
+    [string]$MinNonblackPercent,
+    [string]$MinUniqueSampleColors,
+    [string]$MaxArtifactMB,
+    [string]$MaxWorkingSetGrowthMB,
+    [string]$MaxPrivateMemoryGrowthMB,
+    [string]$MaxHandleGrowth,
+    $approvalExpiresUtc
+)
+$expectedVisibleRuntimeApprovalToken = Get-VisibleRuntimeApprovalToken -Fields $approvalTokenFields
 $executeCommand = @(
     'powershell.exe -NoProfile -ExecutionPolicy Bypass -File',
     (Quote-Arg (Join-Path $RepoRoot 'scripts\smoke\run_hd_soak.ps1')),
@@ -427,7 +478,16 @@ $executeCommand = @(
     '-IntroSkipClickMode', (Quote-Arg $IntroSkipClickMode),
     '-IntroSkipClicks', (Quote-Arg ([string]$IntroSkipClicks)),
     '-SkipPulses', (Quote-Arg ([string]$SkipPulses)),
+    '-SampleIntervalSec', (Quote-Arg ([string]$SampleIntervalSec)),
     '-MaxInputDriftPx', (Quote-Arg ([string]$MaxInputDriftPx)),
+    '-MinNonblackPercent', (Quote-Arg ([string]$MinNonblackPercent)),
+    '-MinUniqueSampleColors', (Quote-Arg ([string]$MinUniqueSampleColors)),
+    '-MaxArtifactMB', (Quote-Arg ([string]$MaxArtifactMB)),
+    '-MaxWorkingSetGrowthMB', (Quote-Arg ([string]$MaxWorkingSetGrowthMB)),
+    '-MaxPrivateMemoryGrowthMB', (Quote-Arg ([string]$MaxPrivateMemoryGrowthMB)),
+    '-MaxHandleGrowth', (Quote-Arg ([string]$MaxHandleGrowth)),
+    '-VisibleRuntimeApprovalExpiresUtc', (Quote-Arg $approvalExpiresUtc),
+    '-VisibleRuntimeApprovalToken', (Quote-Arg $expectedVisibleRuntimeApprovalToken),
     '-Execute',
     '-AllowVisibleRuntime',
     '-RequirePass',
@@ -463,6 +523,10 @@ $plan = [ordered]@{
         max_handle_growth = $MaxHandleGrowth
         max_artifact_mb = $MaxArtifactMB
     }
+    frame_limits = [ordered]@{
+        min_nonblack_percent = $MinNonblackPercent
+        min_unique_sample_colors = $MinUniqueSampleColors
+    }
     input_limits = [ordered]@{
         max_input_drift_px = $MaxInputDriftPx
     }
@@ -471,6 +535,15 @@ $plan = [ordered]@{
         click_repeat = $IntroSkipClicks
         space_pulses = $SkipPulses
         proof_class = 'intro_skip_harness_prep_not_manual_directinput_release_proof'
+    }
+    visible_runtime_approval = [ordered]@{
+        token = $expectedVisibleRuntimeApprovalToken
+        token_kind = 'sha256-16'
+        expires_utc = $approvalExpiresUtc
+        max_age_hours = $approvalExpiryHours
+        min_ttl_minutes = $minApprovalTtlMinutes
+        token_fields = $approvalTokenFields
+        purpose = 'copy-exact dry-run approval packet; edited, stale, or hand-typed visible runtime commands fail closed'
     }
     raw_artifacts_policy = 'raw PNG frames and per-step logs stay outside the repository by default'
     right_bottom_promotion_blocked = $true
@@ -506,6 +579,31 @@ if (-not $Execute) {
 
 if (-not $AllowVisibleRuntime) {
     throw 'Soak execution launches and captures a visible Clash95 runtime. Re-run with -AllowVisibleRuntime only after explicit user approval.'
+}
+if (-not $VisibleRuntimeApprovalToken) {
+    throw 'Visible runtime execution requires -VisibleRuntimeApprovalToken from a fresh dry-run approval packet.'
+}
+if (-not $VisibleRuntimeApprovalExpiresUtc) {
+    throw 'Visible runtime execution requires -VisibleRuntimeApprovalExpiresUtc from a fresh dry-run approval packet.'
+}
+try {
+    $approvalExpiry = [System.DateTimeOffset]::Parse(
+        $VisibleRuntimeApprovalExpiresUtc,
+        [System.Globalization.CultureInfo]::InvariantCulture,
+        [System.Globalization.DateTimeStyles]::AssumeUniversal
+    ).ToUniversalTime()
+} catch {
+    throw "Visible runtime approval expiry is invalid: $VisibleRuntimeApprovalExpiresUtc"
+}
+if ([System.DateTimeOffset]::UtcNow -gt $approvalExpiry) {
+    throw "Visible runtime approval expired at $($approvalExpiry.ToString('o')). Run a fresh dry-run and copy the new approval packet."
+}
+$approvalRemaining = $approvalExpiry - [System.DateTimeOffset]::UtcNow
+if ($approvalRemaining -lt [System.TimeSpan]::FromMinutes($minApprovalTtlMinutes)) {
+    throw "Visible runtime approval expires too soon at $($approvalExpiry.ToString('o')). Run a fresh dry-run so at least $minApprovalTtlMinutes minutes remain."
+}
+if ($VisibleRuntimeApprovalToken -ne $expectedVisibleRuntimeApprovalToken) {
+    throw "Visible runtime approval token does not match this command shape. Expected $expectedVisibleRuntimeApprovalToken."
 }
 if (-not $inputExists) {
     throw "Input executable does not exist: $InputExeFull"
@@ -805,6 +903,8 @@ $report = [ordered]@{
     max_handle_growth = $MaxHandleGrowth
     working_set_growth_limit_bytes = $workingSetLimitBytes
     private_memory_growth_limit_bytes = $privateMemoryLimitBytes
+    max_artifact_mb = $MaxArtifactMB
+    artifact_limit_bytes = $artifactLimitBytes
     artifact_bytes = $artifactBytes
     process_exited_unexpectedly = $unexpectedExit
     exit_code = $exitCode

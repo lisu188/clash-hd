@@ -1,0 +1,192 @@
+{
+  "generated_at": "2026-06-16T14:09:07+02:00",
+  "passed": false,
+  "runtime_policy": "repo-only PNG audit; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "first-mission frames must keep the play area rendered, avoid horizontal or vertical stripe signatures, and expose remaining large black UI patches as non-playable blockers instead of hiding them behind route success",
+  "current_status": "first_mission_visual_playability_not_proven",
+  "first_mission_visual_clean": false,
+  "primary_frame": "stable_minimap_probe",
+  "summary": {
+    "frame_count": 1,
+    "stripe_failure_frames": [],
+    "diagnostic_black_frames": [
+      "stable_minimap_probe"
+    ],
+    "primary_black_patch_regions": [
+      "bottom_right_panel",
+      "minimap_interior"
+    ],
+    "primary_play_area_nonblack": 0.0,
+    "primary_selected_action_bar_nonblack": 0.0,
+    "primary_selected_action_bar_mean_luma": 0.0,
+    "primary_selected_action_bar_visible": false,
+    "primary_legacy_middle_action_bar_nonblack": 0.0,
+    "primary_legacy_middle_action_bar_mean_luma": 0.0,
+    "primary_legacy_middle_action_bar_visible": false
+  },
+  "frames": [
+    {
+      "id": "stable_minimap_probe",
+      "primary": true,
+      "role": "stable_minimap_topband_probe",
+      "path": "captures\\archive\\cdb-surface-dump-20260616-140819\\surface.png",
+      "present": true,
+      "image": {
+        "width": 800,
+        "height": 600
+      },
+      "status": "black_patch_or_diagnostic_frame",
+      "passed": false,
+      "frame_clean_for_playability": false,
+      "play_area_rendered": false,
+      "selected_action_bar_visible": false,
+      "legacy_middle_action_bar_visible": false,
+      "black_patch_regions": [
+        "bottom_right_panel",
+        "minimap_interior"
+      ],
+      "regions": {
+        "play_area": {
+          "rect": [
+            32,
+            16,
+            585,
+            527
+          ],
+          "pixels": 283648,
+          "nonblack_percent": 0.0,
+          "black_percent": 100.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.0,
+          "min_luma": 0.0,
+          "max_luma": 0.0,
+          "quantized_color_bins": 1
+        },
+        "selected_action_bar": {
+          "rect": [
+            150,
+            528,
+            520,
+            573
+          ],
+          "pixels": 17066,
+          "nonblack_percent": 0.0,
+          "black_percent": 100.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.0,
+          "min_luma": 0.0,
+          "max_luma": 0.0,
+          "quantized_color_bins": 1
+        },
+        "legacy_middle_action_bar": {
+          "rect": [
+            150,
+            455,
+            520,
+            500
+          ],
+          "pixels": 17066,
+          "nonblack_percent": 0.0,
+          "black_percent": 100.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.0,
+          "min_luma": 0.0,
+          "max_luma": 0.0,
+          "quantized_color_bins": 1
+        },
+        "bottom_tooltip_strip": {
+          "rect": [
+            32,
+            528,
+            585,
+            599
+          ],
+          "pixels": 39888,
+          "nonblack_percent": 0.0,
+          "black_percent": 100.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.0,
+          "min_luma": 0.0,
+          "max_luma": 0.0,
+          "quantized_color_bins": 1
+        },
+        "right_below_minimap": {
+          "rect": [
+            586,
+            230,
+            799,
+            599
+          ],
+          "pixels": 79180,
+          "nonblack_percent": 49.12,
+          "black_percent": 50.88,
+          "bright_percent": 42.496,
+          "mean_luma": 55.748,
+          "min_luma": 0.0,
+          "max_luma": 248.832,
+          "quantized_color_bins": 117
+        },
+        "bottom_right_panel": {
+          "rect": [
+            586,
+            528,
+            799,
+            599
+          ],
+          "pixels": 15408,
+          "nonblack_percent": 4.582,
+          "black_percent": 95.418,
+          "bright_percent": 4.478,
+          "mean_luma": 5.441,
+          "min_luma": 0.0,
+          "max_luma": 142.305,
+          "quantized_color_bins": 14
+        },
+        "minimap_interior": {
+          "rect": [
+            594,
+            24,
+            793,
+            220
+          ],
+          "pixels": 39400,
+          "nonblack_percent": 1.439,
+          "black_percent": 98.561,
+          "bright_percent": 1.079,
+          "mean_luma": 1.675,
+          "min_luma": 0.0,
+          "max_luma": 255.0,
+          "quantized_color_bins": 17
+        }
+      },
+      "stripe_metrics": {
+        "rect": [
+          32,
+          16,
+          585,
+          527
+        ],
+        "diff_threshold": 40.0,
+        "max_high_percent": 12.0,
+        "max_excess_percent": 8.0,
+        "vertical_high_percent": 0.0,
+        "horizontal_high_percent": 0.0,
+        "vertical_excess_percent": 0.0,
+        "horizontal_excess_percent": 0.0,
+        "vertical_mean_diff": 0.0,
+        "horizontal_mean_diff": 0.0,
+        "mean_diff_ratio_x_over_y": 0.0,
+        "vertical_stripe_detected": false,
+        "horizontal_stripe_detected": false,
+        "passed": true
+      },
+      "failures": [
+        "play area is mostly black or missing",
+        "primary frame selected-unit action bar is not visible"
+      ]
+    }
+  ],
+  "failures": [
+    "primary first-mission frame is not visually clean for playability: play area is mostly black or missing, primary frame selected-unit action bar is not visible, black patch: bottom_right_panel, black patch: minimap_interior"
+  ]
+}

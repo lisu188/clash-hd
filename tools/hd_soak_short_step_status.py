@@ -83,6 +83,16 @@ def artifact_mismatch_failures(
     return failures
 
 
+def triage_visual_summary(triage: dict[str, Any]) -> dict[str, Any]:
+    visual = triage.get("visual_anomalies") or {}
+    return {
+        "visual_anomaly_passed": visual.get("passed"),
+        "black_patch_risk_count": visual.get("black_patch_risk_count"),
+        "palette_or_stripe_risk_count": visual.get("palette_or_stripe_risk_count"),
+        "missing_nonblack_bounds_count": visual.get("missing_nonblack_bounds_count"),
+    }
+
+
 def step_status(
     step: dict[str, Any],
     *,
@@ -245,6 +255,7 @@ def step_status(
             "frame_sample_count": report.get("frame_sample_count"),
             "final_route_marker": report.get("final_route_marker"),
             "candidate_sha256": report.get("candidate_sha256"),
+            **triage_visual_summary(triage),
         },
     )
 

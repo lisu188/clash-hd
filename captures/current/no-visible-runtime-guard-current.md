@@ -1,11 +1,11 @@
 # No-Visible Runtime Guard
 
 - Overall: PASS
-- Generated: `2026-06-16T18:05:12+02:00`
+- Generated: `2026-06-17T09:48:11+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: all referenced CDB surface-dump runs must be hidden-desktop evidence
-- Referenced CDB surface-dump runs: `21`
-- Hidden-desktop runs: `21`
+- Referenced CDB surface-dump runs: `22`
+- Hidden-desktop runs: `22`
 
 ## Runs
 
@@ -30,3 +30,4 @@
 - `captures\archive\cdb-surface-dump-20260518-213418`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter`
 - `captures\archive\cdb-surface-dump-20260520-202424`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter`
 - `captures\archive\cdb-surface-dump-20260523-001159`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter`
+- `captures\archive\cdb-surface-dump-20260616-153751`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw`

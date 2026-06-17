@@ -13,6 +13,9 @@ from typing import Any
 
 import hd_soak_intro_skip_rerun_readiness as readiness
 
+APPROVAL_TOKEN = "1234567890abcdef"
+APPROVAL_EXPIRES_UTC = "2026-06-16T20:00:00.0000000+00:00"
+
 
 def write_json(path: Path, data: dict[str, Any]) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -26,7 +29,13 @@ def command() -> str:
         r"'scripts\smoke\run_hd_soak.ps1' "
         "-Tier 'short2' -Route 'menu-idle' "
         "-IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' "
-        "-MaxInputDriftPx '1' -Execute -AllowVisibleRuntime -RequirePass -Json"
+        "-SampleIntervalSec '15' -MaxInputDriftPx '1' "
+        "-MinNonblackPercent '10' -MinUniqueSampleColors '8' "
+        "-MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' "
+        "-MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' "
+        f"-VisibleRuntimeApprovalExpiresUtc '{APPROVAL_EXPIRES_UTC}' "
+        f"-VisibleRuntimeApprovalToken '{APPROVAL_TOKEN}' "
+        "-Execute -AllowVisibleRuntime -RequirePass -Json"
     )
 
 
@@ -66,6 +75,14 @@ def reports() -> dict[str, dict[str, Any]]:
                 "candidate_path": r"C:\ClashTests\hd-soak\candidate.exe",
                 "output_root": r"C:\ClashCaptures\hd-soak",
                 "intro_skip": dict(readiness.EXPECTED_INTRO_SKIP),
+                "visible_runtime_approval": {
+                    "token": APPROVAL_TOKEN,
+                    "token_kind": "sha256-16",
+                    "expires_utc": APPROVAL_EXPIRES_UTC,
+                    "max_age_hours": 12,
+                    "token_fields": ["fixture", APPROVAL_EXPIRES_UTC],
+                    "purpose": "copy-exact dry-run approval packet; edited, stale, or hand-typed visible runtime commands fail closed",
+                },
             },
         },
         "visible_runtime_guard": {"passed": True},
@@ -98,6 +115,8 @@ def test_ready_packet_passes() -> None:
     assert report["intro_skip_contract"]["click_mode"] == "postmessage"
     assert "visible Clash95 game window" in report["approval_boundary"]
     assert "-AllowVisibleRuntime" in report["dry_run_plan"]["approval_gated_execute_command"]
+    assert "-VisibleRuntimeApprovalExpiresUtc" in report["dry_run_plan"]["approval_gated_execute_command"]
+    assert "-VisibleRuntimeApprovalToken" in report["dry_run_plan"]["approval_gated_execute_command"]
 
 
 def test_rejects_wrong_triage_classification() -> None:
@@ -119,6 +138,31 @@ def test_rejects_intro_skip_command_drift() -> None:
     assert report["passed"] is False
     assert any("approval command missing fragment: -IntroSkipClickMode" in failure for failure in report["failures"])
     assert any("dry-run intro_skip click_mode" in failure for failure in report["failures"])
+
+
+def test_rejects_visible_runtime_token_drift() -> None:
+    data = reports()
+    data["dry_run_plan"]["approval_gated_execute_command"] = command().replace(
+        f"-VisibleRuntimeApprovalToken '{APPROVAL_TOKEN}' ",
+        "",
+    )
+    data["dry_run_plan"]["plan"]["visible_runtime_approval"]["token"] = ""
+    report = build_fixture_report(data)
+    assert report["passed"] is False
+    assert any("approval token" in failure for failure in report["failures"])
+
+
+def test_rejects_visible_runtime_expiry_drift() -> None:
+    data = reports()
+    data["dry_run_plan"]["approval_gated_execute_command"] = command().replace(
+        f"-VisibleRuntimeApprovalExpiresUtc '{APPROVAL_EXPIRES_UTC}' ",
+        "",
+    )
+    data["dry_run_plan"]["plan"]["visible_runtime_approval"]["expires_utc"] = ""
+    data["dry_run_plan"]["plan"]["visible_runtime_approval"]["token_fields"] = ["fixture"]
+    report = build_fixture_report(data)
+    assert report["passed"] is False
+    assert any("approval expires_utc" in failure or "approval expiry" in failure for failure in report["failures"])
 
 
 def test_cli_writes_outputs() -> None:
@@ -166,6 +210,8 @@ def run_tests() -> None:
     test_ready_packet_passes()
     test_rejects_wrong_triage_classification()
     test_rejects_intro_skip_command_drift()
+    test_rejects_visible_runtime_token_drift()
+    test_rejects_visible_runtime_expiry_drift()
     test_cli_writes_outputs()
 
 

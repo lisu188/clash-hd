@@ -1,18 +1,18 @@
 # Python Runtime Safety Guard
 
 - Overall: PASS
-- Generated: `2026-06-16T18:05:12+02:00`
+- Generated: `2026-06-17T09:48:11+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt
-- Python files scanned: `214`
-- Risky files: `105`
+- Python files scanned: `216`
+- Risky files: `107`
 
 ## Classification Counts
 
-- `exempt`: `24`
+- `exempt`: `25`
 - `manual_visible_runtime_gated`: `2`
 - `safe`: `109`
-- `test_fixture`: `79`
+- `test_fixture`: `80`
 
 ## Risky Helpers
 
@@ -34,7 +34,9 @@
   - repo-only approval packet builder; postmessage and runtime text appear only in non-executing command validation
 - `tools/hd_soak_dry_run_plan.py`: `exempt` risks=`['postmessage', 'process_launch', 'subprocess']`
   - repo-only dry-run handoff guard; subprocess is limited to the soak harness without -Execute and does not launch Clash95, CDB, wrappers, or visible windows
-- `tools/hd_soak_failure_triage.py`: `exempt` risks=`['postmessage']`
+- `tools/hd_soak_execution_boundary.py`: `exempt` risks=`['postmessage', 'subprocess']`
+  - repo-local negative approval-boundary probe; subprocess uses invalid visible-runtime approval packets plus a nonexistent input executable and must fail before launch side effects
+- `tools/hd_soak_failure_triage.py`: `exempt` risks=`['postmessage', 'sendinput']`
   - repo-only report classifier; postmessage text appears only in failure guidance and no runtime APIs are called
 - `tools/hd_soak_harness_guard.py`: `exempt` risks=`['postmessage']`
   - repo-only PowerShell source scanner; postmessage text appears only in required source-token checks
@@ -117,6 +119,8 @@
 - `tools/test_hd_soak_approval_preflight.py`: `test_fixture` risks=`['postmessage', 'process_launch', 'sendinput', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_hd_soak_dry_run_plan.py`: `test_fixture` risks=`['postmessage', 'process_launch', 'sendinput', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_hd_soak_execution_boundary.py`: `test_fixture` risks=`['subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_hd_soak_failure_triage.py`: `test_fixture` risks=`['postmessage', 'process_launch', 'sendinput', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
