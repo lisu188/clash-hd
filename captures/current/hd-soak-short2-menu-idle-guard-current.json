@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T16:05:28.249197+00:00",
+  "generated_at": "2026-06-17T07:48:26.976457+00:00",
   "runtime_policy": "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "overall": false,
   "source_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
@@ -194,6 +194,38 @@
         "minimum nonblack percent 9.697 is below 10.0"
       ]
     },
+    "visual_anomalies": {
+      "passed": false,
+      "summary": {
+        "checked": true,
+        "frame_sample_count": 1,
+        "black_patch_risk_count": 1,
+        "palette_or_stripe_risk_count": 0,
+        "missing_nonblack_bounds_count": 0,
+        "anomaly_rows": [
+          {
+            "name": "frame-0000",
+            "flags": [
+              "black_or_blank_patch_risk"
+            ],
+            "nonblack_percent": 9.697,
+            "mean_luma": 3.126,
+            "unique_sample_colors": 249,
+            "nonblack_bounds": {
+              "X": 20,
+              "Y": 116,
+              "Right": 604,
+              "Bottom": 340,
+              "Width": 585,
+              "Height": 225
+            }
+          }
+        ]
+      },
+      "failures": [
+        "1 frame sample(s) show black/blank patch risk"
+      ]
+    },
     "frame_progression": {
       "passed": true,
       "summary": {
@@ -271,6 +303,20 @@
         "1 route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes"
       ]
     },
+    "route_completion_marker": {
+      "passed": true,
+      "summary": {
+        "route": "menu-idle",
+        "final_route_marker": "intro-skip",
+        "expected_final_route_marker": "intro-skip",
+        "route_markers": [
+          "intro-skip"
+        ],
+        "missing_route_name_count": 0,
+        "checked": true
+      },
+      "failures": []
+    },
     "summary_consistency": {
       "passed": true,
       "summary": {
@@ -287,12 +333,19 @@
       "failures": []
     },
     "artifact_budget": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "artifact_bytes": 124455,
-        "artifact_limit_bytes": 262144000
+        "max_artifact_mb": null,
+        "artifact_limit_bytes": null,
+        "effective_artifact_limit_bytes": 262144000,
+        "default_artifact_limit_bytes": 262144000,
+        "checked": true
       },
-      "failures": []
+      "failures": [
+        "max_artifact_mb is missing",
+        "artifact_limit_bytes is missing"
+      ]
     }
   },
   "failures": [
@@ -300,6 +353,7 @@
     "source soak report contains 8 failure(s)",
     "frame sample count 1 is below 2",
     "minimum nonblack percent 9.697 is below 10.0",
+    "1 frame sample(s) show black/blank patch risk",
     "process exited unexpectedly with code 1",
     "process was not stopped cleanly by the harness",
     "2 process samples reported HasExited=True",
@@ -309,6 +363,8 @@
     "frame sample elapsed coverage could not be computed",
     "process sample elapsed coverage 16.606s is below required 103.000s",
     "1 route/input rows did not verify",
-    "1 route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes"
+    "1 route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes",
+    "max_artifact_mb is missing",
+    "artifact_limit_bytes is missing"
   ]
 }

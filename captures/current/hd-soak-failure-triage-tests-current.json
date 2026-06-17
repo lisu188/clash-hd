@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T18:05:28+02:00",
+  "generated_at": "2026-06-17T09:48:26+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves soak failures are classified into approval, crash, render/palette, input-route, frame-progression, process-growth, capture, artifact-budget, insufficient-sample hang, elapsed-coverage, cleanup, or unclassified buckets with next probes",
@@ -7,7 +7,9 @@
     "hd_soak_failure_triage classifies pending visible-runtime approval separately from a game failure",
     "hd_soak_failure_triage classifies AV crashes from exit code 0xC0000005",
     "hd_soak_failure_triage classifies unexpected non-AV process exits",
+    "hd_soak_failure_triage enriches missing route click mode from per-route probe JSON",
     "hd_soak_failure_triage classifies render/palette metric regressions",
+    "hd_soak_failure_triage records visual anomaly summary counts",
     "hd_soak_failure_triage classifies route/input probe failures",
     "hd_soak_failure_triage classifies route/input drift failures",
     "hd_soak_failure_triage classifies frame progression failures",

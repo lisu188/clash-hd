@@ -31,6 +31,7 @@ def fixture_args(tmp: Path) -> argparse.Namespace:
         right_bottom_json=tmp / "right-bottom.json",
         castle_json=tmp / "castle.json",
         battle_json=tmp / "battle.json",
+        first_mission_visual_json=tmp / "first-mission-visual.json",
         completion_json=tmp / "completion.json",
         continuity_json=tmp / "continuity.json",
         exe_artifact_json=tmp / "exe.json",
@@ -109,6 +110,23 @@ def write_complete_fixture(args: argparse.Namespace) -> None:
             "passed": True,
             "promotion_status": "release_ready",
             "stable_stage_should_change": False,
+        },
+    )
+    write_json(
+        args.first_mission_visual_json,
+        {
+            "passed": True,
+            "current_status": "first_mission_visual_clean",
+            "first_mission_visual_clean": True,
+            "primary_frame": "centered_bottom_edge_panel",
+            "primary_frame_path": r"captures\archive\clean\surface.png",
+            "next_probe": "rerun first_mission_visual_audit.py after the next first-mission visual evidence refresh",
+            "summary": {
+                "primary_selected_action_bar_visible": True,
+                "primary_legacy_middle_action_bar_visible": False,
+                "primary_black_patch_regions": [],
+                "stripe_failure_frames": [],
+            },
         },
     )
     write_json(args.completion_json, {"passed": True, "full_game_complete": True})
@@ -344,6 +362,128 @@ def test_validation_only_right_bottom_blocks_release() -> None:
         assert req(report, "right_bottom_action_menu")["status"] == "blocked"
 
 
+def test_first_mission_visual_top_level_clean_flag_satisfies_requirement() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        args = fixture_args(Path(directory))
+        write_complete_fixture(args)
+        write_json(
+            args.first_mission_visual_json,
+            {
+                "passed": True,
+                "current_status": "first_mission_visual_clean",
+                "first_mission_visual_clean": True,
+                "primary_frame": "centered_bottom_edge_panel",
+                "primary_frame_path": r"captures\archive\clean\surface.png",
+                "next_probe": "rerun first_mission_visual_audit.py",
+                "summary": {
+                    "primary_selected_action_bar_visible": True,
+                    "primary_legacy_middle_action_bar_visible": False,
+                    "primary_black_patch_regions": [],
+                    "stripe_failure_frames": [],
+                },
+            },
+        )
+        report = checklist.build_checklist(args)
+    visual = req(report, "first_mission_visual_clean")
+    assert report["passed"] is True, report["failures"]
+    assert visual["passed"] is True
+    assert visual["details"]["current_status"] == "first_mission_visual_clean"
+    assert visual["details"]["primary_frame"] == "centered_bottom_edge_panel"
+    assert visual["details"]["primary_frame_path"] == r"captures\archive\clean\surface.png"
+
+
+def test_first_mission_visual_summary_clean_flag_satisfies_requirement() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        args = fixture_args(Path(directory))
+        write_complete_fixture(args)
+        write_json(
+            args.first_mission_visual_json,
+            {
+                "passed": True,
+                "summary": {
+                    "current_status": "first_mission_visual_clean",
+                    "first_mission_visual_clean": True,
+                    "primary_frame": "centered_bottom_edge_panel",
+                    "primary_frame_path": r"captures\archive\clean-summary\surface.png",
+                    "primary_selected_action_bar_visible": True,
+                    "primary_legacy_middle_action_bar_visible": False,
+                    "primary_black_patch_regions": [],
+                    "stripe_failure_frames": [],
+                    "next_probe": "rerun first_mission_visual_audit.py",
+                },
+            },
+        )
+        report = checklist.build_checklist(args)
+    visual = req(report, "first_mission_visual_clean")
+    assert report["passed"] is True, report["failures"]
+    assert visual["passed"] is True
+    assert visual["details"]["current_status"] == "first_mission_visual_clean"
+    assert visual["details"]["primary_frame"] == "centered_bottom_edge_panel"
+    assert visual["details"]["primary_frame_path"] == r"captures\archive\clean-summary\surface.png"
+    assert visual["details"]["next_probe"] == "rerun first_mission_visual_audit.py"
+
+
+def test_first_mission_visual_blockers_block_release() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        args = fixture_args(Path(directory))
+        write_complete_fixture(args)
+        write_json(
+            args.first_mission_visual_json,
+            {
+                "passed": False,
+                "current_status": "selected_unit_action_bar_on_bottom_but_black_ui_patches_remain",
+                "primary_frame": "centered_bottom_edge_panel",
+                "primary_frame_path": r"captures\archive\blocked\surface.png",
+                "next_probe": "inspect the primary frame's right-side/minimap/bottom-panel compose or present path",
+                "summary": {
+                    "first_mission_visual_clean": False,
+                    "primary_selected_action_bar_visible": True,
+                    "primary_legacy_middle_action_bar_visible": False,
+                    "primary_black_patch_regions": [
+                        "right_below_minimap",
+                        "bottom_right_panel",
+                        "minimap_interior",
+                    ],
+                    "primary_black_patch_details": [
+                        {
+                            "region": "right_below_minimap",
+                            "rect": [586, 230, 799, 599],
+                            "black_percent": 76.407,
+                            "nonblack_percent": 23.593,
+                            "mean_luma": 22.011,
+                            "quantized_color_bins": 19,
+                        }
+                    ],
+                    "stripe_failure_frames": [],
+                },
+                "failures": ["primary first-mission frame is not visually clean"],
+            },
+        )
+        report = checklist.build_checklist(args)
+    visual = req(report, "first_mission_visual_clean")
+    assert report["passed"] is False
+    assert visual["status"] == "blocked"
+    assert visual["details"]["selected_action_bar_visible"] is True
+    assert visual["details"]["legacy_middle_action_bar_visible"] is False
+    assert visual["details"]["black_patch_regions"] == [
+        "right_below_minimap",
+        "bottom_right_panel",
+        "minimap_interior",
+    ]
+    assert visual["details"]["black_patch_details"] == [
+        {
+            "region": "right_below_minimap",
+            "rect": [586, 230, 799, 599],
+            "black_percent": 76.407,
+            "nonblack_percent": 23.593,
+            "mean_luma": 22.011,
+            "quantized_color_bins": 19,
+        }
+    ]
+    assert visual["details"]["next_probe"].startswith("inspect the primary frame")
+    assert "black patches: right_below_minimap, bottom_right_panel, minimap_interior" in visual["summary"]
+
+
 def test_cli_writes_outputs_and_fails_closed() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -374,6 +514,8 @@ def test_cli_writes_outputs_and_fails_closed() -> None:
             str(args.castle_json),
             "--battle-json",
             str(args.battle_json),
+            "--first-mission-visual-json",
+            str(args.first_mission_visual_json),
             "--completion-json",
             str(args.completion_json),
             "--continuity-json",
@@ -403,6 +545,9 @@ def run_tests() -> None:
     test_canonical_short_step_status_satisfies_first_soak()
     test_pending_manual_input_blocks_menu_and_map()
     test_validation_only_right_bottom_blocks_release()
+    test_first_mission_visual_top_level_clean_flag_satisfies_requirement()
+    test_first_mission_visual_summary_clean_flag_satisfies_requirement()
+    test_first_mission_visual_blockers_block_release()
     test_cli_writes_outputs_and_fails_closed()
 
 

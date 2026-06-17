@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-06-16T18:05:34+02:00",
+  "generated_at": "2026-06-17T09:48:33+02:00",
   "passed": true,
   "runtime_policy": "repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report",
   "evidence_index": "captures\\current\\hd-map-evidence-current.md",
   "required_guard_count": 6,
-  "required_supporting_report_count": 82,
-  "required_report_count": 88,
+  "required_supporting_report_count": 86,
+  "required_report_count": 92,
   "required_guards": [
     "stable_stage_guard",
     "exe_artifact_guard",
@@ -23,6 +23,8 @@
     "visible_runtime_launcher_guard_tests",
     "python_runtime_safety_guard",
     "python_runtime_safety_guard_tests",
+    "hd_soak_execution_boundary",
+    "hd_soak_execution_boundary_tests",
     "patch_definition_guard",
     "patch_definition_guard_tests",
     "capture_corpus_index",
@@ -48,6 +50,8 @@
     "right_bottom_blocker_triage_tests",
     "right_bottom_visual_artifact_guard",
     "right_bottom_visual_artifact_guard_tests",
+    "first_mission_visual_audit",
+    "first_mission_visual_audit_tests",
     "right_bottom_grid_hit",
     "right_bottom_grid_hit_summary_tests",
     "right_bottom_grid_hit_probe_guard",
@@ -113,6 +117,8 @@
     "visible_runtime_launcher_guard_tests",
     "python_runtime_safety_guard",
     "python_runtime_safety_guard_tests",
+    "hd_soak_execution_boundary",
+    "hd_soak_execution_boundary_tests",
     "patch_definition_guard",
     "patch_definition_guard_tests",
     "capture_corpus_index",
@@ -138,6 +144,8 @@
     "right_bottom_blocker_triage_tests",
     "right_bottom_visual_artifact_guard",
     "right_bottom_visual_artifact_guard_tests",
+    "first_mission_visual_audit",
+    "first_mission_visual_audit_tests",
     "right_bottom_grid_hit",
     "right_bottom_grid_hit_summary_tests",
     "right_bottom_grid_hit_probe_guard",
@@ -194,6 +202,8 @@
       "passed": true,
       "summary": {
         "purpose": "validation-only groups stay out of the stable HD map stage",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "stable-stage-guard-current.md",
         "refresh_markdown": "captures\\current\\stable-stage-guard-current.md",
         "refresh_json": "captures\\current\\stable-stage-guard-current.json",
@@ -206,6 +216,8 @@
       "passed": true,
       "summary": {
         "purpose": "repository contains no tracked or filesystem .exe artifacts",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "exe-artifact-guard-current.md",
         "refresh_markdown": "captures\\current\\exe-artifact-guard-current.md",
         "refresh_json": "captures\\current\\exe-artifact-guard-current.json",
@@ -218,6 +230,8 @@
       "passed": true,
       "summary": {
         "purpose": "surface-dump launcher defaults to hidden desktop",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "surface-dump-policy-guard-current.md",
         "refresh_markdown": "captures\\current\\surface-dump-policy-guard-current.md",
         "refresh_json": "captures\\current\\surface-dump-policy-guard-current.json",
@@ -230,6 +244,8 @@
       "passed": true,
       "summary": {
         "purpose": "legacy visible-runtime launchers require explicit approval switch",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "visible-runtime-launcher-guard-current.md",
         "refresh_markdown": "captures\\current\\visible-runtime-launcher-guard-current.md",
         "refresh_json": "captures\\current\\visible-runtime-launcher-guard-current.json",
@@ -242,6 +258,8 @@
       "passed": true,
       "summary": {
         "purpose": "referenced CDB surface-dump evidence is hidden-desktop",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "no-visible-runtime-guard-current.md",
         "refresh_markdown": "captures\\current\\no-visible-runtime-guard-current.md",
         "refresh_json": "captures\\current\\no-visible-runtime-guard-current.json",
@@ -254,6 +272,8 @@
       "passed": true,
       "summary": {
         "purpose": "no cdb.exe or clash95* process is left running",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "process-hygiene-guard-current.md",
         "refresh_markdown": "captures\\current\\process-hygiene-guard-current.md",
         "refresh_json": "captures\\current\\process-hygiene-guard-current.json",
@@ -266,6 +286,8 @@
       "passed": true,
       "summary": {
         "purpose": "compact no-popup map visibility and forced-visible baseline",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "no-popup-map-evidence-current.md",
         "refresh_markdown": "captures\\current\\no-popup-map-evidence-current.md",
         "refresh_json": "captures\\current\\no-popup-map-evidence-current.json",
@@ -278,6 +300,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the no-popup map evidence matrix",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "no-popup-map-evidence-tests-current.md",
         "refresh_markdown": "captures\\current\\no-popup-map-evidence-tests-current.md",
         "refresh_json": "captures\\current\\no-popup-map-evidence-tests-current.json",
@@ -290,6 +314,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the no-visible runtime guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "no-visible-runtime-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\no-visible-runtime-guard-tests-current.md",
         "refresh_json": "captures\\current\\no-visible-runtime-guard-tests-current.json",
@@ -302,6 +328,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the no-popup guard set",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "no-popup-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\no-popup-guard-tests-current.md",
         "refresh_json": "captures\\current\\no-popup-guard-tests-current.json",
@@ -314,6 +342,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for legacy visible-runtime launcher gates",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "visible-runtime-launcher-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\visible-runtime-launcher-guard-tests-current.md",
         "refresh_json": "captures\\current\\visible-runtime-launcher-guard-tests-current.json",
@@ -326,6 +356,8 @@
       "passed": true,
       "summary": {
         "purpose": "Python helpers with runtime/window/input APIs are gated, exempt, or fail closed",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "python-runtime-safety-current.md",
         "refresh_markdown": "captures\\current\\python-runtime-safety-current.md",
         "refresh_json": "captures\\current\\python-runtime-safety-current.json",
@@ -338,9 +370,39 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for risky Python helper classification",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "python-runtime-safety-tests-current.md",
         "refresh_markdown": "captures\\current\\python-runtime-safety-tests-current.md",
         "refresh_json": "captures\\current\\python-runtime-safety-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "hd_soak_execution_boundary": {
+      "passed": true,
+      "summary": {
+        "purpose": "negative soak harness execution-boundary proof for bad visible-runtime approval packets",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "hd-soak-execution-boundary-current.md",
+        "refresh_markdown": "captures\\current\\hd-soak-execution-boundary-current.md",
+        "refresh_json": "captures\\current\\hd-soak-execution-boundary-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "hd_soak_execution_boundary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the soak execution-boundary proof",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "hd-soak-execution-boundary-tests-current.md",
+        "refresh_markdown": "captures\\current\\hd-soak-execution-boundary-tests-current.md",
+        "refresh_json": "captures\\current\\hd-soak-execution-boundary-tests-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
@@ -350,6 +412,8 @@
       "passed": true,
       "summary": {
         "purpose": "patch stage definitions keep stable and validation-only groups separated",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "patch-definition-current.md",
         "refresh_markdown": "captures\\current\\patch-definition-current.md",
         "refresh_json": "captures\\current\\patch-definition-current.json",
@@ -362,6 +426,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for patch definition drift and overlap failures",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "patch-definition-tests-current.md",
         "refresh_markdown": "captures\\current\\patch-definition-tests-current.md",
         "refresh_json": "captures\\current\\patch-definition-tests-current.json",
@@ -374,6 +440,8 @@
       "passed": true,
       "summary": {
         "purpose": "read-only capture corpus index prevents stale visible-era artifacts becoming current blockers",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "capture-corpus-index-current.md",
         "refresh_markdown": "captures\\current\\capture-corpus-index-current.md",
         "refresh_json": "captures\\current\\capture-corpus-index-current.json",
@@ -386,6 +454,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for capture reference and stale artifact classification",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "capture-corpus-index-tests-current.md",
         "refresh_markdown": "captures\\current\\capture-corpus-index-tests-current.md",
         "refresh_json": "captures\\current\\capture-corpus-index-tests-current.json",
@@ -398,6 +468,8 @@
       "passed": true,
       "summary": {
         "purpose": "percentage progress report stays generated from current evidence gates",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "current-completion-summary-current.md",
         "refresh_markdown": "captures\\current\\current-completion-summary-current.md",
         "refresh_json": "captures\\current\\current-completion-summary-current.json",
@@ -410,6 +482,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the generated percentage progress report",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "current-completion-summary-tests-current.md",
         "refresh_markdown": "captures\\current\\current-completion-summary-tests-current.md",
         "refresh_json": "captures\\current\\current-completion-summary-tests-current.json",
@@ -422,6 +496,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the process hygiene guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "process-hygiene-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\process-hygiene-guard-tests-current.md",
         "refresh_json": "captures\\current\\process-hygiene-guard-tests-current.json",
@@ -434,6 +510,8 @@
       "passed": true,
       "summary": {
         "purpose": "remaining manual DirectInput targets stay enumerated and promotion remains blocked",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "manual-directinput-validation-checklist-current.md",
         "refresh_markdown": "captures\\current\\manual-directinput-validation-checklist-current.md",
         "refresh_json": "captures\\current\\manual-directinput-validation-checklist-current.json",
@@ -446,6 +524,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the manual DirectInput checklist",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "manual-directinput-validation-checklist-tests-current.md",
         "refresh_markdown": "captures\\current\\manual-directinput-validation-checklist-tests-current.md",
         "refresh_json": "captures\\current\\manual-directinput-validation-checklist-tests-current.json",
@@ -458,6 +538,8 @@
       "passed": true,
       "summary": {
         "purpose": "manual DirectInput proof manifest template stays visible and non-promoting",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "manual-directinput-proof-template-current.md",
         "refresh_markdown": "captures\\current\\manual-directinput-proof-template-current.md",
         "refresh_json": "captures\\current\\manual-directinput-proof-template-report-current.json",
@@ -470,6 +552,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the manual DirectInput proof template",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "manual-directinput-proof-template-tests-current.md",
         "refresh_markdown": "captures\\current\\manual-directinput-proof-template-tests-current.md",
         "refresh_json": "captures\\current\\manual-directinput-proof-template-tests-current.json",
@@ -482,6 +566,8 @@
       "passed": true,
       "summary": {
         "purpose": "approval-gated visible/manual DirectInput command plan remains non-executing and non-promoting",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "manual-directinput-run-plan-current.md",
         "refresh_markdown": "captures\\current\\manual-directinput-run-plan-current.md",
         "refresh_json": "captures\\current\\manual-directinput-run-plan-current.json",
@@ -494,6 +580,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the manual DirectInput run plan",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "manual-directinput-run-plan-tests-current.md",
         "refresh_markdown": "captures\\current\\manual-directinput-run-plan-tests-current.md",
         "refresh_json": "captures\\current\\manual-directinput-run-plan-tests-current.json",
@@ -506,6 +594,8 @@
       "passed": true,
       "summary": {
         "purpose": "CDB-only promotion override remains inactive in current evidence",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "promotion-override-guard-current.md",
         "refresh_markdown": "captures\\current\\promotion-override-guard-current.md",
         "refresh_json": "captures\\current\\promotion-override-guard-current.json",
@@ -518,6 +608,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the promotion override guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "promotion-override-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\promotion-override-guard-tests-current.md",
         "refresh_json": "captures\\current\\promotion-override-guard-tests-current.json",
@@ -530,6 +622,8 @@
       "passed": true,
       "summary": {
         "purpose": "CDB-only promotion override manifest remains absent or strictly validated",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "promotion-override-manifest-current.md",
         "refresh_markdown": "captures\\current\\promotion-override-manifest-current.md",
         "refresh_json": "captures\\current\\promotion-override-manifest-current.json",
@@ -542,6 +636,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for strict CDB-only promotion override manifests",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "promotion-override-manifest-tests-current.md",
         "refresh_markdown": "captures\\current\\promotion-override-manifest-tests-current.md",
         "refresh_json": "captures\\current\\promotion-override-manifest-tests-current.json",
@@ -554,6 +650,8 @@
       "passed": true,
       "summary": {
         "purpose": "current handoff docs point at the latest no-popup blockers",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "handoff-freshness-guard-current.md",
         "refresh_markdown": "captures\\current\\handoff-freshness-guard-current.md",
         "refresh_json": "captures\\current\\handoff-freshness-guard-current.json",
@@ -566,6 +664,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the handoff freshness guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "handoff-freshness-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\handoff-freshness-guard-tests-current.md",
         "refresh_json": "captures\\current\\handoff-freshness-guard-tests-current.json",
@@ -578,6 +678,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom compose promotion decision",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-compose-promotion-decision-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-compose-promotion-decision-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-compose-promotion-decision-tests-current.json",
@@ -590,6 +692,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom compose evidence matrix",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-compose-evidence-matrix-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-compose-evidence-matrix-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-compose-evidence-matrix-tests-current.json",
@@ -602,6 +706,8 @@
       "passed": true,
       "summary": {
         "purpose": "compact non-promoting triage of the current right-bottom action-menu blocker",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-blocker-triage-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-blocker-triage-current.md",
         "refresh_json": "captures\\current\\right-bottom-blocker-triage-current.json",
@@ -614,6 +720,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom action-menu blocker triage",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-blocker-triage-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-blocker-triage-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-blocker-triage-tests-current.json",
@@ -626,6 +734,8 @@
       "passed": true,
       "summary": {
         "purpose": "right-bottom natural UI stripe/layout artifact remains explicitly non-promoting",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-visual-artifact-guard-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-visual-artifact-guard-current.md",
         "refresh_json": "captures\\current\\right-bottom-visual-artifact-guard-current.json",
@@ -638,9 +748,39 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom visual artifact guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-visual-artifact-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-visual-artifact-guard-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-visual-artifact-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "first_mission_visual_audit": {
+      "passed": true,
+      "summary": {
+        "purpose": "first-mission selected-unit frame keeps bottom action-bar placement and surfaces remaining black patch blockers without treating them as fixed",
+        "expected_pass": false,
+        "observed_passed": false,
+        "expected_markdown": "first-mission-visual-audit-current.md",
+        "refresh_markdown": "captures\\current\\first-mission-visual-audit-current.md",
+        "refresh_json": "captures\\current\\first-mission-visual-audit-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "first_mission_visual_audit_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for first-mission stripe and black-patch audit",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "first-mission-visual-audit-tests-current.md",
+        "refresh_markdown": "captures\\current\\first-mission-visual-audit-tests-current.md",
+        "refresh_json": "captures\\current\\first-mission-visual-audit-tests-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
@@ -650,6 +790,8 @@
       "passed": true,
       "summary": {
         "purpose": "controlled no-popup native grid-hit proof for the right-bottom compose validation stage",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-grid-hit-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-grid-hit-current.md",
         "refresh_json": "captures\\current\\right-bottom-grid-hit-current.json",
@@ -662,6 +804,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom grid-hit parser",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-grid-hit-summary-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-grid-hit-summary-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-grid-hit-summary-tests-current.json",
@@ -674,6 +818,8 @@
       "passed": true,
       "summary": {
         "purpose": "focused right-bottom grid-hit probe keeps proven no-popup callsites",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-grid-hit-probe-guard-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-grid-hit-probe-guard-current.md",
         "refresh_json": "captures\\current\\right-bottom-grid-hit-probe-guard-current.json",
@@ -686,6 +832,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom grid-hit probe guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-grid-hit-probe-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-grid-hit-probe-guard-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-grid-hit-probe-guard-tests-current.json",
@@ -698,6 +846,8 @@
       "passed": true,
       "summary": {
         "purpose": "natural right-bottom castle/action route is classified as owner-flag save-state gated",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-natural-route-guard-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-natural-route-guard-current.md",
         "refresh_json": "captures\\current\\right-bottom-natural-route-guard-current.json",
@@ -710,6 +860,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom natural-route guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-natural-route-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-natural-route-guard-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-natural-route-guard-tests-current.json",
@@ -722,6 +874,8 @@
       "passed": true,
       "summary": {
         "purpose": "non-promoting isolated slot5-as-slot0 fixture plan for the right-bottom owner/action route",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-slot-fixture-plan-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-plan-current.md",
         "refresh_json": "captures\\current\\right-bottom-slot-fixture-plan-current.json",
@@ -734,6 +888,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom isolated slot fixture plan",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-slot-fixture-plan-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-plan-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-slot-fixture-plan-tests-current.json",
@@ -746,6 +902,8 @@
       "passed": true,
       "summary": {
         "purpose": "source guard for the dry-run right-bottom slot fixture preparation helper",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-slot-fixture-script-guard-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-script-guard-current.md",
         "refresh_json": "captures\\current\\right-bottom-slot-fixture-script-guard-current.json",
@@ -758,6 +916,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom slot fixture preparation helper guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-slot-fixture-script-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-script-guard-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-slot-fixture-script-guard-tests-current.json",
@@ -770,6 +930,8 @@
       "passed": true,
       "summary": {
         "purpose": "hidden-desktop command plan for the non-promoting right-bottom isolated slot fixture",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-slot-fixture-runtime-plan-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.md",
         "refresh_json": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.json",
@@ -782,6 +944,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom slot fixture runtime command plan",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-slot-fixture-runtime-plan-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-runtime-plan-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-slot-fixture-runtime-plan-tests-current.json",
@@ -794,6 +958,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for future right-bottom slot fixture CDB result classification",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-slot-fixture-result-summary-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-result-summary-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-slot-fixture-result-summary-tests-current.json",
@@ -806,6 +972,8 @@
       "passed": true,
       "summary": {
         "purpose": "load-slot route boundary keeps slot5/right-bottom save-state candidate classified as route-harness blocked",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-route-limit-current.md",
         "refresh_markdown": "captures\\current\\load-slot-route-limit-current.md",
         "refresh_json": "captures\\current\\load-slot-route-limit-current.json",
@@ -818,6 +986,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the load-slot route limit guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-route-limit-tests-current.md",
         "refresh_markdown": "captures\\current\\load-slot-route-limit-tests-current.md",
         "refresh_json": "captures\\current\\load-slot-route-limit-tests-current.json",
@@ -830,6 +1000,8 @@
       "passed": true,
       "summary": {
         "purpose": "load-slot timeout phase keeps rows 3-5 classified as pre-load-menu-loop stalls",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-timeout-phase-current.md",
         "refresh_markdown": "captures\\current\\load-slot-timeout-phase-current.md",
         "refresh_json": "captures\\current\\load-slot-timeout-phase-current.json",
@@ -842,6 +1014,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the load-slot timeout phase classifier",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-timeout-phase-tests-current.md",
         "refresh_markdown": "captures\\current\\load-slot-timeout-phase-tests-current.md",
         "refresh_json": "captures\\current\\load-slot-timeout-phase-tests-current.json",
@@ -854,6 +1028,8 @@
       "passed": true,
       "summary": {
         "purpose": "load-slot entry gap keeps rows 3-5 classified as stopping before case-5 entry",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-entry-gap-current.md",
         "refresh_markdown": "captures\\current\\load-slot-entry-gap-current.md",
         "refresh_json": "captures\\current\\load-slot-entry-gap-current.json",
@@ -866,6 +1042,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the load-slot entry gap classifier",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-entry-gap-tests-current.md",
         "refresh_markdown": "captures\\current\\load-slot-entry-gap-tests-current.md",
         "refresh_json": "captures\\current\\load-slot-entry-gap-tests-current.json",
@@ -878,6 +1056,8 @@
       "passed": true,
       "summary": {
         "purpose": "focused late-entry load-slot transition probe avoids early descriptor forcing",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-probe-guard-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-probe-guard-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-probe-guard-current.json",
@@ -890,6 +1070,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the load-slot transition probe guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-probe-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-probe-guard-tests-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-probe-guard-tests-current.json",
@@ -902,6 +1084,8 @@
       "passed": true,
       "summary": {
         "purpose": "hidden-desktop command plan for the rows 3-5 load-slot transition blocker",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-run-plan-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-run-plan-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-run-plan-current.json",
@@ -914,6 +1098,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the load-slot transition run plan",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-run-plan-tests-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-run-plan-tests-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-run-plan-tests-current.json",
@@ -926,6 +1112,8 @@
       "passed": true,
       "summary": {
         "purpose": "row geometry guard for the rows 3-5 load-slot transition plan",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-geometry-guard-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-geometry-guard-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-geometry-guard-current.json",
@@ -938,6 +1126,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the load-slot transition row geometry guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-geometry-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-geometry-guard-tests-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-geometry-guard-tests-current.json",
@@ -950,6 +1140,8 @@
       "passed": true,
       "summary": {
         "purpose": "row-specific generated CDB preview for the rows 3-5 load-slot transition probes",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-probe-preview-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-probe-preview-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-probe-preview-current.json",
@@ -962,6 +1154,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for row-specific generated transition probe previews",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-probe-preview-tests-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-probe-preview-tests-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-probe-preview-tests-current.json",
@@ -974,6 +1168,8 @@
       "passed": true,
       "summary": {
         "purpose": "aggregate hidden transition readiness matrix for rows 3-5",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-readiness-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-readiness-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-readiness-current.json",
@@ -986,6 +1182,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the load-slot transition readiness matrix",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-readiness-tests-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-readiness-tests-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-readiness-tests-current.json",
@@ -998,6 +1196,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for future LSTRANS log classification",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "load-slot-transition-summary-tests-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-summary-tests-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-summary-tests-current.json",
@@ -1010,6 +1210,8 @@
       "passed": true,
       "summary": {
         "purpose": "static original-exe byte guard for command-99 owner-loop and action owner-flag gates",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-owner-flag-static-guard-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-owner-flag-static-guard-current.md",
         "refresh_json": "captures\\current\\right-bottom-owner-flag-static-guard-current.json",
@@ -1022,6 +1224,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom owner-flag static guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-owner-flag-static-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-owner-flag-static-guard-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-owner-flag-static-guard-tests-current.json",
@@ -1034,6 +1238,8 @@
       "passed": true,
       "summary": {
         "purpose": "right-bottom owner-flag inventory keeps natural and forced action-route evidence classified",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-owner-flag-inventory-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-owner-flag-inventory-current.md",
         "refresh_json": "captures\\current\\right-bottom-owner-flag-inventory-current.json",
@@ -1046,6 +1252,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom owner-flag inventory",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-owner-flag-inventory-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-owner-flag-inventory-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-owner-flag-inventory-tests-current.json",
@@ -1058,6 +1266,8 @@
       "passed": true,
       "summary": {
         "purpose": "right-bottom patch/full-start/grid marker ordering remains stable",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-route-timing-guard-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-route-timing-guard-current.md",
         "refresh_json": "captures\\current\\right-bottom-route-timing-guard-current.json",
@@ -1070,6 +1280,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the right-bottom route timing guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "right-bottom-route-timing-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-route-timing-guard-tests-current.md",
         "refresh_json": "captures\\current\\right-bottom-route-timing-guard-tests-current.json",
@@ -1082,6 +1294,8 @@
       "passed": true,
       "summary": {
         "purpose": "current fixed castle overview and barracks no-popup baselines remain attached",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-baseline-recheck-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-baseline-recheck-current.md",
         "refresh_json": "captures\\current\\castle-overview-baseline-recheck-current.json",
@@ -1094,6 +1308,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the castle overview baseline recheck",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-baseline-recheck-tests-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-baseline-recheck-tests-current.md",
         "refresh_json": "captures\\current\\castle-overview-baseline-recheck-tests-current.json",
@@ -1106,6 +1322,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the castle owner-record parser",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-owner-records-summary-tests-current.md",
         "refresh_markdown": "captures\\current\\castle-owner-records-summary-tests-current.md",
         "refresh_json": "captures\\current\\castle-owner-records-summary-tests-current.json",
@@ -1118,6 +1336,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the castle overview evidence matrix",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-evidence-matrix-tests-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-evidence-matrix-tests-current.md",
         "refresh_json": "captures\\current\\castle-overview-evidence-matrix-tests-current.json",
@@ -1130,6 +1350,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the castle overview visual/catalog gate",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-gate-tests-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-gate-tests-current.md",
         "refresh_json": "captures\\current\\castle-overview-gate-tests-current.json",
@@ -1142,6 +1364,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the focused castle overview hitbox parser",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-hitbox-summary-tests-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-hitbox-summary-tests-current.md",
         "refresh_json": "captures\\current\\castle-overview-hitbox-summary-tests-current.json",
@@ -1154,6 +1378,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the castle overview raw hitmap parser",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-hitmap-summary-tests-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-hitmap-summary-tests-current.md",
         "refresh_json": "captures\\current\\castle-overview-hitmap-summary-tests-current.json",
@@ -1166,6 +1392,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the castle overview multi-hit parser",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-multihit-summary-tests-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-multihit-summary-tests-current.md",
         "refresh_json": "captures\\current\\castle-overview-multihit-summary-tests-current.json",
@@ -1178,6 +1406,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the castle overview promotion decision",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-promotion-decision-tests-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-promotion-decision-tests-current.md",
         "refresh_json": "captures\\current\\castle-overview-promotion-decision-tests-current.json",
@@ -1190,6 +1420,8 @@
       "passed": true,
       "summary": {
         "purpose": "focused castle overview probe keeps proven no-popup hitbox callsites",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-probe-guard-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-probe-guard-current.md",
         "refresh_json": "captures\\current\\castle-overview-probe-guard-current.json",
@@ -1202,6 +1434,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the focused castle overview probe guard",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "castle-overview-probe-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-probe-guard-tests-current.md",
         "refresh_json": "captures\\current\\castle-overview-probe-guard-tests-current.json",
@@ -1214,6 +1448,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for stable-stage validation-scope boundaries",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "stable-stage-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\stable-stage-guard-tests-current.md",
         "refresh_json": "captures\\current\\stable-stage-guard-tests-current.json",
@@ -1226,6 +1462,8 @@
       "passed": true,
       "summary": {
         "purpose": "current docs and handoff files match generated stable-stage/no-popup/manual-proof facts",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "docs-consistency-current.md",
         "refresh_markdown": "captures\\current\\docs-consistency-current.md",
         "refresh_json": "captures\\current\\docs-consistency-current.json",
@@ -1238,6 +1476,8 @@
       "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for stale docs and generated-count drift",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "docs-consistency-tests-current.md",
         "refresh_markdown": "captures\\current\\docs-consistency-tests-current.md",
         "refresh_json": "captures\\current\\docs-consistency-tests-current.json",

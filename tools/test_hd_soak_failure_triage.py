@@ -54,6 +54,8 @@ def base_report() -> dict[str, Any]:
         "working_set_growth_bytes": 1024,
         "private_memory_growth_bytes": 2048,
         "handle_growth": 1,
+        "max_artifact_mb": 250,
+        "artifact_limit_bytes": 250 * 1024 * 1024,
         "artifact_bytes": 123456,
         "process_exited_unexpectedly": False,
         "exit_code": None,
@@ -98,6 +100,7 @@ def base_report() -> dict[str, Any]:
                 "MeanLuma": 40.0,
                 "UniqueSampleColors": 32,
                 "CaptureMode": "screen",
+                "NonblackBounds": {"X": 0, "Y": 0, "Right": 799, "Bottom": 599, "Width": 800, "Height": 600},
             },
             {
                 "Name": "frame-0001",
@@ -109,6 +112,7 @@ def base_report() -> dict[str, Any]:
                 "MeanLuma": 42.0,
                 "UniqueSampleColors": 35,
                 "CaptureMode": "screen",
+                "NonblackBounds": {"X": 0, "Y": 0, "Right": 799, "Bottom": 599, "Width": 800, "Height": 600},
             },
         ],
         "capture_errors": [],
@@ -186,7 +190,73 @@ def test_intro_skip_input_drift_exit_classification() -> None:
     result = triage.build_triage(report)
     assert result["classification"] == "intro_skip_input_drift_exit"
     assert "postmessage" in result["next_probe"]
+    assert result["last_route_marker"] == "intro-skip"
+    assert result["failure_context"]["last_route_marker"] == "intro-skip"
+    assert result["failure_context"]["failure_timestamp"] == "2026-06-16T12:02:00.0000000+00:00"
+    assert result["failure_context"]["failure_timestamp_source"] == "last_process_sample"
+    assert result["failure_context"]["crash_hang_class"] == "intro_skip_input_drift_exit"
     assert result["last_route_result"]["click_mode"] == "sendinput"
+
+
+def test_intro_skip_probe_json_enriches_missing_route_mode() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        probe_path = tmp / "intro-skip.json"
+        probe_path.write_text(
+            json.dumps(
+                {
+                    "points": {
+                        "move_mode": "auto",
+                        "move_method": "setcursor",
+                        "samples": [
+                            {
+                                "phase": "after_move",
+                                "screen_error": [0, 0],
+                                "client_error": [0, 0],
+                            }
+                        ],
+                        "clicks": [
+                            {
+                                "mode": "sendinput",
+                                "events": [
+                                    {
+                                        "phase": "after_sendinput_down",
+                                        "screen_error": [-324, 133],
+                                        "client_error": [-324, 133],
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                }
+            ),
+            encoding="ascii",
+        )
+        report = base_report()
+        report["process_exited_unexpectedly"] = True
+        report["exit_code"] = 1
+        report["clean_stop"] = False
+        report["frame_sample_count"] = 1
+        report["input_max_sample_abs_error"] = 324
+        report["failures"] = [
+            "process exited unexpectedly with code 1",
+            "route/input probe failures: 1",
+            "input drift exceeded 1px or metric missing: 1",
+        ]
+        report["route_results"][0]["ClickPathVerified"] = False
+        report["route_results"][0]["MaxSampleAbsError"] = 324
+        report["route_results"][0]["Json"] = str(probe_path)
+        result = triage.build_triage(report)
+
+    route = result["last_route_result"]
+    assert result["classification"] == "intro_skip_input_drift_exit"
+    assert result["next_probe"].startswith("previous intro-skip click used sendinput")
+    assert route["click_mode"] == "sendinput"
+    assert route["click_mode_source"] == "probe_json"
+    assert route["move_mode"] == "auto"
+    assert route["probe_json"]["read_status"] == "ok"
+    assert route["probe_json"]["max_sample_abs_error"] == 324
+    assert route["probe_json"]["max_sample_phase"] == "after_sendinput_down"
 
 
 def test_render_regression_classification() -> None:
@@ -198,6 +268,27 @@ def test_render_regression_classification() -> None:
     result = triage.build_triage(report)
     assert result["classification"] == "render_or_palette_regression"
     assert result["last_frame_sample"]["name"] == "frame-0001"
+
+
+def test_visual_anomaly_summary_records_black_and_stripe_risk() -> None:
+    report = base_report()
+    report["failures"] = [
+        "black/blank patch risk",
+        "palette/stripe risk",
+    ]
+    report["frame_samples"][1]["NonblackPercent"] = 0.0
+    report["frame_samples"][1]["UniqueSampleColors"] = 1
+    result = triage.build_triage(report)
+
+    visual = result["visual_anomalies"]
+    assert result["classification"] == "render_or_palette_regression"
+    assert visual["passed"] is False
+    assert visual["black_patch_risk_count"] == 1
+    assert visual["palette_or_stripe_risk_count"] == 1
+    assert visual["missing_nonblack_bounds_count"] == 0
+    assert visual["anomaly_rows"][0]["name"] == "frame-0001"
+    assert result["failure_context"]["black_patch_risk_count"] == 1
+    assert result["failure_context"]["palette_or_stripe_risk_count"] == 1
 
 
 def test_input_route_failure_classification() -> None:
@@ -349,7 +440,11 @@ def test_cli_writes_outputs_and_fails_for_failed_report() -> None:
         assert json_out.exists()
         assert md_out.exists()
         payload = json.loads(json_out.read_text(encoding="ascii"))
+        markdown = md_out.read_text(encoding="ascii")
         assert payload["classification"] == "capture_harness_failure"
+        assert payload["failure_context"]["last_route_marker"] == "intro-skip"
+        assert "## Failure Context" in markdown
+        assert "## Visual Anomalies" in markdown
 
 
 def run_tests() -> None:
@@ -357,7 +452,9 @@ def run_tests() -> None:
     test_av_crash_classification()
     test_unexpected_process_exit_classification()
     test_intro_skip_input_drift_exit_classification()
+    test_intro_skip_probe_json_enriches_missing_route_mode()
     test_render_regression_classification()
+    test_visual_anomaly_summary_records_black_and_stripe_risk()
     test_input_route_failure_classification()
     test_input_drift_failure_classification()
     test_frame_progression_failure_classification()

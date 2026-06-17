@@ -50,6 +50,7 @@ def passing_report(tmp: Path) -> dict:
         "frame_hash_unique_count": 2,
         "frame_progress_expected": False,
         "frame_stability_class": "progressing",
+        "final_route_marker": "intro-skip",
         "nonblack_percent_min": 44.5,
         "nonblack_percent_max": 45.0,
         "mean_luma_min": 40.0,
@@ -63,6 +64,8 @@ def passing_report(tmp: Path) -> dict:
         "working_set_growth_bytes": 1024,
         "private_memory_growth_bytes": 2048,
         "handle_growth": 1,
+        "max_artifact_mb": 250,
+        "artifact_limit_bytes": 250 * 1024 * 1024,
         "artifact_bytes": 123456,
         "process_exited_unexpectedly": False,
         "exit_code": None,
@@ -107,6 +110,7 @@ def passing_report(tmp: Path) -> dict:
                 "NonblackPercent": 45.0,
                 "MeanLuma": 40.0,
                 "UniqueSampleColors": 32,
+                "NonblackBounds": {"X": 0, "Y": 0, "Right": 799, "Bottom": 599, "Width": 800, "Height": 600},
             },
             {
                 "Name": "frame-0001",
@@ -117,6 +121,7 @@ def passing_report(tmp: Path) -> dict:
                 "NonblackPercent": 44.5,
                 "MeanLuma": 41.0,
                 "UniqueSampleColors": 35,
+                "NonblackBounds": {"X": 0, "Y": 0, "Right": 799, "Bottom": 599, "Width": 800, "Height": 600},
             },
         ],
         "capture_errors": [],
@@ -154,6 +159,8 @@ def test_passing_report() -> None:
     assert evaluation["checks"]["protected_stage"]["passed"] is True
     assert evaluation["checks"]["patch_evidence"]["passed"] is True
     assert evaluation["checks"]["render_metrics"]["passed"] is True
+    assert evaluation["checks"]["visual_anomalies"]["passed"] is True
+    assert evaluation["checks"]["route_completion_marker"]["passed"] is True
     assert evaluation["checks"]["promotion_boundary"]["passed"] is True
 
 
@@ -168,6 +175,8 @@ def test_pending_approval_report_fails_without_runtime_metric_noise() -> None:
     assert evaluation["checks"]["frame_inventory"]["summary"]["checked"] is False
     assert evaluation["checks"]["render_metrics"]["passed"] is True
     assert evaluation["checks"]["render_metrics"]["summary"]["checked"] is False
+    assert evaluation["checks"]["visual_anomalies"]["passed"] is True
+    assert evaluation["checks"]["visual_anomalies"]["summary"]["checked"] is False
     assert evaluation["checks"]["process_liveness"]["passed"] is True
     assert evaluation["checks"]["process_liveness"]["summary"]["checked"] is False
     assert evaluation["checks"]["process_growth"]["passed"] is True
@@ -234,6 +243,19 @@ def test_render_metrics_fail() -> None:
         evaluation = soak.evaluate_report(report)
     assert evaluation["overall"] is False
     assert evaluation["checks"]["render_metrics"]["passed"] is False
+    assert evaluation["checks"]["visual_anomalies"]["passed"] is False
+    assert any("black/blank patch risk" in failure for failure in evaluation["failures"])
+    assert any("palette/stripe risk" in failure for failure in evaluation["failures"])
+
+
+def test_missing_nonblack_bounds_fail_visual_anomaly_check() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_report(Path(directory))
+        report["frame_samples"][0].pop("NonblackBounds")
+        evaluation = soak.evaluate_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["visual_anomalies"]["passed"] is False
+    assert any("NonblackBounds" in failure for failure in evaluation["failures"])
 
 
 def test_capture_errors_fail() -> None:
@@ -336,6 +358,34 @@ def test_process_growth_fails() -> None:
     assert any("handle_growth" in failure for failure in evaluation["failures"])
 
 
+def test_artifact_budget_fails() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_report(Path(directory))
+        report["artifact_bytes"] = (250 * 1024 * 1024) + 1
+        evaluation = soak.evaluate_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["artifact_budget"]["passed"] is False
+    assert any("artifact bytes" in failure for failure in evaluation["failures"])
+
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_report(Path(directory))
+        report.pop("max_artifact_mb")
+        report.pop("artifact_limit_bytes")
+        evaluation = soak.evaluate_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["artifact_budget"]["passed"] is False
+    assert any("max_artifact_mb is missing" in failure for failure in evaluation["failures"])
+    assert any("artifact_limit_bytes is missing" in failure for failure in evaluation["failures"])
+
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_report(Path(directory))
+        report["artifact_limit_bytes"] = 1
+        evaluation = soak.evaluate_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["artifact_budget"]["passed"] is False
+    assert any("max_artifact_mb-derived limit" in failure for failure in evaluation["failures"])
+
+
 def test_process_sample_exit_state_fails() -> None:
     with tempfile.TemporaryDirectory() as directory:
         report = passing_report(Path(directory))
@@ -418,12 +468,25 @@ def test_empty_route_inventory_fails() -> None:
     with tempfile.TemporaryDirectory() as directory:
         report = passing_report(Path(directory))
         report["route_results"] = []
+        report["final_route_marker"] = "menu-idle"
         report["input_max_abs_error"] = None
         report["input_max_sample_abs_error"] = None
         evaluation = soak.evaluate_report(report)
     assert evaluation["overall"] is False
     assert evaluation["checks"]["input_responsiveness"]["passed"] is False
+    assert evaluation["checks"]["route_completion_marker"]["passed"] is False
     assert any("route/input row inventory is empty" in failure for failure in evaluation["failures"])
+    assert any("without route/input rows" in failure for failure in evaluation["failures"])
+
+
+def test_final_route_marker_mismatch_fails() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_report(Path(directory))
+        report["final_route_marker"] = "load-button"
+        evaluation = soak.evaluate_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["route_completion_marker"]["passed"] is False
+    assert any("final_route_marker" in failure for failure in evaluation["failures"])
 
 
 def test_summary_metric_mismatch_fails() -> None:
@@ -480,6 +543,7 @@ def run_tests() -> None:
     test_repo_artifacts_fail()
     test_noncanonical_soak_roots_fail()
     test_render_metrics_fail()
+    test_missing_nonblack_bounds_fail_visual_anomaly_check()
     test_capture_errors_fail()
     test_tier_route_duration_fail()
     test_frame_hash_inventory_fails()
@@ -488,6 +552,7 @@ def run_tests() -> None:
     test_patch_manifest_mismatch_fails()
     test_missing_patch_manifest_fails()
     test_process_growth_fails()
+    test_artifact_budget_fails()
     test_process_sample_exit_state_fails()
     test_missing_sample_interval_fails()
     test_elapsed_sample_coverage_fails()
@@ -496,6 +561,7 @@ def run_tests() -> None:
     test_probe_exit_code_fails()
     test_missing_input_drift_metrics_fail()
     test_empty_route_inventory_fails()
+    test_final_route_marker_mismatch_fails()
     test_summary_metric_mismatch_fails()
     test_cli_honors_max_input_drift_argument()
 

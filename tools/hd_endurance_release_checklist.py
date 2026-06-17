@@ -34,6 +34,7 @@ DEFAULT_MANUAL_JSON = Path("captures/current/manual-directinput-validation-check
 DEFAULT_RIGHT_BOTTOM_JSON = Path("captures/current/right-bottom-compose-promotion-decision-current.json")
 DEFAULT_CASTLE_JSON = Path("captures/current/castle-overview-promotion-decision-current.json")
 DEFAULT_BATTLE_JSON = Path("captures/current/battle-ui-evidence-current.json")
+DEFAULT_FIRST_MISSION_VISUAL_JSON = Path("captures/current/first-mission-visual-audit-current.json")
 DEFAULT_COMPLETION_JSON = Path("captures/current/current-completion-summary-current.json")
 DEFAULT_CONTINUITY_JSON = Path("captures/current/hd-continuity-current.json")
 DEFAULT_EXE_ARTIFACT_JSON = Path("captures/current/exe-artifact-guard-current.json")
@@ -229,6 +230,33 @@ def short_soak_requirement_summary(
     return "short2 visible-runtime soak has not produced passing frame/process evidence"
 
 
+def first_mission_visual_summary(first_mission_visual: dict[str, Any] | None, visual_clean: bool) -> str:
+    if visual_clean:
+        return "first-mission selected-unit frame is visually clean"
+    if first_mission_visual is None:
+        return "first-mission visual audit is absent"
+    summary = first_mission_visual.get("summary") or {}
+    status = first_mission_visual.get("current_status") or summary.get("current_status") or "blocked"
+    black_regions = summary.get("primary_black_patch_regions") or []
+    stripe_frames = summary.get("stripe_failure_frames") or []
+    parts = [f"first-mission visual audit is not clean ({status})"]
+    if black_regions:
+        parts.append(f"black patches: {', '.join(str(region) for region in black_regions)}")
+    if stripe_frames:
+        parts.append(f"stripe failures: {', '.join(str(frame) for frame in stripe_frames)}")
+    return "; ".join(parts)
+
+
+def first_mission_visual_clean_passed(first_mission_visual: dict[str, Any] | None) -> bool:
+    if not first_mission_visual or not first_mission_visual.get("passed"):
+        return False
+    summary = first_mission_visual.get("summary") or {}
+    return bool(
+        first_mission_visual.get("first_mission_visual_clean")
+        or summary.get("first_mission_visual_clean")
+    )
+
+
 def requirement(
     requirement_id: str,
     title: str,
@@ -265,6 +293,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         "right_bottom": args.right_bottom_json,
         "castle_overview": args.castle_json,
         "battle_ui": args.battle_json,
+        "first_mission_visual": args.first_mission_visual_json,
         "current_completion": args.completion_json,
         "continuity": args.continuity_json,
         "exe_artifact": args.exe_artifact_json,
@@ -279,6 +308,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
     right_bottom = load_json(args.right_bottom_json)
     castle = load_json(args.castle_json)
     battle = load_json(args.battle_json)
+    first_mission_visual = load_json(args.first_mission_visual_json)
     completion = load_json(args.completion_json)
     continuity = load_json(args.continuity_json)
     exe_artifact = load_json(args.exe_artifact_json)
@@ -320,6 +350,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         and battle.get("passed")
         and str(battle.get("promotion_status") or "").lower() not in {"validation_stage_only", "blocked"}
     )
+    first_mission_visual_clean = first_mission_visual_clean_passed(first_mission_visual)
     exe_ok = bool(exe_artifact and exe_artifact.get("passed"))
     process_ok = bool(process_hygiene and process_hygiene.get("passed"))
     save_load_ok = continuity_check_passed(continuity, "save_load_roundtrip")
@@ -353,6 +384,40 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             "hidden/no-popup map evidence still passes" if no_popup_ok else "no-popup map evidence is not passing",
             "refresh no-popup map evidence before runtime endurance claims",
             "render baseline",
+        ),
+        requirement(
+            "first_mission_visual_clean",
+            "First mission selected-unit frame has no stripe or black-patch blockers",
+            "pass" if first_mission_visual_clean else source_state(first_mission_visual),
+            [str(args.first_mission_visual_json)],
+            first_mission_visual_summary(first_mission_visual, first_mission_visual_clean),
+            "fix right/bottom/minimap black patches before treating first-mission playability as release-ready",
+            "render baseline",
+            {
+                "current_status": (first_mission_visual or {}).get("current_status")
+                or nested(first_mission_visual, "summary", "current_status"),
+                "primary_frame": (first_mission_visual or {}).get("primary_frame")
+                or nested(first_mission_visual, "summary", "primary_frame"),
+                "primary_frame_path": (first_mission_visual or {}).get("primary_frame_path")
+                or nested(first_mission_visual, "summary", "primary_frame_path"),
+                "selected_action_bar_visible": nested(
+                    first_mission_visual, "summary", "primary_selected_action_bar_visible"
+                ),
+                "legacy_middle_action_bar_visible": nested(
+                    first_mission_visual, "summary", "primary_legacy_middle_action_bar_visible"
+                ),
+                "black_patch_regions": nested(
+                    first_mission_visual, "summary", "primary_black_patch_regions", default=[]
+                ),
+                "black_patch_details": nested(
+                    first_mission_visual, "summary", "primary_black_patch_details", default=[]
+                ),
+                "stripe_failure_frames": nested(
+                    first_mission_visual, "summary", "stripe_failure_frames", default=[]
+                ),
+                "next_probe": (first_mission_visual or {}).get("next_probe")
+                or nested(first_mission_visual, "summary", "next_probe"),
+            },
         ),
         requirement(
             "short2_menu_idle_soak",
@@ -616,6 +681,7 @@ def add_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--right-bottom-json", type=Path, default=DEFAULT_RIGHT_BOTTOM_JSON)
     parser.add_argument("--castle-json", type=Path, default=DEFAULT_CASTLE_JSON)
     parser.add_argument("--battle-json", type=Path, default=DEFAULT_BATTLE_JSON)
+    parser.add_argument("--first-mission-visual-json", type=Path, default=DEFAULT_FIRST_MISSION_VISUAL_JSON)
     parser.add_argument("--completion-json", type=Path, default=DEFAULT_COMPLETION_JSON)
     parser.add_argument("--continuity-json", type=Path, default=DEFAULT_CONTINUITY_JSON)
     parser.add_argument("--exe-artifact-json", type=Path, default=DEFAULT_EXE_ARTIFACT_JSON)

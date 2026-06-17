@@ -91,6 +91,24 @@ def focused_battle_basis(battle: dict[str, Any]) -> str:
     return f"remaining blocker: {blocker}"
 
 
+def first_mission_visual_blockers(refresh_checks: dict[str, Any]) -> dict[str, Any]:
+    check = refresh_checks.get("first_mission_visual_audit") or {}
+    summary = check.get("summary") or {}
+    failures = list(check.get("failures") or [])
+    return {
+        "present": bool(check),
+        "passed": check.get("passed"),
+        "current_status": summary.get("current_status"),
+        "first_mission_visual_clean": summary.get("first_mission_visual_clean"),
+        "primary_frame": summary.get("primary_frame"),
+        "selected_action_bar_visible": summary.get("primary_selected_action_bar_visible"),
+        "legacy_middle_action_bar_visible": summary.get("primary_legacy_middle_action_bar_visible"),
+        "black_patch_regions": summary.get("primary_black_patch_regions") or [],
+        "stripe_failure_frames": summary.get("stripe_failure_frames") or [],
+        "failures": failures,
+    }
+
+
 def build_summary_from_data(
     *,
     refresh: dict[str, Any],
@@ -107,6 +125,7 @@ def build_summary_from_data(
         failures.append("current evidence refresh has no checks")
         refresh_checks = {}
     refresh_passed, refresh_total, refresh_percent = check_pass_percent(refresh_checks)
+    first_mission_visual = first_mission_visual_blockers(refresh_checks)
 
     focused_completion = (
         battle.get("completion_summary") or {}
@@ -154,7 +173,10 @@ def build_summary_from_data(
     full_game_percent_statement = (
         "100.00%"
         if full_game_complete
-        else "not 100%; manual DirectInput proof and stable promotion remain blocked"
+        else (
+            "not 100%; manual DirectInput proof, stable promotion, endurance soaks, "
+            "continuity, and current visual blockers remain open"
+        )
     )
 
     rows = [
@@ -209,6 +231,7 @@ def build_summary_from_data(
         "full_game_percent_statement": full_game_percent_statement,
         "remaining_blockers": {
             "manual_directinput_pending_ids": manual_summary.get("pending_ids") or [],
+            "first_mission_visual": first_mission_visual,
             "right_bottom_failures": rb_blockers,
             "battle_open_items": battle.get("open_items") or [],
         },
@@ -274,6 +297,9 @@ def write_markdown(path: Path, summary: dict[str, Any]) -> None:
             "## Remaining Blockers",
             "",
             f"- Manual DirectInput pending IDs: `{blockers['manual_directinput_pending_ids']}`",
+            f"- First mission visual status: `{blockers['first_mission_visual'].get('current_status')}`",
+            f"- First mission black patch regions: `{blockers['first_mission_visual'].get('black_patch_regions')}`",
+            f"- First mission stripe failure frames: `{blockers['first_mission_visual'].get('stripe_failure_frames')}`",
             f"- Right-bottom failures: `{blockers['right_bottom_failures']}`",
             f"- Battle open items: `{blockers['battle_open_items']}`",
         ]

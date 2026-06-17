@@ -11,8 +11,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -33,6 +34,14 @@ DEFAULT_SCRIPT = Path("scripts/smoke/run_hd_soak.ps1")
 DEFAULT_JSON = Path("captures/current/hd-soak-dry-run-plan-current.json")
 DEFAULT_MD = Path("captures/current/hd-soak-dry-run-plan-current.md")
 MAX_INPUT_DRIFT_PX = 1
+EXPECTED_SAMPLE_INTERVAL_SEC = 15
+EXPECTED_MIN_NONBLACK_PERCENT = 10.0
+EXPECTED_MIN_NONBLACK_PERCENT_TEXT = "10"
+EXPECTED_MIN_UNIQUE_SAMPLE_COLORS = 8
+EXPECTED_MAX_ARTIFACT_MB = 250
+EXPECTED_MAX_WORKING_SET_GROWTH_MB = 64
+EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB = 64
+EXPECTED_MAX_HANDLE_GROWTH = 128
 EXPECTED_INTRO_SKIP_CLICK_MODE = "postmessage"
 EXPECTED_INTRO_SKIP_CLICKS = 8
 EXPECTED_SKIP_PULSES = 4
@@ -40,6 +49,10 @@ EXPECTED_CANDIDATE_DIR = r"C:\ClashTests\hd-soak"
 EXPECTED_OUTPUT_ROOT = r"C:\ClashCaptures\hd-soak"
 EXPECTED_INPUT_EXE = r"C:\Clash\clash95.exe"
 EXPECTED_WORKDIR = r"C:\Clash"
+APPROVAL_TOKEN_LENGTH = 16
+APPROVAL_MAX_AGE_HOURS = 12
+MIN_APPROVAL_TTL_MINUTES = 30
+APPROVAL_EXPIRY_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$")
 
 
 def status_text(passed: bool) -> str:
@@ -97,8 +110,22 @@ def dry_run_command(script: Path, step: dict[str, Any]) -> list[str]:
         str(EXPECTED_INTRO_SKIP_CLICKS),
         "-SkipPulses",
         str(EXPECTED_SKIP_PULSES),
+        "-SampleIntervalSec",
+        str(EXPECTED_SAMPLE_INTERVAL_SEC),
         "-MaxInputDriftPx",
         str(MAX_INPUT_DRIFT_PX),
+        "-MinNonblackPercent",
+        str(EXPECTED_MIN_NONBLACK_PERCENT),
+        "-MinUniqueSampleColors",
+        str(EXPECTED_MIN_UNIQUE_SAMPLE_COLORS),
+        "-MaxArtifactMB",
+        str(EXPECTED_MAX_ARTIFACT_MB),
+        "-MaxWorkingSetGrowthMB",
+        str(EXPECTED_MAX_WORKING_SET_GROWTH_MB),
+        "-MaxPrivateMemoryGrowthMB",
+        str(EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB),
+        "-MaxHandleGrowth",
+        str(EXPECTED_MAX_HANDLE_GROWTH),
         "-Json",
     ]
 
@@ -109,6 +136,42 @@ def extract_json(stdout: str) -> dict[str, Any]:
     if start < 0 or end < start:
         raise ValueError("dry-run output did not contain a JSON object")
     return json.loads(stdout[start : end + 1])
+
+
+def parse_datetime(value: Any) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def approval_ttl_status(approval_expires_utc: Any) -> dict[str, Any]:
+    expires_at = parse_datetime(approval_expires_utc)
+    now = datetime.now(timezone.utc)
+    failures: list[str] = []
+    remaining_seconds: float | None = None
+    if expires_at is None:
+        failures.append("plan visible runtime approval expires_utc is missing or invalid")
+    else:
+        remaining = expires_at - now
+        remaining_seconds = remaining.total_seconds()
+        if remaining < timedelta(minutes=MIN_APPROVAL_TTL_MINUTES):
+            failures.append(
+                "plan visible runtime approval expires too soon; "
+                f"regenerate before approval so at least {MIN_APPROVAL_TTL_MINUTES} minutes remain"
+            )
+    return {
+        "expires_utc": approval_expires_utc,
+        "remaining_seconds": remaining_seconds,
+        "min_remaining_minutes": MIN_APPROVAL_TTL_MINUTES,
+        "passed": not failures,
+        "failures": failures,
+    }
 
 
 def run_harness_plan(script: Path, step: dict[str, Any]) -> tuple[dict[str, Any] | None, dict[str, Any]]:
@@ -176,6 +239,19 @@ def validate_plan(plan: dict[str, Any], step: dict[str, Any]) -> list[str]:
         failures.append("plan report_markdown does not match the canonical current-step report")
     if (plan.get("input_limits") or {}).get("max_input_drift_px") != MAX_INPUT_DRIFT_PX:
         failures.append("plan does not pin max input drift to 1 px")
+    if int(plan.get("sample_interval_sec") or 0) != EXPECTED_SAMPLE_INTERVAL_SEC:
+        failures.append(f"plan sample_interval_sec is not {EXPECTED_SAMPLE_INTERVAL_SEC}")
+    frame_limits = plan.get("frame_limits") or {}
+    if float(frame_limits.get("min_nonblack_percent") or 0.0) != EXPECTED_MIN_NONBLACK_PERCENT:
+        failures.append(
+            f"plan frame limit min_nonblack_percent is {frame_limits.get('min_nonblack_percent')!r}, "
+            f"expected {EXPECTED_MIN_NONBLACK_PERCENT}"
+        )
+    if int(frame_limits.get("min_unique_sample_colors") or 0) != EXPECTED_MIN_UNIQUE_SAMPLE_COLORS:
+        failures.append(
+            f"plan frame limit min_unique_sample_colors is {frame_limits.get('min_unique_sample_colors')!r}, "
+            f"expected {EXPECTED_MIN_UNIQUE_SAMPLE_COLORS}"
+        )
     intro_skip = plan.get("intro_skip") or {}
     if intro_skip.get("click_mode") != EXPECTED_INTRO_SKIP_CLICK_MODE:
         failures.append("plan intro_skip click_mode is not postmessage")
@@ -186,12 +262,34 @@ def validate_plan(plan: dict[str, Any], step: dict[str, Any]) -> list[str]:
     if intro_skip.get("proof_class") != "intro_skip_harness_prep_not_manual_directinput_release_proof":
         failures.append("plan intro_skip proof_class is missing the non-manual proof boundary")
 
+    approval = plan.get("visible_runtime_approval") or {}
+    approval_token = str(approval.get("token") or "")
+    if len(approval_token) != APPROVAL_TOKEN_LENGTH or not all(ch in "0123456789abcdef" for ch in approval_token):
+        failures.append("plan visible runtime approval token is missing or malformed")
+    if approval.get("token_kind") != "sha256-16":
+        failures.append("plan visible runtime approval token_kind is not sha256-16")
+    approval_expires_utc = str(approval.get("expires_utc") or "")
+    if not APPROVAL_EXPIRY_PATTERN.match(approval_expires_utc):
+        failures.append("plan visible runtime approval expires_utc is missing or malformed")
+    failures.extend(approval_ttl_status(approval_expires_utc)["failures"])
+    if int(approval.get("max_age_hours") or 0) != APPROVAL_MAX_AGE_HOURS:
+        failures.append(f"plan visible runtime approval max_age_hours is not {APPROVAL_MAX_AGE_HOURS}")
+    if int(approval.get("min_ttl_minutes") or 0) != MIN_APPROVAL_TTL_MINUTES:
+        failures.append(f"plan visible runtime approval min_ttl_minutes is not {MIN_APPROVAL_TTL_MINUTES}")
+    token_fields = approval.get("token_fields") or []
+    if not isinstance(token_fields, list) or len(token_fields) < 10:
+        failures.append("plan visible runtime approval token_fields are missing")
+    elif approval_expires_utc not in token_fields:
+        failures.append("plan visible runtime approval expiry is not covered by token_fields")
+    if "copy-exact dry-run approval packet" not in str(approval.get("purpose") or ""):
+        failures.append("plan visible runtime approval purpose does not explain the copy-exact boundary")
+
     growth = plan.get("growth_limits") or {}
     expected_growth = {
-        "max_working_set_growth_mb": 64,
-        "max_private_memory_growth_mb": 64,
-        "max_handle_growth": 128,
-        "max_artifact_mb": 250,
+        "max_working_set_growth_mb": EXPECTED_MAX_WORKING_SET_GROWTH_MB,
+        "max_private_memory_growth_mb": EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB,
+        "max_handle_growth": EXPECTED_MAX_HANDLE_GROWTH,
+        "max_artifact_mb": EXPECTED_MAX_ARTIFACT_MB,
     }
     for name, expected in expected_growth.items():
         if int(growth.get(name) or 0) != expected:
@@ -232,8 +330,26 @@ def validate_plan(plan: dict[str, Any], step: dict[str, Any]) -> list[str]:
         str(EXPECTED_INTRO_SKIP_CLICKS),
         "-SkipPulses",
         str(EXPECTED_SKIP_PULSES),
+        "-SampleIntervalSec",
+        str(EXPECTED_SAMPLE_INTERVAL_SEC),
         "-MaxInputDriftPx",
         "1",
+        "-MinNonblackPercent",
+        EXPECTED_MIN_NONBLACK_PERCENT_TEXT,
+        "-MinUniqueSampleColors",
+        str(EXPECTED_MIN_UNIQUE_SAMPLE_COLORS),
+        "-MaxArtifactMB",
+        str(EXPECTED_MAX_ARTIFACT_MB),
+        "-MaxWorkingSetGrowthMB",
+        str(EXPECTED_MAX_WORKING_SET_GROWTH_MB),
+        "-MaxPrivateMemoryGrowthMB",
+        str(EXPECTED_MAX_PRIVATE_MEMORY_GROWTH_MB),
+        "-MaxHandleGrowth",
+        str(EXPECTED_MAX_HANDLE_GROWTH),
+        "-VisibleRuntimeApprovalExpiresUtc",
+        approval_expires_utc,
+        "-VisibleRuntimeApprovalToken",
+        approval_token,
     ):
         if fragment not in execute_command:
             failures.append(f"execute command missing fragment: {fragment}")
@@ -279,6 +395,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         plan = {}
     else:
         failures.extend(validate_plan(plan, step))
+    approval_ttl = approval_ttl_status((plan.get("visible_runtime_approval") or {}).get("expires_utc"))
 
     status = "ready_for_explicit_approval" if not failures else "dry_run_plan_invalid"
     return {
@@ -301,6 +418,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         },
         "invocation": invocation,
         "plan": plan,
+        "approval_ttl": approval_ttl,
         "approval_gated_execute_command": (plan.get("commands") or {}).get("execute"),
         "locks": {
             "stable_stage_should_change": False,
@@ -315,6 +433,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 def to_markdown(report: dict[str, Any]) -> str:
     step = report.get("current_step") or {}
     plan = report.get("plan") or {}
+    approval_ttl = report.get("approval_ttl") or {}
     lines = [
         "# HD Soak Dry-Run Plan",
         "",
@@ -330,6 +449,7 @@ def to_markdown(report: dict[str, Any]) -> str:
         f"- Report JSON: `{plan.get('report_json')}`",
         f"- Max input drift px: `{(plan.get('input_limits') or {}).get('max_input_drift_px')}`",
         f"- Intro skip: mode=`{(plan.get('intro_skip') or {}).get('click_mode')}` repeat=`{(plan.get('intro_skip') or {}).get('click_repeat')}` pulses=`{(plan.get('intro_skip') or {}).get('space_pulses')}`",
+        f"- Approval TTL: `{status_text(bool(approval_ttl.get('passed')))}; expires={approval_ttl.get('expires_utc')}; remaining_seconds={approval_ttl.get('remaining_seconds')}; min_minutes={approval_ttl.get('min_remaining_minutes')}`",
         f"- Stable stage should change: `{report.get('locks', {}).get('stable_stage_should_change')}`",
         f"- Right-bottom promotion blocked: `{report.get('locks', {}).get('right_bottom_promotion_blocked')}`",
         "",

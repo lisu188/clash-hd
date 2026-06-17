@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-16T18:05:12+02:00",
+  "generated_at": "2026-06-17T09:48:11+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
   "root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd",
-  "file_count": 214,
-  "risky_file_count": 105,
+  "file_count": 216,
+  "risky_file_count": 107,
   "classification_counts": {
     "safe": 109,
-    "exempt": 24,
+    "exempt": 25,
     "manual_visible_runtime_gated": 2,
-    "test_fixture": 79
+    "test_fixture": 80
   },
   "gated_helpers": {
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
@@ -23,6 +23,7 @@
     "cloud_check.py": "cloud-safe validation runner; subprocess is limited to repo tests and does not launch Clash95 or CDB",
     "exe_artifact_guard.py": "uses git subprocess read-only for artifact inventory",
     "hd_soak_dry_run_plan.py": "repo-only dry-run handoff guard; subprocess is limited to the soak harness without -Execute and does not launch Clash95, CDB, wrappers, or visible windows",
+    "hd_soak_execution_boundary.py": "repo-local negative approval-boundary probe; subprocess uses invalid visible-runtime approval packets plus a nonexistent input executable and must fail before launch side effects",
     "hd_endurance_next_actions.py": "repo-only command planner; postmessage and runtime text appear only in approval-gated command templates",
     "hd_soak_approval_preflight.py": "repo-only approval packet builder; postmessage and runtime text appear only in non-executing command validation",
     "hd_soak_failure_triage.py": "repo-only report classifier; postmessage text appears only in failure guidance and no runtime APIs are called",
@@ -351,10 +352,10 @@
       ],
       "risk_lines": {
         "sendinput": [
-          3983
+          4064
         ],
         "postmessage": [
-          3983
+          4064
         ]
       },
       "failures": []
@@ -468,8 +469,8 @@
       ],
       "risk_lines": {
         "postmessage": [
-          30,
-          423
+          38,
+          603
         ]
       },
       "failures": []
@@ -499,9 +500,9 @@
       ],
       "risk_lines": {
         "postmessage": [
-          41,
-          231,
-          559
+          49,
+          333,
+          696
         ]
       },
       "failures": []
@@ -517,17 +518,40 @@
       ],
       "risk_lines": {
         "subprocess": [
-          14,
-          116,
-          120,
-          121
+          15,
+          179,
+          183,
+          184
         ],
         "process_launch": [
-          116
+          179
         ],
         "postmessage": [
-          36,
-          181
+          45,
+          257
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/hd_soak_execution_boundary.py",
+      "classification": "exempt",
+      "reason": "repo-local negative approval-boundary probe; subprocess uses invalid visible-runtime approval packets plus a nonexistent input executable and must fail before launch side effects",
+      "risk_categories": [
+        "postmessage",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          15,
+          46,
+          172,
+          179,
+          180,
+          204
+        ],
+        "postmessage": [
+          127
         ]
       },
       "failures": []
@@ -537,11 +561,18 @@
       "classification": "exempt",
       "reason": "repo-only report classifier; postmessage text appears only in failure guidance and no runtime APIs are called",
       "risk_categories": [
-        "postmessage"
+        "postmessage",
+        "sendinput"
       ],
       "risk_lines": {
+        "sendinput": [
+          411,
+          413
+        ],
         "postmessage": [
-          134
+          144,
+          414,
+          420
         ]
       },
       "failures": []
@@ -555,10 +586,10 @@
       ],
       "risk_lines": {
         "postmessage": [
-          97,
-          193,
-          205,
-          206
+          106,
+          306,
+          318,
+          319
         ]
       },
       "failures": []
@@ -611,7 +642,7 @@
       ],
       "risk_lines": {
         "postmessage": [
-          29
+          36
         ]
       },
       "failures": []
@@ -633,7 +664,7 @@
       ],
       "risk_lines": {
         "postmessage": [
-          91
+          98
         ]
       },
       "failures": []
@@ -1165,34 +1196,35 @@
           46,
           47,
           48,
-          63,
-          66
+          49,
+          64,
+          67
         ],
         "ctypes": [
           25,
-          142
+          143
         ],
         "win32_user32": [
           2,
-          56,
-          64,
-          142
+          57,
+          65,
+          143
         ],
         "sendinput": [
           27,
           44,
-          142
+          143
         ],
         "postmessage": [
           28,
-          49,
           50,
           51,
           52,
           53,
           54,
           55,
-          142
+          56,
+          143
         ],
         "cursor_window_input": [
           30,
@@ -2086,18 +2118,17 @@
       "risk_lines": {
         "subprocess": [
           8,
-          606
+          718
         ],
         "process_launch": [
-          606
+          718
         ],
         "postmessage": [
-          127,
-          140,
-          241,
-          247,
-          348,
-          595
+          164,
+          183,
+          302,
+          406,
+          707
         ]
       },
       "failures": []
@@ -2113,10 +2144,10 @@
       "risk_lines": {
         "subprocess": [
           8,
-          391
+          533
         ],
         "process_launch": [
-          391
+          533
         ]
       },
       "failures": []
@@ -2134,16 +2165,16 @@
       "risk_lines": {
         "subprocess": [
           8,
-          659
+          827
         ],
         "process_launch": [
-          659
+          827
         ],
         "sendinput": [
-          571
+          739
         ],
         "postmessage": [
-          295
+          450
         ]
       },
       "failures": []
@@ -2161,21 +2192,40 @@
       "risk_lines": {
         "subprocess": [
           9,
-          34,
-          35,
-          38,
-          39
+          36,
+          37,
+          40,
+          41
         ],
         "process_launch": [
-          35
+          37
         ],
         "sendinput": [
-          205
+          305
         ],
         "postmessage": [
-          68,
-          144,
-          206
+          70,
+          157,
+          187,
+          306
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_soak_execution_boundary.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          9,
+          20,
+          21,
+          32,
+          43
         ]
       },
       "failures": []
@@ -2193,17 +2243,20 @@
       "risk_lines": {
         "subprocess": [
           7,
-          333
+          424
         ],
         "process_launch": [
-          333
+          424
         ],
         "sendinput": [
-          184,
-          189
+          188,
+          198,
+          220,
+          253,
+          254
         ],
         "postmessage": [
-          188
+          192
         ]
       },
       "failures": []
@@ -2230,10 +2283,10 @@
           21
         ],
         "sendinput": [
-          89
+          166
         ],
         "postmessage": [
-          89
+          166
         ]
       },
       "failures": []
@@ -2251,18 +2304,18 @@
       "risk_lines": {
         "subprocess": [
           8,
-          132
+          176
         ],
         "process_launch": [
-          132
+          176
         ],
         "sendinput": [
-          117
+          136
         ],
         "postmessage": [
-          28,
-          98,
-          114
+          31,
+          115,
+          133
         ]
       },
       "failures": []
@@ -2299,12 +2352,12 @@
       "risk_lines": {
         "subprocess": [
           7,
-          459,
-          465
+          522,
+          528
         ],
         "process_launch": [
-          459,
-          465
+          522,
+          528
         ]
       },
       "failures": []
@@ -2320,10 +2373,10 @@
       "risk_lines": {
         "subprocess": [
           7,
-          141
+          173
         ],
         "process_launch": [
-          141
+          173
         ]
       },
       "failures": []
@@ -2340,14 +2393,14 @@
       "risk_lines": {
         "subprocess": [
           7,
-          81
+          90
         ],
         "process_launch": [
-          81
+          90
         ],
         "postmessage": [
           50,
-          53
+          60
         ]
       },
       "failures": []
@@ -2363,10 +2416,10 @@
       "risk_lines": {
         "subprocess": [
           8,
-          191
+          202
         ],
         "process_launch": [
-          191
+          202
         ]
       },
       "failures": []
@@ -2383,15 +2436,16 @@
       "risk_lines": {
         "subprocess": [
           8,
-          202
+          232
         ],
         "process_launch": [
-          202
+          232
         ],
         "postmessage": [
-          137,
-          140,
-          159
+          83,
+          156,
+          166,
+          188
         ]
       },
       "failures": []
@@ -2407,10 +2461,10 @@
       "risk_lines": {
         "subprocess": [
           8,
-          233
+          237
         ],
         "process_launch": [
-          233
+          237
         ]
       },
       "failures": []
@@ -2884,30 +2938,32 @@
           37,
           49,
           50,
-          56
+          53,
+          60
         ],
         "process_launch": [
           21,
           37,
           49,
           50,
-          56
+          53,
+          60
         ],
         "ctypes": [
           45,
           46,
           48,
-          73
+          78
         ],
         "sendinput": [
           45,
           46,
           47,
-          55
+          59
         ],
         "postmessage": [
-          53,
-          73
+          57,
+          78
         ]
       },
       "failures": []

@@ -36,6 +36,11 @@ RELEASE_LANES = [
     {
         "id": "menu_idle",
         "route": "menu-idle",
+        "proposed_route": "menu-idle",
+        "route_contract_status": "scripted_current_harness",
+        "planned_route_steps": [],
+        "unlock_requirement_ids": ["short2_menu_idle_soak", "stable_menu_real_input"],
+        "implementation_policy": "already scripted; execute only through explicit visible-runtime approval",
         "status": "implemented_pending_first_soak",
         "proof_class": "approval_gated_visible_runtime",
         "promotion_scope": "non_promoting_short_soak",
@@ -45,24 +50,68 @@ RELEASE_LANES = [
     {
         "id": "map_idle",
         "route": "map-idle",
+        "proposed_route": "map-idle",
+        "route_contract_status": "scripted_current_harness",
+        "planned_route_steps": ["load-button", "load-slot0", "confirm-load"],
+        "unlock_requirement_ids": [
+            "short2_menu_idle_soak",
+            "stable_hd_map_real_input",
+            "first_mission_visual_clean",
+        ],
+        "implementation_policy": "already scripted; execute only after menu-idle approval-gated soak passes",
         "status": "implemented_waiting_on_short2_menu",
         "proof_class": "approval_gated_visible_runtime",
         "promotion_scope": "non_promoting_short_soak",
-        "release_requirement_ids": ["short2_menu_idle_soak", "stable_hd_map_real_input"],
+        "release_requirement_ids": [
+            "short2_menu_idle_soak",
+            "stable_hd_map_real_input",
+            "first_mission_visual_clean",
+        ],
         "next_probe": "run short2 map-idle after menu-idle passes",
     },
     {
         "id": "map_pan",
         "route": "map-pan",
+        "proposed_route": "map-pan",
+        "route_contract_status": "scripted_current_harness",
+        "planned_route_steps": ["load-button", "load-slot0", "confirm-load", "pan-path"],
+        "unlock_requirement_ids": [
+            "short2_menu_idle_soak",
+            "stable_hd_map_real_input",
+            "first_mission_visual_clean",
+        ],
+        "implementation_policy": "already scripted; execute only after map-idle approval-gated soak passes",
         "status": "implemented_waiting_on_map_idle",
         "proof_class": "approval_gated_visible_runtime",
         "promotion_scope": "non_promoting_short_soak",
-        "release_requirement_ids": ["long_soak_representative_routes", "stable_hd_map_real_input"],
+        "release_requirement_ids": [
+            "long_soak_representative_routes",
+            "stable_hd_map_real_input",
+            "first_mission_visual_clean",
+        ],
         "next_probe": "run short10/short30 map-pan after map-idle passes",
     },
     {
         "id": "castle_overview_enter_exit",
         "route": None,
+        "proposed_route": "castle-overview-enter-exit",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+            "load-button",
+            "load-slot0",
+            "confirm-load",
+            "enter-castle-overview",
+            "exit-castle-overview",
+        ],
+        "unlock_requirement_ids": [
+            "short2_menu_idle_soak",
+            "stable_hd_map_real_input",
+            "castle_and_barracks_centered_input",
+        ],
+        "implementation_policy": (
+            "do not add to run_hd_soak ValidateSet until short map routes pass "
+            "and castle overview input has natural or approved manual proof"
+        ),
         "status": "planned_not_implemented",
         "proof_class": "future_visible_or_manual_input",
         "promotion_scope": "blocked_until_manual_or_strict_natural_proof",
@@ -72,6 +121,26 @@ RELEASE_LANES = [
     {
         "id": "barracks_castle_centered_input",
         "route": None,
+        "proposed_route": "castle-barracks-enter-exit",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+            "load-button",
+            "load-slot0",
+            "confirm-load",
+            "enter-castle-overview",
+            "enter-barracks",
+            "exit-barracks",
+            "exit-castle-overview",
+        ],
+        "unlock_requirement_ids": [
+            "short2_menu_idle_soak",
+            "stable_hd_map_real_input",
+            "castle_and_barracks_centered_input",
+        ],
+        "implementation_policy": (
+            "do not script barracks routing until castle overview entry/exit is stable "
+            "and centered input proof exists"
+        ),
         "status": "planned_not_implemented",
         "proof_class": "future_visible_or_manual_input",
         "promotion_scope": "blocked_until_manual_or_strict_natural_proof",
@@ -81,6 +150,25 @@ RELEASE_LANES = [
     {
         "id": "right_bottom_action_menu",
         "route": None,
+        "proposed_route": "right-bottom-action-menu",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+            "load-button",
+            "load-slot0",
+            "confirm-load",
+            "pan-to-right-bottom",
+            "natural-select-right-bottom-target",
+            "open-action-menu",
+        ],
+        "unlock_requirement_ids": [
+            "short2_menu_idle_soak",
+            "stable_hd_map_real_input",
+            "right_bottom_action_menu",
+        ],
+        "implementation_policy": (
+            "keep forced coordinate evidence diagnostic; script only after natural or approved manual "
+            "right-bottom action-menu proof exists"
+        ),
         "status": "planned_blocked_by_manual_or_natural_proof",
         "proof_class": "future_visible_or_manual_input",
         "promotion_scope": "blocked; forced coordinates remain diagnostic only",
@@ -90,6 +178,25 @@ RELEASE_LANES = [
     {
         "id": "tactical_battle_entry_return",
         "route": None,
+        "proposed_route": "battle-entry-return",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+            "load-button",
+            "load-slot0",
+            "confirm-load",
+            "enter-battle",
+            "verify-battle-ui",
+            "return-to-map",
+        ],
+        "unlock_requirement_ids": [
+            "short2_menu_idle_soak",
+            "stable_hd_map_real_input",
+            "tactical_battle_entry_return",
+        ],
+        "implementation_policy": (
+            "do not script battle routing until representative map and castle routes are stable "
+            "and battle entry/return proof is available"
+        ),
         "status": "planned_not_implemented",
         "proof_class": "future_visible_or_manual_input",
         "promotion_scope": "blocked_until_battle_entry_return_and_click_to_callback_proof",
@@ -99,6 +206,23 @@ RELEASE_LANES = [
     {
         "id": "save_load_roundtrip",
         "route": None,
+        "proposed_route": "save-load-roundtrip",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+            "prepare-isolated-save",
+            "save-roundtrip",
+            "load-roundtrip",
+            "compare-continuity-markers",
+        ],
+        "unlock_requirement_ids": [
+            "short2_menu_idle_soak",
+            "stable_hd_map_real_input",
+            "save_load_roundtrip",
+        ],
+        "implementation_policy": (
+            "do not script save mutation until an isolated disposable save fixture "
+            "and continuity markers are defined"
+        ),
         "status": "planned_not_implemented",
         "proof_class": "future_safe_test_save_continuity",
         "promotion_scope": "blocked_until_safe_save_roundtrip_evidence",
@@ -108,6 +232,23 @@ RELEASE_LANES = [
     {
         "id": "turn_advancement",
         "route": None,
+        "proposed_route": "turn-advancement",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+            "load-safe-fixture",
+            "advance-turn",
+            "verify-turn-state-markers",
+            "verify-map-still-renders",
+        ],
+        "unlock_requirement_ids": [
+            "short2_menu_idle_soak",
+            "save_load_roundtrip",
+            "turn_advancement",
+        ],
+        "implementation_policy": (
+            "do not script turn advancement until save/load continuity is safe "
+            "and deterministic state markers exist"
+        ),
         "status": "planned_not_implemented",
         "proof_class": "future_state_continuity",
         "promotion_scope": "blocked_until_turn_state_evidence",
@@ -117,6 +258,23 @@ RELEASE_LANES = [
     {
         "id": "campaign_route",
         "route": None,
+        "proposed_route": "campaign-representative-route",
+        "route_contract_status": "locked_not_scripted",
+        "planned_route_steps": [
+            "load-campaign-safe-fixture",
+            "route-campaign-objective",
+            "return-to-map",
+            "sample-continuity",
+        ],
+        "unlock_requirement_ids": [
+            "short2_menu_idle_soak",
+            "long_soak_representative_routes",
+            "campaign_routes",
+        ],
+        "implementation_policy": (
+            "do not script campaign routing until short/medium soak tiers and continuity gates "
+            "are already passing"
+        ),
         "status": "planned_not_implemented",
         "proof_class": "future_long_visible_runtime",
         "promotion_scope": "blocked_until_long_soak_and_campaign_continuity",
@@ -262,6 +420,34 @@ def readiness_status(lane: dict[str, Any], checklist_state: str) -> str:
     return "planned_requirements_clear_not_scripted"
 
 
+def route_contract_record(lane: dict[str, Any]) -> dict[str, Any]:
+    route = lane.get("route")
+    planned_steps = lane.get("planned_route_steps")
+    if route and lane.get("route_steps"):
+        planned_steps = lane["route_steps"]
+    return {
+        "id": lane["id"],
+        "route": route,
+        "proposed_route": lane.get("proposed_route"),
+        "route_contract_status": lane.get("route_contract_status", "unknown"),
+        "planned_route_steps": list(planned_steps or []),
+        "unlock_requirement_ids": list(lane.get("unlock_requirement_ids") or []),
+        "release_requirement_ids": list(lane.get("release_requirement_ids") or []),
+        "implementation_policy": lane.get("implementation_policy", ""),
+        "readiness_status": lane.get("readiness_status"),
+        "current_blocker_count": lane.get("current_blocker_count", 0),
+        "blocking_requirement_ids": [blocker["id"] for blocker in lane.get("current_blockers", [])],
+        "stable_stage_should_change": lane.get("stable_stage_should_change", False),
+        "promotion_ready": False,
+        "safe_to_execute_now": bool(route and lane.get("implemented_in_harness") and not lane.get("current_blockers")),
+        "ready_to_script": bool(
+            not lane.get("implemented_in_harness")
+            and not lane.get("current_blockers")
+            and lane.get("route_contract_status") == "candidate_ready_to_script"
+        ),
+    }
+
+
 def build_report(
     script: Path = DEFAULT_SCRIPT,
     release_checklist_json: Path | None = DEFAULT_RELEASE_CHECKLIST_JSON,
@@ -304,6 +490,7 @@ def build_report(
         lane_record["implemented_in_harness"] = bool(route and route in route_values)
         lane_record["route_steps"] = route_steps.get(str(route), []) if route else []
         lane_record["stable_stage_should_change"] = False
+        lane_record["promotion_ready"] = False
         lane_record["current_blockers"] = []
         if release_checklist["state"] == "present":
             for requirement_id in lane_record.get("release_requirement_ids", []):
@@ -317,11 +504,16 @@ def build_report(
                     lane_record["current_blockers"].append(compact_requirement(requirement))
         lane_record["current_blocker_count"] = len(lane_record["current_blockers"])
         lane_record["readiness_status"] = readiness_status(lane_record, str(release_checklist["state"]))
+        contract = route_contract_record(lane_record)
+        lane_record["route_contract"] = contract
+        lane_record["safe_to_execute_now"] = contract["safe_to_execute_now"]
+        lane_record["ready_to_script"] = contract["ready_to_script"]
         lanes.append(lane_record)
 
     implemented_lane_count = sum(1 for lane in lanes if lane["implemented_in_harness"])
     planned_lane_count = len(lanes) - implemented_lane_count
     blocked_lane_count = sum(1 for lane in lanes if lane["current_blocker_count"])
+    future_route_plan = [route_contract_record(lane) for lane in lanes if not lane["implemented_in_harness"]]
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "passed": not failures,
@@ -333,11 +525,13 @@ def build_report(
         "tier_seconds": tier_seconds,
         "required_short_routes": REQUIRED_SHORT_ROUTES,
         "release_lanes": lanes,
+        "locked_future_route_plan": future_route_plan,
         "counts": {
             "release_lane_count": len(lanes),
             "implemented_lane_count": implemented_lane_count,
             "planned_lane_count": planned_lane_count,
             "blocked_lane_count": blocked_lane_count,
+            "locked_future_route_count": len(future_route_plan),
             "required_short_route_count": len(REQUIRED_SHORT_ROUTES),
         },
         "coverage_complete": planned_lane_count == 0,
@@ -377,6 +571,22 @@ def to_markdown(report: dict[str, Any]) -> str:
             lines.append(
                 f"  - blocker `{blocker['id']}`: status=`{blocker['status']}` summary={blocker['summary']}"
             )
+    if report.get("locked_future_route_plan"):
+        lines.extend(["", "## Locked Future Route Plan", ""])
+        for route_plan in report["locked_future_route_plan"]:
+            proposed_route = route_plan.get("proposed_route") or "unnamed"
+            steps = ", ".join(route_plan.get("planned_route_steps") or [])
+            blockers = ", ".join(route_plan.get("blocking_requirement_ids") or [])
+            lines.append(
+                f"- `{route_plan['id']}`: proposed_route=`{proposed_route}` "
+                f"contract=`{route_plan['route_contract_status']}` "
+                f"ready_to_script=`{route_plan['ready_to_script']}` "
+                f"safe_to_execute_now=`{route_plan['safe_to_execute_now']}`"
+            )
+            lines.append(f"  - steps: `{steps or 'not-defined'}`")
+            lines.append(f"  - unlock_requirements: `{', '.join(route_plan.get('unlock_requirement_ids') or [])}`")
+            lines.append(f"  - current_blockers: `{blockers or 'none'}`")
+            lines.append(f"  - policy: {route_plan.get('implementation_policy') or 'not specified'}")
     if report.get("failures"):
         lines.extend(["", "## Failures", ""])
         lines.extend(f"- {failure}" for failure in report["failures"])

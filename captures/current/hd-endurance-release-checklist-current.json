@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T16:05:30.464957+00:00",
+  "generated_at": "2026-06-17T07:48:29.614112+00:00",
   "passed": false,
   "runtime_policy": "repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -13,6 +13,7 @@
     "right_bottom": "captures\\current\\right-bottom-compose-promotion-decision-current.json",
     "castle_overview": "captures\\current\\castle-overview-promotion-decision-current.json",
     "battle_ui": "captures\\current\\battle-ui-evidence-current.json",
+    "first_mission_visual": "captures\\current\\first-mission-visual-audit-current.json",
     "current_completion": "captures\\current\\current-completion-summary-current.json",
     "continuity": "captures\\current\\hd-continuity-current.json",
     "exe_artifact": "captures\\current\\exe-artifact-guard-current.json",
@@ -28,15 +29,16 @@
     "right_bottom": "present",
     "castle_overview": "present",
     "battle_ui": "present",
+    "first_mission_visual": "present",
     "current_completion": "present",
     "continuity": "present",
     "exe_artifact": "present",
     "process_hygiene": "present"
   },
   "counts": {
-    "total": 14,
+    "total": 15,
     "passed": 4,
-    "blocked": 10,
+    "blocked": 11,
     "missing": 0
   },
   "next_milestone": {
@@ -70,6 +72,73 @@
       "next_probe": "refresh no-popup map evidence before runtime endurance claims"
     },
     {
+      "id": "first_mission_visual_clean",
+      "title": "First mission selected-unit frame has no stripe or black-patch blockers",
+      "category": "render baseline",
+      "status": "blocked",
+      "passed": false,
+      "evidence": [
+        "captures\\current\\first-mission-visual-audit-current.json"
+      ],
+      "summary": "first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior",
+      "next_probe": "fix right/bottom/minimap black patches before treating first-mission playability as release-ready",
+      "details": {
+        "current_status": "selected_unit_action_bar_on_bottom_but_black_ui_patches_remain",
+        "primary_frame": "centered_bottom_edge_panel",
+        "primary_frame_path": "captures\\archive\\cdb-surface-dump-20260616-153751\\surface.png",
+        "selected_action_bar_visible": true,
+        "legacy_middle_action_bar_visible": false,
+        "black_patch_regions": [
+          "right_below_minimap",
+          "bottom_right_panel",
+          "minimap_interior"
+        ],
+        "black_patch_details": [
+          {
+            "region": "right_below_minimap",
+            "rect": [
+              586,
+              230,
+              799,
+              599
+            ],
+            "black_percent": 76.407,
+            "nonblack_percent": 23.593,
+            "mean_luma": 22.011,
+            "quantized_color_bins": 19
+          },
+          {
+            "region": "bottom_right_panel",
+            "rect": [
+              586,
+              528,
+              799,
+              599
+            ],
+            "black_percent": 78.57,
+            "nonblack_percent": 21.43,
+            "mean_luma": 20.063,
+            "quantized_color_bins": 16
+          },
+          {
+            "region": "minimap_interior",
+            "rect": [
+              594,
+              24,
+              793,
+              220
+            ],
+            "black_percent": 98.581,
+            "nonblack_percent": 1.419,
+            "mean_luma": 1.718,
+            "quantized_color_bins": 17
+          }
+        ],
+        "stripe_failure_frames": [],
+        "next_probe": "inspect the primary frame's right-side/minimap/bottom-panel compose or present path for black patch regions, then rerun first_mission_visual_audit.py"
+      }
+    },
+    {
       "id": "short2_menu_idle_soak",
       "title": "First short2 menu-idle soak passes",
       "category": "endurance",
@@ -89,7 +158,7 @@
           "canonical_first_step_present": true,
           "canonical_runtime_report_missing": false,
           "overall": false,
-          "failure_count": 14
+          "failure_count": 17
         },
         "short_step_status": {
           "current_step": "short2_menu_idle",
@@ -251,9 +320,10 @@
   "full_game_percent_statement": "not 100%; endurance, manual input, state continuity, or validation-route gates remain open",
   "current_completion_summary": {
     "full_game_complete": false,
-    "full_game_percent_statement": "not 100%; manual DirectInput proof and stable promotion remain blocked"
+    "full_game_percent_statement": "not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open"
   },
   "failures": [
+    "first_mission_visual_clean: first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior",
     "short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit",
     "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
     "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",

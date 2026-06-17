@@ -19,6 +19,12 @@
   non-promoting and keep full-game completion below 100%
 - Current completion summary tests: PASS, fixture coverage is included in the
   refresh
+- First-mission visual audit: FAIL-closed; selected-unit action bar is now
+  bottom/centered and no stripe failures are present, but black patch blockers
+  remain in `right_below_minimap`, `bottom_right_panel`, and `minimap_interior`.
+  See `first-mission-visual-audit-current.md`
+- First-mission visual audit tests: PASS, fixture coverage is included in the
+  refresh. See `first-mission-visual-audit-tests-current.md`
 - HD short soak report: FAIL-closed pending explicit visible-runtime approval;
   no frame/process endurance evidence has been collected yet, and the guard now
   requires per-run patch-stage evidence before any soak can count
@@ -161,6 +167,10 @@
   safe, test fixture, exempt, or manual/visible-runtime gated
 - Python runtime safety guard tests: PASS, fixture coverage is included in the
   refresh
+- HD soak execution boundary: PASS, invalid or expired visible-runtime approval
+  packets fail before candidate/output/report side effects
+- HD soak execution boundary tests: PASS, fixture coverage proves the negative
+  boundary reporter fails closed before launch side effects
 - Patch definition guard: PASS, stable/validation patch groups are statically
   checked without reading or building an executable
 - Patch definition guard tests: PASS, fixture coverage catches default drift,
@@ -201,13 +211,13 @@
   current evidence
 - Promotion override manifest tests: PASS, fixture coverage requires explicit
   approval, scope, stage/SHA, risk, evidence refs, and stale-process proof
-- No-popup boundary guard: FAIL-closed; required reports are present and linked
-  from this evidence index, but upstream stable-stage, right-bottom visual,
-  castle baseline, and docs-consistency blockers are not passing
+- No-popup boundary guard: PASS; required reports are present and linked
+  from this evidence index, including expected-blocker reports that remain
+  non-promoting until their underlying visual/runtime evidence is fixed
 - No-popup guard regression tests: PASS, fixture coverage is included in the
   refresh and the failing surface-policy CLI output stays fixture-local
-- Docs consistency guard: FAIL-closed while no-popup boundary counts and
-  validation-only castle status remain failing in generated current evidence
+- Docs consistency guard: PASS; generated no-popup boundary counts and
+  validation-only status are reflected in current docs and wiki summaries
 - Docs consistency guard tests: PASS, fixture coverage catches stale generated
   counts and stale promotion-boundary facts
 - Handoff freshness guard: PASS, current handoff points at the route timing
@@ -251,6 +261,8 @@
 - [HD continuity status tests](hd-continuity-tests-current.md)
 - [HD soak harness guard](hd-soak-harness-guard-current.md)
 - [HD soak harness guard tests](hd-soak-harness-guard-tests-current.md)
+- [HD soak execution boundary](hd-soak-execution-boundary-current.md)
+- [HD soak execution boundary tests](hd-soak-execution-boundary-tests-current.md)
 - [HD soak report guard](hd-soak-report-guard-current.md)
 - [HD soak report guard tests](hd-soak-report-guard-tests-current.md)
 - [No-popup boundary guard](no-popup-boundary-guard-current.md)
@@ -946,12 +958,12 @@ The no-popup boundary guard is `captures\current\no-popup-boundary-guard-current
 It passes repo-only and verifies that the current refresh includes the six
 core boundary guards: stable stage, executable artifact, surface-dump policy,
 visible-runtime launcher, no-visible runtime, and process hygiene. It records
-`required_guard_count=6`, `required_supporting_report_count=82`, and
-`required_report_count=88`. It also now
+`required_guard_count=6`, `required_supporting_report_count=86`, and
+`required_report_count=92`. It also now
 requires the no-popup map evidence matrix and its fixture tests, visible runtime
 launcher guard tests, no-visible runtime guard fixture tests,
-no-popup guard regression report, Python runtime safety guard and tests, patch
-definition guard and tests, capture corpus index and tests, current completion
+no-popup guard regression report, Python runtime safety guard and tests, HD soak
+execution-boundary report and tests, patch definition guard and tests, capture corpus index and tests, current completion
 summary and tests, right-bottom validation
 guard tests, manual DirectInput checklist, proof-template, and run-plan reports,
 promotion override guard reports, promotion override manifest reports, docs

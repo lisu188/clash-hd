@@ -31,11 +31,13 @@ import border_tooltip_summary
 import docs_consistency_guard
 import evidence_index_check
 import exe_artifact_guard
+import first_mission_visual_audit
 import handoff_freshness_guard
 import hd_endurance_release_checklist
 import hd_endurance_next_actions
 import hd_continuity_status
 import hd_soak_harness_guard
+import hd_soak_execution_boundary
 import hd_soak_dry_run_plan
 import hd_soak_failure_triage
 import hd_soak_intro_skip_rerun_readiness
@@ -133,6 +135,7 @@ import test_hd_continuity_status
 import test_hd_soak_failure_triage
 import test_hd_soak_dry_run_plan
 import test_hd_soak_harness_guard
+import test_hd_soak_execution_boundary
 import test_hd_soak_intro_skip_rerun_readiness
 import test_hd_soak_long_report_guard
 import test_hd_soak_report
@@ -158,6 +161,7 @@ import test_visible_runtime_launcher_guard
 import test_capture_corpus_index
 import test_current_completion_summary
 import test_docs_consistency_guard
+import test_first_mission_visual_audit
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -279,6 +283,14 @@ DEFAULT_RIGHT_BOTTOM_VISUAL_ARTIFACT_GUARD_TESTS_JSON = Path(
 )
 DEFAULT_RIGHT_BOTTOM_VISUAL_ARTIFACT_GUARD_TESTS_MD = Path(
     "captures/current/right-bottom-visual-artifact-guard-tests-current.md"
+)
+DEFAULT_FIRST_MISSION_VISUAL_AUDIT_JSON = first_mission_visual_audit.DEFAULT_JSON
+DEFAULT_FIRST_MISSION_VISUAL_AUDIT_MD = first_mission_visual_audit.DEFAULT_MD
+DEFAULT_FIRST_MISSION_VISUAL_AUDIT_TESTS_JSON = Path(
+    "captures/current/first-mission-visual-audit-tests-current.json"
+)
+DEFAULT_FIRST_MISSION_VISUAL_AUDIT_TESTS_MD = Path(
+    "captures/current/first-mission-visual-audit-tests-current.md"
 )
 DEFAULT_RIGHT_BOTTOM_SLOT_FIXTURE_PLAN_JSON = right_bottom_slot_fixture_plan.DEFAULT_JSON
 DEFAULT_RIGHT_BOTTOM_SLOT_FIXTURE_PLAN_MD = right_bottom_slot_fixture_plan.DEFAULT_MD
@@ -525,6 +537,14 @@ DEFAULT_HD_SOAK_HARNESS_GUARD_JSON = hd_soak_harness_guard.DEFAULT_JSON
 DEFAULT_HD_SOAK_HARNESS_GUARD_MD = hd_soak_harness_guard.DEFAULT_MD
 DEFAULT_HD_SOAK_HARNESS_GUARD_TESTS_JSON = Path("captures/current/hd-soak-harness-guard-tests-current.json")
 DEFAULT_HD_SOAK_HARNESS_GUARD_TESTS_MD = Path("captures/current/hd-soak-harness-guard-tests-current.md")
+DEFAULT_HD_SOAK_EXECUTION_BOUNDARY_JSON = hd_soak_execution_boundary.DEFAULT_JSON
+DEFAULT_HD_SOAK_EXECUTION_BOUNDARY_MD = hd_soak_execution_boundary.DEFAULT_MD
+DEFAULT_HD_SOAK_EXECUTION_BOUNDARY_TESTS_JSON = Path(
+    "captures/current/hd-soak-execution-boundary-tests-current.json"
+)
+DEFAULT_HD_SOAK_EXECUTION_BOUNDARY_TESTS_MD = Path(
+    "captures/current/hd-soak-execution-boundary-tests-current.md"
+)
 DEFAULT_HD_SOAK_DRY_RUN_PLAN_JSON = hd_soak_dry_run_plan.DEFAULT_JSON
 DEFAULT_HD_SOAK_DRY_RUN_PLAN_MD = hd_soak_dry_run_plan.DEFAULT_MD
 DEFAULT_HD_SOAK_DRY_RUN_PLAN_TESTS_JSON = Path("captures/current/hd-soak-dry-run-plan-tests-current.json")
@@ -2233,6 +2253,67 @@ def build_right_bottom_visual_artifact_guard_tests(args: argparse.Namespace) -> 
         guard_policy=(
             "proves the right-bottom visual artifact guard blocks the current stripy/out-of-place "
             "natural UI state from promotion and fails closed if the artifact or route state changes"
+        ),
+    )
+
+
+def build_first_mission_visual_audit(args: argparse.Namespace) -> dict[str, Any]:
+    audit_args = argparse.Namespace(
+        threshold=args.first_mission_visual_threshold,
+        bright_threshold=args.first_mission_visual_bright_threshold,
+        diff_threshold=args.first_mission_visual_diff_threshold,
+        max_stripe_high_percent=args.first_mission_visual_max_stripe_high_percent,
+        max_stripe_excess_percent=args.first_mission_visual_max_stripe_excess_percent,
+    )
+    report = first_mission_visual_audit.build_report(
+        first_mission_visual_audit.DEFAULT_FRAMES,
+        audit_args,
+    )
+    first_mission_visual_audit.write_json(args.first_mission_visual_audit_json, report)
+    first_mission_visual_audit.write_markdown(args.first_mission_visual_audit_md, report)
+    summary = report.get("summary") or {}
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.first_mission_visual_audit_json),
+        "markdown": str(args.first_mission_visual_audit_md),
+        "summary": {
+            "current_status": report.get("current_status"),
+            "first_mission_visual_clean": report.get("first_mission_visual_clean"),
+            "primary_frame": report.get("primary_frame"),
+            "primary_frame_path": report.get("primary_frame_path"),
+            "next_probe": report.get("next_probe") or summary.get("next_probe"),
+            "primary_play_area_nonblack": summary.get("primary_play_area_nonblack"),
+            "primary_selected_action_bar_visible": summary.get("primary_selected_action_bar_visible"),
+            "primary_legacy_middle_action_bar_visible": summary.get(
+                "primary_legacy_middle_action_bar_visible"
+            ),
+            "primary_black_patch_regions": summary.get("primary_black_patch_regions"),
+            "primary_black_patch_details": summary.get("primary_black_patch_details"),
+            "stripe_failure_frames": summary.get("stripe_failure_frames"),
+            "diagnostic_black_frames": summary.get("diagnostic_black_frames"),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_first_mission_visual_audit_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_first_mission_visual_audit,
+        tests=[
+            "first_mission_visual_audit passes a clean first-mission frame",
+            "first_mission_visual_audit fails horizontal stripe signatures",
+            "first_mission_visual_audit fails large black patch regions",
+            "first_mission_visual_audit fails legacy middle action-bar placement",
+            "first_mission_visual_audit reports diagnostic black frames",
+            "first_mission_visual_audit CLI writes JSON/Markdown and honors --require-pass",
+        ],
+        title="First Mission Visual Audit Tests",
+        json_path=args.first_mission_visual_audit_tests_json,
+        md_path=args.first_mission_visual_audit_tests_md,
+        guard_policy=(
+            "proves first-mission visual audit detects stripe signatures, large black UI patches, "
+            "legacy middle action-bar placement, and diagnostic black frames without launching runtime"
         ),
     )
 
@@ -4776,6 +4857,9 @@ def build_hd_soak_harness_guard_tests(args: argparse.Namespace) -> dict[str, Any
             "hd_soak_harness_guard rejects missing explicit approval text",
             "hd_soak_harness_guard rejects dry-run execute commands without -RequirePass semantics",
             "hd_soak_harness_guard rejects dry-run execute commands without JSON output",
+            "hd_soak_harness_guard rejects missing visible-runtime approval token or expiry boundaries",
+            "hd_soak_harness_guard rejects missing visible-runtime approval minimum TTL boundary",
+            "hd_soak_harness_guard rejects runtime side effects before approval guards",
             "hd_soak_harness_guard rejects missing required report metrics",
             "hd_soak_harness_guard rejects missing sample-interval, render-range, or raw inventory metrics",
             "hd_soak_harness_guard CLI writes JSON/Markdown and fails closed",
@@ -4787,6 +4871,60 @@ def build_hd_soak_harness_guard_tests(args: argparse.Namespace) -> dict[str, Any
             "proves the opt-in soak harness stays protected-stage, approval-gated, "
             "non-promoting, artifact-safe, and preserves full render-range plus "
             "sample-interval, route/process/frame/capture inventory metrics"
+        ),
+    )
+
+
+def build_hd_soak_execution_boundary(args: argparse.Namespace) -> dict[str, Any]:
+    boundary_args = argparse.Namespace(
+        script=args.hd_soak_harness_script,
+        fixture_root=args.hd_soak_execution_boundary_fixture_root,
+        clean_fixture=True,
+    )
+    report = hd_soak_execution_boundary.build_report(boundary_args)
+    hd_soak_execution_boundary.write_outputs(
+        report,
+        args.hd_soak_execution_boundary_json,
+        args.hd_soak_execution_boundary_md,
+    )
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_soak_execution_boundary_json),
+        "markdown": str(args.hd_soak_execution_boundary_md),
+        "summary": {
+            "case_count": report.get("case_count"),
+            "runtime_policy": report.get("runtime_policy"),
+            "guard_policy": report.get("guard_policy"),
+            "cases": [
+                {
+                    "name": case.get("name"),
+                    "passed": case.get("passed"),
+                    "exit_code": case.get("exit_code"),
+                    "expected_phrase_seen": case.get("expected_phrase_seen"),
+                    "side_effects": case.get("side_effects"),
+                }
+                for case in (report.get("cases") or [])
+            ],
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_hd_soak_execution_boundary_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_soak_execution_boundary,
+        tests=[
+            "hd_soak_execution_boundary accepts fake bad-approval failures before side effects",
+            "hd_soak_execution_boundary rejects fake side effects before failure",
+            "hd_soak_execution_boundary renders Markdown case rows",
+            "hd_soak_execution_boundary writes JSON/Markdown reports",
+        ],
+        title="HD Soak Execution Boundary Tests",
+        json_path=args.hd_soak_execution_boundary_tests_json,
+        md_path=args.hd_soak_execution_boundary_tests_md,
+        guard_policy=(
+            "proves the negative execution-boundary reporter fails closed when "
+            "bad visible-runtime approval packets would create candidate/output/report side effects"
         ),
     )
 
@@ -4882,7 +5020,9 @@ def build_hd_soak_report_guard_tests(args: argparse.Namespace) -> dict[str, Any]
             "hd_soak_report rejects weak render/palette metrics",
             "hd_soak_report allows stable idle frames but requires progression for map-pan",
             "hd_soak_report rejects missing or excessive process growth metrics",
+            "hd_soak_report rejects missing, mismatched, or excessive artifact budget metrics",
             "hd_soak_report rejects missing or excessive route input drift metrics",
+            "hd_soak_report rejects final route markers that do not match the last route/input row",
             "hd_soak_report rejects empty route evidence and summary/detail metric mismatches",
             "hd_soak_report rejects patch-stage manifests with original/unexpected bytes or failed HD gate",
             "hd_soak_report rejects missing patch-stage manifests",
@@ -4895,7 +5035,7 @@ def build_hd_soak_report_guard_tests(args: argparse.Namespace) -> dict[str, Any]
             "proves executed soak reports must carry protected-stage patch evidence, base/candidate SHA-256s, "
             "a passing source status, external artifact locations, stable/progressing frame metrics, clean process stop, "
             "elapsed frame/process sample coverage, valid route/input probe rows, and non-promoting input status with bounded working-set, private-memory, "
-            "handle growth, valid capture/frame inventories, and consistent raw/sample summary metrics"
+            "handle growth, artifact budget, valid capture/frame inventories, and consistent raw/sample summary metrics"
         ),
     )
 
@@ -4942,6 +5082,14 @@ def build_hd_soak_failure_triage(args: argparse.Namespace) -> dict[str, Any]:
             "next_probe": triage.get("next_probe"),
             "route": triage.get("route"),
             "final_route_marker": triage.get("final_route_marker"),
+            "visual_anomaly_passed": (triage.get("visual_anomalies") or {}).get("passed"),
+            "black_patch_risk_count": (triage.get("visual_anomalies") or {}).get("black_patch_risk_count"),
+            "palette_or_stripe_risk_count": (
+                (triage.get("visual_anomalies") or {}).get("palette_or_stripe_risk_count")
+            ),
+            "missing_nonblack_bounds_count": (
+                (triage.get("visual_anomalies") or {}).get("missing_nonblack_bounds_count")
+            ),
             "runtime_policy": triage.get("runtime_policy"),
         },
         "failures": triage.get("failures", []),
@@ -4955,7 +5103,9 @@ def build_hd_soak_failure_triage_tests(args: argparse.Namespace) -> dict[str, An
             "hd_soak_failure_triage classifies pending visible-runtime approval separately from a game failure",
             "hd_soak_failure_triage classifies AV crashes from exit code 0xC0000005",
             "hd_soak_failure_triage classifies unexpected non-AV process exits",
+            "hd_soak_failure_triage enriches missing route click mode from per-route probe JSON",
             "hd_soak_failure_triage classifies render/palette metric regressions",
+            "hd_soak_failure_triage records visual anomaly summary counts",
             "hd_soak_failure_triage classifies route/input probe failures",
             "hd_soak_failure_triage classifies route/input drift failures",
             "hd_soak_failure_triage classifies frame progression failures",
@@ -5011,6 +5161,7 @@ def build_hd_soak_route_coverage_tests(args: argparse.Namespace) -> dict[str, An
         tests=[
             "hd_soak_route_coverage passes the current short-route harness contract",
             "hd_soak_route_coverage keeps future release lanes non-promoting",
+            "hd_soak_route_coverage keeps locked future route plans non-executable",
             "hd_soak_route_coverage annotates lanes with current release-checklist blockers",
             "hd_soak_route_coverage treats a missing release checklist as nonfatal",
             "hd_soak_route_coverage fails closed when linked release requirements go stale",
@@ -5024,7 +5175,7 @@ def build_hd_soak_route_coverage_tests(args: argparse.Namespace) -> dict[str, An
         guard_policy=(
             "proves the soak harness exposes the required short routes and tiers while "
             "future castle, battle, right-bottom, save/load, turn, and campaign lanes stay planned/non-promoting "
-            "with current blocker annotations from the release checklist"
+            "with locked non-executable route contracts and current blocker annotations from the release checklist"
         ),
     )
 
@@ -5133,6 +5284,7 @@ def build_hd_endurance_release_checklist(args: argparse.Namespace) -> dict[str, 
         right_bottom_json=args.right_bottom_compose_decision_json,
         castle_json=args.castle_decision_json,
         battle_json=args.battle_ui_evidence_json,
+        first_mission_visual_json=args.first_mission_visual_audit_json,
         completion_json=args.current_completion_summary_json,
         continuity_json=args.hd_continuity_json,
         exe_artifact_json=args.exe_artifact_guard_json,
@@ -5168,6 +5320,9 @@ def build_hd_endurance_release_checklist_tests(args: argparse.Namespace) -> dict
             "hd_endurance_release_checklist accepts a guarded canonical short2 menu-idle step",
             "hd_endurance_release_checklist keeps pending manual DirectInput items blocked",
             "hd_endurance_release_checklist keeps validation-only right-bottom evidence blocked",
+            "hd_endurance_release_checklist accepts top-level first-mission clean audit fields",
+            "hd_endurance_release_checklist accepts summary-level first-mission clean audit fields",
+            "hd_endurance_release_checklist keeps first-mission black-patch evidence release-blocking",
             "hd_endurance_release_checklist CLI writes JSON/Markdown and fails closed",
         ],
         title="HD Endurance Release Checklist Tests",
@@ -5175,7 +5330,7 @@ def build_hd_endurance_release_checklist_tests(args: argparse.Namespace) -> dict
         md_path=args.hd_endurance_release_checklist_tests_md,
         guard_policy=(
             "proves the release-horizon checklist only passes when short/long soak, manual input, "
-            "screen-route, continuity, hygiene, and promotion-boundary evidence are all current"
+            "screen-route, first-mission visual, continuity, hygiene, and promotion-boundary evidence are all current"
         ),
     )
 
@@ -5219,6 +5374,8 @@ def build_hd_soak_intro_skip_rerun_readiness_tests(args: argparse.Namespace) -> 
             "hd_soak_intro_skip_rerun_readiness passes only when the classified failure and guards support an explicit visible rerun",
             "hd_soak_intro_skip_rerun_readiness rejects wrong failure classifications",
             "hd_soak_intro_skip_rerun_readiness rejects approval-command intro-skip drift",
+            "hd_soak_intro_skip_rerun_readiness rejects missing visible-runtime approval tokens",
+            "hd_soak_intro_skip_rerun_readiness rejects missing visible-runtime approval expiry",
             "hd_soak_intro_skip_rerun_readiness CLI writes JSON/Markdown and respects --require-pass",
         ],
         title="HD Soak Intro-Skip Rerun Readiness Tests",
@@ -5290,14 +5447,15 @@ def build_hd_endurance_next_actions_tests(args: argparse.Namespace) -> dict[str,
     return simple_test_check(
         test_runner=test_hd_endurance_next_actions,
         tests=[
-            "hd_endurance_next_actions emits the exact approval-gated short2 runtime command with canonical report paths and explicit input-drift limit",
+            "hd_endurance_next_actions requires a current dry-run plan before exposing a visible-runtime command",
             "hd_endurance_next_actions fails closed when the release checklist is missing",
             "hd_endurance_next_actions switches complete fixtures to release-audit mode",
             "hd_endurance_next_actions keeps later pending short-soak steps ahead of manual milestones",
-            "hd_endurance_next_actions includes the stricter dry-run-plan execute command when available",
+            "hd_endurance_next_actions includes only the stricter dry-run-plan execute command when available",
             "hd_endurance_next_actions records current short-step report, guard, and triage artifact inventory",
             "hd_endurance_next_actions fails closed when the dry-run plan does not match the next short step",
             "hd_endurance_next_actions fails closed when the dry-run plan is stale",
+            "hd_endurance_next_actions fails closed when the visible-runtime approval token expires too soon",
             "hd_endurance_next_actions fails closed when the dry-run plan does not verify the base executable",
             "hd_endurance_next_actions starts focused post-run validation with the failure-safe guard/triage refresh",
             "hd_endurance_next_actions requests repo-only triage when a failed short-step report lacks triage",
@@ -5310,12 +5468,14 @@ def build_hd_endurance_next_actions_tests(args: argparse.Namespace) -> dict[str,
         md_path=args.hd_endurance_next_actions_tests_md,
         guard_policy=(
             "proves the next-action report stays repo-only, separates safe dry-run commands from "
-            "approval-gated visible runtime commands, pins canonical short-step report outputs, "
+            "approval-gated tokened visible runtime commands, rejects legacy un-tokened runtime commands, "
+            "pins canonical short-step report outputs, "
             "starts focused post-run validation with the failure-safe guard/triage refresh, "
             "keeps broad evidence refresh separate, keeps the "
             "short ladder ahead of later manual milestones, preserves classified failure triage, "
             "records current-step artifact inventory, records post-run validation steps, "
-            "and requires the dry-run plan to verify the base executable"
+            "requires the dry-run plan to verify the base executable, and requires enough "
+            "visible-runtime approval TTL before showing an executable command"
         ),
     )
 
@@ -5555,6 +5715,9 @@ def build_hd_soak_dry_run_plan_tests(args: argparse.Namespace) -> dict[str, Any]
             "hd_soak_dry_run_plan rejects executed plans",
             "hd_soak_dry_run_plan rejects protected-stage drift",
             "hd_soak_dry_run_plan rejects execute commands without -RequirePass or -Json",
+            "hd_soak_dry_run_plan rejects visible-runtime execute commands without the approval token",
+            "hd_soak_dry_run_plan rejects visible-runtime execute commands without the approval expiry",
+            "hd_soak_dry_run_plan rejects visible-runtime approval packets that expire too soon",
             "hd_soak_dry_run_plan rejects execute commands missing explicit stage/input/workdir/output roots",
             "hd_soak_dry_run_plan rejects repository candidate output",
             "hd_soak_dry_run_plan rejects missing or unverified base executable input",
@@ -5567,7 +5730,7 @@ def build_hd_soak_dry_run_plan_tests(args: argparse.Namespace) -> dict[str, Any]
             "proves the current short-soak dry-run handoff is machine-readable, "
             "non-executing, protected-stage, canonical-path, outside-repo, and "
             "fails closed unless copied execute commands include -RequirePass -Json "
-            "and the base executable exists with the expected SHA"
+            "with a fresh approval token, and the base executable exists with the expected SHA"
         ),
     )
 
@@ -5631,9 +5794,12 @@ def build_hd_soak_approval_preflight_tests(args: argparse.Namespace) -> dict[str
             "hd_soak_approval_preflight fails closed when source guards are not passing",
             "hd_soak_approval_preflight fails closed when the dry-run plan is not passing",
             "hd_soak_approval_preflight fails closed when the dry-run plan is stale",
+            "hd_soak_approval_preflight fails closed when the visible-runtime approval token expires too soon",
             "hd_soak_approval_preflight catches dry-run plan current-step and report-path mismatches",
             "hd_soak_approval_preflight fails closed when the dry-run plan does not verify the base executable",
             "hd_soak_approval_preflight catches dry-run plan execute commands missing explicit stage/input/root pins",
+            "hd_soak_approval_preflight catches visible-runtime execute commands without the approval token",
+            "hd_soak_approval_preflight catches visible-runtime execute commands without the approval expiry",
             "hd_soak_approval_preflight can gate the next short step after the first soak passes",
             "hd_soak_approval_preflight CLI writes JSON/Markdown and respects --require-pass",
         ],
@@ -5647,6 +5813,7 @@ def build_hd_soak_approval_preflight_tests(args: argparse.Namespace) -> dict[str
             "guard/triage refresh, keeps broad evidence refresh separate, requires next-action "
             "artifact inventory to match the preflight state, "
             "requires the actual harness dry-run plan and embedded next-action summary to match, "
+            "requires visible-runtime approval TTL and limit summaries, "
             "requires verified base-executable input, and requires clean "
             "harness/runtime/process/executable guards before requesting approval"
         ),
@@ -6870,10 +7037,12 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["right_bottom_compose_evidence"] = build_right_bottom_compose_matrix(args, checks)
     checks["right_bottom_blocker_triage"] = build_right_bottom_blocker_triage(args)
     checks["right_bottom_visual_artifact_guard"] = build_right_bottom_visual_artifact_guard(args)
+    checks["first_mission_visual_audit"] = build_first_mission_visual_audit(args)
     checks["right_bottom_compose_promotion_decision_tests"] = build_right_bottom_compose_decision_tests(args)
     checks["right_bottom_compose_evidence_matrix_tests"] = build_right_bottom_compose_matrix_tests(args)
     checks["right_bottom_blocker_triage_tests"] = build_right_bottom_blocker_triage_tests(args)
     checks["right_bottom_visual_artifact_guard_tests"] = build_right_bottom_visual_artifact_guard_tests(args)
+    checks["first_mission_visual_audit_tests"] = build_first_mission_visual_audit_tests(args)
     checks["right_bottom_grid_hit_summary_tests"] = build_right_bottom_grid_hit_tests(args)
     checks["right_bottom_grid_hit_probe_guard_tests"] = build_right_bottom_grid_hit_probe_guard_tests(args)
     checks["right_bottom_natural_route_guard_tests"] = build_right_bottom_natural_route_guard_tests(args)
@@ -6953,6 +7122,8 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["current_completion_summary"] = build_current_completion_summary(args, checks)
     checks["hd_soak_harness_guard"] = build_hd_soak_harness_guard(args)
     checks["hd_soak_harness_guard_tests"] = build_hd_soak_harness_guard_tests(args)
+    checks["hd_soak_execution_boundary"] = build_hd_soak_execution_boundary(args)
+    checks["hd_soak_execution_boundary_tests"] = build_hd_soak_execution_boundary_tests(args)
     checks["hd_soak_report_guard"] = build_hd_soak_report_guard(args)
     checks["hd_soak_report_guard_tests"] = build_hd_soak_report_guard_tests(args)
     checks["hd_soak_failure_triage"] = build_hd_soak_failure_triage(args)
@@ -7789,6 +7960,31 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_RIGHT_BOTTOM_VISUAL_ARTIFACT_GUARD_TESTS_MD,
     )
     parser.add_argument(
+        "--first-mission-visual-audit-json",
+        type=Path,
+        default=DEFAULT_FIRST_MISSION_VISUAL_AUDIT_JSON,
+    )
+    parser.add_argument(
+        "--first-mission-visual-audit-md",
+        type=Path,
+        default=DEFAULT_FIRST_MISSION_VISUAL_AUDIT_MD,
+    )
+    parser.add_argument(
+        "--first-mission-visual-audit-tests-json",
+        type=Path,
+        default=DEFAULT_FIRST_MISSION_VISUAL_AUDIT_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--first-mission-visual-audit-tests-md",
+        type=Path,
+        default=DEFAULT_FIRST_MISSION_VISUAL_AUDIT_TESTS_MD,
+    )
+    parser.add_argument("--first-mission-visual-threshold", type=int, default=12)
+    parser.add_argument("--first-mission-visual-bright-threshold", type=float, default=96.0)
+    parser.add_argument("--first-mission-visual-diff-threshold", type=float, default=40.0)
+    parser.add_argument("--first-mission-visual-max-stripe-high-percent", type=float, default=12.0)
+    parser.add_argument("--first-mission-visual-max-stripe-excess-percent", type=float, default=8.0)
+    parser.add_argument(
         "--right-bottom-compose-decision-tests-json",
         type=Path,
         default=DEFAULT_RIGHT_BOTTOM_COMPOSE_DECISION_TESTS_JSON,
@@ -8056,6 +8252,31 @@ def parse_args() -> argparse.Namespace:
         "--hd-soak-harness-guard-tests-md",
         type=Path,
         default=DEFAULT_HD_SOAK_HARNESS_GUARD_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-execution-boundary-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_EXECUTION_BOUNDARY_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-execution-boundary-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_EXECUTION_BOUNDARY_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-execution-boundary-tests-json",
+        type=Path,
+        default=DEFAULT_HD_SOAK_EXECUTION_BOUNDARY_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-soak-execution-boundary-tests-md",
+        type=Path,
+        default=DEFAULT_HD_SOAK_EXECUTION_BOUNDARY_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-soak-execution-boundary-fixture-root",
+        type=Path,
+        default=hd_soak_execution_boundary.DEFAULT_FIXTURE_ROOT,
     )
     parser.add_argument("--hd-soak-dry-run-plan-json", type=Path, default=DEFAULT_HD_SOAK_DRY_RUN_PLAN_JSON)
     parser.add_argument("--hd-soak-dry-run-plan-md", type=Path, default=DEFAULT_HD_SOAK_DRY_RUN_PLAN_MD)

@@ -1,12 +1,12 @@
 # Docs Consistency Guard
 
 - Overall: PASS
-- Generated: `2026-06-16T18:05:33+02:00`
+- Generated: `2026-06-17T09:48:32+02:00`
 - Runtime policy: repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Manual target IDs: `['stable_menu_load', 'stable_hd_map_input', 'right_bottom_validation_input', 'castle_barracks_centered_input', 'castle_overview_centered_input']`
 - No-popup preference: `Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.`
-- No-popup boundary counts: `required_guard_count=6`, `required_supporting_report_count=82`, `required_report_count=88`
+- No-popup boundary counts: `required_guard_count=6`, `required_supporting_report_count=86`, `required_report_count=92`
 - Right-bottom status: `validation_stage_only`
 - Castle status: `validation_stage_only`
 

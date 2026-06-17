@@ -328,6 +328,44 @@ def analyze_frame(
     }
 
 
+def primary_black_patch_details(primary: dict[str, Any] | None) -> list[dict[str, Any]]:
+    if not primary:
+        return []
+    regions = primary.get("regions") or {}
+    details: list[dict[str, Any]] = []
+    for name in primary.get("black_patch_regions") or []:
+        stats = regions.get(name) or {}
+        details.append(
+            {
+                "region": name,
+                "rect": stats.get("rect"),
+                "black_percent": stats.get("black_percent"),
+                "nonblack_percent": stats.get("nonblack_percent"),
+                "mean_luma": stats.get("mean_luma"),
+                "quantized_color_bins": stats.get("quantized_color_bins"),
+            }
+        )
+    return details
+
+
+def next_probe_for_primary(primary: dict[str, Any] | None) -> str:
+    if not primary:
+        return "restore a primary first-mission frame definition and rerun the visual audit"
+    black_regions = primary.get("black_patch_regions") or []
+    if black_regions:
+        return (
+            "inspect the primary frame's right-side/minimap/bottom-panel compose or present path "
+            "for black patch regions, then rerun first_mission_visual_audit.py"
+        )
+    if not primary.get("selected_action_bar_visible"):
+        return "restore the bottom selected-unit action bar and rerun first_mission_visual_audit.py"
+    if primary.get("legacy_middle_action_bar_visible"):
+        return "remove the legacy middle selected-unit action bar placement and rerun first_mission_visual_audit.py"
+    if not (primary.get("stripe_metrics") or {}).get("passed", True):
+        return "inspect palette/stripe frame output and rerun first_mission_visual_audit.py"
+    return "rerun first_mission_visual_audit.py after the next first-mission visual evidence refresh"
+
+
 def build_report(frames: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
     analyzed = [
         analyze_frame(
@@ -375,6 +413,7 @@ def build_report(frames: list[dict[str, Any]], args: argparse.Namespace) -> dict
         current_status = "selected_unit_action_bar_on_bottom_but_black_ui_patches_remain"
     else:
         current_status = "first_mission_visual_playability_not_proven"
+    black_patch_details = primary_black_patch_details(primary)
     return {
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "passed": not failures,
@@ -383,11 +422,16 @@ def build_report(frames: list[dict[str, Any]], args: argparse.Namespace) -> dict
         "current_status": current_status,
         "first_mission_visual_clean": bool(primary and primary.get("frame_clean_for_playability")),
         "primary_frame": primary.get("id") if primary else None,
+        "primary_frame_path": primary.get("path") if primary else None,
+        "next_probe": next_probe_for_primary(primary),
         "summary": {
             "frame_count": len(analyzed),
             "stripe_failure_frames": stripe_failures,
             "diagnostic_black_frames": diagnostic_black_frames,
             "primary_black_patch_regions": primary.get("black_patch_regions") if primary else [],
+            "primary_black_patch_details": black_patch_details,
+            "primary_frame_path": primary.get("path") if primary else None,
+            "next_probe": next_probe_for_primary(primary),
             "primary_play_area_nonblack": (
                 ((primary.get("regions") or {}).get("play_area") or {}).get("nonblack_percent")
                 if primary
@@ -446,6 +490,8 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Current status: `{report['current_status']}`",
         f"- First mission visual clean: `{report['first_mission_visual_clean']}`",
         f"- Primary frame: `{report['primary_frame']}`",
+        f"- Primary frame path: `{report.get('primary_frame_path')}`",
+        f"- Next probe: {report.get('next_probe')}",
         f"- Primary play area nonblack: `{summary.get('primary_play_area_nonblack')}`%",
         f"- Primary selected action bar nonblack: `{summary.get('primary_selected_action_bar_nonblack')}`%",
         f"- Primary selected action bar mean luma: `{summary.get('primary_selected_action_bar_mean_luma')}`",
@@ -457,9 +503,25 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Stripe failure frames: `{summary.get('stripe_failure_frames')}`",
         f"- Diagnostic black frames: `{summary.get('diagnostic_black_frames')}`",
         "",
+    ]
+    black_details = summary.get("primary_black_patch_details") or []
+    if black_details:
+        lines.extend(["## Primary Black Patch Details", ""])
+        for detail in black_details:
+            lines.append(
+                f"- `{detail.get('region')}` rect=`{detail.get('rect')}` "
+                f"black=`{detail.get('black_percent')}`% "
+                f"nonblack=`{detail.get('nonblack_percent')}`% "
+                f"mean_luma=`{detail.get('mean_luma')}` "
+                f"color_bins=`{detail.get('quantized_color_bins')}`"
+            )
+        lines.append("")
+    lines.extend(
+        [
         "## Frames",
         "",
-    ]
+        ]
+    )
     for frame in report["frames"]:
         regions = frame.get("regions") or {}
         stripes = frame.get("stripe_metrics") or {}
@@ -532,6 +594,7 @@ def main() -> int:
     print(f"current-status: {report['current_status']}")
     print(f"first-mission-visual-clean: {report['first_mission_visual_clean']}")
     print(f"primary-black-patch-regions: {report['summary']['primary_black_patch_regions']}")
+    print(f"next-probe: {report.get('next_probe')}")
     print(f"stripe-failure-frames: {report['summary']['stripe_failure_frames']}")
     print(f"diagnostic-black-frames: {report['summary']['diagnostic_black_frames']}")
     if report["failures"]:

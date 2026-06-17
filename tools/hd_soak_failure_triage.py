@@ -93,6 +93,16 @@ def classify(report: dict[str, Any], guard_evaluation: dict[str, Any] | None = N
                     "inspect frame/process sample timestamps and sample_interval_sec, then rerun with the same tier or a shorter sample interval",
                     False,
                 )
+            if (
+                "artifact size exceeded" in guard_failures
+                or "artifact bytes" in guard_failures
+                or "artifact_limit_bytes" in guard_failures
+            ):
+                return (
+                    "artifact_budget_exceeded",
+                    "reduce sampling/artifact retention or archive raw frames outside the repository before rerun",
+                    False,
+                )
             return (
                 "guard_validation_failure",
                 "inspect hd_soak_report guard failures before accepting or extending the soak",
@@ -147,7 +157,13 @@ def classify(report: dict[str, Any], guard_evaluation: dict[str, Any] | None = N
             False,
         )
 
-    if "nonblack percent" in failures or "unique sampled colors" in failures:
+    if (
+        "nonblack percent" in failures
+        or "unique sampled colors" in failures
+        or "black/blank patch" in failures
+        or "palette/stripe" in failures
+        or "visual anomaly" in failures
+    ):
         return (
             "render_or_palette_regression",
             "inspect the last sampled PNG/metrics and compare against no-popup/current map evidence before patching",
@@ -182,7 +198,11 @@ def classify(report: dict[str, Any], guard_evaluation: dict[str, Any] | None = N
             False,
         )
 
-    if "artifact size exceeded" in failures:
+    if (
+        "artifact size exceeded" in failures
+        or "artifact bytes" in failures
+        or "artifact_limit_bytes" in failures
+    ):
         return (
             "artifact_budget_exceeded",
             "reduce sampling/artifact retention or archive raw frames outside the repository before rerun",
@@ -246,9 +266,78 @@ def frame_summary(frame: dict[str, Any] | None) -> dict[str, Any] | None:
     }
 
 
+def route_probe_details(route: dict[str, Any] | None) -> dict[str, Any]:
+    if not isinstance(route, dict):
+        return {"read_status": "no-route"}
+    probe_json = route.get("Json")
+    if not probe_json:
+        return {"read_status": "missing-json-path"}
+    path = Path(str(probe_json))
+    try:
+        payload = load_json(path)
+    except FileNotFoundError:
+        return {"read_status": "missing"}
+    except (OSError, json.JSONDecodeError) as exc:
+        return {"read_status": "unreadable", "error": str(exc)}
+
+    points = payload.get("points")
+    if isinstance(points, dict):
+        point_items = [points]
+    elif isinstance(points, list):
+        point_items = [point for point in points if isinstance(point, dict)]
+    else:
+        point_items = []
+    first_point = point_items[0] if point_items else {}
+    clicks = first_point.get("clicks") if isinstance(first_point, dict) else None
+    click_items = [click for click in (clicks or []) if isinstance(click, dict)]
+    samples = first_point.get("samples") if isinstance(first_point, dict) else None
+    sample_items = [sample for sample in (samples or []) if isinstance(sample, dict)]
+    click_event_items: list[dict[str, Any]] = []
+    for click in click_items:
+        for event in click.get("events") or []:
+            if isinstance(event, dict):
+                click_event_items.append(event)
+
+    def sample_abs_error(sample: dict[str, Any]) -> int:
+        values: list[int] = []
+        for key in ("screen_error", "client_error"):
+            error = sample.get(key)
+            if isinstance(error, list):
+                for value in error:
+                    try:
+                        values.append(abs(int(value)))
+                    except (TypeError, ValueError):
+                        pass
+        return max(values or [0])
+
+    all_samples = sample_items + click_event_items
+    worst_sample = max(all_samples, key=sample_abs_error, default=None)
+    click_methods = sorted({str(click.get("mode")) for click in click_items if click.get("mode")})
+    return {
+        "read_status": "ok",
+        "path": str(path),
+        "move_mode": first_point.get("move_mode") if isinstance(first_point, dict) else None,
+        "move_method": first_point.get("move_method") if isinstance(first_point, dict) else None,
+        "click_modes": click_methods,
+        "click_repeat_observed": len(click_items) if click_items else None,
+        "sample_count": len(sample_items),
+        "click_event_sample_count": len(click_event_items),
+        "max_sample_abs_error": sample_abs_error(worst_sample or {}),
+        "max_sample_phase": (worst_sample or {}).get("phase"),
+    }
+
+
 def route_summary(route: dict[str, Any] | None) -> dict[str, Any] | None:
     if not isinstance(route, dict):
         return None
+    probe = route_probe_details(route)
+    derived_click_mode = None
+    click_modes = probe.get("click_modes")
+    if isinstance(click_modes, list) and len(click_modes) == 1:
+        derived_click_mode = click_modes[0]
+    click_mode = route.get("ClickMode") or derived_click_mode
+    move_mode = route.get("MoveMode") or probe.get("move_mode")
+    click_repeat = route.get("ClickRepeat") or probe.get("click_repeat_observed")
     return {
         "name": route.get("Name"),
         "points": route.get("Points"),
@@ -258,14 +347,18 @@ def route_summary(route: dict[str, Any] | None) -> dict[str, Any] | None:
         "max_abs_error": route.get("MaxAbsError"),
         "max_sample_abs_error": route.get("MaxSampleAbsError"),
         "click_event_count": route.get("ClickEventCount"),
-        "move_mode": route.get("MoveMode"),
-        "click_mode": route.get("ClickMode"),
-        "click_repeat": route.get("ClickRepeat"),
+        "move_mode": move_mode,
+        "move_mode_source": "route_result" if route.get("MoveMode") else "probe_json" if move_mode else None,
+        "click_mode": click_mode,
+        "click_mode_source": "route_result" if route.get("ClickMode") else "probe_json" if click_mode else None,
+        "click_repeat": click_repeat,
+        "click_repeat_source": "route_result" if route.get("ClickRepeat") else "probe_json" if click_repeat else None,
         "space_pulses": route.get("SpacePulses"),
         "input_proof_class": route.get("InputProofClass"),
         "probe_exit_code": route.get("ProbeExitCode"),
         "json": route.get("Json"),
         "log": route.get("Log"),
+        "probe_json": probe,
     }
 
 
@@ -283,13 +376,50 @@ def process_summary(sample: dict[str, Any] | None) -> dict[str, Any] | None:
     }
 
 
+def failure_timestamp_context(
+    report: dict[str, Any],
+    last_frame: dict[str, Any] | None,
+    last_process: dict[str, Any] | None,
+) -> tuple[Any, str]:
+    if isinstance(last_process, dict) and last_process.get("timestamp"):
+        return last_process.get("timestamp"), "last_process_sample"
+    if isinstance(last_frame, dict) and last_frame.get("timestamp"):
+        return last_frame.get("timestamp"), "last_frame_sample"
+    return report.get("generated_at"), "report_generated_at"
+
+
+def visual_anomaly_summary(report: dict[str, Any]) -> dict[str, Any]:
+    evaluation = hd_soak_report.evaluate_report(report)
+    check = (evaluation.get("checks") or {}).get("visual_anomalies") or {}
+    summary = dict(check.get("summary") or {})
+    summary["passed"] = check.get("passed")
+    summary["failures"] = list(check.get("failures") or [])
+    return summary
+
+
 def build_triage(report: dict[str, Any], source_report: Path | None = None) -> dict[str, Any]:
     guard_evaluation = guard_evaluation_for(report)
     classification, next_probe, passed = classify(report, guard_evaluation)
     last_frame = frame_summary(last_item(report.get("frame_samples")))
     last_route = route_summary(last_item(report.get("route_results")))
     last_process = process_summary(last_item(report.get("process_samples")))
+    failure_timestamp, failure_timestamp_source = failure_timestamp_context(report, last_frame, last_process)
+    visual_anomalies = visual_anomaly_summary(report)
     guard_failures = list((guard_evaluation or {}).get("failures") or [])
+    if classification == "intro_skip_input_drift_exit" and isinstance(last_route, dict):
+        click_mode = last_route.get("click_mode")
+        if click_mode == "sendinput":
+            next_probe = (
+                "previous intro-skip click used sendinput and drifted after button events; "
+                "rerun only with the current tokenized postmessage/space-pulse intro-skip "
+                "command after explicit visible-window approval"
+            )
+        elif not click_mode:
+            next_probe = (
+                "previous intro-skip report does not record the click mode; use the current "
+                "tokenized postmessage/space-pulse intro-skip command, then rerun only after "
+                "explicit visible-window approval"
+            )
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "passed": passed,
@@ -305,11 +435,33 @@ def build_triage(report: dict[str, Any], source_report: Path | None = None) -> d
         "candidate_sha256": report.get("candidate_sha256"),
         "output_directory": report.get("output_directory"),
         "final_route_marker": report.get("final_route_marker"),
+        "last_route_marker": (last_route or {}).get("name") if isinstance(last_route, dict) else None,
         "executed": report.get("executed"),
         "report_passed": report.get("passed"),
         "process_exited_unexpectedly": report.get("process_exited_unexpectedly"),
         "exit_code": report.get("exit_code"),
         "clean_stop": report.get("clean_stop"),
+        "failure_context": {
+            "classification": classification,
+            "crash_hang_class": classification,
+            "next_probe": next_probe,
+            "failure_timestamp": failure_timestamp,
+            "failure_timestamp_source": failure_timestamp_source,
+            "report_generated_at": report.get("generated_at"),
+            "last_frame_timestamp": (last_frame or {}).get("timestamp") if isinstance(last_frame, dict) else None,
+            "last_process_timestamp": (
+                (last_process or {}).get("timestamp") if isinstance(last_process, dict) else None
+            ),
+            "final_route_marker": report.get("final_route_marker"),
+            "last_route_marker": (last_route or {}).get("name") if isinstance(last_route, dict) else None,
+            "route": report.get("route"),
+            "tier": report.get("tier"),
+            "duration_sec": report.get("duration_sec"),
+            "visual_anomaly_passed": visual_anomalies.get("passed"),
+            "black_patch_risk_count": visual_anomalies.get("black_patch_risk_count"),
+            "palette_or_stripe_risk_count": visual_anomalies.get("palette_or_stripe_risk_count"),
+            "missing_nonblack_bounds_count": visual_anomalies.get("missing_nonblack_bounds_count"),
+        },
         "frame_metrics": {
             "frame_sample_count": report.get("frame_sample_count"),
             "frame_hash_unique_count": report.get("frame_hash_unique_count"),
@@ -322,6 +474,7 @@ def build_triage(report: dict[str, Any], source_report: Path | None = None) -> d
             "unique_sample_colors_min": report.get("unique_sample_colors_min"),
             "unique_sample_colors_max": report.get("unique_sample_colors_max"),
         },
+        "visual_anomalies": visual_anomalies,
         "process_metrics": {
             "process_sample_count": report.get("process_sample_count"),
             "working_set_growth_bytes": report.get("working_set_growth_bytes"),
@@ -351,6 +504,8 @@ def to_markdown(triage: dict[str, Any]) -> str:
     frame = triage.get("last_frame_sample") or {}
     route = triage.get("last_route_result") or {}
     process = triage.get("last_process_sample") or {}
+    context = triage.get("failure_context") or {}
+    visual = triage.get("visual_anomalies") or {}
     lines = [
         "# HD Soak Failure Triage",
         "",
@@ -370,6 +525,20 @@ def to_markdown(triage: dict[str, Any]) -> str:
         f"- Candidate SHA-256: `{triage.get('candidate_sha256')}`",
         f"- Output directory: `{triage.get('output_directory')}`",
         f"- Final route marker: `{triage.get('final_route_marker')}`",
+        "",
+        "## Failure Context",
+        "",
+        f"- Failure timestamp: `{context.get('failure_timestamp')}` source=`{context.get('failure_timestamp_source')}`",
+        f"- Crash/hang class: `{context.get('crash_hang_class')}`",
+        f"- Last route marker: `{context.get('last_route_marker')}`",
+        f"- Next probe: {context.get('next_probe')}",
+        "",
+        "## Visual Anomalies",
+        "",
+        f"- Overall: `{status_text(bool(visual.get('passed')))}`",
+        f"- Black/blank patch risk frames: `{visual.get('black_patch_risk_count')}`",
+        f"- Palette/stripe risk frames: `{visual.get('palette_or_stripe_risk_count')}`",
+        f"- Missing nonblack bounds frames: `{visual.get('missing_nonblack_bounds_count')}`",
         "",
         "## Last Evidence",
         "",
@@ -411,6 +580,12 @@ def to_markdown(triage: dict[str, Any]) -> str:
         "unique_sample_colors_max",
     ):
         lines.append(f"- `{key}`: `{metrics.get(key)}`")
+    for row in visual.get("anomaly_rows") or []:
+        lines.append(
+            "- `visual_anomaly`: "
+            f"`{row.get('name')}` flags=`{','.join(row.get('flags') or [])}` "
+            f"nonblack=`{row.get('nonblack_percent')}` colors=`{row.get('unique_sample_colors')}`"
+        )
     for key in (
         "input_max_abs_error",
         "input_max_sample_abs_error",

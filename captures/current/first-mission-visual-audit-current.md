@@ -1,12 +1,14 @@
 # First Mission Visual Audit
 
 - Overall: FAIL
-- Generated: `2026-06-16T15:40:35+02:00`
+- Generated: `2026-06-17T09:47:38+02:00`
 - Runtime policy: repo-only PNG audit; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: first-mission frames must keep the play area rendered, avoid horizontal or vertical stripe signatures, and expose remaining large black UI patches as non-playable blockers instead of hiding them behind route success
 - Current status: `selected_unit_action_bar_on_bottom_but_black_ui_patches_remain`
 - First mission visual clean: `False`
 - Primary frame: `centered_bottom_edge_panel`
+- Primary frame path: `captures\archive\cdb-surface-dump-20260616-153751\surface.png`
+- Next probe: inspect the primary frame's right-side/minimap/bottom-panel compose or present path for black patch regions, then rerun first_mission_visual_audit.py
 - Primary play area nonblack: `97.21`%
 - Primary selected action bar nonblack: `91.954`%
 - Primary selected action bar mean luma: `66.995`
@@ -17,6 +19,12 @@
 - Primary black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
 - Stripe failure frames: `[]`
 - Diagnostic black frames: `['tooltip_owner_probe', 'hover_selection_probe', 'combined_tooltip_action_bar']`
+
+## Primary Black Patch Details
+
+- `right_below_minimap` rect=`[586, 230, 799, 599]` black=`76.407`% nonblack=`23.593`% mean_luma=`22.011` color_bins=`19`
+- `bottom_right_panel` rect=`[586, 528, 799, 599]` black=`78.57`% nonblack=`21.43`% mean_luma=`20.063` color_bins=`16`
+- `minimap_interior` rect=`[594, 24, 793, 220]` black=`98.581`% nonblack=`1.419`% mean_luma=`1.718` color_bins=`17`
 
 ## Frames
 

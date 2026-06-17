@@ -54,6 +54,24 @@ def write_fixture_files(fixture: Path) -> argparse.Namespace:
                 "right_bottom_compose_ui_probe": {"passed": False},
                 "process_hygiene_guard": {"passed": True},
                 "right_bottom_compose_evidence": {"passed": False},
+                "first_mission_visual_audit": {
+                    "passed": False,
+                    "summary": {
+                        "current_status": "selected_unit_action_bar_on_bottom_but_black_ui_patches_remain",
+                        "first_mission_visual_clean": False,
+                        "primary_frame": "centered_bottom_edge_panel",
+                        "primary_selected_action_bar_visible": True,
+                        "primary_legacy_middle_action_bar_visible": False,
+                        "primary_black_patch_regions": [
+                            "right_below_minimap",
+                            "bottom_right_panel",
+                            "minimap_interior",
+                        ],
+                        "stripe_failure_frames": [],
+                    },
+                    "failures": ["primary first-mission frame is not visually clean"],
+                },
+                "first_mission_visual_audit_tests": {"passed": True},
             },
         },
     )
@@ -127,8 +145,17 @@ def test_summary_computes_percentages(fixture: Path) -> None:
     assert rows["manual_directinput_validation"]["completion_percent"] == 0.0, summary
     assert rows["focused_battle_right_bottom_lane"]["basis"].startswith("remaining blocker:"), summary
     assert "click-consumed runs: 0" in rows["focused_battle_right_bottom_lane"]["basis"], summary
+    visual = summary["remaining_blockers"]["first_mission_visual"]
+    assert visual["selected_action_bar_visible"] is True, summary
+    assert visual["legacy_middle_action_bar_visible"] is False, summary
+    assert visual["black_patch_regions"] == [
+        "right_below_minimap",
+        "bottom_right_panel",
+        "minimap_interior",
+    ], summary
+    assert visual["stripe_failure_frames"] == [], summary
     assert summary["full_game_complete"] is False, summary
-    assert "not 100%" in summary["full_game_percent_statement"], summary
+    assert "visual blockers" in summary["full_game_percent_statement"], summary
 
 
 def test_summary_reports_missing_focused_completion(fixture: Path) -> None:
@@ -196,6 +223,7 @@ def test_cli_writes_outputs(fixture: Path) -> None:
     assert run.returncode == 0, run.stdout + run.stderr
     assert json.loads(out_json.read_text(encoding="utf-8"))["passed"] is True
     assert "Focused battle/right-bottom command lane" in out_md.read_text(encoding="utf-8")
+    assert "First mission black patch regions" in out_md.read_text(encoding="utf-8")
 
 
 def run_tests() -> None:

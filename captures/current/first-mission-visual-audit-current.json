@@ -1,11 +1,13 @@
 {
-  "generated_at": "2026-06-16T15:40:35+02:00",
+  "generated_at": "2026-06-17T09:47:38+02:00",
   "passed": false,
   "runtime_policy": "repo-only PNG audit; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "first-mission frames must keep the play area rendered, avoid horizontal or vertical stripe signatures, and expose remaining large black UI patches as non-playable blockers instead of hiding them behind route success",
   "current_status": "selected_unit_action_bar_on_bottom_but_black_ui_patches_remain",
   "first_mission_visual_clean": false,
   "primary_frame": "centered_bottom_edge_panel",
+  "primary_frame_path": "captures\\archive\\cdb-surface-dump-20260616-153751\\surface.png",
+  "next_probe": "inspect the primary frame's right-side/minimap/bottom-panel compose or present path for black patch regions, then rerun first_mission_visual_audit.py",
   "summary": {
     "frame_count": 11,
     "stripe_failure_frames": [],
@@ -19,6 +21,49 @@
       "bottom_right_panel",
       "minimap_interior"
     ],
+    "primary_black_patch_details": [
+      {
+        "region": "right_below_minimap",
+        "rect": [
+          586,
+          230,
+          799,
+          599
+        ],
+        "black_percent": 76.407,
+        "nonblack_percent": 23.593,
+        "mean_luma": 22.011,
+        "quantized_color_bins": 19
+      },
+      {
+        "region": "bottom_right_panel",
+        "rect": [
+          586,
+          528,
+          799,
+          599
+        ],
+        "black_percent": 78.57,
+        "nonblack_percent": 21.43,
+        "mean_luma": 20.063,
+        "quantized_color_bins": 16
+      },
+      {
+        "region": "minimap_interior",
+        "rect": [
+          594,
+          24,
+          793,
+          220
+        ],
+        "black_percent": 98.581,
+        "nonblack_percent": 1.419,
+        "mean_luma": 1.718,
+        "quantized_color_bins": 17
+      }
+    ],
+    "primary_frame_path": "captures\\archive\\cdb-surface-dump-20260616-153751\\surface.png",
+    "next_probe": "inspect the primary frame's right-side/minimap/bottom-panel compose or present path for black patch regions, then rerun first_mission_visual_audit.py",
     "primary_play_area_nonblack": 97.21,
     "primary_selected_action_bar_nonblack": 91.954,
     "primary_selected_action_bar_mean_luma": 66.995,

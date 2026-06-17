@@ -79,6 +79,12 @@ def triage_report(step: dict[str, Any]) -> dict[str, Any]:
         "source_report": step["paths"]["report_json"],
         "classification": "hang_or_no_frame_progress",
         "next_probe": "inspect process samples",
+        "visual_anomalies": {
+            "passed": False,
+            "black_patch_risk_count": 1,
+            "palette_or_stripe_risk_count": 0,
+            "missing_nonblack_bounds_count": 0,
+        },
         "stage": status.PROTECTED_STABLE_STAGE,
         "tier": step["tier"],
         "route": step["route"],
@@ -164,6 +170,11 @@ def test_failed_report_with_triage_is_classified_status() -> None:
     assert report["passed"] is True, report["failures"]
     assert report["current_step"]["id"] == "short2_menu_idle"
     assert report["current_step"]["status"] == "failed_classified_hang_or_no_frame_progress"
+    summary = report["steps"][0]["summary"]
+    assert summary["visual_anomaly_passed"] is False
+    assert summary["black_patch_risk_count"] == 1
+    assert summary["palette_or_stripe_risk_count"] == 0
+    assert summary["missing_nonblack_bounds_count"] == 0
 
 
 def test_failed_report_with_mismatched_triage_fails_closed() -> None:
