@@ -18,8 +18,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 
@@ -59,15 +60,30 @@ def nested_get(value: dict[str, Any], path: list[str], default: Any = None) -> A
 
 
 def path_is_under(child: Path, parent: Path) -> bool:
+    # Windows-target paths (drive-letter or UNC) describe the game host, not this
+    # checkout; on a POSIX host they can never be under the repo root.
+    child_win = PureWindowsPath(str(child))
+    if child_win.drive or str(child).startswith("\\\\"):
+        if os.name != "nt":
+            return False
+        try:
+            child_win.relative_to(PureWindowsPath(str(Path(parent).resolve(strict=False))))
+            return True
+        except ValueError:
+            return False
     try:
-        child.resolve(strict=False).relative_to(parent.resolve(strict=False))
+        Path(str(child)).resolve(strict=False).relative_to(Path(parent).resolve(strict=False))
         return True
     except ValueError:
         return False
 
 
 def same_path(left: Path, right: Path) -> bool:
-    return left.resolve(strict=False) == right.resolve(strict=False)
+    # Compare as Windows-target paths so the check is stable on any host.
+    return (
+        PureWindowsPath(str(left)).as_posix().casefold()
+        == PureWindowsPath(str(right)).as_posix().casefold()
+    )
 
 
 def build_plan(
@@ -101,7 +117,8 @@ def build_plan(
 
     source_save_text = route_candidate.get("save") or r"C:\Clash\save\5.dat"
     source_save = Path(source_save_text)
-    fixture_save = fixture_root / "save" / f"{target_load_slot}.dat"
+    # Windows-target path: keep backslash separators regardless of host OS.
+    fixture_save = PureWindowsPath(str(fixture_root)) / "save" / f"{target_load_slot}.dat"
 
     if candidate_matrix and candidate_matrix.get("passed") is not True:
         failures.append("right-bottom natural route candidate matrix is not passing")
