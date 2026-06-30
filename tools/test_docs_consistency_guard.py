@@ -402,8 +402,15 @@ def test_post_owner_screenshot_fallback(fixture: Path) -> None:
     guard = docs_consistency_guard.build_guard(args)
     assert guard["passed"] is True, guard
     screenshots = guard["facts"]["screenshots"]
-    assert screenshots["normal_post_owner"].endswith("cdb-surface-dump-20260506-190037\\surface.png")
-    assert screenshots["forced_visible_post_owner"].endswith("cdb-surface-dump-20260506-201114\\surface.png")
+    # The screenshot is a real, host-native local path (used for on-disk
+    # existence checks), so compare with separators normalized rather than
+    # asserting Windows-only backslashes.
+    assert screenshots["normal_post_owner"].replace("\\", "/").endswith(
+        "cdb-surface-dump-20260506-190037/surface.png"
+    )
+    assert screenshots["forced_visible_post_owner"].replace("\\", "/").endswith(
+        "cdb-surface-dump-20260506-201114/surface.png"
+    )
 
 
 def test_stale_boundary_counts_fail(fixture: Path) -> None:

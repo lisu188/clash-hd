@@ -46,9 +46,64 @@ def status_text(passed: bool) -> str:
     return "PASS" if passed else "FAIL"
 
 
+def proc_snapshot_rows() -> tuple[list[dict[str, str]], int, str]:
+    """Enumerate running processes from a Linux ``/proc`` filesystem.
+
+    The guard only needs image names (plus pid/parent/session for reporting) to
+    confirm no ``clash95``/``cdb`` runtime process survived. Reading ``/proc`` is
+    pure local inspection and never launches a process.
+    """
+    proc = Path("/proc")
+    if not proc.is_dir():
+        return [], 1, "process hygiene guard requires Windows or a Linux /proc filesystem"
+
+    rows: list[dict[str, str]] = []
+    for entry in proc.iterdir():
+        if not entry.name.isdigit():
+            continue
+        image_name = ""
+        try:
+            argv0 = (entry / "cmdline").read_bytes().split(b"\x00", 1)[0].decode("utf-8", "replace")
+            if argv0:
+                image_name = os.path.basename(argv0)
+        except OSError:
+            pass
+        if not image_name:
+            try:
+                image_name = (entry / "comm").read_text(encoding="utf-8", errors="replace").strip()
+            except OSError:
+                pass
+        if not image_name:
+            try:
+                image_name = os.path.basename(os.readlink(entry / "exe"))
+            except OSError:
+                continue
+        parent_pid = "0"
+        session_number = "0"
+        try:
+            stat_text = (entry / "stat").read_text(encoding="utf-8", errors="replace")
+            # Fields after the (comm) group: state ppid pgrp session ...
+            after_comm = stat_text.rsplit(")", 1)[-1].split()
+            if len(after_comm) >= 4:
+                parent_pid = after_comm[1]
+                session_number = after_comm[3]
+        except OSError:
+            pass
+        rows.append(
+            {
+                "image_name": image_name,
+                "pid": entry.name,
+                "parent_pid": parent_pid,
+                "thread_count": "0",
+                "session_number": session_number,
+            }
+        )
+    return rows, 0, ""
+
+
 def process_snapshot_rows() -> tuple[list[dict[str, str]], int, str]:
     if os.name != "nt":
-        return [], 1, "process hygiene guard requires Windows"
+        return proc_snapshot_rows()
 
     kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
     kernel32.CreateToolhelp32Snapshot.argtypes = [ctypes.c_ulong, ctypes.c_ulong]
