@@ -2,6 +2,12 @@
 
 Generated: 2026-05-22
 
+> Update 2026-06-30: the open questions below were resolved by a full
+> disassembly cross-check. See `reports/hd_completion_certainty.md` for the
+> ground-truth answers (right-bottom `addon_flags` gate, battle unit-capability
+> gate, the natural DirectInput click path, and the exact fixture recipes) and
+> `reports/disassembly_cross_check_hd_next_steps.md` for the per-route validation.
+
 ## Current State
 
 - Branch: `complete-hd-mod-20260515`.
