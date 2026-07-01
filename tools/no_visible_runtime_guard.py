@@ -60,9 +60,12 @@ def collect_run_dirs(value: Any) -> set[Path]:
         for child in value:
             runs.update(collect_run_dirs(child))
     elif isinstance(value, str):
-        normalized = value.replace("/", "\\")
-        for match in RUN_RE.finditer(normalized):
-            runs.add(canonical_run_dir(Path(match.group(0))))
+        # RUN_RE already accepts either separator; rebuild the matched run dir
+        # with forward slashes so Path() splits it into components on POSIX
+        # hosts instead of keeping a literal backslash filename.
+        for match in RUN_RE.finditer(value):
+            token = match.group(0).replace("\\", "/")
+            runs.add(canonical_run_dir(Path(token)))
     return runs
 
 

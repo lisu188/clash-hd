@@ -11,8 +11,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 
@@ -54,9 +55,29 @@ def quote_ps(value: str) -> str:
     return "'" + value.replace("'", "''") + "'"
 
 
+def target_path(value: Any) -> Path | PureWindowsPath:
+    # A drive-letter/UNC/backslash value is a Windows game-host path and must keep
+    # backslash separators on any host; anything else is a normal local path.
+    text = str(value)
+    if PureWindowsPath(text).drive or "\\" in text:
+        return PureWindowsPath(text)
+    return Path(text)
+
+
 def path_is_under(child: Path, parent: Path) -> bool:
+    # Windows-target paths (drive-letter or UNC) describe the game host, not this
+    # checkout; on a POSIX host they can never be under the repo root.
+    child_win = PureWindowsPath(str(child))
+    if child_win.drive or str(child).startswith("\\\\"):
+        if os.name != "nt":
+            return False
+        try:
+            child_win.relative_to(PureWindowsPath(str(Path(parent).resolve(strict=False))))
+            return True
+        except ValueError:
+            return False
     try:
-        child.resolve(strict=False).relative_to(parent.resolve(strict=False))
+        Path(str(child)).resolve(strict=False).relative_to(Path(parent).resolve(strict=False))
         return True
     except ValueError:
         return False
@@ -98,8 +119,10 @@ def build_plan(
         failures.append(f"missing result summary parser: {result_parser}")
 
     fixture_plan = fixture_report.get("plan") or {}
-    fixture_root = Path(fixture_plan.get("fixture_root") or r"C:\ClashTests\right-bottom-slot5-as-slot0-fixture")
-    fixture_save = Path(fixture_plan.get("fixture_save") or (fixture_root / "save" / "0.dat"))
+    # Windows-target paths: keep backslash separators regardless of host OS so the
+    # emitted PowerShell commands are valid on the game host.
+    fixture_root = target_path(fixture_plan.get("fixture_root") or r"C:\ClashTests\right-bottom-slot5-as-slot0-fixture")
+    fixture_save = target_path(fixture_plan.get("fixture_save") or (fixture_root / "save" / "0.dat"))
     candidate_dir = fixture_root / "candidate"
     target_load_slot = int(fixture_plan.get("target_load_slot") or 0)
 
@@ -121,7 +144,7 @@ def build_plan(
         failures.append(f"fixture target load slot is {target_load_slot}, expected 0")
     if path_is_under(fixture_root, repo_root):
         failures.append(f"fixture root is inside the repository: {fixture_root}")
-    if candidate_dir.resolve(strict=False) == fixture_root.resolve(strict=False):
+    if str(candidate_dir).casefold() == str(fixture_root).casefold():
         failures.append("candidate dir must be a child of the fixture workdir, not the workdir itself")
 
     prepare_dry_run = command_text(
