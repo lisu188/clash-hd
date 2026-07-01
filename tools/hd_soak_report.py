@@ -5,10 +5,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 
@@ -43,6 +44,19 @@ def check_record(passed: bool, summary: dict[str, Any], failures: list[str] | No
 def is_under_repo(path_text: str | None) -> bool:
     if not path_text:
         return False
+    # Windows-target paths (drive-letter or UNC) describe the game host, never
+    # this repository checkout. On a POSIX host they cannot live under the repo
+    # root, so treating their literal backslashes as relative path segments
+    # (the default Path/resolve behaviour) would wrongly flag them as in-repo.
+    win = PureWindowsPath(path_text)
+    if win.drive or str(path_text).startswith("\\\\"):
+        if os.name != "nt":
+            return False
+        try:
+            win.relative_to(PureWindowsPath(str(REPO_ROOT.resolve())))
+            return True
+        except ValueError:
+            return False
     try:
         path = Path(path_text)
         if not path.is_absolute():
