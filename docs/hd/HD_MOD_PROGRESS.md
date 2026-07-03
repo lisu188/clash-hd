@@ -3556,3 +3556,36 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   first `short2` visible runtime execution is still pending explicit approval;
   `captures\current\hd-soak-short-current.md` records this as a deliberate
   non-pass rather than simulated soak evidence.
+
+## Right-Bottom addon_flags Save Fixture Helper, 2026-07-03
+
+- Added `tools/right_bottom_addon_flags_fixture.py` and
+  `tools/test_right_bottom_addon_flags_fixture.py` to implement Gate 1 of
+  `reports/hd_completion_certainty.md`: the disassembly-verified isolated save
+  fixture that sets `addon_flags` bit `0x02` at `building_record + 416`, so the
+  right-bottom production/action panel becomes drawable on a natural route
+  (`clash95.c:49999`, `37758`) instead of parking the action descriptor at
+  `x=1000` with `owner_flag=0x00`.
+- The helper is repo-only by default: with no readable `--source-save` it runs
+  plan-only and writes only JSON/Markdown evidence; it never mutates
+  `C:\Clash\save`, refuses to write inside a `Clash\save` directory, and refuses
+  repository output unless `--allow-repo-output` is passed. A copied+patched
+  fixture is written only with `--output-save`, mirroring the proven
+  `battle_constructed_save_fixture.py` pattern.
+- Offset correction recorded by the tool: building records live at
+  `gameData + 509674` and the save prepends a 16-byte header before the
+  `gameData` image, so building 0's `addon_flags` byte is at file offset
+  `16 + 509674 + i*467 + 416` = `510106` (`0x0007C89A`). The parenthetical
+  `0x10 + 0x7C6FA + i*467 + 0x1A0` in `reports/hd_completion_certainty.md` is off
+  by 16: `0x7C6FA` (`509690`) is already the header-adjusted save-file record
+  base, so adding `0x10` again double-counts the header. The decimal formula is
+  authoritative and is what the tool computes.
+- Validation: `tools/test_right_bottom_addon_flags_fixture.py` passes (offset
+  math, single-byte/idempotent flag set, out-of-range and truncated-save
+  rejection, owner/type read-back, and both write guards). The full repo-only
+  sweep `tools/repo_test_sweep.py --require-pass` reports `91/91` passed. Plan
+  evidence: `captures/current/right-bottom-addon-flags-fixture-current.json`
+  and `.md`.
+- This helper is non-promoting. It makes the natural right-bottom route
+  reachable, but promotion still requires the approved manual DirectInput proof
+  per `reports/final_hd_validation_matrix.md`; no default stage changed.

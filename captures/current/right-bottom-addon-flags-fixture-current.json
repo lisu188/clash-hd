@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-07-03T09:04:31.388992+00:00",
+  "passed": true,
+  "mode": "plan-only",
+  "runtime_policy": "repo-only fixture planner; reads at most one source save and writes only JSON/Markdown evidence unless --output-save is passed; never mutates C:\\Clash\\save and never launches Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "promotion_policy": "non-promoting: the copied+patched save makes the right-bottom production panel drawable on a natural route, but promotion still requires approved real-input (manual DirectInput) proof per reports/final_hd_validation_matrix.md",
+  "source_save": "C:\\Clash\\save\\0.dat",
+  "offset_math": {
+    "building_index": 0,
+    "save_header_size": 16,
+    "building_memory_base_offset": 509674,
+    "building_save_base_offset": 509690,
+    "building_record_stride": 467,
+    "building_record_count": 100,
+    "addon_flags_field_offset": 416,
+    "production_flag_bit": "0x02",
+    "record_offset": "0x0007C6FA",
+    "addon_flags_file_offset": "0x0007C89A",
+    "addon_flags_file_offset_decimal": 510106,
+    "formula": "16 + 509674 + building_index*467 + 416",
+    "expected_save_size": 586414,
+    "expected_save_size_hex": "0x0008F2AE"
+  },
+  "warnings": [],
+  "notes": [
+    "source save C:\\Clash\\save\\0.dat not readable here; running plan-only (offset math is host-independent)"
+  ]
+}
