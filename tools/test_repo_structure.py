@@ -89,6 +89,9 @@ def main() -> int:
         make_minimal_repo(fixture)
         assert_all_pass(repo_structure.run_checks(fixture))
 
+        write(fixture / ".agents/session.json", "{}\n")
+        assert_all_pass(repo_structure.run_checks(fixture))
+
         write(fixture / "notes.txt", "not approved at root\n")
         checks = repo_structure.run_checks(fixture)
         assert any(check.name == "root_contents" and not check.passed for check in checks), checks

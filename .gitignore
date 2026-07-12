@@ -51,6 +51,7 @@ temp/
 # Codex local state
 .codex
 .codex-loop/
+.agents/
 
 # Optional generated archive form of cloud fixtures. The searchable fixture tree
 # under cloud/fixtures/ is the committed source of truth.
