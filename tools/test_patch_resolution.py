@@ -129,7 +129,14 @@ def test_descriptor_anchor_shifts() -> None:
 
 
 def test_recipe_coverage_and_old_bytes_invariance() -> None:
-    kinds = {"value": 0, "old-plus": 0, "fixed": 0, "splice": 0, "cave-pending": 0}
+    kinds = {
+        "value": 0,
+        "old-plus": 0,
+        "fixed": 0,
+        "splice": 0,
+        "cave-template": 0,
+        "cave-hook": 0,
+    }
     profile = impl.parse_resolution("1920x1080")
     for patch in impl.PATCHES:
         if patch.group not in impl.PARAMETERIZED_GROUPS:
@@ -137,32 +144,127 @@ def test_recipe_coverage_and_old_bytes_invariance() -> None:
         recipe = impl.RECIPES.get((patch.group, patch.offset))
         assert recipe is not None, (patch.group, hex(patch.offset))
         kinds[recipe.kind] += 1
-        if recipe.kind == "cave-pending":
-            continue
         produced = impl._apply_recipe(patch, recipe, profile)
+        if recipe.kind == "cave-template":
+            template = impl._CAVE_TEMPLATES[(patch.group, patch.offset)]
+            if template.new_offset is not None:
+                assert produced.offset == template.new_offset
+                assert produced.old_hex == "00" * (len(template.template_hex) // 2)
+            else:
+                assert produced.offset == patch.offset
+                assert len(produced.new) == len(patch.new)
+            continue
         assert produced.offset == patch.offset
         assert produced.old_hex == patch.old_hex
         assert len(produced.new) == len(patch.new), (patch.group, hex(patch.offset))
     assert kinds == {
         "value": 65,
         "old-plus": 48,
-        "fixed": 29,
+        "fixed": 26,
         "splice": 15,
-        "cave-pending": 7,
+        "cave-template": 7,
+        "cave-hook": 3,
     }, kinds
 
 
-def test_presets_generate_without_range_errors() -> None:
+def decode_branch(data: bytes, offset: int, kind: str, base_va: int) -> int:
+    if kind == "call":
+        assert data[offset] == 0xE8, hex(offset)
+        disp = int.from_bytes(data[offset + 1 : offset + 5], "little", signed=True)
+        return base_va + offset + 5 + disp
+    if kind == "jmp32":
+        assert data[offset] == 0xE9, hex(offset)
+        disp = int.from_bytes(data[offset + 1 : offset + 5], "little", signed=True)
+        return base_va + offset + 5 + disp
+    if kind == "jz32":
+        assert data[offset : offset + 2] == b"\x0f\x84", hex(offset)
+        disp = int.from_bytes(data[offset + 2 : offset + 6], "little", signed=True)
+        return base_va + offset + 6 + disp
+    if kind == "jcc8":
+        assert data[offset] in (0x74, 0x75, 0x77, 0xEB), hex(offset)
+        disp = int.from_bytes(data[offset + 1 : offset + 2], "little", signed=True)
+        return base_va + offset + 2 + disp
+    raise AssertionError(kind)
+
+
+def test_cave_templates() -> None:
+    for key, template in impl._CAVE_TEMPLATES.items():
+        legacy_patch = next(
+            p for p in impl.PATCHES if (p.group, p.offset) == key
+        )
+        template_bytes = bytes.fromhex(template.template_hex)
+        if template.new_offset is None:
+            assert len(template_bytes) == len(legacy_patch.new), key
+        else:
+            assert len(template_bytes) == 96, key
+            assert template.param_va == 0x51BC20, key
+
+        # Branch tables verify against both static byte encodings.
+        for offset, kind, target in template.legacy_branches:
+            actual = decode_branch(legacy_patch.new, offset, kind, template.legacy_va)
+            assert actual == target, (key, "legacy", hex(offset), hex(actual))
+        for offset, kind, target in template.param_branches:
+            actual = decode_branch(template_bytes, offset, kind, template.param_va)
+            assert actual == target, (key, "param", hex(offset), hex(actual))
+
+        # External targets (outside the cave span) must agree across variants.
+        assert len(template.legacy_branches) == len(template.param_branches), key
+        legacy_span = range(
+            template.legacy_va, template.legacy_va + len(legacy_patch.new)
+        )
+        for (_, lk, lt), (_, pk, pt) in zip(
+            template.legacy_branches, template.param_branches
+        ):
+            assert lk == pk, key
+            if lt not in legacy_span:
+                assert lt == pt, (key, hex(lt), hex(pt))
+
+        # Slots carry the 800x600 values in the template.
+        for slot in template.slots:
+            current = int.from_bytes(
+                template_bytes[slot.at : slot.at + slot.width],
+                "little",
+                signed=slot.signed,
+            )
+            assert current == impl.FORMULAS[slot.value](impl.PROFILE_800), (
+                key,
+                slot.value,
+            )
+
+    # Relocated hooks aim at the relocated cave VA.
+    hook = bytes.fromhex(impl._CAVE_HOOKS[("castle-ui-center-present", 0x0351A5)])
+    target = decode_branch(hook, 0, "jmp32", 0x0351A5 + 0x400C00)
+    assert target == 0x51BC20, hex(target)
+    hook = bytes.fromhex(
+        impl._CAVE_HOOKS[("castle-ui-center-present-wrapper", 0x0351AA)]
+    )
+    assert hook[0] == 0xBB and int.from_bytes(hook[1:5], "little") == 0x51BC20
+    hook = bytes.fromhex(
+        impl._CAVE_HOOKS[("castle-ui-center-present-wrapper", 0x0351DE)]
+    )
+    target = decode_branch(hook, 0, "call", 0x0351DE + 0x400C00)
+    assert target == 0x51BC20, hex(target)
+
+
+def test_presets_generate_full_tables() -> None:
     for key in impl.RESOLUTION_PRESETS:
         profile = impl.parse_resolution(key)
+        table = impl.generate_patches(profile)
+        assert len(table) == len(impl.PATCHES), key
         if key == "800x600":
-            assert impl.generate_patches(profile) == impl.PATCHES
+            assert table == impl.PATCHES
             continue
-        for patch in impl.PATCHES:
-            recipe = impl.RECIPES.get((patch.group, patch.offset))
-            if recipe is None or recipe.kind == "cave-pending":
-                continue
-            impl._apply_recipe(patch, recipe, profile)
+        relocated = [p for p in table if p.offset == 0x119E20]
+        assert len(relocated) == 2 and all(
+            p.old_hex == "00" * 96 for p in relocated
+        ), key
+        for stage in impl.PARAMETERIZED_STAGES:
+            spans = sorted(
+                (p.offset, p.offset + len(p.new))
+                for p in impl.select_patches_for(stage, profile)
+            )
+            for (s1, e1), (s2, e2) in zip(spans, spans[1:]):
+                assert e1 <= s2, (key, stage, hex(s1), hex(s2))
 
 
 def test_range_fail_closed() -> None:
@@ -183,21 +285,20 @@ def test_range_fail_closed() -> None:
         raise AssertionError("imm8 TX=128 must fail closed")
 
 
-def test_cave_pending_refusal_and_stage_gating() -> None:
+def test_stage_gating() -> None:
     profile = impl.parse_resolution("1024x768")
-    try:
-        impl.generate_patches(profile)
-    except impl.ResolutionNotSupportedError:
-        pass
-    else:
-        raise AssertionError("pending cave templates must refuse generation")
-
     try:
         impl.select_patches_for("display", profile)
     except impl.ResolutionNotSupportedError:
         pass
     else:
         raise AssertionError("legacy-only stages must refuse non-800 resolutions")
+
+    for stage in impl.STAGE_GROUPS:
+        assert not __import__("re").search(r"\d+x\d+", stage), (
+            "resolution tokens must never enter stage-name space",
+            stage,
+        )
 
     for stage in impl.PARAMETERIZED_STAGES:
         assert stage in impl.STAGE_GROUPS, stage
@@ -256,15 +357,18 @@ def test_shim_exports_resolution_api() -> None:
 
 
 def test_cli_resolution_gate() -> None:
+    # Non-800 resolutions pass the resolution gate now; without an input exe
+    # in the working directory the run stops at the input-file check.
     completed = subprocess.run(
         [sys.executable, str(SHIM_PATH), "--resolution", "1024x768"],
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        cwd=str(ROOT / "tools"),
         check=False,
     )
     assert completed.returncode != 0
-    assert "not enabled yet" in completed.stderr + completed.stdout
+    assert "Input file does not exist" in completed.stderr + completed.stdout
 
     completed = subprocess.run(
         [sys.executable, str(SHIM_PATH), "--resolution", "640x480"],
@@ -285,9 +389,10 @@ def run_tests() -> None:
     test_menu_hitboxes_shift_by_centering_offset()
     test_descriptor_anchor_shifts()
     test_recipe_coverage_and_old_bytes_invariance()
-    test_presets_generate_without_range_errors()
+    test_cave_templates()
+    test_presets_generate_full_tables()
     test_range_fail_closed()
-    test_cave_pending_refusal_and_stage_gating()
+    test_stage_gating()
     test_coincidence_audit()
     test_shim_exports_resolution_api()
     test_cli_resolution_gate()
