@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Gate whether the classified intro-skip soak failure is ready for rerun.
+"""Gate that the classified intro-skip failure was rerun and the ladder advanced.
+
+The short2 menu-idle rerun passed on 2026-07-12 (approved visible runtime), so
+this gate now asserts the passing-triage state and that the ladder advanced to
+the approval-gated short2 map-idle step.
 
 This is repo-only. It reads the failed short2 menu-idle triage plus current
 harness/dry-run/guard reports and does not launch Clash95, CDB, wrappers,
@@ -29,9 +33,9 @@ RUNTIME_POLICY = (
     "repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, "
     "wrappers, PowerShell harnesses, or visible windows"
 )
-EXPECTED_CLASSIFICATION = "intro_skip_input_drift_exit"
-EXPECTED_STEP_ID = "short2_menu_idle"
-EXPECTED_STEP_STATUS = "failed_classified_intro_skip_input_drift_exit"
+EXPECTED_CLASSIFICATION = "passing_run_no_failure"
+EXPECTED_STEP_ID = "short2_map_idle"
+EXPECTED_STEP_STATUS = "missing_pending_approval"
 EXPECTED_INTRO_SKIP = {
     "click_mode": "postmessage",
     "click_repeat": 8,
