@@ -1,7 +1,7 @@
 # Patch Resolution Tests
 
 - Status: PASS
-- Generated: `2026-07-12T20:34:54+02:00`
+- Generated: `2026-07-12T20:47:46+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves multi-resolution generation cannot drift from the frozen 800x600 byte-for-byte contract
 

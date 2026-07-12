@@ -1,0 +1,25 @@
+{
+    "Path":  "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-castle-entry-v2\\after-load-map.png",
+    "Hash":  "AAF4952F0AC38B5E81DDE09EE51FEB08FB0A364D14166B438E1A3C8619657F12",
+    "Width":  1200,
+    "Height":  900,
+    "OriginX":  1320,
+    "OriginY":  611,
+    "CenterWindowMatchesTarget":  true,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "screen",
+    "TargetHwnd":  "0x4BC0890",
+    "CenterWindowHwnd":  "0x4BC0890",
+    "CenterRootHwnd":  "0x4BC0890",
+    "NonblackPercent":  97.865,
+    "MeanLuma":  106.206,
+    "UniqueSampleColors":  19240,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  1196,
+                           "Bottom":  896,
+                           "Width":  1197,
+                           "Height":  897
+                       }
+}

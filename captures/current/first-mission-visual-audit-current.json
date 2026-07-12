@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:34:28+02:00",
+  "generated_at": "2026-07-12T20:47:20+02:00",
   "passed": false,
   "runtime_policy": "repo-only PNG audit; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "first-mission frames must keep the play area rendered, avoid horizontal or vertical stripe signatures, and expose remaining large black UI patches as non-playable blockers instead of hiding them behind route success",

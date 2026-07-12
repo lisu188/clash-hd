@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T18:35:07.875707+00:00",
+  "generated_at": "2026-07-12T18:48:00.209802+00:00",
   "passed": true,
   "runtime_policy": "repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "script": "scripts\\smoke\\run_hd_soak.ps1",
@@ -7,7 +7,7 @@
     "path": "captures\\current\\hd-endurance-release-checklist-current.json",
     "state": "present",
     "present": true,
-    "generated_at": "2026-07-12T18:35:07.541708+00:00",
+    "generated_at": "2026-07-12T18:47:59.810714+00:00",
     "passed": false,
     "requirement_count": 15
   },
@@ -68,19 +68,6 @@
       "promotion_ready": false,
       "current_blockers": [
         {
-          "id": "short2_menu_idle_soak",
-          "title": "First short2 menu-idle soak passes",
-          "category": "endurance",
-          "status": "blocked",
-          "passed": false,
-          "summary": "short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit",
-          "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage",
-          "evidence": [
-            "captures\\current\\hd-soak-report-guard-current.json",
-            "captures\\current\\hd-soak-short-step-status-current.json"
-          ]
-        },
-        {
           "id": "stable_menu_real_input",
           "title": "Stable menu load has real input proof",
           "category": "manual input",
@@ -93,7 +80,7 @@
           ]
         }
       ],
-      "current_blocker_count": 2,
+      "current_blocker_count": 1,
       "readiness_status": "implemented_blocked_by_current_requirements",
       "route_contract": {
         "id": "menu_idle",
@@ -111,9 +98,8 @@
         ],
         "implementation_policy": "already scripted; execute only through explicit visible-runtime approval",
         "readiness_status": "implemented_blocked_by_current_requirements",
-        "current_blocker_count": 2,
+        "current_blocker_count": 1,
         "blocking_requirement_ids": [
-          "short2_menu_idle_soak",
           "stable_menu_real_input"
         ],
         "stable_stage_should_change": false,
@@ -159,19 +145,6 @@
       "promotion_ready": false,
       "current_blockers": [
         {
-          "id": "short2_menu_idle_soak",
-          "title": "First short2 menu-idle soak passes",
-          "category": "endurance",
-          "status": "blocked",
-          "passed": false,
-          "summary": "short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit",
-          "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage",
-          "evidence": [
-            "captures\\current\\hd-soak-report-guard-current.json",
-            "captures\\current\\hd-soak-short-step-status-current.json"
-          ]
-        },
-        {
           "id": "stable_hd_map_real_input",
           "title": "HD map input has no drift under real input",
           "category": "manual input",
@@ -196,7 +169,7 @@
           ]
         }
       ],
-      "current_blocker_count": 3,
+      "current_blocker_count": 2,
       "readiness_status": "implemented_blocked_by_current_requirements",
       "route_contract": {
         "id": "map_idle",
@@ -220,9 +193,8 @@
         ],
         "implementation_policy": "already scripted; execute only after menu-idle approval-gated soak passes",
         "readiness_status": "implemented_blocked_by_current_requirements",
-        "current_blocker_count": 3,
+        "current_blocker_count": 2,
         "blocking_requirement_ids": [
-          "short2_menu_idle_soak",
           "stable_hd_map_real_input",
           "first_mission_visual_clean"
         ],

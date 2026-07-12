@@ -1,7 +1,7 @@
 # HD Soak Route Coverage
 
 - Overall: PASS
-- Generated: `2026-07-12T18:35:07.875707+00:00`
+- Generated: `2026-07-12T18:48:00.209802+00:00`
 - Runtime policy: repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Harness script: `scripts\smoke\run_hd_soak.ps1`
 - Release checklist: `captures\current\hd-endurance-release-checklist-current.json` state=`present`
@@ -14,11 +14,9 @@
 
 ## Release Lanes
 
-- `menu_idle`: status=`implemented_pending_first_soak` route=`menu-idle` implemented=`True` proof=`approval_gated_visible_runtime` readiness=`implemented_blocked_by_current_requirements` blockers=`2`
-  - blocker `short2_menu_idle_soak`: status=`blocked` summary=short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit
+- `menu_idle`: status=`implemented_pending_first_soak` route=`menu-idle` implemented=`True` proof=`approval_gated_visible_runtime` readiness=`implemented_blocked_by_current_requirements` blockers=`1`
   - blocker `stable_menu_real_input`: status=`blocked` summary=menu-load proof remains pending manual DirectInput validation
-- `map_idle`: status=`implemented_waiting_on_short2_menu` route=`map-idle` implemented=`True` proof=`approval_gated_visible_runtime` readiness=`implemented_blocked_by_current_requirements` blockers=`3`
-  - blocker `short2_menu_idle_soak`: status=`blocked` summary=short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit
+- `map_idle`: status=`implemented_waiting_on_short2_menu` route=`map-idle` implemented=`True` proof=`approval_gated_visible_runtime` readiness=`implemented_blocked_by_current_requirements` blockers=`2`
   - blocker `stable_hd_map_real_input`: status=`blocked` summary=HD map input proof remains pending manual DirectInput validation
   - blocker `first_mission_visual_clean`: status=`blocked` summary=first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior
 - `map_pan`: status=`implemented_waiting_on_map_idle` route=`map-pan` implemented=`True` proof=`approval_gated_visible_runtime` readiness=`implemented_blocked_by_current_requirements` blockers=`3`

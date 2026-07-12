@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:35:07+02:00",
+  "generated_at": "2026-07-12T20:47:59+02:00",
   "passed": false,
   "overall": false,
   "runtime_policy": "repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
@@ -19,11 +19,11 @@
     "present": true,
     "ladder_complete": false,
     "current_step": {
-      "id": "short2_menu_idle",
+      "id": "short2_map_idle",
       "tier": "short2",
-      "route": "menu-idle",
-      "status": "failed_classified_intro_skip_input_drift_exit",
-      "next_command": null
+      "route": "map-idle",
+      "status": "missing_pending_approval",
+      "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json"
     }
   },
   "proof_manifest": {

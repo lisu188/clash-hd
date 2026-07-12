@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:38:36+02:00",
+  "generated_at": "2026-07-12T20:47:46+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "launcher visible launches must stay user-initiated (confirmed=True from the GUI Play button or the CLI double flag) and the launcher must never join the evidence refresh",
@@ -62,6 +62,7 @@
       "passed": true,
       "summary": {
         "scripts": [
+          "build_launcher_exe.ps1",
           "run_launcher.ps1"
         ],
         "risky_lines": {}

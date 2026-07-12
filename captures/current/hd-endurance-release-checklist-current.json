@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T18:35:07.541708+00:00",
+  "generated_at": "2026-07-12T18:47:59.810714+00:00",
   "passed": false,
   "runtime_policy": "repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -37,14 +37,14 @@
   },
   "counts": {
     "total": 15,
-    "passed": 3,
-    "blocked": 12,
+    "passed": 5,
+    "blocked": 10,
     "missing": 0
   },
   "next_milestone": {
-    "id": "short2_menu_idle_soak",
-    "title": "First short2 menu-idle soak passes",
-    "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage"
+    "id": "stable_menu_real_input",
+    "title": "Stable menu load has real input proof",
+    "next_probe": "collect approved manual menu-load proof or keep promotion blocked"
   },
   "requirements": [
     {
@@ -142,13 +142,13 @@
       "id": "short2_menu_idle_soak",
       "title": "First short2 menu-idle soak passes",
       "category": "endurance",
-      "status": "blocked",
-      "passed": false,
+      "status": "pass",
+      "passed": true,
       "evidence": [
         "captures\\current\\hd-soak-report-guard-current.json",
         "captures\\current\\hd-soak-short-step-status-current.json"
       ],
-      "summary": "short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit",
+      "summary": "canonical short2 menu-idle step status passes",
       "next_probe": "run the approval-gated short2 menu-idle soak on the protected stage",
       "details": {
         "global_report_guard": {
@@ -157,18 +157,18 @@
           "canonical_first_step_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
           "canonical_first_step_present": true,
           "canonical_runtime_report_missing": false,
-          "overall": false,
-          "failure_count": 17
+          "overall": true,
+          "failure_count": 0
         },
         "short_step_status": {
-          "current_step": "short2_menu_idle",
-          "current_step_status": "failed_classified_intro_skip_input_drift_exit",
+          "current_step": "short2_map_idle",
+          "current_step_status": "missing_pending_approval",
           "ladder_complete": false,
           "canonical_report_present": true,
           "guard_present": true,
           "triage_present": true,
-          "guard_overall": false,
-          "executed": null
+          "guard_overall": true,
+          "executed": true
         },
         "canonical_outputs": {
           "report_json": "captures\\current\\hd-soak-short2-menu-idle-current.json",
@@ -291,13 +291,13 @@
       "id": "artifact_and_process_hygiene",
       "title": "No prohibited artifacts or stale processes",
       "category": "repo hygiene",
-      "status": "blocked",
-      "passed": false,
+      "status": "pass",
+      "passed": true,
       "evidence": [
         "captures\\current\\exe-artifact-guard-current.json",
         "captures\\current\\process-hygiene-guard-current.json"
       ],
-      "summary": "artifact or process hygiene guard is not passing",
+      "summary": "artifact and process hygiene guards pass",
       "next_probe": "clear hygiene guard failures before accepting runtime evidence"
     },
     {
@@ -324,7 +324,6 @@
   },
   "failures": [
     "first_mission_visual_clean: first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior",
-    "short2_menu_idle_soak: short2 visible-runtime soak has not produced passing frame/process evidence; current short-step status is failed_classified_intro_skip_input_drift_exit",
     "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
     "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
     "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
@@ -333,7 +332,6 @@
     "tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof",
     "save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
     "turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
-    "campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
-    "artifact_and_process_hygiene: artifact or process hygiene guard is not passing"
+    "campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release"
   ]
 }

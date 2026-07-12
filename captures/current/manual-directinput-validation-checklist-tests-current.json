@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:35:02+02:00",
+  "generated_at": "2026-07-12T20:47:54+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for checklist CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the manual DirectInput checklist enumerates the remaining manual targets, keeps promotion blocked without valid proof, validates manual proof manifests including isolated C:\\ClashTests candidate path, stage, observation, no-crash, and process-hygiene records, records the no-popup operator preference, and fails closed for incomplete checklist data",

@@ -1,7 +1,7 @@
 # Castle Overview Hitbox Summary Tests
 
 - Status: PASS
-- Generated: `2026-07-12T20:34:44+02:00`
+- Generated: `2026-07-12T20:47:36+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for parser CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the focused castle overview hitbox parser recognizes displayed/native hit rows, descriptor and click-gate rows, callback suppression, ready size, callback entry, AV rows, and fails closed under required CLI flags
 

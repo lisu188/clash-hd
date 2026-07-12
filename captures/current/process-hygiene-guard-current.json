@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-12T20:34:53+02:00",
-  "passed": false,
+  "generated_at": "2026-07-12T20:47:45+02:00",
+  "passed": true,
   "runtime_policy": "local process inspection only; does not launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "no cdb.exe or clash95*.exe process may be running after evidence refresh",
   "inspection_source": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS)",
@@ -12,17 +12,7 @@
   "target_prefixes": [
     "clash95"
   ],
-  "matching_processes": [
-    {
-      "image_name": "clash95_hd_castle_manual_20260712.exe",
-      "pid": "7832",
-      "parent_pid": "37392",
-      "thread_count": "18",
-      "session_number": "1"
-    }
-  ],
-  "matching_process_count": 1,
-  "failures": [
-    "runtime processes still running: clash95_hd_castle_manual_20260712.exe pid=7832"
-  ]
+  "matching_processes": [],
+  "matching_process_count": 0,
+  "failures": []
 }

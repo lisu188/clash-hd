@@ -1,7 +1,7 @@
 # Right-Bottom Owner-Flag Inventory
 
 - Overall: PASS
-- Generated: `2026-07-12T20:34:16+02:00`
+- Generated: `2026-07-12T20:47:09+02:00`
 - Runtime policy: repo-only; scans existing CDB logs and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: right-bottom owner/action evidence must keep at least one controlled forced owner route, at least one current natural owner-flag-gated route, and no non-fixture archived natural route that already reaches the owner/action renderer without an explicit forced owner flag
 - Scanned CDB logs: `26`

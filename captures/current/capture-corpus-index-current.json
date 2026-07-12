@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-07-12T20:35:09+02:00",
+  "generated_at": "2026-07-12T20:48:02+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\git\\clash-hd\\captures",
-  "artifact_count": 671,
+  "artifact_count": 674,
   "current_reference_count": 172,
   "archived_reference_count": 387,
   "missing_current_refs": [],
   "reference_status_counts": {
     "archived_referenced": 210,
     "current_referenced": 142,
-    "stale_unreferenced": 319
+    "stale_unreferenced": 322
   },
   "era_counts": {
     "cdb_surface_dump_unverified": 65,
     "hidden_cdb_surface_dump": 148,
-    "other_capture_artifact": 446,
+    "other_capture_artifact": 449,
     "visible_era": 12
   },
   "stale_visible_or_sandbox_count": 12,
@@ -7924,6 +7924,26 @@
       "has_run_summary": false
     },
     {
+      "name": "archive/manual-castle-entry-v2",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-castle-entry-v2",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/manual-rightbottom-entry",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-rightbottom-entry",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "archive/map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json",
       "artifact_kind": "file",
@@ -11148,6 +11168,16 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\manual-directinput-validation-checklist-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/manual-visible-session-2026-07-12.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\manual-visible-session-2026-07-12.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,

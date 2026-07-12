@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:35:09+02:00",
+  "generated_at": "2026-07-12T20:48:02+02:00",
   "passed": false,
   "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries",

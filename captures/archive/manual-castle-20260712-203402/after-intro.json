@@ -1,0 +1,25 @@
+{
+    "Path":  "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-castle-20260712-203402\\after-intro.png",
+    "Hash":  "8A08B6C4A8437308F573C7CE57F9820D2B52E5EB8935174E70FD6EB283A80731",
+    "Width":  1200,
+    "Height":  900,
+    "OriginX":  1320,
+    "OriginY":  611,
+    "CenterWindowMatchesTarget":  true,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "screen",
+    "TargetHwnd":  "0xD0B0A4A",
+    "CenterWindowHwnd":  "0xD0B0A4A",
+    "CenterRootHwnd":  "0xD0B0A4A",
+    "NonblackPercent":  61.791,
+    "MeanLuma":  50.066,
+    "UniqueSampleColors":  8690,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  1196,
+                           "Bottom":  896,
+                           "Width":  1197,
+                           "Height":  897
+                       }
+}

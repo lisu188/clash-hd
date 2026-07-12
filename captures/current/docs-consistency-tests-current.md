@@ -1,7 +1,7 @@
 # Docs Consistency Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-12T20:35:10+02:00`
+- Generated: `2026-07-12T20:48:02+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves current docs fail closed when generated counts or promotion-boundary facts go stale
 

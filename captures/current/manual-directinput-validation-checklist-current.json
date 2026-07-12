@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:35:02+02:00",
+  "generated_at": "2026-07-12T20:47:54+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "checklist_policy": "manual DirectInput evidence is tracked separately from CDB/proxy proof; visible/manual validation requires explicit user approval; Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.",

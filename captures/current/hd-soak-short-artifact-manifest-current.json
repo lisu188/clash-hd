@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T18:35:05.901630+00:00",
+  "generated_at": "2026-07-12T18:47:58.300911+00:00",
   "passed": true,
   "runtime_policy": "repo-only short-soak artifact manifest; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",

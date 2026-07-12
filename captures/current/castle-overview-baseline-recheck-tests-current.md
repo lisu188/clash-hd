@@ -1,7 +1,7 @@
 # Castle Overview Baseline Recheck Tests
 
 - Status: PASS
-- Generated: `2026-07-12T20:34:49+02:00`
+- Generated: `2026-07-12T20:47:41+02:00`
 - Runtime policy: repo-only in-process fixture tests; does not launch Clash95, CDB, wrappers, PowerShell, Python child processes, or visible windows
 - Guard policy: proves the castle overview baseline recheck rejects stale overview visual baselines, stale barracks controlled-stop baselines, and failing latest castle overview matrices, including matrices without visible/dormant target-done completion proof
 

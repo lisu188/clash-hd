@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T18:35:05.996630+00:00",
+  "generated_at": "2026-07-12T18:47:58.406912+00:00",
   "passed": true,
   "runtime_policy": "repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "manifest": "captures\\current\\hd-soak-short-artifact-manifest-current.json",
@@ -9,7 +9,7 @@
     "reports_found": 1,
     "guards_written": 1,
     "triage_written": 1,
-    "validated_failed": 1
+    "validated_failed": 0
   },
   "steps": [
     {
@@ -22,13 +22,13 @@
       "report_exists": true,
       "guard_written": true,
       "triage_written": true,
-      "status": "validated_failed",
-      "guard_overall": false,
-      "triage_classification": "intro_skip_input_drift_exit",
-      "triage_passed": false,
+      "status": "validated_pass",
+      "guard_overall": true,
+      "triage_classification": "passing_run_no_failure",
+      "triage_passed": true,
       "executed": true,
-      "report_passed": false,
-      "frame_sample_count": 1,
+      "report_passed": true,
+      "frame_sample_count": 8,
       "final_route_marker": "intro-skip",
       "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33"
     },

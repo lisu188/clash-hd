@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-12T18:35:05.538633+00:00",
+  "generated_at": "2026-07-12T18:47:57.920647+00:00",
   "runtime_policy": "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
-  "overall": false,
+  "overall": true,
   "source_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
   "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
   "tier": "short2",
@@ -17,15 +17,12 @@
       "failures": []
     },
     "source_status": {
-      "passed": false,
+      "passed": true,
       "summary": {
-        "reported_passed": false,
-        "source_failure_count": 8
+        "reported_passed": true,
+        "source_failure_count": 0
       },
-      "failures": [
-        "source soak report did not mark itself passed",
-        "source soak report contains 8 failure(s)"
-      ]
+      "failures": []
     },
     "protected_stage": {
       "passed": true,
@@ -51,7 +48,7 @@
         "input_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
         "expected_base_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
         "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-        "patch_stage_report": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260616-172005-short2-menu-idle\\patch-stage.json",
+        "patch_stage_report": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260712-204302-short2-menu-idle\\patch-stage.json",
         "patch_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
         "patch_count": 118,
         "patch_status_counts": {
@@ -154,9 +151,9 @@
         "expected_input_exe": "C:\\Clash\\clash95.exe",
         "workdir": "C:\\Clash",
         "expected_workdir": "C:\\Clash",
-        "candidate": "C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260616_171910.exe",
+        "candidate": "C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260712_204242.exe",
         "expected_candidate_root": "C:\\ClashTests\\hd-soak",
-        "output_directory": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260616-172005-short2-menu-idle",
+        "output_directory": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260712-204302-short2-menu-idle",
         "expected_output_root": "C:\\ClashCaptures\\hd-soak"
       },
       "failures": []
@@ -169,9 +166,9 @@
       "failures": []
     },
     "frame_inventory": {
-      "passed": false,
+      "passed": true,
       "summary": {
-        "frame_sample_count": 1,
+        "frame_sample_count": 8,
         "expected_size": [
           800,
           600
@@ -179,52 +176,28 @@
         "invalid_hash_count": 0,
         "checked": true
       },
-      "failures": [
-        "frame sample count 1 is below 2"
-      ]
+      "failures": []
     },
     "render_metrics": {
-      "passed": false,
+      "passed": true,
       "summary": {
-        "min_nonblack_percent": 9.697,
-        "min_unique_sample_colors": 249.0,
+        "min_nonblack_percent": 60.487,
+        "min_unique_sample_colors": 157.0,
         "checked": true
       },
-      "failures": [
-        "minimum nonblack percent 9.697 is below 10.0"
-      ]
+      "failures": []
     },
     "visual_anomalies": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "checked": true,
-        "frame_sample_count": 1,
-        "black_patch_risk_count": 1,
+        "frame_sample_count": 8,
+        "black_patch_risk_count": 0,
         "palette_or_stripe_risk_count": 0,
         "missing_nonblack_bounds_count": 0,
-        "anomaly_rows": [
-          {
-            "name": "frame-0000",
-            "flags": [
-              "black_or_blank_patch_risk"
-            ],
-            "nonblack_percent": 9.697,
-            "mean_luma": 3.126,
-            "unique_sample_colors": 249,
-            "nonblack_bounds": {
-              "X": 20,
-              "Y": 116,
-              "Right": 604,
-              "Bottom": 340,
-              "Width": 585,
-              "Height": 225
-            }
-          }
-        ]
+        "anomaly_rows": []
       },
-      "failures": [
-        "1 frame sample(s) show black/blank patch risk"
-      ]
+      "failures": []
     },
     "frame_progression": {
       "passed": true,
@@ -237,71 +210,57 @@
       "failures": []
     },
     "process_liveness": {
-      "passed": false,
+      "passed": true,
       "summary": {
-        "process_exited_unexpectedly": true,
-        "exit_code": 1,
-        "clean_stop": false,
-        "exited_sample_count": 2,
+        "process_exited_unexpectedly": false,
+        "exit_code": -1,
+        "clean_stop": true,
+        "exited_sample_count": 0,
         "checked": true
       },
-      "failures": [
-        "process exited unexpectedly with code 1",
-        "process was not stopped cleanly by the harness",
-        "2 process samples reported HasExited=True"
-      ]
+      "failures": []
     },
     "process_growth": {
-      "passed": false,
+      "passed": true,
       "summary": {
-        "process_sample_count": 3,
-        "working_set_growth_bytes": null,
+        "process_sample_count": 9,
+        "working_set_growth_bytes": -188416,
         "working_set_growth_limit_bytes": 67108864,
-        "private_memory_growth_bytes": null,
+        "private_memory_growth_bytes": -331776,
         "private_memory_growth_limit_bytes": 67108864,
-        "handle_growth": null,
+        "handle_growth": -2,
         "handle_growth_limit": 128,
         "checked": true
       },
-      "failures": [
-        "working_set_growth_bytes is missing",
-        "private_memory_growth_bytes is missing",
-        "handle_growth is missing"
-      ]
+      "failures": []
     },
     "elapsed_coverage": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "duration_sec": 120,
         "sample_interval_sec": 15,
         "required_elapsed_sec": 103,
-        "frame_elapsed_sec": null,
-        "process_elapsed_sec": 16.605865,
+        "frame_elapsed_sec": 111.128874,
+        "process_elapsed_sec": 120.039978,
         "invalid_frame_timestamps": 0,
         "invalid_process_timestamps": 0
       },
-      "failures": [
-        "frame sample elapsed coverage could not be computed",
-        "process sample elapsed coverage 16.606s is below required 103.000s"
-      ]
+      "failures": []
     },
     "input_responsiveness": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "route_result_count": 1,
-        "route_failure_count": 1,
-        "route_drift_failure_count": 1,
+        "route_failure_count": 0,
+        "route_drift_failure_count": 0,
         "max_input_drift_px": 1,
         "reported_input_max_abs_error": 0,
-        "reported_input_max_sample_abs_error": 324,
+        "reported_input_max_sample_abs_error": 0,
         "computed_input_max_abs_error": 0,
-        "computed_input_max_sample_abs_error": 324,
+        "computed_input_max_sample_abs_error": 0,
         "checked": true
       },
-      "failures": [
-        "1 route/input rows did not verify",
-        "1 route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes"
-      ]
+      "failures": []
     },
     "route_completion_marker": {
       "passed": true,
@@ -321,52 +280,31 @@
       "passed": true,
       "summary": {
         "checked": true,
-        "frame_sample_count": 1,
+        "frame_sample_count": 8,
         "frame_hash_unique_count": 1,
-        "process_sample_count": 3,
-        "working_set_growth_bytes": null,
-        "private_memory_growth_bytes": null,
-        "handle_growth": null,
+        "process_sample_count": 9,
+        "working_set_growth_bytes": -188416,
+        "private_memory_growth_bytes": -331776,
+        "handle_growth": -2,
         "input_max_abs_error": 0,
-        "input_max_sample_abs_error": 324
+        "input_max_sample_abs_error": 0
       },
       "failures": []
     },
     "artifact_budget": {
-      "passed": false,
+      "passed": true,
       "summary": {
-        "artifact_bytes": 124455,
-        "max_artifact_mb": null,
-        "artifact_limit_bytes": null,
+        "artifact_bytes": 1541848,
+        "max_artifact_mb": 250,
+        "artifact_limit_bytes": 262144000,
         "effective_artifact_limit_bytes": 262144000,
         "default_artifact_limit_bytes": 262144000,
         "checked": true
       },
-      "failures": [
-        "max_artifact_mb is missing",
-        "artifact_limit_bytes is missing"
-      ]
+      "failures": []
     }
   },
-  "failures": [
-    "source soak report did not mark itself passed",
-    "source soak report contains 8 failure(s)",
-    "frame sample count 1 is below 2",
-    "minimum nonblack percent 9.697 is below 10.0",
-    "1 frame sample(s) show black/blank patch risk",
-    "process exited unexpectedly with code 1",
-    "process was not stopped cleanly by the harness",
-    "2 process samples reported HasExited=True",
-    "working_set_growth_bytes is missing",
-    "private_memory_growth_bytes is missing",
-    "handle_growth is missing",
-    "frame sample elapsed coverage could not be computed",
-    "process sample elapsed coverage 16.606s is below required 103.000s",
-    "1 route/input rows did not verify",
-    "1 route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes",
-    "max_artifact_mb is missing",
-    "artifact_limit_bytes is missing"
-  ],
+  "failures": [],
   "source_report_selection": "canonical_first_short_step",
   "canonical_first_step_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
   "canonical_first_step_present": true,

@@ -1,0 +1,25 @@
+{
+    "Path":  "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-rightbottom-entry\\after-intro.png",
+    "Hash":  "55BA39A80374844CACA64C70A6A29F68B59268FE1AD4A587450DD4526129DD4D",
+    "Width":  1200,
+    "Height":  900,
+    "OriginX":  1320,
+    "OriginY":  611,
+    "CenterWindowMatchesTarget":  true,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "screen",
+    "TargetHwnd":  "0x7E808C4",
+    "CenterWindowHwnd":  "0x7E808C4",
+    "CenterRootHwnd":  "0x7E808C4",
+    "NonblackPercent":  61.791,
+    "MeanLuma":  50.066,
+    "UniqueSampleColors":  8690,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  1196,
+                           "Bottom":  896,
+                           "Width":  1197,
+                           "Height":  897
+                       }
+}

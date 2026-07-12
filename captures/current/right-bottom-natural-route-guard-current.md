@@ -1,7 +1,7 @@
 # Right-Bottom Natural Route Guard
 
 - Status: PASS
-- Generated: `2026-07-12T20:34:16+02:00`
+- Generated: `2026-07-12T20:47:09+02:00`
 - Runtime policy: repo-only; reads existing hidden-desktop CDB artifacts and does not launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: natural right-bottom action routing must be classified as save-state gated only when command 99 reaches the owner loop, the exact 00433C20 owner-loop descriptor model is present, the 004338E0 action descriptor is parked at (1000,426), owner flag bits are zero, no owner/action renderer rows fire, and the run has no AV rows
 - Run: `captures\archive\cdb-surface-dump-20260712-150434`

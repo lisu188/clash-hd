@@ -1,7 +1,7 @@
 # Right-Bottom Slot Fixture Script Guard
 
 - Status: PASS
-- Generated: `2026-07-12T20:34:16+02:00`
+- Generated: `2026-07-12T20:47:09+02:00`
 - Runtime policy: repo-only source inspection; does not run PowerShell, copy saves, launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: the fixture preparation script must default to dry-run, copy only after -Execute, optionally seed a non-save isolated workdir, refuse repository and live C:\Clash\save outputs, and avoid visible-runtime APIs
 - Script: `scripts\smoke\prepare_right_bottom_slot_fixture.ps1`
