@@ -41,6 +41,17 @@ the user's long-lived memory artifact.
   `C:\ClashTests\...` folders. If the user explicitly asks for a local handoff
   executable in the repository root, keep only one freshest untracked `.exe`
   artifact, document it, and remove stale executable artifacts before commit.
+- Launcher policy carve-out: the end-user launcher (`src/launcher/`,
+  `scripts/launcher/run_launcher.ps1`, `docs/hd/LAUNCHER.md`) is a user-facing
+  interactive tool, not an evidence harness. Its visible game launch is
+  user-initiated by definition (`core.launch_game` requires `confirmed=True`
+  from the GUI Play button or the CLI `--launch --yes-launch` double flag), it
+  writes only under `C:\ClashTests\launcher\` and `%LOCALAPPDATA%\ClashHD\`,
+  it never modifies `C:\Clash\clash95.exe`, never ships or downloads
+  binaries, and is never invoked by the evidence refresh. Agents keep using
+  the hidden-desktop no-popup boundary; the launcher's `--dry-run` is the only
+  launcher path agents run without fresh explicit user approval.
+  `tools/launcher_policy_guard.py` enforces this from source.
 
 <!-- clash-hd-windows-toolchain-start -->
 

@@ -112,6 +112,25 @@ game:
 & 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' tools\test_battle_constructed_save_fixture.py
 ```
 
+## Clash95 HD Launcher
+
+The end-user way to play the HD mod is the Tkinter launcher (see
+`docs/hd/LAUNCHER.md`):
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\launcher\run_launcher.ps1
+```
+
+It verifies the base SHA, patches an isolated candidate under
+`C:\ClashTests\launcher\<WxH>`, byte-gates it, copies the user's DirectDraw
+wrapper `ddraw.dll` next to it with a rendered `dxcfg.ini`, and starts the
+game only when the user presses Play. The launcher never ships binaries and
+is never part of the evidence refresh; `tools/launcher_policy_guard.py`
+enforces the policy and `tools/resolution_manifest_guard.py` keeps the
+resolution status manifest (`src/launcher/resolutions.json`) honest. Today
+only the stable 800x600 stage is enabled; preset resolutions unlock as the
+patcher's multi-resolution support and per-resolution evidence land.
+
 ## Clash95 HD Map Smoke Reproduction
 
 The HD mod workspace keeps generated executables outside the repository. Use a
@@ -675,9 +694,9 @@ runtime processes cannot silently remain after a refresh.
 The no-popup boundary guard is
 `captures\current\no-popup-boundary-guard-current.md`. It passes repo-only and verifies
 that the refresh includes the stable-stage, executable-artifact,
-surface-dump-policy, visible-runtime launcher, no-visible-runtime, and
-process-hygiene guards. It records `required_guard_count=6`,
-`required_supporting_report_count=84`, and `required_report_count=90`. It also
+surface-dump-policy, visible-runtime launcher, no-visible-runtime,
+process-hygiene, and launcher-policy guards. It records `required_guard_count=7`,
+`required_supporting_report_count=90`, and `required_report_count=97`. It also
 requires the no-popup map evidence matrix and its fixture tests, no-popup guard
 regression report, no-visible runtime guard tests, HD soak execution-boundary
 report and tests, manual DirectInput

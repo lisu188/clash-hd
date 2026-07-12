@@ -39,6 +39,16 @@ GATED_HELPERS = {
     "raw_sendinput_click.py": "manual/visible-runtime evidence helper; it sends OS input only when explicitly invoked by a guarded harness",
 }
 
+EXTRA_SCAN_DIRS = (Path("src/launcher"),)
+
+USER_GATED_LAUNCHER_HELPERS = {
+    "src/launcher/core.py": (
+        "user-facing launcher core; it spawns the Clash95 process only after an "
+        "explicit user confirmation (launch_game confirmed=True), enforced by "
+        "launcher_policy_guard"
+    ),
+}
+
 EXEMPT_HELPERS = {
     "battle_ui_evidence_matrix.py": "repo-only evidence matrix; process-launch text is a type annotation or fixture reference",
     "battle_visible_input_summary.py": "repo-only log parser; SendInput text appears in artifact names or evidence prose",
@@ -64,6 +74,7 @@ EXEMPT_HELPERS = {
     "repo_structure.py": "repo-only structure guard; subprocess is limited to read-only git inventory",
     "right_bottom_slot_fixture_result_summary.py": "repo-only CDB log parser; Win32/input text appears in evidence markers",
     "python_runtime_safety_guard.py": "this scanner names risky APIs without calling them",
+    "launcher_policy_guard.py": "repo-only source scanner; risky API names appear as patterns, not runtime calls",
     "repo_test_sweep.py": "repo-only validation runner; subprocess is limited to tools/test_*.py Python children",
 }
 
@@ -105,6 +116,9 @@ def classify_python(path: Path, root: Path) -> dict[str, Any]:
     elif name.startswith("test_"):
         classification = "test_fixture"
         reason = "fixture test may spawn Python subprocesses but is not a runtime helper"
+    elif rel in USER_GATED_LAUNCHER_HELPERS:
+        classification = "user_gated_launcher"
+        reason = USER_GATED_LAUNCHER_HELPERS[rel]
     elif name in EXEMPT_HELPERS:
         classification = "exempt"
         reason = EXEMPT_HELPERS[name]
@@ -128,7 +142,11 @@ def classify_python(path: Path, root: Path) -> dict[str, Any]:
 
 def build_guard(args: argparse.Namespace) -> dict[str, Any]:
     root = args.root.resolve()
-    files = sorted((root / args.tools_dir).glob("*.py"))
+    files = sorted(
+        path
+        for scan_dir in (args.tools_dir, *EXTRA_SCAN_DIRS)
+        for path in (root / scan_dir).glob("*.py")
+    )
     records = [classify_python(path, root) for path in files]
     failures = [failure for record in records for failure in record["failures"]]
     risky = [record for record in records if record["risk_categories"]]

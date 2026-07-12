@@ -9,6 +9,7 @@ PowerShell entrypoints are grouped by purpose so the repository root stays focus
 | `scripts/cdb/` | Repeatable CDB probe and hidden-desktop surface-dump harnesses. |
 | `scripts/debug/` | Interactive debugger launch helpers. |
 | `scripts/install/` | Windows debugger/tool installer helpers. |
+| `scripts/launcher/` | User-facing HD launcher entrypoint (see `docs/hd/LAUNCHER.md`). |
 | `scripts/smoke/` | Visual smoke tests, sandbox runs, and candidate-preparation entrypoints. |
 
 Run scripts from the repository root with `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\<group>\<script>.ps1 ...` unless a workflow documents a more specific working directory.

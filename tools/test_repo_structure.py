@@ -36,6 +36,11 @@ def make_minimal_repo(root: Path) -> None:
     )
     write(root / "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp", "// cpp\n")
     write(root / "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.def", "EXPORTS\n")
+    write(root / "src/launcher/core.py", "LAUNCH_POLICY = 'fixture'\n")
+    write(root / "src/launcher/gui.py", "# fixture gui\n")
+    write(root / "src/launcher/resolutions.json", "{}\n")
+    write(root / "scripts/launcher/run_launcher.ps1", "# fixture entry\n")
+    write(root / "docs/hd/LAUNCHER.md", "# fixture launcher doc\n")
     for rel_path in repo_structure.REQUIRED_DIRS:
         (root / rel_path).mkdir(parents=True, exist_ok=True)
     for rel_path in (

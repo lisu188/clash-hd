@@ -46,6 +46,10 @@ REQUIRED_GUARDS = {
         "markdown": "process-hygiene-guard-current.md",
         "purpose": "no cdb.exe or clash95* process is left running",
     },
+    "launcher_policy_guard": {
+        "markdown": "launcher-policy-guard-current.md",
+        "purpose": "launcher visible launches stay user-initiated and outside the evidence refresh",
+    },
 }
 
 REQUIRED_SUPPORTING_REPORTS = {
@@ -112,6 +116,22 @@ REQUIRED_SUPPORTING_REPORTS = {
     "process_hygiene_guard_tests": {
         "markdown": "process-hygiene-guard-tests-current.md",
         "purpose": "fixture regression coverage for the process hygiene guard",
+    },
+    "launcher_policy_guard_tests": {
+        "markdown": "launcher-policy-guard-tests-current.md",
+        "purpose": "fixture regression coverage for the launcher policy guard",
+    },
+    "launcher_core_tests": {
+        "markdown": "launcher-core-tests-current.md",
+        "purpose": "fixture regression coverage for the launcher patch/deploy/launch core",
+    },
+    "resolution_manifest_guard": {
+        "markdown": "resolution-manifest-guard-current.md",
+        "purpose": "launcher resolution statuses stay evidence-backed with one stable default",
+    },
+    "resolution_manifest_guard_tests": {
+        "markdown": "resolution-manifest-guard-tests-current.md",
+        "purpose": "fixture regression coverage for the resolution manifest guard",
     },
     "manual_directinput_checklist": {
         "markdown": "manual-directinput-validation-checklist-current.md",

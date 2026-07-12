@@ -43,6 +43,12 @@ temp/
 *.sg
 *.dat
 
+# Local PyInstaller launcher builds (belt-and-braces; builds belong under
+# C:\ClashTests\launcher\build, never inside the repository).
+*.spec
+/build/
+/dist/
+
 # Obsidian local workspace/cache files. Markdown notes are not ignored.
 .obsidian/workspace*
 .obsidian/cache/

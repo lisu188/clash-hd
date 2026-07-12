@@ -71,6 +71,8 @@ import promotion_override_guard
 import promotion_override_manifest
 import process_hygiene_guard
 import python_runtime_safety_guard
+import launcher_policy_guard
+import resolution_manifest_guard
 import right_bottom_ui_bounds
 import right_bottom_compose_evidence_matrix
 import right_bottom_compose_promotion_decision
@@ -127,6 +129,9 @@ import test_promotion_override_guard
 import test_promotion_override_manifest
 import test_process_hygiene_guard
 import test_python_runtime_safety_guard
+import test_launcher_core
+import test_launcher_policy_guard
+import test_resolution_manifest_guard
 import test_stable_stage_guard
 import test_handoff_freshness_guard
 import test_hd_endurance_release_checklist
@@ -491,6 +496,16 @@ DEFAULT_PYTHON_RUNTIME_SAFETY_JSON = Path("captures/current/python-runtime-safet
 DEFAULT_PYTHON_RUNTIME_SAFETY_MD = Path("captures/current/python-runtime-safety-current.md")
 DEFAULT_PYTHON_RUNTIME_SAFETY_TESTS_JSON = Path("captures/current/python-runtime-safety-tests-current.json")
 DEFAULT_PYTHON_RUNTIME_SAFETY_TESTS_MD = Path("captures/current/python-runtime-safety-tests-current.md")
+DEFAULT_LAUNCHER_POLICY_GUARD_JSON = Path("captures/current/launcher-policy-guard-current.json")
+DEFAULT_LAUNCHER_POLICY_GUARD_MD = Path("captures/current/launcher-policy-guard-current.md")
+DEFAULT_LAUNCHER_POLICY_GUARD_TESTS_JSON = Path("captures/current/launcher-policy-guard-tests-current.json")
+DEFAULT_LAUNCHER_POLICY_GUARD_TESTS_MD = Path("captures/current/launcher-policy-guard-tests-current.md")
+DEFAULT_LAUNCHER_CORE_TESTS_JSON = Path("captures/current/launcher-core-tests-current.json")
+DEFAULT_LAUNCHER_CORE_TESTS_MD = Path("captures/current/launcher-core-tests-current.md")
+DEFAULT_RESOLUTION_MANIFEST_GUARD_JSON = Path("captures/current/resolution-manifest-guard-current.json")
+DEFAULT_RESOLUTION_MANIFEST_GUARD_MD = Path("captures/current/resolution-manifest-guard-current.md")
+DEFAULT_RESOLUTION_MANIFEST_GUARD_TESTS_JSON = Path("captures/current/resolution-manifest-guard-tests-current.json")
+DEFAULT_RESOLUTION_MANIFEST_GUARD_TESTS_MD = Path("captures/current/resolution-manifest-guard-tests-current.md")
 DEFAULT_PATCH_DEFINITION_JSON = Path("captures/current/patch-definition-current.json")
 DEFAULT_PATCH_DEFINITION_MD = Path("captures/current/patch-definition-current.md")
 DEFAULT_PATCH_DEFINITION_TESTS_JSON = Path("captures/current/patch-definition-tests-current.json")
@@ -4741,6 +4756,113 @@ def build_python_runtime_safety_tests(args: argparse.Namespace) -> dict[str, Any
     )
 
 
+def build_launcher_policy_guard(args: argparse.Namespace) -> dict[str, Any]:
+    guard_args = argparse.Namespace(
+        launcher_dir=Path("src/launcher"),
+        scripts_dir=Path("scripts/launcher"),
+        refresh_script=Path("tools/current_evidence_refresh.py"),
+        doc=Path("docs/hd/LAUNCHER.md"),
+    )
+    guard = launcher_policy_guard.build_guard(guard_args)
+    write_json(args.launcher_policy_guard_json, guard)
+    launcher_policy_guard.write_markdown(args.launcher_policy_guard_md, guard)
+    return {
+        "passed": bool(guard.get("passed")),
+        "json": str(args.launcher_policy_guard_json),
+        "markdown": str(args.launcher_policy_guard_md),
+        "summary": {
+            "launcher_dir": guard.get("launcher_dir"),
+            "guard_policy": guard.get("guard_policy"),
+            "runtime_policy": guard.get("runtime_policy"),
+        },
+        "failures": guard.get("failures", []),
+    }
+
+
+def build_launcher_policy_guard_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_launcher_policy_guard,
+        tests=[
+            "launcher_policy_guard passes on a compliant launcher tree",
+            "launcher_policy_guard fails on a missing confirmed=True gate",
+            "launcher_policy_guard fails on missing candidates-root write refusals",
+            "launcher_policy_guard fails on launch call sites outside core/gui/entry",
+            "launcher_policy_guard fails when the refresh references the launcher",
+            "launcher_policy_guard fails on risky launcher PowerShell calls",
+            "launcher_policy_guard fails on missing policy doc phrases",
+            "launcher_policy_guard CLI writes outputs and fails closed under --require-pass",
+        ],
+        title="Launcher Policy Guard Tests",
+        json_path=args.launcher_policy_guard_tests_json,
+        md_path=args.launcher_policy_guard_tests_md,
+        guard_policy="proves the launcher policy guard fails closed on every policy regression",
+    )
+
+
+def build_launcher_core_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_launcher_core,
+        tests=[
+            "launcher core refuses repo/game-dir candidate roots and unknown stages",
+            "launcher core builds, byte-gates, reuses, and rebuilds candidates",
+            "launcher core refuses base executables with unexpected SHA-256",
+            "launcher core launch gate requires confirmed=True and a deployed wrapper",
+            "launcher core reports missing wrapper DLLs without failing deploy",
+            "launcher environment report classifies base/wrapper/process state",
+            "launcher settings round-trip and recover from corrupt files",
+            "launcher single-instance lock handles live and stale owners",
+            "launcher dxcfg rendering rejects unverified scaling modes",
+            "launcher candidate cleanup stays inside the candidates root",
+        ],
+        title="Launcher Core Tests",
+        json_path=args.launcher_core_tests_json,
+        md_path=args.launcher_core_tests_md,
+        guard_policy="proves the launcher patch/deploy/launch core enforces its safety refusals",
+    )
+
+
+def build_resolution_manifest_guard(args: argparse.Namespace) -> dict[str, Any]:
+    guard_args = argparse.Namespace(
+        root=Path("."),
+        manifest=Path("src/launcher/resolutions.json"),
+        expected_default="800x600",
+        expected_stable_stage=None,
+    )
+    guard = resolution_manifest_guard.build_guard(guard_args)
+    write_json(args.resolution_manifest_guard_json, guard)
+    resolution_manifest_guard.write_markdown(args.resolution_manifest_guard_md, guard)
+    return {
+        "passed": bool(guard.get("passed")),
+        "json": str(args.resolution_manifest_guard_json),
+        "markdown": str(args.resolution_manifest_guard_md),
+        "summary": {
+            "resolution_count": guard.get("resolution_count"),
+            "status_counts": guard.get("status_counts"),
+            "guard_policy": guard.get("guard_policy"),
+            "runtime_policy": guard.get("runtime_policy"),
+        },
+        "failures": guard.get("failures", []),
+    }
+
+
+def build_resolution_manifest_guard_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_resolution_manifest_guard,
+        tests=[
+            "resolution_manifest_guard passes on a consistent manifest",
+            "resolution_manifest_guard fails on missing/duplicate stable defaults",
+            "resolution_manifest_guard fails on stable-stage or tile-formula drift",
+            "resolution_manifest_guard fails on missing or visible evidence runs",
+            "resolution_manifest_guard fails on failing smoke matrices and bad bounds",
+            "resolution_manifest_guard CLI writes outputs and fails closed under --require-pass",
+        ],
+        title="Resolution Manifest Guard Tests",
+        json_path=args.resolution_manifest_guard_tests_json,
+        md_path=args.resolution_manifest_guard_tests_md,
+        guard_policy="proves the resolution status manifest guard fails closed on drift",
+    )
+
+
 def build_patch_definition_guard(args: argparse.Namespace) -> dict[str, Any]:
     guard_args = argparse.Namespace()
     guard = patch_definition_guard.build_guard(guard_args)
@@ -7105,6 +7227,11 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["no_visible_runtime_guard_tests"] = build_no_visible_runtime_guard_tests(args)
     checks["process_hygiene_guard"] = build_process_hygiene_guard(args)
     checks["process_hygiene_guard_tests"] = build_process_hygiene_guard_tests(args)
+    checks["launcher_policy_guard"] = build_launcher_policy_guard(args)
+    checks["launcher_policy_guard_tests"] = build_launcher_policy_guard_tests(args)
+    checks["launcher_core_tests"] = build_launcher_core_tests(args)
+    checks["resolution_manifest_guard"] = build_resolution_manifest_guard(args)
+    checks["resolution_manifest_guard_tests"] = build_resolution_manifest_guard_tests(args)
     checks["no_popup_guard_tests"] = build_no_popup_guard_tests(args)
     checks["manual_directinput_checklist"] = build_manual_directinput_checklist(args)
     checks["manual_directinput_checklist_tests"] = build_manual_directinput_checklist_tests(args)
@@ -8101,6 +8228,40 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--python-runtime-safety-json", type=Path, default=DEFAULT_PYTHON_RUNTIME_SAFETY_JSON)
     parser.add_argument("--python-runtime-safety-md", type=Path, default=DEFAULT_PYTHON_RUNTIME_SAFETY_MD)
+    parser.add_argument("--launcher-policy-guard-json", type=Path, default=DEFAULT_LAUNCHER_POLICY_GUARD_JSON)
+    parser.add_argument("--launcher-policy-guard-md", type=Path, default=DEFAULT_LAUNCHER_POLICY_GUARD_MD)
+    parser.add_argument(
+        "--launcher-policy-guard-tests-json",
+        type=Path,
+        default=DEFAULT_LAUNCHER_POLICY_GUARD_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--launcher-policy-guard-tests-md",
+        type=Path,
+        default=DEFAULT_LAUNCHER_POLICY_GUARD_TESTS_MD,
+    )
+    parser.add_argument("--launcher-core-tests-json", type=Path, default=DEFAULT_LAUNCHER_CORE_TESTS_JSON)
+    parser.add_argument("--launcher-core-tests-md", type=Path, default=DEFAULT_LAUNCHER_CORE_TESTS_MD)
+    parser.add_argument(
+        "--resolution-manifest-guard-json",
+        type=Path,
+        default=DEFAULT_RESOLUTION_MANIFEST_GUARD_JSON,
+    )
+    parser.add_argument(
+        "--resolution-manifest-guard-md",
+        type=Path,
+        default=DEFAULT_RESOLUTION_MANIFEST_GUARD_MD,
+    )
+    parser.add_argument(
+        "--resolution-manifest-guard-tests-json",
+        type=Path,
+        default=DEFAULT_RESOLUTION_MANIFEST_GUARD_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--resolution-manifest-guard-tests-md",
+        type=Path,
+        default=DEFAULT_RESOLUTION_MANIFEST_GUARD_TESTS_MD,
+    )
     parser.add_argument(
         "--python-runtime-safety-tests-json",
         type=Path,
