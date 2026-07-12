@@ -156,9 +156,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-from dataclasses import dataclass
+import re
+from dataclasses import dataclass, replace
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable
 
 
 EXPECTED_SHA256 = "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
@@ -1558,6 +1559,578 @@ STAGE_GROUPS = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Resolution parameterization.
+#
+# The legacy PATCHES table above is the frozen byte-for-byte source of truth
+# for the 800x600 resolution; it is never modified. Other resolutions are
+# generated from it through the RECIPES registry: each parameterized patch
+# entry carries a recipe describing which bytes are resolution-dependent and
+# which formula produces them. Recipes verify the legacy value before
+# splicing, so a wrong recipe fails loudly instead of emitting silent bytes.
+# ---------------------------------------------------------------------------
+
+LEGACY_RESOLUTION = (800, 600)
+RESOLUTION_PRESETS = ("800x600", "1024x768", "1280x720", "1280x960", "1920x1080")
+
+MENU_NATIVE_WIDTH = 640
+MENU_NATIVE_HEIGHT = 480
+TILE_SIZE = 64
+TILE_ORIGIN_X = 32
+TILE_ORIGIN_Y = 16
+
+
+class ResolutionError(ValueError):
+    """Invalid resolution or a recipe/legacy-table mismatch."""
+
+
+class ResolutionNotSupportedError(ResolutionError):
+    """The requested stage/group cannot be generated for this resolution yet."""
+
+
+@dataclass(frozen=True)
+class ResolutionProfile:
+    width: int
+    height: int
+
+    def __post_init__(self) -> None:
+        if self.width < 800 or self.height < 600:
+            raise ResolutionError(
+                f"Resolution {self.width}x{self.height} is below the 800x600 minimum "
+                "(native 640x480 screens must fit centered)."
+            )
+        if self.width % 2 or self.height % 2:
+            raise ResolutionError(
+                f"Resolution {self.width}x{self.height} must have even width and "
+                "height so the 640x480 centering offsets stay integral."
+            )
+        if self.width >= 32768 or self.height >= 32768:
+            raise ResolutionError(
+                f"Resolution {self.width}x{self.height} exceeds imm16 comparison slots."
+            )
+
+    @property
+    def key(self) -> str:
+        return f"{self.width}x{self.height}"
+
+    # Centering offset for native 640x480 screens: (80, 60) at 800x600.
+    @property
+    def off_x(self) -> int:
+        return (self.width - MENU_NATIVE_WIDTH) // 2
+
+    @property
+    def off_y(self) -> int:
+        return (self.height - MENU_NATIVE_HEIGHT) // 2
+
+    # Right-bottom action descriptor shift: full delta from the native canvas.
+    @property
+    def shift_x(self) -> int:
+        return self.width - MENU_NATIVE_WIDTH
+
+    @property
+    def shift_y(self) -> int:
+        return self.height - MENU_NATIVE_HEIGHT
+
+    # Visible full tiles: 64px tiles drawn from map origin (32, 16).
+    @property
+    def tiles_x(self) -> int:
+        return (self.width - TILE_ORIGIN_X) // TILE_SIZE
+
+    @property
+    def tiles_y(self) -> int:
+        return (self.height - TILE_ORIGIN_Y) // TILE_SIZE
+
+    # Full-tile-grid present edges. formula-justified: at 800x600 EDGEX=799
+    # coincides with W-1 but EDGEY=591 differs from H-1=599, proving the
+    # sub_418700 present rectangles end on the tile grid, not the screen edge.
+    @property
+    def edge_x(self) -> int:
+        return TILE_ORIGIN_X + TILE_SIZE * self.tiles_x - 1
+
+    @property
+    def edge_y(self) -> int:
+        return TILE_ORIGIN_Y + TILE_SIZE * self.tiles_y - 1
+
+    @property
+    def max_x(self) -> int:
+        return self.width - 1
+
+    @property
+    def max_y(self) -> int:
+        return self.height - 1
+
+    # Leftover partial-tile strips (diagnostic; drawn by the engine's native
+    # right-strip/bottom-row code paths).
+    @property
+    def partial_col_px(self) -> int:
+        return (self.width - TILE_ORIGIN_X) % TILE_SIZE
+
+    @property
+    def partial_row_px(self) -> int:
+        return (self.height - TILE_ORIGIN_Y) % TILE_SIZE
+
+
+def parse_resolution(text: str) -> ResolutionProfile:
+    match = re.fullmatch(r"(\d{3,5})x(\d{3,5})", text.strip())
+    if not match:
+        raise ResolutionError(f"Resolution must look like 800x600, got: {text!r}")
+    return ResolutionProfile(int(match.group(1)), int(match.group(2)))
+
+
+PROFILE_800 = ResolutionProfile(*LEGACY_RESOLUTION)
+
+FORMULAS: dict[str, Callable[[ResolutionProfile], int]] = {
+    "W": lambda p: p.width,
+    "H": lambda p: p.height,
+    "W-1": lambda p: p.max_x,
+    "H-1": lambda p: p.max_y,
+    "OFFX": lambda p: p.off_x,
+    "OFFY": lambda p: p.off_y,
+    "SHIFTX": lambda p: p.shift_x,
+    "SHIFTY": lambda p: p.shift_y,
+    "TX": lambda p: p.tiles_x,
+    "TY": lambda p: p.tiles_y,
+    "-TX": lambda p: -p.tiles_x,
+    "-TY": lambda p: -p.tiles_y,
+    "-(TX+1)": lambda p: -(p.tiles_x + 1),
+    "-(TY+1)": lambda p: -(p.tiles_y + 1),
+    "TX//2": lambda p: p.tiles_x // 2,
+    "TY//2": lambda p: p.tiles_y // 2,
+    "TY-1": lambda p: p.tiles_y - 1,
+    "EDGEX": lambda p: p.edge_x,
+    "EDGEY": lambda p: p.edge_y,
+    # Right-bottom compose strip destinations, anchored to the screen edges:
+    # 586=W-214 (214px status/minimap art width), 528=H-72, 524=H-76.
+    "W-214": lambda p: p.width - 214,
+    "H-72": lambda p: p.height - 72,
+    "H-76": lambda p: p.height - 76,
+    # Unit-selection action bar: bottom edge dest 580=H-20, centered X
+    # 215=(W-370)//2 for the 370px-wide native text panel.
+    "H-20": lambda p: p.height - 20,
+    "(W-370)//2": lambda p: (p.width - 370) // 2,
+}
+
+
+@dataclass(frozen=True)
+class PatternSlot:
+    """One resolution-dependent immediate inside a composite patch.
+
+    `pattern` is a hex substring of the LEGACY new bytes (it includes the
+    legacy value bytes at offset `at`), so a pattern match simultaneously
+    locates the slot and proves the legacy value is what the formula predicts.
+    """
+
+    pattern: str
+    at: int
+    width: int
+    value: str
+    count: int
+    signed: bool = False
+
+
+@dataclass(frozen=True)
+class Recipe:
+    kind: str  # "value" | "old-plus" | "fixed" | "splice" | "cave-pending"
+    value: str = ""
+    signed: bool = False
+    deltas: tuple[str, ...] = ()
+    slots: tuple[PatternSlot, ...] = ()
+
+
+def _encode_int(value: int, width: int, signed: bool, context: str) -> bytes:
+    try:
+        return value.to_bytes(width, "little", signed=signed)
+    except OverflowError as exc:
+        raise ResolutionError(
+            f"{context}: value {value} does not fit in {width} byte(s) "
+            f"(signed={signed})"
+        ) from exc
+
+
+# Whole-value 4-byte little-endian entries: (group, offset) -> formula key.
+_VALUE_RECIPES: dict[tuple[str, int], str] = {
+    ("display", 0x003A64): "H",
+    ("display", 0x003A69): "W",
+    ("display", 0x060EAD): "H",
+    ("display", 0x060EB2): "W",
+    ("shared-surface", 0x000E4D): "H",
+    ("shared-surface", 0x000E62): "W",
+    ("gameplay-surface", 0x00A3BF): "H",
+    ("gameplay-surface", 0x00A3C4): "W",
+    ("input-bounds", 0x05F826): "W-1",
+    ("input-bounds", 0x05F82D): "H-1",
+    ("viewport-init", 0x05F92D): "H",
+    ("viewport-init", 0x05F93B): "W",
+    # formula-justified: EDGEX/EDGEY are tile-grid edges (32+64*TX-1,
+    # 16+64*TY-1), not W-1/H-1 — legacy 591 != 599 proves the Y formula.
+    ("full-redraw-present-bounds-800", 0x017CDE): "EDGEX",
+    ("full-redraw-present-bounds-800", 0x017D6C): "EDGEX",
+    ("full-redraw-present-bounds-800", 0x017D82): "EDGEX",
+    ("full-redraw-present-bounds-800", 0x017D99): "EDGEY",
+    ("full-redraw-present-bounds-800", 0x017E5E): "EDGEY",
+    ("full-redraw-present-bounds-800", 0x017E68): "EDGEX",
+    # Descriptor draw x clip grows to the full screen width.
+    ("right-bottom-action-descriptor-anchor", 0x01918E): "W",
+}
+
+# Resolution-independent entries (hooks with rel32 jumps/calls into fixed cave
+# addresses, and caves that read all geometry from live memory).
+_FIXED_RECIPES: frozenset[tuple[str, int]] = frozenset(
+    {
+        ("surface-blit-hd-aware", 0x001230),
+        ("minimap-right-clip", 0x00C960),
+        ("minimap-right-clip", 0x0E8D80),
+        ("viewport-switch-dynamic-surface", 0x060211),
+        ("mouse-dynamic-origin", 0x05FE61),
+        ("mouse-dynamic-origin", 0x0E8C10),
+        ("map-surface-upgrade-scrollclamp", 0x00AB6A),
+        ("castle-ui-center-present", 0x0351A5),
+        ("castle-ui-center-present-wrapper", 0x0351AA),
+        ("castle-ui-center-present-wrapper", 0x0351DE),
+        ("castle-ui-centered-input", 0x034F90),
+        ("castle-ui-centered-input", 0x034FB3),
+        ("castle-ui-centered-input", 0x0351F5),
+        ("castle-ui-centered-input", 0x034E17),
+        ("castle-overview-center-present-wrapper", 0x02172E),
+        ("castle-overview-center-present-wrapper", 0x021A74),
+        ("castle-overview-centered-input", 0x021920),
+        ("right-bottom-compose-proof", 0x0346B3),
+        ("right-bottom-compose-proof", 0x0351A5),
+        ("right-bottom-action-native-center-wrapper", 0x032D14),
+        ("battle-ui-center-present-wrapper", 0x02E6F5),
+        ("battle-grid-centered-input", 0x02D8ED),
+        ("battle-ui-centered-input", 0x02D901),
+        ("unit-selection-action-bar-map-surface", 0x005E1A),
+        ("unit-selection-action-bar-map-surface", 0x119D50),
+        ("unit-selection-action-bar-map-surface", 0x005E24),
+        ("unit-selection-action-bar-post-redraw", 0x00A23F),
+        ("unit-selection-action-bar-post-redraw", 0x00A26E),
+        ("unit-selection-action-bar-post-redraw", 0x119DD0),
+    }
+)
+
+# Centered-input mouse offsets: mov edx, OFFX/OFFY before the shifted
+# subtract/add against dword_544CFC/dword_544D00 (the single shared mouse
+# model). Each wrapper subtracts on entry and adds back on exit.
+_MOUSE_OFFX = "ba50000000"
+_MOUSE_OFFY = "ba3c000000"
+
+
+def _mouse_offset_slots(count: int) -> tuple[PatternSlot, ...]:
+    return (
+        PatternSlot(_MOUSE_OFFX, 1, 4, "OFFX", count),
+        PatternSlot(_MOUSE_OFFY, 1, 4, "OFFY", count),
+    )
+
+
+_SPLICE_RECIPES: dict[tuple[str, int], tuple[PatternSlot, ...]] = {
+    # mov edx, 800: minimap right anchor = screen width.
+    ("minimap-hd-right-anchor", 0x00C790): (
+        PatternSlot("ba20030000", 1, 4, "W", 1),
+    ),
+    # Conditional viewport switch cave: push H / mov ecx, W for the map
+    # metadata branch (native 480/640 branch untouched).
+    ("viewport-switch-dynamic-surface", 0x0E8DC0): (
+        PatternSlot("6858020000", 1, 4, "H", 1),
+        PatternSlot("b920030000", 1, 4, "W", 1),
+    ),
+    # Map-surface upgrade + scroll clamp cave: cmp word width, alloc H/W,
+    # clamp scroll to map_width-TX / map_height-TY. The 83-group imm8 slots
+    # are sign-extended by the CPU, so they are signed even when positive.
+    ("map-surface-upgrade-scrollclamp", 0x0E8C80): (
+        PatternSlot("6681382003", 3, 2, "W", 1),
+        PatternSlot("bb58020000", 1, 4, "H", 1),
+        PatternSlot("ba20030000", 1, 4, "W", 1),
+        PatternSlot("83eb0c", 2, 1, "TX", 1, signed=True),
+        PatternSlot("83eb09", 2, 1, "TY", 1, signed=True),
+    ),
+    # helpers entries whose sub imm8 keeps its opcode prefix in the patch.
+    ("helpers", 0x00D0B0): (PatternSlot("83ee0c", 2, 1, "TX", 1, signed=True),),
+    ("helpers", 0x00D0DA): (PatternSlot("83ea09", 2, 1, "TY", 1, signed=True),),
+    ("helpers", 0x00D124): (PatternSlot("83ea09", 2, 1, "TY", 1, signed=True),),
+    # Right-bottom compose strip destinations (native source rects untouched).
+    ("right-bottom-compose-proof", 0x1114E0): (
+        PatternSlot("6810020000", 1, 4, "H-72", 1),
+        PatternSlot("684a020000", 1, 4, "W-214", 1),
+    ),
+    ("right-bottom-compose-proof", 0x112080): (
+        PatternSlot("680c020000", 1, 4, "H-76", 1),
+    ),
+    # Unit-selection action bar copyback destination.
+    ("unit-selection-action-bar-map-surface", 0x119D70): (
+        PatternSlot("6844020000", 1, 4, "H-20", 1),
+        PatternSlot("68d7000000", 1, 4, "(W-370)//2", 1),
+    ),
+    # Centered-input wrapper caves (mov imm32 mouse offsets).
+    ("castle-ui-centered-input", 0x1113C5): _mouse_offset_slots(2),
+    ("castle-ui-centered-input", 0x111420): _mouse_offset_slots(1),
+    ("castle-ui-centered-input", 0x111460): _mouse_offset_slots(1),
+    ("castle-ui-centered-input", 0x11148A): _mouse_offset_slots(2),
+    ("battle-grid-centered-input", 0x119CA0): _mouse_offset_slots(2),
+    ("battle-ui-centered-input", 0x119CF0): _mouse_offset_slots(2),
+}
+
+# Hand-assembled caves whose parameterized variants need re-authored imm32
+# encodings (push imm8 centering offsets cannot hold OFF > 127) or
+# relocation. They are replaced by cave templates in the next milestone; at
+# non-legacy resolutions they refuse generation.
+_PENDING_CAVE_RECIPES: frozenset[tuple[str, int]] = frozenset(
+    {
+        ("surface-blit-hd-aware", 0x0E8D20),
+        ("castle-ui-center-present", 0x11136F),
+        ("castle-ui-center-present-wrapper", 0x11136F),
+        ("castle-overview-center-present-wrapper", 0x1198D0),
+        ("castle-overview-centered-input", 0x1199A0),
+        ("right-bottom-action-native-center-wrapper", 0x1199E0),
+        ("battle-ui-center-present-wrapper", 0x119C00),
+    }
+)
+
+# Single-byte tile immediates keyed by (old_hex, new_hex). The formula choice
+# comes from the patch notes' disassembly semantics, not the byte values:
+#   07->09 map_height loops +7 -> TY        09->0c map_width loops +9 -> TX
+#   06->08 full rows 6 -> TY-1              06->0c clipped-row columns -> TX
+#   04->06 center-on-unit X 4 -> TX//2      03->04 center-on-unit Y 3 -> TY//2
+#   f7->f4 map_width-9 -> -TX               f9->f7 map_height-7 -> -TY
+#   f8->f6 area helper -8 -> -(TY+1)        f6->f3 area helper -10 -> -(TX+1)
+# All these single-byte immediates are sign-extended by the CPU (83-group and
+# push imm8 forms), so every slot is signed and the practical tile-count
+# ceiling is 127.
+_SINGLE_BYTE_TILE_FORMULAS: dict[tuple[str, str], tuple[str, bool]] = {
+    ("07", "09"): ("TY", True),
+    ("09", "0c"): ("TX", True),
+    ("06", "08"): ("TY-1", True),
+    ("06", "0c"): ("TX", True),
+    ("04", "06"): ("TX//2", True),
+    ("03", "04"): ("TY//2", True),
+    ("f7", "f4"): ("-TX", True),
+    ("f9", "f7"): ("-TY", True),
+    ("f8", "f6"): ("-(TY+1)", True),
+    ("f6", "f3"): ("-(TX+1)", True),
+}
+
+
+def _build_recipes() -> dict[tuple[str, int], Recipe]:
+    recipes: dict[tuple[str, int], Recipe] = {}
+    for key, formula in _VALUE_RECIPES.items():
+        recipes[key] = Recipe("value", value=formula)
+    for key in _FIXED_RECIPES:
+        recipes[key] = Recipe("fixed")
+    for key, slots in _SPLICE_RECIPES.items():
+        recipes[key] = Recipe("splice", slots=slots)
+    for key in _PENDING_CAVE_RECIPES:
+        recipes[key] = Recipe("cave-pending")
+
+    for patch in PATCHES:
+        key = (patch.group, patch.offset)
+        if key in recipes:
+            continue
+        if patch.group == "menu-center-hitboxes":
+            delta = int.from_bytes(patch.new, "little") - int.from_bytes(
+                patch.old, "little"
+            )
+            if delta == PROFILE_800.off_x:
+                recipes[key] = Recipe("old-plus", deltas=("OFFX",))
+            elif delta == PROFILE_800.off_y:
+                recipes[key] = Recipe("old-plus", deltas=("OFFY",))
+            else:
+                raise ResolutionError(
+                    f"menu hitbox at 0x{patch.offset:06X} shifts by {delta}, "
+                    "expected the 80/60 centering offset"
+                )
+        elif (
+            patch.group == "right-bottom-action-descriptor-anchor"
+            and len(patch.old) == 8
+        ):
+            recipes[key] = Recipe("old-plus", deltas=("SHIFTX", "SHIFTY"))
+        elif (
+            patch.group in ("main-loops", "full-redraw-12x9", "helpers")
+            and len(patch.new) == 1
+        ):
+            pair = (patch.old_hex, patch.new_hex)
+            if pair not in _SINGLE_BYTE_TILE_FORMULAS:
+                raise ResolutionError(
+                    f"{patch.group} at 0x{patch.offset:06X} has unmapped tile "
+                    f"immediate {pair}"
+                )
+            formula, signed = _SINGLE_BYTE_TILE_FORMULAS[pair]
+            recipes[key] = Recipe("value", value=formula, signed=signed)
+    return recipes
+
+
+RECIPES: dict[tuple[str, int], Recipe] = _build_recipes()
+
+# Stages that can be generated for non-legacy resolutions: the stable stage
+# plus its validation lanes. Everything else (isolation ladders, mouse
+# diagnostics, legacy centering experiments) stays 800x600-only.
+_STABLE_STAGE_PREFIX = DEFAULT_STAGE
+PARAMETERIZED_STAGES: tuple[str, ...] = (
+    _STABLE_STAGE_PREFIX,
+    _STABLE_STAGE_PREFIX + "-rightbottomcompose",
+    _STABLE_STAGE_PREFIX + "-rightbottomaction",
+    _STABLE_STAGE_PREFIX + "-rightbottomaction-nativecenter",
+    _STABLE_STAGE_PREFIX + "-rightbottomaction-nativecenter-no-castleinput",
+    _STABLE_STAGE_PREFIX + "-unitselectactionbar",
+    _STABLE_STAGE_PREFIX + "-unitselectactionbarpostredraw",
+    _STABLE_STAGE_PREFIX + "-rightbottomcompose-unitselectactionbarpostredraw",
+    _STABLE_STAGE_PREFIX + "-castlecenter",
+    _STABLE_STAGE_PREFIX + "-castlecenter-hitbox",
+    _STABLE_STAGE_PREFIX + "-castlecenter-all",
+    _STABLE_STAGE_PREFIX + "-castlecenter-all-battlecenter",
+    _STABLE_STAGE_PREFIX + "-castlecenter-all-battlecenter-inputprobe",
+)
+PARAMETERIZED_GROUPS: frozenset[str] = frozenset(
+    group for stage in PARAMETERIZED_STAGES for group in STAGE_GROUPS[stage]
+)
+
+
+def _apply_value_recipe(
+    patch: Patch, recipe: Recipe, profile: ResolutionProfile
+) -> Patch:
+    width = len(patch.new)
+    formula = FORMULAS[recipe.value]
+    context = f"{patch.group} @ 0x{patch.offset:06X} ({recipe.value})"
+    expected_legacy = _encode_int(
+        formula(PROFILE_800), width, recipe.signed, context
+    )
+    if expected_legacy != patch.new:
+        raise ResolutionError(
+            f"{context}: formula predicts legacy bytes "
+            f"{expected_legacy.hex()} but table has {patch.new_hex}"
+        )
+    new = _encode_int(formula(profile), width, recipe.signed, context)
+    return replace(patch, new_hex=new.hex())
+
+
+def _apply_old_plus_recipe(
+    patch: Patch, recipe: Recipe, profile: ResolutionProfile
+) -> Patch:
+    context = f"{patch.group} @ 0x{patch.offset:06X} (old-plus)"
+    if len(patch.old) != 4 * len(recipe.deltas):
+        raise ResolutionError(
+            f"{context}: expected {len(recipe.deltas)} dword field(s)"
+        )
+    fields = []
+    for index, delta_key in enumerate(recipe.deltas):
+        formula = FORMULAS[delta_key]
+        old_value = int.from_bytes(
+            patch.old[index * 4 : index * 4 + 4], "little"
+        )
+        legacy_value = int.from_bytes(
+            patch.new[index * 4 : index * 4 + 4], "little"
+        )
+        if old_value + formula(PROFILE_800) != legacy_value:
+            raise ResolutionError(
+                f"{context}: field {index} legacy delta is "
+                f"{legacy_value - old_value}, formula {delta_key} predicts "
+                f"{formula(PROFILE_800)}"
+            )
+        fields.append(
+            _encode_int(old_value + formula(profile), 4, False, context)
+        )
+    return replace(patch, new_hex=b"".join(fields).hex())
+
+
+def _apply_splice_recipe(
+    patch: Patch, recipe: Recipe, profile: ResolutionProfile
+) -> Patch:
+    legacy = patch.new
+    data = bytearray(legacy)
+    for slot in recipe.slots:
+        pattern = bytes.fromhex(slot.pattern)
+        context = (
+            f"{patch.group} @ 0x{patch.offset:06X} slot {slot.value} "
+            f"({slot.pattern})"
+        )
+        legacy_value = int.from_bytes(
+            pattern[slot.at : slot.at + slot.width], "little", signed=slot.signed
+        )
+        formula = FORMULAS[slot.value]
+        if formula(PROFILE_800) != legacy_value:
+            raise ResolutionError(
+                f"{context}: pattern encodes {legacy_value} but formula "
+                f"predicts {formula(PROFILE_800)} at 800x600"
+            )
+        positions = [
+            index
+            for index in range(len(legacy) - len(pattern) + 1)
+            if legacy[index : index + len(pattern)] == pattern
+        ]
+        if len(positions) != slot.count:
+            raise ResolutionError(
+                f"{context}: found {len(positions)} occurrence(s), "
+                f"expected {slot.count}"
+            )
+        encoded = _encode_int(formula(profile), slot.width, slot.signed, context)
+        for position in positions:
+            start = position + slot.at
+            data[start : start + slot.width] = encoded
+    return replace(patch, new_hex=bytes(data).hex())
+
+
+def _apply_recipe(
+    patch: Patch, recipe: Recipe, profile: ResolutionProfile
+) -> Patch:
+    if recipe.kind == "fixed":
+        return patch
+    if recipe.kind == "value":
+        return _apply_value_recipe(patch, recipe, profile)
+    if recipe.kind == "old-plus":
+        return _apply_old_plus_recipe(patch, recipe, profile)
+    if recipe.kind == "splice":
+        return _apply_splice_recipe(patch, recipe, profile)
+    if recipe.kind == "cave-pending":
+        if (profile.width, profile.height) == LEGACY_RESOLUTION:
+            return patch
+        raise ResolutionNotSupportedError(
+            f"{patch.group} @ 0x{patch.offset:06X} is a hand-assembled cave "
+            "whose parameterized template has not landed yet; resolution "
+            f"{profile.key} is not supported for this group."
+        )
+    raise ResolutionError(f"Unknown recipe kind: {recipe.kind}")
+
+
+def generate_patches(profile: ResolutionProfile) -> tuple[Patch, ...]:
+    """Generate the full patch table for a resolution (no legacy shortcut).
+
+    Entries in non-parameterized groups are passed through verbatim; they are
+    only reachable through legacy-only stages, which select_patches_for
+    refuses for non-legacy resolutions.
+    """
+    generated: list[Patch] = []
+    for patch in PATCHES:
+        key = (patch.group, patch.offset)
+        if patch.group not in PARAMETERIZED_GROUPS:
+            generated.append(patch)
+            continue
+        recipe = RECIPES.get(key)
+        if recipe is None:
+            raise ResolutionError(
+                f"No resolution recipe for {patch.group} @ 0x{patch.offset:06X}"
+            )
+        generated.append(_apply_recipe(patch, recipe, profile))
+    return tuple(generated)
+
+
+def build_patches(profile: ResolutionProfile) -> tuple[Patch, ...]:
+    if (profile.width, profile.height) == LEGACY_RESOLUTION:
+        return PATCHES
+    return generate_patches(profile)
+
+
+def select_patches_for(stage: str, profile: ResolutionProfile) -> list[Patch]:
+    if (
+        profile.width,
+        profile.height,
+    ) != LEGACY_RESOLUTION and stage not in PARAMETERIZED_STAGES:
+        raise ResolutionNotSupportedError(
+            f"Stage {stage!r} supports only the legacy 800x600 resolution; "
+            "parameterized stages are the stable stage and its validation lanes."
+        )
+    groups = set(STAGE_GROUPS[stage])
+    return [patch for patch in build_patches(profile) if patch.group in groups]
+
+
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -1657,6 +2230,16 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--resolution",
+        default="800x600",
+        help=(
+            "target resolution WxH; default 800x600 uses the frozen legacy "
+            "patch table byte-for-byte. Other resolutions generate the table "
+            "from resolution recipes and are limited to the stable stage and "
+            "its validation lanes."
+        ),
+    )
+    parser.add_argument(
         "--allow-unknown-sha",
         action="store_true",
         help="skip whole-file SHA-256 guard; per-offset byte validation still runs",
@@ -1673,6 +2256,18 @@ def main() -> None:
     args = parse_args()
     source_path = args.input
     output_path = args.output
+
+    try:
+        profile = parse_resolution(args.resolution)
+    except ResolutionError as exc:
+        raise SystemExit(str(exc)) from exc
+    legacy = (profile.width, profile.height) == LEGACY_RESOLUTION
+    if not legacy:
+        raise SystemExit(
+            f"--resolution {profile.key} is not enabled yet: the re-authored "
+            "cave templates for non-800x600 resolutions land in the next "
+            "milestone. Only 800x600 builds are currently supported."
+        )
 
     if not source_path.is_file():
         raise SystemExit(f"Input file does not exist: {source_path}")
@@ -1691,13 +2286,17 @@ def main() -> None:
             "Use --allow-unknown-sha only if you know this build has the same offsets."
         )
 
-    patches = select_patches(args.stage)
+    try:
+        patches = select_patches_for(args.stage, profile)
+    except ResolutionError as exc:
+        raise SystemExit(str(exc)) from exc
     validate_input(data, patches)
     patched = apply_patches(data, patches)
     output_path.write_bytes(patched)
 
     print(f"Wrote {output_path}")
     print(f"Stage: {args.stage}")
+    print(f"Resolution: {profile.key}")
     print(f"Patches applied: {len(patches)}")
     print(f"Input SHA-256:  {actual_sha.upper()}")
     print(f"Output SHA-256: {sha256(patched).upper()}")
