@@ -1,7 +1,7 @@
 # Manual DirectInput Run Plan
 
 - Overall: PASS
-- Generated: `2026-07-12T19:43:34+02:00`
+- Generated: `2026-07-12T20:03:57+02:00`
 - Runtime policy: repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, move the mouse, or open visible windows
 - Guard policy: manual DirectInput commands remain templates until explicit user approval; every visible runtime command must carry -AllowVisibleRuntime and the proof manifest must be validated before promotion
 - Candidate path policy: candidate placeholders must resolve to freshly built, hashed executables under C:\ClashTests; never use C:\Clash\clash95.exe or a repository-local executable

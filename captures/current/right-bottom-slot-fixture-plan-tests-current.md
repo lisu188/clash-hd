@@ -1,7 +1,7 @@
 # Right-Bottom Slot Fixture Plan Tests
 
 - Status: PASS
-- Generated: `2026-07-12T19:43:12+02:00`
+- Generated: `2026-07-12T20:03:33+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the isolated slot5-as-slot0 workaround remains non-promoting, safe to stage outside the repository, and invalid once natural slot5 loading is proven
 

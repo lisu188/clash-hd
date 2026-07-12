@@ -1,9 +1,9 @@
 # HD Soak Approval Preflight
 
-- Overall: FAIL
-- Generated: `2026-07-12T17:43:40.466917+00:00`
+- Overall: PASS
+- Generated: `2026-07-12T18:04:03.115118+00:00`
 - Runtime policy: repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
-- Status: `not_ready`
+- Status: `ready_for_explicit_approval`
 - Current step: `short2_menu_idle`
 - Current step status: `failed_classified_intro_skip_input_drift_exit`
 - Canonical runtime report missing: `False`
@@ -42,8 +42,8 @@ Approve the short2_menu_idle visible-runtime soak using the exact approval-gated
 - max_private_memory_growth_mb: `64`
 - max_handle_growth: `128`
 - approval_token_kind: `sha256-16`
-- approval_expires_utc: `2026-07-13T05:43:38.8655165+00:00`
-- approval_remaining_seconds: `43198.399597`
+- approval_expires_utc: `2026-07-13T06:04:01.3773672+00:00`
+- approval_remaining_seconds: `43198.262249`
 - min_approval_ttl_minutes: `30`
 
 ## Safe Dry Run
@@ -55,7 +55,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_s
 ## Approval-Gated Runtime Command
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'menu-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260712_194338.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-13T05:43:38.8655165+00:00' -VisibleRuntimeApprovalToken '6a7237e0d8a4197e' -Execute -AllowVisibleRuntime -RequirePass -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'menu-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260712_200401.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-13T06:04:01.3773672+00:00' -VisibleRuntimeApprovalToken '52a98ab42324ea25' -Execute -AllowVisibleRuntime -RequirePass -Json
 ```
 
 ## Dry-Run Plan
@@ -63,7 +63,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clas
 - Plan: `captures\current\hd-soak-dry-run-plan-current.json`
 - Status: `ready_for_explicit_approval`
 - Current step: `short2_menu_idle`
-- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260712_194338.exe`
+- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260712_200401.exe`
 - Passing: `True`
 - Freshness passing: `True`
 - Max age hours: `12`
@@ -71,7 +71,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clas
 Plan-emitted execute command:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'menu-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260712_194338.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-13T05:43:38.8655165+00:00' -VisibleRuntimeApprovalToken '6a7237e0d8a4197e' -Execute -AllowVisibleRuntime -RequirePass -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'menu-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260712_200401.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-menu-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-13T06:04:01.3773672+00:00' -VisibleRuntimeApprovalToken '52a98ab42324ea25' -Execute -AllowVisibleRuntime -RequirePass -Json
 ```
 
 ## Focused Post-Run Validation
@@ -94,10 +94,3 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clas
 - `C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe tools\evidence_index_check.py captures\current\hd-map-evidence-current.md --require-pass`
 - `C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe tools\current_completion_summary.py --write-json captures\current\current-completion-summary-current.json --write-markdown captures\current\current-completion-summary-current.md --require-pass`
 - `git diff --check`
-
-## Failures
-
-- next-actions report is not passing
-- current short-step status is 'failed_classified_intro_skip_input_drift_exit'
-- process_hygiene is not passing
-- process hygiene found stale cdb/clash95 processes

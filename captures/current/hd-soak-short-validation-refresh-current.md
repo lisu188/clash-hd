@@ -1,7 +1,7 @@
 # HD Soak Short Validation Refresh
 
 - Overall: PASS
-- Generated: `2026-07-12T17:43:38.113117+00:00`
+- Generated: `2026-07-12T18:04:00.528801+00:00`
 - Runtime policy: repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Manifest: `captures\current\hd-soak-short-artifact-manifest-current.json`
 - Status: `validated_reports`

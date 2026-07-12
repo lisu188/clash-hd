@@ -58,10 +58,17 @@ def test_gated_and_exempt_helpers_pass(fixture: Path) -> None:
     )
     write(fixture / "tools" / "right_bottom_slot_fixture_script_guard.py", "PATTERN = 'Start-Process SendInput'\n")
     write(fixture / "tools" / "test_probe.py", "import subprocess\nsubprocess.run(['x'])\n")
+    write(
+        fixture / "src" / "launcher" / "core.py",
+        "import subprocess\nsubprocess.Popen(['clash95_hd_800x600.exe'])\n",
+    )
+    write(fixture / "src" / "launcher" / "gui.py", "def on_play(self):\n    pass\n")
     args = type("Args", (), {"root": fixture, "tools_dir": Path("tools")})()
     guard = python_runtime_safety_guard.build_guard(args)
     assert guard["passed"] is True, guard
     classes = {record["path"]: record["classification"] for record in guard["records"]}
+    assert classes["src/launcher/core.py"] == "user_gated_launcher", classes
+    assert classes["src/launcher/gui.py"] == "safe", classes
     assert classes["tools/mouse_path_probe.py"] == "manual_visible_runtime_gated", classes
     assert classes["tools/raw_sendinput_click.py"] == "manual_visible_runtime_gated", classes
     assert classes["tools/battle_visible_input_summary.py"] == "exempt", classes

@@ -1,7 +1,7 @@
 # Load Slot Transition Probe Guard
 
 - Overall: PASS
-- Generated: `2026-07-12T19:42:51+02:00`
+- Generated: `2026-07-12T20:03:14+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: the focused transition extra probe must avoid early 00419B80 coordinate forcing, late-arm load-row selection only after 0044895A, keep select/accept conditions parameterized by __LOAD_SLOT__, and the surface-dump harness must replace load-slot placeholders in extra probe templates
 - Probe: `probes\cdb\menu\clash95_load_slot_entry_transition_extra.cdb`

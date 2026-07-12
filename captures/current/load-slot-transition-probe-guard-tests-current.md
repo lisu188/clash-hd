@@ -1,7 +1,7 @@
 # Load Slot Transition Probe Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-12T19:43:13+02:00`
+- Generated: `2026-07-12T20:03:34+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the focused transition extra probe and surface-dump runner are ready for parameterized late-armed load-row selection after real load-menu entry
 

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "default": "800x600",
+  "stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "resolutions": {
+    "800x600": {
+      "status": "stable",
+      "tiles": [12, 9],
+      "evidence": {
+        "normal_run": "captures/archive/cdb-surface-dump-20260506-190037",
+        "forced_run": "captures/archive/cdb-surface-dump-20260506-201114",
+        "smoke_json": "captures/current/hd-map-smoke-current.json"
+      }
+    },
+    "1024x768": {
+      "status": "experimental",
+      "tiles": null,
+      "evidence": null
+    },
+    "1280x720": {
+      "status": "experimental",
+      "tiles": null,
+      "evidence": null
+    },
+    "1280x960": {
+      "status": "experimental",
+      "tiles": null,
+      "evidence": null
+    },
+    "1920x1080": {
+      "status": "experimental",
+      "tiles": null,
+      "evidence": null
+    }
+  },
+  "custom_allowed": true,
+  "custom_bounds": {
+    "min": [800, 600],
+    "max": [3840, 2160]
+  }
+}

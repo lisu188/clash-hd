@@ -954,12 +954,27 @@ change flags false. The fixture tests in
 `captures\current\promotion-override-guard-tests-current.md` cover unexpected override,
 manual-proof, promotion-ready, missing-JSON, and CLI fail-closed cases.
 
+The launcher policy guard is `captures\current\launcher-policy-guard-current.md`.
+It passes repo-only and verifies from source that the end-user launcher keeps
+its visible game launches user-initiated (`launch_game` requires
+`confirmed=True` from the GUI Play button or the CLI double flag), refuses
+writes outside its candidates root, and never joins the evidence refresh. Its
+fixture coverage is `captures\current\launcher-policy-guard-tests-current.md`. The
+launcher patch/deploy/launch core has fixture coverage in
+`captures\current\launcher-core-tests-current.md`. The launcher resolution status
+manifest guard is `captures\current\resolution-manifest-guard-current.md`, which
+verifies exactly one stable default resolution (800x600), evidence-backed
+stable/validated entries with hidden-desktop runs, and engine tile-formula
+consistency; its fixture coverage is
+`captures\current\resolution-manifest-guard-tests-current.md`.
+
 The no-popup boundary guard is `captures\current\no-popup-boundary-guard-current.md`.
-It passes repo-only and verifies that the current refresh includes the six
+It passes repo-only and verifies that the current refresh includes the seven
 core boundary guards: stable stage, executable artifact, surface-dump policy,
-visible-runtime launcher, no-visible runtime, and process hygiene. It records
-`required_guard_count=6`, `required_supporting_report_count=86`, and
-`required_report_count=92`. It also now
+visible-runtime launcher, no-visible runtime, process hygiene, and launcher
+policy. It records
+`required_guard_count=7`, `required_supporting_report_count=90`, and
+`required_report_count=97`. It also now
 requires the no-popup map evidence matrix and its fixture tests, visible runtime
 launcher guard tests, no-visible runtime guard fixture tests,
 no-popup guard regression report, Python runtime safety guard and tests, HD soak

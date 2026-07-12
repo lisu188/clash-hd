@@ -1,13 +1,13 @@
 # No-Popup Boundary Guard
 
 - Overall: FAIL
-- Generated: `2026-07-12T19:43:42+02:00`
+- Generated: `2026-07-12T20:04:05+02:00`
 - Runtime policy: repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current refresh must include all no-popup boundary reports and the evidence index must link each report
 - Evidence index: `captures\current\hd-map-evidence-current.md`
-- Core boundary guards: `6`
-- Supporting reports: `86`
-- Required reports total: `92`
+- Core boundary guards: `7`
+- Supporting reports: `90`
+- Required reports total: `97`
 
 ## Required Reports
 
@@ -16,8 +16,8 @@
 - `surface_dump_policy_guard`: `PASS` report=`captures\current\surface-dump-policy-guard-current.md` linked=`True`
 - `visible_runtime_launcher_guard`: `PASS` report=`captures\current\visible-runtime-launcher-guard-current.md` linked=`True`
 - `no_visible_runtime_guard`: `PASS` report=`captures\current\no-visible-runtime-guard-current.md` linked=`True`
-- `process_hygiene_guard`: `FAIL` report=`captures\current\process-hygiene-guard-current.md` linked=`True`
-  - refresh check is not passing: process_hygiene_guard
+- `process_hygiene_guard`: `PASS` report=`captures\current\process-hygiene-guard-current.md` linked=`True`
+- `launcher_policy_guard`: `PASS` report=`captures\current\launcher-policy-guard-current.md` linked=`True`
 - `no_popup_map_evidence`: `PASS` report=`captures\current\no-popup-map-evidence-current.md` linked=`True`
 - `no_popup_map_evidence_tests`: `PASS` report=`captures\current\no-popup-map-evidence-tests-current.md` linked=`True`
 - `no_visible_runtime_guard_tests`: `PASS` report=`captures\current\no-visible-runtime-guard-tests-current.md` linked=`True`
@@ -33,8 +33,11 @@
 - `capture_corpus_index_tests`: `PASS` report=`captures\current\capture-corpus-index-tests-current.md` linked=`True`
 - `current_completion_summary`: `PASS` report=`captures\current\current-completion-summary-current.md` linked=`True`
 - `current_completion_summary_tests`: `PASS` report=`captures\current\current-completion-summary-tests-current.md` linked=`True`
-- `process_hygiene_guard_tests`: `FAIL` report=`captures\current\process-hygiene-guard-tests-current.md` linked=`True`
-  - refresh check is not passing: process_hygiene_guard_tests
+- `process_hygiene_guard_tests`: `PASS` report=`captures\current\process-hygiene-guard-tests-current.md` linked=`True`
+- `launcher_policy_guard_tests`: `PASS` report=`captures\current\launcher-policy-guard-tests-current.md` linked=`True`
+- `launcher_core_tests`: `PASS` report=`captures\current\launcher-core-tests-current.md` linked=`True`
+- `resolution_manifest_guard`: `PASS` report=`captures\current\resolution-manifest-guard-current.md` linked=`True`
+- `resolution_manifest_guard_tests`: `PASS` report=`captures\current\resolution-manifest-guard-tests-current.md` linked=`True`
 - `manual_directinput_checklist`: `PASS` report=`captures\current\manual-directinput-validation-checklist-current.md` linked=`True`
 - `manual_directinput_checklist_tests`: `PASS` report=`captures\current\manual-directinput-validation-checklist-tests-current.md` linked=`True`
 - `manual_directinput_proof_template`: `PASS` report=`captures\current\manual-directinput-proof-template-current.md` linked=`True`
@@ -110,7 +113,5 @@
 
 ## Failures
 
-- process_hygiene_guard: refresh check is not passing: process_hygiene_guard
-- process_hygiene_guard_tests: refresh check is not passing: process_hygiene_guard_tests
 - right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
 - docs_consistency_guard: refresh check is not passing: docs_consistency_guard

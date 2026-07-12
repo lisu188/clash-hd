@@ -1,0 +1,81 @@
+{
+  "generated_at": "2026-07-12T20:03:48+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "launcher visible launches must stay user-initiated (confirmed=True from the GUI Play button or the CLI double flag) and the launcher must never join the evidence refresh",
+  "launcher_dir": "src\\launcher",
+  "scripts_dir": "scripts\\launcher",
+  "refresh_script": "tools\\current_evidence_refresh.py",
+  "doc": "docs\\hd\\LAUNCHER.md",
+  "checks": {
+    "core_source_present": {
+      "name": "core_source_present",
+      "passed": true,
+      "summary": {
+        "path": "src\\launcher\\core.py"
+      },
+      "failures": []
+    },
+    "core_confirmed_gate": {
+      "name": "core_confirmed_gate",
+      "passed": true,
+      "summary": {
+        "keyword_only_signature": true
+      },
+      "failures": []
+    },
+    "core_write_refusal": {
+      "name": "core_write_refusal",
+      "passed": true,
+      "summary": {},
+      "failures": []
+    },
+    "core_refresh_isolation_policy": {
+      "name": "core_refresh_isolation_policy",
+      "passed": true,
+      "summary": {},
+      "failures": []
+    },
+    "launch_call_sites": {
+      "name": "launch_call_sites",
+      "passed": true,
+      "summary": {
+        "call_site_files": [
+          "core.py",
+          "gui.py",
+          "run.py"
+        ],
+        "unexpected": []
+      },
+      "failures": []
+    },
+    "refresh_isolation": {
+      "name": "refresh_isolation",
+      "passed": true,
+      "summary": {
+        "forbidden_tokens_found": []
+      },
+      "failures": []
+    },
+    "launcher_scripts_no_risky_calls": {
+      "name": "launcher_scripts_no_risky_calls",
+      "passed": true,
+      "summary": {
+        "scripts": [
+          "run_launcher.ps1"
+        ],
+        "risky_lines": {}
+      },
+      "failures": []
+    },
+    "doc_policy": {
+      "name": "doc_policy",
+      "passed": true,
+      "summary": {
+        "missing_phrases": []
+      },
+      "failures": []
+    }
+  },
+  "failures": []
+}

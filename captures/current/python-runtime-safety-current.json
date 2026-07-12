@@ -1,16 +1,17 @@
 {
-  "generated_at": "2026-07-12T19:43:27+02:00",
+  "generated_at": "2026-07-12T20:03:48+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
   "root": "C:\\Users\\andrz\\git\\clash-hd",
-  "file_count": 220,
-  "risky_file_count": 107,
+  "file_count": 233,
+  "risky_file_count": 111,
   "classification_counts": {
-    "safe": 113,
-    "exempt": 25,
+    "safe": 122,
+    "user_gated_launcher": 1,
+    "exempt": 26,
     "manual_visible_runtime_gated": 2,
-    "test_fixture": 80
+    "test_fixture": 82
   },
   "gated_helpers": {
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
@@ -41,9 +42,81 @@
     "repo_structure.py": "repo-only structure guard; subprocess is limited to read-only git inventory",
     "right_bottom_slot_fixture_result_summary.py": "repo-only CDB log parser; Win32/input text appears in evidence markers",
     "python_runtime_safety_guard.py": "this scanner names risky APIs without calling them",
+    "launcher_policy_guard.py": "repo-only source scanner; risky API names appear as patterns, not runtime calls",
     "repo_test_sweep.py": "repo-only validation runner; subprocess is limited to tools/test_*.py Python children"
   },
   "records": [
+    {
+      "path": "src/launcher/__init__.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "src/launcher/bootstrap.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "src/launcher/core.py",
+      "classification": "user_gated_launcher",
+      "reason": "user-facing launcher core; it spawns the Clash95 process only after an explicit user confirmation (launch_game confirmed=True), enforced by launcher_policy_guard",
+      "risk_categories": [
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          18,
+          480
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "src/launcher/gui.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "src/launcher/ini.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "src/launcher/presets.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "src/launcher/run.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "src/launcher/settings.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
     {
       "path": "tools/action_panel_route_summary.py",
       "classification": "safe",
@@ -352,10 +425,10 @@
       ],
       "risk_lines": {
         "sendinput": [
-          4064
+          4079
         ],
         "postmessage": [
-          4064
+          4079
         ]
       },
       "failures": []
@@ -691,6 +764,29 @@
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
       "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/launcher_policy_guard.py",
+      "classification": "exempt",
+      "reason": "repo-only source scanner; risky API names appear as patterns, not runtime calls",
+      "risk_categories": [
+        "cursor_window_input",
+        "postmessage",
+        "sendinput"
+      ],
+      "risk_lines": {
+        "sendinput": [
+          52
+        ],
+        "postmessage": [
+          52
+        ],
+        "cursor_window_input": [
+          51,
+          52
+        ]
+      },
       "failures": []
     },
     {
@@ -1193,38 +1289,38 @@
       "risk_lines": {
         "subprocess": [
           23,
-          46,
-          47,
-          48,
-          49,
-          64,
-          67
+          56,
+          57,
+          58,
+          59,
+          74,
+          78
         ],
         "ctypes": [
           25,
-          143
+          161
         ],
         "win32_user32": [
           2,
-          57,
-          65,
-          143
+          67,
+          75,
+          161
         ],
         "sendinput": [
           27,
-          44,
-          143
+          54,
+          161
         ],
         "postmessage": [
           28,
-          50,
-          51,
-          52,
-          53,
-          54,
-          55,
-          56,
-          143
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          161
         ],
         "cursor_window_input": [
           30,
@@ -1346,12 +1442,12 @@
       "risk_lines": {
         "subprocess": [
           7,
-          352,
-          355,
-          356
+          361,
+          364,
+          365
         ],
         "process_launch": [
-          352
+          361
         ]
       },
       "failures": []
@@ -1376,6 +1472,14 @@
           66
         ]
       },
+      "failures": []
+    },
+    {
+      "path": "tools/resolution_manifest_guard.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
       "failures": []
     },
     {
@@ -2486,6 +2590,36 @@
       "failures": []
     },
     {
+      "path": "tools/test_launcher_core.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_launcher_policy_guard.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          9,
+          63,
+          64,
+          67,
+          68
+        ],
+        "process_launch": [
+          64
+        ]
+      },
+      "failures": []
+    },
+    {
       "path": "tools/test_load_slot_entry_gap_plan.py",
       "classification": "test_fixture",
       "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
@@ -2955,7 +3089,8 @@
           49,
           50,
           53,
-          60
+          60,
+          63
         ],
         "process_launch": [
           21,
@@ -2963,13 +3098,14 @@
           49,
           50,
           53,
-          60
+          60,
+          63
         ],
         "ctypes": [
           45,
           46,
           48,
-          78
+          85
         ],
         "sendinput": [
           45,
@@ -2979,7 +3115,7 @@
         ],
         "postmessage": [
           57,
-          78
+          85
         ]
       },
       "failures": []
@@ -3049,12 +3185,12 @@
       "risk_lines": {
         "subprocess": [
           6,
-          104,
-          107,
-          108
+          109,
+          112,
+          113
         ],
         "process_launch": [
-          104
+          109
         ]
       },
       "failures": []
@@ -3077,6 +3213,28 @@
         ],
         "process_launch": [
           26
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_resolution_manifest_guard.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          9,
+          75,
+          76,
+          79,
+          80
+        ],
+        "process_launch": [
+          76
         ]
       },
       "failures": []

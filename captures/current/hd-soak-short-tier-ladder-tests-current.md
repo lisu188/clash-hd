@@ -1,7 +1,7 @@
 # HD Soak Short-Tier Ladder Tests
 
-- Status: FAIL
-- Generated: `2026-07-12T19:43:40+02:00`
+- Status: PASS
+- Generated: `2026-07-12T20:04:03+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the short soak ladder is ordered, approval-gated, non-promoting, and keeps long/future lanes locked until prerequisite soak evidence exists
 
@@ -12,7 +12,3 @@
 - `hd_soak_short_tier_ladder fails closed when a required harness route is missing`
 - `hd_soak_short_tier_ladder catches a mismatched first-step next-action command`
 - `hd_soak_short_tier_ladder CLI writes JSON/Markdown and respects --require-pass`
-
-## Failures
-
-- AssertionError: ['next-action report is not passing', 'next-action command does not match the first short2 menu-idle ladder step']

@@ -1,21 +1,24 @@
 # Python Runtime Safety Guard
 
 - Overall: PASS
-- Generated: `2026-07-12T19:43:27+02:00`
+- Generated: `2026-07-12T20:03:48+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt
-- Python files scanned: `220`
-- Risky files: `107`
+- Python files scanned: `233`
+- Risky files: `111`
 
 ## Classification Counts
 
-- `exempt`: `25`
+- `exempt`: `26`
 - `manual_visible_runtime_gated`: `2`
-- `safe`: `113`
-- `test_fixture`: `80`
+- `safe`: `122`
+- `test_fixture`: `82`
+- `user_gated_launcher`: `1`
 
 ## Risky Helpers
 
+- `src/launcher/core.py`: `user_gated_launcher` risks=`['subprocess']`
+  - user-facing launcher core; it spawns the Clash95 process only after an explicit user confirmation (launch_game confirmed=True), enforced by launcher_policy_guard
 - `tools/battle_ui_evidence_matrix.py`: `exempt` risks=`['process_launch']`
   - repo-only evidence matrix; process-launch text is a type annotation or fixture reference
 - `tools/battle_visible_input_summary.py`: `exempt` risks=`['sendinput']`
@@ -46,6 +49,8 @@
   - repo-only command manifest; postmessage text appears only in approval-gated command templates
 - `tools/hd_soak_short_tier_ladder.py`: `exempt` risks=`['postmessage']`
   - repo-only ladder planner; postmessage text appears only in approval-gated command templates
+- `tools/launcher_policy_guard.py`: `exempt` risks=`['cursor_window_input', 'postmessage', 'sendinput']`
+  - repo-only source scanner; risky API names appear as patterns, not runtime calls
 - `tools/load_slot_timeout_phase.py`: `exempt` risks=`['win32_user32']`
   - repo-only CDB log parser; Win32 text appears only in timeout-stack classification labels
 - `tools/manual_directinput_run_plan.py`: `exempt` risks=`['sendinput']`
@@ -142,6 +147,8 @@
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_hd_soak_short_validation_refresh.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_launcher_policy_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_load_slot_entry_gap_plan.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_load_slot_route_limit_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
@@ -193,6 +200,8 @@
 - `tools/test_repo_structure.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_repo_test_sweep.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_resolution_manifest_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_right_bottom_blocker_triage.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper

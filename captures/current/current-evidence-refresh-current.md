@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-12T19:43:42+02:00`
+- Generated: `2026-07-12T20:04:05+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -459,9 +459,9 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-owner-flag-inventory-current.json`
 - Markdown: `captures\current\right-bottom-owner-flag-inventory-current.md`
-- scanned_log_count: `27`
-- relevant_run_count: `13`
-- classification_counts: `{'forced_owner_action_route': 7, 'natural_state_gated': 1, 'natural_ui_descriptor_only': 1, 'non_natural_isolated_fixture': 4}`
+- scanned_log_count: `26`
+- relevant_run_count: `12`
+- classification_counts: `{'forced_owner_action_route': 7, 'natural_state_gated': 1, 'non_natural_isolated_fixture': 4}`
 - natural_state_gated_count: `1`
 - forced_owner_action_route_count: `7`
 - natural_action_route_count: `0`
@@ -1145,8 +1145,8 @@
 - Status: PASS
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
-- risky_file_count: `107`
-- classification_counts: `{'safe': 113, 'exempt': 25, 'manual_visible_runtime_gated': 2, 'test_fixture': 80}`
+- risky_file_count: `111`
+- classification_counts: `{'safe': 122, 'user_gated_launcher': 1, 'exempt': 26, 'manual_visible_runtime_gated': 2, 'test_fixture': 82}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1179,32 +1179,68 @@
 
 ### Process Hygiene Guard
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\process-hygiene-guard-current.json`
 - Markdown: `captures\current\process-hygiene-guard-current.md`
-- matching_process_count: `2`
+- matching_process_count: `0`
 - target_exact_names: `['cdb.exe']`
 - target_prefixes: `['clash95']`
 - guard_policy: `no cdb.exe or clash95*.exe process may be running after evidence refresh`
-- Failures:
-  - runtime processes still running: cdb.exe pid=16436, clash95_hd_surfdump_20260712_193922.exe pid=33668
 
 ### Process Hygiene Guard Tests
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\process-hygiene-guard-tests-current.json`
 - Markdown: `captures\current\process-hygiene-guard-tests-current.md`
 - test_count: `5`
 - guard_policy: `proves the process hygiene guard rejects leftover cdb.exe/clash95* processes, snapshot failures, and CLI fail-closed cases`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-- Failures:
-  - AssertionError: overall: FAIL
-runtime-policy: local process inspection only; does not launch Clash95, CDB, wrappers, or visible windows
-guard-policy: no cdb.exe or clash95*.exe process may be running after evidence refresh
-matching-process-count: 2
-failures:
-  - runtime processes still running: cdb.exe pid=16436, clash95_hd_surfdump_20260712_193922.exe pid=33668
 
+### Launcher Policy Guard
+
+- Status: PASS
+- JSON: `captures\current\launcher-policy-guard-current.json`
+- Markdown: `captures\current\launcher-policy-guard-current.md`
+- launcher_dir: `src\launcher`
+- guard_policy: `launcher visible launches must stay user-initiated (confirmed=True from the GUI Play button or the CLI double flag) and the launcher must never join the evidence refresh`
+- runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Launcher Policy Guard Tests
+
+- Status: PASS
+- JSON: `captures\current\launcher-policy-guard-tests-current.json`
+- Markdown: `captures\current\launcher-policy-guard-tests-current.md`
+- test_count: `8`
+- guard_policy: `proves the launcher policy guard fails closed on every policy regression`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Launcher Core Tests
+
+- Status: PASS
+- JSON: `captures\current\launcher-core-tests-current.json`
+- Markdown: `captures\current\launcher-core-tests-current.md`
+- test_count: `10`
+- guard_policy: `proves the launcher patch/deploy/launch core enforces its safety refusals`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Resolution Manifest Guard
+
+- Status: PASS
+- JSON: `captures\current\resolution-manifest-guard-current.json`
+- Markdown: `captures\current\resolution-manifest-guard-current.md`
+- resolution_count: `5`
+- status_counts: `{'stable': 1, 'validated': 0, 'experimental': 4}`
+- guard_policy: `exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence, tile counts matching the engine formula`
+- runtime_policy: `repo-only metadata inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Resolution Manifest Guard Tests
+
+- Status: PASS
+- JSON: `captures\current\resolution-manifest-guard-tests-current.json`
+- Markdown: `captures\current\resolution-manifest-guard-tests-current.md`
+- test_count: `6`
+- guard_policy: `proves the resolution status manifest guard fails closed on drift`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### No Popup Guard Tests
 
@@ -1356,7 +1392,7 @@ failures:
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 85.81, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 90.85, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1574,18 +1610,15 @@ failures:
 
 ### Hd Soak Intro Skip Rerun Readiness
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-soak-intro-skip-rerun-readiness-current.json`
 - Markdown: `captures\current\hd-soak-intro-skip-rerun-readiness-current.md`
-- status: `not_ready`
+- status: `ready_for_explicit_visible_rerun_approval`
 - current_step: `short2_menu_idle`
 - current_step_status: `failed_classified_intro_skip_input_drift_exit`
 - triage_classification: `intro_skip_input_drift_exit`
 - approval_boundary: `The next runtime run will open a visible Clash95 game window and still requires explicit user approval.`
 - runtime_policy: `repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - process hygiene guard is not passing
-  - process hygiene reports stale cdb/clash95 processes
 
 ### Hd Soak Intro Skip Rerun Readiness Tests
 
@@ -1650,7 +1683,7 @@ failures:
 - JSON: `captures\current\hd-endurance-release-checklist-current.json`
 - Markdown: `captures\current\hd-endurance-release-checklist-current.md`
 - full_game_complete: `False`
-- counts: `{'total': 15, 'passed': 3, 'blocked': 12, 'missing': 0}`
+- counts: `{'total': 15, 'passed': 4, 'blocked': 11, 'missing': 0}`
 - next_milestone: `{'id': 'short2_menu_idle_soak', 'title': 'First short2 menu-idle soak passes', 'next_probe': 'run the approval-gated short2 menu-idle soak on the protected stage'}`
 - runtime_policy: `repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Failures:
@@ -1665,7 +1698,6 @@ failures:
   - save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
   - turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
   - campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-  - artifact_and_process_hygiene: artifact or process hygiene guard is not passing
 
 ### Hd Endurance Release Checklist Tests
 
@@ -1699,21 +1731,18 @@ failures:
 
 ### Hd Endurance Next Actions
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-endurance-next-actions-current.json`
 - Markdown: `captures\current\hd-endurance-next-actions-current.md`
-- status: `repo_only_followup_available`
-- next_action: `refresh_short2_menu_idle_dry_run_plan`
-- requires_explicit_user_approval: `False`
-- has_plan_verified_execute_command: `False`
-- focused_post_run_validation_count: `0`
+- status: `waiting_for_explicit_visible_runtime_approval`
+- next_action: `rerun_short2_menu_idle_soak`
+- requires_explicit_user_approval: `True`
+- has_plan_verified_execute_command: `True`
+- focused_post_run_validation_count: `3`
 - handoff_refresh_count: `5`
-- broad_evidence_refresh_count: `0`
+- broad_evidence_refresh_count: `4`
 - current_step_artifacts: `{'report_json': 'captures\\current\\hd-soak-short2-menu-idle-current.json', 'report_json_exists': True, 'guard_json': 'captures\\current\\hd-soak-short2-menu-idle-guard-current.json', 'guard_json_exists': True, 'triage_json': 'captures\\current\\hd-soak-short2-menu-idle-triage-current.json', 'triage_json_exists': True, 'canonical_runtime_report_missing': False, 'post_run_guard_missing': False, 'post_run_triage_missing': False}`
 - runtime_policy: `repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - intro-skip rerun readiness is not passing
-  - intro-skip rerun readiness status is 'not_ready'
 
 ### Hd Endurance Next Actions Tests
 
@@ -1726,7 +1755,7 @@ failures:
 
 ### Hd Soak Short Tier Ladder
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-soak-short-tier-ladder-current.json`
 - Markdown: `captures\current\hd-soak-short-tier-ladder-current.md`
 - ladder_complete: `False`
@@ -1736,27 +1765,22 @@ failures:
 - future_lanes_locked: `True`
 - right_bottom_promotion_blocked: `True`
 - runtime_policy: `repo-only short-tier soak ladder; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - next-action report is not passing
-  - next-action command does not match the first short2 menu-idle ladder step
 
 ### Hd Soak Short Tier Ladder Tests
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-soak-short-tier-ladder-tests-current.json`
 - Markdown: `captures\current\hd-soak-short-tier-ladder-tests-current.md`
 - test_count: `5`
 - guard_policy: `proves the short soak ladder is ordered, approval-gated, non-promoting, and keeps long/future lanes locked until prerequisite soak evidence exists`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-- Failures:
-  - AssertionError: ['next-action report is not passing', 'next-action command does not match the first short2 menu-idle ladder step']
 
 ### Hd Soak Approval Preflight
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-soak-approval-preflight-current.json`
 - Markdown: `captures\current\hd-soak-approval-preflight-current.md`
-- status: `not_ready`
+- status: `ready_for_explicit_approval`
 - current_step: `short2_menu_idle`
 - current_step_status: `failed_classified_intro_skip_input_drift_exit`
 - dry_run_plan_status: `ready_for_explicit_approval`
@@ -1765,11 +1789,6 @@ failures:
 - stable_stage_should_change: `False`
 - right_bottom_promotion_blocked: `True`
 - runtime_policy: `repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - next-actions report is not passing
-  - current short-step status is 'failed_classified_intro_skip_input_drift_exit'
-  - process_hygiene is not passing
-  - process hygiene found stale cdb/clash95 processes
 
 ### Hd Soak Approval Preflight Tests
 
@@ -1785,11 +1804,11 @@ failures:
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `658`
-- current_reference_count: `166`
+- artifact_count: `667`
+- current_reference_count: `171`
 - stale_visible_or_sandbox_count: `11`
-- reference_status_counts: `{'archived_referenced': 210, 'current_referenced': 136, 'stale_unreferenced': 312}`
-- era_counts: `{'cdb_surface_dump_unverified': 66, 'hidden_cdb_surface_dump': 148, 'other_capture_artifact': 433, 'visible_era': 11}`
+- reference_status_counts: `{'archived_referenced': 210, 'current_referenced': 141, 'stale_unreferenced': 316}`
+- era_counts: `{'cdb_surface_dump_unverified': 65, 'hidden_cdb_surface_dump': 148, 'other_capture_artifact': 443, 'visible_era': 11}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1807,17 +1826,15 @@ failures:
 - Status: FAIL
 - JSON: `captures\current\no-popup-boundary-guard-current.json`
 - Markdown: `captures\current\no-popup-boundary-guard-current.md`
-- required_guard_count: `6`
-- required_supporting_report_count: `86`
-- required_report_count: `92`
-- required_guards: `['stable_stage_guard', 'exe_artifact_guard', 'surface_dump_policy_guard', 'visible_runtime_launcher_guard', 'no_visible_runtime_guard', 'process_hygiene_guard']`
-- required_supporting_reports: `['no_popup_map_evidence', 'no_popup_map_evidence_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'hd_soak_execution_boundary', 'hd_soak_execution_boundary_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'first_mission_visual_audit', 'first_mission_visual_audit_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
-- required_reports: `['stable_stage_guard', 'exe_artifact_guard', 'surface_dump_policy_guard', 'visible_runtime_launcher_guard', 'no_visible_runtime_guard', 'process_hygiene_guard', 'no_popup_map_evidence', 'no_popup_map_evidence_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'hd_soak_execution_boundary', 'hd_soak_execution_boundary_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'first_mission_visual_audit', 'first_mission_visual_audit_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
+- required_guard_count: `7`
+- required_supporting_report_count: `90`
+- required_report_count: `97`
+- required_guards: `['stable_stage_guard', 'exe_artifact_guard', 'surface_dump_policy_guard', 'visible_runtime_launcher_guard', 'no_visible_runtime_guard', 'process_hygiene_guard', 'launcher_policy_guard']`
+- required_supporting_reports: `['no_popup_map_evidence', 'no_popup_map_evidence_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'hd_soak_execution_boundary', 'hd_soak_execution_boundary_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'launcher_policy_guard_tests', 'launcher_core_tests', 'resolution_manifest_guard', 'resolution_manifest_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'first_mission_visual_audit', 'first_mission_visual_audit_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
+- required_reports: `['stable_stage_guard', 'exe_artifact_guard', 'surface_dump_policy_guard', 'visible_runtime_launcher_guard', 'no_visible_runtime_guard', 'process_hygiene_guard', 'launcher_policy_guard', 'no_popup_map_evidence', 'no_popup_map_evidence_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'hd_soak_execution_boundary', 'hd_soak_execution_boundary_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'launcher_policy_guard_tests', 'launcher_core_tests', 'resolution_manifest_guard', 'resolution_manifest_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'first_mission_visual_audit', 'first_mission_visual_audit_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
 - evidence_index: `captures\current\hd-map-evidence-current.md`
 - guard_policy: `current refresh must include all no-popup boundary reports and the evidence index must link each report`
 - Failures:
-  - process_hygiene_guard: refresh check is not passing: process_hygiene_guard
-  - process_hygiene_guard_tests: refresh check is not passing: process_hygiene_guard_tests
   - right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
   - docs_consistency_guard: refresh check is not passing: docs_consistency_guard
 
@@ -1875,14 +1892,6 @@ failures:
 - first_mission_visual_audit: primary first-mission frame is not visually clean for playability: black patch: right_below_minimap, black patch: bottom_right_panel, black patch: minimap_interior
 - battle_visible_input_summary: visible input summary has no command-ready run
 - battle_ui_evidence_matrix: visible_input: visible input command readiness is not proven
-- process_hygiene_guard: runtime processes still running: cdb.exe pid=16436, clash95_hd_surfdump_20260712_193922.exe pid=33668
-- process_hygiene_guard_tests: AssertionError: overall: FAIL
-runtime-policy: local process inspection only; does not launch Clash95, CDB, wrappers, or visible windows
-guard-policy: no cdb.exe or clash95*.exe process may be running after evidence refresh
-matching-process-count: 2
-failures:
-  - runtime processes still running: cdb.exe pid=16436, clash95_hd_surfdump_20260712_193922.exe pid=33668
-
 - hd_soak_report_guard: source soak report did not mark itself passed
 - hd_soak_report_guard: source soak report contains 8 failure(s)
 - hd_soak_report_guard: frame sample count 1 is below 2
@@ -1908,8 +1917,6 @@ failures:
 - hd_soak_failure_triage: working-set growth metric unavailable
 - hd_soak_failure_triage: private-memory growth metric unavailable
 - hd_soak_failure_triage: handle growth metric unavailable
-- hd_soak_intro_skip_rerun_readiness: process hygiene guard is not passing
-- hd_soak_intro_skip_rerun_readiness: process hygiene reports stale cdb/clash95 processes
 - hd_continuity_status: save_load_roundtrip: compact proof is missing
 - hd_continuity_status: turn_advancement: compact proof is missing
 - hd_continuity_status: campaign_routes: compact proof is missing
@@ -1928,18 +1935,6 @@ failures:
 - hd_endurance_release_checklist: save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - hd_endurance_release_checklist: turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - hd_endurance_release_checklist: campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- hd_endurance_release_checklist: artifact_and_process_hygiene: artifact or process hygiene guard is not passing
-- hd_endurance_next_actions: intro-skip rerun readiness is not passing
-- hd_endurance_next_actions: intro-skip rerun readiness status is 'not_ready'
-- hd_soak_short_tier_ladder: next-action report is not passing
-- hd_soak_short_tier_ladder: next-action command does not match the first short2 menu-idle ladder step
-- hd_soak_short_tier_ladder_tests: AssertionError: ['next-action report is not passing', 'next-action command does not match the first short2 menu-idle ladder step']
-- hd_soak_approval_preflight: next-actions report is not passing
-- hd_soak_approval_preflight: current short-step status is 'failed_classified_intro_skip_input_drift_exit'
-- hd_soak_approval_preflight: process_hygiene is not passing
-- hd_soak_approval_preflight: process hygiene found stale cdb/clash95 processes
-- no_popup_boundary_guard: process_hygiene_guard: refresh check is not passing: process_hygiene_guard
-- no_popup_boundary_guard: process_hygiene_guard_tests: refresh check is not passing: process_hygiene_guard_tests
 - no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
 - no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard
 - docs_consistency_guard: boundary_counts: no-popup boundary guard is not passing

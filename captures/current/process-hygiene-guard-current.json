@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-12T19:43:28+02:00",
-  "passed": false,
+  "generated_at": "2026-07-12T20:03:48+02:00",
+  "passed": true,
   "runtime_policy": "local process inspection only; does not launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "no cdb.exe or clash95*.exe process may be running after evidence refresh",
   "inspection_source": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS)",
@@ -12,24 +12,7 @@
   "target_prefixes": [
     "clash95"
   ],
-  "matching_processes": [
-    {
-      "image_name": "cdb.exe",
-      "pid": "16436",
-      "parent_pid": "32976",
-      "thread_count": "4",
-      "session_number": "1"
-    },
-    {
-      "image_name": "clash95_hd_surfdump_20260712_193922.exe",
-      "pid": "33668",
-      "parent_pid": "16436",
-      "thread_count": "14",
-      "session_number": "1"
-    }
-  ],
-  "matching_process_count": 2,
-  "failures": [
-    "runtime processes still running: cdb.exe pid=16436, clash95_hd_surfdump_20260712_193922.exe pid=33668"
-  ]
+  "matching_processes": [],
+  "matching_process_count": 0,
+  "failures": []
 }

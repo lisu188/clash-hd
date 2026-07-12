@@ -1,12 +1,12 @@
 # HD Endurance Release Checklist
 
 - Overall: FAIL
-- Generated: `2026-07-12T17:43:39.711490+00:00`
+- Generated: `2026-07-12T18:04:02.176337+00:00`
 - Runtime policy: repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Protected stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Full game complete: `False`
 - Completion statement: not 100%; endurance, manual input, state continuity, or validation-route gates remain open
-- Counts: `3/15` pass, `12` blocked, `0` missing
+- Counts: `4/15` pass, `11` blocked, `0` missing
 
 ## Next Milestone
 
@@ -29,7 +29,7 @@
 - `save_load_roundtrip`: `blocked` - save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - `turn_advancement`: `blocked` - turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - `campaign_routes`: `blocked` - campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- `artifact_and_process_hygiene`: `blocked` - artifact or process hygiene guard is not passing
+- `artifact_and_process_hygiene`: `pass` - artifact and process hygiene guards pass
 - `no_speculative_promotion`: `pass` - stable-stage boundary remains unchanged while validation-only lanes stay non-promoting
 
 ## Open Items
@@ -45,4 +45,3 @@
 - save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- artifact_and_process_hygiene: artifact or process hygiene guard is not passing

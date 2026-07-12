@@ -1,19 +1,20 @@
 {
-  "generated_at": "2026-07-12T19:43:42+02:00",
+  "generated_at": "2026-07-12T20:04:05+02:00",
   "passed": false,
   "runtime_policy": "repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report",
   "evidence_index": "captures\\current\\hd-map-evidence-current.md",
-  "required_guard_count": 6,
-  "required_supporting_report_count": 86,
-  "required_report_count": 92,
+  "required_guard_count": 7,
+  "required_supporting_report_count": 90,
+  "required_report_count": 97,
   "required_guards": [
     "stable_stage_guard",
     "exe_artifact_guard",
     "surface_dump_policy_guard",
     "visible_runtime_launcher_guard",
     "no_visible_runtime_guard",
-    "process_hygiene_guard"
+    "process_hygiene_guard",
+    "launcher_policy_guard"
   ],
   "required_supporting_reports": [
     "no_popup_map_evidence",
@@ -32,6 +33,10 @@
     "current_completion_summary",
     "current_completion_summary_tests",
     "process_hygiene_guard_tests",
+    "launcher_policy_guard_tests",
+    "launcher_core_tests",
+    "resolution_manifest_guard",
+    "resolution_manifest_guard_tests",
     "manual_directinput_checklist",
     "manual_directinput_checklist_tests",
     "manual_directinput_proof_template",
@@ -110,6 +115,7 @@
     "visible_runtime_launcher_guard",
     "no_visible_runtime_guard",
     "process_hygiene_guard",
+    "launcher_policy_guard",
     "no_popup_map_evidence",
     "no_popup_map_evidence_tests",
     "no_visible_runtime_guard_tests",
@@ -126,6 +132,10 @@
     "current_completion_summary",
     "current_completion_summary_tests",
     "process_hygiene_guard_tests",
+    "launcher_policy_guard_tests",
+    "launcher_core_tests",
+    "resolution_manifest_guard",
+    "resolution_manifest_guard_tests",
     "manual_directinput_checklist",
     "manual_directinput_checklist_tests",
     "manual_directinput_proof_template",
@@ -269,20 +279,32 @@
       "failures": []
     },
     "process_hygiene_guard": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "purpose": "no cdb.exe or clash95* process is left running",
         "expected_pass": true,
-        "observed_passed": false,
+        "observed_passed": true,
         "expected_markdown": "process-hygiene-guard-current.md",
         "refresh_markdown": "captures\\current\\process-hygiene-guard-current.md",
         "refresh_json": "captures\\current\\process-hygiene-guard-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": [
-        "refresh check is not passing: process_hygiene_guard"
-      ]
+      "failures": []
+    },
+    "launcher_policy_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "launcher visible launches stay user-initiated and outside the evidence refresh",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "launcher-policy-guard-current.md",
+        "refresh_markdown": "captures\\current\\launcher-policy-guard-current.md",
+        "refresh_json": "captures\\current\\launcher-policy-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
     },
     "no_popup_map_evidence": {
       "passed": true,
@@ -495,20 +517,74 @@
       "failures": []
     },
     "process_hygiene_guard_tests": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "purpose": "fixture regression coverage for the process hygiene guard",
         "expected_pass": true,
-        "observed_passed": false,
+        "observed_passed": true,
         "expected_markdown": "process-hygiene-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\process-hygiene-guard-tests-current.md",
         "refresh_json": "captures\\current\\process-hygiene-guard-tests-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": [
-        "refresh check is not passing: process_hygiene_guard_tests"
-      ]
+      "failures": []
+    },
+    "launcher_policy_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the launcher policy guard",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "launcher-policy-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\launcher-policy-guard-tests-current.md",
+        "refresh_json": "captures\\current\\launcher-policy-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "launcher_core_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the launcher patch/deploy/launch core",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "launcher-core-tests-current.md",
+        "refresh_markdown": "captures\\current\\launcher-core-tests-current.md",
+        "refresh_json": "captures\\current\\launcher-core-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "resolution_manifest_guard": {
+      "passed": true,
+      "summary": {
+        "purpose": "launcher resolution statuses stay evidence-backed with one stable default",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "resolution-manifest-guard-current.md",
+        "refresh_markdown": "captures\\current\\resolution-manifest-guard-current.md",
+        "refresh_json": "captures\\current\\resolution-manifest-guard-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "resolution_manifest_guard_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the resolution manifest guard",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "resolution-manifest-guard-tests-current.md",
+        "refresh_markdown": "captures\\current\\resolution-manifest-guard-tests-current.md",
+        "refresh_json": "captures\\current\\resolution-manifest-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
     },
     "manual_directinput_checklist": {
       "passed": true,
@@ -1496,8 +1572,6 @@
     }
   },
   "failures": [
-    "process_hygiene_guard: refresh check is not passing: process_hygiene_guard",
-    "process_hygiene_guard_tests: refresh check is not passing: process_hygiene_guard_tests",
     "right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
     "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
   ]

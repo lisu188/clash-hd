@@ -98,8 +98,11 @@ def test_boundary_guard(fixture: Path) -> None:
     good_args = argparse.Namespace(refresh_json=refresh_json, evidence_index=evidence)
     good = no_popup_boundary_guard.build_guard(good_args)
     assert good["passed"] is True, good
-    assert good["required_guard_count"] == 6, good
+    assert good["required_guard_count"] == 7, good
     assert "visible_runtime_launcher_guard" in good["required_guards"], good
+    assert "launcher_policy_guard" in good["required_guards"], good
+    assert "resolution_manifest_guard" in good["required_supporting_reports"], good
+    assert "launcher_core_tests" in good["required_supporting_reports"], good
     assert "hd_soak_execution_boundary" in good["required_supporting_reports"], good
     assert "hd_soak_execution_boundary_tests" in good["required_supporting_reports"], good
     assert "first_mission_visual_audit" in good["required_supporting_reports"], good

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:43:41+02:00",
+  "generated_at": "2026-07-12T20:04:04+02:00",
   "passed": false,
   "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries",
@@ -52,12 +52,12 @@
     "no_popup_boundary": {
       "passed": false,
       "refresh_passed": false,
-      "required_guard_count": 6,
-      "required_supporting_report_count": 86,
-      "required_report_count": 92,
-      "summary_required_guard_count": 6,
-      "summary_required_supporting_report_count": 86,
-      "summary_required_report_count": 92
+      "required_guard_count": 7,
+      "required_supporting_report_count": 90,
+      "required_report_count": 97,
+      "summary_required_guard_count": 7,
+      "summary_required_supporting_report_count": 90,
+      "summary_required_report_count": 97
     },
     "no_popup_map": {
       "passed": true,
@@ -197,12 +197,12 @@
       "summary": {
         "passed": false,
         "refresh_passed": false,
-        "required_guard_count": 6,
-        "required_supporting_report_count": 86,
-        "required_report_count": 92,
-        "summary_required_guard_count": 6,
-        "summary_required_supporting_report_count": 86,
-        "summary_required_report_count": 92
+        "required_guard_count": 7,
+        "required_supporting_report_count": 90,
+        "required_report_count": 97,
+        "summary_required_guard_count": 7,
+        "summary_required_supporting_report_count": 90,
+        "summary_required_report_count": 97
       },
       "failures": [
         "no-popup boundary guard is not passing"
@@ -315,7 +315,7 @@
         "no_popup_approval_found": true,
         "boundary_pass_found": true,
         "strict_boundary_counts_required": false,
-        "strict_boundary_counts_found": false
+        "strict_boundary_counts_found": true
       },
       "failures": []
     },
