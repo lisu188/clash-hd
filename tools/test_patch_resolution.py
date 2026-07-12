@@ -19,6 +19,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 IMPL_PATH = ROOT / "src" / "patcher" / "patch_clash95_hd.py"
 SHIM_PATH = ROOT / "patch_clash95_hd.py"
+sys.path.insert(0, str(ROOT / "tools"))
+
+import hd_map_smoke_matrix  # noqa: E402
+import patch_stage_report  # noqa: E402
 
 _SPEC = importlib.util.spec_from_file_location("clash95_patch_resolution_impl", IMPL_PATH)
 assert _SPEC is not None and _SPEC.loader is not None
@@ -334,6 +338,83 @@ def test_coincidence_audit() -> None:
             )
 
 
+def test_gate_checks_pin_and_parameterization() -> None:
+    assert (
+        patch_stage_report.current_hd_map_gate_checks()
+        == patch_stage_report.CURRENT_HD_MAP_GATE_CHECKS
+    )
+    frozen = patch_stage_report.CURRENT_HD_MAP_GATE_CHECKS
+    assert frozen["visible_tiles_12x9"] == ("visible_tiles", {"x": 12, "y": 9})
+    profile = impl.parse_resolution("1920x1080")
+    parameterized = patch_stage_report.current_hd_map_gate_checks(profile)
+    assert parameterized["visible_tiles_12x9"] == (
+        "visible_tiles",
+        {"x": 29, "y": 16},
+    )
+    # Only the tile expectation parameterizes; every other key/value is frozen.
+    for name, value in frozen.items():
+        if name != "visible_tiles_12x9":
+            assert parameterized[name] == value, name
+
+
+def test_archived_report_still_passes_smoke_gate() -> None:
+    fixture = ROOT / "cloud" / "fixtures" / "evidence" / "hd-map" / "patch-stage-report.json"
+    report = __import__("json").loads(fixture.read_text(encoding="utf-8"))
+    gate = hd_map_smoke_matrix.patch_stage_gate_from_report(
+        report, impl.DEFAULT_STAGE, fixture
+    )
+    assert gate["passed"], gate["failures"]
+
+
+def test_build_report_on_synthetic_candidates() -> None:
+    import shutil
+    import tempfile
+
+    workdir = ROOT / ".codex-loop" / "tmp-tests" / "patch-resolution-report-fixture"
+    shutil.rmtree(workdir, ignore_errors=True)
+    workdir.mkdir(parents=True)
+    try:
+        base_patches = impl.select_patches(impl.DEFAULT_STAGE)
+        size = max(p.offset + len(p.old) for p in impl.PATCHES) + 0x400
+        base = bytearray(size)
+        # Minimal MZ header so PE parsing degrades gracefully.
+        base[:2] = b"MZ"
+        for patch in impl.PATCHES:
+            base[patch.offset : patch.offset + len(patch.old)] = patch.old
+        # Relocation region must be zero; PATCHES old bytes never cover it.
+        assert bytes(base[0x119E20 : 0x119E20 + 96]) == b"\x00" * 96
+
+        for resolution, expected_tiles in (
+            ("800x600", {"x": 12, "y": 9}),
+            ("1920x1080", {"x": 29, "y": 16}),
+        ):
+            profile = impl.parse_resolution(resolution)
+            patches = impl.select_patches_for(impl.DEFAULT_STAGE, profile)
+            candidate = impl.apply_patches(bytes(base), patches)
+            exe = workdir / f"candidate-{resolution}.bin"
+            exe.write_bytes(candidate)
+            report = patch_stage_report.build_report(
+                exe, impl.DEFAULT_STAGE, resolution
+            )
+            assert report["resolution"] == resolution
+            assert report["current_hd_map_gate"]["passed"], (
+                resolution,
+                report["current_hd_map_gate"]["failures"],
+            )
+            assert report["map"]["visible_tiles"] == expected_tiles, resolution
+            assert report["status_counts"].get("unexpected", 0) == 0
+            assert report["status_counts"].get("original", 0) == 0
+
+        # A 1920x1080 candidate must NOT pass the 800x600 gate (and vice
+        # versa): the selected tables differ.
+        report = patch_stage_report.build_report(
+            workdir / "candidate-1920x1080.bin", impl.DEFAULT_STAGE, "800x600"
+        )
+        assert not report["current_hd_map_gate"]["passed"]
+    finally:
+        shutil.rmtree(workdir, ignore_errors=True)
+
+
 def test_shim_exports_resolution_api() -> None:
     spec = importlib.util.spec_from_file_location(
         "clash95_patch_resolution_shim", SHIM_PATH
@@ -394,6 +475,9 @@ def run_tests() -> None:
     test_range_fail_closed()
     test_stage_gating()
     test_coincidence_audit()
+    test_gate_checks_pin_and_parameterization()
+    test_archived_report_still_passes_smoke_gate()
+    test_build_report_on_synthetic_candidates()
     test_shim_exports_resolution_api()
     test_cli_resolution_gate()
 
