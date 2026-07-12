@@ -133,6 +133,22 @@ Known-good input SHA-256:
 500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae
 ```
 
+Update 2026-07-12: after the workspace move off OneDrive lost the local raw
+CDB logs, the full hidden-desktop evidence set was regenerated on fresh runs
+(castle overview catalog `captures/archive/cdb-surface-dump-20260712-144019`,
+focused hitbox `144151`, visible multihit `144245`, dormant flags1f multihit
+`144327`, barracks controlled-stop `144445` and success-branch `151015`,
+right-bottom owner route `160131`, compose probe `144922`, compose patch
+`160204`, grid hit `150240`, nativecenter descriptor `150434`, compose
+full-start `160351`, natural UI probe `160441`, and the load-slot boundary
+set `153503`–`154340`). Candidate SHAs reproduce the May values
+byte-for-byte, archive `cdb-surface-dump.log` files are now tracked in git,
+and the slot5-as-slot0 fixture runs `154653`/`154903`/`155528` prove the
+natural right-bottom owner/action screen renders end-to-end with
+`NOWNER_WRAPPER_COPYBACK_DONE` and zero AV rows (isolated fixture evidence;
+the stable stage and promotion state are unchanged, and the promotion
+decisions still record `stable_stage_should_change=False`).
+
 Current release status as of 2026-05-18:
 
 - Stable HD map stage remains
