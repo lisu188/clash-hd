@@ -43,11 +43,34 @@ function Stop-ProbeProcesses {
         Stop-Process -Force -ErrorAction SilentlyContinue
 }
 
+if (-not ('ClashWin' -as [type])) {
+    Add-Type @'
+using System; using System.Runtime.InteropServices; using System.Text;
+public class ClashWin {
+  [DllImport("user32.dll")] static extern bool EnumWindows(EnumWindowsProc cb, IntPtr l);
+  delegate bool EnumWindowsProc(IntPtr h, IntPtr l);
+  [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
+  [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr h);
+  [DllImport("user32.dll")] static extern int GetWindowTextLength(IntPtr h);
+  // A visible top-level window with a title owned by the target pid. The GOG
+  // ddraw wrapper can leave Process.MainWindowHandle null even when this window
+  // exists (documented in AGENTS.md), so enumerate instead of trusting .NET.
+  public static bool HasVisibleWindow(uint target){
+    bool found=false;
+    EnumWindows((h,l)=>{ uint p; GetWindowThreadProcessId(h,out p);
+      if(p==target && IsWindowVisible(h) && GetWindowTextLength(h)>0){ found=true; return false; }
+      return true; }, IntPtr.Zero);
+    return found;
+  }
+}
+'@
+}
+
 function Get-ClashWindowProcess {
     Get-Process -ErrorAction SilentlyContinue |
         Where-Object {
             $_.ProcessName -like 'clash95*' -and
-            $_.MainWindowHandle -ne [IntPtr]::Zero
+            ($_.MainWindowHandle -ne [IntPtr]::Zero -or [ClashWin]::HasVisibleWindow([uint32]$_.Id))
         } |
         Sort-Object StartTime -Descending |
         Select-Object -First 1
