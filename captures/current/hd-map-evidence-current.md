@@ -387,39 +387,39 @@
 
 Normal post-owner visibility-zero surface:
 
-![normal post-owner surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260506-190037/surface.png)
+![normal post-owner surface](../archive/cdb-surface-dump-20260506-190037/surface.png)
 
 Forced-visible post-owner surface:
 
-![forced-visible post-owner surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260506-201114/surface.png)
+![forced-visible post-owner surface](../archive/cdb-surface-dump-20260506-201114/surface.png)
 
 Right-bottom owner/action route surface:
 
-![right-bottom owner route surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-112339/surface.png)
+![right-bottom owner route surface](../archive/cdb-surface-dump-20260513-112339/surface.png)
 
 Right-bottom debugger composition surface:
 
-![right-bottom debugger composition surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-115303/surface.png)
+![right-bottom debugger composition surface](../archive/cdb-surface-dump-20260513-115303/surface.png)
 
 Right-bottom validation patch surface:
 
-![right-bottom validation patch surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-120712/surface.png)
+![right-bottom validation patch surface](../archive/cdb-surface-dump-20260513-120712/surface.png)
 
 Right-bottom validation patch full-start owner/action route surface:
 
-![right-bottom validation patch full-start route surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-122928/surface.png)
+![right-bottom validation patch full-start route surface](../archive/cdb-surface-dump-20260513-122928/surface.png)
 
 Right-bottom validation patch normal map surface:
 
-![right-bottom validation patch normal map surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-121513/surface.png)
+![right-bottom validation patch normal map surface](../archive/cdb-surface-dump-20260513-121513/surface.png)
 
 Right-bottom validation patch natural UI surface:
 
-![right-bottom validation patch natural UI surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260513-122200/surface.png)
+![right-bottom validation patch natural UI surface](../archive/cdb-surface-dump-20260513-122200/surface.png)
 
 Right-bottom validation patch controlled grid-hit surface:
 
-![right-bottom validation patch controlled grid-hit surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260514-140601/surface.png)
+![right-bottom validation patch controlled grid-hit surface](../archive/cdb-surface-dump-20260514-140601/surface.png)
 
 ## Key Evidence
 
