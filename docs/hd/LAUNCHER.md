@@ -73,6 +73,43 @@ lanes remain hidden-desktop CDB only. It writes only under
 modifies `C:\Clash\clash95.exe`. `tools/launcher_policy_guard.py` enforces
 all of this from source.
 
+## Per-Resolution Evidence Lanes
+
+Preset resolutions stay `experimental` until their hidden-desktop evidence
+lane passes and `src/launcher/resolutions.json` flips them to `validated`.
+The lane per preset (1024x768 first — smallest offsets, cheapest discriminator
+for the partial right column — then the 1920x1080 flagship):
+
+1. Build the candidate: `python patch_clash95_hd.py --input
+   C:\Clash\clash95.exe --output C:\ClashTests\launcher\<WxH>\clash95_hd_<WxH>.exe
+   --resolution <WxH>` and gate it with `python tools/patch_stage_report.py
+   --exe <candidate> --stage <stable stage> --resolution <WxH>
+   --require-current-hd-map` (the gate's tile expectation derives from the
+   resolution profile).
+2. Hidden-desktop CDB normal run. The surface-dump probe already sizes the
+   dump from the live surface header (`SURFDUMP_READY` computes
+   width*height and `.writemem` uses that length), so a normal run needs no
+   probe edits; `scripts/cdb/run_cdb_surface_dump.ps1` still needs a
+   `-Resolution` parameter threaded into its internal patcher call before it
+   can build non-800x600 candidates itself, and the forced-visible-edge
+   sampling rows hardcode an 800-byte stride that must be parameterized
+   before forced runs are meaningful at other sizes.
+3. Audit/extend the dump consumers for the new cell grid before gating:
+   `tools/cdb_surface_dump_to_png.py` dimensions and the
+   `tools/map_tile_coverage.py` minimap region must derive from the
+   resolution profile.
+4. Gate with `python tools/hd_map_smoke_matrix.py --resolution <WxH>
+   --normal-run <run> --forced-run <run> --require-pass --write-json
+   captures/current/hd-map-smoke-<WxH>-current.json` (non-default
+   resolutions refuse the archived 800x600 default runs).
+5. Flip the manifest entry to `validated` with the evidence paths;
+   `tools/resolution_manifest_guard.py` verifies the runs are hidden-desktop
+   and the matrix passes. `stable` stays exclusive to 800x600.
+
+Run evidence lanes only when no other Clash95/CDB session is active on the
+machine — concurrent manual or visible sessions make process-hygiene
+snapshots ambiguous.
+
 ## User State
 
 Settings (last resolution, scaling mode, paths, window geometry) persist in
