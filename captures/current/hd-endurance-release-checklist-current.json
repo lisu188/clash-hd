@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T18:04:02.176337+00:00",
+  "generated_at": "2026-07-12T18:35:07.541708+00:00",
   "passed": false,
   "runtime_policy": "repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -37,8 +37,8 @@
   },
   "counts": {
     "total": 15,
-    "passed": 4,
-    "blocked": 11,
+    "passed": 3,
+    "blocked": 12,
     "missing": 0
   },
   "next_milestone": {
@@ -291,13 +291,13 @@
       "id": "artifact_and_process_hygiene",
       "title": "No prohibited artifacts or stale processes",
       "category": "repo hygiene",
-      "status": "pass",
-      "passed": true,
+      "status": "blocked",
+      "passed": false,
       "evidence": [
         "captures\\current\\exe-artifact-guard-current.json",
         "captures\\current\\process-hygiene-guard-current.json"
       ],
-      "summary": "artifact and process hygiene guards pass",
+      "summary": "artifact or process hygiene guard is not passing",
       "next_probe": "clear hygiene guard failures before accepting runtime evidence"
     },
     {
@@ -333,6 +333,7 @@
     "tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof",
     "save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
     "turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
-    "campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release"
+    "campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
+    "artifact_and_process_hygiene: artifact or process hygiene guard is not passing"
   ]
 }

@@ -968,13 +968,21 @@ stable/validated entries with hidden-desktop runs, and engine tile-formula
 consistency; its fixture coverage is
 `captures\current\resolution-manifest-guard-tests-current.md`.
 
+The patch resolution tests are
+`captures\current\patch-resolution-tests-current.md`. They pass repo-only and prove
+the multi-resolution patch generator reproduces the frozen 800x600 table
+byte-for-byte (golden identity plus archived candidate SHA reproduction),
+verifies every cave template's slots and branch targets in both encodings,
+keeps preset generation overlap-free, and parameterizes the patch-stage
+report gate without changing legacy gate keys.
+
 The no-popup boundary guard is `captures\current\no-popup-boundary-guard-current.md`.
 It passes repo-only and verifies that the current refresh includes the seven
 core boundary guards: stable stage, executable artifact, surface-dump policy,
 visible-runtime launcher, no-visible runtime, process hygiene, and launcher
 policy. It records
-`required_guard_count=7`, `required_supporting_report_count=90`, and
-`required_report_count=97`. It also now
+`required_guard_count=7`, `required_supporting_report_count=91`, and
+`required_report_count=98`. It also now
 requires the no-popup map evidence matrix and its fixture tests, visible runtime
 launcher guard tests, no-visible runtime guard fixture tests,
 no-popup guard regression report, Python runtime safety guard and tests, HD soak

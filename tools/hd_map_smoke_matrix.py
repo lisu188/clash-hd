@@ -24,6 +24,7 @@ import post_owner_evidence_matrix
 
 DEFAULT_STAGE = "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch"
 DEFAULT_CAPTURES_ROOT = Path("captures/archive")
+DEFAULT_RESOLUTION = "800x600"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -80,7 +81,12 @@ def patch_counts(report: dict[str, Any]) -> dict[str, int]:
     }
 
 
-def patch_stage_gate_from_report(report: dict[str, Any], stage: str, source: Path) -> dict[str, Any]:
+def patch_stage_gate_from_report(
+    report: dict[str, Any],
+    stage: str,
+    source: Path,
+    resolution: str = DEFAULT_RESOLUTION,
+) -> dict[str, Any]:
     if isinstance(report.get("patch_stage"), dict):
         report = report["patch_stage"]
     gate = report.get("current_hd_map_gate") or {"passed": False, "failures": ["missing current_hd_map_gate"]}
@@ -89,6 +95,14 @@ def patch_stage_gate_from_report(report: dict[str, Any], stage: str, source: Pat
     report_stage = str(report.get("stage") or "")
     if report_stage != stage:
         failures.append(f"archived patch report stage mismatch: expected {stage}, got {report_stage}")
+    # Reports written before resolution support carry no resolution field and
+    # are implicitly 800x600.
+    report_resolution = str(report.get("resolution") or DEFAULT_RESOLUTION)
+    if report_resolution != resolution:
+        failures.append(
+            f"archived patch report resolution mismatch: expected {resolution}, "
+            f"got {report_resolution}"
+        )
     if counts["unexpected"]:
         failures.append(f"archived patch report has {counts['unexpected']} unexpected records")
     return {
@@ -105,7 +119,9 @@ def patch_stage_gate_from_report(report: dict[str, Any], stage: str, source: Pat
     }
 
 
-def patch_stage_gate(exe: Path | None, stage: str) -> dict[str, Any]:
+def patch_stage_gate(
+    exe: Path | None, stage: str, resolution: str = DEFAULT_RESOLUTION
+) -> dict[str, Any]:
     if exe is None:
         return {
             "passed": False,
@@ -120,7 +136,7 @@ def patch_stage_gate(exe: Path | None, stage: str) -> dict[str, Any]:
             "stage": stage,
             "failures": [f"candidate executable does not exist: {exe}"],
         }
-    report = patch_stage_report.build_report(exe, stage)
+    report = patch_stage_report.build_report(exe, stage, resolution)
     gate = report["current_hd_map_gate"]
     counts = patch_counts(report)
     return {
@@ -138,6 +154,14 @@ def patch_stage_gate(exe: Path | None, stage: str) -> dict[str, Any]:
 
 
 def build_matrix(args: argparse.Namespace) -> dict[str, Any]:
+    resolution = str(getattr(args, "resolution", None) or DEFAULT_RESOLUTION)
+    failures: list[str] = []
+    if resolution != DEFAULT_RESOLUTION and not (args.normal_run and args.forced_run):
+        failures.append(
+            f"resolution {resolution} requires explicit --normal-run and "
+            "--forced-run archived evidence (the 800x600 archived defaults do "
+            "not apply)"
+        )
     post_args = argparse.Namespace(
         captures_root=args.captures_root,
         normal_run=args.normal_run,
@@ -145,11 +169,15 @@ def build_matrix(args: argparse.Namespace) -> dict[str, Any]:
     )
     post_owner = post_owner_evidence_matrix.build_matrix(post_args)
     if args.patch_report_json:
-        patch_stage = patch_stage_gate_from_report(load_json(args.patch_report_json), args.stage, args.patch_report_json)
+        patch_stage = patch_stage_gate_from_report(
+            load_json(args.patch_report_json),
+            args.stage,
+            args.patch_report_json,
+            resolution,
+        )
     else:
         exe = select_patch_exe(args, post_owner)
-        patch_stage = patch_stage_gate(exe, args.stage)
-    failures: list[str] = []
+        patch_stage = patch_stage_gate(exe, args.stage, resolution)
     if not patch_stage["passed"]:
         failures.extend(f"patch-stage: {failure}" for failure in patch_stage.get("failures", []))
     if not post_owner["passed"]:
@@ -158,6 +186,7 @@ def build_matrix(args: argparse.Namespace) -> dict[str, Any]:
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "captures_root": str(args.captures_root),
         "patch_report_json": str(args.patch_report_json) if args.patch_report_json else None,
+        "resolution": resolution,
         "passed": not failures,
         "patch_stage": patch_stage,
         "post_owner_evidence": post_owner,
@@ -255,6 +284,14 @@ def parse_args() -> argparse.Namespace:
         help="use an archived tools/patch_stage_report.py JSON report instead of reading a local executable",
     )
     parser.add_argument("--stage", default=DEFAULT_STAGE)
+    parser.add_argument(
+        "--resolution",
+        default=DEFAULT_RESOLUTION,
+        help=(
+            "target resolution WxH; non-default resolutions require explicit "
+            "--normal-run/--forced-run evidence for that resolution"
+        ),
+    )
     parser.add_argument("--write-json", type=Path)
     parser.add_argument("--write-markdown", type=Path)
     parser.add_argument("--require-pass", action="store_true")

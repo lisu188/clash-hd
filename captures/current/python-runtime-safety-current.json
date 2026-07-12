@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-07-12T20:03:48+02:00",
+  "generated_at": "2026-07-12T20:34:53+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
   "root": "C:\\Users\\andrz\\git\\clash-hd",
-  "file_count": 233,
-  "risky_file_count": 111,
+  "file_count": 234,
+  "risky_file_count": 112,
   "classification_counts": {
     "safe": 122,
     "user_gated_launcher": 1,
     "exempt": 26,
     "manual_visible_runtime_gated": 2,
-    "test_fixture": 82
+    "test_fixture": 83
   },
   "gated_helpers": {
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
@@ -425,10 +425,10 @@
       ],
       "risk_lines": {
         "sendinput": [
-          4079
+          4082
         ],
         "postmessage": [
-          4079
+          4082
         ]
       },
       "failures": []
@@ -2997,6 +2997,31 @@
         ],
         "process_launch": [
           73
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_patch_resolution.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          14,
+          443,
+          446,
+          447,
+          454,
+          457,
+          458
+        ],
+        "process_launch": [
+          443,
+          454
         ]
       },
       "failures": []

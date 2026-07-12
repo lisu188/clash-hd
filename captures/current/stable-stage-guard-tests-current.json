@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:03:47+02:00",
+  "generated_at": "2026-07-12T20:34:52+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the stable-stage guard rejects patcher-default drift, validation-only group leakage into the stable stage, missing validation-stage groups, mapsurface stages that reintroduce global menu-surface allocation or lose the gameplay-only map surface upgrade, and promotion decisions/evidence matrices that would change the stable stage or omit required castle focused/multihit proof",

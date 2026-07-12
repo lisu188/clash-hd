@@ -1,7 +1,7 @@
 # HD Long Soak Report Guard
 
 - Overall: FAIL
-- Generated: `2026-07-12T20:04:01+02:00`
+- Generated: `2026-07-12T20:35:07+02:00`
 - Runtime policy: repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Guard policy: 2h+ representative-route soak evidence remains locked until the short ladder passes and approved opt-in long-run soak report guards prove clean process, frame, input, artifact, and patch evidence
 - Status: `locked_short_ladder_incomplete`

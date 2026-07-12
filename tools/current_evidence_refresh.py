@@ -125,6 +125,7 @@ import test_no_popup_guards
 import test_no_popup_map_evidence_matrix
 import test_no_visible_runtime_guard
 import test_patch_definition_guard
+import test_patch_resolution
 import test_promotion_override_guard
 import test_promotion_override_manifest
 import test_process_hygiene_guard
@@ -496,6 +497,8 @@ DEFAULT_PYTHON_RUNTIME_SAFETY_JSON = Path("captures/current/python-runtime-safet
 DEFAULT_PYTHON_RUNTIME_SAFETY_MD = Path("captures/current/python-runtime-safety-current.md")
 DEFAULT_PYTHON_RUNTIME_SAFETY_TESTS_JSON = Path("captures/current/python-runtime-safety-tests-current.json")
 DEFAULT_PYTHON_RUNTIME_SAFETY_TESTS_MD = Path("captures/current/python-runtime-safety-tests-current.md")
+DEFAULT_PATCH_RESOLUTION_TESTS_JSON = Path("captures/current/patch-resolution-tests-current.json")
+DEFAULT_PATCH_RESOLUTION_TESTS_MD = Path("captures/current/patch-resolution-tests-current.md")
 DEFAULT_LAUNCHER_POLICY_GUARD_JSON = Path("captures/current/launcher-policy-guard-current.json")
 DEFAULT_LAUNCHER_POLICY_GUARD_MD = Path("captures/current/launcher-policy-guard-current.md")
 DEFAULT_LAUNCHER_POLICY_GUARD_TESTS_JSON = Path("captures/current/launcher-policy-guard-tests-current.json")
@@ -4756,6 +4759,33 @@ def build_python_runtime_safety_tests(args: argparse.Namespace) -> dict[str, Any
     )
 
 
+def build_patch_resolution_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_patch_resolution,
+        tests=[
+            "frozen legacy table SHA pin and dispatch identity hold",
+            "generator reproduces the legacy table byte-for-byte at 800x600",
+            "preset profile math, tile formulas, and parse validation hold",
+            "menu-hitbox and descriptor shifts derive from the centering offsets",
+            "recipe coverage census and old-bytes invariance hold",
+            "cave templates verify slots, branch targets, and relocation shape",
+            "preset generation stays overlap-free across parameterized stages",
+            "signed imm8 tile slots fail closed beyond the 127-tile ceiling",
+            "coincident 800x600 formulas require acknowledged justification",
+            "patch-stage report gate parameterizes tiles and keeps legacy keys",
+            "archived 800x600 reports still pass the smoke-matrix gate",
+            "synthetic candidates pass their own resolution gate and fail others",
+        ],
+        title="Patch Resolution Tests",
+        json_path=args.patch_resolution_tests_json,
+        md_path=args.patch_resolution_tests_md,
+        guard_policy=(
+            "proves multi-resolution generation cannot drift from the frozen "
+            "800x600 byte-for-byte contract"
+        ),
+    )
+
+
 def build_launcher_policy_guard(args: argparse.Namespace) -> dict[str, Any]:
     guard_args = argparse.Namespace(
         launcher_dir=Path("src/launcher"),
@@ -7227,6 +7257,7 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["no_visible_runtime_guard_tests"] = build_no_visible_runtime_guard_tests(args)
     checks["process_hygiene_guard"] = build_process_hygiene_guard(args)
     checks["process_hygiene_guard_tests"] = build_process_hygiene_guard_tests(args)
+    checks["patch_resolution_tests"] = build_patch_resolution_tests(args)
     checks["launcher_policy_guard"] = build_launcher_policy_guard(args)
     checks["launcher_policy_guard_tests"] = build_launcher_policy_guard_tests(args)
     checks["launcher_core_tests"] = build_launcher_core_tests(args)
@@ -8228,6 +8259,16 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--python-runtime-safety-json", type=Path, default=DEFAULT_PYTHON_RUNTIME_SAFETY_JSON)
     parser.add_argument("--python-runtime-safety-md", type=Path, default=DEFAULT_PYTHON_RUNTIME_SAFETY_MD)
+    parser.add_argument(
+        "--patch-resolution-tests-json",
+        type=Path,
+        default=DEFAULT_PATCH_RESOLUTION_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--patch-resolution-tests-md",
+        type=Path,
+        default=DEFAULT_PATCH_RESOLUTION_TESTS_MD,
+    )
     parser.add_argument("--launcher-policy-guard-json", type=Path, default=DEFAULT_LAUNCHER_POLICY_GUARD_JSON)
     parser.add_argument("--launcher-policy-guard-md", type=Path, default=DEFAULT_LAUNCHER_POLICY_GUARD_MD)
     parser.add_argument(

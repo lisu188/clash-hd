@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-12T20:04:04+02:00",
+  "generated_at": "2026-07-12T20:35:09+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\git\\clash-hd\\captures",
-  "artifact_count": 667,
-  "current_reference_count": 171,
+  "artifact_count": 671,
+  "current_reference_count": 172,
   "archived_reference_count": 387,
   "missing_current_refs": [],
   "reference_status_counts": {
     "archived_referenced": 210,
-    "current_referenced": 141,
-    "stale_unreferenced": 316
+    "current_referenced": 142,
+    "stale_unreferenced": 319
   },
   "era_counts": {
     "cdb_surface_dump_unverified": 65,
     "hidden_cdb_surface_dump": 148,
-    "other_capture_artifact": 443,
-    "visible_era": 11
+    "other_capture_artifact": 446,
+    "visible_era": 12
   },
-  "stale_visible_or_sandbox_count": 11,
+  "stale_visible_or_sandbox_count": 12,
   "stale_visible_or_sandbox_examples": [
     "archive/clicktest-20260422-163904",
     "archive/clicktest-20260422-182440",
@@ -31,7 +31,8 @@
     "archive/visual-smoke-20260423-145622",
     "archive/visual-smoke-20260424-073707",
     "archive/visual-smoke-20260424-074428",
-    "archive/visual-smoke-20260424-074630"
+    "archive/visual-smoke-20260424-074630",
+    "archive/visual-smoke-20260712-202900"
   ],
   "current_refs": {
     "captures/archive/cdb-surface-dump-20260429-135242": {
@@ -1327,6 +1328,16 @@
     "captures/current/patch-manifest-compare-current-vs-partial12.md": {
       "ref": "captures/current/patch-manifest-compare-current-vs-partial12.md",
       "entry": "current/patch-manifest-compare-current-vs-partial12.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/patch-resolution-tests-current.md": {
+      "ref": "captures/current/patch-resolution-tests-current.md",
+      "entry": "current/patch-resolution-tests-current.md",
       "reference_class": "current_referenced",
       "sources": [
         "captures/current/hd-map-evidence-current.md"
@@ -7903,6 +7914,16 @@
       "has_run_summary": false
     },
     {
+      "name": "archive/manual-castle-20260712-203402",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-castle-20260712-203402",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "archive/map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json",
       "artifact_kind": "file",
@@ -8657,6 +8678,16 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\visual-smoke-20260424-074630",
       "artifact_kind": "directory",
       "reference_status": "archived_referenced",
+      "era": "visible_era",
+      "classification_reason": "legacy visible/click or visual-smoke artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/visual-smoke-20260712-202900",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\visual-smoke-20260712-202900",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
       "era": "visible_era",
       "classification_reason": "legacy visible/click or visual-smoke artifact",
       "has_surface_png": false,
@@ -11295,6 +11326,26 @@
     {
       "name": "current/patch-manifest-compare-current-vs-partial12.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\patch-manifest-compare-current-vs-partial12.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/patch-resolution-tests-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\patch-resolution-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/patch-resolution-tests-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\patch-resolution-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
       "era": "other_capture_artifact",

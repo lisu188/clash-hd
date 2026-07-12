@@ -121,6 +121,10 @@ REQUIRED_SUPPORTING_REPORTS = {
         "markdown": "launcher-policy-guard-tests-current.md",
         "purpose": "fixture regression coverage for the launcher policy guard",
     },
+    "patch_resolution_tests": {
+        "markdown": "patch-resolution-tests-current.md",
+        "purpose": "multi-resolution patch generation stays byte-compatible with the frozen 800x600 table",
+    },
     "launcher_core_tests": {
         "markdown": "launcher-core-tests-current.md",
         "purpose": "fixture regression coverage for the launcher patch/deploy/launch core",

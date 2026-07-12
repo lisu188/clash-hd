@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:04:04+02:00",
+  "generated_at": "2026-07-12T20:35:09+02:00",
   "passed": false,
   "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries",
@@ -53,11 +53,11 @@
       "passed": false,
       "refresh_passed": false,
       "required_guard_count": 7,
-      "required_supporting_report_count": 90,
-      "required_report_count": 97,
+      "required_supporting_report_count": 91,
+      "required_report_count": 98,
       "summary_required_guard_count": 7,
-      "summary_required_supporting_report_count": 90,
-      "summary_required_report_count": 97
+      "summary_required_supporting_report_count": 91,
+      "summary_required_report_count": 98
     },
     "no_popup_map": {
       "passed": true,
@@ -198,11 +198,11 @@
         "passed": false,
         "refresh_passed": false,
         "required_guard_count": 7,
-        "required_supporting_report_count": 90,
-        "required_report_count": 97,
+        "required_supporting_report_count": 91,
+        "required_report_count": 98,
         "summary_required_guard_count": 7,
-        "summary_required_supporting_report_count": 90,
-        "summary_required_report_count": 97
+        "summary_required_supporting_report_count": 91,
+        "summary_required_report_count": 98
       },
       "failures": [
         "no-popup boundary guard is not passing"

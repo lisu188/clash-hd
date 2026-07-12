@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-12T20:04:05+02:00",
+  "generated_at": "2026-07-12T20:35:10+02:00",
   "passed": false,
   "runtime_policy": "repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report",
   "evidence_index": "captures\\current\\hd-map-evidence-current.md",
   "required_guard_count": 7,
-  "required_supporting_report_count": 90,
-  "required_report_count": 97,
+  "required_supporting_report_count": 91,
+  "required_report_count": 98,
   "required_guards": [
     "stable_stage_guard",
     "exe_artifact_guard",
@@ -34,6 +34,7 @@
     "current_completion_summary_tests",
     "process_hygiene_guard_tests",
     "launcher_policy_guard_tests",
+    "patch_resolution_tests",
     "launcher_core_tests",
     "resolution_manifest_guard",
     "resolution_manifest_guard_tests",
@@ -133,6 +134,7 @@
     "current_completion_summary_tests",
     "process_hygiene_guard_tests",
     "launcher_policy_guard_tests",
+    "patch_resolution_tests",
     "launcher_core_tests",
     "resolution_manifest_guard",
     "resolution_manifest_guard_tests",
@@ -279,18 +281,20 @@
       "failures": []
     },
     "process_hygiene_guard": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "no cdb.exe or clash95* process is left running",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "process-hygiene-guard-current.md",
         "refresh_markdown": "captures\\current\\process-hygiene-guard-current.md",
         "refresh_json": "captures\\current\\process-hygiene-guard-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: process_hygiene_guard"
+      ]
     },
     "launcher_policy_guard": {
       "passed": true,
@@ -517,18 +521,20 @@
       "failures": []
     },
     "process_hygiene_guard_tests": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "fixture regression coverage for the process hygiene guard",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "process-hygiene-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\process-hygiene-guard-tests-current.md",
         "refresh_json": "captures\\current\\process-hygiene-guard-tests-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: process_hygiene_guard_tests"
+      ]
     },
     "launcher_policy_guard_tests": {
       "passed": true,
@@ -539,6 +545,20 @@
         "expected_markdown": "launcher-policy-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\launcher-policy-guard-tests-current.md",
         "refresh_json": "captures\\current\\launcher-policy-guard-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "patch_resolution_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "multi-resolution patch generation stays byte-compatible with the frozen 800x600 table",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "patch-resolution-tests-current.md",
+        "refresh_markdown": "captures\\current\\patch-resolution-tests-current.md",
+        "refresh_json": "captures\\current\\patch-resolution-tests-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
@@ -1572,6 +1592,8 @@
     }
   },
   "failures": [
+    "process_hygiene_guard: refresh check is not passing: process_hygiene_guard",
+    "process_hygiene_guard_tests: refresh check is not passing: process_hygiene_guard_tests",
     "right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
     "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
   ]

@@ -1,10 +1,10 @@
 # Battle Visible Harness Guard
 
 - Overall: PASS
-- Generated: `2026-07-12T20:03:46+02:00`
+- Generated: `2026-07-12T20:34:51+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Script: `scripts\cdb\run_cdb_battle_visible_input_probe.ps1`
-- Wait-LogPattern lines: `[70]`
+- Wait-LogPattern lines: `[93]`
 
 ## Checks
 

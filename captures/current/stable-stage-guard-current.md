@@ -1,7 +1,7 @@
 # Stable Stage Guard
 
 - Overall: PASS
-- Generated: `2026-07-12T20:03:47+02:00`
+- Generated: `2026-07-12T20:34:52+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
 - Current stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Patcher default stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`

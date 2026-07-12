@@ -30,21 +30,38 @@ MAP_GROUPS = {
     "saved-scroll-clamp",
     "map-surface-upgrade-scrollclamp",
 }
-CURRENT_HD_MAP_GATE_CHECKS = {
-    "visible_tiles_12x9": ("visible_tiles", {"x": 12, "y": 9}),
-    "main_loops_12x9": ("main_loops_12x9", True),
-    "full_redraw_12x9": ("full_redraw_12x9", True),
-    "full_redraw_present_bounds_800": ("full_redraw_present_bounds_800", True),
-    "minimap_right_clip": ("minimap_right_clip", True),
-    "minimap_hd_right_anchor": ("minimap_hd_right_anchor", True),
-    "helpers_12x9": ("helpers_12x9", True),
-    "input_bounds_800x600": ("input_bounds_800x600", True),
-    "viewport_init_800x600": ("viewport_init_800x600", True),
-    "viewport_switch_800x600": ("viewport_switch_800x600", True),
-    "viewport_switch_dynamic_surface": ("viewport_switch_dynamic_surface", True),
-    "saved_scroll_restore_clamp": ("saved_scroll_restore_clamp", True),
-    "map_surface_upgrade_after_menu": ("map_surface_upgrade_after_menu", True),
-}
+DEFAULT_RESOLUTION = "800x600"
+
+
+def current_hd_map_gate_checks(profile: Any = None) -> dict:
+    """Gate expectations, parameterized by resolution profile.
+
+    Check key NAMES are historical labels baked into archived report JSON
+    (e.g. `input_bounds_800x600`); only expected VALUES parameterize. With
+    profile=None the returned dict is the frozen 800x600 constant.
+    """
+    if profile is None:
+        tiles = {"x": 12, "y": 9}
+    else:
+        tiles = {"x": profile.tiles_x, "y": profile.tiles_y}
+    return {
+        "visible_tiles_12x9": ("visible_tiles", tiles),
+        "main_loops_12x9": ("main_loops_12x9", True),
+        "full_redraw_12x9": ("full_redraw_12x9", True),
+        "full_redraw_present_bounds_800": ("full_redraw_present_bounds_800", True),
+        "minimap_right_clip": ("minimap_right_clip", True),
+        "minimap_hd_right_anchor": ("minimap_hd_right_anchor", True),
+        "helpers_12x9": ("helpers_12x9", True),
+        "input_bounds_800x600": ("input_bounds_800x600", True),
+        "viewport_init_800x600": ("viewport_init_800x600", True),
+        "viewport_switch_800x600": ("viewport_switch_800x600", True),
+        "viewport_switch_dynamic_surface": ("viewport_switch_dynamic_surface", True),
+        "saved_scroll_restore_clamp": ("saved_scroll_restore_clamp", True),
+        "map_surface_upgrade_after_menu": ("map_surface_upgrade_after_menu", True),
+    }
+
+
+CURRENT_HD_MAP_GATE_CHECKS = current_hd_map_gate_checks()
 
 
 def load_patcher() -> ModuleType:
@@ -152,15 +169,21 @@ def all_group_patched(group: str, groups: dict[str, dict]) -> bool:
     return total > 0 and int(summary.get("patched", 0)) == total
 
 
-def map_summary(stage_groups: tuple[str, ...], groups: dict[str, dict]) -> dict:
+def map_summary(
+    stage_groups: tuple[str, ...], groups: dict[str, dict], profile: Any = None
+) -> dict:
     main_loops = all_group_patched("main-loops", groups)
     helpers = all_group_patched("helpers", groups)
     viewport_switch = all_group_patched("viewport-switch", groups) or all_group_patched(
         "viewport-switch-dynamic-surface", groups
     )
+    hd_tiles = {"x": 12, "y": 9} if profile is None else {
+        "x": profile.tiles_x,
+        "y": profile.tiles_y,
+    }
     return {
         "stage_groups": [group for group in stage_groups if group in MAP_GROUPS],
-        "visible_tiles": {"x": 12 if main_loops else 9, "y": 9 if main_loops else 7},
+        "visible_tiles": hd_tiles if main_loops else {"x": 9, "y": 7},
         "main_loops_12x9": main_loops,
         "full_redraw_12x9": all_group_patched("full-redraw-12x9", groups),
         "full_redraw_present_bounds_800": all_group_patched(
@@ -181,7 +204,7 @@ def map_summary(stage_groups: tuple[str, ...], groups: dict[str, dict]) -> dict:
     }
 
 
-def current_hd_map_gate(report: dict) -> dict:
+def current_hd_map_gate(report: dict, gate_checks: dict | None = None) -> dict:
     failures = []
     status_counts = report["status_counts"]
     if int(status_counts.get("unexpected", 0)):
@@ -191,7 +214,7 @@ def current_hd_map_gate(report: dict) -> dict:
 
     map_info = report["map"]
     checks = {}
-    for name, (key, expected) in CURRENT_HD_MAP_GATE_CHECKS.items():
+    for name, (key, expected) in (gate_checks or CURRENT_HD_MAP_GATE_CHECKS).items():
         actual = map_info[key]
         passed = actual == expected
         checks[name] = {"expected": expected, "actual": actual, "passed": passed}
@@ -205,20 +228,34 @@ def current_hd_map_gate(report: dict) -> dict:
     }
 
 
-def build_report(exe: Path, stage: str) -> dict:
+def build_report(exe: Path, stage: str, resolution: str = DEFAULT_RESOLUTION) -> dict:
     module = load_patcher()
     if stage not in module.STAGE_GROUPS:
         choices = ", ".join(sorted(module.STAGE_GROUPS))
         raise SystemExit(f"Unknown stage: {stage}\nKnown stages: {choices}")
+    try:
+        profile = module.parse_resolution(resolution)
+    except module.ResolutionError as exc:
+        raise SystemExit(str(exc)) from exc
+    legacy = resolution == DEFAULT_RESOLUTION
     data = exe.read_bytes()
     image_base, sections = parse_pe_sections(data)
-    patches = module.select_patches(stage)
+    if legacy:
+        patches = module.select_patches(stage)
+        gate_profile = None
+    else:
+        try:
+            patches = module.select_patches_for(stage, profile)
+        except module.ResolutionError as exc:
+            raise SystemExit(str(exc)) from exc
+        gate_profile = profile
     records = [patch_record(patch, data, image_base, sections) for patch in patches]
     group_summary = summarize_groups(records)
     status_counts = Counter(record["status"] for record in records)
     report = {
         "exe": str(exe),
         "stage": stage,
+        "resolution": resolution,
         "exe_sha256": module.sha256(data).upper(),
         "expected_base_sha256": module.EXPECTED_SHA256.upper(),
         "image_base_hex": f"0x{image_base:08X}" if image_base is not None else None,
@@ -226,10 +263,12 @@ def build_report(exe: Path, stage: str) -> dict:
         "patch_count": len(records),
         "status_counts": dict(status_counts),
         "groups": group_summary,
-        "map": map_summary(module.STAGE_GROUPS[stage], group_summary),
+        "map": map_summary(module.STAGE_GROUPS[stage], group_summary, gate_profile),
         "patches": records,
     }
-    report["current_hd_map_gate"] = current_hd_map_gate(report)
+    report["current_hd_map_gate"] = current_hd_map_gate(
+        report, current_hd_map_gate_checks(gate_profile)
+    )
     return report
 
 
@@ -299,6 +338,14 @@ def parse_args() -> argparse.Namespace:
         default="gameplay-menu640-centered-map12-dynorigin",
         help="patch stage to verify against patch_clash95_hd.py definitions",
     )
+    parser.add_argument(
+        "--resolution",
+        default=DEFAULT_RESOLUTION,
+        help=(
+            "target resolution WxH; non-default resolutions verify the "
+            "generated patch table and parameterize the tile-count gate"
+        ),
+    )
     parser.add_argument("--write-json", type=Path, help="write the full report as JSON")
     parser.add_argument(
         "--require-current-hd-map",
@@ -312,7 +359,7 @@ def main() -> int:
     args = parse_args()
     if not args.exe.is_file():
         raise SystemExit(f"Executable does not exist: {args.exe}")
-    report = build_report(args.exe, args.stage)
+    report = build_report(args.exe, args.stage, args.resolution)
     if args.write_json:
         args.write_json.parent.mkdir(parents=True, exist_ok=True)
         args.write_json.write_text(json.dumps(report, indent=2), encoding="ascii")

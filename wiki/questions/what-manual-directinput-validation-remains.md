@@ -45,7 +45,7 @@ manual DirectInput mouse behavior works. [source page:
 - `castlecenter-all` remains validation-only with
   `stable_stage_should_change=False`.
 - The no-popup boundary guard is PASS with `required_guard_count=7`,
-  `required_supporting_report_count=90`, and `required_report_count=97`.
+  `required_supporting_report_count=91`, and `required_report_count=98`.
 - The manual DirectInput run plan is repo-only and non-promoting: it emits one
   future visible command template per remaining target, every command includes
   `-AllowVisibleRuntime`, and `proof_ready=False` remains blocked until an

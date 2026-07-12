@@ -1,7 +1,7 @@
 # Castle Save Owner-Flag Scan Tests
 
 - Status: PASS
-- Generated: `2026-07-12T20:03:38+02:00`
+- Generated: `2026-07-12T20:34:43+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the installed-save owner-flag scan stores only metadata, detects natural 004338E0 bit-2 route candidates, and fails closed when required save evidence is unavailable
 

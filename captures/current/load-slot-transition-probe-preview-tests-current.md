@@ -1,7 +1,7 @@
 # Load Slot Transition Probe Preview Tests
 
 - Status: PASS
-- Generated: `2026-07-12T20:03:35+02:00`
+- Generated: `2026-07-12T20:34:39+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves generated row-specific transition probes have no unresolved placeholders, keep slot-specific select/accept conditions, and preserve the planned raw mouse values
 

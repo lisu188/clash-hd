@@ -1,7 +1,7 @@
 # HD Soak Dry-Run Plan Tests
 
 - Status: PASS
-- Generated: `2026-07-12T20:04:01+02:00`
+- Generated: `2026-07-12T20:35:06+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the current short-soak dry-run handoff is machine-readable, non-executing, protected-stage, canonical-path, outside-repo, and fails closed unless copied execute commands include -RequirePass -Json with a fresh approval token, and the base executable exists with the expected SHA
 

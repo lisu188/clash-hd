@@ -1,7 +1,7 @@
 # First Mission Visual Audit
 
 - Overall: FAIL
-- Generated: `2026-07-12T20:03:24+02:00`
+- Generated: `2026-07-12T20:34:28+02:00`
 - Runtime policy: repo-only PNG audit; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: first-mission frames must keep the play area rendered, avoid horizontal or vertical stripe signatures, and expose remaining large black UI patches as non-playable blockers instead of hiding them behind route success
 - Current status: `selected_unit_action_bar_on_bottom_but_black_ui_patches_remain`

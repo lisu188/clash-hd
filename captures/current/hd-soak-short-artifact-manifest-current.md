@@ -1,7 +1,7 @@
 # HD Soak Short Artifact Manifest
 
 - Overall: PASS
-- Generated: `2026-07-12T18:04:00.424616+00:00`
+- Generated: `2026-07-12T18:35:05.901630+00:00`
 - Runtime policy: repo-only short-soak artifact manifest; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Protected stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Step reports present: `1/5`
