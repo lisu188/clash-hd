@@ -111,6 +111,11 @@ save-byte edit, mirroring the already-proven battle constructed-fixture pattern:
 This converts `controlled_recovered_but_natural_route_nonpromoting` into a
 natural pass without any new binary patch.
 
+> Update 2026-07-03: steps 1–3 of this recipe are implemented by the repo-only
+> helper `tools/right_bottom_constructed_save_fixture.py` (dry-run planning,
+> auto-selection of a plausible player-owned building, isolated `--output-save`
+> write with repository/source-save guards).
+
 ## Gate 2 — Battle command: use the proven enabled-command fixture + clean visible click
 
 Verified facts:
