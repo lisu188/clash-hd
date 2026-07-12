@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:47:46+02:00",
+  "generated_at": "2026-07-12T21:11:10+02:00",
   "passed": true,
   "runtime_policy": "repo-only metadata inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence, tile counts matching the engine formula",

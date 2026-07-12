@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-12T20:48:02+02:00`
+- Generated: `2026-07-12T21:11:25+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -1401,7 +1401,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 90.26, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 92.21, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1556,14 +1556,12 @@
 
 ### Hd Soak Short Step Status Tests
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-soak-short-step-status-tests-current.json`
 - Markdown: `captures\current\hd-soak-short-step-status-tests-current.md`
 - test_count: `7`
 - guard_policy: `proves per-step soak status stays repo-only, advances only after guarded passing output, rejects stale guard/triage artifacts that do not match the canonical report, and demands triage for failed canonical runtime reports`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-- Failures:
-  - AssertionError: 
 
 ### Hd Soak Dry Run Plan
 
@@ -1594,20 +1592,15 @@
 
 ### Hd Soak Intro Skip Rerun Readiness
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-soak-intro-skip-rerun-readiness-current.json`
 - Markdown: `captures\current\hd-soak-intro-skip-rerun-readiness-current.md`
-- status: `not_ready`
+- status: `ready_for_explicit_visible_rerun_approval`
 - current_step: `short2_map_idle`
 - current_step_status: `missing_pending_approval`
 - triage_classification: `passing_run_no_failure`
 - approval_boundary: `The next runtime run will open a visible Clash95 game window and still requires explicit user approval.`
 - runtime_policy: `repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - triage classification is 'passing_run_no_failure', expected 'intro_skip_input_drift_exit'
-  - current short step is 'short2_map_idle', expected 'short2_menu_idle'
-  - current short step status is 'missing_pending_approval', expected 'failed_classified_intro_skip_input_drift_exit'
-  - dry-run plan current step is 'short2_map_idle', expected 'short2_menu_idle'
 
 ### Hd Soak Intro Skip Rerun Readiness Tests
 
@@ -1756,14 +1749,12 @@
 
 ### Hd Soak Short Tier Ladder Tests
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-soak-short-tier-ladder-tests-current.json`
 - Markdown: `captures\current\hd-soak-short-tier-ladder-tests-current.md`
 - test_count: `5`
 - guard_policy: `proves the short soak ladder is ordered, approval-gated, non-promoting, and keeps long/future lanes locked until prerequisite soak evidence exists`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-- Failures:
-  - AssertionError: 
 
 ### Hd Soak Approval Preflight
 
@@ -1882,11 +1873,6 @@
 - first_mission_visual_audit: primary first-mission frame is not visually clean for playability: black patch: right_below_minimap, black patch: bottom_right_panel, black patch: minimap_interior
 - battle_visible_input_summary: visible input summary has no command-ready run
 - battle_ui_evidence_matrix: visible_input: visible input command readiness is not proven
-- hd_soak_short_step_status_tests: AssertionError: 
-- hd_soak_intro_skip_rerun_readiness: triage classification is 'passing_run_no_failure', expected 'intro_skip_input_drift_exit'
-- hd_soak_intro_skip_rerun_readiness: current short step is 'short2_map_idle', expected 'short2_menu_idle'
-- hd_soak_intro_skip_rerun_readiness: current short step status is 'missing_pending_approval', expected 'failed_classified_intro_skip_input_drift_exit'
-- hd_soak_intro_skip_rerun_readiness: dry-run plan current step is 'short2_map_idle', expected 'short2_menu_idle'
 - hd_continuity_status: save_load_roundtrip: compact proof is missing
 - hd_continuity_status: turn_advancement: compact proof is missing
 - hd_continuity_status: campaign_routes: compact proof is missing
@@ -1904,7 +1890,6 @@
 - hd_endurance_release_checklist: save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - hd_endurance_release_checklist: turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - hd_endurance_release_checklist: campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- hd_soak_short_tier_ladder_tests: AssertionError: 
 - no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
 - no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard
 - docs_consistency_guard: boundary_counts: no-popup boundary guard is not passing

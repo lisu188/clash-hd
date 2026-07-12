@@ -1,7 +1,7 @@
 # Right-Bottom Visual Artifact Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-12T20:47:21+02:00`
+- Generated: `2026-07-12T21:10:46+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the right-bottom visual artifact guard blocks the current stripy/out-of-place natural UI state from promotion and fails closed if the artifact or route state changes
 

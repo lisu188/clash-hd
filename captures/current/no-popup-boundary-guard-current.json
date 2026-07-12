@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:48:02+02:00",
+  "generated_at": "2026-07-12T21:11:25+02:00",
   "passed": false,
   "runtime_policy": "repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report",

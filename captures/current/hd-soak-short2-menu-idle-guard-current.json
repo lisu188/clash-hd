@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T18:47:58.401912+00:00",
+  "generated_at": "2026-07-12T19:11:21.265025+00:00",
   "runtime_policy": "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "overall": true,
   "source_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
@@ -48,7 +48,7 @@
         "input_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
         "expected_base_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
         "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-        "patch_stage_report": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260712-204302-short2-menu-idle\\patch-stage.json",
+        "patch_stage_report": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260712-210537-short2-menu-idle\\patch-stage.json",
         "patch_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
         "patch_count": 118,
         "patch_status_counts": {
@@ -151,9 +151,9 @@
         "expected_input_exe": "C:\\Clash\\clash95.exe",
         "workdir": "C:\\Clash",
         "expected_workdir": "C:\\Clash",
-        "candidate": "C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260712_204242.exe",
+        "candidate": "C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260712_210520.exe",
         "expected_candidate_root": "C:\\ClashTests\\hd-soak",
-        "output_directory": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260712-204302-short2-menu-idle",
+        "output_directory": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260712-210537-short2-menu-idle",
         "expected_output_root": "C:\\ClashCaptures\\hd-soak"
       },
       "failures": []
@@ -224,9 +224,9 @@
       "passed": true,
       "summary": {
         "process_sample_count": 9,
-        "working_set_growth_bytes": -188416,
+        "working_set_growth_bytes": -65536,
         "working_set_growth_limit_bytes": 67108864,
-        "private_memory_growth_bytes": -331776,
+        "private_memory_growth_bytes": -204800,
         "private_memory_growth_limit_bytes": 67108864,
         "handle_growth": -2,
         "handle_growth_limit": 128,
@@ -240,8 +240,8 @@
         "duration_sec": 120,
         "sample_interval_sec": 15,
         "required_elapsed_sec": 103,
-        "frame_elapsed_sec": 111.128874,
-        "process_elapsed_sec": 120.039978,
+        "frame_elapsed_sec": 111.114716,
+        "process_elapsed_sec": 120.069349,
         "invalid_frame_timestamps": 0,
         "invalid_process_timestamps": 0
       },
@@ -283,8 +283,8 @@
         "frame_sample_count": 8,
         "frame_hash_unique_count": 1,
         "process_sample_count": 9,
-        "working_set_growth_bytes": -188416,
-        "private_memory_growth_bytes": -331776,
+        "working_set_growth_bytes": -65536,
+        "private_memory_growth_bytes": -204800,
         "handle_growth": -2,
         "input_max_abs_error": 0,
         "input_max_sample_abs_error": 0

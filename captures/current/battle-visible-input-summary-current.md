@@ -1,6 +1,6 @@
 # Battle Visible Input Summary
 
-- Generated: 2026-07-12T20:47:42+02:00
+- Generated: 2026-07-12T21:11:06+02:00
 - Runtime policy: repo-only evidence parsing; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Focused completion: 99.89%
 - Command-ready runs: 0 / 3

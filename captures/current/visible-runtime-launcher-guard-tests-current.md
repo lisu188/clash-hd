@@ -1,7 +1,7 @@
 # Visible Runtime Launcher Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-12T20:47:44+02:00`
+- Generated: `2026-07-12T21:11:08+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves legacy visible-runtime launchers/helpers require -AllowVisibleRuntime before any risky Start-Process, window-focus, cursor, SendInput, PostMessage, or CopyFromScreen call, requires guarded child helpers to receive the same switch, and proves root risky-call inventory rejects unclassified scripts while allowing documented exemptions
 

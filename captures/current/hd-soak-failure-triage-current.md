@@ -1,7 +1,7 @@
 # HD Soak Failure Triage
 
 - Overall: PASS
-- Generated: `2026-07-12T18:47:58.171646+00:00`
+- Generated: `2026-07-12T19:11:21.048027+00:00`
 - Runtime policy: repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Source report: `captures\current\hd-soak-short2-menu-idle-current.json`
 - Source selection: `canonical_first_short_step`
@@ -14,12 +14,12 @@
 - Tier / route: `short2` / `menu-idle`
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
-- Output directory: `C:\ClashCaptures\hd-soak\hd-soak-20260712-204302-short2-menu-idle`
+- Output directory: `C:\ClashCaptures\hd-soak\hd-soak-20260712-210537-short2-menu-idle`
 - Final route marker: `intro-skip`
 
 ## Failure Context
 
-- Failure timestamp: `2026-07-12T20:45:13.8595221+02:00` source=`last_process_sample`
+- Failure timestamp: `2026-07-12T21:07:49.4090445+02:00` source=`last_process_sample`
 - Crash/hang class: `passing_run_no_failure`
 - Last route marker: `intro-skip`
 - Next probe: repeat short2 or move to short10 only after preserving the report and validation guard output
@@ -35,7 +35,7 @@
 
 - Last route: `intro-skip` path=`True` click=`True` drift=`0` sample_drift=`0` click_mode=`postmessage` repeat=`8`
 - Last frame: `frame-0007` size=`800x600` nonblack=`60.487` luma=`49.409` colors=`157`
-- Last process: exited=`False` exit_code=`None` working_set=`43745280` handles=`643`
+- Last process: exited=`False` exit_code=`None` working_set=`43896832` handles=`643`
 
 ## Metrics
 
@@ -53,8 +53,8 @@
 - `input_max_sample_abs_error`: `0`
 - `max_input_drift_px`: `1`
 - `process_sample_count`: `9`
-- `working_set_growth_bytes`: `-188416`
-- `private_memory_growth_bytes`: `-331776`
+- `working_set_growth_bytes`: `-65536`
+- `private_memory_growth_bytes`: `-204800`
 - `handle_growth`: `-2`
 - `artifact_bytes`: `1541848`
 - `guard_validation_evaluated`: `True`

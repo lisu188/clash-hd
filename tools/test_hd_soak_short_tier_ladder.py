@@ -146,11 +146,11 @@ def test_current_pending_approval_ladder_passes_as_plan() -> None:
     )
     assert report["passed"] is True, report["failures"]
     assert report["ladder_complete"] is False
-    assert report["current_step"]["id"] == "short2_menu_idle"
+    assert report["current_step"]["id"] == "short2_map_idle"
     assert report["current_step"]["requires_explicit_user_approval"] is True
     assert "-Execute -AllowVisibleRuntime" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-ReportJson captures\\current\\hd-soak-short2-map-idle-current.json" in report["current_step"]["approval_gated_runtime_command"]
+    assert "-ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md" in report["current_step"]["approval_gated_runtime_command"]
     assert "-MaxInputDriftPx 1" in report["current_step"]["approval_gated_runtime_command"]
     assert "-MaxInputDriftPx 1" in report["current_step"]["safe_dry_run_command"]
     assert "-IntroSkipClickMode postmessage" in report["current_step"]["approval_gated_runtime_command"]

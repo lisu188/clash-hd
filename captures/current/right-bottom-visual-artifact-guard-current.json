@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T20:47:10+02:00",
+  "generated_at": "2026-07-12T21:10:35+02:00",
   "passed": false,
   "runtime_policy": "repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only while the current natural right-bottom visual artifact remains explicitly blocked from promotion: controlled composition is recovered, natural owner/action rows are absent, and the lower/right natural regions still show the known black/striped incomplete state",
