@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any
 
 
-DEFAULT_RUN = Path("captures/archive/cdb-surface-dump-20260518-213418")
+DEFAULT_RUN = Path("captures/archive/cdb-surface-dump-20260712-150434")
 DEFAULT_JSON = Path("captures/current/right-bottom-natural-route-guard-current.json")
 DEFAULT_MD = Path("captures/current/right-bottom-natural-route-guard-current.md")
 EXPECTED_STAGE = (

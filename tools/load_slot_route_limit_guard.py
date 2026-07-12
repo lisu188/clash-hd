@@ -20,11 +20,11 @@ from typing import Any
 
 DEFAULT_DECOMP_C = Path(r"C:\Clash\clash95.c")
 DEFAULT_SURFACE_PROBE_SCRIPT = Path("scripts/cdb/run_cdb_surface_dump.ps1")
-DEFAULT_SLOT2_RUN = Path("captures/archive/cdb-surface-dump-20260520-202424")
-DEFAULT_SLOT3_RUN = Path("captures/archive/cdb-surface-dump-20260520-202504")
-DEFAULT_SLOT4_RUN = Path("captures/archive/cdb-surface-dump-20260520-202640")
-DEFAULT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260520-202810")
-DEFAULT_RECENT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260523-000931")
+DEFAULT_SLOT2_RUN = Path("captures/archive/cdb-surface-dump-20260712-153805")
+DEFAULT_SLOT3_RUN = Path("captures/archive/cdb-surface-dump-20260712-153827")
+DEFAULT_SLOT4_RUN = Path("captures/archive/cdb-surface-dump-20260712-154103")
+DEFAULT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260712-154340")
+DEFAULT_RECENT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260712-153529")
 DEFAULT_JSON = Path("captures/current/load-slot-route-limit-current.json")
 DEFAULT_MD = Path("captures/current/load-slot-route-limit-current.md")
 

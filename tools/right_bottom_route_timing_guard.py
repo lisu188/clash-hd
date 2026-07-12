@@ -18,9 +18,9 @@ from typing import Any
 import right_bottom_grid_hit_summary
 
 
-DEFAULT_PATCH_RUN = Path("captures/archive/cdb-surface-dump-20260513-120712")
-DEFAULT_FULLSTART_RUN = Path("captures/archive/cdb-surface-dump-20260513-122928")
-DEFAULT_GRID_RUN = Path("captures/archive/cdb-surface-dump-20260514-140601")
+DEFAULT_PATCH_RUN = Path("captures/archive/cdb-surface-dump-20260712-160204")
+DEFAULT_FULLSTART_RUN = Path("captures/archive/cdb-surface-dump-20260712-160351")
+DEFAULT_GRID_RUN = Path("captures/archive/cdb-surface-dump-20260712-150240")
 DEFAULT_JSON = Path("captures/current/right-bottom-route-timing-guard-current.json")
 DEFAULT_MD = Path("captures/current/right-bottom-route-timing-guard-current.md")
 EXPECTED_STAGE = (

@@ -19,9 +19,9 @@ from typing import Any
 
 
 DEFAULT_SAVE_SCAN_JSON = Path("captures/current/castle-save-owner-flag-scan-current.json")
-DEFAULT_BASELINE_RUN = Path("captures/archive/cdb-surface-dump-20260518-213418")
-DEFAULT_SLOT2_RUN = Path("captures/archive/cdb-surface-dump-20260523-001159")
-DEFAULT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260523-000931")
+DEFAULT_BASELINE_RUN = Path("captures/archive/cdb-surface-dump-20260712-150434")
+DEFAULT_SLOT2_RUN = Path("captures/archive/cdb-surface-dump-20260712-153503")
+DEFAULT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260712-153529")
 DEFAULT_JSON = Path("captures/current/right-bottom-natural-route-candidate-matrix-current.json")
 DEFAULT_MD = Path("captures/current/right-bottom-natural-route-candidate-matrix-current.md")
 EXPECTED_STAGE = (

@@ -55,7 +55,7 @@ DECOMP_MARKERS = {
 
 CDB_MARKERS = {
     "early_descriptor_breakpoint": "bp 00419B80",
-    "pre_entry_load_coord_log": "SURFDUMP_LOAD_COORD",
+    "pre_entry_load_coord_log": "__PRE_ENTRY_LOAD_COORD_ACTION__",
     "main_load_callback_skip": "bp 00447780",
     "main_load_callback_log": "SURFDUMP_SKIP_MAIN_LOAD_CALLBACK",
     "main_dispatch_poll": "bp 00447D61",

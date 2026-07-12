@@ -852,6 +852,21 @@ Backslash paths are consumed by CDB's nested command parser, and quoted paths
 can write the raw file but leave a syntax tail that prevents `q` from exiting
 cleanly.
 
+Evidence-file portability: archived `cdb-surface-dump.log` files are tracked in
+git (see the `.gitignore` evidence exceptions), but the castle `.raw` dumps stay
+local-only because the packaging boundary excludes memory dumps. After a
+workspace move, regenerate them with hidden-desktop runs before the refresh:
+
+- `captures/current/castle-owner-records-current.raw`: run the
+  `castlecenter-all` stage with
+  `probes/cdb/castle/clash95_castle_owner_records_dump_extra.cdb`, then copy
+  `C:\Clash\castle-owner-records-current.raw` into `captures/current/`.
+- `captures/archive/castle-overview-hitmap-flags1f.raw` (and the
+  `hitmap-current` / `hitmap-index1` variants): run the matching
+  `clash95_castle_overview_hitmap_*_extra.cdb` probe, then copy the raw file
+  the probe writes into `C:\Clash` (CDB working directory) into the recorded
+  `captures/` location.
+
 ## Clash95 Windows Sandbox UI Testing
 
 Use `run_clash_windows_sandbox.ps1` when the game window should not disrupt the

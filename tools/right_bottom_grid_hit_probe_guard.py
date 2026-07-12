@@ -23,7 +23,7 @@ import right_bottom_grid_hit_summary
 
 DEFAULT_PROBE = Path("probes/cdb/ui/clash95_right_bottom_grid_hit_extra.cdb")
 DEFAULT_SUMMARY_PARSER = Path("tools/right_bottom_grid_hit_summary.py")
-DEFAULT_FOCUSED_RUN = Path("captures/archive/cdb-surface-dump-20260514-140601")
+DEFAULT_FOCUSED_RUN = Path("captures/archive/cdb-surface-dump-20260712-150240")
 DEFAULT_JSON = Path("captures/current/right-bottom-grid-hit-probe-guard-current.json")
 DEFAULT_MD = Path("captures/current/right-bottom-grid-hit-probe-guard-current.md")
 RUNTIME_POLICY = "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"

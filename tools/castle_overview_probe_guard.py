@@ -24,7 +24,7 @@ import castle_overview_hitbox_summary
 DEFAULT_PROBE = Path("probes/cdb/castle/clash95_castle_overview_hitbox_extra.cdb")
 DEFAULT_SUMMARY_PARSER = Path("tools/castle_overview_hitbox_summary.py")
 DEFAULT_PATCHER = Path("patch_clash95_hd.py")
-DEFAULT_FOCUSED_RUN = Path("captures/cdb-surface-dump-20260514-130015")
+DEFAULT_FOCUSED_RUN = Path("captures/archive/cdb-surface-dump-20260712-144151")
 DEFAULT_JSON = Path("captures/current/castle-overview-probe-guard-current.json")
 DEFAULT_MD = Path("captures/current/castle-overview-probe-guard-current.md")
 RUNTIME_POLICY = "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"

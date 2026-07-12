@@ -17,11 +17,11 @@ from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
-DEFAULT_SLOT2_RUN = Path("captures/archive/cdb-surface-dump-20260520-202424")
-DEFAULT_SLOT3_RUN = Path("captures/archive/cdb-surface-dump-20260520-202504")
-DEFAULT_SLOT4_RUN = Path("captures/archive/cdb-surface-dump-20260520-202640")
-DEFAULT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260520-202810")
-DEFAULT_RECENT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260523-000931")
+DEFAULT_SLOT2_RUN = Path("captures/archive/cdb-surface-dump-20260712-153805")
+DEFAULT_SLOT3_RUN = Path("captures/archive/cdb-surface-dump-20260712-153827")
+DEFAULT_SLOT4_RUN = Path("captures/archive/cdb-surface-dump-20260712-154103")
+DEFAULT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260712-154340")
+DEFAULT_RECENT_SLOT5_RUN = Path("captures/archive/cdb-surface-dump-20260712-153529")
 DEFAULT_JSON = Path("captures/current/load-slot-timeout-phase-current.json")
 DEFAULT_MD = Path("captures/current/load-slot-timeout-phase-current.md")
 

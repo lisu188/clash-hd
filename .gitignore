@@ -48,15 +48,23 @@ temp/
 .obsidian/cache/
 .trash/
 
-# Codex local state
+# Codex/Claude local state
 .codex
 .codex-loop/
 .agents/
+.claude/
 
 # Optional generated archive form of cloud fixtures. The searchable fixture tree
 # under cloud/fixtures/ is the committed source of truth.
 cloud/*.zip
 !cloud/fixtures/**/*.log
+
+# Evidence exceptions: the repo-only refresh parses these small run logs and
+# raw hit/record dumps. Keep them tracked so evidence survives workspace moves
+# (the 2026-07-12 move lost every untracked archive log and forced a full
+# hidden-run regeneration campaign).
+!captures/archive/cdb-surface-dump-*/cdb-surface-dump.log
+!captures/archive/battle-visible-input-*/cdb-visible-input.log
 
 # Local-only Codex loop credentials/secrets. Keep VM passwords out of git.
 .codex-loop/*.local.*
