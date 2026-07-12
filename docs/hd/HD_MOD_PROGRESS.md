@@ -3557,28 +3557,32 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   `captures\current\hd-soak-short-current.md` records this as a deliberate
   non-pass rather than simulated soak evidence.
 
-## Right-Bottom Constructed Save Fixture Planner, 2026-07-03
+## Right-Bottom addon_flags Save Fixture Helpers, 2026-07-03
 
-- Added `tools\right_bottom_constructed_save_fixture.py` plus
-  `tools\test_right_bottom_constructed_save_fixture.py`. This is the repo-only
-  constructor for the Gate 1 recipe in `reports\hd_completion_certainty.md`:
-  set `addon_flags` bit `0x02` at save file offset
-  `0x10 + 509674 + i*467 + 0x1A0` in a copied save so the clicked building
-  passes the `clash95.c:49999` render gate on the natural route, mirroring the
-  proven `tools\battle_constructed_save_fixture.py` pattern.
-- The helper is dry-run by default, auto-selects the first plausible
-  player-owned building record without bit `0x02` (or accepts
-  `--building-index`), records source/patched SHA-256 values, and writes
-  evidence to
-  `captures\current\right-bottom-constructed-save-fixture-current.json` and
-  `captures\current\right-bottom-constructed-save-fixture-current.md`.
-- Output-save writes refuse repository paths without `--allow-repo-output`,
-  refuse overwriting the source save, and never touch `C:\Clash\save`. The
-  intended Windows-host usage is
-  `--source-save C:\Clash\save\0.dat --output-save
-  C:\ClashTests\right-bottom-addonflags-fixture\game\save\0.dat`, then rerun
-  the natural right-bottom UI probe and confirm `RBUI_PANEL_DRAW` /
-  `RBUI_ACTION_BOX` appear without debugger-forced clicks.
-- Building record parsing reuses `tools\castle_save_owner_flag_scan.py`
-  (block offset `509690`, stride `467`, flags at `+0x1A0`) so the fixture and
-  the scanner cannot drift apart on layout constants.
+- Added two independent repo-only Gate 1 helpers:
+  `tools\right_bottom_constructed_save_fixture.py` auto-selects a plausible
+  player-owned building (or accepts `--building-index`), while
+  `tools\right_bottom_addon_flags_fixture.py` also records owner/type read-back
+  and can emit plan-only evidence without a readable source save. Their
+  dedicated test modules cover offset math, single-byte/idempotent patching,
+  truncated and out-of-range rejection, selection behavior, and write guards.
+- Both helpers set `addon_flags` bit `0x02` at `building_record + 416`, allowing
+  the right-bottom production/action panel to pass the natural-route render
+  gate (`clash95.c:49999`, `37758`) instead of parking the descriptor at
+  `x=1000` with `owner_flag=0x00`.
+- The authoritative file-offset formula is
+  `16 + 509674 + i*467 + 416` = `510106 + i*467` for building index `i`.
+  Equivalently, the header-adjusted record base is `509690` (`0x7C6FA`) and the
+  flag is at `+0x1A0`; do not add another `0x10` to that adjusted base. The
+  constructed helper imports these layout constants from
+  `tools\castle_save_owner_flag_scan.py` so the scanner and fixture cannot
+  drift.
+- Both helpers are dry-run/plan-only by default and never mutate
+  `C:\Clash\save`. Output-save writes require an explicit destination, refuse
+  unsafe source or repository paths unless specifically allowed, and record
+  evidence under `captures\current\`. The intended isolated destination is
+  `C:\ClashTests\right-bottom-addonflags-fixture\game\save\0.dat`.
+- These helpers are non-promoting. After building a copied fixture, rerun the
+  natural right-bottom UI probe and require `RBUI_PANEL_DRAW` /
+  `RBUI_ACTION_BOX` without debugger-forced clicks; stable promotion still
+  requires the approved manual DirectInput proof. No default stage changed.
