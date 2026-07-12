@@ -1,7 +1,7 @@
 # HD Soak Short-Tier Ladder
 
-- Overall: PASS
-- Generated: `2026-07-12T17:23:40.909418+00:00`
+- Overall: FAIL
+- Generated: `2026-07-12T17:43:40.462400+00:00`
 - Runtime policy: repo-only short-tier soak ladder; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Protected stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Ladder complete: `False`
@@ -42,3 +42,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_s
 - `save_load_roundtrip`: status=`planned_not_implemented` implemented=`False`
 - `turn_advancement`: status=`planned_not_implemented` implemented=`False`
 - `campaign_route`: status=`planned_not_implemented` implemented=`False`
+
+## Failures
+
+- next-action report is not passing
+- next-action command does not match the first short2 menu-idle ladder step

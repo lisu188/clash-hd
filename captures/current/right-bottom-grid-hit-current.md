@@ -1,7 +1,7 @@
 # Right-Bottom Controlled Grid Hit
 
 - Status: PASS
-- Generated: `2026-07-12T19:22:28+02:00`
+- Generated: `2026-07-12T19:42:51+02:00`
 - Runtime policy: existing hidden-desktop CDB/proxy evidence only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Run: `captures\archive\cdb-surface-dump-20260712-150240`
 - Log: `captures\archive\cdb-surface-dump-20260712-150240\cdb-surface-dump.log`

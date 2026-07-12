@@ -1,7 +1,7 @@
 # HD Soak Approval Preflight Tests
 
 - Status: PASS
-- Generated: `2026-07-12T19:23:42+02:00`
+- Generated: `2026-07-12T19:43:41+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the first short2 visible-runtime soak remains explicit-approval gated, pins canonical per-step report paths, keeps dry-runs non-executing, can advance to later short steps, starts focused post-run validation with the failure-safe guard/triage refresh, keeps broad evidence refresh separate, requires next-action artifact inventory to match the preflight state, requires the actual harness dry-run plan and embedded next-action summary to match, requires visible-runtime approval TTL and limit summaries, requires verified base-executable input, and requires clean harness/runtime/process/executable guards before requesting approval
 

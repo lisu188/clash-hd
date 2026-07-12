@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:23:21+02:00",
+  "generated_at": "2026-07-12T19:43:27+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",

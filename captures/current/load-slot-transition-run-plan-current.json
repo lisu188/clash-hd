@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:22:28+02:00",
+  "generated_at": "2026-07-12T19:42:51+02:00",
   "passed": true,
   "runtime_policy": "repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "passes only when rows 3-5 remain blocked before 0044895A, the transition probe guard is passing, and every future command stays hidden-desktop and non-promoting",

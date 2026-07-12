@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:23:39+02:00",
+  "generated_at": "2026-07-12T19:43:39+02:00",
   "passed": false,
   "overall": false,
   "runtime_policy": "repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",

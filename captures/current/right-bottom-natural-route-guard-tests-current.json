@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:22:58+02:00",
+  "generated_at": "2026-07-12T19:43:11+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only in-process parser code; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the natural right-bottom action-route guard fails closed unless the command-99 owner loop is reached, the exact 00433C20 owner-loop descriptor model is present, the 004338E0 descriptor is parked at (1000,426), owner flag bits are zero, owner/action renderer rows are absent, and no AV rows are present",

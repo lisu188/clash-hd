@@ -1,14 +1,15 @@
 {
-  "generated_at": "2026-07-12T19:22:28+02:00",
+  "generated_at": "2026-07-12T19:42:51+02:00",
   "passed": true,
   "runtime_policy": "repo-only; scans existing CDB logs and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "right-bottom owner/action evidence must keep at least one controlled forced owner route, at least one current natural owner-flag-gated route, and no non-fixture archived natural route that already reaches the owner/action renderer without an explicit forced owner flag",
   "captures_root": "captures",
-  "scanned_log_count": 26,
-  "relevant_run_count": 12,
+  "scanned_log_count": 27,
+  "relevant_run_count": 13,
   "classification_counts": {
     "forced_owner_action_route": 7,
     "natural_state_gated": 1,
+    "natural_ui_descriptor_only": 1,
     "non_natural_isolated_fixture": 4
   },
   "natural_state_gated_count": 1,
@@ -16,7 +17,7 @@
   "natural_action_route_count": 0,
   "non_natural_isolated_fixture_count": 4,
   "non_natural_isolated_fixture_action_route_count": 13,
-  "natural_ui_descriptor_only_count": 0,
+  "natural_ui_descriptor_only_count": 1,
   "representative_runs": {
     "natural_state_gated": {
       "run": "captures\\archive\\cdb-surface-dump-20260712-150434",
@@ -156,7 +157,56 @@
       "non_natural_fixture_action_route_count": 0,
       "av_count": 0
     },
-    "natural_ui_descriptor_only": null,
+    "natural_ui_descriptor_only": {
+      "run": "captures\\archive\\cdb-surface-dump-20260712-193922",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-193922",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-193922\\cdb-surface-dump.log",
+      "classifications": [
+        "natural_ui_descriptor_only"
+      ],
+      "proof_class": null,
+      "fixture_status": null,
+      "is_non_natural_fixture": false,
+      "hidden_desktop": null,
+      "stage": null,
+      "candidate_sha256": null,
+      "surface": [
+        null,
+        null
+      ],
+      "marker_counts": {
+        "RBUI_DESC_SWITCH": 1,
+        "RBUI_PANEL_DRAW": 0,
+        "RBUI_ACTION_BOX": 0,
+        "NOWNER_OWNER_FLAG_TEST": 0,
+        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
+        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
+        "NOWNER_4338E0_ENTRY": 0,
+        "NOWNER_ACTION_CALL_WRAPPER": 0,
+        "NOWNER_OWNER_435BC0_ENTRY": 0,
+        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
+        "NOWNER_CASTLE_CMD99_TARGET": 0,
+        "NOWNER_CASTLE_HIT": 0,
+        "NOWNER_4338E0_SURFDUMP_READY": 0,
+        "AV_SURFDUMP": 0
+      },
+      "forced_flags": [],
+      "action_prefixes": [],
+      "owner_render_prefixes": [],
+      "natural_flag_test": {
+        "owner_flag": null,
+        "bit2": null,
+        "bit1": null,
+        "bit8": null
+      },
+      "natural_descriptors": {},
+      "natural_action_descriptor": null,
+      "natural_descriptor_result": {},
+      "natural_action_route_count": 0,
+      "non_natural_fixture_action_route_count": 0,
+      "av_count": 0
+    },
     "non_natural_isolated_fixture": {
       "run": "captures\\archive\\cdb-surface-dump-20260527-193512",
       "run_label": "captures/archive/cdb-surface-dump-20260527-193512",
@@ -1001,6 +1051,56 @@
       "owner_render_prefixes": [
         "APPOST"
       ],
+      "natural_flag_test": {
+        "owner_flag": null,
+        "bit2": null,
+        "bit1": null,
+        "bit8": null
+      },
+      "natural_descriptors": {},
+      "natural_action_descriptor": null,
+      "natural_descriptor_result": {},
+      "natural_action_route_count": 0,
+      "non_natural_fixture_action_route_count": 0,
+      "av_count": 0
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260712-193922",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-193922",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-193922\\cdb-surface-dump.log",
+      "classifications": [
+        "natural_ui_descriptor_only"
+      ],
+      "proof_class": null,
+      "fixture_status": null,
+      "is_non_natural_fixture": false,
+      "hidden_desktop": null,
+      "stage": null,
+      "candidate_sha256": null,
+      "surface": [
+        null,
+        null
+      ],
+      "marker_counts": {
+        "RBUI_DESC_SWITCH": 1,
+        "RBUI_PANEL_DRAW": 0,
+        "RBUI_ACTION_BOX": 0,
+        "NOWNER_OWNER_FLAG_TEST": 0,
+        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
+        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
+        "NOWNER_4338E0_ENTRY": 0,
+        "NOWNER_ACTION_CALL_WRAPPER": 0,
+        "NOWNER_OWNER_435BC0_ENTRY": 0,
+        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
+        "NOWNER_CASTLE_CMD99_TARGET": 0,
+        "NOWNER_CASTLE_HIT": 0,
+        "NOWNER_4338E0_SURFDUMP_READY": 0,
+        "AV_SURFDUMP": 0
+      },
+      "forced_flags": [],
+      "action_prefixes": [],
+      "owner_render_prefixes": [],
       "natural_flag_test": {
         "owner_flag": null,
         "bit2": null,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:23:44+02:00",
+  "generated_at": "2026-07-12T19:43:42+02:00",
   "passed": false,
   "runtime_policy": "repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report",
@@ -269,18 +269,20 @@
       "failures": []
     },
     "process_hygiene_guard": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "no cdb.exe or clash95* process is left running",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "process-hygiene-guard-current.md",
         "refresh_markdown": "captures\\current\\process-hygiene-guard-current.md",
         "refresh_json": "captures\\current\\process-hygiene-guard-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: process_hygiene_guard"
+      ]
     },
     "no_popup_map_evidence": {
       "passed": true,
@@ -493,18 +495,20 @@
       "failures": []
     },
     "process_hygiene_guard_tests": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "fixture regression coverage for the process hygiene guard",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "process-hygiene-guard-tests-current.md",
         "refresh_markdown": "captures\\current\\process-hygiene-guard-tests-current.md",
         "refresh_json": "captures\\current\\process-hygiene-guard-tests-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: process_hygiene_guard_tests"
+      ]
     },
     "manual_directinput_checklist": {
       "passed": true,
@@ -1492,6 +1496,8 @@
     }
   },
   "failures": [
+    "process_hygiene_guard: refresh check is not passing: process_hygiene_guard",
+    "process_hygiene_guard_tests: refresh check is not passing: process_hygiene_guard_tests",
     "right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
     "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
   ]

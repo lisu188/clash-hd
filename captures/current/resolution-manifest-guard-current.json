@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-07-12T19:52:51+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only metadata inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "guard_policy": "exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence, tile counts matching the engine formula",
+  "manifest": "src\\launcher\\resolutions.json",
+  "resolution_count": 5,
+  "status_counts": {
+    "stable": 1,
+    "validated": 0,
+    "experimental": 4
+  },
+  "checks": {
+    "resolution_keys_valid": {
+      "name": "resolution_keys_valid",
+      "passed": true,
+      "summary": {
+        "bad_keys": [],
+        "bad_statuses": {}
+      },
+      "failures": []
+    },
+    "single_stable_default": {
+      "name": "single_stable_default",
+      "passed": true,
+      "summary": {
+        "stable_keys": [
+          "800x600"
+        ],
+        "default": "800x600"
+      },
+      "failures": []
+    },
+    "stable_stage_matches": {
+      "name": "stable_stage_matches",
+      "passed": true,
+      "summary": {
+        "manifest_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+        "expected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch"
+      },
+      "failures": []
+    },
+    "tiles_formula": {
+      "name": "tiles_formula",
+      "passed": true,
+      "summary": {
+        "mismatches": {}
+      },
+      "failures": []
+    },
+    "evidence_backed": {
+      "name": "evidence_backed",
+      "passed": true,
+      "summary": {
+        "checked": [
+          "800x600"
+        ],
+        "failures": []
+      },
+      "failures": []
+    },
+    "custom_bounds_sane": {
+      "name": "custom_bounds_sane",
+      "passed": true,
+      "summary": {
+        "min": [
+          800,
+          600
+        ],
+        "max": [
+          3840,
+          2160
+        ]
+      },
+      "failures": []
+    }
+  },
+  "failures": []
+}

@@ -1,7 +1,7 @@
 # Load Slot Route Limit Guard
 
 - Status: PASS
-- Generated: `2026-07-12T19:22:28+02:00`
+- Generated: `2026-07-12T19:42:51+02:00`
 - Runtime policy: repo-only; reads decompilation text, harness text, and existing hidden-desktop CDB artifacts; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the current slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame
 - Promotion ready: `False`

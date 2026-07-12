@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:22:28+02:00",
+  "generated_at": "2026-07-12T19:42:51+02:00",
   "passed": true,
   "runtime_policy": "repo-only generated-probe preview; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when generated row 3-5 transition probes have no placeholders, carry row-specific raw mouse values, and keep late select/accept conditions targeted at the requested slot",

@@ -1,7 +1,7 @@
 # Current Completion Summary Tests
 
 - Status: PASS
-- Generated: `2026-07-12T19:23:35+02:00`
+- Generated: `2026-07-12T19:43:36+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the generated percentage summary stays machine-checkable and does not claim full-game completion while manual proof is absent
 

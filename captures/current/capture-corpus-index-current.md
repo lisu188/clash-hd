@@ -1,11 +1,11 @@
 # Capture Corpus Index
 
 - Overall: PASS
-- Generated: `2026-07-12T19:23:42+02:00`
+- Generated: `2026-07-12T19:43:41+02:00`
 - Runtime policy: repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers
 - Captures root: `C:\Users\andrz\git\clash-hd\captures`
-- Artifact count: `657`
+- Artifact count: `658`
 - Current references: `166`
 - Archived references: `387`
 - Missing current refs: `[]`
@@ -15,11 +15,11 @@
 
 - `archived_referenced`: `210`
 - `current_referenced`: `136`
-- `stale_unreferenced`: `311`
+- `stale_unreferenced`: `312`
 
 ## Era Counts
 
-- `cdb_surface_dump_unverified`: `65`
+- `cdb_surface_dump_unverified`: `66`
 - `hidden_cdb_surface_dump`: `148`
 - `other_capture_artifact`: `433`
 - `visible_era`: `11`

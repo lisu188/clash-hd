@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:22:28+02:00",
+  "generated_at": "2026-07-12T19:42:51+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture planner; reads generated evidence JSON and writes only JSON/Markdown reports; does not copy saves, launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only while the slot-5 route-compatible save remains blocked before LOADSAVE, the row-0 natural route remains proven, and the proposed copied save stays isolated and non-promoting",

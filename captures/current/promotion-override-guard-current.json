@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:23:34+02:00",
+  "generated_at": "2026-07-12T19:43:35+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence must keep CDB-only promotion overrides inactive until manual proof or an explicit override decision is intentionally supplied",
