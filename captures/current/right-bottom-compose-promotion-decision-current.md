@@ -3,7 +3,7 @@
 - Decision record: FAIL
 - Decision: `defer_stable_promotion`
 - Stable stage should change: `False`
-- Generated: `2026-06-17T09:47:23+02:00`
+- Generated: `2026-07-12T16:08:35+02:00`
 - Current stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Validation stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`
 - Candidate SHA-256: `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`
@@ -38,7 +38,7 @@
 - Full-start route AV count: `0`
 - Normal map gate surface: `[800, 600]`
 - Normal gate unexplained blanks: `0`
-- Natural UI descriptor switch rows: `35`
+- Natural UI descriptor switch rows: `0`
 - Natural UI owner/action rows: `RBUI_PANEL_DRAW=0`, `RBUI_ACTION_BOX=0`
 - Controlled grid hit: `grid_hit_ok=True`, `entry=[450, 73]`, `result=0`
 - Controlled grid hit AV count: `0`
@@ -74,5 +74,7 @@
 
 ## Failures
 
+- right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+- right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
 - right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
 - right-bottom natural UI probe did not enter owner/action draw rows

@@ -1,7 +1,7 @@
 # Castle Overview Probe Guard
 
 - Overall: PASS
-- Generated: `2026-06-17T09:48:06+02:00`
+- Generated: `2026-07-12T16:09:07+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: focused overview hitbox proof must keep the descriptor-loop breakpoints, forbid the old crashing overview descriptor-input wrapper marker, and continue to prove the displayed-coordinate wrapper and click gate with no AV
 
@@ -32,12 +32,12 @@
 ## Focused Hitbox Log
 
 - Status: PASS
-- Run: `captures\archive\cdb-surface-dump-20260515-105411`
-- Log: `captures\archive\cdb-surface-dump-20260515-105411\cdb-surface-dump.log`
+- Run: `captures\archive\cdb-surface-dump-20260712-144151`
+- Log: `captures\archive\cdb-surface-dump-20260712-144151\cdb-surface-dump.log`
 - Ready size: `[800, 600]`
-- Overview post-draw: `{'main_surface': 171785944, 'main_size': [800, 600], 'overview_surface': 172162352, 'overview_size': [640, 480], 'owner_screen': 70240026, 'mouse': [371, 107], 'click_flag': 1, 'button0': 128}`
+- Overview post-draw: `{'main_surface': 167919320, 'main_size': [800, 600], 'overview_surface': 168342584, 'overview_size': [640, 480], 'owner_screen': 71026458, 'mouse': [371, 107], 'click_flag': 1, 'button0': 128}`
 - Displayed result: `{'raw_hit': 248, 'adjusted_hit': 0, 'mouse': [371, 107], 'raw': [23744, 6848], 'target_raw': 248}`
-- Descriptor: `{'command': 134, 'callback': 4521584, 'text': 3, 'arg_count': 5171110, 'owner_screen': 70240026, 'surface': 171785944, 'sz': [800, 600], 'mouse': [371, 107]}`
+- Descriptor: `{'command': 134, 'callback': 4521584, 'text': 3, 'arg_count': 5171110, 'owner_screen': 71026458, 'surface': 167919320, 'sz': [800, 600], 'mouse': [371, 107]}`
 - Click gate: `{'command': 134, 'callback': 4521584, 'gate': 1, 'mouse': [371, 107], 'click_flag': 1, 'button0': 128}`
 - Displayed hit ok: `True`
 - Displayed wrapper ok: `True`

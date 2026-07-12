@@ -1,7 +1,7 @@
 # Visible Runtime Launcher Guard
 
 - Overall: PASS
-- Generated: `2026-06-17T09:48:10+02:00`
+- Generated: `2026-07-12T16:09:11+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: legacy visible-runtime launchers/helpers must fail closed unless -AllowVisibleRuntime is explicitly supplied after user approval; guarded child helpers must receive the same switch; root PowerShell risky-call inventory must be guarded or explicitly exempt
 - Scripts checked: `8`
@@ -20,7 +20,7 @@
 
 ## Root PowerShell Risky-Call Inventory
 
-- Root: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd`
+- Root: `C:\Users\andrz\git\clash-hd`
 - Risky scripts: `0`
 - Guarded risky scripts: `0`
 - Exempt risky scripts: `0`

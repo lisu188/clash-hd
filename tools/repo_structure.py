@@ -37,6 +37,7 @@ APPROVED_ROOT_FILES = {
 }
 APPROVED_ROOT_DIRS = {
     ".agents",
+    ".claude",
     ".codex-loop",
     ".git",
     "__pycache__",
@@ -363,7 +364,7 @@ def git_inventory(root: Path) -> list[Path] | None:
 
 
 def fallback_inventory(root: Path) -> list[Path]:
-    skipped = {".agents", ".git", ".codex-loop", "__pycache__"}
+    skipped = {".agents", ".claude", ".git", ".codex-loop", "__pycache__"}
     paths: list[Path] = []
     for path in root.rglob("*"):
         if any(part in skipped for part in path.parts):

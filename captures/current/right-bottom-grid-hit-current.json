@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-06-17T09:47:21+02:00",
+  "generated_at": "2026-07-12T16:08:34+02:00",
   "passed": true,
   "runtime_policy": "existing hidden-desktop CDB/proxy evidence only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
-  "run": "captures\\archive\\cdb-surface-dump-20260514-140601",
-  "summary_json": "captures\\archive\\cdb-surface-dump-20260514-140601\\summary.json",
-  "log": "captures\\archive\\cdb-surface-dump-20260514-140601\\cdb-surface-dump.log",
+  "run": "captures\\archive\\cdb-surface-dump-20260712-150240",
+  "summary_json": "captures\\archive\\cdb-surface-dump-20260712-150240\\summary.json",
+  "log": "captures\\archive\\cdb-surface-dump-20260712-150240\\cdb-surface-dump.log",
   "manifest": "captures\\archive\\patch-stage-right-bottom-compose-20260513.json",
-  "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png",
+  "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png",
   "parser_summary": {
-    "log": "captures\\archive\\cdb-surface-dump-20260514-140601\\cdb-surface-dump.log",
+    "log": "captures\\archive\\cdb-surface-dump-20260712-150240\\cdb-surface-dump.log",
     "expected_entry": [
       450,
       73
@@ -59,7 +59,7 @@
           73
         ],
         "result": 0,
-        "line": 204
+        "line": 211
       }
     ],
     "forced_gate_count": 1,
@@ -80,41 +80,41 @@
     ],
     "rows": [
       {
-        "line": 203,
+        "line": 210,
         "marker": "RBGRID_OWNER_SETUP_CALL",
         "values": {
-          "owner": 68929306,
+          "owner": 72337178,
           "owner_flag_old": 0,
           "scroll": [
             10,
             17
           ],
-          "surface": 170913232,
+          "surface": 169669040,
           "sz": [
             800,
             600
           ]
         },
-        "text": "RBGRID_OWNER_SETUP_CALL owner=041bc71a owner_flag_old=0x00 scroll=(10,17) surface=0a2fedd0 sz=(800,600)"
+        "text": "RBGRID_OWNER_SETUP_CALL owner=044fc71a owner_flag_old=0x00 scroll=(10,17) surface=0a1cf1b0 sz=(800,600)"
       },
       {
-        "line": 203,
+        "line": 210,
         "marker": "RBGRID_OWNER_FLAG_FORCED",
         "values": {
-          "owner": 68929306,
+          "owner": 72337178,
           "owner_flag_new": 2
         },
-        "text": "RBGRID_OWNER_FLAG_FORCED owner=041bc71a owner_flag_new=0x02"
+        "text": "RBGRID_OWNER_FLAG_FORCED owner=044fc71a owner_flag_new=0x02"
       },
       {
-        "line": 203,
+        "line": 210,
         "marker": "RBGRID_WRITE_532154",
         "values": {
           "ret": 4238870,
-          "new": 174241296,
-          "d532150": 68929306,
+          "new": 172997096,
+          "d532150": 72337178,
           "d53214c": 1,
-          "surface": 170913232,
+          "surface": 169669040,
           "sz": [
             800,
             600
@@ -138,168 +138,168 @@
             600
           ]
         },
-        "text": "RBGRID_WRITE_532154 ret=0040ae16 new=0a62b610 d532150=041bc71a d53214c=00000001 surface=0a2fedd0 sz=(800,600) short_return=1 SURFDUMP_REDRAW seq=1 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a2fedd0 size=(800,600)"
+        "text": "RBGRID_WRITE_532154 ret=0040ae16 new=0a4fb9e8 d532150=044fc71a d53214c=00000001 surface=0a1cf1b0 sz=(800,600) short_return=1 SURFDUMP_REDRAW seq=1 scroll=(10,17) end12=(22,26) map=(100,100) surface=0a1cf1b0 size=(800,600)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_ACTION_CALL",
         "values": {
           "desc": 5315904,
-          "owner": 68929306,
+          "owner": 72337178,
           "owner_flag": 2,
-          "d532150": 68929306,
+          "d532150": 72337178,
           "d53214c": 1,
-          "d532154": 174241296,
-          "surface": 170913232,
+          "d532154": 172997096,
+          "surface": 169669040,
           "sz": [
             800,
             600
           ],
           "skip_prelude": 1
         },
-        "text": "RBGRID_ACTION_CALL desc=00511d40 owner=041bc71a owner_flag=0x02 d532150=041bc71a d53214c=00000001 d532154=0a62b610 surface=0a2fedd0 sz=(800,600) skip_prelude=1"
+        "text": "RBGRID_ACTION_CALL desc=00511d40 owner=044fc71a owner_flag=0x02 d532150=044fc71a d53214c=00000001 d532154=0a4fb9e8 surface=0a1cf1b0 sz=(800,600) skip_prelude=1"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_433914_CALL_435BC0",
         "values": {
           "ret": 4238870,
-          "owner_arg": 68929306,
-          "owner_global": 68929306,
+          "owner_arg": 72337178,
+          "owner_global": 72337178,
           "owner_flag": 2,
           "d532218": 0,
           "d5322c8": 0,
-          "surface": 170913232,
+          "surface": 169669040,
           "sz": [
             800,
             600
           ]
         },
-        "text": "RBGRID_433914_CALL_435BC0 ret=0040ae16 owner_arg=041bc71a owner_global=041bc71a owner_flag=0x02 d532218=00000000 d5322c8=0 surface=0a2fedd0 sz=(800,600)"
+        "text": "RBGRID_433914_CALL_435BC0 ret=0040ae16 owner_arg=044fc71a owner_global=044fc71a owner_flag=0x02 d532218=00000000 d5322c8=0 surface=0a1cf1b0 sz=(800,600)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_OWNER_435BC0_ENTRY",
         "values": {
           "ret": 4405529,
-          "owner_arg": 68929306,
+          "owner_arg": 72337178,
           "d532218_before": 0,
           "d5322c8_before": 0,
           "d532210_before": 0,
-          "surface": 170913232,
+          "surface": 169669040,
           "sz": [
             800,
             600
           ],
           "mouse": [
-            420,
+            320,
             166
           ]
         },
-        "text": "RBGRID_OWNER_435BC0_ENTRY ret=00433919 owner_arg=041bc71a d532218_before=00000000 d5322c8_before=0 d532210_before=0 surface=0a2fedd0 sz=(800,600) mouse=(420,166)"
+        "text": "RBGRID_OWNER_435BC0_ENTRY ret=00433919 owner_arg=044fc71a d532218_before=00000000 d5322c8_before=0 d532210_before=0 surface=0a1cf1b0 sz=(800,600) mouse=(320,166)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_WRITE_532218",
         "values": {
-          "ret": 3,
-          "new": 68929306,
+          "ret": 0,
+          "new": 72337178,
           "selected_index": 0,
           "hover_slot": 0,
-          "surface": 170913232,
+          "surface": 169669040,
           "sz": [
             800,
             600
           ]
         },
-        "text": "RBGRID_WRITE_532218 ret=00000003 new=041bc71a selected_index=0 hover_slot=0 surface=0a2fedd0 sz=(800,600)"
+        "text": "RBGRID_WRITE_532218 ret=00000000 new=044fc71a selected_index=0 hover_slot=0 surface=0a1cf1b0 sz=(800,600)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_WRITE_5322C8",
         "values": {
-          "ret": 3,
+          "ret": 0,
           "new": -1,
-          "d532218": 68929306,
+          "d532218": 72337178,
           "selected_index": 0,
-          "surface": 170913232,
+          "surface": 169669040,
           "sz": [
             800,
             600
           ]
         },
-        "text": "RBGRID_WRITE_5322C8 ret=00000003 new=-1 d532218=041bc71a selected_index=0 surface=0a2fedd0 sz=(800,600)"
+        "text": "RBGRID_WRITE_5322C8 ret=00000000 new=-1 d532218=044fc71a selected_index=0 surface=0a1cf1b0 sz=(800,600)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_PANEL_DRAW_4347A0",
         "values": {
           "ret": 4414852,
-          "owner": 68929306,
+          "owner": 72337178,
           "selected_index": 0,
           "hover_slot": -1,
-          "render": 170913232,
-          "map_surface": 170913232,
+          "render": 169669040,
+          "map_surface": 169669040,
           "sz": [
             800,
             600
           ]
         },
-        "text": "RBGRID_PANEL_DRAW_4347A0 ret=00435d84 owner=041bc71a selected_index=0 hover_slot=-1 render=0a2fedd0 map_surface=0a2fedd0 sz=(800,600)"
+        "text": "RBGRID_PANEL_DRAW_4347A0 ret=00435d84 owner=044fc71a selected_index=0 hover_slot=-1 render=0a1cf1b0 map_surface=0a1cf1b0 sz=(800,600)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_GRID_DRAW_434E20",
         "values": {
           "ret": 4411762,
-          "owner": 68929306,
+          "owner": 72337178,
           "selected_index": 0,
           "hover_slot": -1,
-          "render": 170913232,
-          "map_surface": 170913232,
+          "render": 169669040,
+          "map_surface": 169669040,
           "sz": [
             800,
             600
           ]
         },
-        "text": "RBGRID_GRID_DRAW_434E20 ret=00435172 owner=041bc71a selected_index=0 hover_slot=-1 render=0a2fedd0 map_surface=0a2fedd0 sz=(800,600)"
+        "text": "RBGRID_GRID_DRAW_434E20 ret=00435172 owner=044fc71a selected_index=0 hover_slot=-1 render=0a1cf1b0 map_surface=0a1cf1b0 sz=(800,600)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_STATUS_DRAW_435280",
         "values": {
           "ret": 4414862,
-          "owner": 68929306,
+          "owner": 72337178,
           "selected_index": 0,
           "hover_slot": -1,
           "mouse": [
-            420,
+            320,
             166
           ],
-          "render": 170913232,
-          "map_surface": 170913232
+          "render": 169669040,
+          "map_surface": 169669040
         },
-        "text": "RBGRID_STATUS_DRAW_435280 ret=00435d8e owner=041bc71a selected_index=0 hover_slot=-1 mouse=(420,166) render=0a2fedd0 map_surface=0a2fedd0"
+        "text": "RBGRID_STATUS_DRAW_435280 ret=00435d8e owner=044fc71a selected_index=0 hover_slot=-1 mouse=(320,166) render=0a1cf1b0 map_surface=0a1cf1b0"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_ACTION_BOX_435500",
         "values": {
           "ret": 4414867,
-          "owner": 68929306,
+          "owner": 72337178,
           "selected_index": 0,
           "hover_slot": -1,
           "mouse": [
-            420,
+            320,
             166
           ],
           "render": 5362880,
-          "map_surface": 170913232
+          "map_surface": 169669040
         },
-        "text": "RBGRID_ACTION_BOX_435500 ret=00435d93 owner=041bc71a selected_index=0 hover_slot=-1 mouse=(420,166) render=0051d4c0 map_surface=0a2fedd0"
+        "text": "RBGRID_ACTION_BOX_435500 ret=00435d93 owner=044fc71a selected_index=0 hover_slot=-1 mouse=(320,166) render=0051d4c0 map_surface=0a1cf1b0"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_FORCE_NATIVE",
         "values": {
           "target": "grid0",
@@ -318,24 +318,24 @@
         "text": "RBGRID_FORCE_NATIVE target=grid0 native=(450,73) shift=6 raw=(00007080,00001240) selected_index=0 hover_slot=-1"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_GRID_DRAW_434E20",
         "values": {
           "ret": 4412020,
-          "owner": 68929306,
+          "owner": 72337178,
           "selected_index": 0,
           "hover_slot": -1,
           "render": 5362880,
-          "map_surface": 170913232,
+          "map_surface": 169669040,
           "sz": [
             800,
             600
           ]
         },
-        "text": "RBGRID_GRID_DRAW_434E20 ret=00435274 owner=041bc71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a2fedd0 sz=(800,600)"
+        "text": "RBGRID_GRID_DRAW_434E20 ret=00435274 owner=044fc71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a1cf1b0 sz=(800,600)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_GRID_ROUTE_ENTRY",
         "values": {
           "selected_index": 0,
@@ -348,7 +348,7 @@
         "text": "RBGRID_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(450,73)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_GRID_GATE",
         "values": {
           "raw_result": 0,
@@ -361,7 +361,7 @@
         "text": "RBGRID_GRID_GATE raw_result=0 forced_result=1 mouse=(450,73)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_GRID_CALL",
         "values": {
           "mouse": [
@@ -380,7 +380,7 @@
         "text": "RBGRID_GRID_CALL mouse=(450,73) raw=(00007080,00001240) expected_native=(450,73)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_GRID_ENTRY",
         "values": {
           "mouse": [
@@ -402,7 +402,7 @@
         "text": "RBGRID_GRID_ENTRY mouse=(450,73) raw=(00007080,00001240) expected_native=(450,73) shift=6 selected_index=0 hover_slot=-1"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_GRID_RESULT",
         "values": {
           "result": 0,
@@ -417,7 +417,7 @@
         "text": "RBGRID_GRID_RESULT result=0 expected=0 mouse=(450,73) selected_index=0 hover_slot=-1"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_GRID_ACCEPT",
         "values": {
           "result": 0,
@@ -427,35 +427,35 @@
         "text": "RBGRID_GRID_ACCEPT result=0 exit_armed=1 hover_slot=-1"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_4338E0_AFTER_435BC0",
         "values": {
           "ret": 4238870,
-          "d532218": 68929306,
+          "d532218": 72337178,
           "selected_index": 0,
           "hover_slot": 0,
-          "surface": 170913232,
+          "surface": 169669040,
           "sz": [
             800,
             600
           ]
         },
-        "text": "RBGRID_4338E0_AFTER_435BC0 ret=0040ae16 d532218=041bc71a selected_index=0 hover_slot=0 surface=0a2fedd0 sz=(800,600)"
+        "text": "RBGRID_4338E0_AFTER_435BC0 ret=0040ae16 d532218=044fc71a selected_index=0 hover_slot=0 surface=0a1cf1b0 sz=(800,600)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "RBGRID_SURFDUMP_READY",
         "values": {
           "after_action": 1,
-          "surface": 170913232,
+          "surface": 169669040,
           "size": [
             800,
             600
           ],
-          "base": 173670448,
+          "base": 172425264,
           "bytes": 480000,
-          "d532150": 68929306,
-          "d532218": 68929306,
+          "d532150": 72337178,
+          "d532218": 72337178,
           "selected_index": 0,
           "hover_slot": 0,
           "scroll": [
@@ -463,22 +463,22 @@
             17
           ]
         },
-        "text": "RBGRID_SURFDUMP_READY after_action=1 surface=0a2fedd0 size=(800,600) base=0a5a0030 bytes=480000 d532150=041bc71a d532218=041bc71a selected_index=0 hover_slot=0 scroll=(10,17)"
+        "text": "RBGRID_SURFDUMP_READY after_action=1 surface=0a1cf1b0 size=(800,600) base=0a470030 bytes=480000 d532150=044fc71a d532218=044fc71a selected_index=0 hover_slot=0 scroll=(10,17)"
       },
       {
-        "line": 204,
+        "line": 211,
         "marker": "SURFDUMP_READY",
         "values": {
           "redraw_seq": 991,
-          "surface": 170913232,
+          "surface": 169669040,
           "size": [
             800,
             600
           ],
-          "base": 173670448,
+          "base": 172425264,
           "bytes": 480000
         },
-        "text": "SURFDUMP_READY redraw_seq=991 surface=0a2fedd0 size=(800,600) base=0a5a0030 bytes=480000 SURFDUMP_HOST_READY"
+        "text": "SURFDUMP_READY redraw_seq=991 surface=0a1cf1b0 size=(800,600) base=0a470030 bytes=480000 SURFDUMP_HOST_READY"
       }
     ]
   },

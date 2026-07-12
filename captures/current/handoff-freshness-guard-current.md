@@ -1,7 +1,7 @@
 # Handoff Freshness Guard
 
 - Overall: PASS
-- Generated: `2026-06-17T09:48:20+02:00`
+- Generated: `2026-07-12T16:09:19+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: handoff docs must mention the current route timing guard, keep the right-bottom validation stage out of stable until manual proof or explicit CDB-only override, keep the non-promoting manual proof template visible, keep the percentage completion summary visible, keep the right-bottom owner-flag inventory visible, keep the load-slot route-limit boundary visible, keep the load-slot transition readiness matrix visible, preserve the user's no-popup runtime preference, require the visible-runtime launcher approval guard, and avoid stale route/input-safety, legacy visible-capture, or VM/visual-smoke blockers
 

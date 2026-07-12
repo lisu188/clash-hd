@@ -1,0 +1,5577 @@
+{
+  "log": "captures\\archive\\cdb-surface-dump-20260712-155528\\cdb-surface-dump.log",
+  "proof_class": "non_natural_isolated_fixture",
+  "expected_slot": 0,
+  "selected_arg": 0,
+  "selected_global": 0,
+  "loadsave_rows": [
+    {
+      "line": 199,
+      "marker": "SURFDUMP_LOADSAVE",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": 67108912
+      },
+      "text": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=04000030"
+    }
+  ],
+  "loadsave_slot_values": [
+    0,
+    0
+  ],
+  "loadsave_slot_unique_values": [
+    0
+  ],
+  "loadsave_slot_consistent": true,
+  "loadsave_slot_expected_match": true,
+  "expected_slot_match": true,
+  "row_count": 272,
+  "marker_counts": {
+    "SURFDUMP_LOADSAVE": 1,
+    "SURFDUMP_PLAYGAME": 2,
+    "SURFDUMP_READY": 1,
+    "SURFDUMP_HOST_READY": 1,
+    "NOWNER_HEADER": 1,
+    "NOWNER_FORCE_MAP_CASTLE_CLICK": 1,
+    "NOWNER_MAP_TILE": 1,
+    "NOWNER_BUILDING_TILE": 1,
+    "NOWNER_CASTLE_OVERVIEW_ENTRY": 1,
+    "NOWNER_CASTLE_HIT_GIVEUP": 0,
+    "NOWNER_CASTLE_HITMAP_SAMPLE": 1,
+    "NOWNER_CASTLE_CMD99_TARGET": 1,
+    "NOWNER_CASTLE_HIT": 1,
+    "NOWNER_CASTLE_CMD99_GATE": 1,
+    "NOWNER_CASTLE_CALLBACK": 1,
+    "NOWNER_433C20_ENTRY": 1,
+    "NOWNER_OWNER_FLAG_TEST": 1,
+    "NOWNER_OWNER_SCREEN_DESC_DRAW": 1,
+    "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
+    "NOWNER_HITTEST_ENTRY": 2,
+    "NOWNER_HITTEST_COMPARE": 0,
+    "NOWNER_HITTEST_SCAN_TAIL": 0,
+    "NOWNER_DESCRIPTOR_CALLBACK": 1,
+    "NOWNER_4338E0_ENTRY": 1,
+    "NOWNER_419ED0_ENTRY": 1,
+    "NOWNER_419ED0_SOUND_PREP": 1,
+    "NOWNER_419ED0_SOUND_RETURN": 1,
+    "NOWNER_419ED0_STATE6_READY": 1,
+    "NOWNER_419ED0_RENDER_BEGIN_RETURN": 1,
+    "NOWNER_419ED0_RENDER_BEGIN": 1,
+    "NOWNER_419ED0_STATE5_DONE": 1,
+    "NOWNER_RENDER_BEGIN_LATE_ARMED": 1,
+    "NOWNER_RELEASE_OWNER_DESC_CLICK": 1,
+    "NOWNER_RENDER_BEGIN_ENTRY": 1,
+    "NOWNER_RENDER_BEGIN_LOOP": 1,
+    "NOWNER_RENDER_BEGIN_FLIP_RESULT": 1,
+    "NOWNER_RENDER_BEGIN_DD_PUMP_CALL": 0,
+    "NOWNER_RENDER_BEGIN_DD_PUMP_RETURN": 0,
+    "NOWNER_RENDER_BEGIN_LOST_RESULT": 1,
+    "NOWNER_RENDER_BEGIN_ITERATION_LIMIT": 0,
+    "NOWNER_RENDER_BEGIN_EXIT": 1,
+    "NOWNER_DD_PUMP_ENTRY": 0,
+    "NOWNER_DD_PUMP_MSG_PUMP_CALL": 0,
+    "NOWNER_DD_PUMP_MSG_PUMP_RETURN": 0,
+    "NOWNER_4338E0_AFTER_SELECT": 1,
+    "NOWNER_4338E0_AFTER_GATE": 1,
+    "NOWNER_4338E0_RESOURCE_SETUP": 1,
+    "NOWNER_4338E0_PRE_PUMP": 1,
+    "NOWNER_4338E0_PUMP_ENTRY": 1,
+    "NOWNER_4338E0_PUMP_FILL": 0,
+    "NOWNER_4338E0_PUMP_RETURN": 1,
+    "NOWNER_4338E0_POST_PUMP": 1,
+    "NOWNER_4338E0_SURFDUMP_READY": 0,
+    "NOWNER_4338E0_OWNER_FLAG_BLOCKED": 0,
+    "NOWNER_ACTION_CALL_WRAPPER": 1,
+    "NOWNER_WRAPPER_ENTRY": 1,
+    "NOWNER_WRAPPER_ALLOC_RESULT": 1,
+    "NOWNER_WRAPPER_TEMP_SURFACE": 1,
+    "NOWNER_WRAPPER_CALL_STOCK_435BC0": 1,
+    "NOWNER_OWNER_435BC0_ENTRY": 1,
+    "NOWNER_435BC0_ALLOC_RESULT": 1,
+    "NOWNER_435BC0_MODEL_CHECK": 1,
+    "NOWNER_435BC0_POLL_LIMIT": 0,
+    "NOWNER_435BC0_POLL": 9,
+    "NOWNER_435BC0_WRITE_532218": 1,
+    "NOWNER_435BC0_WRITE_5322C8": 1,
+    "NOWNER_435BC0_PANEL_DRAW": 1,
+    "NOWNER_435BC0_GRID_DRAW": 10,
+    "NOWNER_435BC0_STATUS_DRAW": 1,
+    "NOWNER_435BC0_ACTION_BOX": 1,
+    "NOWNER_435BC0_GRID_ROUTE_ENTRY": 9,
+    "NOWNER_435BC0_GRID_GATE": 9,
+    "NOWNER_435BC0_GRID_CALL": 7,
+    "NOWNER_435BC0_GRID_ENTRY": 7,
+    "NOWNER_435BC0_GRID_RESULT": 0,
+    "NOWNER_435BC0_GRID_FAIL": 7,
+    "NOWNER_435BC0_SELECTION_UPDATE": 0,
+    "NOWNER_435BC0_SELECTION_AFTER": 0,
+    "NOWNER_435BC0_LOOP_HEAD": 8,
+    "NOWNER_435BC0_LOOP_PUMP_CALL": 7,
+    "NOWNER_435BC0_PUMP_ENTRY": 9,
+    "NOWNER_435BC0_PUMP_MSG_CALL": 9,
+    "NOWNER_435BC0_PUMP_MSG_RETURN": 9,
+    "NOWNER_435BC0_PUMP_TICK_RETURN": 9,
+    "NOWNER_435BC0_PUMP_CB14_CALL": 9,
+    "NOWNER_435BC0_PUMP_CB14_RETURN": 0,
+    "NOWNER_435BC0_PUMP_608F0A_CALL": 8,
+    "NOWNER_435BC0_PUMP_608F0A_RETURN": 8,
+    "NOWNER_435BC0_PUMP_608F0B_CALL": 9,
+    "NOWNER_435BC0_PUMP_608F0B_RETURN": 9,
+    "NOWNER_435BC0_PUMP_CB04_CALL": 9,
+    "NOWNER_435BC0_PUMP_CB04_RETURN": 9,
+    "NOWNER_SOURCEHOLD_LOOP_PUMP": 0,
+    "NOWNER_SOURCEHOLD_CB14_PRE": 0,
+    "NOWNER_SOURCEHOLD_608F0A_PRE": 0,
+    "NOWNER_SOURCEHOLD_608F0B_PRE": 0,
+    "NOWNER_SOURCEHOLD_608F0A_COORDS_PRE": 0,
+    "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE": 0,
+    "NOWNER_SOURCEHOLD_4612E0_ENTRY": 0,
+    "NOWNER_SOURCEHOLD_4612E0_RETURN": 0,
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT": 0,
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT_POST": 0,
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_X": 0,
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_Y": 0,
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_BUTTON": 0,
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_REFRESH": 0,
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE": 0,
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE_POST": 0,
+    "NOWNER_ACTION_FORCE_NATIVE": 0,
+    "NOWNER_ACTION_FORCE_DISPLAY": 0,
+    "NOWNER_ACTION_DESCRIPTOR_ENTRY": 0,
+    "NOWNER_ACTION_WIDGET_PRE_GATES": 0,
+    "NOWNER_ACTION_WIDGET_CLICK_GATE_RET": 0,
+    "NOWNER_ACTION_WIDGET_CLICK_GATE": 0,
+    "NOWNER_ACTION_DESCRIPTOR_CALLBACK": 0,
+    "NOWNER_ACTION_DESCRIPTOR_RESULT": 0,
+    "NOWNER_ACTION_CLICK_435620_BEFORE_SET": 0,
+    "NOWNER_ACTION_CLICK_435620_ENTRY": 0,
+    "NOWNER_ACTION_CLICK_EXIT_SET": 0,
+    "NOWNER_435BC0_LOOP_DRAW_CALL": 7,
+    "NOWNER_435BC0_LOOP_DRAW_RETURN": 7,
+    "NOWNER_435BC0_LOOP_HIT_RESULT": 7,
+    "NOWNER_435BC0_LOOP_COMPARE": 7,
+    "NOWNER_435BC0_LOOP_LIMIT": 1,
+    "NOWNER_435BC0_LOOP_EXIT": 1,
+    "NOWNER_435BC0_NO_HIT_UPDATE": 9,
+    "NOWNER_435BC0_RETURN": 1,
+    "NOWNER_WRAPPER_STOCK_RETURN": 1,
+    "NOWNER_WRAPPER_RESTORE_SURFACE": 1,
+    "NOWNER_WRAPPER_COPYBACK_CALL": 1,
+    "NOWNER_WRAPPER_COPYBACK_RETURN": 1,
+    "NOWNER_WRAPPER_PRESENT_CALL": 1,
+    "NOWNER_WRAPPER_ALLOC_FAILED_FALLBACK": 0,
+    "NOWNER_WRAPPER_COPYBACK_DONE": 1,
+    "AV_SURFDUMP": 0
+  },
+  "av_count": 0,
+  "av_rows": [],
+  "load_success": true,
+  "owner_loop_reached": true,
+  "owner_entry": {
+    "ret": 4335150,
+    "owner_arg": 67618586,
+    "owner_flag": 11,
+    "d532150_before": 0,
+    "surface": 170980368,
+    "size": [
+      800,
+      600
+    ]
+  },
+  "owner_flag_test": {
+    "owner": 67618586,
+    "owner_flag": 11,
+    "bit2": 2,
+    "bit1": 1,
+    "bit8": 8,
+    "ret": 4333600,
+    "d532150": 67618586,
+    "d53214c": 1,
+    "d532154": 167928144
+  },
+  "owner_bit2_set": true,
+  "owner_action_route_count": 4,
+  "owner_action_draw_count": 3,
+  "owner_action_prelude_count": 20,
+  "copyback_path_marker_count": 226,
+  "render_begin_marker_count": 5,
+  "dd_pump_marker_count": 0,
+  "descriptor_hittest_marker_count": 3,
+  "stock_loopstate_marker_count": 24,
+  "stock_grid_marker_count": 39,
+  "sourcehold_marker_count": 0,
+  "sourcehold_callsite_marker_count": 0,
+  "sourcehold_4612e0_marker_count": 0,
+  "input_source_cb14_4612e0_seen": true,
+  "input_source_status": "cb14_4612e0_callsite_seen_inner_offsets_unverified",
+  "real_input_click_proven": false,
+  "debugger_forced_click_only": false,
+  "action_click_marker_count": 0,
+  "render_begin_late_armed_count": 1,
+  "render_begin_entry_count": 1,
+  "render_begin_loop_count": 1,
+  "render_begin_flip_result_count": 1,
+  "render_begin_dd_pump_call_count": 0,
+  "render_begin_dd_pump_return_count": 0,
+  "render_begin_lost_result_count": 1,
+  "render_begin_iteration_limit_count": 0,
+  "render_begin_exit_count": 1,
+  "owner_desc_release_count": 1,
+  "last_owner_desc_release": {
+    "before_d544d04": 1,
+    "before_button0": 128,
+    "after_d544d04": 0,
+    "after_button0": 0,
+    "raw": [
+      11520,
+      28160
+    ],
+    "d543d78": 1,
+    "d543d7c": 5,
+    "reason": "post_4338e0_entry"
+  },
+  "wrapper_copyback_count": 1,
+  "wrapper_entry_count": 1,
+  "wrapper_alloc_result_count": 1,
+  "wrapper_temp_surface_count": 1,
+  "wrapper_call_stock_count": 1,
+  "wrapper_stock_return_count": 1,
+  "wrapper_restore_surface_count": 1,
+  "wrapper_copyback_call_count": 1,
+  "wrapper_copyback_return_count": 1,
+  "wrapper_present_call_count": 1,
+  "wrapper_alloc_failed_fallback_count": 0,
+  "owner_435bc0_alloc_result_count": 1,
+  "owner_435bc0_model_check_count": 1,
+  "owner_435bc0_poll_count": 9,
+  "owner_435bc0_poll_limit_count": 0,
+  "owner_435bc0_write_532218_count": 1,
+  "owner_435bc0_write_5322c8_count": 1,
+  "owner_435bc0_grid_route_count": 9,
+  "owner_435bc0_grid_gate_count": 9,
+  "owner_435bc0_grid_result_count": 0,
+  "owner_435bc0_grid_fail_count": 7,
+  "owner_435bc0_selection_update_count": 0,
+  "owner_435bc0_loop_count": 8,
+  "owner_435bc0_pump_call_count": 7,
+  "owner_435bc0_draw_call_count": 7,
+  "owner_435bc0_draw_return_count": 7,
+  "owner_435bc0_hit_result_count": 7,
+  "owner_435bc0_compare_count": 7,
+  "owner_435bc0_loop_limit_count": 1,
+  "owner_435bc0_loop_exit_count": 1,
+  "owner_435bc0_no_hit_update_count": 9,
+  "owner_435bc0_return_count": 1,
+  "owner_435bc0_pump_entry_count": 9,
+  "owner_435bc0_pump_msg_call_count": 9,
+  "owner_435bc0_pump_msg_return_count": 9,
+  "owner_435bc0_pump_tick_return_count": 9,
+  "owner_435bc0_pump_cb14_call_count": 9,
+  "owner_435bc0_pump_cb14_return_count": 0,
+  "owner_435bc0_pump_608f0a_call_count": 8,
+  "owner_435bc0_pump_608f0a_return_count": 8,
+  "owner_435bc0_pump_608f0b_call_count": 9,
+  "owner_435bc0_pump_608f0b_return_count": 9,
+  "owner_435bc0_pump_cb04_call_count": 9,
+  "owner_435bc0_pump_cb04_return_count": 9,
+  "action_click_force_count": 0,
+  "action_click_native_force_count": 0,
+  "action_click_display_force_count": 0,
+  "action_descriptor_entry_count": 0,
+  "action_widget_click_gate_ret_count": 0,
+  "action_descriptor_callback_count": 0,
+  "action_descriptor_result_count": 0,
+  "action_click_435620_entry_count": 0,
+  "action_click_exit_set_count": 0,
+  "last_wrapper_entry": {
+    "ret": 4405529,
+    "owner_arg": 67618586,
+    "d532218": 0,
+    "d5322c8": 0,
+    "surface": 170980368,
+    "size": [
+      800,
+      600
+    ],
+    "raw": [
+      11520,
+      28160
+    ],
+    "d544d04": 0,
+    "button0": 0
+  },
+  "last_wrapper_stock_return": {
+    "eax": 0,
+    "saved_surface": 170980368,
+    "temp_surface": 167942272,
+    "current_surface": 167942272,
+    "d532218": 67618586,
+    "d532220": 0,
+    "d5322c8": -1
+  },
+  "last_owner_435bc0_loop": {
+    "iter": 8,
+    "ebx": 0,
+    "d532210": 0,
+    "d532218": 67618586,
+    "d5322c8": -1,
+    "surface": 167942272,
+    "size": [
+      640,
+      480
+    ],
+    "raw": [
+      256,
+      28160
+    ],
+    "d544d04": 1,
+    "button0": 255
+  },
+  "last_owner_435bc0_hit_result": {
+    "iter": 7,
+    "eax": 0,
+    "ebx": 0,
+    "d532210": 0,
+    "d532218": 67618586,
+    "d5322c8": -1
+  },
+  "last_owner_435bc0_compare": {
+    "iter": 7,
+    "ebx": 0,
+    "d532210": 0,
+    "d532218": 67618586,
+    "d5322c8": -1
+  },
+  "last_owner_435bc0_poll": {
+    "count": 9,
+    "d532210": 1,
+    "d532218": 67618586,
+    "d532220": 0,
+    "d5322c8": -1,
+    "mouse": [
+      4,
+      440
+    ],
+    "raw": [
+      256,
+      28160
+    ],
+    "d544d04": 2,
+    "button0": 49,
+    "surface": 167942272,
+    "size": [
+      640,
+      480
+    ]
+  },
+  "last_owner_435bc0_poll_before_action_force": {
+    "count": 9,
+    "d532210": 1,
+    "d532218": 67618586,
+    "d532220": 0,
+    "d5322c8": -1,
+    "mouse": [
+      4,
+      440
+    ],
+    "raw": [
+      256,
+      28160
+    ],
+    "d544d04": 2,
+    "button0": 49,
+    "surface": 167942272,
+    "size": [
+      640,
+      480
+    ]
+  },
+  "first_owner_435bc0_poll_after_action_force": null,
+  "last_owner_435bc0_poll_after_action_force": null,
+  "last_owner_435bc0_grid_gate": {
+    "raw_result": 0,
+    "mouse": [
+      4,
+      440
+    ],
+    "raw": [
+      256,
+      28160
+    ]
+  },
+  "last_owner_435bc0_grid_result": null,
+  "last_owner_435bc0_pump_call": {
+    "iter": 7,
+    "ebx": 0,
+    "d532210": 0,
+    "render": 5524696,
+    "surface": 167942272,
+    "size": [
+      640,
+      480
+    ],
+    "raw": [
+      256,
+      28160
+    ],
+    "d544d04": 1,
+    "button0": 251
+  },
+  "last_owner_435bc0_pump_tick_return": {
+    "iter": 8,
+    "ret": 4414942,
+    "eax": 46227600,
+    "render": 5524696,
+    "d544d10": 1,
+    "d544d04": 0,
+    "button0": 91,
+    "raw": [
+      256,
+      28160
+    ],
+    "d543d78": 1,
+    "d543d7c": 5
+  },
+  "last_owner_435bc0_pump_cb14_call": {
+    "iter": 8,
+    "ret": 4414942,
+    "vtable": 5304836,
+    "cb14": 4592352,
+    "render": 5524696,
+    "raw": [
+      256,
+      28160
+    ],
+    "d544d04": 0,
+    "button0": 91
+  },
+  "last_owner_435bc0_pump_608f0b_call": {
+    "iter": 8,
+    "ret": 4414942,
+    "render": 5524696,
+    "raw": [
+      256,
+      28160
+    ],
+    "d544d04": 2,
+    "button0": 49
+  },
+  "last_owner_435bc0_pump_cb04_call": {
+    "iter": 8,
+    "ret": 4414942,
+    "vtable": 5304836,
+    "cb04": 4592032,
+    "render": 5524696,
+    "raw": [
+      256,
+      28160
+    ],
+    "d544d04": 2,
+    "button0": 49
+  },
+  "first_owner_435bc0_pump_tick_return": {
+    "iter": 1,
+    "ret": 4414942,
+    "eax": 46227250,
+    "render": 5524696,
+    "d544d10": 1,
+    "d544d04": 0,
+    "button0": 0,
+    "raw": [
+      11520,
+      28160
+    ],
+    "d543d78": 1,
+    "d543d7c": 5
+  },
+  "first_owner_435bc0_pump_cb14_call": {
+    "iter": 1,
+    "ret": 4414942,
+    "vtable": 5304836,
+    "cb14": 4592352,
+    "render": 5524696,
+    "raw": [
+      11520,
+      28160
+    ],
+    "d544d04": 0,
+    "button0": 0
+  },
+  "first_owner_435bc0_pump_608f0b_call": {
+    "iter": 1,
+    "ret": 4414942,
+    "render": 5524696,
+    "raw": [
+      256,
+      28160
+    ],
+    "d544d04": 1,
+    "button0": 219
+  },
+  "last_sourcehold_marker": null,
+  "last_sourcehold": null,
+  "last_action_click_marker": null,
+  "last_action_force_marker": null,
+  "last_action_force": null,
+  "last_action_descriptor_callback": null,
+  "last_action_descriptor_result": null,
+  "last_action_click_exit_set": null,
+  "render_flag_values": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "render_flag_unique_values": [
+    1,
+    0
+  ],
+  "render_flag_bit01_count": 1,
+  "render_flag_nonzero_count": 1,
+  "render_flag_last_value": 0,
+  "render_flag_held_during_spin": false,
+  "dd_pump_entry_count": 0,
+  "dd_pump_msg_pump_call_count": 0,
+  "dd_pump_msg_pump_return_count": 0,
+  "last_render_begin_flip_result": {
+    "iter": 1,
+    "eax": 0,
+    "render": 5524696,
+    "callback": 0,
+    "d544d10": 1,
+    "d544d04": 0,
+    "button0": 0,
+    "raw": [
+      11520,
+      28160
+    ],
+    "d543d78": 1,
+    "d543d7c": 5
+  },
+  "last_render_begin_lost_result": {
+    "iter": 1,
+    "eax": 0,
+    "render": 5524696,
+    "callback": 0,
+    "d544d10": 1,
+    "d544d04": 0,
+    "button0": 0,
+    "raw": [
+      11520,
+      28160
+    ],
+    "d543d78": 1,
+    "d543d7c": 5
+  },
+  "last_render_begin_dd_pump_return": null,
+  "timeout_stack": {
+    "path": "captures\\archive\\cdb-surface-dump-20260712-155528\\timeout-stack.log",
+    "present": false,
+    "classification": "not_found"
+  },
+  "timeout_stack_classification": "not_found",
+  "run_summary": {
+    "Passed": true,
+    "Error": null,
+    "LaunchMode": "hidden-desktop",
+    "HiddenDesktop": true,
+    "AllowVisibleDesktop": false,
+    "DesktopName": "ClashSurfaceDump_20260712_155528",
+    "RunDir": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528",
+    "Stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+    "InputExe": "C:\\Clash\\clash95.exe",
+    "InputSha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+    "CandidatePath": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\clash95_hd_surfdump_20260712_155528.exe",
+    "CandidateDir": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate",
+    "CandidateSha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+    "LoadSlot": 0,
+    "UseDdrawProxy": true,
+    "NoSkipStartAnims": false,
+    "FastForwardStartAnims": true,
+    "ForceVisibleEdges": false,
+    "PostOwnerForceVisibleSeven": false,
+    "SkipMapValidation": true,
+    "LateLoadSlotForcingOnly": false,
+    "DdrawProxyDll": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\ddraw.dll",
+    "DdrawProxySha256": "5C81541EC57243B127B7EB2B322A21614E51C515DC495AF4447CCAE113476E2C",
+    "DdrawProxyLog": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\ddraw_surfdump_proxy.log",
+    "DdrawProxyPalette": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\ddraw_surfdump_palette.bin",
+    "DdrawProxyManifest": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\ddraw_surfdump_proxy.build.json",
+    "Cdb": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+    "CdbExitCode": null,
+    "TimedOut": false,
+    "StoppedAfterDump": true,
+    "DumpMethod": "host-readprocessmemory",
+    "HostDumpedMemory": true,
+    "HostDumpError": null,
+    "ProbeTemplate": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\render\\clash95_surface_dump_probe.cdb",
+    "ExtraProbeTemplate": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\castle\\clash95_castle_cmd99_owner_action_slot5_fixture_exit_extra.cdb",
+    "GeneratedProbe": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528\\clash95_surface_dump_probe.generated.cdb",
+    "Log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528\\cdb-surface-dump.log",
+    "Surface": {
+      "RedrawSeq": 999,
+      "Surface": "0a30f410",
+      "Width": 800,
+      "Height": 600,
+      "Base": "0a5b0030",
+      "Bytes": 480000
+    },
+    "RawPath": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528\\surface.raw",
+    "RawBytes": 480000,
+    "PngPath": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528\\surface.png",
+    "PngSha256": "8d6a4a710c8f759b0903faaf9c9a41295febe6f9ea47dbe59a43c897a3f92640",
+    "PngMetadata": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528\\surface.png.json",
+    "PngPaletteMode": "grayscale-index-empty-palette",
+    "CoverageJson": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528\\map-tile-coverage.json",
+    "CoverageText": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528\\map-tile-coverage.txt",
+    "CoverageBlankActiveCells": [],
+    "VisibilityJson": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528\\visibility-coverage-summary.json",
+    "VisibilityText": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-155528\\visibility-coverage.txt",
+    "VisibilityExitCode": null,
+    "VisibilityRequireExplained": false,
+    "VisibilityUnexplainedBlankCells": [],
+    "VisibilityStatusCounts": null,
+    "VisibilityExplainedGate": {
+      "Required": false,
+      "Passed": true,
+      "Skipped": true,
+      "ExitCode": null,
+      "BlankActiveCells": [],
+      "UnexplainedBlankCells": []
+    },
+    "ForcedVisibleJson": null,
+    "ForcedVisibleText": null,
+    "ForcedVisibleExitCode": null,
+    "ForcedVisibleGate": null,
+    "ForceVisibleStillBlankCells": [],
+    "PostOwnerForcedVisibleJson": null,
+    "PostOwnerForcedVisibleText": null,
+    "PostOwnerForcedVisibleExitCode": null,
+    "PostOwnerForcedVisibleGate": null,
+    "path": "captures\\archive\\cdb-surface-dump-20260712-155528\\summary.json",
+    "present": true
+  },
+  "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+  "candidate_path": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\clash95_hd_surfdump_20260712_155528.exe",
+  "candidate_dir": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+  "owner_action_render_begin_reached": true,
+  "owner_action_render_begin_returned": true,
+  "owner_action_render_begin_stalled": false,
+  "owner_action_ddraw_wait_stalled": false,
+  "castle_hitmap_sample": {
+    "surface": 174307992,
+    "size": [
+      640,
+      480
+    ],
+    "base": 174850096,
+    "displayed": [
+      231,
+      366
+    ],
+    "displayed_sample": 12,
+    "native": [
+      151,
+      306
+    ],
+    "native_sample": 254,
+    "bbox_min": [
+      77,
+      306
+    ],
+    "bbox_min_sample": 254,
+    "bbox_max": [
+      237,
+      426
+    ],
+    "bbox_max_sample": 53,
+    "expected_raw": 254
+  },
+  "castle_cmd99_target": {
+    "native": [
+      151,
+      306
+    ],
+    "displayed_hint": [
+      231,
+      366
+    ],
+    "raw": [
+      9664,
+      19584
+    ]
+  },
+  "castle_hit_count": 1,
+  "last_castle_hit": {
+    "raw_hit": 254,
+    "adjusted": 6,
+    "expected_raw": 254,
+    "command": 99,
+    "callback": 4406304,
+    "owner_screen": 67618586
+  },
+  "loadsave": {
+    "selected_arg": 0,
+    "selected_global": 0,
+    "accept": 1,
+    "choice": 5,
+    "gd": 67108912
+  },
+  "playgame": {
+    "gd": 67108912,
+    "map": [
+      100,
+      100
+    ],
+    "scroll": [
+      11,
+      17
+    ],
+    "surface": 67096440,
+    "size": [
+      640,
+      480
+    ]
+  },
+  "rows": [
+    {
+      "line": 199,
+      "marker": "SURFDUMP_LOADSAVE",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": 67108912
+      },
+      "text": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=04000030"
+    },
+    {
+      "line": 200,
+      "marker": "SURFDUMP_PLAYGAME",
+      "values": {
+        "gd": 67108912,
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          11,
+          17
+        ],
+        "surface": 67096440,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "SURFDUMP_PLAYGAME gd=04000030 map=(100,100) scroll=(11,17) surface=03ffcf78 size=(640,480)"
+    },
+    {
+      "line": 201,
+      "marker": "SURFDUMP_PLAYGAME",
+      "values": {
+        "gd": 67108912,
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          11,
+          17
+        ],
+        "surface": 67096440,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "SURFDUMP_PLAYGAME gd=04000030 map=(100,100) scroll=(11,17) surface=03ffcf78 size=(640,480)"
+    },
+    {
+      "line": 202,
+      "marker": "NOWNER_HEADER",
+      "values": {
+        "gd": 67108912,
+        "player": 0,
+        "scroll": [
+          11,
+          17
+        ],
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ],
+        "seq": 0,
+        "end12": [
+          23,
+          26
+        ],
+        "map": [
+          100,
+          100
+        ]
+      },
+      "text": "NOWNER_HEADER gd=04000030 player=0 scroll=(11,17) surface=0a30f410 size=(800,600) SURFDUMP_REDRAW seq=0 scroll=(11,17) end12=(23,26) map=(100,100) surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_FORCE_MAP_CASTLE_CLICK",
+      "values": {
+        "screen": [
+          224,
+          224
+        ],
+        "expected_map": [
+          14,
+          20
+        ],
+        "raw": [
+          14336,
+          14336
+        ]
+      },
+      "text": "NOWNER_FORCE_MAP_CASTLE_CLICK screen=(224,224) expected_map=(14,20) raw=(00003800,00003800)"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_MAP_TILE",
+      "values": {
+        "map": [
+          14,
+          20
+        ],
+        "mouse": [
+          224,
+          224
+        ],
+        "selected": -1,
+        "current": 0
+      },
+      "text": "NOWNER_MAP_TILE map=(14,20) mouse=(224,224) selected=-1 current=0 NOWNER_REARM_MAP_COMMIT map=(14,20) mouse=(20,224)"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_BUILDING_TILE",
+      "values": {
+        "map": [
+          14,
+          20
+        ],
+        "tile": 32768,
+        "index": 0,
+        "owner": 0,
+        "mode": 2,
+        "active": 0,
+        "flags": 11
+      },
+      "text": "NOWNER_BUILDING_TILE map=(14,20) tile=32768 index=0 owner=0 mode=2 active=0 flags=0x0b"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_CASTLE_OVERVIEW_ENTRY",
+      "values": {
+        "ret": 4320623,
+        "castle_index": 0,
+        "main_surface": 170980368,
+        "size": [
+          800,
+          600
+        ],
+        "overview_surface": 174307992,
+        "owner_screen": 67618586
+      },
+      "text": "NOWNER_CASTLE_OVERVIEW_ENTRY ret=0041ed6f castle_index=0 main_surface=0a30f410 size=(800,600) NOWNER_CASTLE_OVERVIEW_POST_DRAW overview_surface=0a63ba98 size=(640,480) owner_screen=0407c71a"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_CASTLE_HITMAP_SAMPLE",
+      "values": {
+        "surface": 174307992,
+        "size": [
+          640,
+          480
+        ],
+        "base": 174850096,
+        "displayed": [
+          231,
+          366
+        ],
+        "displayed_sample": 12,
+        "native": [
+          151,
+          306
+        ],
+        "native_sample": 254,
+        "bbox_min": [
+          77,
+          306
+        ],
+        "bbox_min_sample": 254,
+        "bbox_max": [
+          237,
+          426
+        ],
+        "bbox_max_sample": 53,
+        "expected_raw": 254
+      },
+      "text": "NOWNER_CASTLE_HITMAP_SAMPLE surface=0a63ba98 size=(640,480) base=0a6c0030 displayed=(231,366) displayed_sample=0x0c native=(151,306) native_sample=0xfe bbox_min=(77,306) bbox_min_sample=0xfe bbox_max=(237,426) bbox_max_sample=0x35 expected_raw=254"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_CASTLE_CMD99_TARGET",
+      "values": {
+        "native": [
+          151,
+          306
+        ],
+        "displayed_hint": [
+          231,
+          366
+        ],
+        "raw": [
+          9664,
+          19584
+        ]
+      },
+      "text": "NOWNER_CASTLE_CMD99_TARGET native=(151,306) displayed_hint=(231,366) raw=(000025c0,00004c80)"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_CASTLE_HIT",
+      "values": {
+        "raw_hit": 254,
+        "adjusted": 6,
+        "expected_raw": 254,
+        "command": 99,
+        "callback": 4406304,
+        "owner_screen": 67618586
+      },
+      "text": "NOWNER_CASTLE_HIT raw_hit=254 adjusted=6 expected_raw=254 NOWNER_CASTLE_DESCRIPTOR command=99 callback=00433c20 owner_screen=0407c71a"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_CASTLE_CMD99_GATE",
+      "values": {
+        "gate_before": 1,
+        "forced_gate": 1
+      },
+      "text": "NOWNER_CASTLE_CMD99_GATE gate_before=1 forced_gate=1"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_CASTLE_CALLBACK",
+      "values": {
+        "callback": 4406304,
+        "eax_arg": 67618586,
+        "command": 99
+      },
+      "text": "NOWNER_CASTLE_CALLBACK callback=00433c20 eax_arg=0407c71a command=99"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_433C20_ENTRY",
+      "values": {
+        "ret": 4335150,
+        "owner_arg": 67618586,
+        "owner_flag": 11,
+        "d532150_before": 0,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_433C20_ENTRY ret=0042262e owner_arg=0407c71a owner_flag=0x0b d532150_before=00000000 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_OWNER_FLAG_TEST",
+      "values": {
+        "owner": 67618586,
+        "owner_flag": 11,
+        "bit2": 2,
+        "bit1": 1,
+        "bit8": 8,
+        "ret": 4333600,
+        "d532150": 67618586,
+        "d53214c": 1,
+        "d532154": 167928144
+      },
+      "text": "NOWNER_OWNER_FLAG_TEST owner=0407c71a owner_flag=0x0b bit2=2 bit1=1 bit8=8 NOWNER_WRITE_532154 continue_full ret=00422020 d532150=0407c71a d53214c=00000001 d532154=0a026150 owner_flag=0x0b"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_OWNER_SCREEN_DESC_DRAW",
+      "values": {
+        "list": 5328832,
+        "d0": [
+          39,
+          "426 cb=004338c0"
+        ],
+        "d1": [
+          155,
+          "426 cb=004338e0"
+        ],
+        "d2": [
+          272,
+          "426 cb=00433a40"
+        ],
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ],
+        "native": [
+          180,
+          440
+        ],
+        "raw": [
+          11520,
+          28160
+        ],
+        "owner": 67618586,
+        "owner_flag": 11
+      },
+      "text": "NOWNER_OWNER_SCREEN_DESC_DRAW list=00514fc0 d0=(39,426 cb=004338c0) d1=(155,426 cb=004338e0) d2=(272,426 cb=00433a40) surface=0a30f410 size=(800,600) NOWNER_FORCE_OWNER_DESC_CLICK native=(180,440) raw=(00002d00,00006e00) d1=(155,426 cb=004338e0) owner=0407c71a owner_flag=0x0b"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_HITTEST_ENTRY",
+      "values": {
+        "count": 1,
+        "desc": 5328832,
+        "xy": [
+          39,
+          426
+        ],
+        "flags": 1,
+        "hit": 4405440,
+        "mouse": [
+          180,
+          440
+        ],
+        "click": 1,
+        "button0": 128
+      },
+      "text": "NOWNER_HITTEST_ENTRY count=1 desc=00514fc0 xy=(39,426) flags=0x01 hit=004338c0 mouse=(180,440) click=00000001 button0=0x80"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_HITTEST_ENTRY",
+      "values": {
+        "count": 2,
+        "desc": 5328885,
+        "xy": [
+          155,
+          426
+        ],
+        "flags": 1,
+        "hit": 4405472,
+        "mouse": [
+          180,
+          440
+        ],
+        "click": 1,
+        "button0": 128
+      },
+      "text": "NOWNER_HITTEST_ENTRY count=2 desc=00514ff5 xy=(155,426) flags=0x01 hit=004338e0 mouse=(180,440) click=00000001 button0=0x80"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_DESCRIPTOR_CALLBACK",
+      "values": {
+        "desc": 5328885,
+        "xy": [
+          155,
+          426
+        ],
+        "flags": 1,
+        "callback": 4405472,
+        "mouse": [
+          180,
+          440
+        ]
+      },
+      "text": "NOWNER_DESCRIPTOR_CALLBACK desc=00514ff5 xy=(155,426) flags=0x01 callback=004338e0 mouse=(180,440)"
+    },
+    {
+      "line": 203,
+      "marker": "NOWNER_RENDER_BEGIN_LATE_ARMED",
+      "values": {},
+      "text": "NOWNER_RENDER_BEGIN_LATE_ARMED"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_4338E0_ENTRY",
+      "values": {
+        "ret": 4299872,
+        "eax_desc": 5328885,
+        "owner": 67618586,
+        "owner_flag": 11,
+        "d532218": 0,
+        "d5322c8": 0,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 128,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_4338E0_ENTRY ret=00419c60 eax_desc=00514ff5 owner=0407c71a owner_flag=0x0b d532218=00000000 d5322c8=0 d544d10=00000001 d544d04=00000001 button0=0x80 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_RELEASE_OWNER_DESC_CLICK",
+      "values": {
+        "before_d544d04": 1,
+        "before_button0": 128,
+        "after_d544d04": 0,
+        "after_button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "reason": "post_4338e0_entry"
+      },
+      "text": "NOWNER_RELEASE_OWNER_DESC_CLICK before_d544d04=00000001 before_button0=0x80 after_d544d04=00000000 after_button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005 reason=post_4338e0_entry"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_419ED0_ENTRY",
+      "values": {
+        "desc": 5328885,
+        "ret": 4405478,
+        "state": 1,
+        "sound": 5176679
+      },
+      "text": "NOWNER_419ED0_ENTRY desc=00514ff5 ret=004338e6 state=1 sound=004efd67"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_419ED0_SOUND_PREP",
+      "values": {
+        "desc": 5328885,
+        "sound": 5176679,
+        "ret": 4405478
+      },
+      "text": "NOWNER_419ED0_SOUND_PREP desc=00514ff5 sound=004efd67 ret=004338e6"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_419ED0_SOUND_RETURN",
+      "values": {
+        "desc": 5328885,
+        "ret": 4405478,
+        "eax": 5176679
+      },
+      "text": "NOWNER_419ED0_SOUND_RETURN desc=00514ff5 ret=004338e6 eax=004efd67"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_419ED0_STATE6_READY",
+      "values": {
+        "desc": 5328885,
+        "ret": 4405478,
+        "state": 1,
+        "d544cd8": 5524696
+      },
+      "text": "NOWNER_419ED0_STATE6_READY desc=00514ff5 ret=004338e6 state=1 d544cd8=00544cd8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_419ED0_RENDER_BEGIN",
+      "values": {
+        "desc": 5328885,
+        "ret": 4405478,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "render": 1
+      },
+      "text": "NOWNER_419ED0_RENDER_BEGIN desc=00514ff5 ret=004338e6 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005 render=00000001"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_RENDER_BEGIN_ENTRY",
+      "values": {
+        "ret": 4300538,
+        "render": 5524696,
+        "callback": 0,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_RENDER_BEGIN_ENTRY ret=00419efa render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_RENDER_BEGIN_LOOP",
+      "values": {
+        "iter": 1,
+        "render": 5524696,
+        "callback": 0,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_RENDER_BEGIN_LOOP iter=1 render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_RENDER_BEGIN_FLIP_RESULT",
+      "values": {
+        "iter": 1,
+        "eax": 0,
+        "render": 5524696,
+        "callback": 0,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_RENDER_BEGIN_FLIP_RESULT iter=1 eax=00000000 render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_RENDER_BEGIN_LOST_RESULT",
+      "values": {
+        "iter": 1,
+        "eax": 0,
+        "render": 5524696,
+        "callback": 0,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_RENDER_BEGIN_LOST_RESULT iter=1 eax=00000000 render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_RENDER_BEGIN_EXIT",
+      "values": {
+        "ret": 4300538,
+        "render": 5524696,
+        "callback": 0,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "iter": 1
+      },
+      "text": "NOWNER_RENDER_BEGIN_EXIT ret=00419efa render=00544cd8 callback=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005 iter=1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_419ED0_RENDER_BEGIN_RETURN",
+      "values": {
+        "desc": 5328885,
+        "ret": 4405478,
+        "eax": 0,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_419ED0_RENDER_BEGIN_RETURN desc=00514ff5 ret=004338e6 eax=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_419ED0_STATE5_DONE",
+      "values": {
+        "desc": 5328885,
+        "ret": 4405478,
+        "state": 5,
+        "eax": 1
+      },
+      "text": "NOWNER_419ED0_STATE5_DONE desc=00514ff5 ret=004338e6 state=5 eax=00000001"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_4338E0_AFTER_SELECT",
+      "values": {
+        "owner": 67618586,
+        "owner_flag": 11,
+        "d532218": 0,
+        "d5322c8": 0,
+        "eax": 1
+      },
+      "text": "NOWNER_4338E0_AFTER_SELECT owner=0407c71a owner_flag=0x0b d532218=00000000 d5322c8=0 eax=00000001"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_4338E0_AFTER_GATE",
+      "values": {
+        "owner": 67618586,
+        "owner_flag": 11,
+        "d544d10": 1,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_4338E0_AFTER_GATE owner=0407c71a owner_flag=0x0b d544d10=00000001 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_4338E0_RESOURCE_SETUP",
+      "values": {
+        "ret": 476,
+        "eax": 5362880,
+        "edx": 20,
+        "d544d10": 1,
+        "owner": 67618586,
+        "owner_flag": 11
+      },
+      "text": "NOWNER_4338E0_RESOURCE_SETUP ret=000001dc eax=0051d4c0 edx=00000014 d544d10=00000001 owner=0407c71a owner_flag=0x0b"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_4338E0_PRE_PUMP",
+      "values": {
+        "ret": 476,
+        "render": 0,
+        "d544d10": 1,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_4338E0_PRE_PUMP ret=000001dc render=00000000 d544d10=00000001 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_4338E0_PUMP_ENTRY",
+      "values": {
+        "ret": 4405519,
+        "render": 5524696,
+        "d544d10": 1,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_4338E0_PUMP_ENTRY ret=0043390f render=00544cd8 d544d10=00000001 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_4338E0_PUMP_RETURN",
+      "values": {
+        "ret": 4405519,
+        "d544d10": 0,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_4338E0_PUMP_RETURN ret=0043390f d544d10=00000000 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_4338E0_POST_PUMP",
+      "values": {
+        "ret": 476,
+        "owner": 67618586,
+        "owner_flag": 11,
+        "d544d10": 0,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_4338E0_POST_PUMP ret=000001dc owner=0407c71a owner_flag=0x0b d544d10=00000000 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_ACTION_CALL_WRAPPER",
+      "values": {
+        "ret": 476,
+        "owner_arg": 67618586,
+        "owner_global": 67618586,
+        "owner_flag": 11,
+        "d532218": 0,
+        "d5322c8": 0,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_ACTION_CALL_WRAPPER ret=000001dc owner_arg=0407c71a owner_global=0407c71a owner_flag=0x0b d532218=00000000 d5322c8=0 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_ENTRY",
+      "values": {
+        "ret": 4405529,
+        "owner_arg": 67618586,
+        "d532218": 0,
+        "d5322c8": 0,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ],
+        "raw": [
+          11520,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 0
+      },
+      "text": "NOWNER_WRAPPER_ENTRY ret=00433919 owner_arg=0407c71a d532218=00000000 d5322c8=0 surface=0a30f410 size=(800,600) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_ALLOC_RESULT",
+      "values": {
+        "alloc": 167942272,
+        "saved_surface": 170980368,
+        "current_surface": 170980368
+      },
+      "text": "NOWNER_WRAPPER_ALLOC_RESULT alloc=0a029880 saved_surface=0a30f410 current_surface=0a30f410"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_TEMP_SURFACE",
+      "values": {
+        "temp_surface": 167942272,
+        "saved_surface": 170980368,
+        "current_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_WRAPPER_TEMP_SURFACE temp_surface=0a029880 saved_surface=0a30f410 current_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_CALL_STOCK_435BC0",
+      "values": {
+        "owner_arg": 67618586,
+        "saved_surface": 170980368,
+        "temp_surface": 167942272,
+        "current_surface": 167942272,
+        "d532218": 0,
+        "d5322c8": 0
+      },
+      "text": "NOWNER_WRAPPER_CALL_STOCK_435BC0 owner_arg=0407c71a saved_surface=0a30f410 temp_surface=0a029880 current_surface=0a029880 d532218=00000000 d5322c8=0"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_OWNER_435BC0_ENTRY",
+      "values": {
+        "ret": 5355575,
+        "owner_arg": 67618586,
+        "d532218_before": 0,
+        "d5322c8_before": 0,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "mouse": [
+          180,
+          440
+        ]
+      },
+      "text": "NOWNER_OWNER_435BC0_ENTRY ret=0051b837 owner_arg=0407c71a d532218_before=00000000 d5322c8_before=0 surface=0a029880 size=(640,480) mouse=(180,440)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_WRITE_532218",
+      "values": {
+        "ret": 0,
+        "new": 67618586,
+        "selected_index": 0,
+        "hover_slot": 0,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_WRITE_532218 ret=00000000 new=0407c71a selected_index=0 hover_slot=0 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_WRITE_5322C8",
+      "values": {
+        "ret": 0,
+        "new": -1,
+        "d532218": 67618586,
+        "selected_index": 0,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_WRITE_5322C8 ret=00000000 new=-1 d532218=0407c71a selected_index=0 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_ALLOC_RESULT",
+      "values": {
+        "eax": 61517880,
+        "d532218": 67618586,
+        "d532214": 1,
+        "d53221c": 0,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_ALLOC_RESULT eax=03aab038 d532218=0407c71a d532214=00000001 d53221c=00000000 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_MODEL_CHECK",
+      "values": {
+        "model": 1,
+        "d53221c": 61517880,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_MODEL_CHECK model=00000001 d53221c=03aab038 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PANEL_DRAW",
+      "values": {
+        "ret": 4414852,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 167942272,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PANEL_DRAW ret=00435d84 owner=0407c71a selected_index=0 hover_slot=-1 render=0a029880 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4411762,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 167942272,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435172 owner=0407c71a selected_index=0 hover_slot=-1 render=0a029880 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_STATUS_DRAW",
+      "values": {
+        "ret": 4414862,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          180,
+          440
+        ],
+        "render": 167942272,
+        "map_surface": 167942272
+      },
+      "text": "NOWNER_435BC0_STATUS_DRAW ret=00435d8e owner=0407c71a selected_index=0 hover_slot=-1 mouse=(180,440) render=0a029880 map_surface=0a029880"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_ACTION_BOX",
+      "values": {
+        "ret": 4414867,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          180,
+          440
+        ],
+        "render": 5362880,
+        "map_surface": 167942272
+      },
+      "text": "NOWNER_435BC0_ACTION_BOX ret=00435d93 owner=0407c71a selected_index=0 hover_slot=-1 mouse=(180,440) render=0051d4c0 map_surface=0a029880"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HEAD",
+      "values": {
+        "iter": 1,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          11520,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 0
+      },
+      "text": "NOWNER_435BC0_LOOP_HEAD iter=1 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_PUMP_CALL",
+      "values": {
+        "iter": 1,
+        "ebx": 0,
+        "d532210": 0,
+        "render": 5524696,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          11520,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 0
+      },
+      "text": "NOWNER_435BC0_LOOP_PUMP_CALL iter=1 ebx=0 d532210=0 render=00544cd8 surface=0a029880 size=(640,480) raw=(00002d00,00006e00) d544d04=00000000 button0=0x00"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_ENTRY",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "render": 5524696,
+        "edx": 0,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PUMP_ENTRY iter=1 ret=00435dde render=00544cd8 edx=00000000 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_CALL",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_CALL iter=1 ret=00435dde render=00544cd8 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_RETURN",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_RETURN iter=1 ret=00435dde eax=00000001 render=00544cd8 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_TICK_RETURN",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "eax": 46227250,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 0,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_TICK_RETURN iter=1 ret=00435dde eax=02c15f32 render=00544cd8 d544d10=00000001 d544d04=00000000 button0=0x00 raw=(00002d00,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB14_CALL",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb14": 4592352,
+        "render": 5524696,
+        "raw": [
+          11520,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 0
+      },
+      "text": "NOWNER_435BC0_PUMP_CB14_CALL iter=1 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00002d00,00006e00) d544d04=00000000 button0=0x00"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_CALL",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_CALL iter=1 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_RETURN",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_RETURN iter=1 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_CALL",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_CALL iter=1 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_RETURN",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_RETURN iter=1 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_CALL",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb04": 4592032,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_CALL iter=1 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_RETURN",
+      "values": {
+        "iter": 1,
+        "ret": 4414942,
+        "eax": 5524696,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_RETURN iter=1 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_CALL",
+      "values": {
+        "iter": 1,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_CALL iter=1 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_POLL",
+      "values": {
+        "count": 1,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_POLL count=1 d532210=0 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000001 button0=0xdb surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 5362880,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_RETURN",
+      "values": {
+        "iter": 1,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_RETURN iter=1 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HIT_RESULT",
+      "values": {
+        "iter": 1,
+        "eax": 0,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_HIT_RESULT iter=1 eax=00000000 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_NO_HIT_UPDATE",
+      "values": {
+        "iter": 1,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_NO_HIT_UPDATE iter=1 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+      "values": {
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_GATE",
+      "values": {
+        "raw_result": 1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_GATE raw_result=1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_CALL",
+      "values": {
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_CALL mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ENTRY",
+      "values": {
+        "mouse": [
+          -76,
+          380
+        ],
+        "raw": [
+          4294962432,
+          24320
+        ],
+        "shift": 6,
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_ENTRY mouse=(-76,380) raw=(ffffed00,00005f00) shift=6 selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_FAIL",
+      "values": {
+        "result": -1,
+        "mouse": [
+          -76,
+          380
+        ],
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_FAIL result=-1 mouse=(-76,380) selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_COMPARE",
+      "values": {
+        "iter": 1,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_COMPARE iter=1 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HEAD",
+      "values": {
+        "iter": 2,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_LOOP_HEAD iter=2 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_PUMP_CALL",
+      "values": {
+        "iter": 2,
+        "ebx": 0,
+        "d532210": 0,
+        "render": 5524696,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_LOOP_PUMP_CALL iter=2 ebx=0 d532210=0 render=00544cd8 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_ENTRY",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "render": 5524696,
+        "edx": 0,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 219,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PUMP_ENTRY iter=2 ret=00435dde render=00544cd8 edx=00000000 d544d10=00000001 d544d04=00000001 button0=0xdb raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_CALL",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 219,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_CALL iter=2 ret=00435dde render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xdb raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_RETURN",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 219,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_RETURN iter=2 ret=00435dde eax=00000001 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xdb raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_TICK_RETURN",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "eax": 46227295,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 219,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_TICK_RETURN iter=2 ret=00435dde eax=02c15f5f render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xdb raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB14_CALL",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb14": 4592352,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 219
+      },
+      "text": "NOWNER_435BC0_PUMP_CB14_CALL iter=2 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_CALL",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_CALL iter=2 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_RETURN",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_RETURN iter=2 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_CALL",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_CALL iter=2 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_RETURN",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_RETURN iter=2 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_CALL",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb04": 4592032,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_CALL iter=2 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_RETURN",
+      "values": {
+        "iter": 2,
+        "ret": 4414942,
+        "eax": 5524696,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_RETURN iter=2 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_CALL",
+      "values": {
+        "iter": 2,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_CALL iter=2 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_POLL",
+      "values": {
+        "count": 2,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_POLL count=2 d532210=0 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000001 button0=0xb3 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 5362880,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_RETURN",
+      "values": {
+        "iter": 2,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_RETURN iter=2 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HIT_RESULT",
+      "values": {
+        "iter": 2,
+        "eax": 0,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_HIT_RESULT iter=2 eax=00000000 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_NO_HIT_UPDATE",
+      "values": {
+        "iter": 2,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_NO_HIT_UPDATE iter=2 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+      "values": {
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_GATE",
+      "values": {
+        "raw_result": 1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_GATE raw_result=1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_CALL",
+      "values": {
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_CALL mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ENTRY",
+      "values": {
+        "mouse": [
+          -76,
+          380
+        ],
+        "raw": [
+          4294962432,
+          24320
+        ],
+        "shift": 6,
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_ENTRY mouse=(-76,380) raw=(ffffed00,00005f00) shift=6 selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_FAIL",
+      "values": {
+        "result": -1,
+        "mouse": [
+          -76,
+          380
+        ],
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_FAIL result=-1 mouse=(-76,380) selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_COMPARE",
+      "values": {
+        "iter": 2,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_COMPARE iter=2 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HEAD",
+      "values": {
+        "iter": 3,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_LOOP_HEAD iter=3 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_PUMP_CALL",
+      "values": {
+        "iter": 3,
+        "ebx": 0,
+        "d532210": 0,
+        "render": 5524696,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_LOOP_PUMP_CALL iter=3 ebx=0 d532210=0 render=00544cd8 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_ENTRY",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "render": 5524696,
+        "edx": 0,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 179,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PUMP_ENTRY iter=3 ret=00435dde render=00544cd8 edx=00000000 d544d10=00000001 d544d04=00000001 button0=0xb3 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_CALL",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 179,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_CALL iter=3 ret=00435dde render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xb3 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_RETURN",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 179,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_RETURN iter=3 ret=00435dde eax=00000001 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xb3 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_TICK_RETURN",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "eax": 46227337,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 179,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_TICK_RETURN iter=3 ret=00435dde eax=02c15f89 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xb3 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB14_CALL",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb14": 4592352,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 179
+      },
+      "text": "NOWNER_435BC0_PUMP_CB14_CALL iter=3 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xb3"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_CALL",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_CALL iter=3 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_RETURN",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_RETURN iter=3 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_CALL",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_CALL iter=3 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_RETURN",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_RETURN iter=3 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_CALL",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb04": 4592032,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_CALL iter=3 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_RETURN",
+      "values": {
+        "iter": 3,
+        "ret": 4414942,
+        "eax": 5524696,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_RETURN iter=3 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_CALL",
+      "values": {
+        "iter": 3,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_CALL iter=3 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_POLL",
+      "values": {
+        "count": 3,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_POLL count=3 d532210=0 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000003 button0=0xe8 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 5362880,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_RETURN",
+      "values": {
+        "iter": 3,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_RETURN iter=3 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HIT_RESULT",
+      "values": {
+        "iter": 3,
+        "eax": 0,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_HIT_RESULT iter=3 eax=00000000 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_NO_HIT_UPDATE",
+      "values": {
+        "iter": 3,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_NO_HIT_UPDATE iter=3 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+      "values": {
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_GATE",
+      "values": {
+        "raw_result": 1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_GATE raw_result=1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_CALL",
+      "values": {
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_CALL mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ENTRY",
+      "values": {
+        "mouse": [
+          -76,
+          380
+        ],
+        "raw": [
+          4294962432,
+          24320
+        ],
+        "shift": 6,
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_ENTRY mouse=(-76,380) raw=(ffffed00,00005f00) shift=6 selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_FAIL",
+      "values": {
+        "result": -1,
+        "mouse": [
+          -76,
+          380
+        ],
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_FAIL result=-1 mouse=(-76,380) selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_COMPARE",
+      "values": {
+        "iter": 3,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_COMPARE iter=3 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HEAD",
+      "values": {
+        "iter": 4,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_LOOP_HEAD iter=4 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_PUMP_CALL",
+      "values": {
+        "iter": 4,
+        "ebx": 0,
+        "d532210": 0,
+        "render": 5524696,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_LOOP_PUMP_CALL iter=4 ebx=0 d532210=0 render=00544cd8 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_ENTRY",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "render": 5524696,
+        "edx": 0,
+        "d544d10": 1,
+        "d544d04": 3,
+        "button0": 232,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PUMP_ENTRY iter=4 ret=00435dde render=00544cd8 edx=00000000 d544d10=00000001 d544d04=00000003 button0=0xe8 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_CALL",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 3,
+        "button0": 232,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_CALL iter=4 ret=00435dde render=00544cd8 d544d10=00000001 d544d04=00000003 button0=0xe8 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_RETURN",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 3,
+        "button0": 232,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_RETURN iter=4 ret=00435dde eax=00000001 render=00544cd8 d544d10=00000001 d544d04=00000003 button0=0xe8 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_TICK_RETURN",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "eax": 46227380,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 3,
+        "button0": 232,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_TICK_RETURN iter=4 ret=00435dde eax=02c15fb4 render=00544cd8 d544d10=00000001 d544d04=00000003 button0=0xe8 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB14_CALL",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb14": 4592352,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 3,
+        "button0": 232
+      },
+      "text": "NOWNER_435BC0_PUMP_CB14_CALL iter=4 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000003 button0=0xe8"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_CALL",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_CALL iter=4 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_RETURN",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_RETURN iter=4 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_CALL",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_CALL iter=4 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_RETURN",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_RETURN iter=4 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_CALL",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb04": 4592032,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_CALL iter=4 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_RETURN",
+      "values": {
+        "iter": 4,
+        "ret": 4414942,
+        "eax": 5524696,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_RETURN iter=4 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_CALL",
+      "values": {
+        "iter": 4,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_CALL iter=4 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_POLL",
+      "values": {
+        "count": 4,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_POLL count=4 d532210=0 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000001 button0=0x95 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 5362880,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_RETURN",
+      "values": {
+        "iter": 4,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_RETURN iter=4 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HIT_RESULT",
+      "values": {
+        "iter": 4,
+        "eax": 0,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_HIT_RESULT iter=4 eax=00000000 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_NO_HIT_UPDATE",
+      "values": {
+        "iter": 4,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_NO_HIT_UPDATE iter=4 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+      "values": {
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_GATE",
+      "values": {
+        "raw_result": 1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_GATE raw_result=1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_CALL",
+      "values": {
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_CALL mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ENTRY",
+      "values": {
+        "mouse": [
+          -76,
+          380
+        ],
+        "raw": [
+          4294962432,
+          24320
+        ],
+        "shift": 6,
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_ENTRY mouse=(-76,380) raw=(ffffed00,00005f00) shift=6 selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_FAIL",
+      "values": {
+        "result": -1,
+        "mouse": [
+          -76,
+          380
+        ],
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_FAIL result=-1 mouse=(-76,380) selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_COMPARE",
+      "values": {
+        "iter": 4,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_COMPARE iter=4 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HEAD",
+      "values": {
+        "iter": 5,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_LOOP_HEAD iter=5 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_PUMP_CALL",
+      "values": {
+        "iter": 5,
+        "ebx": 0,
+        "d532210": 0,
+        "render": 5524696,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_LOOP_PUMP_CALL iter=5 ebx=0 d532210=0 render=00544cd8 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_ENTRY",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "render": 5524696,
+        "edx": 0,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 149,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PUMP_ENTRY iter=5 ret=00435dde render=00544cd8 edx=00000000 d544d10=00000001 d544d04=00000001 button0=0x95 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_CALL",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 149,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_CALL iter=5 ret=00435dde render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0x95 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_RETURN",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 149,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_RETURN iter=5 ret=00435dde eax=00000001 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0x95 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_TICK_RETURN",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "eax": 46227422,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 149,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_TICK_RETURN iter=5 ret=00435dde eax=02c15fde render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0x95 raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB14_CALL",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb14": 4592352,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 149
+      },
+      "text": "NOWNER_435BC0_PUMP_CB14_CALL iter=5 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0x95"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_CALL",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_CALL iter=5 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_RETURN",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_RETURN iter=5 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_CALL",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_CALL iter=5 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_RETURN",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_RETURN iter=5 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_CALL",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb04": 4592032,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_CALL iter=5 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_RETURN",
+      "values": {
+        "iter": 5,
+        "ret": 4414942,
+        "eax": 5524696,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_RETURN iter=5 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_CALL",
+      "values": {
+        "iter": 5,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_CALL iter=5 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_POLL",
+      "values": {
+        "count": 5,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_POLL count=5 d532210=0 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000001 button0=0xdd surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 5362880,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_RETURN",
+      "values": {
+        "iter": 5,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_RETURN iter=5 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HIT_RESULT",
+      "values": {
+        "iter": 5,
+        "eax": 0,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_HIT_RESULT iter=5 eax=00000000 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_NO_HIT_UPDATE",
+      "values": {
+        "iter": 5,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_NO_HIT_UPDATE iter=5 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+      "values": {
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_GATE",
+      "values": {
+        "raw_result": 1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_GATE raw_result=1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_CALL",
+      "values": {
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_CALL mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ENTRY",
+      "values": {
+        "mouse": [
+          -76,
+          380
+        ],
+        "raw": [
+          4294962432,
+          24320
+        ],
+        "shift": 6,
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_ENTRY mouse=(-76,380) raw=(ffffed00,00005f00) shift=6 selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_FAIL",
+      "values": {
+        "result": -1,
+        "mouse": [
+          -76,
+          380
+        ],
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_FAIL result=-1 mouse=(-76,380) selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_COMPARE",
+      "values": {
+        "iter": 5,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_COMPARE iter=5 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HEAD",
+      "values": {
+        "iter": 6,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_LOOP_HEAD iter=6 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_PUMP_CALL",
+      "values": {
+        "iter": 6,
+        "ebx": 0,
+        "d532210": 0,
+        "render": 5524696,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_LOOP_PUMP_CALL iter=6 ebx=0 d532210=0 render=00544cd8 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_ENTRY",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "render": 5524696,
+        "edx": 0,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 221,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PUMP_ENTRY iter=6 ret=00435dde render=00544cd8 edx=00000000 d544d10=00000001 d544d04=00000001 button0=0xdd raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_CALL",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 221,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_CALL iter=6 ret=00435dde render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xdd raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_RETURN",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 221,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_RETURN iter=6 ret=00435dde eax=00000001 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xdd raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_TICK_RETURN",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "eax": 46227464,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 221,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_TICK_RETURN iter=6 ret=00435dde eax=02c16008 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xdd raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB14_CALL",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb14": 4592352,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 221
+      },
+      "text": "NOWNER_435BC0_PUMP_CB14_CALL iter=6 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xdd"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_CALL",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_CALL iter=6 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_RETURN",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_RETURN iter=6 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_CALL",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_CALL iter=6 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_RETURN",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_RETURN iter=6 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_CALL",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb04": 4592032,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_CALL iter=6 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_RETURN",
+      "values": {
+        "iter": 6,
+        "ret": 4414942,
+        "eax": 5524696,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_RETURN iter=6 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_CALL",
+      "values": {
+        "iter": 6,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_CALL iter=6 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_POLL",
+      "values": {
+        "count": 6,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_POLL count=6 d532210=0 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000001 button0=0xfb surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 5362880,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_RETURN",
+      "values": {
+        "iter": 6,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_RETURN iter=6 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HIT_RESULT",
+      "values": {
+        "iter": 6,
+        "eax": 0,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_HIT_RESULT iter=6 eax=00000000 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_NO_HIT_UPDATE",
+      "values": {
+        "iter": 6,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_NO_HIT_UPDATE iter=6 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+      "values": {
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_GATE",
+      "values": {
+        "raw_result": 1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_GATE raw_result=1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_CALL",
+      "values": {
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_CALL mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ENTRY",
+      "values": {
+        "mouse": [
+          -76,
+          380
+        ],
+        "raw": [
+          4294962432,
+          24320
+        ],
+        "shift": 6,
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_ENTRY mouse=(-76,380) raw=(ffffed00,00005f00) shift=6 selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_FAIL",
+      "values": {
+        "result": -1,
+        "mouse": [
+          -76,
+          380
+        ],
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_FAIL result=-1 mouse=(-76,380) selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_COMPARE",
+      "values": {
+        "iter": 6,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_COMPARE iter=6 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HEAD",
+      "values": {
+        "iter": 7,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_LOOP_HEAD iter=7 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_PUMP_CALL",
+      "values": {
+        "iter": 7,
+        "ebx": 0,
+        "d532210": 0,
+        "render": 5524696,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_LOOP_PUMP_CALL iter=7 ebx=0 d532210=0 render=00544cd8 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_ENTRY",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "render": 5524696,
+        "edx": 0,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 251,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PUMP_ENTRY iter=7 ret=00435dde render=00544cd8 edx=00000000 d544d10=00000001 d544d04=00000001 button0=0xfb raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_CALL",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 251,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_CALL iter=7 ret=00435dde render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xfb raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_RETURN",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 251,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_RETURN iter=7 ret=00435dde eax=00000001 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xfb raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_TICK_RETURN",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "eax": 46227507,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 251,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_TICK_RETURN iter=7 ret=00435dde eax=02c16033 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xfb raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB14_CALL",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb14": 4592352,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 251
+      },
+      "text": "NOWNER_435BC0_PUMP_CB14_CALL iter=7 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xfb"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_CALL",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_CALL iter=7 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xff"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_RETURN",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_RETURN iter=7 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xff"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_CALL",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_CALL iter=7 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xff"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_RETURN",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_RETURN iter=7 ret=00435dde eax=00000001 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xff"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_CALL",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb04": 4592032,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_CALL iter=7 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xff"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_RETURN",
+      "values": {
+        "iter": 7,
+        "ret": 4414942,
+        "eax": 5524696,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_RETURN iter=7 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xff"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_CALL",
+      "values": {
+        "iter": 7,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_CALL iter=7 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xff"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_POLL",
+      "values": {
+        "count": 7,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_POLL count=7 d532210=0 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000001 button0=0xff surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 5362880,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_DRAW_RETURN",
+      "values": {
+        "iter": 7,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_LOOP_DRAW_RETURN iter=7 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HIT_RESULT",
+      "values": {
+        "iter": 7,
+        "eax": 0,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_HIT_RESULT iter=7 eax=00000000 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_NO_HIT_UPDATE",
+      "values": {
+        "iter": 7,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_NO_HIT_UPDATE iter=7 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+      "values": {
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_GATE",
+      "values": {
+        "raw_result": 1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_GATE raw_result=1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_CALL",
+      "values": {
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_CALL mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ENTRY",
+      "values": {
+        "mouse": [
+          -76,
+          380
+        ],
+        "raw": [
+          4294962432,
+          24320
+        ],
+        "shift": 6,
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_ENTRY mouse=(-76,380) raw=(ffffed00,00005f00) shift=6 selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_FAIL",
+      "values": {
+        "result": -1,
+        "mouse": [
+          -76,
+          380
+        ],
+        "selected_index": 0,
+        "hover_slot": -1
+      },
+      "text": "NOWNER_435BC0_GRID_FAIL result=-1 mouse=(-76,380) selected_index=0 hover_slot=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_COMPARE",
+      "values": {
+        "iter": 7,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_COMPARE iter=7 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_HEAD",
+      "values": {
+        "iter": 8,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255
+      },
+      "text": "NOWNER_435BC0_LOOP_HEAD iter=8 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1 surface=0a029880 size=(640,480) raw=(00000100,00006e00) d544d04=00000001 button0=0xff"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_ENTRY",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "render": 5524696,
+        "edx": 0,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 255,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PUMP_ENTRY iter=8 ret=00435dde render=00544cd8 edx=00000000 d544d10=00000001 d544d04=00000001 button0=0xff raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_CALL",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 255,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_CALL iter=8 ret=00435dde render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xff raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_RETURN",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 255,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_RETURN iter=8 ret=00435dde eax=00000001 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xff raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_TICK_RETURN",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "eax": 46227561,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 1,
+        "button0": 255,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_TICK_RETURN iter=8 ret=00435dde eax=02c16069 render=00544cd8 d544d10=00000001 d544d04=00000001 button0=0xff raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB14_CALL",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb14": 4592352,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 1,
+        "button0": 255
+      },
+      "text": "NOWNER_435BC0_PUMP_CB14_CALL iter=8 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000001 button0=0xff"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_CALL",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 91
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_CALL iter=8 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000000 button0=0x5b"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0A_RETURN",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "eax": 0,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 91
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0A_RETURN iter=8 ret=00435dde eax=00000000 render=00544cd8 raw=(00000100,00006e00) d544d04=00000000 button0=0x5b"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_CALL",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 91
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_CALL iter=8 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000000 button0=0x5b"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_RETURN",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "eax": 0,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 91
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_RETURN iter=8 ret=00435dde eax=00000000 render=00544cd8 raw=(00000100,00006e00) d544d04=00000000 button0=0x5b"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_CALL",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb04": 4592032,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 91
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_CALL iter=8 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000000 button0=0x5b"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_RETURN",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "eax": 5524696,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 91
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_RETURN iter=8 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000000 button0=0x5b"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_POLL",
+      "values": {
+        "count": 8,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 91,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_POLL count=8 d532210=0 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000000 button0=0x5b surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 5362880,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_NO_HIT_UPDATE",
+      "values": {
+        "iter": 8,
+        "ebx": 0,
+        "d532210": 0,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_NO_HIT_UPDATE iter=8 ebx=0 d532210=0 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+      "values": {
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_GATE",
+      "values": {
+        "raw_result": 0,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_GATE raw_result=0 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_LIMIT",
+      "values": {
+        "iter": 8,
+        "ebx": 0,
+        "d532210": 1,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_LIMIT iter=8 ebx=0 d532210=1 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_ENTRY",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "render": 5524696,
+        "edx": 0,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 91,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_PUMP_ENTRY iter=8 ret=00435dde render=00544cd8 edx=00000000 d544d10=00000001 d544d04=00000000 button0=0x5b raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_CALL",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 91,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_CALL iter=8 ret=00435dde render=00544cd8 d544d10=00000001 d544d04=00000000 button0=0x5b raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_MSG_RETURN",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "eax": 1,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 91,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_MSG_RETURN iter=8 ret=00435dde eax=00000001 render=00544cd8 d544d10=00000001 d544d04=00000000 button0=0x5b raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_TICK_RETURN",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "eax": 46227600,
+        "render": 5524696,
+        "d544d10": 1,
+        "d544d04": 0,
+        "button0": 91,
+        "raw": [
+          256,
+          28160
+        ],
+        "d543d78": 1,
+        "d543d7c": 5
+      },
+      "text": "NOWNER_435BC0_PUMP_TICK_RETURN iter=8 ret=00435dde eax=02c16090 render=00544cd8 d544d10=00000001 d544d04=00000000 button0=0x5b raw=(00000100,00006e00) d543d78=00000001 d543d7c=00000005"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB14_CALL",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb14": 4592352,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 0,
+        "button0": 91
+      },
+      "text": "NOWNER_435BC0_PUMP_CB14_CALL iter=8 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000000 button0=0x5b"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_CALL",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 2,
+        "button0": 49
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_CALL iter=8 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000002 button0=0x31"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_608F0B_RETURN",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "eax": 0,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 2,
+        "button0": 49
+      },
+      "text": "NOWNER_435BC0_PUMP_608F0B_RETURN iter=8 ret=00435dde eax=00000000 render=00544cd8 raw=(00000100,00006e00) d544d04=00000002 button0=0x31"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_CALL",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "vtable": 5304836,
+        "cb04": 4592032,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 2,
+        "button0": 49
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_CALL iter=8 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000002 button0=0x31"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_PUMP_CB04_RETURN",
+      "values": {
+        "iter": 8,
+        "ret": 4414942,
+        "eax": 5524696,
+        "render": 5524696,
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 2,
+        "button0": 49
+      },
+      "text": "NOWNER_435BC0_PUMP_CB04_RETURN iter=8 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000002 button0=0x31"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_POLL",
+      "values": {
+        "count": 9,
+        "d532210": 1,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ],
+        "d544d04": 2,
+        "button0": 49,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_POLL count=9 d532210=1 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000002 button0=0x31 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_DRAW",
+      "values": {
+        "ret": 4412020,
+        "owner": 67618586,
+        "selected_index": 0,
+        "hover_slot": -1,
+        "render": 5362880,
+        "map_surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_NO_HIT_UPDATE",
+      "values": {
+        "iter": 8,
+        "ebx": 0,
+        "d532210": 1,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_NO_HIT_UPDATE iter=8 ebx=0 d532210=1 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_ROUTE_ENTRY",
+      "values": {
+        "selected_index": 0,
+        "hover_slot": -1,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_GRID_GATE",
+      "values": {
+        "raw_result": 0,
+        "mouse": [
+          4,
+          440
+        ],
+        "raw": [
+          256,
+          28160
+        ]
+      },
+      "text": "NOWNER_435BC0_GRID_GATE raw_result=0 mouse=(4,440) raw=(00000100,00006e00)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_LOOP_EXIT",
+      "values": {
+        "iter": 8,
+        "ebx": 0,
+        "d532210": 1,
+        "d532218": 67618586,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_435BC0_LOOP_EXIT iter=8 ebx=0 d532210=1 d532218=0407c71a d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_435BC0_RETURN",
+      "values": {
+        "eax": 0,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "surface": 167942272,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "NOWNER_435BC0_RETURN eax=00000000 d532218=0407c71a d532220=0 d5322c8=-1 surface=0a029880 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_STOCK_RETURN",
+      "values": {
+        "eax": 0,
+        "saved_surface": 170980368,
+        "temp_surface": 167942272,
+        "current_surface": 167942272,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_WRAPPER_STOCK_RETURN eax=00000000 saved_surface=0a30f410 temp_surface=0a029880 current_surface=0a029880 d532218=0407c71a d532220=0 d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_RESTORE_SURFACE",
+      "values": {
+        "saved_surface": 170980368,
+        "temp_surface": 167942272,
+        "current_surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_WRAPPER_RESTORE_SURFACE saved_surface=0a30f410 temp_surface=0a029880 current_surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_COPYBACK_CALL",
+      "values": {
+        "dst_surface": 170980368,
+        "src_surface": 167942272,
+        "rect": [
+          80,
+          60,
+          639,
+          479
+        ],
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_WRAPPER_COPYBACK_CALL dst_surface=0a30f410 src_surface=0a029880 rect=(80,60,639,479) d532218=0407c71a d532220=0 d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_COPYBACK_RETURN",
+      "values": {
+        "eax": 16566696,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_WRAPPER_COPYBACK_RETURN eax=00fcc9a8 d532218=0407c71a d532220=0 d5322c8=-1 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_PRESENT_CALL",
+      "values": {
+        "render": 5524696,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_WRAPPER_PRESENT_CALL render=00544cd8 surface=0a30f410 size=(800,600)"
+    },
+    {
+      "line": 204,
+      "marker": "NOWNER_WRAPPER_COPYBACK_DONE",
+      "values": {
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ],
+        "base": 173735984,
+        "bytes": 480000,
+        "d532150": 67618586,
+        "d532218": 67618586,
+        "d532220": 0,
+        "d5322c8": -1
+      },
+      "text": "NOWNER_WRAPPER_COPYBACK_DONE surface=0a30f410 size=(800,600) base=0a5b0030 bytes=480000 d532150=0407c71a d532218=0407c71a d532220=0 d5322c8=-1"
+    },
+    {
+      "line": 204,
+      "marker": "SURFDUMP_READY",
+      "values": {
+        "redraw_seq": 999,
+        "surface": 170980368,
+        "size": [
+          800,
+          600
+        ],
+        "base": 173735984,
+        "bytes": 480000
+      },
+      "text": "SURFDUMP_READY redraw_seq=999 surface=0a30f410 size=(800,600) base=0a5b0030 bytes=480000"
+    },
+    {
+      "line": 204,
+      "marker": "SURFDUMP_HOST_READY",
+      "values": {},
+      "text": "SURFDUMP_HOST_READY"
+    }
+  ],
+  "status": "owner_action_copyback_reached",
+  "classification": [
+    "LOADSAVE and PlayGame were reached",
+    "candidate SHA-256: D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+    "probe stage: gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+    "observed load slot matches the expected fixture slot",
+    "castle command-99 owner loop was reached",
+    "castle overview hitmap samples were captured around command 0x63",
+    "owner flag bit 0x02 was set",
+    "owner/action prelude markers were observed: 20",
+    "owner/action prelude returned from Render_Begin",
+    "Render_Begin markers late_armed=1 entry=1 loop=1 flip=1 dd_pump_call=0 dd_pump_return=0 lost=1 limit=0 exit=1",
+    "Render_Begin flag values d544d04 unique=[1, 0] bit01_rows=1 last=0",
+    "owner descriptor click-release rows were observed: 1",
+    "last owner descriptor click-release row: {'before_d544d04': 1, 'before_button0': 128, 'after_d544d04': 0, 'after_button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5, 'reason': 'post_4338e0_entry'}",
+    "last Render_Begin flip result: {'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}",
+    "last Render_Begin lost result: {'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}",
+    "owner/action route markers were observed",
+    "owner/action draw rows were observed",
+    "copyback path markers wrapper_entry=1 call_stock=1 stock_return=1 copyback_call=1 copyback_return=1 done=1 alloc_fallback=0",
+    "descriptor hit-test markers were observed: 3",
+    "stock 00435BC0 loop-state markers poll=9 poll_limit=0 write_owner=1 write_hover=1",
+    "stock 00435BC0 grid markers route=9 gate=9 result=0 fail=7 selection_update=0",
+    "stock pump cb14 was 004612e0; inner 004612E0 source-copy offsets seen=0",
+    "real input-source status: cb14_4612e0_callsite_seen_inner_offsets_unverified",
+    "last stock 00435BC0 poll row: {'count': 9, 'd532210': 1, 'd532218': 67618586, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 440], 'raw': [256, 28160], 'd544d04': 2, 'button0': 49, 'surface': 167942272, 'size': [640, 480]}",
+    "last stock 00435BC0 poll before action force: {'count': 9, 'd532210': 1, 'd532218': 67618586, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 440], 'raw': [256, 28160], 'd544d04': 2, 'button0': 49, 'surface': 167942272, 'size': [640, 480]}",
+    "stock 00435BC0 loop markers head=8 pump_call=7 draw_call=7 draw_return=7 hit=7 compare=7 limit=1 loop_exit=1 return=1",
+    "stock 00435BC0 pump callback markers entry=9 tick_return=9 cb14_call=9 cb14_return=0 608f0b_call=9 cb04_call=9",
+    "last stock 00435BC0 pump cb14 call: {'iter': 8, 'ret': 4414942, 'vtable': 5304836, 'cb14': 4592352, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 0, 'button0': 91}",
+    "last stock 00435BC0 pump 608f0b call: {'iter': 8, 'ret': 4414942, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 2, 'button0': 49}",
+    "first stock 00435BC0 pump cb14 call: {'iter': 1, 'ret': 4414942, 'vtable': 5304836, 'cb14': 4592352, 'render': 5524696, 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0}",
+    "first stock 00435BC0 pump 608f0b call: {'iter': 1, 'ret': 4414942, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 1, 'button0': 219}"
+  ]
+}

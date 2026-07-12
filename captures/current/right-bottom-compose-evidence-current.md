@@ -1,7 +1,7 @@
 # Right-Bottom Compose Evidence Matrix
 
 - Overall: FAIL
-- Generated: `2026-06-17T09:47:23+02:00`
+- Generated: `2026-07-12T16:08:35+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
 - Promotion status: `validation_stage_only`
 - Stable stage should change: `False`
@@ -30,7 +30,7 @@
 - r8c11 nonblack: `42.822`
 - Normal map gate surface: `[800, 600]`
 - Normal gate unexplained blanks: `0`
-- Natural UI descriptor switch rows: `35`
+- Natural UI descriptor switch rows: `0`
 - Natural UI owner/action rows: `RBUI_PANEL_DRAW=0`, `RBUI_ACTION_BOX=0`
 - Controlled grid hit: `ok=True`, `entry=[450, 73]`, `result=0`
 - Controlled grid forced gates/failure exits: `1` / `0`
@@ -38,7 +38,7 @@
 - Natural route owner entry flag: `0x00`
 - Natural route owner flag test: `{'owner_flag': '0x00', 'bit2': 0, 'bit1': 0, 'bit8': 0}`
 - Natural route action descriptor: `{'slot': 'd1', 'x': 1000, 'y': 426, 'callback': '004338e0'}`
-- Natural route descriptor result: `{'result': 0, 'owner': '041bc71a', 'owner_flag': '0x00', 'surface': [800, 600]}`
+- Natural route descriptor result: `{'result': 0, 'owner': '044fc71a', 'owner_flag': '0x00', 'surface': [800, 600]}`
 - Natural route owner/action rows / AV rows: `0` / `0`
 - Route timing ordered markers: `patch=29`, `fullstart=29`, `grid=25`
 - Route timing failure exits / AV rows: `0` / `0`
@@ -46,7 +46,12 @@
 
 ## Failures
 
+- right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+- right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
 - right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
+- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
 - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
 - right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
+- natural UI probe did not reach descriptor switch rows
 - natural UI probe did not enter owner/action draw rows

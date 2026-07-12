@@ -1,7 +1,7 @@
 # No-Popup Boundary Guard
 
-- Overall: PASS
-- Generated: `2026-06-17T09:48:33+02:00`
+- Overall: FAIL
+- Generated: `2026-07-12T16:09:27+02:00`
 - Runtime policy: repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current refresh must include all no-popup boundary reports and the evidence index must link each report
 - Evidence index: `captures\current\hd-map-evidence-current.md`
@@ -49,7 +49,8 @@
 - `right_bottom_compose_evidence_matrix_tests`: `PASS` report=`captures\current\right-bottom-compose-evidence-matrix-tests-current.md` linked=`True`
 - `right_bottom_blocker_triage`: `PASS` report=`captures\current\right-bottom-blocker-triage-current.md` linked=`True`
 - `right_bottom_blocker_triage_tests`: `PASS` report=`captures\current\right-bottom-blocker-triage-tests-current.md` linked=`True`
-- `right_bottom_visual_artifact_guard`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-current.md` linked=`True`
+- `right_bottom_visual_artifact_guard`: `FAIL` report=`captures\current\right-bottom-visual-artifact-guard-current.md` linked=`True`
+  - refresh check is not passing: right_bottom_visual_artifact_guard
 - `right_bottom_visual_artifact_guard_tests`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-tests-current.md` linked=`True`
 - `first_mission_visual_audit`: `PASS` report=`captures\current\first-mission-visual-audit-current.md` linked=`True`
 - `first_mission_visual_audit_tests`: `PASS` report=`captures\current\first-mission-visual-audit-tests-current.md` linked=`True`
@@ -101,5 +102,11 @@
 - `castle_overview_probe_guard`: `PASS` report=`captures\current\castle-overview-probe-guard-current.md` linked=`True`
 - `castle_overview_probe_guard_tests`: `PASS` report=`captures\current\castle-overview-probe-guard-tests-current.md` linked=`True`
 - `stable_stage_guard_tests`: `PASS` report=`captures\current\stable-stage-guard-tests-current.md` linked=`True`
-- `docs_consistency_guard`: `PASS` report=`captures\current\docs-consistency-current.md` linked=`True`
+- `docs_consistency_guard`: `FAIL` report=`captures\current\docs-consistency-current.md` linked=`True`
+  - refresh check is not passing: docs_consistency_guard
 - `docs_consistency_guard_tests`: `PASS` report=`captures\current\docs-consistency-tests-current.md` linked=`True`
+
+## Failures
+
+- right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
+- docs_consistency_guard: refresh check is not passing: docs_consistency_guard

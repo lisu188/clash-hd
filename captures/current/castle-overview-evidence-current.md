@@ -1,7 +1,7 @@
 # Castle Overview Evidence Matrix
 
 - Overall: PASS
-- Generated: `2026-06-17T09:47:58+02:00`
+- Generated: `2026-07-12T16:09:01+02:00`
 - Stage: `castlecenter-all`
 - Promotion status: `validation_stage_only`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
@@ -9,8 +9,8 @@
 ## Patch Stage
 
 - Status: PASS
-- Executable: `C:\ClashTests\cdb-castle-overview-nativerender\clash95_hd_surfdump_20260515_105041.exe`
-- Source: `reports\castlecenter_all_patch_stage_20260515_105041.json`
+- Executable: `C:\ClashTests\cdb-castle-overview-nativerender\clash95_hd_surfdump_20260712_144019.exe`
+- Source: `reports\castlecenter_all_patch_stage_20260712_144019.json`
 - Archived report: `True`
 - Resolved stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all`
 - SHA-256: `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6`
@@ -19,12 +19,12 @@
 ## Overview Visual
 
 - Status: PASS
-- Run: `captures\archive\cdb-surface-dump-20260515-105041`
+- Run: `captures\archive\cdb-surface-dump-20260712-144019`
 - Commands: 0x63, 0x86, 0x87, 0x99, 0x9C, 0x9F, 0xA6
 - Surface size: `[800, 600]`
 - Centered geometry: PASS
 
-![castle overview surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260515-105041\surface.png)
+![castle overview surface](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144019\surface.png)
 
 ## Input Hitboxes
 
@@ -45,8 +45,8 @@
 
 ## Additional Screenshots
 
-![focused overview hitbox surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260515-105411\surface.png)
+![focused overview hitbox surface](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144151\surface.png)
 
-![visible-command overview multi-hit surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260515-105458\surface.png)
+![visible-command overview multi-hit surface](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144245\surface.png)
 
-![dormant-command overview multi-hit surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260515-105557\surface.png)
+![dormant-command overview multi-hit surface](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144327\surface.png)

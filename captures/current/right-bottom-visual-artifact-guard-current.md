@@ -1,10 +1,10 @@
 # Right-Bottom Visual Artifact Guard
 
-- Overall: PASS
-- Generated: `2026-06-17T09:47:23+02:00`
+- Overall: FAIL
+- Generated: `2026-07-12T16:08:35+02:00`
 - Runtime policy: repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only while the current natural right-bottom visual artifact remains explicitly blocked from promotion: controlled composition is recovered, natural owner/action rows are absent, and the lower/right natural regions still show the known black/striped incomplete state
-- Visual status: `natural_ui_visual_artifact_blocked`
+- Visual status: `visual_artifact_guard_stale`
 - Promotion ready: `False`
 - stable_stage_should_change: `False`
 - Conclusion: The striped/out-of-place right-bottom action-menu view is still a blocked natural UI artifact, not stable evidence. Controlled composition proves the lower/right UI can be drawn, but natural gameplay has not entered the owner/action draw path.
@@ -12,7 +12,7 @@
 ## Checks
 
 - `controlled_composition_recovered`: `PASS`
-- `natural_owner_action_rows_absent`: `PASS`
+- `natural_owner_action_rows_absent`: `FAIL`
 - `natural_visual_artifact_present`: `PASS`
 - `controlled_vs_natural_visual_gap`: `PASS`
 - `blocker_triage_non_promoting`: `PASS`
@@ -27,3 +27,7 @@
 - Natural r8c10 flags: `['mostly_black', 'large_black_component', 'black_touches_bottom_right']`
 - Natural r8c11 flags: `['mostly_black', 'large_black_component', 'black_touches_bottom_right']`
 - Triage classification: `controlled_recovered_but_natural_route_nonpromoting`
+
+## Failures
+
+- visual artifact guard failed: natural_owner_action_rows_absent

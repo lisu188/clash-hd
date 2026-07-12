@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-06-17T09:48:33+02:00`
+- Generated: `2026-07-12T16:09:27+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -61,7 +61,7 @@
 - success_4356c0_ok: `True`
 - failure_exit_count: `0`
 - av_count: `0`
-- last_select_forced: `{'ret': 4411998, 'forced_index': 1, 'selected_addon': 1, 'list': [0, 1, 3, 16, 17, 37, 38, 39, -1, -1, -1, -1], 'owner': 67028762, 'selected_index': 1, 'render': 5362880, 'map_surface': 170913200, 'sz': [800, 600], 'hover_slot': -1}`
+- last_select_forced: `{'ret': 4411998, 'forced_index': 1, 'selected_addon': 1, 'list': [0, 1, 3, 16, 17, 37, 38, 39, -1, -1, -1, -1], 'owner': 71026458, 'selected_index': 1, 'render': 5362880, 'map_surface': 61400384, 'sz': [800, 600], 'hover_slot': -1}`
 - last_success_4356c0: `{'selected_index': 1, 'selected_addon': 1, 'action_state': 0}`
 
 ### Right Bottom Ui Probe
@@ -87,10 +87,10 @@
 - ready: `True`
 - av_count: `0`
 - owner_rows: `11`
-- panel_rows: `11`
-- draw_rows: `4`
-- nonzero_owner_rows: `12`
-- appost_action_box: `0`
+- panel_rows: `12`
+- draw_rows: `5`
+- nonzero_owner_rows: `13`
+- appost_action_box: `1`
 - tooltip_action_box: `1`
 - apredir_after_action_box: `1`
 - apredir_copyback_after_call: `1`
@@ -100,7 +100,7 @@
 - composition_sample_rows: `2`
 - composition_present_by_region: `{'frame_left': 0, 'frame_top': 0, 'right_frame_under_minimap': 0, 'bottom_tooltip': 0, 'bottom_right_panel': 0, 'bottom_frame': 0}`
 - composition_present_null_by_region: `None`
-- bounds: `{'minimap_top_right': {'nonblack_percent': 61.468, 'black_percent': 38.532, 'flags': ['black_touches_bottom_right']}, 'right_side_total': {'nonblack_percent': 46.831, 'black_percent': 53.169, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'right_side_below_minimap': {'nonblack_percent': 38.366, 'black_percent': 61.634, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_strip': {'nonblack_percent': 51.75, 'black_percent': 48.25, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_ui_corner': {'nonblack_percent': 21.43, 'black_percent': 78.57, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c9': {'nonblack_percent': 46.24, 'black_percent': 53.76, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c10': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c11': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}}`
+- bounds: `None`
 
 ### Right Bottom Compose Probe
 
@@ -211,7 +211,7 @@
 - stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`
 - candidate_sha256: `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`
 - rbui_markers_seen: `True`
-- rbui_desc_switch: `35`
+- rbui_desc_switch: `0`
 - rbui_viewport_switch: `1`
 - rbui_panel_draw: `0`
 - rbui_action_box: `0`
@@ -220,8 +220,10 @@
 - av_count: `0`
 - current_hd_map_gate: `True`
 - right_bottom_patch_group: `{'patched': 4, 'total': 4}`
-- bounds: `{'minimap_top_right': {'nonblack_percent': 12.936, 'black_percent': 87.064, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'right_side_total': {'nonblack_percent': 19.688, 'black_percent': 80.312, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'right_side_below_minimap': {'nonblack_percent': 23.593, 'black_percent': 76.407, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_strip': {'nonblack_percent': 51.75, 'black_percent': 48.25, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_ui_corner': {'nonblack_percent': 21.43, 'black_percent': 78.57, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c9': {'nonblack_percent': 46.24, 'black_percent': 53.76, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c10': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c11': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}}`
+- bounds: `{'minimap_top_right': {'nonblack_percent': 12.964, 'black_percent': 87.036, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'right_side_total': {'nonblack_percent': 19.698, 'black_percent': 80.302, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'right_side_below_minimap': {'nonblack_percent': 23.593, 'black_percent': 76.407, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_strip': {'nonblack_percent': 52.45, 'black_percent': 47.55, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_ui_corner': {'nonblack_percent': 21.43, 'black_percent': 78.57, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c9': {'nonblack_percent': 46.24, 'black_percent': 53.76, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c10': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c11': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}}`
 - Failures:
+  - right-bottom compose UI wrapper reported failure
+  - right-bottom compose UI descriptor switch rows were not observed
   - right-bottom compose UI did not naturally enter owner/action draw rows
 
 ### Right Bottom Grid Hit
@@ -275,7 +277,7 @@
 - owner_entry_flag: `0x00`
 - owner_flag_test: `{'owner_flag': '0x00', 'bit2': 0, 'bit1': 0, 'bit8': 0}`
 - action_descriptor: `{'slot': 'd1', 'x': 1000, 'y': 426, 'callback': '004338e0'}`
-- descriptor_result: `{'result': 0, 'owner': '041bc71a', 'owner_flag': '0x00', 'surface': [800, 600]}`
+- descriptor_result: `{'result': 0, 'owner': '044fc71a', 'owner_flag': '0x00', 'surface': [800, 600]}`
 - action_route_count: `0`
 - state_gated_by_owner_flag: `True`
 - av_count: `0`
@@ -387,7 +389,7 @@
 - blocked_slots: `[3, 4, 5]`
 - recent_slot5_blocked: `True`
 - current_divergence: `slot 2 reaches the 0044895A load-menu entry and accept path; slots 3-5 reach early 00419B80 load-coordinate descriptor rows, then time out before 0044895A load-menu entry, forced select, LOADSAVE, or PlayGame`
-- timeout_stack_categories: `{'slot3_timeout': 'qpc_timing_poll_before_load_menu_loop', 'slot4_timeout': 'qpc_timing_poll_before_load_menu_loop', 'slot5_timeout': 'win32_message_poll_before_load_menu_loop', 'recent_slot5_timeout': 'engine_timing_poll_before_load_menu_loop'}`
+- timeout_stack_categories: `{'slot3_timeout': 'qpc_timing_poll_before_load_menu_loop', 'slot4_timeout': 'avi_or_audio_worker_present', 'slot5_timeout': 'avi_or_audio_worker_present', 'recent_slot5_timeout': 'qpc_timing_poll_before_load_menu_loop'}`
 - next_probe_target: `instrument the transition between the early 00419B80 load descriptors and 0044895A load-menu entry for rows 3-5`
 
 ### Load Slot Entry Gap
@@ -457,11 +459,11 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-owner-flag-inventory-current.json`
 - Markdown: `captures\current\right-bottom-owner-flag-inventory-current.md`
-- scanned_log_count: `188`
-- relevant_run_count: `81`
-- classification_counts: `{'forced_owner_action_route': 65, 'natural_state_gated': 1, 'natural_ui_descriptor_only': 2, 'non_natural_isolated_fixture': 10, 'right_bottom_related': 3}`
+- scanned_log_count: `26`
+- relevant_run_count: `12`
+- classification_counts: `{'forced_owner_action_route': 7, 'natural_state_gated': 1, 'non_natural_isolated_fixture': 4}`
 - natural_state_gated_count: `1`
-- forced_owner_action_route_count: `65`
+- forced_owner_action_route_count: `7`
 - natural_action_route_count: `0`
 - guard_policy: `right-bottom owner/action evidence must keep at least one controlled forced owner route, at least one current natural owner-flag-gated route, and no non-fixture archived natural route that already reaches the owner/action renderer without an explicit forced owner flag`
 - runtime_policy: `repo-only; scans existing CDB logs and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
@@ -495,6 +497,8 @@
 - candidate_sha256: `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`
 - manual_input_proof_valid: `False`
 - Failures:
+  - right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+  - right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
   - right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
   - right-bottom natural UI probe did not enter owner/action draw rows
 
@@ -509,9 +513,14 @@
 - controlled_grid_hit_ok: `True`
 - promotion_decision: `defer_stable_promotion`
 - Failures:
+  - right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+  - right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
   - right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
+  - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+  - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
   - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
   - right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
+  - natural UI probe did not reach descriptor switch rows
   - natural UI probe did not enter owner/action draw rows
 
 ### Right Bottom Blocker Triage
@@ -531,10 +540,10 @@
 
 ### Right Bottom Visual Artifact Guard
 
-- Status: PASS
+- Status: FAIL
 - JSON: `captures\current\right-bottom-visual-artifact-guard-current.json`
 - Markdown: `captures\current\right-bottom-visual-artifact-guard-current.md`
-- visual_status: `natural_ui_visual_artifact_blocked`
+- visual_status: `visual_artifact_guard_stale`
 - promotion_ready: `False`
 - stable_stage_should_change: `False`
 - natural_owner_action_rows: `0`
@@ -543,6 +552,8 @@
 - natural_r8c11_black: `100.0`
 - guard_policy: `passes only while the current natural right-bottom visual artifact remains explicitly blocked from promotion: controlled composition is recovered, natural owner/action rows are absent, and the lower/right natural regions still show the known black/striped incomplete state`
 - runtime_policy: `repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+- Failures:
+  - visual artifact guard failed: natural_owner_action_rows_absent
 
 ### First Mission Visual Audit
 
@@ -919,7 +930,7 @@
 - Status: PASS
 - JSON: `captures\current\castle-overview-baseline-recheck-current.json`
 - Markdown: `captures\current\castle-overview-baseline-recheck-current.md`
-- overview_baseline_run: `captures\archive\cdb-surface-dump-20260515-105041`
+- overview_baseline_run: `captures\archive\cdb-surface-dump-20260712-144019`
 - overview_surface_size: `[800, 600]`
 - overview_centered_geometry: `True`
 - barracks_descriptor_click: `True`
@@ -980,17 +991,19 @@
 
 ### Battle Visible Input Summary
 
-- Status: PASS
+- Status: FAIL
 - JSON: `captures\current\battle-visible-input-current.json`
 - Markdown: `captures\current\battle-visible-input-summary-current.md`
 - run_count: `3`
-- focused_completion_percent: `99.91`
+- focused_completion_percent: `99.89`
 - summary_passed: `False`
-- command_ready_run_count: `2`
+- command_ready_run_count: `0`
 - click_consumed_run_count: `0`
-- invalid_run_count: `1`
+- invalid_run_count: `0`
 - real_visible_click_consumed: `False`
 - open_blocker: `real visible click-to-callback proof`
+- Failures:
+  - visible input summary has no command-ready run
 
 ### Battle Visible Input Summary Tests
 
@@ -1003,18 +1016,20 @@
 
 ### Battle Ui Evidence Matrix
 
-- Status: PASS
+- Status: FAIL
 - JSON: `captures\current\battle-ui-evidence-current.json`
 - Markdown: `captures\current\battle-ui-evidence-current.md`
-- focused_completion_percent: `99.91`
+- focused_completion_percent: `99.89`
 - visible_input_summary_passed: `False`
-- visible_input_command_ready_runs: `2`
+- visible_input_command_ready_runs: `0`
 - visible_input_click_consumed_runs: `0`
-- visible_input_invalid_runs: `1`
+- visible_input_invalid_runs: `0`
 - real_visible_click_consumed: `False`
 - promotion_status: `validation_stage_only`
 - stable_stage_should_change: `False`
-- open_items: `['real visible click-to-callback proof remains open', '1 invalid visible-input run(s) are retained as negative evidence']`
+- open_items: `['real visible click-to-callback proof remains open']`
+- Failures:
+  - visible_input: visible input command readiness is not proven
 
 ### Battle Ui Evidence Matrix Tests
 
@@ -1131,7 +1146,7 @@
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
 - risky_file_count: `107`
-- classification_counts: `{'safe': 109, 'exempt': 25, 'manual_visible_runtime_gated': 2, 'test_fixture': 80}`
+- classification_counts: `{'safe': 113, 'exempt': 25, 'manual_visible_runtime_gated': 2, 'test_fixture': 80}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1331,7 +1346,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 93.92, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.91, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 90.54, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1743,11 +1758,11 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `711`
+- artifact_count: `657`
 - current_reference_count: `166`
-- stale_visible_or_sandbox_count: `16`
-- reference_status_counts: `{'archived_referenced': 283, 'current_referenced': 136, 'stale_unreferenced': 292}`
-- era_counts: `{'cdb_surface_dump_unverified': 60, 'hidden_cdb_surface_dump': 129, 'other_capture_artifact': 506, 'visible_era': 16}`
+- stale_visible_or_sandbox_count: `11`
+- reference_status_counts: `{'archived_referenced': 204, 'current_referenced': 136, 'stale_unreferenced': 317}`
+- era_counts: `{'cdb_surface_dump_unverified': 65, 'hidden_cdb_surface_dump': 148, 'other_capture_artifact': 433, 'visible_era': 11}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1762,7 +1777,7 @@
 
 ### No Popup Boundary Guard
 
-- Status: PASS
+- Status: FAIL
 - JSON: `captures\current\no-popup-boundary-guard-current.json`
 - Markdown: `captures\current\no-popup-boundary-guard-current.md`
 - required_guard_count: `6`
@@ -1773,15 +1788,32 @@
 - required_reports: `['stable_stage_guard', 'exe_artifact_guard', 'surface_dump_policy_guard', 'visible_runtime_launcher_guard', 'no_visible_runtime_guard', 'process_hygiene_guard', 'no_popup_map_evidence', 'no_popup_map_evidence_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'hd_soak_execution_boundary', 'hd_soak_execution_boundary_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'first_mission_visual_audit', 'first_mission_visual_audit_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
 - evidence_index: `captures\current\hd-map-evidence-current.md`
 - guard_policy: `current refresh must include all no-popup boundary reports and the evidence index must link each report`
+- Failures:
+  - right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
+  - docs_consistency_guard: refresh check is not passing: docs_consistency_guard
 
 ### Docs Consistency Guard
 
-- Status: PASS
+- Status: FAIL
 - JSON: `captures\current\docs-consistency-current.json`
 - Markdown: `captures\current\docs-consistency-current.md`
 - check_count: `12`
 - guard_policy: `generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries`
 - runtime_policy: `repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - boundary_counts: no-popup boundary guard is not passing
+  - docs_codex_loop: codex_loop does not keep castlecenter-all validation-only
+  - docs_codex_loop: codex_loop does not document stable_stage_should_change=False
+  - docs_codex_loop: codex_loop does not document no-popup boundary PASS status
+  - docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260506-190037\surface.png
+  - docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260506-201114\surface.png
+  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_owner_route: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160131\surface.png
+  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_probe: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144922\surface.png
+  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_patch: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160204\surface.png
+  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_fullstart_route: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160351\surface.png
+  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_normal_gate: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260513-121513\surface.png
+  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_ui_probe: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160441\surface.png
+  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_grid_hit: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-150240\surface.png
 
 ### Docs Consistency Guard Tests
 
@@ -1806,14 +1838,26 @@
 
 ## Failures
 
+- right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+- right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
 - right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
+- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
 - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
 - right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
+- right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+- right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
 - right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
+- right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
+- right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
 - right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
 - right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
+- right_bottom_compose_evidence: natural UI probe did not reach descriptor switch rows
 - right_bottom_compose_evidence: natural UI probe did not enter owner/action draw rows
+- right_bottom_visual_artifact_guard: visual artifact guard failed: natural_owner_action_rows_absent
 - first_mission_visual_audit: primary first-mission frame is not visually clean for playability: black patch: right_below_minimap, black patch: bottom_right_panel, black patch: minimap_interior
+- battle_visible_input_summary: visible input summary has no command-ready run
+- battle_ui_evidence_matrix: visible_input: visible input command readiness is not proven
 - hd_soak_report_guard: source soak report did not mark itself passed
 - hd_soak_report_guard: source soak report contains 8 failure(s)
 - hd_soak_report_guard: frame sample count 1 is below 2
@@ -1857,3 +1901,18 @@
 - hd_endurance_release_checklist: save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - hd_endurance_release_checklist: turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - hd_endurance_release_checklist: campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
+- no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
+- no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard
+- docs_consistency_guard: boundary_counts: no-popup boundary guard is not passing
+- docs_consistency_guard: docs_codex_loop: codex_loop does not keep castlecenter-all validation-only
+- docs_consistency_guard: docs_codex_loop: codex_loop does not document stable_stage_should_change=False
+- docs_consistency_guard: docs_codex_loop: codex_loop does not document no-popup boundary PASS status
+- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260506-190037\surface.png
+- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260506-201114\surface.png
+- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_owner_route: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160131\surface.png
+- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_probe: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144922\surface.png
+- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_patch: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160204\surface.png
+- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_fullstart_route: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160351\surface.png
+- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_normal_gate: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260513-121513\surface.png
+- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_ui_probe: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160441\surface.png
+- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_grid_hit: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-150240\surface.png

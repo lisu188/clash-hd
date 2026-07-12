@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-06-17T09:47:21+02:00",
+  "generated_at": "2026-07-12T16:08:34+02:00",
   "passed": true,
   "runtime_policy": "repo/local metadata only; reads generated save-scan JSON and existing hidden-desktop CDB artifacts, and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when current evidence shows an action-eligible installed save record exists, the archived slot-0 natural route clicks owner record index 0 but is blocked by owner flag 0x00, slot 2 loads yet misses the bit-2 record with the current click, and slot 5 has a route-compatible bit-2 record but the current load harness times out before LOADSAVE",
   "promotion_ready": false,
   "save_scan_json": "captures\\current\\castle-save-owner-flag-scan-current.json",
-  "baseline_run": "captures\\archive\\cdb-surface-dump-20260518-213418",
-  "slot2_run": "captures\\archive\\cdb-surface-dump-20260523-001159",
-  "slot5_run": "captures\\archive\\cdb-surface-dump-20260523-000931",
-  "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260523-001159\\surface.png",
+  "baseline_run": "captures\\archive\\cdb-surface-dump-20260712-150434",
+  "slot2_run": "captures\\archive\\cdb-surface-dump-20260712-153503",
+  "slot5_run": "captures\\archive\\cdb-surface-dump-20260712-153529",
+  "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153503\\surface.png",
   "summary": {
     "save_scan_passed": true,
     "action_eligible_record_count": 7,
@@ -93,9 +93,9 @@
     ]
   },
   "baseline": {
-    "run": "captures\\archive\\cdb-surface-dump-20260518-213418",
-    "summary_json": "captures\\archive\\cdb-surface-dump-20260518-213418\\summary.json",
-    "log": "captures\\archive\\cdb-surface-dump-20260518-213418\\cdb-surface-dump.log",
+    "run": "captures\\archive\\cdb-surface-dump-20260712-150434",
+    "summary_json": "captures\\archive\\cdb-surface-dump-20260712-150434\\summary.json",
+    "log": "captures\\archive\\cdb-surface-dump-20260712-150434\\cdb-surface-dump.log",
     "summary_exists": true,
     "log_exists": true,
     "passed": true,
@@ -167,7 +167,7 @@
     "action_route_count": 0,
     "marker_counts": {
       "SURFDUMP_LOADSAVE": 2,
-      "SURFDUMP_PLAYGAME": 2,
+      "SURFDUMP_PLAYGAME": 1,
       "NOWNER_MAP_TILE": 1,
       "NOWNER_BUILDING_TILE": 1,
       "NOWNER_CASTLE_OVERVIEW_ENTRY": 1,
@@ -181,13 +181,13 @@
       "AV_SURFDUMP": 0
     },
     "no_av": true,
-    "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260518-213418\\surface.png",
+    "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-150434\\surface.png",
     "failures": []
   },
   "slot2": {
-    "run": "captures\\archive\\cdb-surface-dump-20260523-001159",
-    "summary_json": "captures\\archive\\cdb-surface-dump-20260523-001159\\summary.json",
-    "log": "captures\\archive\\cdb-surface-dump-20260523-001159\\cdb-surface-dump.log",
+    "run": "captures\\archive\\cdb-surface-dump-20260712-153503",
+    "summary_json": "captures\\archive\\cdb-surface-dump-20260712-153503\\summary.json",
+    "log": "captures\\archive\\cdb-surface-dump-20260712-153503\\cdb-surface-dump.log",
     "summary_exists": true,
     "log_exists": true,
     "passed": true,
@@ -224,63 +224,63 @@
         "current": 0
       },
       {
-        "x": 38,
+        "x": 43,
         "y": 45,
-        "mouse_x": 40,
+        "mouse_x": 352,
         "mouse_y": 272,
         "selected": -1,
         "current": 0
       },
       {
-        "x": 38,
+        "x": 43,
         "y": 45,
-        "mouse_x": 40,
+        "mouse_x": 352,
         "mouse_y": 272,
         "selected": -1,
         "current": 0
       },
       {
-        "x": 38,
+        "x": 43,
         "y": 45,
-        "mouse_x": 40,
+        "mouse_x": 352,
         "mouse_y": 272,
         "selected": -1,
         "current": 0
       },
       {
-        "x": 38,
+        "x": 43,
         "y": 45,
-        "mouse_x": 40,
+        "mouse_x": 352,
         "mouse_y": 272,
         "selected": -1,
         "current": 0
       },
       {
-        "x": 38,
+        "x": 43,
         "y": 45,
-        "mouse_x": 40,
+        "mouse_x": 352,
         "mouse_y": 272,
         "selected": -1,
         "current": 0
       },
       {
-        "x": 38,
+        "x": 43,
         "y": 45,
-        "mouse_x": 40,
+        "mouse_x": 352,
         "mouse_y": 272,
         "selected": -1,
         "current": 0
       },
       {
-        "x": 38,
+        "x": 43,
         "y": 45,
-        "mouse_x": 40,
+        "mouse_x": 352,
         "mouse_y": 272,
         "selected": -1,
         "current": 0
       }
     ],
-    "map_tile_count": 9,
+    "map_tile_count": 13,
     "building_tiles": [],
     "building_tile": null,
     "map_click_hits_building": false,
@@ -290,8 +290,8 @@
     "action_route_count": 0,
     "marker_counts": {
       "SURFDUMP_LOADSAVE": 1,
-      "SURFDUMP_PLAYGAME": 1,
-      "NOWNER_MAP_TILE": 9,
+      "SURFDUMP_PLAYGAME": 3,
+      "NOWNER_MAP_TILE": 13,
       "NOWNER_BUILDING_TILE": 0,
       "NOWNER_CASTLE_OVERVIEW_ENTRY": 0,
       "NOWNER_OWNER_FLAG_TEST": 0,
@@ -304,13 +304,13 @@
       "AV_SURFDUMP": 0
     },
     "no_av": true,
-    "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260523-001159\\surface.png",
+    "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153503\\surface.png",
     "failures": []
   },
   "slot5": {
-    "run": "captures\\archive\\cdb-surface-dump-20260523-000931",
-    "summary_json": "captures\\archive\\cdb-surface-dump-20260523-000931\\summary.json",
-    "log": "captures\\archive\\cdb-surface-dump-20260523-000931\\cdb-surface-dump.log",
+    "run": "captures\\archive\\cdb-surface-dump-20260712-153529",
+    "summary_json": "captures\\archive\\cdb-surface-dump-20260712-153529\\summary.json",
+    "log": "captures\\archive\\cdb-surface-dump-20260712-153529\\cdb-surface-dump.log",
     "summary_exists": true,
     "log_exists": true,
     "passed": false,

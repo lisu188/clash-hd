@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T09:47:23+02:00",
+  "generated_at": "2026-07-12T16:08:35+02:00",
   "passed": false,
   "decision": "defer_stable_promotion",
   "stable_stage_should_change": false,
@@ -123,7 +123,7 @@
       "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
       "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
       "rbui_markers_seen": true,
-      "rbui_desc_switch": 35,
+      "rbui_desc_switch": 0,
       "rbui_viewport_switch": 1,
       "rbui_panel_draw": 0,
       "rbui_action_box": 0,
@@ -137,16 +137,16 @@
       },
       "bounds": {
         "minimap_top_right": {
-          "nonblack_percent": 12.936,
-          "black_percent": 87.064,
+          "nonblack_percent": 12.964,
+          "black_percent": 87.036,
           "flags": [
             "large_black_component",
             "black_touches_bottom_right"
           ]
         },
         "right_side_total": {
-          "nonblack_percent": 19.688,
-          "black_percent": 80.312,
+          "nonblack_percent": 19.698,
+          "black_percent": 80.302,
           "flags": [
             "large_black_component",
             "black_touches_bottom_right"
@@ -161,8 +161,8 @@
           ]
         },
         "bottom_strip": {
-          "nonblack_percent": 51.75,
-          "black_percent": 48.25,
+          "nonblack_percent": 52.45,
+          "black_percent": 47.55,
           "flags": [
             "large_black_component",
             "black_touches_bottom_right"
@@ -254,7 +254,7 @@
       },
       "descriptor_result": {
         "result": 0,
-        "owner": "041bc71a",
+        "owner": "044fc71a",
         "owner_flag": "0x00",
         "surface": [
           800,
@@ -301,6 +301,8 @@
     "request explicit approval before any visible/manual input validation"
   ],
   "failures": [
+    "right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
+    "right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
     "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
     "right-bottom natural UI probe did not enter owner/action draw rows"
   ]

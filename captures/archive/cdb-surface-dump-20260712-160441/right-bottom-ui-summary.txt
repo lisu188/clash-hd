@@ -1,0 +1,11 @@
+passed=False
+surface_dump_passed=True
+rbui_markers_seen=True
+descriptor_or_viewport_seen=True
+owner_action_rows_seen=False
+requires_owner_action_rows=True
+allow_descriptor_only=False
+markers=RBUI_PANEL_DRAW=0, RBUI_GRID_DRAW=0, RBUI_STATUS_DRAW=0, RBUI_ACTION_BOX=0, RBUI_GRID_HIT_ENTRY=0, RBUI_GRID_HIT_OK=0, RBUI_GRID_HIT_FAIL=0, RBUI_CLICK_DISPATCH=0, RBUI_DESC_SWITCH=0, RBUI_VIEWPORT_SWITCH=1, SURFDUMP_PLAYGAME=1, SURFDUMP_READY=1
+run_dir=C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160441
+png=C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-160441\surface.png
+log=C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-160441\cdb-surface-dump.log

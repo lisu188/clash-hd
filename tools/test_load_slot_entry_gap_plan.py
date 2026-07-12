@@ -41,7 +41,7 @@ dword_543D78 = 1;
 """
 
 CDB_TEXT = """
-bp 00419B80 ".printf \\"SURFDUMP_LOAD_COORD\\"; gc"
+bp 00419B80 "__PRE_ENTRY_LOAD_COORD_ACTION__; gc"
 bp 00447780 ".printf \\"SURFDUMP_SKIP_MAIN_LOAD_CALLBACK\\"; gc"
 bp 00447D61 ".printf \\"SURFDUMP_MAIN_DISPATCH_POLL\\"; gc"
 bp 0044895A ".printf \\"SURFDUMP_LOAD_MENU_ENTRY\\"; gc"
@@ -147,7 +147,7 @@ def test_fails_without_pre_entry_load_coord_log() -> None:
         report = build(
             write_fixture(
                 Path(tmp),
-                cdb_text=CDB_TEXT.replace("SURFDUMP_LOAD_COORD", "SURFDUMP_COORD_MISSING"),
+                cdb_text=CDB_TEXT.replace("__PRE_ENTRY_LOAD_COORD_ACTION__", "SURFDUMP_COORD_MISSING"),
             )
         )
     assert not report["passed"]

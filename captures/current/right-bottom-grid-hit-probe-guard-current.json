@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T09:47:21+02:00",
+  "generated_at": "2026-07-12T16:08:34+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "focused right-bottom grid-hit proof must keep the owner/action/grid breakpoints, continue to prove native coordinate (450,73) returns grid cell 0, and stay hidden-desktop with no failure-exit or AV rows",
@@ -312,16 +312,16 @@
     },
     "focused_grid_hit_log": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260514-140601",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260514-140601\\summary.json",
-      "log": "captures\\archive\\cdb-surface-dump-20260514-140601\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-150240",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-150240\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-150240\\cdb-surface-dump.log",
       "hidden_desktop": true,
       "allow_visible_desktop": false,
       "use_ddraw_proxy": true,
       "fast_forward_start_anims": true,
       "skip_map_validation": true,
       "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
-      "extra_probe_template": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_right_bottom_grid_hit_extra.cdb",
+      "extra_probe_template": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\ui\\clash95_right_bottom_grid_hit_extra.cdb",
       "surface": [
         800,
         600

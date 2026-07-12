@@ -1,0 +1,922 @@
+{
+  "log": "captures\\archive\\cdb-surface-dump-20260712-154653\\cdb-surface-dump.log",
+  "proof_class": "non_natural_isolated_fixture",
+  "expected_slot": 0,
+  "selected_arg": 0,
+  "selected_global": 0,
+  "loadsave_rows": [
+    {
+      "line": 202,
+      "marker": "SURFDUMP_LOADSAVE",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": 155189296
+      },
+      "text": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=09400030"
+    }
+  ],
+  "loadsave_slot_values": [
+    0,
+    0
+  ],
+  "loadsave_slot_unique_values": [
+    0
+  ],
+  "loadsave_slot_consistent": true,
+  "loadsave_slot_expected_match": true,
+  "expected_slot_match": true,
+  "row_count": 23,
+  "marker_counts": {
+    "SURFDUMP_LOADSAVE": 1,
+    "SURFDUMP_PLAYGAME": 2,
+    "SURFDUMP_READY": 1,
+    "SURFDUMP_HOST_READY": 1,
+    "NOWNER_HEADER": 1,
+    "NOWNER_FORCE_MAP_CASTLE_CLICK": 1,
+    "NOWNER_MAP_TILE": 1,
+    "NOWNER_BUILDING_TILE": 1,
+    "NOWNER_CASTLE_OVERVIEW_ENTRY": 1,
+    "NOWNER_CASTLE_HIT_GIVEUP": 0,
+    "NOWNER_CASTLE_HITMAP_SAMPLE": 1,
+    "NOWNER_CASTLE_CMD99_TARGET": 1,
+    "NOWNER_CASTLE_HIT": 1,
+    "NOWNER_CASTLE_CMD99_GATE": 1,
+    "NOWNER_CASTLE_CALLBACK": 1,
+    "NOWNER_433C20_ENTRY": 1,
+    "NOWNER_OWNER_FLAG_TEST": 1,
+    "NOWNER_OWNER_SCREEN_DESC_DRAW": 1,
+    "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
+    "NOWNER_HITTEST_ENTRY": 2,
+    "NOWNER_HITTEST_COMPARE": 0,
+    "NOWNER_HITTEST_SCAN_TAIL": 0,
+    "NOWNER_DESCRIPTOR_CALLBACK": 1,
+    "NOWNER_4338E0_ENTRY": 1,
+    "NOWNER_419ED0_ENTRY": 0,
+    "NOWNER_419ED0_SOUND_PREP": 0,
+    "NOWNER_419ED0_SOUND_RETURN": 0,
+    "NOWNER_419ED0_STATE6_READY": 0,
+    "NOWNER_419ED0_RENDER_BEGIN_RETURN": 0,
+    "NOWNER_419ED0_RENDER_BEGIN": 0,
+    "NOWNER_419ED0_STATE5_DONE": 0,
+    "NOWNER_RENDER_BEGIN_LATE_ARMED": 0,
+    "NOWNER_RELEASE_OWNER_DESC_CLICK": 0,
+    "NOWNER_RENDER_BEGIN_ENTRY": 0,
+    "NOWNER_RENDER_BEGIN_LOOP": 0,
+    "NOWNER_RENDER_BEGIN_FLIP_RESULT": 0,
+    "NOWNER_RENDER_BEGIN_DD_PUMP_CALL": 0,
+    "NOWNER_RENDER_BEGIN_DD_PUMP_RETURN": 0,
+    "NOWNER_RENDER_BEGIN_LOST_RESULT": 0,
+    "NOWNER_RENDER_BEGIN_ITERATION_LIMIT": 0,
+    "NOWNER_RENDER_BEGIN_EXIT": 0,
+    "NOWNER_DD_PUMP_ENTRY": 0,
+    "NOWNER_DD_PUMP_MSG_PUMP_CALL": 0,
+    "NOWNER_DD_PUMP_MSG_PUMP_RETURN": 0,
+    "NOWNER_4338E0_AFTER_SELECT": 0,
+    "NOWNER_4338E0_AFTER_GATE": 0,
+    "NOWNER_4338E0_RESOURCE_SETUP": 0,
+    "NOWNER_4338E0_PRE_PUMP": 0,
+    "NOWNER_4338E0_PUMP_ENTRY": 0,
+    "NOWNER_4338E0_PUMP_FILL": 0,
+    "NOWNER_4338E0_PUMP_RETURN": 0,
+    "NOWNER_4338E0_POST_PUMP": 0,
+    "NOWNER_4338E0_SURFDUMP_READY": 1,
+    "NOWNER_4338E0_OWNER_FLAG_BLOCKED": 0,
+    "NOWNER_ACTION_CALL_WRAPPER": 0,
+    "NOWNER_WRAPPER_ENTRY": 0,
+    "NOWNER_WRAPPER_ALLOC_RESULT": 0,
+    "NOWNER_WRAPPER_TEMP_SURFACE": 0,
+    "NOWNER_WRAPPER_CALL_STOCK_435BC0": 0,
+    "NOWNER_OWNER_435BC0_ENTRY": 0,
+    "NOWNER_435BC0_ALLOC_RESULT": 0,
+    "NOWNER_435BC0_MODEL_CHECK": 0,
+    "NOWNER_435BC0_POLL_LIMIT": 0,
+    "NOWNER_435BC0_POLL": 0,
+    "NOWNER_435BC0_WRITE_532218": 0,
+    "NOWNER_435BC0_WRITE_5322C8": 0,
+    "NOWNER_435BC0_PANEL_DRAW": 0,
+    "NOWNER_435BC0_GRID_DRAW": 0,
+    "NOWNER_435BC0_STATUS_DRAW": 0,
+    "NOWNER_435BC0_ACTION_BOX": 0,
+    "NOWNER_435BC0_GRID_ROUTE_ENTRY": 0,
+    "NOWNER_435BC0_GRID_GATE": 0,
+    "NOWNER_435BC0_GRID_CALL": 0,
+    "NOWNER_435BC0_GRID_ENTRY": 0,
+    "NOWNER_435BC0_GRID_RESULT": 0,
+    "NOWNER_435BC0_GRID_FAIL": 0,
+    "NOWNER_435BC0_SELECTION_UPDATE": 0,
+    "NOWNER_435BC0_SELECTION_AFTER": 0,
+    "NOWNER_435BC0_LOOP_HEAD": 0,
+    "NOWNER_435BC0_LOOP_PUMP_CALL": 0,
+    "NOWNER_435BC0_PUMP_ENTRY": 0,
+    "NOWNER_435BC0_PUMP_MSG_CALL": 0,
+    "NOWNER_435BC0_PUMP_MSG_RETURN": 0,
+    "NOWNER_435BC0_PUMP_TICK_RETURN": 0,
+    "NOWNER_435BC0_PUMP_CB14_CALL": 0,
+    "NOWNER_435BC0_PUMP_CB14_RETURN": 0,
+    "NOWNER_435BC0_PUMP_608F0A_CALL": 0,
+    "NOWNER_435BC0_PUMP_608F0A_RETURN": 0,
+    "NOWNER_435BC0_PUMP_608F0B_CALL": 0,
+    "NOWNER_435BC0_PUMP_608F0B_RETURN": 0,
+    "NOWNER_435BC0_PUMP_CB04_CALL": 0,
+    "NOWNER_435BC0_PUMP_CB04_RETURN": 0,
+    "NOWNER_SOURCEHOLD_LOOP_PUMP": 0,
+    "NOWNER_SOURCEHOLD_CB14_PRE": 0,
+    "NOWNER_SOURCEHOLD_608F0A_PRE": 0,
+    "NOWNER_SOURCEHOLD_608F0B_PRE": 0,
+    "NOWNER_SOURCEHOLD_608F0A_COORDS_PRE": 0,
+    "NOWNER_SOURCEHOLD_608F0B_COORDS_PRE": 0,
+    "NOWNER_SOURCEHOLD_4612E0_ENTRY": 0,
+    "NOWNER_SOURCEHOLD_4612E0_RETURN": 0,
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT": 0,
+    "NOWNER_SOURCEHOLD_4612E0_DIRECT_POST": 0,
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_X": 0,
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_Y": 0,
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_BUTTON": 0,
+    "NOWNER_SOURCEHOLD_4612E0_AFTER_REFRESH": 0,
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE": 0,
+    "NOWNER_SOURCEHOLD_4612E0_INTERPOLATE_POST": 0,
+    "NOWNER_ACTION_FORCE_NATIVE": 0,
+    "NOWNER_ACTION_FORCE_DISPLAY": 0,
+    "NOWNER_ACTION_DESCRIPTOR_ENTRY": 0,
+    "NOWNER_ACTION_WIDGET_PRE_GATES": 0,
+    "NOWNER_ACTION_WIDGET_CLICK_GATE_RET": 0,
+    "NOWNER_ACTION_WIDGET_CLICK_GATE": 0,
+    "NOWNER_ACTION_DESCRIPTOR_CALLBACK": 0,
+    "NOWNER_ACTION_DESCRIPTOR_RESULT": 0,
+    "NOWNER_ACTION_CLICK_435620_BEFORE_SET": 0,
+    "NOWNER_ACTION_CLICK_435620_ENTRY": 0,
+    "NOWNER_ACTION_CLICK_EXIT_SET": 0,
+    "NOWNER_435BC0_LOOP_DRAW_CALL": 0,
+    "NOWNER_435BC0_LOOP_DRAW_RETURN": 0,
+    "NOWNER_435BC0_LOOP_HIT_RESULT": 0,
+    "NOWNER_435BC0_LOOP_COMPARE": 0,
+    "NOWNER_435BC0_LOOP_LIMIT": 0,
+    "NOWNER_435BC0_LOOP_EXIT": 0,
+    "NOWNER_435BC0_NO_HIT_UPDATE": 0,
+    "NOWNER_435BC0_RETURN": 0,
+    "NOWNER_WRAPPER_STOCK_RETURN": 0,
+    "NOWNER_WRAPPER_RESTORE_SURFACE": 0,
+    "NOWNER_WRAPPER_COPYBACK_CALL": 0,
+    "NOWNER_WRAPPER_COPYBACK_RETURN": 0,
+    "NOWNER_WRAPPER_PRESENT_CALL": 0,
+    "NOWNER_WRAPPER_ALLOC_FAILED_FALLBACK": 0,
+    "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+    "AV_SURFDUMP": 0
+  },
+  "av_count": 0,
+  "av_rows": [],
+  "load_success": true,
+  "owner_loop_reached": true,
+  "owner_entry": {
+    "ret": 4335150,
+    "owner_arg": 155698970,
+    "owner_flag": 11,
+    "d532150_before": 0,
+    "surface": 168218520,
+    "size": [
+      800,
+      600
+    ]
+  },
+  "owner_flag_test": {
+    "owner": 155698970,
+    "owner_flag": 11,
+    "bit2": 2,
+    "bit1": 1,
+    "bit8": 8,
+    "ret": 4333600,
+    "d532150": 155698970,
+    "d53214c": 1,
+    "d532154": 167938240
+  },
+  "owner_bit2_set": true,
+  "owner_action_route_count": 1,
+  "owner_action_draw_count": 0,
+  "owner_action_prelude_count": 0,
+  "copyback_path_marker_count": 0,
+  "render_begin_marker_count": 0,
+  "dd_pump_marker_count": 0,
+  "descriptor_hittest_marker_count": 3,
+  "stock_loopstate_marker_count": 0,
+  "stock_grid_marker_count": 0,
+  "sourcehold_marker_count": 0,
+  "sourcehold_callsite_marker_count": 0,
+  "sourcehold_4612e0_marker_count": 0,
+  "input_source_cb14_4612e0_seen": false,
+  "input_source_status": "real_input_source_not_observed",
+  "real_input_click_proven": false,
+  "debugger_forced_click_only": false,
+  "action_click_marker_count": 0,
+  "render_begin_late_armed_count": 0,
+  "render_begin_entry_count": 0,
+  "render_begin_loop_count": 0,
+  "render_begin_flip_result_count": 0,
+  "render_begin_dd_pump_call_count": 0,
+  "render_begin_dd_pump_return_count": 0,
+  "render_begin_lost_result_count": 0,
+  "render_begin_iteration_limit_count": 0,
+  "render_begin_exit_count": 0,
+  "owner_desc_release_count": 0,
+  "last_owner_desc_release": null,
+  "wrapper_copyback_count": 0,
+  "wrapper_entry_count": 0,
+  "wrapper_alloc_result_count": 0,
+  "wrapper_temp_surface_count": 0,
+  "wrapper_call_stock_count": 0,
+  "wrapper_stock_return_count": 0,
+  "wrapper_restore_surface_count": 0,
+  "wrapper_copyback_call_count": 0,
+  "wrapper_copyback_return_count": 0,
+  "wrapper_present_call_count": 0,
+  "wrapper_alloc_failed_fallback_count": 0,
+  "owner_435bc0_alloc_result_count": 0,
+  "owner_435bc0_model_check_count": 0,
+  "owner_435bc0_poll_count": 0,
+  "owner_435bc0_poll_limit_count": 0,
+  "owner_435bc0_write_532218_count": 0,
+  "owner_435bc0_write_5322c8_count": 0,
+  "owner_435bc0_grid_route_count": 0,
+  "owner_435bc0_grid_gate_count": 0,
+  "owner_435bc0_grid_result_count": 0,
+  "owner_435bc0_grid_fail_count": 0,
+  "owner_435bc0_selection_update_count": 0,
+  "owner_435bc0_loop_count": 0,
+  "owner_435bc0_pump_call_count": 0,
+  "owner_435bc0_draw_call_count": 0,
+  "owner_435bc0_draw_return_count": 0,
+  "owner_435bc0_hit_result_count": 0,
+  "owner_435bc0_compare_count": 0,
+  "owner_435bc0_loop_limit_count": 0,
+  "owner_435bc0_loop_exit_count": 0,
+  "owner_435bc0_no_hit_update_count": 0,
+  "owner_435bc0_return_count": 0,
+  "owner_435bc0_pump_entry_count": 0,
+  "owner_435bc0_pump_msg_call_count": 0,
+  "owner_435bc0_pump_msg_return_count": 0,
+  "owner_435bc0_pump_tick_return_count": 0,
+  "owner_435bc0_pump_cb14_call_count": 0,
+  "owner_435bc0_pump_cb14_return_count": 0,
+  "owner_435bc0_pump_608f0a_call_count": 0,
+  "owner_435bc0_pump_608f0a_return_count": 0,
+  "owner_435bc0_pump_608f0b_call_count": 0,
+  "owner_435bc0_pump_608f0b_return_count": 0,
+  "owner_435bc0_pump_cb04_call_count": 0,
+  "owner_435bc0_pump_cb04_return_count": 0,
+  "action_click_force_count": 0,
+  "action_click_native_force_count": 0,
+  "action_click_display_force_count": 0,
+  "action_descriptor_entry_count": 0,
+  "action_widget_click_gate_ret_count": 0,
+  "action_descriptor_callback_count": 0,
+  "action_descriptor_result_count": 0,
+  "action_click_435620_entry_count": 0,
+  "action_click_exit_set_count": 0,
+  "last_wrapper_entry": null,
+  "last_wrapper_stock_return": null,
+  "last_owner_435bc0_loop": null,
+  "last_owner_435bc0_hit_result": null,
+  "last_owner_435bc0_compare": null,
+  "last_owner_435bc0_poll": null,
+  "last_owner_435bc0_poll_before_action_force": null,
+  "first_owner_435bc0_poll_after_action_force": null,
+  "last_owner_435bc0_poll_after_action_force": null,
+  "last_owner_435bc0_grid_gate": null,
+  "last_owner_435bc0_grid_result": null,
+  "last_owner_435bc0_pump_call": null,
+  "last_owner_435bc0_pump_tick_return": null,
+  "last_owner_435bc0_pump_cb14_call": null,
+  "last_owner_435bc0_pump_608f0b_call": null,
+  "last_owner_435bc0_pump_cb04_call": null,
+  "first_owner_435bc0_pump_tick_return": null,
+  "first_owner_435bc0_pump_cb14_call": null,
+  "first_owner_435bc0_pump_608f0b_call": null,
+  "last_sourcehold_marker": null,
+  "last_sourcehold": null,
+  "last_action_click_marker": null,
+  "last_action_force_marker": null,
+  "last_action_force": null,
+  "last_action_descriptor_callback": null,
+  "last_action_descriptor_result": null,
+  "last_action_click_exit_set": null,
+  "render_flag_values": [],
+  "render_flag_unique_values": [],
+  "render_flag_bit01_count": 0,
+  "render_flag_nonzero_count": 0,
+  "render_flag_last_value": null,
+  "render_flag_held_during_spin": false,
+  "dd_pump_entry_count": 0,
+  "dd_pump_msg_pump_call_count": 0,
+  "dd_pump_msg_pump_return_count": 0,
+  "last_render_begin_flip_result": null,
+  "last_render_begin_lost_result": null,
+  "last_render_begin_dd_pump_return": null,
+  "timeout_stack": {
+    "path": "captures\\archive\\cdb-surface-dump-20260712-154653\\timeout-stack.log",
+    "present": false,
+    "classification": "not_found"
+  },
+  "timeout_stack_classification": "not_found",
+  "run_summary": {
+    "Passed": true,
+    "Error": null,
+    "LaunchMode": "hidden-desktop",
+    "HiddenDesktop": true,
+    "AllowVisibleDesktop": false,
+    "DesktopName": "ClashSurfaceDump_20260712_154653",
+    "RunDir": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653",
+    "Stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+    "InputExe": "C:\\Clash\\clash95.exe",
+    "InputSha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+    "CandidatePath": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\clash95_hd_surfdump_20260712_154653.exe",
+    "CandidateDir": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate",
+    "CandidateSha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+    "LoadSlot": 0,
+    "UseDdrawProxy": true,
+    "NoSkipStartAnims": false,
+    "FastForwardStartAnims": true,
+    "ForceVisibleEdges": false,
+    "PostOwnerForceVisibleSeven": false,
+    "SkipMapValidation": true,
+    "LateLoadSlotForcingOnly": false,
+    "DdrawProxyDll": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\ddraw.dll",
+    "DdrawProxySha256": "C0CC8657AC4FF9624DF72236F787342B8B5B30DE94F9CBA701EB857C58C9274A",
+    "DdrawProxyLog": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\ddraw_surfdump_proxy.log",
+    "DdrawProxyPalette": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\ddraw_surfdump_palette.bin",
+    "DdrawProxyManifest": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\ddraw_surfdump_proxy.build.json",
+    "Cdb": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+    "CdbExitCode": null,
+    "TimedOut": false,
+    "StoppedAfterDump": true,
+    "DumpMethod": "host-readprocessmemory",
+    "HostDumpedMemory": true,
+    "HostDumpError": null,
+    "ProbeTemplate": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\render\\clash95_surface_dump_probe.cdb",
+    "ExtraProbeTemplate": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\castle\\clash95_castle_cmd99_owner_action_slot5_fixture_extra.cdb",
+    "GeneratedProbe": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653\\clash95_surface_dump_probe.generated.cdb",
+    "Log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653\\cdb-surface-dump.log",
+    "Surface": {
+      "RedrawSeq": 998,
+      "Surface": "0a06cf98",
+      "Width": 800,
+      "Height": 600,
+      "Base": "0a340030",
+      "Bytes": 480000
+    },
+    "RawPath": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653\\surface.raw",
+    "RawBytes": 480000,
+    "PngPath": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653\\surface.png",
+    "PngSha256": "39cd6911a576734dfea34b6df05a901babd60c405468305b681b91bb2cddf43e",
+    "PngMetadata": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653\\surface.png.json",
+    "PngPaletteMode": "directdraw-palette",
+    "CoverageJson": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653\\map-tile-coverage.json",
+    "CoverageText": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653\\map-tile-coverage.txt",
+    "CoverageBlankActiveCells": [],
+    "VisibilityJson": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653\\visibility-coverage-summary.json",
+    "VisibilityText": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154653\\visibility-coverage.txt",
+    "VisibilityExitCode": null,
+    "VisibilityRequireExplained": false,
+    "VisibilityUnexplainedBlankCells": [],
+    "VisibilityStatusCounts": null,
+    "VisibilityExplainedGate": {
+      "Required": false,
+      "Passed": true,
+      "Skipped": true,
+      "ExitCode": null,
+      "BlankActiveCells": [],
+      "UnexplainedBlankCells": []
+    },
+    "ForcedVisibleJson": null,
+    "ForcedVisibleText": null,
+    "ForcedVisibleExitCode": null,
+    "ForcedVisibleGate": null,
+    "ForceVisibleStillBlankCells": [],
+    "PostOwnerForcedVisibleJson": null,
+    "PostOwnerForcedVisibleText": null,
+    "PostOwnerForcedVisibleExitCode": null,
+    "PostOwnerForcedVisibleGate": null,
+    "path": "captures\\archive\\cdb-surface-dump-20260712-154653\\summary.json",
+    "present": true
+  },
+  "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+  "candidate_path": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate\\clash95_hd_surfdump_20260712_154653.exe",
+  "candidate_dir": "C:\\ClashTests\\right-bottom-slot5-as-slot0-fixture\\candidate",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+  "owner_action_render_begin_reached": false,
+  "owner_action_render_begin_returned": false,
+  "owner_action_render_begin_stalled": false,
+  "owner_action_ddraw_wait_stalled": false,
+  "castle_hitmap_sample": {
+    "surface": 171172192,
+    "size": [
+      640,
+      480
+    ],
+    "base": 172228656,
+    "displayed": [
+      231,
+      366
+    ],
+    "displayed_sample": 12,
+    "native": [
+      151,
+      306
+    ],
+    "native_sample": 254,
+    "bbox_min": [
+      77,
+      306
+    ],
+    "bbox_min_sample": 254,
+    "bbox_max": [
+      237,
+      426
+    ],
+    "bbox_max_sample": 53,
+    "expected_raw": 254
+  },
+  "castle_cmd99_target": {
+    "native": [
+      151,
+      306
+    ],
+    "displayed_hint": [
+      231,
+      366
+    ],
+    "raw": [
+      9664,
+      19584
+    ]
+  },
+  "castle_hit_count": 1,
+  "last_castle_hit": {
+    "raw_hit": 254,
+    "adjusted": 6,
+    "expected_raw": 254,
+    "command": 99,
+    "callback": 4406304,
+    "owner_screen": 155698970
+  },
+  "loadsave": {
+    "selected_arg": 0,
+    "selected_global": 0,
+    "accept": 1,
+    "choice": 5,
+    "gd": 155189296
+  },
+  "playgame": {
+    "gd": 155189296,
+    "map": [
+      100,
+      100
+    ],
+    "scroll": [
+      11,
+      17
+    ],
+    "surface": 135122808,
+    "size": [
+      640,
+      480
+    ]
+  },
+  "rows": [
+    {
+      "line": 202,
+      "marker": "SURFDUMP_LOADSAVE",
+      "values": {
+        "selected_arg": 0,
+        "selected_global": 0,
+        "accept": 1,
+        "choice": 5,
+        "gd": 155189296
+      },
+      "text": "SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=09400030"
+    },
+    {
+      "line": 203,
+      "marker": "SURFDUMP_PLAYGAME",
+      "values": {
+        "gd": 155189296,
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          11,
+          17
+        ],
+        "surface": 135122808,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "SURFDUMP_PLAYGAME gd=09400030 map=(100,100) scroll=(11,17) surface=080dcf78 size=(640,480)"
+    },
+    {
+      "line": 204,
+      "marker": "SURFDUMP_PLAYGAME",
+      "values": {
+        "gd": 155189296,
+        "map": [
+          100,
+          100
+        ],
+        "scroll": [
+          11,
+          17
+        ],
+        "surface": 135122808,
+        "size": [
+          640,
+          480
+        ]
+      },
+      "text": "SURFDUMP_PLAYGAME gd=09400030 map=(100,100) scroll=(11,17) surface=080dcf78 size=(640,480)"
+    },
+    {
+      "line": 205,
+      "marker": "NOWNER_HEADER",
+      "values": {
+        "gd": 155189296,
+        "player": 0,
+        "scroll": [
+          11,
+          17
+        ],
+        "surface": 168218520,
+        "size": [
+          800,
+          600
+        ],
+        "seq": 0,
+        "end12": [
+          23,
+          26
+        ],
+        "map": [
+          100,
+          100
+        ]
+      },
+      "text": "NOWNER_HEADER gd=09400030 player=0 scroll=(11,17) surface=0a06cf98 size=(800,600) SURFDUMP_REDRAW seq=0 scroll=(11,17) end12=(23,26) map=(100,100) surface=0a06cf98 size=(800,600)"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_FORCE_MAP_CASTLE_CLICK",
+      "values": {
+        "screen": [
+          224,
+          224
+        ],
+        "expected_map": [
+          14,
+          20
+        ],
+        "raw": [
+          14336,
+          14336
+        ]
+      },
+      "text": "NOWNER_FORCE_MAP_CASTLE_CLICK screen=(224,224) expected_map=(14,20) raw=(00003800,00003800)"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_MAP_TILE",
+      "values": {
+        "map": [
+          14,
+          20
+        ],
+        "mouse": [
+          224,
+          224
+        ],
+        "selected": -1,
+        "current": 0
+      },
+      "text": "NOWNER_MAP_TILE map=(14,20) mouse=(224,224) selected=-1 current=0 NOWNER_REARM_MAP_COMMIT map=(14,20) mouse=(20,224)"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_BUILDING_TILE",
+      "values": {
+        "map": [
+          14,
+          20
+        ],
+        "tile": 32768,
+        "index": 0,
+        "owner": 0,
+        "mode": 2,
+        "active": 0,
+        "flags": 11
+      },
+      "text": "NOWNER_BUILDING_TILE map=(14,20) tile=32768 index=0 owner=0 mode=2 active=0 flags=0x0b"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_CASTLE_OVERVIEW_ENTRY",
+      "values": {
+        "ret": 4320623,
+        "castle_index": 0,
+        "main_surface": 168218520,
+        "size": [
+          800,
+          600
+        ],
+        "overview_surface": 171172192,
+        "owner_screen": 155698970
+      },
+      "text": "NOWNER_CASTLE_OVERVIEW_ENTRY ret=0041ed6f castle_index=0 main_surface=0a06cf98 size=(800,600) NOWNER_CASTLE_OVERVIEW_POST_DRAW overview_surface=0a33e160 size=(640,480) owner_screen=0947c71a"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_CASTLE_HITMAP_SAMPLE",
+      "values": {
+        "surface": 171172192,
+        "size": [
+          640,
+          480
+        ],
+        "base": 172228656,
+        "displayed": [
+          231,
+          366
+        ],
+        "displayed_sample": 12,
+        "native": [
+          151,
+          306
+        ],
+        "native_sample": 254,
+        "bbox_min": [
+          77,
+          306
+        ],
+        "bbox_min_sample": 254,
+        "bbox_max": [
+          237,
+          426
+        ],
+        "bbox_max_sample": 53,
+        "expected_raw": 254
+      },
+      "text": "NOWNER_CASTLE_HITMAP_SAMPLE surface=0a33e160 size=(640,480) base=0a440030 displayed=(231,366) displayed_sample=0x0c native=(151,306) native_sample=0xfe bbox_min=(77,306) bbox_min_sample=0xfe bbox_max=(237,426) bbox_max_sample=0x35 expected_raw=254"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_CASTLE_CMD99_TARGET",
+      "values": {
+        "native": [
+          151,
+          306
+        ],
+        "displayed_hint": [
+          231,
+          366
+        ],
+        "raw": [
+          9664,
+          19584
+        ]
+      },
+      "text": "NOWNER_CASTLE_CMD99_TARGET native=(151,306) displayed_hint=(231,366) raw=(000025c0,00004c80)"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_CASTLE_HIT",
+      "values": {
+        "raw_hit": 254,
+        "adjusted": 6,
+        "expected_raw": 254,
+        "command": 99,
+        "callback": 4406304,
+        "owner_screen": 155698970
+      },
+      "text": "NOWNER_CASTLE_HIT raw_hit=254 adjusted=6 expected_raw=254 NOWNER_CASTLE_DESCRIPTOR command=99 callback=00433c20 owner_screen=0947c71a"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_CASTLE_CMD99_GATE",
+      "values": {
+        "gate_before": 1,
+        "forced_gate": 1
+      },
+      "text": "NOWNER_CASTLE_CMD99_GATE gate_before=1 forced_gate=1"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_CASTLE_CALLBACK",
+      "values": {
+        "callback": 4406304,
+        "eax_arg": 155698970,
+        "command": 99
+      },
+      "text": "NOWNER_CASTLE_CALLBACK callback=00433c20 eax_arg=0947c71a command=99"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_433C20_ENTRY",
+      "values": {
+        "ret": 4335150,
+        "owner_arg": 155698970,
+        "owner_flag": 11,
+        "d532150_before": 0,
+        "surface": 168218520,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_433C20_ENTRY ret=0042262e owner_arg=0947c71a owner_flag=0x0b d532150_before=00000000 surface=0a06cf98 size=(800,600)"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_OWNER_FLAG_TEST",
+      "values": {
+        "owner": 155698970,
+        "owner_flag": 11,
+        "bit2": 2,
+        "bit1": 1,
+        "bit8": 8,
+        "ret": 4333600,
+        "d532150": 155698970,
+        "d53214c": 1,
+        "d532154": 167938240
+      },
+      "text": "NOWNER_OWNER_FLAG_TEST owner=0947c71a owner_flag=0x0b bit2=2 bit1=1 bit8=8 NOWNER_WRITE_532154 continue_full ret=00422020 d532150=0947c71a d53214c=00000001 d532154=0a0288c0 owner_flag=0x0b"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_OWNER_SCREEN_DESC_DRAW",
+      "values": {
+        "list": 5328832,
+        "d0": [
+          39,
+          "426 cb=004338c0"
+        ],
+        "d1": [
+          155,
+          "426 cb=004338e0"
+        ],
+        "d2": [
+          272,
+          "426 cb=00433a40"
+        ],
+        "surface": 168218520,
+        "size": [
+          800,
+          600
+        ],
+        "native": [
+          180,
+          440
+        ],
+        "raw": [
+          11520,
+          28160
+        ],
+        "owner": 155698970,
+        "owner_flag": 11
+      },
+      "text": "NOWNER_OWNER_SCREEN_DESC_DRAW list=00514fc0 d0=(39,426 cb=004338c0) d1=(155,426 cb=004338e0) d2=(272,426 cb=00433a40) surface=0a06cf98 size=(800,600) NOWNER_FORCE_OWNER_DESC_CLICK native=(180,440) raw=(00002d00,00006e00) d1=(155,426 cb=004338e0) owner=0947c71a owner_flag=0x0b"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_HITTEST_ENTRY",
+      "values": {
+        "count": 1,
+        "desc": 5328832,
+        "xy": [
+          39,
+          426
+        ],
+        "flags": 1,
+        "hit": 4405440,
+        "mouse": [
+          180,
+          440
+        ],
+        "click": 1,
+        "button0": 128
+      },
+      "text": "NOWNER_HITTEST_ENTRY count=1 desc=00514fc0 xy=(39,426) flags=0x01 hit=004338c0 mouse=(180,440) click=00000001 button0=0x80"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_HITTEST_ENTRY",
+      "values": {
+        "count": 2,
+        "desc": 5328885,
+        "xy": [
+          155,
+          426
+        ],
+        "flags": 1,
+        "hit": 4405472,
+        "mouse": [
+          180,
+          440
+        ],
+        "click": 1,
+        "button0": 128
+      },
+      "text": "NOWNER_HITTEST_ENTRY count=2 desc=00514ff5 xy=(155,426) flags=0x01 hit=004338e0 mouse=(180,440) click=00000001 button0=0x80"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_DESCRIPTOR_CALLBACK",
+      "values": {
+        "desc": 5328885,
+        "xy": [
+          155,
+          426
+        ],
+        "flags": 1,
+        "callback": 4405472,
+        "mouse": [
+          180,
+          440
+        ]
+      },
+      "text": "NOWNER_DESCRIPTOR_CALLBACK desc=00514ff5 xy=(155,426) flags=0x01 callback=004338e0 mouse=(180,440)"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_4338E0_ENTRY",
+      "values": {
+        "ret": 4299872,
+        "eax_desc": 5328885,
+        "owner": 155698970,
+        "owner_flag": 11,
+        "d532218": 0,
+        "d5322c8": 0,
+        "surface": 168218520,
+        "size": [
+          800,
+          600
+        ]
+      },
+      "text": "NOWNER_4338E0_ENTRY ret=00419c60 eax_desc=00514ff5 owner=0947c71a owner_flag=0x0b d532218=00000000 d5322c8=0 surface=0a06cf98 size=(800,600)"
+    },
+    {
+      "line": 206,
+      "marker": "NOWNER_4338E0_SURFDUMP_READY",
+      "values": {
+        "surface": 168218520,
+        "size": [
+          800,
+          600
+        ],
+        "base": 171180080,
+        "bytes": 480000,
+        "owner": 155698970,
+        "owner_flag": 11,
+        "d532150": 155698970,
+        "d532218": 0
+      },
+      "text": "NOWNER_4338E0_SURFDUMP_READY surface=0a06cf98 size=(800,600) base=0a340030 bytes=480000 owner=0947c71a owner_flag=0x0b d532150=0947c71a d532218=00000000"
+    },
+    {
+      "line": 206,
+      "marker": "SURFDUMP_READY",
+      "values": {
+        "redraw_seq": 998,
+        "surface": 168218520,
+        "size": [
+          800,
+          600
+        ],
+        "base": 171180080,
+        "bytes": 480000
+      },
+      "text": "SURFDUMP_READY redraw_seq=998 surface=0a06cf98 size=(800,600) base=0a340030 bytes=480000"
+    },
+    {
+      "line": 206,
+      "marker": "SURFDUMP_HOST_READY",
+      "values": {},
+      "text": "SURFDUMP_HOST_READY"
+    }
+  ],
+  "status": "owner_action_entry_only",
+  "classification": [
+    "LOADSAVE and PlayGame were reached",
+    "candidate SHA-256: D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+    "probe stage: gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+    "observed load slot matches the expected fixture slot",
+    "castle command-99 owner loop was reached",
+    "castle overview hitmap samples were captured around command 0x63",
+    "owner flag bit 0x02 was set",
+    "owner/action route markers were observed",
+    "owner/action draw rows were not observed after route entry",
+    "descriptor hit-test markers were observed: 3",
+    "real input-source status: real_input_source_not_observed",
+    "fixture surface dump was bounded at the 004338E0 owner/action entry"
+  ]
+}

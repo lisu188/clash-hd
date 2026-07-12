@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T09:47:51+02:00",
+  "generated_at": "2026-07-12T16:08:55+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the right-bottom fixture preparation helper stays dry-run by default, copies only after -Execute, refuses live-save/repo outputs, and avoids visible-runtime APIs",

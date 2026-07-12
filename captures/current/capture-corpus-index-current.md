@@ -1,32 +1,31 @@
 # Capture Corpus Index
 
 - Overall: PASS
-- Generated: `2026-06-17T09:48:32+02:00`
+- Generated: `2026-07-12T16:09:26+02:00`
 - Runtime policy: repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers
-- Captures root: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures`
-- Artifact count: `711`
+- Captures root: `C:\Users\andrz\git\clash-hd\captures`
+- Artifact count: `657`
 - Current references: `166`
-- Archived references: `508`
+- Archived references: `386`
 - Missing current refs: `[]`
-- Stale visible/sandbox artifacts: `16`
+- Stale visible/sandbox artifacts: `11`
 
 ## Reference Status Counts
 
-- `archived_referenced`: `283`
+- `archived_referenced`: `204`
 - `current_referenced`: `136`
-- `stale_unreferenced`: `292`
+- `stale_unreferenced`: `317`
 
 ## Era Counts
 
-- `cdb_surface_dump_unverified`: `60`
-- `hidden_cdb_surface_dump`: `129`
-- `other_capture_artifact`: `506`
-- `visible_era`: `16`
+- `cdb_surface_dump_unverified`: `65`
+- `hidden_cdb_surface_dump`: `148`
+- `other_capture_artifact`: `433`
+- `visible_era`: `11`
 
 ## Stale Visible Or Sandbox Examples
 
-- `captures/archive/clicktest-20260422-121137`
 - `captures/archive/clicktest-20260422-163904`
 - `captures/archive/clicktest-20260422-182440`
 - `captures/archive/clicktest-20260422-211114`
@@ -34,11 +33,7 @@
 - `captures/archive/visual-smoke-20260423-113427`
 - `captures/archive/visual-smoke-20260423-121409`
 - `captures/archive/visual-smoke-20260423-135516`
-- `captures/archive/visual-smoke-20260423-140044`
 - `captures/archive/visual-smoke-20260423-145622`
 - `captures/archive/visual-smoke-20260424-073707`
-- `captures/archive/visual-smoke-20260424-073924`
-- `captures/archive/visual-smoke-20260424-074102`
-- `captures/archive/visual-smoke-20260424-074212`
 - `captures/archive/visual-smoke-20260424-074428`
 - `captures/archive/visual-smoke-20260424-074630`

@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-06-17T09:47:21+02:00",
+  "generated_at": "2026-07-12T16:08:34+02:00",
   "passed": true,
   "runtime_policy": "repo-only; reads existing hidden-desktop CDB artifacts and does not launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "natural right-bottom action routing must be classified as save-state gated only when command 99 reaches the owner loop, the exact 00433C20 owner-loop descriptor model is present, the 004338E0 action descriptor is parked at (1000,426), owner flag bits are zero, no owner/action renderer rows fire, and the run has no AV rows",
-  "run": "captures\\archive\\cdb-surface-dump-20260518-213418",
-  "summary_json": "captures\\archive\\cdb-surface-dump-20260518-213418\\summary.json",
-  "log": "captures\\archive\\cdb-surface-dump-20260518-213418\\cdb-surface-dump.log",
-  "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260518-213418\\surface.png",
+  "run": "captures\\archive\\cdb-surface-dump-20260712-150434",
+  "summary_json": "captures\\archive\\cdb-surface-dump-20260712-150434\\summary.json",
+  "log": "captures\\archive\\cdb-surface-dump-20260712-150434\\cdb-surface-dump.log",
+  "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-150434\\surface.png",
   "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
   "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
   "state_gated_by_owner_flag": true,
@@ -29,7 +29,7 @@
     }
   },
   "parsed": {
-    "log": "captures\\archive\\cdb-surface-dump-20260518-213418\\cdb-surface-dump.log",
+    "log": "captures\\archive\\cdb-surface-dump-20260712-150434\\cdb-surface-dump.log",
     "marker_counts": {
       "NOWNER_FORCE_MAP_CASTLE_CLICK": 1,
       "NOWNER_BUILDING_TILE": 1,
@@ -84,7 +84,7 @@
     },
     "descriptor_result": {
       "result": 0,
-      "owner": "041bc71a",
+      "owner": "044fc71a",
       "owner_flag": "0x00",
       "surface": [
         800,
@@ -112,7 +112,7 @@
     },
     "descriptor_result": {
       "result": 0,
-      "owner": "041bc71a",
+      "owner": "044fc71a",
       "owner_flag": "0x00",
       "surface": [
         800,

@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-06-17T09:48:06+02:00",
+  "generated_at": "2026-07-12T16:09:07+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "checks": {
     "overview_visual_baseline": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260515-105041",
-      "screenshot": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-144019",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260712-144019\\surface.png",
       "commands": [
         "0x63",
         "0x86",
@@ -30,8 +30,8 @@
     },
     "barracks_controlled_stop": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260512-082418",
-      "log": "captures\\archive\\cdb-surface-dump-20260512-082418\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-144445",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-144445\\cdb-surface-dump.log",
       "ready": true,
       "descriptor_click_ok": true,
       "controlled_4356c0_ok": true,

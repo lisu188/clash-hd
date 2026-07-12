@@ -82,6 +82,10 @@ $objOut = Join-Path $objDir 'ddraw_surfdump_proxy.obj'
 $cmd = @"
 @echo off
 setlocal
+rem Hardened shells set NoDefaultCurrentDirectoryInExePath, which breaks the
+rem bare-name vswhere.exe lookup inside vcvars; clear it for this build only.
+set NoDefaultCurrentDirectoryInExePath=
+if exist "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" set "PATH=%PATH%;%ProgramFiles(x86)%\Microsoft Visual Studio\Installer"
 call "$vcvars" >nul
 cl /nologo /EHsc /LD /W3 /DWIN32 /D_WINDOWS /Fo"$objOut" /Fe"$outputFull" "$source" /link /DEF:"$defFile" user32.lib gdi32.lib
 exit /b %ERRORLEVEL%
@@ -90,7 +94,10 @@ Set-Content -LiteralPath $cmdPath -Value $cmd -Encoding ASCII
 
 Push-Location -LiteralPath $buildDir
 try {
-    & $env:ComSpec /d /c (Split-Path -Leaf $cmdPath) *> $buildLog
+    # Invoke by full path: bare-name lookup fails in hardened shells that set
+    # NoDefaultCurrentDirectoryInExePath, where cmd.exe skips the current
+    # directory when resolving batch names.
+    & $cmdPath *> $buildLog
     $exitCode = $LASTEXITCODE
 }
 finally {

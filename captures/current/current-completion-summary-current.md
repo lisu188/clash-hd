@@ -1,7 +1,7 @@
 # Current Completion Summary
 
 - Overall: PASS
-- Generated: `2026-06-17T09:48:33+02:00`
+- Generated: `2026-07-12T16:09:27+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Percent policy: Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.
 - Full game complete: `False`
@@ -9,12 +9,12 @@
 
 ## Percentages
 
-- Current repo evidence gates: `93.92%`
-  Basis: 139/148 refresh checks pass
+- Current repo evidence gates: `90.54%`
+  Basis: 134/148 refresh checks pass
 - Repo-only Python test sweep: `100.00%`
-  Basis: 90/90 tools/test_*.py files pass
-- Focused battle/right-bottom command lane: `99.91%`
-  Basis: remaining blocker: real visible click-to-callback proof (command-ready runs: 2; click-consumed runs: 0; invalid runs retained: 1)
+  Basis: 92/92 tools/test_*.py files pass
+- Focused battle/right-bottom command lane: `99.89%`
+  Basis: remaining blocker: real visible click-to-callback proof (command-ready runs: 0; click-consumed runs: 0)
 - Right-bottom promotion gate: `85.71%`
   Basis: 6/7 required promotion checks pass
 - Manual DirectInput validation: `0.00%`
@@ -26,5 +26,5 @@
 - First mission visual status: `selected_unit_action_bar_on_bottom_but_black_ui_patches_remain`
 - First mission black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
 - First mission stripe failure frames: `[]`
-- Right-bottom failures: `['right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows', 'right-bottom natural UI probe did not enter owner/action draw rows']`
-- Battle open items: `['real visible click-to-callback proof remains open', '1 invalid visible-input run(s) are retained as negative evidence']`
+- Right-bottom failures: `['right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure', 'right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed', 'right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows', 'right-bottom natural UI probe did not enter owner/action draw rows']`
+- Battle open items: `['real visible click-to-callback proof remains open']`

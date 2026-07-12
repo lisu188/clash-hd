@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T09:47:23+02:00",
+  "generated_at": "2026-07-12T16:08:35+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "right-bottom validation evidence must keep hidden route/copyback/grid marker ordering, candidate SHA agreement, 800x600 surfaces, and no AV/failure-exit rows",
@@ -8,7 +8,7 @@
   "checks": {
     "patch_route": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260513-120712",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-160204",
       "summary": {
         "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
         "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
@@ -20,7 +20,7 @@
         "no_skip_start_anims": false,
         "fast_forward_start_anims": true,
         "skip_map_validation": true,
-        "extra_probe_template": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_post_owner_action_extra.cdb"
+        "extra_probe_template": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\map\\clash95_post_owner_action_extra.cdb"
       },
       "ordered_markers": [
         "SURFDUMP_PLAYGAME",
@@ -54,7 +54,7 @@
         "SURFDUMP_HOST_READY"
       ],
       "marker_counts": {
-        "SURFDUMP_PLAYGAME": 1,
+        "SURFDUMP_PLAYGAME": 2,
         "SURFDUMP_REDRAW": 2,
         "APPOST_OWNER_SETUP_CALL": 1,
         "APPOST_OWNER_FLAG_FORCED": 1,
@@ -88,7 +88,7 @@
     },
     "fullstart_route": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260513-122928",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-160351",
       "summary": {
         "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
         "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
@@ -100,7 +100,7 @@
         "no_skip_start_anims": true,
         "fast_forward_start_anims": false,
         "skip_map_validation": true,
-        "extra_probe_template": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_post_owner_action_extra.cdb"
+        "extra_probe_template": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\map\\clash95_post_owner_action_extra.cdb"
       },
       "ordered_markers": [
         "SURFDUMP_PLAYGAME",
@@ -168,7 +168,7 @@
     },
     "grid_route": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260514-140601",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-150240",
       "summary": {
         "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
         "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
@@ -180,7 +180,7 @@
         "no_skip_start_anims": false,
         "fast_forward_start_anims": true,
         "skip_map_validation": true,
-        "extra_probe_template": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\clash95_right_bottom_grid_hit_extra.cdb"
+        "extra_probe_template": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\ui\\clash95_right_bottom_grid_hit_extra.cdb"
       },
       "ordered_markers": [
         "SURFDUMP_PLAYGAME",
@@ -210,7 +210,7 @@
         "SURFDUMP_HOST_READY"
       ],
       "marker_counts": {
-        "SURFDUMP_PLAYGAME": 2,
+        "SURFDUMP_PLAYGAME": 1,
         "SURFDUMP_REDRAW": 2,
         "RBGRID_OWNER_SETUP_CALL": 1,
         "RBGRID_OWNER_FLAG_FORCED": 1,

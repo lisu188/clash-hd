@@ -19,8 +19,8 @@ import castle_overview_evidence_matrix
 import castle_overview_gate
 
 
-DEFAULT_OVERVIEW_BASELINE_RUN = Path("captures/archive/cdb-surface-dump-20260515-105041")
-DEFAULT_BARRACKS_BASELINE_RUN = Path("captures/archive/cdb-surface-dump-20260512-082418")
+DEFAULT_OVERVIEW_BASELINE_RUN = Path("captures/archive/cdb-surface-dump-20260712-144019")
+DEFAULT_BARRACKS_BASELINE_RUN = Path("captures/archive/cdb-surface-dump-20260712-144445")
 DEFAULT_JSON = Path("captures/current/castle-overview-baseline-recheck-current.json")
 DEFAULT_MD = Path("captures/current/castle-overview-baseline-recheck-current.md")
 RUNTIME_POLICY = "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"

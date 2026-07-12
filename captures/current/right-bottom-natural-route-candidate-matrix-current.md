@@ -1,14 +1,14 @@
 # Right-Bottom Natural Route Candidate Matrix
 
 - Status: PASS
-- Generated: `2026-06-17T09:47:21+02:00`
+- Generated: `2026-07-12T16:08:34+02:00`
 - Runtime policy: repo/local metadata only; reads generated save-scan JSON and existing hidden-desktop CDB artifacts, and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when current evidence shows an action-eligible installed save record exists, the archived slot-0 natural route clicks owner record index 0 but is blocked by owner flag 0x00, slot 2 loads yet misses the bit-2 record with the current click, and slot 5 has a route-compatible bit-2 record but the current load harness times out before LOADSAVE
 - Promotion ready: `False`
 - Save scan: `captures\current\castle-save-owner-flag-scan-current.json`
-- Baseline run: `captures\archive\cdb-surface-dump-20260518-213418`
-- Slot 2 run: `captures\archive\cdb-surface-dump-20260523-001159`
-- Slot 5 run: `captures\archive\cdb-surface-dump-20260523-000931`
+- Baseline run: `captures\archive\cdb-surface-dump-20260712-150434`
+- Slot 2 run: `captures\archive\cdb-surface-dump-20260712-153503`
+- Slot 5 run: `captures\archive\cdb-surface-dump-20260712-153529`
 
 ## Classification
 
@@ -28,4 +28,4 @@
 - or build an isolated working-directory fixture that maps the slot-5 save state to a route-compatible slot without mutating C:\Clash\save
 - or retarget the CDB map click/scroll path to the slot-2 bit-2 castle at record index 1
 
-![slot2 hidden route surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260523-001159\surface.png)
+![slot2 hidden route surface](C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-153503\surface.png)

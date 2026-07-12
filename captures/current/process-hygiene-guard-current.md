@@ -1,7 +1,7 @@
 # Process Hygiene Guard
 
 - Overall: PASS
-- Generated: `2026-06-17T09:50:35+02:00`
+- Generated: `2026-07-12T16:09:12+02:00`
 - Runtime policy: local process inspection only; does not launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: no cdb.exe or clash95*.exe process may be running after evidence refresh
 - Inspection source: `CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS)`

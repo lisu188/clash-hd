@@ -1,7 +1,7 @@
 # Handoff Freshness Guard Tests
 
 - Status: PASS
-- Generated: `2026-06-17T09:48:21+02:00`
+- Generated: `2026-07-12T16:09:20+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the handoff freshness guard rejects stale route/input blockers, missing route timing links, stale legacy outside-debugger or visible-capture tasks, stale VM/visual-smoke tasks, missing owner-flag inventory artifacts, missing load-slot transition readiness artifacts, missing loop-handoff load-slot transition readiness artifacts, missing manual-proof or explicit CDB-only promotion blockers, missing manual DirectInput checklist artifacts, missing manual proof template artifacts, missing completion summary artifacts, missing no-popup operator preference text, and missing visible runtime launcher guard artifacts
 

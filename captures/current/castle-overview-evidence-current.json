@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T09:47:58+02:00",
+  "generated_at": "2026-07-12T16:09:01+02:00",
   "passed": true,
   "stage": "castlecenter-all",
   "promotion_status": "validation_stage_only",
@@ -7,8 +7,8 @@
   "checks": {
     "patch_stage": {
       "passed": true,
-      "exe": "C:\\ClashTests\\cdb-castle-overview-nativerender\\clash95_hd_surfdump_20260515_105041.exe",
-      "source": "reports\\castlecenter_all_patch_stage_20260515_105041.json",
+      "exe": "C:\\ClashTests\\cdb-castle-overview-nativerender\\clash95_hd_surfdump_20260712_144019.exe",
+      "source": "reports\\castlecenter_all_patch_stage_20260712_144019.json",
       "archived": true,
       "stage": "castlecenter-all",
       "resolved_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
@@ -104,10 +104,10 @@
       "failures": []
     },
     "overview_visual": {
-      "generated_at": "2026-06-17T09:47:58+02:00",
-      "run_dir": "captures\\archive\\cdb-surface-dump-20260515-105041",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-105041\\cdb-surface-dump.log",
-      "screenshot": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",
+      "generated_at": "2026-07-12T16:09:00+02:00",
+      "run_dir": "captures\\archive\\cdb-surface-dump-20260712-144019",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-144019\\cdb-surface-dump.log",
+      "screenshot": "captures\\archive\\cdb-surface-dump-20260712-144019\\surface.png",
       "passed": true,
       "failures": [],
       "expected_commands": [
@@ -139,7 +139,7 @@
             "callback_hex": "0x0044FE70",
             "text": 3,
             "owner_flag": 0,
-            "first_line": 207
+            "first_line": 203
           },
           {
             "command": 153,
@@ -148,7 +148,7 @@
             "callback_hex": "0x0043DCE0",
             "text": 3,
             "owner_flag": 0,
-            "first_line": 207
+            "first_line": 203
           },
           {
             "command": 156,
@@ -157,7 +157,7 @@
             "callback_hex": "0x0043D8E0",
             "text": 3,
             "owner_flag": 0,
-            "first_line": 207
+            "first_line": 203
           },
           {
             "command": 159,
@@ -166,7 +166,7 @@
             "callback_hex": "0x0043DEE0",
             "text": 3,
             "owner_flag": 0,
-            "first_line": 207
+            "first_line": 203
           },
           {
             "command": 166,
@@ -175,7 +175,7 @@
             "callback_hex": "0x0043DAE0",
             "text": 3,
             "owner_flag": 0,
-            "first_line": 207
+            "first_line": 203
           },
           {
             "command": 99,
@@ -184,7 +184,7 @@
             "callback_hex": "0x00433C20",
             "text": 3,
             "owner_flag": 0,
-            "first_line": 207
+            "first_line": 203
           },
           {
             "command": 135,
@@ -193,32 +193,32 @@
             "callback_hex": "0x0042B0A0",
             "text": 3,
             "owner_flag": 0,
-            "first_line": 207
+            "first_line": 203
           }
         ],
         "last_surface": {
           "redraw_seq": 992,
-          "surface": 167853784,
+          "surface": 169230040,
           "size": [
             800,
             600
           ],
-          "base": 169214000,
+          "base": 170590256,
           "bytes": 480000
         },
         "last_overview_post_draw": {
           "ret": 1701667194,
-          "main_surface": 167853784,
+          "main_surface": 169230040,
           "main_size": [
             800,
             600
           ],
-          "overview_surface": 168230160,
+          "overview_surface": 169653240,
           "overview_size": [
             640,
             480
           ],
-          "owner_screen": 69715738
+          "owner_screen": 71157530
         },
         "classification": [
           "controlled castle-screen invocation was attempted",
@@ -229,7 +229,7 @@
         ]
       },
       "geometry": {
-        "path": "captures\\archive\\cdb-surface-dump-20260515-105041\\surface.png",
+        "path": "captures\\archive\\cdb-surface-dump-20260712-144019\\surface.png",
         "image": {
           "width": 800,
           "height": 600
@@ -398,7 +398,7 @@
         "max_vertical_stripe_excess_percent": 8.0
       },
       "barracks_baseline": {
-        "run_dir": "captures\\archive\\cdb-surface-dump-20260512-082418",
+        "run_dir": "captures\\archive\\cdb-surface-dump-20260712-144445",
         "passed": true,
         "failures": [],
         "action": {
@@ -408,7 +408,7 @@
           "av_count": 0
         },
         "geometry": {
-          "path": "captures\\archive\\cdb-surface-dump-20260512-082418\\surface.png",
+          "path": "captures\\archive\\cdb-surface-dump-20260712-144445\\surface.png",
           "image": {
             "width": 800,
             "height": 600
@@ -429,8 +429,8 @@
                 599
               ],
               "pixels": 480000,
-              "nonblack_pixels": 218811,
-              "nonblack_percent": 45.586,
+              "nonblack_pixels": 250635,
+              "nonblack_percent": 52.216,
               "nonblack_bounds": {
                 "x": 80,
                 "y": 60,
@@ -454,8 +454,8 @@
                 539
               ],
               "pixels": 307200,
-              "nonblack_pixels": 218811,
-              "nonblack_percent": 71.228,
+              "nonblack_pixels": 250635,
+              "nonblack_percent": 81.587,
               "nonblack_bounds": {
                 "x": 80,
                 "y": 60,
@@ -479,8 +479,8 @@
                 479
               ],
               "pixels": 307200,
-              "nonblack_pixels": 164688,
-              "nonblack_percent": 53.609,
+              "nonblack_pixels": 191955,
+              "nonblack_percent": 62.485,
               "nonblack_bounds": {
                 "x": 80,
                 "y": 60,
@@ -553,7 +553,7 @@
               "centered_region_dominates_margins": true,
               "native_origin_echo_absent": true
             },
-            "centered_nonblack_percent": 71.228,
+            "centered_nonblack_percent": 81.587,
             "max_margin_nonblack_percent": 0.0,
             "max_allowed_echo_percent": 25.0
           }
@@ -562,9 +562,9 @@
     },
     "focused_hitbox": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260515-105411",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-105411\\cdb-surface-dump.log",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260515-105411\\surface.png",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-144151",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-144151\\cdb-surface-dump.log",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144151\\surface.png",
       "ready": true,
       "ready_size": [
         800,
@@ -589,8 +589,8 @@
         "callback": 4521584,
         "text": 3,
         "arg_count": 5171110,
-        "owner_screen": 70240026,
-        "surface": 171785944,
+        "owner_screen": 71026458,
+        "surface": 167919320,
         "sz": [
           800,
           600
@@ -628,9 +628,9 @@
     "visible_multihit": {
       "passed": true,
       "label": "visible-command multi-hit",
-      "run": "captures\\archive\\cdb-surface-dump-20260515-105458",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-105458\\cdb-surface-dump.log",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260515-105458\\surface.png",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-144245",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-144245\\cdb-surface-dump.log",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144245\\surface.png",
       "ready": true,
       "ready_size": [
         800,
@@ -920,9 +920,9 @@
     "dormant_multihit": {
       "passed": true,
       "label": "dormant-command multi-hit",
-      "run": "captures\\archive\\cdb-surface-dump-20260515-105557",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-105557\\cdb-surface-dump.log",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260515-105557\\surface.png",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-144327",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-144327\\cdb-surface-dump.log",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144327\\surface.png",
       "ready": true,
       "ready_size": [
         800,

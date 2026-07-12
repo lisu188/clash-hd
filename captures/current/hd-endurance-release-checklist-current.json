@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T07:48:29.614112+00:00",
+  "generated_at": "2026-07-12T14:09:24.550440+00:00",
   "passed": false,
   "runtime_policy": "repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",

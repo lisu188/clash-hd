@@ -1,11 +1,11 @@
 # Right-Bottom Controlled Grid Hit
 
 - Status: PASS
-- Generated: `2026-06-17T09:47:21+02:00`
+- Generated: `2026-07-12T16:08:34+02:00`
 - Runtime policy: existing hidden-desktop CDB/proxy evidence only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
-- Run: `captures\archive\cdb-surface-dump-20260514-140601`
-- Log: `captures\archive\cdb-surface-dump-20260514-140601\cdb-surface-dump.log`
-- Screenshot: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260514-140601\surface.png`
+- Run: `captures\archive\cdb-surface-dump-20260712-150240`
+- Log: `captures\archive\cdb-surface-dump-20260712-150240\cdb-surface-dump.log`
+- Screenshot: `C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-150240\surface.png`
 - Screenshot policy: diagnostic CDB/proxy frame only; not visual acceptance proof for the final action-menu layout.
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`
 - Candidate SHA-256: `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T09:47:21+02:00",
+  "generated_at": "2026-07-12T16:08:34+02:00",
   "passed": true,
   "runtime_policy": "repo-only; reads decompilation text, CDB probe text, and generated timeout phase JSON; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when static code still places the real load-row loop after the main Load callback, the current probe spans both sides of that transition, slot 2 reaches the post-entry accept path, and slots 3-5 still stop before 0044895A load-menu entry",
@@ -58,13 +58,13 @@
     "passed": true,
     "slot2": {
       "status": "load_menu_accept_success",
-      "run": "captures\\archive\\cdb-surface-dump-20260520-202424",
-      "load_coord_count": 10,
-      "load_menu_entry_count": 1,
-      "load_menu_loop_count": 4,
-      "force_select_count": 1,
+      "run": "captures\\archive\\cdb-surface-dump-20260712-153805",
+      "load_coord_count": 9,
+      "load_menu_entry_count": 3,
+      "load_menu_loop_count": 2,
+      "force_select_count": 2,
       "loadsave_count": 1,
-      "playgame_count": 5
+      "playgame_count": 1
     },
     "blocked_rows": {
       "slot3_timeout": {
@@ -90,10 +90,10 @@
       "slot4_timeout": {
         "slot": 4,
         "status": "stalled_after_load_button_before_load_menu_loop",
-        "load_coord_count": 2,
+        "load_coord_count": 1,
         "last_load_coord": {
           "entry": "0x000efa5d",
-          "seq": 1,
+          "seq": 0,
           "choice": 5,
           "ex": 232,
           "ey": 228,
@@ -103,7 +103,7 @@
           "accept": 0
         },
         "last_marker": "SURFDUMP_LOAD_COORD",
-        "timeout_stack_category": "qpc_timing_poll_before_load_menu_loop",
+        "timeout_stack_category": "avi_or_audio_worker_present",
         "passed": true,
         "failures": []
       },
@@ -123,17 +123,17 @@
           "accept": 0
         },
         "last_marker": "SURFDUMP_LOAD_COORD",
-        "timeout_stack_category": "win32_message_poll_before_load_menu_loop",
+        "timeout_stack_category": "avi_or_audio_worker_present",
         "passed": true,
         "failures": []
       },
       "recent_slot5_timeout": {
         "slot": 5,
         "status": "stalled_after_load_button_before_load_menu_loop",
-        "load_coord_count": 4,
+        "load_coord_count": 2,
         "last_load_coord": {
           "entry": "0x000efa92",
-          "seq": 3,
+          "seq": 1,
           "choice": 5,
           "ex": 265,
           "ey": 264,
@@ -143,12 +143,12 @@
           "accept": 0
         },
         "last_marker": "SURFDUMP_LOAD_COORD",
-        "timeout_stack_category": "engine_timing_poll_before_load_menu_loop",
+        "timeout_stack_category": "qpc_timing_poll_before_load_menu_loop",
         "passed": true,
         "failures": []
       }
     },
-    "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+    "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
     "summary": {
       "slot2_phase": "load_menu_accept_success",
       "blocked_slots": [
@@ -160,9 +160,9 @@
       "current_divergence": "slot 2 reaches the 0044895A load-menu entry and accept path; slots 3-5 reach early 00419B80 load-coordinate descriptor rows, then time out before 0044895A load-menu entry, forced select, LOADSAVE, or PlayGame",
       "timeout_stack_categories": {
         "slot3_timeout": "qpc_timing_poll_before_load_menu_loop",
-        "slot4_timeout": "qpc_timing_poll_before_load_menu_loop",
-        "slot5_timeout": "win32_message_poll_before_load_menu_loop",
-        "recent_slot5_timeout": "engine_timing_poll_before_load_menu_loop"
+        "slot4_timeout": "avi_or_audio_worker_present",
+        "slot5_timeout": "avi_or_audio_worker_present",
+        "recent_slot5_timeout": "qpc_timing_poll_before_load_menu_loop"
       },
       "next_probe_target": "instrument the transition between the early 00419B80 load descriptors and 0044895A load-menu entry for rows 3-5"
     },
@@ -184,6 +184,6 @@
     ],
     "next_non_promoting_route_option": "use an isolated slot fixture or direct-loader probe only if it is labeled non-natural route evidence until the menu transition is proven"
   },
-  "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+  "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
   "failures": []
 }

@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-06-17T09:48:11+02:00",
+  "generated_at": "2026-07-12T16:09:11+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
-  "root": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd",
-  "file_count": 216,
+  "root": "C:\\Users\\andrz\\git\\clash-hd",
+  "file_count": 220,
   "risky_file_count": 107,
   "classification_counts": {
-    "safe": 109,
+    "safe": 113,
     "exempt": 25,
     "manual_visible_runtime_gated": 2,
     "test_fixture": 80
@@ -1139,24 +1139,24 @@
           39,
           40,
           41,
-          53,
-          54,
-          55,
-          56,
-          57,
-          58,
-          59,
-          60,
-          61,
-          62,
-          63,
-          67,
-          73,
-          74,
-          76,
-          80,
-          82,
-          93
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          122,
+          128,
+          129,
+          131,
+          135,
+          137,
+          148
         ]
       },
       "failures": []
@@ -1324,13 +1324,13 @@
       "risk_lines": {
         "subprocess": [
           15,
-          119,
-          120,
-          124,
-          125
+          142,
+          143,
+          147,
+          148
         ],
         "process_launch": [
-          120
+          143
         ]
       },
       "failures": []
@@ -1346,12 +1346,12 @@
       "risk_lines": {
         "subprocess": [
           7,
-          350,
-          353,
-          354
+          352,
+          355,
+          356
         ],
         "process_launch": [
-          350
+          352
         ]
       },
       "failures": []
@@ -1379,6 +1379,14 @@
       "failures": []
     },
     {
+      "path": "tools/right_bottom_addon_flags_fixture.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/right_bottom_blocker_triage.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
@@ -1396,6 +1404,14 @@
     },
     {
       "path": "tools/right_bottom_compose_promotion_decision.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/right_bottom_constructed_save_fixture.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
@@ -3033,12 +3049,12 @@
       "risk_lines": {
         "subprocess": [
           6,
-          101,
           104,
-          105
+          107,
+          108
         ],
         "process_launch": [
-          101
+          104
         ]
       },
       "failures": []
@@ -3063,6 +3079,14 @@
           26
         ]
       },
+      "failures": []
+    },
+    {
+      "path": "tools/test_right_bottom_addon_flags_fixture.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
       "failures": []
     },
     {
@@ -3129,6 +3153,14 @@
           95
         ]
       },
+      "failures": []
+    },
+    {
+      "path": "tools/test_right_bottom_constructed_save_fixture.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
       "failures": []
     },
     {

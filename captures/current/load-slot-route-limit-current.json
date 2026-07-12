@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T09:47:21+02:00",
+  "generated_at": "2026-07-12T16:08:34+02:00",
   "passed": true,
   "runtime_policy": "repo-only; reads decompilation text, harness text, and existing hidden-desktop CDB artifacts; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the current slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame",
@@ -39,7 +39,7 @@
   "slot_status": {
     "slot2_success": {
       "status": "loads",
-      "run": "captures\\archive\\cdb-surface-dump-20260520-202424",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-153805",
       "selected": {
         "selected_arg": 2,
         "selected_global": 2,
@@ -53,7 +53,7 @@
     },
     "slot3_blocked": {
       "status": "timeout_before_force_select_and_loadsave",
-      "run": "captures\\archive\\cdb-surface-dump-20260520-202504",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-153827",
       "mouse": [
         320,
         232
@@ -61,12 +61,12 @@
       "force_select_count": 0,
       "force_accept_count": 0,
       "load_accept_count": 0,
-      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202504\\timeout-stack.log",
+      "timeout_stack_log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153827\\timeout-stack.log",
       "failures": []
     },
     "slot4_blocked": {
       "status": "timeout_before_force_select_and_loadsave",
-      "run": "captures\\archive\\cdb-surface-dump-20260520-202640",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-154103",
       "mouse": [
         320,
         254
@@ -74,12 +74,12 @@
       "force_select_count": 0,
       "force_accept_count": 0,
       "load_accept_count": 0,
-      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202640\\timeout-stack.log",
+      "timeout_stack_log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154103\\timeout-stack.log",
       "failures": []
     },
     "slot5_blocked": {
       "status": "timeout_before_force_select_and_loadsave",
-      "run": "captures\\archive\\cdb-surface-dump-20260520-202810",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-154340",
       "mouse": [
         320,
         276
@@ -87,12 +87,12 @@
       "force_select_count": 0,
       "force_accept_count": 0,
       "load_accept_count": 0,
-      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202810\\timeout-stack.log",
+      "timeout_stack_log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154340\\timeout-stack.log",
       "failures": []
     },
     "recent_slot5_blocked": {
       "status": "timeout_before_force_select_and_loadsave",
-      "run": "captures\\archive\\cdb-surface-dump-20260523-000931",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-153529",
       "mouse": [
         320,
         276
@@ -100,15 +100,15 @@
       "force_select_count": 0,
       "force_accept_count": 0,
       "load_accept_count": 0,
-      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260523-000931\\timeout-stack.log",
+      "timeout_stack_log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153529\\timeout-stack.log",
       "failures": []
     }
   },
   "runs": {
     "slot2_success": {
-      "run": "captures\\archive\\cdb-surface-dump-20260520-202424",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260520-202424\\summary.json",
-      "log": "captures\\archive\\cdb-surface-dump-20260520-202424\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-153805",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-153805\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-153805\\cdb-surface-dump.log",
       "summary_exists": true,
       "log_exists": true,
       "passed": true,
@@ -138,10 +138,10 @@
         210
       ],
       "mouse_formula_ok": true,
-      "load_coord_count": 10,
-      "force_select_count": 1,
-      "force_accept_count": 2,
-      "load_accept_count": 1,
+      "load_coord_count": 9,
+      "force_select_count": 2,
+      "force_accept_count": 1,
+      "load_accept_count": 3,
       "loadsave": {
         "selected_arg": 2,
         "selected_global": 2,
@@ -157,14 +157,14 @@
       },
       "load_succeeded": true,
       "no_av": true,
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
       "timeout_stack_log": null,
       "failures": []
     },
     "slot3_blocked": {
-      "run": "captures\\archive\\cdb-surface-dump-20260520-202504",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260520-202504\\summary.json",
-      "log": "captures\\archive\\cdb-surface-dump-20260520-202504\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-153827",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-153827\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-153827\\cdb-surface-dump.log",
       "summary_exists": true,
       "log_exists": true,
       "passed": false,
@@ -203,13 +203,13 @@
       "load_succeeded": false,
       "no_av": true,
       "screenshot": null,
-      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202504\\timeout-stack.log",
+      "timeout_stack_log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153827\\timeout-stack.log",
       "failures": []
     },
     "slot4_blocked": {
-      "run": "captures\\archive\\cdb-surface-dump-20260520-202640",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260520-202640\\summary.json",
-      "log": "captures\\archive\\cdb-surface-dump-20260520-202640\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-154103",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-154103\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-154103\\cdb-surface-dump.log",
       "summary_exists": true,
       "log_exists": true,
       "passed": false,
@@ -239,7 +239,7 @@
         254
       ],
       "mouse_formula_ok": true,
-      "load_coord_count": 2,
+      "load_coord_count": 1,
       "force_select_count": 0,
       "force_accept_count": 0,
       "load_accept_count": 0,
@@ -248,13 +248,13 @@
       "load_succeeded": false,
       "no_av": true,
       "screenshot": null,
-      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202640\\timeout-stack.log",
+      "timeout_stack_log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154103\\timeout-stack.log",
       "failures": []
     },
     "slot5_blocked": {
-      "run": "captures\\archive\\cdb-surface-dump-20260520-202810",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260520-202810\\summary.json",
-      "log": "captures\\archive\\cdb-surface-dump-20260520-202810\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-154340",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-154340\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-154340\\cdb-surface-dump.log",
       "summary_exists": true,
       "log_exists": true,
       "passed": false,
@@ -293,13 +293,13 @@
       "load_succeeded": false,
       "no_av": true,
       "screenshot": null,
-      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202810\\timeout-stack.log",
+      "timeout_stack_log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-154340\\timeout-stack.log",
       "failures": []
     },
     "recent_slot5_blocked": {
-      "run": "captures\\archive\\cdb-surface-dump-20260523-000931",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260523-000931\\summary.json",
-      "log": "captures\\archive\\cdb-surface-dump-20260523-000931\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-153529",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-153529\\summary.json",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-153529\\cdb-surface-dump.log",
       "summary_exists": true,
       "log_exists": true,
       "passed": false,
@@ -329,7 +329,7 @@
         276
       ],
       "mouse_formula_ok": true,
-      "load_coord_count": 4,
+      "load_coord_count": 2,
       "force_select_count": 0,
       "force_accept_count": 0,
       "load_accept_count": 0,
@@ -338,7 +338,7 @@
       "load_succeeded": false,
       "no_av": true,
       "screenshot": null,
-      "timeout_stack_log": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260523-000931\\timeout-stack.log",
+      "timeout_stack_log": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153529\\timeout-stack.log",
       "failures": []
     }
   },
@@ -363,6 +363,6 @@
     "cohort_candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
     "cohort_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter"
   },
-  "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+  "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
   "failures": []
 }

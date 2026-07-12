@@ -1,7 +1,7 @@
 # Right-Bottom Slot Fixture Runtime Plan
 
 - Status: PASS
-- Generated: `2026-06-17T09:47:21+02:00`
+- Generated: `2026-07-12T16:08:34+02:00`
 - Runtime policy: repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, copy saves, launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: passes only when the right-bottom slot fixture remains non-promoting, the dry-run preparation helper is source-guarded, and the future CDB command stays hidden-desktop with an isolated workdir/candidate dir
 - Fixture plan: `captures\current\right-bottom-slot-fixture-plan-current.json`

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T09:48:33+02:00",
+  "generated_at": "2026-07-12T16:09:27+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "percent_policy": "Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.",
@@ -14,23 +14,23 @@
     {
       "id": "current_repo_evidence_gates",
       "label": "Current repo evidence gates",
-      "completion_percent": 93.92,
+      "completion_percent": 90.54,
       "passed": false,
-      "basis": "139/148 refresh checks pass"
+      "basis": "134/148 refresh checks pass"
     },
     {
       "id": "repo_test_sweep",
       "label": "Repo-only Python test sweep",
       "completion_percent": 100.0,
       "passed": true,
-      "basis": "90/90 tools/test_*.py files pass"
+      "basis": "92/92 tools/test_*.py files pass"
     },
     {
       "id": "focused_battle_right_bottom_lane",
       "label": "Focused battle/right-bottom command lane",
-      "completion_percent": 99.91,
-      "passed": true,
-      "basis": "remaining blocker: real visible click-to-callback proof (command-ready runs: 2; click-consumed runs: 0; invalid runs retained: 1)"
+      "completion_percent": 99.89,
+      "passed": false,
+      "basis": "remaining blocker: real visible click-to-callback proof (command-ready runs: 0; click-consumed runs: 0)"
     },
     {
       "id": "right_bottom_promotion_gate",
@@ -76,12 +76,13 @@
       ]
     },
     "right_bottom_failures": [
+      "right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
+      "right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
       "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
       "right-bottom natural UI probe did not enter owner/action draw rows"
     ],
     "battle_open_items": [
-      "real visible click-to-callback proof remains open",
-      "1 invalid visible-input run(s) are retained as negative evidence"
+      "real visible click-to-callback proof remains open"
     ]
   },
   "failures": []

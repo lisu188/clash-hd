@@ -29,13 +29,13 @@ STAGE_ALIASES = {
         "presentbounds-minimapright-dynvswitch-castlecenter-all"
     ),
 }
-DEFAULT_OVERVIEW_RUN = Path("captures/archive/cdb-surface-dump-20260515-105041")
-DEFAULT_BARRACKS_RUN = Path("captures/archive/cdb-surface-dump-20260512-082418")
-DEFAULT_FOCUSED_HITBOX_RUN = Path("captures/archive/cdb-surface-dump-20260515-105411")
-DEFAULT_VISIBLE_MULTI_RUN = Path("captures/archive/cdb-surface-dump-20260515-105458")
+DEFAULT_OVERVIEW_RUN = Path("captures/archive/cdb-surface-dump-20260712-144019")
+DEFAULT_BARRACKS_RUN = Path("captures/archive/cdb-surface-dump-20260712-144445")
+DEFAULT_FOCUSED_HITBOX_RUN = Path("captures/archive/cdb-surface-dump-20260712-144151")
+DEFAULT_VISIBLE_MULTI_RUN = Path("captures/archive/cdb-surface-dump-20260712-144245")
 DEFAULT_OWNER_RECORDS_RAW = Path("captures/current/castle-owner-records-current.raw")
 DEFAULT_FORCED_HITMAP_RAW = Path("captures/archive/castle-overview-hitmap-flags1f.raw")
-DEFAULT_DORMANT_MULTI_RUN = Path("captures/archive/cdb-surface-dump-20260515-105557")
+DEFAULT_DORMANT_MULTI_RUN = Path("captures/archive/cdb-surface-dump-20260712-144327")
 
 VISIBLE_COMMAND_RAWS = (0xF8, 0xFE, 0xFF)
 DORMANT_COMMAND_RAWS = (0xFA, 0xFB, 0xFC, 0xFD)

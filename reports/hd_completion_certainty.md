@@ -115,6 +115,18 @@ natural pass without any new binary patch.
 > helper `tools/right_bottom_constructed_save_fixture.py` (dry-run planning,
 > auto-selection of a plausible player-owned building, isolated `--output-save`
 > write with repository/source-save guards).
+>
+> Update 2026-07-12: the byte-flip recipe is NOT sufficient when the only
+> player-owned record is the castle itself (the slot-0 save has a castle-only
+> roster). Setting `addon_flags & 0x02` on a castle record without real addon
+> state sends the castle-overview forced hit-test into an endless
+> `NOWNER_CASTLE_HIT` loop under the descriptor probe (observed in hidden runs
+> before `cdb-surface-dump-20260712-152956` was retired). Use the
+> slot5-as-slot0 fixture instead: slot 5's castle record carries
+> `addon_flags=0x0B` legitimately (`prepare_right_bottom_slot_fixture.ps1`
+> plus `probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_fixture_extra.cdb`,
+> which has the `NOWNER_CASTLE_HIT_GIVEUP` loop escape). Keep the byte-flip
+> helper for saves that actually contain player-owned production buildings.
 
 ## Gate 2 — Battle command: use the proven enabled-command fixture + clean visible click
 

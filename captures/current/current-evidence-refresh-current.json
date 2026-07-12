@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T09:48:33+02:00",
+  "generated_at": "2026-07-12T16:09:27+02:00",
   "passed": false,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "checks": {
@@ -62,9 +62,9 @@
     },
     "barracks_success_branch": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260511-170759",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-170759\\cdb-surface-dump.log",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260511-170759\\surface.png",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-151015",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-151015\\cdb-surface-dump.log",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-151015\\surface.png",
       "summary": {
         "ready": true,
         "descriptor_click_ok": true,
@@ -89,10 +89,10 @@
             -1,
             -1
           ],
-          "owner": 67028762,
+          "owner": 71026458,
           "selected_index": 1,
           "render": 5362880,
-          "map_surface": 170913200,
+          "map_surface": 61400384,
           "sz": [
             800,
             600
@@ -112,7 +112,7 @@
       "run": "captures\\archive\\cdb-surface-dump-20260513-104200",
       "summary_json": "captures\\archive\\cdb-surface-dump-20260513-104200\\right-bottom-ui-summary.json",
       "bounds_json": "captures\\archive\\cdb-surface-dump-20260513-104200\\right-bottom-ui-bounds.json",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-104200\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-104200\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "rbui_markers_seen": true,
@@ -153,14 +153,14 @@
     },
     "right_bottom_owner_route": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260513-112339",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260513-112339\\summary.json",
-      "route_json": "captures\\archive\\cdb-surface-dump-20260513-112339\\action-panel-route-summary.json",
-      "route_markdown": "captures\\archive\\cdb-surface-dump-20260513-112339\\action-panel-route-summary.md",
-      "composition_json": "captures\\archive\\cdb-surface-dump-20260513-112339\\action-box-composition-summary.json",
-      "composition_markdown": "captures\\archive\\cdb-surface-dump-20260513-112339\\action-box-composition-summary.md",
-      "bounds_json": "captures\\archive\\cdb-surface-dump-20260513-112339\\right-bottom-ui-bounds.json",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-160131",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-160131\\summary.json",
+      "route_json": "captures\\archive\\cdb-surface-dump-20260712-160131\\action-panel-route-summary.json",
+      "route_markdown": "captures\\archive\\cdb-surface-dump-20260712-160131\\action-panel-route-summary.md",
+      "composition_json": "captures\\archive\\cdb-surface-dump-20260712-160131\\action-box-composition-summary.json",
+      "composition_markdown": "captures\\archive\\cdb-surface-dump-20260712-160131\\action-box-composition-summary.md",
+      "bounds_json": null,
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "hidden_desktop": true,
@@ -169,10 +169,10 @@
         "ready": true,
         "av_count": 0,
         "owner_rows": 11,
-        "panel_rows": 11,
-        "draw_rows": 4,
-        "nonzero_owner_rows": 12,
-        "appost_action_box": 0,
+        "panel_rows": 12,
+        "draw_rows": 5,
+        "nonzero_owner_rows": 13,
+        "appost_action_box": 1,
         "tooltip_action_box": 1,
         "apredir_after_action_box": 1,
         "apredir_copyback_after_call": 1,
@@ -189,87 +189,21 @@
           "bottom_frame": 0
         },
         "composition_present_null_by_region": null,
-        "bounds": {
-          "minimap_top_right": {
-            "nonblack_percent": 61.468,
-            "black_percent": 38.532,
-            "flags": [
-              "black_touches_bottom_right"
-            ]
-          },
-          "right_side_total": {
-            "nonblack_percent": 46.831,
-            "black_percent": 53.169,
-            "flags": [
-              "large_black_component",
-              "black_touches_bottom_right"
-            ]
-          },
-          "right_side_below_minimap": {
-            "nonblack_percent": 38.366,
-            "black_percent": 61.634,
-            "flags": [
-              "large_black_component",
-              "black_touches_bottom_right"
-            ]
-          },
-          "bottom_strip": {
-            "nonblack_percent": 51.75,
-            "black_percent": 48.25,
-            "flags": [
-              "large_black_component",
-              "black_touches_bottom_right"
-            ]
-          },
-          "bottom_right_ui_corner": {
-            "nonblack_percent": 21.43,
-            "black_percent": 78.57,
-            "flags": [
-              "large_black_component",
-              "black_touches_bottom_right"
-            ]
-          },
-          "bottom_right_tile_r8c9": {
-            "nonblack_percent": 46.24,
-            "black_percent": 53.76,
-            "flags": [
-              "large_black_component",
-              "black_touches_bottom_right"
-            ]
-          },
-          "bottom_right_tile_r8c10": {
-            "nonblack_percent": 0.0,
-            "black_percent": 100.0,
-            "flags": [
-              "mostly_black",
-              "large_black_component",
-              "black_touches_bottom_right"
-            ]
-          },
-          "bottom_right_tile_r8c11": {
-            "nonblack_percent": 0.0,
-            "black_percent": 100.0,
-            "flags": [
-              "mostly_black",
-              "large_black_component",
-              "black_touches_bottom_right"
-            ]
-          }
-        }
+        "bounds": null
       },
       "failures": []
     },
     "right_bottom_compose_probe": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260513-115303",
-      "baseline_run": "captures\\archive\\cdb-surface-dump-20260513-112339",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260513-115303\\summary.json",
-      "route_json": "captures\\archive\\cdb-surface-dump-20260513-115303\\action-panel-route-summary.json",
-      "route_markdown": "captures\\archive\\cdb-surface-dump-20260513-115303\\action-panel-route-summary.md",
-      "composition_json": "captures\\archive\\cdb-surface-dump-20260513-115303\\action-box-compose-summary.json",
-      "composition_markdown": "captures\\archive\\cdb-surface-dump-20260513-115303\\action-box-compose-summary.md",
-      "bounds_json": "captures\\archive\\cdb-surface-dump-20260513-115303\\right-bottom-ui-bounds-compare.json",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-144922",
+      "baseline_run": "captures\\archive\\cdb-surface-dump-20260712-160131",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-144922\\summary.json",
+      "route_json": "captures\\archive\\cdb-surface-dump-20260712-144922\\action-panel-route-summary.json",
+      "route_markdown": "captures\\archive\\cdb-surface-dump-20260712-144922\\action-panel-route-summary.md",
+      "composition_json": "captures\\archive\\cdb-surface-dump-20260712-144922\\action-box-compose-summary.json",
+      "composition_markdown": "captures\\archive\\cdb-surface-dump-20260712-144922\\action-box-compose-summary.md",
+      "bounds_json": "captures\\archive\\cdb-surface-dump-20260712-144922\\right-bottom-ui-bounds-compare.json",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "hidden_desktop": true,
@@ -296,16 +230,16 @@
     },
     "right_bottom_compose_patch": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260513-120712",
-      "baseline_run": "captures\\archive\\cdb-surface-dump-20260513-112339",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-160204",
+      "baseline_run": "captures\\archive\\cdb-surface-dump-20260712-160131",
       "manifest": "captures\\archive\\patch-stage-right-bottom-compose-20260513.json",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260513-120712\\summary.json",
-      "route_json": "captures\\archive\\cdb-surface-dump-20260513-120712\\action-panel-route-patch-summary.json",
-      "route_markdown": "captures\\archive\\cdb-surface-dump-20260513-120712\\action-panel-route-patch-summary.md",
-      "composition_json": "captures\\archive\\cdb-surface-dump-20260513-120712\\action-box-compose-patch-summary.json",
-      "composition_markdown": "captures\\archive\\cdb-surface-dump-20260513-120712\\action-box-compose-patch-summary.md",
-      "bounds_json": "captures\\archive\\cdb-surface-dump-20260513-120712\\right-bottom-compose-patch-bounds-compare.json",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-160204\\summary.json",
+      "route_json": "captures\\archive\\cdb-surface-dump-20260712-160204\\action-panel-route-patch-summary.json",
+      "route_markdown": "captures\\archive\\cdb-surface-dump-20260712-160204\\action-panel-route-patch-summary.md",
+      "composition_json": "captures\\archive\\cdb-surface-dump-20260712-160204\\action-box-compose-patch-summary.json",
+      "composition_markdown": "captures\\archive\\cdb-surface-dump-20260712-160204\\action-box-compose-patch-summary.md",
+      "bounds_json": "captures\\archive\\cdb-surface-dump-20260712-160204\\right-bottom-compose-patch-bounds-compare.json",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "hidden_desktop": true,
@@ -337,16 +271,16 @@
     },
     "right_bottom_compose_fullstart_route": {
       "passed": true,
-      "run": "captures\\archive\\cdb-surface-dump-20260513-122928",
-      "baseline_run": "captures\\archive\\cdb-surface-dump-20260513-112339",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-160351",
+      "baseline_run": "captures\\archive\\cdb-surface-dump-20260712-160131",
       "manifest": "captures\\archive\\patch-stage-right-bottom-compose-20260513.json",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260513-122928\\summary.json",
-      "route_json": "captures\\archive\\cdb-surface-dump-20260513-122928\\action-panel-route-fullstart-summary.json",
-      "route_markdown": "captures\\archive\\cdb-surface-dump-20260513-122928\\action-panel-route-fullstart-summary.md",
-      "composition_json": "captures\\archive\\cdb-surface-dump-20260513-122928\\action-box-compose-fullstart-summary.json",
-      "composition_markdown": "captures\\archive\\cdb-surface-dump-20260513-122928\\action-box-compose-fullstart-summary.md",
-      "bounds_json": "captures\\archive\\cdb-surface-dump-20260513-122928\\right-bottom-compose-fullstart-bounds-compare.json",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\surface.png",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-160351\\summary.json",
+      "route_json": "captures\\archive\\cdb-surface-dump-20260712-160351\\action-panel-route-fullstart-summary.json",
+      "route_markdown": "captures\\archive\\cdb-surface-dump-20260712-160351\\action-panel-route-fullstart-summary.md",
+      "composition_json": "captures\\archive\\cdb-surface-dump-20260712-160351\\action-box-compose-fullstart-summary.json",
+      "composition_markdown": "captures\\archive\\cdb-surface-dump-20260712-160351\\action-box-compose-fullstart-summary.md",
+      "bounds_json": "captures\\archive\\cdb-surface-dump-20260712-160351\\right-bottom-compose-fullstart-bounds-compare.json",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "hidden_desktop": true,
@@ -385,7 +319,7 @@
       "summary_json": "captures\\archive\\cdb-surface-dump-20260513-121513\\summary.json",
       "coverage_json": "captures\\archive\\cdb-surface-dump-20260513-121513\\map-tile-coverage.json",
       "visibility_json": "captures\\archive\\cdb-surface-dump-20260513-121513\\visibility-coverage-summary.json",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "hidden_desktop": true,
@@ -415,12 +349,12 @@
     },
     "right_bottom_compose_ui_probe": {
       "passed": false,
-      "run": "captures\\archive\\cdb-surface-dump-20260513-122200",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260513-122200\\right-bottom-ui-summary.json",
-      "surface_summary_json": "captures\\archive\\cdb-surface-dump-20260513-122200\\summary.json",
-      "bounds_json": "captures\\archive\\cdb-surface-dump-20260513-122200\\right-bottom-ui-bounds.json",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-160441",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-160441\\right-bottom-ui-summary.json",
+      "surface_summary_json": "captures\\archive\\cdb-surface-dump-20260712-160441\\summary.json",
+      "bounds_json": "captures\\archive\\cdb-surface-dump-20260712-160441\\right-bottom-ui-bounds.json",
       "manifest": "captures\\archive\\patch-stage-right-bottom-compose-20260513.json",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "hidden_desktop": true,
@@ -429,7 +363,7 @@
         "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
         "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
         "rbui_markers_seen": true,
-        "rbui_desc_switch": 35,
+        "rbui_desc_switch": 0,
         "rbui_viewport_switch": 1,
         "rbui_panel_draw": 0,
         "rbui_action_box": 0,
@@ -443,16 +377,16 @@
         },
         "bounds": {
           "minimap_top_right": {
-            "nonblack_percent": 12.936,
-            "black_percent": 87.064,
+            "nonblack_percent": 12.964,
+            "black_percent": 87.036,
             "flags": [
               "large_black_component",
               "black_touches_bottom_right"
             ]
           },
           "right_side_total": {
-            "nonblack_percent": 19.688,
-            "black_percent": 80.312,
+            "nonblack_percent": 19.698,
+            "black_percent": 80.302,
             "flags": [
               "large_black_component",
               "black_touches_bottom_right"
@@ -467,8 +401,8 @@
             ]
           },
           "bottom_strip": {
-            "nonblack_percent": 51.75,
-            "black_percent": 48.25,
+            "nonblack_percent": 52.45,
+            "black_percent": 47.55,
             "flags": [
               "large_black_component",
               "black_touches_bottom_right"
@@ -511,6 +445,8 @@
         }
       },
       "failures": [
+        "right-bottom compose UI wrapper reported failure",
+        "right-bottom compose UI descriptor switch rows were not observed",
         "right-bottom compose UI did not naturally enter owner/action draw rows"
       ]
     },
@@ -518,9 +454,9 @@
       "passed": true,
       "json": "captures\\current\\right-bottom-grid-hit-current.json",
       "markdown": "captures\\current\\right-bottom-grid-hit-current.md",
-      "run": "captures\\archive\\cdb-surface-dump-20260514-140601",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260514-140601\\summary.json",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-150240",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-150240\\summary.json",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "hidden_desktop": true,
@@ -577,9 +513,9 @@
       "passed": true,
       "json": "captures\\current\\right-bottom-natural-route-guard-current.json",
       "markdown": "captures\\current\\right-bottom-natural-route-guard-current.md",
-      "run": "captures\\archive\\cdb-surface-dump-20260518-213418",
-      "summary_json": "captures\\archive\\cdb-surface-dump-20260518-213418\\summary.json",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260518-213418\\surface.png",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-150434",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-150434\\summary.json",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-150434\\surface.png",
       "summary": {
         "hidden_desktop": true,
         "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
@@ -599,7 +535,7 @@
         },
         "descriptor_result": {
           "result": 0,
-          "owner": "041bc71a",
+          "owner": "044fc71a",
           "owner_flag": "0x00",
           "surface": [
             800,
@@ -641,7 +577,7 @@
       "passed": true,
       "json": "captures\\current\\right-bottom-natural-route-candidate-matrix-current.json",
       "markdown": "captures\\current\\right-bottom-natural-route-candidate-matrix-current.md",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260523-001159\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153503\\surface.png",
       "summary": {
         "save_scan_passed": true,
         "action_eligible_record_count": 7,
@@ -731,7 +667,7 @@
       "passed": true,
       "json": "captures\\current\\load-slot-route-limit-current.json",
       "markdown": "captures\\current\\load-slot-route-limit-current.md",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
       "summary": {
         "static_load_rows": "0..9",
         "harness_mouse_formula": "x=320, y=166 + 22 * LoadSlot",
@@ -829,7 +765,7 @@
       "passed": true,
       "json": "captures\\current\\load-slot-timeout-phase-current.json",
       "markdown": "captures\\current\\load-slot-timeout-phase-current.md",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
       "summary": {
         "slot2_phase": "load_menu_accept_success",
         "blocked_slots": [
@@ -841,9 +777,9 @@
         "current_divergence": "slot 2 reaches the 0044895A load-menu entry and accept path; slots 3-5 reach early 00419B80 load-coordinate descriptor rows, then time out before 0044895A load-menu entry, forced select, LOADSAVE, or PlayGame",
         "timeout_stack_categories": {
           "slot3_timeout": "qpc_timing_poll_before_load_menu_loop",
-          "slot4_timeout": "qpc_timing_poll_before_load_menu_loop",
-          "slot5_timeout": "win32_message_poll_before_load_menu_loop",
-          "recent_slot5_timeout": "engine_timing_poll_before_load_menu_loop"
+          "slot4_timeout": "avi_or_audio_worker_present",
+          "slot5_timeout": "avi_or_audio_worker_present",
+          "recent_slot5_timeout": "qpc_timing_poll_before_load_menu_loop"
         },
         "next_probe_target": "instrument the transition between the early 00419B80 load descriptors and 0044895A load-menu entry for rows 3-5"
       },
@@ -853,7 +789,7 @@
       "passed": true,
       "json": "captures\\current\\load-slot-entry-gap-current.json",
       "markdown": "captures\\current\\load-slot-entry-gap-current.md",
-      "screenshot": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\cdb-surface-dump-20260520-202424\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
       "summary": {
         "current_gap": "Rows 3-5 are stopped in the transition after the forced main Load callback and before 0044895A load-menu entry. They are not yet evidence of invalid save rows because 0044A110/sub_444750, LOADSAVE, and PlayGame are never reached.",
         "slot2_post_entry_success": true,
@@ -1007,17 +943,15 @@
       "json": "captures\\current\\right-bottom-owner-flag-inventory-current.json",
       "markdown": "captures\\current\\right-bottom-owner-flag-inventory-current.md",
       "summary": {
-        "scanned_log_count": 188,
-        "relevant_run_count": 81,
+        "scanned_log_count": 26,
+        "relevant_run_count": 12,
         "classification_counts": {
-          "forced_owner_action_route": 65,
+          "forced_owner_action_route": 7,
           "natural_state_gated": 1,
-          "natural_ui_descriptor_only": 2,
-          "non_natural_isolated_fixture": 10,
-          "right_bottom_related": 3
+          "non_natural_isolated_fixture": 4
         },
         "natural_state_gated_count": 1,
-        "forced_owner_action_route_count": 65,
+        "forced_owner_action_route_count": 7,
         "natural_action_route_count": 0,
         "guard_policy": "right-bottom owner/action evidence must keep at least one controlled forced owner route, at least one current natural owner-flag-gated route, and no non-fixture archived natural route that already reaches the owner/action renderer without an explicit forced owner flag",
         "runtime_policy": "repo-only; scans existing CDB logs and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
@@ -1059,6 +993,8 @@
         "manual_input_proof_valid": false
       },
       "failures": [
+        "right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
+        "right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
         "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
         "right-bottom natural UI probe did not enter owner/action draw rows"
       ]
@@ -1075,9 +1011,14 @@
         "promotion_decision": "defer_stable_promotion"
       },
       "failures": [
+        "right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
+        "right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
         "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
+        "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
+        "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
         "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
         "right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows",
+        "natural UI probe did not reach descriptor switch rows",
         "natural UI probe did not enter owner/action draw rows"
       ]
     },
@@ -1104,11 +1045,11 @@
       "failures": []
     },
     "right_bottom_visual_artifact_guard": {
-      "passed": true,
+      "passed": false,
       "json": "captures\\current\\right-bottom-visual-artifact-guard-current.json",
       "markdown": "captures\\current\\right-bottom-visual-artifact-guard-current.md",
       "summary": {
-        "visual_status": "natural_ui_visual_artifact_blocked",
+        "visual_status": "visual_artifact_guard_stale",
         "promotion_ready": false,
         "stable_stage_should_change": false,
         "natural_owner_action_rows": 0,
@@ -1118,7 +1059,9 @@
         "guard_policy": "passes only while the current natural right-bottom visual artifact remains explicitly blocked from promotion: controlled composition is recovered, natural owner/action rows are absent, and the lower/right natural regions still show the known black/striped incomplete state",
         "runtime_policy": "repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
-      "failures": []
+      "failures": [
+        "visual artifact guard failed: natural_owner_action_rows_absent"
+      ]
     },
     "first_mission_visual_audit": {
       "passed": false,
@@ -1641,7 +1584,7 @@
       "json": "captures\\current\\castle-overview-baseline-recheck-current.json",
       "markdown": "captures\\current\\castle-overview-baseline-recheck-current.md",
       "summary": {
-        "overview_baseline_run": "captures\\archive\\cdb-surface-dump-20260515-105041",
+        "overview_baseline_run": "captures\\archive\\cdb-surface-dump-20260712-144019",
         "overview_surface_size": [
           800,
           600
@@ -1721,20 +1664,22 @@
       "failures": []
     },
     "battle_visible_input_summary": {
-      "passed": true,
+      "passed": false,
       "json": "captures\\current\\battle-visible-input-current.json",
       "markdown": "captures\\current\\battle-visible-input-summary-current.md",
       "summary": {
         "run_count": 3,
-        "focused_completion_percent": 99.91,
+        "focused_completion_percent": 99.89,
         "summary_passed": false,
-        "command_ready_run_count": 2,
+        "command_ready_run_count": 0,
         "click_consumed_run_count": 0,
-        "invalid_run_count": 1,
+        "invalid_run_count": 0,
         "real_visible_click_consumed": false,
         "open_blocker": "real visible click-to-callback proof"
       },
-      "failures": []
+      "failures": [
+        "visible input summary has no command-ready run"
+      ]
     },
     "battle_visible_input_summary_tests": {
       "passed": true,
@@ -1748,24 +1693,25 @@
       "failures": []
     },
     "battle_ui_evidence_matrix": {
-      "passed": true,
+      "passed": false,
       "json": "captures\\current\\battle-ui-evidence-current.json",
       "markdown": "captures\\current\\battle-ui-evidence-current.md",
       "summary": {
-        "focused_completion_percent": 99.91,
+        "focused_completion_percent": 99.89,
         "visible_input_summary_passed": false,
-        "visible_input_command_ready_runs": 2,
+        "visible_input_command_ready_runs": 0,
         "visible_input_click_consumed_runs": 0,
-        "visible_input_invalid_runs": 1,
+        "visible_input_invalid_runs": 0,
         "real_visible_click_consumed": false,
         "promotion_status": "validation_stage_only",
         "stable_stage_should_change": false,
         "open_items": [
-          "real visible click-to-callback proof remains open",
-          "1 invalid visible-input run(s) are retained as negative evidence"
+          "real visible click-to-callback proof remains open"
         ]
       },
-      "failures": []
+      "failures": [
+        "visible_input: visible input command readiness is not proven"
+      ]
     },
     "battle_ui_evidence_matrix_tests": {
       "passed": true,
@@ -1925,7 +1871,7 @@
       "summary": {
         "risky_file_count": 107,
         "classification_counts": {
-          "safe": 109,
+          "safe": 113,
           "exempt": 25,
           "manual_visible_runtime_gated": 2,
           "test_fixture": 80
@@ -2189,9 +2135,9 @@
         "full_game_complete": false,
         "full_game_percent_statement": "not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open",
         "percentages": {
-          "current_repo_evidence_gates": 93.92,
+          "current_repo_evidence_gates": 90.54,
           "repo_test_sweep": 100.0,
-          "focused_battle_right_bottom_lane": 99.91,
+          "focused_battle_right_bottom_lane": 99.89,
           "right_bottom_promotion_gate": 85.71,
           "manual_directinput_validation": 0.0
         }
@@ -2803,19 +2749,19 @@
       "json": "captures\\current\\capture-corpus-index-current.json",
       "markdown": "captures\\current\\capture-corpus-index-current.md",
       "summary": {
-        "artifact_count": 711,
+        "artifact_count": 657,
         "current_reference_count": 166,
-        "stale_visible_or_sandbox_count": 16,
+        "stale_visible_or_sandbox_count": 11,
         "reference_status_counts": {
-          "archived_referenced": 283,
+          "archived_referenced": 204,
           "current_referenced": 136,
-          "stale_unreferenced": 292
+          "stale_unreferenced": 317
         },
         "era_counts": {
-          "cdb_surface_dump_unverified": 60,
-          "hidden_cdb_surface_dump": 129,
-          "other_capture_artifact": 506,
-          "visible_era": 16
+          "cdb_surface_dump_unverified": 65,
+          "hidden_cdb_surface_dump": 148,
+          "other_capture_artifact": 433,
+          "visible_era": 11
         },
         "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
         "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
@@ -2834,7 +2780,7 @@
       "failures": []
     },
     "no_popup_boundary_guard": {
-      "passed": true,
+      "passed": false,
       "json": "captures\\current\\no-popup-boundary-guard-current.json",
       "markdown": "captures\\current\\no-popup-boundary-guard-current.md",
       "summary": {
@@ -3034,10 +2980,13 @@
         "evidence_index": "captures\\current\\hd-map-evidence-current.md",
         "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report"
       },
-      "failures": []
+      "failures": [
+        "right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
+        "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
+      ]
     },
     "docs_consistency_guard": {
-      "passed": true,
+      "passed": false,
       "json": "captures\\current\\docs-consistency-current.json",
       "markdown": "captures\\current\\docs-consistency-current.md",
       "summary": {
@@ -3045,7 +2994,21 @@
         "guard_policy": "generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries",
         "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
-      "failures": []
+      "failures": [
+        "boundary_counts: no-popup boundary guard is not passing",
+        "docs_codex_loop: codex_loop does not keep castlecenter-all validation-only",
+        "docs_codex_loop: codex_loop does not document stable_stage_should_change=False",
+        "docs_codex_loop: codex_loop does not document no-popup boundary PASS status",
+        "docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+        "docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+        "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_owner_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131\\surface.png",
+        "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922\\surface.png",
+        "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_patch: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204\\surface.png",
+        "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_fullstart_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351\\surface.png",
+        "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_normal_gate: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+        "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_ui_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441\\surface.png",
+        "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_grid_hit: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png"
+      ]
     },
     "docs_consistency_guard_tests": {
       "passed": true,
@@ -3074,14 +3037,26 @@
     }
   },
   "failures": [
+    "right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
+    "right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
     "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
+    "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
+    "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
     "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
     "right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows",
+    "right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
+    "right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
     "right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
+    "right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
+    "right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
     "right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
     "right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows",
+    "right_bottom_compose_evidence: natural UI probe did not reach descriptor switch rows",
     "right_bottom_compose_evidence: natural UI probe did not enter owner/action draw rows",
+    "right_bottom_visual_artifact_guard: visual artifact guard failed: natural_owner_action_rows_absent",
     "first_mission_visual_audit: primary first-mission frame is not visually clean for playability: black patch: right_below_minimap, black patch: bottom_right_panel, black patch: minimap_interior",
+    "battle_visible_input_summary: visible input summary has no command-ready run",
+    "battle_ui_evidence_matrix: visible_input: visible input command readiness is not proven",
     "hd_soak_report_guard: source soak report did not mark itself passed",
     "hd_soak_report_guard: source soak report contains 8 failure(s)",
     "hd_soak_report_guard: frame sample count 1 is below 2",
@@ -3124,6 +3099,21 @@
     "hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof",
     "hd_endurance_release_checklist: save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
     "hd_endurance_release_checklist: turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
-    "hd_endurance_release_checklist: campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release"
+    "hd_endurance_release_checklist: campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
+    "no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
+    "no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard",
+    "docs_consistency_guard: boundary_counts: no-popup boundary guard is not passing",
+    "docs_consistency_guard: docs_codex_loop: codex_loop does not keep castlecenter-all validation-only",
+    "docs_consistency_guard: docs_codex_loop: codex_loop does not document stable_stage_should_change=False",
+    "docs_consistency_guard: docs_codex_loop: codex_loop does not document no-popup boundary PASS status",
+    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_owner_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131\\surface.png",
+    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922\\surface.png",
+    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_patch: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204\\surface.png",
+    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_fullstart_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351\\surface.png",
+    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_normal_gate: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_ui_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441\\surface.png",
+    "docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_grid_hit: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png"
   ]
 }

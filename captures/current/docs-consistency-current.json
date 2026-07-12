@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-17T09:48:32+02:00",
-  "passed": true,
+  "generated_at": "2026-07-12T16:09:27+02:00",
+  "passed": false,
   "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries",
   "facts": {
@@ -50,8 +50,8 @@
       "hidden_run_count": 22
     },
     "no_popup_boundary": {
-      "passed": true,
-      "refresh_passed": true,
+      "passed": false,
+      "refresh_passed": false,
       "required_guard_count": 6,
       "required_supporting_report_count": 86,
       "required_report_count": 92,
@@ -107,15 +107,15 @@
       "dormant_target_count": 4
     },
     "screenshots": {
-      "normal_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
-      "forced_visible_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
-      "right_bottom_owner_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
-      "right_bottom_compose_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
-      "right_bottom_compose_patch": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
-      "right_bottom_compose_fullstart_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\surface.png",
-      "right_bottom_compose_normal_gate": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
-      "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\surface.png",
-      "right_bottom_grid_hit": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png"
+      "normal_post_owner": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+      "forced_visible_post_owner": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+      "right_bottom_owner_route": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131\\surface.png",
+      "right_bottom_compose_probe": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922\\surface.png",
+      "right_bottom_compose_patch": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204\\surface.png",
+      "right_bottom_compose_fullstart_route": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351\\surface.png",
+      "right_bottom_compose_normal_gate": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+      "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441\\surface.png",
+      "right_bottom_grid_hit": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png"
     }
   },
   "doc_groups": {
@@ -193,10 +193,10 @@
       "failures": []
     },
     "boundary_counts": {
-      "passed": true,
+      "passed": false,
       "summary": {
-        "passed": true,
-        "refresh_passed": true,
+        "passed": false,
+        "refresh_passed": false,
         "required_guard_count": 6,
         "required_supporting_report_count": 86,
         "required_report_count": 92,
@@ -204,7 +204,9 @@
         "summary_required_supporting_report_count": 86,
         "summary_required_report_count": 92
       },
-      "failures": []
+      "failures": [
+        "no-popup boundary guard is not passing"
+      ]
     },
     "map_boundary_counts": {
       "passed": true,
@@ -273,21 +275,21 @@
       "passed": true,
       "summary": {
         "screenshots": {
-          "normal_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
-          "forced_visible_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
-          "right_bottom_owner_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
-          "right_bottom_compose_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
-          "right_bottom_compose_patch": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
-          "right_bottom_compose_fullstart_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\surface.png",
-          "right_bottom_compose_normal_gate": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
-          "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\surface.png",
-          "right_bottom_grid_hit": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png"
+          "normal_post_owner": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+          "forced_visible_post_owner": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+          "right_bottom_owner_route": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131\\surface.png",
+          "right_bottom_compose_probe": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922\\surface.png",
+          "right_bottom_compose_patch": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204\\surface.png",
+          "right_bottom_compose_fullstart_route": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351\\surface.png",
+          "right_bottom_compose_normal_gate": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+          "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441\\surface.png",
+          "right_bottom_grid_hit": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png"
         }
       },
       "failures": []
     },
     "docs_codex_loop": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "paths": [
           ".codex-loop\\NEXT.md",
@@ -296,11 +298,15 @@
         ],
         "stable_stage_found": true,
         "no_popup_approval_found": true,
-        "boundary_pass_found": true,
+        "boundary_pass_found": false,
         "strict_boundary_counts_required": false,
         "strict_boundary_counts_found": false
       },
-      "failures": []
+      "failures": [
+        "codex_loop does not keep castlecenter-all validation-only",
+        "codex_loop does not document stable_stage_should_change=False",
+        "codex_loop does not document no-popup boundary PASS status"
+      ]
     },
     "docs_readme_progress": {
       "passed": true,
@@ -352,24 +358,58 @@
       "failures": []
     },
     "docs_current_screenshot_paths": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "evidence_index": "captures\\current\\hd-map-evidence-current.md",
         "screenshots": {
-          "normal_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
-          "forced_visible_post_owner": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
-          "right_bottom_owner_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339\\surface.png",
-          "right_bottom_compose_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303\\surface.png",
-          "right_bottom_compose_patch": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712\\surface.png",
-          "right_bottom_compose_fullstart_route": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928\\surface.png",
-          "right_bottom_compose_normal_gate": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
-          "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200\\surface.png",
-          "right_bottom_grid_hit": "C:\\Users\\andrz\\OneDrive\\Pulpit\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601\\surface.png"
+          "normal_post_owner": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+          "forced_visible_post_owner": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+          "right_bottom_owner_route": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131\\surface.png",
+          "right_bottom_compose_probe": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922\\surface.png",
+          "right_bottom_compose_patch": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204\\surface.png",
+          "right_bottom_compose_fullstart_route": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351\\surface.png",
+          "right_bottom_compose_normal_gate": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+          "right_bottom_compose_ui_probe": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441\\surface.png",
+          "right_bottom_grid_hit": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png"
         },
-        "missing": []
+        "missing": [
+          "normal_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+          "forced_visible_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+          "right_bottom_owner_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131\\surface.png",
+          "right_bottom_compose_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922\\surface.png",
+          "right_bottom_compose_patch: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204\\surface.png",
+          "right_bottom_compose_fullstart_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351\\surface.png",
+          "right_bottom_compose_normal_gate: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+          "right_bottom_compose_ui_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441\\surface.png",
+          "right_bottom_grid_hit: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png"
+        ]
       },
-      "failures": []
+      "failures": [
+        "evidence index missing current screenshot path normal_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+        "evidence index missing current screenshot path forced_visible_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+        "evidence index missing current screenshot path right_bottom_owner_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131\\surface.png",
+        "evidence index missing current screenshot path right_bottom_compose_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922\\surface.png",
+        "evidence index missing current screenshot path right_bottom_compose_patch: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204\\surface.png",
+        "evidence index missing current screenshot path right_bottom_compose_fullstart_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351\\surface.png",
+        "evidence index missing current screenshot path right_bottom_compose_normal_gate: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+        "evidence index missing current screenshot path right_bottom_compose_ui_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441\\surface.png",
+        "evidence index missing current screenshot path right_bottom_grid_hit: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png"
+      ]
     }
   },
-  "failures": []
+  "failures": [
+    "boundary_counts: no-popup boundary guard is not passing",
+    "docs_codex_loop: codex_loop does not keep castlecenter-all validation-only",
+    "docs_codex_loop: codex_loop does not document stable_stage_should_change=False",
+    "docs_codex_loop: codex_loop does not document no-popup boundary PASS status",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_owner_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131\\surface.png",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922\\surface.png",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_patch: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204\\surface.png",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_fullstart_route: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351\\surface.png",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_normal_gate: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_ui_probe: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441\\surface.png",
+    "docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_grid_hit: C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240\\surface.png"
+  ]
 }

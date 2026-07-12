@@ -1,7 +1,7 @@
 # Load Slot Entry Gap
 
 - Status: PASS
-- Generated: `2026-06-17T09:47:21+02:00`
+- Generated: `2026-07-12T16:08:34+02:00`
 - Runtime policy: repo-only; reads decompilation text, CDB probe text, and generated timeout phase JSON; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when static code still places the real load-row loop after the main Load callback, the current probe spans both sides of that transition, slot 2 reaches the post-entry accept path, and slots 3-5 still stop before 0044895A load-menu entry
 - Promotion ready: `False`
@@ -25,9 +25,9 @@ Rows 3-5 are stopped in the transition after the forced main Load callback and b
 | Label | Slot | Status | Load coords | Last marker | Stack category |
 | --- | ---: | --- | ---: | --- | --- |
 | slot3_timeout | 3 | `stalled_after_load_button_before_load_menu_loop` | 1 | `SURFDUMP_LOAD_COORD` | `qpc_timing_poll_before_load_menu_loop` |
-| slot4_timeout | 4 | `stalled_after_load_button_before_load_menu_loop` | 2 | `SURFDUMP_LOAD_COORD` | `qpc_timing_poll_before_load_menu_loop` |
-| slot5_timeout | 5 | `stalled_after_load_button_before_load_menu_loop` | 3 | `SURFDUMP_LOAD_COORD` | `win32_message_poll_before_load_menu_loop` |
-| recent_slot5_timeout | 5 | `stalled_after_load_button_before_load_menu_loop` | 4 | `SURFDUMP_LOAD_COORD` | `engine_timing_poll_before_load_menu_loop` |
+| slot4_timeout | 4 | `stalled_after_load_button_before_load_menu_loop` | 1 | `SURFDUMP_LOAD_COORD` | `avi_or_audio_worker_present` |
+| slot5_timeout | 5 | `stalled_after_load_button_before_load_menu_loop` | 3 | `SURFDUMP_LOAD_COORD` | `avi_or_audio_worker_present` |
+| recent_slot5_timeout | 5 | `stalled_after_load_button_before_load_menu_loop` | 2 | `SURFDUMP_LOAD_COORD` | `qpc_timing_poll_before_load_menu_loop` |
 
 ## Next Probe Targets
 
@@ -39,4 +39,4 @@ Rows 3-5 are stopped in the transition after the forced main Load callback and b
 
 use an isolated slot fixture or direct-loader probe only if it is labeled non-natural route evidence until the menu transition is proven
 
-![slot2 load route surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260520-202424\surface.png)
+![slot2 load route surface](C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-153805\surface.png)

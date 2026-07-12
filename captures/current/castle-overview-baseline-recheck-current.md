@@ -1,13 +1,13 @@
 # Castle Overview Baseline Recheck
 
 - Overall: PASS
-- Generated: `2026-06-17T09:48:06+02:00`
+- Generated: `2026-07-12T16:09:07+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 
 ## Overview Visual Baseline
 
 - Status: PASS
-- Run: `captures\archive\cdb-surface-dump-20260515-105041`
+- Run: `captures\archive\cdb-surface-dump-20260712-144019`
 - Surface size: `[800, 600]`
 - Overview post-draw size: `[800, 600]`
 - Commands: 0x63, 0x86, 0x87, 0x99, 0x9C, 0x9F, 0xA6
@@ -17,7 +17,7 @@
 ## Barracks Controlled Stop Baseline
 
 - Status: PASS
-- Run: `captures\archive\cdb-surface-dump-20260512-082418`
+- Run: `captures\archive\cdb-surface-dump-20260712-144445`
 - Ready: `True`
 - Descriptor click: `True`
 - Controlled 004356c0 stop: `True`
@@ -36,4 +36,4 @@
 
 ## Screenshot
 
-![castle overview baseline](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260515-105041\surface.png)
+![castle overview baseline](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144019\surface.png)

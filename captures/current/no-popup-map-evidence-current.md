@@ -11,9 +11,9 @@
 - Blank active cells: 13
 - Unexplained blank cells: 0
 - Visibility status counts: `{'visibility_zero': 13}`
-- Screenshot: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260429-140916\surface.png`
+- Screenshot: `C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260429-140916\surface.png`
 
-![normal no-popup surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260429-140916/surface.png)
+![normal no-popup surface](C:/Users/andrz/git/clash-hd/captures/archive/cdb-surface-dump-20260429-140916/surface.png)
 
 ## Forced-Visible Edge Run
 
@@ -26,9 +26,9 @@
 - Nonzero visibility returns: 54
 - Nonblack post samples: 54
 - Latest visibility dump map0: `[10, 17]`
-- Screenshot: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\archive\cdb-surface-dump-20260429-135242\surface.png`
+- Screenshot: `C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260429-135242\surface.png`
 
-![forced-visible no-popup surface](C:/Users/andrz/OneDrive/Pulpit/git/clash-hd/captures/archive/cdb-surface-dump-20260429-135242/surface.png)
+![forced-visible no-popup surface](C:/Users/andrz/git/clash-hd/captures/archive/cdb-surface-dump-20260429-135242/surface.png)
 
 ## Interpretation
 

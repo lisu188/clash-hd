@@ -1,7 +1,7 @@
 # Battle UI Evidence Matrix
 
-- Overall: PASS
-- Generated: `2026-06-17T09:48:07+02:00`
+- Overall: FAIL
+- Generated: `2026-07-12T16:09:09+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter`
 - Inputprobe stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe`
@@ -13,7 +13,7 @@
 ## Completion Summary
 
 - Focused area: `battle/right-bottom command lane`
-- Focused completion: `99.91%`
+- Focused completion: `99.89%`
 - Real visible click-to-callback proof: `open`
 - Full-game status: `Full-game reverse engineering is not 100%.`
 - Remaining blocker: `real visible click-to-callback proof`
@@ -37,7 +37,7 @@
 - constructed_fixture_unit_scan: PASS
 - constructed_fixture_command: PASS
 - stable_smoke: PASS
-- visible_input: PASS
+- visible_input: FAIL
 
 ## Key Evidence
 
@@ -88,21 +88,20 @@
 - constructed_fixture_render_begin_guard_seen: `False`
 - constructed_fixture_render_begin_exit_seen: `True`
 - modal_classified: `True`
-- visible_input_focused_completion_percent: `99.91`
+- visible_input_focused_completion_percent: `99.89`
 - visible_input_summary_passed: `False`
-- visible_input_command_ready_runs: `2`
+- visible_input_command_ready_runs: `0`
 - visible_input_click_consumed_runs: `0`
-- visible_input_invalid_runs: `1`
+- visible_input_invalid_runs: `0`
 - visible_input_real_click_consumed: `False`
 
 ## Failures
 
-- None
+- visible_input: visible input command readiness is not proven
 
 ## Open Items
 
 - real visible click-to-callback proof remains open
-- 1 invalid visible-input run(s) are retained as negative evidence
 
 ## Screenshots
 

@@ -1,7 +1,7 @@
 # Right-Bottom Grid Hit Probe Guard
 
 - Overall: PASS
-- Generated: `2026-06-17T09:47:21+02:00`
+- Generated: `2026-07-12T16:08:34+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: focused right-bottom grid-hit proof must keep the owner/action/grid breakpoints, continue to prove native coordinate (450,73) returns grid cell 0, and stay hidden-desktop with no failure-exit or AV rows
 - Expected stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`
@@ -67,8 +67,8 @@
 ## Focused Grid-Hit Log
 
 - Status: PASS
-- Run: `captures\archive\cdb-surface-dump-20260514-140601`
-- Log: `captures\archive\cdb-surface-dump-20260514-140601\cdb-surface-dump.log`
+- Run: `captures\archive\cdb-surface-dump-20260712-150240`
+- Log: `captures\archive\cdb-surface-dump-20260712-150240\cdb-surface-dump.log`
 - Hidden desktop: `True`
 - Allow visible desktop: `False`
 - DirectDraw proxy: `True`

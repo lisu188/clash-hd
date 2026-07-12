@@ -1,7 +1,7 @@
 # Load Slot Entry Gap Tests
 
 - Status: PASS
-- Generated: `2026-06-17T09:47:52+02:00`
+- Generated: `2026-07-12T16:08:57+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the load-slot entry-gap report preserves the distinction between early descriptor rows and real load-menu case entry
 

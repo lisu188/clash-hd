@@ -1,215 +1,25 @@
 {
-  "generated_at": "2026-06-17T09:48:07+02:00",
+  "generated_at": "2026-07-12T16:09:08+02:00",
   "runtime_policy": "repo-only evidence parsing; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
-  "focused_completion_percent": 99.91,
+  "focused_completion_percent": 99.89,
   "run_count": 3,
-  "command_ready_run_count": 2,
+  "command_ready_run_count": 0,
   "click_consumed_run_count": 0,
-  "invalid_run_count": 1,
+  "invalid_run_count": 0,
   "passed": false,
   "real_visible_click_consumed": false,
   "runs": [
     {
       "path": "captures\\archive\\battle-visible-input-quiet-20260521-231521",
-      "log": "captures\\archive\\battle-visible-input-quiet-20260521-231521\\cdb-visible-input-quiet.log",
+      "log": null,
       "input_json": null,
-      "missing_log": false,
+      "missing_log": true,
       "cdb_breakpoint_failure_count": 0,
       "cdb_breakpoint_failures": [],
       "cdb_break_instruction_exception_count": 0,
       "cdb_break_instruction_exceptions": [],
       "marker_counts": {
-        "BATTLE_DIRECTINPUT_MOUSE_ACQUIRE": 1,
-        "SURFDUMP_LOADSAVE_RETURN": 2,
-        "SURFDUMP_PLAYGAME": 7,
-        "BATTLE_FORCE_ATTACK_CALL": 1,
-        "BATTLE_OWNER_ENTRY": 1,
-        "BATTLE_COMMAND_INPUT_WINDOW": 1,
-        "BATTLE_COMMAND_PRE_GATES": 0,
-        "BATTLE_COMMAND_CLICK_GATE_OBSERVED": 0,
-        "BATTLE_COMMAND_CLICK_GATE": 0,
-        "BATTLE_COMMAND_DESCRIPTOR_CALLBACK": 0,
-        "BATTLE_COMMAND_CALLBACK_RESULT": 0,
-        "BATTLE_COMMAND_CALLBACK": 0,
-        "SURFDUMP_HOST_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "command_readiness_proven": true,
-      "descriptor_target_ok": true,
-      "last_command_input_window": {
-        "line": 271,
-        "marker": "BATTLE_COMMAND_INPUT_WINDOW",
-        "values": {
-          "coord_mode": "visible-window",
-          "expected_displayed": [
-            588,
-            440
-          ],
-          "expected_native": [
-            508,
-            380
-          ],
-          "mouse": [
-            320,
-            166
-          ],
-          "raw": [
-            20480,
-            10624
-          ],
-          "click_flag": 0,
-          "button0": 0,
-          "scale": 6,
-          "list": 5327736
-        },
-        "text": "BATTLE_COMMAND_INPUT_WINDOW coord_mode=visible-window expected_displayed=(588,440) expected_native=(508,380) mouse=(320,166) raw=(00005000,00002980) click_flag=00000000 button0=0x00 scale=6 list=00514b78"
-      },
-      "input": {
-        "present": false,
-        "path_verified": false,
-        "click_path_verified": false,
-        "click_event_count": 0,
-        "dry_run": false
-      },
-      "click_gate_passed": false,
-      "callback_target_ok": false,
-      "callback_result_seen": false,
-      "real_visible_click_consumed": false,
-      "classification": [
-        "visible command readiness proven",
-        "visible input JSON missing",
-        "real visible click consumption still open"
-      ]
-    },
-    {
-      "path": "captures\\archive\\battle-visible-input-minimal-20260521-232626",
-      "log": "captures\\archive\\battle-visible-input-minimal-20260521-232626\\cdb-visible-input-minimal.log",
-      "input_json": null,
-      "missing_log": false,
-      "cdb_breakpoint_failure_count": 0,
-      "cdb_breakpoint_failures": [],
-      "cdb_break_instruction_exception_count": 0,
-      "cdb_break_instruction_exceptions": [],
-      "marker_counts": {
-        "BATTLE_DIRECTINPUT_MOUSE_ACQUIRE": 1,
-        "SURFDUMP_LOADSAVE_RETURN": 1,
-        "SURFDUMP_PLAYGAME": 1,
-        "BATTLE_FORCE_ATTACK_CALL": 1,
-        "BATTLE_OWNER_ENTRY": 1,
-        "BATTLE_COMMAND_INPUT_WINDOW": 1,
-        "BATTLE_COMMAND_PRE_GATES": 0,
-        "BATTLE_COMMAND_CLICK_GATE_OBSERVED": 0,
-        "BATTLE_COMMAND_CLICK_GATE": 0,
-        "BATTLE_COMMAND_DESCRIPTOR_CALLBACK": 0,
-        "BATTLE_COMMAND_CALLBACK_RESULT": 0,
-        "BATTLE_COMMAND_CALLBACK": 0,
-        "SURFDUMP_HOST_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "command_readiness_proven": true,
-      "descriptor_target_ok": true,
-      "last_command_input_window": {
-        "line": 247,
-        "marker": "BATTLE_COMMAND_INPUT_WINDOW",
-        "values": {
-          "coord_mode": "visible-window",
-          "expected_displayed": [
-            588,
-            440
-          ],
-          "expected_native": [
-            508,
-            380
-          ],
-          "mouse": [
-            320,
-            166
-          ],
-          "raw": [
-            20480,
-            10624
-          ],
-          "click_flag": 0,
-          "button0": 0,
-          "scale": 6,
-          "list": 5327736
-        },
-        "text": "BATTLE_COMMAND_INPUT_WINDOW coord_mode=visible-window expected_displayed=(588,440) expected_native=(508,380) mouse=(320,166) raw=(00005000,00002980) click_flag=00000000 button0=0x00 scale=6 list=00514b78"
-      },
-      "input": {
-        "present": false,
-        "path_verified": false,
-        "click_path_verified": false,
-        "click_event_count": 0,
-        "dry_run": false
-      },
-      "click_gate_passed": false,
-      "callback_target_ok": false,
-      "callback_result_seen": false,
-      "real_visible_click_consumed": false,
-      "classification": [
-        "visible command readiness proven",
-        "visible input JSON missing",
-        "real visible click consumption still open"
-      ]
-    },
-    {
-      "path": "captures\\archive\\battle-visible-input-rawsend-20260521-233247",
-      "log": "captures\\archive\\battle-visible-input-rawsend-20260521-233247\\cdb-visible-input-rawsend.log",
-      "input_json": null,
-      "missing_log": false,
-      "cdb_breakpoint_failure_count": 52,
-      "cdb_breakpoint_failures": [
-        {
-          "line": 221,
-          "text": "Unable to remove breakpoint 10 at 00447780, Win32 error 0n5"
-        },
-        {
-          "line": 225,
-          "text": "Unable to remove breakpoint 9 at 00419c51, Win32 error 0n5"
-        },
-        {
-          "line": 229,
-          "text": "Unable to remove breakpoint 8 at 00419b80, Win32 error 0n5"
-        },
-        {
-          "line": 233,
-          "text": "Unable to remove breakpoint 7 at 0047bfd0, Win32 error 0n5"
-        },
-        {
-          "line": 237,
-          "text": "Unable to remove breakpoint 6 at 0046fd01, Win32 error 0n5"
-        },
-        {
-          "line": 241,
-          "text": "Unable to remove breakpoint 5 at 0046e6df, Win32 error 0n5"
-        },
-        {
-          "line": 245,
-          "text": "Unable to remove breakpoint 4 at 0046e4d0, Win32 error 0n5"
-        },
-        {
-          "line": 249,
-          "text": "Unable to remove breakpoint 3 at 0044789a, Win32 error 0n5"
-        },
-        {
-          "line": 253,
-          "text": "Unable to remove breakpoint 2 at 0047bdae, Win32 error 0n5"
-        },
-        {
-          "line": 257,
-          "text": "Unable to remove breakpoint 1 at 0047bd66, Win32 error 0n5"
-        }
-      ],
-      "cdb_break_instruction_exception_count": 1,
-      "cdb_break_instruction_exceptions": [
-        {
-          "line": 220,
-          "text": "(1fd0.1c44): Break instruction exception - code 80000003 (first chance)"
-        }
-      ],
-      "marker_counts": {
-        "BATTLE_DIRECTINPUT_MOUSE_ACQUIRE": 1,
+        "BATTLE_DIRECTINPUT_MOUSE_ACQUIRE": 0,
         "SURFDUMP_LOADSAVE_RETURN": 0,
         "SURFDUMP_PLAYGAME": 0,
         "BATTLE_FORCE_ATTACK_CALL": 0,
@@ -239,15 +49,101 @@
       "callback_result_seen": false,
       "real_visible_click_consumed": false,
       "classification": [
-        "invalid CDB breakpoint failure",
-        "invalid CDB break-instruction exception",
+        "missing log",
+        "visible input JSON missing"
+      ]
+    },
+    {
+      "path": "captures\\archive\\battle-visible-input-minimal-20260521-232626",
+      "log": null,
+      "input_json": null,
+      "missing_log": true,
+      "cdb_breakpoint_failure_count": 0,
+      "cdb_breakpoint_failures": [],
+      "cdb_break_instruction_exception_count": 0,
+      "cdb_break_instruction_exceptions": [],
+      "marker_counts": {
+        "BATTLE_DIRECTINPUT_MOUSE_ACQUIRE": 0,
+        "SURFDUMP_LOADSAVE_RETURN": 0,
+        "SURFDUMP_PLAYGAME": 0,
+        "BATTLE_FORCE_ATTACK_CALL": 0,
+        "BATTLE_OWNER_ENTRY": 0,
+        "BATTLE_COMMAND_INPUT_WINDOW": 0,
+        "BATTLE_COMMAND_PRE_GATES": 0,
+        "BATTLE_COMMAND_CLICK_GATE_OBSERVED": 0,
+        "BATTLE_COMMAND_CLICK_GATE": 0,
+        "BATTLE_COMMAND_DESCRIPTOR_CALLBACK": 0,
+        "BATTLE_COMMAND_CALLBACK_RESULT": 0,
+        "BATTLE_COMMAND_CALLBACK": 0,
+        "SURFDUMP_HOST_READY": 0,
+        "AV_SURFDUMP": 0
+      },
+      "command_readiness_proven": false,
+      "descriptor_target_ok": false,
+      "last_command_input_window": null,
+      "input": {
+        "present": false,
+        "path_verified": false,
+        "click_path_verified": false,
+        "click_event_count": 0,
+        "dry_run": false
+      },
+      "click_gate_passed": false,
+      "callback_target_ok": false,
+      "callback_result_seen": false,
+      "real_visible_click_consumed": false,
+      "classification": [
+        "missing log",
+        "visible input JSON missing"
+      ]
+    },
+    {
+      "path": "captures\\archive\\battle-visible-input-rawsend-20260521-233247",
+      "log": null,
+      "input_json": null,
+      "missing_log": true,
+      "cdb_breakpoint_failure_count": 0,
+      "cdb_breakpoint_failures": [],
+      "cdb_break_instruction_exception_count": 0,
+      "cdb_break_instruction_exceptions": [],
+      "marker_counts": {
+        "BATTLE_DIRECTINPUT_MOUSE_ACQUIRE": 0,
+        "SURFDUMP_LOADSAVE_RETURN": 0,
+        "SURFDUMP_PLAYGAME": 0,
+        "BATTLE_FORCE_ATTACK_CALL": 0,
+        "BATTLE_OWNER_ENTRY": 0,
+        "BATTLE_COMMAND_INPUT_WINDOW": 0,
+        "BATTLE_COMMAND_PRE_GATES": 0,
+        "BATTLE_COMMAND_CLICK_GATE_OBSERVED": 0,
+        "BATTLE_COMMAND_CLICK_GATE": 0,
+        "BATTLE_COMMAND_DESCRIPTOR_CALLBACK": 0,
+        "BATTLE_COMMAND_CALLBACK_RESULT": 0,
+        "BATTLE_COMMAND_CALLBACK": 0,
+        "SURFDUMP_HOST_READY": 0,
+        "AV_SURFDUMP": 0
+      },
+      "command_readiness_proven": false,
+      "descriptor_target_ok": false,
+      "last_command_input_window": null,
+      "input": {
+        "present": false,
+        "path_verified": false,
+        "click_path_verified": false,
+        "click_event_count": 0,
+        "dry_run": false
+      },
+      "click_gate_passed": false,
+      "callback_target_ok": false,
+      "callback_result_seen": false,
+      "real_visible_click_consumed": false,
+      "classification": [
+        "missing log",
         "visible input JSON missing"
       ]
     }
   ],
   "failures": [
-    "no visible run proves real click consumption",
-    "invalid CDB breakpoint failures in captures\\archive\\battle-visible-input-rawsend-20260521-233247",
-    "invalid CDB break-instruction exceptions in captures\\archive\\battle-visible-input-rawsend-20260521-233247"
+    "no visible run proves command readiness",
+    "no visible run proves real click consumption"
   ]
 }

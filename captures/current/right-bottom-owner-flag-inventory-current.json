@@ -1,29 +1,27 @@
 {
-  "generated_at": "2026-06-17T09:47:23+02:00",
+  "generated_at": "2026-07-12T16:08:35+02:00",
   "passed": true,
   "runtime_policy": "repo-only; scans existing CDB logs and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "right-bottom owner/action evidence must keep at least one controlled forced owner route, at least one current natural owner-flag-gated route, and no non-fixture archived natural route that already reaches the owner/action renderer without an explicit forced owner flag",
   "captures_root": "captures",
-  "scanned_log_count": 188,
-  "relevant_run_count": 81,
+  "scanned_log_count": 26,
+  "relevant_run_count": 12,
   "classification_counts": {
-    "forced_owner_action_route": 65,
+    "forced_owner_action_route": 7,
     "natural_state_gated": 1,
-    "natural_ui_descriptor_only": 2,
-    "non_natural_isolated_fixture": 10,
-    "right_bottom_related": 3
+    "non_natural_isolated_fixture": 4
   },
   "natural_state_gated_count": 1,
-  "forced_owner_action_route_count": 65,
+  "forced_owner_action_route_count": 7,
   "natural_action_route_count": 0,
-  "non_natural_isolated_fixture_count": 10,
-  "non_natural_isolated_fixture_action_route_count": 9,
-  "natural_ui_descriptor_only_count": 2,
+  "non_natural_isolated_fixture_count": 4,
+  "non_natural_isolated_fixture_action_route_count": 13,
+  "natural_ui_descriptor_only_count": 0,
   "representative_runs": {
     "natural_state_gated": {
-      "run": "captures\\archive\\cdb-surface-dump-20260518-213418",
-      "run_label": "captures/archive/cdb-surface-dump-20260518-213418",
-      "log": "captures\\archive\\cdb-surface-dump-20260518-213418\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-150434",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-150434",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-150434\\cdb-surface-dump.log",
       "classifications": [
         "natural_state_gated"
       ],
@@ -88,7 +86,7 @@
       },
       "natural_descriptor_result": {
         "result": 0,
-        "owner": "041bc71a",
+        "owner": "044fc71a",
         "owner_flag": "0x00",
         "surface": [
           800,
@@ -100,21 +98,21 @@
       "av_count": 0
     },
     "forced_owner_action_route": {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-160614",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-160614",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-160614\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-144445",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-144445",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-144445\\cdb-surface-dump.log",
       "classifications": [
         "forced_owner_action_route"
       ],
       "proof_class": null,
       "fixture_status": null,
       "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "hidden_desktop": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "candidate_sha256": "1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6",
       "surface": [
-        null,
-        null
+        800,
+        600
       ],
       "marker_counts": {
         "RBUI_DESC_SWITCH": 0,
@@ -131,70 +129,20 @@
         "NOWNER_CASTLE_CMD99_TARGET": 0,
         "NOWNER_CASTLE_HIT": 0,
         "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 1
+        "AV_SURFDUMP": 0
       },
       "forced_flags": [
         {
-          "prefix": "APPOST",
+          "prefix": "APBARRACKS",
           "flag": "0x02"
         }
       ],
       "action_prefixes": [
-        "APPOST"
+        "APBARRACKS"
       ],
       "owner_render_prefixes": [
-        "APPOST"
+        "APBARRACKS"
       ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 1
-    },
-    "natural_ui_descriptor_only": {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-104200",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-104200",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-104200\\cdb-surface-dump.log",
-      "classifications": [
-        "natural_ui_descriptor_only"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 26,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
       "natural_flag_test": {
         "owner_flag": null,
         "bit2": null,
@@ -208,71 +156,95 @@
       "non_natural_fixture_action_route_count": 0,
       "av_count": 0
     },
+    "natural_ui_descriptor_only": null,
     "non_natural_isolated_fixture": {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-121204",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-121204",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-121204\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260527-193512",
+      "run_label": "captures/archive/cdb-surface-dump-20260527-193512",
+      "log": "captures\\archive\\cdb-surface-dump-20260527-193512\\cdb-surface-dump.log",
       "classifications": [
         "non_natural_isolated_fixture"
       ],
       "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": "castle_route_not_reached",
+      "fixture_status": null,
       "is_non_natural_fixture": true,
       "hidden_desktop": true,
       "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
       "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
       "surface": [
-        800,
-        600
+        null,
+        null
       ],
       "marker_counts": {
         "RBUI_DESC_SWITCH": 0,
         "RBUI_PANEL_DRAW": 0,
         "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
+        "NOWNER_OWNER_FLAG_TEST": 1,
+        "NOWNER_OWNER_SCREEN_DESC_DRAW": 1,
         "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
+        "NOWNER_4338E0_ENTRY": 1,
+        "NOWNER_ACTION_CALL_WRAPPER": 1,
+        "NOWNER_OWNER_435BC0_ENTRY": 1,
         "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
+        "NOWNER_CASTLE_HITMAP_SAMPLE": 1,
+        "NOWNER_CASTLE_CMD99_TARGET": 1,
+        "NOWNER_CASTLE_HIT": 2,
         "NOWNER_4338E0_SURFDUMP_READY": 0,
         "AV_SURFDUMP": 0
       },
       "forced_flags": [],
       "action_prefixes": [],
-      "owner_render_prefixes": [],
+      "owner_render_prefixes": [
+        "NOWNER"
+      ],
       "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
+        "owner_flag": "0x0b",
+        "bit2": 2,
+        "bit1": 1,
+        "bit8": 8
       },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
+      "natural_descriptors": {
+        "d0": {
+          "x": 39,
+          "y": 426,
+          "callback": "004338c0"
+        },
+        "d1": {
+          "x": 155,
+          "y": 426,
+          "callback": "004338e0"
+        },
+        "d2": {
+          "x": 272,
+          "y": 426,
+          "callback": "00433a40"
+        }
+      },
+      "natural_action_descriptor": {
+        "slot": "d1",
+        "x": 155,
+        "y": 426,
+        "callback": "004338e0"
+      },
       "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
+      "natural_action_route_count": 3,
+      "non_natural_fixture_action_route_count": 3,
       "av_count": 0
     }
   },
   "rows": [
     {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-150744",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-150744",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-150744\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260527-193512",
+      "run_label": "captures/archive/cdb-surface-dump-20260527-193512",
+      "log": "captures\\archive\\cdb-surface-dump-20260527-193512\\cdb-surface-dump.log",
       "classifications": [
-        "right_bottom_related"
+        "non_natural_isolated_fixture"
       ],
-      "proof_class": null,
+      "proof_class": "non_natural_isolated_fixture",
       "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "is_non_natural_fixture": true,
+      "hidden_desktop": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
       "surface": [
         null,
         null
@@ -281,2608 +253,104 @@
         "RBUI_DESC_SWITCH": 0,
         "RBUI_PANEL_DRAW": 0,
         "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
+        "NOWNER_OWNER_FLAG_TEST": 1,
+        "NOWNER_OWNER_SCREEN_DESC_DRAW": 1,
         "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
+        "NOWNER_4338E0_ENTRY": 1,
+        "NOWNER_ACTION_CALL_WRAPPER": 1,
+        "NOWNER_OWNER_435BC0_ENTRY": 1,
         "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-151242",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-151242",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-151242\\cdb-surface-dump.log",
-      "classifications": [
-        "right_bottom_related"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-160614",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-160614",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-160614\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 1
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 1
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-160758",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-160758",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-160758\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-175108",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-175108",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-175108\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-180501",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-180501",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-180501\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-180755",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-180755",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-180755\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-185203",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-185203",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-185203\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-190037",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-190037",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-190037\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-191042",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-191042",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-191042\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-200426",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-200426",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-200426\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260506-201114",
-      "run_label": "captures/archive/cdb-surface-dump-20260506-201114",
-      "log": "captures\\archive\\cdb-surface-dump-20260506-201114\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-084202",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-084202",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-084202\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-134458",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-134458",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-134458\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-134746",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-134746",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-134746\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-134947",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-134947",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-134947\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-141143",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-141143",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-141143\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-142147",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-142147",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-142147\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter",
-      "candidate_sha256": "46DF74DF2C0BBD8210C5DF1D793CDB768000263FAF948423A0521F85BCF68D33",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 1
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 1
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-142304",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-142304",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-142304\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter",
-      "candidate_sha256": "8BC179944C2859FB5C0A8B1E36A695D8A9371E0C975B80FA1092513AC53C89B8",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-143741",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-143741",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-143741\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "BEC4674A98060928337F05CB967AEDBD2A800905389DBBE4990CF771C6DF19C8",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-144739",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-144739",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-144739\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-144934",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-144934",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-144934\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-145141",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-145141",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-145141\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-150643",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-150643",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-150643\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-151705",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-151705",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-151705\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-155526",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-155526",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-155526\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-155739",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-155739",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-155739\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-155910",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-155910",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-155910\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-160114",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-160114",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-160114\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-160221",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-160221",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-160221\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-161212",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-161212",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-161212\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-162607",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-162607",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-162607\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-162846",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-162846",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-162846\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-163718",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-163718",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-163718\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-163846",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-163846",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-163846\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-164536",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-164536",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-164536\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260511-170759",
-      "run_label": "captures/archive/cdb-surface-dump-20260511-170759",
-      "log": "captures\\archive\\cdb-surface-dump-20260511-170759\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "candidate_sha256": "F7E3FE2D4411D586870A05549CBC35B331446D35E567A5347096150B16934434",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260512-080906",
-      "run_label": "captures/archive/cdb-surface-dump-20260512-080906",
-      "log": "captures\\archive\\cdb-surface-dump-20260512-080906\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "candidate_sha256": "572FBC6FC589E5C68753F0E7255E2270CF4E2DD9E030A6954BB97E6D3FD099F4",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260512-081214",
-      "run_label": "captures/archive/cdb-surface-dump-20260512-081214",
-      "log": "captures\\archive\\cdb-surface-dump-20260512-081214\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "candidate_sha256": "748D95A5EC9597F799021455472F253805DAFCEA6027AC833C7881DAD342ADC6",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 1
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 1
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260512-081628",
-      "run_label": "captures/archive/cdb-surface-dump-20260512-081628",
-      "log": "captures\\archive\\cdb-surface-dump-20260512-081628\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "candidate_sha256": "C8C27FCB1AD67D30FBAB889AA673BCD583CFE48C98F2D3672339350D60CC36C7",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260512-082001",
-      "run_label": "captures/archive/cdb-surface-dump-20260512-082001",
-      "log": "captures\\archive\\cdb-surface-dump-20260512-082001\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "candidate_sha256": "AF53C76D4E4C6184E1038B228F23F8D77FA2E0FDB31B6CD6BFC9CB497590619E",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260512-082120",
-      "run_label": "captures/archive/cdb-surface-dump-20260512-082120",
-      "log": "captures\\archive\\cdb-surface-dump-20260512-082120\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "candidate_sha256": "AF53C76D4E4C6184E1038B228F23F8D77FA2E0FDB31B6CD6BFC9CB497590619E",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260512-082418",
-      "run_label": "captures/archive/cdb-surface-dump-20260512-082418",
-      "log": "captures\\archive\\cdb-surface-dump-20260512-082418\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "candidate_sha256": "4E42D4A3EA61E1DB31007600A8B6515B4803E14CCC07FD2CBF1C2BA838492498",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260512-082606",
-      "run_label": "captures/archive/cdb-surface-dump-20260512-082606",
-      "log": "captures\\archive\\cdb-surface-dump-20260512-082606\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "candidate_sha256": "4E42D4A3EA61E1DB31007600A8B6515B4803E14CCC07FD2CBF1C2BA838492498",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APBARRACKS",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APBARRACKS"
-      ],
-      "owner_render_prefixes": [
-        "APBARRACKS"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-104200",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-104200",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-104200\\cdb-surface-dump.log",
-      "classifications": [
-        "natural_ui_descriptor_only"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 26,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
+        "NOWNER_CASTLE_HITMAP_SAMPLE": 1,
+        "NOWNER_CASTLE_CMD99_TARGET": 1,
+        "NOWNER_CASTLE_HIT": 2,
         "NOWNER_4338E0_SURFDUMP_READY": 0,
         "AV_SURFDUMP": 0
       },
       "forced_flags": [],
       "action_prefixes": [],
-      "owner_render_prefixes": [],
+      "owner_render_prefixes": [
+        "NOWNER"
+      ],
+      "natural_flag_test": {
+        "owner_flag": "0x0b",
+        "bit2": 2,
+        "bit1": 1,
+        "bit8": 8
+      },
+      "natural_descriptors": {
+        "d0": {
+          "x": 39,
+          "y": 426,
+          "callback": "004338c0"
+        },
+        "d1": {
+          "x": 155,
+          "y": 426,
+          "callback": "004338e0"
+        },
+        "d2": {
+          "x": 272,
+          "y": 426,
+          "callback": "00433a40"
+        }
+      },
+      "natural_action_descriptor": {
+        "slot": "d1",
+        "x": 155,
+        "y": 426,
+        "callback": "004338e0"
+      },
+      "natural_descriptor_result": {},
+      "natural_action_route_count": 3,
+      "non_natural_fixture_action_route_count": 3,
+      "av_count": 0
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260712-144445",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-144445",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-144445\\cdb-surface-dump.log",
+      "classifications": [
+        "forced_owner_action_route"
+      ],
+      "proof_class": null,
+      "fixture_status": null,
+      "is_non_natural_fixture": false,
+      "hidden_desktop": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "candidate_sha256": "1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6",
+      "surface": [
+        800,
+        600
+      ],
+      "marker_counts": {
+        "RBUI_DESC_SWITCH": 0,
+        "RBUI_PANEL_DRAW": 0,
+        "RBUI_ACTION_BOX": 0,
+        "NOWNER_OWNER_FLAG_TEST": 0,
+        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
+        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
+        "NOWNER_4338E0_ENTRY": 0,
+        "NOWNER_ACTION_CALL_WRAPPER": 0,
+        "NOWNER_OWNER_435BC0_ENTRY": 0,
+        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
+        "NOWNER_CASTLE_CMD99_TARGET": 0,
+        "NOWNER_CASTLE_HIT": 0,
+        "NOWNER_4338E0_SURFDUMP_READY": 0,
+        "AV_SURFDUMP": 0
+      },
+      "forced_flags": [
+        {
+          "prefix": "APBARRACKS",
+          "flag": "0x02"
+        }
+      ],
+      "action_prefixes": [
+        "APBARRACKS"
+      ],
+      "owner_render_prefixes": [
+        "APBARRACKS"
+      ],
       "natural_flag_test": {
         "owner_flag": null,
         "bit2": null,
@@ -2897,9 +365,9 @@
       "av_count": 0
     },
     {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-104954",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-104954",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-104954\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-144922",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-144922",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-144922\\cdb-surface-dump.log",
       "classifications": [
         "forced_owner_action_route"
       ],
@@ -2956,590 +424,9 @@
       "av_count": 0
     },
     {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-105411",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-105411",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-105411\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-111559",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-111559",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-111559\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-112024",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-112024",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-112024\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-112339",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-112339",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-112339\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-114720",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-114720",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-114720\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": null,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-115101",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-115101",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-115101\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-115303",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-115303",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-115303\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-120712",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-120712",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-120712\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
-      "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-122200",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-122200",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-122200\\cdb-surface-dump.log",
-      "classifications": [
-        "natural_ui_descriptor_only"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
-      "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 35,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260513-122928",
-      "run_label": "captures/archive/cdb-surface-dump-20260513-122928",
-      "log": "captures\\archive\\cdb-surface-dump-20260513-122928\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
-      "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260514-140601",
-      "run_label": "captures/archive/cdb-surface-dump-20260514-140601",
-      "log": "captures\\archive\\cdb-surface-dump-20260514-140601\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-150240",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-150240",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-150240\\cdb-surface-dump.log",
       "classifications": [
         "forced_owner_action_route"
       ],
@@ -3596,729 +483,9 @@
       "av_count": 0
     },
     {
-      "run": "captures\\archive\\cdb-surface-dump-20260515-130121",
-      "run_label": "captures/archive/cdb-surface-dump-20260515-130121",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-130121\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260515-130619",
-      "run_label": "captures/archive/cdb-surface-dump-20260515-130619",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-130619\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260515-130736",
-      "run_label": "captures/archive/cdb-surface-dump-20260515-130736",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-130736\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260515-130940",
-      "run_label": "captures/archive/cdb-surface-dump-20260515-130940",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-130940\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction",
-      "candidate_sha256": "513DB3D58F59E060EE7B51F56279ED1ABF1A9192596C422DA1C658ABA162F783",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260515-131514",
-      "run_label": "captures/archive/cdb-surface-dump-20260515-131514",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-131514\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction",
-      "candidate_sha256": "513DB3D58F59E060EE7B51F56279ED1ABF1A9192596C422DA1C658ABA162F783",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260515-131648",
-      "run_label": "captures/archive/cdb-surface-dump-20260515-131648",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-131648\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction",
-      "candidate_sha256": "513DB3D58F59E060EE7B51F56279ED1ABF1A9192596C422DA1C658ABA162F783",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260515-140702",
-      "run_label": "captures/archive/cdb-surface-dump-20260515-140702",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-140702\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
-      "candidate_sha256": "1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260515-141804",
-      "run_label": "captures/archive/cdb-surface-dump-20260515-141804",
-      "log": "captures\\archive\\cdb-surface-dump-20260515-141804\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260517-172014",
-      "run_label": "captures/archive/cdb-surface-dump-20260517-172014",
-      "log": "captures\\archive\\cdb-surface-dump-20260517-172014\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APPOST",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APPOST"
-      ],
-      "owner_render_prefixes": [
-        "APPOST"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260517-172447",
-      "run_label": "captures/archive/cdb-surface-dump-20260517-172447",
-      "log": "captures\\archive\\cdb-surface-dump-20260517-172447\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APNATIVE",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APNATIVE"
-      ],
-      "owner_render_prefixes": [
-        "APNATIVE"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260517-172611",
-      "run_label": "captures/archive/cdb-surface-dump-20260517-172611",
-      "log": "captures\\archive\\cdb-surface-dump-20260517-172611\\cdb-surface-dump.log",
-      "classifications": [
-        "forced_owner_action_route"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 0,
-        "NOWNER_CASTLE_HIT": 0,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [
-        {
-          "prefix": "APNATIVE",
-          "flag": "0x02"
-        }
-      ],
-      "action_prefixes": [
-        "APNATIVE"
-      ],
-      "owner_render_prefixes": [
-        "APNATIVE"
-      ],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260518-213106",
-      "run_label": "captures/archive/cdb-surface-dump-20260518-213106",
-      "log": "captures\\archive\\cdb-surface-dump-20260518-213106\\cdb-surface-dump.log",
-      "classifications": [
-        "right_bottom_related"
-      ],
-      "proof_class": null,
-      "fixture_status": null,
-      "is_non_natural_fixture": false,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 1,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 1,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 1,
-        "NOWNER_CASTLE_HIT": 1,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": "0x00",
-        "bit2": 0,
-        "bit1": 0,
-        "bit8": 0
-      },
-      "natural_descriptors": {
-        "d0": {
-          "x": 39,
-          "y": 426,
-          "callback": "004338c0"
-        },
-        "d1": {
-          "x": 1000,
-          "y": 426,
-          "callback": "004338e0"
-        },
-        "d2": {
-          "x": 1000,
-          "y": 426,
-          "callback": "00433a40"
-        }
-      },
-      "natural_action_descriptor": {
-        "slot": "d1",
-        "x": 1000,
-        "y": 426,
-        "callback": "004338e0"
-      },
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260518-213418",
-      "run_label": "captures/archive/cdb-surface-dump-20260518-213418",
-      "log": "captures\\archive\\cdb-surface-dump-20260518-213418\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-150434",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-150434",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-150434\\cdb-surface-dump.log",
       "classifications": [
         "natural_state_gated"
       ],
@@ -4383,7 +550,7 @@
       },
       "natural_descriptor_result": {
         "result": 0,
-        "owner": "041bc71a",
+        "owner": "044fc71a",
         "owner_flag": "0x00",
         "surface": [
           800,
@@ -4395,18 +562,18 @@
       "av_count": 0
     },
     {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-121204",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-121204",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-121204\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-151015",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-151015",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-151015\\cdb-surface-dump.log",
       "classifications": [
-        "non_natural_isolated_fixture"
+        "forced_owner_action_route"
       ],
-      "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": "castle_route_not_reached",
-      "is_non_natural_fixture": true,
+      "proof_class": null,
+      "fixture_status": null,
+      "is_non_natural_fixture": false,
       "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
+      "candidate_sha256": "1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6",
       "surface": [
         800,
         600
@@ -4428,252 +595,40 @@
         "NOWNER_4338E0_SURFDUMP_READY": 0,
         "AV_SURFDUMP": 0
       },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-121458",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-121458",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-121458\\cdb-surface-dump.log",
-      "classifications": [
-        "non_natural_isolated_fixture"
-      ],
-      "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": "castle_route_not_reached",
-      "is_non_natural_fixture": true,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 1,
-        "NOWNER_CASTLE_HIT": 3919,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-121823",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-121823",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-121823\\cdb-surface-dump.log",
-      "classifications": [
-        "non_natural_isolated_fixture"
-      ],
-      "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": "castle_route_not_reached",
-      "is_non_natural_fixture": true,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
-        "NOWNER_CASTLE_CMD99_TARGET": 1,
-        "NOWNER_CASTLE_HIT": 13,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-160557",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-160557",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-160557\\cdb-surface-dump.log",
-      "classifications": [
-        "non_natural_isolated_fixture"
-      ],
-      "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": "castle_route_not_reached",
-      "is_non_natural_fixture": true,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        800,
-        600
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 0,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 0,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 1,
-        "NOWNER_CASTLE_CMD99_TARGET": 1,
-        "NOWNER_CASTLE_HIT": 14,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": null,
-        "bit2": null,
-        "bit1": null,
-        "bit8": null
-      },
-      "natural_descriptors": {},
-      "natural_action_descriptor": null,
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 0,
-      "non_natural_fixture_action_route_count": 0,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-160717",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-160717",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-160717\\cdb-surface-dump.log",
-      "classifications": [
-        "non_natural_isolated_fixture"
-      ],
-      "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": "owner_action_reached",
-      "is_non_natural_fixture": true,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 1,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 1,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 1,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 1,
-        "NOWNER_CASTLE_CMD99_TARGET": 1,
-        "NOWNER_CASTLE_HIT": 2,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": "0x0b",
-        "bit2": 2,
-        "bit1": 1,
-        "bit8": 8
-      },
-      "natural_descriptors": {
-        "d0": {
-          "x": 39,
-          "y": 426,
-          "callback": "004338c0"
-        },
-        "d1": {
-          "x": 155,
-          "y": 426,
-          "callback": "004338e0"
-        },
-        "d2": {
-          "x": 272,
-          "y": 426,
-          "callback": "00433a40"
+      "forced_flags": [
+        {
+          "prefix": "APBARRACKS",
+          "flag": "0x02"
         }
+      ],
+      "action_prefixes": [
+        "APBARRACKS"
+      ],
+      "owner_render_prefixes": [
+        "APBARRACKS"
+      ],
+      "natural_flag_test": {
+        "owner_flag": null,
+        "bit2": null,
+        "bit1": null,
+        "bit8": null
       },
-      "natural_action_descriptor": {
-        "slot": "d1",
-        "x": 155,
-        "y": 426,
-        "callback": "004338e0"
-      },
+      "natural_descriptors": {},
+      "natural_action_descriptor": null,
       "natural_descriptor_result": {},
-      "natural_action_route_count": 1,
-      "non_natural_fixture_action_route_count": 1,
+      "natural_action_route_count": 0,
+      "non_natural_fixture_action_route_count": 0,
       "av_count": 0
     },
     {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-161047",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-161047",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-161047\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-154653",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-154653",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-154653\\cdb-surface-dump.log",
       "classifications": [
         "non_natural_isolated_fixture"
       ],
       "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": "owner_action_reached",
+      "fixture_status": "owner_action_entry_only",
       "is_non_natural_fixture": true,
       "hidden_desktop": true,
       "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
@@ -4737,14 +692,14 @@
       "av_count": 0
     },
     {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-164350",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-164350",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-164350\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-154903",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-154903",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-154903\\cdb-surface-dump.log",
       "classifications": [
         "non_natural_isolated_fixture"
       ],
       "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": null,
+      "fixture_status": "owner_action_435bc0_loop_stalled",
       "is_non_natural_fixture": true,
       "hidden_desktop": true,
       "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
@@ -4757,12 +712,12 @@
         "RBUI_DESC_SWITCH": 0,
         "RBUI_PANEL_DRAW": 0,
         "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 1,
+        "NOWNER_OWNER_FLAG_TEST": 2,
         "NOWNER_OWNER_SCREEN_DESC_DRAW": 1,
         "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
         "NOWNER_4338E0_ENTRY": 1,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
+        "NOWNER_ACTION_CALL_WRAPPER": 2,
+        "NOWNER_OWNER_435BC0_ENTRY": 2,
         "NOWNER_WRAPPER_COPYBACK_DONE": 0,
         "NOWNER_CASTLE_HITMAP_SAMPLE": 1,
         "NOWNER_CASTLE_CMD99_TARGET": 1,
@@ -4772,7 +727,9 @@
       },
       "forced_flags": [],
       "action_prefixes": [],
-      "owner_render_prefixes": [],
+      "owner_render_prefixes": [
+        "NOWNER"
+      ],
       "natural_flag_test": {
         "owner_flag": "0x0b",
         "bit2": 2,
@@ -4803,165 +760,23 @@
         "callback": "004338e0"
       },
       "natural_descriptor_result": {},
-      "natural_action_route_count": 1,
-      "non_natural_fixture_action_route_count": 1,
+      "natural_action_route_count": 5,
+      "non_natural_fixture_action_route_count": 5,
       "av_count": 0
     },
     {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-165455",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-165455",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-165455\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-155528",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-155528",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-155528\\cdb-surface-dump.log",
       "classifications": [
         "non_natural_isolated_fixture"
       ],
       "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": null,
+      "fixture_status": "owner_action_copyback_reached",
       "is_non_natural_fixture": true,
       "hidden_desktop": true,
       "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
       "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 1,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 1,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 1,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 1,
-        "NOWNER_CASTLE_CMD99_TARGET": 1,
-        "NOWNER_CASTLE_HIT": 2,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": "0x0b",
-        "bit2": 2,
-        "bit1": 1,
-        "bit8": 8
-      },
-      "natural_descriptors": {
-        "d0": {
-          "x": 39,
-          "y": 426,
-          "callback": "004338c0"
-        },
-        "d1": {
-          "x": 155,
-          "y": 426,
-          "callback": "004338e0"
-        },
-        "d2": {
-          "x": 272,
-          "y": 426,
-          "callback": "00433a40"
-        }
-      },
-      "natural_action_descriptor": {
-        "slot": "d1",
-        "x": 155,
-        "y": 426,
-        "callback": "004338e0"
-      },
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 1,
-      "non_natural_fixture_action_route_count": 1,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260527-165909",
-      "run_label": "captures/archive/cdb-surface-dump-20260527-165909",
-      "log": "captures\\archive\\cdb-surface-dump-20260527-165909\\cdb-surface-dump.log",
-      "classifications": [
-        "non_natural_isolated_fixture"
-      ],
-      "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": null,
-      "is_non_natural_fixture": true,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
-      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
-      "surface": [
-        null,
-        null
-      ],
-      "marker_counts": {
-        "RBUI_DESC_SWITCH": 0,
-        "RBUI_PANEL_DRAW": 0,
-        "RBUI_ACTION_BOX": 0,
-        "NOWNER_OWNER_FLAG_TEST": 1,
-        "NOWNER_OWNER_SCREEN_DESC_DRAW": 1,
-        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
-        "NOWNER_4338E0_ENTRY": 1,
-        "NOWNER_ACTION_CALL_WRAPPER": 0,
-        "NOWNER_OWNER_435BC0_ENTRY": 0,
-        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
-        "NOWNER_CASTLE_HITMAP_SAMPLE": 1,
-        "NOWNER_CASTLE_CMD99_TARGET": 1,
-        "NOWNER_CASTLE_HIT": 2,
-        "NOWNER_4338E0_SURFDUMP_READY": 0,
-        "AV_SURFDUMP": 0
-      },
-      "forced_flags": [],
-      "action_prefixes": [],
-      "owner_render_prefixes": [],
-      "natural_flag_test": {
-        "owner_flag": "0x0b",
-        "bit2": 2,
-        "bit1": 1,
-        "bit8": 8
-      },
-      "natural_descriptors": {
-        "d0": {
-          "x": 39,
-          "y": 426,
-          "callback": "004338c0"
-        },
-        "d1": {
-          "x": 155,
-          "y": 426,
-          "callback": "004338e0"
-        },
-        "d2": {
-          "x": 272,
-          "y": 426,
-          "callback": "00433a40"
-        }
-      },
-      "natural_action_descriptor": {
-        "slot": "d1",
-        "x": 155,
-        "y": 426,
-        "callback": "004338e0"
-      },
-      "natural_descriptor_result": {},
-      "natural_action_route_count": 1,
-      "non_natural_fixture_action_route_count": 1,
-      "av_count": 0
-    },
-    {
-      "run": "captures\\archive\\cdb-surface-dump-20260615-100407",
-      "run_label": "captures/archive/cdb-surface-dump-20260615-100407",
-      "log": "captures\\archive\\cdb-surface-dump-20260615-100407\\cdb-surface-dump.log",
-      "classifications": [
-        "non_natural_isolated_fixture"
-      ],
-      "proof_class": "non_natural_isolated_fixture",
-      "fixture_status": null,
-      "is_non_natural_fixture": true,
-      "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput",
-      "candidate_sha256": "5F5F69921227F5FAD9D6056DF3AB87067B13AC948B936AB55C52C14AB43F2B88",
       "surface": [
         800,
         600
@@ -5023,9 +838,9 @@
       "av_count": 0
     },
     {
-      "run": "captures\\archive\\cdb-surface-dump-20260616-135432",
-      "run_label": "captures/archive/cdb-surface-dump-20260616-135432",
-      "log": "captures\\archive\\cdb-surface-dump-20260616-135432\\cdb-surface-dump.log",
+      "run": "captures\\archive\\cdb-surface-dump-20260712-160131",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-160131",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-160131\\cdb-surface-dump.log",
       "classifications": [
         "forced_owner_action_route"
       ],
@@ -5033,8 +848,126 @@
       "fixture_status": null,
       "is_non_natural_fixture": false,
       "hidden_desktop": true,
-      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw",
-      "candidate_sha256": "F1B11E22C9CFB0AAA1CCC325526FC08B952CA6323739CEED3D279B7CB07FB440",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "surface": [
+        800,
+        600
+      ],
+      "marker_counts": {
+        "RBUI_DESC_SWITCH": 0,
+        "RBUI_PANEL_DRAW": 0,
+        "RBUI_ACTION_BOX": 0,
+        "NOWNER_OWNER_FLAG_TEST": 0,
+        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
+        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
+        "NOWNER_4338E0_ENTRY": 0,
+        "NOWNER_ACTION_CALL_WRAPPER": 0,
+        "NOWNER_OWNER_435BC0_ENTRY": 0,
+        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
+        "NOWNER_CASTLE_CMD99_TARGET": 0,
+        "NOWNER_CASTLE_HIT": 0,
+        "NOWNER_4338E0_SURFDUMP_READY": 0,
+        "AV_SURFDUMP": 0
+      },
+      "forced_flags": [
+        {
+          "prefix": "APPOST",
+          "flag": "0x02"
+        }
+      ],
+      "action_prefixes": [
+        "APPOST"
+      ],
+      "owner_render_prefixes": [
+        "APPOST"
+      ],
+      "natural_flag_test": {
+        "owner_flag": null,
+        "bit2": null,
+        "bit1": null,
+        "bit8": null
+      },
+      "natural_descriptors": {},
+      "natural_action_descriptor": null,
+      "natural_descriptor_result": {},
+      "natural_action_route_count": 0,
+      "non_natural_fixture_action_route_count": 0,
+      "av_count": 0
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260712-160204",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-160204",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-160204\\cdb-surface-dump.log",
+      "classifications": [
+        "forced_owner_action_route"
+      ],
+      "proof_class": null,
+      "fixture_status": null,
+      "is_non_natural_fixture": false,
+      "hidden_desktop": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+      "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
+      "surface": [
+        800,
+        600
+      ],
+      "marker_counts": {
+        "RBUI_DESC_SWITCH": 0,
+        "RBUI_PANEL_DRAW": 0,
+        "RBUI_ACTION_BOX": 0,
+        "NOWNER_OWNER_FLAG_TEST": 0,
+        "NOWNER_OWNER_SCREEN_DESC_DRAW": 0,
+        "NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY": 0,
+        "NOWNER_4338E0_ENTRY": 0,
+        "NOWNER_ACTION_CALL_WRAPPER": 0,
+        "NOWNER_OWNER_435BC0_ENTRY": 0,
+        "NOWNER_WRAPPER_COPYBACK_DONE": 0,
+        "NOWNER_CASTLE_HITMAP_SAMPLE": 0,
+        "NOWNER_CASTLE_CMD99_TARGET": 0,
+        "NOWNER_CASTLE_HIT": 0,
+        "NOWNER_4338E0_SURFDUMP_READY": 0,
+        "AV_SURFDUMP": 0
+      },
+      "forced_flags": [
+        {
+          "prefix": "APPOST",
+          "flag": "0x02"
+        }
+      ],
+      "action_prefixes": [
+        "APPOST"
+      ],
+      "owner_render_prefixes": [
+        "APPOST"
+      ],
+      "natural_flag_test": {
+        "owner_flag": null,
+        "bit2": null,
+        "bit1": null,
+        "bit8": null
+      },
+      "natural_descriptors": {},
+      "natural_action_descriptor": null,
+      "natural_descriptor_result": {},
+      "natural_action_route_count": 0,
+      "non_natural_fixture_action_route_count": 0,
+      "av_count": 0
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260712-160351",
+      "run_label": "captures/archive/cdb-surface-dump-20260712-160351",
+      "log": "captures\\archive\\cdb-surface-dump-20260712-160351\\cdb-surface-dump.log",
+      "classifications": [
+        "forced_owner_action_route"
+      ],
+      "proof_class": null,
+      "fixture_status": null,
+      "is_non_natural_fixture": false,
+      "hidden_desktop": true,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
+      "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
       "surface": [
         800,
         600

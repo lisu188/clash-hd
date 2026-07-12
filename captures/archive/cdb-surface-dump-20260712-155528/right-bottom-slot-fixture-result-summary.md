@@ -1,0 +1,323 @@
+# Right-Bottom Slot Fixture Result Summary
+
+- Log: `captures\archive\cdb-surface-dump-20260712-155528\cdb-surface-dump.log`
+- Proof class: `non_natural_isolated_fixture`
+- Status: `owner_action_copyback_reached`
+- Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter`
+- Candidate path: `C:\ClashTests\right-bottom-slot5-as-slot0-fixture\candidate\clash95_hd_surfdump_20260712_155528.exe`
+- Candidate SHA-256: `D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C`
+- Candidate dir: `C:\ClashTests\right-bottom-slot5-as-slot0-fixture\candidate`
+- Expected slot: `0`
+- Selected arg: `0`
+- Selected global: `0`
+- LOADSAVE slot values: `[0, 0]`
+- LOADSAVE slot consistent: `True`
+- LOADSAVE slot expected match: `True`
+- Expected slot match: `True`
+- Rows parsed: `272`
+- Access violations: `0`
+- Load success: `True`
+- Owner loop reached: `True`
+- Owner flag test: `{'owner': 67618586, 'owner_flag': 11, 'bit2': 2, 'bit1': 1, 'bit8': 8, 'ret': 4333600, 'd532150': 67618586, 'd53214c': 1, 'd532154': 167928144}`
+- Owner/action route count: `4`
+- Owner/action draw count: `3`
+- Owner/action prelude count: `20`
+- Copyback path marker count: `226`
+- Owner/action Render_Begin reached: `True`
+- Owner/action Render_Begin returned: `True`
+- Owner/action Render_Begin stalled: `False`
+- Owner/action DD_Pump wait stalled: `False`
+- Render_Begin marker count: `5`
+- Descriptor hit-test marker count: `3`
+- Stock loop-state marker count: `24`
+- Stock grid marker count: `39`
+- Source-hold marker count: `0`
+- Native action-click marker count: `0`
+- Render_Begin late-armed count: `1`
+- Render_Begin entry count: `1`
+- Render_Begin loop count: `1`
+- Render_Begin flip result count: `1`
+- Render_Begin DD_Pump call count: `0`
+- Render_Begin DD_Pump return count: `0`
+- Render_Begin lost result count: `1`
+- Render_Begin iteration limit count: `0`
+- Render_Begin exit count: `1`
+- Owner descriptor click-release count: `1`
+- Last owner descriptor click-release: `{'before_d544d04': 1, 'before_button0': 128, 'after_d544d04': 0, 'after_button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5, 'reason': 'post_4338e0_entry'}`
+- Wrapper copyback count: `1`
+- Wrapper entry count: `1`
+- Wrapper call-stock count: `1`
+- Wrapper stock-return count: `1`
+- Wrapper copyback-call count: `1`
+- Wrapper copyback-return count: `1`
+- Wrapper alloc-failed fallback count: `0`
+- 00435BC0 poll count: `9`
+- 00435BC0 poll limit count: `0`
+- 00435BC0 write d532218 count: `1`
+- 00435BC0 write d5322c8 count: `1`
+- 00435BC0 grid route count: `9`
+- 00435BC0 grid gate count: `9`
+- 00435BC0 grid result count: `0`
+- 00435BC0 grid fail count: `7`
+- 00435BC0 selection update count: `0`
+- 00435BC0 loop head count: `8`
+- 00435BC0 loop limit count: `1`
+- 00435BC0 return count: `1`
+- 00435BC0 pump tick-return count: `9`
+- 00435BC0 pump cb14 call/return count: `9` / `0`
+- 00435BC0 pump 608f0b call/return count: `9` / `9`
+- 00435BC0 pump cb04 call/return count: `9` / `9`
+- Source-hold callsite/inner-004612E0 marker counts: `0` / `0`
+- Input-source cb14=004612E0 seen: `True`
+- Real input-source status: `cb14_4612e0_callsite_seen_inner_offsets_unverified`
+- Real input click proven: `False`
+- Debugger-forced click only: `False`
+- Native action force count: `0`
+- Native action native-force count: `0`
+- Native action display-force count: `0`
+- Native action descriptor entry count: `0`
+- Native action widget click-gate return count: `0`
+- Native action descriptor callback count: `0`
+- Native action descriptor result count: `0`
+- Native action 00435620 entry count: `0`
+- Native action exit-set count: `0`
+- Last wrapper entry: `{'ret': 4405529, 'owner_arg': 67618586, 'd532218': 0, 'd5322c8': 0, 'surface': 170980368, 'size': [800, 600], 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0}`
+- Last wrapper stock return: `{'eax': 0, 'saved_surface': 170980368, 'temp_surface': 167942272, 'current_surface': 167942272, 'd532218': 67618586, 'd532220': 0, 'd5322c8': -1}`
+- Last 00435BC0 loop row: `{'iter': 8, 'ebx': 0, 'd532210': 0, 'd532218': 67618586, 'd5322c8': -1, 'surface': 167942272, 'size': [640, 480], 'raw': [256, 28160], 'd544d04': 1, 'button0': 255}`
+- Last 00435BC0 hit result: `{'iter': 7, 'eax': 0, 'ebx': 0, 'd532210': 0, 'd532218': 67618586, 'd5322c8': -1}`
+- Last 00435BC0 compare: `{'iter': 7, 'ebx': 0, 'd532210': 0, 'd532218': 67618586, 'd5322c8': -1}`
+- Last 00435BC0 poll: `{'count': 9, 'd532210': 1, 'd532218': 67618586, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 440], 'raw': [256, 28160], 'd544d04': 2, 'button0': 49, 'surface': 167942272, 'size': [640, 480]}`
+- Last 00435BC0 grid gate: `{'raw_result': 0, 'mouse': [4, 440], 'raw': [256, 28160]}`
+- Last 00435BC0 grid result: `None`
+- Last 00435BC0 pump call: `{'iter': 7, 'ebx': 0, 'd532210': 0, 'render': 5524696, 'surface': 167942272, 'size': [640, 480], 'raw': [256, 28160], 'd544d04': 1, 'button0': 251}`
+- Last 00435BC0 pump tick-return: `{'iter': 8, 'ret': 4414942, 'eax': 46227600, 'render': 5524696, 'd544d10': 1, 'd544d04': 0, 'button0': 91, 'raw': [256, 28160], 'd543d78': 1, 'd543d7c': 5}`
+- Last 00435BC0 pump cb14 call: `{'iter': 8, 'ret': 4414942, 'vtable': 5304836, 'cb14': 4592352, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 0, 'button0': 91}`
+- Last 00435BC0 pump 608f0b call: `{'iter': 8, 'ret': 4414942, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 2, 'button0': 49}`
+- Last 00435BC0 pump cb04 call: `{'iter': 8, 'ret': 4414942, 'vtable': 5304836, 'cb04': 4592032, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 2, 'button0': 49}`
+- First 00435BC0 pump tick-return: `{'iter': 1, 'ret': 4414942, 'eax': 46227250, 'render': 5524696, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}`
+- First 00435BC0 pump cb14 call: `{'iter': 1, 'ret': 4414942, 'vtable': 5304836, 'cb14': 4592352, 'render': 5524696, 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0}`
+- First 00435BC0 pump 608f0b call: `{'iter': 1, 'ret': 4414942, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 1, 'button0': 219}`
+- Last 00435BC0 poll before action force: `{'count': 9, 'd532210': 1, 'd532218': 67618586, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 440], 'raw': [256, 28160], 'd544d04': 2, 'button0': 49, 'surface': 167942272, 'size': [640, 480]}`
+- First 00435BC0 poll after action force: `None`
+- Last 00435BC0 poll after action force: `None`
+- Last source-hold marker: `None`
+- Last source-hold row: `None`
+- Last native action-click marker: `None`
+- Last native action force marker: `None`
+- Last native action force: `None`
+- Last native action descriptor callback: `None`
+- Last native action descriptor result: `None`
+- Last native action click exit-set: `None`
+- Render flag values: `[1, 0, 0, 0, 0, 0, 0]`
+- Render flag unique values: `[1, 0]`
+- Render flag bit01 count: `1`
+- Render flag last value: `0`
+- Render flag held during spin: `False`
+- DD_Pump marker count: `0`
+- DD_Pump entry count: `0`
+- DD_Pump message pump call count: `0`
+- DD_Pump message pump return count: `0`
+- Last Render_Begin flip result: `{'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}`
+- Last Render_Begin lost result: `{'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}`
+- Last Render_Begin DD_Pump return: `None`
+- Timeout stack classification: `not_found`
+- Timeout stack: `captures\archive\cdb-surface-dump-20260712-155528\timeout-stack.log`
+- Castle hitmap sample: `{'surface': 174307992, 'size': [640, 480], 'base': 174850096, 'displayed': [231, 366], 'displayed_sample': 12, 'native': [151, 306], 'native_sample': 254, 'bbox_min': [77, 306], 'bbox_min_sample': 254, 'bbox_max': [237, 426], 'bbox_max_sample': 53, 'expected_raw': 254}`
+- Castle command-99 target: `{'native': [151, 306], 'displayed_hint': [231, 366], 'raw': [9664, 19584]}`
+- Castle hit count: `1`
+- Last castle hit: `{'raw_hit': 254, 'adjusted': 6, 'expected_raw': 254, 'command': 99, 'callback': 4406304, 'owner_screen': 67618586}`
+
+## Marker Counts
+
+- `SURFDUMP_LOADSAVE`: `1`
+- `SURFDUMP_PLAYGAME`: `2`
+- `SURFDUMP_READY`: `1`
+- `SURFDUMP_HOST_READY`: `1`
+- `NOWNER_HEADER`: `1`
+- `NOWNER_FORCE_MAP_CASTLE_CLICK`: `1`
+- `NOWNER_MAP_TILE`: `1`
+- `NOWNER_BUILDING_TILE`: `1`
+- `NOWNER_CASTLE_OVERVIEW_ENTRY`: `1`
+- `NOWNER_CASTLE_HIT_GIVEUP`: `0`
+- `NOWNER_CASTLE_HITMAP_SAMPLE`: `1`
+- `NOWNER_CASTLE_CMD99_TARGET`: `1`
+- `NOWNER_CASTLE_HIT`: `1`
+- `NOWNER_CASTLE_CMD99_GATE`: `1`
+- `NOWNER_CASTLE_CALLBACK`: `1`
+- `NOWNER_433C20_ENTRY`: `1`
+- `NOWNER_OWNER_FLAG_TEST`: `1`
+- `NOWNER_OWNER_SCREEN_DESC_DRAW`: `1`
+- `NOWNER_OWNER_DESC_RESULT_SURFDUMP_READY`: `0`
+- `NOWNER_HITTEST_ENTRY`: `2`
+- `NOWNER_HITTEST_COMPARE`: `0`
+- `NOWNER_HITTEST_SCAN_TAIL`: `0`
+- `NOWNER_DESCRIPTOR_CALLBACK`: `1`
+- `NOWNER_4338E0_ENTRY`: `1`
+- `NOWNER_419ED0_ENTRY`: `1`
+- `NOWNER_419ED0_SOUND_PREP`: `1`
+- `NOWNER_419ED0_SOUND_RETURN`: `1`
+- `NOWNER_419ED0_STATE6_READY`: `1`
+- `NOWNER_419ED0_RENDER_BEGIN_RETURN`: `1`
+- `NOWNER_419ED0_RENDER_BEGIN`: `1`
+- `NOWNER_419ED0_STATE5_DONE`: `1`
+- `NOWNER_RENDER_BEGIN_LATE_ARMED`: `1`
+- `NOWNER_RELEASE_OWNER_DESC_CLICK`: `1`
+- `NOWNER_RENDER_BEGIN_ENTRY`: `1`
+- `NOWNER_RENDER_BEGIN_LOOP`: `1`
+- `NOWNER_RENDER_BEGIN_FLIP_RESULT`: `1`
+- `NOWNER_RENDER_BEGIN_DD_PUMP_CALL`: `0`
+- `NOWNER_RENDER_BEGIN_DD_PUMP_RETURN`: `0`
+- `NOWNER_RENDER_BEGIN_LOST_RESULT`: `1`
+- `NOWNER_RENDER_BEGIN_ITERATION_LIMIT`: `0`
+- `NOWNER_RENDER_BEGIN_EXIT`: `1`
+- `NOWNER_DD_PUMP_ENTRY`: `0`
+- `NOWNER_DD_PUMP_MSG_PUMP_CALL`: `0`
+- `NOWNER_DD_PUMP_MSG_PUMP_RETURN`: `0`
+- `NOWNER_4338E0_AFTER_SELECT`: `1`
+- `NOWNER_4338E0_AFTER_GATE`: `1`
+- `NOWNER_4338E0_RESOURCE_SETUP`: `1`
+- `NOWNER_4338E0_PRE_PUMP`: `1`
+- `NOWNER_4338E0_PUMP_ENTRY`: `1`
+- `NOWNER_4338E0_PUMP_FILL`: `0`
+- `NOWNER_4338E0_PUMP_RETURN`: `1`
+- `NOWNER_4338E0_POST_PUMP`: `1`
+- `NOWNER_4338E0_SURFDUMP_READY`: `0`
+- `NOWNER_4338E0_OWNER_FLAG_BLOCKED`: `0`
+- `NOWNER_ACTION_CALL_WRAPPER`: `1`
+- `NOWNER_WRAPPER_ENTRY`: `1`
+- `NOWNER_WRAPPER_ALLOC_RESULT`: `1`
+- `NOWNER_WRAPPER_TEMP_SURFACE`: `1`
+- `NOWNER_WRAPPER_CALL_STOCK_435BC0`: `1`
+- `NOWNER_OWNER_435BC0_ENTRY`: `1`
+- `NOWNER_435BC0_ALLOC_RESULT`: `1`
+- `NOWNER_435BC0_MODEL_CHECK`: `1`
+- `NOWNER_435BC0_POLL_LIMIT`: `0`
+- `NOWNER_435BC0_POLL`: `9`
+- `NOWNER_435BC0_WRITE_532218`: `1`
+- `NOWNER_435BC0_WRITE_5322C8`: `1`
+- `NOWNER_435BC0_PANEL_DRAW`: `1`
+- `NOWNER_435BC0_GRID_DRAW`: `10`
+- `NOWNER_435BC0_STATUS_DRAW`: `1`
+- `NOWNER_435BC0_ACTION_BOX`: `1`
+- `NOWNER_435BC0_GRID_ROUTE_ENTRY`: `9`
+- `NOWNER_435BC0_GRID_GATE`: `9`
+- `NOWNER_435BC0_GRID_CALL`: `7`
+- `NOWNER_435BC0_GRID_ENTRY`: `7`
+- `NOWNER_435BC0_GRID_RESULT`: `0`
+- `NOWNER_435BC0_GRID_FAIL`: `7`
+- `NOWNER_435BC0_SELECTION_UPDATE`: `0`
+- `NOWNER_435BC0_SELECTION_AFTER`: `0`
+- `NOWNER_435BC0_LOOP_HEAD`: `8`
+- `NOWNER_435BC0_LOOP_PUMP_CALL`: `7`
+- `NOWNER_435BC0_PUMP_ENTRY`: `9`
+- `NOWNER_435BC0_PUMP_MSG_CALL`: `9`
+- `NOWNER_435BC0_PUMP_MSG_RETURN`: `9`
+- `NOWNER_435BC0_PUMP_TICK_RETURN`: `9`
+- `NOWNER_435BC0_PUMP_CB14_CALL`: `9`
+- `NOWNER_435BC0_PUMP_CB14_RETURN`: `0`
+- `NOWNER_435BC0_PUMP_608F0A_CALL`: `8`
+- `NOWNER_435BC0_PUMP_608F0A_RETURN`: `8`
+- `NOWNER_435BC0_PUMP_608F0B_CALL`: `9`
+- `NOWNER_435BC0_PUMP_608F0B_RETURN`: `9`
+- `NOWNER_435BC0_PUMP_CB04_CALL`: `9`
+- `NOWNER_435BC0_PUMP_CB04_RETURN`: `9`
+- `NOWNER_SOURCEHOLD_LOOP_PUMP`: `0`
+- `NOWNER_SOURCEHOLD_CB14_PRE`: `0`
+- `NOWNER_SOURCEHOLD_608F0A_PRE`: `0`
+- `NOWNER_SOURCEHOLD_608F0B_PRE`: `0`
+- `NOWNER_SOURCEHOLD_608F0A_COORDS_PRE`: `0`
+- `NOWNER_SOURCEHOLD_608F0B_COORDS_PRE`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_ENTRY`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_RETURN`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_DIRECT`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_DIRECT_POST`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_AFTER_X`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_AFTER_Y`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_AFTER_BUTTON`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_AFTER_REFRESH`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_INTERPOLATE`: `0`
+- `NOWNER_SOURCEHOLD_4612E0_INTERPOLATE_POST`: `0`
+- `NOWNER_ACTION_FORCE_NATIVE`: `0`
+- `NOWNER_ACTION_FORCE_DISPLAY`: `0`
+- `NOWNER_ACTION_DESCRIPTOR_ENTRY`: `0`
+- `NOWNER_ACTION_WIDGET_PRE_GATES`: `0`
+- `NOWNER_ACTION_WIDGET_CLICK_GATE_RET`: `0`
+- `NOWNER_ACTION_WIDGET_CLICK_GATE`: `0`
+- `NOWNER_ACTION_DESCRIPTOR_CALLBACK`: `0`
+- `NOWNER_ACTION_DESCRIPTOR_RESULT`: `0`
+- `NOWNER_ACTION_CLICK_435620_BEFORE_SET`: `0`
+- `NOWNER_ACTION_CLICK_435620_ENTRY`: `0`
+- `NOWNER_ACTION_CLICK_EXIT_SET`: `0`
+- `NOWNER_435BC0_LOOP_DRAW_CALL`: `7`
+- `NOWNER_435BC0_LOOP_DRAW_RETURN`: `7`
+- `NOWNER_435BC0_LOOP_HIT_RESULT`: `7`
+- `NOWNER_435BC0_LOOP_COMPARE`: `7`
+- `NOWNER_435BC0_LOOP_LIMIT`: `1`
+- `NOWNER_435BC0_LOOP_EXIT`: `1`
+- `NOWNER_435BC0_NO_HIT_UPDATE`: `9`
+- `NOWNER_435BC0_RETURN`: `1`
+- `NOWNER_WRAPPER_STOCK_RETURN`: `1`
+- `NOWNER_WRAPPER_RESTORE_SURFACE`: `1`
+- `NOWNER_WRAPPER_COPYBACK_CALL`: `1`
+- `NOWNER_WRAPPER_COPYBACK_RETURN`: `1`
+- `NOWNER_WRAPPER_PRESENT_CALL`: `1`
+- `NOWNER_WRAPPER_ALLOC_FAILED_FALLBACK`: `0`
+- `NOWNER_WRAPPER_COPYBACK_DONE`: `1`
+- `AV_SURFDUMP`: `0`
+
+## Classification
+
+- LOADSAVE and PlayGame were reached
+- candidate SHA-256: D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C
+- probe stage: gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter
+- observed load slot matches the expected fixture slot
+- castle command-99 owner loop was reached
+- castle overview hitmap samples were captured around command 0x63
+- owner flag bit 0x02 was set
+- owner/action prelude markers were observed: 20
+- owner/action prelude returned from Render_Begin
+- Render_Begin markers late_armed=1 entry=1 loop=1 flip=1 dd_pump_call=0 dd_pump_return=0 lost=1 limit=0 exit=1
+- Render_Begin flag values d544d04 unique=[1, 0] bit01_rows=1 last=0
+- owner descriptor click-release rows were observed: 1
+- last owner descriptor click-release row: {'before_d544d04': 1, 'before_button0': 128, 'after_d544d04': 0, 'after_button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5, 'reason': 'post_4338e0_entry'}
+- last Render_Begin flip result: {'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}
+- last Render_Begin lost result: {'iter': 1, 'eax': 0, 'render': 5524696, 'callback': 0, 'd544d10': 1, 'd544d04': 0, 'button0': 0, 'raw': [11520, 28160], 'd543d78': 1, 'd543d7c': 5}
+- owner/action route markers were observed
+- owner/action draw rows were observed
+- copyback path markers wrapper_entry=1 call_stock=1 stock_return=1 copyback_call=1 copyback_return=1 done=1 alloc_fallback=0
+- descriptor hit-test markers were observed: 3
+- stock 00435BC0 loop-state markers poll=9 poll_limit=0 write_owner=1 write_hover=1
+- stock 00435BC0 grid markers route=9 gate=9 result=0 fail=7 selection_update=0
+- stock pump cb14 was 004612e0; inner 004612E0 source-copy offsets seen=0
+- real input-source status: cb14_4612e0_callsite_seen_inner_offsets_unverified
+- last stock 00435BC0 poll row: {'count': 9, 'd532210': 1, 'd532218': 67618586, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 440], 'raw': [256, 28160], 'd544d04': 2, 'button0': 49, 'surface': 167942272, 'size': [640, 480]}
+- last stock 00435BC0 poll before action force: {'count': 9, 'd532210': 1, 'd532218': 67618586, 'd532220': 0, 'd5322c8': -1, 'mouse': [4, 440], 'raw': [256, 28160], 'd544d04': 2, 'button0': 49, 'surface': 167942272, 'size': [640, 480]}
+- stock 00435BC0 loop markers head=8 pump_call=7 draw_call=7 draw_return=7 hit=7 compare=7 limit=1 loop_exit=1 return=1
+- stock 00435BC0 pump callback markers entry=9 tick_return=9 cb14_call=9 cb14_return=0 608f0b_call=9 cb04_call=9
+- last stock 00435BC0 pump cb14 call: {'iter': 8, 'ret': 4414942, 'vtable': 5304836, 'cb14': 4592352, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 0, 'button0': 91}
+- last stock 00435BC0 pump 608f0b call: {'iter': 8, 'ret': 4414942, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 2, 'button0': 49}
+- first stock 00435BC0 pump cb14 call: {'iter': 1, 'ret': 4414942, 'vtable': 5304836, 'cb14': 4592352, 'render': 5524696, 'raw': [11520, 28160], 'd544d04': 0, 'button0': 0}
+- first stock 00435BC0 pump 608f0b call: {'iter': 1, 'ret': 4414942, 'render': 5524696, 'raw': [256, 28160], 'd544d04': 1, 'button0': 219}
+
+## Key Rows
+
+- line 204: `NOWNER_435BC0_PUMP_CB14_CALL iter=8 ret=00435dde vtable=0050f204 cb14=004612e0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000000 button0=0x5b`
+- line 204: `NOWNER_435BC0_PUMP_608F0B_CALL iter=8 ret=00435dde render=00544cd8 raw=(00000100,00006e00) d544d04=00000002 button0=0x31`
+- line 204: `NOWNER_435BC0_PUMP_608F0B_RETURN iter=8 ret=00435dde eax=00000000 render=00544cd8 raw=(00000100,00006e00) d544d04=00000002 button0=0x31`
+- line 204: `NOWNER_435BC0_PUMP_CB04_CALL iter=8 ret=00435dde vtable=0050f204 cb04=004611a0 render=00544cd8 raw=(00000100,00006e00) d544d04=00000002 button0=0x31`
+- line 204: `NOWNER_435BC0_PUMP_CB04_RETURN iter=8 ret=00435dde eax=00544cd8 render=00544cd8 raw=(00000100,00006e00) d544d04=00000002 button0=0x31`
+- line 204: `NOWNER_435BC0_POLL count=9 d532210=1 d532218=0407c71a d532220=0 d5322c8=-1 mouse=(4,440) raw=(00000100,00006e00) d544d04=00000002 button0=0x31 surface=0a029880 size=(640,480)`
+- line 204: `NOWNER_435BC0_GRID_DRAW ret=00435274 owner=0407c71a selected_index=0 hover_slot=-1 render=0051d4c0 map_surface=0a029880 size=(640,480)`
+- line 204: `NOWNER_435BC0_NO_HIT_UPDATE iter=8 ebx=0 d532210=1 d532218=0407c71a d5322c8=-1`
+- line 204: `NOWNER_435BC0_GRID_ROUTE_ENTRY selected_index=0 hover_slot=-1 mouse=(4,440) raw=(00000100,00006e00)`
+- line 204: `NOWNER_435BC0_GRID_GATE raw_result=0 mouse=(4,440) raw=(00000100,00006e00)`
+- line 204: `NOWNER_435BC0_LOOP_EXIT iter=8 ebx=0 d532210=1 d532218=0407c71a d5322c8=-1`
+- line 204: `NOWNER_435BC0_RETURN eax=00000000 d532218=0407c71a d532220=0 d5322c8=-1 surface=0a029880 size=(640,480)`
+- line 204: `NOWNER_WRAPPER_STOCK_RETURN eax=00000000 saved_surface=0a30f410 temp_surface=0a029880 current_surface=0a029880 d532218=0407c71a d532220=0 d5322c8=-1`
+- line 204: `NOWNER_WRAPPER_RESTORE_SURFACE saved_surface=0a30f410 temp_surface=0a029880 current_surface=0a30f410 size=(800,600)`
+- line 204: `NOWNER_WRAPPER_COPYBACK_CALL dst_surface=0a30f410 src_surface=0a029880 rect=(80,60,639,479) d532218=0407c71a d532220=0 d5322c8=-1`
+- line 204: `NOWNER_WRAPPER_COPYBACK_RETURN eax=00fcc9a8 d532218=0407c71a d532220=0 d5322c8=-1 surface=0a30f410 size=(800,600)`
+- line 204: `NOWNER_WRAPPER_PRESENT_CALL render=00544cd8 surface=0a30f410 size=(800,600)`
+- line 204: `NOWNER_WRAPPER_COPYBACK_DONE surface=0a30f410 size=(800,600) base=0a5b0030 bytes=480000 d532150=0407c71a d532218=0407c71a d532220=0 d5322c8=-1`
+- line 204: `SURFDUMP_READY redraw_seq=999 surface=0a30f410 size=(800,600) base=0a5b0030 bytes=480000`
+- line 204: `SURFDUMP_HOST_READY`

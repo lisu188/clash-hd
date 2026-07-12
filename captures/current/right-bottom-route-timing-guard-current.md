@@ -1,7 +1,7 @@
 # Right-Bottom Route Timing Guard
 
 - Overall: PASS
-- Generated: `2026-06-17T09:47:23+02:00`
+- Generated: `2026-07-12T16:08:35+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: right-bottom validation evidence must keep hidden route/copyback/grid marker ordering, candidate SHA agreement, 800x600 surfaces, and no AV/failure-exit rows
 - Expected stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`
@@ -12,7 +12,7 @@
 ### Patch Route
 
 - Status: PASS
-- Run: `captures\archive\cdb-surface-dump-20260513-120712`
+- Run: `captures\archive\cdb-surface-dump-20260712-160204`
 - Hidden desktop: `True`
 - Surface: `[800, 600]`
 - Fast-forward startup: `True`
@@ -22,7 +22,7 @@
 ### Fullstart Route
 
 - Status: PASS
-- Run: `captures\archive\cdb-surface-dump-20260513-122928`
+- Run: `captures\archive\cdb-surface-dump-20260712-160351`
 - Hidden desktop: `True`
 - Surface: `[800, 600]`
 - Fast-forward startup: `False`
@@ -32,7 +32,7 @@
 ### Grid Route
 
 - Status: PASS
-- Run: `captures\archive\cdb-surface-dump-20260514-140601`
+- Run: `captures\archive\cdb-surface-dump-20260712-150240`
 - Hidden desktop: `True`
 - Surface: `[800, 600]`
 - Fast-forward startup: `True`

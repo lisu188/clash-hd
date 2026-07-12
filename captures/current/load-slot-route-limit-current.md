@@ -1,7 +1,7 @@
 # Load Slot Route Limit Guard
 
 - Status: PASS
-- Generated: `2026-06-17T09:47:21+02:00`
+- Generated: `2026-07-12T16:08:34+02:00`
 - Runtime policy: repo-only; reads decompilation text, harness text, and existing hidden-desktop CDB artifacts; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the current slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame
 - Promotion ready: `False`
@@ -19,15 +19,15 @@ static code and harness parameters allow rows 0-9, but current archived hidden e
 
 ## Slot Status
 
-- `slot2_success`: `loads` run=`captures\archive\cdb-surface-dump-20260520-202424` mouse=`[320, 210]`
-- `slot3_blocked`: `timeout_before_force_select_and_loadsave` run=`captures\archive\cdb-surface-dump-20260520-202504` mouse=`[320, 232]`
-  Timeout stack: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260520-202504\timeout-stack.log`
-- `slot4_blocked`: `timeout_before_force_select_and_loadsave` run=`captures\archive\cdb-surface-dump-20260520-202640` mouse=`[320, 254]`
-  Timeout stack: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260520-202640\timeout-stack.log`
-- `slot5_blocked`: `timeout_before_force_select_and_loadsave` run=`captures\archive\cdb-surface-dump-20260520-202810` mouse=`[320, 276]`
-  Timeout stack: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260520-202810\timeout-stack.log`
-- `recent_slot5_blocked`: `timeout_before_force_select_and_loadsave` run=`captures\archive\cdb-surface-dump-20260523-000931` mouse=`[320, 276]`
-  Timeout stack: `C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260523-000931\timeout-stack.log`
+- `slot2_success`: `loads` run=`captures\archive\cdb-surface-dump-20260712-153805` mouse=`[320, 210]`
+- `slot3_blocked`: `timeout_before_force_select_and_loadsave` run=`captures\archive\cdb-surface-dump-20260712-153827` mouse=`[320, 232]`
+  Timeout stack: `C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-153827\timeout-stack.log`
+- `slot4_blocked`: `timeout_before_force_select_and_loadsave` run=`captures\archive\cdb-surface-dump-20260712-154103` mouse=`[320, 254]`
+  Timeout stack: `C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-154103\timeout-stack.log`
+- `slot5_blocked`: `timeout_before_force_select_and_loadsave` run=`captures\archive\cdb-surface-dump-20260712-154340` mouse=`[320, 276]`
+  Timeout stack: `C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-154340\timeout-stack.log`
+- `recent_slot5_blocked`: `timeout_before_force_select_and_loadsave` run=`captures\archive\cdb-surface-dump-20260712-153529` mouse=`[320, 276]`
+  Timeout stack: `C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-153529\timeout-stack.log`
 
 ## Next Proof Options
 
@@ -35,4 +35,4 @@ static code and harness parameters allow rows 0-9, but current archived hidden e
 - or create an isolated test working directory that maps the slot-5 save state to a proven row without editing C:\Clash\save
 - or use a direct-loader probe, but label it non-natural route evidence until menu selection is proven
 
-![slot2 load route surface](C:\Users\andrz\OneDrive\Pulpit\git\clash-hd\captures\cdb-surface-dump-20260520-202424\surface.png)
+![slot2 load route surface](C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-153805\surface.png)
