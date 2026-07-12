@@ -101,6 +101,38 @@ def test_plan_refusals(fixture: Path) -> None:
         )
 
 
+def test_non_default_resolution_build(fixture: Path) -> None:
+    if not presets.patcher_supports_resolutions(patch_clash95_hd):
+        return
+    clash_dir, candidates_root = make_environment(fixture)
+    plan = core.plan_candidate(
+        resolution="1024x768",
+        clash_dir=clash_dir,
+        candidates_root=candidates_root,
+        expected_base_sha=BASE_SHA,
+        allow_repo_candidates=True,
+    )
+    assert plan.candidate_exe.name == "clash95_hd_1024x768.exe"
+    result = core.ensure_candidate(plan)
+    profile = patch_clash95_hd.parse_resolution("1024x768")
+    expected = patch_clash95_hd.select_patches_for(plan.stage, profile)
+    assert result["patch_count"] == len(expected), result
+    gate = result["byte_gate"]
+    assert gate["patched"] == len(expected), gate
+    assert gate["original"] == 0 and gate["unexpected"] == 0, gate
+
+    expect_launcher_error(
+        lambda: core.plan_candidate(
+            resolution="900x700",
+            stage="display",
+            clash_dir=clash_dir,
+            candidates_root=candidates_root,
+            allow_repo_candidates=True,
+        ),
+        "legacy 800x600",
+    )
+
+
 def test_ensure_candidate_builds_and_reuses(fixture: Path) -> None:
     clash_dir, candidates_root = make_environment(fixture)
     plan = make_plan(clash_dir, candidates_root)
@@ -259,6 +291,7 @@ def run_tests() -> None:
     fixture.mkdir(parents=True)
     try:
         test_plan_refusals(fixture / "refusals")
+        test_non_default_resolution_build(fixture / "resolution")
         test_ensure_candidate_builds_and_reuses(fixture / "build")
         test_sha_mismatch_refused(fixture / "sha")
         test_launch_gate(fixture / "launch")

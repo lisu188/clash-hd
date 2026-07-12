@@ -54,9 +54,12 @@ class LauncherApp:
             except tk.TclError:
                 pass
 
-        self.resolution_var = tk.StringVar(
-            value=self.settings.get("last_resolution", presets.default_key(self.manifest))
+        saved_resolution = self.settings.get(
+            "last_resolution", presets.default_key(self.manifest)
         )
+        if saved_resolution not in {option.key for option in self.options}:
+            saved_resolution = presets.default_key(self.manifest)
+        self.resolution_var = tk.StringVar(value=saved_resolution)
         self._build_widgets()
         self.refresh_environment()
 
@@ -103,6 +106,29 @@ class LauncherApp:
                 state=state,
             )
             button.pack(anchor="w", padx=6)
+
+        custom_row = ttk.Frame(res_frame)
+        custom_row.pack(anchor="w", padx=6, pady=2)
+        custom_state = "normal" if supports_multi else "disabled"
+        ttk.Radiobutton(
+            custom_row,
+            text="Custom:",
+            value="custom",
+            variable=self.resolution_var,
+            state=custom_state,
+        ).pack(side="left")
+        self.custom_width_var = tk.StringVar(value="")
+        self.custom_height_var = tk.StringVar(value="")
+        ttk.Entry(
+            custom_row, textvariable=self.custom_width_var, width=6, state=custom_state
+        ).pack(side="left", padx=2)
+        ttk.Label(custom_row, text="x").pack(side="left")
+        ttk.Entry(
+            custom_row, textvariable=self.custom_height_var, width=6, state=custom_state
+        ).pack(side="left", padx=2)
+        ttk.Label(custom_row, text="[Experimental]", foreground="#9a6700").pack(
+            side="left", padx=6
+        )
 
         scale_frame = ttk.LabelFrame(
             self.root, text="Window scaling (wrapper; does not change game pixels)"
@@ -186,9 +212,25 @@ class LauncherApp:
                 foreground="#1a7f37" if ok else "#cf222e",
             )
 
+    def _current_resolution_key(self) -> str:
+        selected = self.resolution_var.get()
+        if selected != "custom":
+            return selected
+        width_text = self.custom_width_var.get().strip()
+        height_text = self.custom_height_var.get().strip()
+        if not width_text.isdigit() or not height_text.isdigit():
+            raise core.LauncherError(
+                "Custom resolution needs numeric width and height."
+            )
+        width, height = int(width_text), int(height_text)
+        errors = presets.validate_custom_resolution(width, height, self.manifest)
+        if errors:
+            raise core.LauncherError(" ".join(errors))
+        return f"{width}x{height}"
+
     def _selected_plan(self) -> core.CandidatePlan:
         return core.plan_candidate(
-            resolution=self.resolution_var.get(),
+            resolution=self._current_resolution_key(),
             scaling_mode=self.scaling_var.get(),
             manifest=self.manifest,
         )
@@ -226,7 +268,8 @@ class LauncherApp:
             )
 
         option = self._selected_option()
-        if option is not None and option.is_experimental and not self.experimental_warned:
+        is_experimental = option is None or option.is_experimental
+        if is_experimental and not self.experimental_warned:
             if not messagebox.askokcancel("Experimental resolution", EXPERIMENTAL_WARNING):
                 self.log("Cancelled experimental launch.")
                 return
@@ -279,7 +322,10 @@ class LauncherApp:
         self.log(f"Removed {len(removed)} candidate file(s).")
 
     def _save_settings(self) -> None:
-        self.settings["last_resolution"] = self.resolution_var.get()
+        try:
+            self.settings["last_resolution"] = self._current_resolution_key()
+        except core.LauncherError:
+            self.settings["last_resolution"] = presets.default_key(self.manifest)
         self.settings["scaling_mode"] = self.scaling_var.get()
         try:
             self.settings["window_geometry"] = self.root.geometry()

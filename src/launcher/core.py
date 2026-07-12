@@ -243,13 +243,19 @@ def plan_candidate(
         raise LauncherError(f"Unknown patch stage: {stage}")
     presets.parse_resolution_key(resolution)
     default = presets.default_key(manifest)
-    if resolution != default and not presets.patcher_supports_resolutions(
-        patch_clash95_hd
-    ):
-        raise LauncherError(
-            f"Resolution {resolution} is not supported yet: the patcher builds "
-            f"only {default} until multi-resolution support lands."
-        )
+    if resolution != default:
+        if not presets.patcher_supports_resolutions(patch_clash95_hd):
+            raise LauncherError(
+                f"Resolution {resolution} is not supported yet: the patcher "
+                f"builds only {default} until multi-resolution support lands."
+            )
+        try:
+            # The patcher owns the resolution constraints (minimum, evenness,
+            # stage compatibility); GUI and CLI reject identically through it.
+            profile = patch_clash95_hd.parse_resolution(resolution)
+            patch_clash95_hd.select_patches_for(stage, profile)
+        except patch_clash95_hd.ResolutionError as exc:
+            raise LauncherError(str(exc)) from exc
     if scaling_mode not in ini_mod.VERIFIED_SCALING_MODES:
         known = ", ".join(sorted(ini_mod.VERIFIED_SCALING_MODES))
         raise LauncherError(
@@ -365,7 +371,11 @@ def ensure_candidate(
         )
     say(f"Base SHA-256 verified: {base_sha[:16]}…")
 
-    patches = patch_clash95_hd.select_patches(plan.stage)
+    try:
+        profile = patch_clash95_hd.parse_resolution(plan.resolution)
+        patches = patch_clash95_hd.select_patches_for(plan.stage, profile)
+    except patch_clash95_hd.ResolutionError as exc:
+        raise LauncherError(str(exc)) from exc
     try:
         patch_clash95_hd.validate_input(data, patches)
     except SystemExit as exc:

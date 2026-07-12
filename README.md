@@ -127,9 +127,12 @@ wrapper `ddraw.dll` next to it with a rendered `dxcfg.ini`, and starts the
 game only when the user presses Play. The launcher never ships binaries and
 is never part of the evidence refresh; `tools/launcher_policy_guard.py`
 enforces the policy and `tools/resolution_manifest_guard.py` keeps the
-resolution status manifest (`src/launcher/resolutions.json`) honest. Today
-only the stable 800x600 stage is enabled; preset resolutions unlock as the
-patcher's multi-resolution support and per-resolution evidence land.
+resolution status manifest (`src/launcher/resolutions.json`) honest. The
+patcher's multi-resolution generator is live: preset resolutions (1024x768,
+1280x720, 1280x960, 1920x1080) and custom even sizes from 800x600 up are
+selectable as `experimental` behind a warning dialog, and each preset flips
+to `validated` only when its hidden-desktop evidence lane passes. 800x600
+remains the only `stable` resolution.
 
 ## Clash95 HD Map Smoke Reproduction
 
