@@ -1,7 +1,7 @@
 # No-Visible Runtime Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-12T16:09:12+02:00`
+- Generated: `2026-07-12T19:23:21+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the no-visible runtime guard requires hidden-desktop launch summaries, explicit no-visible runtime policy text, present run summaries, and CLI fail-closed behavior
 

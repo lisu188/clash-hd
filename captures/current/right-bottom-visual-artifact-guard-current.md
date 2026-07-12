@@ -1,7 +1,7 @@
 # Right-Bottom Visual Artifact Guard
 
 - Overall: FAIL
-- Generated: `2026-07-12T16:08:35+02:00`
+- Generated: `2026-07-12T19:22:28+02:00`
 - Runtime policy: repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only while the current natural right-bottom visual artifact remains explicitly blocked from promotion: controlled composition is recovered, natural owner/action rows are absent, and the lower/right natural regions still show the known black/striped incomplete state
 - Visual status: `visual_artifact_guard_stale`

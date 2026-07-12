@@ -1,7 +1,7 @@
 # Castle Overview Baseline Recheck
 
 - Overall: PASS
-- Generated: `2026-07-12T16:09:07+02:00`
+- Generated: `2026-07-12T19:23:16+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 
 ## Overview Visual Baseline

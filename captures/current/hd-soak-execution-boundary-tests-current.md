@@ -1,7 +1,7 @@
 # HD Soak Execution Boundary Tests
 
 - Status: PASS
-- Generated: `2026-07-12T16:09:22+02:00`
+- Generated: `2026-07-12T19:23:37+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the negative execution-boundary reporter fails closed when bad visible-runtime approval packets would create candidate/output/report side effects
 

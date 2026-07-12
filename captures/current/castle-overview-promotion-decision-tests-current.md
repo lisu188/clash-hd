@@ -1,7 +1,7 @@
 # Castle Overview Promotion Decision Tests
 
 - Status: PASS
-- Generated: `2026-07-12T16:09:04+02:00`
+- Generated: `2026-07-12T19:23:09+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for decision CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the castle overview promotion decision defers stable promotion by default, fails when the evidence matrix fails or when focused displayed-wrapper / visible-dormant multi-hit completion proof is missing, only marks the stable stage as changeable when a valid manual proof manifest or an explicit CDB-only override is supplied, rejects placeholder proof files, and its CLI fails closed under --require-pass
 

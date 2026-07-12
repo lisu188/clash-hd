@@ -1,7 +1,7 @@
 # HD Soak Short-Step Status
 
 - Overall: PASS
-- Generated: `2026-07-12T14:09:23.076857+00:00`
+- Generated: `2026-07-12T17:23:38.557348+00:00`
 - Runtime policy: repo-only short-soak step status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Manifest: `captures\current\hd-soak-short-artifact-manifest-current.json`
 - Ladder complete: `False`

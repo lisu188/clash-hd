@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T14:09:24.982505+00:00",
+  "generated_at": "2026-07-12T17:23:40.450508+00:00",
   "passed": true,
   "runtime_policy": "repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "script": "scripts\\smoke\\run_hd_soak.ps1",
@@ -7,7 +7,7 @@
     "path": "captures\\current\\hd-endurance-release-checklist-current.json",
     "state": "present",
     "present": true,
-    "generated_at": "2026-07-12T14:09:24.550440+00:00",
+    "generated_at": "2026-07-12T17:23:40.021509+00:00",
     "passed": false,
     "requirement_count": 15
   },

@@ -1,7 +1,7 @@
 # Right-Bottom Natural Route Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-12T16:08:55+02:00`
+- Generated: `2026-07-12T19:22:58+02:00`
 - Runtime policy: repo-only fixture tests; launches only in-process parser code; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the natural right-bottom action-route guard fails closed unless the command-99 owner loop is reached, the exact 00433C20 owner-loop descriptor model is present, the 004338E0 descriptor is parked at (1000,426), owner flag bits are zero, owner/action renderer rows are absent, and no AV rows are present
 

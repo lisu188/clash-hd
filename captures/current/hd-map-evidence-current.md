@@ -330,23 +330,23 @@
 - [Post-owner evidence matrix](post-owner-evidence-current.md)
 - [Patch manifest comparison, current vs partial12](patch-manifest-compare-current-vs-partial12.md)
 - [Evidence index consistency check](hd-map-evidence-current-check.json)
-- [Right-bottom owner/action route summary](../archive/cdb-surface-dump-20260513-112339/action-panel-route-summary.md)
-- [Right-bottom action-box composition summary](../archive/cdb-surface-dump-20260513-112339/action-box-composition-summary.md)
-- [Right-bottom owner/action route run summary](../archive/cdb-surface-dump-20260513-112339/RUN-SUMMARY.md)
-- [Right-bottom debugger composition route summary](../archive/cdb-surface-dump-20260513-115303/action-panel-route-summary.md)
-- [Right-bottom debugger composition summary](../archive/cdb-surface-dump-20260513-115303/action-box-compose-summary.md)
-- [Right-bottom debugger composition run summary](../archive/cdb-surface-dump-20260513-115303/RUN-SUMMARY.md)
-- [Right-bottom validation patch route summary](../archive/cdb-surface-dump-20260513-120712/action-panel-route-patch-summary.md)
-- [Right-bottom validation patch composition summary](../archive/cdb-surface-dump-20260513-120712/action-box-compose-patch-summary.md)
-- [Right-bottom validation patch run summary](../archive/cdb-surface-dump-20260513-120712/RUN-SUMMARY.md)
-- [Right-bottom validation patch full-start route summary](../archive/cdb-surface-dump-20260513-122928/action-panel-route-fullstart-summary.md)
-- [Right-bottom validation patch full-start composition summary](../archive/cdb-surface-dump-20260513-122928/action-box-compose-fullstart-summary.md)
-- [Right-bottom validation patch full-start run summary](../archive/cdb-surface-dump-20260513-122928/RUN-SUMMARY.md)
+- [Right-bottom owner/action route summary](../archive/cdb-surface-dump-20260712-160131/action-panel-route-summary.md)
+- [Right-bottom action-box composition summary](../archive/cdb-surface-dump-20260712-160131/action-box-composition-summary.md)
+- [Right-bottom owner/action route run summary](../archive/cdb-surface-dump-20260712-160131/RUN-SUMMARY.md)
+- [Right-bottom debugger composition route summary](../archive/cdb-surface-dump-20260712-144922/action-panel-route-summary.md)
+- [Right-bottom debugger composition summary](../archive/cdb-surface-dump-20260712-144922/action-box-compose-summary.md)
+- [Right-bottom debugger composition run summary](../archive/cdb-surface-dump-20260712-144922/RUN-SUMMARY.md)
+- [Right-bottom validation patch route summary](../archive/cdb-surface-dump-20260712-160204/action-panel-route-patch-summary.md)
+- [Right-bottom validation patch composition summary](../archive/cdb-surface-dump-20260712-160204/action-box-compose-patch-summary.md)
+- [Right-bottom validation patch run summary](../archive/cdb-surface-dump-20260712-160204/RUN-SUMMARY.md)
+- [Right-bottom validation patch full-start route summary](../archive/cdb-surface-dump-20260712-160351/action-panel-route-fullstart-summary.md)
+- [Right-bottom validation patch full-start composition summary](../archive/cdb-surface-dump-20260712-160351/action-box-compose-fullstart-summary.md)
+- [Right-bottom validation patch full-start run summary](../archive/cdb-surface-dump-20260712-160351/RUN-SUMMARY.md)
 - [Right-bottom validation patch normal map run summary](../archive/cdb-surface-dump-20260513-121513/RUN-SUMMARY.md)
 - [Right-bottom validation patch normal map coverage](../archive/cdb-surface-dump-20260513-121513/map-tile-coverage.txt)
 - [Right-bottom validation patch normal map visibility](../archive/cdb-surface-dump-20260513-121513/visibility-coverage.txt)
-- [Right-bottom validation patch natural UI probe summary](../archive/cdb-surface-dump-20260513-122200/right-bottom-ui-summary.json)
-- [Right-bottom validation patch natural UI run summary](../archive/cdb-surface-dump-20260513-122200/RUN-SUMMARY.md)
+- [Right-bottom validation patch natural UI probe summary](../archive/cdb-surface-dump-20260712-160441/right-bottom-ui-summary.json)
+- [Right-bottom validation patch natural UI run summary](../archive/cdb-surface-dump-20260712-160441/RUN-SUMMARY.md)
 - [Right-bottom controlled grid-hit report](right-bottom-grid-hit-current.md)
 - [Right-bottom controlled grid-hit parser tests](right-bottom-grid-hit-summary-tests-current.md)
 - [Right-bottom controlled grid-hit probe guard](right-bottom-grid-hit-probe-guard-current.md)
@@ -377,8 +377,8 @@
 - [Right-bottom owner-flag inventory tests](right-bottom-owner-flag-inventory-tests-current.md)
 - [Right-bottom route timing guard](right-bottom-route-timing-guard-current.md)
 - [Right-bottom route timing guard tests](right-bottom-route-timing-guard-tests-current.md)
-- [Right-bottom controlled grid-hit run summary](../archive/cdb-surface-dump-20260514-140601/RUN-SUMMARY.md)
-- [Right-bottom controlled grid-hit run parser summary](../archive/cdb-surface-dump-20260514-140601/right-bottom-grid-hit-summary.md)
+- [Right-bottom controlled grid-hit run summary](../archive/cdb-surface-dump-20260712-150240/RUN-SUMMARY.md)
+- [Right-bottom controlled grid-hit run parser summary](../archive/cdb-surface-dump-20260712-150240/right-bottom-grid-hit-summary.md)
 - [Right-bottom validation patch byte manifest](../archive/patch-stage-right-bottom-compose-20260513.json)
 - [Normal post-owner run summary](../archive/cdb-surface-dump-20260506-190037/RUN-SUMMARY.md)
 - [Forced-visible post-owner run summary](../archive/cdb-surface-dump-20260506-201114/RUN-SUMMARY.md)
@@ -395,19 +395,19 @@ Forced-visible post-owner surface:
 
 Right-bottom owner/action route surface:
 
-![right-bottom owner route surface](../archive/cdb-surface-dump-20260513-112339/surface.png)
+![right-bottom owner route surface](../archive/cdb-surface-dump-20260712-160131/surface.png)
 
 Right-bottom debugger composition surface:
 
-![right-bottom debugger composition surface](../archive/cdb-surface-dump-20260513-115303/surface.png)
+![right-bottom debugger composition surface](../archive/cdb-surface-dump-20260712-144922/surface.png)
 
 Right-bottom validation patch surface:
 
-![right-bottom validation patch surface](../archive/cdb-surface-dump-20260513-120712/surface.png)
+![right-bottom validation patch surface](../archive/cdb-surface-dump-20260712-160204/surface.png)
 
 Right-bottom validation patch full-start owner/action route surface:
 
-![right-bottom validation patch full-start route surface](../archive/cdb-surface-dump-20260513-122928/surface.png)
+![right-bottom validation patch full-start route surface](../archive/cdb-surface-dump-20260712-160351/surface.png)
 
 Right-bottom validation patch normal map surface:
 
@@ -415,11 +415,11 @@ Right-bottom validation patch normal map surface:
 
 Right-bottom validation patch natural UI surface:
 
-![right-bottom validation patch natural UI surface](../archive/cdb-surface-dump-20260513-122200/surface.png)
+![right-bottom validation patch natural UI surface](../archive/cdb-surface-dump-20260712-160441/surface.png)
 
 Right-bottom validation patch controlled grid-hit surface:
 
-![right-bottom validation patch controlled grid-hit surface](../archive/cdb-surface-dump-20260514-140601/surface.png)
+![right-bottom validation patch controlled grid-hit surface](../archive/cdb-surface-dump-20260712-150240/surface.png)
 
 ## Key Evidence
 
@@ -438,19 +438,19 @@ Right-bottom validation patch controlled grid-hit surface:
 - Forced-visible evidence pair:
   `captures\archive\cdb-surface-dump-20260506-201114`
 - Right-bottom owner/action route proof:
-  `captures\archive\cdb-surface-dump-20260513-112339`
+  `captures\archive\cdb-surface-dump-20260712-160131`
 - Right-bottom debugger composition proof:
-  `captures\archive\cdb-surface-dump-20260513-115303`
+  `captures\archive\cdb-surface-dump-20260712-144922`
 - Right-bottom validation patch proof:
-  `captures\archive\cdb-surface-dump-20260513-120712`
+  `captures\archive\cdb-surface-dump-20260712-160204`
 - Right-bottom validation patch full-start owner/action route proof:
-  `captures\archive\cdb-surface-dump-20260513-122928`
+  `captures\archive\cdb-surface-dump-20260712-160351`
 - Right-bottom validation patch normal map proof:
   `captures\archive\cdb-surface-dump-20260513-121513`
 - Right-bottom validation patch natural UI proof:
-  `captures\archive\cdb-surface-dump-20260513-122200`
+  `captures\archive\cdb-surface-dump-20260712-160441`
 - Right-bottom validation patch controlled grid-hit proof:
-  `captures\archive\cdb-surface-dump-20260514-140601`
+  `captures\archive\cdb-surface-dump-20260712-150240`
 - Right-bottom natural route guard:
   `captures\current\right-bottom-natural-route-guard-current.md`
 - Load-slot route limit guard:
@@ -609,7 +609,7 @@ not by a remaining 12x9 map loop, present-bounds, minimap, or action-panel
 copyback defect.
 
 The right-bottom owner/action proof is separate from the map-visibility gate:
-`captures\archive\cdb-surface-dump-20260513-112339` uses a hidden-desktop CDB route
+`captures\archive\cdb-surface-dump-20260712-160131` uses a hidden-desktop CDB route
 with map validation skipped to prove the current stage can reach the
 action/status owner setup, draw cluster, action-box redirect, copyback, and
 surface dump without an AV. The composition rows show the current action-box
@@ -619,7 +619,7 @@ panel regions. The remaining visual issue is a native-anchor/composition
 problem, not a failure to enter the route under this proof.
 
 The follow-up debugger composition proof is also separate from the stable stage:
-`captures\archive\cdb-surface-dump-20260513-115303` uses hidden-desktop CDB to
+`captures\archive\cdb-surface-dump-20260712-144922` uses hidden-desktop CDB to
 manually copy the native status rectangle `(401,288,593,357)` to `(586,528)`
 and the native action-box rectangle `(285,350,450,425)` to `(285,524)` on the
 800x600 surface. It passes with no AV rows and proves the native content can be
@@ -631,7 +631,7 @@ stable HD map stage.
 
 The validation patch proof turns that debugger-only composition into an
 isolated patch group named `right-bottom-compose-proof`, still outside the
-stable HD map stage. `captures\archive\cdb-surface-dump-20260513-120712` applies the
+stable HD map stage. `captures\archive\cdb-surface-dump-20260712-160204` applies the
 new validation stage through the hidden-desktop harness with `-SkipMapValidation`
 and the existing owner/action extra probe. It passes the current HD map byte
 gate plus all four right-bottom patch bytes/caves, reaches the same owner/action
@@ -641,7 +641,7 @@ nonblack. This proves the narrow patch shape, but the stable stage remains
 `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`.
 
 The full-start controlled owner/action route for the same validation patch is
-`captures\archive\cdb-surface-dump-20260513-122928`. It uses the same patched SHA,
+`captures\archive\cdb-surface-dump-20260712-160351`. It uses the same patched SHA,
 hidden desktop, `-UseDdrawProxy`, `-NoSkipStartAnims`, `-SkipMapValidation`,
 and `probes/cdb/map/clash95_post_owner_action_extra.cdb`. It passes with `ready=True`,
 `av_count=0`, `owner_rows=11`, `draw_rows=5`, `13` text rows, and the same
@@ -661,7 +661,7 @@ This adds normal map/visibility safety for the validation patch, but still does
 not promote it into the stable HD map stage.
 
 The natural right-bottom UI probe for that validation stage is
-`captures\archive\cdb-surface-dump-20260513-122200`. It runs the existing
+`captures\archive\cdb-surface-dump-20260712-160441`. It runs the existing
 `probes/cdb/ui/clash95_right_bottom_ui_extra.cdb` probe on the validation patch through the
 hidden-desktop launcher. The run passes with the same patched SHA,
 `RBUI_VIEWPORT_SWITCH=1`, `RBUI_DESC_SWITCH=35`, `SURFDUMP_PLAYGAME=1`,
@@ -671,7 +671,7 @@ route observation while proving the validation patch does not break the
 descriptor/viewport probe path.
 
 The controlled right-bottom grid-hit proof for that validation stage is
-`captures\archive\cdb-surface-dump-20260514-140601`. It uses hidden desktop,
+`captures\archive\cdb-surface-dump-20260712-150240`. It uses hidden desktop,
 `-UseDdrawProxy`, `-FastForwardStartAnims`, `-SkipMapValidation`, and
 `probes/cdb/ui/clash95_right_bottom_grid_hit_extra.cdb` to route into the owner/action grid
 loop with the native coordinate `(450,73)`. The parser records

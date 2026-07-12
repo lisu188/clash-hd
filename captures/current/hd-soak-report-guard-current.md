@@ -1,7 +1,7 @@
 # HD Soak Report Guard
 
 - Overall: FAIL
-- Generated: `2026-07-12T14:09:22.359857+00:00`
+- Generated: `2026-07-12T17:23:37.739799+00:00`
 - Runtime policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Source report: `captures\current\hd-soak-short2-menu-idle-current.json`
 - Source selection: `canonical_first_short_step`

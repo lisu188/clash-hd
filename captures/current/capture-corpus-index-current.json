@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-07-12T16:09:26+02:00",
+  "generated_at": "2026-07-12T19:23:42+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\git\\clash-hd\\captures",
   "artifact_count": 657,
   "current_reference_count": 166,
-  "archived_reference_count": 386,
+  "archived_reference_count": 387,
   "missing_current_refs": [],
   "reference_status_counts": {
-    "archived_referenced": 204,
+    "archived_referenced": 210,
     "current_referenced": 136,
-    "stale_unreferenced": 317
+    "stale_unreferenced": 311
   },
   "era_counts": {
     "cdb_surface_dump_unverified": 65,
@@ -124,156 +124,6 @@
       "exists": true,
       "entry_exists": true
     },
-    "captures/archive/cdb-surface-dump-20260513-112339": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-112339",
-      "entry": "archive/cdb-surface-dump-20260513-112339",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-112339/RUN-SUMMARY.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-112339/RUN-SUMMARY.md",
-      "entry": "archive/cdb-surface-dump-20260513-112339",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-112339/action-box-composition-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-112339/action-box-composition-summary.md",
-      "entry": "archive/cdb-surface-dump-20260513-112339",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-112339/action-panel-route-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-112339/action-panel-route-summary.md",
-      "entry": "archive/cdb-surface-dump-20260513-112339",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-112339/surface.png": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-112339/surface.png",
-      "entry": "archive/cdb-surface-dump-20260513-112339",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-115303": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-115303",
-      "entry": "archive/cdb-surface-dump-20260513-115303",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-115303/RUN-SUMMARY.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-115303/RUN-SUMMARY.md",
-      "entry": "archive/cdb-surface-dump-20260513-115303",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-115303/action-box-compose-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-115303/action-box-compose-summary.md",
-      "entry": "archive/cdb-surface-dump-20260513-115303",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-115303/action-panel-route-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-115303/action-panel-route-summary.md",
-      "entry": "archive/cdb-surface-dump-20260513-115303",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-115303/surface.png": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-115303/surface.png",
-      "entry": "archive/cdb-surface-dump-20260513-115303",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-120712": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-120712",
-      "entry": "archive/cdb-surface-dump-20260513-120712",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-120712/RUN-SUMMARY.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-120712/RUN-SUMMARY.md",
-      "entry": "archive/cdb-surface-dump-20260513-120712",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-120712/action-box-compose-patch-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-120712/action-box-compose-patch-summary.md",
-      "entry": "archive/cdb-surface-dump-20260513-120712",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-120712/action-panel-route-patch-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-120712/action-panel-route-patch-summary.md",
-      "entry": "archive/cdb-surface-dump-20260513-120712",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-120712/surface.png": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-120712/surface.png",
-      "entry": "archive/cdb-surface-dump-20260513-120712",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
     "captures/archive/cdb-surface-dump-20260513-121513": {
       "ref": "captures/archive/cdb-surface-dump-20260513-121513",
       "entry": "archive/cdb-surface-dump-20260513-121513",
@@ -324,136 +174,6 @@
       "exists": true,
       "entry_exists": true
     },
-    "captures/archive/cdb-surface-dump-20260513-122200": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122200",
-      "entry": "archive/cdb-surface-dump-20260513-122200",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122200/RUN-SUMMARY.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122200/RUN-SUMMARY.md",
-      "entry": "archive/cdb-surface-dump-20260513-122200",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122200/right-bottom-ui-summary.json": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122200/right-bottom-ui-summary.json",
-      "entry": "archive/cdb-surface-dump-20260513-122200",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122200/surface.png": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122200/surface.png",
-      "entry": "archive/cdb-surface-dump-20260513-122200",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122928": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122928",
-      "entry": "archive/cdb-surface-dump-20260513-122928",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122928/RUN-SUMMARY.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122928/RUN-SUMMARY.md",
-      "entry": "archive/cdb-surface-dump-20260513-122928",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122928/action-box-compose-fullstart-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122928/action-box-compose-fullstart-summary.md",
-      "entry": "archive/cdb-surface-dump-20260513-122928",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122928/action-panel-route-fullstart-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122928/action-panel-route-fullstart-summary.md",
-      "entry": "archive/cdb-surface-dump-20260513-122928",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122928/surface.png": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122928/surface.png",
-      "entry": "archive/cdb-surface-dump-20260513-122928",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260514-140601": {
-      "ref": "captures/archive/cdb-surface-dump-20260514-140601",
-      "entry": "archive/cdb-surface-dump-20260514-140601",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260514-140601/RUN-SUMMARY.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260514-140601/RUN-SUMMARY.md",
-      "entry": "archive/cdb-surface-dump-20260514-140601",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260514-140601/right-bottom-grid-hit-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260514-140601/right-bottom-grid-hit-summary.md",
-      "entry": "archive/cdb-surface-dump-20260514-140601",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260514-140601/surface.png": {
-      "ref": "captures/archive/cdb-surface-dump-20260514-140601/surface.png",
-      "entry": "archive/cdb-surface-dump-20260514-140601",
-      "reference_class": "current_referenced",
-      "sources": [
-        "captures/current/hd-map-evidence-current.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
     "captures/archive/cdb-surface-dump-20260515-105041": {
       "ref": "captures/archive/cdb-surface-dump-20260515-105041",
       "entry": "archive/cdb-surface-dump-20260515-105041",
@@ -467,6 +187,286 @@
     "captures/archive/cdb-surface-dump-20260518-213418": {
       "ref": "captures/archive/cdb-surface-dump-20260518-213418",
       "entry": "archive/cdb-surface-dump-20260518-213418",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-144922": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-144922",
+      "entry": "archive/cdb-surface-dump-20260712-144922",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-144922/RUN-SUMMARY.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-144922/RUN-SUMMARY.md",
+      "entry": "archive/cdb-surface-dump-20260712-144922",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-144922/action-box-compose-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-144922/action-box-compose-summary.md",
+      "entry": "archive/cdb-surface-dump-20260712-144922",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-144922/action-panel-route-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-144922/action-panel-route-summary.md",
+      "entry": "archive/cdb-surface-dump-20260712-144922",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-144922/surface.png": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-144922/surface.png",
+      "entry": "archive/cdb-surface-dump-20260712-144922",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-150240": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-150240",
+      "entry": "archive/cdb-surface-dump-20260712-150240",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-150240/RUN-SUMMARY.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-150240/RUN-SUMMARY.md",
+      "entry": "archive/cdb-surface-dump-20260712-150240",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-150240/right-bottom-grid-hit-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-150240/right-bottom-grid-hit-summary.md",
+      "entry": "archive/cdb-surface-dump-20260712-150240",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-150240/surface.png": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-150240/surface.png",
+      "entry": "archive/cdb-surface-dump-20260712-150240",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160131": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160131",
+      "entry": "archive/cdb-surface-dump-20260712-160131",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160131/RUN-SUMMARY.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160131/RUN-SUMMARY.md",
+      "entry": "archive/cdb-surface-dump-20260712-160131",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160131/action-box-composition-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160131/action-box-composition-summary.md",
+      "entry": "archive/cdb-surface-dump-20260712-160131",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160131/action-panel-route-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160131/action-panel-route-summary.md",
+      "entry": "archive/cdb-surface-dump-20260712-160131",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160131/surface.png": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160131/surface.png",
+      "entry": "archive/cdb-surface-dump-20260712-160131",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160204": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160204",
+      "entry": "archive/cdb-surface-dump-20260712-160204",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160204/RUN-SUMMARY.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160204/RUN-SUMMARY.md",
+      "entry": "archive/cdb-surface-dump-20260712-160204",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160204/action-box-compose-patch-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160204/action-box-compose-patch-summary.md",
+      "entry": "archive/cdb-surface-dump-20260712-160204",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160204/action-panel-route-patch-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160204/action-panel-route-patch-summary.md",
+      "entry": "archive/cdb-surface-dump-20260712-160204",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160204/surface.png": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160204/surface.png",
+      "entry": "archive/cdb-surface-dump-20260712-160204",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160351": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160351",
+      "entry": "archive/cdb-surface-dump-20260712-160351",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160351/RUN-SUMMARY.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160351/RUN-SUMMARY.md",
+      "entry": "archive/cdb-surface-dump-20260712-160351",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160351/action-box-compose-fullstart-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160351/action-box-compose-fullstart-summary.md",
+      "entry": "archive/cdb-surface-dump-20260712-160351",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160351/action-panel-route-fullstart-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160351/action-panel-route-fullstart-summary.md",
+      "entry": "archive/cdb-surface-dump-20260712-160351",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160351/surface.png": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160351/surface.png",
+      "entry": "archive/cdb-surface-dump-20260712-160351",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160441": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160441",
+      "entry": "archive/cdb-surface-dump-20260712-160441",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160441/RUN-SUMMARY.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160441/RUN-SUMMARY.md",
+      "entry": "archive/cdb-surface-dump-20260712-160441",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160441/right-bottom-ui-summary.json": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160441/right-bottom-ui-summary.json",
+      "entry": "archive/cdb-surface-dump-20260712-160441",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-160441/surface.png": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-160441/surface.png",
+      "entry": "archive/cdb-surface-dump-20260712-160441",
       "reference_class": "current_referenced",
       "sources": [
         "captures/current/hd-map-evidence-current.md"
@@ -2039,6 +2039,16 @@
     "captures/archive/cdb-surface-dump-20260527-193512/right-bottom-natural-slot5-summary.md": {
       "ref": "captures/archive/cdb-surface-dump-20260527-193512/right-bottom-natural-slot5-summary.md",
       "entry": "archive/cdb-surface-dump-20260527-193512",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "README.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260712-144019": {
+      "ref": "captures/archive/cdb-surface-dump-20260712-144019",
+      "entry": "archive/cdb-surface-dump-20260712-144019",
       "reference_class": "archived_referenced",
       "sources": [
         "README.md"
@@ -6626,7 +6636,7 @@
       "name": "archive/cdb-surface-dump-20260513-112339",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339",
       "artifact_kind": "directory",
-      "reference_status": "current_referenced",
+      "reference_status": "archived_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6656,7 +6666,7 @@
       "name": "archive/cdb-surface-dump-20260513-115303",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303",
       "artifact_kind": "directory",
-      "reference_status": "current_referenced",
+      "reference_status": "archived_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6666,7 +6676,7 @@
       "name": "archive/cdb-surface-dump-20260513-120712",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712",
       "artifact_kind": "directory",
-      "reference_status": "current_referenced",
+      "reference_status": "archived_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6686,7 +6696,7 @@
       "name": "archive/cdb-surface-dump-20260513-122200",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200",
       "artifact_kind": "directory",
-      "reference_status": "current_referenced",
+      "reference_status": "archived_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6696,7 +6706,7 @@
       "name": "archive/cdb-surface-dump-20260513-122928",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928",
       "artifact_kind": "directory",
-      "reference_status": "current_referenced",
+      "reference_status": "archived_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6706,7 +6716,7 @@
       "name": "archive/cdb-surface-dump-20260514-140601",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260514-140601",
       "artifact_kind": "directory",
-      "reference_status": "current_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7586,7 +7596,7 @@
       "name": "archive/cdb-surface-dump-20260712-144019",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144019",
       "artifact_kind": "directory",
-      "reference_status": "stale_unreferenced",
+      "reference_status": "archived_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7646,7 +7656,7 @@
       "name": "archive/cdb-surface-dump-20260712-144922",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144922",
       "artifact_kind": "directory",
-      "reference_status": "stale_unreferenced",
+      "reference_status": "current_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7656,7 +7666,7 @@
       "name": "archive/cdb-surface-dump-20260712-150240",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-150240",
       "artifact_kind": "directory",
-      "reference_status": "stale_unreferenced",
+      "reference_status": "current_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7776,7 +7786,7 @@
       "name": "archive/cdb-surface-dump-20260712-160131",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160131",
       "artifact_kind": "directory",
-      "reference_status": "stale_unreferenced",
+      "reference_status": "current_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7786,7 +7796,7 @@
       "name": "archive/cdb-surface-dump-20260712-160204",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160204",
       "artifact_kind": "directory",
-      "reference_status": "stale_unreferenced",
+      "reference_status": "current_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7796,7 +7806,7 @@
       "name": "archive/cdb-surface-dump-20260712-160351",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160351",
       "artifact_kind": "directory",
-      "reference_status": "stale_unreferenced",
+      "reference_status": "current_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7806,7 +7816,7 @@
       "name": "archive/cdb-surface-dump-20260712-160441",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-160441",
       "artifact_kind": "directory",
-      "reference_status": "stale_unreferenced",
+      "reference_status": "current_referenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,

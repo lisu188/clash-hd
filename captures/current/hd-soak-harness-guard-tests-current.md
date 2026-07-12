@@ -1,7 +1,7 @@
 # HD Soak Harness Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-12T16:09:21+02:00`
+- Generated: `2026-07-12T19:23:36+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the opt-in soak harness stays protected-stage, approval-gated, non-promoting, artifact-safe, and preserves full render-range plus sample-interval, route/process/frame/capture inventory metrics
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T16:09:27+02:00",
+  "generated_at": "2026-07-12T19:23:43+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves capture references resolve, synthetic fixture/transition placeholders stay non-current, and stale visible-era artifacts cannot become active evidence silently",

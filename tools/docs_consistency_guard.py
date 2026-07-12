@@ -121,7 +121,12 @@ def path_variants(path_value: str) -> list[str]:
         variants.add(canonical.replace("\\", "/"))
     marker = "/captures/"
     if marker in normalized:
-        variants.add("captures/" + normalized.split(marker, 1)[1])
+        tail = normalized.split(marker, 1)[1]
+        variants.add("captures/" + tail)
+        # The evidence index under captures/current links sibling artifacts
+        # with workspace-portable relative paths like ../archive/<run>/...
+        if tail.startswith("archive/"):
+            variants.add("../" + tail)
     if normalized.endswith("/surface.png"):
         variants.add(normalized.rsplit("/", 1)[0])
     return sorted(variants, key=len, reverse=True)

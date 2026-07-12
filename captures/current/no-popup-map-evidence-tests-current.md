@@ -1,7 +1,7 @@
 # No-Popup Map Evidence Matrix Tests
 
 - Status: PASS
-- Generated: `2026-07-12T16:08:29+02:00`
+- Generated: `2026-07-12T19:22:21+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for matrix CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the no-popup map evidence matrix requires a visibility-explained normal run, a forced-visible edge proof, latest-run selection, and CLI fail-closed behavior
 

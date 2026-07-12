@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-12T16:09:27+02:00`
+- Generated: `2026-07-12T19:23:44+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -1761,7 +1761,7 @@
 - artifact_count: `657`
 - current_reference_count: `166`
 - stale_visible_or_sandbox_count: `11`
-- reference_status_counts: `{'archived_referenced': 204, 'current_referenced': 136, 'stale_unreferenced': 317}`
+- reference_status_counts: `{'archived_referenced': 210, 'current_referenced': 136, 'stale_unreferenced': 311}`
 - era_counts: `{'cdb_surface_dump_unverified': 65, 'hidden_cdb_surface_dump': 148, 'other_capture_artifact': 433, 'visible_era': 11}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
@@ -1802,18 +1802,6 @@
 - runtime_policy: `repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Failures:
   - boundary_counts: no-popup boundary guard is not passing
-  - docs_codex_loop: codex_loop does not keep castlecenter-all validation-only
-  - docs_codex_loop: codex_loop does not document stable_stage_should_change=False
-  - docs_codex_loop: codex_loop does not document no-popup boundary PASS status
-  - docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260506-190037\surface.png
-  - docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260506-201114\surface.png
-  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_owner_route: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160131\surface.png
-  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_probe: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144922\surface.png
-  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_patch: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160204\surface.png
-  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_fullstart_route: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160351\surface.png
-  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_normal_gate: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260513-121513\surface.png
-  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_ui_probe: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160441\surface.png
-  - docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_grid_hit: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-150240\surface.png
 
 ### Docs Consistency Guard Tests
 
@@ -1904,15 +1892,3 @@
 - no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
 - no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard
 - docs_consistency_guard: boundary_counts: no-popup boundary guard is not passing
-- docs_consistency_guard: docs_codex_loop: codex_loop does not keep castlecenter-all validation-only
-- docs_consistency_guard: docs_codex_loop: codex_loop does not document stable_stage_should_change=False
-- docs_consistency_guard: docs_codex_loop: codex_loop does not document no-popup boundary PASS status
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path normal_post_owner: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260506-190037\surface.png
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path forced_visible_post_owner: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260506-201114\surface.png
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_owner_route: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160131\surface.png
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_probe: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144922\surface.png
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_patch: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160204\surface.png
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_fullstart_route: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160351\surface.png
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_normal_gate: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260513-121513\surface.png
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_compose_ui_probe: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-160441\surface.png
-- docs_consistency_guard: docs_current_screenshot_paths: evidence index missing current screenshot path right_bottom_grid_hit: C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-150240\surface.png
