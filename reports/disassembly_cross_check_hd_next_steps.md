@@ -158,6 +158,11 @@ Ordered, with the cheapest disassembly-confirmable work first.
    right-bottom UI probe and confirm `RBUI_PANEL_DRAW`/`RBUI_ACTION_BOX` appear
    *without* debugger-forced clicks. This is the disassembly-grounded answer to
    `controlled_recovered_but_natural_route_nonpromoting`.
+   > Update 2026-07-03: the repo-only constructor for this fixture now exists as
+   > `tools/right_bottom_constructed_save_fixture.py` (dry-run by default,
+   > tested by `tools/test_right_bottom_constructed_save_fixture.py`). The
+   > remaining work for this step is Windows-host only: run it with
+   > `--output-save` under `C:\ClashTests\...` and rerun the natural probe.
 
 2. **Battle: drive the existing enabled-command fixture to a real click.**
    The constructed Dragon-cavalry fixture already satisfies the
