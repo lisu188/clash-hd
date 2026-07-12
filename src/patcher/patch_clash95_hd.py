@@ -1784,9 +1784,6 @@ _FIXED_RECIPES: frozenset[tuple[str, int]] = frozenset(
         ("mouse-dynamic-origin", 0x05FE61),
         ("mouse-dynamic-origin", 0x0E8C10),
         ("map-surface-upgrade-scrollclamp", 0x00AB6A),
-        ("castle-ui-center-present", 0x0351A5),
-        ("castle-ui-center-present-wrapper", 0x0351AA),
-        ("castle-ui-center-present-wrapper", 0x0351DE),
         ("castle-ui-centered-input", 0x034F90),
         ("castle-ui-centered-input", 0x034FB3),
         ("castle-ui-centered-input", 0x0351F5),
@@ -1870,21 +1867,257 @@ _SPLICE_RECIPES: dict[tuple[str, int], tuple[PatternSlot, ...]] = {
     ("battle-ui-centered-input", 0x119CF0): _mouse_offset_slots(2),
 }
 
-# Hand-assembled caves whose parameterized variants need re-authored imm32
-# encodings (push imm8 centering offsets cannot hold OFF > 127) or
-# relocation. They are replaced by cave templates in the next milestone; at
-# non-legacy resolutions they refuse generation.
-_PENDING_CAVE_RECIPES: frozenset[tuple[str, int]] = frozenset(
-    {
-        ("surface-blit-hd-aware", 0x0E8D20),
-        ("castle-ui-center-present", 0x11136F),
-        ("castle-ui-center-present-wrapper", 0x11136F),
-        ("castle-overview-center-present-wrapper", 0x1198D0),
-        ("castle-overview-centered-input", 0x1199A0),
-        ("right-bottom-action-native-center-wrapper", 0x1199E0),
-        ("battle-ui-center-present-wrapper", 0x119C00),
-    }
-)
+@dataclass(frozen=True)
+class TemplateSlot:
+    at: int
+    width: int
+    value: str
+    signed: bool = False
+
+
+@dataclass(frozen=True)
+class CaveTemplate:
+    """Re-authored parameterized cave with a fixed imm32 layout.
+
+    `template_hex` is the parameterized encoding carrying the 800x600 values
+    in its slots, padded with zeros to the cave allotment. The branch tables
+    record every control-flow instruction of both variants (offset, kind,
+    absolute target VA); rel32/rel8 displacements were recomputed once at
+    authoring time from these targets and are verified by
+    tools/test_patch_resolution.py against both byte encodings.
+    """
+
+    template_hex: str
+    slots: tuple[TemplateSlot, ...]
+    legacy_va: int
+    param_va: int
+    legacy_branches: tuple[tuple[int, str, int], ...]
+    param_branches: tuple[tuple[int, str, int], ...]
+    new_offset: int | None = None
+
+
+# The two 86-byte castle-present caves at file 0x11136F are hard-adjacent to
+# the castle-ui-centered-input cave at 0x1113C5 and cannot grow in place;
+# their imm32 variants relocate to the zero region at file 0x119E20
+# (VA 0x51BC20, verified all-zero in the source executable and enforced
+# fail-closed by the old-bytes validation at patch time).
+_RELOCATED_CASTLE_PRESENT_OFFSET = 0x119E20
+_RELOCATED_CASTLE_PRESENT_VA = 0x51BC20
+
+_CAVE_TEMPLATES: dict[tuple[str, int], CaveTemplate] = {
+    ("surface-blit-hd-aware", 0x0E8D20): CaveTemplate(
+        template_hex=(
+            "6089c6bddf010000bf7f02000066813e2003751266817e025802750a"
+            "bd57020000bf1f03000031c931db3b35e00252007513"
+            "66813e8002750c683c0000006850000000eb02515155bac0d45100"
+            "5789f0e86b8bf1ff61c3" + "00" * 9
+        ),
+        slots=(
+            TemplateSlot(16, 2, "W"),
+            TemplateSlot(24, 2, "H"),
+            TemplateSlot(29, 4, "H-1"),
+            TemplateSlot(34, 4, "W-1"),
+            TemplateSlot(58, 4, "OFFY"),
+            TemplateSlot(63, 4, "OFFX"),
+        ),
+        legacy_va=0x4E9920,
+        param_va=0x4E9920,
+        legacy_branches=(
+            (18, "jcc8", 0x4E9946),
+            (26, "jcc8", 0x4E9946),
+            (48, "jcc8", 0x4E995F),
+            (55, "jcc8", 0x4E995F),
+            (61, "jcc8", 0x4E9961),
+            (74, "call", 0x4024E0),
+        ),
+        param_branches=(
+            (18, "jcc8", 0x4E9946),
+            (26, "jcc8", 0x4E9946),
+            (48, "jcc8", 0x4E9965),
+            (55, "jcc8", 0x4E9965),
+            (67, "jcc8", 0x4E9967),
+            (80, "call", 0x4024E0),
+        ),
+    ),
+    ("castle-ui-center-present", 0x11136F): CaveTemplate(
+        template_hex=(
+            "a1e00252006a006a0068df010000bac0d45100687f02000031c931db"
+            "e89f68eeffff35e00252008b0424e81162eeff5a"
+            "683c0000006850000000"
+            "68df010000687f02000031c931dbb8c0d45100e86e68eeff"
+            "b8d84c5400e92ea1f1ff" + "00" * 4
+        ),
+        slots=(TemplateSlot(49, 4, "OFFY"), TemplateSlot(54, 4, "OFFX")),
+        legacy_va=0x51316F,
+        param_va=_RELOCATED_CASTLE_PRESENT_VA,
+        legacy_branches=(
+            (28, "call", 0x4024E0),
+            (42, "call", 0x401E60),
+            (71, "call", 0x4024E0),
+            (81, "jmp32", 0x435DAA),
+        ),
+        param_branches=(
+            (28, "call", 0x4024E0),
+            (42, "call", 0x401E60),
+            (77, "call", 0x4024E0),
+            (87, "jmp32", 0x435DAA),
+        ),
+        new_offset=_RELOCATED_CASTLE_PRESENT_OFFSET,
+    ),
+    ("castle-ui-center-present-wrapper", 0x11136F): CaveTemplate(
+        template_hex=(
+            "60e86a9ff1ff6160a1e00252006a006a0068df010000bac0d45100"
+            "687f02000031c931dbe89768eeffff35e00252008b0424e80962eeff5a"
+            "683c0000006850000000"
+            "68df010000687f02000031c931dbb8c0d45100e86668eeff61c3"
+            + "00" * 4
+        ),
+        slots=(TemplateSlot(57, 4, "OFFY"), TemplateSlot(62, 4, "OFFX")),
+        legacy_va=0x51316F,
+        param_va=_RELOCATED_CASTLE_PRESENT_VA,
+        legacy_branches=(
+            (1, "call", 0x435B90),
+            (36, "call", 0x4024E0),
+            (50, "call", 0x401E60),
+            (79, "call", 0x4024E0),
+        ),
+        param_branches=(
+            (1, "call", 0x435B90),
+            (36, "call", 0x4024E0),
+            (50, "call", 0x401E60),
+            (85, "call", 0x4024E0),
+        ),
+        new_offset=_RELOCATED_CASTLE_PRESENT_OFFSET,
+    ),
+    ("castle-overview-center-present-wrapper", 0x1198D0): CaveTemplate(
+        template_hex=(
+            "60e84a69f0ff6160a1e00252006a006a0068df010000bac0d45100"
+            "687f02000031c931dbe8e76deeffa1e002520085c07407"
+            "66813820037428b8bc000000e8ed64f4ff85c0741a53"
+            "bb58020000ba20030000e84986eeff5b85c07405a3e0025200"
+            "ff35e00252008b0424e82167eeff5a"
+            "683c0000006850000000"
+            "68df010000687f02000031c931dbb8c0d45100e87e6deeff61c3"
+            + "00" * 60
+        ),
+        slots=(
+            TemplateSlot(53, 2, "W"),
+            TemplateSlot(73, 4, "H"),
+            TemplateSlot(78, 4, "W"),
+            TemplateSlot(113, 4, "OFFY"),
+            TemplateSlot(118, 4, "OFFX"),
+        ),
+        legacy_va=0x51B6D0,
+        param_va=0x51B6D0,
+        legacy_branches=(
+            (1, "call", 0x422020),
+            (36, "call", 0x4024E0),
+            (48, "jcc8", 0x51B709),
+            (55, "jcc8", 0x51B731),
+            (62, "call", 0x461C00),
+            (69, "jcc8", 0x51B731),
+            (82, "call", 0x403D70),
+            (90, "jcc8", 0x51B731),
+            (106, "call", 0x401E60),
+            (135, "call", 0x4024E0),
+        ),
+        param_branches=(
+            (1, "call", 0x422020),
+            (36, "call", 0x4024E0),
+            (48, "jcc8", 0x51B709),
+            (55, "jcc8", 0x51B731),
+            (62, "call", 0x461C00),
+            (69, "jcc8", 0x51B731),
+            (82, "call", 0x403D70),
+            (90, "jcc8", 0x51B731),
+            (106, "call", 0x401E60),
+            (141, "call", 0x4024E0),
+        ),
+    ),
+    ("castle-overview-centered-input", 0x1199A0): CaveTemplate(
+        template_hex=(
+            "8b1d004d54008a0d2c5154008b15fc4c5400a330125100d3fb"
+            "8bb8b8000000d3fa81ea5000000081eb3c000000ff5710e96f6df0ff"
+            + "00" * 11
+        ),
+        slots=(TemplateSlot(35, 4, "OFFX"), TemplateSlot(41, 4, "OFFY")),
+        legacy_va=0x51B7A0,
+        param_va=0x51B7A0,
+        legacy_branches=((42, "jmp32", 0x422544),),
+        param_branches=((48, "jmp32", 0x422544),),
+    ),
+    ("right-bottom-action-native-center-wrapper", 0x1199E0): CaveTemplate(
+        template_hex=(
+            "6083ec08a1e0025200890424b8bc000000e80a64f4ff85c0"
+            "0f847a000000bbe0010000ba80020000e86385eeff89442404"
+            "a3e00252008b4424248b4c24208b54241c8b5c24188b6c2410"
+            "8b74240c8b7c2408e889a3f1ff894424248b34248b7c2404"
+            "8935e0025200683c0000006850000000"
+            "68df010000687f02000031c931db89f289f8e8776ceeff"
+            "b8d84c5400e82d56f4ff83c40861c383c40861e93fa3f1ff"
+            + "00" * 31
+        ),
+        slots=(TemplateSlot(105, 4, "OFFY"), TemplateSlot(110, 4, "OFFX")),
+        legacy_va=0x51B7E0,
+        param_va=0x51B7E0,
+        legacy_branches=(
+            (17, "call", 0x461C00),
+            (24, "jz32", 0x51B872),
+            (40, "call", 0x403D70),
+            (82, "call", 0x435BC0),
+            (126, "call", 0x4024E0),
+            (136, "call", 0x460EA0),
+            (150, "jmp32", 0x435BC0),
+        ),
+        param_branches=(
+            (17, "call", 0x461C00),
+            (24, "jz32", 0x51B878),
+            (40, "call", 0x403D70),
+            (82, "call", 0x435BC0),
+            (132, "call", 0x4024E0),
+            (142, "call", 0x460EA0),
+            (156, "jmp32", 0x435BC0),
+        ),
+    ),
+    ("battle-ui-center-present-wrapper", 0x119C00): CaveTemplate(
+        template_hex=(
+            "833d48205300007506e89254f4ffc360a1e00252006a006a00"
+            "68df010000bac0d45100687f02000031c931dbe8af6aeeff"
+            "a1e0025200e82564eeff8b15e0025200"
+            "683c0000006850000000"
+            "68df010000687f02000031c931dbb8c0d45100e87d6aeeff"
+            "61e83754f4ffc3" + "00" * 54
+        ),
+        slots=(TemplateSlot(66, 4, "OFFY"), TemplateSlot(71, 4, "OFFX")),
+        legacy_va=0x51BA00,
+        param_va=0x51BA00,
+        legacy_branches=(
+            (7, "jcc8", 0x51BA0F),
+            (9, "call", 0x460EA0),
+            (44, "call", 0x4024E0),
+            (54, "call", 0x401E60),
+            (88, "call", 0x4024E0),
+            (94, "call", 0x460EA0),
+        ),
+        param_branches=(
+            (7, "jcc8", 0x51BA0F),
+            (9, "call", 0x460EA0),
+            (44, "call", 0x4024E0),
+            (54, "call", 0x401E60),
+            (94, "call", 0x4024E0),
+            (100, "call", 0x460EA0),
+        ),
+    ),
+}
+
+# Hook patches that must retarget when their cave relocates. Values are the
+# parameterized new bytes (jmp/call rel32 or mov imm32 aimed at the relocated
+# cave VA); at 800x600 the legacy hook bytes are used unchanged.
+_CAVE_HOOKS: dict[tuple[str, int], str] = {
+    ("castle-ui-center-present", 0x0351A5): "e9765e0e00",
+    ("castle-ui-center-present-wrapper", 0x0351AA): "bb20bc5100",
+    ("castle-ui-center-present-wrapper", 0x0351DE): "e83d5e0e00",
+}
 
 # Single-byte tile immediates keyed by (old_hex, new_hex). The formula choice
 # comes from the patch notes' disassembly semantics, not the byte values:
@@ -1918,8 +2151,10 @@ def _build_recipes() -> dict[tuple[str, int], Recipe]:
         recipes[key] = Recipe("fixed")
     for key, slots in _SPLICE_RECIPES.items():
         recipes[key] = Recipe("splice", slots=slots)
-    for key in _PENDING_CAVE_RECIPES:
-        recipes[key] = Recipe("cave-pending")
+    for key in _CAVE_TEMPLATES:
+        recipes[key] = Recipe("cave-template")
+    for key in _CAVE_HOOKS:
+        recipes[key] = Recipe("cave-hook")
 
     for patch in PATCHES:
         key = (patch.group, patch.offset)
@@ -2068,6 +2303,36 @@ def _apply_splice_recipe(
     return replace(patch, new_hex=bytes(data).hex())
 
 
+def _apply_cave_template(
+    patch: Patch, profile: ResolutionProfile
+) -> Patch:
+    template = _CAVE_TEMPLATES[(patch.group, patch.offset)]
+    data = bytearray(bytes.fromhex(template.template_hex))
+    for slot in template.slots:
+        context = (
+            f"{patch.group} @ 0x{patch.offset:06X} template slot {slot.value}"
+        )
+        formula = FORMULAS[slot.value]
+        current = int.from_bytes(
+            data[slot.at : slot.at + slot.width], "little", signed=slot.signed
+        )
+        if current != formula(PROFILE_800):
+            raise ResolutionError(
+                f"{context}: template carries {current}, formula predicts "
+                f"{formula(PROFILE_800)} at 800x600"
+            )
+        data[slot.at : slot.at + slot.width] = _encode_int(
+            formula(profile), slot.width, slot.signed, context
+        )
+    offset = template.new_offset if template.new_offset is not None else patch.offset
+    return replace(
+        patch,
+        offset=offset,
+        old_hex="00" * len(data),
+        new_hex=bytes(data).hex(),
+    )
+
+
 def _apply_recipe(
     patch: Patch, recipe: Recipe, profile: ResolutionProfile
 ) -> Patch:
@@ -2079,14 +2344,14 @@ def _apply_recipe(
         return _apply_old_plus_recipe(patch, recipe, profile)
     if recipe.kind == "splice":
         return _apply_splice_recipe(patch, recipe, profile)
-    if recipe.kind == "cave-pending":
+    if recipe.kind == "cave-template":
         if (profile.width, profile.height) == LEGACY_RESOLUTION:
             return patch
-        raise ResolutionNotSupportedError(
-            f"{patch.group} @ 0x{patch.offset:06X} is a hand-assembled cave "
-            "whose parameterized template has not landed yet; resolution "
-            f"{profile.key} is not supported for this group."
-        )
+        return _apply_cave_template(patch, profile)
+    if recipe.kind == "cave-hook":
+        if (profile.width, profile.height) == LEGACY_RESOLUTION:
+            return patch
+        return replace(patch, new_hex=_CAVE_HOOKS[(patch.group, patch.offset)])
     raise ResolutionError(f"Unknown recipe kind: {recipe.kind}")
 
 
@@ -2261,14 +2526,6 @@ def main() -> None:
         profile = parse_resolution(args.resolution)
     except ResolutionError as exc:
         raise SystemExit(str(exc)) from exc
-    legacy = (profile.width, profile.height) == LEGACY_RESOLUTION
-    if not legacy:
-        raise SystemExit(
-            f"--resolution {profile.key} is not enabled yet: the re-authored "
-            "cave templates for non-800x600 resolutions land in the next "
-            "milestone. Only 800x600 builds are currently supported."
-        )
-
     if not source_path.is_file():
         raise SystemExit(f"Input file does not exist: {source_path}")
     if output_path.exists() and not args.overwrite:
