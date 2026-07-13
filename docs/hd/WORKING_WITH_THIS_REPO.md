@@ -71,16 +71,66 @@ Per-tool fixtures: `python tools/test_<name>.py`. Wiki: `python tools/wiki_lint.
   live GDI grab **tears on animated screens** (e.g. the castle courtyard). Static
   screens capture clean.
 
+## Screen tearing in captures (check EVERY screenshot first)
+
+**Always inspect a capture for tearing before you use it as evidence or show
+it.** A torn frame looks exactly like a render defect and has repeatedly
+polluted this repo's audits.
+
+- **Root cause:** `scripts/capture/capture_clash_client_frame.ps1` grabs the
+  desktop front buffer with `Graphics.CopyFromScreen` (`CaptureMode=screen`),
+  which lands mid page-flip on the dgVoodoo-wrapped surface. On **animated**
+  screens (castle courtyard idle anim, clouds, banners, battle) the moving
+  region shears into **horizontal displacement bands**, while static chrome
+  (resource bar, MENU banner) stays crisp. The screen itself renders correctly:
+  the hidden CDB surfdump of the same screen is coherent. Tearing is a **capture
+  artifact, not an HD bug** — never report it as one.
+- **Where it bites:** live 800x600→1200x900 GDI grabs of animated screens.
+  Static screens (menu, idle map) and all hidden CDB surface dumps do **not**
+  tear.
+- **Detect it:** run `python tools/capture_tear_check.py <frame.png> [--rect L T R B]`.
+  Tearing adds row-to-row energy without adding column-to-column energy, so the
+  tool flags a frame when the row/column mean-diff ratio or the excess of
+  high-diff rows over columns is too high. Calibrated on the castle overview:
+  torn GDI grab ratio ≈ 2.05 (flagged), clean CDB dump ≈ 1.37 (clean). The
+  single-frame verdict is **advisory** (legit horizontal UI edges can trip it);
+  it asks for another capture, it does not prove a defect.
+- **Get a clean frame:** capture **2–3 back-to-back grabs** and pass them all to
+  `capture_tear_check.py` — a consecutive **pixel-identical pair** (`verdict:
+  clean_stable_pair`) is the strongest tear-free signal, and the report names
+  the `least_torn_frame` to keep otherwise. Prefer capturing during static
+  moments; retry up to ~5x on animated screens.
+- **Best evidence for geometry:** use the **hidden CDB surface dump** route
+  (`scripts/cdb/run_cdb_surface_dump.ps1`) — it reads surface memory directly and
+  never tears (it is also the no-popup approved path). Reserve visible grabs for
+  authentic-color confirmation, and only trust a settled/stable-pair frame.
+- **Gate caveat:** `tools/castle_overview_gate.py` gates **only vertical** stripe
+  metrics, so it will PASS a horizontally torn frame. It is meant to run on the
+  coherent proxy dump — do **not** point it at a desktop grab and trust the PASS.
+  Use `capture_tear_check.py` for horizontal tearing.
+
 ## The current frontier (2026-07-13)
 
-Refresh ~143/154. Remaining reds are honest, not oversights:
-- **UI layout defects** (user-confirmed): terrain tooltip should be
-  bottom-centered; selected-unit action panel should dock right-bottom. Real
-  anchor-relocation patch work (validation stage first).
+The current refresh remains below 100%. Remaining reds are honest, not
+oversights:
+- **UI layout validation**: the bottom-centered terrain tooltip and
+  right-bottom selected-unit command panel are implemented in validation-only
+  stage `-hdlayout`; hidden-CDB anchor, draw, hit-scan, and full-width redraw
+  checks pass, and an approved isolated visible run passes authentic
+  composition. Its no-click Win32 hover was exact, but the descriptor-5 click
+  missed by `(-44,-67)`. The run is fixture/SendInput diagnostic evidence,
+  manual DirectInput remains `0/5`, and stable promotion remains deferred.
+  Future manual commands place the outer window at `(0,-30)` so the measured
+  `(3,26)` client origin keeps lower/right targets inside the desktop.
+  The dedicated promotion record passes only by deferring promotion and
+  keeping the protected stage unchanged.
 - **Right-bottom compose gates**: a gate-design contradiction — one gate wants
   natural owner/action rows drawn, another wants them absent; only the
   addon_flags fixture draws them. Needs a gate-owner design decision, not a
   force.
+  A natural slot-2/record-1 probe/parser is fixture-test ready, but its real
+  hidden run is still pending because launch was blocked before execution by
+  the external approval quota.
 - **Battle click-to-callback**: blocked by the CDB-vs-visible-window ddraw
   tension (R&D).
 - **Continuity / long soaks**: need fresh approval / multi-hour runtime.
