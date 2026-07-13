@@ -146,6 +146,32 @@ def test_black_patch_regions_fail_playability(fixture: Path) -> None:
     assert "compose or present path" in report["summary"]["next_probe"], report
 
 
+def test_black_patch_excused_when_real_frame_corroborates(fixture: Path) -> None:
+    # Proxy primary frame has a black right_below_minimap patch...
+    proxy = write_png(fixture / "proxy.png", 800, 600, black_patch_pixel)
+    # ...but a real visible-runtime frame renders that region fully (clean).
+    real = write_png(fixture / "real.png", 1200, 900, clean_pixel)
+    report = first_mission_visual_audit.build_report(
+        [frame(proxy)], ns(real_runtime_frame=real)
+    )
+    assert report["passed"] is True, report
+    assert report["proxy_artifact_confirmed_regions"], report
+    assert "right_below_minimap" in report["proxy_artifact_confirmed_regions"], report
+    assert report["summary"]["primary_black_patch_regions"] == [], report
+    assert report["current_status"].endswith("black_patches_are_proxy_artifacts"), report
+
+
+def test_black_patch_not_excused_when_real_frame_also_black(fixture: Path) -> None:
+    proxy = write_png(fixture / "proxy2.png", 800, 600, black_patch_pixel)
+    # Real frame is ALSO black in that region -> not corroborated -> still fails.
+    real = write_png(fixture / "real2.png", 1200, 900, black_patch_pixel)
+    report = first_mission_visual_audit.build_report(
+        [frame(proxy)], ns(real_runtime_frame=real)
+    )
+    assert report["passed"] is False, report
+    assert "right_below_minimap" in report["summary"]["primary_black_patch_regions"], report
+
+
 def test_legacy_middle_action_bar_fails_bottom_gate(fixture: Path) -> None:
     png = write_png(fixture / "legacy-middle.png", 800, 600, legacy_middle_bar_pixel)
     report = first_mission_visual_audit.build_report([frame(png)], ns())
