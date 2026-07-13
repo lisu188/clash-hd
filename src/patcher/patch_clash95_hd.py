@@ -34,6 +34,21 @@ places that panel in the 800x600 bottom strip for hidden-desktop evidence.
 extends that validation lane by re-running the selected-unit panel after the
 full map redraw exits, so the final dumped surface can prove the action bar
 survives the normal redraw cadence at the bottom of the screen.
+``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter``
+relocates the map terrain tooltip anchor by the native-menu centering X offset
+and the full HD Y growth.  At 800x600 the initializer moves from
+`(left=160,right=473,y=467)` to `(left=240,right=553,y=587)`; the stock
+background-save expansion makes the live rectangle `(240..553,586..599)`.
+Battle and castle tooltip initializers remain untouched.
+``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom``
+moves the six gameplay command descriptors (globe plus unit figures) from
+their native `(416..607,400..463)` grid to the 800x600 right-bottom grid
+`(608..799,528..591)`.  The same descriptor coordinates drive drawing and hit
+testing; both descriptor draw clips are widened to the selected resolution.
+``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout``
+combines those two user-chosen layout anchors for validation.  All three
+layout stages remain validation-only until hidden-CDB and approved visible
+runtime evidence support promotion.
 ``--stage gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw``
 combines those validation lanes so a first-mission dump can show which right,
 bottom, and minimap black patches remain after the controlled bottom-strip
@@ -644,6 +659,155 @@ PATCHES: tuple[Patch, ...] = (
         ),
         "0x51BBD0 DGROUP cave: restore 0051D4C0 render handle, then rerun 0x406980 after full redraw when a unit is selected",
     ),
+    # Validation-only HD layout: keep the stock map terrain tooltip box but
+    # translate it with the native 640x480 frame in X and dock its 13-pixel
+    # text rectangle to the HD screen bottom in Y.  These are the four map
+    # contexts only; the battle and castle initializers intentionally remain
+    # native so their separately centered screens do not inherit map geometry.
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x00A198,
+        "d3010000",
+        "4b020000",
+        "0x40AD98 map render-hook tooltip top 467 -> 587 (bottom-docked)",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x00A1A4,
+        "d9010000",
+        "29020000",
+        "0x40ADA4 map render-hook tooltip right 473 -> 553 (+80 centered X)",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x00A1A9,
+        "a0000000",
+        "f0000000",
+        "0x40ADA9 map render-hook tooltip left 160 -> 240 (+80 centered X)",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x00AB94,
+        "d3010000",
+        "4b020000",
+        "0x40B794 PlayGame tooltip top 467 -> 587 (bottom-docked)",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x00ABA0,
+        "d9010000",
+        "29020000",
+        "0x40B7A0 PlayGame tooltip right 473 -> 553 (+80 centered X)",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x00ABA5,
+        "a0000000",
+        "f0000000",
+        "0x40B7A5 PlayGame tooltip left 160 -> 240 (+80 centered X)",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x01A5B3,
+        "d3010000",
+        "4b020000",
+        "0x41B1B3 Unit_Attack map-return tooltip top 467 -> 587",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x01A5B8,
+        "d9010000",
+        "29020000",
+        "0x41B1B8 Unit_Attack map-return tooltip right 473 -> 553",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x01A5C2,
+        "a0000000",
+        "f0000000",
+        "0x41B1C2 Unit_Attack map-return tooltip left 160 -> 240",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x01B022,
+        "d3010000",
+        "4b020000",
+        "0x41BC22 Unit_AttackBuilding map-return tooltip top 467 -> 587",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x01B027,
+        "d9010000",
+        "29020000",
+        "0x41BC27 Unit_AttackBuilding map-return tooltip right 473 -> 553",
+    ),
+    Patch(
+        "terrain-tooltip-bottom-center",
+        0x01B031,
+        "a0000000",
+        "f0000000",
+        "0x41BC31 Unit_AttackBuilding map-return tooltip left 160 -> 240",
+    ),
+    # Validation-only gameplay command-panel anchor.  dword_511D40 is a six
+    # entry, 53-byte descriptor list used by both sub_419D80 drawing and
+    # sub_419DC0 hit testing.  Move its 3x2, 64x32 grid to the right/bottom
+    # screen edges and widen both list and per-descriptor redraw clips.
+    Patch(
+        "selected-unit-command-panel-right-bottom",
+        0x019165,
+        "80020000",
+        "20030000",
+        "0x419D65 single command-descriptor redraw x clip immediate 640 -> 800",
+    ),
+    Patch(
+        "selected-unit-command-panel-right-bottom",
+        0x01918E,
+        "80020000",
+        "20030000",
+        "0x419D8E command-descriptor list draw x clip 640 -> 800",
+    ),
+    Patch(
+        "selected-unit-command-panel-right-bottom",
+        0x10FF40,
+        "a001000090010000",
+        "6002000010020000",
+        "0x511D40 command descriptor 0 (416,400) -> (608,528)",
+    ),
+    Patch(
+        "selected-unit-command-panel-right-bottom",
+        0x10FF75,
+        "e001000090010000",
+        "a002000010020000",
+        "0x511D75 command descriptor 1 (480,400) -> (672,528)",
+    ),
+    Patch(
+        "selected-unit-command-panel-right-bottom",
+        0x10FFAA,
+        "2002000090010000",
+        "e002000010020000",
+        "0x511DAA command descriptor 2 (544,400) -> (736,528)",
+    ),
+    Patch(
+        "selected-unit-command-panel-right-bottom",
+        0x10FFDF,
+        "a0010000b0010000",
+        "6002000030020000",
+        "0x511DDF command descriptor 3 (416,432) -> (608,560)",
+    ),
+    Patch(
+        "selected-unit-command-panel-right-bottom",
+        0x110014,
+        "e0010000b0010000",
+        "a002000030020000",
+        "0x511E14 command descriptor 4 (480,432) -> (672,560)",
+    ),
+    Patch(
+        "selected-unit-command-panel-right-bottom",
+        0x110049,
+        "20020000b0010000",
+        "e002000030020000",
+        "0x511E49 command descriptor 5 (544,432) -> (736,560)",
+    ),
     # Group A2: shift start-menu button descriptors to match centered 640x480 menu art.
     # These are 53-byte UI descriptors copied to stack by PlayGame_Dispatch.
     # The same x/y fields drive both sub_419D80 drawing and sub_419DC0 hit testing.
@@ -893,6 +1057,35 @@ PATCHES: tuple[Patch, ...] = (
         "ba60020000",
         "ba20030000",
         "0x40D390 minimap right anchor 608 -> 800 before left = anchor - minimap_width",
+    ),
+    # Group C5: repaint the ornate frame gutters that the native 640x480 chrome
+    # leaves black under the HD 800x600 expansion. The chrome is drawn once at
+    # gameplay entry (Render_DrawSprite in PlayGame) at native coordinates, so
+    # the left frame band (x=0..31) stops at y=479 and the top frame band stops
+    # at x=639, leaving a black bottom-left gutter (0,480..599) and a black
+    # top-right strip (640..799,0..15). This hook runs at the single post-tile
+    # convergence point in sub_418700 (0x4187AF, after the 12x9 tile loop and
+    # the dead dword_526990 callback, before the cursor/present block) and copies
+    # authentic on-surface frame pixels into those bands via the engine blit
+    # 0x4024E0 (same source/dest surface dword_5202E0). Because the destination
+    # bands are disjoint from the terrain (x>=32, y=16..591) and the moved
+    # minimap (586..799, 16..229), nothing tears and no runtime exclusion is
+    # needed. Validation-only; not part of DEFAULT_STAGE.
+    Patch(
+        "frame-restore-bands",
+        0x17BAF,
+        "85ed0f84ec010000",
+        "e94c361000909090",
+        "0x4187AF post-tile-loop jump to HD frame-restore cave",
+    ),
+    Patch(
+        "frame-restore-bands",
+        0x11A000,
+        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "60a1e002520089c2bb00000000b96801000068e0010000680000000068df010000681f000000e8b566eeffa1e002520089c2bbe0010000b90000000068000000006880020000680f000000687f020000e88b66eeff6185ed0f8445cbefffe954c9efff0000000000000000000000000000000000000000000000000000000000",
+        "0x51BE00 DGROUP cave: copy native left frame down to the "
+        "bottom gutter (0,360..479 -> 0,480) and the native top frame "
+        "right across the top gap (480,0..15 -> 640,0) via 0x4024E0",
     ),
     # Group D: scroll/click/center helpers. Apply after the first stage is proven.
     Patch("helpers", 0x007080, "09", "0c", "scroll clamp X +9 -> +12"),
@@ -1261,6 +1454,75 @@ STAGE_GROUPS = {
         "menu-center-hitboxes",
         "mouse-dynamic-origin",
         "map-surface-upgrade-scrollclamp",
+    ),
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore": (
+        "display",
+        "shared-surface",
+        "gameplay-surface",
+        *DYNAMIC_VIEWPORT_GROUPS,
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "helpers",
+        "surface-blit-hd-aware",
+        "menu-center-hitboxes",
+        "mouse-dynamic-origin",
+        "map-surface-upgrade-scrollclamp",
+        "frame-restore-bands",
+    ),
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter": (
+        "display",
+        "shared-surface",
+        "gameplay-surface",
+        *DYNAMIC_VIEWPORT_GROUPS,
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "helpers",
+        "surface-blit-hd-aware",
+        "menu-center-hitboxes",
+        "mouse-dynamic-origin",
+        "map-surface-upgrade-scrollclamp",
+        "terrain-tooltip-bottom-center",
+    ),
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom": (
+        "display",
+        "shared-surface",
+        "gameplay-surface",
+        *DYNAMIC_VIEWPORT_GROUPS,
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "helpers",
+        "surface-blit-hd-aware",
+        "menu-center-hitboxes",
+        "mouse-dynamic-origin",
+        "map-surface-upgrade-scrollclamp",
+        "selected-unit-command-panel-right-bottom",
+    ),
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout": (
+        "display",
+        "shared-surface",
+        "gameplay-surface",
+        *DYNAMIC_VIEWPORT_GROUPS,
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "helpers",
+        "surface-blit-hd-aware",
+        "menu-center-hitboxes",
+        "mouse-dynamic-origin",
+        "map-surface-upgrade-scrollclamp",
+        "terrain-tooltip-bottom-center",
+        "selected-unit-command-panel-right-bottom",
     ),
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose": (
         "display",
@@ -1708,6 +1970,12 @@ FORMULAS: dict[str, Callable[[ResolutionProfile], int]] = {
     # 215=(W-370)//2 for the 370px-wide native text panel.
     "H-20": lambda p: p.height - 20,
     "(W-370)//2": lambda p: (p.width - 370) // 2,
+    # Selected-unit command panel: three 64px columns and two 32px rows
+    # anchored to the right/bottom screen edges.
+    "W-192": lambda p: p.width - 192,
+    "W-128": lambda p: p.width - 128,
+    "W-64": lambda p: p.width - 64,
+    "H-40": lambda p: p.height - 40,
 }
 
 
@@ -1771,6 +2039,9 @@ _VALUE_RECIPES: dict[tuple[str, int], str] = {
     ("full-redraw-present-bounds-800", 0x017E68): "EDGEX",
     # Descriptor draw x clip grows to the full screen width.
     ("right-bottom-action-descriptor-anchor", 0x01918E): "W",
+    # Gameplay command-panel list and per-descriptor redraw clips.
+    ("selected-unit-command-panel-right-bottom", 0x019165): "W",
+    ("selected-unit-command-panel-right-bottom", 0x01918E): "W",
 }
 
 # Resolution-independent entries (hooks with rel32 jumps/calls into fixed cave
@@ -1857,6 +2128,33 @@ _SPLICE_RECIPES: dict[tuple[str, int], tuple[PatternSlot, ...]] = {
     ("unit-selection-action-bar-map-surface", 0x119D70): (
         PatternSlot("6844020000", 1, 4, "H-20", 1),
         PatternSlot("68d7000000", 1, 4, "(W-370)//2", 1),
+    ),
+    # Selected-unit gameplay command descriptors.  The six entries share
+    # draw/hit coordinates, so absolute right/bottom anchors parameterize both
+    # visual placement and hitboxes without an input wrapper.
+    ("selected-unit-command-panel-right-bottom", 0x10FF40): (
+        PatternSlot("60020000", 0, 4, "W-192", 1),
+        PatternSlot("10020000", 0, 4, "H-72", 1),
+    ),
+    ("selected-unit-command-panel-right-bottom", 0x10FF75): (
+        PatternSlot("a0020000", 0, 4, "W-128", 1),
+        PatternSlot("10020000", 0, 4, "H-72", 1),
+    ),
+    ("selected-unit-command-panel-right-bottom", 0x10FFAA): (
+        PatternSlot("e0020000", 0, 4, "W-64", 1),
+        PatternSlot("10020000", 0, 4, "H-72", 1),
+    ),
+    ("selected-unit-command-panel-right-bottom", 0x10FFDF): (
+        PatternSlot("60020000", 0, 4, "W-192", 1),
+        PatternSlot("30020000", 0, 4, "H-40", 1),
+    ),
+    ("selected-unit-command-panel-right-bottom", 0x110014): (
+        PatternSlot("a0020000", 0, 4, "W-128", 1),
+        PatternSlot("30020000", 0, 4, "H-40", 1),
+    ),
+    ("selected-unit-command-panel-right-bottom", 0x110049): (
+        PatternSlot("e0020000", 0, 4, "W-64", 1),
+        PatternSlot("30020000", 0, 4, "H-40", 1),
     ),
     # Centered-input wrapper caves (mov imm32 mouse offsets).
     ("castle-ui-centered-input", 0x1113C5): _mouse_offset_slots(2),
@@ -2178,6 +2476,19 @@ def _build_recipes() -> dict[tuple[str, int], Recipe]:
             and len(patch.old) == 8
         ):
             recipes[key] = Recipe("old-plus", deltas=("SHIFTX", "SHIFTY"))
+        elif patch.group == "terrain-tooltip-bottom-center":
+            delta = int.from_bytes(patch.new, "little") - int.from_bytes(
+                patch.old, "little"
+            )
+            if delta == PROFILE_800.off_x:
+                recipes[key] = Recipe("old-plus", deltas=("OFFX",))
+            elif delta == PROFILE_800.shift_y:
+                recipes[key] = Recipe("old-plus", deltas=("SHIFTY",))
+            else:
+                raise ResolutionError(
+                    f"terrain tooltip at 0x{patch.offset:06X} shifts by "
+                    f"{delta}, expected OFFX/SHIFTY"
+                )
         elif (
             patch.group in ("main-loops", "full-redraw-12x9", "helpers")
             and len(patch.new) == 1
@@ -2201,6 +2512,9 @@ RECIPES: dict[tuple[str, int], Recipe] = _build_recipes()
 _STABLE_STAGE_PREFIX = DEFAULT_STAGE
 PARAMETERIZED_STAGES: tuple[str, ...] = (
     _STABLE_STAGE_PREFIX,
+    _STABLE_STAGE_PREFIX + "-tooltipbottomcenter",
+    _STABLE_STAGE_PREFIX + "-unitcommandpanel-rightbottom",
+    _STABLE_STAGE_PREFIX + "-hdlayout",
     _STABLE_STAGE_PREFIX + "-rightbottomcompose",
     _STABLE_STAGE_PREFIX + "-rightbottomaction",
     _STABLE_STAGE_PREFIX + "-rightbottomaction-nativecenter",
@@ -2471,6 +2785,9 @@ def parse_args() -> argparse.Namespace:
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp upgrades that surface only after menu dispatch; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds also widens proven sub_418700 present rectangles; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch makes the later sub_460D80 viewport switch use 800x600 for the map metadata object; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter bottom-docks the map terrain tooltip while preserving its stock horizontal alignment; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom docks the six gameplay command descriptors to the right-bottom screen edges and widens both draw clips; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout combines those two user-chosen validation anchors without changing the stable stage; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose adds validation-only status/action composition copies into the HD bottom strip; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar adds a validation-only first-mission selected-unit text/morale action-panel copyback to the HD map surface; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw reruns that selected-unit panel after sub_40ADF0 full-redraw exits and expects the panel in the bottom strip; "

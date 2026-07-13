@@ -316,3 +316,53 @@ Expected CDB proof shape:
    paths.
 5. Prototype only diagnostic fills first, then replace them with authentic
    frame/sprite redraw once the correct owner and draw order are proven.
+
+## Resolution (2026-07-13): `frame-restore-bands` post-map cave
+
+Implemented as **Option B** with authentic on-surface art (no owner needed).
+
+Root cause confirmed against the surfdump: the native 640x480 chrome (drawn once
+at gameplay entry via `Render_DrawSprite` in `PlayGame`, not `sub_418700`; the
+`dword_526990` post-tile callback is null in the HD route) leaves two genuine
+black bands after the HD expansion, measured on
+`captures/archive/cdb-surface-dump-20260713-072428/surface.png`:
+
+- left gutter `left_frame_hd_extension (0,480,31,599)` = 100% black
+- top-right strip `top_right_extension (640,0,799,15)` = 100% black
+
+Fix: new patch group **`frame-restore-bands`** (validation-only stage
+`...-minimapright-dynvswitch-framerestore`, kept out of `DEFAULT_STAGE`) that
+hooks `sub_418700` at the single post-tile convergence point (`0x004187AF`,
+displaced `test ebp,ebp; jz loc_4189A3`) and jumps to a DGROUP cave at
+`0x0051BE00` (file `0x11A000`). The cave issues two in-surface `0x4024E0` blits,
+copying authentic already-drawn frame pixels:
+
+- native left frame `(0,360)-(31,479)` -> gutter `(0,480)` (continues the
+  vertical ornament downward, seamless at y=479/480);
+- native top frame `(480,0)-(639,15)` -> strip `(640,0)` (continues the top
+  ornament rightward).
+
+The two destination bands are geometrically disjoint from the 12x9 terrain
+(`x>=32, y=16..591`) and the moved minimap (`586..799,16..229`), so no runtime
+exclusion is needed and nothing tears. The `x>=32` bottom strip (`y=592..599`)
+is left as the intended ~8px letterbox.
+
+Validation (`captures/archive/cdb-surface-dump-20260713-143450`, candidate SHA
+`4A507EA779A8B62F9BE8D1A073E3077FE291636461DD9F9D313C5660D0743219`):
+
+- reached `SURFDUMP_READY` at redraw 4 with **no access violation** (the DGROUP
+  cave executes);
+- both bands flip to **100% non-black** with authentic-art histogram similarity
+  `0.68` (left) and `0.79` (top-right) vs their native source bands
+  (`tools/border_frame_bounds.py`; recorded in
+  `captures/current/border-frame-restore-current.json`);
+- `map_tile_coverage.py` edge coverage rose top `80%->100%`, left `80%->100%`
+  with the terrain blank-cell (fog/visibility) pattern unchanged;
+- `patch_stage_report.py` shows `frame-restore-bands 2/2` and the stable HD-map
+  gate still `PASS`; `stable_stage_guard.py` stays `PASS`;
+- `capture_tear_check.py` clean.
+
+The surfdump proxy validates the software surface (`dword_5202E0`) directly; the
+existing top/left frame proves the full-surface present publishes `x<32`/`y<16`
+regions to screen, so the new bands use the same publish path. A real
+visible-runtime capture is the remaining optional gold-standard confirmation.

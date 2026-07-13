@@ -1,0 +1,527 @@
+{
+  "parameters": {
+    "logical_width": 800,
+    "logical_height": 600,
+    "threshold": 12,
+    "bright_threshold": 96,
+    "mostly_black_percent": 5.0,
+    "quant_levels": 8,
+    "match_pairs": [
+      {
+        "dest": "left_frame_hd_extension",
+        "source": "left_frame_native"
+      },
+      {
+        "dest": "top_right_extension",
+        "source": "top_frame_native"
+      }
+    ],
+    "require_region_min_nonblack": [
+      {
+        "region": "left_frame_hd_extension",
+        "minimum_nonblack_percent": 95.0
+      },
+      {
+        "region": "top_right_extension",
+        "minimum_nonblack_percent": 95.0
+      }
+    ],
+    "require_match_min_similarity": [
+      {
+        "dest": "left_frame_hd_extension",
+        "minimum_similarity": 0.3
+      },
+      {
+        "dest": "top_right_extension",
+        "minimum_similarity": 0.3
+      }
+    ]
+  },
+  "regions": [
+    {
+      "name": "top_frame_native",
+      "logical_rect": [
+        0,
+        0,
+        639,
+        15
+      ]
+    },
+    {
+      "name": "top_right_extension",
+      "logical_rect": [
+        640,
+        0,
+        799,
+        15
+      ]
+    },
+    {
+      "name": "left_frame_native",
+      "logical_rect": [
+        0,
+        16,
+        31,
+        479
+      ]
+    },
+    {
+      "name": "left_frame_hd_extension",
+      "logical_rect": [
+        0,
+        480,
+        31,
+        599
+      ]
+    },
+    {
+      "name": "bottom_letterbox",
+      "logical_rect": [
+        32,
+        592,
+        799,
+        599
+      ]
+    },
+    {
+      "name": "right_ui_band",
+      "logical_rect": [
+        586,
+        230,
+        799,
+        599
+      ]
+    }
+  ],
+  "images": [
+    {
+      "path": "captures\\archive\\cdb-surface-dump-20260713-143450\\surface.png",
+      "image": {
+        "width": 800,
+        "height": 600
+      },
+      "logical_size": {
+        "width": 800,
+        "height": 600
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "regions": [
+        {
+          "name": "top_frame_native",
+          "logical_rect": [
+            0,
+            0,
+            639,
+            15
+          ],
+          "image_rect": {
+            "x": 0,
+            "y": 0,
+            "right": 639,
+            "bottom": 15,
+            "width": 640,
+            "height": 16
+          },
+          "pixels": 10240,
+          "black_percent": 0.0,
+          "nonblack_percent": 100.0,
+          "bright_percent": 17.266,
+          "mean_luma": 67.486,
+          "dominant_colors": [
+            {
+              "rgb": [
+                112,
+                80,
+                80
+              ],
+              "percent": 14.492
+            },
+            {
+              "rgb": [
+                80,
+                80,
+                48
+              ],
+              "percent": 13.701
+            },
+            {
+              "rgb": [
+                80,
+                48,
+                48
+              ],
+              "percent": 13.623
+            },
+            {
+              "rgb": [
+                16,
+                16,
+                16
+              ],
+              "percent": 10.732
+            },
+            {
+              "rgb": [
+                48,
+                48,
+                48
+              ],
+              "percent": 9.434
+            }
+          ],
+          "flags": []
+        },
+        {
+          "name": "top_right_extension",
+          "logical_rect": [
+            640,
+            0,
+            799,
+            15
+          ],
+          "image_rect": {
+            "x": 640,
+            "y": 0,
+            "right": 799,
+            "bottom": 15,
+            "width": 160,
+            "height": 16
+          },
+          "pixels": 2560,
+          "black_percent": 0.0,
+          "nonblack_percent": 100.0,
+          "bright_percent": 18.398,
+          "mean_luma": 61.088,
+          "dominant_colors": [
+            {
+              "rgb": [
+                16,
+                16,
+                16
+              ],
+              "percent": 21.133
+            },
+            {
+              "rgb": [
+                80,
+                48,
+                48
+              ],
+              "percent": 11.211
+            },
+            {
+              "rgb": [
+                48,
+                48,
+                48
+              ],
+              "percent": 10.664
+            },
+            {
+              "rgb": [
+                48,
+                48,
+                16
+              ],
+              "percent": 10.508
+            },
+            {
+              "rgb": [
+                112,
+                80,
+                80
+              ],
+              "percent": 10.391
+            }
+          ],
+          "flags": []
+        },
+        {
+          "name": "left_frame_native",
+          "logical_rect": [
+            0,
+            16,
+            31,
+            479
+          ],
+          "image_rect": {
+            "x": 0,
+            "y": 16,
+            "right": 31,
+            "bottom": 479,
+            "width": 32,
+            "height": 464
+          },
+          "pixels": 14848,
+          "black_percent": 0.0,
+          "nonblack_percent": 100.0,
+          "bright_percent": 42.47,
+          "mean_luma": 88.3,
+          "dominant_colors": [
+            {
+              "rgb": [
+                144,
+                112,
+                80
+              ],
+              "percent": 17.76
+            },
+            {
+              "rgb": [
+                112,
+                80,
+                80
+              ],
+              "percent": 14.877
+            },
+            {
+              "rgb": [
+                80,
+                80,
+                48
+              ],
+              "percent": 10.325
+            },
+            {
+              "rgb": [
+                80,
+                48,
+                48
+              ],
+              "percent": 9.22
+            },
+            {
+              "rgb": [
+                176,
+                144,
+                112
+              ],
+              "percent": 9.072
+            }
+          ],
+          "flags": []
+        },
+        {
+          "name": "left_frame_hd_extension",
+          "logical_rect": [
+            0,
+            480,
+            31,
+            599
+          ],
+          "image_rect": {
+            "x": 0,
+            "y": 480,
+            "right": 31,
+            "bottom": 599,
+            "width": 32,
+            "height": 120
+          },
+          "pixels": 3840,
+          "black_percent": 0.0,
+          "nonblack_percent": 100.0,
+          "bright_percent": 18.594,
+          "mean_luma": 61.363,
+          "dominant_colors": [
+            {
+              "rgb": [
+                16,
+                16,
+                16
+              ],
+              "percent": 20.078
+            },
+            {
+              "rgb": [
+                48,
+                48,
+                48
+              ],
+              "percent": 13.099
+            },
+            {
+              "rgb": [
+                80,
+                48,
+                48
+              ],
+              "percent": 11.693
+            },
+            {
+              "rgb": [
+                48,
+                48,
+                16
+              ],
+              "percent": 9.948
+            },
+            {
+              "rgb": [
+                112,
+                80,
+                80
+              ],
+              "percent": 9.766
+            }
+          ],
+          "flags": []
+        },
+        {
+          "name": "bottom_letterbox",
+          "logical_rect": [
+            32,
+            592,
+            799,
+            599
+          ],
+          "image_rect": {
+            "x": 32,
+            "y": 592,
+            "right": 799,
+            "bottom": 599,
+            "width": 768,
+            "height": 8
+          },
+          "pixels": 6144,
+          "black_percent": 100.0,
+          "nonblack_percent": 0.0,
+          "bright_percent": 0.0,
+          "mean_luma": 0.0,
+          "dominant_colors": [
+            {
+              "rgb": [
+                16,
+                16,
+                16
+              ],
+              "percent": 100.0
+            }
+          ],
+          "flags": [
+            "mostly_black"
+          ]
+        },
+        {
+          "name": "right_ui_band",
+          "logical_rect": [
+            586,
+            230,
+            799,
+            599
+          ],
+          "image_rect": {
+            "x": 586,
+            "y": 230,
+            "right": 799,
+            "bottom": 599,
+            "width": 214,
+            "height": 370
+          },
+          "pixels": 79180,
+          "black_percent": 76.407,
+          "nonblack_percent": 23.593,
+          "bright_percent": 10.134,
+          "mean_luma": 22.011,
+          "dominant_colors": [
+            {
+              "rgb": [
+                16,
+                16,
+                16
+              ],
+              "percent": 76.407
+            },
+            {
+              "rgb": [
+                176,
+                112,
+                48
+              ],
+              "percent": 8.601
+            },
+            {
+              "rgb": [
+                176,
+                80,
+                16
+              ],
+              "percent": 7.758
+            },
+            {
+              "rgb": [
+                112,
+                16,
+                16
+              ],
+              "percent": 3.036
+            },
+            {
+              "rgb": [
+                144,
+                48,
+                16
+              ],
+              "percent": 2.592
+            }
+          ],
+          "flags": []
+        }
+      ],
+      "matches": [
+        {
+          "dest": "left_frame_hd_extension",
+          "source": "left_frame_native",
+          "similarity": 0.6841,
+          "dest_nonblack_percent": 100.0,
+          "source_nonblack_percent": 100.0
+        },
+        {
+          "dest": "top_right_extension",
+          "source": "top_frame_native",
+          "similarity": 0.7867,
+          "dest_nonblack_percent": 100.0,
+          "source_nonblack_percent": 100.0
+        }
+      ],
+      "gate": {
+        "passed": true,
+        "checks": [
+          {
+            "kind": "nonblack",
+            "region": "left_frame_hd_extension",
+            "minimum_nonblack_percent": 95.0,
+            "actual_nonblack_percent": 100.0,
+            "passed": true
+          },
+          {
+            "kind": "nonblack",
+            "region": "top_right_extension",
+            "minimum_nonblack_percent": 95.0,
+            "actual_nonblack_percent": 100.0,
+            "passed": true
+          },
+          {
+            "kind": "match",
+            "dest": "left_frame_hd_extension",
+            "source": "left_frame_native",
+            "minimum_similarity": 0.3,
+            "actual_similarity": 0.6841,
+            "passed": true
+          },
+          {
+            "kind": "match",
+            "dest": "top_right_extension",
+            "source": "top_frame_native",
+            "minimum_similarity": 0.3,
+            "actual_similarity": 0.7867,
+            "passed": true
+          }
+        ],
+        "failures": []
+      }
+    }
+  ]
+}
