@@ -1,0 +1,8 @@
+.echo === Clash95 continuity roundtrip extra: force saveGame slot 7 on the world map ===
+.echo Harness-only continuity probe: after the natural load route reaches the
+.echo world-map poll, force one saveGame call for slot 7 so save 7.dat captures
+.echo the 16-byte name header plus the full 586398-byte gameData block.
+.echo State flag lives at 00400040 in the DOS stub - never read at runtime -
+.echo because the base template already consumes every t0-t19 pseudo-register.
+ed 00400040 0
+bp 0040B0C3 ".if (poi(00400040) == 0) { ed 00400040 1; .printf \"CONTINUITY_SAVE_CALL slot=7 gd=%p surface=%p size=(%d,%d)\\n\", poi(005202e4), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); r esp=@esp-4; ed @esp 0040B0C3; r eax=7; r edx=00543d28; r eip=004443E0; } .else { .if (poi(00400040) == 1) { ed 00400040 2; .printf \"CONTINUITY_SAVE_RETURNED slot=7 eax=%d gd=%p\\n\", @eax, poi(005202e4); }; }; gc"
