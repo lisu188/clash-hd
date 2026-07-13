@@ -2282,6 +2282,7 @@ def build_first_mission_visual_audit(args: argparse.Namespace) -> dict[str, Any]
         diff_threshold=args.first_mission_visual_diff_threshold,
         max_stripe_high_percent=args.first_mission_visual_max_stripe_high_percent,
         max_stripe_excess_percent=args.first_mission_visual_max_stripe_excess_percent,
+        real_runtime_frame=first_mission_visual_audit.REAL_RUNTIME_CORROBORATION_FRAME,
     )
     report = first_mission_visual_audit.build_report(
         first_mission_visual_audit.DEFAULT_FRAMES,
