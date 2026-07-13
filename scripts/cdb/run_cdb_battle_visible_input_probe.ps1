@@ -102,6 +102,36 @@ function Wait-LogPattern {
     $cdbHasStarted = $false
     while ((Get-Date) -lt $deadline) {
         if (Test-Path -LiteralPath $Path) {
+            # Probe printf rows can arrive without trailing newlines, gluing the
+            # ready marker onto a prompt-prefixed or still-unterminated line that
+            # the per-line scan below skips. Match the pattern on raw content
+            # first; keep the line scan for breakpoint-failure detection.
+            try {
+                $rawStream = [System.IO.File]::Open($Path, 'Open', 'Read', 'ReadWrite')
+                try {
+                    $rawReader = New-Object System.IO.StreamReader($rawStream)
+                    $rawText = $rawReader.ReadToEnd()
+                }
+                finally {
+                    $rawStream.Dispose()
+                }
+                # CDB echoes the probe script into the log, so the pattern also
+                # appears inside bp definitions with %d/%p placeholders. Accept
+                # only an occurrence whose following text carries real values
+                # (no % format placeholders).
+                $patternIndex = 0
+                while (($patternIndex = $rawText.IndexOf($Pattern, $patternIndex)) -ge 0) {
+                    $tailStart = $patternIndex + $Pattern.Length
+                    $tailLength = [Math]::Min(160, $rawText.Length - $tailStart)
+                    $tail = $rawText.Substring($tailStart, $tailLength)
+                    if (-not $tail.Contains('%')) {
+                        return
+                    }
+                    $patternIndex = $tailStart
+                }
+            }
+            catch {
+            }
             $lines = @(Get-Content -LiteralPath $Path)
             if ($lines.Count -lt $processedLineCount) {
                 $processedLineCount = 0
