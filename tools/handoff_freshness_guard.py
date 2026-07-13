@@ -22,7 +22,8 @@ DEFAULT_STATE = Path(".codex-loop/STATE.md")
 DEFAULT_TASKS = Path(".codex-loop/TASKS.md")
 DEFAULT_EVIDENCE_INDEX = Path("captures/current/hd-map-evidence-current.md")
 DEFAULT_PROGRESS = Path("docs/hd/HD_MOD_PROGRESS.md")
-DEFAULT_BOTTOM_QUESTION = Path("wiki/questions/how-should-the-bottom-tooltip-be-recovered.md")
+DEFAULT_PROJECT_GUIDE = Path("docs/hd/WORKING_WITH_THIS_REPO.md")
+DEFAULT_BOTTOM_QUESTION = DEFAULT_PROJECT_GUIDE
 RUNTIME_POLICY = "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
 
 FORBIDDEN_STALE_PHRASES = [
@@ -122,6 +123,10 @@ def read_text(path: Path) -> tuple[str, list[str]]:
         return "", [f"could not read {path}: {type(exc).__name__}: {exc}"]
 
 
+def normalize_text(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip().lower()
+
+
 def check_forbidden(path: Path, text: str) -> list[str]:
     lowered = normalize_text(text)
     failures: list[str] = []
@@ -150,18 +155,22 @@ def check_required_groups(
     return groups, failures
 
 
-def normalize_text(text: str) -> str:
-    return re.sub(r"\s+", " ", text).strip().lower()
+def supporting_doc(args: argparse.Namespace) -> Path:
+    requested = Path(getattr(args, "bottom_question_md", DEFAULT_PROJECT_GUIDE))
+    if requested.exists():
+        return requested
+    return DEFAULT_PROJECT_GUIDE
 
 
 def build_guard(args: argparse.Namespace) -> dict[str, Any]:
+    project_guide = supporting_doc(args)
     files = [
         args.next_md,
         args.state_md,
         args.tasks_md,
         args.evidence_index,
         args.progress_md,
-        args.bottom_question_md,
+        project_guide,
     ]
     failures: list[str] = []
     file_checks: list[dict[str, Any]] = []
@@ -199,19 +208,13 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
         "passed": not failures,
         "runtime_policy": RUNTIME_POLICY,
         "guard_policy": (
-            "handoff docs must mention the current route timing guard, keep the "
-            "right-bottom validation stage out of stable until manual proof or "
-            "explicit CDB-only override, keep the non-promoting manual proof "
-            "template visible, keep the percentage completion summary visible, "
-            "keep the right-bottom owner-flag inventory visible, "
-            "keep the load-slot route-limit boundary visible, "
-            "keep the load-slot transition readiness matrix visible, "
-            "preserve the user's no-popup runtime preference, "
-            "require the visible-runtime launcher approval guard, "
-            "and avoid stale route/input-safety, legacy visible-capture, or "
-            "VM/visual-smoke blockers"
+            "handoff docs must mention the current route timing guard, keep validation stages "
+            "out of stable until required proof exists, retain current manual-proof and "
+            "completion artifacts, preserve the no-popup runtime preference, require the "
+            "visible-runtime approval guard, and avoid stale route/input or VM blockers"
         ),
         "files": file_checks,
+        "supporting_project_guide": str(project_guide),
         "phrase_groups": phrase_groups,
         "loop_phrase_groups": loop_phrase_groups,
         "failures": failures,
@@ -240,6 +243,7 @@ def write_markdown(path: Path, guard: dict[str, Any]) -> None:
         f"- Generated: `{guard['generated_at']}`",
         f"- Runtime policy: {guard['runtime_policy']}",
         f"- Guard policy: {guard['guard_policy']}",
+        f"- Supporting project guide: `{guard.get('supporting_project_guide')}`",
         "",
         "## Phrase Groups",
         "",
@@ -279,7 +283,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--tasks-md", type=Path, default=DEFAULT_TASKS)
     parser.add_argument("--evidence-index", type=Path, default=DEFAULT_EVIDENCE_INDEX)
     parser.add_argument("--progress-md", type=Path, default=DEFAULT_PROGRESS)
-    parser.add_argument("--bottom-question-md", type=Path, default=DEFAULT_BOTTOM_QUESTION)
+    parser.add_argument("--bottom-question-md", type=Path, default=DEFAULT_PROJECT_GUIDE)
     parser.add_argument("--write-json", type=Path, default=DEFAULT_JSON)
     parser.add_argument("--write-markdown", type=Path, default=DEFAULT_MD)
     parser.add_argument("--require-pass", action="store_true")
