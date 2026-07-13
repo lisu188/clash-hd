@@ -1,0 +1,16 @@
+# HD Layout Summary Tests
+
+- Status: PASS
+- Generated: `2026-07-13T08:53:09+02:00`
+- Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
+- Guard policy: proves the hidden-CDB HD layout parser fails closed on anchor, descriptor, clip, redraw, and access-violation regressions
+
+## Tests
+
+- `HD layout summary passes exact anchors without requiring a tooltip draw marker`
+- `HD layout summary rejects a wrong tooltip anchor`
+- `HD layout summary rejects a missing command-panel descriptor draw`
+- `HD layout summary rejects a wrong command-panel clip`
+- `HD layout summary rejects access-violation markers`
+- `HD layout summary requires an exact redraw-clip allow row after a redraw invocation`
+- `HD layout summary CLI writes JSON/Markdown and honors --require-pass`

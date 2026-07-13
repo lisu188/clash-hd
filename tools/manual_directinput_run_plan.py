@@ -35,13 +35,18 @@ RUNTIME_POLICY = (
 GUARD_POLICY = (
     "manual DirectInput commands remain templates until explicit user approval; every visible "
     "runtime command must carry -AllowVisibleRuntime and the proof manifest must be validated "
-    "before promotion"
+    "before promotion; the visible harness window must use the safe desktop offset so "
+    "lower/right 800x600 client targets are not cursor-clamped"
 )
 CANDIDATE_PATH_POLICY = (
     "candidate placeholders must resolve to freshly built, hashed executables under "
     f"{manual_directinput_checklist.EXPECTED_CANDIDATE_ROOT}; never use "
     f"{manual_directinput_checklist.FORBIDDEN_LIVE_ORIGINAL} or a repository-local executable"
 )
+# The approved 2026-07-13 wrapper run measured a (3,26) non-client offset on
+# the 800x600 logical desktop.  Moving the outer window to (0,-30) keeps the
+# full logical client, including x=780/y=580 proof points, inside 0..799/0..599.
+SAFE_MOVE_WINDOW_ORIGIN = (0, -30)
 
 
 COMMAND_SPECS: dict[str, dict[str, Any]] = {
@@ -129,6 +134,10 @@ def visible_command(spec: dict[str, Any]) -> str:
             "300",
             "-ClickRepeat",
             "2",
+            "-MoveWindowX",
+            str(SAFE_MOVE_WINDOW_ORIGIN[0]),
+            "-MoveWindowY",
+            str(SAFE_MOVE_WINDOW_ORIGIN[1]),
             "-AllowVisibleRuntime",
         ]
     )
@@ -171,6 +180,7 @@ def build_commands() -> dict[str, dict[str, Any]]:
             "route": spec["route"],
             "route_points": spec["route_points"],
             "followup_points": spec["followup_points"],
+            "move_window_origin": list(SAFE_MOVE_WINDOW_ORIGIN),
             "requires_explicit_user_approval": True,
             "contains_allow_visible_runtime": True,
             "command": visible_command(spec),
@@ -240,6 +250,10 @@ def build_plan(
             failures.append(f"missing command template for manual target: {item_id}")
         elif "-AllowVisibleRuntime" not in command:
             failures.append(f"manual target command lacks -AllowVisibleRuntime: {item_id}")
+        if "-MoveWindowX 0 -MoveWindowY -30" not in command:
+            failures.append(
+                f"manual target command lacks the safe (0,-30) window offset: {item_id}"
+            )
         candidate_placeholder = commands.get(item_id, {}).get("candidate_placeholder", "")
         if not manual_directinput_checklist._is_same_or_under(
             candidate_placeholder,
@@ -265,6 +279,7 @@ def build_plan(
         "candidate executable path placeholders are replaced with freshly built, hashed candidates",
         CANDIDATE_PATH_POLICY,
         "stale clash95*/cdb processes are killed and recorded before launching a visible runtime",
+        "the harness uses -MoveWindowX 0 -MoveWindowY -30 so the measured (3,26) non-client offset still leaves 800x600 lower/right client points inside the active desktop instead of cursor-clamping them",
         "each manual target captures observed result, screenshot or notes, pass/fail notes, and no-crash status",
         "captures/current/manual-directinput-proof-current.json is filled from the approved run and validated before promotion",
     ]
@@ -293,6 +308,11 @@ def build_plan(
                 "-AllowVisibleRuntime" in command.get("command", "")
                 for command in commands.values()
             ),
+            "all_commands_have_safe_window_origin": all(
+                "-MoveWindowX 0 -MoveWindowY -30" in command.get("command", "")
+                and command.get("move_window_origin") == [0, -30]
+                for command in commands.values()
+            ),
             "template_valid_as_proof": template_report.get("template_valid_as_proof"),
             "manual_proof_valid": checklist.get("manual_proof_valid"),
             "promotion_ready": checklist.get("promotion_ready"),
@@ -316,6 +336,7 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Proof ready: `{report['proof_ready']}`",
         f"- Manual target count: `{report['manual_target_count']}`",
         f"- All commands have -AllowVisibleRuntime: `{summary.get('all_commands_have_allow_visible_runtime')}`",
+        f"- All commands use safe window offset (0,-30): `{summary.get('all_commands_have_safe_window_origin')}`",
         f"- Manual proof valid: `{summary.get('manual_proof_valid')}`",
         f"- Promotion ready: `{summary.get('promotion_ready')}`",
         "",
@@ -334,6 +355,7 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
                 f"- Route: `{item['route']}`",
                 f"- Load-route points: `{item['route_points']}`",
                 f"- Follow-up manual points: `{item['followup_points'] or 'n/a'}`",
+                f"- Safe window origin: `{item['move_window_origin']}`",
                 f"- Notes: {item['notes']}",
                 "",
                 "```powershell",

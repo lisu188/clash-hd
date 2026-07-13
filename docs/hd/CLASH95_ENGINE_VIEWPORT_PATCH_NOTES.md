@@ -30,6 +30,109 @@ That checkout contains a single older `clash.c` and is useful for historical
 logic comparison. The Windows target should be driven from `C:\Clash\clash95.c`
 and the map/Ghidra metadata.
 
+## 2026-07-13 User-Chosen HD Layout Anchors (Validation Only)
+
+The user chose the intended 800x600 gameplay layout from real-runtime review:
+terrain tooltip text belongs at the bottom of the play area, horizontally
+centered, and the six-icon selected-unit command panel (globe plus unit
+figures) belongs in the right-bottom corner under the right-anchored minimap.
+This command panel is the `dword_511D40` descriptor grid; it is distinct from
+the older 370x20 selected-unit text/morale copyback lane discussed below.
+
+The exact tooltip owner chain is the four map-context initializers
+(`sub_40AD40`, `PlayGame`, `Unit_Attack`, and `Unit_AttackBuilding`) ->
+`sub_422880` -> tooltip surface `dword_526EF4` and box globals
+`dword_526EF8/dword_526EFC/dword_526F00/dword_526F04`. During gameplay,
+`sub_4084A0` selects the localized terrain/AP string -> `sub_4229A0` reads
+those box globals -> `sub_40C190` draws the text -> `Render_Present` publishes
+it. The validation group `terrain-tooltip-bottom-center` translates the native
+X interval with the centered 640x480 frame and docks the initializer Y value to
+the 800x600 bottom edge. The exact immediate patches are:
+
+| Context/value | File offset | VA | Old bytes | New bytes |
+| --- | ---: | ---: | --- | --- |
+| `sub_40AD40` top | `0x00A198` | `0x0040AD98` | `D3 01 00 00` (467) | `4B 02 00 00` (587) |
+| `sub_40AD40` right | `0x00A1A4` | `0x0040ADA4` | `D9 01 00 00` (473) | `29 02 00 00` (553) |
+| `sub_40AD40` left | `0x00A1A9` | `0x0040ADA9` | `A0 00 00 00` (160) | `F0 00 00 00` (240) |
+| `PlayGame` top | `0x00AB94` | `0x0040B794` | `D3 01 00 00` (467) | `4B 02 00 00` (587) |
+| `PlayGame` right | `0x00ABA0` | `0x0040B7A0` | `D9 01 00 00` (473) | `29 02 00 00` (553) |
+| `PlayGame` left | `0x00ABA5` | `0x0040B7A5` | `A0 00 00 00` (160) | `F0 00 00 00` (240) |
+| `Unit_Attack` top | `0x01A5B3` | `0x0041B1B3` | `D3 01 00 00` (467) | `4B 02 00 00` (587) |
+| `Unit_Attack` right | `0x01A5B8` | `0x0041B1B8` | `D9 01 00 00` (473) | `29 02 00 00` (553) |
+| `Unit_Attack` left | `0x01A5C2` | `0x0041B1C2` | `A0 00 00 00` (160) | `F0 00 00 00` (240) |
+| `Unit_AttackBuilding` top | `0x01B022` | `0x0041BC22` | `D3 01 00 00` (467) | `4B 02 00 00` (587) |
+| `Unit_AttackBuilding` right | `0x01B027` | `0x0041BC27` | `D9 01 00 00` (473) | `29 02 00 00` (553) |
+| `Unit_AttackBuilding` left | `0x01B031` | `0x0041BC31` | `A0 00 00 00` (160) | `F0 00 00 00` (240) |
+
+The exact command-panel owner chain is the six-entry, 53-byte descriptor list
+at `dword_511D40` -> `sub_419D80` for drawing and `sub_419DC0` ->
+`sub_419B80` for hit testing. Because drawing and input consume the same X/Y
+fields, the validation group `selected-unit-command-panel-right-bottom` moves
+the descriptors without a separate hitbox shim and widens both descriptor
+draw clips. The single-descriptor clip patch is at file offset **`0x019165`**,
+VA **`0x00419D65`** (not `0x019164`). The exact patches are:
+
+| Owner/value | File offset | VA | Old bytes | New bytes |
+| --- | ---: | ---: | --- | --- |
+| `sub_419D60` single redraw X clip | `0x019165` | `0x00419D65` | `80 02 00 00` (640) | `20 03 00 00` (800) |
+| `sub_419D80` list draw X clip | `0x01918E` | `0x00419D8E` | `80 02 00 00` (640) | `20 03 00 00` (800) |
+| descriptor 0 | `0x10FF40` | `0x00511D40` | `A0 01 00 00 90 01 00 00` (416,400) | `60 02 00 00 10 02 00 00` (608,528) |
+| descriptor 1 | `0x10FF75` | `0x00511D75` | `E0 01 00 00 90 01 00 00` (480,400) | `A0 02 00 00 10 02 00 00` (672,528) |
+| descriptor 2 | `0x10FFAA` | `0x00511DAA` | `20 02 00 00 90 01 00 00` (544,400) | `E0 02 00 00 10 02 00 00` (736,528) |
+| descriptor 3 | `0x10FFDF` | `0x00511DDF` | `A0 01 00 00 B0 01 00 00` (416,432) | `60 02 00 00 30 02 00 00` (608,560) |
+| descriptor 4 | `0x110014` | `0x00511E14` | `E0 01 00 00 B0 01 00 00` (480,432) | `A0 02 00 00 30 02 00 00` (672,560) |
+| descriptor 5 | `0x110049` | `0x00511E49` | `20 02 00 00 B0 01 00 00` (544,432) | `E0 02 00 00 30 02 00 00` (736,560) |
+
+The individual validation stages end in `-tooltipbottomcenter` and
+`-unitcommandpanel-rightbottom`; the combined stage is
+`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout`.
+The protected stable/default stage remains
+`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
+and contains neither new group.
+
+Candidate SHA-256
+`911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD`
+has a 138/138 old/new-byte match with zero unexpected records in
+`captures/current/patch-stage-hdlayout-current.json`. Hidden-desktop run
+`captures/archive/cdb-surface-dump-20260713-072428` passed without visible
+fallback. Its focused CDB rows prove:
+
+- live tooltip globals `left=240, top=586, right=553, bottom=599` on an
+  800x600 route (the initializer's 587 top argument becomes live top 586 after
+  the stock text-offset calculation);
+- both command draw clips equal 800;
+- all six descriptors draw at `(608,528)`, `(672,528)`, `(736,528)`,
+  `(608,560)`, `(672,560)`, and `(736,560)`;
+- the render target equals `dword_5202E0`, the live 800x600 map surface; and
+- `sub_419DC0` hit scanning observes the relocated descriptor endpoints; and
+- a labeled debugger-only invocation of `sub_419D60` for descriptor 5 at
+  `(736,560)` reaches `0x00419D6D` with `clip=800`, proving the corrected
+  high-X single-descriptor redraw branch. This is helper/clip evidence, not a
+  manual-input claim.
+
+`captures/current/hd-layout-summary-current.json` and `.md` apply a strict
+repo-only gate to those markers and report PASS.
+
+Approved visible-runtime diagnostic
+`captures/archive/visual-smoke-20260713-075818` used the identical candidate
+SHA through an isolated `C:\ClashTests` fixture. Authentic screen captures now
+pass the chosen bottom-centered tooltip and right-bottom command-panel
+composition review; the repo-only result is
+`captures/current/hd-layout-visible-current.json`. Input evidence remains
+incomplete: a no-click Win32 hover at client `(640,544)` was exact, but the
+descriptor-5 held-click request `(760,560)` landed at `(716,493)`, an error of
+`(-44,-67)`, so its path and click-path verification both failed. The run used
+an isolated save fixture and automated SendInput, and therefore is not manual
+DirectInput or callback proof. Manual validation remains `0/5`, stable
+promotion is deferred, and the protected default stage is unchanged. The
+manual run planner now adds `-MoveWindowX 0 -MoveWindowY -30` to every future
+command. The approved run measured client origin `(3,26)`; this outer-window
+offset keeps logical lower/right targets inside the active 800x600 desktop.
+The explicit fail-closed record
+`captures/current/hd-layout-promotion-decision-current.json` passes only as
+`defer_stable_promotion`; click/callback/manual proof, promotion readiness, and
+stable-stage change all remain false.
+
 ## 2026-06-16 First Mission Bottom Bar And Black Patches
 
 The selected-unit action bar correction is validation-only and keeps the stable

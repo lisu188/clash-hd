@@ -1,0 +1,25 @@
+{
+    "Path":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-145714\\route-03-confirm-load.png",
+    "Hash":  "B3BD100D4BD96E7D27589F7B48D224545A65E80093C55257BA5FCF6C6A5152EE",
+    "Width":  363,
+    "Height":  151,
+    "OriginX":  1745,
+    "OriginY":  1025,
+    "CenterWindowMatchesTarget":  false,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "windowdc-contaminated-fallback",
+    "TargetHwnd":  "0xD520BE0",
+    "CenterWindowHwnd":  "0x8A1040C",
+    "CenterRootHwnd":  "0x8A1040C",
+    "NonblackPercent":  46.559,
+    "MeanLuma":  110.574,
+    "UniqueSampleColors":  53,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  244,
+                           "Bottom":  100,
+                           "Width":  245,
+                           "Height":  101
+                       }
+}

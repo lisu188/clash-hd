@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T21:35:41+02:00",
+  "generated_at": "2026-07-13T08:54:22+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves generated row-specific transition probes have no unresolved placeholders, keep slot-specific select/accept conditions, and preserve the planned raw mouse values",

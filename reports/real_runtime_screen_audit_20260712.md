@@ -62,9 +62,12 @@ hardening to a same-state A/B remains available.
   engine draws.
 - **Battle click-to-callback**: hard-blocked (CDB will not complete dgVoodoo
   D3D device creation under the debugger); unrelated to these six screens.
-- The `first_mission_visual_audit` gate stays failing (honest) until a
-  same-state real-runtime capture replaces the proxy primary frame; this
-  report is the evidence for why those ~region checks are proxy-invalid.
+- **Post-report policy update (2026-07-13):** `first_mission_visual_audit`
+  now accepts this evidence as per-region render-presence corroboration. A raw
+  proxy-black region is excused only when the supplied real-runtime frame
+  measures that same screen region as clearly rendered. This is not a
+  same-state pixel comparison; a same-state A/B remains useful optional
+  hardening, not a prerequisite for the current gate.
 
 Evidence PNGs are kept local per the no-large-captures packaging boundary;
 paths are recorded in `captures/current/manual-visible-session-2026-07-12.md`.

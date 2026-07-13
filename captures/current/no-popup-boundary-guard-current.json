@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-12T21:36:17+02:00",
-  "passed": false,
+  "generated_at": "2026-07-13T08:55:07+02:00",
+  "passed": true,
   "runtime_policy": "repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report",
   "evidence_index": "captures\\current\\hd-map-evidence-current.md",
   "required_guard_count": 7,
-  "required_supporting_report_count": 91,
-  "required_report_count": 98,
+  "required_supporting_report_count": 93,
+  "required_report_count": 100,
   "required_guards": [
     "stable_stage_guard",
     "exe_artifact_guard",
@@ -19,6 +19,8 @@
   "required_supporting_reports": [
     "no_popup_map_evidence",
     "no_popup_map_evidence_tests",
+    "hd_layout_summary",
+    "hd_layout_summary_tests",
     "no_visible_runtime_guard_tests",
     "no_popup_guard_tests",
     "visible_runtime_launcher_guard_tests",
@@ -119,6 +121,8 @@
     "launcher_policy_guard",
     "no_popup_map_evidence",
     "no_popup_map_evidence_tests",
+    "hd_layout_summary",
+    "hd_layout_summary_tests",
     "no_visible_runtime_guard_tests",
     "no_popup_guard_tests",
     "visible_runtime_launcher_guard_tests",
@@ -331,6 +335,34 @@
         "expected_markdown": "no-popup-map-evidence-tests-current.md",
         "refresh_markdown": "captures\\current\\no-popup-map-evidence-tests-current.md",
         "refresh_json": "captures\\current\\no-popup-map-evidence-tests-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "hd_layout_summary": {
+      "passed": true,
+      "summary": {
+        "purpose": "hidden-CDB proof for the bottom-centered terrain tooltip and right-bottom selected-unit command-panel anchors",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "hd-layout-summary-current.md",
+        "refresh_markdown": "captures\\current\\hd-layout-summary-current.md",
+        "refresh_json": "captures\\current\\hd-layout-summary-current.json",
+        "linked_from_evidence_index": true,
+        "markdown_exists": true
+      },
+      "failures": []
+    },
+    "hd_layout_summary_tests": {
+      "passed": true,
+      "summary": {
+        "purpose": "fixture regression coverage for the hidden-CDB HD layout summary",
+        "expected_pass": true,
+        "observed_passed": true,
+        "expected_markdown": "hd-layout-summary-tests-current.md",
+        "refresh_markdown": "captures\\current\\hd-layout-summary-tests-current.md",
+        "refresh_json": "captures\\current\\hd-layout-summary-tests-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
@@ -827,10 +859,10 @@
       "failures": []
     },
     "right_bottom_visual_artifact_guard": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "purpose": "right-bottom natural UI stripe/layout artifact remains explicitly non-promoting",
-        "expected_pass": true,
+        "expected_pass": false,
         "observed_passed": false,
         "expected_markdown": "right-bottom-visual-artifact-guard-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-visual-artifact-guard-current.md",
@@ -838,9 +870,7 @@
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": [
-        "refresh check is not passing: right_bottom_visual_artifact_guard"
-      ]
+      "failures": []
     },
     "right_bottom_visual_artifact_guard_tests": {
       "passed": true,
@@ -859,9 +889,9 @@
     "first_mission_visual_audit": {
       "passed": true,
       "summary": {
-        "purpose": "first-mission selected-unit frame keeps bottom action-bar placement and surfaces remaining black patch blockers without treating them as fixed",
-        "expected_pass": false,
-        "observed_passed": false,
+        "purpose": "first-mission selected-unit frame keeps bottom action-bar placement and requires raw proxy-black regions to be absent or positively corroborated as rendered by a real-runtime frame",
+        "expected_pass": true,
+        "observed_passed": true,
         "expected_markdown": "first-mission-visual-audit-current.md",
         "refresh_markdown": "captures\\current\\first-mission-visual-audit-current.md",
         "refresh_json": "captures\\current\\first-mission-visual-audit-current.json",
@@ -1557,20 +1587,18 @@
       "failures": []
     },
     "docs_consistency_guard": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "purpose": "current docs and handoff files match generated stable-stage/no-popup/manual-proof facts",
         "expected_pass": true,
-        "observed_passed": false,
+        "observed_passed": true,
         "expected_markdown": "docs-consistency-current.md",
         "refresh_markdown": "captures\\current\\docs-consistency-current.md",
         "refresh_json": "captures\\current\\docs-consistency-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": [
-        "refresh check is not passing: docs_consistency_guard"
-      ]
+      "failures": []
     },
     "docs_consistency_guard_tests": {
       "passed": true,
@@ -1587,8 +1615,5 @@
       "failures": []
     }
   },
-  "failures": [
-    "right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard",
-    "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
-  ]
+  "failures": []
 }

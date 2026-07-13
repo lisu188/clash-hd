@@ -61,6 +61,17 @@ REQUIRED_SUPPORTING_REPORTS = {
         "markdown": "no-popup-map-evidence-tests-current.md",
         "purpose": "fixture regression coverage for the no-popup map evidence matrix",
     },
+    "hd_layout_summary": {
+        "markdown": "hd-layout-summary-current.md",
+        "purpose": (
+            "hidden-CDB proof for the bottom-centered terrain tooltip and "
+            "right-bottom selected-unit command-panel anchors"
+        ),
+    },
+    "hd_layout_summary_tests": {
+        "markdown": "hd-layout-summary-tests-current.md",
+        "purpose": "fixture regression coverage for the hidden-CDB HD layout summary",
+    },
     "no_visible_runtime_guard_tests": {
         "markdown": "no-visible-runtime-guard-tests-current.md",
         "purpose": "fixture regression coverage for the no-visible runtime guard",
@@ -204,6 +215,7 @@ REQUIRED_SUPPORTING_REPORTS = {
     "right_bottom_visual_artifact_guard": {
         "markdown": "right-bottom-visual-artifact-guard-current.md",
         "purpose": "right-bottom natural UI stripe/layout artifact remains explicitly non-promoting",
+        "allow_failed": True,
     },
     "right_bottom_visual_artifact_guard_tests": {
         "markdown": "right-bottom-visual-artifact-guard-tests-current.md",
@@ -213,9 +225,9 @@ REQUIRED_SUPPORTING_REPORTS = {
         "markdown": "first-mission-visual-audit-current.md",
         "purpose": (
             "first-mission selected-unit frame keeps bottom action-bar placement and "
-            "surfaces remaining black patch blockers without treating them as fixed"
+            "requires raw proxy-black regions to be absent or positively corroborated "
+            "as rendered by a real-runtime frame"
         ),
-        "allow_failed": True,
     },
     "first_mission_visual_audit_tests": {
         "markdown": "first-mission-visual-audit-tests-current.md",

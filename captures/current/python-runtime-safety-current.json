@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-07-12T21:35:58+02:00",
+  "generated_at": "2026-07-13T12:28:59+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
   "root": "C:\\Users\\andrz\\git\\clash-hd",
-  "file_count": 234,
-  "risky_file_count": 112,
+  "file_count": 244,
+  "risky_file_count": 118,
   "classification_counts": {
-    "safe": 122,
+    "safe": 126,
     "user_gated_launcher": 1,
-    "exempt": 26,
+    "exempt": 28,
     "manual_visible_runtime_gated": 2,
-    "test_fixture": 83
+    "test_fixture": 87
   },
   "gated_helpers": {
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
@@ -28,6 +28,8 @@
     "hd_endurance_next_actions.py": "repo-only command planner; postmessage and runtime text appear only in approval-gated command templates",
     "hd_soak_approval_preflight.py": "repo-only approval packet builder; postmessage and runtime text appear only in non-executing command validation",
     "hd_soak_failure_triage.py": "repo-only report classifier; postmessage text appears only in failure guidance and no runtime APIs are called",
+    "hd_layout_promotion_decision.py": "repo-only evidence decision; Win32 text describes the archived automated-hover proof class and no runtime/input APIs are called",
+    "hd_layout_visible_summary.py": "repo-only PNG/JSON evidence parser; Win32 cursor and desktop text describes archived evidence and no runtime/input APIs are called",
     "hd_soak_harness_guard.py": "repo-only PowerShell source scanner; postmessage text appears only in required source-token checks",
     "hd_soak_intro_skip_rerun_readiness.py": "repo-only readiness gate; visible-runtime and postmessage text appears only in approval-boundary validation",
     "hd_soak_short_artifact_manifest.py": "repo-only command manifest; postmessage text appears only in approval-gated command templates",
@@ -249,6 +251,14 @@
       "failures": []
     },
     {
+      "path": "tools/capture_tear_check.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/castle_barracks_action_click_summary.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
@@ -421,14 +431,18 @@
       "reason": "repo-only evidence coordinator; risky API text appears in policy/test descriptions",
       "risk_categories": [
         "postmessage",
-        "sendinput"
+        "sendinput",
+        "win32_user32"
       ],
       "risk_lines": {
+        "win32_user32": [
+          1021
+        ],
         "sendinput": [
-          4082
+          4417
         ],
         "postmessage": [
-          4082
+          4417
         ]
       },
       "failures": []
@@ -554,6 +568,49 @@
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
       "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_layout_promotion_decision.py",
+      "classification": "exempt",
+      "reason": "repo-only evidence decision; Win32 text describes the archived automated-hover proof class and no runtime/input APIs are called",
+      "risk_categories": [
+        "win32_user32"
+      ],
+      "risk_lines": {
+        "win32_user32": [
+          296
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/hd_layout_summary.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_layout_visible_summary.py",
+      "classification": "exempt",
+      "reason": "repo-only PNG/JSON evidence parser; Win32 cursor and desktop text describes archived evidence and no runtime/input APIs are called",
+      "risk_categories": [
+        "cursor_window_input",
+        "win32_user32"
+      ],
+      "risk_lines": {
+        "win32_user32": [
+          7,
+          455,
+          580,
+          607
+        ],
+        "cursor_window_input": [
+          607
+        ]
+      },
       "failures": []
     },
     {
@@ -892,7 +949,7 @@
       ],
       "risk_lines": {
         "sendinput": [
-          127
+          132
         ]
       },
       "failures": []
@@ -1293,34 +1350,36 @@
           57,
           58,
           59,
-          74,
-          78
+          76,
+          80
         ],
         "ctypes": [
           25,
-          161
+          163
         ],
         "win32_user32": [
           2,
-          67,
-          75,
-          161
+          63,
+          64,
+          69,
+          77,
+          163
         ],
         "sendinput": [
           27,
           54,
-          161
+          163
         ],
         "postmessage": [
           28,
           60,
           61,
           62,
-          63,
-          64,
           65,
           66,
-          161
+          67,
+          68,
+          163
         ],
         "cursor_window_input": [
           30,
@@ -1548,6 +1607,14 @@
     },
     {
       "path": "tools/right_bottom_natural_route_guard.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/right_bottom_natural_slot2_summary.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
@@ -1857,6 +1924,14 @@
           21
         ]
       },
+      "failures": []
+    },
+    {
+      "path": "tools/test_capture_tear_check.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
       "failures": []
     },
     {
@@ -2171,13 +2246,13 @@
       "risk_lines": {
         "subprocess": [
           9,
-          96,
-          97,
-          100,
-          101
+          102,
+          103,
+          106,
+          107
         ],
         "process_launch": [
-          97
+          103
         ]
       },
       "failures": []
@@ -2268,6 +2343,68 @@
         ],
         "process_launch": [
           533
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_layout_promotion_decision.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          10,
+          306,
+          307,
+          331,
+          332
+        ],
+        "process_launch": [
+          307
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_layout_summary.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          7,
+          132,
+          138
+        ],
+        "process_launch": [
+          132,
+          138
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_layout_visible_summary.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          7,
+          188
+        ],
+        "process_launch": [
+          188
         ]
       },
       "failures": []
@@ -2968,13 +3105,13 @@
       "risk_lines": {
         "subprocess": [
           9,
-          94,
-          95,
-          98,
-          99
+          112,
+          113,
+          116,
+          117
         ],
         "process_launch": [
-          95
+          113
         ]
       },
       "failures": []
@@ -3012,16 +3149,16 @@
       "risk_lines": {
         "subprocess": [
           14,
-          443,
-          446,
-          447,
-          454,
-          457,
-          458
+          536,
+          539,
+          540,
+          547,
+          550,
+          551
         ],
         "process_launch": [
-          443,
-          454
+          536,
+          547
         ]
       },
       "failures": []
@@ -3415,6 +3552,27 @@
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
       "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_right_bottom_natural_slot2_summary.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          7,
+          224,
+          249
+        ],
+        "process_launch": [
+          224,
+          249
+        ]
+      },
       "failures": []
     },
     {

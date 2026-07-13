@@ -3,7 +3,7 @@ title: What Manual DirectInput Validation Remains
 type: question
 status: open
 created: 2026-05-12
-updated: 2026-05-12
+updated: 2026-07-13
 tags:
   - question
   - clash95
@@ -44,8 +44,28 @@ manual DirectInput mouse behavior works. [source page:
   `stable_stage_should_change=False`.
 - `castlecenter-all` remains validation-only with
   `stable_stage_should_change=False`.
+- The validation-only `-hdlayout` hidden-CDB summary now proves the
+  bottom-centered tooltip init anchor, all six right-bottom selected-unit
+  command-panel draw/hit-test anchors, and the `800`-wide high-X redraw branch
+  without an AV. This narrows the remaining work but does not substitute for an
+  approved visible/manual DirectInput check.
+- Approved isolated visible run
+  `captures/archive/visual-smoke-20260713-075818` now passes authentic
+  composition for that layout. Its only exact panel input sample is a no-click
+  Win32 hover at `(640,544)`; the descriptor-5 click missed by `(-44,-67)`.
+  Because the run used a save fixture and automated SendInput, the five manual
+  checklist targets remain pending (`0/5`) and stable promotion remains
+  deferred.
+- The manual run plan now mitigates the observed screen-edge clamp by adding
+  `-MoveWindowX 0 -MoveWindowY -30` to every future command. The approved run's
+  client origin was `(3,26)`, so this keeps the logical lower/right targets on
+  the active 800x600 desktop; it is a preparation fix, not new proof.
+- The HD-layout promotion decision now passes only as
+  `defer_stable_promotion`; it explicitly keeps manual proof `0/5`, click and
+  callback proof false, promotion readiness false, and the stable stage
+  unchanged.
 - The no-popup boundary guard is PASS with `required_guard_count=7`,
-  `required_supporting_report_count=91`, and `required_report_count=98`.
+  `required_supporting_report_count=93`, and `required_report_count=100`.
 - The manual DirectInput run plan is repo-only and non-promoting: it emits one
   future visible command template per remaining target, every command includes
   `-AllowVisibleRuntime`, and `proof_ready=False` remains blocked until an

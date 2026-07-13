@@ -41,6 +41,8 @@ class FakeModule:
         Patch("battle-ui-center-present-wrapper", 0x90, "abab", "bcbc"),
         Patch("battle-grid-centered-input", 0xA0, "cdcd", "dede"),
         Patch("battle-ui-centered-input", 0xB0, "efef", "fafa"),
+        Patch("terrain-tooltip-bottom-center", 0xC0, "0101", "0202"),
+        Patch("selected-unit-command-panel-right-bottom", 0xD0, "0303", "0404"),
     )
     STAGE_GROUPS = {
         patch_definition_guard.EXPECTED_STABLE_STAGE: ("display", "input"),
@@ -48,6 +50,22 @@ class FakeModule:
             "display",
             "input",
             "right-bottom-compose-proof",
+        ),
+        patch_definition_guard.TOOLTIP_BOTTOM_CENTER_STAGE: (
+            "display",
+            "input",
+            "terrain-tooltip-bottom-center",
+        ),
+        patch_definition_guard.UNIT_COMMAND_PANEL_STAGE: (
+            "display",
+            "input",
+            "selected-unit-command-panel-right-bottom",
+        ),
+        patch_definition_guard.HD_LAYOUT_STAGE: (
+            "display",
+            "input",
+            "terrain-tooltip-bottom-center",
+            "selected-unit-command-panel-right-bottom",
         ),
         patch_definition_guard.CASTLECENTER_STAGE: (
             "display",
@@ -164,6 +182,17 @@ def test_battlecenter_fixture_has_no_extra_groups() -> None:
     ], guard
 
 
+def test_hd_layout_fixture_has_only_layout_groups() -> None:
+    guard = patch_definition_guard.build_guard(type("Args", (), {})(), FakeModule)
+    summary = guard["validation_stage_summaries"][patch_definition_guard.HD_LAYOUT_STAGE]
+    assert summary["missing"] == [], guard
+    assert summary["unexpected"] == [], guard
+    assert summary["expected_extras"] == [
+        "selected-unit-command-panel-right-bottom",
+        "terrain-tooltip-bottom-center",
+    ], guard
+
+
 def test_overlapping_selected_patch_fails() -> None:
     patches = FakeModule.PATCHES + (Patch("input", 0x11, "bb", "cc"),)
     module = clone_module(PATCHES=patches)
@@ -191,6 +220,7 @@ def run_tests() -> None:
         test_validation_leakage_fails()
         test_unknown_group_fails()
         test_battlecenter_fixture_has_no_extra_groups()
+        test_hd_layout_fixture_has_only_layout_groups()
         test_overlapping_selected_patch_fails()
         test_cli_writes_current_outputs(fixture / "cli")
     finally:

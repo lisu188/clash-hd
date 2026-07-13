@@ -1,7 +1,7 @@
 # Stable Stage Guard Regression Tests
 
 - Status: PASS
-- Generated: `2026-07-12T21:35:55+02:00`
+- Generated: `2026-07-13T08:54:39+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the stable-stage guard rejects patcher-default drift, validation-only group leakage into the stable stage, missing validation-stage groups, mapsurface stages that reintroduce global menu-surface allocation or lose the gameplay-only map surface upgrade, and promotion decisions/evidence matrices that would change the stable stage or omit required castle focused/multihit proof
 

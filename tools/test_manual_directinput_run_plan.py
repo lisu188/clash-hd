@@ -95,6 +95,7 @@ def test_plan_passes_but_does_not_claim_proof(fixture: Path) -> None:
     assert plan["candidate_root"] == "C:\\ClashTests", plan
     assert "repository-local" in plan["candidate_path_policy"], plan
     assert plan["summary"]["promotion_ready"] is False, plan
+    assert plan["summary"]["all_commands_have_safe_window_origin"] is True, plan
 
 
 def test_one_approval_gated_command_per_required_id(fixture: Path) -> None:
@@ -106,6 +107,8 @@ def test_one_approval_gated_command_per_required_id(fixture: Path) -> None:
         assert "powershell.exe" in command["command"], (item_id, command)
         assert command["candidate_placeholder"].startswith("C:\\ClashTests\\"), (item_id, command)
         assert "-Exe 'C:\\ClashTests\\" in command["command"], (item_id, command)
+        assert "-MoveWindowX 0 -MoveWindowY -30" in command["command"], (item_id, command)
+        assert command["move_window_origin"] == [0, -30], (item_id, command)
         assert "repository-local" in command["candidate_path_policy"], (item_id, command)
         assert command["requires_explicit_user_approval"] is True, (item_id, command)
         assert command["stage"], (item_id, command)
@@ -165,6 +168,25 @@ def test_non_isolated_candidate_placeholder_fails_closed(fixture: Path) -> None:
     assert any("not under C:\\ClashTests" in failure for failure in plan["failures"]), plan
 
 
+def test_nonzero_window_origin_fails_closed(fixture: Path) -> None:
+    args = write_current_reports(fixture)
+    original = manual_directinput_run_plan.SAFE_MOVE_WINDOW_ORIGIN
+    try:
+        manual_directinput_run_plan.SAFE_MOVE_WINDOW_ORIGIN = (80, 80)
+        plan = manual_directinput_run_plan.build_plan(
+            checklist_json=args.checklist_json,
+            template_report_json=args.template_report_json,
+            visual_smoke_script=args.visual_smoke_script,
+            battle_visible_script=args.battle_visible_script,
+            checklist_script=args.checklist_script,
+            proof_json=args.proof_json,
+        )
+    finally:
+        manual_directinput_run_plan.SAFE_MOVE_WINDOW_ORIGIN = original
+    assert plan["passed"] is False, plan
+    assert any("safe (0,-30) window offset" in failure for failure in plan["failures"]), plan
+
+
 def test_cli_writes_outputs(fixture: Path) -> None:
     args = write_current_reports(fixture)
     out_json = fixture / "out" / "run-plan.json"
@@ -192,8 +214,10 @@ def test_cli_writes_outputs(fixture: Path) -> None:
     payload = json.loads(out_json.read_text(encoding="utf-8"))
     assert payload["passed"] is True, payload
     assert payload["summary"]["all_commands_have_allow_visible_runtime"] is True, payload
+    assert payload["summary"]["all_commands_have_safe_window_origin"] is True, payload
     markdown = out_md.read_text(encoding="utf-8")
     assert "-AllowVisibleRuntime" in markdown
+    assert "-MoveWindowX 0 -MoveWindowY -30" in markdown
     assert "C:\\ClashTests" in markdown
 
 
@@ -207,6 +231,7 @@ def run_tests() -> None:
         test_missing_checklist_item_fails_closed(fixture / "missing-item")
         test_missing_allow_visible_runtime_fails_closed(fixture / "missing-guard")
         test_non_isolated_candidate_placeholder_fails_closed(fixture / "candidate-root")
+        test_nonzero_window_origin_fails_closed(fixture / "unsafe-window-origin")
         test_cli_writes_outputs(fixture / "cli")
     finally:
         shutil.rmtree(fixture, ignore_errors=True)

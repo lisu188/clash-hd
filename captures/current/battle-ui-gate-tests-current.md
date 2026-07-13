@@ -1,7 +1,7 @@
 # Battle UI Gate Tests
 
 - Status: PASS
-- Generated: `2026-07-12T21:35:53+02:00`
+- Generated: `2026-07-13T08:54:37+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for gate CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the battle UI gate is fail-closed across runtime evidence, patch-stage, candidate-location, and stable-regression boundaries before any battle patch group exists
 

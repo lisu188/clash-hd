@@ -29,9 +29,13 @@ those regions render correctly:
   `captures/archive/manual-rightbottom-entry/after-load-map.png`.
 
 So the black patches are a capture-tool artifact of the hidden proxy, not an
-HD rendering defect. This does not by itself flip the repo-only
-`first_mission_visual_audit` gate (which still parses the proxy dumps), but it
-materially changes the completion picture.
+HD rendering defect.
+
+**Post-session policy update (2026-07-13):** the repo-only
+`first_mission_visual_audit` now combines its proxy primary-frame checks with
+explicit per-region measurements from the tracked real-runtime frame above.
+That corroboration can excuse the proxy-only black regions, but it remains a
+render-presence check rather than a same-state pixel comparison.
 
 ## Per-target result
 

@@ -1,0 +1,247 @@
+{
+  "generated_at": "2026-07-13T08:54:56+02:00",
+  "runtime_policy": "repo-only JSON decision; does not launch or control Clash95, CDB, wrappers, PowerShell, input automation, or visible windows",
+  "passed": true,
+  "decision": "defer_stable_promotion",
+  "stable_stage_should_change": false,
+  "current_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout",
+  "expected_validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout",
+  "candidate_sha256": "911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD",
+  "expected_candidate_sha256": "911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD",
+  "candidate_identity": {
+    "patch_manifest": "911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD",
+    "hidden_archived_run": "911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD",
+    "visible_composition": "911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD"
+  },
+  "manual_directinput_proof": false,
+  "manual_checked_item_count": 0,
+  "manual_checklist_item_count": 5,
+  "command_click_alignment": false,
+  "panel_click_callback_proof": false,
+  "promotion_ready": false,
+  "allow_cdb_only_promotion": false,
+  "promotion_override_manifest": null,
+  "override_accepted": false,
+  "checks": {
+    "patch_manifest": {
+      "passed": true,
+      "failures": []
+    },
+    "candidate_identity": {
+      "passed": true,
+      "failures": []
+    },
+    "hidden_geometry": {
+      "passed": true,
+      "failures": []
+    },
+    "visible_composition": {
+      "passed": true,
+      "failures": []
+    },
+    "failed_command_click": {
+      "passed": true,
+      "failures": []
+    },
+    "automated_hover_scope": {
+      "passed": true,
+      "failures": []
+    },
+    "manual_directinput_pending": {
+      "passed": true,
+      "failures": []
+    },
+    "promotion_state": {
+      "passed": true,
+      "failures": []
+    },
+    "process_hygiene": {
+      "passed": true,
+      "failures": []
+    },
+    "stable_stage_protection": {
+      "passed": true,
+      "failures": []
+    },
+    "no_override": {
+      "passed": true,
+      "failures": []
+    }
+  },
+  "evidence": {
+    "patch_groups": {
+      "terrain-tooltip-bottom-center": {
+        "patched": 12,
+        "total": 12
+      },
+      "selected-unit-command-panel-right-bottom": {
+        "patched": 8,
+        "total": 8
+      }
+    },
+    "current_hd_map_gate": {
+      "passed": true,
+      "failures": [],
+      "checks": {
+        "visible_tiles_12x9": {
+          "expected": {
+            "x": 12,
+            "y": 9
+          },
+          "actual": {
+            "x": 12,
+            "y": 9
+          },
+          "passed": true
+        },
+        "main_loops_12x9": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "full_redraw_12x9": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "full_redraw_present_bounds_800": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "minimap_right_clip": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "minimap_hd_right_anchor": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "helpers_12x9": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "input_bounds_800x600": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "viewport_init_800x600": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "viewport_switch_800x600": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "viewport_switch_dynamic_surface": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "saved_scroll_restore_clamp": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        "map_surface_upgrade_after_menu": {
+          "expected": true,
+          "actual": true,
+          "passed": true
+        }
+      }
+    },
+    "hidden_redraw_clip_proved": true,
+    "hidden_run": {
+      "passed": true,
+      "hidden_desktop": true,
+      "allow_visible_desktop": false,
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout",
+      "candidate_sha256": "911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD"
+    },
+    "visible_composition_passed": true,
+    "visible_evidence_class": "approved_visible_automated_layout_composition",
+    "failed_panel_click_attempt": {
+      "attempt_observed": true,
+      "requested_client": [
+        760,
+        560
+      ],
+      "actual_client": [
+        716,
+        493
+      ],
+      "client_error": [
+        -44,
+        -67
+      ],
+      "max_abs_error": 67,
+      "max_sample_abs_error": 67,
+      "click_event_count": 2,
+      "path_verified": false,
+      "click_path_verified": false,
+      "alignment_passed": false,
+      "classified_failed_attempt": true,
+      "excluded_from_pass_gate": true,
+      "failure_reason": "The requested screen point extended beyond the active desktop; Win32 clamped the cursor, so this attempt proves neither descriptor-5 click alignment nor a callback."
+    },
+    "automated_hover_alignment": {
+      "passed": true,
+      "client_size": [
+        800,
+        600
+      ],
+      "expected_client_size": [
+        800,
+        600
+      ],
+      "requested_client": [
+        640,
+        544
+      ],
+      "actual_client": [
+        640,
+        544
+      ],
+      "client_error": [
+        0,
+        0
+      ],
+      "max_abs_error": 0,
+      "max_sample_abs_error": 0,
+      "path_verified": true,
+      "move_mode": "auto",
+      "move_method": "setcursor",
+      "sample_count": 1,
+      "all_samples_exact": true,
+      "click_event_count": 0,
+      "proof_class": "automated_win32_setcursor_alignment",
+      "manual_directinput_proof": false,
+      "command_click_alignment": false
+    },
+    "manual_checklist_status": "pending_manual_validation",
+    "process_hygiene_matching_process_count": 0
+  },
+  "reasons": [
+    "the exact HD-layout patch and current HD map gate are passing",
+    "hidden CDB geometry proves the tooltip anchor, all six panel coordinates, and the redraw clip",
+    "authentic visible frames prove the relocated tooltip and active lower-right panel composition",
+    "the descriptor-5 click attempt was clamped from [760, 560] to [716, 493] and failed alignment",
+    "no relocated command callback or manual DirectInput proof exists",
+    "the manual DirectInput checklist remains 0/5 and promotion readiness remains false",
+    "the protected stable stage remains unchanged and no override is accepted"
+  ],
+  "next_actions": [
+    "keep the protected stable stage unchanged",
+    "obtain a correctly aligned real command click and observed callback before reconsidering promotion",
+    "complete the five-item manual DirectInput checklist with separately approved visible validation"
+  ],
+  "failures": []
+}

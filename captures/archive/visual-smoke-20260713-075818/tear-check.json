@@ -1,0 +1,63 @@
+{
+  "frames": [
+    {
+      "heuristic_advisory": true,
+      "heuristic_scope": "content_and_roi_calibrated",
+      "rect": [
+        0,
+        0,
+        1199,
+        899
+      ],
+      "diff_threshold": 40.0,
+      "row_mean_diff": 11.079,
+      "column_mean_diff": 10.743,
+      "row_high_percent": 0.111,
+      "column_high_percent": 0.083,
+      "row_excess_percent": 0.028,
+      "mean_ratio": 1.031,
+      "max_row_excess_percent": 6.0,
+      "max_mean_ratio": 1.8,
+      "min_row_mean": 1.0,
+      "tear_suspected": false,
+      "frame": "captures\\archive\\visual-smoke-20260713-075818\\after-map-path.png",
+      "width": 1200,
+      "height": 900,
+      "pixel_sha256": "16312a10b20f31177491cf8c53a1201b891c5fdad1d109d98960c2c7893b99ec"
+    },
+    {
+      "heuristic_advisory": true,
+      "heuristic_scope": "content_and_roi_calibrated",
+      "rect": [
+        0,
+        0,
+        1199,
+        899
+      ],
+      "diff_threshold": 40.0,
+      "row_mean_diff": 11.142,
+      "column_mean_diff": 10.785,
+      "row_high_percent": 0.111,
+      "column_high_percent": 0.083,
+      "row_excess_percent": 0.028,
+      "mean_ratio": 1.033,
+      "max_row_excess_percent": 6.0,
+      "max_mean_ratio": 1.8,
+      "min_row_mean": 1.0,
+      "tear_suspected": false,
+      "frame": "captures\\archive\\visual-smoke-20260713-075818\\after-hdlayout-panel-hover.png",
+      "width": 1200,
+      "height": 900,
+      "pixel_sha256": "2da09cd264951072519c0e2f6176a2053f9ffc455b24ab9d3237db7e79a4f836"
+    }
+  ],
+  "frame_count": 2,
+  "stable_pair_index": null,
+  "least_torn_index": 0,
+  "least_torn_frame": "captures\\archive\\visual-smoke-20260713-075818\\after-map-path.png",
+  "verdict": "animated_no_tear_suspected",
+  "clean": true,
+  "heuristic_advisory": true,
+  "heuristic_scope": "content_and_roi_calibrated",
+  "note": "All tear verdicts are advisory, content- and ROI-calibrated heuristics. An identical pair only corroborates frames that are individually non-suspect; it does not prove capture independence and never clears a suspect frame. Tearing is a GDI CopyFromScreen capture artifact, not a game render defect \u2014 confirm geometry with a hidden CDB surface dump."
+}

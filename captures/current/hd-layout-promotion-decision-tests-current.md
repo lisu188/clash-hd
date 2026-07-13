@@ -1,0 +1,17 @@
+# HD Layout Promotion Decision Tests
+
+- Status: PASS
+- Generated: `2026-07-13T08:54:56+02:00`
+- Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
+- Guard policy: proves authentic composition cannot promote the validation stage while command click, callback, and five-item manual DirectInput proof remain absent
+
+## Tests
+
+- `HD layout decision passes only while deferring stable promotion`
+- `HD layout decision rejects candidate SHA drift across patch, hidden, or visible evidence`
+- `HD layout decision rejects hidden or authentic-visible evidence regressions`
+- `HD layout decision never reclassifies the failed descriptor-5 click as success`
+- `HD layout decision rejects manual-proof or promotion-ready overclaims`
+- `HD layout decision rejects stable-stage drift`
+- `HD layout decision rejects every CDB-only override route`
+- `HD layout decision CLI writes PASS/defer outputs and fails closed on regressions`

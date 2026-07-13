@@ -1,7 +1,7 @@
 # HD Continuity Status
 
 - Overall: FAIL
-- Generated: `2026-07-12T21:36:12+02:00`
+- Generated: `2026-07-13T08:55:02+02:00`
 - Runtime policy: repo-only continuity status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Guard policy: save/load, turn, and campaign continuity remain blocked until a compact approved proof manifest documents an isolated test-save workflow, stable stage/candidate identity shared by every continuity lane, state hashes, route observations, and no live save mutation
 - Proof manifest: `captures\current\hd-continuity-proof-current.json` present=`False`

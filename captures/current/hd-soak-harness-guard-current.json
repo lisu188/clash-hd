@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T21:36:08+02:00",
+  "generated_at": "2026-07-13T08:54:58+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "HD soak harness must stay opt-in, protected-stage, non-promoting, and artifact-safe",

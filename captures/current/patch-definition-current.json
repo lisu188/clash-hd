@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-12T21:35:54+02:00",
+  "generated_at": "2026-07-13T08:54:39+02:00",
   "passed": true,
   "runtime_policy": "repo-only patch-table inspection; does not read, build, or execute game executables",
   "guard_policy": "patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps",
   "expected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
   "patcher_default_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-  "patch_count": 189,
-  "patch_group_count": 43,
-  "stage_count": 56,
+  "patch_count": 209,
+  "patch_group_count": 45,
+  "stage_count": 59,
   "patch_group_counts": {
     "battle-grid-centered-input": 2,
     "battle-ui-center-present-wrapper": 2,
@@ -45,8 +45,10 @@
     "right-bottom-action-native-center-wrapper": 2,
     "right-bottom-compose-proof": 4,
     "saved-scroll-clamp": 2,
+    "selected-unit-command-panel-right-bottom": 8,
     "shared-surface": 2,
     "surface-blit-hd-aware": 2,
+    "terrain-tooltip-bottom-center": 12,
     "unit-selection-action-bar-map-surface": 4,
     "unit-selection-action-bar-post-redraw": 3,
     "viewport-init": 2,
@@ -80,7 +82,9 @@
     "castle-ui-center-present",
     "castle-ui-center-present-wrapper",
     "castle-ui-centered-input",
-    "right-bottom-compose-proof"
+    "right-bottom-compose-proof",
+    "selected-unit-command-panel-right-bottom",
+    "terrain-tooltip-bottom-center"
   ],
   "validation_groups_in_stable": [],
   "validation_stage_summaries": {
@@ -106,6 +110,86 @@
       ],
       "expected_extras": [
         "right-bottom-compose-proof"
+      ],
+      "missing": [],
+      "unexpected": []
+    },
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter": {
+      "groups": [
+        "display",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "gameplay-surface",
+        "helpers",
+        "input-bounds",
+        "main-loops",
+        "map-surface-upgrade-scrollclamp",
+        "menu-center-hitboxes",
+        "minimap-hd-right-anchor",
+        "minimap-right-clip",
+        "mouse-dynamic-origin",
+        "shared-surface",
+        "surface-blit-hd-aware",
+        "terrain-tooltip-bottom-center",
+        "viewport-init",
+        "viewport-switch-dynamic-surface"
+      ],
+      "expected_extras": [
+        "terrain-tooltip-bottom-center"
+      ],
+      "missing": [],
+      "unexpected": []
+    },
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom": {
+      "groups": [
+        "display",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "gameplay-surface",
+        "helpers",
+        "input-bounds",
+        "main-loops",
+        "map-surface-upgrade-scrollclamp",
+        "menu-center-hitboxes",
+        "minimap-hd-right-anchor",
+        "minimap-right-clip",
+        "mouse-dynamic-origin",
+        "selected-unit-command-panel-right-bottom",
+        "shared-surface",
+        "surface-blit-hd-aware",
+        "viewport-init",
+        "viewport-switch-dynamic-surface"
+      ],
+      "expected_extras": [
+        "selected-unit-command-panel-right-bottom"
+      ],
+      "missing": [],
+      "unexpected": []
+    },
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout": {
+      "groups": [
+        "display",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "gameplay-surface",
+        "helpers",
+        "input-bounds",
+        "main-loops",
+        "map-surface-upgrade-scrollclamp",
+        "menu-center-hitboxes",
+        "minimap-hd-right-anchor",
+        "minimap-right-clip",
+        "mouse-dynamic-origin",
+        "selected-unit-command-panel-right-bottom",
+        "shared-surface",
+        "surface-blit-hd-aware",
+        "terrain-tooltip-bottom-center",
+        "viewport-init",
+        "viewport-switch-dynamic-surface"
+      ],
+      "expected_extras": [
+        "selected-unit-command-panel-right-bottom",
+        "terrain-tooltip-bottom-center"
       ],
       "missing": [],
       "unexpected": []

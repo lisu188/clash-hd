@@ -1,0 +1,25 @@
+{
+    "Path":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\menu.png",
+    "Hash":  "E646D45926695F0E84938F2B74F66CE0F9CA3453B4CD900DFF9FB5D73969E3F7",
+    "Width":  1200,
+    "Height":  900,
+    "OriginX":  1320,
+    "OriginY":  611,
+    "CenterWindowMatchesTarget":  true,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "screen",
+    "TargetHwnd":  "0x7F0C9E",
+    "CenterWindowHwnd":  "0x7F0C9E",
+    "CenterRootHwnd":  "0x7F0C9E",
+    "NonblackPercent":  61.79,
+    "MeanLuma":  50.063,
+    "UniqueSampleColors":  8686,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  1196,
+                           "Bottom":  896,
+                           "Width":  1197,
+                           "Height":  897
+                       }
+}

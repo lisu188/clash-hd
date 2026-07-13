@@ -1,7 +1,7 @@
 # Right-Bottom Blocker Triage
 
 - Overall: PASS
-- Generated: `2026-07-12T21:35:19+02:00`
+- Generated: `2026-07-13T08:53:43+02:00`
 - Runtime policy: repo-only evidence triage; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only while the current blocker is explicitly classified as non-promoting: controlled composition is recovered, natural owner/action rows are absent, the natural route is either owner-flag gated, blocked inside the slot5 Render_Begin/DD_Pump/copyback lane, blocked by the documented loop-state/input-resample/source-hold lane, or has only debugger-forced native action-click copyback proof; the next proof path remains hidden diagnosis or approved manual input
 - Classification: `controlled_recovered_but_natural_route_nonpromoting`

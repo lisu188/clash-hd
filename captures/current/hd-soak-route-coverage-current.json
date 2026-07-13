@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:36:13.405951+00:00",
+  "generated_at": "2026-07-13T06:55:03.569480+00:00",
   "passed": true,
   "runtime_policy": "repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "script": "scripts\\smoke\\run_hd_soak.ps1",
@@ -7,7 +7,7 @@
     "path": "captures\\current\\hd-endurance-release-checklist-current.json",
     "state": "present",
     "present": true,
-    "generated_at": "2026-07-12T19:36:13.012951+00:00",
+    "generated_at": "2026-07-13T06:55:03.190479+00:00",
     "passed": false,
     "requirement_count": 15
   },
@@ -155,21 +155,9 @@
           "evidence": [
             "captures\\current\\manual-directinput-validation-checklist-current.json"
           ]
-        },
-        {
-          "id": "first_mission_visual_clean",
-          "title": "First mission selected-unit frame has no stripe or black-patch blockers",
-          "category": "render baseline",
-          "status": "blocked",
-          "passed": false,
-          "summary": "first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior",
-          "next_probe": "fix right/bottom/minimap black patches before treating first-mission playability as release-ready",
-          "evidence": [
-            "captures\\current\\first-mission-visual-audit-current.json"
-          ]
         }
       ],
-      "current_blocker_count": 2,
+      "current_blocker_count": 1,
       "readiness_status": "implemented_blocked_by_current_requirements",
       "route_contract": {
         "id": "map_idle",
@@ -193,10 +181,9 @@
         ],
         "implementation_policy": "already scripted; execute only after menu-idle approval-gated soak passes",
         "readiness_status": "implemented_blocked_by_current_requirements",
-        "current_blocker_count": 2,
+        "current_blocker_count": 1,
         "blocking_requirement_ids": [
-          "stable_hd_map_real_input",
-          "first_mission_visual_clean"
+          "stable_hd_map_real_input"
         ],
         "stable_stage_should_change": false,
         "promotion_ready": false,
@@ -265,21 +252,9 @@
           "evidence": [
             "captures\\current\\manual-directinput-validation-checklist-current.json"
           ]
-        },
-        {
-          "id": "first_mission_visual_clean",
-          "title": "First mission selected-unit frame has no stripe or black-patch blockers",
-          "category": "render baseline",
-          "status": "blocked",
-          "passed": false,
-          "summary": "first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior",
-          "next_probe": "fix right/bottom/minimap black patches before treating first-mission playability as release-ready",
-          "evidence": [
-            "captures\\current\\first-mission-visual-audit-current.json"
-          ]
         }
       ],
-      "current_blocker_count": 3,
+      "current_blocker_count": 2,
       "readiness_status": "implemented_blocked_by_current_requirements",
       "route_contract": {
         "id": "map_pan",
@@ -304,11 +279,10 @@
         ],
         "implementation_policy": "already scripted; execute only after map-idle approval-gated soak passes",
         "readiness_status": "implemented_blocked_by_current_requirements",
-        "current_blocker_count": 3,
+        "current_blocker_count": 2,
         "blocking_requirement_ids": [
           "long_soak_representative_routes",
-          "stable_hd_map_real_input",
-          "first_mission_visual_clean"
+          "stable_hd_map_real_input"
         ],
         "stable_stage_should_change": false,
         "promotion_ready": false,

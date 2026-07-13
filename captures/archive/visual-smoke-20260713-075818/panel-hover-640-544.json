@@ -1,0 +1,84 @@
+{
+  "hwnd": 211094738,
+  "client_size": [
+    800,
+    600
+  ],
+  "client_origin_screen": [
+    3,
+    26
+  ],
+  "points": [
+    {
+      "index": 0,
+      "client": [
+        640,
+        544
+      ],
+      "move_mode": "auto",
+      "move_method": "setcursor",
+      "logical_delta": [
+        0,
+        0
+      ],
+      "logical_estimated_client": null,
+      "requested_screen": [
+        643,
+        570
+      ],
+      "actual_screen": [
+        643,
+        570
+      ],
+      "actual_client": [
+        640,
+        544
+      ],
+      "error": [
+        0,
+        0
+      ],
+      "client_error": [
+        0,
+        0
+      ],
+      "samples": [
+        {
+          "phase": "after_move",
+          "requested_client": [
+            640,
+            544
+          ],
+          "requested_screen": [
+            643,
+            570
+          ],
+          "actual_screen": [
+            643,
+            570
+          ],
+          "actual_client": [
+            640,
+            544
+          ],
+          "screen_error": [
+            0,
+            0
+          ],
+          "client_error": [
+            0,
+            0
+          ]
+        }
+      ],
+      "clicks": []
+    }
+  ],
+  "max_abs_error": 0,
+  "max_sample_abs_error": 0,
+  "click_event_count": 0,
+  "path_verified": true,
+  "click_path_verified": true,
+  "pid": 30292,
+  "exe": null
+}

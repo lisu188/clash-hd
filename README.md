@@ -349,7 +349,8 @@ Check that the evidence index links and screenshots still resolve:
 
 Refresh the current repo-only evidence set, including the HD map smoke matrix,
 no-popup map evidence matrix, no-popup map evidence matrix tests,
-patch-manifest comparison, evidence-index check,
+HD layout hidden-CDB summary and tests, approved-visible HD layout summary and
+tests, patch-manifest comparison, evidence-index check,
 barracks success-branch proof,
 right-bottom UI probe summary, right-bottom owner/action route proof,
 right-bottom debugger composition proof, right-bottom validation patch proof,
@@ -396,6 +397,36 @@ Its fixture coverage is
 selection, normal visibility-gate regressions, forced-visible gate
 regressions, and CLI `--require-pass` fail-closed behavior.
 
+The validation-only HD layout gate is
+`captures\current\hd-layout-summary-current.md`, parsed from hidden-desktop run
+`captures\archive\cdb-surface-dump-20260713-072428`. It proves the
+bottom-centered terrain-tooltip init anchor, all six right-bottom selected-unit
+command-panel draw/hit-test anchors, and the `800`-wide high-X redraw branch,
+with no AV marker. Its seven-fixture parser coverage is
+`captures\current\hd-layout-summary-tests-current.md`.
+
+The separate approved visible-runtime diagnostic is summarized by
+`captures\current\hd-layout-visible-current.md` from isolated fixture run
+`captures\archive\visual-smoke-20260713-075818`. Candidate SHA-256
+`911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD`
+matches the hidden run and patch manifest. Authentic screen captures pass the
+chosen tooltip/command-panel composition review, and a no-click Win32 hover at
+client `(640,544)` has exact requested/actual coordinates. The attempted
+descriptor-5 click does not pass alignment: requested client `(760,560)` became
+`(716,493)`, an error of `(-44,-67)`. This fixture/SendInput run is diagnostic,
+not manual DirectInput or callback proof; the manual checklist remains `0/5`,
+promotion is deferred, and the protected stable stage is unchanged. Future
+manual-run commands now include `-MoveWindowX 0 -MoveWindowY -30`; the approved
+run measured client origin `(3,26)`, so that outer-window offset keeps the
+logical lower/right targets inside the active 800x600 desktop.
+
+The fail-closed promotion record is
+`captures\current\hd-layout-promotion-decision-current.md`. It passes only with
+`decision=defer_stable_promotion`, command-click/callback/manual proof false,
+manual checklist `0/5`, `promotion_ready=False`, and
+`stable_stage_should_change=False`; its fixture tests are
+`captures\current\hd-layout-promotion-decision-tests-current.md`.
+
 The current right-bottom owner/action route proof is
 `captures\archive\cdb-surface-dump-20260513-112339`, a hidden-desktop run with
 `-SkipMapValidation` whose action-panel summary reaches the owner setup,
@@ -405,6 +436,12 @@ records `13` filtered text rows, `5` null-destination present/copy rows, `2`
 sample rows, and no present rows intersecting the bottom tooltip or bottom-right
 panel regions, so the next right-bottom target is native anchor/final
 composition behavior.
+
+The natural saved-state slot-2/record-1 probe and strict parser are source- and
+fixture-test ready. The current support artifact is
+`captures\current\right-bottom-natural-slot2-summary-tests-current.md`; no real
+runtime summary is claimed because the hidden CDB launch was blocked before
+execution by the external approval quota.
 
 The current controlled right-bottom visual candidate is
 `captures\current\right-bottom-action-nativecenter-current.md`, backed by wrapper-aware
@@ -699,10 +736,10 @@ The no-popup boundary guard is
 that the refresh includes the stable-stage, executable-artifact,
 surface-dump-policy, visible-runtime launcher, no-visible-runtime,
 process-hygiene, and launcher-policy guards. It records `required_guard_count=7`,
-`required_supporting_report_count=91`, and `required_report_count=98`. It also
+`required_supporting_report_count=93`, and `required_report_count=100`. It also
 requires the no-popup map evidence matrix and its fixture tests, no-popup guard
 regression report, no-visible runtime guard tests, HD soak execution-boundary
-report and tests, manual DirectInput
+report and tests, the HD layout hidden-CDB summary and its fixture tests, manual DirectInput
 checklist/proof-template/run-plan reports plus tests, right-bottom validation
 guard tests, right-bottom action-menu blocker triage and tests,
 right-bottom visual artifact guard and tests, load-slot transition probe guard

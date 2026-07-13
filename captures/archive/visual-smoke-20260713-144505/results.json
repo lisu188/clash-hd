@@ -1,0 +1,226 @@
+{
+    "Exe":  "C:\\Clash\\clash95_framerestore_hd.exe",
+    "ExeSha256":  "4A507EA779A8B62F9BE8D1A073E3077FE291636461DD9F9D313C5660D0743219",
+    "ProcessId":  38944,
+    "LaunchAttempts":  1,
+    "LaunchErrors":  [
+
+                     ],
+    "OutputDirectory":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505",
+    "MenuMouseJson":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\intro-skip-00.json",
+    "MapMouseJson":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\route-01-load-button-path.json",
+    "MenuFrame":  {
+                      "Path":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\menu.png",
+                      "Hash":  "E646D45926695F0E84938F2B74F66CE0F9CA3453B4CD900DFF9FB5D73969E3F7",
+                      "Width":  1200,
+                      "Height":  900,
+                      "OriginX":  1320,
+                      "OriginY":  611,
+                      "CenterWindowMatchesTarget":  true,
+                      "ReacquiredSameProcessWindow":  false,
+                      "CaptureMode":  "screen",
+                      "TargetHwnd":  "0x7F0C9E",
+                      "CenterWindowHwnd":  "0x7F0C9E",
+                      "CenterRootHwnd":  "0x7F0C9E",
+                      "NonblackPercent":  61.79,
+                      "MeanLuma":  50.063,
+                      "UniqueSampleColors":  8686,
+                      "NonblackBounds":  {
+                                             "X":  0,
+                                             "Y":  0,
+                                             "Right":  1196,
+                                             "Bottom":  896,
+                                             "Width":  1197,
+                                             "Height":  897
+                                         }
+                  },
+    "MapFrame":  {
+                     "Path":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\after-map-path.png",
+                     "Hash":  "455C07B5C535CDE0DA92C3B01048FFFA2101034C73E8F6A46D275B2E387F93AE",
+                     "Width":  1200,
+                     "Height":  900,
+                     "OriginX":  125,
+                     "OriginY":  159,
+                     "CenterWindowMatchesTarget":  true,
+                     "ReacquiredSameProcessWindow":  false,
+                     "CaptureMode":  "screen",
+                     "TargetHwnd":  "0x7F0C9E",
+                     "CenterWindowHwnd":  "0x7F0C9E",
+                     "CenterRootHwnd":  "0x7F0C9E",
+                     "NonblackPercent":  97.865,
+                     "MeanLuma":  106.261,
+                     "UniqueSampleColors":  19463,
+                     "NonblackBounds":  {
+                                            "X":  0,
+                                            "Y":  0,
+                                            "Right":  1196,
+                                            "Bottom":  896,
+                                            "Width":  1197,
+                                            "Height":  897
+                                        }
+                 },
+    "MenuPathVerified":  true,
+    "MenuClickPathVerified":  true,
+    "MenuProbeExitCode":  0,
+    "MapPathVerified":  true,
+    "MapClickPathVerified":  true,
+    "MapProbeExitCode":  0,
+    "Points":  "400,300;300,218;320,166;400,226",
+    "Route":  "load-slot0",
+    "RouteSteps":  [
+                       {
+                           "Index":  0,
+                           "Name":  "neutral-menu",
+                           "Points":  "400,300",
+                           "WaitMs":  1400,
+                           "Json":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\route-00-neutral-menu-path.json",
+                           "PathVerified":  true,
+                           "ClickPathVerified":  true,
+                           "ProbeExitCode":  0,
+                           "Frame":  {
+                                         "Path":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\route-00-neutral-menu.png",
+                                         "Hash":  "6E1D950657A1229176E1E3B9D9AA5278AECA77FD1AF6BD5215080909B6BDA79C",
+                                         "Width":  1200,
+                                         "Height":  900,
+                                         "OriginX":  125,
+                                         "OriginY":  159,
+                                         "CenterWindowMatchesTarget":  true,
+                                         "ReacquiredSameProcessWindow":  false,
+                                         "CaptureMode":  "screen",
+                                         "TargetHwnd":  "0x7F0C9E",
+                                         "CenterWindowHwnd":  "0x7F0C9E",
+                                         "CenterRootHwnd":  "0x7F0C9E",
+                                         "NonblackPercent":  62.003,
+                                         "MeanLuma":  49.996,
+                                         "UniqueSampleColors":  8732,
+                                         "NonblackBounds":  {
+                                                                "X":  0,
+                                                                "Y":  0,
+                                                                "Right":  1196,
+                                                                "Bottom":  896,
+                                                                "Width":  1197,
+                                                                "Height":  897
+                                                            }
+                                     },
+                           "FrameState":  "main-menu-or-dialog-likely",
+                           "GameplayFrameLikely":  false,
+                           "GameplayWarnings":  [
+                                                    "low_top_left_gameplay_border_coverage"
+                                                ]
+                       },
+                       {
+                           "Index":  1,
+                           "Name":  "load-button",
+                           "Points":  "300,218",
+                           "WaitMs":  1400,
+                           "Json":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\route-01-load-button-path.json",
+                           "PathVerified":  true,
+                           "ClickPathVerified":  true,
+                           "ProbeExitCode":  0,
+                           "Frame":  {
+                                         "Path":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\route-01-load-button.png",
+                                         "Hash":  "F42C847A5B2038D366A136ED135926B2DF5793E0D4C558971DC50412A8BAE645",
+                                         "Width":  1200,
+                                         "Height":  900,
+                                         "OriginX":  125,
+                                         "OriginY":  159,
+                                         "CenterWindowMatchesTarget":  true,
+                                         "ReacquiredSameProcessWindow":  false,
+                                         "CaptureMode":  "screen",
+                                         "TargetHwnd":  "0x7F0C9E",
+                                         "CenterWindowHwnd":  "0x7F0C9E",
+                                         "CenterRootHwnd":  "0x7F0C9E",
+                                         "NonblackPercent":  97.865,
+                                         "MeanLuma":  106.264,
+                                         "UniqueSampleColors":  19464,
+                                         "NonblackBounds":  {
+                                                                "X":  0,
+                                                                "Y":  0,
+                                                                "Right":  1196,
+                                                                "Bottom":  896,
+                                                                "Width":  1197,
+                                                                "Height":  897
+                                                            }
+                                     },
+                           "FrameState":  "gameplay-likely",
+                           "GameplayFrameLikely":  true,
+                           "GameplayWarnings":  [
+
+                                                ]
+                       }
+                   ],
+    "ReadinessFrames":  [
+                            {
+                                "Name":  "readiness-00",
+                                "Frame":  {
+                                              "Path":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\readiness-00.png",
+                                              "Hash":  "8E4FF33F456230FD9A0A9FFBCE47C140AC3883649E7B139601150F0314D04631",
+                                              "Width":  1200,
+                                              "Height":  900,
+                                              "OriginX":  1320,
+                                              "OriginY":  611,
+                                              "CenterWindowMatchesTarget":  true,
+                                              "ReacquiredSameProcessWindow":  false,
+                                              "CaptureMode":  "screen",
+                                              "TargetHwnd":  "0x7F0C9E",
+                                              "CenterWindowHwnd":  "0x7F0C9E",
+                                              "CenterRootHwnd":  "0x7F0C9E",
+                                              "NonblackPercent":  61.791,
+                                              "MeanLuma":  50.066,
+                                              "UniqueSampleColors":  8690,
+                                              "NonblackBounds":  {
+                                                                     "X":  0,
+                                                                     "Y":  0,
+                                                                     "Right":  1196,
+                                                                     "Bottom":  896,
+                                                                     "Width":  1197,
+                                                                     "Height":  897
+                                                                 }
+                                          },
+                                "State":  "main-menu-or-dialog-likely",
+                                "Reason":  "large non-gameplay frame with broad nonblack bounds",
+                                "NonblackPercent":  61.791,
+                                "MeanLuma":  50.066,
+                                "NonblackBounds":  {
+                                                       "X":  0,
+                                                       "Y":  0,
+                                                       "Right":  1196,
+                                                       "Bottom":  896,
+                                                       "Width":  1197,
+                                                       "Height":  897
+                                                   },
+                                "GameplayFrameLikely":  false,
+                                "GameplayWarnings":  [
+                                                         "low_top_left_gameplay_border_coverage"
+                                                     ],
+                                "GameplayCheckExitCode":  2,
+                                "GameplayCheckJson":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\readiness-00-gameplay-check.json"
+                            }
+                        ],
+    "IntroProbeRows":  [
+                           {
+                               "Round":  0,
+                               "Json":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\intro-skip-00.json",
+                               "PathVerified":  true,
+                               "ClickPathVerified":  true,
+                               "ProbeExitCode":  0,
+                               "FrameState":  "main-menu-or-dialog-likely",
+                               "GameplayFrameLikely":  false
+                           }
+                       ],
+    "MainMenuReady":  true,
+    "MenuFrameState":  "main-menu-or-dialog-likely",
+    "FinalFrameState":  "gameplay-likely",
+    "GameplayFrameLikely":  true,
+    "GameplayWarnings":  [
+
+                         ],
+    "MoveMode":  "auto",
+    "ClickMode":  "sendinput",
+    "IntroSkipClicks":  8,
+    "IntroMaxRounds":  8,
+    "PostIntroWaitSec":  4,
+    "RunSeconds":  8,
+    "ProcessExitedBeforeCleanup":  false,
+    "ExitCode":  null
+}

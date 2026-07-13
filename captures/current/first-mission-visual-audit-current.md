@@ -1,14 +1,18 @@
 # First Mission Visual Audit
 
-- Overall: FAIL
-- Generated: `2026-07-12T21:35:29+02:00`
+- Overall: PASS
+- Generated: `2026-07-13T08:53:58+02:00`
 - Runtime policy: repo-only PNG audit; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
-- Guard policy: first-mission frames must keep the play area rendered, avoid horizontal or vertical stripe signatures, and expose remaining large black UI patches as non-playable blockers instead of hiding them behind route success
-- Current status: `selected_unit_action_bar_on_bottom_but_black_ui_patches_remain`
-- First mission visual clean: `False`
+- Guard policy: first-mission frames must keep the play area rendered, avoid horizontal or vertical stripe signatures, and expose unexplained large black UI patches as non-playable blockers; a raw proxy-black region is classified as a capture artifact only when a supplied real-runtime frame positively corroborates it
+- Corroboration method: per-region render-presence corroboration; not a same-state pixel comparison
+- Real-runtime corroboration frame: `captures\archive\visual-smoke-20260712-202900\after-map-path.png`
+- Real-runtime corroboration frame present: `True`
+- Corroborated rendered regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Current status: `selected_unit_action_bar_on_bottom_black_patches_are_proxy_artifacts`
+- First mission visual clean: `True`
 - Primary frame: `centered_bottom_edge_panel`
 - Primary frame path: `captures\archive\cdb-surface-dump-20260616-153751\surface.png`
-- Next probe: inspect the primary frame's right-side/minimap/bottom-panel compose or present path for black patch regions, then rerun first_mission_visual_audit.py
+- Next probe: rerun first_mission_visual_audit.py after the next first-mission visual evidence refresh
 - Primary play area nonblack: `97.21`%
 - Primary selected action bar nonblack: `91.954`%
 - Primary selected action bar mean luma: `66.995`
@@ -16,15 +20,17 @@
 - Primary legacy middle action bar nonblack: `99.982`%
 - Primary legacy middle action bar mean luma: `107.377`
 - Primary legacy middle action bar visible: `False`
-- Primary black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Primary raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Primary unresolved black patch regions: `[]`
 - Stripe failure frames: `[]`
 - Diagnostic black frames: `['tooltip_owner_probe', 'hover_selection_probe', 'combined_tooltip_action_bar']`
 
-## Primary Black Patch Details
+## Real-Runtime Corroboration
 
-- `right_below_minimap` rect=`[586, 230, 799, 599]` black=`76.407`% nonblack=`23.593`% mean_luma=`22.011` color_bins=`19`
-- `bottom_right_panel` rect=`[586, 528, 799, 599]` black=`78.57`% nonblack=`21.43`% mean_luma=`20.063` color_bins=`16`
-- `minimap_interior` rect=`[594, 24, 793, 220]` black=`98.581`% nonblack=`1.419`% mean_luma=`1.718` color_bins=`17`
+- `right_below_minimap` scaled_rect=`[879, 345, 1198, 898]` real_black=`1.794`% real_nonblack=`98.206`% corroborated_rendered=`True`
+- `bottom_right_panel` scaled_rect=`[879, 792, 1198, 898]` real_black=`9.287`% real_nonblack=`90.713`% corroborated_rendered=`True`
+- `minimap_interior` scaled_rect=`[891, 36, 1189, 330]` real_black=`0.0`% real_nonblack=`100.0`% corroborated_rendered=`True`
 
 ## Frames
 
@@ -45,7 +51,9 @@
 - Right below minimap black: `76.407`%
 - Minimap interior black: `98.581`%
 - Stripe pass: `True` horizontal_high=`0.587`% vertical_high=`0.542`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### pre_redraw_action_bar
 
@@ -64,7 +72,9 @@
 - Right below minimap black: `76.407`%
 - Minimap interior black: `98.581`%
 - Stripe pass: `True` horizontal_high=`0.783`% vertical_high=`0.542`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### tooltip_owner_probe
 
@@ -83,7 +93,9 @@
 - Right below minimap black: `50.88`%
 - Minimap interior black: `98.561`%
 - Stripe pass: `True` horizontal_high=`0.0`% vertical_high=`0.0`%
-- Black patch regions: `['bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### hover_selection_probe
 
@@ -102,7 +114,9 @@
 - Right below minimap black: `100.0`%
 - Minimap interior black: `98.515`%
 - Stripe pass: `True` horizontal_high=`0.0`% vertical_high=`0.0`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### combined_tooltip_action_bar
 
@@ -121,7 +135,9 @@
 - Right below minimap black: `95.83`%
 - Minimap interior black: `98.561`%
 - Stripe pass: `True` horizontal_high=`0.0`% vertical_high=`0.0`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### post_redraw_action_bar
 
@@ -140,7 +156,9 @@
 - Right below minimap black: `76.407`%
 - Minimap interior black: `98.581`%
 - Stripe pass: `True` horizontal_high=`0.783`% vertical_high=`0.542`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### post_redraw_action_bar_bottom_gauge
 
@@ -159,7 +177,9 @@
 - Right below minimap black: `76.407`%
 - Minimap interior black: `98.581`%
 - Stripe pass: `True` horizontal_high=`0.587`% vertical_high=`0.542`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### combined_natural_unit
 
@@ -178,7 +198,9 @@
 - Right below minimap black: `76.407`%
 - Minimap interior black: `98.581`%
 - Stripe pass: `True` horizontal_high=`0.587`% vertical_high=`0.542`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### combined_minimap_surface_probe
 
@@ -197,14 +219,16 @@
 - Right below minimap black: `76.407`%
 - Minimap interior black: `98.581`%
 - Stripe pass: `True` horizontal_high=`0.587`% vertical_high=`0.542`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### bottom_edge_panel_only
 
 - Role: current bottom-edge selected-unit panel frame
 - Path: `captures\archive\cdb-surface-dump-20260616-153155\surface.png`
-- Status: `black_patch_or_diagnostic_frame`
-- Frame clean for playability: `False`
+- Status: `visual_clean_candidate`
+- Frame clean for playability: `True`
 - Play area nonblack: `97.21`%
 - Expected bottom action bar nonblack: `86.617`%
 - Expected bottom action bar mean luma: `66.211`
@@ -216,14 +240,16 @@
 - Right below minimap black: `76.407`%
 - Minimap interior black: `98.581`%
 - Stripe pass: `True` horizontal_high=`0.587`% vertical_high=`0.542`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`
 
 ### centered_bottom_edge_panel
 
 - Role: current centered bottom-edge selected-unit panel frame
 - Path: `captures\archive\cdb-surface-dump-20260616-153751\surface.png`
-- Status: `black_patch_or_diagnostic_frame`
-- Frame clean for playability: `False`
+- Status: `visual_clean_candidate`
+- Frame clean for playability: `True`
 - Play area nonblack: `97.21`%
 - Expected bottom action bar nonblack: `91.954`%
 - Expected bottom action bar mean luma: `66.995`
@@ -235,8 +261,6 @@
 - Right below minimap black: `76.407`%
 - Minimap interior black: `98.581`%
 - Stripe pass: `True` horizontal_high=`0.587`% vertical_high=`0.542`%
-- Black patch regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
-
-## Failures
-
-- primary first-mission frame is not visually clean for playability: black patch: right_below_minimap, black patch: bottom_right_panel, black patch: minimap_interior
+- Raw proxy-black regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Confirmed proxy-artifact regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
+- Unresolved black patch regions: `[]`

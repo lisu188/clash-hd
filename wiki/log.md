@@ -1819,6 +1819,62 @@ tags:
   `natural_slot5_right_bottom_action_click_centered_input` is in place, but the
   runtime evidence run is still pending.
 
+## [2026-07-13] progress | Validate chosen HD tooltip and command-panel anchors
+- Source: validation-only `-hdlayout` patch manifest and hidden/no-popup CDB
+  run.
+- Pages updated: `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`,
+  `[source: docs/hd/HD_MOD_PROGRESS.md]`, and
+  [[How Should The Bottom Tooltip Be Recovered]].
+- Evidence: `[source: captures/current/patch-stage-hdlayout-current.json]` and
+  `[source: captures/archive/cdb-surface-dump-20260713-072428/RUN-SUMMARY.md]`,
+  summarized by `[source: captures/current/hd-layout-summary-current.json]`.
+- Claim: candidate
+  `911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD`
+  matches 138/138 expected patches; hidden CDB proves the bottom-centered
+  tooltip globals and all six right-bottom command descriptor draw/hit
+  coordinates on the 800x600 map surface, plus the patched high-X redraw
+  branch through a labeled debugger-only helper invocation.
+- Status: implementation validation only. The proxy PNG cannot prove final
+  overlay appearance; the stable stage is unchanged and visible validation
+  still requires fresh explicit user approval.
+
+## [2026-07-13] evidence | Approved visible HD-layout diagnostic
+
+- Source: `[source: captures/archive/visual-smoke-20260713-075818/results.json]`,
+  `[source: captures/archive/visual-smoke-20260713-075818/after-map-path.png]`,
+  and
+  `[source: captures/archive/visual-smoke-20260713-075818/after-hdlayout-panel-hover.png]`.
+- Pages updated: `[source: docs/hd/CLASH95_ENGINE_VIEWPORT_PATCH_NOTES.md]`,
+  `[source: docs/hd/HD_MOD_PROGRESS.md]`,
+  [[How Should The Bottom Tooltip Be Recovered]], and
+  [[What Manual DirectInput Validation Remains]].
+- Evidence: `[source: captures/current/hd-layout-visible-current.json]` records
+  authentic screen composition PASS for candidate
+  `911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD`.
+- Input boundary: the no-click Win32 hover at client `(640,544)` was exact; the
+  descriptor-5 held-click request `(760,560)` landed at `(716,493)`, an error
+  of `(-44,-67)`, so input/callback proof did not pass.
+- Follow-up: future manual commands now use `-MoveWindowX 0 -MoveWindowY -30`.
+  With the observed client origin `(3,26)`, this keeps the lower/right logical
+  targets inside the active 800x600 desktop and avoids repeating the clamp.
+- Status: approved visible fixture/SendInput diagnostic only. Manual
+  DirectInput remains `0/5`, promotion is deferred, and the protected stable
+  stage is unchanged.
+
+## [2026-07-13] evidence | Fail-closed HD-layout promotion decision
+
+- Evidence: `[source: captures/current/hd-layout-promotion-decision-current.json]`
+  and
+  `[source: captures/current/hd-layout-promotion-decision-tests-current.md]`.
+- Claim: the decision record passes only as `defer_stable_promotion`; command
+  click, callback, manual DirectInput, override, promotion readiness, and
+  stable-stage change all remain false.
+- Related support: the natural slot-2/record-1 right-bottom probe/parser now
+  has fixture/source-guard tests in
+  `[source: captures/current/right-bottom-natural-slot2-summary-tests-current.md]`.
+- Open evidence: no natural slot-2 runtime result exists; the hidden CDB launch
+  was blocked before execution by the external approval quota.
+
 Future entries should be appended using this shape:
 
 ```markdown

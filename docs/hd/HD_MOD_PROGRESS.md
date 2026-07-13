@@ -3586,3 +3586,103 @@ The obsolete route evidence block from 2026-04-24/25 has been removed. Current v
   natural right-bottom UI probe and require `RBUI_PANEL_DRAW` /
   `RBUI_ACTION_BOX` without debugger-forced clicks; stable promotion still
   requires the approved manual DirectInput proof. No default stage changed.
+
+## User-Chosen Tooltip And Command-Panel Layout Validation, 2026-07-13
+
+- The user chose the intended HD anchors: terrain tooltip text at the bottom
+  of the play area, horizontally centered, and the six-icon selected-unit
+  command panel (globe plus unit figures) docked in the right-bottom corner
+  under the minimap. This six-descriptor grid is distinct from the historical
+  370x20 selected-unit text/morale copyback.
+- The tooltip owner chain is the four map-context initializers
+  (`sub_40AD40`, `PlayGame`, `Unit_Attack`, and `Unit_AttackBuilding`) ->
+  `sub_422880` -> `dword_526EF4` and
+  `dword_526EF8/dword_526EFC/dword_526F00/dword_526F04`; hover text then flows
+  `sub_4084A0` -> `sub_4229A0` -> `sub_40C190` -> `Render_Present`.
+- The selected-unit command-panel owner chain is the six-entry, 53-byte list
+  at `dword_511D40` -> `sub_419D80` for drawing and `sub_419DC0` ->
+  `sub_419B80` for hit testing. Drawing and input share the descriptor X/Y
+  values, so the relocation does not need a separate input shim.
+- Added validation-only groups `terrain-tooltip-bottom-center` and
+  `selected-unit-command-panel-right-bottom`, exposed separately by the
+  `-tooltipbottomcenter` and `-unitcommandpanel-rightbottom` stage suffixes and
+  together by
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout`.
+  The protected stable/default stage remains
+  `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
+  and contains neither group.
+
+Exact tooltip old/new-byte manifest:
+
+| Context/value | File offset | VA | Old bytes | New bytes |
+| --- | ---: | ---: | --- | --- |
+| `sub_40AD40` top | `0x00A198` | `0x0040AD98` | `D3 01 00 00` (467) | `4B 02 00 00` (587) |
+| `sub_40AD40` right | `0x00A1A4` | `0x0040ADA4` | `D9 01 00 00` (473) | `29 02 00 00` (553) |
+| `sub_40AD40` left | `0x00A1A9` | `0x0040ADA9` | `A0 00 00 00` (160) | `F0 00 00 00` (240) |
+| `PlayGame` top | `0x00AB94` | `0x0040B794` | `D3 01 00 00` (467) | `4B 02 00 00` (587) |
+| `PlayGame` right | `0x00ABA0` | `0x0040B7A0` | `D9 01 00 00` (473) | `29 02 00 00` (553) |
+| `PlayGame` left | `0x00ABA5` | `0x0040B7A5` | `A0 00 00 00` (160) | `F0 00 00 00` (240) |
+| `Unit_Attack` top | `0x01A5B3` | `0x0041B1B3` | `D3 01 00 00` (467) | `4B 02 00 00` (587) |
+| `Unit_Attack` right | `0x01A5B8` | `0x0041B1B8` | `D9 01 00 00` (473) | `29 02 00 00` (553) |
+| `Unit_Attack` left | `0x01A5C2` | `0x0041B1C2` | `A0 00 00 00` (160) | `F0 00 00 00` (240) |
+| `Unit_AttackBuilding` top | `0x01B022` | `0x0041BC22` | `D3 01 00 00` (467) | `4B 02 00 00` (587) |
+| `Unit_AttackBuilding` right | `0x01B027` | `0x0041BC27` | `D9 01 00 00` (473) | `29 02 00 00` (553) |
+| `Unit_AttackBuilding` left | `0x01B031` | `0x0041BC31` | `A0 00 00 00` (160) | `F0 00 00 00` (240) |
+
+Exact command-panel old/new-byte manifest (the single redraw clip is file
+offset **`0x019165`**, VA **`0x00419D65`**, not `0x019164`):
+
+| Owner/value | File offset | VA | Old bytes | New bytes |
+| --- | ---: | ---: | --- | --- |
+| `sub_419D60` single redraw X clip | `0x019165` | `0x00419D65` | `80 02 00 00` (640) | `20 03 00 00` (800) |
+| `sub_419D80` list draw X clip | `0x01918E` | `0x00419D8E` | `80 02 00 00` (640) | `20 03 00 00` (800) |
+| descriptor 0 | `0x10FF40` | `0x00511D40` | `A0 01 00 00 90 01 00 00` (416,400) | `60 02 00 00 10 02 00 00` (608,528) |
+| descriptor 1 | `0x10FF75` | `0x00511D75` | `E0 01 00 00 90 01 00 00` (480,400) | `A0 02 00 00 10 02 00 00` (672,528) |
+| descriptor 2 | `0x10FFAA` | `0x00511DAA` | `20 02 00 00 90 01 00 00` (544,400) | `E0 02 00 00 10 02 00 00` (736,528) |
+| descriptor 3 | `0x10FFDF` | `0x00511DDF` | `A0 01 00 00 B0 01 00 00` (416,432) | `60 02 00 00 30 02 00 00` (608,560) |
+| descriptor 4 | `0x110014` | `0x00511E14` | `E0 01 00 00 B0 01 00 00` (480,432) | `A0 02 00 00 30 02 00 00` (672,560) |
+| descriptor 5 | `0x110049` | `0x00511E49` | `20 02 00 00 B0 01 00 00` (544,432) | `E0 02 00 00 30 02 00 00` (736,560) |
+
+- Candidate SHA-256
+  `911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD`
+  has 138/138 expected patches and zero unexpected records in
+  `captures\current\patch-stage-hdlayout-current.json`.
+- Hidden/no-popup run
+  `captures\archive\cdb-surface-dump-20260713-072428\RUN-SUMMARY.md` passed.
+  Focused CDB rows observed live tooltip globals
+  `(left,top,right,bottom)=(240,586,553,599)`, both X clips at 800, all six
+  panel draws at `(608,528)`, `(672,528)`, `(736,528)`, `(608,560)`,
+  `(672,560)`, and `(736,560)`, `render == map_surface`, and hit scanning with
+  the relocated first/last endpoints. A labeled debugger-only call through
+  `sub_419D60` for descriptor 5 also reached the patched high-X draw branch at
+  `0x00419D6D` with `clip=800`; this proves the redraw clip, not manual input.
+- `captures\current\hd-layout-summary-current.json` applies the strict marker
+  gate and passes every layout check.
+- Approved visible-runtime fixture run
+  `captures\archive\visual-smoke-20260713-075818` used the same candidate SHA
+  and produced authentic `CaptureMode=screen` frames. The dedicated
+  `captures\current\hd-layout-visible-current.json` gate records composition
+  PASS for the chosen bottom-centered tooltip and right-bottom command panel.
+- The exact no-click Win32 hover at client `(640,544)` had zero requested versus
+  actual error. The descriptor-5 held-click attempt did not reach its requested
+  client point: `(760,560)` became `(716,493)`, or `(-44,-67)`, and both path
+  verification flags are false. This is an isolated save-fixture plus
+  automated SendInput diagnostic, not a command callback or manual DirectInput
+  pass.
+- The manual DirectInput run planner now emits
+  `-MoveWindowX 0 -MoveWindowY -30` for every future command. With the approved run's measured client origin
+  `(3,26)`, that outer-window offset keeps logical targets through
+  `(780,580)` inside the active 800x600 desktop instead of repeating the clamp.
+- Manual DirectInput remains `0/5`; promotion is deferred. Both layout groups
+  remain validation-only and the protected stable/default stage is unchanged.
+- `captures\current\hd-layout-promotion-decision-current.json` is a passing
+  fail-closed decision record only because it says
+  `decision=defer_stable_promotion`, command-click/callback/manual proof and
+  promotion readiness are false, and `stable_stage_should_change=False`.
+
+The natural saved-state slot-2/record-1 right-bottom probe
+`probes\cdb\castle\clash95_castle_cmd99_owner_action_slot2_record1_natural_extra.cdb`
+and its strict parser now have fixture/source-guard coverage in
+`captures\current\right-bottom-natural-slot2-summary-tests-current.md`. The
+real hidden-CDB run remains pending: its launch was blocked before execution by
+the external approval quota, so there is no natural slot-2 runtime pass claim.

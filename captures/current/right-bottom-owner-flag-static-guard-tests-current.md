@@ -1,7 +1,7 @@
 # Right-Bottom Owner-Flag Static Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-12T21:35:42+02:00`
+- Generated: `2026-07-13T08:54:23+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the static owner-flag guard fails closed on executable SHA drift, 004338E0 gate drift, and missing local executable evidence
 

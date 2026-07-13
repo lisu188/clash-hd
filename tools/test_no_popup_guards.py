@@ -99,6 +99,8 @@ def test_boundary_guard(fixture: Path) -> None:
     good = no_popup_boundary_guard.build_guard(good_args)
     assert good["passed"] is True, good
     assert good["required_guard_count"] == 7, good
+    assert good["required_supporting_report_count"] == 93, good
+    assert good["required_report_count"] == 100, good
     assert "visible_runtime_launcher_guard" in good["required_guards"], good
     assert "launcher_policy_guard" in good["required_guards"], good
     assert "resolution_manifest_guard" in good["required_supporting_reports"], good
@@ -107,17 +109,37 @@ def test_boundary_guard(fixture: Path) -> None:
     assert "hd_soak_execution_boundary_tests" in good["required_supporting_reports"], good
     assert "first_mission_visual_audit" in good["required_supporting_reports"], good
     assert "first_mission_visual_audit_tests" in good["required_supporting_reports"], good
+    assert "hd_layout_summary" in good["required_supporting_reports"], good
+    assert "hd_layout_summary_tests" in good["required_supporting_reports"], good
 
     expected_blocker_payload = refresh_payload(fixture)
-    expected_blocker_payload["checks"]["first_mission_visual_audit"]["passed"] = False
-    expected_blocker_payload["checks"]["first_mission_visual_audit"]["failures"] = [
-        "primary first-mission frame is not visually clean"
+    expected_blocker_payload["checks"]["right_bottom_visual_artifact_guard"]["passed"] = False
+    expected_blocker_payload["checks"]["right_bottom_visual_artifact_guard"]["failures"] = [
+        "natural right-bottom UI artifact remains non-promoting"
     ]
     refresh_json.write_text(json.dumps(expected_blocker_payload), encoding="utf-8")
     expected_blocker = no_popup_boundary_guard.build_guard(good_args)
     assert expected_blocker["passed"] is True, expected_blocker
-    assert expected_blocker["checks"]["first_mission_visual_audit"]["summary"]["expected_pass"] is False
-    assert expected_blocker["checks"]["first_mission_visual_audit"]["summary"]["observed_passed"] is False
+    blocker_check = expected_blocker["checks"]["right_bottom_visual_artifact_guard"]
+    assert blocker_check["summary"]["expected_pass"] is False, blocker_check
+    assert blocker_check["summary"]["observed_passed"] is False, blocker_check
+    refresh_json.write_text(json.dumps(refresh_payload(fixture)), encoding="utf-8")
+
+    failed_visual_payload = refresh_payload(fixture)
+    failed_visual_payload["checks"]["first_mission_visual_audit"]["passed"] = False
+    failed_visual_payload["checks"]["first_mission_visual_audit"]["failures"] = [
+        "primary first-mission frame is not visually clean"
+    ]
+    refresh_json.write_text(json.dumps(failed_visual_payload), encoding="utf-8")
+    failed_visual = no_popup_boundary_guard.build_guard(good_args)
+    assert failed_visual["passed"] is False, failed_visual
+    visual_check = failed_visual["checks"]["first_mission_visual_audit"]
+    assert visual_check["summary"]["expected_pass"] is True, visual_check
+    assert visual_check["summary"]["observed_passed"] is False, visual_check
+    assert any(
+        "refresh check is not passing: first_mission_visual_audit" in failure
+        for failure in failed_visual["failures"]
+    ), failed_visual
     refresh_json.write_text(json.dumps(refresh_payload(fixture)), encoding="utf-8")
 
     good_run = run_script(

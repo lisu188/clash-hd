@@ -1,0 +1,212 @@
+{
+  "generated_at": "2026-07-13T08:53:09+02:00",
+  "runtime_policy": "repo-only parser; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
+  "log": "captures\\archive\\cdb-surface-dump-20260713-072428\\cdb-surface-dump.log",
+  "target_size": [
+    800,
+    600
+  ],
+  "passed": true,
+  "redraw_clip_proved": true,
+  "checks": {
+    "no_access_violation": {
+      "passed": true,
+      "marker_count": 0,
+      "markers": []
+    },
+    "tooltip_init_anchor": {
+      "passed": true,
+      "expected": {
+        "left": 240,
+        "top": 586,
+        "right": 553,
+        "bottom": 599,
+        "width": 800,
+        "height": 600
+      },
+      "row_count": 1,
+      "matching_row_count": 1,
+      "first_row": [
+        {
+          "line_no": 201,
+          "ret": 0,
+          "left": 240,
+          "top": 586,
+          "right": 553,
+          "bottom": 599,
+          "surface": 174287488,
+          "map_surface": 170978992,
+          "width": 800,
+          "height": 600
+        }
+      ]
+    },
+    "panel_setup": {
+      "passed": true,
+      "expected_clip_single": 800,
+      "expected_clip_list": 800,
+      "expected_coords": [
+        [
+          608,
+          528
+        ],
+        [
+          672,
+          528
+        ],
+        [
+          736,
+          528
+        ],
+        [
+          608,
+          560
+        ],
+        [
+          672,
+          560
+        ],
+        [
+          736,
+          560
+        ]
+      ],
+      "expected_size": [
+        800,
+        600
+      ],
+      "requires_render_equals_map_surface": true,
+      "row_count": 1,
+      "matching_row_count": 1,
+      "first_row": [
+        {
+          "line_no": 202,
+          "ret": 4241331,
+          "clip_single": 800,
+          "clip_list": 800,
+          "e0_x": 608,
+          "e0_y": 528,
+          "e1_x": 672,
+          "e1_y": 528,
+          "e2_x": 736,
+          "e2_y": 528,
+          "e3_x": 608,
+          "e3_y": 560,
+          "e4_x": 672,
+          "e4_y": 560,
+          "e5_x": 736,
+          "e5_y": 560,
+          "render": 170978992,
+          "map_surface": 170978992,
+          "width": 800,
+          "height": 600
+        }
+      ]
+    },
+    "panel_draws": {
+      "passed": true,
+      "expected_descriptor_count": 6,
+      "valid_descriptor_count": 6,
+      "valid_descriptors": [
+        "0x00511d40",
+        "0x00511d75",
+        "0x00511daa",
+        "0x00511ddf",
+        "0x00511e14",
+        "0x00511e49"
+      ],
+      "missing_descriptors": [],
+      "invalid_row_count": 0,
+      "invalid_rows": [],
+      "row_count": 6
+    },
+    "panel_hitscan_anchor": {
+      "passed": true,
+      "expected_e0": [
+        608,
+        528
+      ],
+      "expected_e5": [
+        736,
+        560
+      ],
+      "row_count": 19,
+      "matching_row_count": 19,
+      "first_row": [
+        {
+          "line_no": 212,
+          "list": 5315904,
+          "mouse_x": 320,
+          "mouse_y": 166,
+          "e0_x": 608,
+          "e0_y": 528,
+          "e5_x": 736,
+          "e5_y": 560
+        }
+      ]
+    },
+    "panel_redraw_clip": {
+      "passed": true,
+      "required": true,
+      "proved": true,
+      "redraw_invoke_row_count": 1,
+      "parsed_redraw_invoke_row_count": 1,
+      "matching_redraw_invoke_row_count": 1,
+      "matching_redraw_row_count": 0,
+      "redraw_row_required": false,
+      "redraw_allowed_row_count": 1,
+      "matching_redraw_allowed_row_count": 1,
+      "expected_descriptor": "0x00511e49",
+      "expected_coords": [
+        736,
+        560
+      ],
+      "expected_helper": "0x00419d60",
+      "expected_return": "0x0040a460",
+      "expected_clip": 800,
+      "expected_draw": "0x004191f0",
+      "first_redraw_invoke_marker": [
+        {
+          "line_no": 210,
+          "text": "HDLAYOUT_PANEL_REDRAW_INVOKE desc=00511e49 x=736 y=560 helper=00419d60 return=0040a460"
+        }
+      ],
+      "first_redraw_invoke_row": [
+        {
+          "line_no": 210,
+          "desc": 5316169,
+          "x": 736,
+          "y": 560,
+          "helper": 4300128,
+          "return": 4236384
+        }
+      ],
+      "first_matching_redraw_row": [],
+      "first_matching_redraw_allowed_row": [
+        {
+          "line_no": 211,
+          "desc": 5316169,
+          "x": 736,
+          "y": 560,
+          "clip": 800,
+          "draw": 4297200,
+          "render": 170978992,
+          "map_surface": 170978992
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "tooltip_init": 1,
+    "tooltip_draw": 0,
+    "panel_setup": 1,
+    "panel_redraw_invoke": 1,
+    "panel_draw": 6,
+    "panel_redraw": 0,
+    "panel_redraw_allowed": 1,
+    "panel_hitscan": 19,
+    "access_violation": 0
+  },
+  "tooltip_draw_required": false,
+  "tooltip_draw_note": "A tooltip draw is optional: the init marker proves the anchor even when the proxy cursor does not reach a terrain cell."
+}

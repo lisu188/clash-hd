@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T21:36:17+02:00",
+  "generated_at": "2026-07-13T08:55:07+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "percent_policy": "Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.",
@@ -14,16 +14,16 @@
     {
       "id": "current_repo_evidence_gates",
       "label": "Current repo evidence gates",
-      "completion_percent": 92.21,
+      "completion_percent": 94.41,
       "passed": false,
-      "basis": "142/154 refresh checks pass"
+      "basis": "152/161 refresh checks pass"
     },
     {
       "id": "repo_test_sweep",
       "label": "Repo-only Python test sweep",
       "completion_percent": 100.0,
       "passed": true,
-      "basis": "92/92 tools/test_*.py files pass"
+      "basis": "101/101 tools/test_*.py files pass"
     },
     {
       "id": "focused_battle_right_bottom_lane",
@@ -59,21 +59,15 @@
     ],
     "first_mission_visual": {
       "present": true,
-      "passed": false,
-      "current_status": "selected_unit_action_bar_on_bottom_but_black_ui_patches_remain",
-      "first_mission_visual_clean": false,
+      "passed": true,
+      "current_status": "selected_unit_action_bar_on_bottom_black_patches_are_proxy_artifacts",
+      "first_mission_visual_clean": true,
       "primary_frame": "centered_bottom_edge_panel",
       "selected_action_bar_visible": true,
       "legacy_middle_action_bar_visible": false,
-      "black_patch_regions": [
-        "right_below_minimap",
-        "bottom_right_panel",
-        "minimap_interior"
-      ],
+      "black_patch_regions": [],
       "stripe_failure_frames": [],
-      "failures": [
-        "primary first-mission frame is not visually clean for playability: black patch: right_below_minimap, black patch: bottom_right_panel, black patch: minimap_interior"
-      ]
+      "failures": []
     },
     "right_bottom_failures": [
       "right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",

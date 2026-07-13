@@ -1,0 +1,25 @@
+{
+    "Path":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-145714\\readiness-02.png",
+    "Hash":  "3BD487B726DF599ED2DD9E511DE59975E9B30F879751EFBDCA3CE2A4DE42B0CF",
+    "Width":  1200,
+    "Height":  900,
+    "OriginX":  1320,
+    "OriginY":  611,
+    "CenterWindowMatchesTarget":  false,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "windowdc-contaminated-fallback",
+    "TargetHwnd":  "0x110E10",
+    "CenterWindowHwnd":  "0x3071E",
+    "CenterRootHwnd":  "0x3071E",
+    "NonblackPercent":  27.403,
+    "MeanLuma":  23.029,
+    "UniqueSampleColors":  158,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  800,
+                           "Bottom":  600,
+                           "Width":  801,
+                           "Height":  601
+                       }
+}

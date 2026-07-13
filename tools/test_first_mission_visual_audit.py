@@ -64,6 +64,12 @@ def black_patch_pixel(x: int, y: int) -> tuple[int, int, int]:
     return clean_pixel(x, y)
 
 
+def scaled_black_patch_pixel(x: int, y: int) -> tuple[int, int, int]:
+    native_x = int(x * 800 / 1200)
+    native_y = int(y * 600 / 900)
+    return black_patch_pixel(native_x, native_y)
+
+
 def legacy_middle_bar_pixel(x: int, y: int) -> tuple[int, int, int]:
     if 150 <= x <= 520 and 455 <= y <= 500:
         return (45, 40, 30)
@@ -163,13 +169,15 @@ def test_black_patch_excused_when_real_frame_corroborates(fixture: Path) -> None
 
 def test_black_patch_not_excused_when_real_frame_also_black(fixture: Path) -> None:
     proxy = write_png(fixture / "proxy2.png", 800, 600, black_patch_pixel)
-    # Real frame is ALSO black in that region -> not corroborated -> still fails.
-    real = write_png(fixture / "real2.png", 1200, 900, black_patch_pixel)
+    # The 1200x900 real frame is ALSO black in the correctly scaled region.
+    real = write_png(fixture / "real2.png", 1200, 900, scaled_black_patch_pixel)
     report = first_mission_visual_audit.build_report(
         [frame(proxy)], ns(real_runtime_frame=real)
     )
     assert report["passed"] is False, report
     assert "right_below_minimap" in report["summary"]["primary_black_patch_regions"], report
+    corroboration = report["real_runtime_corroboration"]["regions"]["right_below_minimap"]
+    assert corroboration["corroborated_rendered"] is False, corroboration
 
 
 def test_legacy_middle_action_bar_fails_bottom_gate(fixture: Path) -> None:
@@ -219,6 +227,8 @@ def run_tests() -> None:
         test_clean_frame_passes(fixture / "clean")
         test_horizontal_stripes_fail(fixture / "striped")
         test_black_patch_regions_fail_playability(fixture / "black-patch")
+        test_black_patch_excused_when_real_frame_corroborates(fixture / "corroborated")
+        test_black_patch_not_excused_when_real_frame_also_black(fixture / "still-black")
         test_legacy_middle_action_bar_fails_bottom_gate(fixture / "legacy-middle")
         test_diagnostic_black_frame_is_reported(fixture / "diagnostic")
         test_cli_writes_outputs(fixture / "cli")

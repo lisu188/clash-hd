@@ -1,0 +1,21 @@
+﻿coverage: C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260713-071952\map-tile-coverage.json
+logs: 1
+observation_points: 108
+blank_cells: r3c10, r3c11, r4c10, r4c11, r5c10, r5c11, r6c10, r6c11, r7c10, r7c11, r8c0, r8c11
+explained_blank_cells: r3c10, r3c11, r4c10, r4c11, r5c10, r5c11, r6c10, r6c11, r7c10, r7c11, r8c0, r8c11
+unexplained_blank_cells: -
+status_counts:
+  visibility_zero: 12
+classified_cells:
+  r3c10: visibility_zero vis=0 clear=0 neighbors=0/0
+  r3c11: visibility_zero vis=0 clear=0 neighbors=0/0
+  r4c10: visibility_zero vis=0 clear=0 neighbors=0/0
+  r4c11: visibility_zero vis=0 clear=0 neighbors=0/0
+  r5c10: visibility_zero vis=0 clear=0 neighbors=0/0
+  r5c11: visibility_zero vis=0 clear=0 neighbors=0/0
+  r6c10: visibility_zero vis=0 clear=0 neighbors=0/0
+  r6c11: visibility_zero vis=0 clear=0 neighbors=0/0
+  r7c10: visibility_zero vis=0 clear=0 neighbors=0/0
+  r7c11: visibility_zero vis=0 clear=0 neighbors=0/0
+  r8c0: visibility_zero vis=0 clear=0 neighbors=0/0
+  r8c11: visibility_zero vis=0 clear=0 neighbors=0/0

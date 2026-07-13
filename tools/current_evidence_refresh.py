@@ -36,6 +36,9 @@ import handoff_freshness_guard
 import hd_endurance_release_checklist
 import hd_endurance_next_actions
 import hd_continuity_status
+import hd_layout_summary
+import hd_layout_visible_summary
+import hd_layout_promotion_decision
 import hd_soak_harness_guard
 import hd_soak_execution_boundary
 import hd_soak_dry_run_plan
@@ -97,6 +100,7 @@ import test_right_bottom_grid_hit_probe_guard
 import test_right_bottom_grid_hit_summary
 import test_right_bottom_natural_route_candidate_matrix
 import test_right_bottom_natural_route_guard
+import test_right_bottom_natural_slot2_summary
 import test_right_bottom_blocker_triage
 import test_right_bottom_visual_artifact_guard
 import test_right_bottom_owner_flag_static_guard
@@ -138,6 +142,9 @@ import test_handoff_freshness_guard
 import test_hd_endurance_release_checklist
 import test_hd_endurance_next_actions
 import test_hd_continuity_status
+import test_hd_layout_summary
+import test_hd_layout_visible_summary
+import test_hd_layout_promotion_decision
 import test_hd_soak_failure_triage
 import test_hd_soak_dry_run_plan
 import test_hd_soak_harness_guard
@@ -175,6 +182,45 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 DEFAULT_HD_MAP_SMOKE_JSON = Path("captures/current/hd-map-smoke-current.json")
 DEFAULT_HD_MAP_SMOKE_MD = Path("captures/current/hd-map-smoke-current.md")
+DEFAULT_HD_LAYOUT_LOG = Path(
+    "captures/archive/cdb-surface-dump-20260713-072428/cdb-surface-dump.log"
+)
+DEFAULT_HD_LAYOUT_SUMMARY_JSON = Path("captures/current/hd-layout-summary-current.json")
+DEFAULT_HD_LAYOUT_SUMMARY_MD = Path("captures/current/hd-layout-summary-current.md")
+DEFAULT_HD_LAYOUT_SUMMARY_TESTS_JSON = Path(
+    "captures/current/hd-layout-summary-tests-current.json"
+)
+DEFAULT_HD_LAYOUT_SUMMARY_TESTS_MD = Path(
+    "captures/current/hd-layout-summary-tests-current.md"
+)
+DEFAULT_HD_LAYOUT_VISIBLE_RUN_DIR = Path(
+    "captures/archive/visual-smoke-20260713-075818"
+)
+DEFAULT_HD_LAYOUT_VISIBLE_BASELINE_FRAME = Path(
+    "captures/archive/manual-rightbottom-entry/after-load-map.png"
+)
+DEFAULT_HD_LAYOUT_VISIBLE_JSON = Path("captures/current/hd-layout-visible-current.json")
+DEFAULT_HD_LAYOUT_VISIBLE_MD = Path("captures/current/hd-layout-visible-current.md")
+DEFAULT_HD_LAYOUT_VISIBLE_TESTS_JSON = Path(
+    "captures/current/hd-layout-visible-tests-current.json"
+)
+DEFAULT_HD_LAYOUT_VISIBLE_TESTS_MD = Path(
+    "captures/current/hd-layout-visible-tests-current.md"
+)
+DEFAULT_HD_LAYOUT_PROMOTION_DECISION_JSON = hd_layout_promotion_decision.DEFAULT_OUTPUT_JSON
+DEFAULT_HD_LAYOUT_PROMOTION_DECISION_MD = hd_layout_promotion_decision.DEFAULT_OUTPUT_MD
+DEFAULT_HD_LAYOUT_PROMOTION_DECISION_TESTS_JSON = Path(
+    "captures/current/hd-layout-promotion-decision-tests-current.json"
+)
+DEFAULT_HD_LAYOUT_PROMOTION_DECISION_TESTS_MD = Path(
+    "captures/current/hd-layout-promotion-decision-tests-current.md"
+)
+DEFAULT_RIGHT_BOTTOM_NATURAL_SLOT2_TESTS_JSON = Path(
+    "captures/current/right-bottom-natural-slot2-summary-tests-current.json"
+)
+DEFAULT_RIGHT_BOTTOM_NATURAL_SLOT2_TESTS_MD = Path(
+    "captures/current/right-bottom-natural-slot2-summary-tests-current.md"
+)
 DEFAULT_NO_POPUP_MAP_EVIDENCE_JSON = Path("captures/current/no-popup-map-evidence-current.json")
 DEFAULT_NO_POPUP_MAP_EVIDENCE_MD = Path("captures/current/no-popup-map-evidence-current.md")
 DEFAULT_NO_POPUP_MAP_EVIDENCE_TESTS_JSON = Path("captures/current/no-popup-map-evidence-tests-current.json")
@@ -806,6 +852,291 @@ def build_hd_map_smoke(args: argparse.Namespace) -> dict[str, Any]:
         },
         "failures": matrix.get("failures", []),
     }
+
+
+def build_hd_layout_summary(args: argparse.Namespace) -> dict[str, Any]:
+    log = args.hd_layout_log
+    run = log.parent
+    if not log.is_file():
+        return {
+            "passed": False,
+            "json": str(args.hd_layout_summary_json),
+            "markdown": str(args.hd_layout_summary_md),
+            "log": str(log),
+            "run": str(run),
+            "summary": {
+                "redraw_clip_proved": False,
+                "marker_counts": {},
+                "check_passes": {},
+            },
+            "failures": [f"missing HD layout CDB log: {log}"],
+        }
+
+    try:
+        report = hd_layout_summary.summarize(log)
+    except Exception as exc:
+        return {
+            "passed": False,
+            "json": str(args.hd_layout_summary_json),
+            "markdown": str(args.hd_layout_summary_md),
+            "log": str(log),
+            "run": str(run),
+            "summary": {
+                "redraw_clip_proved": False,
+                "marker_counts": {},
+                "check_passes": {},
+            },
+            "failures": [f"failed to parse HD layout CDB log: {type(exc).__name__}: {exc}"],
+        }
+
+    write_json(args.hd_layout_summary_json, report)
+    hd_layout_summary.write_markdown(args.hd_layout_summary_md, report)
+    check_passes = {
+        name: bool(check.get("passed"))
+        for name, check in (report.get("checks") or {}).items()
+    }
+    failures = [
+        f"HD layout summary check failed: {name}"
+        for name, passed in check_passes.items()
+        if not passed
+    ]
+    if not report.get("passed") and not failures:
+        failures.append("HD layout summary failed without a detailed check failure")
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.hd_layout_summary_json),
+        "markdown": str(args.hd_layout_summary_md),
+        "log": str(log),
+        "run": str(run),
+        "summary": {
+            "redraw_clip_proved": bool(report.get("redraw_clip_proved")),
+            "marker_counts": report.get("marker_counts") or {},
+            "check_passes": check_passes,
+        },
+        "failures": failures,
+    }
+
+
+def build_hd_layout_summary_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_layout_summary,
+        tests=[
+            "HD layout summary passes exact anchors without requiring a tooltip draw marker",
+            "HD layout summary rejects a wrong tooltip anchor",
+            "HD layout summary rejects a missing command-panel descriptor draw",
+            "HD layout summary rejects a wrong command-panel clip",
+            "HD layout summary rejects access-violation markers",
+            "HD layout summary requires an exact redraw-clip allow row after a redraw invocation",
+            "HD layout summary CLI writes JSON/Markdown and honors --require-pass",
+        ],
+        title="HD Layout Summary Tests",
+        json_path=args.hd_layout_summary_tests_json,
+        md_path=args.hd_layout_summary_tests_md,
+        guard_policy=(
+            "proves the hidden-CDB HD layout parser fails closed on anchor, descriptor, "
+            "clip, redraw, and access-violation regressions"
+        ),
+    )
+
+
+def build_hd_layout_visible_summary(args: argparse.Namespace) -> dict[str, Any]:
+    run_dir = args.hd_layout_visible_run_dir
+    baseline_frame = args.hd_layout_visible_baseline_frame
+    try:
+        report = hd_layout_visible_summary.summarize(run_dir, baseline_frame)
+    except Exception as exc:
+        return {
+            "passed": False,
+            "json": str(args.hd_layout_visible_json),
+            "markdown": str(args.hd_layout_visible_md),
+            "run": str(run_dir),
+            "summary": {
+                "authentic_composition_passed": False,
+                "command_click_alignment": False,
+                "manual_directinput_proof": False,
+                "promotion_ready": False,
+            },
+            "failures": [
+                "failed to parse approved visible HD layout evidence: "
+                f"{type(exc).__name__}: {exc}"
+            ],
+        }
+
+    write_json(args.hd_layout_visible_json, report)
+    hd_layout_visible_summary.write_markdown(args.hd_layout_visible_md, report)
+
+    failures: list[str] = []
+    if report.get("passed") is not True:
+        failures.append("approved visible HD layout composition summary is not passing")
+    for field in (
+        "command_click_alignment",
+        "panel_click_callback_proof",
+        "manual_directinput_proof",
+        "stable_stage_promotion_ready",
+        "promotion_ready",
+    ):
+        if report.get(field) is not False:
+            failures.append(f"approved visible HD layout boundary field must remain false: {field}")
+
+    checks = report.get("checks") or {}
+    tooltip_passed = bool((checks.get("tooltip_bottom_center_visible") or {}).get("passed"))
+    panel_passed = bool((checks.get("panel_right_bottom_visible") or {}).get("passed"))
+    hover_passed = bool((checks.get("automated_hover_alignment") or {}).get("passed"))
+    failed_click = report.get("failed_panel_click_attempt") or {}
+    if failed_click.get("classified_failed_attempt") is not True:
+        failures.append("descriptor-5 click miss is not explicitly classified")
+    if failed_click.get("alignment_passed") is not False:
+        failures.append("descriptor-5 click attempt must remain a failed alignment result")
+
+    return {
+        "passed": not failures,
+        "json": str(args.hd_layout_visible_json),
+        "markdown": str(args.hd_layout_visible_md),
+        "run": str(run_dir),
+        "summary": {
+            "evidence_class": report.get("evidence_class"),
+            "candidate_sha256": report.get("candidate_sha256"),
+            "authentic_composition_passed": tooltip_passed and panel_passed,
+            "tooltip_bottom_center_visible": tooltip_passed,
+            "panel_right_bottom_visible": panel_passed,
+            "automated_no_click_hover_exact": hover_passed,
+            "failed_descriptor5_click_requested": failed_click.get("requested_client"),
+            "failed_descriptor5_click_actual": failed_click.get("actual_client"),
+            "failed_descriptor5_click_error": failed_click.get("client_error"),
+            "command_click_alignment": report.get("command_click_alignment"),
+            "panel_click_callback_proof": report.get("panel_click_callback_proof"),
+            "manual_directinput_proof": report.get("manual_directinput_proof"),
+            "promotion_ready": report.get("promotion_ready"),
+        },
+        "failures": failures,
+    }
+
+
+def build_hd_layout_visible_summary_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_layout_visible_summary,
+        tests=[
+            "visible HD layout summary requires the exact isolated candidate identity",
+            "visible HD layout summary detects tooltip and active-panel geometry",
+            "visible HD layout summary classifies exact no-click hover as automated Win32 alignment only",
+            "visible HD layout summary exposes the failed descriptor-5 click instead of hiding it",
+            "visible HD layout summary passes the real archive while keeping manual/callback/promotion claims false",
+            "visible HD layout summary CLI writes strict JSON/Markdown and honors --require-pass",
+        ],
+        title="HD Layout Visible Summary Tests",
+        json_path=args.hd_layout_visible_tests_json,
+        md_path=args.hd_layout_visible_tests_md,
+        guard_policy=(
+            "proves authentic visible composition stays separate from automated hover, "
+            "failed click alignment, manual DirectInput, callbacks, and stable promotion"
+        ),
+    )
+
+
+def build_hd_layout_promotion_decision(args: argparse.Namespace) -> dict[str, Any]:
+    decision_args = argparse.Namespace(
+        patch_json=args.hd_layout_promotion_patch_json,
+        hidden_json=args.hd_layout_promotion_hidden_json,
+        hidden_run_json=args.hd_layout_promotion_hidden_run_json,
+        visible_json=args.hd_layout_visible_json,
+        manual_json=args.manual_directinput_checklist_json,
+        process_hygiene_json=args.process_hygiene_guard_json,
+        current_stable_stage=hd_layout_promotion_decision.PROTECTED_STABLE_STAGE,
+        allow_cdb_only_promotion=False,
+        promotion_override_manifest=None,
+    )
+    decision = hd_layout_promotion_decision.build_decision(decision_args)
+    write_json(args.hd_layout_promotion_decision_json, decision)
+    hd_layout_promotion_decision.write_markdown(
+        args.hd_layout_promotion_decision_md,
+        decision,
+    )
+
+    failures: list[str] = []
+    if decision.get("passed") is not True:
+        failures.extend(
+            decision.get("failures") or ["HD layout promotion decision is not passing"]
+        )
+    if decision.get("decision") != "defer_stable_promotion":
+        failures.append("HD layout promotion decision must remain defer_stable_promotion")
+    for field in (
+        "stable_stage_should_change",
+        "manual_directinput_proof",
+        "command_click_alignment",
+        "panel_click_callback_proof",
+        "promotion_ready",
+        "override_accepted",
+    ):
+        if decision.get(field) is not False:
+            failures.append(f"HD layout promotion boundary field must remain false: {field}")
+
+    return {
+        "passed": not failures,
+        "json": str(args.hd_layout_promotion_decision_json),
+        "markdown": str(args.hd_layout_promotion_decision_md),
+        "summary": {
+            "decision": decision.get("decision"),
+            "candidate_sha256": decision.get("candidate_sha256"),
+            "current_stable_stage": decision.get("current_stable_stage"),
+            "validation_stage": decision.get("validation_stage"),
+            "manual_checklist": (
+                f"{decision.get('manual_checked_item_count')}/"
+                f"{decision.get('manual_checklist_item_count')}"
+            ),
+            "command_click_alignment": decision.get("command_click_alignment"),
+            "panel_click_callback_proof": decision.get("panel_click_callback_proof"),
+            "promotion_ready": decision.get("promotion_ready"),
+            "stable_stage_should_change": decision.get("stable_stage_should_change"),
+        },
+        "failures": failures,
+    }
+
+
+def build_hd_layout_promotion_decision_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hd_layout_promotion_decision,
+        tests=[
+            "HD layout decision passes only while deferring stable promotion",
+            "HD layout decision rejects candidate SHA drift across patch, hidden, or visible evidence",
+            "HD layout decision rejects hidden or authentic-visible evidence regressions",
+            "HD layout decision never reclassifies the failed descriptor-5 click as success",
+            "HD layout decision rejects manual-proof or promotion-ready overclaims",
+            "HD layout decision rejects stable-stage drift",
+            "HD layout decision rejects every CDB-only override route",
+            "HD layout decision CLI writes PASS/defer outputs and fails closed on regressions",
+        ],
+        title="HD Layout Promotion Decision Tests",
+        json_path=args.hd_layout_promotion_decision_tests_json,
+        md_path=args.hd_layout_promotion_decision_tests_md,
+        guard_policy=(
+            "proves authentic composition cannot promote the validation stage while "
+            "command click, callback, and five-item manual DirectInput proof remain absent"
+        ),
+    )
+
+
+def build_right_bottom_natural_slot2_summary_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_right_bottom_natural_slot2_summary,
+        tests=[
+            "natural slot-2 summary accepts a complete synthetic proof while preserving evidence limits",
+            "natural slot-2 summary rejects a wrong target record flag",
+            "natural slot-2 summary requires verified load choice 5 from slot 2",
+            "natural slot-2 summary rejects missing or misordered composition markers",
+            "natural slot-2 summary rejects visible fallback or the wrong probe profile",
+            "natural slot-2 static guard rejects forbidden mutations and control-flow forcing",
+            "natural slot-2 summary rejects runtime forcing markers",
+            "natural slot-2 summary CLI writes JSON/Markdown and honors --require-pass",
+            "natural slot-2 summary CLI returns 2 for a failing log",
+        ],
+        title="Right-Bottom Natural Slot-2 Summary Tests",
+        json_path=args.right_bottom_natural_slot2_tests_json,
+        md_path=args.right_bottom_natural_slot2_tests_md,
+        guard_policy=(
+            "proves the natural slot-2 parser and static probe guard fail closed; "
+            "this support-only check is not a real runtime result"
+        ),
+    )
 
 
 def build_no_popup_map_evidence(args: argparse.Namespace) -> dict[str, Any]:
@@ -2323,6 +2654,8 @@ def build_first_mission_visual_audit_tests(args: argparse.Namespace) -> dict[str
             "first_mission_visual_audit passes a clean first-mission frame",
             "first_mission_visual_audit fails horizontal stripe signatures",
             "first_mission_visual_audit fails large black patch regions",
+            "first_mission_visual_audit excuses a proxy-black region only when a real-runtime frame corroborates it as rendered",
+            "first_mission_visual_audit keeps a proxy-black region failing when the real-runtime frame is also black",
             "first_mission_visual_audit fails legacy middle action-bar placement",
             "first_mission_visual_audit reports diagnostic black frames",
             "first_mission_visual_audit CLI writes JSON/Markdown and honors --require-pass",
@@ -2332,7 +2665,8 @@ def build_first_mission_visual_audit_tests(args: argparse.Namespace) -> dict[str
         md_path=args.first_mission_visual_audit_tests_md,
         guard_policy=(
             "proves first-mission visual audit detects stripe signatures, large black UI patches, "
-            "legacy middle action-bar placement, and diagnostic black frames without launching runtime"
+            "legacy middle action-bar placement, and diagnostic black frames, and only excuses proxy-black "
+            "regions with positive real-runtime corroboration, without launching runtime"
         ),
     )
 
@@ -7154,6 +7488,10 @@ def build_right_bottom_compose_normal_gate(args: argparse.Namespace) -> dict[str
 def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks = {
         "hd_map_smoke": build_hd_map_smoke(args),
+        "hd_layout_summary": build_hd_layout_summary(args),
+        "hd_layout_summary_tests": build_hd_layout_summary_tests(args),
+        "hd_layout_visible_summary": build_hd_layout_visible_summary(args),
+        "hd_layout_visible_summary_tests": build_hd_layout_visible_summary_tests(args),
         "no_popup_map_evidence": build_no_popup_map_evidence(args),
         "no_popup_map_evidence_tests": build_no_popup_map_evidence_tests(args),
         "patch_manifest_compare": build_patch_compare(args),
@@ -7201,6 +7539,9 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["right_bottom_natural_route_guard_tests"] = build_right_bottom_natural_route_guard_tests(args)
     checks["right_bottom_natural_route_candidate_matrix_tests"] = (
         build_right_bottom_natural_route_candidate_matrix_tests(args)
+    )
+    checks["right_bottom_natural_slot2_summary_tests"] = (
+        build_right_bottom_natural_slot2_summary_tests(args)
     )
     checks["right_bottom_slot_fixture_plan_tests"] = build_right_bottom_slot_fixture_plan_tests(args)
     checks["right_bottom_slot_fixture_script_guard_tests"] = build_right_bottom_slot_fixture_script_guard_tests(args)
@@ -7267,6 +7608,8 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["no_popup_guard_tests"] = build_no_popup_guard_tests(args)
     checks["manual_directinput_checklist"] = build_manual_directinput_checklist(args)
     checks["manual_directinput_checklist_tests"] = build_manual_directinput_checklist_tests(args)
+    checks["hd_layout_promotion_decision"] = build_hd_layout_promotion_decision(args)
+    checks["hd_layout_promotion_decision_tests"] = build_hd_layout_promotion_decision_tests(args)
     checks["manual_directinput_proof_template"] = build_manual_directinput_proof_template(args)
     checks["manual_directinput_proof_template_tests"] = build_manual_directinput_proof_template_tests(args)
     checks["manual_directinput_run_plan"] = build_manual_directinput_run_plan(args)
@@ -7397,6 +7740,102 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--hd-map-stage", default=hd_map_smoke_matrix.DEFAULT_STAGE)
     parser.add_argument("--hd-map-smoke-json", type=Path, default=DEFAULT_HD_MAP_SMOKE_JSON)
     parser.add_argument("--hd-map-smoke-md", type=Path, default=DEFAULT_HD_MAP_SMOKE_MD)
+    parser.add_argument("--hd-layout-log", type=Path, default=DEFAULT_HD_LAYOUT_LOG)
+    parser.add_argument(
+        "--hd-layout-summary-json",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_SUMMARY_JSON,
+    )
+    parser.add_argument(
+        "--hd-layout-summary-md",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_SUMMARY_MD,
+    )
+    parser.add_argument(
+        "--hd-layout-summary-tests-json",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_SUMMARY_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-layout-summary-tests-md",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_SUMMARY_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-layout-visible-run-dir",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_VISIBLE_RUN_DIR,
+    )
+    parser.add_argument(
+        "--hd-layout-visible-baseline-frame",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_VISIBLE_BASELINE_FRAME,
+    )
+    parser.add_argument(
+        "--hd-layout-visible-json",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_VISIBLE_JSON,
+    )
+    parser.add_argument(
+        "--hd-layout-visible-md",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_VISIBLE_MD,
+    )
+    parser.add_argument(
+        "--hd-layout-visible-tests-json",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_VISIBLE_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-layout-visible-tests-md",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_VISIBLE_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hd-layout-promotion-patch-json",
+        type=Path,
+        default=hd_layout_promotion_decision.DEFAULT_PATCH_JSON,
+    )
+    parser.add_argument(
+        "--hd-layout-promotion-hidden-json",
+        type=Path,
+        default=hd_layout_promotion_decision.DEFAULT_HIDDEN_JSON,
+    )
+    parser.add_argument(
+        "--hd-layout-promotion-hidden-run-json",
+        type=Path,
+        default=hd_layout_promotion_decision.DEFAULT_HIDDEN_RUN_JSON,
+    )
+    parser.add_argument(
+        "--hd-layout-promotion-decision-json",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_PROMOTION_DECISION_JSON,
+    )
+    parser.add_argument(
+        "--hd-layout-promotion-decision-md",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_PROMOTION_DECISION_MD,
+    )
+    parser.add_argument(
+        "--hd-layout-promotion-decision-tests-json",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_PROMOTION_DECISION_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hd-layout-promotion-decision-tests-md",
+        type=Path,
+        default=DEFAULT_HD_LAYOUT_PROMOTION_DECISION_TESTS_MD,
+    )
+    parser.add_argument(
+        "--right-bottom-natural-slot2-tests-json",
+        type=Path,
+        default=DEFAULT_RIGHT_BOTTOM_NATURAL_SLOT2_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--right-bottom-natural-slot2-tests-md",
+        type=Path,
+        default=DEFAULT_RIGHT_BOTTOM_NATURAL_SLOT2_TESTS_MD,
+    )
     parser.add_argument("--no-popup-map-evidence-json", type=Path, default=DEFAULT_NO_POPUP_MAP_EVIDENCE_JSON)
     parser.add_argument("--no-popup-map-evidence-md", type=Path, default=DEFAULT_NO_POPUP_MAP_EVIDENCE_MD)
     parser.add_argument("--no-popup-map-evidence-tests-json", type=Path, default=DEFAULT_NO_POPUP_MAP_EVIDENCE_TESTS_JSON)

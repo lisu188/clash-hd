@@ -1,7 +1,7 @@
 # HD Soak Failure Triage
 
 - Overall: PASS
-- Generated: `2026-07-12T19:36:11.012655+00:00`
+- Generated: `2026-07-13T06:55:01.250925+00:00`
 - Runtime policy: repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Source report: `captures\current\hd-soak-short2-menu-idle-current.json`
 - Source selection: `canonical_first_short_step`

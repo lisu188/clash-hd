@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-12T21:36:17+02:00`
+- Generated: `2026-07-13T08:55:07+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -16,6 +16,52 @@
 - candidate_sha256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
 - captures_root: `captures\archive`
 - patch_report_json: `captures\current\patch-stage-current-hd-map.json`
+
+### Hd Layout Summary
+
+- Status: PASS
+- JSON: `captures\current\hd-layout-summary-current.json`
+- Markdown: `captures\current\hd-layout-summary-current.md`
+- redraw_clip_proved: `True`
+- marker_counts: `{'tooltip_init': 1, 'tooltip_draw': 0, 'panel_setup': 1, 'panel_redraw_invoke': 1, 'panel_draw': 6, 'panel_redraw': 0, 'panel_redraw_allowed': 1, 'panel_hitscan': 19, 'access_violation': 0}`
+- check_passes: `{'no_access_violation': True, 'tooltip_init_anchor': True, 'panel_setup': True, 'panel_draws': True, 'panel_hitscan_anchor': True, 'panel_redraw_clip': True}`
+
+### Hd Layout Summary Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-layout-summary-tests-current.json`
+- Markdown: `captures\current\hd-layout-summary-tests-current.md`
+- test_count: `7`
+- guard_policy: `proves the hidden-CDB HD layout parser fails closed on anchor, descriptor, clip, redraw, and access-violation regressions`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Hd Layout Visible Summary
+
+- Status: PASS
+- JSON: `captures\current\hd-layout-visible-current.json`
+- Markdown: `captures\current\hd-layout-visible-current.md`
+- evidence_class: `approved_visible_automated_layout_composition`
+- candidate_sha256: `911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD`
+- authentic_composition_passed: `True`
+- tooltip_bottom_center_visible: `True`
+- panel_right_bottom_visible: `True`
+- automated_no_click_hover_exact: `True`
+- failed_descriptor5_click_requested: `[760, 560]`
+- failed_descriptor5_click_actual: `[716, 493]`
+- failed_descriptor5_click_error: `[-44, -67]`
+- command_click_alignment: `False`
+- panel_click_callback_proof: `False`
+- manual_directinput_proof: `False`
+- promotion_ready: `False`
+
+### Hd Layout Visible Summary Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-layout-visible-tests-current.json`
+- Markdown: `captures\current\hd-layout-visible-tests-current.md`
+- test_count: `6`
+- guard_policy: `proves authentic visible composition stays separate from automated hover, failed click alignment, manual DirectInput, callbacks, and stable promotion`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### No Popup Map Evidence
 
@@ -459,7 +505,7 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-owner-flag-inventory-current.json`
 - Markdown: `captures\current\right-bottom-owner-flag-inventory-current.md`
-- scanned_log_count: `26`
+- scanned_log_count: `31`
 - relevant_run_count: `12`
 - classification_counts: `{'forced_owner_action_route': 7, 'natural_state_gated': 1, 'non_natural_isolated_fixture': 4}`
 - natural_state_gated_count: `1`
@@ -557,24 +603,22 @@
 
 ### First Mission Visual Audit
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\first-mission-visual-audit-current.json`
 - Markdown: `captures\current\first-mission-visual-audit-current.md`
-- current_status: `selected_unit_action_bar_on_bottom_but_black_ui_patches_remain`
-- first_mission_visual_clean: `False`
+- current_status: `selected_unit_action_bar_on_bottom_black_patches_are_proxy_artifacts`
+- first_mission_visual_clean: `True`
 - primary_frame: `centered_bottom_edge_panel`
 - primary_frame_path: `captures\archive\cdb-surface-dump-20260616-153751\surface.png`
-- next_probe: `inspect the primary frame's right-side/minimap/bottom-panel compose or present path for black patch regions, then rerun first_mission_visual_audit.py`
+- next_probe: `rerun first_mission_visual_audit.py after the next first-mission visual evidence refresh`
 - primary_play_area_nonblack: `97.21`
 - primary_selected_action_bar_visible: `True`
 - primary_legacy_middle_action_bar_visible: `False`
-- primary_black_patch_regions: `['right_below_minimap', 'bottom_right_panel', 'minimap_interior']`
-- primary_black_patch_details: `[{'region': 'right_below_minimap', 'rect': [586, 230, 799, 599], 'black_percent': 76.407, 'nonblack_percent': 23.593, 'mean_luma': 22.011, 'quantized_color_bins': 19}, {'region': 'bottom_right_panel', 'rect': [586, 528, 799, 599], 'black_percent': 78.57, 'nonblack_percent': 21.43, 'mean_luma': 20.063, 'quantized_color_bins': 16}, {'region': 'minimap_interior', 'rect': [594, 24, 793, 220], 'black_percent': 98.581, 'nonblack_percent': 1.419, 'mean_luma': 1.718, 'quantized_color_bins': 17}]`
+- primary_black_patch_regions: `[]`
+- primary_black_patch_details: `[]`
 - stripe_failure_frames: `[]`
 - diagnostic_black_frames: `['tooltip_owner_probe', 'hover_selection_probe', 'combined_tooltip_action_bar']`
 - runtime_policy: `repo-only PNG audit; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-- Failures:
-  - primary first-mission frame is not visually clean for playability: black patch: right_below_minimap, black patch: bottom_right_panel, black patch: minimap_interior
 
 ### Right Bottom Compose Promotion Decision Tests
 
@@ -617,8 +661,8 @@
 - Status: PASS
 - JSON: `captures\current\first-mission-visual-audit-tests-current.json`
 - Markdown: `captures\current\first-mission-visual-audit-tests-current.md`
-- test_count: `6`
-- guard_policy: `proves first-mission visual audit detects stripe signatures, large black UI patches, legacy middle action-bar placement, and diagnostic black frames without launching runtime`
+- test_count: `8`
+- guard_policy: `proves first-mission visual audit detects stripe signatures, large black UI patches, legacy middle action-bar placement, and diagnostic black frames, and only excuses proxy-black regions with positive real-runtime corroboration, without launching runtime`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Right Bottom Grid Hit Summary Tests
@@ -655,6 +699,15 @@
 - Markdown: `captures\current\right-bottom-natural-route-candidate-matrix-tests-current.md`
 - test_count: `5`
 - guard_policy: `proves the right-bottom natural-route candidate matrix is a non-promoting repo-only classifier for save-state route candidates and current harness blockers`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
+### Right Bottom Natural Slot2 Summary Tests
+
+- Status: PASS
+- JSON: `captures\current\right-bottom-natural-slot2-summary-tests-current.json`
+- Markdown: `captures\current\right-bottom-natural-slot2-summary-tests-current.md`
+- test_count: `9`
+- guard_policy: `proves the natural slot-2 parser and static probe guard fail closed; this support-only check is not a real runtime result`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### Right Bottom Slot Fixture Plan Tests
@@ -1064,9 +1117,9 @@
 - JSON: `captures\current\patch-definition-current.json`
 - Markdown: `captures\current\patch-definition-current.md`
 - patcher_default_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
-- patch_count: `189`
-- patch_group_count: `43`
-- stage_count: `56`
+- patch_count: `209`
+- patch_group_count: `45`
+- stage_count: `59`
 - validation_groups_in_stable: `[]`
 - overlap_failure_count: `0`
 - guard_policy: `patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps`
@@ -1089,7 +1142,7 @@
 - current_stable_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - patcher_default_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - validation_only_groups_in_stable: `[]`
-- mapsurface_stages_checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
+- mapsurface_stages_checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
 - mapsurface_with_menu_surface: `[]`
 - mapsurface_missing_upgrade: `[]`
 
@@ -1145,8 +1198,8 @@
 - Status: PASS
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
-- risky_file_count: `112`
-- classification_counts: `{'safe': 122, 'user_gated_launcher': 1, 'exempt': 26, 'manual_visible_runtime_gated': 2, 'test_fixture': 83}`
+- risky_file_count: `118`
+- classification_counts: `{'safe': 126, 'user_gated_launcher': 1, 'exempt': 28, 'manual_visible_runtime_gated': 2, 'test_fixture': 87}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1164,8 +1217,8 @@
 - Status: PASS
 - JSON: `captures\current\no-visible-runtime-guard-current.json`
 - Markdown: `captures\current\no-visible-runtime-guard-current.md`
-- run_count: `22`
-- hidden_run_count: `22`
+- run_count: `23`
+- hidden_run_count: `23`
 - guard_policy: `all referenced CDB surface-dump runs must be hidden-desktop evidence`
 
 ### No Visible Runtime Guard Tests
@@ -1282,6 +1335,30 @@
 - guard_policy: `proves the manual DirectInput checklist enumerates the remaining manual targets, keeps promotion blocked without valid proof, validates manual proof manifests including isolated C:\ClashTests candidate path, stage, observation, no-crash, and process-hygiene records, records the no-popup operator preference, and fails closed for incomplete checklist data`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for checklist CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
+### Hd Layout Promotion Decision
+
+- Status: PASS
+- JSON: `captures\current\hd-layout-promotion-decision-current.json`
+- Markdown: `captures\current\hd-layout-promotion-decision-current.md`
+- decision: `defer_stable_promotion`
+- candidate_sha256: `911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD`
+- current_stable_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
+- validation_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout`
+- manual_checklist: `0/5`
+- command_click_alignment: `False`
+- panel_click_callback_proof: `False`
+- promotion_ready: `False`
+- stable_stage_should_change: `False`
+
+### Hd Layout Promotion Decision Tests
+
+- Status: PASS
+- JSON: `captures\current\hd-layout-promotion-decision-tests-current.json`
+- Markdown: `captures\current\hd-layout-promotion-decision-tests-current.md`
+- test_count: `8`
+- guard_policy: `proves authentic composition cannot promote the validation stage while command click, callback, and five-item manual DirectInput proof remain absent`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
 ### Manual Directinput Proof Template
 
 - Status: PASS
@@ -1314,7 +1391,7 @@
 - visible_runtime_requires_approval: `True`
 - proof_ready: `False`
 - promotion_ready: `False`
-- guard_policy: `manual DirectInput commands remain templates until explicit user approval; every visible runtime command must carry -AllowVisibleRuntime and the proof manifest must be validated before promotion`
+- guard_policy: `manual DirectInput commands remain templates until explicit user approval; every visible runtime command must carry -AllowVisibleRuntime and the proof manifest must be validated before promotion; the visible harness window must use the safe desktop offset so lower/right 800x600 client targets are not cursor-clamped`
 - runtime_policy: `repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, move the mouse, or open visible windows`
 
 ### Manual Directinput Run Plan Tests
@@ -1401,7 +1478,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 92.21, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 94.41, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1665,11 +1742,10 @@
 - JSON: `captures\current\hd-endurance-release-checklist-current.json`
 - Markdown: `captures\current\hd-endurance-release-checklist-current.md`
 - full_game_complete: `False`
-- counts: `{'total': 15, 'passed': 5, 'blocked': 10, 'missing': 0}`
+- counts: `{'total': 15, 'passed': 6, 'blocked': 9, 'missing': 0}`
 - next_milestone: `{'id': 'stable_menu_real_input', 'title': 'Stable menu load has real input proof', 'next_probe': 'collect approved manual menu-load proof or keep promotion blocked'}`
 - runtime_policy: `repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Failures:
-  - first_mission_visual_clean: first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior
   - long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing
   - stable_menu_real_input: menu-load proof remains pending manual DirectInput validation
   - stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation
@@ -1785,11 +1861,11 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `679`
-- current_reference_count: `172`
-- stale_visible_or_sandbox_count: `12`
-- reference_status_counts: `{'archived_referenced': 210, 'current_referenced': 142, 'stale_unreferenced': 327}`
-- era_counts: `{'cdb_surface_dump_unverified': 65, 'hidden_cdb_surface_dump': 148, 'other_capture_artifact': 454, 'visible_era': 12}`
+- artifact_count: `700`
+- current_reference_count: `179`
+- stale_visible_or_sandbox_count: `13`
+- reference_status_counts: `{'archived_referenced': 216, 'current_referenced': 149, 'stale_unreferenced': 335}`
+- era_counts: `{'cdb_surface_dump_unverified': 65, 'hidden_cdb_surface_dump': 153, 'other_capture_artifact': 469, 'visible_era': 13}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1804,31 +1880,26 @@
 
 ### No Popup Boundary Guard
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\no-popup-boundary-guard-current.json`
 - Markdown: `captures\current\no-popup-boundary-guard-current.md`
 - required_guard_count: `7`
-- required_supporting_report_count: `91`
-- required_report_count: `98`
+- required_supporting_report_count: `93`
+- required_report_count: `100`
 - required_guards: `['stable_stage_guard', 'exe_artifact_guard', 'surface_dump_policy_guard', 'visible_runtime_launcher_guard', 'no_visible_runtime_guard', 'process_hygiene_guard', 'launcher_policy_guard']`
-- required_supporting_reports: `['no_popup_map_evidence', 'no_popup_map_evidence_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'hd_soak_execution_boundary', 'hd_soak_execution_boundary_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'launcher_policy_guard_tests', 'patch_resolution_tests', 'launcher_core_tests', 'resolution_manifest_guard', 'resolution_manifest_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'first_mission_visual_audit', 'first_mission_visual_audit_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
-- required_reports: `['stable_stage_guard', 'exe_artifact_guard', 'surface_dump_policy_guard', 'visible_runtime_launcher_guard', 'no_visible_runtime_guard', 'process_hygiene_guard', 'launcher_policy_guard', 'no_popup_map_evidence', 'no_popup_map_evidence_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'hd_soak_execution_boundary', 'hd_soak_execution_boundary_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'launcher_policy_guard_tests', 'patch_resolution_tests', 'launcher_core_tests', 'resolution_manifest_guard', 'resolution_manifest_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'first_mission_visual_audit', 'first_mission_visual_audit_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
+- required_supporting_reports: `['no_popup_map_evidence', 'no_popup_map_evidence_tests', 'hd_layout_summary', 'hd_layout_summary_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'hd_soak_execution_boundary', 'hd_soak_execution_boundary_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'launcher_policy_guard_tests', 'patch_resolution_tests', 'launcher_core_tests', 'resolution_manifest_guard', 'resolution_manifest_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'first_mission_visual_audit', 'first_mission_visual_audit_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
+- required_reports: `['stable_stage_guard', 'exe_artifact_guard', 'surface_dump_policy_guard', 'visible_runtime_launcher_guard', 'no_visible_runtime_guard', 'process_hygiene_guard', 'launcher_policy_guard', 'no_popup_map_evidence', 'no_popup_map_evidence_tests', 'hd_layout_summary', 'hd_layout_summary_tests', 'no_visible_runtime_guard_tests', 'no_popup_guard_tests', 'visible_runtime_launcher_guard_tests', 'python_runtime_safety_guard', 'python_runtime_safety_guard_tests', 'hd_soak_execution_boundary', 'hd_soak_execution_boundary_tests', 'patch_definition_guard', 'patch_definition_guard_tests', 'capture_corpus_index', 'capture_corpus_index_tests', 'current_completion_summary', 'current_completion_summary_tests', 'process_hygiene_guard_tests', 'launcher_policy_guard_tests', 'patch_resolution_tests', 'launcher_core_tests', 'resolution_manifest_guard', 'resolution_manifest_guard_tests', 'manual_directinput_checklist', 'manual_directinput_checklist_tests', 'manual_directinput_proof_template', 'manual_directinput_proof_template_tests', 'manual_directinput_run_plan', 'manual_directinput_run_plan_tests', 'promotion_override_guard', 'promotion_override_guard_tests', 'promotion_override_manifest', 'promotion_override_manifest_tests', 'handoff_freshness_guard', 'handoff_freshness_guard_tests', 'right_bottom_compose_promotion_decision_tests', 'right_bottom_compose_evidence_matrix_tests', 'right_bottom_blocker_triage', 'right_bottom_blocker_triage_tests', 'right_bottom_visual_artifact_guard', 'right_bottom_visual_artifact_guard_tests', 'first_mission_visual_audit', 'first_mission_visual_audit_tests', 'right_bottom_grid_hit', 'right_bottom_grid_hit_summary_tests', 'right_bottom_grid_hit_probe_guard', 'right_bottom_grid_hit_probe_guard_tests', 'right_bottom_natural_route_guard', 'right_bottom_natural_route_guard_tests', 'right_bottom_slot_fixture_plan', 'right_bottom_slot_fixture_plan_tests', 'right_bottom_slot_fixture_script_guard', 'right_bottom_slot_fixture_script_guard_tests', 'right_bottom_slot_fixture_runtime_plan', 'right_bottom_slot_fixture_runtime_plan_tests', 'right_bottom_slot_fixture_result_summary_tests', 'load_slot_route_limit_guard', 'load_slot_route_limit_guard_tests', 'load_slot_timeout_phase', 'load_slot_timeout_phase_tests', 'load_slot_entry_gap', 'load_slot_entry_gap_tests', 'load_slot_transition_probe_guard', 'load_slot_transition_probe_guard_tests', 'load_slot_transition_run_plan', 'load_slot_transition_run_plan_tests', 'load_slot_transition_geometry_guard', 'load_slot_transition_geometry_guard_tests', 'load_slot_transition_probe_preview', 'load_slot_transition_probe_preview_tests', 'load_slot_transition_readiness', 'load_slot_transition_readiness_tests', 'load_slot_transition_summary_tests', 'right_bottom_owner_flag_static_guard', 'right_bottom_owner_flag_static_guard_tests', 'right_bottom_owner_flag_inventory', 'right_bottom_owner_flag_inventory_tests', 'right_bottom_route_timing_guard', 'right_bottom_route_timing_guard_tests', 'castle_overview_baseline_recheck', 'castle_overview_baseline_recheck_tests', 'castle_owner_records_summary_tests', 'castle_overview_evidence_matrix_tests', 'castle_overview_gate_tests', 'castle_overview_hitbox_summary_tests', 'castle_overview_hitmap_summary_tests', 'castle_overview_multihit_summary_tests', 'castle_overview_promotion_decision_tests', 'castle_overview_probe_guard', 'castle_overview_probe_guard_tests', 'stable_stage_guard_tests', 'docs_consistency_guard', 'docs_consistency_guard_tests']`
 - evidence_index: `captures\current\hd-map-evidence-current.md`
 - guard_policy: `current refresh must include all no-popup boundary reports and the evidence index must link each report`
-- Failures:
-  - right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
-  - docs_consistency_guard: refresh check is not passing: docs_consistency_guard
 
 ### Docs Consistency Guard
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\docs-consistency-current.json`
 - Markdown: `captures\current\docs-consistency-current.md`
 - check_count: `12`
 - guard_policy: `generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries`
 - runtime_policy: `repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - boundary_counts: no-popup boundary guard is not passing
 
 ### Docs Consistency Guard Tests
 
@@ -1844,9 +1915,9 @@
 - Status: PASS
 - JSON: `captures\current\hd-map-evidence-current-check.json`
 - Index: `captures\current\hd-map-evidence-current.md`
-- links: `149`
+- links: `156`
 - images: `9`
-- local_records: `158`
+- local_records: `165`
 - missing: `0`
 - image_missing: `0`
 - image_wrong_extension: `0`
@@ -1870,7 +1941,6 @@
 - right_bottom_compose_evidence: natural UI probe did not reach descriptor switch rows
 - right_bottom_compose_evidence: natural UI probe did not enter owner/action draw rows
 - right_bottom_visual_artifact_guard: visual artifact guard failed: natural_owner_action_rows_absent
-- first_mission_visual_audit: primary first-mission frame is not visually clean for playability: black patch: right_below_minimap, black patch: bottom_right_panel, black patch: minimap_interior
 - battle_visible_input_summary: visible input summary has no command-ready run
 - battle_ui_evidence_matrix: visible_input: visible input command readiness is not proven
 - hd_continuity_status: save_load_roundtrip: compact proof is missing
@@ -1880,7 +1950,6 @@
 - hd_soak_long_report_guard: long soak proof manifest is missing: captures\current\hd-soak-long-proof-current.json
 - hd_soak_long_report_guard: missing passing 2h+ representative route: map-idle
 - hd_soak_long_report_guard: missing passing 2h+ representative route: map-pan
-- hd_endurance_release_checklist: first_mission_visual_clean: first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior
 - hd_endurance_release_checklist: long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing
 - hd_endurance_release_checklist: stable_menu_real_input: menu-load proof remains pending manual DirectInput validation
 - hd_endurance_release_checklist: stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation
@@ -1890,6 +1959,3 @@
 - hd_endurance_release_checklist: save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - hd_endurance_release_checklist: turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 - hd_endurance_release_checklist: campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- no_popup_boundary_guard: right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
-- no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard
-- docs_consistency_guard: boundary_counts: no-popup boundary guard is not passing

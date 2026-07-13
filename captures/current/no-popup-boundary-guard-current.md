@@ -1,13 +1,13 @@
 # No-Popup Boundary Guard
 
-- Overall: FAIL
-- Generated: `2026-07-12T21:36:17+02:00`
+- Overall: PASS
+- Generated: `2026-07-13T08:55:07+02:00`
 - Runtime policy: repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current refresh must include all no-popup boundary reports and the evidence index must link each report
 - Evidence index: `captures\current\hd-map-evidence-current.md`
 - Core boundary guards: `7`
-- Supporting reports: `91`
-- Required reports total: `98`
+- Supporting reports: `93`
+- Required reports total: `100`
 
 ## Required Reports
 
@@ -20,6 +20,8 @@
 - `launcher_policy_guard`: `PASS` report=`captures\current\launcher-policy-guard-current.md` linked=`True`
 - `no_popup_map_evidence`: `PASS` report=`captures\current\no-popup-map-evidence-current.md` linked=`True`
 - `no_popup_map_evidence_tests`: `PASS` report=`captures\current\no-popup-map-evidence-tests-current.md` linked=`True`
+- `hd_layout_summary`: `PASS` report=`captures\current\hd-layout-summary-current.md` linked=`True`
+- `hd_layout_summary_tests`: `PASS` report=`captures\current\hd-layout-summary-tests-current.md` linked=`True`
 - `no_visible_runtime_guard_tests`: `PASS` report=`captures\current\no-visible-runtime-guard-tests-current.md` linked=`True`
 - `no_popup_guard_tests`: `PASS` report=`captures\current\no-popup-guard-tests-current.md` linked=`True`
 - `visible_runtime_launcher_guard_tests`: `PASS` report=`captures\current\visible-runtime-launcher-guard-tests-current.md` linked=`True`
@@ -55,8 +57,7 @@
 - `right_bottom_compose_evidence_matrix_tests`: `PASS` report=`captures\current\right-bottom-compose-evidence-matrix-tests-current.md` linked=`True`
 - `right_bottom_blocker_triage`: `PASS` report=`captures\current\right-bottom-blocker-triage-current.md` linked=`True`
 - `right_bottom_blocker_triage_tests`: `PASS` report=`captures\current\right-bottom-blocker-triage-tests-current.md` linked=`True`
-- `right_bottom_visual_artifact_guard`: `FAIL` report=`captures\current\right-bottom-visual-artifact-guard-current.md` linked=`True`
-  - refresh check is not passing: right_bottom_visual_artifact_guard
+- `right_bottom_visual_artifact_guard`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-current.md` linked=`True`
 - `right_bottom_visual_artifact_guard_tests`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-tests-current.md` linked=`True`
 - `first_mission_visual_audit`: `PASS` report=`captures\current\first-mission-visual-audit-current.md` linked=`True`
 - `first_mission_visual_audit_tests`: `PASS` report=`captures\current\first-mission-visual-audit-tests-current.md` linked=`True`
@@ -108,11 +109,5 @@
 - `castle_overview_probe_guard`: `PASS` report=`captures\current\castle-overview-probe-guard-current.md` linked=`True`
 - `castle_overview_probe_guard_tests`: `PASS` report=`captures\current\castle-overview-probe-guard-tests-current.md` linked=`True`
 - `stable_stage_guard_tests`: `PASS` report=`captures\current\stable-stage-guard-tests-current.md` linked=`True`
-- `docs_consistency_guard`: `FAIL` report=`captures\current\docs-consistency-current.md` linked=`True`
-  - refresh check is not passing: docs_consistency_guard
+- `docs_consistency_guard`: `PASS` report=`captures\current\docs-consistency-current.md` linked=`True`
 - `docs_consistency_guard_tests`: `PASS` report=`captures\current\docs-consistency-tests-current.md` linked=`True`
-
-## Failures
-
-- right_bottom_visual_artifact_guard: refresh check is not passing: right_bottom_visual_artifact_guard
-- docs_consistency_guard: refresh check is not passing: docs_consistency_guard

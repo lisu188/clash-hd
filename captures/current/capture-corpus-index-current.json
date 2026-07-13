@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-12T21:36:16+02:00",
+  "generated_at": "2026-07-13T08:55:05+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\git\\clash-hd\\captures",
-  "artifact_count": 679,
-  "current_reference_count": 172,
-  "archived_reference_count": 387,
+  "artifact_count": 700,
+  "current_reference_count": 179,
+  "archived_reference_count": 400,
   "missing_current_refs": [],
   "reference_status_counts": {
-    "archived_referenced": 210,
-    "current_referenced": 142,
-    "stale_unreferenced": 327
+    "archived_referenced": 216,
+    "current_referenced": 149,
+    "stale_unreferenced": 335
   },
   "era_counts": {
     "cdb_surface_dump_unverified": 65,
-    "hidden_cdb_surface_dump": 148,
-    "other_capture_artifact": 454,
-    "visible_era": 12
+    "hidden_cdb_surface_dump": 153,
+    "other_capture_artifact": 469,
+    "visible_era": 13
   },
-  "stale_visible_or_sandbox_count": 12,
+  "stale_visible_or_sandbox_count": 13,
   "stale_visible_or_sandbox_examples": [
     "archive/clicktest-20260422-163904",
     "archive/clicktest-20260422-182440",
@@ -32,7 +32,8 @@
     "archive/visual-smoke-20260424-073707",
     "archive/visual-smoke-20260424-074428",
     "archive/visual-smoke-20260424-074630",
-    "archive/visual-smoke-20260712-202900"
+    "archive/visual-smoke-20260712-202900",
+    "archive/visual-smoke-20260713-075818"
   ],
   "current_refs": {
     "captures/archive/cdb-surface-dump-20260429-135242": {
@@ -748,6 +749,66 @@
     "captures/current/hd-endurance-release-checklist-current.md": {
       "ref": "captures/current/hd-endurance-release-checklist-current.md",
       "entry": "current/hd-endurance-release-checklist-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-promotion-decision-current.md": {
+      "ref": "captures/current/hd-layout-promotion-decision-current.md",
+      "entry": "current/hd-layout-promotion-decision-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-promotion-decision-tests-current.md": {
+      "ref": "captures/current/hd-layout-promotion-decision-tests-current.md",
+      "entry": "current/hd-layout-promotion-decision-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-summary-current.md": {
+      "ref": "captures/current/hd-layout-summary-current.md",
+      "entry": "current/hd-layout-summary-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-summary-tests-current.md": {
+      "ref": "captures/current/hd-layout-summary-tests-current.md",
+      "entry": "current/hd-layout-summary-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-visible-current.md": {
+      "ref": "captures/current/hd-layout-visible-current.md",
+      "entry": "current/hd-layout-visible-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-visible-tests-current.md": {
+      "ref": "captures/current/hd-layout-visible-tests-current.md",
+      "entry": "current/hd-layout-visible-tests-current.md",
       "reference_class": "current_referenced",
       "sources": [
         "captures/current/hd-map-evidence-current.md"
@@ -1575,6 +1636,16 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/current/right-bottom-natural-slot2-summary-tests-current.md": {
+      "ref": "captures/current/right-bottom-natural-slot2-summary-tests-current.md",
+      "entry": "current/right-bottom-natural-slot2-summary-tests-current.md",
+      "reference_class": "current_referenced",
+      "sources": [
+        "captures/current/hd-map-evidence-current.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/current/right-bottom-owner-flag-inventory-current.md": {
       "ref": "captures/current/right-bottom-owner-flag-inventory-current.md",
       "entry": "current/right-bottom-owner-flag-inventory-current.md",
@@ -2117,12 +2188,33 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/archive/cdb-surface-dump-20260713-072428": {
+      "ref": "captures/archive/cdb-surface-dump-20260713-072428",
+      "entry": "archive/cdb-surface-dump-20260713-072428",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "README.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/archive/patch-stage-right-bottom-compose-20260513.json": {
       "ref": "captures/archive/patch-stage-right-bottom-compose-20260513.json",
       "entry": "archive/patch-stage-right-bottom-compose-20260513.json",
       "reference_class": "archived_referenced",
       "sources": [
         "README.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/visual-smoke-20260713-075818": {
+      "ref": "captures/archive/visual-smoke-20260713-075818",
+      "entry": "archive/visual-smoke-20260713-075818",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "README.md",
+        "docs/hd/HD_MOD_PROGRESS.md"
       ],
       "exists": true,
       "entry_exists": true
@@ -2470,6 +2562,56 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/current/hd-layout-promotion-decision-current.md": {
+      "ref": "captures/current/hd-layout-promotion-decision-current.md",
+      "entry": "current/hd-layout-promotion-decision-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "README.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-promotion-decision-tests-current.md": {
+      "ref": "captures/current/hd-layout-promotion-decision-tests-current.md",
+      "entry": "current/hd-layout-promotion-decision-tests-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "README.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-summary-current.md": {
+      "ref": "captures/current/hd-layout-summary-current.md",
+      "entry": "current/hd-layout-summary-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "README.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-summary-tests-current.md": {
+      "ref": "captures/current/hd-layout-summary-tests-current.md",
+      "entry": "current/hd-layout-summary-tests-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "README.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-visible-current.md": {
+      "ref": "captures/current/hd-layout-visible-current.md",
+      "entry": "current/hd-layout-visible-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "README.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/current/hd-map-evidence-current.md": {
       "ref": "captures/current/hd-map-evidence-current.md",
       "entry": "current/hd-map-evidence-current.md",
@@ -2601,6 +2743,17 @@
       "reference_class": "archived_referenced",
       "sources": [
         "README.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/right-bottom-natural-slot2-summary-tests-current.md": {
+      "ref": "captures/current/right-bottom-natural-slot2-summary-tests-current.md",
+      "entry": "current/right-bottom-natural-slot2-summary-tests-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "README.md",
+        "docs/hd/HD_MOD_PROGRESS.md"
       ],
       "exists": true,
       "entry_exists": true
@@ -4515,6 +4668,16 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/archive/cdb-surface-dump-20260713-072428/RUN-SUMMARY.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260713-072428/RUN-SUMMARY.md",
+      "entry": "archive/cdb-surface-dump-20260713-072428",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/archive/cdb-viewport-bounds-minimapright-20260423.log": {
       "ref": "captures/archive/cdb-viewport-bounds-minimapright-20260423.log",
       "entry": "archive/cdb-viewport-bounds-minimapright-20260423.log",
@@ -5427,6 +5590,36 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/current/hd-layout-promotion-decision-current.json": {
+      "ref": "captures/current/hd-layout-promotion-decision-current.json",
+      "entry": "current/hd-layout-promotion-decision-current.json",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-summary-current.json": {
+      "ref": "captures/current/hd-layout-summary-current.json",
+      "entry": "current/hd-layout-summary-current.json",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-layout-visible-current.json": {
+      "ref": "captures/current/hd-layout-visible-current.json",
+      "entry": "current/hd-layout-visible-current.json",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/current/hd-map-evidence-current-check.json": {
       "ref": "captures/current/hd-map-evidence-current-check.json",
       "entry": "current/hd-map-evidence-current-check.json",
@@ -5501,6 +5694,16 @@
     "captures/current/patch-stage-current-hd-map.json": {
       "ref": "captures/current/patch-stage-current-hd-map.json",
       "entry": "current/patch-stage-current-hd-map.json",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/patch-stage-hdlayout-current.json": {
+      "ref": "captures/current/patch-stage-hdlayout-current.json",
+      "entry": "current/patch-stage-hdlayout-current.json",
       "reference_class": "archived_referenced",
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
@@ -7884,6 +8087,56 @@
       "has_run_summary": true
     },
     {
+      "name": "archive/cdb-surface-dump-20260713-071034",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-071034",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-071641",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-071641",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-071952",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-071952",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-072149",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-072149",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-072428",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-072428",
+      "artifact_kind": "directory",
+      "reference_status": "archived_referenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
       "name": "archive/clicktest-20260422-163904",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\clicktest-20260422-163904",
       "artifact_kind": "directory",
@@ -8718,6 +8971,16 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\visual-smoke-20260712-202900",
       "artifact_kind": "directory",
       "reference_status": "stale_unreferenced",
+      "era": "visible_era",
+      "classification_reason": "legacy visible/click or visual-smoke artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/visual-smoke-20260713-075818",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\visual-smoke-20260713-075818",
+      "artifact_kind": "directory",
+      "reference_status": "archived_referenced",
       "era": "visible_era",
       "classification_reason": "legacy visible/click or visual-smoke artifact",
       "has_surface_png": false,
@@ -9998,6 +10261,126 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-endurance-release-checklist-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-promotion-decision-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-promotion-decision-current.json",
+      "artifact_kind": "file",
+      "reference_status": "archived_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-promotion-decision-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-promotion-decision-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-promotion-decision-tests-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-promotion-decision-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-promotion-decision-tests-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-promotion-decision-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-summary-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-summary-current.json",
+      "artifact_kind": "file",
+      "reference_status": "archived_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-summary-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-summary-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-summary-tests-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-summary-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-summary-tests-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-summary-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-visible-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-visible-current.json",
+      "artifact_kind": "file",
+      "reference_status": "archived_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-visible-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-visible-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-visible-tests-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-visible-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-visible-tests-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-visible-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -11474,6 +11857,16 @@
       "has_run_summary": false
     },
     {
+      "name": "current/patch-stage-hdlayout-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\patch-stage-hdlayout-current.json",
+      "artifact_kind": "file",
+      "reference_status": "archived_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/post-owner-evidence-current.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\post-owner-evidence-current.json",
       "artifact_kind": "file",
@@ -12036,6 +12429,26 @@
     {
       "name": "current/right-bottom-natural-route-guard-tests-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\right-bottom-natural-route-guard-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/right-bottom-natural-slot2-summary-tests-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\right-bottom-natural-slot2-summary-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/right-bottom-natural-slot2-summary-tests-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\right-bottom-natural-slot2-summary-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
       "era": "other_capture_artifact",

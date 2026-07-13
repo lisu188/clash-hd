@@ -1,0 +1,25 @@
+{
+    "Path":  "C:\\Users\\andrz\\git\\clash-hd\\scripts\\smoke\\..\\..\\captures\\archive\\visual-smoke-20260713-144505\\route-01-load-button.png",
+    "Hash":  "F42C847A5B2038D366A136ED135926B2DF5793E0D4C558971DC50412A8BAE645",
+    "Width":  1200,
+    "Height":  900,
+    "OriginX":  125,
+    "OriginY":  159,
+    "CenterWindowMatchesTarget":  true,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "screen",
+    "TargetHwnd":  "0x7F0C9E",
+    "CenterWindowHwnd":  "0x7F0C9E",
+    "CenterRootHwnd":  "0x7F0C9E",
+    "NonblackPercent":  97.865,
+    "MeanLuma":  106.264,
+    "UniqueSampleColors":  19464,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  1196,
+                           "Bottom":  896,
+                           "Width":  1197,
+                           "Height":  897
+                       }
+}

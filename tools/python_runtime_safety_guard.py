@@ -60,6 +60,8 @@ EXEMPT_HELPERS = {
     "hd_endurance_next_actions.py": "repo-only command planner; postmessage and runtime text appear only in approval-gated command templates",
     "hd_soak_approval_preflight.py": "repo-only approval packet builder; postmessage and runtime text appear only in non-executing command validation",
     "hd_soak_failure_triage.py": "repo-only report classifier; postmessage text appears only in failure guidance and no runtime APIs are called",
+    "hd_layout_promotion_decision.py": "repo-only evidence decision; Win32 text describes the archived automated-hover proof class and no runtime/input APIs are called",
+    "hd_layout_visible_summary.py": "repo-only PNG/JSON evidence parser; Win32 cursor and desktop text describes archived evidence and no runtime/input APIs are called",
     "hd_soak_harness_guard.py": "repo-only PowerShell source scanner; postmessage text appears only in required source-token checks",
     "hd_soak_intro_skip_rerun_readiness.py": "repo-only readiness gate; visible-runtime and postmessage text appears only in approval-boundary validation",
     "hd_soak_short_artifact_manifest.py": "repo-only command manifest; postmessage text appears only in approval-gated command templates",

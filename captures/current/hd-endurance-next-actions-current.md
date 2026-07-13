@@ -1,12 +1,12 @@
 # HD Endurance Next Actions
 
 - Overall: PASS
-- Generated: `2026-07-12T19:36:13.551953+00:00`
+- Generated: `2026-07-13T06:55:03.714479+00:00`
 - Runtime policy: repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Status: `waiting_for_explicit_visible_runtime_approval`
 - Current short step: `short2_map_idle`
 - Full game complete: `False`
-- Open requirements: `10`
+- Open requirements: `9`
 
 ## Next Action
 
@@ -33,11 +33,11 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_s
 Approval-gated runtime command (plan-verified):
 
 - Dry-run plan status: `ready_for_explicit_approval`
-- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260712_213611.exe`
+- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260713_085502.exe`
 - Output root: `C:\ClashCaptures\hd-soak`
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260712_213611.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-13T07:36:12.0514017+00:00' -VisibleRuntimeApprovalToken '47e53457c70b45ef' -Execute -AllowVisibleRuntime -RequirePass -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260713_085502.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-13T18:55:02.3524670+00:00' -VisibleRuntimeApprovalToken 'bdaf238c3207bc7b' -Execute -AllowVisibleRuntime -RequirePass -Json
 ```
 
 Rejected legacy runtime command:
@@ -69,7 +69,6 @@ Broad evidence refresh:
 
 ## Open Requirement Groups
 
-- `render baseline`: `first_mission_visual_clean`
 - `endurance`: `long_soak_representative_routes`
 - `manual input`: `stable_menu_real_input, stable_hd_map_real_input`
 - `screen route`: `right_bottom_action_menu, castle_and_barracks_centered_input, tactical_battle_entry_return`
@@ -77,7 +76,6 @@ Broad evidence refresh:
 
 ## Open Requirement Details
 
-- `first_mission_visual_clean` (`render baseline`, `blocked`): first-mission visual audit is not clean (selected_unit_action_bar_on_bottom_but_black_ui_patches_remain); black patches: right_below_minimap, bottom_right_panel, minimap_interior Next probe: fix right/bottom/minimap black patches before treating first-mission playability as release-ready
 - `long_soak_representative_routes` (`endurance`, `blocked`): 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing Next probe: add long-tier reports only after short2/short10/short30 are stable
 - `stable_menu_real_input` (`manual input`, `blocked`): menu-load proof remains pending manual DirectInput validation Next probe: collect approved manual menu-load proof or keep promotion blocked
 - `stable_hd_map_real_input` (`manual input`, `blocked`): HD map input proof remains pending manual DirectInput validation Next probe: collect approved manual map input proof after short soak is stable

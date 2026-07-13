@@ -1,6 +1,6 @@
 # Current HD Map Evidence
 
-- Updated: `2026-06-15`
+- Updated: `2026-07-13`
 - Scope: current 800x600 Clash95 HD map patch-stage evidence.
 - Runtime policy: current no-popup evidence remains CDB-only; the endurance
   soak road is opt-in visible-runtime evidence and is tracked separately.
@@ -15,16 +15,43 @@
   baseline
 - No-popup map evidence matrix tests: PASS, fixture coverage is included in
   the refresh
+- HD layout hidden-CDB summary: PASS for the `-hdlayout` validation stage;
+  tooltip init is bottom-centered at `(240,586)..(553,599)`, all six selected-unit
+  command descriptors draw/hit-test at the right-bottom anchors, the high-X
+  redraw helper is allowed by the `800` clip, and no AV marker is present
+- HD layout summary tests: PASS, seven repo-only fixtures cover exact anchors,
+  missing descriptors, clip drift, redraw-branch proof, AV rejection, and CLI
+  fail-closed behavior
+- HD layout approved-visible summary: authentic composition PASS for the
+  `-hdlayout` fixture; exact no-click Win32 hover at `(640,544)`, but the
+  descriptor-5 click requested at `(760,560)` landed at `(716,493)`
+  (`-44,-67`). This is fixture/SendInput diagnostic evidence, not manual
+  DirectInput or callback proof; manual validation remains `0/5`, promotion is
+  deferred, and stable is unchanged. Future manual commands place the outer
+  window at `(0,-30)` so the measured `(3,26)` client origin keeps the
+  lower/right targets inside the active desktop
+- HD layout approved-visible summary tests: PASS, fixture coverage keeps
+  composition evidence separate from click alignment, manual proof, and
+  promotion readiness
+- HD layout promotion decision: PASS only as `defer_stable_promotion`; manual
+  checklist `0/5`, click/callback/promotion readiness false, and stable stage
+  unchanged
+- Natural slot-2/record-1 right-bottom parser tests: PASS support-only; the
+  real hidden CDB run is pending because launch was blocked before execution by
+  the external approval quota
 - Current completion summary: PASS, repo-generated percentages remain
   non-promoting and keep full-game completion below 100%
 - Current completion summary tests: PASS, fixture coverage is included in the
   refresh
-- First-mission visual audit: FAIL-closed; selected-unit action bar is now
-  bottom/centered and no stripe failures are present, but black patch blockers
-  remain in `right_below_minimap`, `bottom_right_panel`, and `minimap_interior`.
-  See `first-mission-visual-audit-current.md`
-- First-mission visual audit tests: PASS, fixture coverage is included in the
-  refresh. See `first-mission-visual-audit-tests-current.md`
+- First-mission visual audit policy update (2026-07-13): PASS when the proxy
+  primary frame keeps its play area/action bar and has no stripe failures, and
+  each raw proxy-black UI region is positively corroborated as rendered in the
+  tracked real-runtime frame. This is per-region render-presence evidence, not
+  a same-state pixel comparison. See `first-mission-visual-audit-current.md`
+- First-mission visual audit tests: PASS after positive and negative
+  real-runtime corroboration fixtures, alongside the existing stripe,
+  black-patch, placement, and CLI coverage. See
+  `first-mission-visual-audit-tests-current.md`
 - HD short soak report: FAIL-closed pending explicit visible-runtime approval;
   no frame/process endurance evidence has been collected yet, and the guard now
   requires per-run patch-stage evidence before any soak can count
@@ -236,6 +263,13 @@
 - [Current repo-only evidence refresh](current-evidence-refresh-current.md)
 - [No-popup map evidence matrix](no-popup-map-evidence-current.md)
 - [No-popup map evidence matrix tests](no-popup-map-evidence-tests-current.md)
+- [HD layout hidden-CDB summary](hd-layout-summary-current.md)
+- [HD layout summary tests](hd-layout-summary-tests-current.md)
+- [HD layout approved-visible summary](hd-layout-visible-current.md)
+- [HD layout approved-visible summary tests](hd-layout-visible-tests-current.md)
+- [HD layout promotion decision](hd-layout-promotion-decision-current.md)
+- [HD layout promotion decision tests](hd-layout-promotion-decision-tests-current.md)
+- [Right-bottom natural slot-2 summary tests](right-bottom-natural-slot2-summary-tests-current.md)
 - [Current completion summary](current-completion-summary-current.md)
 - [Current completion summary tests](current-completion-summary-tests-current.md)
 - [HD short soak legacy compatibility report](hd-soak-short-current.md)
@@ -507,6 +541,20 @@ Right-bottom validation patch controlled grid-hit surface:
   `captures\current\process-hygiene-guard-current.md`
 - No-popup boundary guard:
   `captures\current\no-popup-boundary-guard-current.md`
+- HD layout hidden-CDB summary:
+  `captures\current\hd-layout-summary-current.md`
+- HD layout summary tests:
+  `captures\current\hd-layout-summary-tests-current.md`
+- HD layout approved-visible summary:
+  `captures\current\hd-layout-visible-current.md`
+- HD layout approved-visible summary tests:
+  `captures\current\hd-layout-visible-tests-current.md`
+- HD layout promotion decision:
+  `captures\current\hd-layout-promotion-decision-current.md`
+- HD layout promotion decision tests:
+  `captures\current\hd-layout-promotion-decision-tests-current.md`
+- Right-bottom natural slot-2 parser/source-guard tests:
+  `captures\current\right-bottom-natural-slot2-summary-tests-current.md`
 - No-popup guard regression tests:
   `captures\current\no-popup-guard-tests-current.md`
 - Right-bottom validation patch SHA-256:
@@ -981,11 +1029,12 @@ It passes repo-only and verifies that the current refresh includes the seven
 core boundary guards: stable stage, executable artifact, surface-dump policy,
 visible-runtime launcher, no-visible runtime, process hygiene, and launcher
 policy. It records
-`required_guard_count=7`, `required_supporting_report_count=91`, and
-`required_report_count=98`. It also now
+`required_guard_count=7`, `required_supporting_report_count=93`, and
+`required_report_count=100`. It also now
 requires the no-popup map evidence matrix and its fixture tests, visible runtime
 launcher guard tests, no-visible runtime guard fixture tests,
-no-popup guard regression report, Python runtime safety guard and tests, HD soak
+no-popup guard regression report, the HD layout hidden-CDB summary and its
+fixture tests, Python runtime safety guard and tests, HD soak
 execution-boundary report and tests, patch definition guard and tests, capture corpus index and tests, current completion
 summary and tests, right-bottom validation
 guard tests, manual DirectInput checklist, proof-template, and run-plan reports,
