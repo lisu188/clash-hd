@@ -1,0 +1,8 @@
+.echo === Clash95 continuity turn-advance extra v3 ===
+.echo Harness-only continuity probe: snapshot saveGame slot 9, then force-call
+.echo the engine's own next-player routine 0040AA60 - log Next player, advance
+.echo dword_5202EC to the next active player, refit turn state - and after it
+.echo returns snapshot saveGame slot 10 with the advanced player recorded.
+.echo Staged at the world-map poll 0040B0C3 - state flag at 00400040.
+ed 00400040 0
+bp 0040B0C3 ".if (poi(00400040) == 0) { ed 00400040 1; .printf \"CONTINUITY_TURN_SAVE_BEFORE slot=9 player=%d gd=%p\\n\", poi(005202ec), poi(005202e4); r esp=@esp-4; ed @esp 0040B0C3; r eax=9; r edx=00543d28; r eip=004443E0; } .else { .if (poi(00400040) == 1) { ed 00400040 2; .printf \"CONTINUITY_TURN_ADVANCE_CALL player_before=%d save9_eax=%d\\n\", poi(005202ec), @eax; r esp=@esp-4; ed @esp 0040B0C3; r eax=0; r edx=5; r ecx=0; r eip=0040AA60; } .else { .if (poi(00400040) == 2) { ed 00400040 3; .printf \"CONTINUITY_TURN_ADVANCED player_now=%d day_owner=%d\\n\", poi(005202ec), poi(poi(005202e4)+0n147139); r esp=@esp-4; ed @esp 0040B0C3; r eax=0n10; r edx=00543d28; r eip=004443E0; } .else { .if (poi(00400040) == 3) { ed 00400040 4; .printf \"CONTINUITY_TURN_SAVE_AFTER slot=10 eax=%d player=%d\\n\", @eax, poi(005202ec); }; }; }; }; gc"
