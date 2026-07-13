@@ -152,8 +152,18 @@ proof of a live rendering defect.
 ### Visible runtime
 
 The visible wrapper provides final colors and composition, but GDI capture can
-tear on animated screens. Use static frames where possible and separate visual
-proof from input callback proof.
+tear on animated screens: the desktop front buffer is grabbed mid page-flip,
+so the moving region shears into horizontal bands while static chrome stays
+crisp. The render itself is correct -- the hidden CDB surfdump of the same
+screen is coherent -- so tearing is a capture artifact, not an HD defect.
+Always check a visible grab for tearing before treating it as evidence:
+`python tools/capture_tear_check.py <frame.png> [--rect L T R B]` flags it via
+a row-vs-column mean-diff ratio (torn castle grab ~2.05 vs clean CDB dump
+~1.37). For a clean frame, take 2-3 back-to-back grabs and pass them all; a
+consecutive pixel-identical pair (`clean_stable_pair`) is the strongest
+tear-free signal. Note `tools/castle_overview_gate.py` gates only vertical
+stripe metrics and will pass a horizontally torn frame. Use static frames
+where possible and separate visual proof from input callback proof.
 
 ## Repository checks
 
