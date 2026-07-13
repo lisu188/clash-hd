@@ -62,7 +62,15 @@ Run individual fixtures with `python tools/test_<name>.py`.
   layer and can alter palette presentation. Do not classify proxy-only black
   regions as real rendering defects without visible-runtime corroboration.
 - **Visible runtime** requires explicit approval. It provides real colors and
-  final composition, but GDI capture can tear on animated screens.
+  final composition, but GDI capture can tear on animated screens. Always
+  check a visible grab for tearing before trusting it: run
+  `python tools/capture_tear_check.py <frame.png> [--rect L T R B]`, which
+  flags a frame when row-to-row diff energy exceeds column-to-column
+  (calibrated on the castle overview: torn grab ratio ~2.05 vs clean CDB dump
+  ~1.37). For a clean frame, take 2-3 back-to-back grabs and pass them all --
+  a consecutive pixel-identical pair (`clean_stable_pair`) is the strongest
+  tear-free signal. Prefer the hidden CDB surfdump for geometry; it never
+  tears. Tearing is a capture artifact, not a render defect.
 
 ## Current frontier
 
