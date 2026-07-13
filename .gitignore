@@ -49,11 +49,6 @@ temp/
 /build/
 /dist/
 
-# Obsidian local workspace/cache files. Markdown notes are not ignored.
-.obsidian/workspace*
-.obsidian/cache/
-.trash/
-
 # Codex/Claude local state
 .codex
 .codex-loop/
