@@ -95,18 +95,18 @@
   ],
   "images": [
     {
-      "path": "captures\\archive\\cdb-surface-dump-20260713-151040\\surface.png",
+      "path": "captures\\archive\\visual-smoke-20260713-150843\\after-map-path.png",
       "image": {
-        "width": 800,
-        "height": 600
+        "width": 1200,
+        "height": 900
       },
       "logical_size": {
         "width": 800,
         "height": 600
       },
       "scale": {
-        "x": 1.0,
-        "y": 1.0
+        "x": 1.5,
+        "y": 1.5
       },
       "regions": [
         {
@@ -120,56 +120,56 @@
           "image_rect": {
             "x": 0,
             "y": 0,
-            "right": 639,
-            "bottom": 15,
-            "width": 640,
-            "height": 16
+            "right": 959,
+            "bottom": 23,
+            "width": 960,
+            "height": 24
           },
-          "pixels": 10240,
+          "pixels": 23040,
           "black_percent": 0.0,
           "nonblack_percent": 100.0,
-          "bright_percent": 17.266,
-          "mean_luma": 67.486,
+          "bright_percent": 18.646,
+          "mean_luma": 68.617,
           "dominant_colors": [
+            {
+              "rgb": [
+                80,
+                48,
+                48
+              ],
+              "percent": 19.457
+            },
+            {
+              "rgb": [
+                80,
+                80,
+                48
+              ],
+              "percent": 12.07
+            },
             {
               "rgb": [
                 112,
                 80,
                 80
               ],
-              "percent": 14.492
+              "percent": 11.22
             },
             {
               "rgb": [
-                80,
+                112,
                 80,
                 48
               ],
-              "percent": 13.701
+              "percent": 10.629
             },
             {
               "rgb": [
-                80,
-                48,
-                48
+                144,
+                112,
+                80
               ],
-              "percent": 13.623
-            },
-            {
-              "rgb": [
-                16,
-                16,
-                16
-              ],
-              "percent": 10.732
-            },
-            {
-              "rgb": [
-                48,
-                48,
-                48
-              ],
-              "percent": 9.434
+              "percent": 8.49
             }
           ],
           "flags": []
@@ -183,42 +183,34 @@
             15
           ],
           "image_rect": {
-            "x": 640,
+            "x": 960,
             "y": 0,
-            "right": 799,
-            "bottom": 15,
-            "width": 160,
-            "height": 16
+            "right": 1199,
+            "bottom": 23,
+            "width": 240,
+            "height": 24
           },
-          "pixels": 2560,
+          "pixels": 5760,
           "black_percent": 0.0,
           "nonblack_percent": 100.0,
-          "bright_percent": 18.398,
-          "mean_luma": 61.088,
+          "bright_percent": 18.281,
+          "mean_luma": 62.498,
           "dominant_colors": [
-            {
-              "rgb": [
-                16,
-                16,
-                16
-              ],
-              "percent": 21.133
-            },
             {
               "rgb": [
                 80,
                 48,
                 48
               ],
-              "percent": 11.211
+              "percent": 16.562
             },
             {
               "rgb": [
-                48,
-                48,
-                48
+                16,
+                16,
+                16
               ],
-              "percent": 10.664
+              "percent": 11.997
             },
             {
               "rgb": [
@@ -226,7 +218,15 @@
                 48,
                 16
               ],
-              "percent": 10.508
+              "percent": 11.944
+            },
+            {
+              "rgb": [
+                48,
+                16,
+                16
+              ],
+              "percent": 10.208
             },
             {
               "rgb": [
@@ -234,7 +234,7 @@
                 80,
                 80
               ],
-              "percent": 10.391
+              "percent": 8.021
             }
           ],
           "flags": []
@@ -249,17 +249,17 @@
           ],
           "image_rect": {
             "x": 0,
-            "y": 16,
-            "right": 31,
-            "bottom": 479,
-            "width": 32,
-            "height": 464
+            "y": 24,
+            "right": 47,
+            "bottom": 719,
+            "width": 48,
+            "height": 696
           },
-          "pixels": 14848,
+          "pixels": 33408,
           "black_percent": 0.0,
           "nonblack_percent": 100.0,
-          "bright_percent": 42.47,
-          "mean_luma": 88.3,
+          "bright_percent": 43.403,
+          "mean_luma": 88.795,
           "dominant_colors": [
             {
               "rgb": [
@@ -267,23 +267,7 @@
                 112,
                 80
               ],
-              "percent": 17.76
-            },
-            {
-              "rgb": [
-                112,
-                80,
-                80
-              ],
-              "percent": 14.877
-            },
-            {
-              "rgb": [
-                80,
-                80,
-                48
-              ],
-              "percent": 10.325
+              "percent": 16.813
             },
             {
               "rgb": [
@@ -291,15 +275,31 @@
                 48,
                 48
               ],
-              "percent": 9.22
+              "percent": 13.081
             },
             {
               "rgb": [
-                176,
-                144,
-                112
+                112,
+                80,
+                80
               ],
-              "percent": 9.072
+              "percent": 11.44
+            },
+            {
+              "rgb": [
+                112,
+                80,
+                48
+              ],
+              "percent": 8.791
+            },
+            {
+              "rgb": [
+                80,
+                80,
+                48
+              ],
+              "percent": 8.16
             }
           ],
           "flags": []
@@ -314,41 +314,33 @@
           ],
           "image_rect": {
             "x": 0,
-            "y": 480,
-            "right": 31,
-            "bottom": 599,
-            "width": 32,
-            "height": 120
+            "y": 720,
+            "right": 47,
+            "bottom": 899,
+            "width": 48,
+            "height": 180
           },
-          "pixels": 3840,
+          "pixels": 8640,
           "black_percent": 0.0,
           "nonblack_percent": 100.0,
-          "bright_percent": 18.594,
-          "mean_luma": 61.363,
+          "bright_percent": 17.975,
+          "mean_luma": 62.089,
           "dominant_colors": [
             {
               "rgb": [
-                16,
-                16,
-                16
-              ],
-              "percent": 20.078
-            },
-            {
-              "rgb": [
-                48,
-                48,
-                48
-              ],
-              "percent": 13.099
-            },
-            {
-              "rgb": [
                 80,
                 48,
                 48
               ],
-              "percent": 11.693
+              "percent": 18.067
+            },
+            {
+              "rgb": [
+                16,
+                16,
+                16
+              ],
+              "percent": 12.269
             },
             {
               "rgb": [
@@ -356,15 +348,23 @@
                 48,
                 16
               ],
-              "percent": 9.948
+              "percent": 10.891
             },
             {
               "rgb": [
-                112,
-                80,
-                80
+                48,
+                16,
+                16
               ],
-              "percent": 9.766
+              "percent": 9.387
+            },
+            {
+              "rgb": [
+                48,
+                48,
+                48
+              ],
+              "percent": 8.16
             }
           ],
           "flags": []
@@ -378,18 +378,18 @@
             599
           ],
           "image_rect": {
-            "x": 32,
-            "y": 592,
-            "right": 799,
-            "bottom": 599,
-            "width": 768,
-            "height": 8
+            "x": 48,
+            "y": 888,
+            "right": 1199,
+            "bottom": 899,
+            "width": 1152,
+            "height": 12
           },
-          "pixels": 6144,
-          "black_percent": 100.0,
-          "nonblack_percent": 0.0,
+          "pixels": 13824,
+          "black_percent": 91.298,
+          "nonblack_percent": 8.702,
           "bright_percent": 0.0,
-          "mean_luma": 0.0,
+          "mean_luma": 5.163,
           "dominant_colors": [
             {
               "rgb": [
@@ -397,12 +397,42 @@
                 16,
                 16
               ],
-              "percent": 100.0
+              "percent": 91.471
+            },
+            {
+              "rgb": [
+                48,
+                80,
+                48
+              ],
+              "percent": 4.232
+            },
+            {
+              "rgb": [
+                48,
+                80,
+                16
+              ],
+              "percent": 2.416
+            },
+            {
+              "rgb": [
+                48,
+                48,
+                16
+              ],
+              "percent": 1.005
+            },
+            {
+              "rgb": [
+                48,
+                48,
+                48
+              ],
+              "percent": 0.875
             }
           ],
-          "flags": [
-            "mostly_black"
-          ]
+          "flags": []
         },
         {
           "name": "right_ui_band",
@@ -413,58 +443,58 @@
             599
           ],
           "image_rect": {
-            "x": 586,
-            "y": 230,
-            "right": 799,
-            "bottom": 599,
-            "width": 214,
-            "height": 370
+            "x": 879,
+            "y": 345,
+            "right": 1199,
+            "bottom": 899,
+            "width": 321,
+            "height": 555
           },
-          "pixels": 79180,
-          "black_percent": 76.407,
-          "nonblack_percent": 23.593,
-          "bright_percent": 10.134,
-          "mean_luma": 22.011,
+          "pixels": 178155,
+          "black_percent": 1.96,
+          "nonblack_percent": 98.04,
+          "bright_percent": 94.969,
+          "mean_luma": 118.938,
           "dominant_colors": [
             {
               "rgb": [
-                16,
-                16,
-                16
+                112,
+                144,
+                80
               ],
-              "percent": 76.407
+              "percent": 39.884
             },
             {
               "rgb": [
-                176,
+                80,
+                144,
+                48
+              ],
+              "percent": 22.566
+            },
+            {
+              "rgb": [
+                112,
+                144,
+                48
+              ],
+              "percent": 8.676
+            },
+            {
+              "rgb": [
+                80,
+                144,
+                80
+              ],
+              "percent": 8.004
+            },
+            {
+              "rgb": [
+                80,
                 112,
                 48
               ],
-              "percent": 8.601
-            },
-            {
-              "rgb": [
-                176,
-                80,
-                16
-              ],
-              "percent": 7.758
-            },
-            {
-              "rgb": [
-                112,
-                16,
-                16
-              ],
-              "percent": 3.036
-            },
-            {
-              "rgb": [
-                144,
-                48,
-                16
-              ],
-              "percent": 2.592
+              "percent": 7.781
             }
           ],
           "flags": []
@@ -474,14 +504,14 @@
         {
           "dest": "left_frame_hd_extension",
           "source": "left_frame_native",
-          "similarity": 0.6841,
+          "similarity": 0.6759,
           "dest_nonblack_percent": 100.0,
           "source_nonblack_percent": 100.0
         },
         {
           "dest": "top_right_extension",
           "source": "top_frame_native",
-          "similarity": 0.7867,
+          "similarity": 0.7993,
           "dest_nonblack_percent": 100.0,
           "source_nonblack_percent": 100.0
         }
@@ -508,7 +538,7 @@
             "dest": "left_frame_hd_extension",
             "source": "left_frame_native",
             "minimum_similarity": 0.3,
-            "actual_similarity": 0.6841,
+            "actual_similarity": 0.6759,
             "passed": true
           },
           {
@@ -516,7 +546,7 @@
             "dest": "top_right_extension",
             "source": "top_frame_native",
             "minimum_similarity": 0.3,
-            "actual_similarity": 0.7867,
+            "actual_similarity": 0.7993,
             "passed": true
           }
         ],

@@ -333,36 +333,55 @@ black bands after the HD expansion, measured on
 Fix: new patch group **`frame-restore-bands`** (validation-only stage
 `...-minimapright-dynvswitch-framerestore`, kept out of `DEFAULT_STAGE`) that
 hooks `sub_418700` at the single post-tile convergence point (`0x004187AF`,
-displaced `test ebp,ebp; jz loc_4189A3`) and jumps to a DGROUP cave at
-`0x0051BE00` (file `0x11A000`). The cave issues two in-surface `0x4024E0` blits,
-copying authentic already-drawn frame pixels:
+displaced `test ebp,ebp; jz loc_4189A3`, inside the `if (a1)` present gate) and
+jumps to a DGROUP cave at `0x0051BE00` (file `0x11A000`, 197 bytes in a verified
+all-zero 256-byte region). The cave copies authentic already-drawn frame pixels
+via the engine blit `0x4024E0` (`Render_FillRect`: `eax`=src surface, `edx`=dst
+surface, `ebx`/`ecx`=src left/top, pushed dstTop/dstLeft/srcBottom/srcRight,
+inclusive coords, callee-cleaned):
 
 - native left frame `(0,360)-(31,479)` -> gutter `(0,480)` (continues the
   vertical ornament downward, seamless at y=479/480);
 - native top frame `(480,0)-(639,15)` -> strip `(640,0)` (continues the top
   ornament rightward).
 
+**Present-path lesson (why each band is painted twice).** The engine draws to
+the offscreen back buffer `dword_5202E0` but presents only the map rectangle
+(`x=32..799, y=16..591`) to the screen each frame via
+`Render_FillRect(src, dst=0, ...)` — dst `0` is the managed DD-safe screen
+target. So a back-buffer-only fill passes the surfdump proxy while remaining
+invisible on the real screen (confirmed by visual-smoke `20260713-144505`).
+Writing the raw DD primary object `0x51D4C0` instead crashes with
+`DDERR_SURFACELOST` when the surface is lost mid-transition (confirmed by
+visual-smoke `20260713-145714`). The working cave therefore paints each band on
+the back buffer (keeps full re-presents and the proxy correct) and then, gated
+on the saved `a1` present flag (`[esp+8]` after `pushad`), presents the same
+source rect to the screen with dst=0, exactly like the engine's own map present.
+
 The two destination bands are geometrically disjoint from the 12x9 terrain
 (`x>=32, y=16..591`) and the moved minimap (`586..799,16..229`), so no runtime
 exclusion is needed and nothing tears. The `x>=32` bottom strip (`y=592..599`)
 is left as the intended ~8px letterbox.
 
-Validation (`captures/archive/cdb-surface-dump-20260713-143450`, candidate SHA
-`4A507EA779A8B62F9BE8D1A073E3077FE291636461DD9F9D313C5660D0743219`):
+Validation, hidden CDB surfdump (`captures/archive/cdb-surface-dump-20260713-143450`,
+back-buffer half; re-run for the final gated cave, SHA
+`FE9CBE3C67A16945371326CA4C7A668B70286A9D3C80AA6795B2C33B13F74C5E`):
 
-- reached `SURFDUMP_READY` at redraw 4 with **no access violation** (the DGROUP
-  cave executes);
+- reached `SURFDUMP_READY` with **no access violation**;
 - both bands flip to **100% non-black** with authentic-art histogram similarity
-  `0.68` (left) and `0.79` (top-right) vs their native source bands
+  `~0.68` (left) and `~0.79` (top-right) vs their native source bands
   (`tools/border_frame_bounds.py`; recorded in
   `captures/current/border-frame-restore-current.json`);
 - `map_tile_coverage.py` edge coverage rose top `80%->100%`, left `80%->100%`
   with the terrain blank-cell (fog/visibility) pattern unchanged;
 - `patch_stage_report.py` shows `frame-restore-bands 2/2` and the stable HD-map
-  gate still `PASS`; `stable_stage_guard.py` stays `PASS`;
-- `capture_tear_check.py` clean.
+  gate still `PASS`; `stable_stage_guard.py` stays `PASS`.
 
-The surfdump proxy validates the software surface (`dword_5202E0`) directly; the
-existing top/left frame proves the full-surface present publishes `x<32`/`y<16`
-regions to screen, so the new bands use the same publish path. A real
-visible-runtime capture is the remaining optional gold-standard confirmation.
+Validation, **real visible runtime** (user-approved, visual-smoke
+`captures/archive/visual-smoke-20260713-150843/after-map-path.png`):
+
+- `left_frame_hd_extension` and `top_right_extension` both **100% non-black on
+  the actual screen** with authenticity `0.68`/`0.80`
+  (`captures/current/border-frame-restore-realruntime-current.json`);
+- minimap, terrain, and bottom tooltip (`Plain - 4ap`) unregressed;
+- `capture_tear_check.py` clean (`tear_suspected=False`).
