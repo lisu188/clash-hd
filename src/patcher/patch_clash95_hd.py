@@ -1064,10 +1064,19 @@ PATCHES: tuple[Patch, ...] = (
     # the left frame band (x=0..31) stops at y=479 and the top frame band stops
     # at x=639, leaving a black bottom-left gutter (0,480..599) and a black
     # top-right strip (640..799,0..15). This hook runs at the single post-tile
-    # convergence point in sub_418700 (0x4187AF, after the 12x9 tile loop and
-    # the dead dword_526990 callback, before the cursor/present block) and copies
-    # authentic on-surface frame pixels into those bands via the engine blit
-    # 0x4024E0 (same source/dest surface dword_5202E0). Because the destination
+    # convergence point in sub_418700 (0x4187AF, the `if (a1)` present gate,
+    # after the 12x9 tile loop and the dead dword_526990 callback) and copies
+    # authentic frame pixels into those bands via the engine blit 0x4024E0
+    # (Render_FillRect: eax=src surface, edx=dst surface, ebx/ecx=src left/top,
+    # pushed dstTop/dstLeft/srcBottom/srcRight, inclusive). The engine draws the
+    # map to the offscreen back buffer dword_5202E0 and each frame presents only
+    # the map rectangle (x=32..799, y=16..591) to the screen with dst=0 (the
+    # DD-safe managed target), so back-buffer gutter writes never reach the
+    # display. The cave therefore paints each band twice: once on the back buffer
+    # dword_5202E0 (so a full re-present stays correct and the surfdump proxy can
+    # verify it) and once to the screen via the same dst=0 present the engine
+    # uses for the map (writing the raw DD primary 0x51D4C0 instead throws
+    # DDERR_SURFACELOST when the surface is lost mid-transition). Because the
     # bands are disjoint from the terrain (x>=32, y=16..591) and the moved
     # minimap (586..799, 16..229), nothing tears and no runtime exclusion is
     # needed. Validation-only; not part of DEFAULT_STAGE.
@@ -1081,11 +1090,12 @@ PATCHES: tuple[Patch, ...] = (
     Patch(
         "frame-restore-bands",
         0x11A000,
-        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-        "60a1e002520089c2bb00000000b96801000068e0010000680000000068df010000681f000000e8b566eeffa1e002520089c2bbe0010000b90000000068000000006880020000680f000000687f020000e88b66eeff6185ed0f8445cbefffe954c9efff0000000000000000000000000000000000000000000000000000000000",
-        "0x51BE00 DGROUP cave: copy native left frame down to the "
-        "bottom gutter (0,360..479 -> 0,480) and the native top frame "
-        "right across the top gap (480,0..15 -> 640,0) via 0x4024E0",
+        "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "60a1e002520089c2bb00000000b96801000068e0010000680000000068df010000681f000000e8b566eeffa1e002520089c2bbe0010000b90000000068000000006880020000680f000000687f020000e88b66eeff8b44240885c0745aa1e0025200ba00000000bb00000000b96801000068e0010000680000000068df010000681f000000e85666eeffa1e0025200ba00000000bbe0010000b90000000068000000006880020000680f000000687f020000e82966eeff6185ed0f84e3caefffe9f2c8efff0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "0x51BE00 DGROUP cave: fill the black frame gutters with "
+        "authentic native pixels on the back buffer 0x5202E0 and present "
+        "them to screen via Render_FillRect dest=0 (the engine DD-safe "
+        "target) - left frame (0,360..479->0,480), top (480,0..15->640,0)",
     ),
     # Group D: scroll/click/center helpers. Apply after the first stage is proven.
     Patch("helpers", 0x007080, "09", "0c", "scroll clamp X +9 -> +12"),
