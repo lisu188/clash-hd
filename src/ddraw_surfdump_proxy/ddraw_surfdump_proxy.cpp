@@ -12,6 +12,16 @@
 
 namespace {
 
+// Optional true-color presentation for the battle visible-capture path.
+// Enabled only when the environment variable CLASH_PROXY_PRESENT=1 is set at
+// DLL load; when disabled, present_to_window() early-returns and every hidden
+// surfdump run stays byte-for-byte unchanged.
+bool g_present_enabled = false;
+HWND g_present_hwnd = nullptr;
+bool g_present_shown = false;
+PALETTEENTRY g_last_palette_entries[256] = {};
+bool g_have_palette = false;
+
 void log_line(const char* format, ...) {
     char module_path[MAX_PATH] = {};
     HMODULE module = GetModuleHandleA("ddraw.dll");
@@ -71,6 +81,9 @@ void write_palette_file(const PALETTEENTRY* entries) {
     if (!entries) {
         return;
     }
+
+    memcpy(g_last_palette_entries, entries, sizeof(g_last_palette_entries));
+    g_have_palette = true;
 
     char path[MAX_PATH] = {};
     if (!proxy_output_path("ddraw_surfdump_palette.bin", path, sizeof(path))) {
@@ -261,6 +274,7 @@ public:
         if ((flags & DDBLT_COLORFILL) && fx) {
             BYTE color = static_cast<BYTE>(fx->dwFillColor & 0xff);
             fill_rect(dst_rect, color);
+            maybe_present();
             return DD_OK;
         }
 
@@ -269,6 +283,7 @@ public:
             return DD_OK;
         }
         copy_from(src, dst_rect, src_rect);
+        maybe_present();
         return DD_OK;
     }
 
@@ -305,6 +320,7 @@ public:
             return DD_OK;
         }
         copy_from(src, &dst, src_rect);
+        maybe_present();
         return DD_OK;
     }
 
@@ -335,6 +351,7 @@ public:
         if (attached_) {
             copy_from(attached_, nullptr, nullptr);
         }
+        maybe_present();
         return DD_OK;
     }
 
@@ -579,6 +596,79 @@ private:
         }
     }
 
+    // Present this surface to the captured game window in true color. No-op
+    // unless CLASH_PROXY_PRESENT=1 armed g_present_* at DLL load, so hidden
+    // surfdump runs are unaffected. Uses plain GDI (no D3D), which is why CDB
+    // still runs to completion against this proxy.
+    void maybe_present() {
+        if (g_present_enabled && (caps_ & DDSCAPS_PRIMARYSURFACE)) {
+            present_to_window();
+        }
+    }
+
+    void present_to_window() {
+        if (!g_present_enabled || !g_present_hwnd) {
+            return;
+        }
+
+        // 8bpp top-down DIB (negative height) with a 256-entry color table.
+        // Assumes pitch_ == width_ and width_ is a multiple of 4 (640/800 both
+        // are), so the surface rows already satisfy the DIB 4-byte row stride.
+        struct {
+            BITMAPINFOHEADER header;
+            RGBQUAD colors[256];
+        } bmi = {};
+        bmi.header.biSize = sizeof(BITMAPINFOHEADER);
+        bmi.header.biWidth = static_cast<LONG>(width_);
+        bmi.header.biHeight = -static_cast<LONG>(height_);
+        bmi.header.biPlanes = 1;
+        bmi.header.biBitCount = 8;
+        bmi.header.biCompression = BI_RGB;
+        bmi.header.biClrUsed = 256;
+        bmi.header.biClrImportant = 256;
+
+        PALETTEENTRY entries[256] = {};
+        bool have_colors = false;
+        if (palette_ && SUCCEEDED(palette_->GetEntries(0, 0, 256, entries))) {
+            have_colors = true;
+        } else if (g_have_palette) {
+            memcpy(entries, g_last_palette_entries, sizeof(entries));
+            have_colors = true;
+        }
+        if (!have_colors) {
+            return;  // no palette yet; wait until the game sets one
+        }
+        for (int i = 0; i < 256; ++i) {
+            bmi.colors[i].rgbRed = entries[i].peRed;
+            bmi.colors[i].rgbGreen = entries[i].peGreen;
+            bmi.colors[i].rgbBlue = entries[i].peBlue;
+            bmi.colors[i].rgbReserved = 0;
+        }
+
+        HDC dc = ::GetDC(g_present_hwnd);
+        if (!dc) {
+            return;
+        }
+        if (!g_present_shown) {
+            ::ShowWindow(g_present_hwnd, SW_SHOW);
+            ::SetForegroundWindow(g_present_hwnd);
+            g_present_shown = true;
+        }
+        int dst_w = static_cast<int>(width_);
+        int dst_h = static_cast<int>(height_);
+        RECT rc = {};
+        if (::GetClientRect(g_present_hwnd, &rc) && rc.right > rc.left && rc.bottom > rc.top) {
+            dst_w = rc.right - rc.left;
+            dst_h = rc.bottom - rc.top;
+        }
+        ::SetStretchBltMode(dc, COLORONCOLOR);
+        ::StretchDIBits(dc, 0, 0, dst_w, dst_h, 0, 0,
+                        static_cast<int>(width_), static_cast<int>(height_),
+                        pixels_.data(), reinterpret_cast<BITMAPINFO*>(&bmi),
+                        DIB_RGB_COLORS, SRCCOPY);
+        ::ReleaseDC(g_present_hwnd, dc);
+    }
+
     LONG ref_count_;
     DWORD width_;
     DWORD height_;
@@ -751,6 +841,9 @@ public:
 
     HRESULT STDMETHODCALLTYPE SetCooperativeLevel(HWND hwnd, DWORD flags) override {
         log_line("FakeDirectDraw SetCooperativeLevel hwnd=%p flags=0x%08lx", hwnd, flags);
+        if (g_present_enabled && hwnd) {
+            g_present_hwnd = hwnd;
+        }
         return DD_OK;
     }
 
@@ -813,7 +906,11 @@ HRESULT WINAPI DirectDrawCreateEx(GUID FAR* guid, LPVOID* dd, REFIID iid, IUnkno
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
     if (reason == DLL_PROCESS_ATTACH) {
         DisableThreadLibraryCalls(instance);
-        log_line("ddraw_surfdump_proxy loaded");
+        char present_flag[8] = {};
+        DWORD present_len =
+            GetEnvironmentVariableA("CLASH_PROXY_PRESENT", present_flag, sizeof(present_flag));
+        g_present_enabled = (present_len > 0 && present_flag[0] == '1');
+        log_line("ddraw_surfdump_proxy loaded present_enabled=%d", g_present_enabled ? 1 : 0);
     } else if (reason == DLL_PROCESS_DETACH) {
         log_line("ddraw_surfdump_proxy unloaded");
     }
