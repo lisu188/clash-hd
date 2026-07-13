@@ -460,6 +460,21 @@ Frame dumping limitations:
   covers the target center. Treat that as weaker visual evidence than
   `CaptureMode=screen`; inspect the PNG and nonblack bounds before drawing
   conclusions.
+- **Always check a visible-runtime capture for tearing before treating it as
+  evidence.** `capture_clash_client_frame.ps1` grabs the desktop front buffer
+  with `Graphics.CopyFromScreen`, which lands mid page-flip on the
+  dgVoodoo-wrapped surface. On animated screens (castle courtyard, battle) the
+  moving region shears into horizontal displacement bands while static chrome
+  stays crisp; the render itself is correct (the hidden CDB surfdump of the same
+  screen is coherent), so tearing is a capture artifact, not an HD defect. Run
+  `python tools/capture_tear_check.py <frame.png> [--rect L T R B]` to flag it
+  (row-vs-column mean-diff ratio; torn castle grab ≈ 2.05 vs clean CDB dump ≈
+  1.37). For a clean frame, take 2–3 back-to-back grabs and pass them all — a
+  consecutive pixel-identical pair (`clean_stable_pair`) is the strongest
+  tear-free signal. Prefer the hidden CDB surface dump for geometry evidence; it
+  never tears. Note `tools/castle_overview_gate.py` gates only VERTICAL stripe
+  metrics and will pass a horizontally torn frame — use `capture_tear_check.py`
+  for horizontal tearing.
 - `SendInput` or `PostMessage` failures can be artifacts of how the game reads
   input. Treat them as automation results, then confirm real input issues with
   manual testing or CDB/memory probes.
