@@ -1,0 +1,16 @@
+.echo === Clash95 continuity campaign-route extra ===
+.echo Harness-only continuity probe for a 600s-plus campaign route entirely on
+.echo the hidden desktop. Snapshot saveGame slot 11 at route start and record
+.echo the system tick from KUSER_SHARED_DATA 7ffe0320. While the route runs the
+.echo probe holds the base template redraw counter t13 at zero so the surface
+.echo dump waits, and every 0x1000 poll hits it force-calls the engine next
+.echo player routine 0040AA60 so real multi-day turn processing happens. Once
+.echo 0n39040 ticks pass - about 610 seconds at the standard 64Hz tick - it
+.echo snapshots saveGame slot 12, releases the redraw counter, and the normal
+.echo dump path finishes the run. Wall-clock duration is independently
+.echo verifiable from the 11.dat and 12.dat file timestamps.
+.echo State flag at 00400040, start tick at 00400044, hit counter at 00400048.
+ed 00400040 0
+ed 00400044 0
+ed 00400048 0
+bp 0040B0C3 ".if (poi(00400040) == 0) { ed 00400040 1; ed 00400044 poi(7ffe0320); .printf \"CONTINUITY_ROUTE_START slot=11 player=%d tick=%d gd=%p\\n\", poi(005202ec), poi(7ffe0320), poi(005202e4); r esp=@esp-4; ed @esp 0040B0C3; r eax=0n11; r edx=00543d28; r eip=004443E0; } .else { .if (poi(00400040) == 1) { ed 00400040 2; .printf \"CONTINUITY_ROUTE_SAVE11_DONE eax=%d\\n\", @eax; } .else { .if (poi(00400040) == 2) { r @$t13 = 0; ed 00400048 (poi(00400048)+1); .if ((poi(7ffe0320)-poi(00400044)) >= 0n39040) { ed 00400040 3; .printf \"CONTINUITY_ROUTE_END slot=12 player=%d tick=%d tickdelta=%d hits=%d\\n\", poi(005202ec), poi(7ffe0320), poi(7ffe0320)-poi(00400044), poi(00400048); r esp=@esp-4; ed @esp 0040B0C3; r eax=0n12; r edx=00543d28; r eip=004443E0; } .else { .if ((poi(00400048) & 0xFFF) == 0xFFF) { .printf \"CONTINUITY_ROUTE_TURN hits=%d tickdelta=%d player=%d\\n\", poi(00400048), poi(7ffe0320)-poi(00400044), poi(005202ec); r esp=@esp-4; ed @esp 0040B0C3; r eax=0; r edx=5; r ecx=0; r eip=0040AA60; }; }; } .else { .if (poi(00400040) == 3) { ed 00400040 4; .printf \"CONTINUITY_ROUTE_SAVE12_DONE eax=%d player=%d\\n\", @eax, poi(005202ec); }; }; }; }; }; gc"

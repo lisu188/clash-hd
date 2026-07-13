@@ -1,0 +1,96 @@
+Opened log file 'C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260713-160520\cdb-surface-dump.log'
+
+************* Preparing the environment for Debugger Extensions Gallery repositories **************
+   ExtensionRepository : Implicit
+   UseExperimentalFeatureForNugetShare : true
+   AllowNugetExeUpdate : true
+   NonInteractiveNuget : true
+   AllowNugetMSCredentialProviderInstall : true
+   AllowParallelInitializationOfLocalRepositories : true
+
+   EnableRedirectToV8JsProvider : false
+
+   -- Configuring repositories
+      ----> Repository : LocalInstalled, Enabled: true
+      ----> Repository : UserExtensions, Enabled: true
+
+>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds
+
+************* Waiting for Debugger Extensions Gallery to Initialize **************
+
+>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds
+   ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29
+
+Microsoft (R) Windows Debugger Version 10.0.26100.8038 X86
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+CommandLine: C:\ClashTests\continuity-roundtrip\clash95_hd_surfdump_20260713_160520.exe
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\atlmfc.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\ObjectiveC.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\concurrency.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\cpp_rest.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\stl.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Data.Json.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Geolocation.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Sensors.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Media.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\windows.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\winrt.natvis'
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Symbol search path is: srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Executable search path is: 
+ModLoad: 00400000 00562000   clash95.exe
+ModLoad: 776d0000 7788f000   ntdll.dll
+ModLoad: 758f0000 759e0000   C:\WINDOWS\SysWOW64\KERNEL32.DLL
+ModLoad: 76ef0000 771c2000   C:\WINDOWS\SysWOW64\KERNELBASE.dll
+ModLoad: 65e50000 65efe000   C:\WINDOWS\SysWOW64\apphelp.dll
+ModLoad: 75da0000 75dc2000   C:\WINDOWS\SysWOW64\GDI32.dll
+ModLoad: 76d20000 76d3c000   C:\WINDOWS\SysWOW64\win32u.dll
+ModLoad: 77240000 7732b000   C:\WINDOWS\SysWOW64\gdi32full.dll
+ModLoad: 767d0000 76855000   C:\WINDOWS\SysWOW64\msvcp_win.dll
+ModLoad: 76a50000 76b60000   C:\WINDOWS\SysWOW64\ucrtbase.dll
+ModLoad: 774e0000 776b5000   C:\WINDOWS\SysWOW64\USER32.dll
+ModLoad: 66c90000 66cc3000   C:\WINDOWS\SysWOW64\WINMM.dll
+ModLoad: 65f60000 65fd6000   C:\WINDOWS\SysWOW64\DSOUND.dll
+ModLoad: 66360000 66386000   C:\ClashTests\continuity-roundtrip\DDRAW.dll
+ModLoad: 66390000 663b7000   C:\WINDOWS\SysWOW64\DINPUT.dll
+ModLoad: 76b70000 76bf2000   C:\WINDOWS\SysWOW64\advapi32.dll
+ModLoad: 00c50000 00cd2000   C:\WINDOWS\SysWOW64\ADVAPI32.dll
+ModLoad: 75dd0000 75e97000   C:\WINDOWS\SysWOW64\msvcrt.dll
+ModLoad: 65f30000 65f54000   C:\WINDOWS\SysWOW64\MSVFW32.dll
+ModLoad: 66340000 6635c000   C:\WINDOWS\SysWOW64\AVIFIL32.dll
+ModLoad: 773f0000 77476000   C:\WINDOWS\SysWOW64\sechost.dll
+ModLoad: 751f0000 75845000   C:\WINDOWS\SysWOW64\SHELL32.dll
+ModLoad: 77330000 773ec000   C:\WINDOWS\SysWOW64\RPCRT4.dll
+ModLoad: 65b90000 65c21000   C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.26100.8521_none_cf9e08b68ea73d80\COMCTL32.dll
+ModLoad: 00c50000 00ee3000   C:\WINDOWS\SysWOW64\combase.dll
+ModLoad: 75a90000 75d23000   C:\WINDOWS\SysWOW64\combase.dll
+ModLoad: 65c90000 65d2a000   C:\WINDOWS\SysWOW64\ResampleDmo.DLL
+ModLoad: 76c00000 76c9f000   C:\WINDOWS\SysWOW64\OLEAUT32.dll
+ModLoad: 76480000 765d4000   C:\WINDOWS\SysWOW64\ole32.dll
+ModLoad: 75190000 751e5000   C:\WINDOWS\SysWOW64\powrprof.dll
+ModLoad: 65e20000 65e3f000   C:\WINDOWS\SysWOW64\winmmbase.dll
+ModLoad: 65e00000 65e1a000   C:\WINDOWS\SysWOW64\MSACM32.dll
+ModLoad: 65f20000 65f29000   C:\WINDOWS\SysWOW64\msdmo.dll
+(6eec.6c68): Break instruction exception - code 80000003 (first chance)
+eax=00000000 ebx=00000000 ecx=f8990000 edx=00000000 esi=006074e8 edi=0023a000
+eip=777e82d8 esp=000efa54 ebp=000efa80 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+ntdll!LdrpDoDebuggerBreak+0x2b:
+777e82d8 cc              int     3
+0:000> $$><C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260713-160520\clash95_surface_dump_probe.generated.cdb
+=== Clash95 CDB surface dump probe ===
+route-injects load slot 0, waits for gameplay redraw, then dumps dword_5202E0
+=== Clash95 continuity roundtrip extra: force saveGame(slot 7) on the world map ===
+Harness-only continuity probe: after the natural load route reaches the
+world-map poll, force one saveGame(7, byte_543D28) call so save\7.dat
+captures the 16-byte name header plus the full 586398-byte gameData block.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ^ Bad register error in '.echo === Clash95 CDB surface dump probe ===;.echo route-injects load slot 0, waits for gameplay redraw, then dumps dword_5202E0;sxe -c ".echo AV_SURFDUMP; .exr -1; r; kb; u @eip-20 @eip+20; q'
