@@ -1,0 +1,269 @@
+Opened log file 'C:\Users\andrz\git\clash-hd\captures\archive\battle-visible-input-present-20260713-155200\cdb-visible-input.log'
+
+************* Preparing the environment for Debugger Extensions Gallery repositories **************
+   ExtensionRepository : Implicit
+   UseExperimentalFeatureForNugetShare : true
+   AllowNugetExeUpdate : true
+   NonInteractiveNuget : true
+   AllowNugetMSCredentialProviderInstall : true
+   AllowParallelInitializationOfLocalRepositories : true
+
+   EnableRedirectToV8JsProvider : false
+
+   -- Configuring repositories
+      ----> Repository : LocalInstalled, Enabled: true
+      ----> Repository : UserExtensions, Enabled: true
+
+>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds
+
+************* Waiting for Debugger Extensions Gallery to Initialize **************
+
+>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds
+   ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29
+
+Microsoft (R) Windows Debugger Version 10.0.26100.8038 X86
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+CommandLine: C:\ClashTests\battle-present\clash95_hd_battle_present_20260713.exe 
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\atlmfc.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\ObjectiveC.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\concurrency.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\cpp_rest.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\stl.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Data.Json.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Geolocation.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Devices.Sensors.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\Windows.Media.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\windows.natvis'
+NatVis script successfully loaded from 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\Visualizers\winrt.natvis'
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Symbol search path is: srv*C:\Symbols*https://msdl.microsoft.com/download/symbols
+Executable search path is: 
+ModLoad: 00400000 00562000   clash95.exe
+ModLoad: 776d0000 7788f000   ntdll.dll
+ModLoad: 758f0000 759e0000   C:\WINDOWS\SysWOW64\KERNEL32.DLL
+ModLoad: 76ef0000 771c2000   C:\WINDOWS\SysWOW64\KERNELBASE.dll
+ModLoad: 75da0000 75dc2000   C:\WINDOWS\SysWOW64\GDI32.dll
+ModLoad: 76d20000 76d3c000   C:\WINDOWS\SysWOW64\win32u.dll
+ModLoad: 77240000 7732b000   C:\WINDOWS\SysWOW64\gdi32full.dll
+ModLoad: 767d0000 76855000   C:\WINDOWS\SysWOW64\msvcp_win.dll
+ModLoad: 76a50000 76b60000   C:\WINDOWS\SysWOW64\ucrtbase.dll
+ModLoad: 774e0000 776b5000   C:\WINDOWS\SysWOW64\USER32.dll
+ModLoad: 66c90000 66cc3000   C:\WINDOWS\SysWOW64\WINMM.dll
+ModLoad: 65f60000 65f86000   C:\ClashTests\battle-present\DDRAW.dll
+ModLoad: 65dd0000 65e46000   C:\WINDOWS\SysWOW64\DSOUND.dll
+ModLoad: 65f30000 65f57000   C:\WINDOWS\SysWOW64\DINPUT.dll
+ModLoad: 76b70000 76bf2000   C:\WINDOWS\SysWOW64\ADVAPI32.dll
+ModLoad: 00c50000 00cd2000   C:\WINDOWS\SysWOW64\advapi32.dll
+ModLoad: 65f10000 65f2c000   C:\WINDOWS\SysWOW64\AVIFIL32.dll
+ModLoad: 75dd0000 75e97000   C:\WINDOWS\SysWOW64\msvcrt.dll
+ModLoad: 75a90000 75d23000   C:\WINDOWS\SysWOW64\combase.dll
+ModLoad: 76480000 765d4000   C:\WINDOWS\SysWOW64\ole32.dll
+ModLoad: 77330000 773ec000   C:\WINDOWS\SysWOW64\RPCRT4.dll
+ModLoad: 773f0000 77476000   C:\WINDOWS\SysWOW64\sechost.dll
+ModLoad: 65d00000 65d24000   C:\WINDOWS\SysWOW64\MSVFW32.dll
+ModLoad: 751f0000 75845000   C:\WINDOWS\SysWOW64\SHELL32.dll
+ModLoad: 65c60000 65cfa000   C:\WINDOWS\SysWOW64\ResampleDmo.DLL
+ModLoad: 75190000 751e5000   C:\WINDOWS\SysWOW64\powrprof.dll
+ModLoad: 76c00000 76c9f000   C:\WINDOWS\SysWOW64\OLEAUT32.dll
+ModLoad: 65c10000 65c2a000   C:\WINDOWS\SysWOW64\MSACM32.dll
+ModLoad: 65be0000 65bff000   C:\WINDOWS\SysWOW64\winmmbase.dll
+ModLoad: 65b40000 65bd1000   C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.26100.8521_none_cf9e08b68ea73d80\COMCTL32.dll
+ModLoad: 65dc0000 65dc9000   C:\WINDOWS\SysWOW64\msdmo.dll
+(9308.343c): Break instruction exception - code 80000003 (first chance)
+eax=00000000 ebx=00000000 ecx=d5430000 edx=00000000 esi=00697510 edi=00263000
+eip=777e82d8 esp=000efa54 ebp=000efa80 iopl=0         nv up ei pl zr na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+ntdll!LdrpDoDebuggerBreak+0x2b:
+777e82d8 cc              int     3
+0:000> .echo === Clash95 CDB surface dump probe ===
+=== Clash95 CDB surface dump probe ===
+0:000> .echo route-injects load slot 0, waits for gameplay redraw, then dumps dword_5202E0
+route-injects load slot 0, waits for gameplay redraw, then dumps dword_5202E0
+0:000> sxe -c ".echo AV_SURFDUMP; .exr -1; r; kb; u @eip-20 @eip+20; q" av
+0:000> bc *
+0:000> r @$t0 = 0
+0:000> r @$t1 = 0
+0:000> r @$t2 = 0
+0:000> r @$t3 = 0
+0:000> r @$t4 = 0
+0:000> r @$t5 = 0
+0:000> r @$t6 = 0
+0:000> r @$t7 = 0
+0:000> r @$t8 = 0
+0:000> r @$t9 = 0
+0:000> r @$t10 = 0
+0:000> r @$t11 = 0
+0:000> r @$t12 = 0
+0:000> r @$t13 = 0
+0:000> r @$t14 = 0
+0:000> r @$t15 = 0
+0:000> r @$t16 = 0
+0:000> r @$t17 = 0
+0:000> r @$t18 = 0
+0:000> r @$t19 = 0
+0:000> 
+0:000> 
+0:000> bp 00401DDA ".printf \"SURFDUMP_APP_REQUEST_QUIT text_ptr=%p caption_ptr=%p\\n\", poi(@esp+4), poi(@esp+8); da poi(@esp+4); da poi(@esp+8); kb; q"
+0:000> bp 0047BD66 ".printf \"BATTLE_DIRECTINPUT_MOUSE_ACQUIRE eip=0047bd66 result=%p hwnd=%p device=%p\\n\", @eax, poi(005452dc), poi(@esi+8); gc"
+0:000> bp 0047BDAE ".printf \"SURFDUMP_BYPASS_KEYBOARD_ACQUIRE hwnd=%p device=%p\\n\", poi(005452dc), poi(@esi+4); r eax=0; r eip=0047bdbf; gc"
+0:000> .echo SURFDUMP_START_ANIMS_SLEEP_FAST_FORWARD_ENABLED
+SURFDUMP_START_ANIMS_SLEEP_FAST_FORWARD_ENABLED
+0:000> bp 0044789a ".printf \"SURFDUMP_SKIP_START_SLEEP ret=004478a1\\n\"; r eip=004478a1; r esp=@esp+4; gc"
+0:000> bp 0046e4d0 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046e4d7; r esp=@esp+4; gc } .else { gc }"
+0:000> bp 0046e6df ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046e6df next=0046e6e6\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046e6e6; r esp=@esp+4; gc } .else { gc }"
+0:000> bp 0046fd01 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_AVI_SLEEP call=0046fd01 next=0046fd08\\n\"; r @$t12 = @$t12 + 1; }; r eip=0046fd08; r esp=@esp+4; gc } .else { gc }"
+0:000> bp 0047BFD0 ".if (@$t14 == 0) { .if (@$t12 < 0n8) { .printf \"SURFDUMP_SKIP_TIME_SLEEP ret=%p\\n\", poi(@esp); r @$t12 = @$t12 + 1; }; r eax=0; r eip=poi(@esp); r esp=@esp+4; gc } .else { gc }"
+0:000> 
+breakpoint 7 redefined
+0:000> bp 00419B80 ".if (@$t14 == 0) { .if (poi(00543d7c) != 5) { ed 00544cfc 00004b00; ed 00544d00 00003680; eb 005451c0 80; ed 00544d04 1; .if (@$t0 < 0n16) { .printf \"SURFDUMP_MAIN_HIT seq=%d choice=%d entry=0x%08x ex=%d ey=%d mouse=(%d,%d)\\n\", @$t0, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t0 = @$t0 + 1; }; } .else { ed 00544cfc 00005000; ed 00544d00 00002980; eb 005451c0 80; ed 00544d04 1; .if (@$t1 < 0n16) { .printf \"SURFDUMP_LOAD_COORD seq=%d choice=%d entry=0x%08x ex=%d ey=%d mouse=(%d,%d) selected=%d accept=%d\\n\", @$t1, poi(00543d7c), @eax, poi(@eax), poi(@eax+4), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(005441e0), poi(00544190); r @$t1 = @$t1 + 1; }; }; } .else { .if (@$t18 == 0) { eb 005451c0 00; ed 00544d04 0; }; }; gc"
+0:000> bp 00419C51 ".if (@$t14 == 0) { .if (poi(00543d7c) != 5) { r eax=1; .if (@$t2 < 0n8) { .printf \"SURFDUMP_FORCE_MAIN_CLICK seq=%d desc=0x%08x mouse=(%d,%d)\\n\", @$t2, @ebx, poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t2 = @$t2 + 1; }; }; }; gc"
+0:000> bp 00447780 ".printf \"SURFDUMP_SKIP_MAIN_LOAD_CALLBACK ret=%p choice_before=%d exit_before=%d mouse=(%d,%d)\\n\", poi(@esp), poi(00543d7c), poi(00543d78), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); ed 00543d7c 5; ed 00543d78 1; r eip=poi(@esp); r esp=@esp+4; gc"
+0:000> bp 00447D61 ".if (@$t8 < 0n12) { .printf \"SURFDUMP_MAIN_DISPATCH_POLL seq=%d choice=%d exit=%d aux=%d accept=%d selected=%d\\n\", @$t8, poi(00543d7c), poi(00543d78), poi(00544184), poi(00544190), poi(005441e0); r @$t8 = @$t8 + 1; }; gc"
+0:000> bp 0044895A ".if (@$t14 == 0) { .printf \"SURFDUMP_LOAD_MENU_ENTRY choice=%d exit=%d selected=%d accept=%d mouse=(%d,%d)\\n\", poi(00543d7c), poi(00543d78), poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+0:000> bp 00448A45 ".if (@$t14 == 0) { .if (@$t9 < 0n12) { .printf \"SURFDUMP_LOAD_MENU_LOOP seq=%d exit=%d selected=%d accept=%d mouse=(%d,%d) lbtn=0x%02x\\n\", @$t9, poi(00543d78), poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), by(005451c0); r @$t9 = @$t9 + 1; }; }; gc"
+0:000> bp 00448A68 ".if (@$t14 == 0) { .if (poi(00543d7c) == 5) { ed 00544cfc 00005000; ed 00544d00 00002980; eb 005451c0 80; ed 00544d04 1; r eax=1; .if (@$t4 < 0n8) { .printf \"SURFDUMP_FORCE_LOAD_SELECT seq=%d mouse=(%d,%d) selected=%d accept=%d\\n\", @$t4, poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(005441e0), poi(00544190); r @$t4 = @$t4 + 1; }; }; }; gc"
+0:000> bp 00448AE3 ".if (@$t14 == 0) { .if (poi(00543d7c) == 5) { r eax=1; .if (@$t5 < 0n8) { .printf \"SURFDUMP_FORCE_LOAD_ACCEPT seq=%d selected=%d accept=%d mouse=(%d,%d)\\n\", @$t5, poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t5 = @$t5 + 1; }; }; }; gc"
+0:000> bp 0044A110 ".if (@$t14 == 0) { .printf \"SURFDUMP_LOAD_ACCEPT_CALL arg=%d selected=%d accept_before=%d mouse=(%d,%d)\\n\", @eax, poi(005441e0), poi(00544190), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+0:000> bp 00444490 ".printf \"SURFDUMP_LOADSAVE selected_arg=%d selected_global=%d accept=%d choice=%d gd=%p\\n\", @eax, poi(005441e0), poi(00544190), poi(00543d7c), poi(005202e4); gc"
+0:000> bp 00448B74 ".printf \"SURFDUMP_LOADSAVE_RETURN selected=%d accept=%d choice=%d gd=%p surface=%p size=(%d,%d)\\n\", poi(005441e0), poi(00544190), poi(00543d7c), poi(005202e4), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); gc"
+0:000> 
+breakpoint 18 redefined
+0:000> .echo === Clash95 battle force-command callback probe ===
+=== Clash95 battle force-command callback probe ===
+0:000> .echo Harness-only battle entry plus natural command descriptor click callback trace
+Harness-only battle entry plus natural command descriptor click callback trace
+0:000> r @$t15=0
+0:000> r @$t18=0
+0:000> r @$t19=0
+0:000> r @$t10=0
+0:000> r @$t11=0
+0:000> r @$t12=0
+0:000> 
+0:000> bp 0040B0C3 ".if ((poi(005202e4) != 0) & (@$t18 == 0)) { r @$t18=1; r @$t0=poi(005202e4); r @$t1=poi(005202ec); r @$t2=0xffffffff; r @$t3=0xffffffff; r @$t6=0; r @$t7=0; .printf \"BATTLE_FORCE_SCAN gd=%p current=%d selected=%d prior=%d d51d01c=%d surface=%p width=%d height=%d\\n\", @$t0, @$t1, poi(00511b58), poi(00514194), poi(0051d01c), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); .for (r @$t4=0; @$t4 < 0n500; r @$t4=@$t4+1) { r @$t5=@$t0+0n147174+(@$t4*0n725); .if ((wo(@$t5) < 0n100) & (wo(@$t5+2) < 0n100) & (by(@$t5+4) < 4) & (wo(@$t5+6) <= 0n40)) { .printf \"BATTLE_FORCE_UNIT idx=%d ptr=%p owner=%d xy=(%d,%d) first=%d status720=%d\\n\", @$t4, @$t5, by(@$t5+4), wo(@$t5), wo(@$t5+2), wo(@$t5+6), by(@$t5+0n720); .if ((@$t2 == 0xffffffff) & (by(@$t5+4) == @$t1)) { r @$t2=@$t4; r @$t6=@$t5; }; .if ((@$t3 == 0xffffffff) & (by(@$t5+4) != @$t1)) { r @$t3=@$t4; r @$t7=@$t5; }; }; }; .if ((@$t2 != 0xffffffff) & (@$t3 != 0xffffffff)) { r @$t8=wo(@$t7); r @$t9=wo(@$t7+2); .if (@$t8 > 0) { ew @$t6 (@$t8-1) } .else { ew @$t6 (@$t8+1) }; ew @$t6+2 @$t9; r @$t10=poi(0051d01c); ed 0051d01c 1; .printf \"BATTLE_FORCE_ATTACK_CALL attacker=%d defender=%d attacker_ptr=%p defender_ptr=%p attacker_owner=%d defender_owner=%d attacker_xy=(%d,%d) defender_xy=(%d,%d) old_d51d01c=%d new_d51d01c=%d return=0040b0c3\\n\", @$t2, @$t3, @$t6, @$t7, by(@$t6+4), by(@$t7+4), wo(@$t6), wo(@$t6+2), wo(@$t7), wo(@$t7+2), @$t10, poi(0051d01c); r @$t7=0; r esp=@esp-4; ed @esp 0040B0C3; r eax=@$t2; r edx=@$t3; r ebx=(@ebx & 0xffffff00); r eip=0041AD20; } .else { .printf \"BATTLE_FORCE_SCAN_FAILED attacker=%d defender=%d current=%d gd=%p\\n\", @$t2, @$t3, @$t1, @$t0; r @$t7=0; }; }; gc"
+0:000> 
+breakpoint 19 redefined
+0:000> bp 0041AD20 ".if (@$t18 != 0) { .printf \"BATTLE_ROUTE_CANDIDATE name=Unit_Attack eip=0041ad20 ret=%p attacker=%d target=%d surface=%p width=%d height=%d\\n\", poi(@esp), @eax, @edx, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+0:000> bp 0041B145 ".if (@$t18 != 0) { .printf \"BATTLE_ROUTE_CANDIDATE name=Unit_Attack_calls_BattleRunner eip=0041b145 ret=%p attacker_ptr=%p defender_ptr=%p result_ptr=%p stack_arg=%p ebp=%p surface=%p width=%d height=%d\\n\", poi(@esp), @eax, @edx, @ecx, poi(@esp), @ebp, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); }; gc"
+0:000> bp 0041CE7A ".if (@$t18 != 0) { r eax=1; .printf \"BATTLE_FORCE_WAIT_GATE name=Unit_Attack_DD_IsFlipping eip=0041ce7a forced_eax=1 click_flag_before=%p button0=0x%02x\\n\", poi(00544d04), by(005451c0); }; gc"
+0:000> bp 0042E9E0 ".if (@$t18 != 0) { .printf \"BATTLE_OWNER_ENTRY source=BattleRunner eip=0042e9e0 ret=%p attacker=%p defender=%p result_ptr=%p building_ptr=%p ebp=%p surface=%p width=%d height=%d mouse=(%d,%d)\\n\", poi(@esp), @eax, @edx, @ecx, @ebx, @ebp, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); .printf \"BATTLE_SURFACE ptr=%p width=%d height=%d pitch=0 base=%p mode=unknown\\n\", poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(005202e0)+4); r @$t19=1; }; gc"
+0:000> bp 0042E4B2 ".if (@$t19 != 0) { r eip=0042E4B7; }; gc"
+0:000> bp 0042E4D9 ".if (@$t19 != 0) { .if (@$t17 == 0) { .printf \"BATTLE_COMMAND_SKIP_TURN_FRAME eip=0042e4d9 next=0042e4fc mouse=(%d,%d)\\n\", poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); r @$t17=1; }; r eip=0042E4FC; }; gc"
+0:000> bp 0042E501 ".if ((@$t19 != 0) & (@$t15 == 0)) { .if ((@$t16 == 0) | (((by(005451c0) != 0) | (poi(00544d04) != 0)) & (@$t16 < 0n24))) { .printf \"BATTLE_COMMAND_INPUT_WINDOW coord_mode=visible-window expected_displayed=(588,440) expected_native=(508,380) mouse=(%d,%d) raw=(%p,%p) click_flag=%p button0=0x%02x scale=%d list=%p\\n\", poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544cfc), poi(00544d00), poi(00544d04), by(005451c0), by(0054512c), @eax; r @$t16=@$t16+1; }; }; gc"
+0:000> bp 00419C28 ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_PRE_GATES desc=%p state=0x%02x hover_cb=%p click_cb=%p type=0x%02x mouse=(%d,%d) click_flag=%p button0=0x%02x\\n\", @ebx, by(@ebx+8), poi(@ebx+1c), poi(@ebx+20), by(@ebx+30), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04), by(005451c0); }; gc"
+0:000> bp 00419C47 ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_CLICK_GATE desc=%p desc_xy=(%d,%d) state=0x%02x hover_cb=%p click_cb=%p mouse=(%d,%d) click_flag=%p button0=0x%02x\\n\", @ebx, poi(@ebx), poi(@ebx+4), by(@ebx+8), poi(@ebx+1c), poi(@ebx+20), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04), by(005451c0); }; gc"
+0:000> bp 00419C51 ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_CLICK_GATE_OBSERVED desc=%p eax=%d desc_xy=(%d,%d) state=0x%02x click_cb=%p mouse=(%d,%d) click_flag=%p button0=0x%02x\\n\", @ebx, @eax, poi(@ebx), poi(@ebx+4), by(@ebx+8), poi(@ebx+20), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04), by(005451c0); }; gc"
+breakpoint 9 redefined
+0:000> bp 00419C53 ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_CLICK_GATE_RET desc=%p click_gate=%d click_cb=%p state=0x%02x mouse=(%d,%d) click_flag=%p\\n\", @ebx, @eax, poi(@ebx+20), by(@ebx+8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04); }; gc"
+0:000> bp 00419C5D ".if ((@$t19 != 0) & (@ebx == 00514b78) & ((by(005451c0) != 0) | (poi(00544d04) != 0) | (@$t15 == 2))) { .printf \"BATTLE_COMMAND_DESCRIPTOR_CALLBACK desc=%p callback=%p desc_xy=(%d,%d) state=0x%02x mouse=(%d,%d) d53205c=%d d532060=%d d514b80=%d\\n\", @ebx, poi(@ebx+20), poi(@ebx), poi(@ebx+4), by(@ebx+8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(0053205c), poi(00532060), poi(00514b80); }; gc"
+0:000> bp 0042D4E0 ".if (@$t19 != 0) { r @$t15=2; r @$t6=@eax; r @$t8=poi(00511b58); r @$t9=wo(poi(00532048)+(@$t8*0n31)+0n852); r @$t7=@$t9*0n88; .printf \"BATTLE_COMMAND_CALLBACK eip=0042d4e0 ret=%p desc=%p state=0x%02x displayed=(%d,%d) unit_index=%d unit_type=%d avail=%d enabled=%d d53205c_before=%d d532060=%d d514b80=%d\\n\", poi(@esp), @eax, by(@eax+8), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), @$t8, @$t9, by(0051257e+@$t7), by(00512582+@$t7), poi(0053205c), poi(00532060), poi(00514b80); }; gc"
+0:000> bp 0042D520 ".if ((@$t19 != 0) & (@$t15 == 2)) { r @$t10=0; r @$t11=0; r @$t12=0; .printf \"BATTLE_COMMAND_RENDER_BEGIN_ENTER eip=0042d520 call=004609d0 desc=%p unit_type=%d avail=%d enabled=%d click_flag=%p button0=0x%02x\\n\", @$t6, @$t9, by(0051257e+@$t7), by(00512582+@$t7), poi(00544d04), by(005451c0); }; gc"
+0:000> bp 004609D0 ".if ((@$t19 != 0) & (@$t15 == 2) & (@eax == 00544cd8)) { r @$t10=1; r @$t11=0; r @$t12=0; .printf \"BATTLE_RENDER_BEGIN_ENTER eip=004609d0 surface=%p desc=%p unit_type=%d avail=%d enabled=%d\\n\", @eax, @$t6, @$t9, by(0051257e+@$t7), by(00512582+@$t7); }; gc"
+0:000> bp 004609E0 ".if (@$t10 == 1) { r @$t11=@$t11+1; .if (@$t11 <= 6) { .printf \"BATTLE_RENDER_BEGIN_LOOP iter=%d eip=004609e0 dd_is_flipping=%d desc=%p unit_type=%d\\n\", @$t11, @eax, @$t6, @$t9; }; .if ((@eax != 0) & (@$t11 >= 8)) { r @$t12=1; r eax=0; .printf \"BATTLE_RENDER_BEGIN_SPIN_GUARD iter=%d eip=004609e0 forced_flipping=0 desc=%p unit_type=%d\\n\", @$t11, @$t6, @$t9; }; }; gc"
+0:000> bp 004609FC ".if (@$t10 == 1) { .if ((@$t11 <= 6) | (@$t12 != 0) | ((@eax != 0) & (@$t11 >= 8))) { .printf \"BATTLE_RENDER_BEGIN_LOST_CHECK iter=%d eip=004609fc dd_is_lost=%d guard=%d desc=%p unit_type=%d\\n\", @$t11, @eax, @$t12, @$t6, @$t9; }; .if ((@eax != 0) & (@$t11 >= 8)) { r @$t12=2; r eax=0; .printf \"BATTLE_RENDER_BEGIN_LOST_GUARD iter=%d eip=004609fc forced_lost=0 reason=lost desc=%p unit_type=%d\\n\", @$t11, @$t6, @$t9; }; .if ((@$t12 == 1) & (@eax != 0)) { r eax=0; .printf \"BATTLE_RENDER_BEGIN_LOST_GUARD iter=%d eip=004609fc forced_lost=0 reason=spin desc=%p unit_type=%d\\n\", @$t11, @$t6, @$t9; }; }; gc"
+0:000> bp 00460A00 ".if (@$t10 == 1) { .printf \"BATTLE_RENDER_BEGIN_EXIT eip=00460a00 iter=%d guard=%d desc=%p unit_type=%d result=%d\\n\", @$t11, @$t12, @$t6, @$t9, @eax; r @$t10=0; r @$t12=0; }; gc"
+0:000> bp 0042D51C ".if ((@$t19 != 0) & (@$t15 == 2)) { r @$t15=3; r @$t19=0; r @$t10=poi(005202e0); r @$t11=wo(@$t10); r @$t12=wo(@$t10+2); r @$t13=poi(@$t10+4); r @$t16=@$t13; r @$t17=@$t11*@$t12; .printf \"BATTLE_COMMAND_CALLBACK_RESULT branch=precondition-disabled desc=%p state=0x%02x unit_index=%d unit_type=%d avail=%d enabled=%d d53205c=%d d532060=%d d514b80=%d surface=%p size=(%d,%d)\\n\", @$t6, by(@$t6+8), @$t8, @$t9, by(0051257e+@$t7), by(00512582+@$t7), poi(0053205c), poi(00532060), poi(00514b80), @$t10, @$t11, @$t12; .printf \"SURFDUMP_READY redraw_seq=3 surface=%p size=(%d,%d) base=%p bytes=%d\\n\", @$t10, @$t11, @$t12, @$t13, @$t17; .echo SURFDUMP_HOST_READY; gc }; gc"
+0:000> bp 0042D543 ".if ((@$t19 != 0) & (@$t15 == 2)) { r @$t15=3; r @$t19=0; r @$t10=poi(005202e0); r @$t11=wo(@$t10); r @$t12=wo(@$t10+2); r @$t13=poi(@$t10+4); r @$t16=@$t13; r @$t17=@$t11*@$t12; .printf \"BATTLE_COMMAND_CALLBACK_RESULT branch=state2 desc=%p state=0x%02x d53205c=%d d532060=%d d514b80=%d surface=%p size=(%d,%d)\\n\", @ecx, by(@ecx+8), poi(0053205c), poi(00532060), poi(00514b80), @$t10, @$t11, @$t12; .printf \"SURFDUMP_READY redraw_seq=3 surface=%p size=(%d,%d) base=%p bytes=%d\\n\", @$t10, @$t11, @$t12, @$t13, @$t17; .echo SURFDUMP_HOST_READY; gc }; gc"
+0:000> bp 0042D55C ".if ((@$t19 != 0) & (@$t15 == 2)) { r @$t15=3; r @$t19=0; r @$t10=poi(005202e0); r @$t11=wo(@$t10); r @$t12=wo(@$t10+2); r @$t13=poi(@$t10+4); r @$t16=@$t13; r @$t17=@$t11*@$t12; .printf \"BATTLE_COMMAND_CALLBACK_RESULT branch=state1 desc=%p state=0x%02x d53205c=%d d532060=%d d514b80=%d surface=%p size=(%d,%d)\\n\", @ecx, by(@ecx+8), poi(0053205c), poi(00532060), poi(00514b80), @$t10, @$t11, @$t12; .printf \"SURFDUMP_READY redraw_seq=3 surface=%p size=(%d,%d) base=%p bytes=%d\\n\", @$t10, @$t11, @$t12, @$t13, @$t17; .echo SURFDUMP_HOST_READY; gc }; gc"
+0:000> 
+breakpoint 39 redefined
+0:000> bp 0040B660 ".if ((poi(005202e4) != 0) & (@$t14 == 0)) { r @$t14 = 1; eb 005451c0 00; ed 00544d04 0; .printf \"SURFDUMP_PLAYGAME gd=%p map=(%d,%d) scroll=(%d,%d) surface=%p size=(%d,%d)\\n\", poi(005202e4), poi(poi(005202e4)+0n140000), poi(poi(005202e4)+0n140004), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2); } .else { .if (poi(005202e4) == 0) { .echo SURFDUMP_PLAYGAME gd=00000000; }; }; gc"
+0:000> 
+breakpoint 40 redefined
+0:000> 
+breakpoint 40 redefined
+0:000> g
+ModLoad: 75850000 75875000   C:\WINDOWS\SysWOW64\IMM32.DLL
+ModLoad: 74380000 7438e000   C:\WINDOWS\SysWOW64\UMPDC.dll
+ModLoad: 68950000 68ac4000   C:\WINDOWS\SysWOW64\inputhost.dll
+ModLoad: 68870000 6894b000   C:\WINDOWS\SysWOW64\CoreMessaging.dll
+ModLoad: 66bf0000 66c70000   C:\WINDOWS\SysWOW64\uxtheme.dll
+ModLoad: 76e70000 76ee7000   C:\WINDOWS\SysWOW64\bcryptPrimitives.dll
+ModLoad: 70040000 7004a000   C:\WINDOWS\SysWOW64\CRYPTBASE.DLL
+ModLoad: 766b0000 767c8000   C:\WINDOWS\SysWOW64\MSCTF.dll
+ModLoad: 74100000 74115000   C:\WINDOWS\SysWOW64\kernel.appcore.dll
+ModLoad: 6df10000 6e014000   C:\WINDOWS\SysWOW64\textinputframework.dll
+ModLoad: 67d00000 67f93000   C:\WINDOWS\SysWOW64\CoreUIComponents.dll
+ModLoad: 70ba0000 70c99000   C:\WINDOWS\SysWOW64\wintypes.dll
+ModLoad: 6cfd0000 6cfdb000   C:\WINDOWS\SysWOW64\HID.DLL
+ModLoad: 75ea0000 762f1000   C:\WINDOWS\SysWOW64\SETUPAPI.DLL
+ModLoad: 743a0000 743de000   C:\WINDOWS\SysWOW64\cfgmgr32.DLL
+ModLoad: 6e640000 6e664000   C:\WINDOWS\SysWOW64\DEVOBJ.dll
+ModLoad: 75d30000 75d98000   C:\WINDOWS\SysWOW64\WINTRUST.dll
+ModLoad: 76940000 76a49000   C:\WINDOWS\SysWOW64\CRYPT32.dll
+ModLoad: 730b0000 730be000   C:\WINDOWS\SysWOW64\MSASN1.dll
+BATTLE_DIRECTINPUT_MOUSE_ACQUIRE eip=0047bd66 result=*** WARNING: Unable to verify checksum for clash95.exe
+00000000 hwnd=02b00846 device=006ec7cc
+SURFDUMP_BYPASS_KEYBOARD_ACQUIRE hwnd=02b00846 device=006ebda4
+ModLoad: 76dd0000 76e56000   C:\WINDOWS\SysWOW64\clbcatq.dll
+ModLoad: 6e5b0000 6e635000   C:\WINDOWS\SysWOW64\MMDevApi.dll
+ModLoad: 68590000 686fe000   C:\WINDOWS\SysWOW64\AUDIOSES.DLL
+ModLoad: 76860000 76931000   C:\WINDOWS\SysWOW64\shcore.dll
+ModLoad: 68570000 68580000   C:\WINDOWS\SysWOW64\resourcepolicyclient.dll
+ModLoad: 6e3e0000 6e4f2000   C:\Windows\SysWOW64\Windows.UI.dll
+ModLoad: 65aa0000 65aa9000   C:\WINDOWS\SysWOW64\avrt.dll
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_AVI_SLEEP call=0046e4d0 next=0046e4d7
+SURFDUMP_SKIP_START_SLEEP ret=004478a1
+SURFDUMP_MAIN_HIT seq=0 choice=0 entry=0x000efa28 ex=239 ey=196 mouse=(300,218)
+SURFDUMP_SKIP_MAIN_LOAD_CALLBACK ret=00419c60 choice_before=0 exit_before=0 mouse=(300,218)
+SURFDUMP_LOAD_COORD seq=0 choice=5 entry=0x000efa5d ex=232 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=1 choice=5 entry=0x000efa92 ex=265 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=2 choice=5 entry=0x000efac7 ex=437 ey=196 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=3 choice=5 entry=0x000efafc ex=424 ey=228 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=4 choice=5 entry=0x000efb31 ex=468 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_COORD seq=5 choice=5 entry=0x000efb31 ex=468 ey=264 mouse=(320,166) selected=0 accept=0
+SURFDUMP_LOAD_MENU_ENTRY choice=5 exit=1 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_MENU_LOOP seq=0 exit=0 selected=-1 accept=0 mouse=(320,166) lbtn=0x80
+SURFDUMP_LOAD_MENU_LOOP seq=1 exit=0 selected=-1 accept=0 mouse=(320,166) lbtn=0x80
+SURFDUMP_FORCE_LOAD_SELECT seq=0 mouse=(320,166) selected=-1 accept=0
+SURFDUMP_FORCE_LOAD_ACCEPT seq=0 selected=0 accept=0 mouse=(320,166)
+SURFDUMP_LOAD_ACCEPT_CALL arg=0 selected=0 accept_before=0 mouse=(320,166)
+SURFDUMP_LOAD_ACCEPT_CALL arg=0 selected=0 accept_before=0 mouse=(320,166)
+SURFDUMP_LOAD_COORD seq=6 choice=5 entry=0x000efca8 ex=329 ey=452 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOAD_COORD seq=7 choice=5 entry=0x000efcdd ex=409 ey=468 mouse=(320,166) selected=0 accept=1
+SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=03470030
+SURFDUMP_LOADSAVE selected_arg=0 selected_global=0 accept=1 choice=5 gd=03470030
+SURFDUMP_LOADSAVE_RETURN selected=0 accept=1 choice=5 gd=03470030 surface=02f1ced8 size=(640,480)
+SURFDUMP_LOADSAVE_RETURN selected=0 accept=1 choice=5 gd=03470030 surface=02f1ced8 size=(640,480)
+SURFDUMP_PLAYGAME gd=03470030 map=(100,100) scroll=(10,17) surface=02f1ced8 size=(640,480)
+BATTLE_FORCE_SCAN gd=03470030 current=0 selected=-1 prior=-1 d51d01c=0 surface=045bf350 width=800 height=600
+BATTLE_FORCE_UNIT idx=0 ptr=03493f16 owner=0 xy=(14,22) first=8 status720=0
+BATTLE_FORCE_UNIT idx=1 ptr=034941eb owner=0 xy=(15,22) first=1 status720=0
+BATTLE_FORCE_UNIT idx=2 ptr=034944c0 owner=0 xy=(15,23) first=17 status720=0
+BATTLE_FORCE_UNIT idx=3 ptr=03494795 owner=0 xy=(16,19) first=16 status720=0
+BATTLE_FORCE_UNIT idx=4 ptr=03494a6a owner=1 xy=(90,9) first=5 status720=0
+BATTLE_FORCE_UNIT idx=5 ptr=03494d3f owner=1 xy=(91,9) first=1 status720=0
+BATTLE_FORCE_UNIT idx=6 ptr=03495014 owner=1 xy=(91,10) first=17 status720=0
+BATTLE_FORCE_UNIT idx=7 ptr=034952e9 owner=1 xy=(89,6) first=0 status720=0
+BATTLE_FORCE_UNIT idx=8 ptr=034955be owner=2 xy=(60,48) first=5 status720=0
+BATTLE_FORCE_UNIT idx=9 ptr=03495893 owner=2 xy=(61,48) first=1 status720=0
+BATTLE_FORCE_UNIT idx=10 ptr=03495b68 owner=2 xy=(61,49) first=17 status720=0
+BATTLE_FORCE_UNIT idx=11 ptr=03495e3d owner=2 xy=(59,45) first=0 status720=0
+BATTLE_FORCE_UNIT idx=12 ptr=03496112 owner=2 xy=(62,45) first=0 status720=0
+BATTLE_FORCE_UNIT idx=13 ptr=034963e7 owner=3 xy=(90,74) first=5 status720=0
+BATTLE_FORCE_UNIT idx=14 ptr=034966bc owner=3 xy=(91,74) first=1 status720=0
+BATTLE_FORCE_UNIT idx=15 ptr=03496991 owner=3 xy=(91,75) first=17 status720=0
+BATTLE_FORCE_UNIT idx=16 ptr=03496c66 owner=3 xy=(89,71) first=0 status720=0
+BATTLE_FORCE_UNIT idx=17 ptr=03496f3b owner=3 xy=(92,71) first=0 status720=0
+BATTLE_FORCE_ATTACK_CALL attacker=0 defender=4 attacker_ptr=03493f16 defender_ptr=03494a6a attacker_owner=0 defender_owner=1 attacker_xy=(89,9) defender_xy=(90,9) old_d51d01c=0 new_d51d01c=1 return=0040b0c3
+BATTLE_FORCE_WAIT_GATE name=Unit_Attack_DD_IsFlipping eip=0041ce7a forced_eax=1 click_flag_before=00000000 button0=0x00
+BATTLE_ROUTE_CANDIDATE name=Unit_Attack_calls_BattleRunner eip=0041b145 ret=00000000 attacker_ptr=03493f16 defender_ptr=03494a6a result_ptr=00000000 stack_arg=00000000 ebp=03493f16 surface=045bf350 width=800 height=600
+BATTLE_OWNER_ENTRY source=BattleRunner eip=0042e9e0 ret=0041b14a attacker=03493f16 defender=03494a6a result_ptr=00000000 building_ptr=00000000 ebp=03493f16 surface=045bf350 width=800 height=600 mouse=(320,166)
+BATTLE_SURFACE ptr=045bf350 width=800 height=600 pitch=0 base=04860030 mode=unknown
+BATTLE_COMMAND_SKIP_TURN_FRAME eip=0042e4d9 next=0042e4fc mouse=(320,166)
+BATTLE_COMMAND_INPUT_WINDOW coord_mode=visible-window expected_displayed=(588,440) expected_native=(508,380) mouse=(320,166) raw=(00005000,00002980) click_flag=00000000 button0=0x00 scale=6 list=00514b78
