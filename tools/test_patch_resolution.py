@@ -33,7 +33,7 @@ _SPEC.loader.exec_module(impl)
 
 # Pin of the frozen legacy table. Any edit to PATCHES must be deliberate:
 # update this hash together with the archived-SHA reproduction check.
-FROZEN_TABLE_SHA256 = "7d79b84c8b04916208795fb372bb2af9c2342544b4f9a72e1b5f781182a06a85"
+FROZEN_TABLE_SHA256 = "6683ee66851d23a28d856a8576e6b58c9b1285e0766bb592b9cdb0847bc8c55c"
 
 # 4-byte value slots where more than one formula matches the legacy bytes at
 # 800x600. Each entry records why the chosen formula is right; the audit test
@@ -132,6 +132,99 @@ def test_descriptor_anchor_shifts() -> None:
             assert new_value - old_value == expected_delta, hex(patch.offset)
 
 
+def test_terrain_tooltip_bottom_center_recipes() -> None:
+    entries = [p for p in impl.PATCHES if p.group == "terrain-tooltip-bottom-center"]
+    assert len(entries) == 12, len(entries)
+    assert {p.offset for p in entries} == {
+        0x00A198,
+        0x00A1A4,
+        0x00A1A9,
+        0x00AB94,
+        0x00ABA0,
+        0x00ABA5,
+        0x01A5B3,
+        0x01A5B8,
+        0x01A5C2,
+        0x01B022,
+        0x01B027,
+        0x01B031,
+    }
+    assert not ({0x02E055, 0x02E05A, 0x02E05F} & {p.offset for p in entries})
+    for patch in entries:
+        delta = int.from_bytes(patch.new, "little") - int.from_bytes(
+            patch.old, "little"
+        )
+        recipe = impl.RECIPES[(patch.group, patch.offset)]
+        assert recipe.kind == "old-plus"
+        if delta == impl.PROFILE_800.off_x:
+            assert recipe.deltas == ("OFFX",)
+        else:
+            assert delta == impl.PROFILE_800.shift_y
+            assert recipe.deltas == ("SHIFTY",)
+
+    generated = {
+        p.offset: int.from_bytes(p.new, "little")
+        for p in impl.generate_patches(impl.parse_resolution("1024x768"))
+        if p.group == "terrain-tooltip-bottom-center"
+    }
+    assert generated[0x00A198] == 755
+    assert generated[0x00A1A4] == 665
+    assert generated[0x00A1A9] == 352
+
+
+def test_selected_unit_command_panel_right_bottom_recipes() -> None:
+    entries = [
+        p
+        for p in impl.PATCHES
+        if p.group == "selected-unit-command-panel-right-bottom"
+    ]
+    assert len(entries) == 8, len(entries)
+    clips = [p for p in entries if len(p.old) == 4]
+    coords = [p for p in entries if len(p.old) == 8]
+    assert {p.offset for p in clips} == {0x019165, 0x01918E}
+    assert all(impl.RECIPES[(p.group, p.offset)].value == "W" for p in clips)
+    assert [p.new_hex for p in coords] == [
+        "6002000010020000",
+        "a002000010020000",
+        "e002000010020000",
+        "6002000030020000",
+        "a002000030020000",
+        "e002000030020000",
+    ]
+    assert all(
+        impl.RECIPES[(p.group, p.offset)].kind == "splice" for p in coords
+    )
+
+    generated = [
+        p
+        for p in impl.generate_patches(impl.parse_resolution("1024x768"))
+        if p.group == "selected-unit-command-panel-right-bottom"
+        and len(p.old) == 8
+    ]
+    assert [
+        (
+            int.from_bytes(p.new[:4], "little"),
+            int.from_bytes(p.new[4:], "little"),
+        )
+        for p in generated
+    ] == [
+        (832, 696),
+        (896, 696),
+        (960, 696),
+        (832, 728),
+        (896, 728),
+        (960, 728),
+    ]
+
+    stable = set(impl.STAGE_GROUPS[impl.DEFAULT_STAGE])
+    assert "terrain-tooltip-bottom-center" not in stable
+    assert "selected-unit-command-panel-right-bottom" not in stable
+    assert set(impl.STAGE_GROUPS[impl.DEFAULT_STAGE + "-hdlayout"]) == stable | {
+        "terrain-tooltip-bottom-center",
+        "selected-unit-command-panel-right-bottom",
+    }
+
+
 def test_recipe_coverage_and_old_bytes_invariance() -> None:
     kinds = {
         "value": 0,
@@ -162,10 +255,10 @@ def test_recipe_coverage_and_old_bytes_invariance() -> None:
         assert produced.old_hex == patch.old_hex
         assert len(produced.new) == len(patch.new), (patch.group, hex(patch.offset))
     assert kinds == {
-        "value": 65,
-        "old-plus": 48,
+        "value": 67,
+        "old-plus": 60,
         "fixed": 26,
-        "splice": 15,
+        "splice": 21,
         "cave-template": 7,
         "cave-hook": 3,
     }, kinds
@@ -469,6 +562,8 @@ def run_tests() -> None:
     test_profile_math()
     test_menu_hitboxes_shift_by_centering_offset()
     test_descriptor_anchor_shifts()
+    test_terrain_tooltip_bottom_center_recipes()
+    test_selected_unit_command_panel_right_bottom_recipes()
     test_recipe_coverage_and_old_bytes_invariance()
     test_cave_templates()
     test_presets_generate_full_tables()
