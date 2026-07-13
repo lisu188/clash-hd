@@ -1,5 +1,11 @@
 # LLM Wiki Agent Operating Schema
 
+> New here, or a smaller/lower-tier model? Read
+> `docs/hd/WORKING_WITH_THIS_REPO.md` first — a short, prescriptive guide to the
+> five hard rules (never touch the original exe, honesty over green gates, never
+> fabricate approval, the stable stage is sacred, verify old bytes), the
+> environment gotchas, and the safe actions. This file is the full spec.
+
 ## Project Purpose
 
 This repository is a personal, Obsidian-compatible, LLM-maintained markdown wiki.
