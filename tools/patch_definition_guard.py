@@ -30,6 +30,9 @@ EXPECTED_STABLE_STAGE = (
     "presentbounds-minimapright-dynvswitch"
 )
 RIGHT_BOTTOM_VALIDATION_STAGE = EXPECTED_STABLE_STAGE + "-rightbottomcompose"
+TOOLTIP_BOTTOM_CENTER_STAGE = EXPECTED_STABLE_STAGE + "-tooltipbottomcenter"
+UNIT_COMMAND_PANEL_STAGE = EXPECTED_STABLE_STAGE + "-unitcommandpanel-rightbottom"
+HD_LAYOUT_STAGE = EXPECTED_STABLE_STAGE + "-hdlayout"
 CASTLECENTER_STAGE = EXPECTED_STABLE_STAGE + "-castlecenter"
 CASTLECENTER_HITBOX_STAGE = EXPECTED_STABLE_STAGE + "-castlecenter-hitbox"
 CASTLECENTER_ALL_STAGE = EXPECTED_STABLE_STAGE + "-castlecenter-all"
@@ -37,6 +40,8 @@ BATTLECENTER_STAGE = CASTLECENTER_ALL_STAGE + "-battlecenter"
 BATTLECENTER_INPUTPROBE_STAGE = BATTLECENTER_STAGE + "-inputprobe"
 VALIDATION_ONLY_GROUPS = {
     "right-bottom-compose-proof",
+    "terrain-tooltip-bottom-center",
+    "selected-unit-command-panel-right-bottom",
     "castle-ui-center-present",
     "castle-ui-center-present-wrapper",
     "castle-ui-centered-input",
@@ -48,6 +53,12 @@ VALIDATION_ONLY_GROUPS = {
 }
 VALIDATION_STAGE_EXTRAS = {
     RIGHT_BOTTOM_VALIDATION_STAGE: {"right-bottom-compose-proof"},
+    TOOLTIP_BOTTOM_CENTER_STAGE: {"terrain-tooltip-bottom-center"},
+    UNIT_COMMAND_PANEL_STAGE: {"selected-unit-command-panel-right-bottom"},
+    HD_LAYOUT_STAGE: {
+        "terrain-tooltip-bottom-center",
+        "selected-unit-command-panel-right-bottom",
+    },
     CASTLECENTER_STAGE: {"castle-ui-center-present"},
     CASTLECENTER_HITBOX_STAGE: {"castle-ui-center-present", "castle-ui-centered-input"},
     CASTLECENTER_ALL_STAGE: {

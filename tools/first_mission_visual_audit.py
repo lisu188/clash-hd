@@ -25,8 +25,9 @@ RUNTIME_POLICY = (
 )
 GUARD_POLICY = (
     "first-mission frames must keep the play area rendered, avoid horizontal or "
-    "vertical stripe signatures, and expose remaining large black UI patches as "
-    "non-playable blockers instead of hiding them behind route success"
+    "vertical stripe signatures, and expose unexplained large black UI patches as "
+    "non-playable blockers; a raw proxy-black region is classified as a capture "
+    "artifact only when a supplied real-runtime frame positively corroborates it"
 )
 
 DEFAULT_FRAMES = [
@@ -120,6 +121,9 @@ REGIONS: dict[str, tuple[int, int, int, int]] = {
 PROXY_ARTIFACT_REGIONS = ("right_below_minimap", "bottom_right_panel", "minimap_interior")
 REAL_RUNTIME_CORROBORATION_FRAME = Path(
     "captures/archive/visual-smoke-20260712-202900/after-map-path.png"
+)
+REAL_RUNTIME_CORROBORATION_METHOD = (
+    "per-region render-presence corroboration; not a same-state pixel comparison"
 )
 # A corroborated region must be clearly rendered in the real frame; keep the bar
 # well under the 70% black-patch threshold so a genuinely-black real region is
@@ -270,6 +274,7 @@ def measure_real_runtime_corroboration(
     result: dict[str, Any] = {
         "frame": str(real_frame_path),
         "present": real_frame_path.exists(),
+        "method": REAL_RUNTIME_CORROBORATION_METHOD,
         "regions": {},
         "corroborated": [],
     }
@@ -449,7 +454,13 @@ def build_report(frames: list[dict[str, Any]], args: argparse.Namespace) -> dict
             bright_threshold=args.bright_threshold,
         )
     else:
-        corroboration = {"frame": None, "present": False, "regions": {}, "corroborated": []}
+        corroboration = {
+            "frame": None,
+            "present": False,
+            "method": REAL_RUNTIME_CORROBORATION_METHOD,
+            "regions": {},
+            "corroborated": [],
+        }
     corroborated_regions = tuple(corroboration["corroborated"])
     analyzed = [
         analyze_frame(
@@ -523,6 +534,9 @@ def build_report(frames: list[dict[str, Any]], args: argparse.Namespace) -> dict
             "frame_count": len(analyzed),
             "stripe_failure_frames": stripe_failures,
             "diagnostic_black_frames": diagnostic_black_frames,
+            "primary_raw_black_patch_regions": (
+                primary.get("raw_black_patch_regions") if primary else []
+            ),
             "primary_black_patch_regions": primary.get("black_patch_regions") if primary else [],
             "primary_black_patch_details": black_patch_details,
             "primary_frame_path": primary.get("path") if primary else None,
@@ -575,6 +589,7 @@ def write_json(path: Path, report: dict[str, Any]) -> None:
 
 def write_markdown(path: Path, report: dict[str, Any]) -> None:
     summary = report["summary"]
+    corroboration = report.get("real_runtime_corroboration") or {}
     lines = [
         "# First Mission Visual Audit",
         "",
@@ -582,6 +597,10 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Generated: `{report['generated_at']}`",
         f"- Runtime policy: {report['runtime_policy']}",
         f"- Guard policy: {report['guard_policy']}",
+        f"- Corroboration method: {corroboration.get('method')}",
+        f"- Real-runtime corroboration frame: `{corroboration.get('frame')}`",
+        f"- Real-runtime corroboration frame present: `{corroboration.get('present')}`",
+        f"- Corroborated rendered regions: `{corroboration.get('corroborated')}`",
         f"- Current status: `{report['current_status']}`",
         f"- First mission visual clean: `{report['first_mission_visual_clean']}`",
         f"- Primary frame: `{report['primary_frame']}`",
@@ -594,11 +613,25 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Primary legacy middle action bar nonblack: `{summary.get('primary_legacy_middle_action_bar_nonblack')}`%",
         f"- Primary legacy middle action bar mean luma: `{summary.get('primary_legacy_middle_action_bar_mean_luma')}`",
         f"- Primary legacy middle action bar visible: `{summary.get('primary_legacy_middle_action_bar_visible')}`",
-        f"- Primary black patch regions: `{summary.get('primary_black_patch_regions')}`",
+        f"- Primary raw proxy-black regions: `{summary.get('primary_raw_black_patch_regions')}`",
+        f"- Confirmed proxy-artifact regions: `{report.get('proxy_artifact_confirmed_regions')}`",
+        f"- Primary unresolved black patch regions: `{summary.get('primary_black_patch_regions')}`",
         f"- Stripe failure frames: `{summary.get('stripe_failure_frames')}`",
         f"- Diagnostic black frames: `{summary.get('diagnostic_black_frames')}`",
         "",
     ]
+    corroboration_regions = corroboration.get("regions") or {}
+    if corroboration.get("frame"):
+        lines.extend(["## Real-Runtime Corroboration", ""])
+        for name in PROXY_ARTIFACT_REGIONS:
+            detail = corroboration_regions.get(name) or {}
+            lines.append(
+                f"- `{name}` scaled_rect=`{detail.get('scaled_rect')}` "
+                f"real_black=`{detail.get('real_black_percent')}`% "
+                f"real_nonblack=`{detail.get('real_nonblack_percent')}`% "
+                f"corroborated_rendered=`{detail.get('corroborated_rendered')}`"
+            )
+        lines.append("")
     black_details = summary.get("primary_black_patch_details") or []
     if black_details:
         lines.extend(["## Primary Black Patch Details", ""])
@@ -639,7 +672,9 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
                 f"- Right below minimap black: `{(regions.get('right_below_minimap') or {}).get('black_percent')}`%",
                 f"- Minimap interior black: `{(regions.get('minimap_interior') or {}).get('black_percent')}`%",
                 f"- Stripe pass: `{stripes.get('passed')}` horizontal_high=`{stripes.get('horizontal_high_percent')}`% vertical_high=`{stripes.get('vertical_high_percent')}`%",
-                f"- Black patch regions: `{frame.get('black_patch_regions')}`",
+                f"- Raw proxy-black regions: `{frame.get('raw_black_patch_regions')}`",
+                f"- Confirmed proxy-artifact regions: `{frame.get('proxy_artifact_confirmed_regions')}`",
+                f"- Unresolved black patch regions: `{frame.get('black_patch_regions')}`",
                 "",
             ]
         )
