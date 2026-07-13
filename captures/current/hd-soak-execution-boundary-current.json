@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:11:20.778025+00:00",
+  "generated_at": "2026-07-12T19:36:10.691372+00:00",
   "passed": true,
   "runtime_policy": "repo-local negative harness probe; invokes PowerShell only with invalid visible-runtime approval and a nonexistent input executable, and must not launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "invalid visible-runtime approval packets must fail before output, candidate, report, patch, or launch side effects",

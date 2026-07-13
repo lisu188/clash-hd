@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T21:10:35+02:00",
+  "generated_at": "2026-07-12T21:35:18+02:00",
   "passed": true,
   "runtime_policy": "repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, copy saves, launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "passes only when the right-bottom slot fixture remains non-promoting, the dry-run preparation helper is source-guarded, and the future CDB command stays hidden-desktop with an isolated workdir/candidate dir",

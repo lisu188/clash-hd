@@ -1,7 +1,7 @@
 # Load Slot Transition Geometry Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-12T21:10:55+02:00`
+- Generated: `2026-07-12T21:35:41+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the transition plan stays tied to x=320, y=166+22*slot row geometry and requires entry/slot-match summaries
 

@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-07-12T21:11:24+02:00",
+  "generated_at": "2026-07-12T21:36:16+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\git\\clash-hd\\captures",
-  "artifact_count": 674,
+  "artifact_count": 679,
   "current_reference_count": 172,
   "archived_reference_count": 387,
   "missing_current_refs": [],
   "reference_status_counts": {
     "archived_referenced": 210,
     "current_referenced": 142,
-    "stale_unreferenced": 322
+    "stale_unreferenced": 327
   },
   "era_counts": {
     "cdb_surface_dump_unverified": 65,
     "hidden_cdb_surface_dump": 148,
-    "other_capture_artifact": 449,
+    "other_capture_artifact": 454,
     "visible_era": 12
   },
   "stale_visible_or_sandbox_count": 12,
@@ -7914,6 +7914,16 @@
       "has_run_summary": false
     },
     {
+      "name": "archive/manual-barracks-entry",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-barracks-entry",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "archive/manual-castle-20260712-203402",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-castle-20260712-203402",
       "artifact_kind": "directory",
@@ -10578,6 +10588,46 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short-validation-refresh-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short2-map-idle-guard-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-guard-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short2-map-idle-guard-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-guard-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short2-map-idle-triage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-triage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short2-map-idle-triage-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-triage-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,

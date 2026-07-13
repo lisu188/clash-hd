@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-12T21:11:25+02:00`
+- Generated: `2026-07-12T21:36:17+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -1722,7 +1722,7 @@
 - focused_post_run_validation_count: `3`
 - handoff_refresh_count: `5`
 - broad_evidence_refresh_count: `4`
-- current_step_artifacts: `{'report_json': 'captures\\current\\hd-soak-short2-map-idle-current.json', 'report_json_exists': False, 'guard_json': 'captures\\current\\hd-soak-short2-map-idle-guard-current.json', 'guard_json_exists': False, 'triage_json': 'captures\\current\\hd-soak-short2-map-idle-triage-current.json', 'triage_json_exists': False, 'canonical_runtime_report_missing': True, 'post_run_guard_missing': True, 'post_run_triage_missing': True}`
+- current_step_artifacts: `{'report_json': 'captures\\current\\hd-soak-short2-map-idle-current.json', 'report_json_exists': False, 'guard_json': 'captures\\current\\hd-soak-short2-map-idle-guard-current.json', 'guard_json_exists': True, 'triage_json': 'captures\\current\\hd-soak-short2-map-idle-triage-current.json', 'triage_json_exists': True, 'canonical_runtime_report_missing': True, 'post_run_guard_missing': False, 'post_run_triage_missing': False}`
 - runtime_policy: `repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 
 ### Hd Endurance Next Actions Tests
@@ -1785,11 +1785,11 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `674`
+- artifact_count: `679`
 - current_reference_count: `172`
 - stale_visible_or_sandbox_count: `12`
-- reference_status_counts: `{'archived_referenced': 210, 'current_referenced': 142, 'stale_unreferenced': 322}`
-- era_counts: `{'cdb_surface_dump_unverified': 65, 'hidden_cdb_surface_dump': 148, 'other_capture_artifact': 449, 'visible_era': 12}`
+- reference_status_counts: `{'archived_referenced': 210, 'current_referenced': 142, 'stale_unreferenced': 327}`
+- era_counts: `{'cdb_surface_dump_unverified': 65, 'hidden_cdb_surface_dump': 148, 'other_capture_artifact': 454, 'visible_era': 12}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 

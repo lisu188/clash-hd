@@ -1,7 +1,7 @@
 # Patch Definition Guard
 
 - Overall: PASS
-- Generated: `2026-07-12T21:11:07+02:00`
+- Generated: `2026-07-12T21:35:54+02:00`
 - Runtime policy: repo-only patch-table inspection; does not read, build, or execute game executables
 - Guard policy: patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps
 - Expected stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`

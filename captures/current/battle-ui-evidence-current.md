@@ -1,7 +1,7 @@
 # Battle UI Evidence Matrix
 
 - Overall: FAIL
-- Generated: `2026-07-12T21:11:06+02:00`
+- Generated: `2026-07-12T21:35:53+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter`
 - Inputprobe stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe`

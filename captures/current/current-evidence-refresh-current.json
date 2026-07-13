@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T21:11:25+02:00",
+  "generated_at": "2026-07-12T21:36:17+02:00",
   "passed": false,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "checks": {
@@ -2709,12 +2709,12 @@
           "report_json": "captures\\current\\hd-soak-short2-map-idle-current.json",
           "report_json_exists": false,
           "guard_json": "captures\\current\\hd-soak-short2-map-idle-guard-current.json",
-          "guard_json_exists": false,
+          "guard_json_exists": true,
           "triage_json": "captures\\current\\hd-soak-short2-map-idle-triage-current.json",
-          "triage_json_exists": false,
+          "triage_json_exists": true,
           "canonical_runtime_report_missing": true,
-          "post_run_guard_missing": true,
-          "post_run_triage_missing": true
+          "post_run_guard_missing": false,
+          "post_run_triage_missing": false
         },
         "runtime_policy": "repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
@@ -2793,18 +2793,18 @@
       "json": "captures\\current\\capture-corpus-index-current.json",
       "markdown": "captures\\current\\capture-corpus-index-current.md",
       "summary": {
-        "artifact_count": 674,
+        "artifact_count": 679,
         "current_reference_count": 172,
         "stale_visible_or_sandbox_count": 12,
         "reference_status_counts": {
           "archived_referenced": 210,
           "current_referenced": 142,
-          "stale_unreferenced": 322
+          "stale_unreferenced": 327
         },
         "era_counts": {
           "cdb_surface_dump_unverified": 65,
           "hidden_cdb_surface_dump": 148,
-          "other_capture_artifact": 449,
+          "other_capture_artifact": 454,
           "visible_era": 12
         },
         "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",

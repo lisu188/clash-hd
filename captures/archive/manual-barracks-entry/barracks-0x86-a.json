@@ -1,0 +1,25 @@
+{
+    "Path":  "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-barracks-entry\\barracks-0x86-a.png",
+    "Hash":  "AB1223A951D48279F95627FF3C4F859640575D857C04F5243F47D4958E911C8B",
+    "Width":  1200,
+    "Height":  900,
+    "OriginX":  1320,
+    "OriginY":  611,
+    "CenterWindowMatchesTarget":  true,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "screen",
+    "TargetHwnd":  "0x8A0A6A",
+    "CenterWindowHwnd":  "0x8A0A6A",
+    "CenterRootHwnd":  "0x8A0A6A",
+    "NonblackPercent":  98.247,
+    "MeanLuma":  91.496,
+    "UniqueSampleColors":  38747,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  1196,
+                           "Bottom":  896,
+                           "Width":  1197,
+                           "Height":  897
+                       }
+}

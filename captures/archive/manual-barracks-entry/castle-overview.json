@@ -1,0 +1,25 @@
+{
+    "Path":  "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-barracks-entry\\castle-overview.png",
+    "Hash":  "33DEB8E6F33AFBCDCC98F412CA39122D159EFADBE07F2CCDB96735BB095A7178",
+    "Width":  1200,
+    "Height":  900,
+    "OriginX":  1320,
+    "OriginY":  611,
+    "CenterWindowMatchesTarget":  true,
+    "ReacquiredSameProcessWindow":  false,
+    "CaptureMode":  "screen",
+    "TargetHwnd":  "0x8A0A6A",
+    "CenterWindowHwnd":  "0x8A0A6A",
+    "CenterRootHwnd":  "0x8A0A6A",
+    "NonblackPercent":  98.247,
+    "MeanLuma":  91.497,
+    "UniqueSampleColors":  38740,
+    "NonblackBounds":  {
+                           "X":  0,
+                           "Y":  0,
+                           "Right":  1196,
+                           "Bottom":  896,
+                           "Width":  1197,
+                           "Height":  897
+                       }
+}
