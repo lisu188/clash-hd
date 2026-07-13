@@ -36,6 +36,10 @@ RIGHT_BOTTOM_VALIDATION_STAGE = (
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-"
     "presentbounds-minimapright-dynvswitch-rightbottomcompose"
 )
+TOOLTIP_BOTTOM_CENTER_STAGE = patch_clash95_hd.DEFAULT_STAGE + "-tooltipbottomcenter"
+UNIT_COMMAND_PANEL_STAGE = patch_clash95_hd.DEFAULT_STAGE + "-unitcommandpanel-rightbottom"
+HD_LAYOUT_STAGE = patch_clash95_hd.DEFAULT_STAGE + "-hdlayout"
+FRAME_RESTORE_STAGE = patch_clash95_hd.DEFAULT_STAGE + "-framerestore"
 CASTLECENTER_STAGE = (
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-"
     "presentbounds-minimapright-dynvswitch-castlecenter"
@@ -53,6 +57,8 @@ BATTLECENTER_INPUTPROBE_STAGE = BATTLECENTER_STAGE + "-inputprobe"
 
 VALIDATION_ONLY_GROUPS = (
     "right-bottom-compose-proof",
+    "terrain-tooltip-bottom-center",
+    "selected-unit-command-panel-right-bottom",
     "castle-ui-center-present",
     "castle-ui-center-present-wrapper",
     "castle-ui-centered-input",
@@ -61,6 +67,7 @@ VALIDATION_ONLY_GROUPS = (
     "battle-ui-center-present-wrapper",
     "battle-grid-centered-input",
     "battle-ui-centered-input",
+    "frame-restore-bands",
 )
 
 MENU_SURFACE_GROUP = "menu-surface"
@@ -68,6 +75,13 @@ MAP_SURFACE_UPGRADE_GROUP = "map-surface-upgrade-scrollclamp"
 
 VALIDATION_STAGE_EXPECTATIONS = {
     RIGHT_BOTTOM_VALIDATION_STAGE: ("right-bottom-compose-proof",),
+    TOOLTIP_BOTTOM_CENTER_STAGE: ("terrain-tooltip-bottom-center",),
+    UNIT_COMMAND_PANEL_STAGE: ("selected-unit-command-panel-right-bottom",),
+    HD_LAYOUT_STAGE: (
+        "terrain-tooltip-bottom-center",
+        "selected-unit-command-panel-right-bottom",
+    ),
+    FRAME_RESTORE_STAGE: ("frame-restore-bands",),
     CASTLECENTER_STAGE: ("castle-ui-center-present",),
     CASTLECENTER_HITBOX_STAGE: (
         "castle-ui-center-present",
