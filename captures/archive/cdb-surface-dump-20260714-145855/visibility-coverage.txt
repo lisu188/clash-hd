@@ -1,0 +1,8 @@
+﻿coverage: C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260714-145855\map-tile-coverage.json
+logs: 1
+observation_points: 0
+blank_cells: -
+explained_blank_cells: -
+unexplained_blank_cells: -
+status_counts:
+classified_cells:
