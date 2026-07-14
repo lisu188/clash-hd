@@ -1,16 +1,27 @@
-.echo === Clash95 continuity campaign-route extra ===
-.echo Harness-only continuity probe for a 600s-plus campaign route entirely on
-.echo the hidden desktop. Snapshot saveGame slot 11 at route start and record
-.echo the system tick from KUSER_SHARED_DATA 7ffe0320. While the route runs the
-.echo probe holds the base template redraw counter t13 at zero so the surface
-.echo dump waits, and every 0x1000 poll hits it force-calls the engine next
-.echo player routine 0040AA60 so real multi-day turn processing happens. Once
-.echo 0n39040 ticks pass - about 610 seconds at the standard 64Hz tick - it
-.echo snapshots saveGame slot 12, releases the redraw counter, and the normal
-.echo dump path finishes the run. Wall-clock duration is independently
-.echo verifiable from the 11.dat and 12.dat file timestamps.
-.echo State flag at 00400040, start tick at 00400044, hit counter at 00400048.
+.echo === Clash95 continuity campaign-route extra v6 (three-advance cap) ===
+.echo Harness-only continuity probe for a 600s-plus campaign route on the hidden
+.echo desktop. Prior findings: the world-map poll 0040B0C3 fires once per call,
+.echo Render_Present 00460EA0 never fires on the map path, and the base template
+.echo owns bp 00406FA0 with its definition composed after any extra. The per
+.echo frame steady state therefore hooks 00406FA1 - the second instruction of
+.echo the redraw function, push edx - which fires every redraw frame with no
+.echo breakpoint conflict. First poll hit latches the base dump flag t7 and
+.echo snapshots saveGame slot 11. Every 0x1000 redraw hits force the engine
+.echo next-player routine 0040AA60, capped at three advances because the
+.echo fourth would wrap into a new day whose transition blocks on a DirectDraw
+.echo wait the memory-only proxy never satisfies - observed as a hang in run
+.echo 20260714-075917. Registers are preserved with
+.echo eax edx ecx stashed and restored around every forced call. After 0n39040
+.echo ticks from KUSER_SHARED_DATA 7ffe0320 - about 610 seconds at the standard
+.echo 64Hz tick - snapshot saveGame slot 12, release t7 and set t13 to 4, and
+.echo the base template dump ends the run. Duration independently verifiable
+.echo from 11.dat and 12.dat file timestamps.
+.echo Scratch in the DOS stub: state 00400040, start-tick 00400044, hit-count
+.echo 00400048, captured-state 0040004c, eax 00400050, edx 00400054, ecx 00400058.
 ed 00400040 0
 ed 00400044 0
 ed 00400048 0
-bp 0040B0C3 ".if (poi(00400040) == 0) { ed 00400040 1; ed 00400044 poi(7ffe0320); .printf \"CONTINUITY_ROUTE_START slot=11 player=%d tick=%d gd=%p\\n\", poi(005202ec), poi(7ffe0320), poi(005202e4); r esp=@esp-4; ed @esp 0040B0C3; r eax=0n11; r edx=00543d28; r eip=004443E0; } .else { .if (poi(00400040) == 1) { ed 00400040 2; .printf \"CONTINUITY_ROUTE_SAVE11_DONE eax=%d\\n\", @eax; } .else { .if (poi(00400040) == 2) { r @$t13 = 0; ed 00400048 (poi(00400048)+1); .if ((poi(7ffe0320)-poi(00400044)) >= 0n39040) { ed 00400040 3; .printf \"CONTINUITY_ROUTE_END slot=12 player=%d tick=%d tickdelta=%d hits=%d\\n\", poi(005202ec), poi(7ffe0320), poi(7ffe0320)-poi(00400044), poi(00400048); r esp=@esp-4; ed @esp 0040B0C3; r eax=0n12; r edx=00543d28; r eip=004443E0; } .else { .if ((poi(00400048) & 0xFFF) == 0xFFF) { .printf \"CONTINUITY_ROUTE_TURN hits=%d tickdelta=%d player=%d\\n\", poi(00400048), poi(7ffe0320)-poi(00400044), poi(005202ec); r esp=@esp-4; ed @esp 0040B0C3; r eax=0; r edx=5; r ecx=0; r eip=0040AA60; }; }; } .else { .if (poi(00400040) == 3) { ed 00400040 4; .printf \"CONTINUITY_ROUTE_SAVE12_DONE eax=%d player=%d\\n\", @eax, poi(005202ec); }; }; }; }; }; gc"
+ed 0040004c 0
+ed 0040005c 0
+bp 0040B0C3 "ed 0040004c poi(00400040); .if (poi(0040004c) == 0) { ed 00400040 1; ed 00400044 poi(7ffe0320); r @$t7 = 1; .printf \"CONTINUITY_ROUTE_START slot=11 player=%d tick=%d gd=%p\\n\", poi(005202ec), poi(7ffe0320), poi(005202e4); r esp=@esp-4; ed @esp 0040B0C3; r eax=0n11; r edx=00543d28; r eip=004443E0; }; .if (poi(0040004c) == 1) { ed 00400040 2; .printf \"CONTINUITY_ROUTE_SAVE11_DONE eax=%d tick=%d\\n\", @eax, poi(7ffe0320); }; gc"
+bp 00406FA1 "ed 0040004c poi(00400040); .if (poi(0040004c) == 2) { ed 00400048 (poi(00400048)+1); .if ((poi(00400048) & 0x7ff) == 0) { .printf \"CONTINUITY_ROUTE_HEARTBEAT hits=%d tickdelta=%d player=%d\\n\", poi(00400048), poi(7ffe0320)-poi(00400044), poi(005202ec); }; .if ((poi(7ffe0320)-poi(00400044)) >= 0n39040) { ed 00400040 3; ed 00400050 @eax; ed 00400054 @edx; ed 00400058 @ecx; .printf \"CONTINUITY_ROUTE_END slot=12 player=%d tickdelta=%d hits=%d\\n\", poi(005202ec), poi(7ffe0320)-poi(00400044), poi(00400048); r esp=@esp-4; ed @esp 00406FA1; r eax=0n12; r edx=00543d28; r eip=004443E0; } .else { .if (((poi(00400048) & 0xFFF) == 0xFFF) & (poi(0040005c) < 3)) { ed 00400040 5; ed 0040005c (poi(0040005c)+1); ed 00400050 @eax; ed 00400054 @edx; ed 00400058 @ecx; .printf \"CONTINUITY_ROUTE_TURN_CALL hits=%d tickdelta=%d player=%d\\n\", poi(00400048), poi(7ffe0320)-poi(00400044), poi(005202ec); r esp=@esp-4; ed @esp 00406FA1; r eax=0; r edx=5; r ecx=0; r eip=0040AA60; }; }; }; .if (poi(0040004c) == 3) { ed 00400040 4; r @$t7 = 0; r @$t13 = 4; r eax=poi(00400050); r edx=poi(00400054); r ecx=poi(00400058); .printf \"CONTINUITY_ROUTE_SAVE12_DONE player=%d dump_released=1\\n\", poi(005202ec); }; .if (poi(0040004c) == 5) { ed 00400040 2; r eax=poi(00400050); r edx=poi(00400054); r ecx=poi(00400058); .printf \"CONTINUITY_ROUTE_TURN_DONE player=%d\\n\", poi(005202ec); }; gc"
