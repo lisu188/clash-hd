@@ -82,6 +82,16 @@ user32.MoveWindow.argtypes = [
     wintypes.BOOL,
 ]
 user32.MoveWindow.restype = wintypes.BOOL
+user32.SetWindowPos.argtypes = [
+    wintypes.HWND,
+    wintypes.HWND,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.c_uint,
+]
+user32.SetWindowPos.restype = wintypes.BOOL
 user32.ShowWindow.argtypes = [wintypes.HWND, ctypes.c_int]
 user32.ShowWindow.restype = wintypes.BOOL
 user32.BringWindowToTop.argtypes = [wintypes.HWND]
@@ -585,10 +595,20 @@ def main() -> int:
         hwnd = wait_for_window(pid, args.window_timeout)
         user32.ShowWindow(hwnd, 5)
         if args.move_window:
-            window_rect = RECT()
-            wincheck(user32.GetWindowRect(hwnd, ctypes.byref(window_rect)), "GetWindowRect")
-            window_width, window_height = rect_size(window_rect)
-            wincheck(user32.MoveWindow(hwnd, args.move_window[0], args.move_window[1], window_width, window_height, True), "MoveWindow")
+            # Reposition asynchronously and without resizing. MoveWindow(bRepaint=
+            # True) sends a synchronous WM_* to the target window; a game stuck in
+            # a modal input loop (e.g. the battle command screen) never pumps its
+            # queue, so the call blocks forever. SWP_ASYNCWINDOWPOS posts the
+            # request instead of sending it. SWP_NOSIZE preserves the window size
+            # (the surfdump present proxy already sized it to the mode resolution).
+            SWP_NOSIZE = 0x0001
+            SWP_NOZORDER = 0x0004
+            SWP_NOACTIVATE = 0x0010
+            SWP_ASYNCWINDOWPOS = 0x4000
+            user32.SetWindowPos(
+                hwnd, None, args.move_window[0], args.move_window[1], 0, 0,
+                SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_ASYNCWINDOWPOS,
+            )
             time.sleep(0.15)
         user32.BringWindowToTop(hwnd)
         user32.SetForegroundWindow(hwnd)
