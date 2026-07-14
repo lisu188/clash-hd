@@ -853,6 +853,22 @@ public:
         bpp_ = bpp ? bpp : 8;
         log_line("FakeDirectDraw SetDisplayMode %lux%lu bpp=%lu refresh=%lu flags=0x%08lx",
                  width_, height_, bpp_, refresh, flags);
+        // Size the visible window's client area to the mode resolution here, at
+        // mode-set time (before the game creates its DirectDraw surfaces), so a
+        // 1:1 client makes window-relative input map to surface pixels. Doing
+        // this at present time instead invalidates the live primary surface and
+        // spins the game's DD-lost render guard. The game also expects a client
+        // matching its logical resolution for mouse mapping.
+        if (g_present_enabled && g_present_hwnd) {
+            RECT want = {0, 0, static_cast<LONG>(width_), static_cast<LONG>(height_)};
+            DWORD style = static_cast<DWORD>(::GetWindowLongPtr(g_present_hwnd, GWL_STYLE));
+            DWORD exstyle = static_cast<DWORD>(::GetWindowLongPtr(g_present_hwnd, GWL_EXSTYLE));
+            if (::AdjustWindowRectEx(&want, style, FALSE, exstyle)) {
+                ::SetWindowPos(g_present_hwnd, nullptr, 0, 0,
+                               want.right - want.left, want.bottom - want.top,
+                               SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+            }
+        }
         return DD_OK;
     }
 
