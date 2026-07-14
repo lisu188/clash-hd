@@ -1,0 +1,15 @@
+{
+  "raw_path": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260714-081544\\surface.raw",
+  "png_path": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260714-081544\\surface.png",
+  "log_path": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260714-081544\\cdb-surface-dump.log",
+  "palette_path": "C:\\ClashTests\\continuity-roundtrip\\ddraw_surfdump_palette.bin",
+  "width": 800,
+  "height": 600,
+  "pitch": 800,
+  "palette_mode": "directdraw-palette",
+  "raw_bytes": 480000,
+  "used_bytes": 480000,
+  "raw_sha256": "2f7d688838d762349be7fe8801412734be2f493f3ec3944179e1b6287e1a4384",
+  "used_sha256": "2f7d688838d762349be7fe8801412734be2f493f3ec3944179e1b6287e1a4384",
+  "png_sha256": "250ce40abbc9863b20b0744989d01b1539320051bff05a43e7ec707232e2a8c1"
+}

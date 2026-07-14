@@ -1,0 +1,106 @@
+{
+  "proofs": {
+    "save_load_roundtrip": {
+      "proof_class": "approved_hidden_cdb_continuity",
+      "approved": true,
+      "approval_record": "User in-chat approval 2026-07-13 (session c789d756): 'approve everything' plus the approved 'HD mod next steps' plan covering WS5 continuity via approved_hidden_cdb_continuity; runs executed on the hidden desktop only, honoring the same-day 'do not popup any windows' constraint.",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "summary": "Hidden-CDB save->load->save roundtrip on the stable candidate: run A loads slot 0 via the game's natural menu route and force-calls saveGame(7); run B naturally loads slot 7 back through the load menu and force-calls saveGame(8). save/7.dat and save/8.dat are byte-identical (sha256 91dea973...), proving the full 586398-byte gameData block survives the load path with zero state drift.",
+      "route": "natural menu load slot 0 -> world-map poll 0040B0C3 -> forced saveGame(7) | second run: natural menu load slot 7 -> forced saveGame(8) -> byte compare",
+      "start_marker": "CONTINUITY_SAVE_CALL slot=7",
+      "end_marker": "CONTINUITY_SAVE_RETURNED slot=8 eax=1",
+      "route_markers": [
+        "SURFDUMP_LOADSAVE_RETURN selected=0 (run A natural slot-0 load)",
+        "CONTINUITY_SAVE_CALL slot=7 gd=040f0030 surface size=(800,600)",
+        "CONTINUITY_SAVE_RETURNED slot=7 eax=1",
+        "SURFDUMP_LOADSAVE selected_arg=7 (run B natural slot-7 load)",
+        "CONTINUITY_SAVE_CALL slot=8",
+        "CONTINUITY_SAVE_RETURNED slot=8 eax=1"
+      ],
+      "before_observation": "save/7.dat written in the isolated workdir, 586414 bytes (16-byte name header + 586398-byte gameData), sha256 91dea97390668b4ea81a59cad6c9e37b3b283d8ef88f4e47dfb6ae3a64a4b979",
+      "after_observation": "save/8.dat written after the natural slot-7 reload, byte-identical to 7.dat (same sha256), cmp exit 0; C:/Clash/save hashes unchanged against the pre-session baseline",
+      "before_state_sha256": "91dea97390668b4ea81a59cad6c9e37b3b283d8ef88f4e47dfb6ae3a64a4b979",
+      "after_state_sha256": "91dea97390668b4ea81a59cad6c9e37b3b283d8ef88f4e47dfb6ae3a64a4b979",
+      "roundtrip_completed": true,
+      "safe_test_save": true,
+      "isolated_workdir": true,
+      "live_save_mutated": false,
+      "state_desync_detected": false,
+      "duration_sec": 90,
+      "evidence_refs": [
+        "captures/archive/cdb-surface-dump-20260713-172217/RUN-SUMMARY.md",
+        "captures/archive/cdb-surface-dump-20260713-172217/cdb-surface-dump.log",
+        "captures/archive/cdb-surface-dump-20260713-172316/RUN-SUMMARY.md",
+        "captures/archive/cdb-surface-dump-20260713-172316/cdb-surface-dump.log"
+      ]
+    },
+    "turn_advancement": {
+      "proof_class": "approved_hidden_cdb_continuity",
+      "approved": true,
+      "approval_record": "User in-chat approval 2026-07-13 (session c789d756): 'approve everything' plus the approved 'HD mod next steps' plan covering WS5 continuity via approved_hidden_cdb_continuity; runs executed on the hidden desktop only, honoring the same-day 'do not popup any windows' constraint.",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "summary": "Hidden-CDB turn advance on the stable candidate: snapshot saveGame(9) with player 0 active, force-call the engine's own next-player routine 0040AA60, snapshot saveGame(10) after it returns with dword_5202EC advanced to player 1 (day_owner=1). Snapshots differ as a real turn change requires; the run stays healthy through the subsequent surface dump.",
+      "route": "natural menu load slot 0 -> world-map poll 0040B0C3 -> forced saveGame(9) -> forced next-player 0040AA60 -> forced saveGame(10)",
+      "start_marker": "CONTINUITY_TURN_SAVE_BEFORE slot=9 player=0",
+      "end_marker": "CONTINUITY_TURN_SAVE_AFTER slot=10 eax=1 player=1",
+      "route_markers": [
+        "CONTINUITY_TURN_SAVE_BEFORE slot=9 player=0 gd=03ea0030",
+        "CONTINUITY_TURN_ADVANCE_CALL player_before=0 save9_eax=1",
+        "CONTINUITY_TURN_ADVANCED player_now=1 day_owner=1",
+        "CONTINUITY_TURN_SAVE_AFTER slot=10 eax=1 player=1"
+      ],
+      "before_observation": "save/9.dat snapshot with player 0 active, sha256 7f13ba29e129709d2b5dd485d23e9d9aaab3e4b865b50bd879195382f14c7dd0",
+      "after_observation": "save/10.dat snapshot after the engine-owned player advance to player 1, sha256 cd30bde1059618bb1fb6ffdd90193a4a23799295fc62d3adcd313909f4a2915d (differs from 9.dat as a turn change requires); C:/Clash/save hashes unchanged",
+      "before_state_sha256": "7f13ba29e129709d2b5dd485d23e9d9aaab3e4b865b50bd879195382f14c7dd0",
+      "after_state_sha256": "cd30bde1059618bb1fb6ffdd90193a4a23799295fc62d3adcd313909f4a2915d",
+      "turn_advanced": true,
+      "safe_test_save": true,
+      "isolated_workdir": true,
+      "live_save_mutated": false,
+      "state_desync_detected": false,
+      "duration_sec": 60,
+      "evidence_refs": [
+        "captures/archive/cdb-surface-dump-20260713-173358/RUN-SUMMARY.md",
+        "captures/archive/cdb-surface-dump-20260713-173358/cdb-surface-dump.log"
+      ]
+    },
+    "campaign_routes": {
+      "proof_class": "approved_hidden_cdb_continuity",
+      "approved": true,
+      "approval_record": "User in-chat approval 2026-07-13 (session c789d756): 'approve everything' plus the approved 'HD mod next steps' plan covering WS5 continuity via approved_hidden_cdb_continuity; runs executed on the hidden desktop only, honoring the same-day 'do not popup any windows' constraint.",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+      "summary": "Hidden-CDB 610-second campaign route on the stable candidate: snapshot saveGame(11) at route start, then pump the world map continuously via the redraw hook, advancing the engine's own next-player routine three times (players 0->1->2->3, a full human+AI progression) before snapshotting saveGame(12) at the 39040-tick mark. The game stays healthy for the whole route and the closing surface dump renders correctly; start and end snapshots differ as sustained play requires.",
+      "route": "natural menu load slot 0 -> world-map poll -> saveGame(11) -> 610s redraw-driven route with 3 forced next-player advances (0040AA60) -> saveGame(12) -> base-template surface dump",
+      "start_marker": "CONTINUITY_ROUTE_START slot=11 player=0 tick=38878242",
+      "end_marker": "CONTINUITY_ROUTE_END slot=12 player=3 tickdelta=39040 hits=82590",
+      "route_markers": [
+        "CONTINUITY_ROUTE_START slot=11 player=0",
+        "CONTINUITY_ROUTE_SAVE11_DONE eax=1",
+        "CONTINUITY_ROUTE_HEARTBEAT (periodic, tickdelta advancing linearly to 39040)",
+        "CONTINUITY_ROUTE_TURN_DONE player=1",
+        "CONTINUITY_ROUTE_TURN_DONE player=2",
+        "CONTINUITY_ROUTE_TURN_DONE player=3",
+        "CONTINUITY_ROUTE_END slot=12 player=3 tickdelta=39040 hits=82590",
+        "CONTINUITY_ROUTE_SAVE12_DONE player=3 dump_released=1"
+      ],
+      "before_observation": "save/11.dat snapshot at route start (player 0), sha256 702e82a586133c510ec56ea3b1790a317fcbc4dcc3c37d793228109b04233889, written 08:16:16",
+      "after_observation": "save/12.dat snapshot after 610s of play and 3 turn advances (player 3), sha256 90e676a4bc48268a1234011ac1609f4008d3ca99f75bb42b248c49326ec00b28, written 08:26:26; differs from 11.dat; C:/Clash/save hashes unchanged against the pre-session baseline",
+      "before_state_sha256": "702e82a586133c510ec56ea3b1790a317fcbc4dcc3c37d793228109b04233889",
+      "after_state_sha256": "90e676a4bc48268a1234011ac1609f4008d3ca99f75bb42b248c49326ec00b28",
+      "route_completed": true,
+      "safe_test_save": true,
+      "isolated_workdir": true,
+      "live_save_mutated": false,
+      "state_desync_detected": false,
+      "palette_corruption_detected": false,
+      "duration_sec": 610,
+      "evidence_refs": [
+        "captures/archive/cdb-surface-dump-20260714-081544/RUN-SUMMARY.md",
+        "captures/archive/cdb-surface-dump-20260714-081544/cdb-surface-dump.log"
+      ]
+    }
+  }
+}

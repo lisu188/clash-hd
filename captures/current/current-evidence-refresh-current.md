@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-13T08:55:07+02:00`
+- Generated: `2026-07-14T13:53:23+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -505,7 +505,7 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-owner-flag-inventory-current.json`
 - Markdown: `captures\current\right-bottom-owner-flag-inventory-current.md`
-- scanned_log_count: `31`
+- scanned_log_count: `47`
 - relevant_run_count: `12`
 - classification_counts: `{'forced_owner_action_route': 7, 'natural_state_gated': 1, 'non_natural_isolated_fixture': 4}`
 - natural_state_gated_count: `1`
@@ -1117,9 +1117,9 @@
 - JSON: `captures\current\patch-definition-current.json`
 - Markdown: `captures\current\patch-definition-current.md`
 - patcher_default_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
-- patch_count: `209`
-- patch_group_count: `45`
-- stage_count: `59`
+- patch_count: `211`
+- patch_group_count: `46`
+- stage_count: `60`
 - validation_groups_in_stable: `[]`
 - overlap_failure_count: `0`
 - guard_policy: `patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps`
@@ -1142,7 +1142,7 @@
 - current_stable_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - patcher_default_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - validation_only_groups_in_stable: `[]`
-- mapsurface_stages_checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
+- mapsurface_stages_checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
 - mapsurface_with_menu_surface: `[]`
 - mapsurface_missing_upgrade: `[]`
 
@@ -1199,7 +1199,7 @@
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
 - risky_file_count: `118`
-- classification_counts: `{'safe': 126, 'user_gated_launcher': 1, 'exempt': 28, 'manual_visible_runtime_gated': 2, 'test_fixture': 87}`
+- classification_counts: `{'safe': 125, 'user_gated_launcher': 1, 'exempt': 28, 'manual_visible_runtime_gated': 2, 'test_fixture': 87}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1449,7 +1449,7 @@
 - Status: PASS
 - JSON: `captures\current\handoff-freshness-guard-current.json`
 - Markdown: `captures\current\handoff-freshness-guard-current.md`
-- guard_policy: `handoff docs must mention the current route timing guard, keep the right-bottom validation stage out of stable until manual proof or explicit CDB-only override, keep the non-promoting manual proof template visible, keep the percentage completion summary visible, keep the right-bottom owner-flag inventory visible, keep the load-slot route-limit boundary visible, keep the load-slot transition readiness matrix visible, preserve the user's no-popup runtime preference, require the visible-runtime launcher approval guard, and avoid stale route/input-safety, legacy visible-capture, or VM/visual-smoke blockers`
+- guard_policy: `handoff docs must mention the current route timing guard, keep validation stages out of stable until required proof exists, retain current manual-proof and completion artifacts, preserve the no-popup runtime preference, require the visible-runtime approval guard, and avoid stale route/input or VM blockers`
 - phrase_groups: `{'route_timing_artifacts': True, 'owner_flag_inventory_artifacts': True, 'load_slot_route_limit_artifacts': True, 'load_slot_transition_readiness_artifacts': True, 'manual_or_override_blocker': True, 'no_visible_runtime_warning': True, 'no_popup_operator_preference': True, 'right_bottom_safety_done': True, 'manual_checklist_artifact': True, 'manual_proof_template_artifact': True, 'completion_summary_artifact': True, 'visible_runtime_launcher_guard': True}`
 - loop_phrase_groups: `{'loop_load_slot_transition_readiness_artifacts': True}`
 
@@ -1478,7 +1478,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 94.41, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 95.03, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1690,16 +1690,12 @@
 
 ### Hd Continuity Status
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-continuity-current.json`
 - Markdown: `captures\current\hd-continuity-current.md`
-- counts: `{'total': 3, 'passed': 0, 'blocked': 3}`
-- proof_manifest: `{'path': 'captures\\current\\hd-continuity-proof-current.json', 'present': False, 'valid_json': False}`
+- counts: `{'total': 3, 'passed': 3, 'blocked': 0}`
+- proof_manifest: `{'path': 'captures\\current\\hd-continuity-proof-current.json', 'present': True, 'valid_json': True}`
 - runtime_policy: `repo-only continuity status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - save_load_roundtrip: compact proof is missing
-  - turn_advancement: compact proof is missing
-  - campaign_routes: compact proof is missing
 
 ### Hd Continuity Status Tests
 
@@ -1742,7 +1738,7 @@
 - JSON: `captures\current\hd-endurance-release-checklist-current.json`
 - Markdown: `captures\current\hd-endurance-release-checklist-current.md`
 - full_game_complete: `False`
-- counts: `{'total': 15, 'passed': 6, 'blocked': 9, 'missing': 0}`
+- counts: `{'total': 15, 'passed': 9, 'blocked': 6, 'missing': 0}`
 - next_milestone: `{'id': 'stable_menu_real_input', 'title': 'Stable menu load has real input proof', 'next_probe': 'collect approved manual menu-load proof or keep promotion blocked'}`
 - runtime_policy: `repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Failures:
@@ -1752,9 +1748,6 @@
   - right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
   - castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
   - tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
-  - save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-  - turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-  - campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 
 ### Hd Endurance Release Checklist Tests
 
@@ -1772,7 +1765,7 @@
 - Markdown: `captures\current\hd-soak-route-coverage-current.md`
 - implemented_routes: `['menu-idle', 'map-idle', 'map-pan', 'custom']`
 - implemented_tiers: `['short2', 'short10', 'short30', 'custom']`
-- counts: `{'release_lane_count': 10, 'implemented_lane_count': 3, 'planned_lane_count': 7, 'blocked_lane_count': 10, 'locked_future_route_count': 7, 'required_short_route_count': 3}`
+- counts: `{'release_lane_count': 10, 'implemented_lane_count': 3, 'planned_lane_count': 7, 'blocked_lane_count': 8, 'locked_future_route_count': 7, 'required_short_route_count': 3}`
 - coverage_complete: `False`
 - next_runtime_route: `menu-idle`
 - runtime_policy: `repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
@@ -1861,11 +1854,11 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `700`
+- artifact_count: `726`
 - current_reference_count: `179`
-- stale_visible_or_sandbox_count: `13`
-- reference_status_counts: `{'archived_referenced': 216, 'current_referenced': 149, 'stale_unreferenced': 335}`
-- era_counts: `{'cdb_surface_dump_unverified': 65, 'hidden_cdb_surface_dump': 153, 'other_capture_artifact': 469, 'visible_era': 13}`
+- stale_visible_or_sandbox_count: `16`
+- reference_status_counts: `{'archived_referenced': 200, 'current_referenced': 149, 'stale_unreferenced': 377}`
+- era_counts: `{'cdb_surface_dump_unverified': 73, 'hidden_cdb_surface_dump': 162, 'other_capture_artifact': 475, 'visible_era': 16}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1897,8 +1890,8 @@
 - Status: PASS
 - JSON: `captures\current\docs-consistency-current.json`
 - Markdown: `captures\current\docs-consistency-current.md`
-- check_count: `12`
-- guard_policy: `generated current-evidence facts must agree with .codex-loop handoff docs, README/progress notes, the evidence index, and wiki summaries`
+- check_count: `6`
+- guard_policy: `generated project state must agree with Clash95 HD documentation, protected-stage and approval boundaries must remain visible, and the removed knowledge-base scaffold must stay absent`
 - runtime_policy: `repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 
 ### Docs Consistency Guard Tests
@@ -1943,9 +1936,6 @@
 - right_bottom_visual_artifact_guard: visual artifact guard failed: natural_owner_action_rows_absent
 - battle_visible_input_summary: visible input summary has no command-ready run
 - battle_ui_evidence_matrix: visible_input: visible input command readiness is not proven
-- hd_continuity_status: save_load_roundtrip: compact proof is missing
-- hd_continuity_status: turn_advancement: compact proof is missing
-- hd_continuity_status: campaign_routes: compact proof is missing
 - hd_soak_long_report_guard: short ladder is not complete; long tiers remain locked
 - hd_soak_long_report_guard: long soak proof manifest is missing: captures\current\hd-soak-long-proof-current.json
 - hd_soak_long_report_guard: missing passing 2h+ representative route: map-idle
@@ -1956,6 +1946,3 @@
 - hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
-- hd_endurance_release_checklist: save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- hd_endurance_release_checklist: turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- hd_endurance_release_checklist: campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
