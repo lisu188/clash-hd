@@ -239,7 +239,23 @@ try {
             '--click-repeat', $ClickRepeat,
             '--json', $OutJson
         )
-        & $Python @mouseArgs
+        # Time-bound the input tool and capture its output. The live battle
+        # DirectInput mouse-acquire state can fight automated cursor control; a
+        # runaway/blocked probe would otherwise hang the whole harness with no
+        # diagnostics. Capture stdout+stderr next to the log for inspection.
+        $mouseOutPath = [System.IO.Path]::ChangeExtension($Log, $null) + 'mouse-probe-output.txt'
+        $mouseJob = Start-Job -ScriptBlock {
+            param($py, $a)
+            & $py @a 2>&1
+        } -ArgumentList $Python, $mouseArgs
+        if (Wait-Job $mouseJob -Timeout 30) {
+            Receive-Job $mouseJob 2>&1 | Out-String | Set-Content -LiteralPath $mouseOutPath -Encoding UTF8
+        }
+        else {
+            Stop-Job $mouseJob
+            "MOUSE_PROBE_TIMEOUT after 30s (input tool did not return)" | Set-Content -LiteralPath $mouseOutPath -Encoding UTF8
+        }
+        Remove-Job $mouseJob -Force -ErrorAction SilentlyContinue
     }
 
     $deadline = (Get-Date).AddSeconds($RunSeconds)
