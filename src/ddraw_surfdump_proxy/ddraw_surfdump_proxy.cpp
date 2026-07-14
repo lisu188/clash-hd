@@ -652,6 +652,16 @@ private:
         if (!g_present_shown) {
             ::ShowWindow(g_present_hwnd, SW_SHOW);
             ::SetForegroundWindow(g_present_hwnd);
+            // Log where client (0,0) lands on screen so absolute-coordinate
+            // input (raw SendInput) can target surface pixels directly without
+            // MoveWindow (which synchronously blocks on the game's stuck battle
+            // message loop).
+            POINT origin = {0, 0};
+            RECT cr = {};
+            if (::ClientToScreen(g_present_hwnd, &origin) && ::GetClientRect(g_present_hwnd, &cr)) {
+                log_line("PROXY_PRESENT_WINDOW client_origin_screen=(%ld,%ld) client_size=(%ld,%ld)",
+                         origin.x, origin.y, cr.right - cr.left, cr.bottom - cr.top);
+            }
             g_present_shown = true;
         }
         int dst_w = static_cast<int>(width_);
