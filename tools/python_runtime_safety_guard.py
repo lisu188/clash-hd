@@ -37,6 +37,7 @@ RISK_PATTERNS: dict[str, re.Pattern[str]] = {
 GATED_HELPERS = {
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
     "raw_sendinput_click.py": "manual/visible-runtime evidence helper; it sends OS input only when explicitly invoked by a guarded harness",
+    "menu_pulse_click.py": "manual/visible-runtime evidence helper; it drives the engine cursor by pulse injection only when explicitly invoked by the approval-gated soak harness",
 }
 
 EXTRA_SCAN_DIRS = (Path("src/launcher"),)
