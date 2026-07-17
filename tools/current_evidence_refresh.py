@@ -566,9 +566,11 @@ DEFAULT_BATTLE_UI_GATE_TESTS_MD = Path("captures/current/battle-ui-gate-tests-cu
 DEFAULT_BATTLE_VISIBLE_INPUT_JSON = battle_visible_input_summary.DEFAULT_JSON
 DEFAULT_BATTLE_VISIBLE_INPUT_MD = battle_visible_input_summary.DEFAULT_MD
 DEFAULT_BATTLE_VISIBLE_INPUT_RUNS = (
-    Path("captures/archive/battle-visible-input-quiet-20260521-231521"),
-    Path("captures/archive/battle-visible-input-minimal-20260521-232626"),
-    Path("captures/archive/battle-visible-input-rawsend-20260521-233247"),
+    # 2026-07-17: first natural visible click-to-callback run (painting proxy,
+    # pump-restored passive probe, pulse SendInput; FORCE absent, eax=1 gate
+    # row + 0042d4e0 callback consumed). Replaces the three 20260521 runs
+    # whose raw logs were lost in the workspace move.
+    Path("captures/archive/battle-visible-input-present-20260717-133221"),
 )
 DEFAULT_BATTLE_VISIBLE_INPUT_SUMMARY_TESTS_JSON = Path(
     "captures/current/battle-visible-input-summary-tests-current.json"

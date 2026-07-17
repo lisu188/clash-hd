@@ -510,6 +510,13 @@ public:
         if (should_log(&log_count)) {
             log_line("FakeSurface Unlock this=%p", this);
         }
+        // The battle stage paints exclusively through Lock/Unlock on the
+        // primary surface (no Blt/Flip after the initial pre-palette
+        // colorfill), so without presenting here the visible window was never
+        // shown at all: first-present ShowWindow/SetForegroundWindow never
+        // ran, PROXY_PRESENT_WINDOW was never logged, and OS-injected input
+        // had no visible foreground window to reach.
+        maybe_present();
         return DD_OK;
     }
 

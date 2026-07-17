@@ -10,6 +10,20 @@ param(
     [ValidateSet('window', 'raw-screen')]
     [string]$InputMode = 'window',
     [string]$RawScreenPoints = '668,520',
+    # When set to the surfdump proxy log path, raw-screen mode recomputes
+    # RawScreenPoints after the ready marker as (PROXY_PRESENT_WINDOW
+    # client_origin_screen + Points), using only rows appended by this run.
+    [string]$RawPointsFromProxyLog = '',
+    # Optional 'dx,dy' relative SendInput MOVE total emitted before clicking in
+    # raw-screen mode (reaches DirectInput raw-delta consumers, unlike
+    # SetCursorPos).
+    [string]$RawPreMoveRel = '',
+    [int]$RawRelStep = 8,
+    [switch]$RawSkipSetCursor,
+    [switch]$RawRecenterAfterRel,
+    [ValidateSet('setcursor', 'sendinput-absolute', 'both', 'servo', 'pulse')]
+    [string]$RawMoveMode = 'setcursor',
+    [string]$RawPulseDelta = '',
     [ValidateSet('sendinput', 'postmessage', 'both')]
     [string]$ClickMode = 'sendinput',
     [ValidateSet('setcursor', 'sendinput-absolute', 'sendinput-relative', 'sendinput-client-delta', 'auto', 'none')]
@@ -205,12 +219,54 @@ Stop-ProbeProcesses
 Remove-Item -LiteralPath $Log -Force -ErrorAction SilentlyContinue
 Remove-Item -LiteralPath $OutJson -Force -ErrorAction SilentlyContinue
 
+$proxyLogStartLength = 0L
+if ($RawPointsFromProxyLog -and (Test-Path -LiteralPath $RawPointsFromProxyLog)) {
+    # The proxy appends (FILE_APPEND_DATA); remember the pre-run length so only
+    # rows appended by THIS run are trusted for window-origin targeting.
+    $proxyLogStartLength = (Get-Item -LiteralPath $RawPointsFromProxyLog).Length
+}
+
 $cdbArgs = @('-hd', '-logo', $Log, '-cf', $Probe, $Exe)
 $cdbProcess = Start-Process -FilePath $Cdb -ArgumentList $cdbArgs -WorkingDirectory $WorkDir -PassThru -WindowStyle Hidden
 
 try {
     if ($InputMode -eq 'raw-screen') {
         Wait-LogPattern -Path $Log -Pattern $ReadyPattern -TimeoutSec $ReadyTimeoutSec
+        if ($RawPointsFromProxyLog) {
+            $freshProxyText = ''
+            if (Test-Path -LiteralPath $RawPointsFromProxyLog) {
+                $proxyStream = [System.IO.File]::Open($RawPointsFromProxyLog, 'Open', 'Read', 'ReadWrite')
+                try {
+                    if ($proxyLogStartLength -lt $proxyStream.Length) {
+                        $null = $proxyStream.Seek($proxyLogStartLength, 'Begin')
+                    }
+                    $proxyReader = New-Object System.IO.StreamReader($proxyStream)
+                    $freshProxyText = $proxyReader.ReadToEnd()
+                }
+                finally {
+                    $proxyStream.Dispose()
+                }
+            }
+            $originMatches = [regex]::Matches(
+                $freshProxyText,
+                'PROXY_PRESENT_WINDOW client_origin_screen=\((-?\d+),(-?\d+)\)')
+            if ($originMatches.Count -gt 0) {
+                $lastOrigin = $originMatches[$originMatches.Count - 1]
+                $originX = [int]$lastOrigin.Groups[1].Value
+                $originY = [int]$lastOrigin.Groups[2].Value
+                $pointParts = $Points.Split(',')
+                $computedPoint = '{0},{1}' -f ($originX + [int]$pointParts[0]), ($originY + [int]$pointParts[1])
+                $rawPointCount = 1
+                if ($RawPreMoveRel) {
+                    $rawPointCount = @($RawPreMoveRel.Split(';')).Count
+                }
+                $RawScreenPoints = (@($computedPoint) * $rawPointCount) -join ';'
+                Write-Host ("raw-screen: proxy origin=({0},{1}) -> RawScreenPoints={2}" -f $originX, $originY, $RawScreenPoints)
+            }
+            else {
+                Write-Warning "raw-screen: no fresh PROXY_PRESENT_WINDOW row in $RawPointsFromProxyLog; keeping RawScreenPoints=$RawScreenPoints"
+            }
+        }
         $rawClickArgs = @(
             $rawClickTool,
             '--screen-points', $RawScreenPoints,
@@ -220,6 +276,21 @@ try {
             '--click-repeat', $ClickRepeat,
             '--json', $OutJson
         )
+        if ($RawPreMoveRel) {
+            # '=' form: the value can start with '-' (negative relative legs),
+            # which argparse would otherwise parse as an option name.
+            $rawClickArgs += @("--pre-move-rel=$RawPreMoveRel", '--rel-step', $RawRelStep)
+        }
+        if ($RawSkipSetCursor) {
+            $rawClickArgs += '--skip-set-cursor'
+        }
+        if ($RawRecenterAfterRel) {
+            $rawClickArgs += '--recenter-after-rel'
+        }
+        if ($RawPulseDelta) {
+            $rawClickArgs += "--pulse-delta=$RawPulseDelta"
+        }
+        $rawClickArgs += @('--move-mode', $RawMoveMode)
         & $Python @rawClickArgs
     } else {
         $game = Wait-ClashWindowProcess -TimeoutSec $WindowTimeoutSec
@@ -292,4 +363,6 @@ if (Test-Path -LiteralPath $Log) {
     ClickRepeat = $ClickRepeat
     Points = $Points
     RawScreenPoints = $RawScreenPoints
+    RawPointsFromProxyLog = $RawPointsFromProxyLog
+    RawPreMoveRel = $RawPreMoveRel
 }

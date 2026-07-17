@@ -1,0 +1,348 @@
+{
+  "dry_run": false,
+  "points": [
+    {
+      "requested_screen": [
+        588,
+        440
+      ],
+      "move_mode": "pulse",
+      "samples": [
+        {
+          "phase": "after_move",
+          "actual_screen": [
+            1280,
+            720
+          ]
+        },
+        {
+          "phase": "after_clicks",
+          "actual_screen": [
+            1280,
+            720
+          ]
+        }
+      ],
+      "clicks": [
+        {
+          "repeat_index": 0,
+          "hold_ms": 700,
+          "before_down": [
+            1280,
+            720
+          ],
+          "sendinput_down": 1,
+          "pulse_hold": {
+            "deltas": [
+              [
+                -89,
+                -37
+              ],
+              [
+                -91,
+                -37
+              ],
+              [
+                -92,
+                -38
+              ],
+              [
+                -93,
+                -38
+              ]
+            ],
+            "pulses": 11
+          },
+          "after_down": [
+            1280,
+            720
+          ],
+          "sendinput_up": 1,
+          "after_up": [
+            1280,
+            720
+          ]
+        },
+        {
+          "repeat_index": 1,
+          "hold_ms": 700,
+          "before_down": [
+            1280,
+            720
+          ],
+          "sendinput_down": 1,
+          "pulse_hold": {
+            "deltas": [
+              [
+                -89,
+                -37
+              ],
+              [
+                -91,
+                -37
+              ],
+              [
+                -92,
+                -38
+              ],
+              [
+                -93,
+                -38
+              ]
+            ],
+            "pulses": 10
+          },
+          "after_down": [
+            1280,
+            720
+          ],
+          "sendinput_up": 1,
+          "after_up": [
+            1280,
+            720
+          ]
+        },
+        {
+          "repeat_index": 2,
+          "hold_ms": 700,
+          "before_down": [
+            1280,
+            720
+          ],
+          "sendinput_down": 1,
+          "pulse_hold": {
+            "deltas": [
+              [
+                -89,
+                -37
+              ],
+              [
+                -91,
+                -37
+              ],
+              [
+                -92,
+                -38
+              ],
+              [
+                -93,
+                -38
+              ]
+            ],
+            "pulses": 10
+          },
+          "after_down": [
+            1280,
+            720
+          ],
+          "sendinput_up": 1,
+          "after_up": [
+            1280,
+            720
+          ]
+        },
+        {
+          "repeat_index": 3,
+          "hold_ms": 700,
+          "before_down": [
+            1280,
+            720
+          ],
+          "sendinput_down": 1,
+          "pulse_hold": {
+            "deltas": [
+              [
+                -89,
+                -37
+              ],
+              [
+                -91,
+                -37
+              ],
+              [
+                -92,
+                -38
+              ],
+              [
+                -93,
+                -38
+              ]
+            ],
+            "pulses": 10
+          },
+          "after_down": [
+            1280,
+            720
+          ],
+          "sendinput_up": 1,
+          "after_up": [
+            1280,
+            720
+          ]
+        },
+        {
+          "repeat_index": 4,
+          "hold_ms": 700,
+          "before_down": [
+            1280,
+            720
+          ],
+          "sendinput_down": 1,
+          "pulse_hold": {
+            "deltas": [
+              [
+                -89,
+                -37
+              ],
+              [
+                -91,
+                -37
+              ],
+              [
+                -92,
+                -38
+              ],
+              [
+                -93,
+                -38
+              ]
+            ],
+            "pulses": 9
+          },
+          "after_down": [
+            1280,
+            720
+          ],
+          "sendinput_up": 1,
+          "after_up": [
+            1280,
+            720
+          ]
+        },
+        {
+          "repeat_index": 5,
+          "hold_ms": 700,
+          "before_down": [
+            1280,
+            720
+          ],
+          "sendinput_down": 1,
+          "pulse_hold": {
+            "deltas": [
+              [
+                -89,
+                -37
+              ],
+              [
+                -91,
+                -37
+              ],
+              [
+                -92,
+                -38
+              ],
+              [
+                -93,
+                -38
+              ]
+            ],
+            "pulses": 11
+          },
+          "after_down": [
+            1280,
+            720
+          ],
+          "sendinput_up": 1,
+          "after_up": [
+            1280,
+            720
+          ]
+        },
+        {
+          "repeat_index": 6,
+          "hold_ms": 700,
+          "before_down": [
+            1280,
+            720
+          ],
+          "sendinput_down": 1,
+          "pulse_hold": {
+            "deltas": [
+              [
+                -89,
+                -37
+              ],
+              [
+                -91,
+                -37
+              ],
+              [
+                -92,
+                -38
+              ],
+              [
+                -93,
+                -38
+              ]
+            ],
+            "pulses": 10
+          },
+          "after_down": [
+            1280,
+            720
+          ],
+          "sendinput_up": 1,
+          "after_up": [
+            1280,
+            720
+          ]
+        },
+        {
+          "repeat_index": 7,
+          "hold_ms": 700,
+          "before_down": [
+            1280,
+            720
+          ],
+          "sendinput_down": 1,
+          "pulse_hold": {
+            "deltas": [
+              [
+                -89,
+                -37
+              ],
+              [
+                -91,
+                -37
+              ],
+              [
+                -92,
+                -38
+              ],
+              [
+                -93,
+                -38
+              ]
+            ],
+            "pulses": 11
+          },
+          "after_down": [
+            1280,
+            720
+          ],
+          "sendinput_up": 1,
+          "after_up": [
+            1280,
+            720
+          ]
+        }
+      ],
+      "screen_error": [
+        692,
+        280
+      ]
+    }
+  ],
+  "click_event_count": 8,
+  "path_verified": false
+}

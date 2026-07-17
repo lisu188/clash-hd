@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-17T12:35:14+02:00`
+- Generated: `2026-07-17T13:39:59+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -1025,19 +1025,17 @@
 
 ### Battle Visible Input Summary
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\battle-visible-input-current.json`
 - Markdown: `captures\current\battle-visible-input-summary-current.md`
-- run_count: `3`
-- focused_completion_percent: `99.89`
-- summary_passed: `False`
-- command_ready_run_count: `0`
-- click_consumed_run_count: `0`
+- run_count: `1`
+- focused_completion_percent: `99.95`
+- summary_passed: `True`
+- command_ready_run_count: `1`
+- click_consumed_run_count: `1`
 - invalid_run_count: `0`
-- real_visible_click_consumed: `False`
-- open_blocker: `real visible click-to-callback proof`
-- Failures:
-  - visible input summary has no command-ready run
+- real_visible_click_consumed: `True`
+- open_blocker: `None`
 
 ### Battle Visible Input Summary Tests
 
@@ -1050,20 +1048,18 @@
 
 ### Battle Ui Evidence Matrix
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\battle-ui-evidence-current.json`
 - Markdown: `captures\current\battle-ui-evidence-current.md`
-- focused_completion_percent: `99.89`
-- visible_input_summary_passed: `False`
-- visible_input_command_ready_runs: `0`
-- visible_input_click_consumed_runs: `0`
+- focused_completion_percent: `99.95`
+- visible_input_summary_passed: `True`
+- visible_input_command_ready_runs: `1`
+- visible_input_click_consumed_runs: `1`
 - visible_input_invalid_runs: `0`
-- real_visible_click_consumed: `False`
+- real_visible_click_consumed: `True`
 - promotion_status: `validation_stage_only`
 - stable_stage_should_change: `False`
-- open_items: `['real visible click-to-callback proof remains open']`
-- Failures:
-  - visible_input: visible input command readiness is not proven
+- open_items: `[]`
 
 ### Battle Ui Evidence Matrix Tests
 
@@ -1459,7 +1455,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 96.89, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 100.0, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 98.14, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.95, 'right_bottom_promotion_gate': 100.0, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1837,11 +1833,11 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `742`
+- artifact_count: `753`
 - current_reference_count: `179`
 - stale_visible_or_sandbox_count: `18`
-- reference_status_counts: `{'archived_referenced': 202, 'current_referenced': 149, 'stale_unreferenced': 391}`
-- era_counts: `{'cdb_surface_dump_unverified': 73, 'hidden_cdb_surface_dump': 164, 'other_capture_artifact': 487, 'visible_era': 18}`
+- reference_status_counts: `{'archived_referenced': 202, 'current_referenced': 149, 'stale_unreferenced': 402}`
+- era_counts: `{'cdb_surface_dump_unverified': 73, 'hidden_cdb_surface_dump': 164, 'other_capture_artifact': 498, 'visible_era': 18}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1900,8 +1896,6 @@
 
 ## Failures
 
-- battle_visible_input_summary: visible input summary has no command-ready run
-- battle_ui_evidence_matrix: visible_input: visible input command readiness is not proven
 - hd_soak_long_report_guard: short ladder is not complete; long tiers remain locked
 - hd_soak_long_report_guard: long soak proof manifest is missing: captures\current\hd-soak-long-proof-current.json
 - hd_soak_long_report_guard: missing passing 2h+ representative route: map-idle

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-13T08:54:37+02:00",
-  "passed": false,
+  "generated_at": "2026-07-17T13:39:36+02:00",
+  "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
   "input_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
@@ -209,20 +209,16 @@
       "failures": []
     },
     "visible_input": {
-      "passed": false,
+      "passed": true,
       "path": "captures\\current\\battle-visible-input-current.json",
-      "summary_passed": false,
-      "focused_completion_percent": 99.89,
-      "command_ready_run_count": 0,
-      "click_consumed_run_count": 0,
+      "summary_passed": true,
+      "focused_completion_percent": 99.95,
+      "command_ready_run_count": 1,
+      "click_consumed_run_count": 1,
       "invalid_run_count": 0,
-      "real_visible_click_consumed": false,
-      "open_items": [
-        "real visible click-to-callback proof remains open"
-      ],
-      "failures": [
-        "visible input command readiness is not proven"
-      ]
+      "real_visible_click_consumed": true,
+      "open_items": [],
+      "failures": []
     }
   },
   "key_evidence": {
@@ -306,26 +302,22 @@
     "constructed_fixture_render_begin_guard_seen": false,
     "constructed_fixture_render_begin_exit_seen": true,
     "modal_classified": true,
-    "visible_input_focused_completion_percent": 99.89,
-    "visible_input_summary_passed": false,
-    "visible_input_command_ready_runs": 0,
-    "visible_input_click_consumed_runs": 0,
+    "visible_input_focused_completion_percent": 99.95,
+    "visible_input_summary_passed": true,
+    "visible_input_command_ready_runs": 1,
+    "visible_input_click_consumed_runs": 1,
     "visible_input_invalid_runs": 0,
-    "visible_input_real_click_consumed": false
+    "visible_input_real_click_consumed": true
   },
   "completion_summary": {
     "focused_area": "battle/right-bottom command lane",
-    "focused_completion_percent": 99.89,
-    "real_visible_click_consumed": false,
+    "focused_completion_percent": 99.95,
+    "real_visible_click_consumed": true,
     "full_game_complete": false,
     "full_game_completion_percent": null,
     "full_game_statement": "Full-game reverse engineering is not 100%.",
-    "remaining_blocker": "real visible click-to-callback proof"
+    "remaining_blocker": null
   },
-  "open_items": [
-    "real visible click-to-callback proof remains open"
-  ],
-  "failures": [
-    "visible_input: visible input command readiness is not proven"
-  ]
+  "open_items": [],
+  "failures": []
 }

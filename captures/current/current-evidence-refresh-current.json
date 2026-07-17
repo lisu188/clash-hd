@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T12:35:14+02:00",
+  "generated_at": "2026-07-17T13:39:59+02:00",
   "passed": false,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "checks": {
@@ -1711,22 +1711,20 @@
       "failures": []
     },
     "battle_visible_input_summary": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\battle-visible-input-current.json",
       "markdown": "captures\\current\\battle-visible-input-summary-current.md",
       "summary": {
-        "run_count": 3,
-        "focused_completion_percent": 99.89,
-        "summary_passed": false,
-        "command_ready_run_count": 0,
-        "click_consumed_run_count": 0,
+        "run_count": 1,
+        "focused_completion_percent": 99.95,
+        "summary_passed": true,
+        "command_ready_run_count": 1,
+        "click_consumed_run_count": 1,
         "invalid_run_count": 0,
-        "real_visible_click_consumed": false,
-        "open_blocker": "real visible click-to-callback proof"
+        "real_visible_click_consumed": true,
+        "open_blocker": null
       },
-      "failures": [
-        "visible input summary has no command-ready run"
-      ]
+      "failures": []
     },
     "battle_visible_input_summary_tests": {
       "passed": true,
@@ -1740,25 +1738,21 @@
       "failures": []
     },
     "battle_ui_evidence_matrix": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\battle-ui-evidence-current.json",
       "markdown": "captures\\current\\battle-ui-evidence-current.md",
       "summary": {
-        "focused_completion_percent": 99.89,
-        "visible_input_summary_passed": false,
-        "visible_input_command_ready_runs": 0,
-        "visible_input_click_consumed_runs": 0,
+        "focused_completion_percent": 99.95,
+        "visible_input_summary_passed": true,
+        "visible_input_command_ready_runs": 1,
+        "visible_input_click_consumed_runs": 1,
         "visible_input_invalid_runs": 0,
-        "real_visible_click_consumed": false,
+        "real_visible_click_consumed": true,
         "promotion_status": "validation_stage_only",
         "stable_stage_should_change": false,
-        "open_items": [
-          "real visible click-to-callback proof remains open"
-        ]
+        "open_items": []
       },
-      "failures": [
-        "visible_input: visible input command readiness is not proven"
-      ]
+      "failures": []
     },
     "battle_ui_evidence_matrix_tests": {
       "passed": true,
@@ -2286,9 +2280,9 @@
         "full_game_complete": false,
         "full_game_percent_statement": "not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open",
         "percentages": {
-          "current_repo_evidence_gates": 96.89,
+          "current_repo_evidence_gates": 98.14,
           "repo_test_sweep": 100.0,
-          "focused_battle_right_bottom_lane": 99.89,
+          "focused_battle_right_bottom_lane": 99.95,
           "right_bottom_promotion_gate": 100.0,
           "manual_directinput_validation": 0.0
         }
@@ -2866,18 +2860,18 @@
       "json": "captures\\current\\capture-corpus-index-current.json",
       "markdown": "captures\\current\\capture-corpus-index-current.md",
       "summary": {
-        "artifact_count": 742,
+        "artifact_count": 753,
         "current_reference_count": 179,
         "stale_visible_or_sandbox_count": 18,
         "reference_status_counts": {
           "archived_referenced": 202,
           "current_referenced": 149,
-          "stale_unreferenced": 391
+          "stale_unreferenced": 402
         },
         "era_counts": {
           "cdb_surface_dump_unverified": 73,
           "hidden_cdb_surface_dump": 164,
-          "other_capture_artifact": 487,
+          "other_capture_artifact": 498,
           "visible_era": 18
         },
         "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
@@ -3153,8 +3147,6 @@
     }
   },
   "failures": [
-    "battle_visible_input_summary: visible input summary has no command-ready run",
-    "battle_ui_evidence_matrix: visible_input: visible input command readiness is not proven",
     "hd_soak_long_report_guard: short ladder is not complete; long tiers remain locked",
     "hd_soak_long_report_guard: long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
     "hd_soak_long_report_guard: missing passing 2h+ representative route: map-idle",
