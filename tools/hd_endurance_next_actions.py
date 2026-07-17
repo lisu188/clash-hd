@@ -20,6 +20,7 @@ DEFAULT_CHECKLIST_JSON = Path("captures/current/hd-endurance-release-checklist-c
 DEFAULT_SHORT_STEP_STATUS_JSON = Path("captures/current/hd-soak-short-step-status-current.json")
 DEFAULT_DRY_RUN_PLAN_JSON = Path("captures/current/hd-soak-dry-run-plan-current.json")
 DEFAULT_INTRO_SKIP_READINESS_JSON = Path("captures/current/hd-soak-intro-skip-rerun-readiness-current.json")
+DEFAULT_HARNESS_GUARD_JSON = Path("captures/current/hd-soak-harness-guard-current.json")
 DEFAULT_JSON = Path("captures/current/hd-endurance-next-actions-current.json")
 DEFAULT_MD = Path("captures/current/hd-endurance-next-actions-current.md")
 RUNTIME_POLICY = (
@@ -221,7 +222,7 @@ def current_failure_summary(step: dict[str, Any]) -> dict[str, Any] | None:
     summary = step.get("summary") or {}
     if not summary.get("classification"):
         return None
-    return {
+    result = {
         "classification": summary.get("classification"),
         "next_probe": summary.get("next_probe"),
         "frame_sample_count": summary.get("frame_sample_count"),
@@ -231,6 +232,26 @@ def current_failure_summary(step: dict[str, Any]) -> dict[str, Any] | None:
         "black_patch_risk_count": summary.get("black_patch_risk_count"),
         "palette_or_stripe_risk_count": summary.get("palette_or_stripe_risk_count"),
         "missing_nonblack_bounds_count": summary.get("missing_nonblack_bounds_count"),
+    }
+    for key in (
+        "wer_followup_matched",
+        "wer_followup_status",
+        "window_health_mitigation_ready",
+    ):
+        if key in summary:
+            result[key] = summary.get(key)
+    return result
+
+
+def window_health_guard_summary(harness_guard: dict[str, Any] | None) -> dict[str, Any]:
+    stop_check = ((harness_guard or {}).get("checks") or {}).get("window_health_stop") or {}
+    return {
+        "harness_guard_passed": (harness_guard or {}).get("passed") is True,
+        "window_health_stop_check_passed": stop_check.get("passed") is True,
+        "ready": (
+            (harness_guard or {}).get("passed") is True
+            and stop_check.get("passed") is True
+        ),
     }
 
 
@@ -486,6 +507,7 @@ def next_action_for_short_step(
     step_status: dict[str, Any] | None,
     dry_run_plan: dict[str, Any] | None = None,
     intro_skip_readiness: dict[str, Any] | None = None,
+    harness_guard: dict[str, Any] | None = None,
 ) -> tuple[dict[str, Any] | None, list[str]]:
     current = (step_status or {}).get("current_step") or {}
     step = short_step_record(step_status)
@@ -573,7 +595,159 @@ def next_action_for_short_step(
 
     if status.startswith("failed_classified_"):
         summary = step.get("summary") or {}
-        readiness_summary, readiness_failures = intro_skip_readiness_for_step(intro_skip_readiness, step)
+        window_health = window_health_guard_summary(harness_guard)
+        application_hang_rerun_ready = (
+            summary.get("classification") == "application_hang_wer_closed"
+            and summary.get("wer_followup_matched") is True
+            and summary.get("wer_followup_status") == "application_hang_confirmed_wer_closed"
+            and summary.get("window_health_mitigation_ready") is True
+            and window_health.get("ready") is True
+        )
+        if application_hang_rerun_ready:
+            legacy_command = str(current.get("next_command") or step.get("approval_gated_runtime_command") or "")
+            plan_summary, plan_failures = dry_run_plan_for_step(dry_run_plan, step)
+            plan_command = (plan_summary or {}).get("execute_command")
+            if not plan_command:
+                return plan_required_action(
+                    base,
+                    step,
+                    action_id=f"refresh_{current.get('id')}_dry_run_plan",
+                    why=(
+                        "The AppHangB1 retry mitigation is ready, but visible execution requires "
+                        "a fresh tokened dry-run packet before approval can be requested."
+                    ),
+                    legacy_command=legacy_command,
+                    dry_run_plan=plan_summary,
+                ), plan_failures
+            return {
+                **base,
+                "id": f"rerun_{current.get('id')}_soak",
+                "status": "approval_required",
+                "requires_visible_runtime": True,
+                "requires_explicit_user_approval": True,
+                "why": (
+                    "Windows confirmed the previous visible result as AppHangB1 and closed the "
+                    "nonresponsive candidate. The matching hidden CDB route stayed live, and the "
+                    "harness guard now proves responsiveness sampling stops input and capture at "
+                    "the first hung or missing live target window."
+                ),
+                "exact_runtime_command": str(plan_command),
+                "exact_runtime_command_source": "dry_run_plan",
+                "legacy_step_runtime_command": None,
+                "rejected_legacy_runtime_command": rejected_legacy_runtime_command(
+                    legacy_command,
+                    "superseded by the current dry-run plan command with visible-runtime approval token",
+                ),
+                "plan_verified_execute_command": plan_command,
+                "dry_run_plan": plan_summary,
+                "application_hang_rerun_readiness": {
+                    "wer_followup_matched": True,
+                    "wer_followup_status": summary.get("wer_followup_status"),
+                    "window_health_mitigation_ready": True,
+                    **window_health,
+                },
+                "safe_dry_run_command": step.get("safe_dry_run_command"),
+                "post_run_validation": post_run_validation_for_step(step),
+                "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+                "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
+            }, plan_failures
+        window_missing_rerun_ready = (
+            summary.get("classification") == "window_missing_while_process_alive"
+            and summary.get("window_health_mitigation_ready") is True
+            and window_health.get("ready") is True
+        )
+        if window_missing_rerun_ready:
+            legacy_command = str(current.get("next_command") or step.get("approval_gated_runtime_command") or "")
+            plan_summary, plan_failures = dry_run_plan_for_step(dry_run_plan, step)
+            plan_command = (plan_summary or {}).get("execute_command")
+            if not plan_command:
+                return plan_required_action(
+                    base,
+                    step,
+                    action_id=f"refresh_{current.get('id')}_dry_run_plan",
+                    why=(
+                        "The window-missing mitigation is ready, but visible execution requires "
+                        "a fresh tokened dry-run packet before approval can be requested."
+                    ),
+                    legacy_command=legacy_command,
+                    dry_run_plan=plan_summary,
+                ), plan_failures
+            return {
+                **base,
+                "id": f"rerun_{current.get('id')}_soak",
+                "status": "approval_required",
+                "requires_visible_runtime": True,
+                "requires_explicit_user_approval": True,
+                "why": (
+                    "The previous visible run lost its application/windowed target window while "
+                    "the process stayed alive. The harness now grace-retries transient window "
+                    "loss, verifies the menu before route input, drives menu clicks with the "
+                    "pulse-mode engine-aim mechanism, and verifies the gameplay map on screen, "
+                    "while still stopping at the first persistently missing live target window."
+                ),
+                "exact_runtime_command": str(plan_command),
+                "exact_runtime_command_source": "dry_run_plan",
+                "legacy_step_runtime_command": None,
+                "rejected_legacy_runtime_command": rejected_legacy_runtime_command(
+                    legacy_command,
+                    "superseded by the current dry-run plan command with visible-runtime approval token",
+                ),
+                "plan_verified_execute_command": plan_command,
+                "dry_run_plan": plan_summary,
+                "window_missing_rerun_readiness": {
+                    "window_health_mitigation_ready": True,
+                    **window_health,
+                },
+                "safe_dry_run_command": step.get("safe_dry_run_command"),
+                "post_run_validation": post_run_validation_for_step(step),
+                "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+                "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
+            }, plan_failures
+        if summary.get("classification") == "input_environment_permission_denied":
+            legacy_command = str(current.get("next_command") or step.get("approval_gated_runtime_command") or "")
+            plan_summary, plan_failures = dry_run_plan_for_step(dry_run_plan, step)
+            plan_command = (plan_summary or {}).get("execute_command")
+            if not plan_command:
+                return plan_required_action(
+                    base,
+                    step,
+                    action_id=f"refresh_{current.get('id')}_dry_run_plan",
+                    why=(
+                        "The previous route was blocked by Windows input-API permissions. "
+                        "Refresh the tokened dry-run plan before requesting an unsandboxed rerun."
+                    ),
+                    legacy_command=legacy_command,
+                    dry_run_plan=plan_summary,
+                ), plan_failures
+            return {
+                **base,
+                "id": f"rerun_{current.get('id')}_soak",
+                "status": "approval_required",
+                "requires_visible_runtime": True,
+                "requires_explicit_user_approval": True,
+                "why": (
+                    "The previous route was blocked by Windows input-API permissions, not "
+                    "classified as game behavior. Rerun the current tokened postmessage command "
+                    "only in a fresh explicitly approved unsandboxed Windows session."
+                ),
+                "exact_runtime_command": str(plan_command),
+                "exact_runtime_command_source": "dry_run_plan",
+                "legacy_step_runtime_command": None,
+                "rejected_legacy_runtime_command": rejected_legacy_runtime_command(
+                    legacy_command,
+                    "superseded by the current dry-run plan command with visible-runtime approval token",
+                ),
+                "plan_verified_execute_command": plan_command,
+                "dry_run_plan": plan_summary,
+                "safe_dry_run_command": step.get("safe_dry_run_command"),
+                "post_run_validation": post_run_validation_for_step(step),
+                "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+                "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
+            }, plan_failures
+        readiness_summary = None
+        readiness_failures: list[str] = []
+        if summary.get("classification") == "intro_skip_input_drift_exit":
+            readiness_summary, readiness_failures = intro_skip_readiness_for_step(intro_skip_readiness, step)
         if summary.get("classification") == "intro_skip_input_drift_exit" and readiness_summary:
             legacy_command = str(current.get("next_command") or step.get("approval_gated_runtime_command") or "")
             plan_summary, plan_failures = dry_run_plan_for_step(dry_run_plan, step)
@@ -617,6 +791,34 @@ def next_action_for_short_step(
                 "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
                 "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
             }, plan_failures
+        if (
+            summary.get("classification") == "intro_skip_input_drift_exit"
+            and summary.get("intro_skip_click_mode") == "postmessage"
+        ):
+            return {
+                **base,
+                "id": f"fix_{current.get('id')}_intro_transition",
+                "status": "repo_only_harness_fix_required",
+                "requires_visible_runtime": False,
+                "requires_explicit_user_approval": False,
+                "why": summary.get("next_probe")
+                or "Stop or reacquire intro-skip postmessage repeats when the window transitions.",
+                "exact_runtime_command": None,
+                "safe_dry_run_command": step.get("safe_dry_run_command"),
+                "repo_command": None,
+                "triage": {
+                    "classification": summary.get("classification"),
+                    "next_probe": summary.get("next_probe"),
+                    "intro_skip_click_mode": summary.get("intro_skip_click_mode"),
+                    "intro_skip_click_repeat": summary.get("intro_skip_click_repeat"),
+                    "intro_skip_click_path_verified": summary.get("intro_skip_click_path_verified"),
+                    "final_route_marker": summary.get("final_route_marker"),
+                    "candidate_sha256": summary.get("candidate_sha256"),
+                },
+                "post_run_validation": post_run_validation_for_step(step),
+                "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+                "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
+            }, []
         if readiness_failures:
             return None, readiness_failures
         return {
@@ -713,11 +915,17 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     short_step_status_path = getattr(args, "short_step_status_json", DEFAULT_SHORT_STEP_STATUS_JSON)
     dry_run_plan_path = getattr(args, "dry_run_plan_json", None)
     intro_skip_readiness_path = getattr(args, "intro_skip_readiness_json", None)
+    harness_guard_path = getattr(args, "harness_guard_json", DEFAULT_HARNESS_GUARD_JSON)
     step_status = load_json(short_step_status_path)
     dry_run_plan = load_json(dry_run_plan_path) if dry_run_plan_path and dry_run_plan_path.exists() else None
     intro_skip_readiness = (
         load_json(intro_skip_readiness_path)
         if intro_skip_readiness_path and intro_skip_readiness_path.exists()
+        else None
+    )
+    harness_guard = (
+        load_json(harness_guard_path)
+        if harness_guard_path and harness_guard_path.exists()
         else None
     )
     failures: list[str] = []
@@ -738,6 +946,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         step_status,
         dry_run_plan,
         intro_skip_readiness,
+        harness_guard,
     )
     failures.extend(short_step_failures)
     next_action = short_step_action or next_action_for_milestone(milestone)
@@ -756,6 +965,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "short_step_status": str(short_step_status_path),
         "dry_run_plan": str(dry_run_plan_path) if dry_run_plan_path else None,
         "intro_skip_readiness": str(intro_skip_readiness_path) if intro_skip_readiness_path else None,
+        "harness_guard": str(harness_guard_path) if harness_guard_path else None,
         "short_ladder_complete": bool((step_status or {}).get("ladder_complete")),
         "current_short_step": (step_status or {}).get("current_step"),
         "full_game_complete": bool(checklist.get("full_game_complete")),
@@ -954,6 +1164,7 @@ def main() -> int:
     parser.add_argument("--short-step-status-json", type=Path, default=DEFAULT_SHORT_STEP_STATUS_JSON)
     parser.add_argument("--dry-run-plan-json", type=Path, default=DEFAULT_DRY_RUN_PLAN_JSON)
     parser.add_argument("--intro-skip-readiness-json", type=Path, default=DEFAULT_INTRO_SKIP_READINESS_JSON)
+    parser.add_argument("--harness-guard-json", type=Path, default=DEFAULT_HARNESS_GUARD_JSON)
     parser.add_argument("--write-json", type=Path, default=DEFAULT_JSON)
     parser.add_argument("--write-markdown", "--write-md", dest="write_markdown", type=Path, default=DEFAULT_MD)
     parser.add_argument("--require-pass", action="store_true")

@@ -147,30 +147,38 @@ def test_current_pending_approval_ladder_passes_as_plan() -> None:
     assert report["passed"] is True, report["failures"]
     assert report["ladder_complete"] is False
     assert report["current_step"]["id"] == "short2_map_idle"
-    assert report["current_step"]["requires_explicit_user_approval"] is True
-    assert "-Execute -AllowVisibleRuntime" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-ReportJson captures\\current\\hd-soak-short2-map-idle-current.json" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MaxInputDriftPx 1" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MaxInputDriftPx 1" in report["current_step"]["safe_dry_run_command"]
-    assert "-IntroSkipClickMode postmessage" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-IntroSkipClicks 8" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-SkipPulses 4" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-SampleIntervalSec 15" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MinNonblackPercent 10" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MinUniqueSampleColors 8" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MaxArtifactMB 250" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MaxWorkingSetGrowthMB 64" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MaxPrivateMemoryGrowthMB 64" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MaxHandleGrowth 128" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-IntroSkipClickMode postmessage" in report["current_step"]["safe_dry_run_command"]
-    assert "-SampleIntervalSec 15" in report["current_step"]["safe_dry_run_command"]
-    assert "-MaxArtifactMB 250" in report["current_step"]["safe_dry_run_command"]
     assert report["locks"]["stable_stage_should_change"] is False
     assert report["locks"]["right_bottom_promotion_blocked"] is True
     assert report["locks"]["long_tiers_locked"] is True
     assert report["locks"]["future_lanes_locked"] is True
-    assert report["next_action_alignment"]["plan_verified_matches_current_step"] is True
+    alignment = report["next_action_alignment"]
+    assert (
+        alignment["plan_verified_matches_current_step"]
+        or alignment["repo_only_triage_matches_current_step"]
+    ) is True
+    if alignment["plan_verified_matches_current_step"]:
+        assert report["current_step"]["requires_explicit_user_approval"] is True
+        command = report["current_step"]["approval_gated_runtime_command"]
+        assert "-Execute -AllowVisibleRuntime" in command
+        assert "-ReportJson captures\\current\\hd-soak-short2-map-idle-current.json" in command
+        assert "-ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md" in command
+        for fragment in (
+            "-MaxInputDriftPx 1",
+            "-IntroSkipClickMode postmessage",
+            "-IntroSkipClicks 8",
+            "-SkipPulses 4",
+            "-SampleIntervalSec 15",
+            "-MinNonblackPercent 10",
+            "-MinUniqueSampleColors 8",
+            "-MaxArtifactMB 250",
+            "-MaxWorkingSetGrowthMB 64",
+            "-MaxPrivateMemoryGrowthMB 64",
+            "-MaxHandleGrowth 128",
+        ):
+            assert fragment in command
+    else:
+        assert alignment["reported_next_action"] == "inspect_short2_map_idle_triage"
+        assert alignment["reported_runtime_command"] is None
 
 
 def test_first_pass_advances_to_short2_map_idle() -> None:

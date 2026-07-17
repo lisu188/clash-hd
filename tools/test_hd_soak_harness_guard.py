@@ -42,6 +42,8 @@ def test_current_harness_passes() -> None:
     assert guard["passed"] is True, guard
     assert guard["checks"]["visible_runtime_opt_in"]["passed"] is True
     assert guard["checks"]["intro_skip_policy"]["passed"] is True
+    assert guard["checks"]["windowed_mode"]["passed"] is True
+    assert guard["checks"]["window_health_stop"]["passed"] is True
     assert guard["checks"]["promotion_boundary"]["passed"] is True
 
 
@@ -170,6 +172,30 @@ def test_guard_rejects_intro_skip_default_drift(fixture: Path) -> None:
     assert any("IntroSkipClickMode default" in failure for failure in guard["failures"]), guard
 
 
+def test_guard_rejects_missing_transition_safe_intro_stop(fixture: Path) -> None:
+    bad = harness_text().replace("        $args += '--stop-click-repeat-on-drift'\n", "")
+    script = write_fixture(fixture / "intro-transition-stop.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert any("--stop-click-repeat-on-drift" in failure for failure in guard["failures"]), guard
+
+
+def test_guard_rejects_missing_windowed_contract(fixture: Path) -> None:
+    bad = harness_text().replace("$presentation -ne 'windowed'", "$presentation -ne 'fullscreen'", 1)
+    script = write_fixture(fixture / "window-mode.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert any("windowed-mode contract" in failure for failure in guard["failures"]), guard
+
+
+def test_guard_rejects_missing_window_health_stop(fixture: Path) -> None:
+    bad = harness_text().replace("IsHungAppWindow", "WindowLooksHung")
+    script = write_fixture(fixture / "window-health.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert any("window-health marker" in failure for failure in guard["failures"]), guard
+
+
 def test_guard_rejects_missing_intro_execute_fragment(fixture: Path) -> None:
     bad = harness_text().replace("    '-IntroSkipClickMode', (Quote-Arg $IntroSkipClickMode),\n", "")
     script = write_fixture(fixture / "intro-execute.ps1", bad)
@@ -234,6 +260,9 @@ def run_tests() -> None:
         test_guard_rejects_missing_visible_runtime_minimum_ttl(fixture / "minimum-ttl")
         test_guard_rejects_launch_before_approval_boundary(fixture / "launch-order")
         test_guard_rejects_intro_skip_default_drift(fixture / "intro-mode")
+        test_guard_rejects_missing_transition_safe_intro_stop(fixture / "intro-transition-stop")
+        test_guard_rejects_missing_windowed_contract(fixture / "window-mode")
+        test_guard_rejects_missing_window_health_stop(fixture / "window-health")
         test_guard_rejects_missing_intro_execute_fragment(fixture / "intro-execute")
         test_guard_rejects_missing_metric(fixture / "metric")
         test_guard_rejects_missing_render_range_and_inventory_metrics(fixture / "range-inventory")

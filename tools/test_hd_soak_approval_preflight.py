@@ -16,6 +16,7 @@ import hd_soak_approval_preflight as preflight
 
 APPROVAL_TOKEN = "1234567890abcdef"
 APPROVAL_EXPIRES_UTC = "2999-01-01T00:00:00+00:00"
+WINDOW_CONFIG_SHA256 = "f" * 64
 
 
 RUNTIME_COMMAND = (
@@ -167,6 +168,15 @@ def dry_run_plan_for_step(step: dict[str, Any]) -> dict[str, Any]:
             "candidate_dir": r"C:\ClashTests\hd-soak",
             "candidate_path": r"C:\ClashTests\hd-soak\clash95_hd_soak_fixture.exe",
             "output_root": r"C:\ClashCaptures\hd-soak",
+            "window_mode": {
+                "Passed": True,
+                "Required": True,
+                "Display": preflight.EXPECTED_WINDOW_DISPLAY,
+                "Presentation": preflight.EXPECTED_WINDOW_PRESENTATION,
+                "Path": r"C:\Clash\dxcfg.ini",
+                "Sha256": WINDOW_CONFIG_SHA256,
+                "Failures": [],
+            },
             "report_json": paths["report_json"],
             "report_markdown": paths["report_markdown"],
             "growth_limits": {
@@ -183,6 +193,7 @@ def dry_run_plan_for_step(step: dict[str, Any]) -> dict[str, Any]:
             "intro_skip": {
                 "click_mode": preflight.EXPECTED_INTRO_SKIP_CLICK_MODE,
                 "click_repeat": preflight.EXPECTED_INTRO_SKIP_CLICKS,
+                "stop_click_repeat_on_drift": True,
                 "space_pulses": preflight.EXPECTED_SKIP_PULSES,
                 "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
             },
@@ -192,7 +203,7 @@ def dry_run_plan_for_step(step: dict[str, Any]) -> dict[str, Any]:
                 "expires_utc": APPROVAL_EXPIRES_UTC,
                 "max_age_hours": 12,
                 "min_ttl_minutes": preflight.MIN_APPROVAL_TTL_MINUTES,
-                "token_fields": ["fixture", APPROVAL_EXPIRES_UTC],
+                "token_fields": ["fixture", WINDOW_CONFIG_SHA256, APPROVAL_EXPIRES_UTC],
                 "purpose": "copy-exact dry-run approval packet; edited, stale, or hand-typed visible runtime commands fail closed",
             },
             "right_bottom_promotion_blocked": True,
@@ -309,7 +320,10 @@ def source_reports() -> dict[str, dict[str, Any]]:
             },
             "steps": [first_step],
         },
-        "harness_guard": {"passed": True},
+        "harness_guard": {
+            "passed": True,
+            "checks": {"window_health_stop": {"passed": True}},
+        },
         "dry_run_plan": dry_run_plan,
         "intro_skip_readiness": intro_skip_readiness_for_step(first_step),
         "visible_runtime_guard": {"passed": True},
@@ -447,6 +461,7 @@ def test_current_preflight_passes_with_generated_reports() -> None:
     assert r"C:\ClashTests\hd-soak" in report["approval_gated_runtime_command"]
     assert report["dry_run_plan_consistency"]["candidate_path"].endswith("clash95_hd_soak_fixture.exe")
     assert "visible Clash95 game window" in report["approval_prompt"]
+    assert "explicitly windowed mode" in report["approval_prompt"]
     assert "postmessage intro-skip" in report["approval_prompt"]
     assert "input drift <= 1px" in report["approval_prompt"]
     assert "artifact budget" in report["approval_prompt"]
@@ -457,6 +472,11 @@ def test_current_preflight_passes_with_generated_reports() -> None:
     assert limits["approval_token_kind"] == "sha256-16"
     assert limits["min_approval_ttl_minutes"] == preflight.MIN_APPROVAL_TTL_MINUTES
     assert limits["approval_remaining_seconds"] > preflight.MIN_APPROVAL_TTL_MINUTES * 60
+    assert limits["window_mode_required"] is True
+    assert limits["window_display"] == preflight.EXPECTED_WINDOW_DISPLAY
+    assert limits["window_presentation"] == preflight.EXPECTED_WINDOW_PRESENTATION
+    assert limits["window_config_sha256"] == WINDOW_CONFIG_SHA256
+    assert limits["intro_stop_click_repeat_on_drift"] is True
     assert report["locks"]["stable_stage_should_change"] is False
     assert report["locks"]["right_bottom_promotion_blocked"] is True
 
@@ -601,6 +621,75 @@ def test_intro_skip_rerun_preflight_passes_with_readiness_gate() -> None:
     assert report["current_failure"]["black_patch_risk_count"] == 1
     assert report["current_failure"]["palette_or_stripe_risk_count"] == 0
     assert "visible Clash95 game window" in report["approval_prompt"]
+
+
+def test_input_environment_rerun_preflight_requires_fresh_approval() -> None:
+    reports = source_reports()
+    step = configure_intro_skip_rerun_reports(reports)
+    status = "failed_classified_input_environment_permission_denied"
+    failure = current_failure_fixture()
+    failure["classification"] = "input_environment_permission_denied"
+    failure["next_probe"] = "rerun in an explicitly approved unsandboxed Windows session"
+    step["status"] = status
+    step["summary"] = failure
+    reports["step_status"]["current_step"]["status"] = status
+    reports["dry_run_plan"]["current_step"]["status"] = status
+    reports["next_actions"]["next_action"]["current_failure"] = failure
+    report = build_fixture_report(reports)
+
+    assert report["passed"] is True, report["failures"]
+    assert report["status"] == "ready_for_explicit_approval"
+    assert report["current_step"]["status"] == status
+    assert report["next_action_consistency"]["current_failure_matches"] is True
+    assert report["next_action_consistency"]["intro_skip_rerun_ready"] is False
+    assert report["next_action_consistency"]["input_environment_rerun_ready"] is True
+    assert report["next_action_consistency"]["next_action_id"] == "rerun_short2_menu_idle_soak"
+    assert report["current_failure"]["black_patch_risk_count"] == 1
+    assert report["current_failure"]["palette_or_stripe_risk_count"] == 0
+    assert "visible Clash95 game window" in report["approval_prompt"]
+
+
+def test_application_hang_rerun_preflight_requires_window_health_stop() -> None:
+    reports = source_reports()
+    step = configure_intro_skip_rerun_reports(reports)
+    status = "failed_classified_application_hang_wer_closed"
+    failure = current_failure_fixture()
+    failure.update(
+        {
+            "classification": "application_hang_wer_closed",
+            "next_probe": "generate a fresh tokened application/windowed retry packet",
+            "wer_followup_matched": True,
+            "wer_followup_status": "application_hang_confirmed_wer_closed",
+            "window_health_mitigation_ready": True,
+        }
+    )
+    step["status"] = status
+    step["summary"] = failure
+    reports["step_status"]["current_step"]["status"] = status
+    reports["dry_run_plan"]["current_step"]["status"] = status
+    reports["next_actions"]["next_action"]["current_failure"] = failure
+    reports["next_actions"]["next_action"]["application_hang_rerun_readiness"] = {
+        "wer_followup_matched": True,
+        "wer_followup_status": "application_hang_confirmed_wer_closed",
+        "window_health_mitigation_ready": True,
+        "harness_guard_passed": True,
+        "window_health_stop_check_passed": True,
+        "ready": True,
+    }
+    report = build_fixture_report(reports)
+
+    assert report["passed"] is True, report["failures"]
+    assert report["status"] == "ready_for_explicit_approval"
+    assert report["next_action_consistency"]["application_hang_rerun_ready"] is True
+    assert report["guards"]["window_health_stop_check_passed"] is True
+    assert report["approval_limits"]["window_health_stop_required"] is True
+    assert "stops further input and capture" in report["approval_prompt"]
+
+    reports["harness_guard"]["checks"]["window_health_stop"]["passed"] = False
+    blocked = build_fixture_report(reports)
+    assert blocked["passed"] is False
+    assert blocked["next_action_consistency"]["application_hang_rerun_ready"] is False
+    assert any("AppHang rerun readiness" in failure for failure in blocked["failures"])
 
 
 def test_next_actions_current_failure_must_match_preflight() -> None:
@@ -751,6 +840,20 @@ def test_dry_run_plan_must_pin_intro_skip_contract() -> None:
     assert any("execute command missing fragment: -IntroSkipClickMode" in failure for failure in report["failures"])
 
 
+def test_dry_run_plan_must_pin_windowed_contract() -> None:
+    reports = source_reports()
+    reports["dry_run_plan"]["plan"]["window_mode"]["Presentation"] = "fullscreen"
+    reports["dry_run_plan"]["plan"]["visible_runtime_approval"]["token_fields"] = [
+        "fixture",
+        APPROVAL_EXPIRES_UTC,
+    ]
+    report = build_fixture_report(reports)
+
+    assert report["passed"] is False
+    assert any("window presentation" in failure for failure in report["failures"])
+    assert any("windowed config SHA-256 is not covered" in failure for failure in report["failures"])
+
+
 def test_later_short_step_preflight_uses_step_status_without_first_next_action() -> None:
     reports = source_reports()
     first = step_record("short2_menu_idle", "short2", "menu-idle", status="pass", passed=True)
@@ -874,6 +977,8 @@ def run_tests() -> None:
     test_next_actions_dry_run_plan_summary_must_match_current_dry_run_plan()
     test_step_status_must_be_pending_first_step()
     test_intro_skip_rerun_preflight_passes_with_readiness_gate()
+    test_input_environment_rerun_preflight_requires_fresh_approval()
+    test_application_hang_rerun_preflight_requires_window_health_stop()
     test_next_actions_current_failure_must_match_preflight()
     test_guard_source_must_pass()
     test_dry_run_plan_source_must_pass()
@@ -885,6 +990,7 @@ def run_tests() -> None:
     test_dry_run_plan_must_pin_visible_runtime_token()
     test_dry_run_plan_must_pin_visible_runtime_expiry()
     test_dry_run_plan_must_pin_intro_skip_contract()
+    test_dry_run_plan_must_pin_windowed_contract()
     test_later_short_step_preflight_uses_step_status_without_first_next_action()
     test_cli_writes_outputs()
 

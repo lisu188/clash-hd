@@ -342,6 +342,9 @@ def move_cursor(
         return "sendinput-absolute"
 
 
+user32.GetForegroundWindow.restype = wintypes.HWND
+
+
 def make_lparam(client_x: int, client_y: int) -> int:
     return ((client_y & 0xFFFF) << 16) | (client_x & 0xFFFF)
 
@@ -437,6 +440,25 @@ def send_space_pulses(count: int, interval: float) -> None:
         time.sleep(interval)
 
 
+def sample_abs_error(sample: dict) -> int:
+    values: list[int] = []
+    for key in ("screen_error", "client_error"):
+        for value in sample.get(key) or []:
+            try:
+                values.append(abs(int(value)))
+            except (TypeError, ValueError):
+                pass
+    return max(values or [0])
+
+
+def click_sample_abs_error(click: dict) -> int:
+    return max((sample_abs_error(sample) for sample in click.get("events") or []), default=0)
+
+
+def should_stop_click_repeat(click: dict, stop_on_drift: bool) -> bool:
+    return stop_on_drift and click_sample_abs_error(click) > 1
+
+
 def move_path(
     hwnd: int,
     points: list[tuple[int, int]],
@@ -446,6 +468,7 @@ def move_path(
     move_mode: str,
     click_hold_sec: float,
     click_repeat: int,
+    stop_click_repeat_on_drift: bool,
     client_delta_origin: tuple[int, int],
     relative_max_steps: int,
     relative_step_limit: int,
@@ -495,6 +518,9 @@ def move_path(
             "client_error": sample["client_error"],
             "samples": [sample],
             "clicks": [],
+            "click_repeat_stop_reason": None,
+            "click_repeat_stop_error": None,
+            "click_repeat_stop_index": None,
         }
         if click:
             for repeat_index in range(click_repeat):
@@ -510,6 +536,12 @@ def move_path(
                 click_map["repeat_index"] = repeat_index
                 row["clicks"].append(click_map)
                 row["samples"].extend(click_map["events"])
+                repeat_error = click_sample_abs_error(click_map)
+                if should_stop_click_repeat(click_map, stop_click_repeat_on_drift):
+                    row["click_repeat_stop_reason"] = "sample_drift_after_click"
+                    row["click_repeat_stop_error"] = repeat_error
+                    row["click_repeat_stop_index"] = repeat_index
+                    break
                 time.sleep(0.04)
         rows.append(row)
         time.sleep(interval)
@@ -535,6 +567,13 @@ def move_path(
         "max_abs_error": max_abs_error,
         "max_sample_abs_error": max_sample_abs_error,
         "click_event_count": sum(len(row["clicks"]) for row in rows),
+        "click_repeat_requested": click_repeat,
+        "click_repeat_stop_observed": any(row["click_repeat_stop_reason"] for row in rows),
+        "click_repeat_stop_reasons": [
+            row["click_repeat_stop_reason"]
+            for row in rows
+            if row["click_repeat_stop_reason"]
+        ],
         "path_verified": max_abs_error <= 1,
         "click_path_verified": max_sample_abs_error <= 1,
     }
@@ -575,6 +614,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--click-hold-ms", type=int, default=120, help="button-down hold time for forced clicks")
     parser.add_argument("--click-repeat", type=int, default=1, help="number of forced clicks at each point")
+    parser.add_argument(
+        "--stop-click-repeat-on-drift",
+        action="store_true",
+        help="stop repeated clicks after sampled cursor/client drift during transition-safe intro prep",
+    )
     parser.add_argument("--kill-owned", action="store_true", help="terminate the launched process after the probe")
     parser.add_argument("--json", type=Path, help="write JSON result")
     return parser.parse_args()
@@ -612,6 +656,7 @@ def main() -> int:
             time.sleep(0.15)
         user32.BringWindowToTop(hwnd)
         user32.SetForegroundWindow(hwnd)
+        foreground_verified = (user32.GetForegroundWindow() == hwnd)
         time.sleep(args.settle_sec)
         if args.space_pulses:
             send_space_pulses(args.space_pulses, args.space_interval_ms / 1000.0)
@@ -630,12 +675,17 @@ def main() -> int:
             args.move_mode,
             args.click_hold_ms / 1000.0,
             args.click_repeat,
+            args.stop_click_repeat_on_drift,
             client_delta_origin_points[0],
             args.relative_max_steps,
             args.relative_step_limit,
             args.relative_step_sleep_ms / 1000.0,
         )
-        result.update({"pid": pid, "exe": str(args.exe) if args.exe else None})
+        result.update({
+            "pid": pid,
+            "exe": str(args.exe) if args.exe else None,
+            "foreground_verified": bool(foreground_verified),
+        })
         if args.json:
             args.json.parent.mkdir(parents=True, exist_ok=True)
             args.json.write_text(json.dumps(result, indent=2), encoding="ascii")

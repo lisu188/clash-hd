@@ -52,6 +52,80 @@ $ErrorActionPreference = 'Stop'
 $StableStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch'
 $ExpectedBaseSha256 = '500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae'
 $RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
+$IntroSkipStopClickRepeatOnDrift = $true
+# 2026-07-17 diagnosis: the menu consumes ONLY pulse-mode relative DirectInput
+# (one MOUSEEVENTF_MOVE per ~28ms poll; engine cursor = gain*delta per poll,
+# accumulator resets each poll). SetCursorPos/absolute moves/PostMessage clicks
+# never reach the menu hit test, which is why earlier sendinput route clicks
+# verified OS-cursor placement but never navigated. Route clicks therefore run
+# through tools/menu_pulse_click.py (engine-aim + frame-transition proof).
+$IntroMenuVerifyNonblackPercent = 50.0
+$IntroMenuVerifyNonblackMaxPercent = 80.0
+$IntroMenuVerifyMaxUniqueColors = 400
+$IntroSkipMaxRounds = 12
+# Rapid kill+relaunch destabilizes the GOG DirectDraw wrapper (observed
+# DDERR_UNSUPPORTED dialog on fast relaunch 2026-07-17), so default to a
+# single launch; the engine-cursor revival inside tools/menu_pulse_click.py
+# (foreground activation cycle) handles the dead-poll case in-process without
+# a relaunch. MaxLaunchAttempts stays configurable for machines whose wrapper
+# tolerates relaunch.
+$MaxLaunchAttempts = 1
+$RelaunchSettleMs = 8000
+$PulseAimTolerancePx = 10
+$MapReachedNonblackPercent = 85.0
+$WindowMissingGraceAttempts = 3
+$WindowMissingGraceDelayMs = 800
+
+if (-not ([System.Management.Automation.PSTypeName]'ClashSoakWindowHealthWin32').Type) {
+    Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+
+public static class ClashSoakWindowHealthWin32 {
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RECT {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+
+    public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern bool EnumWindows(EnumWindowsProc callback, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsWindowVisible(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern bool GetClientRect(IntPtr hWnd, out RECT rect);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsHungAppWindow(IntPtr hWnd);
+
+    public static IntPtr FindVisibleWindowForProcess(uint processId) {
+        IntPtr found = IntPtr.Zero;
+        EnumWindows(delegate(IntPtr hWnd, IntPtr lParam) {
+            uint windowProcessId;
+            GetWindowThreadProcessId(hWnd, out windowProcessId);
+            if (windowProcessId == processId && IsWindowVisible(hWnd)) {
+                RECT rect;
+                if (GetClientRect(hWnd, out rect) && rect.Right > rect.Left && rect.Bottom > rect.Top) {
+                    found = hWnd;
+                    return false;
+                }
+            }
+            return true;
+        }, IntPtr.Zero);
+        return found;
+    }
+}
+'@
+}
 
 function Resolve-PlanPath {
     param([Parameter(Mandatory = $true)][string]$Path)
@@ -72,6 +146,138 @@ function Test-IsUnderPath {
         return $true
     }
     return $fullPath.StartsWith($fullRoot + '\', [System.StringComparison]::OrdinalIgnoreCase)
+}
+
+function Get-DxcfgWindowedStatus {
+    param([Parameter(Mandatory = $true)][string]$Path)
+    $failures = @()
+    $settings = @{}
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+        $failures += "Windowed DirectDraw config is missing: $Path"
+    }
+    else {
+        $section = ''
+        foreach ($rawLine in Get-Content -LiteralPath $Path) {
+            $line = $rawLine.Trim()
+            if (-not $line -or $line.StartsWith(';') -or $line.StartsWith('#')) {
+                continue
+            }
+            if ($line -match '^\[(?<section>[^]]+)\]$') {
+                $section = $Matches.section.ToLowerInvariant()
+                continue
+            }
+            if ($section -eq 'dxcfg' -and $line -match '^(?<key>[^=]+)=(?<value>.*)$') {
+                $settings[$Matches.key.Trim().ToLowerInvariant()] = $Matches.value.Trim().ToLowerInvariant()
+            }
+        }
+    }
+    $display = $settings['display']
+    $presentation = $settings['presentation']
+    if ($display -ne 'application') {
+        $failures += "Windowed DirectDraw config display is '$display', expected 'application'"
+    }
+    if ($presentation -ne 'windowed') {
+        $failures += "Windowed DirectDraw config presentation is '$presentation', expected 'windowed'"
+    }
+    [pscustomobject]@{
+        Passed = (@($failures).Count -eq 0)
+        Path = $Path
+        Sha256 = if (Test-Path -LiteralPath $Path -PathType Leaf) { (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash } else { $null }
+        Display = $display
+        Presentation = $presentation
+        Required = $true
+        Failures = @($failures)
+    }
+}
+
+function Get-WindowHealthSample {
+    param(
+        [Parameter(Mandatory = $true)][System.Diagnostics.Process]$Process,
+        [Parameter(Mandatory = $true)][string]$Phase
+    )
+
+    $timestamp = (Get-Date).ToString('o')
+    try {
+        $Process.Refresh()
+        if ($Process.HasExited) {
+            return [pscustomobject]@{
+                Timestamp = $timestamp
+                Phase = $Phase
+                ProcessExited = $true
+                WindowFound = $false
+                Hwnd = $null
+                ClientWidth = $null
+                ClientHeight = $null
+                IsHung = $null
+                HealthClass = 'process_exited'
+            }
+        }
+        $handle = [ClashSoakWindowHealthWin32]::FindVisibleWindowForProcess([uint32]$Process.Id)
+        $graceAttemptsUsed = 0
+        while ($handle -eq [IntPtr]::Zero -and $graceAttemptsUsed -lt $WindowMissingGraceAttempts) {
+            # Grace retry: the application/windowed wrapper can briefly hide or
+            # recreate its window during display transitions; only classify the
+            # window as missing after it stays missing across the grace window.
+            $graceAttemptsUsed++
+            Start-Sleep -Milliseconds $WindowMissingGraceDelayMs
+            $Process.Refresh()
+            if ($Process.HasExited) {
+                return [pscustomobject]@{
+                    Timestamp = $timestamp
+                    Phase = $Phase
+                    ProcessExited = $true
+                    WindowFound = $false
+                    Hwnd = $null
+                    ClientWidth = $null
+                    ClientHeight = $null
+                    IsHung = $null
+                    HealthClass = 'process_exited'
+                }
+            }
+            $handle = [ClashSoakWindowHealthWin32]::FindVisibleWindowForProcess([uint32]$Process.Id)
+        }
+        if ($handle -eq [IntPtr]::Zero) {
+            return [pscustomobject]@{
+                Timestamp = $timestamp
+                Phase = $Phase
+                ProcessExited = $false
+                WindowFound = $false
+                Hwnd = $null
+                ClientWidth = $null
+                ClientHeight = $null
+                IsHung = $null
+                GraceAttempts = $graceAttemptsUsed
+                HealthClass = 'window_missing_while_process_alive'
+            }
+        }
+        $rect = New-Object ClashSoakWindowHealthWin32+RECT
+        [ClashSoakWindowHealthWin32]::GetClientRect($handle, [ref]$rect) | Out-Null
+        $isHung = [ClashSoakWindowHealthWin32]::IsHungAppWindow($handle)
+        return [pscustomobject]@{
+            Timestamp = $timestamp
+            Phase = $Phase
+            ProcessExited = $false
+            WindowFound = $true
+            Hwnd = ('0x{0:X}' -f $handle.ToInt64())
+            ClientWidth = $rect.Right - $rect.Left
+            ClientHeight = $rect.Bottom - $rect.Top
+            IsHung = [bool]$isHung
+            HealthClass = if ($isHung) { 'application_hung' } else { 'responsive' }
+        }
+    } catch {
+        return [pscustomobject]@{
+            Timestamp = $timestamp
+            Phase = $Phase
+            ProcessExited = $false
+            WindowFound = $false
+            Hwnd = $null
+            ClientWidth = $null
+            ClientHeight = $null
+            IsHung = $null
+            HealthClass = 'health_probe_error'
+            Error = $_.Exception.Message
+        }
+    }
 }
 
 function Find-Python {
@@ -139,15 +345,19 @@ function Get-RouteSteps {
             return @()
         }
         'map-idle' {
+            # Click steps carry ENGINE-space targets consumed by
+            # tools/menu_pulse_click.py (centered main-menu Load ellipse center
+            # measured at 302,211 on 2026-07-17; slot/confirm targets from
+            # docs/hd/CLASH95_MENU_LOAD_ROUTE_NOTES.md engine hit zones).
             return @(
-                [pscustomobject]@{ Name = 'load-button'; Points = '300,218'; Click = $true; WaitMs = $RouteStepWaitMs },
+                [pscustomobject]@{ Name = 'load-button'; Points = '302,211'; Click = $true; WaitMs = $RouteStepWaitMs },
                 [pscustomobject]@{ Name = 'load-slot0'; Points = '320,166'; Click = $true; WaitMs = $RouteStepWaitMs },
                 [pscustomobject]@{ Name = 'confirm-load'; Points = '400,226'; Click = $true; WaitMs = [math]::Max($RouteStepWaitMs, 2200) }
             )
         }
         'map-pan' {
             return @(
-                [pscustomobject]@{ Name = 'load-button'; Points = '300,218'; Click = $true; WaitMs = $RouteStepWaitMs },
+                [pscustomobject]@{ Name = 'load-button'; Points = '302,211'; Click = $true; WaitMs = $RouteStepWaitMs },
                 [pscustomobject]@{ Name = 'load-slot0'; Points = '320,166'; Click = $true; WaitMs = $RouteStepWaitMs },
                 [pscustomobject]@{ Name = 'confirm-load'; Points = '400,226'; Click = $true; WaitMs = [math]::Max($RouteStepWaitMs, 2200) },
                 [pscustomobject]@{ Name = 'pan-path'; Points = '400,300;680,300;680,520;120,520;120,120;400,300'; Click = $false; WaitMs = [math]::Max($RouteStepWaitMs, 2200) }
@@ -171,7 +381,8 @@ function Invoke-MousePath {
         [int]$SpacePulses = 0,
         [string]$MoveModeOverride = '',
         [string]$ClickModeOverride = '',
-        [int]$ClickRepeatOverride = -1
+        [int]$ClickRepeatOverride = -1,
+        [bool]$StopClickRepeatOnDrift = $false
     )
 
     $mouseTool = Join-Path $RepoRoot 'tools\mouse_path_probe.py'
@@ -197,6 +408,9 @@ function Invoke-MousePath {
     )
     if ($Click) {
         $args += @('--click', '--click-mode', $effectiveClickMode, '--click-hold-ms', "$ClickHoldMs", '--click-repeat', "$effectiveClickRepeat")
+    }
+    if ($StopClickRepeatOnDrift) {
+        $args += '--stop-click-repeat-on-drift'
     }
 
     $probeLog = [System.IO.Path]::ChangeExtension($OutputJson, '.log')
@@ -226,12 +440,106 @@ function Invoke-MousePath {
     return [pscustomobject]@{
         path_verified = $false
         click_path_verified = $false
+        click_event_count = 0
+        click_repeat_stop_observed = $false
+        click_repeat_stop_reasons = @()
         ProbeExitCode = $exitCode
         ProbeLog = $probeLog
         ProbeError = "mouse_path_probe.py did not write JSON"
         EffectiveMoveMode = $effectiveMoveMode
         EffectiveClickMode = $effectiveClickMode
         EffectiveClickRepeat = $effectiveClickRepeat
+    }
+}
+
+function Invoke-MenuPulseRoute {
+    param(
+        [System.Diagnostics.Process]$Process,
+        [string]$OutputJson,
+        [object[]]$ClickSteps
+    )
+
+    $pulseTool = Join-Path $RepoRoot 'tools\menu_pulse_click.py'
+    if (-not (Test-Path -LiteralPath $pulseTool -PathType Leaf)) {
+        throw "Required pulse click tool was not found: $pulseTool"
+    }
+    $stepSpec = (@($ClickSteps | ForEach-Object { "{0}:{1}" -f $_.Name, $_.Points }) -join ';')
+    $toolArgs = @(
+        $pulseTool,
+        '--pid', "$($Process.Id)",
+        '--steps', $stepSpec,
+        '--map-nonblack', "$MapReachedNonblackPercent",
+        '--aim-tolerance', "$PulseAimTolerancePx",
+        '--click-hold-ms', '700',
+        '--click-repeats', '3',
+        '--deadline-sec', '150',
+        '--json', $OutputJson
+    )
+    $probeLog = [System.IO.Path]::ChangeExtension($OutputJson, '.log')
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $toolOutput = & $PythonFull '-W' 'ignore' @toolArgs 2>&1
+        $exitCode = $LASTEXITCODE
+    } catch {
+        $toolOutput = @($_.Exception.Message)
+        $exitCode = 1
+    } finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+    $toolOutput | Set-Content -LiteralPath $probeLog -Encoding ASCII
+
+    $result = $null
+    if (Test-Path -LiteralPath $OutputJson -PathType Leaf) {
+        $result = Get-Content -LiteralPath $OutputJson -Raw | ConvertFrom-Json
+    }
+    [pscustomobject]@{
+        Result = $result
+        ExitCode = $exitCode
+        Json = $OutputJson
+        Log = $probeLog
+        StepSpec = $stepSpec
+    }
+}
+
+function Convert-PulseStepToRouteRow {
+    param(
+        [object]$PulseRun,
+        [object]$StepRow,
+        [object]$StepDefinition
+    )
+
+    $aim = if ($StepRow) { $StepRow.aim } else { $null }
+    $skipped = [bool]($StepRow -and $StepRow.skipped_map_reached)
+    $aimError = if ($aim -and $null -ne $aim.aim_error_px) { [int]$aim.aim_error_px } else { $null }
+    $transitionVerified = [bool]($StepRow -and $StepRow.transition_verified)
+    [pscustomobject]@{
+        Name = $StepDefinition.Name
+        Points = $StepDefinition.Points
+        Click = $true
+        InputMechanism = 'pulse-relative-engine-aim'
+        PathVerified = ($skipped -or [bool]($aim -and $aim.converged))
+        ClickPathVerified = ($skipped -or $transitionVerified)
+        MaxAbsError = $null
+        MaxSampleAbsError = $null
+        AimErrorPx = $aimError
+        AimTolerancePx = $PulseAimTolerancePx
+        TransitionVerified = $transitionVerified
+        SkippedMapReached = $skipped
+        ChangedPixels = if ($StepRow -and $null -ne $StepRow.changed_pixels) { [int]$StepRow.changed_pixels } else { $null }
+        PostNonblack = if ($StepRow -and $null -ne $StepRow.post_nonblack) { [double]$StepRow.post_nonblack } else { $null }
+        ClickEventCount = if ($StepRow -and $null -ne $StepRow.click_count) { [int]$StepRow.click_count } else { 0 }
+        ClickRepeatObserved = if ($StepRow -and $null -ne $StepRow.click_count) { [int]$StepRow.click_count } else { 0 }
+        TransitionStopObserved = $false
+        RepeatStopReasons = @()
+        MoveMode = 'pulse-relative'
+        ClickMode = 'sendinput-hold-while-pulsing'
+        ClickRepeat = 3
+        SpacePulses = 0
+        InputProofClass = 'automated_visible_runtime_diagnostic_not_manual_directinput_release_proof'
+        ProbeExitCode = $PulseRun.ExitCode
+        Json = $PulseRun.Json
+        Log = $PulseRun.Log
     }
 }
 
@@ -356,8 +664,14 @@ function Write-SoakMarkdown {
         "- Input max move drift px: $($Report.input_max_abs_error)",
         "- Input max sampled drift px: $($Report.input_max_sample_abs_error)",
         "- Input drift limit px: $($Report.max_input_drift_px)",
+        "- Window mode: required=$($Report.window_mode.Required) display=$($Report.window_mode.Display) presentation=$($Report.window_mode.Presentation) config=$($Report.window_mode.Path)",
+        "- Window hang observed: $($Report.window_hang_observed)",
+        "- Window missing while process alive: $($Report.window_missing_while_alive_observed)",
+        "- First window-health failure: $($Report.window_health_first_failure.Phase) / $($Report.window_health_first_failure.HealthClass)",
         "- Intro skip mode/repeat/pulses: $($Report.intro_skip.click_mode) / $($Report.intro_skip.click_repeat) / $($Report.intro_skip.space_pulses)",
         "- Intro skip proof class: $($Report.intro_skip.proof_class)",
+        "- Intro menu verified: $($Report.intro_skip.menu_verified) (nonblack $($Report.intro_skip.menu_verify_nonblack_percent), rounds $($Report.intro_skip.rounds_used))",
+        "- Map route reached: $($Report.map_route_reached) (final nonblack $($Report.route_final_nonblack_percent))",
         "- Working-set growth bytes: $(Format-NullableMetric $Report.working_set_growth_bytes)",
         "- Private-memory growth bytes: $(Format-NullableMetric $Report.private_memory_growth_bytes)",
         "- Handle growth: $(Format-NullableMetric $Report.handle_growth)",
@@ -383,6 +697,12 @@ function Write-SoakMarkdown {
     foreach ($frame in @($Report.frame_samples)) {
         $lines += "- $($frame.Name): hash=$($frame.Hash) nonblack=$($frame.NonblackPercent) luma=$($frame.MeanLuma) colors=$($frame.UniqueSampleColors) mode=$($frame.CaptureMode)"
     }
+    $lines += ''
+    $lines += '## Window Health Samples'
+    $lines += ''
+    foreach ($sample in @($Report.window_health_samples)) {
+        $lines += "- $($sample.Phase): class=$($sample.HealthClass) hwnd=$($sample.Hwnd) size=$($sample.ClientWidth)x$($sample.ClientHeight)"
+    }
     $dir = Split-Path -Parent $Path
     if ($dir -and -not (Test-Path -LiteralPath $dir)) {
         New-Item -ItemType Directory -Force -Path $dir | Out-Null
@@ -398,6 +718,30 @@ $OutputRootFull = Resolve-PlanPath $OutputRoot
 $ReportJsonFull = Resolve-PlanPath $ReportJson
 $ReportMarkdownFull = Resolve-PlanPath $ReportMarkdown
 $PythonFull = Find-Python $Python
+$windowedMode = Get-DxcfgWindowedStatus -Path (Join-Path $WorkDirFull 'dxcfg.ini')
+if (-not $windowedMode.Passed) {
+    throw "Windowed DirectDraw config check failed: $($windowedMode.Failures -join '; ')"
+}
+
+function Test-AcceptedIntroTransition {
+    param([Parameter(Mandatory = $true)][object]$Row)
+    if ($Row.Name -ne 'intro-skip') {
+        return $false
+    }
+    # Preferred acceptance: the harness verified the main menu on screen after
+    # the intro-skip rounds (frame nonblack at menu levels).
+    if ([bool]$Row.PSObject.Properties['MenuVerified'] -and [bool]$Row.MenuVerified) {
+        return $true
+    }
+    return (
+        [bool]$Row.Click -and
+        [bool]$Row.PathVerified -and
+        [bool]$Row.TransitionStopObserved -and
+        ((Convert-NullableInt $Row.ClickRepeatObserved) -gt 0) -and
+        (@($Row.RepeatStopReasons) -contains 'sample_drift_after_click') -and
+        ($Row.ProbeExitCode -in @(0, 2))
+    )
+}
 
 if (-not $CandidateName) {
     $CandidateName = 'clash95_hd_soak_{0}.exe' -f (Get-Date -Format 'yyyyMMdd_HHmmss')
@@ -439,6 +783,7 @@ $approvalExpiresUtc = if ($VisibleRuntimeApprovalExpiresUtc) {
 $approvalTokenFields = @(
     $InputExeFull,
     $WorkDirFull,
+    $windowedMode.Sha256,
     $Stage,
     $Tier,
     $Route,
@@ -450,6 +795,7 @@ $approvalTokenFields = @(
     $ReportMarkdownFull,
     $IntroSkipClickMode,
     [string]$IntroSkipClicks,
+    [string]$IntroSkipStopClickRepeatOnDrift,
     [string]$SkipPulses,
     [string]$MaxInputDriftPx,
     [string]$SampleIntervalSec,
@@ -514,6 +860,7 @@ $plan = [ordered]@{
     candidate_dir = $CandidateDirFull
     candidate_path = $CandidateFull
     workdir = $WorkDirFull
+    window_mode = $windowedMode
     output_root = $OutputRootFull
     report_json = $ReportJsonFull
     report_markdown = $ReportMarkdownFull
@@ -530,9 +877,16 @@ $plan = [ordered]@{
     input_limits = [ordered]@{
         max_input_drift_px = $MaxInputDriftPx
     }
+    window_health_policy = [ordered]@{
+        probe = 'EnumWindows plus IsHungAppWindow; no synchronous target-window message'
+        phases = 'after launch, after intro wait, before and after every route step, before every capture'
+        stop_on_hung_or_missing_window = $true
+        purpose = 'stop further input/capture at the first nonresponsive or missing application/windowed target'
+    }
     intro_skip = [ordered]@{
         click_mode = $IntroSkipClickMode
         click_repeat = $IntroSkipClicks
+        stop_click_repeat_on_drift = $IntroSkipStopClickRepeatOnDrift
         space_pulses = $SkipPulses
         proof_class = 'intro_skip_harness_prep_not_manual_directinput_release_proof'
     }
@@ -626,9 +980,18 @@ $frameSamples = @()
 $processSamples = @()
 $routeResults = @()
 $captureErrors = @()
+$windowHealthSamples = @()
 $cleanStop = $false
 $candidateSha256 = $null
 $patchStageReport = Join-Path $outDir 'patch-stage.json'
+$introMenuVerified = $false
+$introMenuVerifyNonblack = $null
+$introRoundsUsed = 0
+$mapRouteReached = $null
+$routeFinalNonblack = $null
+$launchAttemptRows = @()
+$cursorProbeAlive = $false
+$cursorProbeRequired = $false
 
 try {
     if (-not $SkipPatch) {
@@ -661,35 +1024,207 @@ try {
         throw "patch_stage_report.py failed with exit code $LASTEXITCODE"
     }
 
-    $process = Start-Process -FilePath $CandidateFull -WorkingDirectory $WorkDirFull -PassThru
-    Start-Sleep -Milliseconds 800
-
-    $introJson = Join-Path $outDir 'intro-skip.json'
+    # LAUNCH ATTEMPTS: the menu is bimodal on this machine. If the intro-skip
+    # stimuli land, the interactive menu appears (engine cursor responds to
+    # pulse input); if the intro instead auto-plays out, the menu comes up in
+    # a dead attract-like state where no automated input reaches the engine
+    # cursor and the wrapper later transitions the window (the 2026-07-14/15
+    # window_missing failures). A fresh relaunch re-rolls the race, so each
+    # attempt runs intro rounds and (for click routes) a no-click pulse probe
+    # that verifies the engine cursor is alive before the route is trusted.
+    $cursorProbeRequired = ($Route -in @('map-idle', 'map-pan'))
+    $launchAttemptRows = @()
+    $cursorProbeAlive = $false
     $introClick = ($IntroSkipClickMode -ne 'none') -and ($IntroSkipClicks -gt 0)
-    $introClickRepeat = if ($introClick) { $IntroSkipClicks } else { 0 }
-    $introResult = Invoke-MousePath -Process $process -OutputJson $introJson -Points '400,300' -Click $introClick -SpacePulses $SkipPulses -ClickModeOverride $IntroSkipClickMode -ClickRepeatOverride $introClickRepeat
+    $introRoundCount = $IntroSkipMaxRounds
+    $introClicksPerRound = if ($introClick) { $IntroSkipClicks } else { 0 }
+    $introPulsesPerRound = $SkipPulses
+    $process = $null
+    for ($launchAttempt = 1; $launchAttempt -le $MaxLaunchAttempts; $launchAttempt++) {
+        if ($null -ne $process -and -not $process.HasExited) {
+            Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+            Start-Sleep -Milliseconds $RelaunchSettleMs
+        }
+        $process = Start-Process -FilePath $CandidateFull -WorkingDirectory $WorkDirFull -PassThru
+        Start-Sleep -Milliseconds 800
+        $windowHealthSamples += Get-WindowHealthSample -Process $process -Phase 'after-launch'
+
+        # Intro skip runs as verified ROUNDS: the intro length varies run to
+        # run (single-shot skips raced it and sampled story screens on
+        # 2026-07-14). Each round replays the pinned single-shot budget
+        # (IntroSkipClicks postmessage clicks with drift stop, SkipPulses
+        # space pulses) and ends with a menu-fingerprint frame check.
+        $introMenuVerified = $false
+        $introMenuVerifyNonblack = $null
+        $introRoundsUsed = 0
+        $introRoundRows = @()
+        $introJson = $null
+        $introResult = $null
+        for ($introRound = 0; $introRound -lt $introRoundCount; $introRound++) {
+            $process.Refresh()
+            if ($process.HasExited) {
+                break
+            }
+            $introRoundsUsed = $introRound + 1
+            $introJson = Join-Path $outDir ("intro-skip-a{0}-round-{1}.json" -f $launchAttempt, $introRound)
+            $introResult = Invoke-MousePath -Process $process -OutputJson $introJson -Points '400,300' -Click $introClick -SpacePulses $introPulsesPerRound -ClickModeOverride $IntroSkipClickMode -ClickRepeatOverride $introClicksPerRound -StopClickRepeatOnDrift $IntroSkipStopClickRepeatOnDrift
+            $introRoundRows += $introResult
+            Start-Sleep -Seconds 2
+            $menuCheckPng = Join-Path $outDir ("intro-menucheck-a{0}-{1}.png" -f $launchAttempt, $introRound)
+            $menuCheckJson = Join-Path $outDir ("intro-menucheck-a{0}-{1}.json" -f $launchAttempt, $introRound)
+            try {
+                $menuCheck = Save-ClientFrame -Process $process -FramePath $menuCheckPng -FrameJson $menuCheckJson
+                $introMenuVerifyNonblack = [double]$menuCheck.NonblackPercent
+                $menuCheckColors = [int]$menuCheck.UniqueSampleColors
+                # Menu fingerprint: nonblack in the menu band, a small static
+                # palette, and a STABLE frame (bright intro/logo/movie frames
+                # can pass a plain nonblack floor but fail band+palette+
+                # stability).
+                $menuBandOk = (
+                    $introMenuVerifyNonblack -ge $IntroMenuVerifyNonblackPercent -and
+                    $introMenuVerifyNonblack -le $IntroMenuVerifyNonblackMaxPercent -and
+                    $menuCheckColors -le $IntroMenuVerifyMaxUniqueColors
+                )
+                if ($menuBandOk) {
+                    Start-Sleep -Milliseconds 800
+                    $menuCheck2Png = Join-Path $outDir ("intro-menucheck-a{0}-{1}b.png" -f $launchAttempt, $introRound)
+                    $menuCheck2Json = Join-Path $outDir ("intro-menucheck-a{0}-{1}b.json" -f $launchAttempt, $introRound)
+                    $menuCheck2 = Save-ClientFrame -Process $process -FramePath $menuCheck2Png -FrameJson $menuCheck2Json
+                    if ($menuCheck2.Hash -eq $menuCheck.Hash) {
+                        $introMenuVerified = $true
+                        break
+                    }
+                }
+            } catch {
+                # capture failures during intro transitions are tolerated; the
+                # next round retries and window health is sampled after the loop
+            }
+        }
+
+        $cursorProbeExitCode = $null
+        $cursorProbeJson = $null
+        if ($introMenuVerified -and $cursorProbeRequired) {
+            $cursorProbeJson = Join-Path $outDir ("cursor-probe-a{0}.json" -f $launchAttempt)
+            $probeArgs = @(
+                (Join-Path $RepoRoot 'tools\menu_pulse_click.py'),
+                '--pid', "$($process.Id)",
+                '--steps', 'cursor-probe:200,150',
+                '--probe-only',
+                '--map-nonblack', '0',
+                '--aim-tolerance', "$PulseAimTolerancePx",
+                '--deadline-sec', '45',
+                '--json', $cursorProbeJson
+            )
+            $previousEap = $ErrorActionPreference
+            $ErrorActionPreference = 'Continue'
+            try {
+                & $PythonFull '-W' 'ignore' @probeArgs 2>&1 | Set-Content -LiteralPath ([System.IO.Path]::ChangeExtension($cursorProbeJson, '.log')) -Encoding ASCII
+                $cursorProbeExitCode = $LASTEXITCODE
+            } finally {
+                $ErrorActionPreference = $previousEap
+            }
+            $cursorProbeAlive = ($cursorProbeExitCode -eq 0)
+        }
+        $launchAttemptRows += [pscustomobject]@{
+            Attempt = $launchAttempt
+            MenuVerified = $introMenuVerified
+            MenuVerifyNonblackPercent = $introMenuVerifyNonblack
+            IntroRoundsUsed = $introRoundsUsed
+            CursorProbeRequired = $cursorProbeRequired
+            CursorProbeExitCode = $cursorProbeExitCode
+            CursorProbeAlive = $cursorProbeAlive
+            CursorProbeJson = $cursorProbeJson
+        }
+        if ($introMenuVerified -and ((-not $cursorProbeRequired) -or $cursorProbeAlive)) {
+            break
+        }
+    }
+    $introClickEvents = [int](@($introRoundRows | ForEach-Object { Convert-NullableInt $_.click_event_count } | Where-Object { $null -ne $_ }) | Measure-Object -Sum).Sum
+    $introStopReasons = @($introRoundRows | ForEach-Object { @($_.click_repeat_stop_reasons) } | Where-Object { $_ })
     $routeResults += [pscustomobject]@{
         Name = 'intro-skip'
         Points = '400,300'
         Click = $introClick
-        PathVerified = [bool]$introResult.path_verified
-        ClickPathVerified = [bool]$introResult.click_path_verified
-        MaxAbsError = Convert-NullableInt $introResult.max_abs_error
-        MaxSampleAbsError = Convert-NullableInt $introResult.max_sample_abs_error
-        ClickEventCount = Convert-NullableInt $introResult.click_event_count
-        MoveMode = $introResult.EffectiveMoveMode
-        ClickMode = $introResult.EffectiveClickMode
-        ClickRepeat = $introResult.EffectiveClickRepeat
+        PathVerified = (@($introRoundRows | Where-Object { [bool]$_.path_verified }).Count -gt 0)
+        ClickPathVerified = (@($introRoundRows | Where-Object { [bool]$_.click_path_verified }).Count -gt 0)
+        MaxAbsError = if ($introResult) { Convert-NullableInt $introResult.max_abs_error } else { $null }
+        MaxSampleAbsError = if ($introResult) { Convert-NullableInt $introResult.max_sample_abs_error } else { $null }
+        ClickEventCount = $introClickEvents
+        ClickRepeatObserved = $introClickEvents
+        TransitionStopObserved = (@($introRoundRows | Where-Object { [bool]$_.click_repeat_stop_observed }).Count -gt 0)
+        RepeatStopReasons = $introStopReasons
+        MenuVerified = $introMenuVerified
+        MenuVerifyNonblackPercent = $introMenuVerifyNonblack
+        MenuVerifyThresholdPercent = $IntroMenuVerifyNonblackPercent
+        IntroRoundsUsed = $introRoundsUsed
+        IntroRoundBudget = $introRoundCount
+        MoveMode = if ($introResult) { $introResult.EffectiveMoveMode } else { $MoveMode }
+        ClickMode = $IntroSkipClickMode
+        ClickRepeat = $IntroSkipClicks
         SpacePulses = $SkipPulses
         InputProofClass = 'intro_skip_harness_prep_not_manual_directinput_release_proof'
-        ProbeExitCode = $introResult.ProbeExitCode
+        ProbeExitCode = if ($introResult) { $introResult.ProbeExitCode } else { 1 }
         Json = $introJson
-        Log = $introResult.ProbeLog
+        Log = if ($introResult) { $introResult.ProbeLog } else { $null }
     }
-    Start-Sleep -Seconds 2
+    $introHealth = Get-WindowHealthSample -Process $process -Phase 'after-intro-wait'
+    $windowHealthSamples += $introHealth
+    $routeWindowHealthStop = ($introHealth.HealthClass -ne 'responsive')
 
+    $pulseRouteSteps = @()
+    $legacyRouteSteps = @()
     foreach ($step in $RouteSteps) {
-        if ($process.HasExited) {
+        if ([bool]$step.Click -and ($Route -in @('map-idle', 'map-pan'))) {
+            $pulseRouteSteps += $step
+        } else {
+            $legacyRouteSteps += $step
+        }
+    }
+
+    if (@($pulseRouteSteps).Count -gt 0 -and ((-not $introMenuVerified) -or ($cursorProbeRequired -and -not $cursorProbeAlive))) {
+        # Fail closed: never aim/click into unverified screens (story pages,
+        # transition frames, or a dead attract-state menu); the missing menu/
+        # cursor verification is already a reported failure and the
+        # map-reached gate will also fail.
+        $pulseRouteSteps = @()
+    }
+    if (@($pulseRouteSteps).Count -gt 0 -and -not $process.HasExited -and -not $routeWindowHealthStop) {
+        $prePulseHealth = Get-WindowHealthSample -Process $process -Phase 'before-pulse-route'
+        $windowHealthSamples += $prePulseHealth
+        if ($prePulseHealth.HealthClass -ne 'responsive') {
+            $routeWindowHealthStop = $true
+        } else {
+            $pulseJson = Join-Path $outDir 'route-pulse-clicks.json'
+            $pulseRun = Invoke-MenuPulseRoute -Process $process -OutputJson $pulseJson -ClickSteps $pulseRouteSteps
+            $pulseSteps = @()
+            if ($pulseRun.Result -and $pulseRun.Result.steps) {
+                $pulseSteps = @($pulseRun.Result.steps)
+            }
+            foreach ($stepDefinition in $pulseRouteSteps) {
+                $stepRow = $pulseSteps | Where-Object { $_.name -eq $stepDefinition.Name } | Select-Object -First 1
+                $routeResults += Convert-PulseStepToRouteRow -PulseRun $pulseRun -StepRow $stepRow -StepDefinition $stepDefinition
+            }
+            if ($pulseRun.Result) {
+                $mapRouteReached = [bool]$pulseRun.Result.map_reached
+                $routeFinalNonblack = if ($null -ne $pulseRun.Result.final_nonblack) { [double]$pulseRun.Result.final_nonblack } else { $null }
+            }
+            Start-Sleep -Milliseconds 1200
+            $postPulseHealth = Get-WindowHealthSample -Process $process -Phase 'after-pulse-route-wait'
+            $windowHealthSamples += $postPulseHealth
+            if ($postPulseHealth.HealthClass -ne 'responsive') {
+                $routeWindowHealthStop = $true
+            }
+        }
+    }
+
+    foreach ($step in $legacyRouteSteps) {
+        if ($process.HasExited -or $routeWindowHealthStop) {
+            break
+        }
+        $preStepHealth = Get-WindowHealthSample -Process $process -Phase ("before-{0}" -f $step.Name)
+        $windowHealthSamples += $preStepHealth
+        if ($preStepHealth.HealthClass -ne 'responsive') {
+            $routeWindowHealthStop = $true
             break
         }
         $safeStepName = $step.Name -replace '[^0-9A-Za-z_.-]', '-'
@@ -704,6 +1239,9 @@ try {
             MaxAbsError = Convert-NullableInt $stepResult.max_abs_error
             MaxSampleAbsError = Convert-NullableInt $stepResult.max_sample_abs_error
             ClickEventCount = Convert-NullableInt $stepResult.click_event_count
+            ClickRepeatObserved = Convert-NullableInt $stepResult.click_event_count
+            TransitionStopObserved = [bool]$stepResult.click_repeat_stop_observed
+            RepeatStopReasons = @($stepResult.click_repeat_stop_reasons)
             MoveMode = $stepResult.EffectiveMoveMode
             ClickMode = $stepResult.EffectiveClickMode
             ClickRepeat = $stepResult.EffectiveClickRepeat
@@ -714,6 +1252,12 @@ try {
             Log = $stepResult.ProbeLog
         }
         Start-Sleep -Milliseconds ([int]$step.WaitMs)
+        $postStepHealth = Get-WindowHealthSample -Process $process -Phase ("after-{0}-wait" -f $step.Name)
+        $windowHealthSamples += $postStepHealth
+        if ($postStepHealth.HealthClass -ne 'responsive') {
+            $routeWindowHealthStop = $true
+            break
+        }
     }
 
     $deadline = (Get-Date).AddSeconds($DurationResolvedSec)
@@ -721,6 +1265,17 @@ try {
     do {
         $processSamples += Get-ProcessSnapshot -Process $process
         if ($process.HasExited) {
+            break
+        }
+
+        $captureHealth = Get-WindowHealthSample -Process $process -Phase ("before-frame-{0:D4}" -f $sampleIndex)
+        $windowHealthSamples += $captureHealth
+        if ($captureHealth.HealthClass -ne 'responsive') {
+            $captureErrors += [pscustomobject]@{
+                Timestamp = (Get-Date).ToString('o')
+                Frame = ('frame-{0:D4}' -f $sampleIndex)
+                Error = "capture skipped because window health was $($captureHealth.HealthClass)"
+            }
             break
         }
 
@@ -787,6 +1342,12 @@ $inputMaxAbsValues = @($routeResults | ForEach-Object { $_.MaxAbsError } | Where
 $inputMaxSampleAbsValues = @($routeResults | ForEach-Object { $_.MaxSampleAbsError } | Where-Object { $_ -ne $null })
 $inputMaxAbsError = if (@($inputMaxAbsValues).Count -gt 0) { [int](Select-NumberMax -Values $inputMaxAbsValues) } else { $null }
 $inputMaxSampleAbsError = if (@($inputMaxSampleAbsValues).Count -gt 0) { [int](Select-NumberMax -Values $inputMaxSampleAbsValues) } else { $null }
+$windowHangSamples = @($windowHealthSamples | Where-Object { $_.HealthClass -eq 'application_hung' })
+$windowMissingWhileAliveSamples = @($windowHealthSamples | Where-Object { $_.HealthClass -eq 'window_missing_while_process_alive' })
+$windowHealthFailureSamples = @($windowHealthSamples | Where-Object { $_.HealthClass -ne 'responsive' -and $_.HealthClass -ne 'process_exited' })
+$windowHangObserved = (@($windowHangSamples).Count -gt 0)
+$windowMissingWhileAliveObserved = (@($windowMissingWhileAliveSamples).Count -gt 0)
+$windowHealthFirstFailure = if (@($windowHealthFailureSamples).Count -gt 0) { @($windowHealthFailureSamples)[0] } else { $null }
 $unexpectedExit = $false
 $exitCode = $null
 if ($process) {
@@ -802,15 +1363,30 @@ if ($process) {
 }
 
 $routeFailures = @($routeResults | Where-Object {
-    (-not $_.PathVerified) -or ($_.Click -and -not $_.ClickPathVerified) -or ($_.ProbeExitCode -notin @(0, 2))
+    (-not (Test-AcceptedIntroTransition -Row $_)) -and
+    ((-not $_.PathVerified) -or ($_.Click -and -not $_.ClickPathVerified) -or ($_.ProbeExitCode -notin @(0, 2)))
 })
 $routeDriftFailures = @($routeResults | Where-Object {
-    ($null -eq $_.MaxAbsError) -or
-    ([int]$_.MaxAbsError -gt $MaxInputDriftPx) -or
-    ($_.Click -and (($null -eq $_.MaxSampleAbsError) -or ([int]$_.MaxSampleAbsError -gt $MaxInputDriftPx)))
+    if ([bool]$_.PSObject.Properties['InputMechanism'] -and $_.InputMechanism -eq 'pulse-relative-engine-aim') {
+        # Pulse rows prove ENGINE-space aim + observed frame transition instead
+        # of OS-cursor drift (the menu never reads the OS cursor).
+        ($_.ProbeExitCode -ne 0) -or
+        ((-not [bool]$_.SkippedMapReached) -and (
+            ($null -eq $_.AimErrorPx) -or
+            ([int]$_.AimErrorPx -gt [int]$_.AimTolerancePx) -or
+            (-not [bool]$_.TransitionVerified)
+        ))
+    } else {
+        ($null -eq $_.MaxAbsError) -or
+        ([int]$_.MaxAbsError -gt $MaxInputDriftPx) -or
+        ($_.ProbeExitCode -notin @(0, 2)) -or
+        ($_.Click -and (-not (Test-AcceptedIntroTransition -Row $_)) -and (($null -eq $_.MaxSampleAbsError) -or ([int]$_.MaxSampleAbsError -gt $MaxInputDriftPx)))
+    }
 })
 $failures = @()
 if ($scriptError) { $failures += $scriptError.Exception.Message }
+if ($windowHangObserved) { $failures += 'application window became nonresponsive during the soak route' }
+if ($windowMissingWhileAliveObserved) { $failures += 'visible application window disappeared while the process remained alive' }
 if ($unexpectedExit) { $failures += "process exited unexpectedly with code $exitCode" }
 if (@($captureErrors).Count -gt 0) { $failures += "capture errors: $(@($captureErrors).Count)" }
 if (@($frameSamples).Count -lt 2) { $failures += "expected at least 2 frame samples" }
@@ -832,6 +1408,15 @@ if (@($routeFailures).Count -gt 0) {
 }
 if (@($routeDriftFailures).Count -gt 0) {
     $failures += "input drift exceeded ${MaxInputDriftPx}px or metric missing: $(@($routeDriftFailures).Count)"
+}
+if ($null -ne $process -and -not $introMenuVerified) {
+    $failures += 'intro skip rounds never verified the main menu on screen'
+}
+if ($null -ne $process -and $cursorProbeRequired -and -not $cursorProbeAlive) {
+    $failures += 'no launch attempt produced an interactive menu (engine cursor never responded to pulse input)'
+}
+if ($Route -in @('map-idle', 'map-pan') -and $mapRouteReached -ne $true) {
+    $failures += 'route did not reach the gameplay map'
 }
 if ($null -eq $workingSetGrowthBytes) {
     $failures += 'working-set growth metric unavailable'
@@ -888,12 +1473,30 @@ $report = [ordered]@{
     input_max_abs_error = $inputMaxAbsError
     input_max_sample_abs_error = $inputMaxSampleAbsError
     max_input_drift_px = $MaxInputDriftPx
+    window_mode = $windowedMode
+    window_health_policy = $plan.window_health_policy
+    window_health_sample_count = @($windowHealthSamples).Count
+    window_hang_observed = $windowHangObserved
+    window_missing_while_alive_observed = $windowMissingWhileAliveObserved
+    window_health_first_failure = $windowHealthFirstFailure
     intro_skip = [ordered]@{
         click_mode = $IntroSkipClickMode
         click_repeat = $IntroSkipClicks
+        stop_click_repeat_on_drift = $IntroSkipStopClickRepeatOnDrift
         space_pulses = $SkipPulses
         proof_class = 'intro_skip_harness_prep_not_manual_directinput_release_proof'
+        menu_verified = $introMenuVerified
+        menu_verify_nonblack_percent = $introMenuVerifyNonblack
+        menu_verify_threshold_percent = $IntroMenuVerifyNonblackPercent
+        rounds_used = $introRoundsUsed
     }
+    map_route_reached = $mapRouteReached
+    route_final_nonblack_percent = $routeFinalNonblack
+    map_reached_nonblack_threshold_percent = $MapReachedNonblackPercent
+    launch_attempt_count = @($launchAttemptRows).Count
+    launch_attempts = @($launchAttemptRows)
+    cursor_probe_required = $cursorProbeRequired
+    cursor_probe_alive = $cursorProbeAlive
     process_sample_count = @($processSamples).Count
     working_set_growth_bytes = $workingSetGrowthBytes
     private_memory_growth_bytes = $privateMemoryGrowthBytes
@@ -916,6 +1519,7 @@ $report = [ordered]@{
     process_samples = @($processSamples)
     frame_samples = @($frameSamples)
     capture_errors = @($captureErrors)
+    window_health_samples = @($windowHealthSamples)
 }
 
 $reportDir = Split-Path -Parent $ReportJsonFull

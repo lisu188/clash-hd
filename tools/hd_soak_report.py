@@ -95,6 +95,52 @@ def integer_or_none(value: Any) -> int | None:
         return None
 
 
+def accepted_intro_transition(row: dict[str, Any]) -> bool:
+    if row.get("Name") != "intro-skip":
+        return False
+    # Preferred acceptance: the harness verified the main menu on screen after
+    # the intro-skip rounds (frame nonblack at menu levels).
+    if row.get("MenuVerified") is True:
+        return True
+    reasons = row.get("RepeatStopReasons") or []
+    if not isinstance(reasons, (list, tuple)):
+        return False
+    click_repeat_observed = integer_or_none(row.get("ClickRepeatObserved"))
+    return (
+        row.get("Click") is True
+        and row.get("PathVerified") is True
+        and row.get("TransitionStopObserved") is True
+        and click_repeat_observed is not None
+        and click_repeat_observed > 0
+        and "sample_drift_after_click" in reasons
+        and integer_or_none(row.get("ProbeExitCode")) in {0, 2}
+    )
+
+
+def is_pulse_engine_aim_row(row: dict[str, Any]) -> bool:
+    return row.get("InputMechanism") == "pulse-relative-engine-aim"
+
+
+def pulse_row_drift_failed(row: dict[str, Any]) -> bool:
+    """Pulse rows prove ENGINE-space aim + frame transition, not OS drift.
+
+    The 2026-07-17 diagnosis showed the menu only reads the DirectInput
+    accumulator (pulse-fed), so OS-cursor drift is meaningless for these rows;
+    the honest gates are aim error within tolerance and an observed frame
+    transition (or the step being skipped because the map was already
+    reached).
+    """
+    if integer_or_none(row.get("ProbeExitCode")) != 0:
+        return True
+    if row.get("SkippedMapReached") is True:
+        return False
+    aim_error = integer_or_none(row.get("AimErrorPx"))
+    aim_tolerance = integer_or_none(row.get("AimTolerancePx"))
+    if aim_error is None or aim_tolerance is None or aim_error > aim_tolerance:
+        return True
+    return row.get("TransitionVerified") is not True
+
+
 def float_or_none(value: Any) -> float | None:
     if value is None or value == "":
         return None
@@ -660,12 +706,17 @@ def evaluate_report(
     route_failures = [
         row
         for row in route_results
-        if row.get("PathVerified") is False or (row.get("Click") is True and row.get("ClickPathVerified") is False)
+        if not accepted_intro_transition(row)
+        and (row.get("PathVerified") is False or (row.get("Click") is True and row.get("ClickPathVerified") is False))
     ]
     route_drift_failures = []
     computed_max_abs_errors: list[int] = []
     computed_max_sample_abs_errors: list[int] = []
     for row in route_results:
+        if is_pulse_engine_aim_row(row):
+            if pulse_row_drift_failed(row):
+                route_drift_failures.append(row)
+            continue
         max_abs_error = integer_or_none(row.get("MaxAbsError"))
         max_sample_abs_error = integer_or_none(row.get("MaxSampleAbsError"))
         probe_exit_code = integer_or_none(row.get("ProbeExitCode"))
@@ -680,10 +731,11 @@ def evaluate_report(
                 row_drift_failed = True
         if row.get("Click") is True:
             if max_sample_abs_error is None:
-                row_drift_failed = True
+                if not accepted_intro_transition(row):
+                    row_drift_failed = True
             else:
                 computed_max_sample_abs_errors.append(max_sample_abs_error)
-                if max_sample_abs_error > max_input_drift_px:
+                if max_sample_abs_error > max_input_drift_px and not accepted_intro_transition(row):
                     row_drift_failed = True
         elif max_sample_abs_error is not None:
             computed_max_sample_abs_errors.append(max_sample_abs_error)
@@ -742,6 +794,26 @@ def evaluate_report(
             "expected_final_route_marker": expected_final_route_marker,
             "route_markers": route_names,
             "missing_route_name_count": missing_route_name_count,
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    map_route_reached = report.get("map_route_reached")
+    route_final_nonblack = float_or_none(report.get("route_final_nonblack_percent"))
+    map_screen_required = route in {"map-idle", "map-pan"}
+    if executed and map_screen_required and map_route_reached is not True:
+        failures.append(
+            "map route did not verify the gameplay map on screen (map_route_reached is not true)"
+        )
+    checks["route_screen_outcome"] = check_record(
+        (not executed) or not failures,
+        {
+            "route": route,
+            "map_screen_required": map_screen_required,
+            "map_route_reached": map_route_reached,
+            "route_final_nonblack_percent": route_final_nonblack,
             "checked": executed,
         },
         failures,

@@ -171,6 +171,102 @@ def test_unexpected_process_exit_classification() -> None:
     assert "CDB crash logging" in result["next_probe"]
 
 
+def test_matching_hidden_cdb_followup_advances_unexpected_exit_probe() -> None:
+    report = base_report()
+    report["process_exited_unexpectedly"] = True
+    report["exit_code"] = 1
+    report["clean_stop"] = False
+    report["failures"] = ["process exited unexpectedly with code 1"]
+    followup = {
+        "passed": True,
+        "status": "cdb_exit_not_reproduced_hidden_memory_proxy",
+        "candidate_sha256": report["candidate_sha256"],
+        "stage": report["stage"],
+        "route": report["route"],
+        "hidden_desktop": True,
+        "presentation": {"proxy_present_enabled": False},
+        "route_evidence": {"gameplay_observed": True},
+        "observation": {
+            "post_dump_observation_completed": True,
+            "post_dump_exit_observed": False,
+            "access_violation_observed": False,
+            "app_request_quit_observed": False,
+        },
+    }
+    result = triage.build_triage(report, cdb_followup=followup)
+    assert result["passed"] is False
+    assert result["classification"] == "unexpected_process_exit"
+    assert result["cdb_followup"]["matched"] is True
+    assert "application/windowed wrapper" in result["next_probe"]
+    followup["candidate_sha256"] = "b" * 64
+    mismatch = triage.build_triage(report, cdb_followup=followup)
+    assert mismatch["cdb_followup"]["matched"] is False
+    assert "CDB crash logging" in mismatch["next_probe"]
+
+
+def test_matching_wer_followup_classifies_os_closed_application_hang() -> None:
+    report = base_report()
+    report["process_exited_unexpectedly"] = True
+    report["exit_code"] = 1
+    report["clean_stop"] = False
+    report["failures"] = ["process exited unexpectedly with code 1"]
+    followup = {
+        "passed": True,
+        "status": "application_hang_confirmed_wer_closed",
+        "candidate_sha256": report["candidate_sha256"],
+        "stage": report["stage"],
+        "route": report["route"],
+        "event_evidence": {
+            "event_name": "AppHangB1",
+            "application_hang_1002_count": 1,
+            "wer_apphang_1001_count": 2,
+            "application_error_1000_count": 0,
+            "windows_closed_nonresponsive_application": True,
+        },
+        "timeline_correlation": {
+            "candidate_name_matches": True,
+            "event_within_failed_run_window": True,
+        },
+    }
+    result = triage.build_triage(report, wer_followup=followup)
+    assert result["passed"] is False
+    assert result["classification"] == "application_hang_wer_closed"
+    assert result["wer_followup"]["matched"] is True
+    assert result["wer_followup"]["window_health_mitigation_ready"] is False
+    assert "window responsiveness" in result["next_probe"]
+    followup["mitigation"] = {
+        "window_health_instrumentation_added": True,
+        "harness_guard_path": "captures/current/hd-soak-harness-guard-current.json",
+        "harness_guard_passed": True,
+        "window_health_stop_check_passed": True,
+    }
+    mitigated = triage.build_triage(report, wer_followup=followup)
+    assert mitigated["wer_followup"]["window_health_mitigation_ready"] is True
+    assert "fresh tokened" in mitigated["next_probe"]
+    followup["event_evidence"]["event_name"] = "APPCRASH"
+    mismatch = triage.build_triage(report, wer_followup=followup)
+    assert mismatch["classification"] == "unexpected_process_exit"
+    assert mismatch["wer_followup"]["matched"] is False
+
+
+def test_runtime_window_health_classifies_hang_before_generic_exit() -> None:
+    report = base_report()
+    report["process_exited_unexpectedly"] = True
+    report["exit_code"] = 1
+    report["clean_stop"] = False
+    report["window_hang_observed"] = True
+    report["window_health_samples"] = [
+        {"Phase": "after-load-button-wait", "HealthClass": "application_hung"}
+    ]
+    report["failures"] = [
+        "application window became nonresponsive during the soak route",
+        "process exited unexpectedly with code 1",
+    ]
+    result = triage.build_triage(report)
+    assert result["classification"] == "application_hang_detected"
+    assert "window_health_samples" in result["next_probe"]
+
+
 def test_intro_skip_input_drift_exit_classification() -> None:
     report = base_report()
     report["process_exited_unexpectedly"] = True
@@ -259,6 +355,52 @@ def test_intro_skip_probe_json_enriches_missing_route_mode() -> None:
     assert route["probe_json"]["max_sample_phase"] == "after_sendinput_down"
 
 
+def test_later_no_window_probe_preserves_intro_skip_exit_classification() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        load_log = tmp / "route-load-button.log"
+        load_log.write_text(
+            "TimeoutError: no visible window found for pid 24184\n",
+            encoding="ascii",
+        )
+        report = base_report()
+        report["route"] = "map-idle"
+        report["final_route_marker"] = "load-button"
+        report["process_exited_unexpectedly"] = True
+        report["exit_code"] = 1
+        report["clean_stop"] = False
+        report["frame_sample_count"] = 0
+        report["input_max_sample_abs_error"] = 311
+        report["failures"] = [
+            "process exited unexpectedly with code 1",
+            "route/input probe failures: 2",
+            "input drift exceeded 1px or metric missing: 2",
+        ]
+        report["route_results"][0]["ClickPathVerified"] = False
+        report["route_results"][0]["MaxSampleAbsError"] = 311
+        report["route_results"][0]["ClickMode"] = "postmessage"
+        report["route_results"][0]["ClickRepeat"] = 8
+        report["route_results"].append(
+            {
+                "Name": "load-button",
+                "Points": "300,218",
+                "Click": True,
+                "PathVerified": False,
+                "ClickPathVerified": False,
+                "ProbeExitCode": 1,
+                "Log": str(load_log),
+            }
+        )
+        result = triage.build_triage(report)
+
+    assert result["classification"] == "intro_skip_input_drift_exit"
+    assert result["last_route_marker"] == "load-button"
+    assert result["intro_skip_route_result"]["click_mode"] == "postmessage"
+    assert "stop or reacquire" in result["next_probe"]
+    load_row = result["probe_log_diagnostics"]["rows"][1]
+    assert load_row["signals"] == ["no_visible_process_window"]
+
+
 def test_render_regression_classification() -> None:
     report = base_report()
     report["failures"] = [
@@ -311,6 +453,52 @@ def test_input_drift_failure_classification() -> None:
     assert result["classification"] == "input_route_failure"
     assert result["last_route_result"]["max_abs_error"] == 4
     assert result["input_metrics"]["max_input_drift_px"] == 1
+
+
+def test_sendinput_permission_denial_is_environment_failure() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        log_path = Path(directory) / "intro-skip.log"
+        log_path.write_text(
+            "PermissionError: [WinError 5] SendInput absolute move\n",
+            encoding="ascii",
+        )
+        report = base_report()
+        report["failures"] = [
+            "nonblack percent dropped below 10",
+            "route/input probe failures: 1",
+            "input drift exceeded 1px or metric missing: 1",
+        ]
+        report["route_results"][0]["PathVerified"] = False
+        report["route_results"][0]["ClickPathVerified"] = False
+        report["route_results"][0]["ProbeExitCode"] = 1
+        report["route_results"][0]["Log"] = str(log_path)
+        result = triage.build_triage(report)
+
+    assert result["classification"] == "input_environment_permission_denied"
+    assert "unsandboxed Windows session" in result["next_probe"]
+    diagnostics = result["probe_log_diagnostics"]
+    assert diagnostics["permission_denied_route_count"] == 1
+    assert diagnostics["permission_denied_routes"] == ["intro-skip"]
+    assert diagnostics["rows"][0]["signals"] == ["sendinput_permission_denied"]
+    assert result["failure_context"]["input_permission_denied_routes"] == ["intro-skip"]
+
+
+def test_cursor_query_denial_is_not_misattributed_to_sendinput() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        log_path = Path(directory) / "load-slot0.log"
+        log_path.write_text(
+            '{"sendinput_down": 1, "cursor_error": "[WinError 5] GetCursorPos"}\n',
+            encoding="ascii",
+        )
+        report = base_report()
+        report["failures"] = ["route/input probe failures: 1"]
+        report["route_results"][0]["Name"] = "load-slot0"
+        report["route_results"][0]["Log"] = str(log_path)
+        result = triage.build_triage(report)
+
+    row = result["probe_log_diagnostics"]["rows"][0]
+    assert result["classification"] == "input_environment_permission_denied"
+    assert row["signals"] == ["cursor_query_permission_denied"]
 
 
 def test_frame_progression_failure_classification() -> None:
@@ -451,12 +639,18 @@ def run_tests() -> None:
     test_pending_approval_classification()
     test_av_crash_classification()
     test_unexpected_process_exit_classification()
+    test_matching_hidden_cdb_followup_advances_unexpected_exit_probe()
+    test_matching_wer_followup_classifies_os_closed_application_hang()
+    test_runtime_window_health_classifies_hang_before_generic_exit()
     test_intro_skip_input_drift_exit_classification()
     test_intro_skip_probe_json_enriches_missing_route_mode()
+    test_later_no_window_probe_preserves_intro_skip_exit_classification()
     test_render_regression_classification()
     test_visual_anomaly_summary_records_black_and_stripe_risk()
     test_input_route_failure_classification()
     test_input_drift_failure_classification()
+    test_sendinput_permission_denial_is_environment_failure()
+    test_cursor_query_denial_is_not_misattributed_to_sendinput()
     test_frame_progression_failure_classification()
     test_process_growth_regression_classification()
     test_artifact_budget_classification()
