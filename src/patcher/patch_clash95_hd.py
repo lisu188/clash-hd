@@ -1534,6 +1534,25 @@ STAGE_GROUPS = {
         "terrain-tooltip-bottom-center",
         "selected-unit-command-panel-right-bottom",
     ),
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore": (
+        "display",
+        "shared-surface",
+        "gameplay-surface",
+        *DYNAMIC_VIEWPORT_GROUPS,
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "helpers",
+        "surface-blit-hd-aware",
+        "menu-center-hitboxes",
+        "mouse-dynamic-origin",
+        "map-surface-upgrade-scrollclamp",
+        "terrain-tooltip-bottom-center",
+        "selected-unit-command-panel-right-bottom",
+        "frame-restore-bands",
+    ),
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose": (
         "display",
         "shared-surface",
@@ -2798,6 +2817,7 @@ def parse_args() -> argparse.Namespace:
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter bottom-docks the map terrain tooltip while preserving its stock horizontal alignment; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom docks the six gameplay command descriptors to the right-bottom screen edges and widens both draw clips; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout combines those two user-chosen validation anchors without changing the stable stage; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore adds the validation-only frame-restore-bands gutter repaint to the hdlayout lane so visible candidates also carry the restored border frame; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose adds validation-only status/action composition copies into the HD bottom strip; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar adds a validation-only first-mission selected-unit text/morale action-panel copyback to the HD map surface; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw reruns that selected-unit panel after sub_40ADF0 full-redraw exits and expects the panel in the bottom strip; "

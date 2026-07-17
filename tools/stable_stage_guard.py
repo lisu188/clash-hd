@@ -40,6 +40,7 @@ TOOLTIP_BOTTOM_CENTER_STAGE = patch_clash95_hd.DEFAULT_STAGE + "-tooltipbottomce
 UNIT_COMMAND_PANEL_STAGE = patch_clash95_hd.DEFAULT_STAGE + "-unitcommandpanel-rightbottom"
 HD_LAYOUT_STAGE = patch_clash95_hd.DEFAULT_STAGE + "-hdlayout"
 FRAME_RESTORE_STAGE = patch_clash95_hd.DEFAULT_STAGE + "-framerestore"
+HD_LAYOUT_FRAME_RESTORE_STAGE = HD_LAYOUT_STAGE + "-framerestore"
 CASTLECENTER_STAGE = (
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-"
     "presentbounds-minimapright-dynvswitch-castlecenter"
@@ -82,6 +83,11 @@ VALIDATION_STAGE_EXPECTATIONS = {
         "selected-unit-command-panel-right-bottom",
     ),
     FRAME_RESTORE_STAGE: ("frame-restore-bands",),
+    HD_LAYOUT_FRAME_RESTORE_STAGE: (
+        "terrain-tooltip-bottom-center",
+        "selected-unit-command-panel-right-bottom",
+        "frame-restore-bands",
+    ),
     CASTLECENTER_STAGE: ("castle-ui-center-present",),
     CASTLECENTER_HITBOX_STAGE: (
         "castle-ui-center-present",
@@ -214,9 +220,18 @@ def build_stage_scope_checks(current_stable_stage: str) -> dict[str, Any]:
             f"validation-only groups found in stable stage: {stable_validation_groups}"
         )
 
+    stable_prefix = current_stable_stage + "-"
     for stage, extra_groups in VALIDATION_STAGE_EXPECTATIONS.items():
         groups = stage_groups(stage)
-        check_name = f"validation_stage_scope_{stage.split('-')[-1]}"
+        # Name the check after the full suffix beyond the stable stage so
+        # combined lanes (e.g. -hdlayout-framerestore) cannot silently
+        # overwrite a single-lane check that shares the same last token.
+        scope = (
+            stage[len(stable_prefix):]
+            if stage.startswith(stable_prefix)
+            else stage.split("-")[-1]
+        )
+        check_name = f"validation_stage_scope_{scope.replace('-', '_')}"
         if groups is None:
             checks[check_name] = failed_record(
                 f"validation stage is not defined: {stage}",

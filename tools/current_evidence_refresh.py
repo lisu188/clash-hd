@@ -27,6 +27,7 @@ import battle_visible_input_summary
 import capture_corpus_index
 import current_completion_summary
 import action_panel_route_summary
+import border_frame_restore_check
 import border_tooltip_summary
 import docs_consistency_guard
 import evidence_index_check
@@ -125,6 +126,7 @@ import test_battle_visible_harness_guard
 import test_battle_visible_input_summary
 import test_battle_ui_summary
 import test_battle_ui_gate
+import test_border_frame_restore_check
 import test_no_popup_guards
 import test_no_popup_map_evidence_matrix
 import test_no_visible_runtime_guard
@@ -335,6 +337,16 @@ DEFAULT_RIGHT_BOTTOM_VISUAL_ARTIFACT_GUARD_TESTS_JSON = Path(
 )
 DEFAULT_RIGHT_BOTTOM_VISUAL_ARTIFACT_GUARD_TESTS_MD = Path(
     "captures/current/right-bottom-visual-artifact-guard-tests-current.md"
+)
+DEFAULT_BORDER_FRAME_RESTORE_EVIDENCE_JSON = border_frame_restore_check.DEFAULT_EVIDENCE_JSON
+DEFAULT_BORDER_FRAME_RESTORE_REALRUNTIME_JSON = border_frame_restore_check.DEFAULT_REALRUNTIME_JSON
+DEFAULT_BORDER_FRAME_RESTORE_CHECK_JSON = border_frame_restore_check.DEFAULT_JSON
+DEFAULT_BORDER_FRAME_RESTORE_CHECK_MD = border_frame_restore_check.DEFAULT_MD
+DEFAULT_BORDER_FRAME_RESTORE_CHECK_TESTS_JSON = Path(
+    "captures/current/border-frame-restore-check-tests-current.json"
+)
+DEFAULT_BORDER_FRAME_RESTORE_CHECK_TESTS_MD = Path(
+    "captures/current/border-frame-restore-check-tests-current.md"
 )
 DEFAULT_FIRST_MISSION_VISUAL_AUDIT_JSON = first_mission_visual_audit.DEFAULT_JSON
 DEFAULT_FIRST_MISSION_VISUAL_AUDIT_MD = first_mission_visual_audit.DEFAULT_MD
@@ -2679,6 +2691,65 @@ def build_first_mission_visual_audit_tests(args: argparse.Namespace) -> dict[str
             "proves first-mission visual audit detects stripe signatures, large black UI patches, "
             "legacy middle action-bar placement, and diagnostic black frames, and only excuses proxy-black "
             "regions with positive real-runtime corroboration, without launching runtime"
+        ),
+    )
+
+
+def build_border_frame_restore_check(args: argparse.Namespace) -> dict[str, Any]:
+    check_args = argparse.Namespace(
+        evidence_json=args.border_frame_restore_evidence_json,
+        realruntime_json=args.border_frame_restore_realruntime_json,
+        proxy_run_token=border_frame_restore_check.DEFAULT_PROXY_RUN_TOKEN,
+        real_runtime_run_token=border_frame_restore_check.DEFAULT_REAL_RUNTIME_RUN_TOKEN,
+        repo_root=border_frame_restore_check.REPO_ROOT,
+    )
+    report = border_frame_restore_check.build_check(check_args)
+    write_json(args.border_frame_restore_check_json, report)
+    border_frame_restore_check.write_markdown(args.border_frame_restore_check_md, report)
+    checks = report.get("checks") or {}
+    return {
+        "passed": bool(report.get("passed")),
+        "json": str(args.border_frame_restore_check_json),
+        "markdown": str(args.border_frame_restore_check_md),
+        "summary": {
+            "patch_group": report.get("patch_group"),
+            "validation_stage": report.get("validation_stage"),
+            "real_runtime_frames": report.get("real_runtime_frames"),
+            "proxy_surface_evidence_passed": bool(
+                (checks.get("proxy_surface_evidence") or {}).get("passed")
+            ),
+            "real_runtime_evidence_passed": bool(
+                (checks.get("real_runtime_evidence") or {}).get("passed")
+            ),
+            "guard_policy": report.get("guard_policy"),
+            "runtime_policy": report.get("runtime_policy"),
+        },
+        "failures": report.get("failures", []),
+    }
+
+
+def build_border_frame_restore_check_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_border_frame_restore_check,
+        tests=[
+            "border_frame_restore_check passes the committed proxy plus real-runtime band evidence shape",
+            "border_frame_restore_check fails when an evidence file is missing",
+            "border_frame_restore_check fails when a border band region disappears",
+            "border_frame_restore_check fails when an HD extension band goes black",
+            "border_frame_restore_check fails when histogram authenticity similarity drops below the minimum",
+            "border_frame_restore_check fails when the recorded gate failed",
+            "border_frame_restore_check fails when the recorded gate thresholds were weakened",
+            "border_frame_restore_check fails when the real-runtime frame reference is missing",
+            "border_frame_restore_check fails when a referenced source frame no longer exists",
+            "border_frame_restore_check CLI writes JSON/Markdown and honors --require-pass",
+        ],
+        title="Border Frame-Restore Check Tests",
+        json_path=args.border_frame_restore_check_tests_json,
+        md_path=args.border_frame_restore_check_tests_md,
+        guard_policy=(
+            "proves the frame-restore-bands lane keeps every border band, passing "
+            "authenticity gates at frozen thresholds, and a resolvable real-runtime "
+            "frame reference, failing closed on any missing file or field"
         ),
     )
 
@@ -7659,6 +7730,8 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["right_bottom_blocker_triage_tests"] = build_right_bottom_blocker_triage_tests(args)
     checks["right_bottom_visual_artifact_guard_tests"] = build_right_bottom_visual_artifact_guard_tests(args)
     checks["first_mission_visual_audit_tests"] = build_first_mission_visual_audit_tests(args)
+    checks["border_frame_restore_check"] = build_border_frame_restore_check(args)
+    checks["border_frame_restore_check_tests"] = build_border_frame_restore_check_tests(args)
     checks["right_bottom_grid_hit_summary_tests"] = build_right_bottom_grid_hit_tests(args)
     checks["right_bottom_grid_hit_probe_guard_tests"] = build_right_bottom_grid_hit_probe_guard_tests(args)
     checks["right_bottom_natural_route_guard_tests"] = build_right_bottom_natural_route_guard_tests(args)
@@ -8712,6 +8785,36 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--first-mission-visual-diff-threshold", type=float, default=40.0)
     parser.add_argument("--first-mission-visual-max-stripe-high-percent", type=float, default=12.0)
     parser.add_argument("--first-mission-visual-max-stripe-excess-percent", type=float, default=8.0)
+    parser.add_argument(
+        "--border-frame-restore-evidence-json",
+        type=Path,
+        default=DEFAULT_BORDER_FRAME_RESTORE_EVIDENCE_JSON,
+    )
+    parser.add_argument(
+        "--border-frame-restore-realruntime-json",
+        type=Path,
+        default=DEFAULT_BORDER_FRAME_RESTORE_REALRUNTIME_JSON,
+    )
+    parser.add_argument(
+        "--border-frame-restore-check-json",
+        type=Path,
+        default=DEFAULT_BORDER_FRAME_RESTORE_CHECK_JSON,
+    )
+    parser.add_argument(
+        "--border-frame-restore-check-md",
+        type=Path,
+        default=DEFAULT_BORDER_FRAME_RESTORE_CHECK_MD,
+    )
+    parser.add_argument(
+        "--border-frame-restore-check-tests-json",
+        type=Path,
+        default=DEFAULT_BORDER_FRAME_RESTORE_CHECK_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--border-frame-restore-check-tests-md",
+        type=Path,
+        default=DEFAULT_BORDER_FRAME_RESTORE_CHECK_TESTS_MD,
+    )
     parser.add_argument(
         "--right-bottom-compose-decision-tests-json",
         type=Path,
