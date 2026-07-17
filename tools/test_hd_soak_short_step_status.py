@@ -193,6 +193,31 @@ def test_failed_report_with_mismatched_triage_fails_closed() -> None:
     assert any("triage route does not match" in failure for failure in report["failures"])
 
 
+def test_apphang_triage_exposes_window_health_rerun_readiness() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        manifest_data = manifest_fixture(tmp)
+        first = manifest_data["step_reports"][0]
+        triage = triage_report(first)
+        triage["classification"] = "application_hang_wer_closed"
+        triage["next_probe"] = "generate a fresh tokened windowed retry packet"
+        triage["wer_followup"] = {
+            "matched": True,
+            "status": "application_hang_confirmed_wer_closed",
+            "window_health_mitigation_ready": True,
+        }
+        write_json(Path(first["paths"]["report_json"]), soak_report(first, passed=False))
+        write_json(Path(first["paths"]["guard_json"]), guard_report(first, overall=False))
+        write_json(Path(first["paths"]["triage_json"]), triage)
+        report = status.build_report(args_for(tmp, manifest_data))
+    summary = report["steps"][0]["summary"]
+    assert report["passed"] is True, report["failures"]
+    assert report["current_step"]["status"] == "failed_classified_application_hang_wer_closed"
+    assert summary["wer_followup_matched"] is True
+    assert summary["wer_followup_status"] == "application_hang_confirmed_wer_closed"
+    assert summary["window_health_mitigation_ready"] is True
+
+
 def test_cli_writes_outputs() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -225,6 +250,7 @@ def run_tests() -> None:
     test_canonical_report_with_mismatched_guard_fails_closed()
     test_failed_report_with_triage_is_classified_status()
     test_failed_report_with_mismatched_triage_fails_closed()
+    test_apphang_triage_exposes_window_health_rerun_readiness()
     test_cli_writes_outputs()
 
 

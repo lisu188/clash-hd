@@ -61,6 +61,7 @@ def reports() -> dict[str, dict[str, Any]]:
             "checks": {
                 "intro_skip_policy": {"passed": True},
                 "visible_runtime_opt_in": {"passed": True},
+                "windowed_mode": {"passed": True},
                 "protected_stage_boundary": {"passed": True},
             },
         },
@@ -117,6 +118,42 @@ def test_ready_packet_passes() -> None:
     assert "-AllowVisibleRuntime" in report["dry_run_plan"]["approval_gated_execute_command"]
     assert "-VisibleRuntimeApprovalExpiresUtc" in report["dry_run_plan"]["approval_gated_execute_command"]
     assert "-VisibleRuntimeApprovalToken" in report["dry_run_plan"]["approval_gated_execute_command"]
+
+
+def test_input_environment_denied_map_attempt_preserves_readiness() -> None:
+    data = reports()
+    data["step_status"]["current_step"]["status"] = (
+        "failed_classified_input_environment_permission_denied"
+    )
+    report = build_fixture_report(data)
+
+    assert report["passed"] is True, report["failures"]
+    assert report["current_step"]["status"] == (
+        "failed_classified_input_environment_permission_denied"
+    )
+
+
+def test_intro_transition_failure_preserves_readiness_after_harness_fix() -> None:
+    data = reports()
+    data["step_status"]["current_step"]["status"] = (
+        "failed_classified_intro_skip_input_drift_exit"
+    )
+    report = build_fixture_report(data)
+
+    assert report["passed"] is True, report["failures"]
+    assert report["intro_skip_contract"]["stop_click_repeat_on_drift"] is True
+
+
+def test_unexpected_process_exit_is_not_applicable_not_rerun_ready() -> None:
+    data = reports()
+    data["step_status"]["current_step"]["status"] = (
+        "failed_classified_unexpected_process_exit"
+    )
+    report = build_fixture_report(data)
+
+    assert report["passed"] is True, report["failures"]
+    assert report["status"] == "not_applicable_current_failure"
+    assert "No intro-skip rerun is authorized" in report["approval_boundary"]
 
 
 def test_rejects_wrong_triage_classification() -> None:
@@ -208,6 +245,9 @@ def test_cli_writes_outputs() -> None:
 
 def run_tests() -> None:
     test_ready_packet_passes()
+    test_input_environment_denied_map_attempt_preserves_readiness()
+    test_intro_transition_failure_preserves_readiness_after_harness_fix()
+    test_unexpected_process_exit_is_not_applicable_not_rerun_ready()
     test_rejects_wrong_triage_classification()
     test_rejects_intro_skip_command_drift()
     test_rejects_visible_runtime_token_drift()

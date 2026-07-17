@@ -49,6 +49,8 @@ EXPECTED_MAX_HANDLE_GROWTH = 128
 EXPECTED_INTRO_SKIP_CLICK_MODE = "postmessage"
 EXPECTED_INTRO_SKIP_CLICKS = 8
 EXPECTED_SKIP_PULSES = 4
+EXPECTED_WINDOW_DISPLAY = "application"
+EXPECTED_WINDOW_PRESENTATION = "windowed"
 MAX_DRY_RUN_PLAN_AGE_HOURS = 12
 MIN_APPROVAL_TTL_MINUTES = 30
 PYTHON_EXE = (
@@ -114,7 +116,7 @@ def current_failure_summary(step: dict[str, Any]) -> dict[str, Any] | None:
     summary = step.get("summary") or {}
     if not summary.get("classification"):
         return None
-    return {
+    result = {
         "classification": summary.get("classification"),
         "next_probe": summary.get("next_probe"),
         "frame_sample_count": summary.get("frame_sample_count"),
@@ -125,6 +127,14 @@ def current_failure_summary(step: dict[str, Any]) -> dict[str, Any] | None:
         "palette_or_stripe_risk_count": summary.get("palette_or_stripe_risk_count"),
         "missing_nonblack_bounds_count": summary.get("missing_nonblack_bounds_count"),
     }
+    for key in (
+        "wer_followup_matched",
+        "wer_followup_status",
+        "window_health_mitigation_ready",
+    ):
+        if key in summary:
+            result[key] = summary.get(key)
+    return result
 
 
 def text_contains_path(text: str, path_text: str | None) -> bool:
@@ -207,6 +217,8 @@ def approval_limits_from_plan(plan: dict[str, Any], approval_ttl: dict[str, Any]
     frame = plan.get("frame_limits") or {}
     input_limits = plan.get("input_limits") or {}
     approval = plan.get("visible_runtime_approval") or {}
+    window_mode = plan.get("window_mode") or {}
+    intro_skip = plan.get("intro_skip") or {}
     return {
         "sample_interval_sec": plan.get("sample_interval_sec"),
         "max_input_drift_px": input_limits.get("max_input_drift_px"),
@@ -220,6 +232,13 @@ def approval_limits_from_plan(plan: dict[str, Any], approval_ttl: dict[str, Any]
         "approval_expires_utc": approval.get("expires_utc"),
         "approval_remaining_seconds": approval_ttl.get("remaining_seconds"),
         "min_approval_ttl_minutes": approval_ttl.get("min_remaining_minutes"),
+        "window_mode_required": window_mode.get("Required"),
+        "window_display": window_mode.get("Display"),
+        "window_presentation": window_mode.get("Presentation"),
+        "window_config_path": window_mode.get("Path"),
+        "window_config_sha256": window_mode.get("Sha256"),
+        "intro_stop_click_repeat_on_drift": intro_skip.get("stop_click_repeat_on_drift"),
+        "window_health_stop_required": True,
     }
 
 
@@ -333,10 +352,22 @@ def dry_run_plan_failures(
         failures.append("dry-run plan intro_skip click_mode is not postmessage")
     if int(intro_skip.get("click_repeat") or 0) != EXPECTED_INTRO_SKIP_CLICKS:
         failures.append(f"dry-run plan intro_skip click_repeat is not {EXPECTED_INTRO_SKIP_CLICKS}")
+    if intro_skip.get("stop_click_repeat_on_drift") is not True:
+        failures.append("dry-run plan intro_skip does not stop repeated clicks on transition drift")
     if int(intro_skip.get("space_pulses") or 0) != EXPECTED_SKIP_PULSES:
         failures.append(f"dry-run plan intro_skip space_pulses is not {EXPECTED_SKIP_PULSES}")
     if intro_skip.get("proof_class") != "intro_skip_harness_prep_not_manual_directinput_release_proof":
         failures.append("dry-run plan intro_skip proof_class is missing the non-manual proof boundary")
+    window_mode = plan.get("window_mode") or {}
+    window_config_sha256 = str(window_mode.get("Sha256") or "")
+    if window_mode.get("Passed") is not True or window_mode.get("Required") is not True:
+        failures.append("dry-run plan windowed-mode check is not required and passing")
+    if window_mode.get("Display") != EXPECTED_WINDOW_DISPLAY:
+        failures.append("dry-run plan window display is not application")
+    if window_mode.get("Presentation") != EXPECTED_WINDOW_PRESENTATION:
+        failures.append("dry-run plan window presentation is not windowed")
+    if len(window_config_sha256) != 64 or not all(ch in "0123456789abcdefABCDEF" for ch in window_config_sha256):
+        failures.append("dry-run plan windowed config SHA-256 is missing or malformed")
     approval = plan.get("visible_runtime_approval") or {}
     token = str(approval.get("token") or "")
     if len(token) != 16 or not all(ch in "0123456789abcdef" for ch in token):
@@ -351,6 +382,8 @@ def dry_run_plan_failures(
     token_fields = approval.get("token_fields") or []
     if approval_expires_utc and approval_expires_utc not in token_fields:
         failures.append("dry-run plan visible runtime approval expiry is not covered by token_fields")
+    if window_config_sha256 and window_config_sha256 not in token_fields:
+        failures.append("dry-run plan windowed config SHA-256 is not covered by token_fields")
     failures.extend(approval_ttl_status(approval_expires_utc)["failures"])
     if "copy-exact dry-run approval packet" not in str(approval.get("purpose") or ""):
         failures.append("dry-run plan visible runtime approval purpose is missing")
@@ -536,7 +569,34 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         and intro_skip_readiness.get("passed") is True
         and intro_skip_readiness.get("status") == "ready_for_explicit_visible_rerun_approval"
     )
-    approval_step_ready = approval_step_pending or intro_skip_rerun_ready
+    input_environment_rerun_ready = (
+        current_step.get("status")
+        == "failed_classified_input_environment_permission_denied"
+    )
+    harness_guard = loaded.get("harness_guard") or {}
+    window_health_stop_check = (harness_guard.get("checks") or {}).get("window_health_stop") or {}
+    application_hang_rerun_ready = (
+        current_step.get("status") == "failed_classified_application_hang_wer_closed"
+        and (step.get("summary") or {}).get("wer_followup_matched") is True
+        and (step.get("summary") or {}).get("wer_followup_status")
+        == "application_hang_confirmed_wer_closed"
+        and (step.get("summary") or {}).get("window_health_mitigation_ready") is True
+        and harness_guard.get("passed") is True
+        and window_health_stop_check.get("passed") is True
+    )
+    window_missing_rerun_ready = (
+        current_step.get("status") == "failed_classified_window_missing_while_process_alive"
+        and (step.get("summary") or {}).get("window_health_mitigation_ready") is True
+        and harness_guard.get("passed") is True
+        and window_health_stop_check.get("passed") is True
+    )
+    approval_step_ready = (
+        approval_step_pending
+        or intro_skip_rerun_ready
+        or input_environment_rerun_ready
+        or application_hang_rerun_ready
+        or window_missing_rerun_ready
+    )
 
     if next_actions and not next_actions.get("passed"):
         failures.append("next-actions report is not passing")
@@ -550,7 +610,12 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
     if approval_step_ready:
         expected_action_ids = {f"run_{current_step.get('id')}_soak"}
-        if intro_skip_rerun_ready:
+        if (
+            intro_skip_rerun_ready
+            or input_environment_rerun_ready
+            or application_hang_rerun_ready
+            or window_missing_rerun_ready
+        ):
             expected_action_ids.add(f"rerun_{current_step.get('id')}_soak")
         if action.get("id") not in expected_action_ids:
             failures.append(
@@ -683,6 +748,15 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             failures.append(f"{guard_name} is not passing")
     if intro_skip_rerun_ready and not intro_skip_readiness.get("passed"):
         failures.append("intro-skip rerun readiness is not passing")
+    if current_step.get("status") == "failed_classified_application_hang_wer_closed" and not application_hang_rerun_ready:
+        failures.append("AppHang rerun readiness is missing matched WER and passing window-health stop evidence")
+    if (
+        current_step.get("status") == "failed_classified_window_missing_while_process_alive"
+        and not window_missing_rerun_ready
+    ):
+        failures.append(
+            "window-missing rerun readiness is missing window-health mitigation and passing harness-guard evidence"
+        )
     if (loaded.get("process_hygiene") or {}).get("matching_process_count") not in {None, 0}:
         failures.append("process hygiene found stale cdb/clash95 processes")
     if (loaded.get("exe_artifact") or {}).get("tracked_exes"):
@@ -690,7 +764,9 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
     approval_prompt = (
         f"Approve the {step_slug(step)} visible-runtime soak using the exact "
-        "approval-gated command in this report. This will open a visible Clash95 game window. "
+        "approval-gated command in this report. This will open a visible Clash95 game window "
+        "in explicitly windowed mode using token-pinned display=application and "
+        "presentation=windowed configuration. "
         "It will generate a patched candidate "
         r"under C:\ClashTests\hd-soak and raw frame artifacts under C:\ClashCaptures\hd-soak; "
         rf"it must not modify C:\Clash\clash95.exe, uses postmessage intro-skip harness prep "
@@ -698,6 +774,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "does not treat intro skip as manual DirectInput proof, and enforces input drift <= "
         rf"{EXPECTED_MAX_INPUT_DRIFT_PX}px, frame thresholds, artifact budget, process-growth "
         "limits, and a fresh copy-exact approval token."
+        " The harness samples target-window responsiveness around every route/capture phase and "
+        "stops further input and capture at the first hung or missing live target window."
     )
 
     return {
@@ -737,6 +815,9 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "next_action_consistency": {
             "approval_step_pending": approval_step_pending,
             "intro_skip_rerun_ready": intro_skip_rerun_ready,
+            "input_environment_rerun_ready": input_environment_rerun_ready,
+            "application_hang_rerun_ready": application_hang_rerun_ready,
+            "window_missing_rerun_ready": window_missing_rerun_ready,
             "next_action_id": action.get("id"),
             "runtime_command_matches": action.get("exact_runtime_command") == approval_command,
             "legacy_step_runtime_command_matches": action.get("legacy_step_runtime_command") in {None, runtime_command},
@@ -759,6 +840,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "must_not_modify": must_not_modify,
         "guards": {
             "harness_guard_passed": bool((loaded.get("harness_guard") or {}).get("passed")),
+            "window_health_stop_check_passed": window_health_stop_check.get("passed") is True,
             "dry_run_plan_passed": bool((loaded.get("dry_run_plan") or {}).get("passed")),
             "visible_runtime_guard_passed": bool((loaded.get("visible_runtime_guard") or {}).get("passed")),
             "process_hygiene_passed": bool((loaded.get("process_hygiene") or {}).get("passed")),
@@ -831,6 +913,7 @@ def to_markdown(report: dict[str, Any]) -> str:
         "approval_expires_utc",
         "approval_remaining_seconds",
         "min_approval_ttl_minutes",
+        "window_health_stop_required",
     ):
         lines.append(f"- {key}: `{limits.get(key)}`")
     lines.extend(

@@ -272,12 +272,14 @@ def args_for(
     step_status_path: Path | None = None,
     dry_run_plan_path: Path | None = None,
     intro_skip_readiness_path: Path | None = None,
+    harness_guard_path: Path | None = None,
 ) -> argparse.Namespace:
     return argparse.Namespace(
         checklist_json=path,
         short_step_status_json=step_status_path or path.parent / "missing-step-status.json",
         dry_run_plan_json=dry_run_plan_path,
         intro_skip_readiness_json=intro_skip_readiness_path,
+        harness_guard_json=harness_guard_path,
     )
 
 
@@ -707,6 +709,206 @@ def test_intro_skip_readiness_turns_classified_failure_into_rerun_approval() -> 
     assert "postmessage intro-skip prep" in action["why"]
 
 
+def test_input_environment_denial_turns_into_unsandboxed_rerun_approval() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        checklist_path = write_json(tmp / "checklist.json", checklist_fixture())
+        step = step_record(
+            "short2_map_idle",
+            "short2",
+            "map-idle",
+            status="failed_classified_input_environment_permission_denied",
+        )
+        step["summary"] = {
+            "classification": "input_environment_permission_denied",
+            "next_probe": "rerun in an explicitly approved unsandboxed Windows session",
+            "frame_sample_count": 7,
+            "final_route_marker": "confirm-load",
+            "candidate_sha256": "a" * 64,
+            "visual_anomaly_passed": False,
+            "black_patch_risk_count": 7,
+            "palette_or_stripe_risk_count": 0,
+            "missing_nonblack_bounds_count": 0,
+        }
+        step_status_path = write_json(
+            tmp / "step-status.json",
+            {
+                "passed": True,
+                "ladder_complete": False,
+                "current_step": {
+                    "id": step["id"],
+                    "status": step["status"],
+                    "next_command": None,
+                },
+                "steps": [step],
+            },
+        )
+        dry_run_plan_path = write_json(tmp / "dry-run-plan.json", dry_run_plan_for_step(step))
+        report = next_actions.build_report(
+            args_for(checklist_path, step_status_path, dry_run_plan_path)
+        )
+
+    action = report["next_action"]
+    assert report["passed"] is True, report
+    assert report["status"] == "waiting_for_explicit_visible_runtime_approval"
+    assert action["id"] == "rerun_short2_map_idle_soak"
+    assert action["requires_visible_runtime"] is True
+    assert action["requires_explicit_user_approval"] is True
+    assert action["exact_runtime_command"] == action["plan_verified_execute_command"]
+    assert action["current_failure"]["classification"] == "input_environment_permission_denied"
+    assert "unsandboxed Windows session" in action["why"]
+
+
+def test_postmessage_intro_transition_requires_repo_harness_fix() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        checklist_path = write_json(tmp / "checklist.json", checklist_fixture())
+        step = step_record(
+            "short2_map_idle",
+            "short2",
+            "map-idle",
+            status="failed_classified_intro_skip_input_drift_exit",
+        )
+        step["summary"] = {
+            "classification": "intro_skip_input_drift_exit",
+            "next_probe": "make the harness stop or reacquire after the transition",
+            "intro_skip_click_mode": "postmessage",
+            "intro_skip_click_repeat": 8,
+            "intro_skip_click_path_verified": False,
+            "frame_sample_count": 0,
+            "final_route_marker": "load-button",
+            "candidate_sha256": "a" * 64,
+        }
+        step_status_path = write_json(
+            tmp / "step-status.json",
+            {
+                "passed": True,
+                "ladder_complete": False,
+                "current_step": {
+                    "id": step["id"],
+                    "status": step["status"],
+                    "next_command": None,
+                },
+                "steps": [step],
+            },
+        )
+        report = next_actions.build_report(args_for(checklist_path, step_status_path))
+
+    action = report["next_action"]
+    assert report["passed"] is True, report
+    assert report["status"] == "repo_only_followup_available"
+    assert action["id"] == "fix_short2_map_idle_intro_transition"
+    assert action["requires_visible_runtime"] is False
+    assert action["requires_explicit_user_approval"] is False
+    assert action["triage"]["intro_skip_click_mode"] == "postmessage"
+    assert "stop or reacquire" in action["why"]
+
+
+def test_unexpected_exit_ignores_unrelated_intro_readiness_failure() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        checklist_path = write_json(tmp / "checklist.json", checklist_fixture())
+        step = step_record(
+            "short2_map_idle",
+            "short2",
+            "map-idle",
+            status="failed_classified_unexpected_process_exit",
+        )
+        step["summary"] = {
+            "classification": "unexpected_process_exit",
+            "next_probe": "collect exit code, last frame, process log, and rerun once with CDB crash logging",
+            "frame_sample_count": 1,
+            "final_route_marker": "confirm-load",
+            "candidate_sha256": "a" * 64,
+        }
+        step_status_path = write_json(
+            tmp / "step-status.json",
+            {
+                "passed": True,
+                "ladder_complete": False,
+                "current_step": {
+                    "id": step["id"],
+                    "status": step["status"],
+                    "next_command": None,
+                },
+                "steps": [step],
+            },
+        )
+        readiness_path = write_json(
+            tmp / "intro-skip-readiness.json",
+            intro_skip_readiness_for_step(step, passed=False),
+        )
+        report = next_actions.build_report(
+            args_for(checklist_path, step_status_path, intro_skip_readiness_path=readiness_path)
+        )
+
+    action = report["next_action"]
+    assert report["passed"] is True, report
+    assert action["id"] == "inspect_short2_map_idle_triage"
+    assert action["requires_visible_runtime"] is False
+    assert action["triage"]["classification"] == "unexpected_process_exit"
+
+
+def test_apphang_with_window_health_guard_requests_fresh_windowed_approval() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        checklist_path = write_json(tmp / "checklist.json", checklist_fixture())
+        step = step_record(
+            "short2_map_idle",
+            "short2",
+            "map-idle",
+            status="failed_classified_application_hang_wer_closed",
+        )
+        step["summary"] = {
+            "classification": "application_hang_wer_closed",
+            "next_probe": "generate a fresh tokened application/windowed retry packet",
+            "frame_sample_count": 1,
+            "final_route_marker": "confirm-load",
+            "candidate_sha256": "a" * 64,
+            "wer_followup_matched": True,
+            "wer_followup_status": "application_hang_confirmed_wer_closed",
+            "window_health_mitigation_ready": True,
+        }
+        step_status_path = write_json(
+            tmp / "step-status.json",
+            {
+                "passed": True,
+                "ladder_complete": False,
+                "current_step": {
+                    "id": step["id"],
+                    "status": step["status"],
+                    "next_command": step["approval_gated_runtime_command"],
+                },
+                "steps": [step],
+            },
+        )
+        dry_run_plan_path = write_json(tmp / "dry-run-plan.json", dry_run_plan_for_step(step))
+        harness_guard_path = write_json(
+            tmp / "harness-guard.json",
+            {"passed": True, "checks": {"window_health_stop": {"passed": True}}},
+        )
+        report = next_actions.build_report(
+            args_for(
+                checklist_path,
+                step_status_path,
+                dry_run_plan_path,
+                harness_guard_path=harness_guard_path,
+            )
+        )
+
+    action = report["next_action"]
+    assert report["passed"] is True, report
+    assert report["status"] == "waiting_for_explicit_visible_runtime_approval"
+    assert action["id"] == "rerun_short2_map_idle_soak"
+    assert action["requires_visible_runtime"] is True
+    assert action["requires_explicit_user_approval"] is True
+    assert action["exact_runtime_command"] == action["plan_verified_execute_command"]
+    readiness = action["application_hang_rerun_readiness"]
+    assert readiness["wer_followup_matched"] is True
+    assert readiness["window_health_stop_check_passed"] is True
+    assert "AppHangB1" in action["why"]
+
+
 def test_cli_writes_outputs() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -757,6 +959,10 @@ def run_tests() -> None:
     test_failed_short_step_without_triage_requests_repo_triage_command()
     test_classified_failed_short_step_points_to_next_probe()
     test_intro_skip_readiness_turns_classified_failure_into_rerun_approval()
+    test_input_environment_denial_turns_into_unsandboxed_rerun_approval()
+    test_postmessage_intro_transition_requires_repo_harness_fix()
+    test_unexpected_exit_ignores_unrelated_intro_readiness_failure()
+    test_apphang_with_window_health_guard_requests_fresh_windowed_approval()
     test_cli_writes_outputs()
 
 

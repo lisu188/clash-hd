@@ -443,6 +443,23 @@ def test_input_drift_fails() -> None:
     assert any("drift limit" in failure for failure in evaluation["failures"])
 
 
+def test_intro_transition_stop_accepts_only_post_click_drift() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_report(Path(directory))
+        row = report["route_results"][0]
+        row["ClickPathVerified"] = False
+        row["MaxSampleAbsError"] = 298
+        row["ClickRepeatObserved"] = 7
+        row["TransitionStopObserved"] = True
+        row["RepeatStopReasons"] = ["sample_drift_after_click"]
+        report["input_max_sample_abs_error"] = 298
+        evaluation = soak.evaluate_report(report)
+        row["PathVerified"] = False
+        rejected = soak.evaluate_report(report)
+    assert evaluation["checks"]["input_responsiveness"]["passed"] is True, evaluation
+    assert rejected["checks"]["input_responsiveness"]["passed"] is False, rejected
+
+
 def test_probe_exit_code_fails() -> None:
     with tempfile.TemporaryDirectory() as directory:
         report = passing_report(Path(directory))
@@ -558,6 +575,7 @@ def run_tests() -> None:
     test_elapsed_sample_coverage_fails()
     test_missing_process_growth_fails()
     test_input_drift_fails()
+    test_intro_transition_stop_accepts_only_post_click_drift()
     test_probe_exit_code_fails()
     test_missing_input_drift_metrics_fail()
     test_empty_route_inventory_fails()
