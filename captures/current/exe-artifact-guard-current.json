@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:54:39+02:00",
+  "generated_at": "2026-07-17T15:36:45+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
   "filesystem_exes": [],

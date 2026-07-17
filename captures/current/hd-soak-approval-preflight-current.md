@@ -1,24 +1,35 @@
 # HD Soak Approval Preflight
 
 - Overall: PASS
-- Generated: `2026-07-13T06:55:04.083581+00:00`
+- Generated: `2026-07-17T13:37:00.990278+00:00`
 - Runtime policy: repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Status: `ready_for_explicit_approval`
 - Current step: `short2_map_idle`
-- Current step status: `missing_pending_approval`
-- Canonical runtime report missing: `True`
+- Current step status: `failed_classified_intro_skip_input_drift_exit`
+- Canonical runtime report missing: `False`
 - Stable stage should change: `False`
 - Right-bottom promotion blocked: `True`
 
 ## Current Step Artifacts
 
-- Report JSON: `captures\current\hd-soak-short2-map-idle-current.json` exists=`False`
+- Report JSON: `captures\current\hd-soak-short2-map-idle-current.json` exists=`True`
 - Guard JSON: `captures\current\hd-soak-short2-map-idle-guard-current.json` exists=`True`
 - Triage JSON: `captures\current\hd-soak-short2-map-idle-triage-current.json` exists=`True`
 
 ## Approval Prompt
 
-Approve the short2_map_idle visible-runtime soak using the exact approval-gated command in this report. This will open a visible Clash95 game window. It will generate a patched candidate under C:\ClashTests\hd-soak and raw frame artifacts under C:\ClashCaptures\hd-soak; it must not modify C:\Clash\clash95.exe, uses postmessage intro-skip harness prep (8 clicks plus 4 space pulses), does not treat intro skip as manual DirectInput proof, and enforces input drift <= 1px, frame thresholds, artifact budget, process-growth limits, and a fresh copy-exact approval token.
+Approve the short2_map_idle visible-runtime soak using the exact approval-gated command in this report. This will open a visible Clash95 game window in explicitly windowed mode using token-pinned display=application and presentation=windowed configuration. It will generate a patched candidate under C:\ClashTests\hd-soak and raw frame artifacts under C:\ClashCaptures\hd-soak; it must not modify C:\Clash\clash95.exe, uses postmessage intro-skip harness prep (8 clicks plus 4 space pulses), does not treat intro skip as manual DirectInput proof, and enforces input drift <= 1px, frame thresholds, artifact budget, process-growth limits, and a fresh copy-exact approval token. The harness samples target-window responsiveness around every route/capture phase and stops further input and capture at the first hung or missing live target window.
+
+## Current Failure
+
+- Classification: `intro_skip_input_drift_exit`
+- Next probe: previous intro-skip postmessage repeats crossed a window/intro transition; make the harness stop or reacquire after the transition, retain explicit windowed-mode verification, then rerun only after fresh visible-window approval
+- Final route marker: `intro-skip`
+- Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
+- Visual anomaly passed: `True`
+- Black/blank patch risk count: `0`
+- Palette/stripe risk count: `0`
+- Missing nonblack bounds count: `0`
 
 ## Approval Limits
 
@@ -31,9 +42,10 @@ Approve the short2_map_idle visible-runtime soak using the exact approval-gated 
 - max_private_memory_growth_mb: `64`
 - max_handle_growth: `128`
 - approval_token_kind: `sha256-16`
-- approval_expires_utc: `2026-07-13T18:55:02.3524670+00:00`
-- approval_remaining_seconds: `43198.268886`
+- approval_expires_utc: `2026-07-18T01:36:59.4055286+00:00`
+- approval_remaining_seconds: `43198.41525`
 - min_approval_ttl_minutes: `30`
+- window_health_stop_required: `True`
 
 ## Safe Dry Run
 
@@ -44,7 +56,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_s
 ## Approval-Gated Runtime Command
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260713_085502.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-13T18:55:02.3524670+00:00' -VisibleRuntimeApprovalToken 'bdaf238c3207bc7b' -Execute -AllowVisibleRuntime -RequirePass -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260717_153659.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-18T01:36:59.4055286+00:00' -VisibleRuntimeApprovalToken '887be19af5c3acce' -Execute -AllowVisibleRuntime -RequirePass -Json
 ```
 
 ## Dry-Run Plan
@@ -52,7 +64,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clas
 - Plan: `captures\current\hd-soak-dry-run-plan-current.json`
 - Status: `ready_for_explicit_approval`
 - Current step: `short2_map_idle`
-- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260713_085502.exe`
+- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260717_153659.exe`
 - Passing: `True`
 - Freshness passing: `True`
 - Max age hours: `12`
@@ -60,7 +72,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clas
 Plan-emitted execute command:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260713_085502.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-13T18:55:02.3524670+00:00' -VisibleRuntimeApprovalToken 'bdaf238c3207bc7b' -Execute -AllowVisibleRuntime -RequirePass -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260717_153659.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-18T01:36:59.4055286+00:00' -VisibleRuntimeApprovalToken '887be19af5c3acce' -Execute -AllowVisibleRuntime -RequirePass -Json
 ```
 
 ## Focused Post-Run Validation

@@ -1,14 +1,14 @@
 # Patch Definition Guard
 
 - Overall: PASS
-- Generated: `2026-07-13T08:54:39+02:00`
+- Generated: `2026-07-17T15:36:44+02:00`
 - Runtime policy: repo-only patch-table inspection; does not read, build, or execute game executables
 - Guard policy: patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps
 - Expected stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Patcher default stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
-- Patch count: `209`
-- Patch groups: `45`
-- Stages: `59`
+- Patch count: `211`
+- Patch groups: `46`
+- Stages: `61`
 - Validation-only groups in stable: `[]`
 - Incompatible selected overlaps: `0`
 

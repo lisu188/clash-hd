@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-17T13:39:59+02:00`
+- Generated: `2026-07-17T15:37:02+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -646,6 +646,28 @@
 - guard_policy: `proves first-mission visual audit detects stripe signatures, large black UI patches, legacy middle action-bar placement, and diagnostic black frames, and only excuses proxy-black regions with positive real-runtime corroboration, without launching runtime`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
+### Border Frame Restore Check
+
+- Status: PASS
+- JSON: `captures\current\border-frame-restore-check-current.json`
+- Markdown: `captures\current\border-frame-restore-check-current.md`
+- patch_group: `frame-restore-bands`
+- validation_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore`
+- real_runtime_frames: `['captures/archive/visual-smoke-20260713-150843/after-map-path.png']`
+- proxy_surface_evidence_passed: `True`
+- real_runtime_evidence_passed: `True`
+- guard_policy: `committed frame-restore band evidence must keep every border band region, filled HD extension bands with passing histogram authenticity gates at or above the frozen thresholds, and a real-runtime frame reference that still resolves inside the repository`
+- runtime_policy: `repo-only committed-evidence validation; does not launch Clash95, CDB, wrappers, or visible windows`
+
+### Border Frame Restore Check Tests
+
+- Status: PASS
+- JSON: `captures\current\border-frame-restore-check-tests-current.json`
+- Markdown: `captures\current\border-frame-restore-check-tests-current.md`
+- test_count: `10`
+- guard_policy: `proves the frame-restore-bands lane keeps every border band, passing authenticity gates at frozen thresholds, and a resolvable real-runtime frame reference, failing closed on any missing file or field`
+- runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
+
 ### Right Bottom Grid Hit Summary Tests
 
 - Status: PASS
@@ -1096,7 +1118,7 @@
 - patcher_default_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - patch_count: `211`
 - patch_group_count: `46`
-- stage_count: `60`
+- stage_count: `61`
 - validation_groups_in_stable: `[]`
 - overlap_failure_count: `0`
 - guard_policy: `patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps`
@@ -1119,7 +1141,7 @@
 - current_stable_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - patcher_default_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - validation_only_groups_in_stable: `[]`
-- mapsurface_stages_checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
+- mapsurface_stages_checked: `['gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapclip', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-tooltipbottomcenter', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbar', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitselectactionbarpostredraw', 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-vswitch', 'gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch']`
 - mapsurface_with_menu_surface: `[]`
 - mapsurface_missing_upgrade: `[]`
 
@@ -1175,8 +1197,8 @@
 - Status: PASS
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
-- risky_file_count: `118`
-- classification_counts: `{'safe': 126, 'user_gated_launcher': 1, 'exempt': 28, 'manual_visible_runtime_gated': 2, 'test_fixture': 87}`
+- risky_file_count: `120`
+- classification_counts: `{'safe': 127, 'user_gated_launcher': 1, 'exempt': 28, 'manual_visible_runtime_gated': 3, 'test_fixture': 88}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1455,7 +1477,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 98.14, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.95, 'right_bottom_promotion_gate': 100.0, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 98.77, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.95, 'right_bottom_promotion_gate': 100.0, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1602,7 +1624,7 @@
 - ladder_complete: `False`
 - counts: `{'total': 5, 'passed': 1, 'pending_or_missing': 0, 'locked': 3, 'failed_or_invalid': 1}`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_window_missing_while_process_alive`
+- current_step_status: `failed_classified_intro_skip_input_drift_exit`
 - long_tiers_locked: `True`
 - future_lanes_locked: `True`
 - right_bottom_promotion_blocked: `True`
@@ -1624,7 +1646,7 @@
 - Markdown: `captures\current\hd-soak-dry-run-plan-current.md`
 - status: `ready_for_explicit_approval`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_window_missing_while_process_alive`
+- current_step_status: `failed_classified_intro_skip_input_drift_exit`
 - dry_run: `True`
 - candidate_dir: `C:\ClashTests\hd-soak`
 - output_root: `C:\ClashCaptures\hd-soak`
@@ -1649,11 +1671,11 @@
 - Status: PASS
 - JSON: `captures\current\hd-soak-intro-skip-rerun-readiness-current.json`
 - Markdown: `captures\current\hd-soak-intro-skip-rerun-readiness-current.md`
-- status: `not_applicable_current_failure`
+- status: `ready_for_explicit_visible_rerun_approval`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_window_missing_while_process_alive`
+- current_step_status: `failed_classified_intro_skip_input_drift_exit`
 - triage_classification: `passing_run_no_failure`
-- approval_boundary: `No intro-skip rerun is authorized while the current step has an unrelated classified failure; follow its repo-only triage instead.`
+- approval_boundary: `The next runtime run will open a visible Clash95 game window and still requires explicit user approval.`
 - runtime_policy: `repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 
 ### Hd Soak Intro Skip Rerun Readiness Tests
@@ -1691,7 +1713,7 @@
 - status: `locked_short_ladder_incomplete`
 - duration_sec: `0`
 - counts: `{'required_routes': 2, 'passing_routes': 0, 'missing_routes': 2}`
-- short_ladder: `{'path': 'captures\\current\\hd-soak-short-step-status-current.json', 'present': True, 'ladder_complete': False, 'current_step': {'id': 'short2_map_idle', 'tier': 'short2', 'route': 'map-idle', 'status': 'failed_classified_window_missing_while_process_alive', 'next_command': None}}`
+- short_ladder: `{'path': 'captures\\current\\hd-soak-short-step-status-current.json', 'present': True, 'ladder_complete': False, 'current_step': {'id': 'short2_map_idle', 'tier': 'short2', 'route': 'map-idle', 'status': 'failed_classified_intro_skip_input_drift_exit', 'next_command': None}}`
 - proof_manifest: `{'path': 'captures\\current\\hd-soak-long-proof-current.json', 'present': False, 'report_guard_count': 0}`
 - runtime_policy: `repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Failures:
@@ -1761,10 +1783,10 @@
 - Status: PASS
 - JSON: `captures\current\hd-endurance-next-actions-current.json`
 - Markdown: `captures\current\hd-endurance-next-actions-current.md`
-- status: `repo_only_followup_available`
-- next_action: `inspect_short2_map_idle_triage`
-- requires_explicit_user_approval: `False`
-- has_plan_verified_execute_command: `False`
+- status: `waiting_for_explicit_visible_runtime_approval`
+- next_action: `rerun_short2_map_idle_soak`
+- requires_explicit_user_approval: `True`
+- has_plan_verified_execute_command: `True`
 - focused_post_run_validation_count: `3`
 - handoff_refresh_count: `5`
 - broad_evidence_refresh_count: `4`
@@ -1804,20 +1826,18 @@
 
 ### Hd Soak Approval Preflight
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-soak-approval-preflight-current.json`
 - Markdown: `captures\current\hd-soak-approval-preflight-current.md`
-- status: `not_ready`
+- status: `ready_for_explicit_approval`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_window_missing_while_process_alive`
+- current_step_status: `failed_classified_intro_skip_input_drift_exit`
 - dry_run_plan_status: `ready_for_explicit_approval`
 - dry_run_plan_passed: `True`
 - writes_outside_repo: `['C:\\ClashCaptures\\hd-soak', 'C:\\ClashTests\\hd-soak']`
 - stable_stage_should_change: `False`
 - right_bottom_promotion_blocked: `True`
 - runtime_policy: `repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - current short-step status is 'failed_classified_window_missing_while_process_alive'
 
 ### Hd Soak Approval Preflight Tests
 
@@ -1833,11 +1853,11 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `753`
+- artifact_count: `757`
 - current_reference_count: `179`
 - stale_visible_or_sandbox_count: `18`
-- reference_status_counts: `{'archived_referenced': 202, 'current_referenced': 149, 'stale_unreferenced': 402}`
-- era_counts: `{'cdb_surface_dump_unverified': 73, 'hidden_cdb_surface_dump': 164, 'other_capture_artifact': 498, 'visible_era': 18}`
+- reference_status_counts: `{'archived_referenced': 202, 'current_referenced': 149, 'stale_unreferenced': 406}`
+- era_counts: `{'cdb_surface_dump_unverified': 73, 'hidden_cdb_surface_dump': 164, 'other_capture_artifact': 502, 'visible_era': 18}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1906,4 +1926,3 @@
 - hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
-- hd_soak_approval_preflight: current short-step status is 'failed_classified_window_missing_while_process_alive'

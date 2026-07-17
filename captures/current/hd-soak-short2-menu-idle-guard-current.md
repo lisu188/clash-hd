@@ -1,7 +1,7 @@
 # HD Soak Report Guard
 
 - Overall: PASS
-- Generated: `2026-07-13T06:55:01.439715+00:00`
+- Generated: `2026-07-17T13:36:58.572230+00:00`
 - Runtime policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Source report: `captures\current\hd-soak-short2-menu-idle-current.json`
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
@@ -28,5 +28,6 @@
 - `elapsed_coverage`: `PASS`
 - `input_responsiveness`: `PASS`
 - `route_completion_marker`: `PASS`
+- `route_screen_outcome`: `PASS`
 - `summary_consistency`: `PASS`
 - `artifact_budget`: `PASS`

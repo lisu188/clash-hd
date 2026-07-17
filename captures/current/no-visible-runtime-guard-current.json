@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-13T08:54:41+02:00",
+  "generated_at": "2026-07-17T15:36:46+02:00",
   "passed": true,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "all referenced CDB surface-dump runs must be hidden-desktop evidence",
-  "run_count": 23,
-  "hidden_run_count": 23,
+  "run_count": 24,
+  "hidden_run_count": 24,
   "runs": [
     {
       "run": "captures\\archive\\cdb-surface-dump-20260429-135242",
@@ -220,6 +220,18 @@
       "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
       "candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
       "extra_probe_template": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\battle\\clash95_battle_unit_scan_extra.cdb",
+      "failures": []
+    },
+    {
+      "run": "captures\\archive\\cdb-surface-dump-20260712-155528",
+      "summary_json": "captures\\archive\\cdb-surface-dump-20260712-155528\\summary.json",
+      "passed": true,
+      "launch_mode": "hidden-desktop",
+      "hidden_desktop": true,
+      "desktop_name": "ClashSurfaceDump_20260712_155528",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+      "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C",
+      "extra_probe_template": "C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\castle\\clash95_castle_cmd99_owner_action_slot5_fixture_exit_extra.cdb",
       "failures": []
     },
     {

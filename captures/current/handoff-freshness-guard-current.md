@@ -1,9 +1,10 @@
 # Handoff Freshness Guard
 
 - Overall: PASS
-- Generated: `2026-07-13T08:54:57+02:00`
+- Generated: `2026-07-17T15:36:55+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
-- Guard policy: handoff docs must mention the current route timing guard, keep the right-bottom validation stage out of stable until manual proof or explicit CDB-only override, keep the non-promoting manual proof template visible, keep the percentage completion summary visible, keep the right-bottom owner-flag inventory visible, keep the load-slot route-limit boundary visible, keep the load-slot transition readiness matrix visible, preserve the user's no-popup runtime preference, require the visible-runtime launcher approval guard, and avoid stale route/input-safety, legacy visible-capture, or VM/visual-smoke blockers
+- Guard policy: handoff docs must mention the current route timing guard, keep validation stages out of stable until required proof exists, retain current manual-proof and completion artifacts, preserve the no-popup runtime preference, require the visible-runtime approval guard, and avoid stale route/input or VM blockers
+- Supporting project guide: `docs\hd\WORKING_WITH_THIS_REPO.md`
 
 ## Phrase Groups
 
@@ -31,4 +32,4 @@
 - `.codex-loop\TASKS.md`: `PASS` exists=`True`
 - `captures\current\hd-map-evidence-current.md`: `PASS` exists=`True`
 - `docs\hd\HD_MOD_PROGRESS.md`: `PASS` exists=`True`
-- `wiki\questions\how-should-the-bottom-tooltip-be-recovered.md`: `PASS` exists=`True`
+- `docs\hd\WORKING_WITH_THIS_REPO.md`: `PASS` exists=`True`

@@ -1,11 +1,11 @@
 # No-Visible Runtime Guard
 
 - Overall: PASS
-- Generated: `2026-07-13T08:54:41+02:00`
+- Generated: `2026-07-17T15:36:46+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: all referenced CDB surface-dump runs must be hidden-desktop evidence
-- Referenced CDB surface-dump runs: `23`
-- Hidden-desktop runs: `23`
+- Referenced CDB surface-dump runs: `24`
+- Hidden-desktop runs: `24`
 
 ## Runs
 
@@ -27,6 +27,7 @@
 - `captures\archive\cdb-surface-dump-20260712-151015`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all`
 - `captures\archive\cdb-surface-dump-20260712-153503`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter`
 - `captures\archive\cdb-surface-dump-20260712-153805`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter`
+- `captures\archive\cdb-surface-dump-20260712-155528`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter`
 - `captures\archive\cdb-surface-dump-20260712-160131`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - `captures\archive\cdb-surface-dump-20260712-160204`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`
 - `captures\archive\cdb-surface-dump-20260712-160351`: `PASS` launch=`hidden-desktop` hidden=`True` stage=`gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`

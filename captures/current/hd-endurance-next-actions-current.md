@@ -1,26 +1,26 @@
 # HD Endurance Next Actions
 
 - Overall: PASS
-- Generated: `2026-07-13T06:55:03.714479+00:00`
+- Generated: `2026-07-17T13:37:00.574284+00:00`
 - Runtime policy: repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Status: `waiting_for_explicit_visible_runtime_approval`
 - Current short step: `short2_map_idle`
 - Full game complete: `False`
-- Open requirements: `9`
+- Open requirements: `6`
 
 ## Next Action
 
-- `run_short2_map_idle_soak`: `approval_required`
+- `rerun_short2_map_idle_soak`: `approval_required`
 - Requires visible runtime: `True`
 - Requires explicit user approval: `True`
-- Why: The short soak ladder is not complete. Run the current protected-stage short2 map-idle soak before unlocking later short, long, or future route lanes.
+- Why: The previous short2 menu-idle run failed during intro-skip input, and the repo-only rerun readiness gate now proves the harness uses postmessage intro-skip prep. Rerun only after explicit visible-window approval.
 
 Current step artifacts:
 
-- Report JSON: `captures\current\hd-soak-short2-map-idle-current.json` exists=`False`
+- Report JSON: `captures\current\hd-soak-short2-map-idle-current.json` exists=`True`
 - Guard JSON: `captures\current\hd-soak-short2-map-idle-guard-current.json` exists=`True`
 - Triage JSON: `captures\current\hd-soak-short2-map-idle-triage-current.json` exists=`True`
-- Canonical runtime report missing: `True`
+- Canonical runtime report missing: `False`
 - Post-run guard missing: `False`
 - Post-run triage missing: `False`
 
@@ -33,11 +33,11 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_s
 Approval-gated runtime command (plan-verified):
 
 - Dry-run plan status: `ready_for_explicit_approval`
-- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260713_085502.exe`
+- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260717_153659.exe`
 - Output root: `C:\ClashCaptures\hd-soak`
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260713_085502.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-13T18:55:02.3524670+00:00' -VisibleRuntimeApprovalToken 'bdaf238c3207bc7b' -Execute -AllowVisibleRuntime -RequirePass -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260717_153659.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-18T01:36:59.4055286+00:00' -VisibleRuntimeApprovalToken '887be19af5c3acce' -Execute -AllowVisibleRuntime -RequirePass -Json
 ```
 
 Rejected legacy runtime command:
@@ -45,6 +45,17 @@ Rejected legacy runtime command:
 - Safe to run: `False`
 - Reason: superseded by the current dry-run plan command with visible-runtime approval token
 - Command body: omitted from Markdown; retained in JSON for audit.
+
+Current failure:
+
+- Classification: `intro_skip_input_drift_exit`
+- Next probe: previous intro-skip postmessage repeats crossed a window/intro transition; make the harness stop or reacquire after the transition, retain explicit windowed-mode verification, then rerun only after fresh visible-window approval
+- Final route marker: `intro-skip`
+- Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
+- Visual anomaly passed: `True`
+- Black/blank patch risk count: `0`
+- Palette/stripe risk count: `0`
+- Missing nonblack bounds count: `0`
 
 Focused post-run validation:
 
@@ -72,7 +83,6 @@ Broad evidence refresh:
 - `endurance`: `long_soak_representative_routes`
 - `manual input`: `stable_menu_real_input, stable_hd_map_real_input`
 - `screen route`: `right_bottom_action_menu, castle_and_barracks_centered_input, tactical_battle_entry_return`
-- `state continuity`: `save_load_roundtrip, turn_advancement, campaign_routes`
 
 ## Open Requirement Details
 
@@ -82,6 +92,3 @@ Broad evidence refresh:
 - `right_bottom_action_menu` (`screen route`, `blocked`): right-bottom action/menu remains validation-only or manual-proof blocked Next probe: replace debugger-forced action-click proof with natural or approved manual input proof
 - `castle_and_barracks_centered_input` (`screen route`, `blocked`): castle/barracks centered input remains validation-only or manual-proof blocked Next probe: collect approved centered castle/barracks input proof
 - `tactical_battle_entry_return` (`screen route`, `blocked`): battle evidence remains validation-only or missing visible click-to-callback proof Next probe: prove battle entry, UI use, return, and post-return map health on an approved route
-- `save_load_roundtrip` (`state continuity`, `blocked`): save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release Next probe: add safe test-save roundtrip evidence after short-tier stability
-- `turn_advancement` (`state continuity`, `blocked`): turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release Next probe: add deterministic turn-advance route evidence after save/load is safe
-- `campaign_routes` (`state continuity`, `blocked`): campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release Next probe: add representative campaign route soaks after short/medium tiers are stable

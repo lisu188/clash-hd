@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:55:07+02:00",
+  "generated_at": "2026-07-17T15:37:02+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "percent_policy": "Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.",
@@ -14,9 +14,9 @@
     {
       "id": "current_repo_evidence_gates",
       "label": "Current repo evidence gates",
-      "completion_percent": 94.41,
+      "completion_percent": 98.77,
       "passed": false,
-      "basis": "152/161 refresh checks pass"
+      "basis": "161/163 refresh checks pass"
     },
     {
       "id": "repo_test_sweep",
@@ -28,16 +28,16 @@
     {
       "id": "focused_battle_right_bottom_lane",
       "label": "Focused battle/right-bottom command lane",
-      "completion_percent": 99.89,
-      "passed": false,
-      "basis": "remaining blocker: real visible click-to-callback proof (command-ready runs: 0; click-consumed runs: 0)"
+      "completion_percent": 99.95,
+      "passed": true,
+      "basis": "remaining blocker: battle evidence focused completion percent (command-ready runs: 1; click-consumed runs: 1)"
     },
     {
       "id": "right_bottom_promotion_gate",
       "label": "Right-bottom promotion gate",
-      "completion_percent": 85.71,
-      "passed": false,
-      "basis": "6/7 required promotion checks pass"
+      "completion_percent": 100.0,
+      "passed": true,
+      "basis": "7/7 required promotion checks pass"
     },
     {
       "id": "manual_directinput_validation",
@@ -69,15 +69,8 @@
       "stripe_failure_frames": [],
       "failures": []
     },
-    "right_bottom_failures": [
-      "right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
-      "right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
-      "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
-      "right-bottom natural UI probe did not enter owner/action draw rows"
-    ],
-    "battle_open_items": [
-      "real visible click-to-callback proof remains open"
-    ]
+    "right_bottom_failures": [],
+    "battle_open_items": []
   },
   "failures": []
 }

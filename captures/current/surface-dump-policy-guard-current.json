@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:54:39+02:00",
+  "generated_at": "2026-07-17T15:36:45+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "surface-dump harness must default to hidden desktop and require -AllowVisibleDesktop for active-desktop fallback",
@@ -10,7 +10,7 @@
       "passed": true,
       "summary": {
         "lines": [
-          21
+          23
         ]
       },
       "failures": []
@@ -20,7 +20,7 @@
       "passed": true,
       "summary": {
         "lines": [
-          592
+          597
         ]
       },
       "failures": []
@@ -30,7 +30,7 @@
       "passed": true,
       "summary": {
         "lines": [
-          201
+          206
         ]
       },
       "failures": []
@@ -40,13 +40,13 @@
       "passed": true,
       "summary": {
         "visible_branch_line": [
-          599
+          608
         ],
         "visible_launch_lines": [
-          600
+          609
         ],
         "start_process_lines": [
-          601
+          610
         ]
       },
       "failures": []
@@ -56,8 +56,8 @@
       "passed": true,
       "summary": {
         "hidden_branch_lines": [
-          189,
-          611
+          194,
+          620
         ]
       },
       "failures": []
@@ -67,8 +67,8 @@
       "passed": true,
       "summary": {
         "lines": [
-          710,
-          937
+          736,
+          989
         ]
       },
       "failures": []
@@ -78,8 +78,8 @@
       "passed": true,
       "summary": {
         "lines": [
-          711,
-          938
+          737,
+          990
         ]
       },
       "failures": []

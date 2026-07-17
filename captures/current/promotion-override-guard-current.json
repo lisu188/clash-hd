@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:54:57+02:00",
+  "generated_at": "2026-07-17T15:36:55+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence must keep CDB-only promotion overrides inactive until manual proof or an explicit override decision is intentionally supplied",
@@ -9,7 +9,7 @@
       "path": "captures\\current\\right-bottom-compose-promotion-decision-current.json",
       "summary": {
         "decision": "defer_stable_promotion",
-        "passed": false,
+        "passed": true,
         "allow_cdb_only_promotion": false,
         "stable_stage_should_change": false,
         "manual_input_proof_supplied": false,

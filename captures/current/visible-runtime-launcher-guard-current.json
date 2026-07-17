@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:54:39+02:00",
+  "generated_at": "2026-07-17T15:36:45+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "legacy visible-runtime launchers/helpers must fail closed unless -AllowVisibleRuntime is explicitly supplied after user approval; guarded child helpers must receive the same switch; root PowerShell risky-call inventory must be guarded or explicitly exempt",
@@ -44,16 +44,16 @@
         41
       ],
       "guard_lines": [
-        580
+        934
       ],
       "approval_phrase_lines": [
-        499,
-        581
+        845,
+        935
       ],
       "throw_lines": [
-        581
+        935
       ],
-      "first_risky_line": 664,
+      "first_risky_line": 1048,
       "child_visible_runtime_invocation_lines": [],
       "failures": []
     },
@@ -122,18 +122,18 @@
       "passed": true,
       "exists": true,
       "allow_visible_runtime_lines": [
-        25
+        39
       ],
       "guard_lines": [
-        31
+        45
       ],
       "approval_phrase_lines": [
-        32
+        46
       ],
       "throw_lines": [
-        32
+        46
       ],
-      "first_risky_line": 179,
+      "first_risky_line": 230,
       "child_visible_runtime_invocation_lines": [],
       "failures": []
     },

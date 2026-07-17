@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-13T08:55:05+02:00",
+  "generated_at": "2026-07-17T15:37:02+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\git\\clash-hd\\captures",
-  "artifact_count": 700,
+  "artifact_count": 757,
   "current_reference_count": 179,
-  "archived_reference_count": 400,
+  "archived_reference_count": 348,
   "missing_current_refs": [],
   "reference_status_counts": {
-    "archived_referenced": 216,
+    "archived_referenced": 202,
     "current_referenced": 149,
-    "stale_unreferenced": 335
+    "stale_unreferenced": 406
   },
   "era_counts": {
-    "cdb_surface_dump_unverified": 65,
-    "hidden_cdb_surface_dump": 153,
-    "other_capture_artifact": 469,
-    "visible_era": 13
+    "cdb_surface_dump_unverified": 73,
+    "hidden_cdb_surface_dump": 164,
+    "other_capture_artifact": 502,
+    "visible_era": 18
   },
-  "stale_visible_or_sandbox_count": 13,
+  "stale_visible_or_sandbox_count": 18,
   "stale_visible_or_sandbox_examples": [
     "archive/clicktest-20260422-163904",
     "archive/clicktest-20260422-182440",
@@ -33,7 +33,12 @@
     "archive/visual-smoke-20260424-074428",
     "archive/visual-smoke-20260424-074630",
     "archive/visual-smoke-20260712-202900",
-    "archive/visual-smoke-20260713-075818"
+    "archive/visual-smoke-20260713-075818",
+    "archive/visual-smoke-20260713-144505",
+    "archive/visual-smoke-20260713-145714",
+    "archive/visual-smoke-20260713-150843",
+    "archive/visual-smoke-20260714-140443",
+    "archive/visual-smoke-20260714-155327"
   ],
   "current_refs": {
     "captures/archive/cdb-surface-dump-20260429-135242": {
@@ -1828,976 +1833,6 @@
     }
   },
   "archived_refs": {
-    "captures/archive/cdb-surface-dump-20260429-135242": {
-      "ref": "captures/archive/cdb-surface-dump-20260429-135242",
-      "entry": "archive/cdb-surface-dump-20260429-135242",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260429-140916": {
-      "ref": "captures/archive/cdb-surface-dump-20260429-140916",
-      "entry": "archive/cdb-surface-dump-20260429-140916",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260512-082418": {
-      "ref": "captures/archive/cdb-surface-dump-20260512-082418",
-      "entry": "archive/cdb-surface-dump-20260512-082418",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-095443": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-095443",
-      "entry": "archive/cdb-surface-dump-20260513-095443",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-112339": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-112339",
-      "entry": "archive/cdb-surface-dump-20260513-112339",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-115303": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-115303",
-      "entry": "archive/cdb-surface-dump-20260513-115303",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-120712": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-120712",
-      "entry": "archive/cdb-surface-dump-20260513-120712",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-121513": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-121513",
-      "entry": "archive/cdb-surface-dump-20260513-121513",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122200": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122200",
-      "entry": "archive/cdb-surface-dump-20260513-122200",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260513-122928": {
-      "ref": "captures/archive/cdb-surface-dump-20260513-122928",
-      "entry": "archive/cdb-surface-dump-20260513-122928",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260515-105041": {
-      "ref": "captures/archive/cdb-surface-dump-20260515-105041",
-      "entry": "archive/cdb-surface-dump-20260515-105041",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260515-105411": {
-      "ref": "captures/archive/cdb-surface-dump-20260515-105411",
-      "entry": "archive/cdb-surface-dump-20260515-105411",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260515-105458": {
-      "ref": "captures/archive/cdb-surface-dump-20260515-105458",
-      "entry": "archive/cdb-surface-dump-20260515-105458",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260515-105557": {
-      "ref": "captures/archive/cdb-surface-dump-20260515-105557",
-      "entry": "archive/cdb-surface-dump-20260515-105557",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260517-163116": {
-      "ref": "captures/archive/cdb-surface-dump-20260517-163116",
-      "entry": "archive/cdb-surface-dump-20260517-163116",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260517-163734": {
-      "ref": "captures/archive/cdb-surface-dump-20260517-163734",
-      "entry": "archive/cdb-surface-dump-20260517-163734",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260517-171559": {
-      "ref": "captures/archive/cdb-surface-dump-20260517-171559",
-      "entry": "archive/cdb-surface-dump-20260517-171559",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260517-172611": {
-      "ref": "captures/archive/cdb-surface-dump-20260517-172611",
-      "entry": "archive/cdb-surface-dump-20260517-172611",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260518-092756": {
-      "ref": "captures/archive/cdb-surface-dump-20260518-092756",
-      "entry": "archive/cdb-surface-dump-20260518-092756",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260518-100917": {
-      "ref": "captures/archive/cdb-surface-dump-20260518-100917",
-      "entry": "archive/cdb-surface-dump-20260518-100917",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260518-213418": {
-      "ref": "captures/archive/cdb-surface-dump-20260518-213418",
-      "entry": "archive/cdb-surface-dump-20260518-213418",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260518-214535": {
-      "ref": "captures/archive/cdb-surface-dump-20260518-214535",
-      "entry": "archive/cdb-surface-dump-20260518-214535",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260518-221018": {
-      "ref": "captures/archive/cdb-surface-dump-20260518-221018",
-      "entry": "archive/cdb-surface-dump-20260518-221018",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260520-094032": {
-      "ref": "captures/archive/cdb-surface-dump-20260520-094032",
-      "entry": "archive/cdb-surface-dump-20260520-094032",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260520-100717": {
-      "ref": "captures/archive/cdb-surface-dump-20260520-100717",
-      "entry": "archive/cdb-surface-dump-20260520-100717",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260520-101859": {
-      "ref": "captures/archive/cdb-surface-dump-20260520-101859",
-      "entry": "archive/cdb-surface-dump-20260520-101859",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260520-103155": {
-      "ref": "captures/archive/cdb-surface-dump-20260520-103155",
-      "entry": "archive/cdb-surface-dump-20260520-103155",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260520-103714": {
-      "ref": "captures/archive/cdb-surface-dump-20260520-103714",
-      "entry": "archive/cdb-surface-dump-20260520-103714",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260520-111115": {
-      "ref": "captures/archive/cdb-surface-dump-20260520-111115",
-      "entry": "archive/cdb-surface-dump-20260520-111115",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260520-195244": {
-      "ref": "captures/archive/cdb-surface-dump-20260520-195244",
-      "entry": "archive/cdb-surface-dump-20260520-195244",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260520-220459": {
-      "ref": "captures/archive/cdb-surface-dump-20260520-220459",
-      "entry": "archive/cdb-surface-dump-20260520-220459",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260527-163809/load-slot-transition-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260527-163809/load-slot-transition-summary.md",
-      "entry": "archive/cdb-surface-dump-20260527-163809",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260527-193512/right-bottom-natural-slot5-summary.md": {
-      "ref": "captures/archive/cdb-surface-dump-20260527-193512/right-bottom-natural-slot5-summary.md",
-      "entry": "archive/cdb-surface-dump-20260527-193512",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260712-144019": {
-      "ref": "captures/archive/cdb-surface-dump-20260712-144019",
-      "entry": "archive/cdb-surface-dump-20260712-144019",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/cdb-surface-dump-20260713-072428": {
-      "ref": "captures/archive/cdb-surface-dump-20260713-072428",
-      "entry": "archive/cdb-surface-dump-20260713-072428",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/patch-stage-right-bottom-compose-20260513.json": {
-      "ref": "captures/archive/patch-stage-right-bottom-compose-20260513.json",
-      "entry": "archive/patch-stage-right-bottom-compose-20260513.json",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/archive/visual-smoke-20260713-075818": {
-      "ref": "captures/archive/visual-smoke-20260713-075818",
-      "entry": "archive/visual-smoke-20260713-075818",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-command-availability-current.md": {
-      "ref": "captures/current/battle-command-availability-current.md",
-      "entry": "current/battle-command-availability-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-constructed-fixture-command-callback-current.md": {
-      "ref": "captures/current/battle-constructed-fixture-command-callback-current.md",
-      "entry": "current/battle-constructed-fixture-command-callback-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-constructed-fixture-unit-scan-current.md": {
-      "ref": "captures/current/battle-constructed-fixture-unit-scan-current.md",
-      "entry": "current/battle-constructed-fixture-unit-scan-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-constructed-save-fixture-current.md": {
-      "ref": "captures/current/battle-constructed-save-fixture-current.md",
-      "entry": "current/battle-constructed-save-fixture-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-save-unit-inventory-current.md": {
-      "ref": "captures/current/battle-save-unit-inventory-current.md",
-      "entry": "current/battle-save-unit-inventory-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-slot-scan-current.md": {
-      "ref": "captures/current/battle-slot-scan-current.md",
-      "entry": "current/battle-slot-scan-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-ui-centered-input-current.md": {
-      "ref": "captures/current/battle-ui-centered-input-current.md",
-      "entry": "current/battle-ui-centered-input-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-ui-command-callback-current.md": {
-      "ref": "captures/current/battle-ui-command-callback-current.md",
-      "entry": "current/battle-ui-command-callback-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-ui-command-enabled-callback-current.md": {
-      "ref": "captures/current/battle-ui-command-enabled-callback-current.md",
-      "entry": "current/battle-ui-command-enabled-callback-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-ui-command-hit-current.md": {
-      "ref": "captures/current/battle-ui-command-hit-current.md",
-      "entry": "current/battle-ui-command-hit-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-ui-evidence-current.md": {
-      "ref": "captures/current/battle-ui-evidence-current.md",
-      "entry": "current/battle-ui-evidence-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-ui-force-entry-current.md": {
-      "ref": "captures/current/battle-ui-force-entry-current.md",
-      "entry": "current/battle-ui-force-entry-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-ui-grid-hit-current.md": {
-      "ref": "captures/current/battle-ui-grid-hit-current.md",
-      "entry": "current/battle-ui-grid-hit-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-ui-modal-classified-current.md": {
-      "ref": "captures/current/battle-ui-modal-classified-current.md",
-      "entry": "current/battle-ui-modal-classified-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/battle-ui-post-ready-redraw-current.md": {
-      "ref": "captures/current/battle-ui-post-ready-redraw-current.md",
-      "entry": "current/battle-ui-post-ready-redraw-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-baseline-recheck-current.md": {
-      "ref": "captures/current/castle-overview-baseline-recheck-current.md",
-      "entry": "current/castle-overview-baseline-recheck-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-baseline-recheck-tests-current.md": {
-      "ref": "captures/current/castle-overview-baseline-recheck-tests-current.md",
-      "entry": "current/castle-overview-baseline-recheck-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-evidence-current.md": {
-      "ref": "captures/current/castle-overview-evidence-current.md",
-      "entry": "current/castle-overview-evidence-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-evidence-matrix-tests-current.md": {
-      "ref": "captures/current/castle-overview-evidence-matrix-tests-current.md",
-      "entry": "current/castle-overview-evidence-matrix-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-flags1f-multihit-current.md": {
-      "ref": "captures/current/castle-overview-flags1f-multihit-current.md",
-      "entry": "current/castle-overview-flags1f-multihit-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-gate-tests-current.md": {
-      "ref": "captures/current/castle-overview-gate-tests-current.md",
-      "entry": "current/castle-overview-gate-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-hitbox-summary-tests-current.md": {
-      "ref": "captures/current/castle-overview-hitbox-summary-tests-current.md",
-      "entry": "current/castle-overview-hitbox-summary-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-hitmap-current.md": {
-      "ref": "captures/current/castle-overview-hitmap-current.md",
-      "entry": "current/castle-overview-hitmap-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-hitmap-summary-tests-current.md": {
-      "ref": "captures/current/castle-overview-hitmap-summary-tests-current.md",
-      "entry": "current/castle-overview-hitmap-summary-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-multihit-summary-tests-current.md": {
-      "ref": "captures/current/castle-overview-multihit-summary-tests-current.md",
-      "entry": "current/castle-overview-multihit-summary-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-probe-guard-current.md": {
-      "ref": "captures/current/castle-overview-probe-guard-current.md",
-      "entry": "current/castle-overview-probe-guard-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-probe-guard-tests-current.md": {
-      "ref": "captures/current/castle-overview-probe-guard-tests-current.md",
-      "entry": "current/castle-overview-probe-guard-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-promotion-decision-current.md": {
-      "ref": "captures/current/castle-overview-promotion-decision-current.md",
-      "entry": "current/castle-overview-promotion-decision-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-overview-promotion-decision-tests-current.md": {
-      "ref": "captures/current/castle-overview-promotion-decision-tests-current.md",
-      "entry": "current/castle-overview-promotion-decision-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-owner-records-current.md": {
-      "ref": "captures/current/castle-owner-records-current.md",
-      "entry": "current/castle-owner-records-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/castle-owner-records-summary-tests-current.md": {
-      "ref": "captures/current/castle-owner-records-summary-tests-current.md",
-      "entry": "current/castle-owner-records-summary-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/current-evidence-refresh-current.md": {
-      "ref": "captures/current/current-evidence-refresh-current.md",
-      "entry": "current/current-evidence-refresh-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/exe-artifact-guard-current.md": {
-      "ref": "captures/current/exe-artifact-guard-current.md",
-      "entry": "current/exe-artifact-guard-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/hd-layout-promotion-decision-current.md": {
-      "ref": "captures/current/hd-layout-promotion-decision-current.md",
-      "entry": "current/hd-layout-promotion-decision-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/hd-layout-promotion-decision-tests-current.md": {
-      "ref": "captures/current/hd-layout-promotion-decision-tests-current.md",
-      "entry": "current/hd-layout-promotion-decision-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/hd-layout-summary-current.md": {
-      "ref": "captures/current/hd-layout-summary-current.md",
-      "entry": "current/hd-layout-summary-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/hd-layout-summary-tests-current.md": {
-      "ref": "captures/current/hd-layout-summary-tests-current.md",
-      "entry": "current/hd-layout-summary-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/hd-layout-visible-current.md": {
-      "ref": "captures/current/hd-layout-visible-current.md",
-      "entry": "current/hd-layout-visible-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/hd-map-evidence-current.md": {
-      "ref": "captures/current/hd-map-evidence-current.md",
-      "entry": "current/hd-map-evidence-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md",
-        "wiki/sources/current-hd-map-evidence.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/no-popup-boundary-guard-current.md": {
-      "ref": "captures/current/no-popup-boundary-guard-current.md",
-      "entry": "current/no-popup-boundary-guard-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/no-popup-guard-tests-current.md": {
-      "ref": "captures/current/no-popup-guard-tests-current.md",
-      "entry": "current/no-popup-guard-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/no-popup-map-evidence-current.md": {
-      "ref": "captures/current/no-popup-map-evidence-current.md",
-      "entry": "current/no-popup-map-evidence-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/no-popup-map-evidence-tests-current.md": {
-      "ref": "captures/current/no-popup-map-evidence-tests-current.md",
-      "entry": "current/no-popup-map-evidence-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/no-visible-runtime-guard-current.md": {
-      "ref": "captures/current/no-visible-runtime-guard-current.md",
-      "entry": "current/no-visible-runtime-guard-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/no-visible-runtime-guard-tests-current.md": {
-      "ref": "captures/current/no-visible-runtime-guard-tests-current.md",
-      "entry": "current/no-visible-runtime-guard-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/process-hygiene-guard-current.md": {
-      "ref": "captures/current/process-hygiene-guard-current.md",
-      "entry": "current/process-hygiene-guard-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/right-bottom-action-nativecenter-current.md": {
-      "ref": "captures/current/right-bottom-action-nativecenter-current.md",
-      "entry": "current/right-bottom-action-nativecenter-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/right-bottom-compose-evidence-current.md": {
-      "ref": "captures/current/right-bottom-compose-evidence-current.md",
-      "entry": "current/right-bottom-compose-evidence-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/right-bottom-compose-evidence-matrix-tests-current.md": {
-      "ref": "captures/current/right-bottom-compose-evidence-matrix-tests-current.md",
-      "entry": "current/right-bottom-compose-evidence-matrix-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/right-bottom-compose-promotion-decision-current.md": {
-      "ref": "captures/current/right-bottom-compose-promotion-decision-current.md",
-      "entry": "current/right-bottom-compose-promotion-decision-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/right-bottom-compose-promotion-decision-tests-current.md": {
-      "ref": "captures/current/right-bottom-compose-promotion-decision-tests-current.md",
-      "entry": "current/right-bottom-compose-promotion-decision-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/right-bottom-natural-slot2-summary-tests-current.md": {
-      "ref": "captures/current/right-bottom-natural-slot2-summary-tests-current.md",
-      "entry": "current/right-bottom-natural-slot2-summary-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md",
-        "docs/hd/HD_MOD_PROGRESS.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/stable-stage-guard-current.md": {
-      "ref": "captures/current/stable-stage-guard-current.md",
-      "entry": "current/stable-stage-guard-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/stable-stage-guard-tests-current.md": {
-      "ref": "captures/current/stable-stage-guard-tests-current.md",
-      "entry": "current/stable-stage-guard-tests-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/surface-dump-policy-guard-current.md": {
-      "ref": "captures/current/surface-dump-policy-guard-current.md",
-      "entry": "current/surface-dump-policy-guard-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": true,
-      "entry_exists": true
-    },
-    "captures/current/surface-dump-policy-guard-current.md/json": {
-      "ref": "captures/current/surface-dump-policy-guard-current.md/json",
-      "entry": "current/surface-dump-policy-guard-current.md",
-      "reference_class": "archived_referenced",
-      "sources": [
-        "README.md"
-      ],
-      "exists": false,
-      "entry_exists": true
-    },
     "captures/archive/cdb-map-minimapaction-minimapright-vswitch-20260423.log": {
       "ref": "captures/archive/cdb-map-minimapaction-minimapright-vswitch-20260423.log",
       "entry": "archive/cdb-map-minimapaction-minimapright-vswitch-20260423.log",
@@ -3138,9 +2173,29 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/archive/cdb-surface-dump-20260429-135242": {
+      "ref": "captures/archive/cdb-surface-dump-20260429-135242",
+      "entry": "archive/cdb-surface-dump-20260429-135242",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/archive/cdb-surface-dump-20260429-135242/surface.png": {
       "ref": "captures/archive/cdb-surface-dump-20260429-135242/surface.png",
       "entry": "archive/cdb-surface-dump-20260429-135242",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260429-140916": {
+      "ref": "captures/archive/cdb-surface-dump-20260429-140916",
+      "entry": "archive/cdb-surface-dump-20260429-140916",
       "reference_class": "archived_referenced",
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
@@ -4258,6 +3313,16 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/archive/cdb-surface-dump-20260512-082418": {
+      "ref": "captures/archive/cdb-surface-dump-20260512-082418",
+      "entry": "archive/cdb-surface-dump-20260512-082418",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/archive/cdb-surface-dump-20260512-082418/surface.png": {
       "ref": "captures/archive/cdb-surface-dump-20260512-082418/surface.png",
       "entry": "archive/cdb-surface-dump-20260512-082418",
@@ -4288,9 +3353,49 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/archive/cdb-surface-dump-20260517-163116": {
+      "ref": "captures/archive/cdb-surface-dump-20260517-163116",
+      "entry": "archive/cdb-surface-dump-20260517-163116",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260517-163734": {
+      "ref": "captures/archive/cdb-surface-dump-20260517-163734",
+      "entry": "archive/cdb-surface-dump-20260517-163734",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260517-171559": {
+      "ref": "captures/archive/cdb-surface-dump-20260517-171559",
+      "entry": "archive/cdb-surface-dump-20260517-171559",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/archive/cdb-surface-dump-20260517-172014": {
       "ref": "captures/archive/cdb-surface-dump-20260517-172014",
       "entry": "archive/cdb-surface-dump-20260517-172014",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260517-172611": {
+      "ref": "captures/archive/cdb-surface-dump-20260517-172611",
+      "entry": "archive/cdb-surface-dump-20260517-172611",
       "reference_class": "archived_referenced",
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
@@ -4308,9 +3413,119 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/archive/cdb-surface-dump-20260518-092756": {
+      "ref": "captures/archive/cdb-surface-dump-20260518-092756",
+      "entry": "archive/cdb-surface-dump-20260518-092756",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/archive/cdb-surface-dump-20260518-092756/surface.png": {
       "ref": "captures/archive/cdb-surface-dump-20260518-092756/surface.png",
       "entry": "archive/cdb-surface-dump-20260518-092756",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260518-100917": {
+      "ref": "captures/archive/cdb-surface-dump-20260518-100917",
+      "entry": "archive/cdb-surface-dump-20260518-100917",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260518-214535": {
+      "ref": "captures/archive/cdb-surface-dump-20260518-214535",
+      "entry": "archive/cdb-surface-dump-20260518-214535",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260518-221018": {
+      "ref": "captures/archive/cdb-surface-dump-20260518-221018",
+      "entry": "archive/cdb-surface-dump-20260518-221018",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260520-094032": {
+      "ref": "captures/archive/cdb-surface-dump-20260520-094032",
+      "entry": "archive/cdb-surface-dump-20260520-094032",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260520-100717": {
+      "ref": "captures/archive/cdb-surface-dump-20260520-100717",
+      "entry": "archive/cdb-surface-dump-20260520-100717",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260520-101859": {
+      "ref": "captures/archive/cdb-surface-dump-20260520-101859",
+      "entry": "archive/cdb-surface-dump-20260520-101859",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260520-103155": {
+      "ref": "captures/archive/cdb-surface-dump-20260520-103155",
+      "entry": "archive/cdb-surface-dump-20260520-103155",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260520-103714": {
+      "ref": "captures/archive/cdb-surface-dump-20260520-103714",
+      "entry": "archive/cdb-surface-dump-20260520-103714",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260520-111115": {
+      "ref": "captures/archive/cdb-surface-dump-20260520-111115",
+      "entry": "archive/cdb-surface-dump-20260520-111115",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260520-195244": {
+      "ref": "captures/archive/cdb-surface-dump-20260520-195244",
+      "entry": "archive/cdb-surface-dump-20260520-195244",
       "reference_class": "archived_referenced",
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
@@ -4371,6 +3586,16 @@
     "captures/archive/cdb-surface-dump-20260520-214344": {
       "ref": "captures/archive/cdb-surface-dump-20260520-214344",
       "entry": "archive/cdb-surface-dump-20260520-214344",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260520-220459": {
+      "ref": "captures/archive/cdb-surface-dump-20260520-220459",
+      "entry": "archive/cdb-surface-dump-20260520-220459",
       "reference_class": "archived_referenced",
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
@@ -4441,6 +3666,16 @@
     "captures/archive/cdb-surface-dump-20260527-161047/right-bottom-slot-fixture-result-summary.md": {
       "ref": "captures/archive/cdb-surface-dump-20260527-161047/right-bottom-slot-fixture-result-summary.md",
       "entry": "archive/cdb-surface-dump-20260527-161047",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/archive/cdb-surface-dump-20260527-163809/load-slot-transition-summary.md": {
+      "ref": "captures/archive/cdb-surface-dump-20260527-163809/load-slot-transition-summary.md",
+      "entry": "archive/cdb-surface-dump-20260527-163809",
       "reference_class": "archived_referenced",
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
@@ -5548,6 +4783,16 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/archive/visual-smoke-20260713-075818": {
+      "ref": "captures/archive/visual-smoke-20260713-075818",
+      "entry": "archive/visual-smoke-20260713-075818",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/archive/win32-geometry-ddraw-disasm-20260422.log": {
       "ref": "captures/archive/win32-geometry-ddraw-disasm-20260422.log",
       "entry": "archive/win32-geometry-ddraw-disasm-20260422.log",
@@ -5571,6 +4816,136 @@
     "captures/current/": {
       "ref": "captures/current/",
       "entry": "current/",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-command-availability-current.md": {
+      "ref": "captures/current/battle-command-availability-current.md",
+      "entry": "current/battle-command-availability-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-constructed-fixture-unit-scan-current.md": {
+      "ref": "captures/current/battle-constructed-fixture-unit-scan-current.md",
+      "entry": "current/battle-constructed-fixture-unit-scan-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-constructed-save-fixture-current.md": {
+      "ref": "captures/current/battle-constructed-save-fixture-current.md",
+      "entry": "current/battle-constructed-save-fixture-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-save-unit-inventory-current.md": {
+      "ref": "captures/current/battle-save-unit-inventory-current.md",
+      "entry": "current/battle-save-unit-inventory-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-slot-scan-current.md": {
+      "ref": "captures/current/battle-slot-scan-current.md",
+      "entry": "current/battle-slot-scan-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-ui-centered-input-current.md": {
+      "ref": "captures/current/battle-ui-centered-input-current.md",
+      "entry": "current/battle-ui-centered-input-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-ui-command-callback-current.md": {
+      "ref": "captures/current/battle-ui-command-callback-current.md",
+      "entry": "current/battle-ui-command-callback-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-ui-command-enabled-callback-current.md": {
+      "ref": "captures/current/battle-ui-command-enabled-callback-current.md",
+      "entry": "current/battle-ui-command-enabled-callback-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-ui-command-hit-current.md": {
+      "ref": "captures/current/battle-ui-command-hit-current.md",
+      "entry": "current/battle-ui-command-hit-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-ui-evidence-current.md": {
+      "ref": "captures/current/battle-ui-evidence-current.md",
+      "entry": "current/battle-ui-evidence-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-ui-grid-hit-current.md": {
+      "ref": "captures/current/battle-ui-grid-hit-current.md",
+      "entry": "current/battle-ui-grid-hit-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-ui-modal-classified-current.md": {
+      "ref": "captures/current/battle-ui-modal-classified-current.md",
+      "entry": "current/battle-ui-modal-classified-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/battle-ui-post-ready-redraw-current.md": {
+      "ref": "captures/current/battle-ui-post-ready-redraw-current.md",
+      "entry": "current/battle-ui-post-ready-redraw-current.md",
       "reference_class": "archived_referenced",
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
@@ -5630,6 +5005,16 @@
       "exists": true,
       "entry_exists": true
     },
+    "captures/current/hd-map-evidence-current.md": {
+      "ref": "captures/current/hd-map-evidence-current.md",
+      "entry": "current/hd-map-evidence-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
     "captures/current/hd-map-smoke-current.json": {
       "ref": "captures/current/hd-map-smoke-current.json",
       "entry": "current/hd-map-smoke-current.json",
@@ -5645,8 +5030,7 @@
       "entry": "current/hd-map-smoke-current.md",
       "reference_class": "archived_referenced",
       "sources": [
-        "docs/hd/HD_MOD_PROGRESS.md",
-        "wiki/sources/current-hd-map-evidence.md"
+        "docs/hd/HD_MOD_PROGRESS.md"
       ],
       "exists": true,
       "entry_exists": true
@@ -5664,6 +5048,36 @@
     "captures/current/hd-soak-short-current.md": {
       "ref": "captures/current/hd-soak-short-current.md",
       "entry": "current/hd-soak-short-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short2-map-idle-cdb-followup-current.json": {
+      "ref": "captures/current/hd-soak-short2-map-idle-cdb-followup-current.json",
+      "entry": "current/hd-soak-short2-map-idle-cdb-followup-current.json",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/hd-soak-short2-map-idle-wer-followup-current.json": {
+      "ref": "captures/current/hd-soak-short2-map-idle-wer-followup-current.json",
+      "entry": "current/hd-soak-short2-map-idle-wer-followup-current.json",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/no-popup-map-evidence-current.md": {
+      "ref": "captures/current/no-popup-map-evidence-current.md",
+      "entry": "current/no-popup-map-evidence-current.md",
       "reference_class": "archived_referenced",
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
@@ -5726,8 +5140,7 @@
       "entry": "current/post-owner-evidence-current.md",
       "reference_class": "archived_referenced",
       "sources": [
-        "docs/hd/HD_MOD_PROGRESS.md",
-        "wiki/sources/current-hd-map-evidence.md"
+        "docs/hd/HD_MOD_PROGRESS.md"
       ],
       "exists": true,
       "entry_exists": true
@@ -5735,6 +5148,36 @@
     "captures/current/right-bottom-blocker-triage-current.md": {
       "ref": "captures/current/right-bottom-blocker-triage-current.md",
       "entry": "current/right-bottom-blocker-triage-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/right-bottom-compose-evidence-current.md": {
+      "ref": "captures/current/right-bottom-compose-evidence-current.md",
+      "entry": "current/right-bottom-compose-evidence-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/right-bottom-compose-promotion-decision-current.md": {
+      "ref": "captures/current/right-bottom-compose-promotion-decision-current.md",
+      "entry": "current/right-bottom-compose-promotion-decision-current.md",
+      "reference_class": "archived_referenced",
+      "sources": [
+        "docs/hd/HD_MOD_PROGRESS.md"
+      ],
+      "exists": true,
+      "entry_exists": true
+    },
+    "captures/current/right-bottom-natural-slot2-summary-tests-current.md": {
+      "ref": "captures/current/right-bottom-natural-slot2-summary-tests-current.md",
+      "entry": "current/right-bottom-natural-slot2-summary-tests-current.md",
       "reference_class": "archived_referenced",
       "sources": [
         "docs/hd/HD_MOD_PROGRESS.md"
@@ -5899,6 +5342,206 @@
     {
       "name": "archive/battle-visible-input-minimal-20260521-232626",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-minimal-20260521-232626",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260713-153900",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260713-153900",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260713-154500",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260713-154500",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260713-155200",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260713-155200",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260714-142600",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260714-142600",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260714-143200",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260714-143200",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260714-144200",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260714-144200",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260714-144800",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260714-144800",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260714-145400",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260714-145400",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260714-150000",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260714-150000",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-124449",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-124449",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-124850",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-124850",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-125206",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-125206",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-125927",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-125927",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-131239",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-131239",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-131804",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-131804",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-131957",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-131957",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-132332",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-132332",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-132640",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-132640",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-132948",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-132948",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/battle-visible-input-present-20260717-133221",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-present-20260717-133221",
       "artifact_kind": "directory",
       "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
@@ -6840,7 +6483,7 @@
       "name": "archive/cdb-surface-dump-20260513-095443",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-095443",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6900,7 +6543,7 @@
       "name": "archive/cdb-surface-dump-20260513-112339",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-112339",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6930,7 +6573,7 @@
       "name": "archive/cdb-surface-dump-20260513-115303",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-115303",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6940,7 +6583,7 @@
       "name": "archive/cdb-surface-dump-20260513-120712",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-120712",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6960,7 +6603,7 @@
       "name": "archive/cdb-surface-dump-20260513-122200",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122200",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -6970,7 +6613,7 @@
       "name": "archive/cdb-surface-dump-20260513-122928",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-122928",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7000,7 +6643,7 @@
       "name": "archive/cdb-surface-dump-20260515-105411",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260515-105411",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7010,7 +6653,7 @@
       "name": "archive/cdb-surface-dump-20260515-105458",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260515-105458",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7020,7 +6663,7 @@
       "name": "archive/cdb-surface-dump-20260515-105557",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260515-105557",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -7860,7 +7503,7 @@
       "name": "archive/cdb-surface-dump-20260712-144019",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144019",
       "artifact_kind": "directory",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -8131,6 +7774,196 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-072428",
       "artifact_kind": "directory",
       "reference_status": "archived_referenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-143450",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-143450",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-151040",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-151040",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-160446",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-160446",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-160520",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-160520",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-160925",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-160925",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-172217",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-172217",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-172316",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-172316",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-172606",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-172606",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-172904",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-172904",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-173126",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-173126",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-173358",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-173358",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-173715",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-173715",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-175514",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-175514",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-175735",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-175735",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260713-181433",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260713-181433",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260714-075917",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260714-075917",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260714-081544",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260714-081544",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260714-141021",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260714-141021",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "hidden_cdb_surface_dump",
+      "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
+      "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260714-145855",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260714-145855",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
@@ -8987,6 +8820,56 @@
       "has_run_summary": false
     },
     {
+      "name": "archive/visual-smoke-20260713-144505",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\visual-smoke-20260713-144505",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "visible_era",
+      "classification_reason": "legacy visible/click or visual-smoke artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/visual-smoke-20260713-145714",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\visual-smoke-20260713-145714",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "visible_era",
+      "classification_reason": "legacy visible/click or visual-smoke artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/visual-smoke-20260713-150843",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\visual-smoke-20260713-150843",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "visible_era",
+      "classification_reason": "legacy visible/click or visual-smoke artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/visual-smoke-20260714-140443",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\visual-smoke-20260714-140443",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "visible_era",
+      "classification_reason": "legacy visible/click or visual-smoke artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/visual-smoke-20260714-155327",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\visual-smoke-20260714-155327",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "visible_era",
+      "classification_reason": "legacy visible/click or visual-smoke artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/battle-command-availability-current.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\battle-command-availability-current.json",
       "artifact_kind": "file",
@@ -9020,7 +8903,7 @@
       "name": "current/battle-constructed-fixture-command-callback-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\battle-constructed-fixture-command-callback-current.md",
       "artifact_kind": "file",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -9240,7 +9123,7 @@
       "name": "current/battle-ui-force-entry-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\battle-ui-force-entry-current.md",
       "artifact_kind": "file",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -9437,6 +9320,66 @@
       "has_run_summary": false
     },
     {
+      "name": "current/border-frame-restore-check-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\border-frame-restore-check-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/border-frame-restore-check-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\border-frame-restore-check-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/border-frame-restore-check-tests-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\border-frame-restore-check-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/border-frame-restore-check-tests-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\border-frame-restore-check-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/border-frame-restore-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\border-frame-restore-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/border-frame-restore-realruntime-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\border-frame-restore-realruntime-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/bottom-tooltip-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\bottom-tooltip-current.md",
       "artifact_kind": "file",
@@ -9580,7 +9523,7 @@
       "name": "current/castle-overview-flags1f-multihit-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\castle-overview-flags1f-multihit-current.md",
       "artifact_kind": "file",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -9680,7 +9623,7 @@
       "name": "current/castle-overview-hitmap-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\castle-overview-hitmap-current.md",
       "artifact_kind": "file",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -9850,7 +9793,7 @@
       "name": "current/castle-owner-records-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\castle-owner-records-current.md",
       "artifact_kind": "file",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -10161,6 +10104,16 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-continuity-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-continuity-proof-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-continuity-proof-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -10977,6 +10930,46 @@
       "has_run_summary": false
     },
     {
+      "name": "current/hd-soak-short2-map-idle-cdb-followup-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-cdb-followup-current.json",
+      "artifact_kind": "file",
+      "reference_status": "archived_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short2-map-idle-cdb-followup-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-cdb-followup-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short2-map-idle-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short2-map-idle-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/hd-soak-short2-map-idle-guard-current.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-guard-current.json",
       "artifact_kind": "file",
@@ -11009,6 +11002,26 @@
     {
       "name": "current/hd-soak-short2-map-idle-triage-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-triage-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short2-map-idle-wer-followup-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-wer-followup-current.json",
+      "artifact_kind": "file",
+      "reference_status": "archived_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short2-map-idle-wer-followup-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-wer-followup-current.md",
       "artifact_kind": "file",
       "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
@@ -12110,7 +12123,7 @@
       "name": "current/right-bottom-action-nativecenter-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\right-bottom-action-nativecenter-current.md",
       "artifact_kind": "file",
-      "reference_status": "archived_referenced",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,

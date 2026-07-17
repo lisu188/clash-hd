@@ -1,14 +1,14 @@
 # HD Soak Route Coverage
 
 - Overall: PASS
-- Generated: `2026-07-13T06:55:03.569480+00:00`
+- Generated: `2026-07-17T13:37:00.433258+00:00`
 - Runtime policy: repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Harness script: `scripts\smoke\run_hd_soak.ps1`
 - Release checklist: `captures\current\hd-endurance-release-checklist-current.json` state=`present`
 - Implemented routes: `menu-idle, map-idle, map-pan, custom`
 - Implemented tiers: `short2, short10, short30, custom`
 - Release lanes implemented: `3/10`
-- Release lanes with current blockers: `10`
+- Release lanes with current blockers: `8`
 - Coverage complete: `False`
 - Next runtime route: `menu-idle`
 
@@ -29,13 +29,10 @@
   - blocker `right_bottom_action_menu`: status=`blocked` summary=right-bottom action/menu remains validation-only or manual-proof blocked
 - `tactical_battle_entry_return`: status=`planned_not_implemented` route=`not-yet-scripted` implemented=`False` proof=`future_visible_or_manual_input` readiness=`planned_blocked_by_current_requirements` blockers=`1`
   - blocker `tactical_battle_entry_return`: status=`blocked` summary=battle evidence remains validation-only or missing visible click-to-callback proof
-- `save_load_roundtrip`: status=`planned_not_implemented` route=`not-yet-scripted` implemented=`False` proof=`future_safe_test_save_continuity` readiness=`planned_blocked_by_current_requirements` blockers=`1`
-  - blocker `save_load_roundtrip`: status=`blocked` summary=save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- `turn_advancement`: status=`planned_not_implemented` route=`not-yet-scripted` implemented=`False` proof=`future_state_continuity` readiness=`planned_blocked_by_current_requirements` blockers=`1`
-  - blocker `turn_advancement`: status=`blocked` summary=turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- `campaign_route`: status=`planned_not_implemented` route=`not-yet-scripted` implemented=`False` proof=`future_long_visible_runtime` readiness=`planned_blocked_by_current_requirements` blockers=`2`
+- `save_load_roundtrip`: status=`planned_not_implemented` route=`not-yet-scripted` implemented=`False` proof=`future_safe_test_save_continuity` readiness=`planned_requirements_clear_not_scripted` blockers=`0`
+- `turn_advancement`: status=`planned_not_implemented` route=`not-yet-scripted` implemented=`False` proof=`future_state_continuity` readiness=`planned_requirements_clear_not_scripted` blockers=`0`
+- `campaign_route`: status=`planned_not_implemented` route=`not-yet-scripted` implemented=`False` proof=`future_long_visible_runtime` readiness=`planned_blocked_by_current_requirements` blockers=`1`
   - blocker `long_soak_representative_routes`: status=`blocked` summary=2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing
-  - blocker `campaign_routes`: status=`blocked` summary=campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
 
 ## Locked Future Route Plan
 
@@ -62,15 +59,15 @@
 - `save_load_roundtrip`: proposed_route=`save-load-roundtrip` contract=`locked_not_scripted` ready_to_script=`False` safe_to_execute_now=`False`
   - steps: `prepare-isolated-save, save-roundtrip, load-roundtrip, compare-continuity-markers`
   - unlock_requirements: `short2_menu_idle_soak, stable_hd_map_real_input, save_load_roundtrip`
-  - current_blockers: `save_load_roundtrip`
+  - current_blockers: `none`
   - policy: do not script save mutation until an isolated disposable save fixture and continuity markers are defined
 - `turn_advancement`: proposed_route=`turn-advancement` contract=`locked_not_scripted` ready_to_script=`False` safe_to_execute_now=`False`
   - steps: `load-safe-fixture, advance-turn, verify-turn-state-markers, verify-map-still-renders`
   - unlock_requirements: `short2_menu_idle_soak, save_load_roundtrip, turn_advancement`
-  - current_blockers: `turn_advancement`
+  - current_blockers: `none`
   - policy: do not script turn advancement until save/load continuity is safe and deterministic state markers exist
 - `campaign_route`: proposed_route=`campaign-representative-route` contract=`locked_not_scripted` ready_to_script=`False` safe_to_execute_now=`False`
   - steps: `load-campaign-safe-fixture, route-campaign-objective, return-to-map, sample-continuity`
   - unlock_requirements: `short2_menu_idle_soak, long_soak_representative_routes, campaign_routes`
-  - current_blockers: `long_soak_representative_routes, campaign_routes`
+  - current_blockers: `long_soak_representative_routes`
   - policy: do not script campaign routing until short/medium soak tiers and continuity gates are already passing

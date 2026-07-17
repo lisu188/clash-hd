@@ -1,0 +1,196 @@
+{
+    "generated_at":  "2026-07-17T15:25:41.3412314+02:00",
+    "runtime_policy":  "opt-in visible runtime soak; raw frames stay outside the repository by default",
+    "executed":  true,
+    "passed":  false,
+    "failures":  [
+                     "process exited unexpectedly with code 1",
+                     "expected at least 2 frame samples",
+                     "nonblack percent dropped below 10",
+                     "unique sampled colors dropped below 8",
+                     "route/input probe failures: 1",
+                     "input drift exceeded 1px or metric missing: 1",
+                     "intro skip rounds never verified the main menu on screen",
+                     "no launch attempt produced an interactive menu (engine cursor never responded to pulse input)",
+                     "route did not reach the gameplay map",
+                     "working-set growth metric unavailable",
+                     "private-memory growth metric unavailable",
+                     "handle growth metric unavailable"
+                 ],
+    "tier":  "short2",
+    "duration_sec":  120,
+    "sample_interval_sec":  15,
+    "route":  "map-idle",
+    "final_route_marker":  "intro-skip",
+    "stage":  "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "protected_stable_stage":  "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+    "stable_stage_should_change":  false,
+    "input_exe":  "C:\\Clash\\clash95.exe",
+    "input_sha256":  "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "candidate":  "C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260717_152510.exe",
+    "candidate_sha256":  "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+    "patch_stage_report":  "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle\\patch-stage.json",
+    "workdir":  "C:\\Clash",
+    "output_directory":  "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle",
+    "report_json":  "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-current.json",
+    "report_markdown":  "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-current.md",
+    "frame_sample_count":  0,
+    "frame_hash_unique_count":  0,
+    "frame_progress_expected":  false,
+    "frame_stability_class":  "no_frames",
+    "nonblack_percent_min":  0,
+    "nonblack_percent_max":  0,
+    "mean_luma_min":  0,
+    "mean_luma_max":  0,
+    "unique_sample_colors_min":  0,
+    "unique_sample_colors_max":  0,
+    "input_max_abs_error":  null,
+    "input_max_sample_abs_error":  null,
+    "max_input_drift_px":  1,
+    "window_mode":  {
+                        "Passed":  true,
+                        "Path":  "C:\\Clash\\dxcfg.ini",
+                        "Sha256":  "0F35B74B13284901C07145FB945575A7F5A5F313E13AEB24392843609ECDA3FE",
+                        "Display":  "application",
+                        "Presentation":  "windowed",
+                        "Required":  true,
+                        "Failures":  [
+
+                                     ]
+                    },
+    "window_health_policy":  {
+                                 "probe":  "EnumWindows plus IsHungAppWindow; no synchronous target-window message",
+                                 "phases":  "after launch, after intro wait, before and after every route step, before every capture",
+                                 "stop_on_hung_or_missing_window":  true,
+                                 "purpose":  "stop further input/capture at the first nonresponsive or missing application/windowed target"
+                             },
+    "window_health_sample_count":  2,
+    "window_hang_observed":  false,
+    "window_missing_while_alive_observed":  false,
+    "window_health_first_failure":  null,
+    "intro_skip":  {
+                       "click_mode":  "postmessage",
+                       "click_repeat":  8,
+                       "stop_click_repeat_on_drift":  true,
+                       "space_pulses":  4,
+                       "proof_class":  "intro_skip_harness_prep_not_manual_directinput_release_proof",
+                       "menu_verified":  false,
+                       "menu_verify_nonblack_percent":  null,
+                       "menu_verify_threshold_percent":  50,
+                       "rounds_used":  1
+                   },
+    "map_route_reached":  null,
+    "route_final_nonblack_percent":  null,
+    "map_reached_nonblack_threshold_percent":  85,
+    "launch_attempt_count":  1,
+    "launch_attempts":  [
+                            {
+                                "Attempt":  1,
+                                "MenuVerified":  false,
+                                "MenuVerifyNonblackPercent":  null,
+                                "IntroRoundsUsed":  1,
+                                "CursorProbeRequired":  true,
+                                "CursorProbeExitCode":  null,
+                                "CursorProbeAlive":  false,
+                                "CursorProbeJson":  null
+                            }
+                        ],
+    "cursor_probe_required":  true,
+    "cursor_probe_alive":  false,
+    "process_sample_count":  2,
+    "working_set_growth_bytes":  null,
+    "private_memory_growth_bytes":  null,
+    "handle_growth":  null,
+    "max_working_set_growth_mb":  64,
+    "max_private_memory_growth_mb":  64,
+    "max_handle_growth":  128,
+    "working_set_growth_limit_bytes":  67108864,
+    "private_memory_growth_limit_bytes":  67108864,
+    "max_artifact_mb":  250,
+    "artifact_limit_bytes":  262144000,
+    "artifact_bytes":  56508,
+    "process_exited_unexpectedly":  true,
+    "exit_code":  1,
+    "clean_stop":  false,
+    "keep_open":  false,
+    "input_proof_class":  "automated_visible_runtime_diagnostic_not_manual_directinput_release_proof",
+    "right_bottom_promotion_blocked":  true,
+    "route_results":  [
+                          {
+                              "Name":  "intro-skip",
+                              "Points":  "400,300",
+                              "Click":  true,
+                              "PathVerified":  false,
+                              "ClickPathVerified":  false,
+                              "MaxAbsError":  null,
+                              "MaxSampleAbsError":  null,
+                              "ClickEventCount":  0,
+                              "ClickRepeatObserved":  0,
+                              "TransitionStopObserved":  false,
+                              "RepeatStopReasons":  [
+
+                                                    ],
+                              "MenuVerified":  false,
+                              "MenuVerifyNonblackPercent":  null,
+                              "MenuVerifyThresholdPercent":  50,
+                              "IntroRoundsUsed":  1,
+                              "IntroRoundBudget":  12,
+                              "MoveMode":  "auto",
+                              "ClickMode":  "postmessage",
+                              "ClickRepeat":  8,
+                              "SpacePulses":  4,
+                              "InputProofClass":  "intro_skip_harness_prep_not_manual_directinput_release_proof",
+                              "ProbeExitCode":  1,
+                              "Json":  "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle\\intro-skip-a1-round-0.json",
+                              "Log":  "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle\\intro-skip-a1-round-0.log"
+                          }
+                      ],
+    "process_samples":  [
+                            {
+                                "Timestamp":  "2026-07-17T15:25:41.2949500+02:00",
+                                "HasExited":  true,
+                                "ExitCode":  1,
+                                "WorkingSet64":  null,
+                                "PrivateMemorySize64":  null,
+                                "HandleCount":  null
+                            },
+                            {
+                                "Timestamp":  "2026-07-17T15:25:41.2959501+02:00",
+                                "HasExited":  true,
+                                "ExitCode":  1,
+                                "WorkingSet64":  null,
+                                "PrivateMemorySize64":  null,
+                                "HandleCount":  null
+                            }
+                        ],
+    "frame_samples":  [
+
+                      ],
+    "capture_errors":  [
+
+                       ],
+    "window_health_samples":  [
+                                  {
+                                      "Timestamp":  "2026-07-17T15:25:26.2166535+02:00",
+                                      "Phase":  "after-launch",
+                                      "ProcessExited":  false,
+                                      "WindowFound":  true,
+                                      "Hwnd":  "0x1E120E",
+                                      "ClientWidth":  800,
+                                      "ClientHeight":  600,
+                                      "IsHung":  false,
+                                      "HealthClass":  "responsive"
+                                  },
+                                  {
+                                      "Timestamp":  "2026-07-17T15:25:41.2899511+02:00",
+                                      "Phase":  "after-intro-wait",
+                                      "ProcessExited":  true,
+                                      "WindowFound":  false,
+                                      "Hwnd":  null,
+                                      "ClientWidth":  null,
+                                      "ClientHeight":  null,
+                                      "IsHung":  null,
+                                      "HealthClass":  "process_exited"
+                                  }
+                              ]
+}

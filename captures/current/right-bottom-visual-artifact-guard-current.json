@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T12:35:24+02:00",
+  "generated_at": "2026-07-17T15:36:07+02:00",
   "passed": true,
   "runtime_policy": "repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only while the resolved right-bottom state holds: controlled composition is recovered, the accepted slot5-as-slot0 fixture natural-draw evidence remains valid (user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence), the compose evidence matrix passes with promotion still deferred, and blocker triage remains non-promoting",

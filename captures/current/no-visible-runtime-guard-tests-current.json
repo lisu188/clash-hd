@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:54:41+02:00",
+  "generated_at": "2026-07-17T15:36:46+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the no-visible runtime guard requires hidden-desktop launch summaries, explicit no-visible runtime policy text, present run summaries, and CLI fail-closed behavior",

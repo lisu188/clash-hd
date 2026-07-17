@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-13T08:54:38+02:00",
+  "generated_at": "2026-07-17T15:36:44+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "script": "scripts\\cdb\\run_cdb_battle_visible_input_probe.ps1",
   "wait_log_pattern_lines": [
-    93
+    107
   ],
   "checks": [
     {

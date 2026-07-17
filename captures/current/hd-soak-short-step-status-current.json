@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T06:55:01.655718+00:00",
+  "generated_at": "2026-07-17T13:36:58.776528+00:00",
   "passed": true,
   "runtime_policy": "repo-only short-soak step status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "manifest": "captures\\current\\hd-soak-short-artifact-manifest-current.json",
@@ -9,16 +9,16 @@
   "counts": {
     "total": 5,
     "passed": 1,
-    "pending_or_missing": 1,
+    "pending_or_missing": 0,
     "locked": 3,
-    "failed_or_invalid": 0
+    "failed_or_invalid": 1
   },
   "current_step": {
     "id": "short2_map_idle",
     "tier": "short2",
     "route": "map-idle",
-    "status": "missing_pending_approval",
-    "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json"
+    "status": "failed_classified_intro_skip_input_drift_exit",
+    "next_command": null
   },
   "steps": [
     {
@@ -62,7 +62,7 @@
         "short2_menu_idle"
       ],
       "prerequisites_passed": true,
-      "status": "missing_pending_approval",
+      "status": "failed_classified_intro_skip_input_drift_exit",
       "passed": false,
       "paths": {
         "report_json": "captures\\current\\hd-soak-short2-map-idle-current.json",
@@ -73,9 +73,26 @@
         "triage_markdown": "captures\\current\\hd-soak-short2-map-idle-triage-current.md"
       },
       "summary": {
-        "canonical_report_present": false,
-        "legacy_report_matches": false,
-        "next_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json"
+        "canonical_report_present": true,
+        "guard_present": true,
+        "guard_overall": false,
+        "triage_present": true,
+        "triage_passed": false,
+        "classification": "intro_skip_input_drift_exit",
+        "next_probe": "previous intro-skip postmessage repeats crossed a window/intro transition; make the harness stop or reacquire after the transition, retain explicit windowed-mode verification, then rerun only after fresh visible-window approval",
+        "frame_sample_count": 0,
+        "final_route_marker": "intro-skip",
+        "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+        "visual_anomaly_passed": true,
+        "black_patch_risk_count": 0,
+        "palette_or_stripe_risk_count": 0,
+        "missing_nonblack_bounds_count": 0,
+        "intro_skip_click_mode": "postmessage",
+        "intro_skip_click_repeat": 8,
+        "intro_skip_click_path_verified": false,
+        "wer_followup_matched": true,
+        "wer_followup_status": "application_hang_confirmed_wer_closed",
+        "window_health_mitigation_ready": true
       },
       "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json",
       "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json"

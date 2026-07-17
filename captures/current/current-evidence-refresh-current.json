@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T13:39:59+02:00",
+  "generated_at": "2026-07-17T15:37:02+02:00",
   "passed": false,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "checks": {
@@ -1225,6 +1225,34 @@
       },
       "failures": []
     },
+    "border_frame_restore_check": {
+      "passed": true,
+      "json": "captures\\current\\border-frame-restore-check-current.json",
+      "markdown": "captures\\current\\border-frame-restore-check-current.md",
+      "summary": {
+        "patch_group": "frame-restore-bands",
+        "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore",
+        "real_runtime_frames": [
+          "captures/archive/visual-smoke-20260713-150843/after-map-path.png"
+        ],
+        "proxy_surface_evidence_passed": true,
+        "real_runtime_evidence_passed": true,
+        "guard_policy": "committed frame-restore band evidence must keep every border band region, filled HD extension bands with passing histogram authenticity gates at or above the frozen thresholds, and a real-runtime frame reference that still resolves inside the repository",
+        "runtime_policy": "repo-only committed-evidence validation; does not launch Clash95, CDB, wrappers, or visible windows"
+      },
+      "failures": []
+    },
+    "border_frame_restore_check_tests": {
+      "passed": true,
+      "json": "captures\\current\\border-frame-restore-check-tests-current.json",
+      "markdown": "captures\\current\\border-frame-restore-check-tests-current.md",
+      "summary": {
+        "test_count": 10,
+        "guard_policy": "proves the frame-restore-bands lane keeps every border band, passing authenticity gates at frozen thresholds, and a resolvable real-runtime frame reference, failing closed on any missing file or field",
+        "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
+      },
+      "failures": []
+    },
     "right_bottom_grid_hit_summary_tests": {
       "passed": true,
       "json": "captures\\current\\right-bottom-grid-hit-summary-tests-current.json",
@@ -1795,7 +1823,7 @@
         "patcher_default_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
         "patch_count": 211,
         "patch_group_count": 46,
-        "stage_count": 60,
+        "stage_count": 61,
         "validation_groups_in_stable": [],
         "overlap_failure_count": 0,
         "guard_policy": "patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps",
@@ -1835,6 +1863,7 @@
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout",
+          "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput",
@@ -1914,13 +1943,13 @@
       "json": "captures\\current\\python-runtime-safety-current.json",
       "markdown": "captures\\current\\python-runtime-safety-current.md",
       "summary": {
-        "risky_file_count": 118,
+        "risky_file_count": 120,
         "classification_counts": {
-          "safe": 126,
+          "safe": 127,
           "user_gated_launcher": 1,
           "exempt": 28,
-          "manual_visible_runtime_gated": 2,
-          "test_fixture": 87
+          "manual_visible_runtime_gated": 3,
+          "test_fixture": 88
         },
         "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
         "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
@@ -2280,7 +2309,7 @@
         "full_game_complete": false,
         "full_game_percent_statement": "not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open",
         "percentages": {
-          "current_repo_evidence_gates": 98.14,
+          "current_repo_evidence_gates": 98.77,
           "repo_test_sweep": 100.0,
           "focused_battle_right_bottom_lane": 99.95,
           "right_bottom_promotion_gate": 100.0,
@@ -2523,7 +2552,7 @@
           "failed_or_invalid": 1
         },
         "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_window_missing_while_process_alive",
+        "current_step_status": "failed_classified_intro_skip_input_drift_exit",
         "long_tiers_locked": true,
         "future_lanes_locked": true,
         "right_bottom_promotion_blocked": true,
@@ -2549,7 +2578,7 @@
       "summary": {
         "status": "ready_for_explicit_approval",
         "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_window_missing_while_process_alive",
+        "current_step_status": "failed_classified_intro_skip_input_drift_exit",
         "dry_run": true,
         "candidate_dir": "C:\\ClashTests\\hd-soak",
         "output_root": "C:\\ClashCaptures\\hd-soak",
@@ -2578,11 +2607,11 @@
       "json": "captures\\current\\hd-soak-intro-skip-rerun-readiness-current.json",
       "markdown": "captures\\current\\hd-soak-intro-skip-rerun-readiness-current.md",
       "summary": {
-        "status": "not_applicable_current_failure",
+        "status": "ready_for_explicit_visible_rerun_approval",
         "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_window_missing_while_process_alive",
+        "current_step_status": "failed_classified_intro_skip_input_drift_exit",
         "triage_classification": "passing_run_no_failure",
-        "approval_boundary": "No intro-skip rerun is authorized while the current step has an unrelated classified failure; follow its repo-only triage instead.",
+        "approval_boundary": "The next runtime run will open a visible Clash95 game window and still requires explicit user approval.",
         "runtime_policy": "repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
       "failures": []
@@ -2648,7 +2677,7 @@
             "id": "short2_map_idle",
             "tier": "short2",
             "route": "map-idle",
-            "status": "failed_classified_window_missing_while_process_alive",
+            "status": "failed_classified_intro_skip_input_drift_exit",
             "next_command": null
           }
         },
@@ -2763,10 +2792,10 @@
       "json": "captures\\current\\hd-endurance-next-actions-current.json",
       "markdown": "captures\\current\\hd-endurance-next-actions-current.md",
       "summary": {
-        "status": "repo_only_followup_available",
-        "next_action": "inspect_short2_map_idle_triage",
-        "requires_explicit_user_approval": false,
-        "has_plan_verified_execute_command": false,
+        "status": "waiting_for_explicit_visible_runtime_approval",
+        "next_action": "rerun_short2_map_idle_soak",
+        "requires_explicit_user_approval": true,
+        "has_plan_verified_execute_command": true,
         "focused_post_run_validation_count": 3,
         "handoff_refresh_count": 5,
         "broad_evidence_refresh_count": 4,
@@ -2823,13 +2852,13 @@
       "failures": []
     },
     "hd_soak_approval_preflight": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\hd-soak-approval-preflight-current.json",
       "markdown": "captures\\current\\hd-soak-approval-preflight-current.md",
       "summary": {
-        "status": "not_ready",
+        "status": "ready_for_explicit_approval",
         "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_window_missing_while_process_alive",
+        "current_step_status": "failed_classified_intro_skip_input_drift_exit",
         "dry_run_plan_status": "ready_for_explicit_approval",
         "dry_run_plan_passed": true,
         "writes_outside_repo": [
@@ -2840,9 +2869,7 @@
         "right_bottom_promotion_blocked": true,
         "runtime_policy": "repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
-      "failures": [
-        "current short-step status is 'failed_classified_window_missing_while_process_alive'"
-      ]
+      "failures": []
     },
     "hd_soak_approval_preflight_tests": {
       "passed": true,
@@ -2860,18 +2887,18 @@
       "json": "captures\\current\\capture-corpus-index-current.json",
       "markdown": "captures\\current\\capture-corpus-index-current.md",
       "summary": {
-        "artifact_count": 753,
+        "artifact_count": 757,
         "current_reference_count": 179,
         "stale_visible_or_sandbox_count": 18,
         "reference_status_counts": {
           "archived_referenced": 202,
           "current_referenced": 149,
-          "stale_unreferenced": 402
+          "stale_unreferenced": 406
         },
         "era_counts": {
           "cdb_surface_dump_unverified": 73,
           "hidden_cdb_surface_dump": 164,
-          "other_capture_artifact": 498,
+          "other_capture_artifact": 502,
           "visible_era": 18
         },
         "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
@@ -3156,7 +3183,6 @@
     "hd_endurance_release_checklist: stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
     "hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
     "hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
-    "hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof",
-    "hd_soak_approval_preflight: current short-step status is 'failed_classified_window_missing_while_process_alive'"
+    "hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:53:43+02:00",
+  "generated_at": "2026-07-17T15:36:07+02:00",
   "passed": true,
   "runtime_policy": "repo-only; reads existing hidden-desktop CDB artifacts and does not launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "natural right-bottom action routing must be classified as save-state gated only when command 99 reaches the owner loop, the exact 00433C20 owner-loop descriptor model is present, the 004338E0 action descriptor is parked at (1000,426), owner flag bits are zero, no owner/action renderer rows fire, and the run has no AV rows",

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T06:55:01.024450+00:00",
+  "generated_at": "2026-07-17T13:36:58.126231+00:00",
   "runtime_policy": "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "overall": true,
   "source_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
@@ -272,6 +272,17 @@
           "intro-skip"
         ],
         "missing_route_name_count": 0,
+        "checked": true
+      },
+      "failures": []
+    },
+    "route_screen_outcome": {
+      "passed": true,
+      "summary": {
+        "route": "menu-idle",
+        "map_screen_required": false,
+        "map_route_reached": null,
+        "route_final_nonblack_percent": null,
         "checked": true
       },
       "failures": []

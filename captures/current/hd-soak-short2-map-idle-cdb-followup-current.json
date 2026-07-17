@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-07-15T05:13:55.8422504+00:00",
+  "passed": true,
+  "status": "cdb_exit_not_reproduced_hidden_memory_proxy",
+  "runtime_policy": "hidden-desktop CDB follow-up; no visible desktop, cursor control, SendInput, PostMessage, or screen capture",
+  "manifest_path": "captures\\current\\hd-soak-short2-map-idle-cdb-followup-current.json",
+  "source_visible_report": "captures\\current\\hd-soak-short2-map-idle-current.json",
+  "source_cdb_summary": "C:\\ClashCaptures\\hd-soak-cdb-crash\\cdb-surface-dump-20260715-070814\\summary.json",
+  "source_cdb_markdown": "C:\\ClashCaptures\\hd-soak-cdb-crash\\cdb-surface-dump-20260715-070814\\RUN-SUMMARY.md",
+  "source_cdb_log": "C:\\ClashCaptures\\hd-soak-cdb-crash\\cdb-surface-dump-20260715-070814\\cdb-surface-dump.log",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "route": "map-idle",
+  "load_slot": 0,
+  "input_exe": "C:\\Clash\\clash95.exe",
+  "input_sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+  "candidate": "C:\\ClashTests\\hd-soak-cdb-crash\\cdb-20260715-070812\\clash95_hd_cdb_crash_20260715_070812.exe",
+  "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "candidate_matches_visible_failure": true,
+  "hidden_desktop": true,
+  "presentation": {
+    "class": "memory_only_no_active_display_switch",
+    "proxy_present_enabled": false,
+    "window_config_path": "C:\\Clash\\dxcfg.ini",
+    "window_config_sha256": "0F35B74B13284901C07145FB945575A7F5A5F313E13AEB24392843609ECDA3FE",
+    "window_display": "application",
+    "window_presentation": "windowed"
+  },
+  "route_evidence": {
+    "gameplay_observed": true,
+    "playgame_marker": true,
+    "surface_ready_marker": true,
+    "surface_width": 800,
+    "surface_height": 600,
+    "surface_png": "C:\\ClashCaptures\\hd-soak-cdb-crash\\cdb-surface-dump-20260715-070814\\surface.png",
+    "surface_png_sha256": "4DDCBD9C8075D0FF90D569B7BCBC1312D4F79EF7A144CFBA6B0875BD2D3112E0",
+    "visibility_explained_gate_passed": true
+  },
+  "observation": {
+    "continue_after_dump_sec": 45,
+    "post_dump_observation_started": true,
+    "post_dump_observation_completed": true,
+    "post_dump_exit_observed": false,
+    "access_violation_observed": false,
+    "app_request_quit_observed": false,
+    "timed_out": false,
+    "stopped_by_harness_after_observation": true
+  },
+  "cleanup": {
+    "stale_process_count_after_run": 0,
+    "original_sha256_after_run": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE"
+  },
+  "scope_limit": "The hidden memory-only DirectDraw proxy differs from the approved application/windowed wrapper plus visible input and capture path, so this pass does not clear or replace the visible unexpected-exit failure.",
+  "stable_stage_should_change": false,
+  "visible_rerun_approved": false
+}

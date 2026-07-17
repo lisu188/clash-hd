@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:54:39+02:00",
+  "generated_at": "2026-07-17T15:36:44+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
   "current_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -15,7 +15,8 @@
     "castle-overview-centered-input",
     "battle-ui-center-present-wrapper",
     "battle-grid-centered-input",
-    "battle-ui-centered-input"
+    "battle-ui-centered-input",
+    "frame-restore-bands"
   ],
   "validation_only_groups_in_stable": [],
   "validation_stage_expectations": {
@@ -31,6 +32,14 @@
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout": [
       "terrain-tooltip-bottom-center",
       "selected-unit-command-panel-right-bottom"
+    ],
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore": [
+      "frame-restore-bands"
+    ],
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore": [
+      "terrain-tooltip-bottom-center",
+      "selected-unit-command-panel-right-bottom",
+      "frame-restore-bands"
     ],
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter": [
       "castle-ui-center-present"
@@ -73,7 +82,9 @@
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout",
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput",
@@ -137,7 +148,7 @@
       },
       "failures": []
     },
-    "validation_stage_scope_rightbottom": {
+    "validation_stage_scope_unitcommandpanel_rightbottom": {
       "passed": true,
       "summary": {
         "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-unitcommandpanel-rightbottom",
@@ -162,6 +173,32 @@
       },
       "failures": []
     },
+    "validation_stage_scope_framerestore": {
+      "passed": true,
+      "summary": {
+        "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore",
+        "expected_extra_groups": [
+          "frame-restore-bands"
+        ],
+        "unexpected_groups": [],
+        "missing_groups": []
+      },
+      "failures": []
+    },
+    "validation_stage_scope_hdlayout_framerestore": {
+      "passed": true,
+      "summary": {
+        "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore",
+        "expected_extra_groups": [
+          "terrain-tooltip-bottom-center",
+          "selected-unit-command-panel-right-bottom",
+          "frame-restore-bands"
+        ],
+        "unexpected_groups": [],
+        "missing_groups": []
+      },
+      "failures": []
+    },
     "validation_stage_scope_castlecenter": {
       "passed": true,
       "summary": {
@@ -174,7 +211,7 @@
       },
       "failures": []
     },
-    "validation_stage_scope_hitbox": {
+    "validation_stage_scope_castlecenter_hitbox": {
       "passed": true,
       "summary": {
         "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
@@ -187,7 +224,7 @@
       },
       "failures": []
     },
-    "validation_stage_scope_all": {
+    "validation_stage_scope_castlecenter_all": {
       "passed": true,
       "summary": {
         "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
@@ -202,7 +239,7 @@
       },
       "failures": []
     },
-    "validation_stage_scope_battlecenter": {
+    "validation_stage_scope_castlecenter_all_battlecenter": {
       "passed": true,
       "summary": {
         "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
@@ -218,7 +255,7 @@
       },
       "failures": []
     },
-    "validation_stage_scope_inputprobe": {
+    "validation_stage_scope_castlecenter_all_battlecenter_inputprobe": {
       "passed": true,
       "summary": {
         "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
@@ -250,7 +287,9 @@
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
+          "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout",
+          "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter-no-castleinput",
@@ -284,7 +323,7 @@
         "current_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
         "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
         "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
-        "evidence_passed": false,
+        "evidence_passed": true,
         "proof": {}
       },
       "failures": []
@@ -298,7 +337,7 @@
         "current_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
         "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose",
         "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
-        "evidence_passed": false,
+        "evidence_passed": true,
         "proof": {}
       },
       "failures": []

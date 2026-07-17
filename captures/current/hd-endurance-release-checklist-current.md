@@ -1,12 +1,12 @@
 # HD Endurance Release Checklist
 
 - Overall: FAIL
-- Generated: `2026-07-13T06:55:03.190479+00:00`
+- Generated: `2026-07-17T13:37:00.112263+00:00`
 - Runtime policy: repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Protected stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Full game complete: `False`
 - Completion statement: not 100%; endurance, manual input, state continuity, or validation-route gates remain open
-- Counts: `6/15` pass, `9` blocked, `0` missing
+- Counts: `9/15` pass, `6` blocked, `0` missing
 
 ## Next Milestone
 
@@ -26,9 +26,9 @@
 - `right_bottom_action_menu`: `blocked` - right-bottom action/menu remains validation-only or manual-proof blocked
 - `castle_and_barracks_centered_input`: `blocked` - castle/barracks centered input remains validation-only or manual-proof blocked
 - `tactical_battle_entry_return`: `blocked` - battle evidence remains validation-only or missing visible click-to-callback proof
-- `save_load_roundtrip`: `blocked` - save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- `turn_advancement`: `blocked` - turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- `campaign_routes`: `blocked` - campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
+- `save_load_roundtrip`: `pass` - save/load continuity proof passes
+- `turn_advancement`: `pass` - turn advancement proof passes
+- `campaign_routes`: `pass` - campaign route proof passes
 - `artifact_and_process_hygiene`: `pass` - artifact and process hygiene guards pass
 - `no_speculative_promotion`: `pass` - stable-stage boundary remains unchanged while validation-only lanes stay non-promoting
 
@@ -40,6 +40,3 @@
 - right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
 - castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
 - tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
-- save_load_roundtrip: save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- turn_advancement: turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release
-- campaign_routes: campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release

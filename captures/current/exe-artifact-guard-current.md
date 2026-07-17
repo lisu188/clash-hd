@@ -1,7 +1,7 @@
 # Executable Artifact Guard
 
 - Overall: PASS
-- Generated: `2026-07-13T08:54:39+02:00`
+- Generated: `2026-07-17T15:36:45+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
 - Filesystem `.exe` files: `0`
 - Git-index `.exe` files: `0`

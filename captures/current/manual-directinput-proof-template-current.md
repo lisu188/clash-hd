@@ -1,7 +1,7 @@
 # Manual DirectInput Proof Template
 
 - Overall: PASS
-- Generated: `2026-07-13T08:54:56+02:00`
+- Generated: `2026-07-17T15:36:54+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: manual proof template must document the accepted manifest shape while remaining invalid as proof until approved manual evidence replaces every placeholder
 - Candidate path policy: candidate_path must be a freshly built, hashed executable under C:\ClashTests; never use C:\Clash\clash95.exe or a repository-local executable

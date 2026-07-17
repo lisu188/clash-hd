@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:54:58+02:00",
+  "generated_at": "2026-07-17T15:36:55+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "HD soak harness must stay opt-in, protected-stage, non-promoting, and artifact-safe",
@@ -67,19 +67,19 @@
       "summary": {
         "execute_switch_line": 40,
         "allow_visible_runtime_switch_line": 41,
-        "dry_run_branch_line": 556,
-        "runtime_guard_line": 580,
-        "token_guard_line": 583,
-        "expiry_guard_line": 586,
-        "expiry_parse_line": 590,
-        "expiry_stale_line": 599,
-        "min_ttl_line": 433,
-        "ttl_guard_line": 603,
-        "token_match_line": 605,
-        "output_dir_line": 621,
-        "candidate_dir_line": 635,
-        "patch_report_line": 659,
-        "start_process_line": 664,
+        "dry_run_branch_line": 910,
+        "runtime_guard_line": 934,
+        "token_guard_line": 937,
+        "expiry_guard_line": 940,
+        "expiry_parse_line": 944,
+        "expiry_stale_line": 953,
+        "min_ttl_line": 777,
+        "ttl_guard_line": 957,
+        "token_match_line": 959,
+        "output_dir_line": 975,
+        "candidate_dir_line": 998,
+        "patch_report_line": 1022,
+        "start_process_line": 1048,
         "execute_command_fragments": [
           "-Execute",
           "-AllowVisibleRuntime",
@@ -102,6 +102,7 @@
         "approval_token_markers": [
           "$InputExeFull",
           "$WorkDirFull",
+          "$windowedMode.Sha256",
           "$Stage",
           "$Tier",
           "$Route",
@@ -113,6 +114,7 @@
           "$ReportMarkdownFull",
           "$IntroSkipClickMode",
           "$IntroSkipClicks",
+          "$IntroSkipStopClickRepeatOnDrift",
           "$SkipPulses",
           "$MaxInputDriftPx",
           "$SampleIntervalSec",
@@ -135,6 +137,36 @@
       },
       "failures": []
     },
+    "windowed_mode": {
+      "passed": true,
+      "summary": {
+        "required_display": "application",
+        "required_presentation": "windowed",
+        "config_name": "dxcfg.ini",
+        "approval_token_pins_config_sha256": true
+      },
+      "failures": []
+    },
+    "window_health_stop": {
+      "passed": true,
+      "summary": {
+        "probe": "EnumWindows plus IsHungAppWindow",
+        "stops_input_and_capture_on_failure": true,
+        "required_markers": [
+          "Get-WindowHealthSample",
+          "IsHungAppWindow",
+          "window_health_policy",
+          "window_health_samples",
+          "window_hang_observed",
+          "window_missing_while_alive_observed",
+          "capture skipped because window health was",
+          "before-{0}",
+          "after-{0}-wait",
+          "before-frame-{0:D4}"
+        ]
+      },
+      "failures": []
+    },
     "artifact_policy": {
       "passed": true,
       "summary": {
@@ -151,7 +183,7 @@
     "required_metrics": {
       "passed": true,
       "summary": {
-        "required_metric_count": 34,
+        "required_metric_count": 39,
         "required_metrics": [
           "frame_sample_count",
           "frame_hash_unique_count",
@@ -186,7 +218,12 @@
           "route_results",
           "process_samples",
           "frame_samples",
-          "capture_errors"
+          "capture_errors",
+          "window_health_sample_count",
+          "window_hang_observed",
+          "window_missing_while_alive_observed",
+          "window_health_first_failure",
+          "window_health_samples"
         ]
       },
       "failures": []

@@ -1,7 +1,7 @@
 # HD Soak Intro-Skip Rerun Readiness Tests
 
 - Status: PASS
-- Generated: `2026-07-13T08:55:02+02:00`
+- Generated: `2026-07-17T15:36:59+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves a classified intro-skip input-drift failure can become a rerun approval packet only after repo-only harness, dry-run, visible-runtime, process, and exe-artifact guards pass
 

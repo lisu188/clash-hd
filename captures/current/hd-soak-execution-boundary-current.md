@@ -1,7 +1,7 @@
 # HD Soak Execution Boundary
 
 - Overall: PASS
-- Generated: `2026-07-13T06:55:00.980450+00:00`
+- Generated: `2026-07-17T13:36:58.093234+00:00`
 - Runtime policy: repo-local negative harness probe; invokes PowerShell only with invalid visible-runtime approval and a nonexistent input executable, and must not launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: invalid visible-runtime approval packets must fail before output, candidate, report, patch, or launch side effects
 - Script: `scripts\smoke\run_hd_soak.ps1`

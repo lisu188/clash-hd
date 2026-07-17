@@ -1,7 +1,7 @@
 # Current Completion Summary
 
 - Overall: PASS
-- Generated: `2026-07-13T08:55:07+02:00`
+- Generated: `2026-07-17T15:37:02+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Percent policy: Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.
 - Full game complete: `False`
@@ -9,14 +9,14 @@
 
 ## Percentages
 
-- Current repo evidence gates: `94.41%`
-  Basis: 152/161 refresh checks pass
+- Current repo evidence gates: `98.77%`
+  Basis: 161/163 refresh checks pass
 - Repo-only Python test sweep: `100.00%`
   Basis: 101/101 tools/test_*.py files pass
-- Focused battle/right-bottom command lane: `99.89%`
-  Basis: remaining blocker: real visible click-to-callback proof (command-ready runs: 0; click-consumed runs: 0)
-- Right-bottom promotion gate: `85.71%`
-  Basis: 6/7 required promotion checks pass
+- Focused battle/right-bottom command lane: `99.95%`
+  Basis: remaining blocker: battle evidence focused completion percent (command-ready runs: 1; click-consumed runs: 1)
+- Right-bottom promotion gate: `100.00%`
+  Basis: 7/7 required promotion checks pass
 - Manual DirectInput validation: `0.00%`
   Basis: 0/5 manual checklist items have accepted proof
 
@@ -26,5 +26,5 @@
 - First mission visual status: `selected_unit_action_bar_on_bottom_black_patches_are_proxy_artifacts`
 - First mission black patch regions: `[]`
 - First mission stripe failure frames: `[]`
-- Right-bottom failures: `['right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure', 'right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed', 'right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows', 'right-bottom natural UI probe did not enter owner/action draw rows']`
-- Battle open items: `['real visible click-to-callback proof remains open']`
+- Right-bottom failures: `[]`
+- Battle open items: `[]`

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T13:39:36+02:00",
+  "generated_at": "2026-07-17T15:36:43+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T08:54:56+02:00",
+  "generated_at": "2026-07-17T15:36:54+02:00",
   "runtime_policy": "repo-only JSON decision; does not launch or control Clash95, CDB, wrappers, PowerShell, input automation, or visible windows",
   "passed": true,
   "decision": "defer_stable_promotion",

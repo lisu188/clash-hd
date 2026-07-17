@@ -1,18 +1,18 @@
 # Python Runtime Safety Guard
 
 - Overall: PASS
-- Generated: `2026-07-13T12:28:59+02:00`
+- Generated: `2026-07-17T15:36:46+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt
-- Python files scanned: `244`
-- Risky files: `118`
+- Python files scanned: `247`
+- Risky files: `120`
 
 ## Classification Counts
 
 - `exempt`: `28`
-- `manual_visible_runtime_gated`: `2`
-- `safe`: `126`
-- `test_fixture`: `87`
+- `manual_visible_runtime_gated`: `3`
+- `safe`: `127`
+- `test_fixture`: `88`
 - `user_gated_launcher`: `1`
 
 ## Risky Helpers
@@ -27,7 +27,7 @@
   - cloud fixture builder; risky text is source material/path filtering, not runtime window or input calls
 - `tools/cloud_check.py`: `exempt` risks=`['process_launch', 'subprocess']`
   - cloud-safe validation runner; subprocess is limited to repo tests and does not launch Clash95 or CDB
-- `tools/current_evidence_refresh.py`: `exempt` risks=`['postmessage', 'sendinput', 'win32_user32']`
+- `tools/current_evidence_refresh.py`: `exempt` risks=`['postmessage', 'process_launch', 'sendinput', 'win32_user32']`
   - repo-only evidence coordinator; risky API text appears in policy/test descriptions
 - `tools/exe_artifact_guard.py`: `exempt` risks=`['process_launch', 'subprocess']`
   - uses git subprocess read-only for artifact inventory
@@ -43,7 +43,7 @@
   - repo-only dry-run handoff guard; subprocess is limited to the soak harness without -Execute and does not launch Clash95, CDB, wrappers, or visible windows
 - `tools/hd_soak_execution_boundary.py`: `exempt` risks=`['postmessage', 'subprocess']`
   - repo-local negative approval-boundary probe; subprocess uses invalid visible-runtime approval packets plus a nonexistent input executable and must fail before launch side effects
-- `tools/hd_soak_failure_triage.py`: `exempt` risks=`['postmessage', 'sendinput']`
+- `tools/hd_soak_failure_triage.py`: `exempt` risks=`['cursor_window_input', 'postmessage', 'sendinput']`
   - repo-only report classifier; postmessage text appears only in failure guidance and no runtime APIs are called
 - `tools/hd_soak_harness_guard.py`: `exempt` risks=`['postmessage']`
   - repo-only PowerShell source scanner; postmessage text appears only in required source-token checks
@@ -59,6 +59,8 @@
   - repo-only CDB log parser; Win32 text appears only in timeout-stack classification labels
 - `tools/manual_directinput_run_plan.py`: `exempt` risks=`['sendinput']`
   - repo-only command planner; visible-runtime and input text appears only in gated command templates
+- `tools/menu_pulse_click.py`: `manual_visible_runtime_gated` risks=`['ctypes', 'cursor_window_input', 'postmessage', 'sendinput', 'win32_user32']`
+  - manual/visible-runtime evidence helper; it drives the engine cursor by pulse injection only when explicitly invoked by the approval-gated soak harness
 - `tools/mouse_path_probe.py`: `manual_visible_runtime_gated` risks=`['ctypes', 'cursor_window_input', 'postmessage', 'process_launch', 'sendinput', 'subprocess', 'win32_user32']`
   - manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked
 - `tools/process_hygiene_guard.py`: `exempt` risks=`['ctypes']`
@@ -86,6 +88,8 @@
 - `tools/test_battle_visible_harness_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_battle_visible_input_summary.py`: `test_fixture` risks=`['process_launch', 'sendinput', 'subprocess', 'win32_user32']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_border_frame_restore_check.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_capture_corpus_index.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
@@ -137,7 +141,7 @@
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_hd_soak_execution_boundary.py`: `test_fixture` risks=`['subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
-- `tools/test_hd_soak_failure_triage.py`: `test_fixture` risks=`['postmessage', 'process_launch', 'sendinput', 'subprocess']`
+- `tools/test_hd_soak_failure_triage.py`: `test_fixture` risks=`['cursor_window_input', 'postmessage', 'process_launch', 'sendinput', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_hd_soak_harness_guard.py`: `test_fixture` risks=`['postmessage', 'process_launch', 'sendinput', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper

@@ -1,7 +1,7 @@
 # Right-Bottom Slot Fixture Result Summary Tests
 
 - Status: PASS
-- Generated: `2026-07-13T08:54:21+02:00`
+- Generated: `2026-07-17T15:36:32+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves future right-bottom slot fixture CDB logs can be classified as load failure, owner-flag blocked, owner-loop without action, owner/action reached, slot mismatch, or AV failure with strict LOADSAVE slot consistency
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T06:55:03.569480+00:00",
+  "generated_at": "2026-07-17T13:37:00.433258+00:00",
   "passed": true,
   "runtime_policy": "repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "script": "scripts\\smoke\\run_hd_soak.ps1",
@@ -7,7 +7,7 @@
     "path": "captures\\current\\hd-endurance-release-checklist-current.json",
     "state": "present",
     "present": true,
-    "generated_at": "2026-07-13T06:55:03.190479+00:00",
+    "generated_at": "2026-07-17T13:37:00.112263+00:00",
     "passed": false,
     "requirement_count": 15
   },
@@ -647,22 +647,9 @@
       "route_steps": [],
       "stable_stage_should_change": false,
       "promotion_ready": false,
-      "current_blockers": [
-        {
-          "id": "save_load_roundtrip",
-          "title": "Safe save/load roundtrip continuity is proven",
-          "category": "state continuity",
-          "status": "blocked",
-          "passed": false,
-          "summary": "save/load continuity proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
-          "next_probe": "add safe test-save roundtrip evidence after short-tier stability",
-          "evidence": [
-            "captures\\current\\hd-continuity-current.json"
-          ]
-        }
-      ],
-      "current_blocker_count": 1,
-      "readiness_status": "planned_blocked_by_current_requirements",
+      "current_blockers": [],
+      "current_blocker_count": 0,
+      "readiness_status": "planned_requirements_clear_not_scripted",
       "route_contract": {
         "id": "save_load_roundtrip",
         "route": null,
@@ -683,11 +670,9 @@
           "save_load_roundtrip"
         ],
         "implementation_policy": "do not script save mutation until an isolated disposable save fixture and continuity markers are defined",
-        "readiness_status": "planned_blocked_by_current_requirements",
-        "current_blocker_count": 1,
-        "blocking_requirement_ids": [
-          "save_load_roundtrip"
-        ],
+        "readiness_status": "planned_requirements_clear_not_scripted",
+        "current_blocker_count": 0,
+        "blocking_requirement_ids": [],
         "stable_stage_should_change": false,
         "promotion_ready": false,
         "safe_to_execute_now": false,
@@ -724,22 +709,9 @@
       "route_steps": [],
       "stable_stage_should_change": false,
       "promotion_ready": false,
-      "current_blockers": [
-        {
-          "id": "turn_advancement",
-          "title": "Turn advancement avoids state desync",
-          "category": "state continuity",
-          "status": "blocked",
-          "passed": false,
-          "summary": "turn advancement proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
-          "next_probe": "add deterministic turn-advance route evidence after save/load is safe",
-          "evidence": [
-            "captures\\current\\hd-continuity-current.json"
-          ]
-        }
-      ],
-      "current_blocker_count": 1,
-      "readiness_status": "planned_blocked_by_current_requirements",
+      "current_blockers": [],
+      "current_blocker_count": 0,
+      "readiness_status": "planned_requirements_clear_not_scripted",
       "route_contract": {
         "id": "turn_advancement",
         "route": null,
@@ -760,11 +732,9 @@
           "turn_advancement"
         ],
         "implementation_policy": "do not script turn advancement until save/load continuity is safe and deterministic state markers exist",
-        "readiness_status": "planned_blocked_by_current_requirements",
-        "current_blocker_count": 1,
-        "blocking_requirement_ids": [
-          "turn_advancement"
-        ],
+        "readiness_status": "planned_requirements_clear_not_scripted",
+        "current_blocker_count": 0,
+        "blocking_requirement_ids": [],
         "stable_stage_should_change": false,
         "promotion_ready": false,
         "safe_to_execute_now": false,
@@ -814,21 +784,9 @@
           "evidence": [
             "captures\\current\\hd-soak-long-report-guard-current.json"
           ]
-        },
-        {
-          "id": "campaign_routes",
-          "title": "Campaign routes remain stable",
-          "category": "state continuity",
-          "status": "blocked",
-          "passed": false,
-          "summary": "campaign route proof blocked (blocked_missing_proof): continuity proof is missing or not sufficient for release",
-          "next_probe": "add representative campaign route soaks after short/medium tiers are stable",
-          "evidence": [
-            "captures\\current\\hd-continuity-current.json"
-          ]
         }
       ],
-      "current_blocker_count": 2,
+      "current_blocker_count": 1,
       "readiness_status": "planned_blocked_by_current_requirements",
       "route_contract": {
         "id": "campaign_route",
@@ -852,10 +810,9 @@
         ],
         "implementation_policy": "do not script campaign routing until short/medium soak tiers and continuity gates are already passing",
         "readiness_status": "planned_blocked_by_current_requirements",
-        "current_blocker_count": 2,
+        "current_blocker_count": 1,
         "blocking_requirement_ids": [
-          "long_soak_representative_routes",
-          "campaign_routes"
+          "long_soak_representative_routes"
         ],
         "stable_stage_should_change": false,
         "promotion_ready": false,
@@ -1015,11 +972,9 @@
         "save_load_roundtrip"
       ],
       "implementation_policy": "do not script save mutation until an isolated disposable save fixture and continuity markers are defined",
-      "readiness_status": "planned_blocked_by_current_requirements",
-      "current_blocker_count": 1,
-      "blocking_requirement_ids": [
-        "save_load_roundtrip"
-      ],
+      "readiness_status": "planned_requirements_clear_not_scripted",
+      "current_blocker_count": 0,
+      "blocking_requirement_ids": [],
       "stable_stage_should_change": false,
       "promotion_ready": false,
       "safe_to_execute_now": false,
@@ -1045,11 +1000,9 @@
         "turn_advancement"
       ],
       "implementation_policy": "do not script turn advancement until save/load continuity is safe and deterministic state markers exist",
-      "readiness_status": "planned_blocked_by_current_requirements",
-      "current_blocker_count": 1,
-      "blocking_requirement_ids": [
-        "turn_advancement"
-      ],
+      "readiness_status": "planned_requirements_clear_not_scripted",
+      "current_blocker_count": 0,
+      "blocking_requirement_ids": [],
       "stable_stage_should_change": false,
       "promotion_ready": false,
       "safe_to_execute_now": false,
@@ -1077,10 +1030,9 @@
       ],
       "implementation_policy": "do not script campaign routing until short/medium soak tiers and continuity gates are already passing",
       "readiness_status": "planned_blocked_by_current_requirements",
-      "current_blocker_count": 2,
+      "current_blocker_count": 1,
       "blocking_requirement_ids": [
-        "long_soak_representative_routes",
-        "campaign_routes"
+        "long_soak_representative_routes"
       ],
       "stable_stage_should_change": false,
       "promotion_ready": false,
@@ -1092,7 +1044,7 @@
     "release_lane_count": 10,
     "implemented_lane_count": 3,
     "planned_lane_count": 7,
-    "blocked_lane_count": 10,
+    "blocked_lane_count": 8,
     "locked_future_route_count": 7,
     "required_short_route_count": 3
   },
