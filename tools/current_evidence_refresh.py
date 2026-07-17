@@ -728,6 +728,8 @@ DEFAULT_RIGHT_BOTTOM_COMPOSE_PATCH_RUN = Path("captures/archive/cdb-surface-dump
 DEFAULT_RIGHT_BOTTOM_COMPOSE_FULLSTART_RUN = Path("captures/archive/cdb-surface-dump-20260712-160351")
 DEFAULT_RIGHT_BOTTOM_COMPOSE_NORMAL_RUN = Path("captures/archive/cdb-surface-dump-20260513-121513")
 DEFAULT_RIGHT_BOTTOM_COMPOSE_UI_RUN = Path("captures/archive/cdb-surface-dump-20260712-160441")
+# user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence
+DEFAULT_RIGHT_BOTTOM_COMPOSE_UI_FIXTURE_RUN = Path("captures/archive/cdb-surface-dump-20260712-155528")
 DEFAULT_RIGHT_BOTTOM_GRID_HIT_RUN = Path("captures/archive/cdb-surface-dump-20260712-150240")
 DEFAULT_RIGHT_BOTTOM_NATURAL_ROUTE_RUN = right_bottom_natural_route_guard.DEFAULT_RUN
 DEFAULT_RIGHT_BOTTOM_NATURAL_ROUTE_CANDIDATE_SLOT2_RUN = (
@@ -778,6 +780,9 @@ DEFAULT_REFRESH_MD = Path("captures/current/current-evidence-refresh-current.md"
 RIGHT_BOTTOM_COMPOSE_PATCH_STAGE = (
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-"
     "minimapright-dynvswitch-rightbottomcompose"
+)
+RIGHT_BOTTOM_FIXTURE_NATURAL_DRAW_RULING = (
+    "user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence"
 )
 RUNTIME_POLICY = "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows"
 
@@ -2588,11 +2593,14 @@ def build_right_bottom_visual_artifact_guard_tests(args: argparse.Namespace) -> 
     return simple_test_check(
         test_runner=test_right_bottom_visual_artifact_guard,
         tests=[
-            "right_bottom_visual_artifact_guard passes for the current blocked natural visual artifact",
+            "right_bottom_visual_artifact_guard passes for the resolved fixture-accepted natural-draw state",
             "right_bottom_visual_artifact_guard fails if blocker triage is missing",
             "right_bottom_visual_artifact_guard accepts the current and legacy non-promoting triage classifications",
-            "right_bottom_visual_artifact_guard fails if natural owner/action rows appear",
-            "right_bottom_visual_artifact_guard fails if the natural lower/right black artifact changes",
+            "right_bottom_visual_artifact_guard fails closed if the fixture natural-draw payload is missing",
+            "right_bottom_visual_artifact_guard fails closed if any fixture natural-draw marker regresses",
+            "right_bottom_visual_artifact_guard fails closed if the fixture natural-draw log has AV rows",
+            "right_bottom_visual_artifact_guard fails if the compose matrix stops passing",
+            "right_bottom_visual_artifact_guard fails if the compose matrix would flip stable promotion",
             "right_bottom_visual_artifact_guard fails if controlled composition recovery regresses",
             "right_bottom_visual_artifact_guard CLI writes JSON/Markdown and honors --require-pass",
         ],
@@ -2600,8 +2608,10 @@ def build_right_bottom_visual_artifact_guard_tests(args: argparse.Namespace) -> 
         json_path=args.right_bottom_visual_artifact_guard_tests_json,
         md_path=args.right_bottom_visual_artifact_guard_tests_md,
         guard_policy=(
-            "proves the right-bottom visual artifact guard blocks the current stripy/out-of-place "
-            "natural UI state from promotion and fails closed if the artifact or route state changes"
+            "proves the right-bottom visual artifact guard validates the resolved state "
+            "(user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence) "
+            "with promotion still deferred, and fails closed if the fixture evidence, compose "
+            "matrix, triage, or controlled recovery state changes"
         ),
     )
 
@@ -3922,6 +3932,8 @@ def write_right_bottom_compose_decision_tests_markdown(path: Path, result: dict[
 def build_right_bottom_compose_decision_tests(args: argparse.Namespace) -> dict[str, Any]:
     tests = [
         "right_bottom_compose_promotion_decision defers stable promotion by default",
+        "right_bottom_compose_promotion_decision accepts fixture natural-draw evidence while still deferring promotion",
+        "right_bottom_compose_promotion_decision fails closed when the fixture natural-draw payload regresses",
         "right_bottom_compose_promotion_decision fails when any required route/gate/grid/natural-route/timing check is missing or failing",
         "right_bottom_compose_promotion_decision fails when natural route owner-flag, descriptor, action-route, or AV facts regress",
         "right_bottom_compose_promotion_decision allows stable promotion only with a valid manual/real input proof manifest",
@@ -3992,6 +4004,8 @@ def build_right_bottom_compose_matrix_tests(args: argparse.Namespace) -> dict[st
         "right_bottom_compose_evidence_matrix fails when any required check is missing or failing",
         "right_bottom_compose_evidence_matrix rejects route, startup, hidden-desktop, AV, visibility, grid-hit, natural-route, timing, and decision regressions",
         "right_bottom_compose_evidence_matrix rejects nested natural-route owner flag, descriptor, and result regressions",
+        "right_bottom_compose_evidence_matrix accepts the slot5-as-slot0 fixture natural-draw payload while still deferring promotion",
+        "right_bottom_compose_evidence_matrix fails closed when the fixture natural-draw payload is missing or regresses",
         "right_bottom_compose_evidence_matrix rejects candidate SHA disagreement",
         "right_bottom_compose_evidence_matrix CLI writes JSON/Markdown and returns 2 on --require-pass failure",
     ]
@@ -6612,6 +6626,79 @@ def build_right_bottom_ui(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def evaluate_right_bottom_fixture_natural_draw(fixture_run: Path) -> tuple[dict[str, Any], list[str]]:
+    """Evaluate the accepted slot5-as-slot0 fixture run as natural-draw evidence.
+
+    user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence.
+    Fails closed when the fixture run/log/result-summary is missing or when any
+    required marker (PANEL_DRAW, GRID_DRAW, NOWNER_WRAPPER_COPYBACK_DONE) is absent
+    or any access-violation indicator is present.
+    """
+    failures: list[str] = []
+    log = fixture_run / "cdb-surface-dump.log"
+    result_summary_path = fixture_run / "right-bottom-slot-fixture-result-summary.json"
+    payload: dict[str, Any] = {
+        "ruling": RIGHT_BOTTOM_FIXTURE_NATURAL_DRAW_RULING,
+        "fixture_run": str(fixture_run),
+        "log": str(log),
+        "result_summary_json": str(result_summary_path),
+        "marker_counts": None,
+        "av_count": None,
+        "proof_class": None,
+        "expected_slot_match": None,
+        "row_count": None,
+        "stage": None,
+        "candidate_sha256": None,
+    }
+    if not log.exists():
+        failures.append(f"missing right-bottom fixture natural-draw log: {log}")
+        return payload, failures
+
+    log_text = log.read_text(encoding="utf-8", errors="replace")
+    marker_counts = {
+        "NOWNER_435BC0_PANEL_DRAW": log_text.count("NOWNER_435BC0_PANEL_DRAW"),
+        "NOWNER_435BC0_GRID_DRAW": log_text.count("NOWNER_435BC0_GRID_DRAW"),
+        "NOWNER_WRAPPER_COPYBACK_DONE": log_text.count("NOWNER_WRAPPER_COPYBACK_DONE"),
+        "NOWNER_WRAPPER_PRESENT_CALL": log_text.count("NOWNER_WRAPPER_PRESENT_CALL"),
+    }
+    av_count = (
+        log_text.lower().count("c0000005")
+        + log_text.lower().count("access violation")
+        + log_text.count("AV_")
+    )
+    payload["marker_counts"] = marker_counts
+    payload["av_count"] = av_count
+    if marker_counts["NOWNER_435BC0_PANEL_DRAW"] < 1:
+        failures.append("right-bottom fixture natural-draw log has no NOWNER_435BC0_PANEL_DRAW rows")
+    if marker_counts["NOWNER_435BC0_GRID_DRAW"] < 1:
+        failures.append("right-bottom fixture natural-draw log has no NOWNER_435BC0_GRID_DRAW rows")
+    if marker_counts["NOWNER_WRAPPER_COPYBACK_DONE"] < 1:
+        failures.append("right-bottom fixture natural-draw log has no NOWNER_WRAPPER_COPYBACK_DONE rows")
+    if av_count:
+        failures.append(f"right-bottom fixture natural-draw log has AV rows: {av_count}")
+
+    if not result_summary_path.exists():
+        failures.append(
+            f"missing right-bottom fixture natural-draw result summary: {result_summary_path}"
+        )
+        return payload, failures
+
+    result_summary = json.loads(result_summary_path.read_text(encoding="utf-8-sig"))
+    payload["proof_class"] = result_summary.get("proof_class")
+    payload["expected_slot_match"] = result_summary.get("expected_slot_match")
+    payload["row_count"] = result_summary.get("row_count")
+    payload["stage"] = result_summary.get("stage")
+    payload["candidate_sha256"] = result_summary.get("candidate_sha256")
+    if result_summary.get("proof_class") != "non_natural_isolated_fixture":
+        failures.append(
+            "right-bottom fixture result summary proof_class is "
+            f"{result_summary.get('proof_class')}, expected non_natural_isolated_fixture"
+        )
+    if result_summary.get("expected_slot_match") is not True:
+        failures.append("right-bottom fixture result summary did not confirm expected_slot_match")
+    return payload, failures
+
+
 def build_right_bottom_compose_ui_probe(args: argparse.Namespace) -> dict[str, Any]:
     run = args.right_bottom_compose_ui_run
     manifest_path = args.right_bottom_compose_patch_manifest
@@ -6664,12 +6751,36 @@ def build_right_bottom_compose_ui_probe(args: argparse.Namespace) -> dict[str, A
         + log_text.count("AV_")
     )
 
+    natural_owner_rows = int(marker_counts.get("RBUI_PANEL_DRAW") or 0) + int(
+        marker_counts.get("RBUI_ACTION_BOX") or 0
+    )
+    natural_rows_present = natural_owner_rows > 0
+    natural_draw_source = "bare_map_natural_rows" if natural_rows_present else "slot5_as_slot0_fixture"
+    fixture_payload: dict[str, Any] | None = None
+
     if not summary.get("SurfaceDumpPassed"):
         failures.append("right-bottom compose UI surface dump did not pass")
     if not summary.get("RbuiMarkersSeen"):
         failures.append("right-bottom compose UI RBUI markers were not observed")
     if summary.get("Passed") is False:
-        failures.append("right-bottom compose UI wrapper reported failure")
+        if natural_rows_present:
+            failures.append("right-bottom compose UI wrapper reported failure")
+        else:
+            # user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence.
+            # On the bare map the wrapper's owner/action-rows requirement is the retired
+            # rows-absent expectation; accept the wrapper failure only when it is exactly
+            # that condition (no error, surface dump and RBUI markers otherwise fine).
+            rows_only_wrapper_failure = bool(
+                summary.get("Error") in (None, "")
+                and summary.get("SurfaceDumpPassed")
+                and summary.get("RbuiMarkersSeen")
+                and summary.get("RequiresOwnerActionRows") is True
+                and summary.get("OwnerActionRowsSeen") is False
+            )
+            if not rows_only_wrapper_failure:
+                failures.append(
+                    "right-bottom compose UI wrapper reported failure beyond the retired rows-absent expectation"
+                )
     if not surface_summary.get("HiddenDesktop"):
         failures.append("right-bottom compose UI run was not hidden-desktop")
     if surface_summary.get("SkipMapValidation"):
@@ -6691,15 +6802,25 @@ def build_right_bottom_compose_ui_probe(args: argparse.Namespace) -> dict[str, A
         failures.append("right-bottom compose UI run did not reach SURFDUMP_PLAYGAME")
     if int(marker_counts.get("SURFDUMP_READY") or 0) <= 0:
         failures.append("right-bottom compose UI run did not reach SURFDUMP_READY")
-    if int(marker_counts.get("RBUI_DESC_SWITCH") or 0) <= 0:
-        failures.append("right-bottom compose UI descriptor switch rows were not observed")
-    if int(marker_counts.get("RBUI_VIEWPORT_SWITCH") or 0) <= 0:
-        failures.append("right-bottom compose UI viewport switch row was not observed")
-    natural_owner_rows = int(marker_counts.get("RBUI_PANEL_DRAW") or 0) + int(
-        marker_counts.get("RBUI_ACTION_BOX") or 0
-    )
-    if natural_owner_rows <= 0:
-        failures.append("right-bottom compose UI did not naturally enter owner/action draw rows")
+    if natural_rows_present:
+        # Original natural-rows path: unchanged requirements when the bare-map run
+        # itself enters the owner/action draw rows.
+        if int(marker_counts.get("RBUI_DESC_SWITCH") or 0) <= 0:
+            failures.append("right-bottom compose UI descriptor switch rows were not observed")
+        if int(marker_counts.get("RBUI_VIEWPORT_SWITCH") or 0) <= 0:
+            failures.append("right-bottom compose UI viewport switch row was not observed")
+    else:
+        # Rows absent on the bare map is the physically-correct engine result: the
+        # unmodified slot-0 save's only player-owned record has owner_flag=0x00, which
+        # parks descriptor 004338E0 off-screen, and the widget poll 00419DC0 never
+        # fires headlessly. Per the ruling
+        # (user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence)
+        # the accepted fixture run supplies the natural-draw proof; fail closed if it
+        # is missing or incomplete.
+        fixture_payload, fixture_failures = evaluate_right_bottom_fixture_natural_draw(
+            args.right_bottom_compose_ui_fixture_run
+        )
+        failures.extend(fixture_failures)
     if av_count:
         failures.append("right-bottom compose UI AV rows were observed")
     if not current_gate.get("passed"):
@@ -6732,6 +6853,8 @@ def build_right_bottom_compose_ui_probe(args: argparse.Namespace) -> dict[str, A
             "av_count": av_count,
             "current_hd_map_gate": current_gate.get("passed"),
             "right_bottom_patch_group": patch_group,
+            "natural_draw_source": natural_draw_source,
+            "fixture": fixture_payload,
             "bounds": bounds_summary,
         },
         "failures": failures,
@@ -8012,6 +8135,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--right-bottom-compose-fullstart-run", type=Path, default=DEFAULT_RIGHT_BOTTOM_COMPOSE_FULLSTART_RUN)
     parser.add_argument("--right-bottom-compose-normal-run", type=Path, default=DEFAULT_RIGHT_BOTTOM_COMPOSE_NORMAL_RUN)
     parser.add_argument("--right-bottom-compose-ui-run", type=Path, default=DEFAULT_RIGHT_BOTTOM_COMPOSE_UI_RUN)
+    parser.add_argument(
+        "--right-bottom-compose-ui-fixture-run",
+        type=Path,
+        default=DEFAULT_RIGHT_BOTTOM_COMPOSE_UI_FIXTURE_RUN,
+    )
     parser.add_argument("--right-bottom-grid-hit-run", type=Path, default=DEFAULT_RIGHT_BOTTOM_GRID_HIT_RUN)
     parser.add_argument("--right-bottom-grid-hit-json", type=Path, default=DEFAULT_RIGHT_BOTTOM_GRID_HIT_JSON)
     parser.add_argument("--right-bottom-grid-hit-md", type=Path, default=DEFAULT_RIGHT_BOTTOM_GRID_HIT_MD)

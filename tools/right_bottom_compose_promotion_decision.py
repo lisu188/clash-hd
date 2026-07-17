@@ -94,8 +94,23 @@ def build_decision_from_checks(args: argparse.Namespace, checks: dict[str, Any])
     timing_summary = (checks.get("right_bottom_route_timing_guard") or {}).get("summary") or {}
 
     natural_owner_rows = int(ui_summary.get("rbui_panel_draw") or 0) + int(ui_summary.get("rbui_action_box") or 0)
-    if natural_owner_rows <= 0:
-        failures.append("right-bottom natural UI probe did not enter owner/action draw rows")
+    ui_fixture = ui_summary.get("fixture") or {}
+    ui_fixture_markers = ui_fixture.get("marker_counts") or {}
+    # user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence.
+    # Bare-map rows-absent is the physically-correct engine result; the accepted fixture
+    # run supplies the natural-draw proof under the same marker requirements.
+    fixture_natural_draw_accepted = bool(
+        ui_summary.get("natural_draw_source") == "slot5_as_slot0_fixture"
+        and int(ui_fixture_markers.get("NOWNER_435BC0_PANEL_DRAW") or 0) >= 1
+        and int(ui_fixture_markers.get("NOWNER_435BC0_GRID_DRAW") or 0) >= 1
+        and int(ui_fixture_markers.get("NOWNER_WRAPPER_COPYBACK_DONE") or 0) >= 1
+        and ui_fixture.get("av_count") == 0
+    )
+    if natural_owner_rows <= 0 and not fixture_natural_draw_accepted:
+        failures.append(
+            "right-bottom natural UI probe did not enter owner/action draw rows and no accepted "
+            "slot5-as-slot0 fixture natural-draw evidence was recorded"
+        )
     natural_owner_flag = natural_route_summary.get("owner_flag_test") or {}
     natural_action_descriptor = natural_route_summary.get("action_descriptor") or {}
     if natural_route_summary.get("state_gated_by_owner_flag") is not True:
@@ -182,9 +197,16 @@ def build_decision_from_checks(args: argparse.Namespace, checks: dict[str, Any])
                 if bare_override_blocked
                 else "promotion override manifest has not been supplied"
             ),
-            "natural right-bottom UI probe does not enter owner/action draw rows"
-            if natural_owner_rows == 0
-            else "natural right-bottom UI probe has owner/action draw evidence",
+            (
+                "natural right-bottom UI probe has owner/action draw evidence"
+                if natural_owner_rows > 0
+                else (
+                    "natural draw evidence accepted from the slot5-as-slot0 fixture "
+                    "(user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence)"
+                    if fixture_natural_draw_accepted
+                    else "natural right-bottom UI probe does not enter owner/action draw rows"
+                )
+            ),
             "visible/manual runs require explicit user approval",
         ]
 
@@ -225,6 +247,9 @@ def build_decision_from_checks(args: argparse.Namespace, checks: dict[str, Any])
         "promotion_override_manifest_supplied": bool(override_manifest["supplied"]),
         "promotion_override_manifest_valid": override_manifest_valid,
         "promotion_override_manifest_summary": override_manifest["summary"],
+        "natural_draw_source": ui_summary.get("natural_draw_source"),
+        "fixture_natural_draw_accepted": fixture_natural_draw_accepted,
+        "fixture_natural_draw": ui_fixture or None,
         "required_checks": {name: bool((checks.get(name) or {}).get("passed")) for name in REQUIRED_CHECKS},
         "evidence": {
             "patch": patch_summary,
@@ -254,6 +279,8 @@ def print_decision(decision: dict[str, Any]) -> None:
     print(f"validation-stage: {decision['validation_stage']}")
     print(f"candidate-sha256: {decision.get('candidate_sha256')}")
     print(f"manual-input-proof-valid: {decision['manual_input_proof_valid']}")
+    print(f"natural-draw-source: {decision.get('natural_draw_source')}")
+    print(f"fixture-natural-draw-accepted: {decision.get('fixture_natural_draw_accepted')}")
     print(f"promotion-override-manifest-valid: {decision['promotion_override_manifest_valid']}")
     print(f"bare-cdb-only-promotion-blocked: {decision['bare_cdb_only_promotion_blocked']}")
     print("required-checks:")
@@ -313,6 +340,9 @@ def write_markdown(path: Path, decision: dict[str, Any]) -> None:
             f"- Normal gate unexplained blanks: `{evidence['normal_gate'].get('visibility_unexplained_blank_cells')}`",
             f"- Natural UI descriptor switch rows: `{evidence['natural_ui_probe'].get('rbui_desc_switch')}`",
             f"- Natural UI owner/action rows: `RBUI_PANEL_DRAW={evidence['natural_ui_probe'].get('rbui_panel_draw')}`, `RBUI_ACTION_BOX={evidence['natural_ui_probe'].get('rbui_action_box')}`",
+            f"- Natural draw source: `{decision.get('natural_draw_source')}`",
+            f"- Fixture natural-draw accepted: `{decision.get('fixture_natural_draw_accepted')}`",
+            f"- Fixture natural-draw evidence: `{decision.get('fixture_natural_draw')}`",
             f"- Controlled grid hit: `grid_hit_ok={evidence['controlled_grid_hit'].get('grid_hit_ok')}`, `entry={evidence['controlled_grid_hit'].get('last_grid_entry')}`, `result={evidence['controlled_grid_hit'].get('last_grid_result')}`",
             f"- Controlled grid hit AV count: `{evidence['controlled_grid_hit'].get('av_count')}`",
             f"- Natural route state-gated: `{evidence['natural_route_guard'].get('state_gated_by_owner_flag')}`",
