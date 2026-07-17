@@ -211,6 +211,82 @@ def test_natural_owner_action_rows_are_required(fixture: Path) -> None:
     assert "natural right-bottom UI probe does not enter owner/action draw rows" in decision["reasons"], decision
 
 
+def fixture_ui_probe_summary_update() -> dict:
+    """Rows-absent bare-map summary carrying the accepted fixture payload.
+
+    user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence.
+    """
+    return {
+        "rbui_desc_switch": 0,
+        "rbui_viewport_switch": 1,
+        "rbui_panel_draw": 0,
+        "rbui_action_box": 0,
+        "natural_draw_source": "slot5_as_slot0_fixture",
+        "fixture": {
+            "ruling": "user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence",
+            "fixture_run": "captures/archive/cdb-surface-dump-20260712-155528",
+            "marker_counts": {
+                "NOWNER_435BC0_PANEL_DRAW": 1,
+                "NOWNER_435BC0_GRID_DRAW": 10,
+                "NOWNER_WRAPPER_COPYBACK_DONE": 1,
+                "NOWNER_WRAPPER_PRESENT_CALL": 1,
+            },
+            "av_count": 0,
+            "proof_class": "non_natural_isolated_fixture",
+            "expected_slot_match": True,
+        },
+    }
+
+
+def test_fixture_natural_draw_acceptance_still_defers(fixture: Path) -> None:
+    checks = checks_payload()
+    checks["right_bottom_compose_ui_probe"]["summary"].update(fixture_ui_probe_summary_update())
+    decision = right_bottom_compose_promotion_decision.build_decision_from_checks(args_for(), checks)
+    assert decision["passed"] is True, decision
+    assert decision["decision"] == "defer_stable_promotion", decision
+    assert decision["stable_stage_should_change"] is False, decision
+    assert decision["manual_input_proof_valid"] is False, decision
+    assert decision["natural_draw_source"] == "slot5_as_slot0_fixture", decision
+    assert decision["fixture_natural_draw_accepted"] is True, decision
+    assert any("user ruling 2026-07-14" in reason for reason in decision["reasons"]), decision
+
+
+def test_fixture_natural_draw_path_fails_closed(fixture: Path) -> None:
+    for marker in (
+        "NOWNER_435BC0_PANEL_DRAW",
+        "NOWNER_435BC0_GRID_DRAW",
+        "NOWNER_WRAPPER_COPYBACK_DONE",
+    ):
+        checks = checks_payload()
+        summary_update = fixture_ui_probe_summary_update()
+        summary_update["fixture"]["marker_counts"][marker] = 0
+        checks["right_bottom_compose_ui_probe"]["summary"].update(summary_update)
+        decision = right_bottom_compose_promotion_decision.build_decision_from_checks(args_for(), checks)
+        assert decision["passed"] is False, (marker, decision)
+        assert decision["decision"] == "defer_stable_promotion", (marker, decision)
+        assert decision["fixture_natural_draw_accepted"] is False, (marker, decision)
+        assert any(
+            "no accepted" in failure and "fixture natural-draw evidence" in failure
+            for failure in decision["failures"]
+        ), (marker, decision)
+
+    checks = checks_payload()
+    summary_update = fixture_ui_probe_summary_update()
+    summary_update["fixture"]["av_count"] = 1
+    checks["right_bottom_compose_ui_probe"]["summary"].update(summary_update)
+    decision = right_bottom_compose_promotion_decision.build_decision_from_checks(args_for(), checks)
+    assert decision["passed"] is False, decision
+    assert decision["fixture_natural_draw_accepted"] is False, decision
+
+    checks = checks_payload()
+    summary_update = fixture_ui_probe_summary_update()
+    summary_update["fixture"]["av_count"] = None
+    checks["right_bottom_compose_ui_probe"]["summary"].update(summary_update)
+    decision = right_bottom_compose_promotion_decision.build_decision_from_checks(args_for(), checks)
+    assert decision["passed"] is False, decision
+    assert decision["fixture_natural_draw_accepted"] is False, decision
+
+
 def test_natural_route_guard_summary_is_required(fixture: Path) -> None:
     cases = [
         ("state gate", "state_gated_by_owner_flag", False, "save-state gate"),
@@ -402,6 +478,8 @@ def run_tests() -> None:
     try:
         test_deferred_by_default(fixture / "defer")
         test_natural_owner_action_rows_are_required(fixture / "natural-owner")
+        test_fixture_natural_draw_acceptance_still_defers(fixture / "fixture-accepted")
+        test_fixture_natural_draw_path_fails_closed(fixture / "fixture-fail-closed")
         test_natural_route_guard_summary_is_required(fixture / "natural-route")
         test_missing_or_failed_required_checks_fail(fixture / "required")
         test_valid_manual_input_proof_allows_stable_promotion(fixture / "manual")

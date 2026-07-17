@@ -167,6 +167,46 @@ def good_checks() -> dict:
     }
 
 
+def fixture_ui_summary() -> dict:
+    """Bare-map rows-absent probe summary carrying the accepted fixture payload.
+
+    user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence.
+    """
+    return {
+        "stage": VALIDATION_STAGE,
+        "candidate_sha256": SHA,
+        "hidden_desktop": True,
+        "rbui_desc_switch": 0,
+        "rbui_viewport_switch": 1,
+        "rbui_panel_draw": 0,
+        "rbui_action_box": 0,
+        "av_count": 0,
+        "natural_draw_source": "slot5_as_slot0_fixture",
+        "fixture": {
+            "ruling": "user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence",
+            "fixture_run": "captures/archive/cdb-surface-dump-20260712-155528",
+            "marker_counts": {
+                "NOWNER_435BC0_PANEL_DRAW": 1,
+                "NOWNER_435BC0_GRID_DRAW": 10,
+                "NOWNER_WRAPPER_COPYBACK_DONE": 1,
+                "NOWNER_WRAPPER_PRESENT_CALL": 1,
+            },
+            "av_count": 0,
+            "proof_class": "non_natural_isolated_fixture",
+            "expected_slot_match": True,
+        },
+    }
+
+
+def fixture_checks() -> dict:
+    checks = good_checks()
+    checks["right_bottom_compose_ui_probe"] = check(
+        "right_bottom_compose_ui_probe",
+        fixture_ui_summary(),
+    )
+    return checks
+
+
 def write_refresh(path: Path, checks: dict) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({"checks": checks}, indent=2) + "\n", encoding="utf-8")
@@ -279,6 +319,49 @@ def test_matrix_rejects_natural_route_nested_regressions(fixture: Path) -> None:
         assert any(expected_failure in failure for failure in matrix["failures"]), matrix
 
 
+def test_matrix_accepts_fixture_natural_draw_payload(fixture: Path) -> None:
+    matrix = right_bottom_compose_evidence_matrix.build_matrix_from_checks(args_for(), fixture_checks())
+    assert matrix["passed"] is True, matrix
+    assert matrix["promotion_status"] == "validation_stage_only", matrix
+    assert matrix["stable_stage_should_change"] is False, matrix
+    assert matrix["key_evidence"]["natural_draw_source"] == "slot5_as_slot0_fixture", matrix
+    assert matrix["key_evidence"]["promotion_decision"] == "defer_stable_promotion", matrix
+
+
+def test_matrix_fixture_path_fails_closed(fixture: Path) -> None:
+    def without_fixture(checks: dict) -> None:
+        summary = checks["right_bottom_compose_ui_probe"]["summary"]
+        summary.pop("natural_draw_source")
+        summary.pop("fixture")
+
+    def zero_marker(marker: str):
+        def mutate(checks: dict) -> None:
+            checks["right_bottom_compose_ui_probe"]["summary"]["fixture"]["marker_counts"][marker] = 0
+
+        return mutate
+
+    def fixture_av(checks: dict) -> None:
+        checks["right_bottom_compose_ui_probe"]["summary"]["fixture"]["av_count"] = 1
+
+    def fixture_av_missing(checks: dict) -> None:
+        checks["right_bottom_compose_ui_probe"]["summary"]["fixture"]["av_count"] = None
+
+    cases = [
+        ("fixture payload missing", without_fixture, "owner/action draw rows"),
+        ("fixture panel draw", zero_marker("NOWNER_435BC0_PANEL_DRAW"), "NOWNER_435BC0_PANEL_DRAW"),
+        ("fixture grid draw", zero_marker("NOWNER_435BC0_GRID_DRAW"), "NOWNER_435BC0_GRID_DRAW"),
+        ("fixture copyback", zero_marker("NOWNER_WRAPPER_COPYBACK_DONE"), "NOWNER_WRAPPER_COPYBACK_DONE"),
+        ("fixture av rows", fixture_av, "AV rows or missing AV accounting"),
+        ("fixture av missing", fixture_av_missing, "AV rows or missing AV accounting"),
+    ]
+    for _label, mutate, expected_failure in cases:
+        checks = deepcopy(fixture_checks())
+        mutate(checks)
+        matrix = right_bottom_compose_evidence_matrix.build_matrix_from_checks(args_for(), checks)
+        assert matrix["passed"] is False, (_label, matrix)
+        assert any(expected_failure in failure for failure in matrix["failures"]), (_label, matrix)
+
+
 def test_matrix_rejects_candidate_sha_disagreement(fixture: Path) -> None:
     checks = good_checks()
     checks["right_bottom_compose_ui_probe"]["summary"]["candidate_sha256"] = "other-sha"
@@ -332,6 +415,8 @@ def run_tests() -> None:
         test_missing_or_failed_required_checks_fail(fixture / "required")
         test_matrix_rejects_route_and_safety_regressions(fixture / "regressions")
         test_matrix_rejects_natural_route_nested_regressions(fixture / "natural-route-regressions")
+        test_matrix_accepts_fixture_natural_draw_payload(fixture / "fixture-accepted")
+        test_matrix_fixture_path_fails_closed(fixture / "fixture-fail-closed")
         test_matrix_rejects_candidate_sha_disagreement(fixture / "sha")
         test_cli_writes_outputs_and_fails_closed(fixture / "cli")
     finally:

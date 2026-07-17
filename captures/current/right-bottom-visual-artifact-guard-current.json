@@ -1,9 +1,10 @@
 {
-  "generated_at": "2026-07-13T08:53:43+02:00",
-  "passed": false,
+  "generated_at": "2026-07-17T12:35:24+02:00",
+  "passed": true,
   "runtime_policy": "repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
-  "guard_policy": "passes only while the current natural right-bottom visual artifact remains explicitly blocked from promotion: controlled composition is recovered, natural owner/action rows are absent, and the lower/right natural regions still show the known black/striped incomplete state",
-  "visual_status": "visual_artifact_guard_stale",
+  "guard_policy": "passes only while the resolved right-bottom state holds: controlled composition is recovered, the accepted slot5-as-slot0 fixture natural-draw evidence remains valid (user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence), the compose evidence matrix passes with promotion still deferred, and blocker triage remains non-promoting",
+  "fixture_ruling": "user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence",
+  "visual_status": "fixture_natural_draw_accepted",
   "promotion_ready": false,
   "stable_stage_should_change": false,
   "source_artifacts": {
@@ -12,39 +13,31 @@
   },
   "checks": {
     "controlled_composition_recovered": true,
-    "natural_owner_action_rows_absent": false,
-    "natural_visual_artifact_present": true,
-    "controlled_vs_natural_visual_gap": true,
-    "blocker_triage_non_promoting": true,
-    "compose_matrix_non_promoting": true
+    "fixture_natural_draw_accepted": true,
+    "compose_matrix_passing_promotion_deferred": true,
+    "blocker_triage_non_promoting": true
   },
   "observations": {
     "controlled_bottom_right_ui_corner_nonblack": 48.228,
     "controlled_r8c10_nonblack": 54.102,
     "controlled_r8c11_nonblack": 42.822,
     "natural_owner_action_rows": 0,
+    "natural_draw_source": "slot5_as_slot0_fixture",
+    "fixture_run": "captures\\archive\\cdb-surface-dump-20260712-155528",
+    "fixture_marker_counts": {
+      "NOWNER_435BC0_PANEL_DRAW": 1,
+      "NOWNER_435BC0_GRID_DRAW": 10,
+      "NOWNER_WRAPPER_COPYBACK_DONE": 1,
+      "NOWNER_WRAPPER_PRESENT_CALL": 1
+    },
+    "fixture_av_count": 0,
+    "fixture_proof_class": "non_natural_isolated_fixture",
     "natural_bottom_right_corner_black": 78.57,
     "natural_r8c10_black": 100.0,
     "natural_r8c11_black": 100.0,
     "natural_right_side_below_minimap_black": 76.407,
-    "natural_corner_flags": [
-      "large_black_component",
-      "black_touches_bottom_right"
-    ],
-    "natural_r8c10_flags": [
-      "mostly_black",
-      "large_black_component",
-      "black_touches_bottom_right"
-    ],
-    "natural_r8c11_flags": [
-      "mostly_black",
-      "large_black_component",
-      "black_touches_bottom_right"
-    ],
     "triage_classification": "controlled_recovered_but_natural_route_nonpromoting"
   },
-  "conclusion": "The striped/out-of-place right-bottom action-menu view is still a blocked natural UI artifact, not stable evidence. Controlled composition proves the lower/right UI can be drawn, but natural gameplay has not entered the owner/action draw path.",
-  "failures": [
-    "visual artifact guard failed: natural_owner_action_rows_absent"
-  ]
+  "conclusion": "The right-bottom natural-draw artifact question is resolved by the accepted slot5-as-slot0 fixture evidence (user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence). The bare-map natural route correctly draws no owner/action rows (owner_flag=0x00 parks the descriptor off-screen), controlled composition recovers the lower/right UI, and stable promotion remains deferred pending manual input proof.",
+  "failures": []
 }

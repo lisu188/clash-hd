@@ -1,7 +1,7 @@
 # Right-Bottom Compose Evidence Matrix
 
-- Overall: FAIL
-- Generated: `2026-07-13T08:53:43+02:00`
+- Overall: PASS
+- Generated: `2026-07-17T12:35:24+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
 - Promotion status: `validation_stage_only`
 - Stable stage should change: `False`
@@ -14,11 +14,11 @@
 - `right_bottom_compose_patch`: `PASS`
 - `right_bottom_compose_fullstart_route`: `PASS`
 - `right_bottom_compose_normal_gate`: `PASS`
-- `right_bottom_compose_ui_probe`: `FAIL`
+- `right_bottom_compose_ui_probe`: `PASS`
 - `right_bottom_grid_hit`: `PASS`
 - `right_bottom_natural_route_guard`: `PASS`
 - `right_bottom_route_timing_guard`: `PASS`
-- `right_bottom_compose_promotion_decision`: `FAIL`
+- `right_bottom_compose_promotion_decision`: `PASS`
 
 ## Key Evidence
 
@@ -32,6 +32,8 @@
 - Normal gate unexplained blanks: `0`
 - Natural UI descriptor switch rows: `0`
 - Natural UI owner/action rows: `RBUI_PANEL_DRAW=0`, `RBUI_ACTION_BOX=0`
+- Natural draw source: `slot5_as_slot0_fixture`
+- Fixture natural-draw evidence: `{'ruling': 'user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence', 'fixture_run': 'captures\\archive\\cdb-surface-dump-20260712-155528', 'marker_counts': {'NOWNER_435BC0_PANEL_DRAW': 1, 'NOWNER_435BC0_GRID_DRAW': 10, 'NOWNER_WRAPPER_COPYBACK_DONE': 1, 'NOWNER_WRAPPER_PRESENT_CALL': 1}, 'av_count': 0, 'proof_class': 'non_natural_isolated_fixture', 'expected_slot_match': True}`
 - Controlled grid hit: `ok=True`, `entry=[450, 73]`, `result=0`
 - Controlled grid forced gates/failure exits: `1` / `0`
 - Natural route state-gated: `True`
@@ -43,15 +45,3 @@
 - Route timing ordered markers: `patch=29`, `fullstart=29`, `grid=25`
 - Route timing failure exits / AV rows: `0` / `0`
 - Promotion decision: `defer_stable_promotion`
-
-## Failures
-
-- right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
-- right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
-- right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
-- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
-- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-- right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
-- natural UI probe did not reach descriptor switch rows
-- natural UI probe did not enter owner/action draw rows

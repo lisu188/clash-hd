@@ -127,13 +127,33 @@ def build_matrix_from_checks(args: argparse.Namespace, checks: dict[str, Any]) -
 
     if ui.get("hidden_desktop") is not True:
         failures.append("natural UI probe did not run on hidden desktop")
-    if int(ui.get("rbui_desc_switch") or 0) <= 0:
-        failures.append("natural UI probe did not reach descriptor switch rows")
-    if int(ui.get("rbui_viewport_switch") or 0) <= 0:
-        failures.append("natural UI probe did not reach viewport switch rows")
     natural_owner_rows = int(ui.get("rbui_panel_draw") or 0) + int(ui.get("rbui_action_box") or 0)
-    if natural_owner_rows <= 0:
-        failures.append("natural UI probe did not enter owner/action draw rows")
+    ui_fixture = ui.get("fixture") or {}
+    ui_fixture_markers = ui_fixture.get("marker_counts") or {}
+    if natural_owner_rows > 0:
+        # Original natural-rows path: the bare-map probe itself entered the rows.
+        if int(ui.get("rbui_desc_switch") or 0) <= 0:
+            failures.append("natural UI probe did not reach descriptor switch rows")
+        if int(ui.get("rbui_viewport_switch") or 0) <= 0:
+            failures.append("natural UI probe did not reach viewport switch rows")
+    elif ui.get("natural_draw_source") == "slot5_as_slot0_fixture":
+        # user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence.
+        # The bare-map rows-absent result is physically correct; require the accepted
+        # fixture's natural-draw markers instead and fail closed otherwise.
+        if int(ui_fixture_markers.get("NOWNER_435BC0_PANEL_DRAW") or 0) < 1:
+            failures.append("fixture natural-draw evidence has no NOWNER_435BC0_PANEL_DRAW rows")
+        if int(ui_fixture_markers.get("NOWNER_435BC0_GRID_DRAW") or 0) < 1:
+            failures.append("fixture natural-draw evidence has no NOWNER_435BC0_GRID_DRAW rows")
+        if int(ui_fixture_markers.get("NOWNER_WRAPPER_COPYBACK_DONE") or 0) < 1:
+            failures.append("fixture natural-draw evidence has no NOWNER_WRAPPER_COPYBACK_DONE rows")
+        fixture_av = ui_fixture.get("av_count")
+        if fixture_av is None or int(fixture_av or 0) != 0:
+            failures.append(f"fixture natural-draw evidence has AV rows or missing AV accounting: {fixture_av}")
+    else:
+        failures.append(
+            "natural UI probe did not enter owner/action draw rows and no accepted "
+            "slot5-as-slot0 fixture natural-draw evidence was recorded"
+        )
     if int(ui.get("av_count") or 0):
         failures.append(f"natural UI probe has AV rows: {ui.get('av_count')}")
 
@@ -239,6 +259,17 @@ def build_matrix_from_checks(args: argparse.Namespace, checks: dict[str, Any]) -
             "natural_desc_switch": ui.get("rbui_desc_switch"),
             "natural_panel_draw": ui.get("rbui_panel_draw"),
             "natural_action_box": ui.get("rbui_action_box"),
+            "natural_draw_source": ui.get("natural_draw_source"),
+            "fixture_natural_draw": {
+                "ruling": ui_fixture.get("ruling"),
+                "fixture_run": ui_fixture.get("fixture_run"),
+                "marker_counts": ui_fixture_markers or None,
+                "av_count": ui_fixture.get("av_count"),
+                "proof_class": ui_fixture.get("proof_class"),
+                "expected_slot_match": ui_fixture.get("expected_slot_match"),
+            }
+            if ui_fixture
+            else None,
             "controlled_grid_hit_ok": grid.get("grid_hit_ok"),
             "controlled_grid_entry": grid.get("last_grid_entry"),
             "controlled_grid_result": grid.get("last_grid_result"),
@@ -319,6 +350,8 @@ def write_markdown(path: Path, matrix: dict[str, Any]) -> None:
             f"- Normal gate unexplained blanks: `{evidence['normal_unexplained_blank_cells']}`",
             f"- Natural UI descriptor switch rows: `{evidence['natural_desc_switch']}`",
             f"- Natural UI owner/action rows: `RBUI_PANEL_DRAW={evidence['natural_panel_draw']}`, `RBUI_ACTION_BOX={evidence['natural_action_box']}`",
+            f"- Natural draw source: `{evidence['natural_draw_source']}`",
+            f"- Fixture natural-draw evidence: `{evidence['fixture_natural_draw']}`",
             f"- Controlled grid hit: `ok={evidence['controlled_grid_hit_ok']}`, `entry={evidence['controlled_grid_entry']}`, `result={evidence['controlled_grid_result']}`",
             f"- Controlled grid forced gates/failure exits: `{evidence['controlled_grid_forced_gate_count']}` / `{evidence['controlled_grid_failure_exit_count']}`",
             f"- Natural route state-gated: `{evidence['natural_route_state_gated']}`",

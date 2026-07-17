@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-14T13:53:23+02:00`
+- Generated: `2026-07-17T12:35:14+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -249,7 +249,7 @@
 
 ### Right Bottom Compose Ui Probe
 
-- Status: FAIL
+- Status: PASS
 - surface_dump_passed: `True`
 - hidden_desktop: `True`
 - map_validation_skipped: `False`
@@ -266,11 +266,9 @@
 - av_count: `0`
 - current_hd_map_gate: `True`
 - right_bottom_patch_group: `{'patched': 4, 'total': 4}`
+- natural_draw_source: `slot5_as_slot0_fixture`
+- fixture: `{'ruling': 'user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence', 'fixture_run': 'captures\\archive\\cdb-surface-dump-20260712-155528', 'log': 'captures\\archive\\cdb-surface-dump-20260712-155528\\cdb-surface-dump.log', 'result_summary_json': 'captures\\archive\\cdb-surface-dump-20260712-155528\\right-bottom-slot-fixture-result-summary.json', 'marker_counts': {'NOWNER_435BC0_PANEL_DRAW': 1, 'NOWNER_435BC0_GRID_DRAW': 10, 'NOWNER_WRAPPER_COPYBACK_DONE': 1, 'NOWNER_WRAPPER_PRESENT_CALL': 1}, 'av_count': 0, 'proof_class': 'non_natural_isolated_fixture', 'expected_slot_match': True, 'row_count': 272, 'stage': 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'candidate_sha256': 'D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C'}`
 - bounds: `{'minimap_top_right': {'nonblack_percent': 12.964, 'black_percent': 87.036, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'right_side_total': {'nonblack_percent': 19.698, 'black_percent': 80.302, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'right_side_below_minimap': {'nonblack_percent': 23.593, 'black_percent': 76.407, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_strip': {'nonblack_percent': 52.45, 'black_percent': 47.55, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_ui_corner': {'nonblack_percent': 21.43, 'black_percent': 78.57, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c9': {'nonblack_percent': 46.24, 'black_percent': 53.76, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c10': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c11': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}}`
-- Failures:
-  - right-bottom compose UI wrapper reported failure
-  - right-bottom compose UI descriptor switch rows were not observed
-  - right-bottom compose UI did not naturally enter owner/action draw rows
 
 ### Right Bottom Grid Hit
 
@@ -505,9 +503,9 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-owner-flag-inventory-current.json`
 - Markdown: `captures\current\right-bottom-owner-flag-inventory-current.md`
-- scanned_log_count: `47`
-- relevant_run_count: `12`
-- classification_counts: `{'forced_owner_action_route': 7, 'natural_state_gated': 1, 'non_natural_isolated_fixture': 4}`
+- scanned_log_count: `49`
+- relevant_run_count: `14`
+- classification_counts: `{'forced_owner_action_route': 7, 'natural_state_gated': 1, 'natural_ui_descriptor_only': 1, 'non_natural_isolated_fixture': 5}`
 - natural_state_gated_count: `1`
 - forced_owner_action_route_count: `7`
 - natural_action_route_count: `0`
@@ -533,7 +531,7 @@
 
 ### Right Bottom Compose Promotion Decision
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\right-bottom-compose-promotion-decision-current.json`
 - Markdown: `captures\current\right-bottom-compose-promotion-decision-current.md`
 - decision: `defer_stable_promotion`
@@ -542,15 +540,10 @@
 - validation_stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`
 - candidate_sha256: `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`
 - manual_input_proof_valid: `False`
-- Failures:
-  - right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
-  - right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
-  - right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-  - right-bottom natural UI probe did not enter owner/action draw rows
 
 ### Right Bottom Compose Evidence
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\right-bottom-compose-evidence-current.json`
 - Markdown: `captures\current\right-bottom-compose-evidence-current.md`
 - promotion_status: `validation_stage_only`
@@ -558,16 +551,6 @@
 - candidate_sha256: `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`
 - controlled_grid_hit_ok: `True`
 - promotion_decision: `defer_stable_promotion`
-- Failures:
-  - right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
-  - right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
-  - right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-  - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
-  - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
-  - right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-  - right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
-  - natural UI probe did not reach descriptor switch rows
-  - natural UI probe did not enter owner/action draw rows
 
 ### Right Bottom Blocker Triage
 
@@ -586,20 +569,18 @@
 
 ### Right Bottom Visual Artifact Guard
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\right-bottom-visual-artifact-guard-current.json`
 - Markdown: `captures\current\right-bottom-visual-artifact-guard-current.md`
-- visual_status: `visual_artifact_guard_stale`
+- visual_status: `fixture_natural_draw_accepted`
 - promotion_ready: `False`
 - stable_stage_should_change: `False`
 - natural_owner_action_rows: `0`
 - natural_bottom_right_corner_black: `78.57`
 - natural_r8c10_black: `100.0`
 - natural_r8c11_black: `100.0`
-- guard_policy: `passes only while the current natural right-bottom visual artifact remains explicitly blocked from promotion: controlled composition is recovered, natural owner/action rows are absent, and the lower/right natural regions still show the known black/striped incomplete state`
+- guard_policy: `passes only while the resolved right-bottom state holds: controlled composition is recovered, the accepted slot5-as-slot0 fixture natural-draw evidence remains valid (user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence), the compose evidence matrix passes with promotion still deferred, and blocker triage remains non-promoting`
 - runtime_policy: `repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
-- Failures:
-  - visual artifact guard failed: natural_owner_action_rows_absent
 
 ### First Mission Visual Audit
 
@@ -625,7 +606,7 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-compose-promotion-decision-tests-current.json`
 - Markdown: `captures\current\right-bottom-compose-promotion-decision-tests-current.md`
-- test_count: `7`
+- test_count: `9`
 - guard_policy: `proves the right-bottom compose promotion decision defers by default, fails closed for missing/failing route/grid/timing gates, rejects placeholder proof files, and only permits promotion with a valid manual proof manifest or an explicit CDB-only override`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for decision CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -634,7 +615,7 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-compose-evidence-matrix-tests-current.json`
 - Markdown: `captures\current\right-bottom-compose-evidence-matrix-tests-current.md`
-- test_count: `6`
+- test_count: `8`
 - guard_policy: `proves the right-bottom compose evidence matrix requires all route gates, hidden-desktop/full-start safety, normal map/visibility proof, natural UI routing, controlled grid-hit proof, route timing/order proof, candidate SHA agreement, and deferred promotion status`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for matrix CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -652,8 +633,8 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-visual-artifact-guard-tests-current.json`
 - Markdown: `captures\current\right-bottom-visual-artifact-guard-tests-current.md`
-- test_count: `7`
-- guard_policy: `proves the right-bottom visual artifact guard blocks the current stripy/out-of-place natural UI state from promotion and fails closed if the artifact or route state changes`
+- test_count: `10`
+- guard_policy: `proves the right-bottom visual artifact guard validates the resolved state (user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence) with promotion still deferred, and fails closed if the fixture evidence, compose matrix, triage, or controlled recovery state changes`
 - runtime_policy: `repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
 ### First Mission Visual Audit Tests
@@ -1199,7 +1180,7 @@
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
 - risky_file_count: `118`
-- classification_counts: `{'safe': 125, 'user_gated_launcher': 1, 'exempt': 28, 'manual_visible_runtime_gated': 2, 'test_fixture': 87}`
+- classification_counts: `{'safe': 126, 'user_gated_launcher': 1, 'exempt': 28, 'manual_visible_runtime_gated': 2, 'test_fixture': 87}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1217,8 +1198,8 @@
 - Status: PASS
 - JSON: `captures\current\no-visible-runtime-guard-current.json`
 - Markdown: `captures\current\no-visible-runtime-guard-current.md`
-- run_count: `23`
-- hidden_run_count: `23`
+- run_count: `24`
+- hidden_run_count: `24`
 - guard_policy: `all referenced CDB surface-dump runs must be hidden-desktop evidence`
 
 ### No Visible Runtime Guard Tests
@@ -1478,7 +1459,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 95.03, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 85.71, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 96.89, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.89, 'right_bottom_promotion_gate': 100.0, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1583,7 +1564,7 @@
 - JSON: `captures\current\hd-soak-short-artifact-manifest-current.json`
 - Markdown: `captures\current\hd-soak-short-artifact-manifest-current.md`
 - step_count: `5`
-- existing_step_report_count: `1`
+- existing_step_report_count: `2`
 - legacy_report_exists: `True`
 - long_tiers_locked: `True`
 - future_lanes_locked: `True`
@@ -1605,7 +1586,7 @@
 - JSON: `captures\current\hd-soak-short-validation-refresh-current.json`
 - Markdown: `captures\current\hd-soak-short-validation-refresh-current.md`
 - status: `validated_reports`
-- counts: `{'steps': 5, 'reports_found': 1, 'guards_written': 1, 'triage_written': 1, 'validated_failed': 0}`
+- counts: `{'steps': 5, 'reports_found': 2, 'guards_written': 2, 'triage_written': 2, 'validated_failed': 1}`
 - runtime_policy: `repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 
 ### Hd Soak Short Validation Refresh Tests
@@ -1623,9 +1604,9 @@
 - JSON: `captures\current\hd-soak-short-step-status-current.json`
 - Markdown: `captures\current\hd-soak-short-step-status-current.md`
 - ladder_complete: `False`
-- counts: `{'total': 5, 'passed': 1, 'pending_or_missing': 1, 'locked': 3, 'failed_or_invalid': 0}`
+- counts: `{'total': 5, 'passed': 1, 'pending_or_missing': 0, 'locked': 3, 'failed_or_invalid': 1}`
 - current_step: `short2_map_idle`
-- current_step_status: `missing_pending_approval`
+- current_step_status: `failed_classified_window_missing_while_process_alive`
 - long_tiers_locked: `True`
 - future_lanes_locked: `True`
 - right_bottom_promotion_blocked: `True`
@@ -1647,7 +1628,7 @@
 - Markdown: `captures\current\hd-soak-dry-run-plan-current.md`
 - status: `ready_for_explicit_approval`
 - current_step: `short2_map_idle`
-- current_step_status: `missing_pending_approval`
+- current_step_status: `failed_classified_window_missing_while_process_alive`
 - dry_run: `True`
 - candidate_dir: `C:\ClashTests\hd-soak`
 - output_root: `C:\ClashCaptures\hd-soak`
@@ -1672,11 +1653,11 @@
 - Status: PASS
 - JSON: `captures\current\hd-soak-intro-skip-rerun-readiness-current.json`
 - Markdown: `captures\current\hd-soak-intro-skip-rerun-readiness-current.md`
-- status: `ready_for_explicit_visible_rerun_approval`
+- status: `not_applicable_current_failure`
 - current_step: `short2_map_idle`
-- current_step_status: `missing_pending_approval`
+- current_step_status: `failed_classified_window_missing_while_process_alive`
 - triage_classification: `passing_run_no_failure`
-- approval_boundary: `The next runtime run will open a visible Clash95 game window and still requires explicit user approval.`
+- approval_boundary: `No intro-skip rerun is authorized while the current step has an unrelated classified failure; follow its repo-only triage instead.`
 - runtime_policy: `repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 
 ### Hd Soak Intro Skip Rerun Readiness Tests
@@ -1714,7 +1695,7 @@
 - status: `locked_short_ladder_incomplete`
 - duration_sec: `0`
 - counts: `{'required_routes': 2, 'passing_routes': 0, 'missing_routes': 2}`
-- short_ladder: `{'path': 'captures\\current\\hd-soak-short-step-status-current.json', 'present': True, 'ladder_complete': False, 'current_step': {'id': 'short2_map_idle', 'tier': 'short2', 'route': 'map-idle', 'status': 'missing_pending_approval', 'next_command': 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json'}}`
+- short_ladder: `{'path': 'captures\\current\\hd-soak-short-step-status-current.json', 'present': True, 'ladder_complete': False, 'current_step': {'id': 'short2_map_idle', 'tier': 'short2', 'route': 'map-idle', 'status': 'failed_classified_window_missing_while_process_alive', 'next_command': None}}`
 - proof_manifest: `{'path': 'captures\\current\\hd-soak-long-proof-current.json', 'present': False, 'report_guard_count': 0}`
 - runtime_policy: `repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Failures:
@@ -1784,14 +1765,14 @@
 - Status: PASS
 - JSON: `captures\current\hd-endurance-next-actions-current.json`
 - Markdown: `captures\current\hd-endurance-next-actions-current.md`
-- status: `waiting_for_explicit_visible_runtime_approval`
-- next_action: `run_short2_map_idle_soak`
-- requires_explicit_user_approval: `True`
-- has_plan_verified_execute_command: `True`
+- status: `repo_only_followup_available`
+- next_action: `inspect_short2_map_idle_triage`
+- requires_explicit_user_approval: `False`
+- has_plan_verified_execute_command: `False`
 - focused_post_run_validation_count: `3`
 - handoff_refresh_count: `5`
 - broad_evidence_refresh_count: `4`
-- current_step_artifacts: `{'report_json': 'captures\\current\\hd-soak-short2-map-idle-current.json', 'report_json_exists': False, 'guard_json': 'captures\\current\\hd-soak-short2-map-idle-guard-current.json', 'guard_json_exists': True, 'triage_json': 'captures\\current\\hd-soak-short2-map-idle-triage-current.json', 'triage_json_exists': True, 'canonical_runtime_report_missing': True, 'post_run_guard_missing': False, 'post_run_triage_missing': False}`
+- current_step_artifacts: `{'report_json': 'captures\\current\\hd-soak-short2-map-idle-current.json', 'report_json_exists': True, 'guard_json': 'captures\\current\\hd-soak-short2-map-idle-guard-current.json', 'guard_json_exists': True, 'triage_json': 'captures\\current\\hd-soak-short2-map-idle-triage-current.json', 'triage_json_exists': True, 'canonical_runtime_report_missing': False, 'post_run_guard_missing': False, 'post_run_triage_missing': False}`
 - runtime_policy: `repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 
 ### Hd Endurance Next Actions Tests
@@ -1827,18 +1808,20 @@
 
 ### Hd Soak Approval Preflight
 
-- Status: PASS
+- Status: FAIL
 - JSON: `captures\current\hd-soak-approval-preflight-current.json`
 - Markdown: `captures\current\hd-soak-approval-preflight-current.md`
-- status: `ready_for_explicit_approval`
+- status: `not_ready`
 - current_step: `short2_map_idle`
-- current_step_status: `missing_pending_approval`
+- current_step_status: `failed_classified_window_missing_while_process_alive`
 - dry_run_plan_status: `ready_for_explicit_approval`
 - dry_run_plan_passed: `True`
 - writes_outside_repo: `['C:\\ClashCaptures\\hd-soak', 'C:\\ClashTests\\hd-soak']`
 - stable_stage_should_change: `False`
 - right_bottom_promotion_blocked: `True`
 - runtime_policy: `repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - current short-step status is 'failed_classified_window_missing_while_process_alive'
 
 ### Hd Soak Approval Preflight Tests
 
@@ -1854,11 +1837,11 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `726`
+- artifact_count: `742`
 - current_reference_count: `179`
-- stale_visible_or_sandbox_count: `16`
-- reference_status_counts: `{'archived_referenced': 200, 'current_referenced': 149, 'stale_unreferenced': 377}`
-- era_counts: `{'cdb_surface_dump_unverified': 73, 'hidden_cdb_surface_dump': 162, 'other_capture_artifact': 475, 'visible_era': 16}`
+- stale_visible_or_sandbox_count: `18`
+- reference_status_counts: `{'archived_referenced': 202, 'current_referenced': 149, 'stale_unreferenced': 391}`
+- era_counts: `{'cdb_surface_dump_unverified': 73, 'hidden_cdb_surface_dump': 164, 'other_capture_artifact': 487, 'visible_era': 18}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1917,23 +1900,6 @@
 
 ## Failures
 
-- right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
-- right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
-- right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
-- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
-- right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-- right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
-- right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
-- right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
-- right_bottom_compose_evidence: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-- right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure
-- right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed
-- right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows
-- right_bottom_compose_evidence: right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows
-- right_bottom_compose_evidence: natural UI probe did not reach descriptor switch rows
-- right_bottom_compose_evidence: natural UI probe did not enter owner/action draw rows
-- right_bottom_visual_artifact_guard: visual artifact guard failed: natural_owner_action_rows_absent
 - battle_visible_input_summary: visible input summary has no command-ready run
 - battle_ui_evidence_matrix: visible_input: visible input command readiness is not proven
 - hd_soak_long_report_guard: short ladder is not complete; long tiers remain locked
@@ -1946,3 +1912,4 @@
 - hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
+- hd_soak_approval_preflight: current short-step status is 'failed_classified_window_missing_while_process_alive'

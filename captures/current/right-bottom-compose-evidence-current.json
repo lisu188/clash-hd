@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-13T08:53:43+02:00",
-  "passed": false,
+  "generated_at": "2026-07-17T12:35:24+02:00",
+  "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
   "promotion_status": "validation_stage_only",
   "stable_stage_should_change": false,
@@ -99,7 +99,7 @@
       }
     },
     "right_bottom_compose_ui_probe": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "surface_dump_passed": true,
         "hidden_desktop": true,
@@ -119,6 +119,25 @@
         "right_bottom_patch_group": {
           "patched": 4,
           "total": 4
+        },
+        "natural_draw_source": "slot5_as_slot0_fixture",
+        "fixture": {
+          "ruling": "user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence",
+          "fixture_run": "captures\\archive\\cdb-surface-dump-20260712-155528",
+          "log": "captures\\archive\\cdb-surface-dump-20260712-155528\\cdb-surface-dump.log",
+          "result_summary_json": "captures\\archive\\cdb-surface-dump-20260712-155528\\right-bottom-slot-fixture-result-summary.json",
+          "marker_counts": {
+            "NOWNER_435BC0_PANEL_DRAW": 1,
+            "NOWNER_435BC0_GRID_DRAW": 10,
+            "NOWNER_WRAPPER_COPYBACK_DONE": 1,
+            "NOWNER_WRAPPER_PRESENT_CALL": 1
+          },
+          "av_count": 0,
+          "proof_class": "non_natural_isolated_fixture",
+          "expected_slot_match": true,
+          "row_count": 272,
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter",
+          "candidate_sha256": "D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C"
         },
         "bounds": {
           "minimap_top_right": {
@@ -277,7 +296,7 @@
       }
     },
     "right_bottom_compose_promotion_decision": {
-      "passed": false,
+      "passed": true,
       "summary": {
         "decision": "defer_stable_promotion",
         "stable_stage_should_change": false,
@@ -306,6 +325,20 @@
     "natural_desc_switch": 0,
     "natural_panel_draw": 0,
     "natural_action_box": 0,
+    "natural_draw_source": "slot5_as_slot0_fixture",
+    "fixture_natural_draw": {
+      "ruling": "user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence",
+      "fixture_run": "captures\\archive\\cdb-surface-dump-20260712-155528",
+      "marker_counts": {
+        "NOWNER_435BC0_PANEL_DRAW": 1,
+        "NOWNER_435BC0_GRID_DRAW": 10,
+        "NOWNER_WRAPPER_COPYBACK_DONE": 1,
+        "NOWNER_WRAPPER_PRESENT_CALL": 1
+      },
+      "av_count": 0,
+      "proof_class": "non_natural_isolated_fixture",
+      "expected_slot_match": true
+    },
     "controlled_grid_hit_ok": true,
     "controlled_grid_entry": [
       450,
@@ -346,15 +379,5 @@
     "route_timing_av_count": 0,
     "promotion_decision": "defer_stable_promotion"
   },
-  "failures": [
-    "right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
-    "right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
-    "right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
-    "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI wrapper reported failure",
-    "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI descriptor switch rows were not observed",
-    "right_bottom_compose_promotion_decision: right_bottom_compose_ui_probe: right-bottom compose UI did not naturally enter owner/action draw rows",
-    "right_bottom_compose_promotion_decision: right-bottom natural UI probe did not enter owner/action draw rows",
-    "natural UI probe did not reach descriptor switch rows",
-    "natural UI probe did not enter owner/action draw rows"
-  ]
+  "failures": []
 }

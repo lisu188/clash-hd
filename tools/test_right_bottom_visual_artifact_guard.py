@@ -7,6 +7,7 @@ import json
 import shutil
 import subprocess
 import sys
+from copy import deepcopy
 from pathlib import Path
 
 
@@ -35,7 +36,7 @@ def run_script(*args: str) -> subprocess.CompletedProcess[str]:
 
 def good_payloads() -> dict[str, dict]:
     compose = {
-        "passed": False,
+        "passed": True,
         "promotion_status": "validation_stage_only",
         "stable_stage_should_change": False,
         "checks": {
@@ -49,14 +50,28 @@ def good_payloads() -> dict[str, dict]:
                 },
             },
             "right_bottom_compose_ui_probe": {
-                "passed": False,
+                "passed": True,
                 "summary": {
                     "rbui_markers_seen": True,
-                    "rbui_desc_switch": 35,
+                    "rbui_desc_switch": 0,
                     "rbui_viewport_switch": 1,
                     "rbui_panel_draw": 0,
                     "rbui_action_box": 0,
                     "av_count": 0,
+                    "natural_draw_source": "slot5_as_slot0_fixture",
+                    "fixture": {
+                        "ruling": right_bottom_visual_artifact_guard.FIXTURE_NATURAL_DRAW_RULING,
+                        "fixture_run": "captures/archive/cdb-surface-dump-20260712-155528",
+                        "marker_counts": {
+                            "NOWNER_435BC0_PANEL_DRAW": 1,
+                            "NOWNER_435BC0_GRID_DRAW": 10,
+                            "NOWNER_WRAPPER_COPYBACK_DONE": 1,
+                            "NOWNER_WRAPPER_PRESENT_CALL": 1,
+                        },
+                        "av_count": 0,
+                        "proof_class": "non_natural_isolated_fixture",
+                        "expected_slot_match": True,
+                    },
                     "bounds": {
                         "bottom_right_ui_corner": {
                             "nonblack_percent": 21.43,
@@ -107,11 +122,17 @@ def build_from_paths(paths: dict[str, Path]) -> dict:
     )
 
 
-def test_good_visual_blocker_passes(fixture: Path) -> None:
+def ui_summary(payloads: dict[str, dict]) -> dict:
+    return payloads["compose"]["checks"]["right_bottom_compose_ui_probe"]["summary"]
+
+
+def test_good_resolved_state_passes(fixture: Path) -> None:
     report = build_from_paths(write_payloads(fixture))
     assert report["passed"] is True, report
-    assert report["visual_status"] == "natural_ui_visual_artifact_blocked", report
+    assert report["visual_status"] == "fixture_natural_draw_accepted", report
     assert report["promotion_ready"] is False, report
+    assert report["stable_stage_should_change"] is False, report
+    assert "user ruling 2026-07-14" in report["fixture_ruling"], report
 
 
 def test_missing_triage_fails(fixture: Path) -> None:
@@ -130,22 +151,55 @@ def test_legacy_blocked_classification_is_still_accepted(fixture: Path) -> None:
     assert report["promotion_ready"] is False, report
 
 
-def test_natural_owner_rows_make_guard_stale(fixture: Path) -> None:
+def test_fixture_evidence_missing_fails_closed(fixture: Path) -> None:
     payloads = good_payloads()
-    payloads["compose"]["checks"]["right_bottom_compose_ui_probe"]["summary"]["rbui_action_box"] = 1
+    summary = ui_summary(payloads)
+    summary.pop("natural_draw_source")
+    summary.pop("fixture")
     report = build_from_paths(write_payloads(fixture, payloads))
     assert report["passed"] is False, report
-    assert any("natural_owner_action_rows_absent" in failure for failure in report["failures"]), report
+    assert any("fixture_natural_draw_accepted" in failure for failure in report["failures"]), report
 
 
-def test_visual_no_longer_black_fails_closed(fixture: Path) -> None:
+def test_fixture_marker_regression_fails_closed(fixture: Path) -> None:
+    for marker in (
+        "NOWNER_435BC0_PANEL_DRAW",
+        "NOWNER_435BC0_GRID_DRAW",
+        "NOWNER_WRAPPER_COPYBACK_DONE",
+    ):
+        payloads = deepcopy(good_payloads())
+        ui_summary(payloads)["fixture"]["marker_counts"][marker] = 0
+        report = build_from_paths(write_payloads(fixture / marker.lower(), payloads))
+        assert report["passed"] is False, report
+        assert any("fixture_natural_draw_accepted" in failure for failure in report["failures"]), report
+
+
+def test_fixture_av_rows_fail_closed(fixture: Path) -> None:
     payloads = good_payloads()
-    bounds = payloads["compose"]["checks"]["right_bottom_compose_ui_probe"]["summary"]["bounds"]
-    bounds["bottom_right_tile_r8c10"]["black_percent"] = 20.0
-    bounds["bottom_right_tile_r8c10"]["nonblack_percent"] = 80.0
+    ui_summary(payloads)["fixture"]["av_count"] = 1
     report = build_from_paths(write_payloads(fixture, payloads))
     assert report["passed"] is False, report
-    assert any("natural_visual_artifact_present" in failure for failure in report["failures"]), report
+    assert any("fixture_natural_draw_accepted" in failure for failure in report["failures"]), report
+
+
+def test_compose_matrix_not_passing_fails(fixture: Path) -> None:
+    payloads = good_payloads()
+    payloads["compose"]["passed"] = False
+    report = build_from_paths(write_payloads(fixture, payloads))
+    assert report["passed"] is False, report
+    assert any(
+        "compose_matrix_passing_promotion_deferred" in failure for failure in report["failures"]
+    ), report
+
+
+def test_promotion_flip_fails_closed(fixture: Path) -> None:
+    payloads = good_payloads()
+    payloads["compose"]["stable_stage_should_change"] = True
+    report = build_from_paths(write_payloads(fixture, payloads))
+    assert report["passed"] is False, report
+    assert any(
+        "compose_matrix_passing_promotion_deferred" in failure for failure in report["failures"]
+    ), report
 
 
 def test_controlled_recovery_regression_fails(fixture: Path) -> None:
@@ -183,11 +237,14 @@ def run_tests() -> None:
     shutil.rmtree(fixture, ignore_errors=True)
     fixture.mkdir(parents=True)
     try:
-        test_good_visual_blocker_passes(fixture / "good")
+        test_good_resolved_state_passes(fixture / "good")
         test_missing_triage_fails(fixture / "missing-triage")
         test_legacy_blocked_classification_is_still_accepted(fixture / "legacy-classification")
-        test_natural_owner_rows_make_guard_stale(fixture / "owner-rows")
-        test_visual_no_longer_black_fails_closed(fixture / "visual-fixed")
+        test_fixture_evidence_missing_fails_closed(fixture / "fixture-missing")
+        test_fixture_marker_regression_fails_closed(fixture / "fixture-markers")
+        test_fixture_av_rows_fail_closed(fixture / "fixture-av")
+        test_compose_matrix_not_passing_fails(fixture / "compose-failing")
+        test_promotion_flip_fails_closed(fixture / "promotion-flip")
         test_controlled_recovery_regression_fails(fixture / "controlled-regression")
         test_cli_writes_outputs(fixture / "cli")
     finally:
