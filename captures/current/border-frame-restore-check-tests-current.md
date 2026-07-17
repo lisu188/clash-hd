@@ -1,0 +1,19 @@
+# Border Frame-Restore Check Tests
+
+- Status: PASS
+- Generated: `2026-07-17T14:34:30+02:00`
+- Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
+- Guard policy: proves the frame-restore-bands lane keeps every border band, passing authenticity gates at frozen thresholds, and a resolvable real-runtime frame reference, failing closed on any missing file or field
+
+## Tests
+
+- `border_frame_restore_check passes the committed proxy plus real-runtime band evidence shape`
+- `border_frame_restore_check fails when an evidence file is missing`
+- `border_frame_restore_check fails when a border band region disappears`
+- `border_frame_restore_check fails when an HD extension band goes black`
+- `border_frame_restore_check fails when histogram authenticity similarity drops below the minimum`
+- `border_frame_restore_check fails when the recorded gate failed`
+- `border_frame_restore_check fails when the recorded gate thresholds were weakened`
+- `border_frame_restore_check fails when the real-runtime frame reference is missing`
+- `border_frame_restore_check fails when a referenced source frame no longer exists`
+- `border_frame_restore_check CLI writes JSON/Markdown and honors --require-pass`

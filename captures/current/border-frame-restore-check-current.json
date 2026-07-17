@@ -1,0 +1,90 @@
+{
+  "generated_at": "2026-07-17T14:37:48+02:00",
+  "passed": true,
+  "runtime_policy": "repo-only committed-evidence validation; does not launch Clash95, CDB, wrappers, or visible windows",
+  "guard_policy": "committed frame-restore band evidence must keep every border band region, filled HD extension bands with passing histogram authenticity gates at or above the frozen thresholds, and a real-runtime frame reference that still resolves inside the repository",
+  "patch_group": "frame-restore-bands",
+  "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore",
+  "real_runtime_frames": [
+    "captures/archive/visual-smoke-20260713-150843/after-map-path.png"
+  ],
+  "checks": {
+    "proxy_surface_evidence": {
+      "passed": true,
+      "summary": {
+        "path": "captures\\current\\border-frame-restore-current.json",
+        "required_run_token": "cdb-surface-dump-",
+        "required_bands": [
+          "top_frame_native",
+          "top_right_extension",
+          "left_frame_native",
+          "left_frame_hd_extension",
+          "bottom_letterbox",
+          "right_ui_band"
+        ],
+        "required_match_pairs": {
+          "left_frame_hd_extension": "left_frame_native",
+          "top_right_extension": "top_frame_native"
+        },
+        "min_extension_nonblack_percent": 95.0,
+        "min_match_similarity": 0.3,
+        "image_count": 1,
+        "images": [
+          {
+            "source_frame": "captures/archive/cdb-surface-dump-20260713-151040/surface.png",
+            "source_frame_exists": true,
+            "gate_passed": true,
+            "extension_nonblack_percent": {
+              "left_frame_hd_extension": 100.0,
+              "top_right_extension": 100.0
+            },
+            "match_similarity": {
+              "left_frame_hd_extension": 0.6841,
+              "top_right_extension": 0.7867
+            }
+          }
+        ]
+      },
+      "failures": []
+    },
+    "real_runtime_evidence": {
+      "passed": true,
+      "summary": {
+        "path": "captures\\current\\border-frame-restore-realruntime-current.json",
+        "required_run_token": "visual-smoke-",
+        "required_bands": [
+          "top_frame_native",
+          "top_right_extension",
+          "left_frame_native",
+          "left_frame_hd_extension",
+          "bottom_letterbox",
+          "right_ui_band"
+        ],
+        "required_match_pairs": {
+          "left_frame_hd_extension": "left_frame_native",
+          "top_right_extension": "top_frame_native"
+        },
+        "min_extension_nonblack_percent": 95.0,
+        "min_match_similarity": 0.3,
+        "image_count": 1,
+        "images": [
+          {
+            "source_frame": "captures/archive/visual-smoke-20260713-150843/after-map-path.png",
+            "source_frame_exists": true,
+            "gate_passed": true,
+            "extension_nonblack_percent": {
+              "left_frame_hd_extension": 100.0,
+              "top_right_extension": 100.0
+            },
+            "match_similarity": {
+              "left_frame_hd_extension": 0.6759,
+              "top_right_extension": 0.7993
+            }
+          }
+        ]
+      },
+      "failures": []
+    }
+  },
+  "failures": []
+}
