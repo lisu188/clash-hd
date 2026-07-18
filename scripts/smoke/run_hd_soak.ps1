@@ -75,6 +75,17 @@ $PulseAimTolerancePx = 10
 $MapReachedNonblackPercent = 85.0
 $WindowMissingGraceAttempts = 3
 $WindowMissingGraceDelayMs = 800
+# Stale-handle policy for the INPUT helpers (the grace retries above only cover
+# health sampling). The wrapper destroys and recreates its top-level window
+# across the intro->menu mode switch, so tools/mouse_path_probe.py must (a) wait
+# for the same hwnd to report the same client size on consecutive samples before
+# it sends anything, and (b) re-acquire the handle for the pid instead of dying
+# on ERROR_INVALID_WINDOW_HANDLE the way the 2026-07-18 short2 run did.
+$WindowStableSamples = 2
+$WindowStablePollMs = 350
+$WindowStableTimeoutSec = 8
+$WindowReacquireAttempts = 12
+$WindowReacquireDelayMs = 250
 
 if (-not ([System.Management.Automation.PSTypeName]'ClashSoakWindowHealthWin32').Type) {
     Add-Type @'
@@ -404,6 +415,11 @@ function Invoke-MousePath {
         '--interval-ms', '300',
         '--move-mode', $effectiveMoveMode,
         '--points', $Points,
+        '--window-stable-samples', "$WindowStableSamples",
+        '--window-stable-poll-ms', "$WindowStablePollMs",
+        '--window-stable-timeout-sec', "$WindowStableTimeoutSec",
+        '--window-reacquire-attempts', "$WindowReacquireAttempts",
+        '--window-reacquire-delay-ms', "$WindowReacquireDelayMs",
         '--json', $OutputJson
     )
     if ($Click) {
@@ -434,6 +450,9 @@ function Invoke-MousePath {
         $result | Add-Member -NotePropertyName EffectiveMoveMode -NotePropertyValue $effectiveMoveMode -Force
         $result | Add-Member -NotePropertyName EffectiveClickMode -NotePropertyValue $effectiveClickMode -Force
         $result | Add-Member -NotePropertyName EffectiveClickRepeat -NotePropertyValue $effectiveClickRepeat -Force
+        $result | Add-Member -NotePropertyName WindowStable -NotePropertyValue ([bool]($result.window_stability -and $result.window_stability.stable)) -Force
+        $result | Add-Member -NotePropertyName WindowLost -NotePropertyValue ([bool]$result.window_lost) -Force
+        $result | Add-Member -NotePropertyName WindowReacquireCount -NotePropertyValue (Convert-NullableInt $result.window_reacquire_count) -Force
         return $result
     }
 
@@ -443,6 +462,9 @@ function Invoke-MousePath {
         click_event_count = 0
         click_repeat_stop_observed = $false
         click_repeat_stop_reasons = @()
+        WindowStable = $false
+        WindowLost = $false
+        WindowReacquireCount = $null
         ProbeExitCode = $exitCode
         ProbeLog = $probeLog
         ProbeError = "mouse_path_probe.py did not write JSON"
@@ -1199,6 +1221,9 @@ try {
         MenuVerifyThresholdPercent = $IntroMenuVerifyNonblackPercent
         IntroRoundsUsed = $introRoundsUsed
         IntroRoundBudget = $introRoundCount
+        WindowStable = (@($introRoundRows | Where-Object { [bool]$_.WindowStable }).Count -gt 0)
+        WindowLostObserved = (@($introRoundRows | Where-Object { [bool]$_.WindowLost }).Count -gt 0)
+        WindowReacquireCount = [int](@($introRoundRows | ForEach-Object { Convert-NullableInt $_.WindowReacquireCount } | Where-Object { $null -ne $_ }) | Measure-Object -Sum).Sum
         MoveMode = if ($introResult) { $introResult.EffectiveMoveMode } else { $MoveMode }
         ClickMode = $IntroSkipClickMode
         ClickRepeat = $IntroSkipClicks
@@ -1283,6 +1308,9 @@ try {
             ClickRepeatObserved = Convert-NullableInt $stepResult.click_event_count
             TransitionStopObserved = [bool]$stepResult.click_repeat_stop_observed
             RepeatStopReasons = @($stepResult.click_repeat_stop_reasons)
+            WindowStable = [bool]$stepResult.WindowStable
+            WindowLostObserved = [bool]$stepResult.WindowLost
+            WindowReacquireCount = Convert-NullableInt $stepResult.WindowReacquireCount
             MoveMode = $stepResult.EffectiveMoveMode
             ClickMode = $stepResult.EffectiveClickMode
             ClickRepeat = $stepResult.EffectiveClickRepeat

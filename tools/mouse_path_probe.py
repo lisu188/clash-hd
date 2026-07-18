@@ -106,7 +106,11 @@ user32.keybd_event.argtypes = [ctypes.c_ubyte, ctypes.c_ubyte, wintypes.DWORD, c
 user32.keybd_event.restype = None
 user32.GetSystemMetrics.argtypes = [ctypes.c_int]
 user32.GetSystemMetrics.restype = ctypes.c_int
+user32.IsWindow.argtypes = [wintypes.HWND]
+user32.IsWindow.restype = wintypes.BOOL
 
+
+ERROR_INVALID_WINDOW_HANDLE = 1400
 
 WM_LBUTTONDOWN = 0x0201
 WM_LBUTTONUP = 0x0202
@@ -169,6 +173,175 @@ def client_rect_and_origin(hwnd: int) -> tuple[RECT, POINT]:
     origin = POINT(0, 0)
     wincheck(user32.ClientToScreen(hwnd, ctypes.byref(origin)), "ClientToScreen")
     return rect, origin
+
+
+class WindowLostError(RuntimeError):
+    """The target window vanished and could not be re-acquired for the pid."""
+
+
+def is_invalid_window_error(exc: BaseException) -> bool:
+    """True for ERROR_INVALID_WINDOW_HANDLE, i.e. the handle was recreated."""
+    return getattr(exc, "winerror", None) == ERROR_INVALID_WINDOW_HANDLE
+
+
+def window_alive(hwnd: int) -> bool:
+    return bool(hwnd) and bool(user32.IsWindow(hwnd))
+
+
+class WindowTarget:
+    """A pid-anchored window handle that is re-resolved at every input phase.
+
+    Why this exists (2026-07-18 diagnosis): the GOG/DirectDraw wrapper destroys
+    and recreates its top-level window across the intro->menu mode switch, and
+    the window is transiently desktop-sized while the switch is in flight (a
+    2560x1440 client was sampled at 20:41:19 on a run whose real client is
+    800x600). Any handle cached across that boundary is stale, so the first
+    Win32 call using it fails with WinError 1400 (ERROR_INVALID_WINDOW_HANDLE)
+    - which is exactly how the 2026-07-18 short2 run died, as an unhandled
+    traceback inside client_rect_and_origin with zero frames captured.
+
+    Every geometry/input phase therefore goes through this object, which
+    validates the cached handle with IsWindow, re-acquires it for the pid with
+    a bounded retry/backoff when it died, and only fails closed (WindowLostError)
+    once the retries are exhausted. Failing closed is preserved: the caller
+    still reports path_verified false, it just does so with honest evidence
+    instead of a crash.
+    """
+
+    def __init__(
+        self,
+        pid: int,
+        reacquire_attempts: int = 12,
+        reacquire_delay: float = 0.25,
+    ) -> None:
+        self.pid = int(pid)
+        self.hwnd = 0
+        self.previous_hwnd = 0
+        self.reacquire_attempts = max(1, int(reacquire_attempts))
+        self.reacquire_delay = max(0.0, float(reacquire_delay))
+        self.reacquire_count = 0
+        self.events: list[dict] = []
+        self.stability: dict | None = None
+
+    def record(self, kind: str, phase: str, **fields: object) -> None:
+        event = {"kind": kind, "phase": phase, "hwnd": int(self.hwnd) or None}
+        event.update(fields)
+        self.events.append(event)
+
+    def acquire(self, timeout: float, phase: str) -> int:
+        """Resolve a visible window for the pid, waiting up to timeout seconds."""
+        deadline = time.time() + max(0.0, float(timeout))
+        while True:
+            found = find_window_for_pid(self.pid)
+            if found:
+                # previous_hwnd survives invalidate() so a recreated window is
+                # reported as a re-acquisition rather than a first acquisition.
+                previous = self.hwnd or self.previous_hwnd
+                self.hwnd = int(found)
+                if previous and previous != self.hwnd:
+                    self.reacquire_count += 1
+                    self.record(
+                        "window_reacquired",
+                        phase,
+                        previous_hwnd=int(previous),
+                    )
+                return self.hwnd
+            if time.time() >= deadline:
+                break
+            time.sleep(0.1)
+        self.record(
+            "window_lost",
+            phase,
+            previous_hwnd=int(self.hwnd or self.previous_hwnd) or None,
+        )
+        raise WindowLostError(f"no visible window found for pid {self.pid} at {phase}")
+
+    def invalidate(self, phase: str, reason: str) -> None:
+        if self.hwnd:
+            self.previous_hwnd = int(self.hwnd)
+            self.record("window_handle_invalid", phase, reason=reason)
+        self.hwnd = 0
+
+    def ensure(self, phase: str) -> int:
+        """Return a handle that is live right now, re-acquiring if it died."""
+        if window_alive(self.hwnd):
+            return self.hwnd
+        if self.hwnd:
+            self.invalidate(phase, "IsWindow returned false")
+        return self.acquire(self.reacquire_attempts * self.reacquire_delay, phase)
+
+    def geometry(self, phase: str) -> tuple[int, RECT, POINT]:
+        """Read client geometry from a handle validated at read time.
+
+        IsWindow can still go stale between the check and the read, so an
+        ERROR_INVALID_WINDOW_HANDLE from the read itself is treated as another
+        recreation and retried rather than raised at the caller.
+        """
+        last_error: BaseException | None = None
+        for _ in range(self.reacquire_attempts):
+            hwnd = self.ensure(phase)
+            try:
+                rect, origin = client_rect_and_origin(hwnd)
+            except OSError as exc:
+                if not is_invalid_window_error(exc):
+                    raise
+                last_error = exc
+                self.invalidate(phase, str(exc))
+                time.sleep(self.reacquire_delay)
+                continue
+            return hwnd, rect, origin
+        self.record("window_lost", phase, reason=str(last_error))
+        raise WindowLostError(
+            f"client geometry unavailable for pid {self.pid} at {phase}: {last_error}"
+        )
+
+    def wait_stable(
+        self,
+        phase: str,
+        samples: int = 2,
+        poll_sec: float = 0.35,
+        timeout: float = 8.0,
+    ) -> dict:
+        """Wait for the handle AND the client size to repeat across samples.
+
+        This is the mode-switch settle gate, and it is a measurement rather
+        than a sleep: input is only worth sending once the same window has
+        reported the same client size on consecutive polls, which is precisely
+        what is false while the wrapper is swapping display modes. Every
+        sample is recorded so a run can be read honestly either way; a timeout
+        is reported as stable=false and left to the caller's own gates rather
+        than inventing a new hard failure.
+        """
+        required = max(1, int(samples))
+        deadline = time.time() + max(0.0, float(timeout))
+        observations: list[dict] = []
+        streak: list[tuple[int, tuple[int, int]]] = []
+        stable = False
+        self.stability = {
+            "stable": False,
+            "required_consecutive_samples": required,
+            "timeout_sec": float(timeout),
+            "poll_sec": float(poll_sec),
+            "samples": observations,
+        }
+        while True:
+            hwnd, rect, _origin = self.geometry(phase)
+            size = rect_size(rect)
+            observations.append({"hwnd": int(hwnd), "client_size": [size[0], size[1]]})
+            entry = (int(hwnd), size)
+            if streak and streak[-1] == entry:
+                streak.append(entry)
+            else:
+                streak = [entry]
+            if len(streak) >= required:
+                stable = True
+                break
+            if time.time() >= deadline:
+                break
+            time.sleep(max(0.0, float(poll_sec)))
+        self.stability["stable"] = stable
+        self.stability["samples_taken"] = len(observations)
+        return self.stability
 
 
 def default_points(width: int, height: int) -> list[tuple[int, int]]:
@@ -460,7 +633,7 @@ def should_stop_click_repeat(click: dict, stop_on_drift: bool) -> bool:
 
 
 def move_path(
-    hwnd: int,
+    target: WindowTarget,
     points: list[tuple[int, int]],
     interval: float,
     click: bool,
@@ -474,11 +647,27 @@ def move_path(
     relative_step_limit: int,
     relative_step_sleep: float,
 ) -> dict:
-    rect, origin = client_rect_and_origin(hwnd)
+    hwnd, rect, origin = target.geometry("move-path")
     width, height = rect_size(rect)
     rows = []
+    window_lost = False
+    window_lost_reason = None
     logical_x, logical_y = client_delta_origin
     for index, (client_x, client_y) in enumerate(points):
+        # Re-validate before every point: the wrapper can recreate (and move)
+        # its window between two points of the same path, which shifts the
+        # client origin. Recomputing the screen target from the fresh origin
+        # keeps the sampled drift honest instead of measuring against a window
+        # that no longer exists.
+        try:
+            step_hwnd, _step_rect, step_origin = target.geometry(f"point-{index}")
+        except WindowLostError as exc:
+            window_lost = True
+            window_lost_reason = str(exc)
+            break
+        window_reacquired = step_hwnd != hwnd
+        hwnd = step_hwnd
+        origin = step_origin
         screen_x = int(origin.x + client_x)
         screen_y = int(origin.y + client_y)
         logical_delta = [0, 0]
@@ -507,6 +696,8 @@ def move_path(
         row = {
             "index": index,
             "client": [client_x, client_y],
+            "hwnd": int(hwnd),
+            "window_reacquired": bool(window_reacquired),
             "move_mode": move_mode,
             "move_method": move_method,
             "logical_delta": logical_delta,
@@ -545,6 +736,8 @@ def move_path(
                 time.sleep(0.04)
         rows.append(row)
         time.sleep(interval)
+    points_completed = len(rows)
+    all_points_visited = points_completed == len(points)
     max_abs_error = max((max(abs(row["error"][0]), abs(row["error"][1])) for row in rows), default=0)
     samples = [sample for row in rows for sample in row["samples"]]
     max_sample_abs_error = max(
@@ -563,6 +756,13 @@ def move_path(
         "hwnd": hwnd,
         "client_size": [width, height],
         "client_origin_screen": [int(origin.x), int(origin.y)],
+        "window_lost": window_lost,
+        "window_lost_reason": window_lost_reason,
+        "window_reacquire_count": target.reacquire_count,
+        "window_events": target.events,
+        "points_requested": len(points),
+        "points_completed": points_completed,
+        "all_points_visited": all_points_visited,
         "points": rows,
         "max_abs_error": max_abs_error,
         "max_sample_abs_error": max_sample_abs_error,
@@ -574,8 +774,13 @@ def move_path(
             for row in rows
             if row["click_repeat_stop_reason"]
         ],
-        "path_verified": max_abs_error <= 1,
-        "click_path_verified": max_sample_abs_error <= 1,
+        # Fail closed: a path that lost its window, or that never visited every
+        # requested point, is not a verified path no matter how small the drift
+        # measured on the points it did reach.
+        "path_verified": all_points_visited and not window_lost and max_abs_error <= 1,
+        "click_path_verified": (
+            all_points_visited and not window_lost and max_sample_abs_error <= 1
+        ),
     }
 
 
@@ -619,9 +824,38 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="stop repeated clicks after sampled cursor/client drift during transition-safe intro prep",
     )
+    parser.add_argument(
+        "--window-stable-samples",
+        type=int,
+        default=2,
+        help="consecutive samples that must report the same hwnd and client size "
+        "before input is sent (mode-switch settle gate)",
+    )
+    parser.add_argument("--window-stable-poll-ms", type=int, default=350, help="delay between settle-gate samples")
+    parser.add_argument(
+        "--window-stable-timeout-sec",
+        type=float,
+        default=8.0,
+        help="maximum wait for the settle gate; a timeout is reported, not silently ignored",
+    )
+    parser.add_argument(
+        "--window-reacquire-attempts",
+        type=int,
+        default=12,
+        help="bounded retries used to re-acquire a window the wrapper recreated",
+    )
+    parser.add_argument("--window-reacquire-delay-ms", type=int, default=250, help="delay between re-acquire attempts")
     parser.add_argument("--kill-owned", action="store_true", help="terminate the launched process after the probe")
     parser.add_argument("--json", type=Path, help="write JSON result")
     return parser.parse_args()
+
+
+def emit_result(result: dict, json_path: Path | None) -> None:
+    text = json.dumps(result, indent=2)
+    if json_path:
+        json_path.parent.mkdir(parents=True, exist_ok=True)
+        json_path.write_text(text, encoding="ascii")
+    print(text)
 
 
 def main() -> int:
@@ -635,8 +869,13 @@ def main() -> int:
     else:
         raise SystemExit("provide --exe or --pid")
 
+    target = WindowTarget(
+        pid,
+        reacquire_attempts=args.window_reacquire_attempts,
+        reacquire_delay=args.window_reacquire_delay_ms / 1000.0,
+    )
     try:
-        hwnd = wait_for_window(pid, args.window_timeout)
+        hwnd = target.acquire(args.window_timeout, "initial")
         user32.ShowWindow(hwnd, 5)
         if args.move_window:
             # Reposition asynchronously and without resizing. MoveWindow(bRepaint=
@@ -654,20 +893,48 @@ def main() -> int:
                 SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_ASYNCWINDOWPOS,
             )
             time.sleep(0.15)
+        hwnd = target.ensure("foreground")
         user32.BringWindowToTop(hwnd)
         user32.SetForegroundWindow(hwnd)
         foreground_verified = (user32.GetForegroundWindow() == hwnd)
         time.sleep(args.settle_sec)
+
+        # Settle gate BEFORE any input: the intro->menu mode switch recreates
+        # and resizes the window, and stimuli aimed at the pre-switch handle are
+        # thrown away (or crash, pre-fix). Wait for the same handle to report
+        # the same client size twice in a row instead of sleeping and hoping.
+        def settle(phase: str) -> dict:
+            return target.wait_stable(
+                phase,
+                samples=args.window_stable_samples,
+                poll_sec=args.window_stable_poll_ms / 1000.0,
+                timeout=args.window_stable_timeout_sec,
+            )
+
+        stability_gates = [settle("pre-input")]
+
         if args.space_pulses:
+            target.ensure("space-pulses")
             send_space_pulses(args.space_pulses, args.space_interval_ms / 1000.0)
-        rect, _origin = client_rect_and_origin(hwnd)
+            # The space pulses ARE the intro-skip stimulus, so they are what
+            # triggers the display-mode switch, and the window transiently
+            # resizes to the desktop while it is in flight (observed 800x600 ->
+            # 2560x1440 -> 800x600 on 2026-07-18, which is how a bogus client
+            # size reached the geometry read below). Settle again afterwards so
+            # the client size the path is measured against is the real one.
+            stability_gates.append(settle("post-space-pulses"))
+
+        # The effective gate is the last one taken; window_stability keeps that
+        # shape so existing readers of .stable stay correct.
+        stability = stability_gates[-1]
+        hwnd, rect, _origin = target.geometry("client-size")
         width, height = rect_size(rect)
         points = parse_points(args.points, width, height)
         client_delta_origin_points = parse_points(args.client_delta_origin, width, height)
         if len(client_delta_origin_points) != 1:
             raise SystemExit("--client-delta-origin expects one x,y point")
         result = move_path(
-            hwnd,
+            target,
             points,
             args.interval_ms / 1000.0,
             args.click,
@@ -685,12 +952,37 @@ def main() -> int:
             "pid": pid,
             "exe": str(args.exe) if args.exe else None,
             "foreground_verified": bool(foreground_verified),
+            "window_stability": stability,
+            "window_stability_gates": stability_gates,
         })
-        if args.json:
-            args.json.parent.mkdir(parents=True, exist_ok=True)
-            args.json.write_text(json.dumps(result, indent=2), encoding="ascii")
-        print(json.dumps(result, indent=2))
+        emit_result(result, args.json)
         return 0 if result["path_verified"] else 2
+    except WindowLostError as exc:
+        # Fail closed with evidence instead of an unhandled traceback: the
+        # harness reads this JSON, and "the wrapper recreated/destroyed the
+        # window and it never came back" is a materially different diagnosis
+        # from "the probe crashed", which is all the 2026-07-18 run could say.
+        emit_result(
+            {
+                "pid": pid,
+                "exe": str(args.exe) if args.exe else None,
+                "path_verified": False,
+                "click_path_verified": False,
+                "window_lost": True,
+                "window_lost_reason": str(exc),
+                "window_reacquire_count": target.reacquire_count,
+                "window_events": target.events,
+                "window_stability": target.stability,
+                "points": [],
+                "click_event_count": 0,
+                "click_repeat_stop_observed": False,
+                "click_repeat_stop_reasons": [],
+                "max_abs_error": None,
+                "max_sample_abs_error": None,
+            },
+            args.json,
+        )
+        return 4
     finally:
         if process and args.kill_owned:
             process.terminate()
