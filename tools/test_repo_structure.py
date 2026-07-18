@@ -80,10 +80,12 @@ def main() -> int:
     assert "|-- src/" in output, output
     assert "|-- scripts/" in output, output
     assert "|-- tools/" in output, output
-    assert "|-- raw/" in output, output
-    assert "`-- meta/" in output, output
-    assert "User-owned source material" in output, output
-    assert "Agent-maintained Obsidian-compatible" in output, output
+    assert "|-- probes/" in output, output
+    assert "|-- captures/" in output, output
+    # The raw/, wiki/, and meta/ LLM-knowledge-base sections were removed with the
+    # wiki scaffold (a44098ce) and must stay absent from the structure listing.
+    for removed in ("raw/", "wiki/", "meta/", "User-owned source material", "Obsidian-compatible"):
+        assert removed not in output, (removed, output)
 
     counted = repo_structure.build_output(ROOT, include_counts=True)
     assert "tools/" in counted and " files)" in counted, counted
