@@ -1,7 +1,7 @@
 # Python Runtime Safety Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T10:18:09+02:00`
+- Generated: `2026-07-18T11:01:30+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt
 - Python files scanned: `247`

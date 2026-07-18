@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:18:06+02:00",
+  "generated_at": "2026-07-18T10:42:23+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for gate CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the battle UI gate is fail-closed across runtime evidence, patch-stage, candidate-location, and stable-regression boundaries before any battle patch group exists",

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:17:55+02:00",
+  "generated_at": "2026-07-18T10:42:12+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the load-slot timeout phase classifier preserves the current pre-load-menu-loop blocker shape for rows 3-5",

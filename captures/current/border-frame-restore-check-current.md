@@ -1,7 +1,7 @@
 # Border Frame-Restore Evidence Check
 
 - Overall: PASS
-- Generated: `2026-07-18T10:17:51+02:00`
+- Generated: `2026-07-18T10:42:08+02:00`
 - Runtime policy: repo-only committed-evidence validation; does not launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: committed frame-restore band evidence must keep every border band region, filled HD extension bands with passing histogram authenticity gates at or above the frozen thresholds, and a real-runtime frame reference that still resolves inside the repository
 - Patch group: `frame-restore-bands`

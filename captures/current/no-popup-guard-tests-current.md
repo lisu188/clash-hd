@@ -1,7 +1,7 @@
 # No-Popup Guard Regression Tests
 
 - Status: PASS
-- Generated: `2026-07-18T10:18:17+02:00`
+- Generated: `2026-07-18T10:42:35+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the no-popup boundary guard and surface-dump launcher policy guard reject missing evidence links, missing/failing refresh checks, missing supporting reports, and ungated visible fallback while keeping negative CLI outputs out of current reports
 

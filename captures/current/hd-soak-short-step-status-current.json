@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T08:18:22.578841+00:00",
+  "generated_at": "2026-07-18T08:58:23.410081+00:00",
   "passed": true,
   "runtime_policy": "repo-only short-soak step status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "manifest": "captures\\current\\hd-soak-short-artifact-manifest-current.json",
@@ -17,7 +17,7 @@
     "id": "short2_map_idle",
     "tier": "short2",
     "route": "map-idle",
-    "status": "failed_classified_intro_skip_input_drift_exit",
+    "status": "failed_classified_input_environment_permission_denied",
     "next_command": null
   },
   "steps": [
@@ -62,7 +62,7 @@
         "short2_menu_idle"
       ],
       "prerequisites_passed": true,
-      "status": "failed_classified_intro_skip_input_drift_exit",
+      "status": "failed_classified_input_environment_permission_denied",
       "passed": false,
       "paths": {
         "report_json": "captures\\current\\hd-soak-short2-map-idle-current.json",
@@ -78,9 +78,9 @@
         "guard_overall": false,
         "triage_present": true,
         "triage_passed": false,
-        "classification": "intro_skip_input_drift_exit",
-        "next_probe": "previous intro-skip postmessage repeats crossed a window/intro transition; make the harness stop or reacquire after the transition, retain explicit windowed-mode verification, then rerun only after fresh visible-window approval",
-        "frame_sample_count": 0,
+        "classification": "input_environment_permission_denied",
+        "next_probe": "SetForegroundWindow was silently denied on every aim iteration, so the foreground-mode DirectInput never received the injected pulses; rerun the exact tokenized route command DIRECTLY from an interactive session with input standing (never via Start-Job or any detached/non-interactive wrapper), and do not change patches or lower visual thresholds",
+        "frame_sample_count": 8,
         "final_route_marker": "intro-skip",
         "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
         "visual_anomaly_passed": true,

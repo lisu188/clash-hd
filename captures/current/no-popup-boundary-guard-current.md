@@ -1,7 +1,7 @@
 # No-Popup Boundary Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T10:18:26+02:00`
+- Generated: `2026-07-18T10:42:44+02:00`
 - Runtime policy: repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current refresh must include all no-popup boundary reports and the evidence index must link each report
 - Evidence index: `captures\current\hd-map-evidence-current.md`

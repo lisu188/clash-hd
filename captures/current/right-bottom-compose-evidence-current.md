@@ -1,7 +1,7 @@
 # Right-Bottom Compose Evidence Matrix
 
 - Overall: PASS
-- Generated: `2026-07-18T10:17:28+02:00`
+- Generated: `2026-07-18T10:41:44+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
 - Promotion status: `validation_stage_only`
 - Stable stage should change: `False`

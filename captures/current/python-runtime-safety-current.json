@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:18:09+02:00",
+  "generated_at": "2026-07-18T11:01:30+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
@@ -724,19 +724,21 @@
         "sendinput": [
           262,
           263,
-          765,
-          767
+          902,
+          904
         ],
         "postmessage": [
-          428,
-          768,
-          774,
-          777,
-          779
+          538,
+          905,
+          911,
+          914,
+          916
         ],
         "cursor_window_input": [
           269,
-          270
+          270,
+          316,
+          848
         ]
       },
       "failures": []
@@ -2700,10 +2702,10 @@
       "risk_lines": {
         "subprocess": [
           7,
-          612
+          714
         ],
         "process_launch": [
-          612
+          714
         ],
         "sendinput": [
           284,
@@ -2719,7 +2721,8 @@
           398
         ],
         "cursor_window_input": [
-          490
+          487,
+          592
         ]
       },
       "failures": []
@@ -2815,12 +2818,12 @@
       "risk_lines": {
         "subprocess": [
           7,
-          539,
-          545
+          615,
+          621
         ],
         "process_launch": [
-          539,
-          545
+          615,
+          621
         ]
       },
       "failures": []

@@ -1,7 +1,7 @@
 # Castle Overview Evidence Matrix
 
 - Overall: PASS
-- Generated: `2026-07-18T10:17:59+02:00`
+- Generated: `2026-07-18T10:42:15+02:00`
 - Stage: `castlecenter-all`
 - Promotion status: `validation_stage_only`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows

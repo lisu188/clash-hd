@@ -1,6 +1,6 @@
 # HD Layout CDB Summary
 
-- Generated: `2026-07-18T10:17:02+02:00`
+- Generated: `2026-07-18T10:41:17+02:00`
 - Log: `captures\archive\cdb-surface-dump-20260713-072428\cdb-surface-dump.log`
 - Target: `800x600`
 - Result: `PASS`

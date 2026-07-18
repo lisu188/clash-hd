@@ -1,7 +1,7 @@
 # Current Completion Summary
 
 - Overall: PASS
-- Generated: `2026-07-18T10:18:26+02:00`
+- Generated: `2026-07-18T10:42:45+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Percent policy: Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.
 - Full game complete: `False`
@@ -9,8 +9,8 @@
 
 ## Percentages
 
-- Current repo evidence gates: `98.77%`
-  Basis: 161/163 refresh checks pass
+- Current repo evidence gates: `98.16%`
+  Basis: 160/163 refresh checks pass
 - Repo-only Python test sweep: `100.00%`
   Basis: 101/101 tools/test_*.py files pass
 - Focused battle/right-bottom command lane: `99.95%`

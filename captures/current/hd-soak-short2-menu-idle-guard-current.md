@@ -1,7 +1,7 @@
 # HD Soak Report Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T08:18:22.360841+00:00`
+- Generated: `2026-07-18T08:58:23.229079+00:00`
 - Runtime policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Source report: `captures\current\hd-soak-short2-menu-idle-current.json`
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
@@ -21,6 +21,7 @@
 - `capture_integrity`: `PASS`
 - `frame_inventory`: `PASS`
 - `render_metrics`: `PASS`
+- `capture_consistency`: `PASS`
 - `visual_anomalies`: `PASS`
 - `frame_progression`: `PASS`
 - `process_liveness`: `PASS`

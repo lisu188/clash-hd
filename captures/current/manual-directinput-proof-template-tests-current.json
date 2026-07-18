@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:18:18+02:00",
+  "generated_at": "2026-07-18T10:42:36+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for template CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the manual DirectInput proof template documents the proof shape, pins candidate placeholders under C:\\ClashTests, stays invalid until placeholders are replaced, and can become valid only after all required manual proof fields are supplied",

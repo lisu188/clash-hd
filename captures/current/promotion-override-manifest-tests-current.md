@@ -1,7 +1,7 @@
 # Promotion Override Manifest Tests
 
 - Status: PASS
-- Generated: `2026-07-18T10:18:18+02:00`
+- Generated: `2026-07-18T10:42:36+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves CDB-only promotion overrides require an explicit valid manifest
 

@@ -1,7 +1,7 @@
 # Launcher Policy Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-18T10:18:10+02:00`
+- Generated: `2026-07-18T10:42:27+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the launcher policy guard fails closed on every policy regression
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T08:18:22.368848+00:00",
+  "generated_at": "2026-07-18T08:58:23.241080+00:00",
   "passed": true,
   "runtime_policy": "repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "manifest": "captures\\current\\hd-soak-short-artifact-manifest-current.json",
@@ -44,11 +44,11 @@
       "triage_written": true,
       "status": "validated_failed",
       "guard_overall": false,
-      "triage_classification": "intro_skip_input_drift_exit",
+      "triage_classification": "input_environment_permission_denied",
       "triage_passed": false,
       "executed": true,
       "report_passed": false,
-      "frame_sample_count": 0,
+      "frame_sample_count": 8,
       "final_route_marker": "intro-skip",
       "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33"
     },

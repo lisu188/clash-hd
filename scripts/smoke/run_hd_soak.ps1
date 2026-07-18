@@ -982,6 +982,7 @@ $routeResults = @()
 $captureErrors = @()
 $windowHealthSamples = @()
 $cleanStop = $false
+$stopSignalAt = $null
 $candidateSha256 = $null
 $patchStageReport = Join-Path $outDir 'patch-stage.json'
 $introMenuVerified = $false
@@ -991,6 +992,9 @@ $mapRouteReached = $null
 $routeFinalNonblack = $null
 $launchAttemptRows = @()
 $cursorProbeAlive = $false
+$cursorProbeConverged = $false
+$cursorProbeUsable = $false
+$cursorProbeForegroundDenied = $false
 $cursorProbeRequired = $false
 
 try {
@@ -1035,6 +1039,9 @@ try {
     $cursorProbeRequired = ($Route -in @('map-idle', 'map-pan'))
     $launchAttemptRows = @()
     $cursorProbeAlive = $false
+    $cursorProbeConverged = $false
+    $cursorProbeUsable = $false
+    $cursorProbeForegroundDenied = $false
     $introClick = ($IntroSkipClickMode -ne 'none') -and ($IntroSkipClicks -gt 0)
     $introRoundCount = $IntroSkipMaxRounds
     $introClicksPerRound = if ($introClick) { $IntroSkipClicks } else { 0 }
@@ -1123,7 +1130,38 @@ try {
             } finally {
                 $ErrorActionPreference = $previousEap
             }
-            $cursorProbeAlive = ($cursorProbeExitCode -eq 0)
+            # menu_pulse_click.py exits 0 only when the aim CONVERGED *and* the
+            # engine cursor responded, so exit code alone cannot tell "the
+            # cursor is dead" apart from "the cursor moved but aim did not
+            # converge". Read the probe JSON for the real signals: a converge
+            # failure with cursor_alive:true and a measured gain is a very
+            # different defect from a cursor that never moved, and reporting
+            # the wrong one sent the 2026-07-18 run chasing a phantom.
+            $cursorProbeConverged = ($cursorProbeExitCode -eq 0)
+            $cursorProbeAlive = $cursorProbeConverged
+            $cursorProbeForegroundDenied = $false
+            if ($cursorProbeJson -and (Test-Path -LiteralPath $cursorProbeJson -PathType Leaf)) {
+                try {
+                    $probePayload = Get-Content -LiteralPath $cursorProbeJson -Raw | ConvertFrom-Json
+                    if ($null -ne $probePayload.cursor_alive) {
+                        $cursorProbeAlive = [bool]$probePayload.cursor_alive
+                    }
+                    $aimRows = @($probePayload.steps | ForEach-Object { $_.aim } | Where-Object { $_ })
+                    if (@($aimRows).Count -gt 0) {
+                        $cursorProbeConverged = (@($aimRows | Where-Object { -not [bool]$_.converged }).Count -eq 0)
+                    }
+                    $foregroundFlags = @($aimRows | ForEach-Object { @($_.iterations) } | Where-Object { $_ -and ($null -ne $_.foreground_ok) })
+                    if (@($foregroundFlags).Count -gt 0) {
+                        $cursorProbeForegroundDenied = (@($foregroundFlags | Where-Object { [bool]$_.foreground_ok }).Count -eq 0)
+                    }
+                } catch {
+                    # an unreadable probe JSON leaves the exit-code-derived
+                    # values in place; the probe log is retained either way
+                }
+            }
+            # Route gating stays on the STRICT signal: an unconverged aim must
+            # never be trusted to click into the game, even if the cursor moved.
+            $cursorProbeUsable = ($cursorProbeExitCode -eq 0)
         }
         $launchAttemptRows += [pscustomobject]@{
             Attempt = $launchAttempt
@@ -1133,9 +1171,12 @@ try {
             CursorProbeRequired = $cursorProbeRequired
             CursorProbeExitCode = $cursorProbeExitCode
             CursorProbeAlive = $cursorProbeAlive
+            CursorProbeConverged = $cursorProbeConverged
+            CursorProbeUsable = $cursorProbeUsable
+            CursorProbeForegroundDenied = $cursorProbeForegroundDenied
             CursorProbeJson = $cursorProbeJson
         }
-        if ($introMenuVerified -and ((-not $cursorProbeRequired) -or $cursorProbeAlive)) {
+        if ($introMenuVerified -and ((-not $cursorProbeRequired) -or $cursorProbeUsable)) {
             break
         }
     }
@@ -1181,7 +1222,7 @@ try {
         }
     }
 
-    if (@($pulseRouteSteps).Count -gt 0 -and ((-not $introMenuVerified) -or ($cursorProbeRequired -and -not $cursorProbeAlive))) {
+    if (@($pulseRouteSteps).Count -gt 0 -and ((-not $introMenuVerified) -or ($cursorProbeRequired -and -not $cursorProbeUsable))) {
         # Fail closed: never aim/click into unverified screens (story pages,
         # transition frames, or a dead attract-state menu); the missing menu/
         # cursor verification is already a reported failure and the
@@ -1308,6 +1349,10 @@ try {
     $scriptError = $_
 } finally {
     if ($process -and -not $process.HasExited -and -not $KeepOpen) {
+        # Record the teardown boundary BEFORE the kill so frame evidence can be
+        # partitioned against it. Anything sampled at or after this instant is
+        # shutdown imagery, not render evidence.
+        $stopSignalAt = (Get-Date)
         Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
         $cleanStop = $true
     }
@@ -1315,19 +1360,65 @@ try {
 
 $artifactBytes = Get-DirectorySizeBytes -Path $outDir
 $artifactLimitBytes = [int64]$MaxArtifactMB * 1024L * 1024L
-$frameHashes = @($frameSamples | ForEach-Object { $_.Hash } | Where-Object { $_ })
+# RENDER EVIDENCE PARTITION.
+#
+# Two things disqualify a captured frame as evidence of what the game rendered:
+#
+#  1. It was sampled at or after the teardown signal (shutdown imagery).
+#  2. It came through a different capture path than the rest of the run.
+#
+# (2) is what broke the 2026-07-18 short2 run. capture_clash_client_frame.ps1
+# picks 'screen' (CopyFromScreen) when the target owns its client-centre point
+# and 'windowdc-contaminated-fallback' (BitBlt from the window DC) otherwise.
+# For this DirectDraw title the two paths do NOT observe the same pixels: the
+# run captured seven byte-identical windowdc frames of a healthy 60.487%-nonblack
+# menu and one 'screen' frame that came back black, and the black outlier alone
+# dragged nonblack_percent_min to 0.017 and produced a FALSE render regression.
+# A frame captured through a minority path is not comparable to the others, so
+# it is excluded from the render metrics and reported as a capture-harness
+# inconsistency instead of a rendering defect.
+$captureModeValues = @($frameSamples | ForEach-Object { $_.CaptureMode } | Where-Object { $_ })
+$captureModeGroups = @($captureModeValues | Group-Object | Sort-Object -Property Count -Descending)
+$dominantCaptureMode = if (@($captureModeGroups).Count -gt 0) { @($captureModeGroups)[0].Name } else { $null }
+$captureModeCounts = [ordered]@{}
+foreach ($group in $captureModeGroups) { $captureModeCounts[$group.Name] = $group.Count }
+$captureModeChanged = (@($captureModeGroups).Count -gt 1)
+
+foreach ($frame in $frameSamples) {
+    $reasons = @()
+    if ($null -ne $stopSignalAt -and $frame.Timestamp) {
+        try {
+            if ([datetime]::Parse($frame.Timestamp) -ge $stopSignalAt) { $reasons += 'captured_after_stop_signal' }
+        } catch {
+            # an unparsable timestamp is not grounds to discard the frame
+        }
+    }
+    if ($dominantCaptureMode -and $frame.CaptureMode -and ($frame.CaptureMode -ne $dominantCaptureMode)) {
+        $reasons += 'minority_capture_mode'
+    }
+    $frame | Add-Member -NotePropertyName RenderEvidence -NotePropertyValue (@($reasons).Count -eq 0) -Force
+    $frame | Add-Member -NotePropertyName RenderEvidenceExcludedReasons -NotePropertyValue @($reasons) -Force
+}
+$renderEvidenceFrames = @($frameSamples | Where-Object { [bool]$_.RenderEvidence })
+$excludedFrames = @($frameSamples | Where-Object { -not [bool]$_.RenderEvidence })
+
+# Frame progression is render evidence too: a minority-capture-path frame hashes
+# differently for reasons that have nothing to do with the game drawing a new
+# scene, which would let a stalled map-pan masquerade as progressing.
+$frameHashes = @($renderEvidenceFrames | ForEach-Object { $_.Hash } | Where-Object { $_ })
 $uniqueFrameHashes = @($frameHashes | Sort-Object -Unique)
 $frameProgressExpected = ($Route -eq 'map-pan')
-$frameStabilityClass = if (@($frameSamples).Count -eq 0) {
+$frameStabilityClass = if (@($renderEvidenceFrames).Count -eq 0) {
     'no_frames'
 } elseif (@($uniqueFrameHashes).Count -le 1) {
     'stable_idle'
 } else {
     'progressing'
 }
-$nonblackValues = @($frameSamples | ForEach-Object { $_.NonblackPercent })
-$lumaValues = @($frameSamples | ForEach-Object { $_.MeanLuma })
-$uniqueColorValues = @($frameSamples | ForEach-Object { $_.UniqueSampleColors })
+
+$nonblackValues = @($renderEvidenceFrames | ForEach-Object { $_.NonblackPercent })
+$lumaValues = @($renderEvidenceFrames | ForEach-Object { $_.MeanLuma })
+$uniqueColorValues = @($renderEvidenceFrames | ForEach-Object { $_.UniqueSampleColors })
 $widthValues = @($frameSamples | ForEach-Object { $_.Width })
 $heightValues = @($frameSamples | ForEach-Object { $_.Height })
 $workingSetValues = @($processSamples | ForEach-Object { $_.WorkingSet64 } | Where-Object { $_ -ne $null })
@@ -1389,7 +1480,12 @@ if ($windowHangObserved) { $failures += 'application window became nonresponsive
 if ($windowMissingWhileAliveObserved) { $failures += 'visible application window disappeared while the process remained alive' }
 if ($unexpectedExit) { $failures += "process exited unexpectedly with code $exitCode" }
 if (@($captureErrors).Count -gt 0) { $failures += "capture errors: $(@($captureErrors).Count)" }
+if ($captureModeChanged) {
+    $modeSummary = (@($captureModeGroups | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ', ')
+    $failures += "capture mode changed mid-run; observed ${modeSummary}; frames from different capture paths are not comparable render evidence"
+}
 if (@($frameSamples).Count -lt 2) { $failures += "expected at least 2 frame samples" }
+if (@($renderEvidenceFrames).Count -lt 2) { $failures += "expected at least 2 render-evidence frame samples" }
 if ($frameProgressExpected -and @($uniqueFrameHashes).Count -lt 2) {
     $failures += 'frame progression required for map-pan route'
 }
@@ -1412,8 +1508,18 @@ if (@($routeDriftFailures).Count -gt 0) {
 if ($null -ne $process -and -not $introMenuVerified) {
     $failures += 'intro skip rounds never verified the main menu on screen'
 }
-if ($null -ne $process -and $cursorProbeRequired -and -not $cursorProbeAlive) {
-    $failures += 'no launch attempt produced an interactive menu (engine cursor never responded to pulse input)'
+if ($null -ne $process -and $cursorProbeRequired -and -not $cursorProbeUsable) {
+    # Report what actually happened. "Never responded" is only true when the
+    # engine cursor produced no position at all; a cursor that moved but whose
+    # aim did not converge, and a cursor starved of input because foreground
+    # activation was denied, are three distinct defects.
+    if ($cursorProbeForegroundDenied) {
+        $failures += 'engine cursor input was never delivered (SetForegroundWindow denied on every aim iteration; the harness had no input standing)'
+    } elseif ($cursorProbeAlive) {
+        $failures += 'engine cursor responded to pulse input but aim never converged on the probe target'
+    } else {
+        $failures += 'no launch attempt produced an interactive menu (engine cursor never responded to pulse input)'
+    }
 }
 if ($Route -in @('map-idle', 'map-pan') -and $mapRouteReached -ne $true) {
     $failures += 'route did not reach the gameplay map'
@@ -1461,6 +1567,20 @@ $report = [ordered]@{
     report_json = $ReportJsonFull
     report_markdown = $ReportMarkdownFull
     frame_sample_count = @($frameSamples).Count
+    render_evidence_frame_count = @($renderEvidenceFrames).Count
+    render_evidence_excluded_count = @($excludedFrames).Count
+    render_evidence_excluded_frames = @($excludedFrames | ForEach-Object {
+        [ordered]@{
+            name = $_.Name
+            capture_mode = $_.CaptureMode
+            nonblack_percent = $_.NonblackPercent
+            reasons = @($_.RenderEvidenceExcludedReasons)
+        }
+    })
+    capture_mode_dominant = $dominantCaptureMode
+    capture_mode_counts = $captureModeCounts
+    capture_mode_changed = $captureModeChanged
+    stop_signal_at = if ($null -ne $stopSignalAt) { $stopSignalAt.ToString('o') } else { $null }
     frame_hash_unique_count = @($uniqueFrameHashes).Count
     frame_progress_expected = $frameProgressExpected
     frame_stability_class = $frameStabilityClass
@@ -1497,6 +1617,9 @@ $report = [ordered]@{
     launch_attempts = @($launchAttemptRows)
     cursor_probe_required = $cursorProbeRequired
     cursor_probe_alive = $cursorProbeAlive
+    cursor_probe_converged = $cursorProbeConverged
+    cursor_probe_usable = $cursorProbeUsable
+    cursor_probe_foreground_denied = $cursorProbeForegroundDenied
     process_sample_count = @($processSamples).Count
     working_set_growth_bytes = $workingSetGrowthBytes
     private_memory_growth_bytes = $privateMemoryGrowthBytes

@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-18T10:18:26+02:00`
+- Generated: `2026-07-18T10:42:45+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -1477,7 +1477,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 98.77, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.95, 'right_bottom_promotion_gate': 100.0, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 98.16, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.95, 'right_bottom_promotion_gate': 100.0, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1624,7 +1624,7 @@
 - ladder_complete: `False`
 - counts: `{'total': 5, 'passed': 1, 'pending_or_missing': 0, 'locked': 3, 'failed_or_invalid': 1}`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_intro_skip_input_drift_exit`
+- current_step_status: `failed_classified_render_or_palette_regression`
 - long_tiers_locked: `True`
 - future_lanes_locked: `True`
 - right_bottom_promotion_blocked: `True`
@@ -1646,7 +1646,7 @@
 - Markdown: `captures\current\hd-soak-dry-run-plan-current.md`
 - status: `ready_for_explicit_approval`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_intro_skip_input_drift_exit`
+- current_step_status: `failed_classified_render_or_palette_regression`
 - dry_run: `True`
 - candidate_dir: `C:\ClashTests\hd-soak`
 - output_root: `C:\ClashCaptures\hd-soak`
@@ -1671,11 +1671,11 @@
 - Status: PASS
 - JSON: `captures\current\hd-soak-intro-skip-rerun-readiness-current.json`
 - Markdown: `captures\current\hd-soak-intro-skip-rerun-readiness-current.md`
-- status: `ready_for_explicit_visible_rerun_approval`
+- status: `not_applicable_current_failure`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_intro_skip_input_drift_exit`
+- current_step_status: `failed_classified_render_or_palette_regression`
 - triage_classification: `passing_run_no_failure`
-- approval_boundary: `The next runtime run will open a visible Clash95 game window and still requires explicit user approval.`
+- approval_boundary: `No intro-skip rerun is authorized while the current step has an unrelated classified failure; follow its repo-only triage instead.`
 - runtime_policy: `repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 
 ### Hd Soak Intro Skip Rerun Readiness Tests
@@ -1713,7 +1713,7 @@
 - status: `locked_short_ladder_incomplete`
 - duration_sec: `0`
 - counts: `{'required_routes': 2, 'passing_routes': 0, 'missing_routes': 2}`
-- short_ladder: `{'path': 'captures\\current\\hd-soak-short-step-status-current.json', 'present': True, 'ladder_complete': False, 'current_step': {'id': 'short2_map_idle', 'tier': 'short2', 'route': 'map-idle', 'status': 'failed_classified_intro_skip_input_drift_exit', 'next_command': None}}`
+- short_ladder: `{'path': 'captures\\current\\hd-soak-short-step-status-current.json', 'present': True, 'ladder_complete': False, 'current_step': {'id': 'short2_map_idle', 'tier': 'short2', 'route': 'map-idle', 'status': 'failed_classified_render_or_palette_regression', 'next_command': None}}`
 - proof_manifest: `{'path': 'captures\\current\\hd-soak-long-proof-current.json', 'present': False, 'report_guard_count': 0}`
 - runtime_policy: `repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Failures:
@@ -1783,10 +1783,10 @@
 - Status: PASS
 - JSON: `captures\current\hd-endurance-next-actions-current.json`
 - Markdown: `captures\current\hd-endurance-next-actions-current.md`
-- status: `waiting_for_explicit_visible_runtime_approval`
-- next_action: `rerun_short2_map_idle_soak`
-- requires_explicit_user_approval: `True`
-- has_plan_verified_execute_command: `True`
+- status: `repo_only_followup_available`
+- next_action: `inspect_short2_map_idle_triage`
+- requires_explicit_user_approval: `False`
+- has_plan_verified_execute_command: `False`
 - focused_post_run_validation_count: `3`
 - handoff_refresh_count: `5`
 - broad_evidence_refresh_count: `4`
@@ -1826,18 +1826,20 @@
 
 ### Hd Soak Approval Preflight
 
-- Status: PASS
+- Status: FAIL
 - JSON: `captures\current\hd-soak-approval-preflight-current.json`
 - Markdown: `captures\current\hd-soak-approval-preflight-current.md`
-- status: `ready_for_explicit_approval`
+- status: `not_ready`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_intro_skip_input_drift_exit`
+- current_step_status: `failed_classified_render_or_palette_regression`
 - dry_run_plan_status: `ready_for_explicit_approval`
 - dry_run_plan_passed: `True`
 - writes_outside_repo: `['C:\\ClashCaptures\\hd-soak', 'C:\\ClashTests\\hd-soak']`
 - stable_stage_should_change: `False`
 - right_bottom_promotion_blocked: `True`
 - runtime_policy: `repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
+- Failures:
+  - current short-step status is 'failed_classified_render_or_palette_regression'
 
 ### Hd Soak Approval Preflight Tests
 
@@ -1926,3 +1928,4 @@
 - hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
+- hd_soak_approval_preflight: current short-step status is 'failed_classified_render_or_palette_regression'

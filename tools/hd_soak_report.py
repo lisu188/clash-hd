@@ -154,6 +154,49 @@ def frame_display_name(frame: dict[str, Any], index: int) -> str:
     return str(frame.get("Name") or f"frame-{index:04d}")
 
 
+def partition_render_evidence(
+    frame_samples: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, int]]:
+    """Split frames into render evidence and non-evidence.
+
+    A frame is only evidence of what the game drew if it came through the same
+    capture path as the rest of the run and was sampled before teardown. The
+    harness stamps ``RenderEvidence`` itself; this recomputes the capture-path
+    rule so reports written before that stamp existed are judged identically.
+
+    Returns (evidence, excluded, capture_mode_counts).
+    """
+    capture_modes: dict[str, int] = {}
+    for frame in frame_samples:
+        mode = frame.get("CaptureMode")
+        if mode:
+            capture_modes[str(mode)] = capture_modes.get(str(mode), 0) + 1
+
+    dominant = None
+    if capture_modes:
+        dominant = max(capture_modes.items(), key=lambda item: (item[1], item[0]))[0]
+
+    evidence: list[dict[str, Any]] = []
+    excluded: list[dict[str, Any]] = []
+    for frame in frame_samples:
+        stamped = frame.get("RenderEvidence")
+        if stamped is False:
+            excluded.append(frame)
+            continue
+        mode = frame.get("CaptureMode")
+        if stamped is None and dominant and mode and str(mode) != dominant:
+            excluded.append(frame)
+            continue
+        evidence.append(frame)
+
+    # Never let the partition empty the evidence set; if every frame was
+    # excluded there is nothing left to judge and the raw set is the honest
+    # input, with the capture-consistency check carrying the failure.
+    if not evidence:
+        return list(frame_samples), [], capture_modes
+    return evidence, excluded, capture_modes
+
+
 def parse_timestamp(value: Any) -> datetime | None:
     if not isinstance(value, str) or not value.strip():
         return None
@@ -480,9 +523,10 @@ def evaluate_report(
     )
 
     failures = []
-    nonblack_values = numbers([frame.get("NonblackPercent") for frame in frame_samples])
-    luma_values = numbers([frame.get("MeanLuma") for frame in frame_samples])
-    unique_values = numbers([frame.get("UniqueSampleColors") for frame in frame_samples])
+    evidence_frames, excluded_frames, capture_modes = partition_render_evidence(frame_samples)
+    nonblack_values = numbers([frame.get("NonblackPercent") for frame in evidence_frames])
+    luma_values = numbers([frame.get("MeanLuma") for frame in evidence_frames])
+    unique_values = numbers([frame.get("UniqueSampleColors") for frame in evidence_frames])
     min_nonblack = min(nonblack_values) if nonblack_values else 0.0
     min_unique = min(unique_values) if unique_values else 0.0
     if executed:
@@ -492,13 +536,47 @@ def evaluate_report(
             failures.append(f"minimum unique sampled colors {min_unique} is below {min_unique_sample_colors}")
     checks["render_metrics"] = check_record(
         (not executed) or (min_nonblack >= min_nonblack_percent and min_unique >= min_unique_sample_colors),
-        {"min_nonblack_percent": min_nonblack, "min_unique_sample_colors": min_unique, "checked": executed},
+        {
+            "min_nonblack_percent": min_nonblack,
+            "min_unique_sample_colors": min_unique,
+            "render_evidence_frame_count": len(evidence_frames),
+            "excluded_frame_count": len(excluded_frames),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    # A run that switched capture paths mid-flight did not produce comparable
+    # frames. That is a capture-harness defect, and reporting it separately is
+    # what keeps it from being misread as the game failing to render.
+    failures = []
+    if executed and len(capture_modes) > 1:
+        summary = ", ".join(f"{mode}={count}" for mode, count in sorted(capture_modes.items()))
+        failures.append(
+            f"capture mode changed mid-run; observed {summary}; frames from different "
+            "capture paths are not comparable render evidence"
+        )
+    checks["capture_consistency"] = check_record(
+        (not executed) or len(capture_modes) <= 1,
+        {
+            "checked": executed,
+            "capture_modes": capture_modes,
+            "excluded_frames": [
+                {
+                    "name": frame_display_name(frame, index),
+                    "capture_mode": frame.get("CaptureMode"),
+                    "nonblack_percent": float_or_none(frame.get("NonblackPercent")),
+                    "reasons": list(frame.get("RenderEvidenceExcludedReasons") or []),
+                }
+                for index, frame in enumerate(excluded_frames)
+            ],
+        },
         failures,
     )
 
     failures = []
     visual_anomaly_rows: list[dict[str, Any]] = []
-    for index, frame in enumerate(frame_samples):
+    for index, frame in enumerate(evidence_frames):
         name = frame_display_name(frame, index)
         frame_flags: list[str] = []
         frame_nonblack = float_or_none(frame.get("NonblackPercent"))

@@ -483,6 +483,108 @@ def test_sendinput_permission_denial_is_environment_failure() -> None:
     assert result["failure_context"]["input_permission_denied_routes"] == ["intro-skip"]
 
 
+def test_silent_foreground_denial_is_environment_failure() -> None:
+    """Silent SetForegroundWindow denial leaves no WinError 5 anywhere.
+
+    Reproduces the 2026-07-18 short2 run, where the harness ran detached and
+    Windows refused activation without raising: the only trace is
+    foreground_ok:false on every aim iteration in the cursor-probe JSON.
+    """
+    with tempfile.TemporaryDirectory() as directory:
+        probe_path = Path(directory) / "cursor-probe-a1.json"
+        probe_path.write_text(
+            json.dumps(
+                {
+                    "steps": [
+                        {
+                            "name": "cursor-probe",
+                            "aim": {
+                                "converged": False,
+                                "aim_error_px": 413,
+                                "iterations": [
+                                    {"it": 0, "pos": [410, 129], "foreground_ok": False},
+                                    {"it": 1, "pos": [594, 37], "foreground_ok": False},
+                                    {"it": 2, "pos": [613, 59], "foreground_ok": False},
+                                ],
+                            },
+                        }
+                    ],
+                    "cursor_alive": True,
+                }
+            ),
+            encoding="ascii",
+        )
+        report = base_report()
+        report["failures"] = [
+            "nonblack percent dropped below 10",
+            "unique sampled colors dropped below 8",
+            "route did not reach the gameplay map",
+        ]
+        report["launch_attempts"] = [
+            {"Attempt": 1, "CursorProbeExitCode": 2, "CursorProbeJson": str(probe_path)}
+        ]
+        result = triage.build_triage(report)
+
+    assert result["classification"] == "input_environment_permission_denied"
+    assert "input standing" in result["next_probe"]
+    diagnostics = result["cursor_probe_diagnostics"]
+    assert diagnostics["foreground_denied_attempt_count"] == 1
+    assert diagnostics["cursor_alive_observed"] is True
+    row = diagnostics["rows"][0]
+    assert "foreground_activation_denied" in row["signals"]
+    # The engine cursor DID respond; that must not be reported as a dead cursor.
+    assert "cursor_responded_without_convergence" in row["signals"]
+    assert "cursor_never_responded" not in row["signals"]
+    # No log-based signal exists for this failure mode.
+    assert result["probe_log_diagnostics"]["permission_denied_route_count"] == 0
+
+
+def test_converged_cursor_probe_is_not_flagged_as_focus_denial() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        probe_path = Path(directory) / "cursor-probe-a1.json"
+        probe_path.write_text(
+            json.dumps(
+                {
+                    "steps": [
+                        {
+                            "aim": {
+                                "converged": True,
+                                "iterations": [
+                                    {"it": 0, "pos": [210, 160], "foreground_ok": True},
+                                    {"it": 1, "pos": [200, 150], "foreground_ok": True},
+                                ],
+                            }
+                        }
+                    ],
+                    "cursor_alive": True,
+                }
+            ),
+            encoding="ascii",
+        )
+        report = base_report()
+        report["failures"] = ["route did not reach the gameplay map"]
+        report["launch_attempts"] = [
+            {"Attempt": 1, "CursorProbeExitCode": 0, "CursorProbeJson": str(probe_path)}
+        ]
+        result = triage.build_triage(report)
+
+    assert result["classification"] != "input_environment_permission_denied"
+    diagnostics = result["cursor_probe_diagnostics"]
+    assert diagnostics["foreground_denied_attempt_count"] == 0
+    assert diagnostics["rows"][0]["signals"] == []
+
+
+def test_capture_mode_change_is_not_a_render_regression() -> None:
+    report = base_report()
+    report["failures"] = [
+        "capture mode changed mid-run; observed screen=1, windowdc-contaminated-fallback=7; "
+        "frames from different capture paths are not comparable render evidence",
+        "nonblack percent dropped below 10",
+    ]
+    result = triage.build_triage(report)
+    assert result["classification"] == "capture_harness_failure"
+
+
 def test_cursor_query_denial_is_not_misattributed_to_sendinput() -> None:
     with tempfile.TemporaryDirectory() as directory:
         log_path = Path(directory) / "load-slot0.log"
@@ -650,6 +752,9 @@ def run_tests() -> None:
     test_input_route_failure_classification()
     test_input_drift_failure_classification()
     test_sendinput_permission_denial_is_environment_failure()
+    test_silent_foreground_denial_is_environment_failure()
+    test_converged_cursor_probe_is_not_flagged_as_focus_denial()
+    test_capture_mode_change_is_not_a_render_regression()
     test_cursor_query_denial_is_not_misattributed_to_sendinput()
     test_frame_progression_failure_classification()
     test_process_growth_regression_classification()

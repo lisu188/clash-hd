@@ -1,7 +1,7 @@
 # No-Visible Runtime Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T10:18:09+02:00`
+- Generated: `2026-07-18T10:42:26+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: all referenced CDB surface-dump runs must be hidden-desktop evidence
 - Referenced CDB surface-dump runs: `24`

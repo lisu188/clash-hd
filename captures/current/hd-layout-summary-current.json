@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:17:02+02:00",
+  "generated_at": "2026-07-18T10:41:17+02:00",
   "runtime_policy": "repo-only parser; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "log": "captures\\archive\\cdb-surface-dump-20260713-072428\\cdb-surface-dump.log",
   "target_size": [

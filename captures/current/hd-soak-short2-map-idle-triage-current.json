@@ -1,33 +1,33 @@
 {
-  "generated_at": "2026-07-18T08:18:22.367847+00:00",
+  "generated_at": "2026-07-18T08:58:23.240080+00:00",
   "passed": false,
   "runtime_policy": "repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "source_report": "captures\\current\\hd-soak-short2-map-idle-current.json",
-  "classification": "intro_skip_input_drift_exit",
-  "next_probe": "previous intro-skip postmessage repeats crossed a window/intro transition; make the harness stop or reacquire after the transition, retain explicit windowed-mode verification, then rerun only after fresh visible-window approval",
+  "classification": "input_environment_permission_denied",
+  "next_probe": "SetForegroundWindow was silently denied on every aim iteration, so the foreground-mode DirectInput never received the injected pulses; rerun the exact tokenized route command DIRECTLY from an interactive session with input standing (never via Start-Job or any detached/non-interactive wrapper), and do not change patches or lower visual thresholds",
   "tier": "short2",
   "route": "map-idle",
   "duration_sec": 120,
   "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-  "candidate": "C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260717_152510.exe",
+  "candidate": "C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260718_102439.exe",
   "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-  "output_directory": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle",
+  "output_directory": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260718-102547-short2-map-idle",
   "final_route_marker": "intro-skip",
   "last_route_marker": "intro-skip",
   "executed": true,
   "report_passed": false,
-  "process_exited_unexpectedly": true,
-  "exit_code": 1,
-  "clean_stop": false,
+  "process_exited_unexpectedly": false,
+  "exit_code": -1,
+  "clean_stop": true,
   "failure_context": {
-    "classification": "intro_skip_input_drift_exit",
-    "crash_hang_class": "intro_skip_input_drift_exit",
-    "next_probe": "previous intro-skip postmessage repeats crossed a window/intro transition; make the harness stop or reacquire after the transition, retain explicit windowed-mode verification, then rerun only after fresh visible-window approval",
-    "failure_timestamp": "2026-07-17T15:25:41.2959501+02:00",
+    "classification": "input_environment_permission_denied",
+    "crash_hang_class": "input_environment_permission_denied",
+    "next_probe": "SetForegroundWindow was silently denied on every aim iteration, so the foreground-mode DirectInput never received the injected pulses; rerun the exact tokenized route command DIRECTLY from an interactive session with input standing (never via Start-Job or any detached/non-interactive wrapper), and do not change patches or lower visual thresholds",
+    "failure_timestamp": "2026-07-18T10:28:08.1537210+02:00",
     "failure_timestamp_source": "last_process_sample",
-    "report_generated_at": "2026-07-17T15:25:41.3412314+02:00",
-    "last_frame_timestamp": null,
-    "last_process_timestamp": "2026-07-17T15:25:41.2959501+02:00",
+    "report_generated_at": "2026-07-18T10:28:08.4381655+02:00",
+    "last_frame_timestamp": "2026-07-18T10:28:00.1479873+02:00",
+    "last_process_timestamp": "2026-07-18T10:28:08.1537210+02:00",
     "final_route_marker": "intro-skip",
     "last_route_marker": "intro-skip",
     "route": "map-idle",
@@ -38,23 +38,28 @@
     "palette_or_stripe_risk_count": 0,
     "missing_nonblack_bounds_count": 0,
     "input_permission_denied_route_count": 0,
-    "input_permission_denied_routes": []
+    "input_permission_denied_routes": [],
+    "foreground_denied_attempt_count": 1,
+    "foreground_denied_attempts": [
+      1
+    ],
+    "cursor_alive_observed": true
   },
   "frame_metrics": {
-    "frame_sample_count": 0,
-    "frame_hash_unique_count": 0,
+    "frame_sample_count": 8,
+    "frame_hash_unique_count": 2,
     "frame_progress_expected": false,
-    "frame_stability_class": "no_frames",
-    "nonblack_percent_min": 0,
-    "nonblack_percent_max": 0,
-    "mean_luma_min": 0,
-    "mean_luma_max": 0,
-    "unique_sample_colors_min": 0,
-    "unique_sample_colors_max": 0
+    "frame_stability_class": "progressing",
+    "nonblack_percent_min": 0.017,
+    "nonblack_percent_max": 60.487,
+    "mean_luma_min": 0.035,
+    "mean_luma_max": 49.409,
+    "unique_sample_colors_min": 6,
+    "unique_sample_colors_max": 157
   },
   "visual_anomalies": {
     "checked": true,
-    "frame_sample_count": 0,
+    "frame_sample_count": 8,
     "black_patch_risk_count": 0,
     "palette_or_stripe_risk_count": 0,
     "missing_nonblack_bounds_count": 0,
@@ -63,15 +68,15 @@
     "failures": []
   },
   "process_metrics": {
-    "process_sample_count": 2,
-    "working_set_growth_bytes": null,
-    "private_memory_growth_bytes": null,
-    "handle_growth": null,
-    "artifact_bytes": 56508
+    "process_sample_count": 9,
+    "working_set_growth_bytes": 876544,
+    "private_memory_growth_bytes": 704512,
+    "handle_growth": 6,
+    "artifact_bytes": 1657609
   },
   "input_metrics": {
-    "input_max_abs_error": null,
-    "input_max_sample_abs_error": null,
+    "input_max_abs_error": 0,
+    "input_max_sample_abs_error": 80,
     "max_input_drift_px": 1
   },
   "probe_log_diagnostics": {
@@ -82,11 +87,40 @@
     "rows": [
       {
         "name": "intro-skip",
-        "path": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle\\intro-skip-a1-round-0.log",
+        "path": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260718-102547-short2-map-idle\\intro-skip-a1-round-0.log",
         "read_status": "ok",
-        "size_bytes": 730,
+        "size_bytes": 6689,
         "tail_truncated": false,
         "signals": []
+      }
+    ]
+  },
+  "cursor_probe_diagnostics": {
+    "checked_attempt_count": 1,
+    "readable_probe_count": 1,
+    "foreground_denied_attempt_count": 1,
+    "foreground_denied_attempts": [
+      1
+    ],
+    "cursor_responded_without_convergence_attempts": [
+      1
+    ],
+    "cursor_alive_observed": true,
+    "rows": [
+      {
+        "attempt": 1,
+        "path": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260718-102547-short2-map-idle\\cursor-probe-a1.json",
+        "signals": [
+          "foreground_activation_denied",
+          "cursor_responded_without_convergence"
+        ],
+        "read_status": "ok",
+        "iteration_count": 4,
+        "foreground_ok_count": 0,
+        "foreground_denied_count": 4,
+        "converged": false,
+        "cursor_alive": true,
+        "aim_error_px": 413
       }
     ]
   },
@@ -186,11 +220,11 @@
     "name": "intro-skip",
     "points": "400,300",
     "click": true,
-    "path_verified": false,
+    "path_verified": true,
     "click_path_verified": false,
-    "max_abs_error": null,
-    "max_sample_abs_error": null,
-    "click_event_count": 0,
+    "max_abs_error": 0,
+    "max_sample_abs_error": 80,
+    "click_event_count": 1,
     "move_mode": "auto",
     "move_mode_source": "route_result",
     "click_mode": "postmessage",
@@ -199,22 +233,33 @@
     "click_repeat_source": "route_result",
     "space_pulses": 4,
     "input_proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
-    "probe_exit_code": 1,
-    "json": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle\\intro-skip-a1-round-0.json",
-    "log": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle\\intro-skip-a1-round-0.log",
+    "probe_exit_code": 0,
+    "json": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260718-102547-short2-map-idle\\intro-skip-a1-round-0.json",
+    "log": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260718-102547-short2-map-idle\\intro-skip-a1-round-0.log",
     "probe_json": {
-      "read_status": "missing"
+      "read_status": "ok",
+      "path": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260718-102547-short2-map-idle\\intro-skip-a1-round-0.json",
+      "move_mode": "auto",
+      "move_method": "setcursor",
+      "click_modes": [
+        "postmessage"
+      ],
+      "click_repeat_observed": 1,
+      "sample_count": 5,
+      "click_event_sample_count": 4,
+      "max_sample_abs_error": 80,
+      "max_sample_phase": "after_postmessage_down"
     }
   },
   "last_route_result": {
     "name": "intro-skip",
     "points": "400,300",
     "click": true,
-    "path_verified": false,
+    "path_verified": true,
     "click_path_verified": false,
-    "max_abs_error": null,
-    "max_sample_abs_error": null,
-    "click_event_count": 0,
+    "max_abs_error": 0,
+    "max_sample_abs_error": 80,
+    "click_event_count": 1,
     "move_mode": "auto",
     "move_mode_source": "route_result",
     "click_mode": "postmessage",
@@ -223,21 +268,42 @@
     "click_repeat_source": "route_result",
     "space_pulses": 4,
     "input_proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
-    "probe_exit_code": 1,
-    "json": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle\\intro-skip-a1-round-0.json",
-    "log": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260717-152525-short2-map-idle\\intro-skip-a1-round-0.log",
+    "probe_exit_code": 0,
+    "json": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260718-102547-short2-map-idle\\intro-skip-a1-round-0.json",
+    "log": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260718-102547-short2-map-idle\\intro-skip-a1-round-0.log",
     "probe_json": {
-      "read_status": "missing"
+      "read_status": "ok",
+      "path": "C:\\ClashCaptures\\hd-soak\\hd-soak-20260718-102547-short2-map-idle\\intro-skip-a1-round-0.json",
+      "move_mode": "auto",
+      "move_method": "setcursor",
+      "click_modes": [
+        "postmessage"
+      ],
+      "click_repeat_observed": 1,
+      "sample_count": 5,
+      "click_event_sample_count": 4,
+      "max_sample_abs_error": 80,
+      "max_sample_phase": "after_postmessage_down"
     }
   },
-  "last_frame_sample": null,
+  "last_frame_sample": {
+    "name": "frame-0007",
+    "timestamp": "2026-07-18T10:28:00.1479873+02:00",
+    "hash": "585C2E7D16B88EC9C69FFCD2E46CAA4B82C1B79824F9625AC537A15D4C131875",
+    "width": 800,
+    "height": 600,
+    "nonblack_percent": 0.017,
+    "mean_luma": 0.035,
+    "unique_sample_colors": 6,
+    "capture_mode": "screen"
+  },
   "last_process_sample": {
-    "timestamp": "2026-07-17T15:25:41.2959501+02:00",
-    "has_exited": true,
-    "exit_code": 1,
-    "working_set64": null,
-    "private_memory_size64": null,
-    "handle_count": null,
+    "timestamp": "2026-07-18T10:28:08.1537210+02:00",
+    "has_exited": false,
+    "exit_code": null,
+    "working_set64": 42201088,
+    "private_memory_size64": 32395264,
+    "handle_count": 648,
     "error": null
   },
   "guard_validation": {
@@ -247,17 +313,9 @@
     "failures": []
   },
   "failures": [
-    "process exited unexpectedly with code 1",
-    "expected at least 2 frame samples",
     "nonblack percent dropped below 10",
     "unique sampled colors dropped below 8",
-    "route/input probe failures: 1",
-    "input drift exceeded 1px or metric missing: 1",
-    "intro skip rounds never verified the main menu on screen",
     "no launch attempt produced an interactive menu (engine cursor never responded to pulse input)",
-    "route did not reach the gameplay map",
-    "working-set growth metric unavailable",
-    "private-memory growth metric unavailable",
-    "handle growth metric unavailable"
+    "route did not reach the gameplay map"
   ]
 }
