@@ -168,9 +168,14 @@ def test_castle_targets_carry_the_entry_click_and_the_barracks_gap(fixture: Path
         command = plan["commands"][item_id]
         assert command["followup_points"].startswith("castle-entry:470,397"), command
     barracks = plan["commands"]["castle_barracks_centered_input"]
-    assert "OPEN COORDINATE GAP" in barracks["notes"], barracks
+    # The barracks coordinate is resolved: command 0x86 is present in the live
+    # slot-0 castle. Aim its interior (398,228) and keep the evidence-backed
+    # edge point (371,107) documented as the fallback.
+    assert "barracks-0x86:398,228" in barracks["followup_points"], barracks
+    assert "BARRACKS COORDINATE RESOLVED" in barracks["notes"], barracks
     assert "371,107" in barracks["notes"], barracks
-    assert any("barracks-entry coordinate is known" in item for item in plan["runtime_prerequisites"]), plan
+    assert "0044FE70" in barracks["notes"], barracks
+    assert any("0044FE70" in item for item in plan["runtime_prerequisites"]), plan
 
 
 def test_harness_without_pulse_lane_fails_closed(fixture: Path) -> None:
