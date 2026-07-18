@@ -1,7 +1,7 @@
 # Python Runtime Safety Guard
 
 - Overall: PASS
-- Generated: `2026-07-17T15:36:46+02:00`
+- Generated: `2026-07-18T10:18:09+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt
 - Python files scanned: `247`
@@ -57,7 +57,7 @@
   - repo-only source scanner; risky API names appear as patterns, not runtime calls
 - `tools/load_slot_timeout_phase.py`: `exempt` risks=`['win32_user32']`
   - repo-only CDB log parser; Win32 text appears only in timeout-stack classification labels
-- `tools/manual_directinput_run_plan.py`: `exempt` risks=`['sendinput']`
+- `tools/manual_directinput_run_plan.py`: `exempt` risks=`['cursor_window_input', 'sendinput']`
   - repo-only command planner; visible-runtime and input text appears only in gated command templates
 - `tools/menu_pulse_click.py`: `manual_visible_runtime_gated` risks=`['ctypes', 'cursor_window_input', 'postmessage', 'sendinput', 'win32_user32']`
   - manual/visible-runtime evidence helper; it drives the engine cursor by pulse injection only when explicitly invoked by the approval-gated soak harness

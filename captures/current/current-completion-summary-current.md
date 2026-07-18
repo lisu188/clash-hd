@@ -1,7 +1,7 @@
 # Current Completion Summary
 
 - Overall: PASS
-- Generated: `2026-07-17T15:37:02+02:00`
+- Generated: `2026-07-18T10:18:26+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Percent policy: Percentages are computed from generated evidence gates and checklist counts. They are progress indicators, not a claim that full-game reverse engineering is complete.
 - Full game complete: `False`

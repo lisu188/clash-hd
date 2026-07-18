@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T15:37:02+02:00",
+  "generated_at": "2026-07-18T10:18:26+02:00",
   "passed": false,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "checks": {
@@ -1041,7 +1041,7 @@
       "json": "captures\\current\\right-bottom-owner-flag-inventory-current.json",
       "markdown": "captures\\current\\right-bottom-owner-flag-inventory-current.md",
       "summary": {
-        "scanned_log_count": 49,
+        "scanned_log_count": 53,
         "relevant_run_count": 14,
         "classification_counts": {
           "forced_owner_action_route": 7,
@@ -2887,16 +2887,16 @@
       "json": "captures\\current\\capture-corpus-index-current.json",
       "markdown": "captures\\current\\capture-corpus-index-current.md",
       "summary": {
-        "artifact_count": 757,
+        "artifact_count": 762,
         "current_reference_count": 179,
         "stale_visible_or_sandbox_count": 18,
         "reference_status_counts": {
           "archived_referenced": 202,
           "current_referenced": 149,
-          "stale_unreferenced": 406
+          "stale_unreferenced": 411
         },
         "era_counts": {
-          "cdb_surface_dump_unverified": 73,
+          "cdb_surface_dump_unverified": 78,
           "hidden_cdb_surface_dump": 164,
           "other_capture_artifact": 502,
           "visible_era": 18

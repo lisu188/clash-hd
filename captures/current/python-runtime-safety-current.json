@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T15:36:46+02:00",
+  "generated_at": "2026-07-18T10:18:09+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
@@ -979,11 +979,22 @@
       "classification": "exempt",
       "reason": "repo-only command planner; visible-runtime and input text appears only in gated command templates",
       "risk_categories": [
+        "cursor_window_input",
         "sendinput"
       ],
       "risk_lines": {
         "sendinput": [
-          132
+          44,
+          60,
+          62,
+          72,
+          227,
+          432
+        ],
+        "cursor_window_input": [
+          44,
+          143,
+          434
         ]
       },
       "failures": []

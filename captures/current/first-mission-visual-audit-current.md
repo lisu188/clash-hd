@@ -1,7 +1,7 @@
 # First Mission Visual Audit
 
 - Overall: PASS
-- Generated: `2026-07-17T15:36:18+02:00`
+- Generated: `2026-07-18T10:17:39+02:00`
 - Runtime policy: repo-only PNG audit; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: first-mission frames must keep the play area rendered, avoid horizontal or vertical stripe signatures, and expose unexplained large black UI patches as non-playable blockers; a raw proxy-black region is classified as a capture artifact only when a supplied real-runtime frame positively corroborates it
 - Corroboration method: per-region render-presence corroboration; not a same-state pixel comparison

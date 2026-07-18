@@ -1,7 +1,7 @@
 # First Mission Visual Audit Tests
 
 - Status: PASS
-- Generated: `2026-07-17T15:36:29+02:00`
+- Generated: `2026-07-18T10:17:51+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves first-mission visual audit detects stripe signatures, large black UI patches, legacy middle action-bar placement, and diagnostic black frames, and only excuses proxy-black regions with positive real-runtime corroboration, without launching runtime
 

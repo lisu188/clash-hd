@@ -1,7 +1,7 @@
 # HD Soak Short-Tier Ladder
 
 - Overall: PASS
-- Generated: `2026-07-17T13:37:00.855276+00:00`
+- Generated: `2026-07-18T08:18:24.678328+00:00`
 - Runtime policy: repo-only short-tier soak ladder; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Protected stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Ladder complete: `False`

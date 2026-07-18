@@ -1,7 +1,7 @@
 # HD Endurance Next Actions Tests
 
 - Status: PASS
-- Generated: `2026-07-17T15:37:00+02:00`
+- Generated: `2026-07-18T10:18:24+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the next-action report stays repo-only, separates safe dry-run commands from approval-gated tokened visible runtime commands, rejects legacy un-tokened runtime commands, pins canonical short-step report outputs, starts focused post-run validation with the failure-safe guard/triage refresh, keeps broad evidence refresh separate, keeps the short ladder ahead of later manual milestones, preserves classified failure triage, records current-step artifact inventory, records post-run validation steps, requires the dry-run plan to verify the base executable, and requires enough visible-runtime approval TTL before showing an executable command
 

@@ -1,10 +1,10 @@
 # Right-Bottom Owner-Flag Inventory
 
 - Overall: PASS
-- Generated: `2026-07-17T15:36:07+02:00`
+- Generated: `2026-07-18T10:17:28+02:00`
 - Runtime policy: repo-only; scans existing CDB logs and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: right-bottom owner/action evidence must keep at least one controlled forced owner route, at least one current natural owner-flag-gated route, and no non-fixture archived natural route that already reaches the owner/action renderer without an explicit forced owner flag
-- Scanned CDB logs: `49`
+- Scanned CDB logs: `53`
 - Relevant runs: `14`
 - Classification counts: `{'forced_owner_action_route': 7, 'natural_state_gated': 1, 'natural_ui_descriptor_only': 1, 'non_natural_isolated_fixture': 5}`
 - Natural state-gated routes: `1`

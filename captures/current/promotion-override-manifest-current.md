@@ -1,7 +1,7 @@
 # Promotion Override Manifest
 
 - Overall: PASS
-- Generated: `2026-07-17T15:36:54+02:00`
+- Generated: `2026-07-18T10:18:18+02:00`
 - Runtime policy: repo-only manifest validation; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: CDB-only promotion requires an explicit valid override manifest; absence of a manifest keeps current evidence override-inactive
 - Override active: `False`

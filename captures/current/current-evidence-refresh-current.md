@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-17T15:37:02+02:00`
+- Generated: `2026-07-18T10:18:26+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -503,7 +503,7 @@
 - Status: PASS
 - JSON: `captures\current\right-bottom-owner-flag-inventory-current.json`
 - Markdown: `captures\current\right-bottom-owner-flag-inventory-current.md`
-- scanned_log_count: `49`
+- scanned_log_count: `53`
 - relevant_run_count: `14`
 - classification_counts: `{'forced_owner_action_route': 7, 'natural_state_gated': 1, 'natural_ui_descriptor_only': 1, 'non_natural_isolated_fixture': 5}`
 - natural_state_gated_count: `1`
@@ -1853,11 +1853,11 @@
 - Status: PASS
 - JSON: `captures\current\capture-corpus-index-current.json`
 - Markdown: `captures\current\capture-corpus-index-current.md`
-- artifact_count: `757`
+- artifact_count: `762`
 - current_reference_count: `179`
 - stale_visible_or_sandbox_count: `18`
-- reference_status_counts: `{'archived_referenced': 202, 'current_referenced': 149, 'stale_unreferenced': 406}`
-- era_counts: `{'cdb_surface_dump_unverified': 73, 'hidden_cdb_surface_dump': 164, 'other_capture_artifact': 502, 'visible_era': 18}`
+- reference_status_counts: `{'archived_referenced': 202, 'current_referenced': 149, 'stale_unreferenced': 411}`
+- era_counts: `{'cdb_surface_dump_unverified': 78, 'hidden_cdb_surface_dump': 164, 'other_capture_artifact': 502, 'visible_era': 18}`
 - guard_policy: `current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers`
 - runtime_policy: `repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 

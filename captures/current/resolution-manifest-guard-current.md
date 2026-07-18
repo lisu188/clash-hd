@@ -1,7 +1,7 @@
 # Resolution Manifest Guard
 
 - Overall: PASS
-- Generated: `2026-07-17T15:36:47+02:00`
+- Generated: `2026-07-18T10:18:10+02:00`
 - Runtime policy: repo-only metadata inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence, tile counts matching the engine formula
 - Manifest: `src\launcher\resolutions.json`

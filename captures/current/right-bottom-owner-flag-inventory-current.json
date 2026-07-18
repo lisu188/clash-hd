@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-17T15:36:07+02:00",
+  "generated_at": "2026-07-18T10:17:28+02:00",
   "passed": true,
   "runtime_policy": "repo-only; scans existing CDB logs and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "right-bottom owner/action evidence must keep at least one controlled forced owner route, at least one current natural owner-flag-gated route, and no non-fixture archived natural route that already reaches the owner/action renderer without an explicit forced owner flag",
   "captures_root": "captures",
-  "scanned_log_count": 49,
+  "scanned_log_count": 53,
   "relevant_run_count": 14,
   "classification_counts": {
     "forced_owner_action_route": 7,

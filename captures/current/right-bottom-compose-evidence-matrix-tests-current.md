@@ -1,7 +1,7 @@
 # Right-Bottom Compose Evidence Matrix Tests
 
 - Status: PASS
-- Generated: `2026-07-17T15:36:18+02:00`
+- Generated: `2026-07-18T10:17:40+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for matrix CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the right-bottom compose evidence matrix requires all route gates, hidden-desktop/full-start safety, normal map/visibility proof, natural UI routing, controlled grid-hit proof, route timing/order proof, candidate SHA agreement, and deferred promotion status
 

@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-07-17T15:37:02+02:00",
+  "generated_at": "2026-07-18T10:18:26+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\git\\clash-hd\\captures",
-  "artifact_count": 757,
+  "artifact_count": 762,
   "current_reference_count": 179,
   "archived_reference_count": 348,
   "missing_current_refs": [],
   "reference_status_counts": {
     "archived_referenced": 202,
     "current_referenced": 149,
-    "stale_unreferenced": 406
+    "stale_unreferenced": 411
   },
   "era_counts": {
-    "cdb_surface_dump_unverified": 73,
+    "cdb_surface_dump_unverified": 78,
     "hidden_cdb_surface_dump": 164,
     "other_capture_artifact": 502,
     "visible_era": 18
@@ -7967,6 +7967,56 @@
       "era": "hidden_cdb_surface_dump",
       "classification_reason": "CDB surface dump reports hidden/no-popup desktop",
       "has_surface_png": true,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260718-095803",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260718-095803",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260718-095822",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260718-095822",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260718-100101",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260718-100101",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260718-100349",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260718-100349",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
+      "has_run_summary": true
+    },
+    {
+      "name": "archive/cdb-surface-dump-20260718-100700",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260718-100700",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "cdb_surface_dump_unverified",
+      "classification_reason": "CDB surface dump metadata did not state hidden/visible desktop",
+      "has_surface_png": false,
       "has_run_summary": true
     },
     {

@@ -1,7 +1,7 @@
 # Right-Bottom Route Timing Guard Tests
 
 - Status: PASS
-- Generated: `2026-07-17T15:36:34+02:00`
+- Generated: `2026-07-18T10:17:57+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for guard CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the right-bottom route timing guard rejects missing copyback/grid markers, marker-order regressions, visible fallback, surface/stage/SHA drift, grid proof failures, failure-exit rows, and AV rows
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T15:36:39+02:00",
+  "generated_at": "2026-07-18T10:18:02+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for parser CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the castle overview multi-hit parser recognizes expected target rows, hit-test results, descriptor, click-gate, target-done rows, ready size, callback entry, AV rows, and fails closed under required CLI flags",

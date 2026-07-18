@@ -1,7 +1,7 @@
 # Surface Dump Policy Guard
 
 - Overall: PASS
-- Generated: `2026-07-17T15:36:45+02:00`
+- Generated: `2026-07-18T10:18:08+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: surface-dump harness must default to hidden desktop and require -AllowVisibleDesktop for active-desktop fallback
 - Script: `scripts\cdb\run_cdb_surface_dump.ps1`

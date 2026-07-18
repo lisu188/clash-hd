@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T15:36:54+02:00",
+  "generated_at": "2026-07-18T10:18:18+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "manual proof template must document the accepted manifest shape while remaining invalid as proof until approved manual evidence replaces every placeholder",

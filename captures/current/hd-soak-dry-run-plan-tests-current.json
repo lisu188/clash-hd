@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T15:36:59+02:00",
+  "generated_at": "2026-07-18T10:18:23+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the current short-soak dry-run handoff is machine-readable, non-executing, protected-stage, canonical-path, outside-repo, and fails closed unless copied execute commands include -RequirePass -Json with a fresh approval token, and the base executable exists with the expected SHA",

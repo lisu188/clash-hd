@@ -1,7 +1,7 @@
 # Castle Save Owner-Flag Scan
 
 - Overall: PASS
-- Generated: `2026-07-17T15:36:07+02:00`
+- Generated: `2026-07-18T10:17:28+02:00`
 - Runtime policy: local save metadata inspection only; reads installed save files but does not copy raw saves, launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: finds whether any installed save naturally has castle owner flag bit 0x02 set, which is required before the 004338E0 owner/action lane can be routed without debugger-forced owner flags
 - Saves root: `C:\Clash\save`
