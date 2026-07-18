@@ -91,6 +91,7 @@ if (-not ([System.Management.Automation.PSTypeName]'ClashSoakWindowHealthWin32')
     Add-Type @'
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 public static class ClashSoakWindowHealthWin32 {
     [StructLayout(LayoutKind.Sequential)]
@@ -107,16 +108,46 @@ public static class ClashSoakWindowHealthWin32 {
     public static extern bool EnumWindows(EnumWindowsProc callback, IntPtr lParam);
 
     [DllImport("user32.dll")]
+    public static extern bool EnumChildWindows(IntPtr parent, EnumWindowsProc callback, IntPtr lParam);
+
+    [DllImport("user32.dll")]
     public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
     [DllImport("user32.dll")]
     public static extern bool IsWindowVisible(IntPtr hWnd);
 
     [DllImport("user32.dll")]
+    public static extern bool IsWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsIconic(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
     public static extern bool GetClientRect(IntPtr hWnd, out RECT rect);
 
     [DllImport("user32.dll")]
     public static extern bool IsHungAppWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern IntPtr GetForegroundWindow();
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    public static extern int GetClassName(IntPtr hWnd, StringBuilder buffer, int size);
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    public static extern int GetWindowText(IntPtr hWnd, StringBuilder buffer, int size);
+
+    public static string ClassNameOf(IntPtr hWnd) {
+        StringBuilder buffer = new StringBuilder(256);
+        GetClassName(hWnd, buffer, buffer.Capacity);
+        return buffer.ToString();
+    }
+
+    public static string TextOf(IntPtr hWnd) {
+        StringBuilder buffer = new StringBuilder(512);
+        GetWindowText(hWnd, buffer, buffer.Capacity);
+        return buffer.ToString();
+    }
 
     public static IntPtr FindVisibleWindowForProcess(uint processId) {
         IntPtr found = IntPtr.Zero;
@@ -133,6 +164,62 @@ public static class ClashSoakWindowHealthWin32 {
             return true;
         }, IntPtr.Zero);
         return found;
+    }
+
+    // MEASURED 2026-07-18 (C:\ClashCaptures\hd-soak-diag\windowtimeline-*):
+    // when the GOG DirectDraw wrapper fails a display-mode switch it CLEARS
+    // WS_VISIBLE on its main window (style 0x95000000 -> 0x8D000000) while the
+    // window stays alive with an intact 800x600 client rect, and pops a modal
+    // #32770 carrying "DirectDraw Error DDERR_UNSUPPORTED". The visible-only
+    // filter above reports that as "window missing", which sent two sessions
+    // hunting a phantom teardown. These two probes let the harness say which of
+    // the three states it is. They are DIAGNOSTIC ONLY: a hidden window is
+    // still a hard failure and no input or capture is ever driven through one,
+    // because a screen grab of a hidden window observes whatever is behind it.
+    public static IntPtr FindAliveHiddenWindowForProcess(uint processId) {
+        IntPtr found = IntPtr.Zero;
+        EnumWindows(delegate(IntPtr hWnd, IntPtr lParam) {
+            uint windowProcessId;
+            GetWindowThreadProcessId(hWnd, out windowProcessId);
+            if (windowProcessId == processId && IsWindow(hWnd) && !IsWindowVisible(hWnd)) {
+                RECT rect;
+                if (GetClientRect(hWnd, out rect) && rect.Right > rect.Left && rect.Bottom > rect.Top) {
+                    found = hWnd;
+                    return false;
+                }
+            }
+            return true;
+        }, IntPtr.Zero);
+        return found;
+    }
+
+    public static IntPtr FindDialogForProcess(uint processId) {
+        IntPtr found = IntPtr.Zero;
+        EnumWindows(delegate(IntPtr hWnd, IntPtr lParam) {
+            uint windowProcessId;
+            GetWindowThreadProcessId(hWnd, out windowProcessId);
+            if (windowProcessId == processId && IsWindowVisible(hWnd) && ClassNameOf(hWnd) == "#32770") {
+                found = hWnd;
+                return false;
+            }
+            return true;
+        }, IntPtr.Zero);
+        return found;
+    }
+
+    public static string DialogTextOf(IntPtr dialog) {
+        StringBuilder collected = new StringBuilder();
+        EnumChildWindows(dialog, delegate(IntPtr child, IntPtr lParam) {
+            string text = TextOf(child);
+            if (text.Length > 0) {
+                if (collected.Length > 0) {
+                    collected.Append(" | ");
+                }
+                collected.Append(text);
+            }
+            return true;
+        }, IntPtr.Zero);
+        return collected.ToString();
     }
 }
 '@
@@ -201,6 +288,74 @@ function Get-DxcfgWindowedStatus {
     }
 }
 
+function Get-InputStandingStatus {
+    <#
+      MEASURED 2026-07-18: three consecutive soak-shaped runs (21:43, 21:49,
+      21:58) were destroyed by a LOCKED WORKSTATION, and none of them said so.
+      With the lock screen owning the foreground (LockApp / LogonUI, class
+      Windows.UI.Core.CoreWindow), tools/mouse_path_probe.py died on every
+      intro round with "[WinError 5] SetCursorPos" and "[WinError 5] SendInput
+      absolute move", so no intro-skip stimulus was ever delivered, the intro
+      auto-played to completion, and the GOG DirectDraw wrapper then failed its
+      intro->menu display-mode switch with a modal
+      "DirectDraw Error DDERR_UNSUPPORTED" box.
+
+      The run before them (21:09), on an unlocked session, skipped the intro on
+      round 0 and clicked the menu successfully, so this is an environment
+      precondition and not a harness or patch defect. Checking it BEFORE launch
+      turns a ten-minute wrapper-destabilising false failure into an immediate,
+      correctly-named refusal. OpenInputDesktop is deliberately NOT used: it
+      still reported the "Default" desktop while the machine was locked on this
+      machine, so the foreground owner is the signal that actually measured.
+    #>
+    $blockingOwners = @('LockApp', 'LogonUI')
+    try {
+        $foreground = [ClashSoakWindowHealthWin32]::GetForegroundWindow()
+        if ($foreground -eq [IntPtr]::Zero) {
+            return [pscustomobject]@{
+                Passed = $false
+                ForegroundProcess = $null
+                ForegroundTitle = $null
+                ForegroundClass = $null
+                Failures = @('no foreground window exists; the interactive session cannot accept injected input')
+            }
+        }
+        $foregroundPid = [uint32]0
+        [ClashSoakWindowHealthWin32]::GetWindowThreadProcessId($foreground, [ref]$foregroundPid) | Out-Null
+        $ownerProcess = $null
+        try {
+            $ownerProcess = (Get-Process -Id $foregroundPid -ErrorAction Stop).ProcessName
+        } catch {
+            $ownerProcess = $null
+        }
+        $title = [ClashSoakWindowHealthWin32]::TextOf($foreground)
+        $class = [ClashSoakWindowHealthWin32]::ClassNameOf($foreground)
+        $failures = @()
+        if ($ownerProcess -and ($blockingOwners -contains $ownerProcess)) {
+            $failures += (
+                "the workstation is locked (foreground window '$title' is owned by $ownerProcess); " +
+                'OS input injection is denied and the DirectDraw wrapper cannot complete a display-mode ' +
+                'switch, so unlock the session before running the visible soak'
+            )
+        }
+        return [pscustomobject]@{
+            Passed = (@($failures).Count -eq 0)
+            ForegroundProcess = $ownerProcess
+            ForegroundTitle = $title
+            ForegroundClass = $class
+            Failures = @($failures)
+        }
+    } catch {
+        return [pscustomobject]@{
+            Passed = $false
+            ForegroundProcess = $null
+            ForegroundTitle = $null
+            ForegroundClass = $null
+            Failures = @("input standing probe failed: $($_.Exception.Message)")
+        }
+    }
+}
+
 function Get-WindowHealthSample {
     param(
         [Parameter(Mandatory = $true)][System.Diagnostics.Process]$Process,
@@ -248,6 +403,27 @@ function Get-WindowHealthSample {
             $handle = [ClashSoakWindowHealthWin32]::FindVisibleWindowForProcess([uint32]$Process.Id)
         }
         if ($handle -eq [IntPtr]::Zero) {
+            # Say WHICH of the three no-visible-window states this is. All three
+            # stay hard failures, but "hidden with a wrapper error dialog up" and
+            # "genuinely gone" call for completely different follow-ups.
+            $dialog = [ClashSoakWindowHealthWin32]::FindDialogForProcess([uint32]$Process.Id)
+            $hidden = [ClashSoakWindowHealthWin32]::FindAliveHiddenWindowForProcess([uint32]$Process.Id)
+            $dialogText = $null
+            $healthClass = 'window_missing_while_process_alive'
+            if ($dialog -ne [IntPtr]::Zero) {
+                $dialogText = [ClashSoakWindowHealthWin32]::DialogTextOf($dialog)
+                $healthClass = 'wrapper_error_dialog'
+            } elseif ($hidden -ne [IntPtr]::Zero) {
+                $healthClass = 'window_hidden_while_process_alive'
+            }
+            $hiddenWidth = $null
+            $hiddenHeight = $null
+            if ($hidden -ne [IntPtr]::Zero) {
+                $hiddenRect = New-Object ClashSoakWindowHealthWin32+RECT
+                [ClashSoakWindowHealthWin32]::GetClientRect($hidden, [ref]$hiddenRect) | Out-Null
+                $hiddenWidth = $hiddenRect.Right - $hiddenRect.Left
+                $hiddenHeight = $hiddenRect.Bottom - $hiddenRect.Top
+            }
             return [pscustomobject]@{
                 Timestamp = $timestamp
                 Phase = $Phase
@@ -258,7 +434,13 @@ function Get-WindowHealthSample {
                 ClientHeight = $null
                 IsHung = $null
                 GraceAttempts = $graceAttemptsUsed
-                HealthClass = 'window_missing_while_process_alive'
+                HiddenWindowHwnd = if ($hidden -ne [IntPtr]::Zero) { ('0x{0:X}' -f $hidden.ToInt64()) } else { $null }
+                HiddenWindowClientWidth = $hiddenWidth
+                HiddenWindowClientHeight = $hiddenHeight
+                HiddenWindowIconic = if ($hidden -ne [IntPtr]::Zero) { [bool][ClashSoakWindowHealthWin32]::IsIconic($hidden) } else { $null }
+                DialogHwnd = if ($dialog -ne [IntPtr]::Zero) { ('0x{0:X}' -f $dialog.ToInt64()) } else { $null }
+                DialogText = $dialogText
+                HealthClass = $healthClass
             }
         }
         $rect = New-Object ClashSoakWindowHealthWin32+RECT
@@ -689,6 +871,9 @@ function Write-SoakMarkdown {
         "- Window mode: required=$($Report.window_mode.Required) display=$($Report.window_mode.Display) presentation=$($Report.window_mode.Presentation) config=$($Report.window_mode.Path)",
         "- Window hang observed: $($Report.window_hang_observed)",
         "- Window missing while process alive: $($Report.window_missing_while_alive_observed)",
+        "- Window hidden while process alive: $($Report.window_hidden_while_alive_observed)",
+        "- Wrapper error dialog: $($Report.wrapper_error_dialog_observed) $($Report.wrapper_error_dialog_text)",
+        "- Input standing preflight: $($Report.input_standing.passed) (foreground owner $($Report.input_standing.foreground_process))",
         "- First window-health failure: $($Report.window_health_first_failure.Phase) / $($Report.window_health_first_failure.HealthClass)",
         "- Intro skip mode/repeat/pulses: $($Report.intro_skip.click_mode) / $($Report.intro_skip.click_repeat) / $($Report.intro_skip.space_pulses)",
         "- Intro skip proof class: $($Report.intro_skip.proof_class)",
@@ -723,7 +908,14 @@ function Write-SoakMarkdown {
     $lines += '## Window Health Samples'
     $lines += ''
     foreach ($sample in @($Report.window_health_samples)) {
-        $lines += "- $($sample.Phase): class=$($sample.HealthClass) hwnd=$($sample.Hwnd) size=$($sample.ClientWidth)x$($sample.ClientHeight)"
+        $detail = ''
+        if ($sample.HiddenWindowHwnd) {
+            $detail += " hidden=$($sample.HiddenWindowHwnd) hiddenSize=$($sample.HiddenWindowClientWidth)x$($sample.HiddenWindowClientHeight)"
+        }
+        if ($sample.DialogText) {
+            $detail += " dialog=$($sample.DialogText)"
+        }
+        $lines += "- $($sample.Phase): class=$($sample.HealthClass) hwnd=$($sample.Hwnd) size=$($sample.ClientWidth)x$($sample.ClientHeight)$detail"
     }
     $dir = Split-Path -Parent $Path
     if ($dir -and -not (Test-Path -LiteralPath $dir)) {
@@ -744,6 +936,7 @@ $windowedMode = Get-DxcfgWindowedStatus -Path (Join-Path $WorkDirFull 'dxcfg.ini
 if (-not $windowedMode.Passed) {
     throw "Windowed DirectDraw config check failed: $($windowedMode.Failures -join '; ')"
 }
+$inputStanding = Get-InputStandingStatus
 
 function Test-AcceptedIntroTransition {
     param([Parameter(Mandatory = $true)][object]$Row)
@@ -883,6 +1076,7 @@ $plan = [ordered]@{
     candidate_path = $CandidateFull
     workdir = $WorkDirFull
     window_mode = $windowedMode
+    input_standing = $inputStanding
     output_root = $OutputRootFull
     report_json = $ReportJsonFull
     report_markdown = $ReportMarkdownFull
@@ -980,6 +1174,13 @@ if ($approvalRemaining -lt [System.TimeSpan]::FromMinutes($minApprovalTtlMinutes
 }
 if ($VisibleRuntimeApprovalToken -ne $expectedVisibleRuntimeApprovalToken) {
     throw "Visible runtime approval token does not match this command shape. Expected $expectedVisibleRuntimeApprovalToken."
+}
+if (-not $inputStanding.Passed) {
+    # Fail closed BEFORE launching. A run started without input standing cannot
+    # deliver the intro-skip stimulus, cannot focus the game, and leaves the
+    # DirectDraw wrapper in a failed display-mode state; letting it proceed
+    # produces a false render/route failure instead of naming the real blocker.
+    throw "Input standing preflight failed: $($inputStanding.Failures -join '; ')"
 }
 if (-not $inputExists) {
     throw "Input executable does not exist: $InputExeFull"
@@ -1462,10 +1663,19 @@ $inputMaxSampleAbsValues = @($routeResults | ForEach-Object { $_.MaxSampleAbsErr
 $inputMaxAbsError = if (@($inputMaxAbsValues).Count -gt 0) { [int](Select-NumberMax -Values $inputMaxAbsValues) } else { $null }
 $inputMaxSampleAbsError = if (@($inputMaxSampleAbsValues).Count -gt 0) { [int](Select-NumberMax -Values $inputMaxSampleAbsValues) } else { $null }
 $windowHangSamples = @($windowHealthSamples | Where-Object { $_.HealthClass -eq 'application_hung' })
-$windowMissingWhileAliveSamples = @($windowHealthSamples | Where-Object { $_.HealthClass -eq 'window_missing_while_process_alive' })
+$windowHiddenWhileAliveSamples = @($windowHealthSamples | Where-Object { $_.HealthClass -eq 'window_hidden_while_process_alive' })
+$wrapperErrorDialogSamples = @($windowHealthSamples | Where-Object { $_.HealthClass -eq 'wrapper_error_dialog' })
+# The three no-visible-window classes are reported separately but all keep
+# tripping the existing observed flag, so no gate is loosened by the split.
+$windowMissingWhileAliveSamples = @($windowHealthSamples | Where-Object {
+    $_.HealthClass -in @('window_missing_while_process_alive', 'window_hidden_while_process_alive', 'wrapper_error_dialog')
+})
 $windowHealthFailureSamples = @($windowHealthSamples | Where-Object { $_.HealthClass -ne 'responsive' -and $_.HealthClass -ne 'process_exited' })
 $windowHangObserved = (@($windowHangSamples).Count -gt 0)
 $windowMissingWhileAliveObserved = (@($windowMissingWhileAliveSamples).Count -gt 0)
+$windowHiddenWhileAliveObserved = (@($windowHiddenWhileAliveSamples).Count -gt 0)
+$wrapperErrorDialogObserved = (@($wrapperErrorDialogSamples).Count -gt 0)
+$wrapperErrorDialogText = if ($wrapperErrorDialogObserved) { @($wrapperErrorDialogSamples)[0].DialogText } else { $null }
 $windowHealthFirstFailure = if (@($windowHealthFailureSamples).Count -gt 0) { @($windowHealthFailureSamples)[0] } else { $null }
 $unexpectedExit = $false
 $exitCode = $null
@@ -1506,6 +1716,12 @@ $failures = @()
 if ($scriptError) { $failures += $scriptError.Exception.Message }
 if ($windowHangObserved) { $failures += 'application window became nonresponsive during the soak route' }
 if ($windowMissingWhileAliveObserved) { $failures += 'visible application window disappeared while the process remained alive' }
+if ($wrapperErrorDialogObserved) {
+    $failures += "the DirectDraw wrapper raised a modal error dialog while the application window was hidden: $wrapperErrorDialogText"
+}
+elseif ($windowHiddenWhileAliveObserved) {
+    $failures += 'the application window was hidden (WS_VISIBLE cleared) but still alive; the wrapper failed a display transition rather than tearing the window down'
+}
 if ($unexpectedExit) { $failures += "process exited unexpectedly with code $exitCode" }
 if (@($captureErrors).Count -gt 0) { $failures += "capture errors: $(@($captureErrors).Count)" }
 if ($captureModeChanged) {
@@ -1622,10 +1838,14 @@ $report = [ordered]@{
     input_max_sample_abs_error = $inputMaxSampleAbsError
     max_input_drift_px = $MaxInputDriftPx
     window_mode = $windowedMode
+    input_standing = $inputStanding
     window_health_policy = $plan.window_health_policy
     window_health_sample_count = @($windowHealthSamples).Count
     window_hang_observed = $windowHangObserved
     window_missing_while_alive_observed = $windowMissingWhileAliveObserved
+    window_hidden_while_alive_observed = $windowHiddenWhileAliveObserved
+    wrapper_error_dialog_observed = $wrapperErrorDialogObserved
+    wrapper_error_dialog_text = $wrapperErrorDialogText
     window_health_first_failure = $windowHealthFirstFailure
     intro_skip = [ordered]@{
         click_mode = $IntroSkipClickMode

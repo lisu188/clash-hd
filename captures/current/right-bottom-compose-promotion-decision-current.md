@@ -3,7 +3,7 @@
 - Decision record: PASS
 - Decision: `defer_stable_promotion`
 - Stable stage should change: `False`
-- Generated: `2026-07-18T21:35:48+02:00`
+- Generated: `2026-07-18T22:13:54+02:00`
 - Current stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Validation stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`
 - Candidate SHA-256: `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`

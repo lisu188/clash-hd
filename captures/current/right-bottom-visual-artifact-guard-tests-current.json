@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:36:00+02:00",
+  "generated_at": "2026-07-18T22:14:05+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the right-bottom visual artifact guard validates the resolved state (user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence) with promotion still deferred, and fails closed if the fixture evidence, compose matrix, triage, or controlled recovery state changes",

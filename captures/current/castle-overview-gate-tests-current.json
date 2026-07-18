@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:36:20+02:00",
+  "generated_at": "2026-07-18T22:14:24+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for gate CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the castle overview visual/catalog gate rejects missing readiness, AV rows, missing or wrong overview post-draw and surface sizes, missing expected commands, centered-geometry regressions, barracks baseline regressions, and fails closed under --require-pass",

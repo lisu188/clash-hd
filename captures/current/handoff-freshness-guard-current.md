@@ -1,7 +1,7 @@
 # Handoff Freshness Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T21:36:40+02:00`
+- Generated: `2026-07-18T22:14:43+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: handoff docs must mention the current route timing guard, keep validation stages out of stable until required proof exists, retain current manual-proof and completion artifacts, preserve the no-popup runtime preference, require the visible-runtime approval guard, and avoid stale route/input or VM blockers
 - Supporting project guide: `docs\hd\WORKING_WITH_THIS_REPO.md`

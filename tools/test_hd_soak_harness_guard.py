@@ -214,6 +214,47 @@ def test_guard_rejects_missing_window_stable_gate(fixture: Path) -> None:
     assert any("$WindowStableSamples" in failure for failure in guard["failures"]), guard
 
 
+def test_guard_rejects_missing_wrapper_transition_classification(fixture: Path) -> None:
+    bad = harness_text().replace("FindAliveHiddenWindowForProcess", "FindSomeWindow")
+    script = write_fixture(fixture / "wrapper-transition.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert guard["checks"]["wrapper_transition_classification"]["passed"] is False, guard
+    assert any(
+        "FindAliveHiddenWindowForProcess" in failure for failure in guard["failures"]
+    ), guard
+
+
+def test_guard_rejects_missing_wrapper_error_dialog_report_field(fixture: Path) -> None:
+    bad = harness_text().replace("wrapper_error_dialog_observed", "dialog_seen")
+    script = write_fixture(fixture / "wrapper-dialog-field.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert guard["checks"]["wrapper_transition_classification"]["passed"] is False, guard
+
+
+def test_guard_rejects_missing_input_standing_preflight(fixture: Path) -> None:
+    bad = harness_text().replace("Get-InputStandingStatus", "Get-SomeStatus")
+    script = write_fixture(fixture / "input-standing.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert guard["checks"]["input_standing_preflight"]["passed"] is False, guard
+    assert any("Get-InputStandingStatus" in failure for failure in guard["failures"]), guard
+
+
+def test_guard_rejects_input_standing_preflight_that_does_not_fail_closed(fixture: Path) -> None:
+    bad = harness_text().replace(
+        'throw "Input standing preflight failed',
+        'Write-Host "Input standing preflight failed',
+    )
+    script = write_fixture(fixture / "input-standing-soft.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert any(
+        "does not fail closed before launch" in failure for failure in guard["failures"]
+    ), guard
+
+
 def test_guard_rejects_missing_intro_execute_fragment(fixture: Path) -> None:
     bad = harness_text().replace("    '-IntroSkipClickMode', (Quote-Arg $IntroSkipClickMode),\n", "")
     script = write_fixture(fixture / "intro-execute.ps1", bad)

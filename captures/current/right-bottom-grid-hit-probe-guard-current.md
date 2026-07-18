@@ -1,7 +1,7 @@
 # Right-Bottom Grid Hit Probe Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T21:35:47+02:00`
+- Generated: `2026-07-18T22:13:53+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: focused right-bottom grid-hit proof must keep the owner/action/grid breakpoints, continue to prove native coordinate (450,73) returns grid cell 0, and stay hidden-desktop with no failure-exit or AV rows
 - Expected stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose`

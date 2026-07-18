@@ -1,7 +1,7 @@
 # Promotion Override Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T21:36:40+02:00`
+- Generated: `2026-07-18T22:14:43+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current evidence must keep CDB-only promotion overrides inactive until manual proof or an explicit override decision is intentionally supplied
 

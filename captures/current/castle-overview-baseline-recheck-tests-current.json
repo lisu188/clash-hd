@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:36:25+02:00",
+  "generated_at": "2026-07-18T22:14:30+02:00",
   "passed": true,
   "runtime_policy": "repo-only in-process fixture tests; does not launch Clash95, CDB, wrappers, PowerShell, Python child processes, or visible windows",
   "guard_policy": "proves the castle overview baseline recheck rejects stale overview visual baselines, stale barracks controlled-stop baselines, and failing latest castle overview matrices, including matrices without visible/dormant target-done completion proof",

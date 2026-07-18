@@ -1,7 +1,7 @@
 # Capture Corpus Index
 
 - Overall: PASS
-- Generated: `2026-07-18T21:36:49+02:00`
+- Generated: `2026-07-18T22:14:50+02:00`
 - Runtime policy: repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers
 - Captures root: `C:\Users\andrz\git\clash-hd\captures`

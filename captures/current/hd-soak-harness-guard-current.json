@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:36:41+02:00",
+  "generated_at": "2026-07-18T22:17:23+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "HD soak harness must stay opt-in, protected-stage, non-promoting, and artifact-safe",
@@ -67,19 +67,19 @@
       "summary": {
         "execute_switch_line": 40,
         "allow_visible_runtime_switch_line": 41,
-        "dry_run_branch_line": 932,
-        "runtime_guard_line": 956,
-        "token_guard_line": 959,
-        "expiry_guard_line": 962,
-        "expiry_parse_line": 966,
-        "expiry_stale_line": 975,
-        "min_ttl_line": 799,
-        "ttl_guard_line": 979,
-        "token_match_line": 981,
-        "output_dir_line": 997,
-        "candidate_dir_line": 1024,
-        "patch_report_line": 1048,
-        "start_process_line": 1077,
+        "dry_run_branch_line": 1126,
+        "runtime_guard_line": 1150,
+        "token_guard_line": 1153,
+        "expiry_guard_line": 1156,
+        "expiry_parse_line": 1160,
+        "expiry_stale_line": 1169,
+        "min_ttl_line": 992,
+        "ttl_guard_line": 1173,
+        "token_match_line": 1175,
+        "output_dir_line": 1198,
+        "candidate_dir_line": 1225,
+        "patch_report_line": 1249,
+        "start_process_line": 1278,
         "execute_command_fragments": [
           "-Execute",
           "-AllowVisibleRuntime",
@@ -163,6 +163,38 @@
           "before-{0}",
           "after-{0}-wait",
           "before-frame-{0:D4}"
+        ]
+      },
+      "failures": []
+    },
+    "wrapper_transition_classification": {
+      "passed": true,
+      "summary": {
+        "policy": "a missing visible window is classified as genuinely absent, hidden but alive, or accompanied by a wrapper error dialog; all three stay hard failures and none is ever driven with input or capture",
+        "required_markers": [
+          "FindAliveHiddenWindowForProcess",
+          "FindDialogForProcess",
+          "DialogTextOf",
+          "window_hidden_while_process_alive",
+          "wrapper_error_dialog",
+          "window_hidden_while_alive_observed",
+          "wrapper_error_dialog_observed",
+          "wrapper_error_dialog_text"
+        ]
+      },
+      "failures": []
+    },
+    "input_standing_preflight": {
+      "passed": true,
+      "summary": {
+        "policy": "visible execution refuses to launch when the foreground window is owned by the lock screen, because OS input injection is denied and the DirectDraw wrapper cannot complete a display-mode switch",
+        "required_markers": [
+          "Get-InputStandingStatus",
+          "GetForegroundWindow",
+          "LockApp",
+          "LogonUI",
+          "input_standing",
+          "Input standing preflight failed"
         ]
       },
       "failures": []

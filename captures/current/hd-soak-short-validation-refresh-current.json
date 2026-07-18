@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T19:36:44.847278+00:00",
+  "generated_at": "2026-07-18T20:14:47.246634+00:00",
   "passed": true,
   "runtime_policy": "repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "manifest": "captures\\current\\hd-soak-short-artifact-manifest-current.json",

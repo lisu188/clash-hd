@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:35:48+02:00",
+  "generated_at": "2026-07-18T22:13:53+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not run PowerShell, copy saves, launch Clash95, CDB, wrappers, or visible windows",
   "guard_policy": "the fixture preparation script must default to dry-run, copy only after -Execute, optionally seed a non-save isolated workdir, refuse repository and live C:\\Clash\\save outputs, and avoid visible-runtime APIs",

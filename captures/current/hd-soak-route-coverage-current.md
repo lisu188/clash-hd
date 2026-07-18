@@ -1,7 +1,7 @@
 # HD Soak Route Coverage
 
 - Overall: PASS
-- Generated: `2026-07-18T19:36:47.275015+00:00`
+- Generated: `2026-07-18T20:14:49.096616+00:00`
 - Runtime policy: repo-only soak route coverage inventory; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Harness script: `scripts\smoke\run_hd_soak.ps1`
 - Release checklist: `captures\current\hd-endurance-release-checklist-current.json` state=`present`

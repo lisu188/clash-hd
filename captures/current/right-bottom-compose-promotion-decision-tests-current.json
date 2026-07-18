@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:35:59+02:00",
+  "generated_at": "2026-07-18T22:14:05+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for decision CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the right-bottom compose promotion decision defers by default, fails closed for missing/failing route/grid/timing gates, rejects placeholder proof files, and only permits promotion with a valid manual proof manifest or an explicit CDB-only override",

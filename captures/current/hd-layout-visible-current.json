@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:35:29+02:00",
+  "generated_at": "2026-07-18T22:13:36+02:00",
   "runtime_policy": "repo-only PNG/JSON parser; does not launch Clash95, CDB, wrappers, PowerShell, input automation, or visible windows",
   "run_dir": "captures\\archive\\visual-smoke-20260713-075818",
   "passed": true,
