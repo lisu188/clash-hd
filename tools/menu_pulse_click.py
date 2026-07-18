@@ -367,11 +367,160 @@ def parse_steps(text: str) -> list[tuple[str, int, int]]:
     return steps
 
 
+def parse_points(text: str) -> list[tuple[str, int, int]]:
+    """Parse aim points as 'x,y' or 'name:x,y', auto-naming the unnamed ones.
+
+    The manual DirectInput run plan carries bare 'x,y;x,y' follow-up point
+    lists, so bare coordinates must stay accepted; named points keep the
+    emitted evidence rows readable when a caller supplies names.
+    """
+    points: list[tuple[str, int, int]] = []
+    for item in text.split(";"):
+        item = item.strip()
+        if not item:
+            continue
+        name = f"point-{len(points):02d}"
+        coords = item
+        if ":" in item:
+            name, coords = item.split(":", 1)
+            name = name.strip()
+        x_text, y_text = coords.split(",", 1)
+        points.append((name, int(x_text), int(y_text)))
+    if not points:
+        raise ValueError("at least one aim point is required")
+    return points
+
+
+def run_aim_points(
+    args: argparse.Namespace,
+    result: dict[str, Any],
+    hwnd: int,
+    frame: np.ndarray,
+    interval: float,
+    deadline: float,
+) -> int:
+    """Aim (and optionally click) validation points on an already-loaded screen.
+
+    Unlike --steps this never skips on the map fingerprint and never treats a
+    small frame delta as a failure: follow-up validation points (map edges,
+    minimap corners, castle descriptors, recovered lower/right action UI) can
+    legitimately redraw only a handful of pixels. What is proven per point is
+    the aimed ENGINE cursor position error; the frame delta is recorded as
+    observed so a run can report honestly either way.
+    """
+    points = parse_points(args.aim_points)
+    result["aim_points"] = [{"name": name, "target": [x, y]} for name, x, y in points]
+    result["aim_only"] = bool(args.aim_only)
+    last_pos: tuple[int, int] | None = (0, 0)
+    gain = args.initial_gain
+    converged = 0
+
+    for name, tx, ty in points:
+        row: dict[str, Any] = {
+            "name": name,
+            "target": [tx, ty],
+            "pre_nonblack": round(nonblack_percent(frame), 2),
+            "pre_unique_colors": unique_sample_colors(frame),
+        }
+        if time.time() > deadline:
+            row["deadline_hit"] = True
+            result["steps"].append(row)
+            break
+
+        aimed = aim(args.pid, hwnd, (tx, ty), gain, frame, last_pos, interval,
+                    args.aim_tolerance, deadline)
+        frame = aimed.pop("frame")
+        hwnd = aimed.pop("hwnd")
+        last_pos = aimed.pop("last_pos")
+        gain = float(aimed.get("gain") or gain)
+        row["aim"] = aimed
+        row["converged"] = bool(aimed.get("converged"))
+        if not aimed.get("converged"):
+            row["clicked"] = False
+            row["transition_verified"] = False
+            result["steps"].append(row)
+            if aimed.get("window_lost"):
+                break
+            continue
+        converged += 1
+
+        if args.aim_only:
+            row["clicked"] = False
+            row["aim_only"] = True
+            result["steps"].append(row)
+            continue
+
+        pos = tuple(aimed["aimed_pos"])
+        nb = row["pre_nonblack"]
+        menu_like = MENU_NONBLACK_RANGE[0] <= nb <= MENU_NONBLACK_RANGE[1]
+        if menu_like and (MENU_EXIT_ZONE[0] <= pos[0] <= MENU_EXIT_ZONE[2]
+                          and MENU_EXIT_ZONE[1] <= pos[1] <= MENU_EXIT_ZONE[3]):
+            # The expected screen never loaded and the aim landed on the menu
+            # Exit control; refuse rather than quit the game.
+            row["clicked"] = False
+            row["transition_verified"] = False
+            row["refused_exit_zone"] = True
+            result["steps"].append(row)
+            continue
+
+        click_foreground_ok = focus(hwnd)
+        row["click_foreground_ok"] = click_foreground_ok
+        if not click_foreground_ok:
+            row["clicked"] = False
+            row["transition_verified"] = False
+            row["foreground_denied"] = True
+            result["steps"].append(row)
+            continue
+
+        pre_click = frame
+        delta = tuple(aimed["pulse_delta"])
+        row["clicked"] = True
+        row["click_count"] = click_while_pulsing(delta, args.click_hold_ms, args.click_repeats, interval)
+        time.sleep(args.point_settle_ms / 1000.0)
+        hwnd, after = grab_retry(args.pid, hwnd)
+        if after is None:
+            row["transition_verified"] = False
+            row["window_lost_after_click"] = True
+            result["steps"].append(row)
+            break
+        row["changed_pixels"] = changed_pixels(pre_click, after)
+        row["post_nonblack"] = round(nonblack_percent(after), 2)
+        row["post_unique_colors"] = unique_sample_colors(after)
+        row["transition_verified"] = row["changed_pixels"] > args.transition_min_pixels
+        frame = after
+        last_pos = None  # screen changed; cursor location unknown until next diff
+        result["steps"].append(row)
+
+    result["final_nonblack"] = round(nonblack_percent(frame), 2)
+    result["all_steps_accounted"] = len(result["steps"]) == len(points)
+    result["aim_points_total"] = len(points)
+    result["aim_points_converged"] = converged
+    emit(result, args.json)
+    return 0 if (converged == len(points) and result["all_steps_accounted"]) else 2
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid", type=int, required=True)
-    ap.add_argument("--steps", required=True,
-                    help="semicolon list of name:engineX,engineY steps, e.g. 'load-button:302,211;load-slot0:320,166'")
+    ap.add_argument("--steps",
+                    help="ROUTE mode: semicolon list of name:engineX,engineY steps, e.g. "
+                         "'load-button:302,211;load-slot0:320,166'. Routes menu screens and stops "
+                         "once the gameplay map fingerprint appears.")
+    ap.add_argument("--aim-points",
+                    help="AIM-POINTS mode: semicolon list of engineX,engineY (or name:engineX,engineY) "
+                         "validation points on an ALREADY-loaded screen. Every point is aimed with the "
+                         "same frame-diff feedback loop and clicked while pulsing, but nothing is skipped "
+                         "on a map fingerprint and a small frame delta is not a failure: follow-up "
+                         "validation points can legitimately redraw only a few pixels. The proof carried "
+                         "per point is the aimed engine position error; the frame delta is reported as "
+                         "observed.")
+    ap.add_argument("--aim-only", action="store_true",
+                    help="--aim-points: aim at every point without clicking")
+    ap.add_argument("--transition-min-pixels", type=int, default=12000,
+                    help="changed-pixel count above which a post-click frame delta counts as a "
+                         "verified transition")
+    ap.add_argument("--point-settle-ms", type=int, default=1200,
+                    help="--aim-points: settle time after each clicked point before the post frame")
     ap.add_argument("--map-nonblack", type=float, default=85.0,
                     help="skip remaining steps once the frame nonblack%% reaches this (0 disables)")
     ap.add_argument("--aim-tolerance", type=int, default=10)
@@ -391,12 +540,16 @@ def main() -> int:
     ap.add_argument("--json", type=Path)
     args = ap.parse_args()
 
+    if bool(args.steps) == bool(args.aim_points):
+        ap.error("exactly one of --steps or --aim-points is required")
+
     deadline = time.time() + args.deadline_sec
     interval = args.pulse_interval_ms / 1000.0
-    steps = parse_steps(args.steps)
+    steps = parse_steps(args.steps) if args.steps else []
     result: dict[str, Any] = {
         "input_mechanism": INPUT_MECHANISM,
         "engine_model": ENGINE_MODEL,
+        "mode": "aim-points" if args.aim_points else ("probe-only" if args.probe_only else "route-steps"),
         "pid": args.pid,
         "steps": [],
         "map_reached": False,
@@ -420,6 +573,9 @@ def main() -> int:
         result["error"] = "could not grab client frame"
         emit(result, args.json)
         return 3
+
+    if args.aim_points:
+        return run_aim_points(args, result, hwnd, frame, interval, deadline)
 
     if args.probe_only:
         name, tx, ty = steps[0]
@@ -501,7 +657,7 @@ def main() -> int:
         row["changed_pixels"] = changed
         row["post_nonblack"] = round(post_nb, 2)
         row["post_unique_colors"] = unique_sample_colors(after)
-        row["transition_verified"] = changed > 12000
+        row["transition_verified"] = changed > args.transition_min_pixels
         frame = after
         last_pos = None  # screen changed; cursor location unknown until next diff
         result["steps"].append(row)

@@ -26,6 +26,7 @@ DEFAULT_MD = Path("captures/current/manual-directinput-run-plan-current.md")
 DEFAULT_VISUAL_SMOKE_SCRIPT = Path("scripts/smoke/run_clash_visual_smoke.ps1")
 DEFAULT_BATTLE_VISIBLE_SCRIPT = Path("scripts/cdb/run_cdb_battle_visible_input_probe.ps1")
 DEFAULT_CHECKLIST_SCRIPT = Path("tools/manual_directinput_checklist.py")
+DEFAULT_PULSE_TOOL = Path("tools/menu_pulse_click.py")
 DEFAULT_PROOF_JSON = Path("captures/current/manual-directinput-proof-current.json")
 
 RUNTIME_POLICY = (
@@ -38,6 +39,12 @@ GUARD_POLICY = (
     "before promotion; the visible harness window must use the safe desktop offset so "
     "lower/right 800x600 client targets are not cursor-clamped"
 )
+ENGINE_INPUT_POLICY = (
+    "the game reads mouse position from the DirectInput accumulator, not the OS cursor, so "
+    "SetCursorPos/absolute-SendInput moves are invisible to its hit test; every menu, map, and "
+    "follow-up click in this plan is driven by pulse-mode relative injection through "
+    "tools/menu_pulse_click.py with frame-diff engine-cursor feedback and per-point aim error"
+)
 CANDIDATE_PATH_POLICY = (
     "candidate placeholders must resolve to freshly built, hashed executables under "
     f"{manual_directinput_checklist.EXPECTED_CANDIDATE_ROOT}; never use "
@@ -48,6 +55,34 @@ CANDIDATE_PATH_POLICY = (
 # full logical client, including x=780/y=580 proof points, inside 0..799/0..599.
 SAFE_MOVE_WINDOW_ORIGIN = (0, -30)
 
+# 2026-07-17 diagnosis (commit 589f5700): the menu and map read the mouse from
+# the DirectInput ACCUMULATOR, not the OS cursor.  Every -MoveMode the visual
+# smoke harness historically offered (setcursor / sendinput-absolute) is
+# invisible to the engine hit test, so the previously prescribed
+# "-MoveMode auto -ClickMode sendinput" commands verified OS-cursor placement
+# while the engine cursor never moved and no click was ever registered.  The
+# route and the per-target follow-up points therefore run through
+# tools/menu_pulse_click.py: one relative MOUSEEVENTF_MOVE per ~28ms input
+# poll, frame-diff engine-cursor feedback, button held while pulsing.
+INPUT_MODE = "pulse"
+# What the plan is allowed to emit, checked independently of INPUT_MODE so a
+# regression back to an OS-cursor lane fails the plan instead of relabelling it.
+REQUIRED_INPUT_MODE_FLAG = "-InputMode pulse"
+ENGINE_INPUT_MECHANISM = "pulse-relative-engine-aim"
+DI_INVISIBLE_MOVE_MODES = ("setcursor", "sendinput-absolute", "auto")
+# Engine-space load route.  The centered main-menu Load ellipse centre was
+# measured at 302,211 on 2026-07-17; the historic 300,218 was an OS-cursor-era
+# approximation.  Slot/confirm targets come from the menu load route notes.
+PULSE_ROUTE_STEPS = "load-button:302,211;load-slot0:320,166;confirm-load:400,226"
+INTRO_VERIFY_ROUNDS = 12
+PULSE_AIM_TOLERANCE_PX = 10
+# Documented real-runtime castle-entry click (captures/archive/
+# manual-barracks-entry/click-castle.json, manual-visible-session-2026-07-12):
+# a real click at client (470,397) entered the slot-0 "Stormus" castle
+# overview.  The castle targets need it before any overview descriptor point
+# is reachable; the load route only reaches the map.
+CASTLE_ENTRY_POINT = "castle-entry:470,397"
+
 
 COMMAND_SPECS: dict[str, dict[str, Any]] = {
     "stable_menu_load": {
@@ -55,40 +90,75 @@ COMMAND_SPECS: dict[str, dict[str, Any]] = {
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
+        "pulse_route_steps": PULSE_ROUTE_STEPS,
         "followup_points": "",
-        "notes": "proves the centered menu load route and held-click cadence with real DirectInput",
+        "notes": (
+            "proves the centered menu load route and held-click cadence against the engine's "
+            "DirectInput accumulator; the harness gates on a verified menu fingerprint, an "
+            "engine-cursor liveness probe, and per-step aim error plus frame transition"
+        ),
     },
     "stable_hd_map_input": {
         "candidate": r"C:\ClashTests\manual-directinput\<stable-hd-map-candidate-exe>",
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
-        "followup_points": "400,300;780,300;400,580;760,560",
-        "notes": "the command reaches gameplay through the load route; then manually exercise the listed map edge/minimap/selection points",
+        "pulse_route_steps": PULSE_ROUTE_STEPS,
+        "followup_points": (
+            "map-center:400,300;map-right-edge:780,300;map-bottom:400,580;minimap-right-bottom:760,560"
+        ),
+        "notes": (
+            "the command reaches gameplay through the pulse load route, then aims and clicks each "
+            "map edge/minimap/selection point with engine-cursor feedback; per-point aim error and "
+            "frame delta are recorded, and edge-scroll behaviour still needs a human read of the frames"
+        ),
     },
     "right_bottom_validation_input": {
         "candidate": r"C:\ClashTests\manual-directinput\<rightbottomcompose-candidate-exe>",
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
-        "followup_points": "588,440;450,73;760,560",
-        "notes": "the command reaches gameplay through the load route; then manually check the recovered lower/right action UI and displayed grid/action positions",
+        "pulse_route_steps": PULSE_ROUTE_STEPS,
+        "followup_points": "action-ui:588,440;grid-hit:450,73;minimap-right-bottom:760,560",
+        "notes": (
+            "the command reaches gameplay through the pulse load route, then aims the recovered "
+            "lower/right action UI and the controlled native (450,73) grid-hit position; needs the "
+            "slot5-as-slot0 right-bottom fixture staged so the owner/action descriptors exist"
+        ),
     },
     "castle_barracks_centered_input": {
         "candidate": r"C:\ClashTests\manual-directinput\<castlecenter-all-candidate-exe>",
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
-        "followup_points": "400,300;231,366;180,440",
-        "notes": "the command reaches gameplay through the load route; then manually check centered barracks descriptor/action positions",
+        "pulse_route_steps": PULSE_ROUTE_STEPS,
+        "followup_points": f"{CASTLE_ENTRY_POINT};castle-0x63:231,366;owner-action:180,440",
+        "notes": (
+            "OPEN COORDINATE GAP: no barracks-entry coordinate is known for the slot-0 'Stormus' "
+            "castle. The surfdump-catalog command-0x86 descriptor point (371,107) was clicked "
+            "coordinate-perfectly on 2026-07-12 and hit a wall with the frame unchanged, because "
+            "the Stormus keep presents a different building layout (4 of 8 catalog descriptors "
+            "absent, shifted bboxes). This command reaches the castle overview only; the barracks "
+            "build sub-screen cannot be entered until a real barracks coordinate is discovered, so "
+            "this target must not be recorded as passing from this command alone"
+        ),
     },
     "castle_overview_centered_input": {
         "candidate": r"C:\ClashTests\manual-directinput\<castlecenter-all-candidate-exe>",
         "script": DEFAULT_VISUAL_SMOKE_SCRIPT,
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
-        "followup_points": "231,366;180,440;503,426",
-        "notes": "the command reaches gameplay through the load route; then manually check centered castle overview descriptors and callbacks",
+        "pulse_route_steps": PULSE_ROUTE_STEPS,
+        "followup_points": (
+            f"{CASTLE_ENTRY_POINT};castle-0x63:231,366;owner-action:180,440;overview-0x87:503,426"
+        ),
+        "notes": (
+            "the command reaches gameplay through the pulse load route, enters the castle overview "
+            "at the documented real-runtime (470,397) click, then aims the centered overview "
+            "descriptors; 231,366 is the 0x63 displayed coordinate that a fixture run already "
+            "recorded as sampling 0x0c rather than the descriptor, and 503,426 has no hitmap "
+            "evidence behind it, so both need frame confirmation before being reported as hits"
+        ),
     },
 }
 
@@ -110,37 +180,52 @@ def command_text(parts: list[str]) -> str:
 
 
 def visible_command(spec: dict[str, Any]) -> str:
-    return command_text(
-        [
-            "powershell.exe",
-            "-NoProfile",
-            "-ExecutionPolicy",
-            "Bypass",
-            "-File",
-            quote_ps(str(spec["script"])),
-            "-Exe",
-            quote_ps(str(spec["candidate"])),
-            "-WorkDir",
-            quote_ps(r"C:\Clash"),
-            "-Route",
-            quote_ps(str(spec["route"])),
-            "-Points",
-            quote_ps(str(spec["route_points"])),
-            "-MoveMode",
-            "auto",
-            "-ClickMode",
-            "sendinput",
-            "-ClickHoldMs",
-            "300",
-            "-ClickRepeat",
-            "2",
-            "-MoveWindowX",
-            str(SAFE_MOVE_WINDOW_ORIGIN[0]),
-            "-MoveWindowY",
-            str(SAFE_MOVE_WINDOW_ORIGIN[1]),
-            "-AllowVisibleRuntime",
-        ]
-    )
+    parts = [
+        "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        quote_ps(str(spec["script"])),
+        "-Exe",
+        quote_ps(str(spec["candidate"])),
+        "-WorkDir",
+        quote_ps(r"C:\Clash"),
+        "-Route",
+        quote_ps(str(spec["route"])),
+        "-Points",
+        quote_ps(str(spec["route_points"])),
+        # The engine-visible lane. -MoveMode/-ClickMode below still drive the
+        # intro-skip stimuli (mouse_path_probe space pulses and clicks, which
+        # the intro does consume); the menu/map route and every follow-up
+        # point go through the pulse engine-aim path instead.
+        "-InputMode",
+        INPUT_MODE,
+        "-PulseRouteSteps",
+        quote_ps(str(spec["pulse_route_steps"])),
+    ]
+    if spec.get("followup_points"):
+        parts += ["-FollowupPoints", quote_ps(str(spec["followup_points"]))]
+    parts += [
+        "-PulseAimTolerancePx",
+        str(PULSE_AIM_TOLERANCE_PX),
+        "-IntroMaxRounds",
+        str(INTRO_VERIFY_ROUNDS),
+        "-MoveMode",
+        "auto",
+        "-ClickMode",
+        "sendinput",
+        "-ClickHoldMs",
+        "300",
+        "-ClickRepeat",
+        "2",
+        "-MoveWindowX",
+        str(SAFE_MOVE_WINDOW_ORIGIN[0]),
+        "-MoveWindowY",
+        str(SAFE_MOVE_WINDOW_ORIGIN[1]),
+        "-AllowVisibleRuntime",
+    ]
+    return command_text(parts)
 
 
 def validate_proof_command(checklist_script: Path, proof_json: Path) -> str:
@@ -163,6 +248,28 @@ def script_has_visible_guard(path: Path) -> bool:
     return "[switch]$AllowVisibleRuntime" in text and "if (-not $AllowVisibleRuntime)" in text
 
 
+def script_supports_pulse_input(path: Path) -> bool:
+    """The harness must actually expose the engine-visible pulse lane.
+
+    Without this the emitted commands would silently fall back to the
+    DI-invisible OS-cursor path that never registered a click.
+    """
+    if not path.exists():
+        return False
+    text = path.read_text(encoding="utf-8-sig", errors="replace")
+    return all(
+        token in text
+        for token in ("$InputMode", "'pulse'", "$PulseRouteSteps", "$FollowupPoints", "menu_pulse_click.py")
+    )
+
+
+def pulse_tool_supports_aim_points(path: Path) -> bool:
+    if not path.exists():
+        return False
+    text = path.read_text(encoding="utf-8-sig", errors="replace")
+    return "--aim-points" in text and "--probe-only" in text
+
+
 def build_commands() -> dict[str, dict[str, Any]]:
     checklist_by_id = {
         item["id"]: item
@@ -179,7 +286,12 @@ def build_commands() -> dict[str, dict[str, Any]]:
             "candidate_path_policy": CANDIDATE_PATH_POLICY,
             "route": spec["route"],
             "route_points": spec["route_points"],
+            "pulse_route_steps": spec["pulse_route_steps"],
             "followup_points": spec["followup_points"],
+            "input_mode": INPUT_MODE,
+            "engine_input_mechanism": ENGINE_INPUT_MECHANISM,
+            "aim_tolerance_px": PULSE_AIM_TOLERANCE_PX,
+            "intro_verify_rounds": INTRO_VERIFY_ROUNDS,
             "move_window_origin": list(SAFE_MOVE_WINDOW_ORIGIN),
             "requires_explicit_user_approval": True,
             "contains_allow_visible_runtime": True,
@@ -196,6 +308,7 @@ def build_plan(
     visual_smoke_script: Path = DEFAULT_VISUAL_SMOKE_SCRIPT,
     battle_visible_script: Path = DEFAULT_BATTLE_VISIBLE_SCRIPT,
     checklist_script: Path = DEFAULT_CHECKLIST_SCRIPT,
+    pulse_tool: Path = DEFAULT_PULSE_TOOL,
     proof_json: Path = DEFAULT_PROOF_JSON,
 ) -> dict[str, Any]:
     failures: list[str] = []
@@ -242,6 +355,17 @@ def build_plan(
             failures.append(f"visible runtime script is missing an AllowVisibleRuntime guard: {script}")
     if not checklist_script.exists():
         failures.append(f"missing manual proof validator script: {checklist_script}")
+    if not script_supports_pulse_input(visual_smoke_script):
+        failures.append(
+            f"visible runtime script does not expose the engine-visible pulse input lane "
+            f"(-InputMode pulse / -PulseRouteSteps / -FollowupPoints): {visual_smoke_script}"
+        )
+    if not pulse_tool.exists():
+        failures.append(f"missing engine-aim pulse tool: {pulse_tool}")
+    elif not pulse_tool_supports_aim_points(pulse_tool):
+        failures.append(
+            f"engine-aim pulse tool lacks the --aim-points/--probe-only modes the plan relies on: {pulse_tool}"
+        )
 
     commands = build_commands()
     for item_id in manual_directinput_checklist.REQUIRED_IDS:
@@ -253,6 +377,17 @@ def build_plan(
         if "-MoveWindowX 0 -MoveWindowY -30" not in command:
             failures.append(
                 f"manual target command lacks the safe (0,-30) window offset: {item_id}"
+            )
+        if REQUIRED_INPUT_MODE_FLAG not in command:
+            failures.append(
+                f"manual target command does not select the engine-visible pulse input mode: {item_id}"
+            )
+        if "-PulseRouteSteps" not in command:
+            failures.append(f"manual target command lacks pulse route steps: {item_id}")
+        expected_followup = COMMAND_SPECS[item_id].get("followup_points") or ""
+        if expected_followup and "-FollowupPoints" not in command:
+            failures.append(
+                f"manual target command lacks the pulse follow-up validation points: {item_id}"
             )
         candidate_placeholder = commands.get(item_id, {}).get("candidate_placeholder", "")
         if not manual_directinput_checklist._is_same_or_under(
@@ -282,6 +417,12 @@ def build_plan(
         "the harness uses -MoveWindowX 0 -MoveWindowY -30 so the measured (3,26) non-client offset still leaves 800x600 lower/right client points inside the active desktop instead of cursor-clamping them",
         "each manual target captures observed result, screenshot or notes, pass/fail notes, and no-crash status",
         "captures/current/manual-directinput-proof-current.json is filled from the approved run and validated before promotion",
+        "-InputMode pulse is used for every target: the engine reads the DirectInput accumulator, so setcursor/absolute moves never reach its hit test and any run without the pulse lane proves nothing about clicks",
+        "each run reports IntroMenuVerified and CursorProbeAlive before trusting a route; a run that never verified the menu fingerprint or never woke the engine cursor is a failed run, not a failed build",
+        "the pulse lane is automated-but-real OS SendInput; evidence_class stays manual_directinput only if the operator genuinely witnessed the run, and the harness-side proof class stays automated_visible_runtime_engine_aim_evidence",
+        "castle targets need the documented real-runtime castle-entry click (470,397) before any overview descriptor point is reachable; the load route only reaches the map",
+        "castle_barracks_centered_input has an OPEN coordinate gap: no barracks-entry coordinate is known for the slot-0 'Stormus' castle (the catalog 0x86 point 371,107 hit a wall on 2026-07-12), so it cannot honestly be recorded as passing from these commands",
+        "right_bottom_validation_input needs the slot5-as-slot0 right-bottom fixture staged (scripts/smoke/prepare_right_bottom_slot_fixture.ps1) so owner/action descriptors exist to hit",
     ]
 
     return {
@@ -294,6 +435,11 @@ def build_plan(
         "checklist_json": str(checklist_json),
         "template_report_json": str(template_report_json),
         "visible_runtime_guarded_scripts": [str(visual_smoke_script), str(battle_visible_script)],
+        "input_mode": INPUT_MODE,
+        "engine_input_mechanism": ENGINE_INPUT_MECHANISM,
+        "engine_input_policy": ENGINE_INPUT_POLICY,
+        "di_invisible_move_modes": list(DI_INVISIBLE_MOVE_MODES),
+        "pulse_tool": str(pulse_tool),
         "proof_json_template": str(proof_json),
         "proof_ready": False,
         "visible_runtime_requires_approval": True,
@@ -313,6 +459,16 @@ def build_plan(
                 and command.get("move_window_origin") == [0, -30]
                 for command in commands.values()
             ),
+            "all_commands_use_pulse_input_mode": all(
+                REQUIRED_INPUT_MODE_FLAG in command.get("command", "")
+                and "-PulseRouteSteps" in command.get("command", "")
+                for command in commands.values()
+            ),
+            "followup_point_targets": [
+                item_id
+                for item_id, command in commands.items()
+                if command.get("followup_points")
+            ],
             "template_valid_as_proof": template_report.get("template_valid_as_proof"),
             "manual_proof_valid": checklist.get("manual_proof_valid"),
             "promotion_ready": checklist.get("promotion_ready"),
@@ -330,6 +486,9 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Generated: `{report['generated_at']}`",
         f"- Runtime policy: {report['runtime_policy']}",
         f"- Guard policy: {report['guard_policy']}",
+        f"- Engine input policy: {report['engine_input_policy']}",
+        f"- Input mode: `{report['input_mode']}` (mechanism `{report['engine_input_mechanism']}`, tool `{report['pulse_tool']}`)",
+        f"- DirectInput-invisible move modes (never sufficient alone): `{', '.join(report['di_invisible_move_modes'])}`",
         f"- Candidate path policy: {report['candidate_path_policy']}",
         f"- Candidate root: `{report['candidate_root']}`",
         f"- Visible runtime requires approval: `{report['visible_runtime_requires_approval']}`",
@@ -337,6 +496,7 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- Manual target count: `{report['manual_target_count']}`",
         f"- All commands have -AllowVisibleRuntime: `{summary.get('all_commands_have_allow_visible_runtime')}`",
         f"- All commands use safe window offset (0,-30): `{summary.get('all_commands_have_safe_window_origin')}`",
+        f"- All commands use the engine-visible pulse input mode: `{summary.get('all_commands_use_pulse_input_mode')}`",
         f"- Manual proof valid: `{summary.get('manual_proof_valid')}`",
         f"- Promotion ready: `{summary.get('promotion_ready')}`",
         "",
@@ -353,8 +513,12 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
                 f"- Candidate placeholder: `{item['candidate_placeholder']}`",
                 f"- Candidate path policy: {item['candidate_path_policy']}",
                 f"- Route: `{item['route']}`",
-                f"- Load-route points: `{item['route_points']}`",
-                f"- Follow-up manual points: `{item['followup_points'] or 'n/a'}`",
+                f"- Load-route points (legacy record): `{item['route_points']}`",
+                f"- Pulse engine-aim route steps: `{item['pulse_route_steps']}`",
+                f"- Follow-up pulse aim points: `{item['followup_points'] or 'n/a'}`",
+                f"- Input mode: `{item['input_mode']}` / `{item['engine_input_mechanism']}`",
+                f"- Aim tolerance px: `{item['aim_tolerance_px']}`",
+                f"- Intro verify rounds: `{item['intro_verify_rounds']}`",
                 f"- Safe window origin: `{item['move_window_origin']}`",
                 f"- Notes: {item['notes']}",
                 "",
@@ -392,6 +556,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--visual-smoke-script", type=Path, default=DEFAULT_VISUAL_SMOKE_SCRIPT)
     parser.add_argument("--battle-visible-script", type=Path, default=DEFAULT_BATTLE_VISIBLE_SCRIPT)
     parser.add_argument("--checklist-script", type=Path, default=DEFAULT_CHECKLIST_SCRIPT)
+    parser.add_argument("--pulse-tool", type=Path, default=DEFAULT_PULSE_TOOL)
     parser.add_argument("--proof-json", type=Path, default=DEFAULT_PROOF_JSON)
     parser.add_argument("--write-json", type=Path, default=DEFAULT_JSON)
     parser.add_argument("--write-markdown", "--write-md", dest="write_markdown", type=Path, default=DEFAULT_MD)
@@ -407,10 +572,12 @@ def main(argv: list[str] | None = None) -> int:
         visual_smoke_script=args.visual_smoke_script,
         battle_visible_script=args.battle_visible_script,
         checklist_script=args.checklist_script,
+        pulse_tool=args.pulse_tool,
         proof_json=args.proof_json,
     )
     print(f"overall: {status_text(bool(report.get('passed')))}")
     print(f"runtime-policy: {report['runtime_policy']}")
+    print(f"input-mode: {report['input_mode']} ({report['engine_input_mechanism']})")
     print(f"manual-target-count: {report['manual_target_count']}")
     print(f"proof-ready: {report['proof_ready']}")
     if report["failures"]:
