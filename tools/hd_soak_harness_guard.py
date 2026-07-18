@@ -382,6 +382,72 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
         health_failures,
     )
 
+    # A no-visible-window sample has three very different causes and the harness
+    # must name which one it saw. Measured 2026-07-18: the GOG wrapper clears
+    # WS_VISIBLE on its still-alive 800x600 window and raises a modal #32770
+    # ("DirectDraw Error DDERR_UNSUPPORTED") when a display-mode switch fails,
+    # which the old visible-only probe reported as a bare "window missing" and
+    # cost two sessions chasing a phantom window teardown.
+    transition_failures = []
+    transition_markers = [
+        "FindAliveHiddenWindowForProcess",
+        "FindDialogForProcess",
+        "DialogTextOf",
+        "window_hidden_while_process_alive",
+        "wrapper_error_dialog",
+        "window_hidden_while_alive_observed",
+        "wrapper_error_dialog_observed",
+        "wrapper_error_dialog_text",
+    ]
+    for marker in transition_markers:
+        if marker not in text:
+            transition_failures.append(
+                f"wrapper-transition classification marker is missing: {marker}"
+            )
+    checks["wrapper_transition_classification"] = check_record(
+        not transition_failures,
+        {
+            "policy": (
+                "a missing visible window is classified as genuinely absent, hidden "
+                "but alive, or accompanied by a wrapper error dialog; all three stay "
+                "hard failures and none is ever driven with input or capture"
+            ),
+            "required_markers": transition_markers,
+        },
+        transition_failures,
+    )
+
+    # Without input standing the intro-skip stimulus never reaches the game, the
+    # intro auto-plays, and the wrapper fails its display-mode switch. Measured
+    # 2026-07-18: three runs burned that way on a locked workstation while the
+    # harness reported render/route failures instead of the real precondition.
+    standing_failures = []
+    standing_markers = [
+        "Get-InputStandingStatus",
+        "GetForegroundWindow",
+        "LockApp",
+        "LogonUI",
+        "input_standing",
+        "Input standing preflight failed",
+    ]
+    for marker in standing_markers:
+        if marker not in text:
+            standing_failures.append(f"input-standing preflight marker is missing: {marker}")
+    if "throw \"Input standing preflight failed" not in text:
+        standing_failures.append("input-standing preflight does not fail closed before launch")
+    checks["input_standing_preflight"] = check_record(
+        not standing_failures,
+        {
+            "policy": (
+                "visible execution refuses to launch when the foreground window is "
+                "owned by the lock screen, because OS input injection is denied and "
+                "the DirectDraw wrapper cannot complete a display-mode switch"
+            ),
+            "required_markers": standing_markers,
+        },
+        standing_failures,
+    )
+
     # The window-health grace retries above only cover HEALTH SAMPLING. The
     # input helpers cache a handle across the intro->menu mode switch, and the
     # wrapper recreates its window there (2026-07-18: WinError 1400 killed a
