@@ -70,6 +70,12 @@ WNDENUMPROC = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
 user32.EnumWindows.argtypes = [WNDENUMPROC, wintypes.LPARAM]
 user32.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
 user32.SendInput.argtypes = [wintypes.UINT, ctypes.POINTER(INPUT), ctypes.c_int]
+user32.IsWindow.argtypes = [wintypes.HWND]
+user32.IsWindow.restype = wintypes.BOOL
+user32.GetClientRect.argtypes = [wintypes.HWND, ctypes.POINTER(RECT)]
+user32.GetClientRect.restype = wintypes.BOOL
+user32.ClientToScreen.argtypes = [wintypes.HWND, ctypes.POINTER(POINT)]
+user32.ClientToScreen.restype = wintypes.BOOL
 
 MOUSEEVENTF_MOVE = 0x0001
 MOUSEEVENTF_LEFTDOWN = 0x0002
@@ -97,11 +103,42 @@ def find_window(pid: int) -> int | None:
     return result[0] if result else None
 
 
+def live_hwnd(pid: int, hwnd: int | None, attempts: int = 8, delay: float = 0.25) -> int | None:
+    """Return a handle that is live NOW, re-resolving one the wrapper recreated.
+
+    The GOG/DirectDraw wrapper destroys and recreates its top-level window
+    across display-mode switches (2026-07-18: a cached handle went stale
+    mid-run and the Win32 call on it failed with ERROR_INVALID_WINDOW_HANDLE).
+    Every phase that focuses, grabs, or clicks therefore re-validates its
+    handle here and re-acquires it for the pid with a bounded retry, returning
+    None - fail closed - only once the retries are exhausted.
+    """
+    if hwnd and user32.IsWindow(hwnd):
+        return int(hwnd)
+    for _ in range(max(1, attempts)):
+        found = find_window(pid)
+        if found:
+            return int(found)
+        time.sleep(delay)
+    return None
+
+
 def client_geometry(hwnd: int) -> tuple[int, int, int, int]:
+    """Client origin/size, or zeros when the handle is dead.
+
+    Both Win32 return values are checked: on a stale handle they fail and leave
+    the structures zeroed, and silently returning that as a real (0,0,0,0)
+    geometry would have callers grab or aim at the desktop corner. Zeros mean
+    "no usable window" and every caller treats them as such.
+    """
+    if not (hwnd and user32.IsWindow(hwnd)):
+        return 0, 0, 0, 0
     r = RECT()
-    user32.GetClientRect(hwnd, ctypes.byref(r))
+    if not user32.GetClientRect(hwnd, ctypes.byref(r)):
+        return 0, 0, 0, 0
     pt = POINT(0, 0)
-    user32.ClientToScreen(hwnd, ctypes.byref(pt))
+    if not user32.ClientToScreen(hwnd, ctypes.byref(pt)):
+        return 0, 0, 0, 0
     return int(pt.x), int(pt.y), int(r.right - r.left), int(r.bottom - r.top)
 
 
@@ -299,7 +336,16 @@ def aim(pid: int, hwnd: int, target: tuple[int, int], gain: float, prev: np.ndar
                               "wakes": 0}
     pos = last_pos
     frame = prev
-    # Prime the engine's input acquisition before the first aim.
+    # Prime the engine's input acquisition before the first aim, on a handle
+    # re-validated here rather than trusted from the caller's phase.
+    primed = live_hwnd(pid, hwnd)
+    if primed is None:
+        result["window_lost"] = True
+        result["frame"] = frame
+        result["hwnd"] = hwnd
+        result["last_pos"] = pos
+        return result
+    hwnd = primed
     wake_foreground(hwnd)
     no_motion_streak = 0
     for it in range(max_iterations):
@@ -307,6 +353,16 @@ def aim(pid: int, hwnd: int, target: tuple[int, int], gain: float, prev: np.ndar
             result["deadline_hit"] = True
             break
         delta = (int(round(target[0] / gain)), int(round(target[1] / gain)))
+        # Re-validate every iteration: focusing a handle the wrapper already
+        # destroyed can never succeed, and reporting that as "foreground denied"
+        # misdiagnoses a recreated window as a permissions/standing problem.
+        fresh = live_hwnd(pid, hwnd)
+        if fresh is None:
+            result["window_lost"] = True
+            break
+        if fresh != hwnd:
+            result["reacquired"] = int(result.get("reacquired") or 0) + 1
+            hwnd = fresh
         foreground_ok = focus(hwnd)
         pulse_stream(delta, 0.6, interval)
         time.sleep(0.15)
@@ -463,6 +519,14 @@ def run_aim_points(
             result["steps"].append(row)
             continue
 
+        fresh = live_hwnd(args.pid, hwnd)
+        if fresh is None:
+            row["clicked"] = False
+            row["transition_verified"] = False
+            row["window_lost"] = True
+            result["steps"].append(row)
+            break
+        hwnd = fresh
         click_foreground_ok = focus(hwnd)
         row["click_foreground_ok"] = click_foreground_ok
         if not click_foreground_ok:
@@ -631,6 +695,15 @@ def main() -> int:
             ok = False
             break
         pre_click = frame
+        fresh = live_hwnd(args.pid, hwnd)
+        if fresh is None:
+            row["clicked"] = False
+            row["transition_verified"] = False
+            row["window_lost"] = True
+            result["steps"].append(row)
+            ok = False
+            break
+        hwnd = fresh
         click_foreground_ok = focus(hwnd)
         row["click_foreground_ok"] = click_foreground_ok
         if not click_foreground_ok:

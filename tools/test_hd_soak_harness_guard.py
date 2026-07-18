@@ -44,6 +44,7 @@ def test_current_harness_passes() -> None:
     assert guard["checks"]["intro_skip_policy"]["passed"] is True
     assert guard["checks"]["windowed_mode"]["passed"] is True
     assert guard["checks"]["window_health_stop"]["passed"] is True
+    assert guard["checks"]["window_handle_freshness"]["passed"] is True
     assert guard["checks"]["promotion_boundary"]["passed"] is True
 
 
@@ -196,6 +197,23 @@ def test_guard_rejects_missing_window_health_stop(fixture: Path) -> None:
     assert any("window-health marker" in failure for failure in guard["failures"]), guard
 
 
+def test_guard_rejects_missing_window_handle_freshness(fixture: Path) -> None:
+    bad = harness_text().replace("    '--window-reacquire-attempts', \"$WindowReacquireAttempts\",\n", "")
+    script = write_fixture(fixture / "window-freshness.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert guard["checks"]["window_handle_freshness"]["passed"] is False, guard
+    assert any("--window-reacquire-attempts" in failure for failure in guard["failures"]), guard
+
+
+def test_guard_rejects_missing_window_stable_gate(fixture: Path) -> None:
+    bad = harness_text().replace("$WindowStableSamples", "$WindowSettleSamples")
+    script = write_fixture(fixture / "window-stable.ps1", bad)
+    guard = hd_soak_harness_guard.build_guard(script)
+    assert guard["passed"] is False, guard
+    assert any("$WindowStableSamples" in failure for failure in guard["failures"]), guard
+
+
 def test_guard_rejects_missing_intro_execute_fragment(fixture: Path) -> None:
     bad = harness_text().replace("    '-IntroSkipClickMode', (Quote-Arg $IntroSkipClickMode),\n", "")
     script = write_fixture(fixture / "intro-execute.ps1", bad)
@@ -263,6 +281,8 @@ def run_tests() -> None:
         test_guard_rejects_missing_transition_safe_intro_stop(fixture / "intro-transition-stop")
         test_guard_rejects_missing_windowed_contract(fixture / "window-mode")
         test_guard_rejects_missing_window_health_stop(fixture / "window-health")
+        test_guard_rejects_missing_window_handle_freshness(fixture / "window-freshness")
+        test_guard_rejects_missing_window_stable_gate(fixture / "window-stable")
         test_guard_rejects_missing_intro_execute_fragment(fixture / "intro-execute")
         test_guard_rejects_missing_metric(fixture / "metric")
         test_guard_rejects_missing_render_range_and_inventory_metrics(fixture / "range-inventory")

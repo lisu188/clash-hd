@@ -244,6 +244,7 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
     approval_token_markers = [
         "$InputExeFull",
         "$WorkDirFull",
+        "$windowedMode.Sha256",
         "$Stage",
         "$Tier",
         "$Route",
@@ -255,6 +256,7 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
         "$ReportMarkdownFull",
         "$IntroSkipClickMode",
         "$IntroSkipClicks",
+        "$IntroSkipStopClickRepeatOnDrift",
         "$SkipPulses",
         "$MaxInputDriftPx",
         "$SampleIntervalSec",
@@ -309,8 +311,12 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
     for marker in [
         "ClickModeOverride",
         "ClickRepeatOverride",
+        "StopClickRepeatOnDrift",
+        "--stop-click-repeat-on-drift",
         "EffectiveClickMode",
         "EffectiveClickRepeat",
+        "TransitionStopObserved",
+        "sample_drift_after_click",
         "intro_skip_harness_prep_not_manual_directinput_release_proof",
     ]:
         if marker not in text:
@@ -324,6 +330,92 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
             "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
         },
         intro_failures,
+    )
+
+    windowed_failures = []
+    windowed_markers = [
+        "Get-DxcfgWindowedStatus",
+        "dxcfg.ini",
+        "$display -ne 'application'",
+        "$presentation -ne 'windowed'",
+        "Windowed DirectDraw config check failed",
+        "window_mode = $windowedMode",
+        "$windowedMode.Sha256",
+    ]
+    for marker in windowed_markers:
+        if marker not in text:
+            windowed_failures.append(f"windowed-mode contract marker is missing: {marker}")
+    checks["windowed_mode"] = check_record(
+        not windowed_failures,
+        {
+            "required_display": "application",
+            "required_presentation": "windowed",
+            "config_name": "dxcfg.ini",
+            "approval_token_pins_config_sha256": "$windowedMode.Sha256" in approval_token_block,
+        },
+        windowed_failures,
+    )
+
+    health_failures = []
+    health_markers = [
+        "Get-WindowHealthSample",
+        "IsHungAppWindow",
+        "window_health_policy",
+        "window_health_samples",
+        "window_hang_observed",
+        "window_missing_while_alive_observed",
+        "capture skipped because window health was",
+        "before-{0}",
+        "after-{0}-wait",
+        "before-frame-{0:D4}",
+    ]
+    for marker in health_markers:
+        if marker not in text:
+            health_failures.append(f"window-health marker is missing: {marker}")
+    checks["window_health_stop"] = check_record(
+        not health_failures,
+        {
+            "probe": "EnumWindows plus IsHungAppWindow",
+            "stops_input_and_capture_on_failure": True,
+            "required_markers": health_markers,
+        },
+        health_failures,
+    )
+
+    # The window-health grace retries above only cover HEALTH SAMPLING. The
+    # input helpers cache a handle across the intro->menu mode switch, and the
+    # wrapper recreates its window there (2026-07-18: WinError 1400 killed a
+    # short2 run with zero frames), so the harness must pin the settle gate and
+    # the bounded re-acquire it hands to tools/mouse_path_probe.py.
+    freshness_failures = []
+    freshness_markers = [
+        "$WindowStableSamples",
+        "$WindowStablePollMs",
+        "$WindowStableTimeoutSec",
+        "$WindowReacquireAttempts",
+        "$WindowReacquireDelayMs",
+        "--window-stable-samples",
+        "--window-stable-poll-ms",
+        "--window-stable-timeout-sec",
+        "--window-reacquire-attempts",
+        "--window-reacquire-delay-ms",
+        "WindowStable",
+        "WindowLostObserved",
+        "WindowReacquireCount",
+    ]
+    for marker in freshness_markers:
+        if marker not in text:
+            freshness_failures.append(f"window-handle freshness marker is missing: {marker}")
+    checks["window_handle_freshness"] = check_record(
+        not freshness_failures,
+        {
+            "policy": (
+                "input helpers re-resolve the target window per phase and wait for a "
+                "stable hwnd/client size before sending input"
+            ),
+            "required_markers": freshness_markers,
+        },
+        freshness_failures,
     )
 
     artifact_failures = []
@@ -385,6 +477,11 @@ def build_guard(script: Path = DEFAULT_SCRIPT) -> dict[str, Any]:
         "process_samples",
         "frame_samples",
         "capture_errors",
+        "window_health_sample_count",
+        "window_hang_observed",
+        "window_missing_while_alive_observed",
+        "window_health_first_failure",
+        "window_health_samples",
     ]
     for metric in required_metrics:
         if metric not in text:
