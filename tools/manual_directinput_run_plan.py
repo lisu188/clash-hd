@@ -132,15 +132,25 @@ COMMAND_SPECS: dict[str, dict[str, Any]] = {
         "route": "load-slot0",
         "route_points": "300,218;320,166;400,226",
         "pulse_route_steps": PULSE_ROUTE_STEPS,
-        "followup_points": f"{CASTLE_ENTRY_POINT};castle-0x63:231,366;owner-action:180,440",
+        "followup_points": f"{CASTLE_ENTRY_POINT};castle-0x63:231,366;barracks-0x86:398,228",
         "notes": (
-            "OPEN COORDINATE GAP: no barracks-entry coordinate is known for the slot-0 'Stormus' "
-            "castle. The surfdump-catalog command-0x86 descriptor point (371,107) was clicked "
-            "coordinate-perfectly on 2026-07-12 and hit a wall with the frame unchanged, because "
-            "the Stormus keep presents a different building layout (4 of 8 catalog descriptors "
-            "absent, shifted bboxes). This command reaches the castle overview only; the barracks "
-            "build sub-screen cannot be entered until a real barracks coordinate is discovered, so "
-            "this target must not be recorded as passing from this command alone"
+            "BARRACKS COORDINATE RESOLVED (2026-07-18): the live slot-0 castle DOES present "
+            "command 0x86 (21906 hitmap pixels, native bbox [175,47,455,223]). The earlier "
+            "'no known coordinate / different castle layout' claim was a misdiagnosis: the "
+            "committed hitmap is the live save's own castle (owner record 0, 'Drakefly', map "
+            "pos 14,20 - 'Stormus' is an exe-resident scenario default name, not this record), "
+            "and the 2026-07-12 miss happened because that session never loaded the save at all "
+            "(SetCursorPos moved only the OS cursor, never the DirectInput accumulator - the bug "
+            "fixed in 589f5700), so a default scenario with a different castle was on screen. "
+            "Displayed (371,107) is evidence-backed twice on hidden slot-0 runs "
+            "(cdb-surface-dump-20260712-144245 multihit and -144151 hitbox: raw 0xF8 -> command "
+            "0x86 -> callback 0044FE70, gate 1) but sits on the bbox top edge with ~1px "
+            "clearance (75/289 of a +/-8px box). This command therefore aims (398,228) = native "
+            "(318,168), the same region's interior with ~37px clearance (289/289 of a +/-8px "
+            "box), derived statically from the committed hitmap raw and NOT yet live "
+            "hit-tested - if it misses, fall back to the proven (371,107). The remaining work "
+            "for this target is executing the 0044FE70 callback (hidden probes deliberately "
+            "suppress it), not discovering a coordinate"
         ),
     },
     "castle_overview_centered_input": {
@@ -421,7 +431,7 @@ def build_plan(
         "each run reports IntroMenuVerified and CursorProbeAlive before trusting a route; a run that never verified the menu fingerprint or never woke the engine cursor is a failed run, not a failed build",
         "the pulse lane is automated-but-real OS SendInput; evidence_class stays manual_directinput only if the operator genuinely witnessed the run, and the harness-side proof class stays automated_visible_runtime_engine_aim_evidence",
         "castle targets need the documented real-runtime castle-entry click (470,397) before any overview descriptor point is reachable; the load route only reaches the map",
-        "castle_barracks_centered_input has an OPEN coordinate gap: no barracks-entry coordinate is known for the slot-0 'Stormus' castle (the catalog 0x86 point 371,107 hit a wall on 2026-07-12), so it cannot honestly be recorded as passing from these commands",
+        "castle_barracks_centered_input aims the resolved barracks descriptor 0x86 at displayed (398,228); the 2026-07-12 miss at (371,107) is explained (that session never loaded the save - SetCursorPos never moved the DirectInput accumulator, fixed in 589f5700), and (371,107) itself is the evidence-backed fallback. Record this target as passing only if the run's own frames show the barracks build sub-screen actually entered (the 0044FE70 callback executing), not merely a click at the coordinate",
         "right_bottom_validation_input needs the slot5-as-slot0 right-bottom fixture staged (scripts/smoke/prepare_right_bottom_slot_fixture.ps1) so owner/action descriptors exist to hit",
     ]
 
