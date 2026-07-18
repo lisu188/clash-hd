@@ -161,7 +161,14 @@ combined first-mission lane.
 - This implementation pass: `100.00%` complete for post-redraw action-bar
   route recovery and focused bottom-strip visual placement.
 - Current repo evidence gates: `97.37%`
-- Focused battle/right-bottom command lane: `99.91%`
+- Focused battle/right-bottom command lane: ~~`99.91%`~~ → **`99.95%`**
+  (2026-07-18 correction; the `99.91%` figure below is a stale 2026-05-27
+  snapshot. Canonical source is the generated
+  `captures/current/battle-visible-input-summary-current.md` /
+  `battle-visible-input-current.json`, which now record
+  `real_visible_click_consumed: true` after `c5fe1d70`. This document's other
+  numbers are unaudited snapshots of the same vintage — cite the generated
+  files, not this list.)
 - Right-bottom promotion gate: `85.71%`
 - Manual DirectInput validation: `0.00%`
 - Full game: not `100%`; manual DirectInput proof and stable promotion remain blocked.

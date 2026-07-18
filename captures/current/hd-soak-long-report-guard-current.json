@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:58:47+02:00",
+  "generated_at": "2026-07-18T21:30:55+02:00",
   "passed": false,
   "overall": false,
   "runtime_policy": "repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
@@ -22,7 +22,7 @@
       "id": "short2_map_idle",
       "tier": "short2",
       "route": "map-idle",
-      "status": "failed_classified_input_environment_permission_denied",
+      "status": "failed_classified_window_missing_while_process_alive",
       "next_command": null
     }
   },

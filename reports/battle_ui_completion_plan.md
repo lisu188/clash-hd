@@ -2,6 +2,18 @@
 
 Generated: 2026-05-15
 
+> **UPDATE 2026-07-17 (`c5fe1d70`): the central open item of this plan is
+> closed.** A real visible click **is** consumed by the command descriptor and
+> **does** reach callback `0042D4E0`. Run
+> `captures/archive/battle-visible-input-present-20260717-133221`:
+> `BATTLE_COMMAND_CLICK_GATE_OBSERVED desc=00514b78 eax=1` →
+> `BATTLE_COMMAND_CALLBACK eip=0042d4e0`, with `BATTLE_COMMAND_CLICK_GATE_FORCE`
+> absent across the whole run; official summary command-ready `1/1`,
+> click-consumed `1/1`, invalid `0`. The focused lane figure moved `99.91%` →
+> `99.95%`. Statements below asserting that no run proves real visible click
+> consumption are the dated 2026-05 state. Manual DirectInput proof and stable
+> promotion remain open.
+
 ## Scope
 
 Battle UI support is a separate probe-first validation lane. The first release
@@ -122,10 +134,12 @@ bodies are skipped after entry in that focused proof.
 
 The visible-input bridge now proves that a real visible-window run can reach
 the battle command input window with descriptor list `00514b78` and expected
-displayed/native command point `(588,440)->(508,380)`. It does not yet prove
+displayed/native command point `(588,440)->(508,380)`. ~~It does not yet prove
 that a real OS click is consumed by the command descriptor or reaches callback
-`0042D4E0`. Current focused battle/right-bottom command-lane completion is
-`99.91%`; full-game reverse engineering is not `100%`.
+`0042D4E0`.~~ *(Superseded 2026-07-17 — that proof now exists; see the update
+note at the top.)* Focused battle/right-bottom command-lane completion was
+`99.91%` at this writing and is `99.95%` as of 2026-07-17; full-game reverse
+engineering is not `100%`.
 
 ## Fresh Battlecenter Evidence
 
@@ -413,7 +427,9 @@ that a real OS click is consumed by the command descriptor or reaches callback
   `coord_mode=visible-window`, expected displayed `(588,440)`, expected native
   `(508,380)`, and descriptor list `00514b78`.
 - Limitation:
-  no run proves real visible click consumption yet. The raw-send attempt is
+  ~~no run proves real visible click consumption yet.~~ *(Superseded
+  2026-07-17 by run `battle-visible-input-present-20260717-133221` — see the
+  top-of-file update.)* The raw-send attempt is
   retained as negative evidence because it hit one post-`g` `80000003`
   break-instruction exception at `ntdll!NtReleaseMutant`, followed by 52 CDB
   breakpoint insert/remove failures before command readiness.

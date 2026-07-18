@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:42:44+02:00",
+  "generated_at": "2026-07-18T21:30:58+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
@@ -5330,6 +5330,16 @@
   },
   "artifacts": [
     {
+      "name": "archive/battle-visible-input-20260522-superseded.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-20260522-superseded.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "archive/battle-visible-input-loaderonly-20260521-233400",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-loaderonly-20260521-233400",
       "artifact_kind": "directory",
@@ -8090,6 +8100,16 @@
       "has_run_summary": false
     },
     {
+      "name": "archive/manual-visible-session-2026-07-12.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-visible-session-2026-07-12.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "archive/map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\map-copy-extent-sharedscratch-skipclick-loadslot0-summary-20260422.json",
       "artifact_kind": "file",
@@ -9322,16 +9342,6 @@
     {
       "name": "current/battle-visible-input-current.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\battle-visible-input-current.json",
-      "artifact_kind": "file",
-      "reference_status": "stale_unreferenced",
-      "era": "other_capture_artifact",
-      "classification_reason": "non-runtime report or unclassified capture artifact",
-      "has_surface_png": false,
-      "has_run_summary": false
-    },
-    {
-      "name": "current/battle-visible-input-current.md",
-      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\battle-visible-input-current.md",
       "artifact_kind": "file",
       "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
@@ -11664,16 +11674,6 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\manual-directinput-validation-checklist-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
-      "era": "other_capture_artifact",
-      "classification_reason": "non-runtime report or unclassified capture artifact",
-      "has_surface_png": false,
-      "has_run_summary": false
-    },
-    {
-      "name": "current/manual-visible-session-2026-07-12.md",
-      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\manual-visible-session-2026-07-12.md",
-      "artifact_kind": "file",
-      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,

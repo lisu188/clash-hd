@@ -1,3 +1,40 @@
+# SUPERSEDED — archived historical session record (do not cite as current evidence)
+
+> **This document is a hand-written 2026-07-12 session log that has been
+> superseded. It is retained as a historical record only. Four of its
+> load-bearing claims are now known to be FALSE.** Archived 2026-07-18.
+>
+> 1. **"Battle visible click-to-callback: blocked by an environmental
+>    incompatibility"** (see "Not achieved this session") is DEAD. The battle
+>    natural click-to-callback is PROVEN — commit `c5fe1d70`, run
+>    `captures/archive/battle-visible-input-present-20260717-133221`
+>    (`eax=1` click gate + `0042d4e0` callback consumed). Canonical current
+>    status: `captures/current/battle-visible-input-summary-current.md`
+>    (focused completion 99.95%, click-consumed runs 1/1).
+> 2. **"the building-sprite click coordinates are not documented"** (barracks)
+>    is DEAD as a diagnosis. Commit `a07ea061` shows the barracks gap was a
+>    misdiagnosis, not a coordinate problem: `0x86` IS present in the live
+>    slot-0 castle, and the absent `0xFA`–`0xFD` are explained by
+>    `flags_1a0=0x00`.
+> 3. **The "PASS" rows in the per-target table are NOT valid input evidence.**
+>    Every click in this session used `SetCursorPos`-style OS-cursor movement,
+>    which the engine never sees — the menu reads its mouse from the
+>    DirectInput accumulator. See commit `589f5700` (root cause) and `a07ea061`
+>    ("that session never loaded the save at all ... `move_method setcursor`,
+>    `logical_delta [0,0]`"). The castle reached at (470,397) was therefore a
+>    default scenario, not the slot-0 save castle, and "Stormus" is an
+>    exe-resident scenario default name rather than that record.
+> 4. **"3 of 5 targets have clean verified-real-input evidence"** is DEAD. The
+>    machine-generated checklist
+>    `captures/current/manual-directinput-validation-checklist-current.md`
+>    records all five targets as `pending_manual`, `manual_proof_supplied:
+>    False`, `promotion_ready: False` — i.e. **0 of 5 accepted**.
+>
+> The still-standing contribution of this document is the headline finding that
+> the HD UI renders correctly in the real runtime (the black patches are a
+> hidden-proxy capture artifact). That finding is independently carried by
+> `tools/first_mission_visual_audit.py`.
+
 # Manual Visible-Runtime Session — 2026-07-12
 
 Real DirectInput visible-runtime session, run after explicit user approval

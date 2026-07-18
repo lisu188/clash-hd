@@ -1,7 +1,7 @@
 # HD Endurance Release Checklist
 
 - Overall: FAIL
-- Generated: `2026-07-18T08:42:42.318200+00:00`
+- Generated: `2026-07-18T19:30:55.424670+00:00`
 - Runtime policy: repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Protected stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Full game complete: `False`

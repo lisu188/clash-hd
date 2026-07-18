@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-07-18T11:01:30+02:00",
+  "generated_at": "2026-07-18T21:30:37+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
   "root": "C:\\Users\\andrz\\git\\clash-hd",
   "file_count": 247,
-  "risky_file_count": 120,
+  "risky_file_count": 121,
   "classification_counts": {
-    "safe": 127,
+    "safe": 126,
     "user_gated_launcher": 1,
     "exempt": 28,
     "manual_visible_runtime_gated": 3,
-    "test_fixture": 88
+    "test_fixture": 89
   },
   "gated_helpers": {
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
@@ -457,14 +457,14 @@
           581
         ],
         "win32_user32": [
-          1040
+          1059
         ],
         "sendinput": [
           582,
-          4504
+          4523
         ],
         "postmessage": [
-          4504
+          4523
         ]
       },
       "failures": []
@@ -990,13 +990,13 @@
           60,
           62,
           72,
-          227,
-          432
+          235,
+          440
         ],
         "cursor_window_input": [
           44,
-          143,
-          434
+          151,
+          442
         ]
       },
       "failures": []
@@ -1044,12 +1044,14 @@
           69,
           71,
           72,
-          88,
-          91,
-          102,
-          104,
-          138,
-          145
+          75,
+          77,
+          94,
+          97,
+          137,
+          140,
+          175,
+          182
         ],
         "win32_user32": [
           38,
@@ -1057,43 +1059,55 @@
           70,
           71,
           72,
-          88,
-          89,
-          91,
-          96,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          94,
+          95,
+          97,
           102,
-          104,
-          108,
-          109,
-          110,
-          124,
-          126,
-          127,
+          111,
+          116,
           129,
-          138,
+          134,
+          137,
+          140,
           145,
-          177,
-          179,
-          183
+          146,
+          147,
+          161,
+          163,
+          164,
+          166,
+          175,
+          182,
+          214,
+          216,
+          220
         ],
         "sendinput": [
           6,
           72,
-          138,
-          145
+          175,
+          182
         ],
         "postmessage": [
           7
         ],
         "cursor_window_input": [
           6,
-          104,
-          117,
-          118,
-          126,
-          127,
-          172,
-          179
+          77,
+          78,
+          140,
+          154,
+          155,
+          163,
+          164,
+          209,
+          216
         ]
       },
       "failures": []
@@ -1138,12 +1152,12 @@
       "risk_lines": {
         "subprocess": [
           14,
-          629,
-          631,
-          699
+          863,
+          865,
+          991
         ],
         "process_launch": [
-          631
+          865
         ],
         "ctypes": [
           12,
@@ -1182,20 +1196,20 @@
           105,
           107,
           108,
-          127,
-          140,
+          131,
           144,
-          168,
-          170,
-          204,
-          206,
-          223,
-          225,
-          231,
-          241,
-          243,
-          364,
-          378
+          148,
+          172,
+          174,
+          377,
+          379,
+          396,
+          398,
+          404,
+          414,
+          416,
+          537,
+          551
         ],
         "win32_user32": [
           5,
@@ -1236,67 +1250,71 @@
           106,
           107,
           108,
-          140,
-          141,
+          109,
+          110,
           144,
-          150,
-          168,
-          170,
-          204,
-          211,
-          212,
-          213,
-          214,
-          223,
-          231,
-          241,
-          320,
-          338,
-          345,
-          353,
-          364,
-          378,
-          437,
-          439,
-          583,
-          640,
-          652,
-          657,
-          658,
-          659,
-          705
+          145,
+          148,
+          154,
+          172,
+          174,
+          188,
+          199,
+          377,
+          384,
+          385,
+          386,
+          387,
+          396,
+          404,
+          414,
+          493,
+          511,
+          518,
+          526,
+          537,
+          551,
+          610,
+          612,
+          788,
+          879,
+          891,
+          897,
+          898,
+          899,
+          997
         ],
         "sendinput": [
           101,
           102,
-          204,
-          206,
-          223,
-          225,
-          241,
-          243,
-          322,
-          324,
-          325,
-          333,
-          334,
-          335,
-          342,
-          415,
-          485,
+          377,
+          379,
+          396,
+          398,
+          414,
+          416,
           495,
-          513,
-          597,
-          604,
-          611,
-          612
+          497,
+          498,
+          506,
+          507,
+          508,
+          515,
+          588,
+          674,
+          684,
+          704,
+          802,
+          809,
+          816,
+          817
         ],
         "postmessage": [
           103,
           104,
-          353,
-          423,
-          611
+          526,
+          596,
+          816
         ],
         "cursor_window_input": [
           66,
@@ -1317,18 +1335,18 @@
           100,
           105,
           106,
-          170,
-          231,
-          320,
-          338,
-          364,
-          378,
-          437,
-          439,
-          640,
-          642,
-          657,
-          658
+          174,
+          404,
+          493,
+          511,
+          537,
+          551,
+          610,
+          612,
+          879,
+          881,
+          897,
+          898
         ]
       },
       "failures": []
@@ -2749,10 +2767,10 @@
           21
         ],
         "sendinput": [
-          168
+          169
         ],
         "postmessage": [
-          168
+          169
         ]
       },
       "failures": []
@@ -3234,10 +3252,31 @@
     },
     {
       "path": "tools/test_mouse_path_probe.py",
-      "classification": "safe",
-      "reason": "no risky runtime/input/process APIs found",
-      "risk_categories": [],
-      "risk_lines": {},
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "ctypes",
+        "win32_user32"
+      ],
+      "risk_lines": {
+        "ctypes": [
+          11,
+          125,
+          151
+        ],
+        "win32_user32": [
+          4,
+          64,
+          69,
+          74,
+          92,
+          112,
+          143,
+          161,
+          168,
+          196
+        ]
+      },
       "failures": []
     },
     {

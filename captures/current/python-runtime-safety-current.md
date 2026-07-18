@@ -1,18 +1,18 @@
 # Python Runtime Safety Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T11:01:30+02:00`
+- Generated: `2026-07-18T21:30:37+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt
 - Python files scanned: `247`
-- Risky files: `120`
+- Risky files: `121`
 
 ## Classification Counts
 
 - `exempt`: `28`
 - `manual_visible_runtime_gated`: `3`
-- `safe`: `127`
-- `test_fixture`: `88`
+- `safe`: `126`
+- `test_fixture`: `89`
 - `user_gated_launcher`: `1`
 
 ## Risky Helpers
@@ -188,6 +188,8 @@
 - `tools/test_manual_directinput_run_plan.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_mouse_edge_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_mouse_path_probe.py`: `test_fixture` risks=`['ctypes', 'win32_user32']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_no_popup_guards.py`: `test_fixture` risks=`['process_launch', 'subprocess', 'win32_user32']`
   - fixture test may spawn Python subprocesses but is not a runtime helper

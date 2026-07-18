@@ -1,7 +1,7 @@
 # HD Soak Report Guard
 
 - Overall: FAIL
-- Generated: `2026-07-18T08:58:23.237081+00:00`
+- Generated: `2026-07-18T19:30:53.085253+00:00`
 - Runtime policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Source report: `captures\current\hd-soak-short2-map-idle-current.json`
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
@@ -18,16 +18,16 @@
 - `patch_evidence`: `PASS`
 - `promotion_boundary`: `PASS`
 - `artifact_locations`: `PASS`
-- `capture_integrity`: `PASS`
-- `frame_inventory`: `PASS`
-- `render_metrics`: `PASS`
-- `capture_consistency`: `FAIL`
+- `capture_integrity`: `FAIL`
+- `frame_inventory`: `FAIL`
+- `render_metrics`: `FAIL`
+- `capture_consistency`: `PASS`
 - `visual_anomalies`: `PASS`
 - `frame_progression`: `PASS`
 - `process_liveness`: `PASS`
 - `process_growth`: `PASS`
-- `elapsed_coverage`: `PASS`
-- `input_responsiveness`: `PASS`
+- `elapsed_coverage`: `FAIL`
+- `input_responsiveness`: `FAIL`
 - `route_completion_marker`: `PASS`
 - `route_screen_outcome`: `FAIL`
 - `summary_consistency`: `FAIL`
@@ -36,9 +36,19 @@
 ## Failures
 
 - source soak report did not mark itself passed
-- source soak report contains 4 failure(s)
-- capture mode changed mid-run; observed screen=1, windowdc-contaminated-fallback=7; frames from different capture paths are not comparable render evidence
+- source soak report contains 9 failure(s)
+- capture_errors contains 1 row(s)
+- frame sample count 0 is below 2
+- minimum nonblack percent 0.0 is below 10.0
+- minimum unique sampled colors 0.0 is below 8
+- frame sample elapsed coverage could not be computed
+- process sample elapsed coverage 2.465s is below required 103.000s
+- 2 route/input rows did not verify
+- 3 route/input rows exceeded drift limit, omitted drift metrics, or had bad probe exit codes
 - map route did not verify the gameplay map on screen (map_route_reached is not true)
-- nonblack_percent_min summary 0.017 does not match detailed rows 60.487
-- unique_sample_colors_min summary 6 does not match detailed rows 157
-- mean_luma_min summary 0.035 does not match detailed rows 49.409
+- nonblack_percent_min summary 0.0 does not match detailed rows None
+- nonblack_percent_max summary 0.0 does not match detailed rows None
+- unique_sample_colors_min summary 0 does not match detailed rows None
+- unique_sample_colors_max summary 0 does not match detailed rows None
+- mean_luma_min summary 0.0 does not match detailed rows None
+- mean_luma_max summary 0.0 does not match detailed rows None

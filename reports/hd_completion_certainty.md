@@ -19,11 +19,24 @@ only remaining work is producing approved real-input evidence. Specifically:
   against ground truth** (see `reports/disassembly_cross_check_hd_next_steps.md`).
 - Per `reports/final_hd_validation_matrix.md`, **every automated gate passes**
   except exactly two rows, both labelled "EXPECTED FAIL until proof":
-  1. `battle_visible_input_summary.py --require-click-consumed` (click-consumed `0/3`).
-  2. `manual_directinput_checklist.py --require-promotion-ready` (5 targets pending).
-- There is **no third blocker**. The two failing rows are the same underlying
-  requirement: real DirectInput click consumption captured into the manual proof
-  manifest.
+  1. ~~`battle_visible_input_summary.py --require-click-consumed`
+     (click-consumed `0/3`)~~ — **now PASSES** (update 2026-07-17, commit
+     `c5fe1d70`): click-consumed `1/1`, command-ready `1/1`, invalid `0`, from
+     run `captures/archive/battle-visible-input-present-20260717-133221`
+     (`BATTLE_COMMAND_CLICK_GATE_OBSERVED desc=00514b78 eax=1` →
+     `BATTLE_COMMAND_CALLBACK eip=0042d4e0`, zero
+     `BATTLE_COMMAND_CLICK_GATE_FORCE` rows).
+  2. `manual_directinput_checklist.py --require-promotion-ready` (5 targets
+     pending) — **still open**.
+- ~~There is **no third blocker**. The two failing rows are the same underlying
+  requirement~~ — **revised 2026-07-18.** Row 1's requirement (real DirectInput
+  click consumption reaching a descriptor callback) has been met; row 2 is
+  narrower than the original framing suggested: what remains is recording the
+  five manual proof targets into an approved manifest. Note that the refresh
+  gate set has also grown well past the two rows this section enumerated
+  (soak/endurance/continuity checks were added after 2026-06-30), so "exactly
+  two rows" describes the 2026-06-30 matrix, not the current refresh. Read
+  `captures/current/current-evidence-refresh-current.json` for the live set.
 
 So "completing clash-hd" = (a) reach each natural UI state, (b) prove a real
 click is consumed on it, (c) record the 5-target manual proof manifest, (d) run
@@ -63,7 +76,18 @@ Implications, all verified:
   callback. The debugger-forced runs were synthesizing render_state[11] / the
   click gate instead of letting `byte_5451C0` set it — that is why they are
   "debugger-forced, not natural". A clean visible run with a real click needs no
-  injection.
+  injection. **Confirmed empirically 2026-07-17 (`c5fe1d70`).**
+
+> **Injection mechanics, added 2026-07-17 (`589f5700`).** Step 1 reads the
+> DirectInput **accumulator**, not the OS cursor. Consequently `SetCursorPos`
+> and absolute `SendInput` moves are **invisible** to the engine — they move the
+> OS cursor and leave `dword_544CFC/544D00` untouched. Relative *pulse*-mode
+> injection does work: the per-poll accumulator resets to screen centre, and
+> injected relative deltas are applied `x~8` and read `/4`. A capture showing
+> `move_method=setcursor` with `logical_delta [0,0]` is the fingerprint of the
+> old broken path, not of a privilege problem. Any earlier note attributing
+> automation failure to `[WinError 5]`, exclusive DirectInput acquisition, or
+> missing environment privilege is **wrong**.
 - The HD `mouse-relative-format` + `mouse-dynamic-origin` patches are what make
   step 2's cursor position land at the right `dword_544CFC/544D00` under the
   wrapper; the button bit (`byte_5451C0`) is read straight from the device and is
@@ -127,8 +151,32 @@ natural pass without any new binary patch.
 > plus `probes/cdb/castle/clash95_castle_cmd99_owner_action_slot5_fixture_extra.cdb`,
 > which has the `NOWNER_CASTLE_HIT_GIVEUP` loop escape). Keep the byte-flip
 > helper for saves that actually contain player-owned production buildings.
+>
+> Update 2026-07-14 (ruling implemented in `96a3d078`): the user **accepted the
+> slot5-as-slot0 fixture run `cdb-surface-dump-20260712-155528` as valid
+> natural-draw evidence** for the right-bottom compose gates
+> (`NOWNER_435BC0_PANEL_DRAW` 1, `NOWNER_435BC0_GRID_DRAW` 10,
+> `NOWNER_WRAPPER_COPYBACK_DONE` 1, 0 AVs). This closed the rows-present vs
+> rows-absent gate-design contradiction — the bare-map save physically cannot
+> draw the rows, since `owner_flag=0` parks descriptor `004338E0` and the widget
+> poll never fires headlessly. All 7 required promotion checks now pass. Two
+> honest limits are unchanged: the decision remains `defer_stable_promotion`
+> with `manual_input_proof_valid=false`, and the fixture's own
+> `proof_class` stays `non_natural_isolated_fixture`.
 
 ## Gate 2 — Battle command: use the proven enabled-command fixture + clean visible click
+
+> **CLEARED 2026-07-17 (commit `c5fe1d70`).** This gate's prediction held: a
+> clean visible run with a real click reached callback `0042D4E0` naturally,
+> with no forced click-gate. Run
+> `captures/archive/battle-visible-input-present-20260717-133221`. Three
+> harness-side root causes had to be fixed first, none of which invalidate the
+> analysis below: (1) the proxy now presents on `Unlock` (battle paints via
+> `Lock`/`Unlock`, never `Flip`/`Blt`, so the window was never shown);
+> (2) the probe's `SKIP_TURN_FRAME` jump had amputated the game's own battle
+> input pump `004605d0`, restored surgically; (3) the input model was decoded —
+> see the injection note under "The natural input path" below. The steps below
+> are retained as the derivation.
 
 Verified facts:
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:42:23+02:00",
+  "generated_at": "2026-07-18T21:30:33+02:00",
   "runtime_policy": "repo-only evidence parsing; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "focused_completion_percent": 99.95,
   "run_count": 1,
@@ -66,8 +66,15 @@
       },
       "input": {
         "present": true,
-        "path_verified": true,
-        "click_path_verified": true,
+        "move_mode": "pulse",
+        "path_verified": null,
+        "path_verified_status": "not_applicable",
+        "path_verified_reason": "engine-cursor pulse aiming: the OS pointer intentionally never travels to the target, so OS-pointer-path verification is not meaningful for this run",
+        "path_verified_probe_value": false,
+        "click_path_verified": null,
+        "click_path_verified_status": "not_applicable",
+        "click_path_verified_reason": "engine-cursor pulse aiming: the OS pointer intentionally never travels to the target, so OS-pointer-path verification is not meaningful for this run",
+        "click_path_verified_probe_value": null,
         "click_event_count": 8,
         "dry_run": false
       },

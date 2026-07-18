@@ -1,7 +1,7 @@
 # Right-Bottom Natural Slot-2 Summary Tests
 
 - Status: PASS
-- Generated: `2026-07-18T10:42:10+02:00`
+- Generated: `2026-07-18T21:30:18+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the natural slot-2 parser and static probe guard fail closed; this support-only check is not a real runtime result
 

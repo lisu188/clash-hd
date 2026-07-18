@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T08:42:40.297278+00:00",
+  "generated_at": "2026-07-18T19:30:52.723649+00:00",
   "passed": true,
   "runtime_policy": "repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "source_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
@@ -38,7 +38,10 @@
     "palette_or_stripe_risk_count": 0,
     "missing_nonblack_bounds_count": 0,
     "input_permission_denied_route_count": 0,
-    "input_permission_denied_routes": []
+    "input_permission_denied_routes": [],
+    "foreground_denied_attempt_count": 0,
+    "foreground_denied_attempts": [],
+    "cursor_alive_observed": false
   },
   "frame_metrics": {
     "frame_sample_count": 8,
@@ -89,6 +92,15 @@
         "signals": []
       }
     ]
+  },
+  "cursor_probe_diagnostics": {
+    "checked_attempt_count": 0,
+    "readable_probe_count": 0,
+    "foreground_denied_attempt_count": 0,
+    "foreground_denied_attempts": [],
+    "cursor_responded_without_convergence_attempts": [],
+    "cursor_alive_observed": false,
+    "rows": []
   },
   "cdb_followup": null,
   "wer_followup": null,

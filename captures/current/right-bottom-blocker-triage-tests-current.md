@@ -1,7 +1,7 @@
 # Right-Bottom Blocker Triage Tests
 
 - Status: PASS
-- Generated: `2026-07-18T10:41:56+02:00`
+- Generated: `2026-07-18T21:30:03+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves current right-bottom action-menu triage stays non-promoting, distinguishes controlled composition recovery from natural UI proof, and fails closed if the owner-flag/load-route blocker shape changes
 

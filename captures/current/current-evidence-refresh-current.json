@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:42:45+02:00",
+  "generated_at": "2026-07-18T21:30:58+02:00",
   "passed": false,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "checks": {
@@ -447,7 +447,10 @@
         "candidate_sha256": "EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756",
         "rbui_markers_seen": true,
         "rbui_desc_switch": 0,
+        "rbui_desc_switch_asserted": false,
+        "rbui_desc_switch_unasserted_reason": "RBUI_DESC_SWITCH is NOT asserted on the slot5-as-slot0 fixture path. The descriptor-switch row is emitted only by the widget poll 00419DC0, which genuinely cannot fire headlessly on the bare map, and the accepted fixture run carries only NOWNER_* wrapper/hittest rows, so it supplies no descriptor-switch equivalent to substitute. A PASS on this path is therefore NOT proof that right-bottom descriptor switching occurs; descriptor switching remains UNPROVEN.",
         "rbui_viewport_switch": 1,
+        "rbui_viewport_switch_asserted": true,
         "rbui_panel_draw": 0,
         "rbui_action_box": 0,
         "surfdump_playgame": 1,
@@ -459,6 +462,7 @@
           "total": 4
         },
         "natural_draw_source": "slot5_as_slot0_fixture",
+        "guard_policy": "slot5-as-slot0 fixture path: asserts RBUI_VIEWPORT_SWITCH >= 1 (unconditional, asserted on both paths) plus the fixture natural-draw gates (NOWNER_435BC0_PANEL_DRAW >= 1, NOWNER_435BC0_GRID_DRAW >= 1, NOWNER_WRAPPER_COPYBACK_DONE >= 1, av_count == 0, proof_class == non_natural_isolated_fixture, expected_slot_match is True) alongside the surface-dump, stage, SHA, and patch-group gates. DISCLOSURE: RBUI_DESC_SWITCH is NOT asserted on the slot5-as-slot0 fixture path. The descriptor-switch row is emitted only by the widget poll 00419DC0, which genuinely cannot fire headlessly on the bare map, and the accepted fixture run carries only NOWNER_* wrapper/hittest rows, so it supplies no descriptor-switch equivalent to substitute. A PASS on this path is therefore NOT proof that right-bottom descriptor switching occurs; descriptor switching remains UNPROVEN.",
         "fixture": {
           "ruling": "user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence",
           "fixture_run": "captures\\archive\\cdb-surface-dump-20260712-155528",
@@ -1943,13 +1947,13 @@
       "json": "captures\\current\\python-runtime-safety-current.json",
       "markdown": "captures\\current\\python-runtime-safety-current.md",
       "summary": {
-        "risky_file_count": 120,
+        "risky_file_count": 121,
         "classification_counts": {
-          "safe": 127,
+          "safe": 126,
           "user_gated_launcher": 1,
           "exempt": 28,
           "manual_visible_runtime_gated": 3,
-          "test_fixture": 88
+          "test_fixture": 89
         },
         "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
         "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
@@ -2309,7 +2313,7 @@
         "full_game_complete": false,
         "full_game_percent_statement": "not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open",
         "percentages": {
-          "current_repo_evidence_gates": 98.16,
+          "current_repo_evidence_gates": 98.77,
           "repo_test_sweep": 100.0,
           "focused_battle_right_bottom_lane": 99.95,
           "right_bottom_promotion_gate": 100.0,
@@ -2552,7 +2556,7 @@
           "failed_or_invalid": 1
         },
         "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_render_or_palette_regression",
+        "current_step_status": "failed_classified_window_missing_while_process_alive",
         "long_tiers_locked": true,
         "future_lanes_locked": true,
         "right_bottom_promotion_blocked": true,
@@ -2578,7 +2582,7 @@
       "summary": {
         "status": "ready_for_explicit_approval",
         "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_render_or_palette_regression",
+        "current_step_status": "failed_classified_window_missing_while_process_alive",
         "dry_run": true,
         "candidate_dir": "C:\\ClashTests\\hd-soak",
         "output_root": "C:\\ClashCaptures\\hd-soak",
@@ -2609,7 +2613,7 @@
       "summary": {
         "status": "not_applicable_current_failure",
         "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_render_or_palette_regression",
+        "current_step_status": "failed_classified_window_missing_while_process_alive",
         "triage_classification": "passing_run_no_failure",
         "approval_boundary": "No intro-skip rerun is authorized while the current step has an unrelated classified failure; follow its repo-only triage instead.",
         "runtime_policy": "repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
@@ -2677,7 +2681,7 @@
             "id": "short2_map_idle",
             "tier": "short2",
             "route": "map-idle",
-            "status": "failed_classified_render_or_palette_regression",
+            "status": "failed_classified_window_missing_while_process_alive",
             "next_command": null
           }
         },
@@ -2792,10 +2796,10 @@
       "json": "captures\\current\\hd-endurance-next-actions-current.json",
       "markdown": "captures\\current\\hd-endurance-next-actions-current.md",
       "summary": {
-        "status": "repo_only_followup_available",
-        "next_action": "inspect_short2_map_idle_triage",
-        "requires_explicit_user_approval": false,
-        "has_plan_verified_execute_command": false,
+        "status": "waiting_for_explicit_visible_runtime_approval",
+        "next_action": "rerun_short2_map_idle_soak",
+        "requires_explicit_user_approval": true,
+        "has_plan_verified_execute_command": true,
         "focused_post_run_validation_count": 3,
         "handoff_refresh_count": 5,
         "broad_evidence_refresh_count": 4,
@@ -2852,13 +2856,13 @@
       "failures": []
     },
     "hd_soak_approval_preflight": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\hd-soak-approval-preflight-current.json",
       "markdown": "captures\\current\\hd-soak-approval-preflight-current.md",
       "summary": {
-        "status": "not_ready",
+        "status": "ready_for_explicit_approval",
         "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_render_or_palette_regression",
+        "current_step_status": "failed_classified_window_missing_while_process_alive",
         "dry_run_plan_status": "ready_for_explicit_approval",
         "dry_run_plan_passed": true,
         "writes_outside_repo": [
@@ -2869,9 +2873,7 @@
         "right_bottom_promotion_blocked": true,
         "runtime_policy": "repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
-      "failures": [
-        "current short-step status is 'failed_classified_render_or_palette_regression'"
-      ]
+      "failures": []
     },
     "hd_soak_approval_preflight_tests": {
       "passed": true,
@@ -3185,7 +3187,6 @@
     "hd_endurance_release_checklist: stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
     "hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
     "hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
-    "hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof",
-    "hd_soak_approval_preflight: current short-step status is 'failed_classified_render_or_palette_regression'"
+    "hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof"
   ]
 }

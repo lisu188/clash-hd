@@ -1,7 +1,7 @@
 # Current Evidence Refresh
 
 - Overall: FAIL
-- Generated: `2026-07-18T10:42:45+02:00`
+- Generated: `2026-07-18T21:30:58+02:00`
 - Runtime policy: repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows
 
 ## Checks
@@ -258,7 +258,10 @@
 - candidate_sha256: `EFE643F0511A85946AD752CD7AB516207722FDC8409E4529C3CE40660EA84756`
 - rbui_markers_seen: `True`
 - rbui_desc_switch: `0`
+- rbui_desc_switch_asserted: `False`
+- rbui_desc_switch_unasserted_reason: `RBUI_DESC_SWITCH is NOT asserted on the slot5-as-slot0 fixture path. The descriptor-switch row is emitted only by the widget poll 00419DC0, which genuinely cannot fire headlessly on the bare map, and the accepted fixture run carries only NOWNER_* wrapper/hittest rows, so it supplies no descriptor-switch equivalent to substitute. A PASS on this path is therefore NOT proof that right-bottom descriptor switching occurs; descriptor switching remains UNPROVEN.`
 - rbui_viewport_switch: `1`
+- rbui_viewport_switch_asserted: `True`
 - rbui_panel_draw: `0`
 - rbui_action_box: `0`
 - surfdump_playgame: `1`
@@ -267,8 +270,10 @@
 - current_hd_map_gate: `True`
 - right_bottom_patch_group: `{'patched': 4, 'total': 4}`
 - natural_draw_source: `slot5_as_slot0_fixture`
+- guard_policy: `slot5-as-slot0 fixture path: asserts RBUI_VIEWPORT_SWITCH >= 1 (unconditional, asserted on both paths) plus the fixture natural-draw gates (NOWNER_435BC0_PANEL_DRAW >= 1, NOWNER_435BC0_GRID_DRAW >= 1, NOWNER_WRAPPER_COPYBACK_DONE >= 1, av_count == 0, proof_class == non_natural_isolated_fixture, expected_slot_match is True) alongside the surface-dump, stage, SHA, and patch-group gates. DISCLOSURE: RBUI_DESC_SWITCH is NOT asserted on the slot5-as-slot0 fixture path. The descriptor-switch row is emitted only by the widget poll 00419DC0, which genuinely cannot fire headlessly on the bare map, and the accepted fixture run carries only NOWNER_* wrapper/hittest rows, so it supplies no descriptor-switch equivalent to substitute. A PASS on this path is therefore NOT proof that right-bottom descriptor switching occurs; descriptor switching remains UNPROVEN.`
 - fixture: `{'ruling': 'user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence', 'fixture_run': 'captures\\archive\\cdb-surface-dump-20260712-155528', 'log': 'captures\\archive\\cdb-surface-dump-20260712-155528\\cdb-surface-dump.log', 'result_summary_json': 'captures\\archive\\cdb-surface-dump-20260712-155528\\right-bottom-slot-fixture-result-summary.json', 'marker_counts': {'NOWNER_435BC0_PANEL_DRAW': 1, 'NOWNER_435BC0_GRID_DRAW': 10, 'NOWNER_WRAPPER_COPYBACK_DONE': 1, 'NOWNER_WRAPPER_PRESENT_CALL': 1}, 'av_count': 0, 'proof_class': 'non_natural_isolated_fixture', 'expected_slot_match': True, 'row_count': 272, 'stage': 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomaction-nativecenter', 'candidate_sha256': 'D3FF331FD6A7B10A91C55A55FF891685CFAC376917816557B40A483EBDBC569C'}`
 - bounds: `{'minimap_top_right': {'nonblack_percent': 12.964, 'black_percent': 87.036, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'right_side_total': {'nonblack_percent': 19.698, 'black_percent': 80.302, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'right_side_below_minimap': {'nonblack_percent': 23.593, 'black_percent': 76.407, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_strip': {'nonblack_percent': 52.45, 'black_percent': 47.55, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_ui_corner': {'nonblack_percent': 21.43, 'black_percent': 78.57, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c9': {'nonblack_percent': 46.24, 'black_percent': 53.76, 'flags': ['large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c10': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}, 'bottom_right_tile_r8c11': {'nonblack_percent': 0.0, 'black_percent': 100.0, 'flags': ['mostly_black', 'large_black_component', 'black_touches_bottom_right']}}`
+- **UNASSERTED-CHECK DISCLOSURE:** RBUI_DESC_SWITCH is NOT asserted on the slot5-as-slot0 fixture path. The descriptor-switch row is emitted only by the widget poll 00419DC0, which genuinely cannot fire headlessly on the bare map, and the accepted fixture run carries only NOWNER_* wrapper/hittest rows, so it supplies no descriptor-switch equivalent to substitute. A PASS on this path is therefore NOT proof that right-bottom descriptor switching occurs; descriptor switching remains UNPROVEN.
 
 ### Right Bottom Grid Hit
 
@@ -1197,8 +1202,8 @@
 - Status: PASS
 - JSON: `captures\current\python-runtime-safety-current.json`
 - Markdown: `captures\current\python-runtime-safety-current.md`
-- risky_file_count: `120`
-- classification_counts: `{'safe': 127, 'user_gated_launcher': 1, 'exempt': 28, 'manual_visible_runtime_gated': 3, 'test_fixture': 88}`
+- risky_file_count: `121`
+- classification_counts: `{'safe': 126, 'user_gated_launcher': 1, 'exempt': 28, 'manual_visible_runtime_gated': 3, 'test_fixture': 89}`
 - guard_policy: `Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt`
 - runtime_policy: `repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows`
 
@@ -1477,7 +1482,7 @@
 - Markdown: `captures\current\current-completion-summary-current.md`
 - full_game_complete: `False`
 - full_game_percent_statement: `not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open`
-- percentages: `{'current_repo_evidence_gates': 98.16, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.95, 'right_bottom_promotion_gate': 100.0, 'manual_directinput_validation': 0.0}`
+- percentages: `{'current_repo_evidence_gates': 98.77, 'repo_test_sweep': 100.0, 'focused_battle_right_bottom_lane': 99.95, 'right_bottom_promotion_gate': 100.0, 'manual_directinput_validation': 0.0}`
 
 ### Hd Soak Harness Guard
 
@@ -1624,7 +1629,7 @@
 - ladder_complete: `False`
 - counts: `{'total': 5, 'passed': 1, 'pending_or_missing': 0, 'locked': 3, 'failed_or_invalid': 1}`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_render_or_palette_regression`
+- current_step_status: `failed_classified_window_missing_while_process_alive`
 - long_tiers_locked: `True`
 - future_lanes_locked: `True`
 - right_bottom_promotion_blocked: `True`
@@ -1646,7 +1651,7 @@
 - Markdown: `captures\current\hd-soak-dry-run-plan-current.md`
 - status: `ready_for_explicit_approval`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_render_or_palette_regression`
+- current_step_status: `failed_classified_window_missing_while_process_alive`
 - dry_run: `True`
 - candidate_dir: `C:\ClashTests\hd-soak`
 - output_root: `C:\ClashCaptures\hd-soak`
@@ -1673,7 +1678,7 @@
 - Markdown: `captures\current\hd-soak-intro-skip-rerun-readiness-current.md`
 - status: `not_applicable_current_failure`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_render_or_palette_regression`
+- current_step_status: `failed_classified_window_missing_while_process_alive`
 - triage_classification: `passing_run_no_failure`
 - approval_boundary: `No intro-skip rerun is authorized while the current step has an unrelated classified failure; follow its repo-only triage instead.`
 - runtime_policy: `repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
@@ -1713,7 +1718,7 @@
 - status: `locked_short_ladder_incomplete`
 - duration_sec: `0`
 - counts: `{'required_routes': 2, 'passing_routes': 0, 'missing_routes': 2}`
-- short_ladder: `{'path': 'captures\\current\\hd-soak-short-step-status-current.json', 'present': True, 'ladder_complete': False, 'current_step': {'id': 'short2_map_idle', 'tier': 'short2', 'route': 'map-idle', 'status': 'failed_classified_render_or_palette_regression', 'next_command': None}}`
+- short_ladder: `{'path': 'captures\\current\\hd-soak-short-step-status-current.json', 'present': True, 'ladder_complete': False, 'current_step': {'id': 'short2_map_idle', 'tier': 'short2', 'route': 'map-idle', 'status': 'failed_classified_window_missing_while_process_alive', 'next_command': None}}`
 - proof_manifest: `{'path': 'captures\\current\\hd-soak-long-proof-current.json', 'present': False, 'report_guard_count': 0}`
 - runtime_policy: `repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Failures:
@@ -1783,10 +1788,10 @@
 - Status: PASS
 - JSON: `captures\current\hd-endurance-next-actions-current.json`
 - Markdown: `captures\current\hd-endurance-next-actions-current.md`
-- status: `repo_only_followup_available`
-- next_action: `inspect_short2_map_idle_triage`
-- requires_explicit_user_approval: `False`
-- has_plan_verified_execute_command: `False`
+- status: `waiting_for_explicit_visible_runtime_approval`
+- next_action: `rerun_short2_map_idle_soak`
+- requires_explicit_user_approval: `True`
+- has_plan_verified_execute_command: `True`
 - focused_post_run_validation_count: `3`
 - handoff_refresh_count: `5`
 - broad_evidence_refresh_count: `4`
@@ -1826,20 +1831,18 @@
 
 ### Hd Soak Approval Preflight
 
-- Status: FAIL
+- Status: PASS
 - JSON: `captures\current\hd-soak-approval-preflight-current.json`
 - Markdown: `captures\current\hd-soak-approval-preflight-current.md`
-- status: `not_ready`
+- status: `ready_for_explicit_approval`
 - current_step: `short2_map_idle`
-- current_step_status: `failed_classified_render_or_palette_regression`
+- current_step_status: `failed_classified_window_missing_while_process_alive`
 - dry_run_plan_status: `ready_for_explicit_approval`
 - dry_run_plan_passed: `True`
 - writes_outside_repo: `['C:\\ClashCaptures\\hd-soak', 'C:\\ClashTests\\hd-soak']`
 - stable_stage_should_change: `False`
 - right_bottom_promotion_blocked: `True`
 - runtime_policy: `repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
-- Failures:
-  - current short-step status is 'failed_classified_render_or_palette_regression'
 
 ### Hd Soak Approval Preflight Tests
 
@@ -1928,4 +1931,3 @@
 - hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked
 - hd_endurance_release_checklist: tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof
-- hd_soak_approval_preflight: current short-step status is 'failed_classified_render_or_palette_regression'

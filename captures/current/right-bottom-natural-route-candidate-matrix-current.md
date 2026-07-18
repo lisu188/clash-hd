@@ -1,7 +1,7 @@
 # Right-Bottom Natural Route Candidate Matrix
 
 - Status: PASS
-- Generated: `2026-07-18T10:41:43+02:00`
+- Generated: `2026-07-18T21:29:50+02:00`
 - Runtime policy: repo/local metadata only; reads generated save-scan JSON and existing hidden-desktop CDB artifacts, and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when current evidence shows an action-eligible installed save record exists, the archived slot-0 natural route clicks owner record index 0 but is blocked by owner flag 0x00, slot 2 loads yet misses the bit-2 record with the current click, and slot 5 has a route-compatible bit-2 record but the current load harness times out before LOADSAVE
 - Promotion ready: `False`

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T08:58:23.235081+00:00",
+  "generated_at": "2026-07-18T19:30:53.082252+00:00",
   "passed": true,
   "runtime_policy": "repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "source_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",

@@ -1,7 +1,7 @@
 # Right-Bottom Owner-Flag Inventory Tests
 
 - Status: PASS
-- Generated: `2026-07-18T10:42:13+02:00`
+- Generated: `2026-07-18T21:30:22+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the owner-flag inventory preserves the current right-bottom conclusion: forced owner/action routes exist, the natural command-99 route is owner-flag gated, and no natural route already reaches owner/action rows
 

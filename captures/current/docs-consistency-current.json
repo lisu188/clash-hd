@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:42:44+02:00",
+  "generated_at": "2026-07-18T21:30:58+02:00",
   "passed": true,
   "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "generated project state must agree with Clash95 HD documentation, protected-stage and approval boundaries must remain visible, and the removed knowledge-base scaffold must stay absent",

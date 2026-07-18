@@ -1,6 +1,6 @@
 # HD Layout Visible Evidence Summary
 
-- Generated: `2026-07-18T10:41:24+02:00`
+- Generated: `2026-07-18T21:29:29+02:00`
 - Run: `captures\archive\visual-smoke-20260713-075818`
 - Candidate SHA-256: `911A4F1CFB3CFEE7974F50742CC98FDD16DCC82EAA95C88F748E0976140E6FBD`
 - Result: `PASS`

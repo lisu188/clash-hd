@@ -1,7 +1,7 @@
 # HD Soak Failure Triage
 
 - Overall: PASS
-- Generated: `2026-07-18T08:42:40.297278+00:00`
+- Generated: `2026-07-18T19:30:52.723649+00:00`
 - Runtime policy: repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Source report: `captures\current\hd-soak-short2-menu-idle-current.json`
 - Source selection: `canonical_first_short_step`
@@ -37,6 +37,9 @@
 - Readable route logs: `1`
 - Input-API permission-denied routes: `0`
 - Affected routes: ``
+- Cursor probes checked: `0`
+- Foreground-denied attempts: `0`
+- Engine cursor responded at least once: `False`
 
 ## Last Evidence
 

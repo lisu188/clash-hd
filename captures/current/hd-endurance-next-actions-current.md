@@ -1,7 +1,7 @@
 # HD Endurance Next Actions
 
 - Overall: PASS
-- Generated: `2026-07-18T08:59:08.424863+00:00`
+- Generated: `2026-07-18T19:30:56.000730+00:00`
 - Runtime policy: repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Status: `waiting_for_explicit_visible_runtime_approval`
 - Current short step: `short2_map_idle`
@@ -13,7 +13,7 @@
 - `rerun_short2_map_idle_soak`: `approval_required`
 - Requires visible runtime: `True`
 - Requires explicit user approval: `True`
-- Why: The previous route was blocked by Windows input-API permissions, not classified as game behavior. Rerun the current tokened postmessage command only in a fresh explicitly approved unsandboxed Windows session.
+- Why: The previous visible run lost its application/windowed target window while the process stayed alive. The harness now grace-retries transient window loss, verifies the menu before route input, drives menu clicks with the pulse-mode engine-aim mechanism, and verifies the gameplay map on screen, while still stopping at the first persistently missing live target window.
 
 Current step artifacts:
 
@@ -33,11 +33,11 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_s
 Approval-gated runtime command (plan-verified):
 
 - Dry-run plan status: `ready_for_explicit_approval`
-- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260718_105858.exe`
+- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260718_213054.exe`
 - Output root: `C:\ClashCaptures\hd-soak`
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260718_105858.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-18T20:58:58.0600415+00:00' -VisibleRuntimeApprovalToken '74bb576847312baf' -Execute -AllowVisibleRuntime -RequirePass -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260718_213054.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-19T07:30:54.4376452+00:00' -VisibleRuntimeApprovalToken '621411bf0eaa8eaa' -Execute -AllowVisibleRuntime -RequirePass -Json
 ```
 
 Rejected legacy runtime command:
@@ -48,9 +48,9 @@ Rejected legacy runtime command:
 
 Current failure:
 
-- Classification: `input_environment_permission_denied`
-- Next probe: SetForegroundWindow was silently denied on every aim iteration, so the foreground-mode DirectInput never received the injected pulses; rerun the exact tokenized route command DIRECTLY from an interactive session with input standing (never via Start-Job or any detached/non-interactive wrapper), and do not change patches or lower visual thresholds
-- Final route marker: `intro-skip`
+- Classification: `window_missing_while_process_alive`
+- Next probe: inspect window_health_samples and wrapper transitions at the first missing-window phase before requesting any visible rerun
+- Final route marker: `confirm-load`
 - Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
 - Visual anomaly passed: `True`
 - Black/blank patch risk count: `0`

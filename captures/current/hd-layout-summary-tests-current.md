@@ -1,7 +1,7 @@
 # HD Layout Summary Tests
 
 - Status: PASS
-- Generated: `2026-07-18T10:41:17+02:00`
+- Generated: `2026-07-18T21:29:21+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the hidden-CDB HD layout parser fails closed on anchor, descriptor, clip, redraw, and access-violation regressions
 

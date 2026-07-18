@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T10:42:37+02:00",
+  "generated_at": "2026-07-18T21:30:49+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "HD soak harness must stay opt-in, protected-stage, non-promoting, and artifact-safe",
@@ -67,19 +67,19 @@
       "summary": {
         "execute_switch_line": 40,
         "allow_visible_runtime_switch_line": 41,
-        "dry_run_branch_line": 910,
-        "runtime_guard_line": 934,
-        "token_guard_line": 937,
-        "expiry_guard_line": 940,
-        "expiry_parse_line": 944,
-        "expiry_stale_line": 953,
-        "min_ttl_line": 777,
-        "ttl_guard_line": 957,
-        "token_match_line": 959,
-        "output_dir_line": 975,
-        "candidate_dir_line": 998,
-        "patch_report_line": 1022,
-        "start_process_line": 1048,
+        "dry_run_branch_line": 932,
+        "runtime_guard_line": 956,
+        "token_guard_line": 959,
+        "expiry_guard_line": 962,
+        "expiry_parse_line": 966,
+        "expiry_stale_line": 975,
+        "min_ttl_line": 799,
+        "ttl_guard_line": 979,
+        "token_match_line": 981,
+        "output_dir_line": 997,
+        "candidate_dir_line": 1024,
+        "patch_report_line": 1048,
+        "start_process_line": 1077,
         "execute_command_fragments": [
           "-Execute",
           "-AllowVisibleRuntime",
@@ -163,6 +163,28 @@
           "before-{0}",
           "after-{0}-wait",
           "before-frame-{0:D4}"
+        ]
+      },
+      "failures": []
+    },
+    "window_handle_freshness": {
+      "passed": true,
+      "summary": {
+        "policy": "input helpers re-resolve the target window per phase and wait for a stable hwnd/client size before sending input",
+        "required_markers": [
+          "$WindowStableSamples",
+          "$WindowStablePollMs",
+          "$WindowStableTimeoutSec",
+          "$WindowReacquireAttempts",
+          "$WindowReacquireDelayMs",
+          "--window-stable-samples",
+          "--window-stable-poll-ms",
+          "--window-stable-timeout-sec",
+          "--window-reacquire-attempts",
+          "--window-reacquire-delay-ms",
+          "WindowStable",
+          "WindowLostObserved",
+          "WindowReacquireCount"
         ]
       },
       "failures": []
