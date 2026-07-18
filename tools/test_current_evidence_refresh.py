@@ -157,13 +157,15 @@ def write_compose_ui_run(
     run: Path,
     *,
     rows_present: bool,
+    viewport_switch: int = 1,
+    desc_switch: int | None = None,
 ) -> None:
     """Write a minimal synthetic right-bottom compose UI probe run directory."""
     marker_counts = {
         "SURFDUMP_PLAYGAME": 1,
         "SURFDUMP_READY": 1,
-        "RBUI_DESC_SWITCH": 2 if rows_present else 0,
-        "RBUI_VIEWPORT_SWITCH": 1,
+        "RBUI_DESC_SWITCH": (2 if rows_present else 0) if desc_switch is None else desc_switch,
+        "RBUI_VIEWPORT_SWITCH": viewport_switch,
         "RBUI_PANEL_DRAW": 1 if rows_present else 0,
         "RBUI_ACTION_BOX": 1 if rows_present else 0,
     }
@@ -218,6 +220,8 @@ def write_fixture_run(
     ),
     write_log: bool = True,
     write_result_summary: bool = True,
+    proof_class: str = "non_natural_isolated_fixture",
+    expected_slot_match: bool = True,
 ) -> None:
     run.mkdir(parents=True, exist_ok=True)
     if write_log:
@@ -226,8 +230,8 @@ def write_fixture_run(
         write_json(
             run / "right-bottom-slot-fixture-result-summary.json",
             {
-                "proof_class": "non_natural_isolated_fixture",
-                "expected_slot_match": True,
+                "proof_class": proof_class,
+                "expected_slot_match": expected_slot_match,
                 "row_count": 272,
                 "stage": "fixture-stage",
                 "candidate_sha256": "D3FF",
@@ -351,6 +355,170 @@ def test_compose_ui_probe_wrapper_failure_beyond_rows_absent_fails() -> None:
     ), result
 
 
+def test_compose_ui_probe_viewport_switch_asserted_on_fixture_path() -> None:
+    """H1 regression: RBUI_VIEWPORT_SWITCH must be asserted on BOTH paths.
+
+    Commit 96a3d078 moved this assertion inside `if natural_rows_present:`, so on the
+    fixture path it stopped being evaluated at all. It is satisfied (value 1) on the
+    real run, so there is no reason to relax it.
+    """
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(
+            args.right_bottom_compose_ui_run, rows_present=False, viewport_switch=0
+        )
+        write_fixture_run(args.right_bottom_compose_ui_fixture_run)
+        result = refresh.build_right_bottom_compose_ui_probe(args)
+    assert result["passed"] is False, result
+    assert any(
+        "viewport switch row was not observed" in failure for failure in result["failures"]
+    ), result
+
+
+def test_compose_ui_probe_viewport_switch_asserted_on_natural_path() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(
+            args.right_bottom_compose_ui_run, rows_present=True, viewport_switch=0
+        )
+        result = refresh.build_right_bottom_compose_ui_probe(args)
+    assert result["passed"] is False, result
+    assert any(
+        "viewport switch row was not observed" in failure for failure in result["failures"]
+    ), result
+
+
+def test_compose_ui_probe_discloses_unasserted_desc_switch_on_fixture_path() -> None:
+    """H1: the fixture path does not assert RBUI_DESC_SWITCH -- say so, loudly."""
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(args.right_bottom_compose_ui_run, rows_present=False)
+        write_fixture_run(args.right_bottom_compose_ui_fixture_run)
+        result = refresh.build_right_bottom_compose_ui_probe(args)
+    assert result["passed"] is True, result
+    summary = result["summary"]
+    assert summary["rbui_desc_switch"] == 0, result
+    assert summary["rbui_desc_switch_asserted"] is False, result
+    assert summary["rbui_viewport_switch_asserted"] is True, result
+    reason = summary["rbui_desc_switch_unasserted_reason"]
+    assert reason == refresh.RBUI_DESC_SWITCH_UNASSERTED_REASON, result
+    assert "UNPROVEN" in reason, result
+    assert "00419DC0" in reason, result
+    assert "not asserted" in summary["guard_policy"].lower(), result
+    assert "DISCLOSURE" in summary["guard_policy"], result
+
+
+def test_compose_ui_probe_natural_path_reports_desc_switch_asserted() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(args.right_bottom_compose_ui_run, rows_present=True)
+        result = refresh.build_right_bottom_compose_ui_probe(args)
+    summary = result["summary"]
+    assert result["passed"] is True, result
+    assert summary["rbui_desc_switch_asserted"] is True, result
+    assert summary["rbui_desc_switch_unasserted_reason"] is None, result
+    assert summary["guard_policy"] == refresh.RIGHT_BOTTOM_COMPOSE_UI_GUARD_POLICY_NATURAL, result
+
+
+def test_compose_ui_probe_natural_path_still_requires_desc_switch() -> None:
+    """The natural-rows path keeps the descriptor-switch requirement it always had."""
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(
+            args.right_bottom_compose_ui_run, rows_present=True, desc_switch=0
+        )
+        result = refresh.build_right_bottom_compose_ui_probe(args)
+    assert result["passed"] is False, result
+    assert any(
+        "descriptor switch rows were not observed" in failure for failure in result["failures"]
+    ), result
+
+
+def test_markdown_surfaces_desc_switch_disclosure() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(args.right_bottom_compose_ui_run, rows_present=False)
+        write_fixture_run(args.right_bottom_compose_ui_fixture_run)
+        check = refresh.build_right_bottom_compose_ui_probe(args)
+        markdown_path = tmp / "refresh.md"
+        refresh.write_markdown(
+            markdown_path,
+            {
+                "passed": True,
+                "generated_at": "2026-07-18T00:00:00+02:00",
+                "runtime_policy": refresh.RUNTIME_POLICY,
+                "checks": {"right_bottom_compose_ui_probe": check},
+                "failures": [],
+            },
+        )
+        markdown = markdown_path.read_text(encoding="utf-8")
+    assert "UNASSERTED-CHECK DISCLOSURE" in markdown, markdown
+    assert "descriptor switching remains UNPROVEN" in markdown, markdown
+    assert "rbui_desc_switch_asserted: `False`" in markdown, markdown
+
+
+def test_compose_ui_probe_fixture_grid_draw_regression_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(args.right_bottom_compose_ui_run, rows_present=False)
+        write_fixture_run(
+            args.right_bottom_compose_ui_fixture_run,
+            log_text="NOWNER_435BC0_PANEL_DRAW\nNOWNER_WRAPPER_COPYBACK_DONE\n",
+        )
+        result = refresh.build_right_bottom_compose_ui_probe(args)
+    assert result["passed"] is False, result
+    assert any("NOWNER_435BC0_GRID_DRAW" in failure for failure in result["failures"]), result
+
+
+def test_compose_ui_probe_fixture_copyback_regression_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(args.right_bottom_compose_ui_run, rows_present=False)
+        write_fixture_run(
+            args.right_bottom_compose_ui_fixture_run,
+            log_text="NOWNER_435BC0_PANEL_DRAW\nNOWNER_435BC0_GRID_DRAW\n",
+        )
+        result = refresh.build_right_bottom_compose_ui_probe(args)
+    assert result["passed"] is False, result
+    assert any(
+        "NOWNER_WRAPPER_COPYBACK_DONE" in failure for failure in result["failures"]
+    ), result
+
+
+def test_compose_ui_probe_fixture_proof_class_mismatch_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(args.right_bottom_compose_ui_run, rows_present=False)
+        write_fixture_run(
+            args.right_bottom_compose_ui_fixture_run, proof_class="natural_bare_map"
+        )
+        result = refresh.build_right_bottom_compose_ui_probe(args)
+    assert result["passed"] is False, result
+    assert any("proof_class" in failure for failure in result["failures"]), result
+
+
+def test_compose_ui_probe_fixture_slot_mismatch_fails_closed() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = compose_ui_args(tmp)
+        write_compose_ui_run(args.right_bottom_compose_ui_run, rows_present=False)
+        write_fixture_run(
+            args.right_bottom_compose_ui_fixture_run, expected_slot_match=False
+        )
+        result = refresh.build_right_bottom_compose_ui_probe(args)
+    assert result["passed"] is False, result
+    assert any("expected_slot_match" in failure for failure in result["failures"]), result
+
+
 def run_tests() -> None:
     test_legacy_report_selected_when_canonical_missing()
     test_canonical_first_step_report_selected_when_present()
@@ -363,6 +531,16 @@ def run_tests() -> None:
     test_compose_ui_probe_fixture_av_rows_fail_closed()
     test_compose_ui_probe_missing_result_summary_fails_closed()
     test_compose_ui_probe_wrapper_failure_beyond_rows_absent_fails()
+    test_compose_ui_probe_viewport_switch_asserted_on_fixture_path()
+    test_compose_ui_probe_viewport_switch_asserted_on_natural_path()
+    test_compose_ui_probe_discloses_unasserted_desc_switch_on_fixture_path()
+    test_compose_ui_probe_natural_path_reports_desc_switch_asserted()
+    test_compose_ui_probe_natural_path_still_requires_desc_switch()
+    test_markdown_surfaces_desc_switch_disclosure()
+    test_compose_ui_probe_fixture_grid_draw_regression_fails_closed()
+    test_compose_ui_probe_fixture_copyback_regression_fails_closed()
+    test_compose_ui_probe_fixture_proof_class_mismatch_fails_closed()
+    test_compose_ui_probe_fixture_slot_mismatch_fails_closed()
 
 
 if __name__ == "__main__":

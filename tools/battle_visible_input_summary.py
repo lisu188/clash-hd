@@ -165,19 +165,95 @@ def any_row_value(rows: list[dict[str, Any]], marker: str, key: str, value: Any)
     return False
 
 
+PULSE_MOVE_MODE = "pulse"
+PULSE_PATH_REASON = (
+    "engine-cursor pulse aiming: the OS pointer intentionally never travels to the target, so "
+    "OS-pointer-path verification is not meaningful for this run"
+)
+ABSENT_PATH_REASON = "probe did not record this field"
+MISSING_PAYLOAD_REASON = "no visible-input JSON present for this run"
+
+
+def payload_move_mode(payload: dict[str, Any]) -> str | None:
+    """Return the run's move mode, which the probe records per point, not at top level."""
+    mode = payload.get("move_mode")
+    if isinstance(mode, str) and mode:
+        return mode
+    for point in payload.get("points") or []:
+        if not isinstance(point, dict):
+            continue
+        point_mode = point.get("move_mode")
+        if isinstance(point_mode, str) and point_mode:
+            return point_mode
+    return None
+
+
+def path_verification(payload: dict[str, Any], key: str, move_mode: str | None) -> dict[str, Any]:
+    """Report what the probe actually recorded for an OS-pointer-path field.
+
+    Never synthesizes a true. A recorded value is passed through verbatim; a run that
+    aimed via engine-cursor pulses, or that never recorded the field, is reported as
+    not_applicable with a reason rather than being collapsed into "this was not a dry run".
+    """
+    raw = payload.get(key)
+    if move_mode == PULSE_MOVE_MODE:
+        return {
+            "value": None,
+            "status": "not_applicable",
+            "reason": PULSE_PATH_REASON,
+            "probe_value": raw if isinstance(raw, bool) else None,
+        }
+    if isinstance(raw, bool):
+        return {
+            "value": raw,
+            "status": "verified" if raw else "not_verified",
+            "reason": None,
+            "probe_value": raw,
+        }
+    return {
+        "value": None,
+        "status": "not_applicable",
+        "reason": ABSENT_PATH_REASON,
+        "probe_value": None,
+    }
+
+
 def input_json_summary(payload: dict[str, Any] | None) -> dict[str, Any]:
     if payload is None:
+        missing = {
+            "value": None,
+            "status": "not_applicable",
+            "reason": MISSING_PAYLOAD_REASON,
+            "probe_value": None,
+        }
         return {
             "present": False,
-            "path_verified": False,
-            "click_path_verified": False,
+            "move_mode": None,
+            "path_verified": missing["value"],
+            "path_verified_status": missing["status"],
+            "path_verified_reason": missing["reason"],
+            "path_verified_probe_value": missing["probe_value"],
+            "click_path_verified": missing["value"],
+            "click_path_verified_status": missing["status"],
+            "click_path_verified_reason": missing["reason"],
+            "click_path_verified_probe_value": missing["probe_value"],
             "click_event_count": 0,
             "dry_run": False,
         }
+    move_mode = payload_move_mode(payload)
+    path = path_verification(payload, "path_verified", move_mode)
+    click_path = path_verification(payload, "click_path_verified", move_mode)
     return {
         "present": True,
-        "path_verified": bool(payload.get("path_verified") or payload.get("dry_run") is False),
-        "click_path_verified": bool(payload.get("click_path_verified") or payload.get("dry_run") is False),
+        "move_mode": move_mode,
+        "path_verified": path["value"],
+        "path_verified_status": path["status"],
+        "path_verified_reason": path["reason"],
+        "path_verified_probe_value": path["probe_value"],
+        "click_path_verified": click_path["value"],
+        "click_path_verified_status": click_path["status"],
+        "click_path_verified_reason": click_path["reason"],
+        "click_path_verified_probe_value": click_path["probe_value"],
         "click_event_count": int(payload.get("click_event_count") or sum(len(row.get("clicks", [])) for row in payload.get("points", []))),
         "dry_run": bool(payload.get("dry_run")),
     }
@@ -330,6 +406,19 @@ def markdown_for(summary: dict[str, Any], markdown_path: Path) -> str:
                 f"- CDB breakpoint failures: {run['cdb_breakpoint_failure_count']}",
                 f"- CDB break-instruction exceptions: {run['cdb_break_instruction_exception_count']}",
                 f"- Input JSON: {'present' if run['input']['present'] else 'missing'}",
+                f"- Move mode: {run['input']['move_mode'] or 'unrecorded'}",
+                f"- OS pointer path verified: {run['input']['path_verified_status']}"
+                + (
+                    f" ({run['input']['path_verified_reason']})"
+                    if run["input"]["path_verified_reason"]
+                    else ""
+                ),
+                f"- OS pointer click path verified: {run['input']['click_path_verified_status']}"
+                + (
+                    f" ({run['input']['click_path_verified_reason']})"
+                    if run["input"]["click_path_verified_reason"]
+                    else ""
+                ),
                 f"- Classification: {', '.join(run['classification'])}",
                 "",
             ]

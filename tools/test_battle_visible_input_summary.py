@@ -139,6 +139,96 @@ def test_aggregate_pass_requires_consumed_click(fixture: Path) -> None:
     assert complete["passed"] is True, complete
 
 
+def test_probe_false_path_verified_is_never_reported_true(fixture: Path) -> None:
+    """H2 regression: a probe-recorded false must never be synthesized into a true.
+
+    The old code collapsed both fields to `payload.get(...) or dry_run is False`, so a
+    non-dry run reported path_verified true even when the probe recorded false.
+    """
+    input_json = {"dry_run": False, "path_verified": False, "click_path_verified": False, "click_event_count": 3}
+    run = write_run(fixture / "probe-false", consumed_log(), input_json=input_json)
+    summary = battle_visible_input_summary.build_run_summary(run)
+    reported = summary["input"]
+    assert reported["path_verified"] is False, reported
+    assert reported["path_verified_status"] == "not_verified", reported
+    assert reported["click_path_verified"] is False, reported
+    assert reported["click_path_verified_status"] == "not_verified", reported
+    # The pass gate must be untouched by this reporting change.
+    assert summary["real_visible_click_consumed"] is True, summary
+
+
+def test_pulse_run_reports_not_applicable(fixture: Path) -> None:
+    """Engine-cursor pulse aiming: OS-pointer-path verification is meaningless, not true.
+
+    Mirrors the real artifact: path_verified false, click_path_verified absent entirely,
+    requested [588,440] but the OS pointer intentionally stays at [1280,720].
+    """
+    input_json = {
+        "dry_run": False,
+        "path_verified": False,
+        "click_event_count": 8,
+        "points": [
+            {
+                "requested_screen": [588, 440],
+                "move_mode": "pulse",
+                "samples": [{"phase": "after_move", "actual_screen": [1280, 720]}],
+                "clicks": [{"repeat_index": 0}],
+            }
+        ],
+    }
+    run = write_run(fixture / "pulse", consumed_log(), input_json=input_json)
+    summary = battle_visible_input_summary.build_run_summary(run)
+    reported = summary["input"]
+    assert reported["move_mode"] == "pulse", reported
+    assert reported["path_verified"] is None, reported
+    assert reported["path_verified_status"] == "not_applicable", reported
+    assert "engine-cursor pulse" in reported["path_verified_reason"], reported
+    assert reported["path_verified_probe_value"] is False, reported
+    # click_path_verified is absent from the probe JSON: still never a true.
+    assert reported["click_path_verified"] is None, reported
+    assert reported["click_path_verified_status"] == "not_applicable", reported
+    assert reported["click_path_verified_probe_value"] is None, reported
+    # Pass gate unchanged: it reads click_event_count and the CDB gates, not these fields.
+    assert summary["real_visible_click_consumed"] is True, summary
+
+
+def test_absent_path_fields_are_not_applicable(fixture: Path) -> None:
+    """A non-pulse run that simply never recorded the field reports not_applicable."""
+    input_json = {"dry_run": False, "click_event_count": 2}
+    run = write_run(fixture / "absent", consumed_log(), input_json=input_json)
+    reported = battle_visible_input_summary.build_run_summary(run)["input"]
+    assert reported["path_verified"] is None, reported
+    assert reported["path_verified_status"] == "not_applicable", reported
+    assert reported["path_verified_reason"] == "probe did not record this field", reported
+    assert reported["click_path_verified"] is None, reported
+    assert reported["click_path_verified_status"] == "not_applicable", reported
+
+
+def test_missing_input_json_is_not_applicable(fixture: Path) -> None:
+    run = write_run(fixture / "no-json", ready_log())
+    reported = battle_visible_input_summary.build_run_summary(run)["input"]
+    assert reported["present"] is False, reported
+    assert reported["path_verified"] is None, reported
+    assert reported["path_verified_status"] == "not_applicable", reported
+    assert reported["click_path_verified"] is None, reported
+    assert reported["click_path_verified_status"] == "not_applicable", reported
+
+
+def test_markdown_discloses_path_verification_status(fixture: Path) -> None:
+    input_json = {
+        "dry_run": False,
+        "path_verified": False,
+        "click_event_count": 8,
+        "points": [{"move_mode": "pulse", "clicks": [{"repeat_index": 0}]}],
+    }
+    run = write_run(fixture / "md", consumed_log(), input_json=input_json)
+    summary = battle_visible_input_summary.build_summary([run])
+    markdown = battle_visible_input_summary.markdown_for(summary, fixture / "md" / "summary.md")
+    assert "OS pointer path verified: not_applicable" in markdown, markdown
+    assert "OS pointer click path verified: not_applicable" in markdown, markdown
+    assert "Move mode: pulse" in markdown, markdown
+
+
 def run_tests() -> None:
     fixture = ROOT / ".codex-loop" / "tmp-tests" / "battle-visible-input-summary-fixture"
     shutil.rmtree(fixture, ignore_errors=True)
@@ -149,6 +239,11 @@ def run_tests() -> None:
         test_invalid_cdb_breakpoint_failures_fail_readiness(fixture / "invalid-case")
         test_cli_writes_current_artifacts(fixture / "cli-case")
         test_aggregate_pass_requires_consumed_click(fixture / "aggregate-case")
+        test_probe_false_path_verified_is_never_reported_true(fixture / "probe-false-case")
+        test_pulse_run_reports_not_applicable(fixture / "pulse-case")
+        test_absent_path_fields_are_not_applicable(fixture / "absent-case")
+        test_missing_input_json_is_not_applicable(fixture / "missing-json-case")
+        test_markdown_discloses_path_verification_status(fixture / "markdown-case")
     finally:
         shutil.rmtree(fixture, ignore_errors=True)
 

@@ -51,6 +51,15 @@ Run individual fixtures with `python tools/test_<name>.py`.
   `Process.MainWindowHandle` can remain null. Find the visible titled window for
   the process with `EnumWindows`.
 - PowerShell reserves `$pid`; use `$procId` or another variable name.
+- **Input injection does reach the game** (commit `589f5700`). The engine reads
+  the DirectInput *accumulator*, so `SetCursorPos` and absolute `SendInput`
+  moves are invisible to it — they move only the OS cursor. Pulse-mode relative
+  injection works (per-poll accumulator reset to screen centre, injected deltas
+  applied x8 and read /4; see `-RawMoveMode servo|pulse` in
+  `raw_sendinput_click.py`). Older notes blaming `[WinError 5]`, exclusive
+  DirectInput, or missing environment privilege for "automation is impossible"
+  are **wrong**; treat a `logical_delta` of `[0,0]` with
+  `move_method=setcursor` as the signature of that old bug.
 - The surfdump proxy under `src/ddraw_surfdump_proxy/` is memory-only and works
   with CDB. The user-owned GOG/dgVoodoo wrapper creates a visible window but can
   prevent useful CDB logging. Use the correct path for the evidence required.
@@ -76,10 +85,22 @@ Run individual fixtures with `python tools/test_<name>.py`.
 
 - Terrain tooltip and selected-unit action-panel anchoring still need a
   validation-stage implementation and evidence.
-- Right-bottom composition guards contain an unresolved ownership/design
-  conflict.
-- Battle click-to-callback proof remains constrained by the visible-window/CDB
-  wrapper split.
+- Right-bottom composition: the rows-present vs rows-absent gate-design
+  contradiction is **resolved**. The user's 2026-07-14 ruling (commit
+  `96a3d078`) accepts the slot5-as-slot0 fixture run
+  `captures/archive/cdb-surface-dump-20260712-155528` as natural-draw evidence,
+  and all 7 required promotion checks now pass. Stable promotion is still
+  `defer_stable_promotion` — deferred **by decision** pending manual input
+  proof (`manual_input_proof_valid=false`), not by an open design question. The
+  fixture's own `proof_class` remains `non_natural_isolated_fixture`.
+- Battle click-to-callback is **PROVEN** (commit `c5fe1d70`, run
+  `captures/archive/battle-visible-input-present-20260717-133221`): a genuine
+  `BATTLE_COMMAND_CLICK_GATE_OBSERVED desc=00514b78 eax=1` followed by
+  `BATTLE_COMMAND_CALLBACK eip=0042d4e0`, with `BATTLE_COMMAND_CLICK_GATE_FORCE`
+  absent from the entire run. This is no longer constrained by the
+  visible-window/CDB wrapper split — the `CLASH_PROXY_PRESENT` painting proxy
+  (present-on-`Unlock`) resolved that. Manual DirectInput proof for the five
+  checklist targets is still outstanding.
 - Long-duration continuity and soak runs require fresh approval.
 
 ## Safe default actions

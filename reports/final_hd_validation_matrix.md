@@ -2,6 +2,23 @@
 
 Generated: 2026-05-22
 
+> **UPDATE 2026-07-17 — the battle blocker below is closed.** Real visible
+> battle click-to-callback proof now exists (commit `c5fe1d70`, run
+> `captures/archive/battle-visible-input-present-20260717-133221`):
+> `BATTLE_COMMAND_CLICK_GATE_OBSERVED desc=00514b78 eax=1` followed by
+> `BATTLE_COMMAND_CALLBACK eip=0042d4e0`, `BATTLE_COMMAND_CLICK_GATE_FORCE`
+> count `0` across the run. `battle_visible_input_summary.py
+> --require-click-consumed` now **PASSES** (command-ready `1/1`,
+> click-consumed `1/1`, invalid `0`) and the focused lane figure moved from
+> `99.91%` to `99.95%`. The rows marked `99.91%` / click-consumed `0/3` below
+> are retained as the historical 2026-05-22 state.
+>
+> **Still open:** manual DirectInput proof (`0/5` targets) and stable
+> promotion. The release limitation below therefore still holds on those
+> grounds — but no longer on the grounds of missing click-to-callback proof.
+> Consult `captures/current/current-completion-summary-current.md` for live
+> figures; the numbers in this file are a dated snapshot.
+
 ## Verdict
 
 Automated repo-only and hidden/no-popup validation is passing. The HD mod is not
@@ -9,6 +26,7 @@ yet release-complete because manual DirectInput proof remains pending and the
 user has not approved a CDB-only promotion override. The focused
 battle/right-bottom command lane is `99.91%`: command readiness is proven in
 visible runs, but real visible click-to-callback proof is still open.
+*(Superseded 2026-07-17 — see the update note above.)*
 
 ## Gate Matrix
 
@@ -25,7 +43,7 @@ visible runs, but real visible click-to-callback proof is still open.
 | Overview visible multi-hit | `castle_overview_multihit_summary.py ... --require-all-targets --forbid-callback` | `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6` | PASS | `reports\castle_overview_multihit_20260515_105458.json`, `.md`; commands `0x86`, `0x63`, `0x87` |
 | Overview dormant multi-hit | `castle_overview_multihit_summary.py ... --require-all-targets --forbid-callback` | `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6` | PASS | `reports\castle_overview_flags1f_multihit_20260515_105557.json`, `.md`; commands `0x99`, `0x9C`, `0x9F`, `0xA6` |
 | Battle/right-bottom evidence matrix | `battle_ui_evidence_matrix.py --require-pass` | `F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF` / `F84933776944E2B616F6BBCCF7708ABBF06498D5438FA8DF7B7AF1BB56CD180A` | PASS | `captures\current\battle-ui-evidence-current.json`, `.md`; visible command readiness included; promotion remains validation-only |
-| Battle visible input summary | `battle_visible_input_summary.py --require-click-consumed` | n/a | EXPECTED FAIL until proof | `captures\current\battle-visible-input-current.json`, `.md`; focused completion `99.91%`, command-ready runs `2/3`, click-consumed runs `0/3`, invalid runs `1`, post-`g` break-instruction exception runs `1/3` |
+| Battle visible input summary | `battle_visible_input_summary.py --require-click-consumed` | n/a | ~~EXPECTED FAIL until proof~~ → **PASS as of 2026-07-17** (`c5fe1d70`) | *2026-05-22 state:* focused completion `99.91%`, command-ready `2/3`, click-consumed `0/3`, invalid `1`, post-`g` break-instruction exception `1/3`. *Current:* focused completion `99.95%`, command-ready `1/1`, click-consumed `1/1`, invalid `0`; run `captures\archive\battle-visible-input-present-20260717-133221` |
 | Battle visible harness guard | `battle_visible_harness_guard.py --require-pass` | n/a | PASS | `captures\current\battle-visible-harness-guard-current.json`, `.md`; fail-fast coverage for breakpoint insert/remove failures and post-`g` `80000003` exceptions |
 | Manual DirectInput | `manual_directinput_checklist.py --require-promotion-ready` | n/a | EXPECTED FAIL until proof | Five required target IDs remain pending |
 | Artifact hygiene | `rg --files -g "*.exe"` | n/a | expected empty | no repository executables may be present |
@@ -50,14 +68,20 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts/cdb/run_cdb_su
 
 The current evidence is structured and reproducible, but it is hidden CDB/proxy
 evidence plus partial visible-window command-readiness evidence. It is not
-manual DirectInput proof, and it is not yet real visible battle command
-click-to-callback proof. Stable promotion and release-ready claims remain
+manual DirectInput proof, ~~and it is not yet real visible battle command
+click-to-callback proof~~ *(struck 2026-07-17: that proof now exists — see the
+update note at the top)*. Stable promotion and release-ready claims remain
 blocked until the approved manual proof manifest passes or a separate explicit
 CDB-only override manifest is approved.
 
 ## Completion Summary
 
-- Focused battle/right-bottom command lane: `99.91%`.
-- Full-game reverse engineering: not `100%`.
-- Current blocker: real visible click-to-callback proof for the battle command
-  descriptor.
+*Dated 2026-05-22 snapshot; current figures live in
+`captures/current/current-completion-summary-current.md`.*
+
+- Focused battle/right-bottom command lane: ~~`99.91%`~~ → `99.95%` as of
+  2026-07-17.
+- Full-game reverse engineering: not `100%` (still true).
+- ~~Current blocker: real visible click-to-callback proof for the battle command
+  descriptor.~~ **Closed 2026-07-17 (`c5fe1d70`).** The remaining blockers are
+  manual DirectInput proof (`0/5` targets) and stable promotion.

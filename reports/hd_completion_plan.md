@@ -7,6 +7,17 @@ Generated: 2026-05-22
 > ground-truth answers (right-bottom `addon_flags` gate, battle unit-capability
 > gate, the natural DirectInput click path, and the exact fixture recipes) and
 > `reports/disassembly_cross_check_hd_next_steps.md` for the per-route validation.
+>
+> Update 2026-07-17 (`c5fe1d70`): **the "real visible click-to-callback proof"
+> blocker named throughout this file is closed.** Run
+> `captures/archive/battle-visible-input-present-20260717-133221` shows
+> `BATTLE_COMMAND_CLICK_GATE_OBSERVED desc=00514b78 eax=1` →
+> `BATTLE_COMMAND_CALLBACK eip=0042d4e0` with zero
+> `BATTLE_COMMAND_CLICK_GATE_FORCE` rows; `battle_visible_input_summary.py
+> --require-click-consumed` passes (command-ready `1/1`, click-consumed `1/1`,
+> invalid `0`) and the focused lane figure is `99.95%`, not `99.91%`. The
+> `2/3` / `0/3` / `99.91%` figures below are the dated 2026-05-22 state.
+> Manual DirectInput proof (`0/5`) and stable promotion remain open.
 
 ## Current State
 
@@ -85,12 +96,16 @@ Generated: 2026-05-22
 - Treat `battlecenter-inputprobe` as covering currently proven battle routes:
   centered 640x480 battle presentation, centered grid/descriptor input
   wrappers, constructed enabled-command callback under hidden CDB, and visible
-  command readiness. Do not promote it until real visible click-to-callback
-  proof exists.
+  command readiness. ~~Do not promote it until real visible click-to-callback
+  proof exists.~~ *(That proof landed 2026-07-17, `c5fe1d70`.)* Promotion is
+  still gated on manual DirectInput proof and an approved promotion decision.
 - Keep stable default unchanged until either manual proof or an explicit override manifest passes.
 
 ## Completion Summary
 
-- Focused battle/right-bottom command lane: `99.91%`.
-- Full-game reverse engineering: not `100%`.
-- Current blocker: real visible click-to-callback proof.
+- Focused battle/right-bottom command lane: ~~`99.91%`~~ → `99.95%` as of
+  2026-07-17.
+- Full-game reverse engineering: not `100%` (still true).
+- ~~Current blocker: real visible click-to-callback proof.~~ **Closed
+  2026-07-17 (`c5fe1d70`).** Current blockers: manual DirectInput proof
+  (`0/5` targets) and stable promotion.

@@ -76,11 +76,19 @@ DI_INVISIBLE_MOVE_MODES = ("setcursor", "sendinput-absolute", "auto")
 PULSE_ROUTE_STEPS = "load-button:302,211;load-slot0:320,166;confirm-load:400,226"
 INTRO_VERIFY_ROUNDS = 12
 PULSE_AIM_TOLERANCE_PX = 10
-# Documented real-runtime castle-entry click (captures/archive/
-# manual-barracks-entry/click-castle.json, manual-visible-session-2026-07-12):
-# a real click at client (470,397) entered the slot-0 "Stormus" castle
-# overview.  The castle targets need it before any overview descriptor point
-# is reachable; the load route only reaches the map.
+# Castle-entry click point.  UNVERIFIED PROVENANCE - do not describe this as
+# proven real-runtime evidence.  It was originally taken from captures/archive/
+# manual-barracks-entry/click-castle.json plus the 2026-07-12 manual session
+# (now captures/archive/manual-visible-session-2026-07-12.md, banner-marked
+# SUPERSEDED), which claimed a real click at client (470,397) entered the
+# slot-0 "Stormus" castle overview.  a07ea061 refuted that reading: those
+# clicks used move_method=setcursor with logical_delta [0,0], so the engine's
+# DirectInput accumulator never moved (root cause fixed in 589f5700), that
+# session never loaded the save, and "Stormus" is an exe-resident scenario
+# default name rather than the slot-0 owner record.  (470,397) is therefore a
+# plausible starting aim point awaiting a pulse-mode re-verification, not a
+# documented result.  The castle targets still need some entry click before any
+# overview descriptor point is reachable; the load route only reaches the map.
 CASTLE_ENTRY_POINT = "castle-entry:470,397"
 
 

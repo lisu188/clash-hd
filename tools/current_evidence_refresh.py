@@ -798,6 +798,25 @@ RIGHT_BOTTOM_COMPOSE_PATCH_STAGE = (
 RIGHT_BOTTOM_FIXTURE_NATURAL_DRAW_RULING = (
     "user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence"
 )
+RBUI_DESC_SWITCH_UNASSERTED_REASON = (
+    "RBUI_DESC_SWITCH is NOT asserted on the slot5-as-slot0 fixture path. The descriptor-switch "
+    "row is emitted only by the widget poll 00419DC0, which genuinely cannot fire headlessly on "
+    "the bare map, and the accepted fixture run carries only NOWNER_* wrapper/hittest rows, so it "
+    "supplies no descriptor-switch equivalent to substitute. A PASS on this path is therefore NOT "
+    "proof that right-bottom descriptor switching occurs; descriptor switching remains UNPROVEN."
+)
+RIGHT_BOTTOM_COMPOSE_UI_GUARD_POLICY_NATURAL = (
+    "bare-map natural-rows path: asserts RBUI_VIEWPORT_SWITCH >= 1 and RBUI_DESC_SWITCH >= 1 "
+    "alongside the surface-dump, stage, SHA, and patch-group gates"
+)
+RIGHT_BOTTOM_COMPOSE_UI_GUARD_POLICY_FIXTURE = (
+    "slot5-as-slot0 fixture path: asserts RBUI_VIEWPORT_SWITCH >= 1 (unconditional, asserted on "
+    "both paths) plus the fixture natural-draw gates (NOWNER_435BC0_PANEL_DRAW >= 1, "
+    "NOWNER_435BC0_GRID_DRAW >= 1, NOWNER_WRAPPER_COPYBACK_DONE >= 1, av_count == 0, "
+    "proof_class == non_natural_isolated_fixture, expected_slot_match is True) alongside the "
+    "surface-dump, stage, SHA, and patch-group gates. DISCLOSURE: "
+    + RBUI_DESC_SWITCH_UNASSERTED_REASON
+)
 RUNTIME_POLICY = "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows"
 
 
@@ -6875,14 +6894,25 @@ def build_right_bottom_compose_ui_probe(args: argparse.Namespace) -> dict[str, A
         failures.append("right-bottom compose UI run did not reach SURFDUMP_PLAYGAME")
     if int(marker_counts.get("SURFDUMP_READY") or 0) <= 0:
         failures.append("right-bottom compose UI run did not reach SURFDUMP_READY")
+    # RBUI_VIEWPORT_SWITCH is asserted UNCONDITIONALLY, on both the natural-rows and the
+    # fixture path. The compose patch's dynamic viewport switch does not depend on the
+    # owner/action draw rows being entered: it is emitted on the bare map and is satisfied
+    # there, so there is no justification for relaxing it on the fixture path.
+    if int(marker_counts.get("RBUI_VIEWPORT_SWITCH") or 0) <= 0:
+        failures.append("right-bottom compose UI viewport switch row was not observed")
+
+    rbui_desc_switch_asserted = natural_rows_present
+    rbui_desc_switch_unasserted_reason: str | None = None
     if natural_rows_present:
-        # Original natural-rows path: unchanged requirements when the bare-map run
+        # Original natural-rows path: unchanged requirement when the bare-map run
         # itself enters the owner/action draw rows.
         if int(marker_counts.get("RBUI_DESC_SWITCH") or 0) <= 0:
             failures.append("right-bottom compose UI descriptor switch rows were not observed")
-        if int(marker_counts.get("RBUI_VIEWPORT_SWITCH") or 0) <= 0:
-            failures.append("right-bottom compose UI viewport switch row was not observed")
     else:
+        # RBUI_DESC_SWITCH is deliberately NOT asserted here, and that omission is
+        # disclosed in the emitted payload, the generated markdown, and the guard
+        # policy text rather than left silent -- see RBUI_DESC_SWITCH_UNASSERTED_REASON.
+        rbui_desc_switch_unasserted_reason = RBUI_DESC_SWITCH_UNASSERTED_REASON
         # Rows absent on the bare map is the physically-correct engine result: the
         # unmodified slot-0 save's only player-owned record has owner_flag=0x00, which
         # parks descriptor 004338E0 off-screen, and the widget poll 00419DC0 never
@@ -6918,7 +6948,10 @@ def build_right_bottom_compose_ui_probe(args: argparse.Namespace) -> dict[str, A
             "candidate_sha256": summary.get("CandidateSha256"),
             "rbui_markers_seen": summary.get("RbuiMarkersSeen"),
             "rbui_desc_switch": marker_counts.get("RBUI_DESC_SWITCH"),
+            "rbui_desc_switch_asserted": rbui_desc_switch_asserted,
+            "rbui_desc_switch_unasserted_reason": rbui_desc_switch_unasserted_reason,
             "rbui_viewport_switch": marker_counts.get("RBUI_VIEWPORT_SWITCH"),
+            "rbui_viewport_switch_asserted": True,
             "rbui_panel_draw": marker_counts.get("RBUI_PANEL_DRAW"),
             "rbui_action_box": marker_counts.get("RBUI_ACTION_BOX"),
             "surfdump_playgame": marker_counts.get("SURFDUMP_PLAYGAME"),
@@ -6927,6 +6960,11 @@ def build_right_bottom_compose_ui_probe(args: argparse.Namespace) -> dict[str, A
             "current_hd_map_gate": current_gate.get("passed"),
             "right_bottom_patch_group": patch_group,
             "natural_draw_source": natural_draw_source,
+            "guard_policy": (
+                RIGHT_BOTTOM_COMPOSE_UI_GUARD_POLICY_NATURAL
+                if natural_rows_present
+                else RIGHT_BOTTOM_COMPOSE_UI_GUARD_POLICY_FIXTURE
+            ),
             "fixture": fixture_payload,
             "bounds": bounds_summary,
         },
@@ -7914,6 +7952,12 @@ def write_markdown(path: Path, refresh: dict[str, Any]) -> None:
         summary = check.get("summary") or {}
         for key, value in summary.items():
             lines.append(f"- {key}: `{value}`")
+        if summary.get("rbui_desc_switch_asserted") is False:
+            # Never let a green check be read as descriptor-switch proof.
+            lines.append(
+                "- **UNASSERTED-CHECK DISCLOSURE:** "
+                f"{summary.get('rbui_desc_switch_unasserted_reason')}"
+            )
         if check.get("failures"):
             lines.append("- Failures:")
             for failure in check["failures"]:
