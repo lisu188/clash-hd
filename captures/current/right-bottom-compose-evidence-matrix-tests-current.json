@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:30:03+02:00",
+  "generated_at": "2026-07-18T21:36:00+02:00",
   "passed": true,
   "runtime_policy": "repo-only fixture tests; launches only Python child processes for matrix CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "proves the right-bottom compose evidence matrix requires all route gates, hidden-desktop/full-start safety, normal map/visibility proof, natural UI routing, controlled grid-hit proof, route timing/order proof, candidate SHA agreement, and deferred promotion status",

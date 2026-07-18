@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:30:33+02:00",
+  "generated_at": "2026-07-18T21:36:26+02:00",
   "runtime_policy": "repo-only evidence parsing; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "focused_completion_percent": 99.95,
   "run_count": 1,

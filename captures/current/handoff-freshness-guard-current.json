@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:30:49+02:00",
+  "generated_at": "2026-07-18T21:36:40+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "handoff docs must mention the current route timing guard, keep validation stages out of stable until required proof exists, retain current manual-proof and completion artifacts, preserve the no-popup runtime preference, require the visible-runtime approval guard, and avoid stale route/input or VM blockers",

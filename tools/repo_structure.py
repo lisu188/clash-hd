@@ -38,6 +38,7 @@ APPROVED_ROOT_FILES = {
 APPROVED_ROOT_DIRS = {
     ".agents",
     ".claude",
+    ".codex",
     ".codex-loop",
     ".git",
     "__pycache__",
@@ -212,38 +213,11 @@ SECTIONS: tuple[Section, ...] = (
         "Cloud-check support files and generated fixtures",
         (("fixtures/", "Stable offline fixtures used by tests"),),
     ),
-    Section(
-        "raw/",
-        "User-owned source material for the LLM wiki; agents do not edit sources",
-        (
-            ("inbox/", "New sources waiting for ingest"),
-            ("processed/", "Sources moved only after explicit user approval"),
-            ("assets/", "User-provided images, PDFs, media, and attachments"),
-        ),
-    ),
-    Section(
-        "wiki/",
-        "Agent-maintained Obsidian-compatible durable knowledge base",
-        (
-            ("index.md", "Catalog of wiki content"),
-            ("overview.md", "Starter guide for the wiki"),
-            ("log.md", "Append-only maintenance and ingest log"),
-            ("sources/", "One source-summary page per ingested source"),
-            ("entities/", "People, organizations, projects, products, places, works"),
-            ("concepts/", "Reusable ideas, terms, methods, patterns, and theories"),
-            ("syntheses/", "Cross-source synthesis pages"),
-            ("questions/", "Open questions and research threads"),
-            ("comparisons/", "Structured comparisons"),
-        ),
-    ),
-    Section(
-        "meta/",
-        "Templates and human-readable workflows for wiki maintenance",
-        (
-            ("templates/", "Page templates"),
-            ("workflows/", "Ingest, query, lint, and contradiction workflows"),
-        ),
-    ),
+    # The raw/, wiki/, and meta/ LLM-knowledge-base sections were removed from the
+    # repository with the wiki scaffold (a44098ce "Remove llm wiki", merged in
+    # 33944b53). They are intentionally absent from disk and from git, so they are
+    # no longer declared here; docs_consistency_guard separately enforces that the
+    # scaffold stays absent.
 )
 
 

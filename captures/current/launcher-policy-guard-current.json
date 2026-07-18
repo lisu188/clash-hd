@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:30:38+02:00",
+  "generated_at": "2026-07-18T21:36:30+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "launcher visible launches must stay user-initiated (confirmed=True from the GUI Play button or the CLI double flag) and the launcher must never join the evidence refresh",

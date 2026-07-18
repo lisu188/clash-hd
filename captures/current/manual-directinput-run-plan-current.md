@@ -1,7 +1,7 @@
 # Manual DirectInput Run Plan
 
 - Overall: PASS
-- Generated: `2026-07-18T21:30:48+02:00`
+- Generated: `2026-07-18T21:36:40+02:00`
 - Runtime policy: repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, launch Clash95, CDB, wrappers, move the mouse, or open visible windows
 - Guard policy: manual DirectInput commands remain templates until explicit user approval; every visible runtime command must carry -AllowVisibleRuntime and the proof manifest must be validated before promotion; the visible harness window must use the safe desktop offset so lower/right 800x600 client targets are not cursor-clamped
 - Engine input policy: the game reads mouse position from the DirectInput accumulator, not the OS cursor, so SetCursorPos/absolute-SendInput moves are invisible to its hit test; every menu, map, and follow-up click in this plan is driven by pulse-mode relative injection through tools/menu_pulse_click.py with frame-diff engine-cursor feedback and per-point aim error

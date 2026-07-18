@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T21:29:50+02:00",
+  "generated_at": "2026-07-18T21:35:48+02:00",
   "passed": true,
   "runtime_policy": "repo-only; reads archived hidden-desktop CDB logs, summaries, and timeout stacks; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when slot 2 still proves the full load-menu accept path while slots 3-5 and the current slot-5 right-bottom attempt all stall after early load-menu descriptor rows but before 0044895A load-menu entry, forced select, LOADSAVE, and PlayGame",

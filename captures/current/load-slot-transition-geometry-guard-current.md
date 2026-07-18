@@ -1,7 +1,7 @@
 # Load Slot Transition Geometry Guard
 
 - Status: PASS
-- Generated: `2026-07-18T21:29:50+02:00`
+- Generated: `2026-07-18T21:35:48+02:00`
 - Runtime policy: repo-only source/plan inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when the transition run plan targets rows 3-5 and the surface-dump launcher still replaces extra-probe load-slot mouse placeholders using x=320 and y=166+22*slot shifted into raw mouse globals
 - Promotion ready: `False`

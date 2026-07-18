@@ -1,7 +1,7 @@
 # Border Frame-Restore Check Tests
 
 - Status: PASS
-- Generated: `2026-07-18T21:30:16+02:00`
+- Generated: `2026-07-18T21:36:11+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the frame-restore-bands lane keeps every border band, passing authenticity gates at frozen thresholds, and a resolvable real-runtime frame reference, failing closed on any missing file or field
 

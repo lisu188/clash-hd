@@ -1,7 +1,7 @@
 # HD Endurance Release Checklist Tests
 
 - Status: PASS
-- Generated: `2026-07-18T21:30:55+02:00`
+- Generated: `2026-07-18T21:36:47+02:00`
 - Runtime policy: repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: proves the release-horizon checklist only passes when short/long soak, manual input, screen-route, first-mission visual, continuity, hygiene, and promotion-boundary evidence are all current
 
