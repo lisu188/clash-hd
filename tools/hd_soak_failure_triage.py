@@ -24,6 +24,155 @@ RUNTIME_POLICY = (
     "PowerShell harnesses, or visible windows"
 )
 AV_EXIT_CODES = {3221225477, -1073741819, 0xC0000005}
+MAX_PROBE_LOG_TAIL_BYTES = 256 * 1024
+
+
+def cdb_followup_path_for_report(report_path: Path | None) -> Path | None:
+    if report_path is None:
+        return None
+    name = report_path.name
+    suffix = "-current.json"
+    if not name.endswith(suffix):
+        return None
+    return report_path.with_name(f"{name[:-len(suffix)]}-cdb-followup-current.json")
+
+
+def load_cdb_followup_for_report(report_path: Path | None) -> dict[str, Any] | None:
+    path = cdb_followup_path_for_report(report_path)
+    if path is None or not path.exists():
+        return None
+    return load_json(path)
+
+
+def wer_followup_path_for_report(report_path: Path | None) -> Path | None:
+    if report_path is None:
+        return None
+    name = report_path.name
+    suffix = "-current.json"
+    if not name.endswith(suffix):
+        return None
+    return report_path.with_name(f"{name[:-len(suffix)]}-wer-followup-current.json")
+
+
+def load_wer_followup_for_report(report_path: Path | None) -> dict[str, Any] | None:
+    path = wer_followup_path_for_report(report_path)
+    if path is None or not path.exists():
+        return None
+    return load_json(path)
+
+
+def summarize_wer_followup(
+    report: dict[str, Any],
+    followup: dict[str, Any] | None,
+    source_report: Path | None = None,
+) -> dict[str, Any] | None:
+    if not isinstance(followup, dict):
+        return None
+    events = followup.get("event_evidence") or {}
+    correlation = followup.get("timeline_correlation") or {}
+    mitigation = followup.get("mitigation") or {}
+    failures: list[str] = []
+    if str(followup.get("candidate_sha256") or "").upper() != str(
+        report.get("candidate_sha256") or ""
+    ).upper():
+        failures.append("candidate SHA-256 does not match the visible soak report")
+    if followup.get("stage") != report.get("stage"):
+        failures.append("stage does not match the visible soak report")
+    if followup.get("route") != report.get("route"):
+        failures.append("route does not match the visible soak report")
+    if source_report is not None and Path(str(followup.get("source_visible_report") or "")) != source_report:
+        failures.append("source visible report does not match the triaged report")
+    if followup.get("passed") is not True:
+        failures.append("WER follow-up manifest is not passing")
+    if events.get("event_name") != "AppHangB1":
+        failures.append("WER event is not AppHangB1")
+    if int(events.get("application_hang_1002_count") or 0) < 1:
+        failures.append("Application Hang event 1002 was not observed")
+    if int(events.get("wer_apphang_1001_count") or 0) < 1:
+        failures.append("WER AppHang event 1001 was not observed")
+    if int(events.get("application_error_1000_count") or 0) != 0:
+        failures.append("an Application Error 1000 crash event was also observed")
+    if events.get("windows_closed_nonresponsive_application") is not True:
+        failures.append("OS closure of the nonresponsive application was not established")
+    if correlation.get("candidate_name_matches") is not True:
+        failures.append("WER candidate name does not match the soak candidate")
+    if correlation.get("event_within_failed_run_window") is not True:
+        failures.append("WER event was not correlated to the failed run window")
+    mitigation_ready = (
+        mitigation.get("window_health_instrumentation_added") is True
+        and mitigation.get("harness_guard_passed") is True
+        and mitigation.get("window_health_stop_check_passed") is True
+        and bool(mitigation.get("harness_guard_path"))
+    )
+    return {
+        "path": followup.get("manifest_path"),
+        "matched": not failures,
+        "status": followup.get("status"),
+        "candidate_sha256": followup.get("candidate_sha256"),
+        "stage": followup.get("stage"),
+        "route": followup.get("route"),
+        "event_evidence": events,
+        "timeline_correlation": correlation,
+        "capture_analysis": followup.get("capture_analysis"),
+        "mitigation": mitigation,
+        "window_health_mitigation_ready": mitigation_ready,
+        "scope_limit": followup.get("scope_limit"),
+        "failures": failures,
+    }
+
+
+def summarize_cdb_followup(
+    report: dict[str, Any],
+    followup: dict[str, Any] | None,
+    source_report: Path | None = None,
+) -> dict[str, Any] | None:
+    if not isinstance(followup, dict):
+        return None
+    observation = followup.get("observation") or {}
+    route = followup.get("route_evidence") or {}
+    presentation = followup.get("presentation") or {}
+    failures: list[str] = []
+    if str(followup.get("candidate_sha256") or "").upper() != str(
+        report.get("candidate_sha256") or ""
+    ).upper():
+        failures.append("candidate SHA-256 does not match the visible soak report")
+    if followup.get("stage") != report.get("stage"):
+        failures.append("stage does not match the visible soak report")
+    if followup.get("route") != report.get("route"):
+        failures.append("route does not match the visible soak report")
+    if source_report is not None and Path(str(followup.get("source_visible_report") or "")) != source_report:
+        failures.append("source visible report does not match the triaged report")
+    if followup.get("passed") is not True:
+        failures.append("follow-up manifest is not passing")
+    if followup.get("hidden_desktop") is not True:
+        failures.append("follow-up was not hidden-desktop")
+    if presentation.get("proxy_present_enabled") is not False:
+        failures.append("memory-only proxy presentation was not explicitly disabled")
+    if route.get("gameplay_observed") is not True:
+        failures.append("follow-up did not observe gameplay")
+    if observation.get("post_dump_observation_completed") is not True:
+        failures.append("post-dump observation did not complete")
+    if observation.get("post_dump_exit_observed") is not False:
+        failures.append("follow-up observed a post-dump exit")
+    if observation.get("access_violation_observed") is not False:
+        failures.append("follow-up observed an access violation")
+    if observation.get("app_request_quit_observed") is not False:
+        failures.append("follow-up observed App_RequestQuit")
+    return {
+        "path": followup.get("manifest_path"),
+        "matched": not failures,
+        "status": followup.get("status"),
+        "source_cdb_summary": followup.get("source_cdb_summary"),
+        "candidate_sha256": followup.get("candidate_sha256"),
+        "stage": followup.get("stage"),
+        "route": followup.get("route"),
+        "hidden_desktop": followup.get("hidden_desktop"),
+        "presentation": presentation,
+        "route_evidence": route,
+        "observation": observation,
+        "scope_limit": followup.get("scope_limit"),
+        "failures": failures,
+    }
 
 
 def status_text(passed: bool) -> str:
@@ -69,9 +218,218 @@ def guard_evaluation_for(report: dict[str, Any]) -> dict[str, Any] | None:
     return hd_soak_report.evaluate_report(report)
 
 
-def classify(report: dict[str, Any], guard_evaluation: dict[str, Any] | None = None) -> tuple[str, str, bool]:
+def probe_log_diagnostic(route: dict[str, Any]) -> dict[str, Any]:
+    """Summarize environment-level input failures without copying raw logs."""
+    name = route.get("Name")
+    log_value = route.get("Log")
+    if not log_value:
+        return {
+            "name": name,
+            "path": None,
+            "read_status": "missing-log-path",
+            "size_bytes": None,
+            "signals": [],
+        }
+
+    path = Path(str(log_value))
+    try:
+        size_bytes = path.stat().st_size
+        with path.open("rb") as handle:
+            if size_bytes > MAX_PROBE_LOG_TAIL_BYTES:
+                handle.seek(-MAX_PROBE_LOG_TAIL_BYTES, 2)
+            text = handle.read().decode("utf-8", errors="replace").lower()
+    except FileNotFoundError:
+        return {
+            "name": name,
+            "path": str(path),
+            "read_status": "missing",
+            "size_bytes": None,
+            "signals": [],
+        }
+    except OSError as exc:
+        return {
+            "name": name,
+            "path": str(path),
+            "read_status": "unreadable",
+            "size_bytes": None,
+            "signals": [],
+            "error": str(exc),
+        }
+
+    signals: list[str] = []
+    lines = text.splitlines()
+    sendinput_permission_denied = any(
+        "[winerror 5] sendinput" in line
+        or ("sendinput" in line and "access is denied" in line)
+        for line in lines
+    )
+    if sendinput_permission_denied:
+        signals.append("sendinput_permission_denied")
+    cursor_query_permission_denied = any(
+        "[winerror 5] getcursorpos" in line
+        or ("getcursorpos" in line and "access is denied" in line)
+        for line in lines
+    )
+    if cursor_query_permission_denied:
+        signals.append("cursor_query_permission_denied")
+    if "no visible window found for pid" in text:
+        signals.append("no_visible_process_window")
+    return {
+        "name": name,
+        "path": str(path),
+        "read_status": "ok",
+        "size_bytes": size_bytes,
+        "tail_truncated": size_bytes > MAX_PROBE_LOG_TAIL_BYTES,
+        "signals": signals,
+    }
+
+
+def probe_log_diagnostics(report: dict[str, Any]) -> dict[str, Any]:
+    rows = [
+        probe_log_diagnostic(route)
+        for route in report.get("route_results") or []
+        if isinstance(route, dict)
+    ]
+    denied_routes = [
+        str(row.get("name"))
+        for row in rows
+        if any(
+            signal in {
+                "sendinput_permission_denied",
+                "cursor_query_permission_denied",
+            }
+            for signal in (row.get("signals") or [])
+        )
+    ]
+    return {
+        "checked_route_count": len(rows),
+        "readable_log_count": sum(1 for row in rows if row.get("read_status") == "ok"),
+        "permission_denied_route_count": len(denied_routes),
+        "permission_denied_routes": denied_routes,
+        "rows": rows,
+    }
+
+
+def cursor_probe_diagnostic(attempt: dict[str, Any]) -> dict[str, Any]:
+    """Summarize one launch attempt's engine-cursor probe JSON.
+
+    A silently denied SetForegroundWindow produces no WinError 5 anywhere: the
+    call just returns false and the foreground-mode DirectInput never sees the
+    injected pulses. The probe records that as ``foreground_ok: false`` on every
+    aim iteration, so the probe JSON -- not the log text -- is the only place
+    focus denial is observable.
+    """
+    name = attempt.get("Attempt")
+    json_value = attempt.get("CursorProbeJson")
+    base: dict[str, Any] = {
+        "attempt": name,
+        "path": str(json_value) if json_value else None,
+        "signals": [],
+    }
+    if not json_value:
+        base["read_status"] = "missing-json-path"
+        return base
+
+    path = Path(str(json_value))
+    try:
+        payload = load_json(path)
+    except FileNotFoundError:
+        base["read_status"] = "missing"
+        return base
+    except (OSError, json.JSONDecodeError) as exc:
+        base["read_status"] = "unreadable"
+        base["error"] = str(exc)
+        return base
+
+    iterations: list[dict[str, Any]] = []
+    converged_flags: list[bool] = []
+    for step in payload.get("steps") or []:
+        if not isinstance(step, dict):
+            continue
+        aim = step.get("aim")
+        if not isinstance(aim, dict):
+            continue
+        converged_flags.append(bool(aim.get("converged")))
+        for row in aim.get("iterations") or []:
+            if isinstance(row, dict):
+                iterations.append(row)
+
+    foreground_flags = [
+        bool(row.get("foreground_ok"))
+        for row in iterations
+        if "foreground_ok" in row
+    ]
+    denied_count = len([flag for flag in foreground_flags if not flag])
+    cursor_alive = payload.get("cursor_alive")
+    converged = bool(converged_flags) and all(converged_flags)
+
+    signals: list[str] = []
+    if foreground_flags and denied_count == len(foreground_flags):
+        signals.append("foreground_activation_denied")
+    elif denied_count:
+        signals.append("foreground_activation_intermittent")
+    if cursor_alive is True and not converged:
+        signals.append("cursor_responded_without_convergence")
+    if cursor_alive is False:
+        signals.append("cursor_never_responded")
+
+    base.update(
+        {
+            "read_status": "ok",
+            "iteration_count": len(iterations),
+            "foreground_ok_count": len(foreground_flags) - denied_count,
+            "foreground_denied_count": denied_count,
+            "converged": converged,
+            "cursor_alive": cursor_alive,
+            "aim_error_px": (
+                (payload.get("steps") or [{}])[0].get("aim", {}).get("aim_error_px")
+                if payload.get("steps")
+                else None
+            ),
+            "signals": signals,
+        }
+    )
+    return base
+
+
+def cursor_probe_diagnostics(report: dict[str, Any]) -> dict[str, Any]:
+    rows = [
+        cursor_probe_diagnostic(attempt)
+        for attempt in report.get("launch_attempts") or []
+        if isinstance(attempt, dict)
+    ]
+    denied_attempts = [
+        row.get("attempt")
+        for row in rows
+        if "foreground_activation_denied" in (row.get("signals") or [])
+    ]
+    responded_without_convergence = [
+        row.get("attempt")
+        for row in rows
+        if "cursor_responded_without_convergence" in (row.get("signals") or [])
+    ]
+    return {
+        "checked_attempt_count": len(rows),
+        "readable_probe_count": sum(1 for row in rows if row.get("read_status") == "ok"),
+        "foreground_denied_attempt_count": len(denied_attempts),
+        "foreground_denied_attempts": denied_attempts,
+        "cursor_responded_without_convergence_attempts": responded_without_convergence,
+        "cursor_alive_observed": any(row.get("cursor_alive") is True for row in rows),
+        "rows": rows,
+    }
+
+
+def classify(
+    report: dict[str, Any],
+    guard_evaluation: dict[str, Any] | None = None,
+    probe_diagnostics: dict[str, Any] | None = None,
+    cursor_diagnostics: dict[str, Any] | None = None,
+) -> tuple[str, str, bool]:
     failures = lower_failures(report)
     guard_failures = lower_guard_failures(guard_evaluation)
+    input_permission_denied = bool(
+        (probe_diagnostics or {}).get("permission_denied_route_count")
+    ) or bool((cursor_diagnostics or {}).get("foreground_denied_attempt_count"))
     if report.get("executed") is not True:
         if "approval" in failures or report.get("execution_blocked_reason"):
             return (
@@ -122,20 +480,56 @@ def classify(report: dict[str, Any], guard_evaluation: dict[str, Any] | None = N
                 "run the crash/CDB probe for the same candidate and compare the patch-stage manifest",
                 False,
             )
-        last_route = last_item(report.get("route_results"))
+        if report.get("window_hang_observed") is True or "application window became nonresponsive" in failures:
+            return (
+                "application_hang_detected",
+                "inspect window_health_samples to isolate the first nonresponsive route phase before requesting any visible rerun",
+                False,
+            )
+        if (
+            report.get("window_missing_while_alive_observed") is True
+            or "visible application window disappeared while the process remained alive" in failures
+        ):
+            return (
+                "window_missing_while_process_alive",
+                "inspect window_health_samples and wrapper transitions at the first missing-window phase before requesting any visible rerun",
+                False,
+            )
+        if input_permission_denied:
+            return (
+                "input_environment_permission_denied",
+                "rerun the exact tokenized route command in a fresh explicitly approved unsandboxed Windows session; do not change patches or lower visual thresholds",
+                False,
+            )
+        routes = [
+            route
+            for route in report.get("route_results") or []
+            if isinstance(route, dict)
+        ]
+        last_route = last_item(routes)
+        intro_route = next(
+            (route for route in routes if route.get("Name") == "intro-skip"),
+            None,
+        )
+        no_visible_process_window = any(
+            "no_visible_process_window" in (row.get("signals") or [])
+            for row in (probe_diagnostics or {}).get("rows") or []
+        )
         max_input_drift = int_value(report, "max_input_drift_px") or 1
         intro_skip_drift = (
-            report.get("final_route_marker") == "intro-skip"
-            and isinstance(last_route, dict)
-            and last_route.get("Name") == "intro-skip"
+            isinstance(intro_route, dict)
             and (
-                last_route.get("PathVerified") is not True
-                or (last_route.get("Click") is True and last_route.get("ClickPathVerified") is not True)
-                or route_int_value(last_route, "MaxAbsError") > max_input_drift
-                or route_int_value(last_route, "MaxSampleAbsError") > max_input_drift
+                intro_route.get("PathVerified") is not True
+                or (intro_route.get("Click") is True and intro_route.get("ClickPathVerified") is not True)
+                or route_int_value(intro_route, "MaxAbsError") > max_input_drift
+                or route_int_value(intro_route, "MaxSampleAbsError") > max_input_drift
                 or int_value(report, "input_max_sample_abs_error") > max_input_drift
                 or "input drift" in failures
                 or "route/input probe failures" in failures
+            )
+            and (
+                report.get("final_route_marker") == "intro-skip"
+                or no_visible_process_window
             )
         )
         if intro_skip_drift:
@@ -150,10 +544,47 @@ def classify(report: dict[str, Any], guard_evaluation: dict[str, Any] | None = N
             False,
         )
 
+    if input_permission_denied:
+        return (
+            "input_environment_permission_denied",
+            "rerun the exact tokenized route command in a fresh explicitly approved unsandboxed Windows session; do not change patches or lower visual thresholds",
+            False,
+        )
+
+    if report.get("window_hang_observed") is True or "application window became nonresponsive" in failures:
+        return (
+            "application_hang_detected",
+            "inspect window_health_samples to isolate the first nonresponsive route phase before requesting any visible rerun",
+            False,
+        )
+
+    if (
+        report.get("window_missing_while_alive_observed") is True
+        or "visible application window disappeared while the process remained alive" in failures
+    ):
+        return (
+            "window_missing_while_process_alive",
+            "inspect window_health_samples and wrapper transitions at the first missing-window phase before requesting any visible rerun",
+            False,
+        )
+
     if "route/input probe failures" in failures or "input drift" in failures:
         return (
             "input_route_failure",
             "inspect route_results and rerun the same route with mouse_path_probe logging before changing patches",
+            False,
+        )
+
+    # A capture-path change has to be ruled out BEFORE the render verdict: the
+    # 'screen' and window-DC paths do not observe the same pixels for this
+    # DirectDraw title, so a black outlier from a minority path is a capture
+    # defect masquerading as a render regression (2026-07-18 short2).
+    if "capture mode changed" in failures:
+        return (
+            "capture_harness_failure",
+            "the run mixed capture paths, so its frames are not comparable render "
+            "evidence; make capture_clash_client_frame.ps1 hold one path for the whole "
+            "run before judging any render metric",
             False,
         )
 
@@ -397,17 +828,77 @@ def visual_anomaly_summary(report: dict[str, Any]) -> dict[str, Any]:
     return summary
 
 
-def build_triage(report: dict[str, Any], source_report: Path | None = None) -> dict[str, Any]:
+def build_triage(
+    report: dict[str, Any],
+    source_report: Path | None = None,
+    cdb_followup: dict[str, Any] | None = None,
+    wer_followup: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     guard_evaluation = guard_evaluation_for(report)
-    classification, next_probe, passed = classify(report, guard_evaluation)
+    probe_diagnostics = probe_log_diagnostics(report)
+    cursor_diagnostics = cursor_probe_diagnostics(report)
+    classification, next_probe, passed = classify(
+        report, guard_evaluation, probe_diagnostics, cursor_diagnostics
+    )
+    if (
+        classification == "input_environment_permission_denied"
+        and cursor_diagnostics.get("foreground_denied_attempt_count")
+    ):
+        next_probe = (
+            "SetForegroundWindow was silently denied on every aim iteration, so the "
+            "foreground-mode DirectInput never received the injected pulses; rerun the "
+            "exact tokenized route command DIRECTLY from an interactive session with "
+            "input standing (never via Start-Job or any detached/non-interactive "
+            "wrapper), and do not change patches or lower visual thresholds"
+        )
+    cdb_followup_summary = summarize_cdb_followup(report, cdb_followup, source_report)
+    wer_followup_summary = summarize_wer_followup(report, wer_followup, source_report)
+    if (
+        classification == "unexpected_process_exit"
+        and wer_followup_summary
+        and wer_followup_summary.get("matched") is True
+    ):
+        classification = "application_hang_wer_closed"
+        if wer_followup_summary.get("window_health_mitigation_ready") is True:
+            next_probe = (
+                "generate a fresh tokened application/windowed retry packet and request explicit "
+                "visible-runtime approval; the instrumented harness must stop at the first hung "
+                "or missing live target window"
+            )
+        else:
+            next_probe = (
+                "instrument window responsiveness before and after every route step, stop further "
+                "input/capture when the target becomes hung or loses its visible window, and isolate "
+                "the first application/windowed wrapper transition that becomes nonresponsive"
+            )
+    elif (
+        classification == "unexpected_process_exit"
+        and cdb_followup_summary
+        and cdb_followup_summary.get("matched") is True
+    ):
+        next_probe = (
+            "the same candidate reached gameplay and stayed live in the completed hidden "
+            "CDB memory-proxy observation; inspect the application/windowed wrapper, input, "
+            "and capture path before requesting any visible rerun"
+        )
     last_frame = frame_summary(last_item(report.get("frame_samples")))
     last_route = route_summary(last_item(report.get("route_results")))
+    intro_route = route_summary(
+        next(
+            (
+                route
+                for route in report.get("route_results") or []
+                if isinstance(route, dict) and route.get("Name") == "intro-skip"
+            ),
+            None,
+        )
+    )
     last_process = process_summary(last_item(report.get("process_samples")))
     failure_timestamp, failure_timestamp_source = failure_timestamp_context(report, last_frame, last_process)
     visual_anomalies = visual_anomaly_summary(report)
     guard_failures = list((guard_evaluation or {}).get("failures") or [])
-    if classification == "intro_skip_input_drift_exit" and isinstance(last_route, dict):
-        click_mode = last_route.get("click_mode")
+    if classification == "intro_skip_input_drift_exit" and isinstance(intro_route, dict):
+        click_mode = intro_route.get("click_mode")
         if click_mode == "sendinput":
             next_probe = (
                 "previous intro-skip click used sendinput and drifted after button events; "
@@ -419,6 +910,12 @@ def build_triage(report: dict[str, Any], source_report: Path | None = None) -> d
                 "previous intro-skip report does not record the click mode; use the current "
                 "tokenized postmessage/space-pulse intro-skip command, then rerun only after "
                 "explicit visible-window approval"
+            )
+        elif click_mode == "postmessage":
+            next_probe = (
+                "previous intro-skip postmessage repeats crossed a window/intro transition; "
+                "make the harness stop or reacquire after the transition, retain explicit "
+                "windowed-mode verification, then rerun only after fresh visible-window approval"
             )
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -461,6 +958,15 @@ def build_triage(report: dict[str, Any], source_report: Path | None = None) -> d
             "black_patch_risk_count": visual_anomalies.get("black_patch_risk_count"),
             "palette_or_stripe_risk_count": visual_anomalies.get("palette_or_stripe_risk_count"),
             "missing_nonblack_bounds_count": visual_anomalies.get("missing_nonblack_bounds_count"),
+            "input_permission_denied_route_count": probe_diagnostics.get(
+                "permission_denied_route_count"
+            ),
+            "input_permission_denied_routes": probe_diagnostics.get("permission_denied_routes"),
+            "foreground_denied_attempt_count": cursor_diagnostics.get(
+                "foreground_denied_attempt_count"
+            ),
+            "foreground_denied_attempts": cursor_diagnostics.get("foreground_denied_attempts"),
+            "cursor_alive_observed": cursor_diagnostics.get("cursor_alive_observed"),
         },
         "frame_metrics": {
             "frame_sample_count": report.get("frame_sample_count"),
@@ -487,6 +993,11 @@ def build_triage(report: dict[str, Any], source_report: Path | None = None) -> d
             "input_max_sample_abs_error": report.get("input_max_sample_abs_error"),
             "max_input_drift_px": report.get("max_input_drift_px"),
         },
+        "probe_log_diagnostics": probe_diagnostics,
+        "cursor_probe_diagnostics": cursor_diagnostics,
+        "cdb_followup": cdb_followup_summary,
+        "wer_followup": wer_followup_summary,
+        "intro_skip_route_result": intro_route,
         "last_route_result": last_route,
         "last_frame_sample": last_frame,
         "last_process_sample": last_process,
@@ -506,6 +1017,10 @@ def to_markdown(triage: dict[str, Any]) -> str:
     process = triage.get("last_process_sample") or {}
     context = triage.get("failure_context") or {}
     visual = triage.get("visual_anomalies") or {}
+    probe_diagnostics = triage.get("probe_log_diagnostics") or {}
+    cursor_diagnostics = triage.get("cursor_probe_diagnostics") or {}
+    cdb_followup = triage.get("cdb_followup") or {}
+    wer_followup = triage.get("wer_followup") or {}
     lines = [
         "# HD Soak Failure Triage",
         "",
@@ -540,6 +1055,16 @@ def to_markdown(triage: dict[str, Any]) -> str:
         f"- Palette/stripe risk frames: `{visual.get('palette_or_stripe_risk_count')}`",
         f"- Missing nonblack bounds frames: `{visual.get('missing_nonblack_bounds_count')}`",
         "",
+        "## Probe Environment",
+        "",
+        f"- Checked route logs: `{probe_diagnostics.get('checked_route_count')}`",
+        f"- Readable route logs: `{probe_diagnostics.get('readable_log_count')}`",
+        f"- Input-API permission-denied routes: `{probe_diagnostics.get('permission_denied_route_count')}`",
+        f"- Affected routes: `{','.join(probe_diagnostics.get('permission_denied_routes') or [])}`",
+        f"- Cursor probes checked: `{cursor_diagnostics.get('checked_attempt_count')}`",
+        f"- Foreground-denied attempts: `{cursor_diagnostics.get('foreground_denied_attempt_count')}`",
+        f"- Engine cursor responded at least once: `{cursor_diagnostics.get('cursor_alive_observed')}`",
+        "",
         "## Last Evidence",
         "",
         (
@@ -563,6 +1088,29 @@ def to_markdown(triage: dict[str, Any]) -> str:
         "## Metrics",
         "",
     ]
+    if cdb_followup:
+        insertion = lines.index("## Last Evidence")
+        lines[insertion:insertion] = [
+            "## Hidden CDB Follow-up",
+            "",
+            f"- Matched: `{cdb_followup.get('matched')}`",
+            f"- Status: `{cdb_followup.get('status')}`",
+            f"- Summary: `{cdb_followup.get('source_cdb_summary')}`",
+            f"- Scope limit: {cdb_followup.get('scope_limit')}",
+            "",
+        ]
+    if wer_followup:
+        insertion = lines.index("## Last Evidence")
+        lines[insertion:insertion] = [
+            "## Windows Error Reporting Follow-up",
+            "",
+            f"- Matched: `{wer_followup.get('matched')}`",
+            f"- Status: `{wer_followup.get('status')}`",
+            f"- Event: `{(wer_followup.get('event_evidence') or {}).get('event_name')}`",
+            f"- Window-health mitigation ready: `{wer_followup.get('window_health_mitigation_ready')}`",
+            f"- Scope limit: {wer_followup.get('scope_limit')}",
+            "",
+        ]
     metrics = triage.get("frame_metrics") or {}
     process_metrics = triage.get("process_metrics") or {}
     input_metrics = triage.get("input_metrics") or {}
@@ -634,10 +1182,14 @@ def main() -> int:
     parser.add_argument("report", nargs="?", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--write-json", type=Path, default=DEFAULT_JSON)
     parser.add_argument("--write-markdown", "--write-md", dest="write_markdown", type=Path, default=DEFAULT_MD)
+    parser.add_argument("--cdb-followup", type=Path)
+    parser.add_argument("--wer-followup", type=Path)
     parser.add_argument("--require-pass", action="store_true")
     args = parser.parse_args()
 
-    triage = build_triage(load_json(args.report), args.report)
+    followup = load_json(args.cdb_followup) if args.cdb_followup else load_cdb_followup_for_report(args.report)
+    wer_followup = load_json(args.wer_followup) if args.wer_followup else load_wer_followup_for_report(args.report)
+    triage = build_triage(load_json(args.report), args.report, followup, wer_followup)
     write_outputs(triage, args.write_json, args.write_markdown)
     print(f"overall: {status_text(bool(triage['passed']))}")
     print(f"runtime-policy: {triage['runtime_policy']}")

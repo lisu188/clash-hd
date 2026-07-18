@@ -248,6 +248,82 @@ def test_render_metrics_fail() -> None:
     assert any("palette/stripe risk" in failure for failure in evaluation["failures"])
 
 
+def test_minority_capture_mode_frame_is_not_render_evidence() -> None:
+    """A black frame from a different capture path is a capture defect.
+
+    Reproduces the 2026-07-18 short2 run: seven healthy window-DC frames plus
+    one 'screen' frame that came back black. The black frame must not set the
+    render minima, and the run must fail as a capture inconsistency rather than
+    a render/palette regression.
+    """
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_report(Path(directory))
+        healthy = report["frame_samples"][0]
+        for frame in report["frame_samples"]:
+            frame["CaptureMode"] = "windowdc-contaminated-fallback"
+        outlier = dict(healthy)
+        outlier.update(
+            {
+                "Name": "frame-0002",
+                "Timestamp": "2026-06-16T12:01:55.0000000+00:00",
+                "Hash": "c" * 64,
+                "CaptureMode": "screen",
+                "NonblackPercent": 0.017,
+                "MeanLuma": 0.035,
+                "UniqueSampleColors": 6,
+            }
+        )
+        report["frame_samples"].append(outlier)
+        evaluation = soak.evaluate_report(report)
+
+    render = evaluation["checks"]["render_metrics"]
+    assert render["passed"] is True, render
+    assert render["summary"]["min_nonblack_percent"] == 44.5
+    assert render["summary"]["excluded_frame_count"] == 1
+    assert evaluation["checks"]["visual_anomalies"]["passed"] is True
+    capture = evaluation["checks"]["capture_consistency"]
+    assert capture["passed"] is False
+    assert any("capture mode changed mid-run" in failure for failure in evaluation["failures"])
+    assert not any("black/blank patch risk" in failure for failure in evaluation["failures"])
+
+
+def test_uniform_capture_mode_still_reports_render_regression() -> None:
+    """The partition must not become a way to hide a real black-screen run."""
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_report(Path(directory))
+        for frame in report["frame_samples"]:
+            frame["CaptureMode"] = "screen"
+        report["frame_samples"][1]["NonblackPercent"] = 0.0
+        report["frame_samples"][1]["UniqueSampleColors"] = 1
+        evaluation = soak.evaluate_report(report)
+    assert evaluation["checks"]["capture_consistency"]["passed"] is True
+    assert evaluation["checks"]["render_metrics"]["passed"] is False
+    assert any("black/blank patch risk" in failure for failure in evaluation["failures"])
+
+
+def test_harness_stamped_non_evidence_frame_is_excluded() -> None:
+    """A frame the harness stamped as post-teardown is not render evidence."""
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_report(Path(directory))
+        teardown = dict(report["frame_samples"][0])
+        teardown.update(
+            {
+                "Name": "frame-0002",
+                "Timestamp": "2026-06-16T12:02:30.0000000+00:00",
+                "Hash": "d" * 64,
+                "NonblackPercent": 0.0,
+                "UniqueSampleColors": 1,
+                "RenderEvidence": False,
+                "RenderEvidenceExcludedReasons": ["captured_after_stop_signal"],
+            }
+        )
+        report["frame_samples"].append(teardown)
+        evaluation = soak.evaluate_report(report)
+    assert evaluation["checks"]["render_metrics"]["passed"] is True
+    assert evaluation["checks"]["render_metrics"]["summary"]["excluded_frame_count"] == 1
+    assert evaluation["checks"]["visual_anomalies"]["passed"] is True
+
+
 def test_missing_nonblack_bounds_fail_visual_anomaly_check() -> None:
     with tempfile.TemporaryDirectory() as directory:
         report = passing_report(Path(directory))
@@ -560,6 +636,9 @@ def run_tests() -> None:
     test_repo_artifacts_fail()
     test_noncanonical_soak_roots_fail()
     test_render_metrics_fail()
+    test_minority_capture_mode_frame_is_not_render_evidence()
+    test_uniform_capture_mode_still_reports_render_regression()
+    test_harness_stamped_non_evidence_frame_is_excluded()
     test_missing_nonblack_bounds_fail_visual_anomaly_check()
     test_capture_errors_fail()
     test_tier_route_duration_fail()
