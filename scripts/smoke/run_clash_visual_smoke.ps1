@@ -24,6 +24,36 @@ param(
     [string]$ClickMode = 'sendinput',
     [int]$MoveWindowX = 80,
     [int]$MoveWindowY = 80,
+    # 2026-07-17 diagnosis (commit 589f5700): the menu/map read the mouse from
+    # the DirectInput ACCUMULATOR, not the OS cursor. SetCursorPos and absolute
+    # SendInput moves - i.e. every -MoveMode this harness offered - are
+    # invisible to the engine hit test, so legacy route clicks verified OS
+    # cursor placement while the engine cursor never moved. -InputMode pulse
+    # routes and aims through tools/menu_pulse_click.py instead (one relative
+    # MOUSEEVENTF_MOVE per ~28ms poll, frame-diff position feedback, button
+    # held while pulsing). 'legacy' keeps the historic behaviour selectable.
+    [ValidateSet('legacy', 'pulse')]
+    [string]$InputMode = 'legacy',
+    [string]$PulseRouteSteps = 'load-button:302,211;load-slot0:320,166;confirm-load:400,226',
+    [string]$FollowupPoints = '',
+    [switch]$FollowupAimOnly,
+    [int]$PulseAimTolerancePx = 10,
+    [int]$PulseClickHoldMs = 700,
+    [int]$PulseClickRepeats = 3,
+    [int]$PulseIntervalMs = 28,
+    [double]$PulseInitialGain = 4.4,
+    [int]$PulseRouteDeadlineSec = 150,
+    [int]$PulsePointDeadlineSec = 90,
+    [int]$PulsePointSettleMs = 1200,
+    [int]$CursorProbeDeadlineSec = 45,
+    [string]$CursorProbePoint = '200,150',
+    [double]$MapReachedNonblackPercent = 85.0,
+    [double]$IntroMenuVerifyNonblackPercent = 50.0,
+    [double]$IntroMenuVerifyNonblackMaxPercent = 80.0,
+    [int]$IntroMenuVerifyMaxUniqueColors = 400,
+    [int]$IntroMenuStabilityWaitMs = 800,
+    [int]$WindowMissingGraceAttempts = 3,
+    [int]$WindowMissingGraceDelayMs = 800,
     [switch]$NoGameplayCheck,
     [switch]$KeepOpen,
     [switch]$AllowVisibleRuntime
@@ -69,6 +99,9 @@ public static class ClashVisualSmokeWin32 {
 
     [DllImport("user32.dll")]
     public static extern bool GetClientRect(IntPtr hWnd, out RECT rect);
+
+    [DllImport("user32.dll")]
+    public static extern bool IsHungAppWindow(IntPtr hWnd);
 
     [DllImport("user32.dll")]
     public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
@@ -137,6 +170,285 @@ function Get-WindowHandleForProcess {
         return $Process.MainWindowHandle
     }
     return [ClashVisualSmokeWin32]::FindVisibleWindowForProcess([uint32]$Process.Id)
+}
+
+function New-WindowHealthSample {
+    param(
+        [string]$Timestamp,
+        [string]$Phase,
+        [bool]$ProcessExited,
+        [bool]$WindowFound,
+        [object]$Hwnd,
+        [object]$ClientWidth,
+        [object]$ClientHeight,
+        [object]$IsHung,
+        [int]$GraceAttempts,
+        [string]$HealthClass,
+        [string]$ErrorText = $null
+    )
+
+    [pscustomobject]@{
+        Timestamp = $Timestamp
+        Phase = $Phase
+        ProcessExited = $ProcessExited
+        WindowFound = $WindowFound
+        Hwnd = $Hwnd
+        ClientWidth = $ClientWidth
+        ClientHeight = $ClientHeight
+        IsHung = $IsHung
+        GraceAttempts = $GraceAttempts
+        HealthClass = $HealthClass
+        Error = $ErrorText
+    }
+}
+
+function Get-WindowHealthSample {
+    param(
+        [System.Diagnostics.Process]$Process,
+        [string]$Phase
+    )
+
+    $timestamp = (Get-Date).ToString('o')
+    try {
+        $Process.Refresh()
+        if ($Process.HasExited) {
+            return New-WindowHealthSample -Timestamp $timestamp -Phase $Phase -ProcessExited $true -WindowFound $false -Hwnd $null -ClientWidth $null -ClientHeight $null -IsHung $null -GraceAttempts 0 -HealthClass 'process_exited'
+        }
+        $handle = [ClashVisualSmokeWin32]::FindVisibleWindowForProcess([uint32]$Process.Id)
+        $graceAttemptsUsed = 0
+        while ($handle -eq [IntPtr]::Zero -and $graceAttemptsUsed -lt $WindowMissingGraceAttempts) {
+            # Grace retry: the GOG DirectDraw wrapper briefly hides or recreates
+            # its window during display transitions, so only classify the window
+            # as missing after it stays missing across the whole grace window.
+            $graceAttemptsUsed++
+            Start-Sleep -Milliseconds $WindowMissingGraceDelayMs
+            $Process.Refresh()
+            if ($Process.HasExited) {
+                return New-WindowHealthSample -Timestamp $timestamp -Phase $Phase -ProcessExited $true -WindowFound $false -Hwnd $null -ClientWidth $null -ClientHeight $null -IsHung $null -GraceAttempts $graceAttemptsUsed -HealthClass 'process_exited'
+            }
+            $handle = [ClashVisualSmokeWin32]::FindVisibleWindowForProcess([uint32]$Process.Id)
+        }
+        if ($handle -eq [IntPtr]::Zero) {
+            return New-WindowHealthSample -Timestamp $timestamp -Phase $Phase -ProcessExited $false -WindowFound $false -Hwnd $null -ClientWidth $null -ClientHeight $null -IsHung $null -GraceAttempts $graceAttemptsUsed -HealthClass 'window_missing_while_process_alive'
+        }
+        $rect = New-Object ClashVisualSmokeWin32+RECT
+        [ClashVisualSmokeWin32]::GetClientRect($handle, [ref]$rect) | Out-Null
+        $isHung = [ClashVisualSmokeWin32]::IsHungAppWindow($handle)
+        $healthClass = if ($isHung) { 'application_hung' } else { 'responsive' }
+        return New-WindowHealthSample -Timestamp $timestamp -Phase $Phase -ProcessExited $false -WindowFound $true -Hwnd ('0x{0:X}' -f $handle.ToInt64()) -ClientWidth ($rect.Right - $rect.Left) -ClientHeight ($rect.Bottom - $rect.Top) -IsHung ([bool]$isHung) -GraceAttempts $graceAttemptsUsed -HealthClass $healthClass
+    } catch {
+        return New-WindowHealthSample -Timestamp $timestamp -Phase $Phase -ProcessExited $false -WindowFound $false -Hwnd $null -ClientWidth $null -ClientHeight $null -IsHung $null -GraceAttempts 0 -HealthClass 'health_probe_error' -ErrorText $_.Exception.Message
+    }
+}
+
+function Test-MenuFingerprint {
+    param([object]$FrameMeta)
+
+    if (-not $FrameMeta) {
+        return $false
+    }
+    $nonblack = [double]$FrameMeta.NonblackPercent
+    $colors = [int]$FrameMeta.UniqueSampleColors
+    # Menu fingerprint: nonblack inside the menu band AND a small static
+    # palette. Bright intro/logo/movie frames clear a plain nonblack floor but
+    # fail the upper band or the palette bound; the caller additionally
+    # requires a STABLE frame hash across two captures.
+    return (
+        $nonblack -ge $IntroMenuVerifyNonblackPercent -and
+        $nonblack -le $IntroMenuVerifyNonblackMaxPercent -and
+        $colors -le $IntroMenuVerifyMaxUniqueColors
+    )
+}
+
+function Get-PulseRouteStepList {
+    param([string]$Spec)
+
+    $items = @()
+    foreach ($raw in ($Spec -split ';')) {
+        $text = $raw.Trim()
+        if (-not $text) {
+            continue
+        }
+        if ($text -notmatch '^(?<name>[^:]+):\s*(?<x>-?\d+)\s*,\s*(?<y>-?\d+)\s*$') {
+            throw "Invalid -PulseRouteSteps entry (expected name:x,y): $text"
+        }
+        $items += [pscustomobject]@{
+            Name = $Matches.name.Trim()
+            Points = ('{0},{1}' -f $Matches.x, $Matches.y)
+        }
+    }
+    return @($items)
+}
+
+function Get-FollowupPointList {
+    param([string]$Spec)
+
+    $items = @()
+    foreach ($raw in ($Spec -split ';')) {
+        $text = $raw.Trim()
+        if (-not $text) {
+            continue
+        }
+        $name = ''
+        $coords = $text
+        if ($text -match '^(?<name>[^:]+):(?<coords>.+)$') {
+            $name = $Matches.name.Trim()
+            $coords = $Matches.coords.Trim()
+        }
+        if ($coords -notmatch '^\s*(?<x>-?\d+)\s*,\s*(?<y>-?\d+)\s*$') {
+            throw "Invalid -FollowupPoints entry (expected x,y or name:x,y): $text"
+        }
+        $index = @($items).Count
+        if (-not $name) {
+            $name = 'followup-{0:D2}' -f $index
+        }
+        $items += [pscustomobject]@{
+            Index = $index
+            Name = $name
+            Points = ('{0},{1}' -f $Matches.x, $Matches.y)
+        }
+    }
+    return @($items)
+}
+
+function Invoke-MenuPulseTool {
+    param(
+        [System.Diagnostics.Process]$Process,
+        [string]$Json,
+        [string[]]$ToolArgs
+    )
+
+    $pulseTool = Join-Path $RepoRoot 'tools\menu_pulse_click.py'
+    if (-not (Test-Path -LiteralPath $pulseTool -PathType Leaf)) {
+        throw "Required pulse click tool was not found: $pulseTool"
+    }
+    $allArgs = @($pulseTool, '--pid', "$($Process.Id)") + $ToolArgs + @('--json', $Json)
+    $log = [System.IO.Path]::ChangeExtension($Json, '.log')
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $output = & $Python '-W' 'ignore' @allArgs 2>&1
+        $exitCode = $LASTEXITCODE
+    } catch {
+        $output = @($_.Exception.Message)
+        $exitCode = 1
+    } finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+    $output | Set-Content -LiteralPath $log -Encoding ASCII
+
+    $result = $null
+    if (Test-Path -LiteralPath $Json -PathType Leaf) {
+        $result = Get-Content -LiteralPath $Json -Raw | ConvertFrom-Json
+    }
+    [pscustomobject]@{
+        Result = $result
+        ExitCode = $exitCode
+        Json = $Json
+        Log = $log
+        ToolArgs = ($ToolArgs -join ' ')
+    }
+}
+
+function Invoke-PulseCursorProbe {
+    param(
+        [System.Diagnostics.Process]$Process,
+        [string]$Json
+    )
+
+    # No-click liveness probe: aims the ENGINE cursor at one point and exits 0
+    # only if the frame diff shows it responded and converged. This separates
+    # "the menu is on screen" from "the menu is interactive": the intro can
+    # auto-play into a dead attract-like menu whose input poll never wakes.
+    Invoke-MenuPulseTool -Process $Process -Json $Json -ToolArgs @(
+        '--steps', ("cursor-probe:{0}" -f $CursorProbePoint),
+        '--probe-only',
+        '--map-nonblack', '0',
+        '--aim-tolerance', "$PulseAimTolerancePx",
+        '--pulse-interval-ms', "$PulseIntervalMs",
+        '--initial-gain', "$PulseInitialGain",
+        '--deadline-sec', "$CursorProbeDeadlineSec"
+    )
+}
+
+function Invoke-MenuPulseRoute {
+    param(
+        [System.Diagnostics.Process]$Process,
+        [string]$Json,
+        [string]$StepSpec
+    )
+
+    Invoke-MenuPulseTool -Process $Process -Json $Json -ToolArgs @(
+        '--steps', $StepSpec,
+        '--map-nonblack', "$MapReachedNonblackPercent",
+        '--aim-tolerance', "$PulseAimTolerancePx",
+        '--click-hold-ms', "$PulseClickHoldMs",
+        '--click-repeats', "$PulseClickRepeats",
+        '--pulse-interval-ms', "$PulseIntervalMs",
+        '--initial-gain', "$PulseInitialGain",
+        '--deadline-sec', "$PulseRouteDeadlineSec"
+    )
+}
+
+function Invoke-PulseAimPoint {
+    param(
+        [System.Diagnostics.Process]$Process,
+        [string]$Json,
+        [string]$PointSpec
+    )
+
+    $toolArgs = @(
+        '--aim-points', $PointSpec,
+        '--aim-tolerance', "$PulseAimTolerancePx",
+        '--click-hold-ms', "$PulseClickHoldMs",
+        '--click-repeats', "$PulseClickRepeats",
+        '--pulse-interval-ms', "$PulseIntervalMs",
+        '--initial-gain', "$PulseInitialGain",
+        '--point-settle-ms', "$PulsePointSettleMs",
+        '--deadline-sec', "$PulsePointDeadlineSec"
+    )
+    if ($FollowupAimOnly) {
+        $toolArgs += '--aim-only'
+    }
+    Invoke-MenuPulseTool -Process $Process -Json $Json -ToolArgs $toolArgs
+}
+
+function Convert-PulseStepToRouteRow {
+    param(
+        [object]$PulseRun,
+        [object]$StepRow,
+        [string]$Name,
+        [string]$Points,
+        [int]$Index
+    )
+
+    $aim = if ($StepRow) { $StepRow.aim } else { $null }
+    $skipped = [bool]($StepRow -and $StepRow.skipped_map_reached)
+    [pscustomobject]@{
+        Index = $Index
+        Name = $Name
+        Points = $Points
+        InputMechanism = 'pulse-relative-engine-aim'
+        MoveMode = 'pulse-relative'
+        ClickMode = 'sendinput-hold-while-pulsing'
+        AimConverged = ($skipped -or [bool]($aim -and $aim.converged))
+        AimErrorPx = if ($aim -and $null -ne $aim.aim_error_px) { [int]$aim.aim_error_px } else { $null }
+        AimTolerancePx = $PulseAimTolerancePx
+        AimedPos = if ($aim) { $aim.aimed_pos } else { $null }
+        EngineGain = if ($aim) { $aim.gain } else { $null }
+        TransitionVerified = [bool]($StepRow -and $StepRow.transition_verified)
+        SkippedMapReached = $skipped
+        ChangedPixels = if ($StepRow -and $null -ne $StepRow.changed_pixels) { [int]$StepRow.changed_pixels } else { $null }
+        PostNonblack = if ($StepRow -and $null -ne $StepRow.post_nonblack) { [double]$StepRow.post_nonblack } else { $null }
+        ClickCount = if ($StepRow -and $null -ne $StepRow.click_count) { [int]$StepRow.click_count } else { 0 }
+        RefusedExitZone = [bool]($StepRow -and $StepRow.refused_exit_zone)
+        ForegroundDenied = [bool]($StepRow -and $StepRow.foreground_denied)
+        WindowLostAfterClick = [bool]($StepRow -and $StepRow.window_lost_after_click)
+        InputProofClass = 'automated_visible_runtime_engine_aim_evidence_not_manual_directinput_release_proof'
+        ProbeExitCode = $PulseRun.ExitCode
+        Json = $PulseRun.Json
+        Log = $PulseRun.Log
+    }
 }
 
 function Wait-ClashWindow {
@@ -572,6 +884,26 @@ $mousePath = Join-Path $RepoRoot 'tools\mouse_path_probe.py'
 if (-not (Test-Path -LiteralPath $mousePath)) {
     throw "Required path was not found: $mousePath"
 }
+$pulseToolPath = Join-Path $RepoRoot 'tools\menu_pulse_click.py'
+$pulseRouteStepList = @()
+$followupPointList = @()
+if ($InputMode -eq 'pulse') {
+    if (-not (Test-Path -LiteralPath $pulseToolPath)) {
+        throw "Required path was not found: $pulseToolPath"
+    }
+    if ($Route -ne 'menu-only') {
+        $pulseRouteStepList = Get-PulseRouteStepList -Spec $PulseRouteSteps
+        if (@($pulseRouteStepList).Count -eq 0) {
+            throw "-InputMode pulse with -Route $Route requires at least one -PulseRouteSteps entry"
+        }
+    }
+}
+if ($FollowupPoints) {
+    if ($InputMode -ne 'pulse') {
+        throw "-FollowupPoints requires -InputMode pulse (the legacy move modes are invisible to the engine's DirectInput hit test)"
+    }
+    $followupPointList = Get-FollowupPointList -Spec $FollowupPoints
+}
 
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $outDir = Join-Path $OutRoot "visual-smoke-$stamp"
@@ -590,10 +922,17 @@ try {
 
     $readinessFrames = @()
     $introProbeRows = @()
+    $windowHealthSamples = @()
     $menuPath = $null
     $menuMouseJson = $null
     $mainMenuReady = $false
+    $introMenuVerified = $false
+    $introMenuVerifyNonblack = $null
+    $introMenuVerifyColors = $null
+    $introRoundsUsed = 0
+    $windowHealthSamples += Get-WindowHealthSample -Process $process -Phase 'after-launch'
     for ($round = 0; $round -lt $IntroMaxRounds; $round++) {
+        $introRoundsUsed = $round + 1
         $menuMouseJson = Join-Path $outDir ("intro-skip-{0:D2}.json" -f $round)
         $menuPath = Invoke-MousePath -Process $process -Json $menuMouseJson -PathPoints $introSkipPoints -Click -SpacePulses $SkipPulses -AllowUnverified
         Start-Sleep -Milliseconds $IntroRoundWaitMs
@@ -603,6 +942,29 @@ try {
             -Path (Join-Path $outDir ("readiness-{0:D2}.png" -f $round)) `
             -OutDir $outDir
         $readinessFrames += $readiness
+        $roundMenuVerified = $false
+        if ($InputMode -eq 'pulse' -and -not $introMenuVerified) {
+            # Verified intro-skip round: the frame-state classifier alone also
+            # accepts bright story pages, so pulse mode additionally requires
+            # the menu fingerprint (nonblack band + small palette) AND a stable
+            # frame hash across two captures before any route click is trusted.
+            if (Test-MenuFingerprint -FrameMeta $readiness.Frame) {
+                Start-Sleep -Milliseconds $IntroMenuStabilityWaitMs
+                try {
+                    $stabilityMeta = Save-CleanClientFrame -Process $process -Path (Join-Path $outDir ("menucheck-{0:D2}b.png" -f $round))
+                    if ($stabilityMeta -and $readiness.Frame -and $stabilityMeta.Hash -eq $readiness.Frame.Hash) {
+                        $roundMenuVerified = $true
+                        $introMenuVerified = $true
+                        $introMenuVerifyNonblack = [double]$readiness.Frame.NonblackPercent
+                        $introMenuVerifyColors = [int]$readiness.Frame.UniqueSampleColors
+                    }
+                } catch {
+                    # Capture failures during intro/display transitions are
+                    # tolerated; the next round retries and window health is
+                    # sampled after the loop.
+                }
+            }
+        }
         $introProbeRows += [pscustomobject]@{
             Round = $round
             Json = $menuMouseJson
@@ -611,9 +973,17 @@ try {
             ProbeExitCode = $menuPath.ProbeExitCode
             FrameState = $readiness.State
             GameplayFrameLikely = $readiness.GameplayFrameLikely
+            MenuFingerprintVerified = $roundMenuVerified
+            NonblackPercent = if ($readiness.Frame) { $readiness.Frame.NonblackPercent } else { $null }
+            UniqueSampleColors = if ($readiness.Frame) { $readiness.Frame.UniqueSampleColors } else { $null }
         }
         if ($readiness.State -eq 'main-menu-or-dialog-likely' -or $readiness.State -eq 'gameplay-likely') {
             $mainMenuReady = $true
+            if ($InputMode -ne 'pulse') {
+                break
+            }
+        }
+        if ($InputMode -eq 'pulse' -and $introMenuVerified) {
             break
         }
     }
@@ -621,11 +991,115 @@ try {
     Start-Sleep -Seconds $PostIntroWaitSec
     $menuFrameState = Save-StateFrame -Process $process -Name 'menu-ready' -Path (Join-Path $outDir 'menu.png') -OutDir $outDir
 
+    $windowHealthSamples += Get-WindowHealthSample -Process $process -Phase 'after-intro-wait'
+
+    $cursorProbeRun = $null
+    $cursorProbeAlive = $false
+    $cursorProbeRequired = ($InputMode -eq 'pulse' -and $Route -ne 'menu-only')
+    if ($cursorProbeRequired -and $introMenuVerified) {
+        $cursorProbeRun = Invoke-PulseCursorProbe -Process $process -Json (Join-Path $outDir 'cursor-probe.json')
+        $cursorProbeAlive = ($cursorProbeRun.ExitCode -eq 0)
+    }
+
     $routeSteps = Get-RouteSteps -RouteName $Route -CustomPoints $Points
     $routeRows = @()
+    $pulseRouteRows = @()
+    $followupRows = @()
+    $pulseRouteRun = $null
+    $mapRouteReached = $null
+    $routeFinalNonblack = $null
+    $routeBlockedReason = $null
     $lastRoutePath = $null
     $lastRouteJson = $null
+
+    if ($InputMode -eq 'pulse') {
+        # Pulse lane: the DirectInput-visible route replaces the legacy
+        # mouse_path_probe click steps entirely. Fail closed - never aim or
+        # click into an unverified screen (story page, transition frame, or a
+        # dead attract-state menu whose input poll never woke).
+        if ($Route -eq 'menu-only') {
+            $routeBlockedReason = 'menu-only route has no click steps'
+        } elseif ($menuFrameState.State -eq 'gameplay-likely') {
+            $routeBlockedReason = 'gameplay frame already reached before the route'
+        } elseif (-not $introMenuVerified) {
+            $routeBlockedReason = 'intro-skip rounds never verified the main-menu fingerprint'
+        } elseif (-not $cursorProbeAlive) {
+            $routeBlockedReason = 'engine-cursor liveness probe did not converge'
+        } else {
+            $prePulseHealth = Get-WindowHealthSample -Process $process -Phase 'before-pulse-route'
+            $windowHealthSamples += $prePulseHealth
+            if ($prePulseHealth.HealthClass -ne 'responsive') {
+                $routeBlockedReason = "window health before the route was $($prePulseHealth.HealthClass)"
+            } else {
+                $pulseStepSpec = (@($pulseRouteStepList | ForEach-Object { '{0}:{1}' -f $_.Name, $_.Points }) -join ';')
+                $pulseRouteRun = Invoke-MenuPulseRoute -Process $process -Json (Join-Path $outDir 'route-pulse-clicks.json') -StepSpec $pulseStepSpec
+                $pulseSteps = @()
+                if ($pulseRouteRun.Result -and $pulseRouteRun.Result.steps) {
+                    $pulseSteps = @($pulseRouteRun.Result.steps)
+                }
+                $pulseIndex = 0
+                foreach ($stepDefinition in $pulseRouteStepList) {
+                    $stepRow = $pulseSteps | Where-Object { $_.name -eq $stepDefinition.Name } | Select-Object -First 1
+                    $pulseRouteRows += Convert-PulseStepToRouteRow -PulseRun $pulseRouteRun -StepRow $stepRow -Name $stepDefinition.Name -Points $stepDefinition.Points -Index $pulseIndex
+                    $pulseIndex++
+                }
+                if ($pulseRouteRun.Result) {
+                    $mapRouteReached = [bool]$pulseRouteRun.Result.map_reached
+                    $routeFinalNonblack = if ($null -ne $pulseRouteRun.Result.final_nonblack) { [double]$pulseRouteRun.Result.final_nonblack } else { $null }
+                }
+                Start-Sleep -Milliseconds 1200
+                $postPulseHealth = Get-WindowHealthSample -Process $process -Phase 'after-pulse-route'
+                $windowHealthSamples += $postPulseHealth
+                $routePulseFrame = Save-StateFrame -Process $process -Name 'route-pulse' -Path (Join-Path $outDir 'route-pulse.png') -OutDir $outDir
+                $readinessFrames += $routePulseFrame
+            }
+        }
+
+        # Per-target FOLLOW-UP validation points: one menu_pulse_click
+        # --aim-points invocation per point so each carries its own JSON, log,
+        # and post-click PNG. Gated on the map actually having been reached -
+        # aiming validation points at a menu would prove nothing.
+        if (@($followupPointList).Count -gt 0) {
+            if (-not $mapRouteReached) {
+                $routeBlockedReason = if ($routeBlockedReason) { $routeBlockedReason } else { 'pulse route did not reach the gameplay map' }
+            } else {
+                foreach ($point in $followupPointList) {
+                    $process.Refresh()
+                    if ($process.HasExited) {
+                        break
+                    }
+                    $preHealth = Get-WindowHealthSample -Process $process -Phase ('before-followup-{0}' -f $point.Name)
+                    $windowHealthSamples += $preHealth
+                    if ($preHealth.HealthClass -ne 'responsive') {
+                        break
+                    }
+                    $safePointName = ($point.Name -replace '[^0-9A-Za-z_.-]', '-')
+                    $pointJson = Join-Path $outDir ("followup-{0:D2}-{1}.json" -f $point.Index, $safePointName)
+                    $pointRun = Invoke-PulseAimPoint -Process $process -Json $pointJson -PointSpec ('{0}:{1}' -f $point.Name, $point.Points)
+                    $pointStepRow = $null
+                    if ($pointRun.Result -and $pointRun.Result.steps) {
+                        $pointStepRow = @($pointRun.Result.steps) | Select-Object -First 1
+                    }
+                    $pointFrame = Save-StateFrame `
+                        -Process $process `
+                        -Name ("followup-{0:D2}-{1}" -f $point.Index, $safePointName) `
+                        -Path (Join-Path $outDir ("followup-{0:D2}-{1}.png" -f $point.Index, $safePointName)) `
+                        -OutDir $outDir
+                    $followupRow = Convert-PulseStepToRouteRow -PulseRun $pointRun -StepRow $pointStepRow -Name $point.Name -Points $point.Points -Index $point.Index
+                    $followupRow | Add-Member -NotePropertyName AimOnly -NotePropertyValue ([bool]$FollowupAimOnly) -Force
+                    $followupRow | Add-Member -NotePropertyName Frame -NotePropertyValue $pointFrame.Frame -Force
+                    $followupRow | Add-Member -NotePropertyName FrameState -NotePropertyValue $pointFrame.State -Force
+                    $followupRow | Add-Member -NotePropertyName GameplayFrameLikely -NotePropertyValue $pointFrame.GameplayFrameLikely -Force
+                    $followupRows += $followupRow
+                }
+            }
+        }
+    }
+
     foreach ($step in $routeSteps) {
+        if ($InputMode -eq 'pulse') {
+            break
+        }
         if ($menuFrameState.State -eq 'gameplay-likely') {
             break
         }
@@ -659,6 +1133,7 @@ try {
     }
 
     Start-Sleep -Seconds $RunSeconds
+    $windowHealthSamples += Get-WindowHealthSample -Process $process -Phase 'before-final-capture'
     $mapFrameState = Save-StateFrame -Process $process -Name 'after-route' -Path (Join-Path $outDir 'after-map-path.png') -OutDir $outDir
 
     $routePointText = if (@($routeSteps).Count -gt 0) {
@@ -704,6 +1179,39 @@ try {
         IntroMaxRounds = $IntroMaxRounds
         PostIntroWaitSec = $PostIntroWaitSec
         RunSeconds = $RunSeconds
+        InputMode = $InputMode
+        InputMechanism = if ($InputMode -eq 'pulse') { 'pulse-relative-engine-aim' } else { "$MoveMode/$ClickMode" }
+        InputProofClass = if ($InputMode -eq 'pulse') {
+            'automated_visible_runtime_engine_aim_evidence_not_manual_directinput_release_proof'
+        } else {
+            'legacy_os_cursor_path_evidence_not_engine_verified'
+        }
+        IntroMenuVerified = $introMenuVerified
+        IntroMenuVerifyNonblackPercent = $introMenuVerifyNonblack
+        IntroMenuVerifyUniqueColors = $introMenuVerifyColors
+        IntroMenuVerifyBand = @($IntroMenuVerifyNonblackPercent, $IntroMenuVerifyNonblackMaxPercent)
+        IntroMenuVerifyMaxUniqueColors = $IntroMenuVerifyMaxUniqueColors
+        IntroRoundsUsed = $introRoundsUsed
+        CursorProbeRequired = $cursorProbeRequired
+        CursorProbeAlive = $cursorProbeAlive
+        CursorProbeExitCode = if ($cursorProbeRun) { $cursorProbeRun.ExitCode } else { $null }
+        CursorProbeJson = if ($cursorProbeRun) { $cursorProbeRun.Json } else { $null }
+        PulseRouteSteps = $PulseRouteSteps
+        PulseRouteRows = $pulseRouteRows
+        PulseRouteJson = if ($pulseRouteRun) { $pulseRouteRun.Json } else { $null }
+        PulseRouteExitCode = if ($pulseRouteRun) { $pulseRouteRun.ExitCode } else { $null }
+        MapRouteReached = $mapRouteReached
+        RouteFinalNonblackPercent = $routeFinalNonblack
+        RouteBlockedReason = $routeBlockedReason
+        FollowupPoints = $FollowupPoints
+        FollowupAimOnly = [bool]$FollowupAimOnly
+        FollowupRows = $followupRows
+        FollowupPointCount = @($followupPointList).Count
+        FollowupConvergedCount = @($followupRows | Where-Object { $_.AimConverged }).Count
+        PulseAimTolerancePx = $PulseAimTolerancePx
+        WindowHealthSamples = $windowHealthSamples
+        WindowHangObserved = (@($windowHealthSamples | Where-Object { $_.HealthClass -eq 'application_hung' }).Count -gt 0)
+        WindowMissingWhileAliveObserved = (@($windowHealthSamples | Where-Object { $_.HealthClass -eq 'window_missing_while_process_alive' }).Count -gt 0)
         ProcessExitedBeforeCleanup = $process.HasExited
         ExitCode = if ($process.HasExited) { $process.ExitCode } else { $null }
     }
