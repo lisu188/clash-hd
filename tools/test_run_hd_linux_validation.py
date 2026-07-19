@@ -98,6 +98,56 @@ def test_worker_script_has_approval_guard() -> None:
     assert "allow_visible_runtime" in text
 
 
+class _FakeProc:
+    def __init__(self, returncode: int) -> None:
+        self.returncode = returncode
+
+
+def test_execute_runs_patch_fixture_and_launch(fixture: Path) -> None:
+    plan = _plan("--execute", "--run-dir", str(fixture / "run"))
+    # execute_plan is unit-tested in isolation; main() only calls it once the
+    # preflight (approval + SHA-verified binary) has passed, so clear that here.
+    plan["failures"] = []
+    plan["passed"] = True
+    calls: list[list[str]] = []
+
+    # Seed a captured target-summary for one target to test folding.
+    rb = next(t for t in plan["targets"] if t["id"] == "right_bottom_validation_input")
+    Path(rb["out_dir"]).mkdir(parents=True, exist_ok=True)
+    (Path(rb["out_dir"]) / "target-summary.json").write_text(
+        json.dumps({"no_crash": True, "artifacts": ["after-followup.png"]}), encoding="utf-8"
+    )
+
+    def fake_runner(argv):
+        calls.append(argv)
+        return _FakeProc(0)
+
+    result = driver.execute_plan(plan, runner=fake_runner)
+    kinds = [s["step"].split(":")[0] for s in result["execution_steps"]]
+    assert kinds.count("patch") == 3, kinds
+    assert any(s["step"] == "fixture:right_bottom_validation_input" for s in result["execution_steps"])
+    assert kinds.count("launch") == 5, kinds
+    assert result["executed"] is True
+    assert result["passed"] is True, result["failures"]
+    # Folded captured evidence.
+    rb2 = next(t for t in result["targets"] if t["id"] == "right_bottom_validation_input")
+    assert rb2["no_crash"] is True and rb2["artifacts"] == ["after-followup.png"]
+
+
+def test_execute_failure_flips_passed(fixture: Path) -> None:
+    plan = _plan("--execute", "--run-dir", str(fixture / "run2"))
+    plan["failures"] = []
+    plan["passed"] = True
+
+    def failing_launch(argv):
+        # Fail only the launch steps.
+        return _FakeProc(1 if "run_clash_hd_linux_wine.sh" in " ".join(argv) else 0)
+
+    result = driver.execute_plan(plan, runner=failing_launch)
+    assert result["passed"] is False
+    assert any("launch:" in f for f in result["failures"]), result["failures"]
+
+
 def test_cli_dry_run_writes_manifest(fixture: Path) -> None:
     out = fixture / "run-manifest.json"
     run = run_script("--dry-run", "--write-json", str(out))
@@ -120,6 +170,8 @@ def run_tests() -> None:
         test_wrong_sha_source_rejected(fixture)
         test_launch_command_references_worker()
         test_worker_script_has_approval_guard()
+        test_execute_runs_patch_fixture_and_launch(fixture)
+        test_execute_failure_flips_passed(fixture)
         test_cli_dry_run_writes_manifest(fixture)
     finally:
         shutil.rmtree(fixture, ignore_errors=True)

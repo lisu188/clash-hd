@@ -32,9 +32,10 @@ import argparse
 import hashlib
 import json
 import shlex
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import manual_directinput_checklist as checklist
 import manual_directinput_run_plan as run_plan
@@ -214,6 +215,66 @@ def build_plan(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def _read_target_summary(out_dir: str) -> tuple[bool, list[str]]:
+    summary_path = Path(out_dir) / "target-summary.json"
+    if not summary_path.exists():
+        return False, []
+    try:
+        data = json.loads(summary_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False, []
+    return bool(data.get("no_crash")), list(data.get("artifacts") or [])
+
+
+def execute_plan(
+    plan: dict[str, Any],
+    *,
+    runner: Callable[[list[str]], Any] | None = None,
+    cwd: Path | None = None,
+) -> dict[str, Any]:
+    """Actually run the planned patch/fixture/launch steps.
+
+    ``runner`` is a ``subprocess.run``-style callable returning an object with a
+    ``returncode`` (injectable for tests). Failures accumulate and flip
+    ``passed`` to False so a real run never silently exits 0 without evidence.
+    """
+    if runner is None:
+        def runner(argv: list[str]) -> subprocess.CompletedProcess[str]:  # type: ignore[misc]
+            return subprocess.run(argv, cwd=str(cwd) if cwd else None, check=False)
+
+    steps: list[dict[str, Any]] = []
+    failures = list(plan.get("failures", []))
+
+    def _run(name: str, argv: list[str]) -> int:
+        rc = getattr(runner(argv), "returncode", 1)
+        steps.append({"step": name, "returncode": rc, "command": " ".join(argv)})
+        if rc != 0:
+            failures.append(f"{name} failed (exit {rc})")
+        return rc
+
+    # 1. Build every candidate stage.
+    for cand in plan["candidate_stages"].values():
+        _run(f"patch:{cand['stage']}", list(cand["patch_command"]))
+
+    # 2. Prepare per-target fixtures (right-bottom addon_flags save).
+    for target in plan["targets"]:
+        if target.get("fixture_command"):
+            _run(f"fixture:{target['id']}", shlex.split(target["fixture_command"]))
+
+    # 3. Launch each target and fold its captured no_crash / artifacts.
+    for target in plan["targets"]:
+        _run(f"launch:{target['id']}", shlex.split(target["launch_command"]))
+        no_crash, artifacts = _read_target_summary(target["out_dir"])
+        target["no_crash"] = no_crash
+        target["artifacts"] = artifacts
+
+    plan["executed"] = True
+    plan["execution_steps"] = steps
+    plan["failures"] = failures
+    plan["passed"] = not failures
+    return plan
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-exe", help="Path to clash95.exe (base SHA verified) for a real run")
@@ -238,6 +299,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     plan = build_plan(args)
+    repo_root = Path(__file__).resolve().parents[1]
+
+    # Real run: only execute once the preflight (approval + SHA-verified binary)
+    # passed. Otherwise leave it as a plan and fail.
+    executed = False
+    if not plan["dry_run"] and plan["passed"]:
+        plan = execute_plan(plan, cwd=repo_root)
+        executed = True
 
     default_manifest = Path(args.run_dir) / "run-manifest.json"
     out_path = args.write_json or default_manifest
@@ -247,6 +316,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"runner: {plan['runner']}")
     print(f"runtime-policy: {plan['runtime_policy']}")
     print(f"dry-run: {plan['dry_run']}")
+    print(f"executed: {executed}")
     print(f"source-present: {plan['source_present']}")
     print(f"target-count: {len(plan['targets'])}")
     print(f"run-manifest: {out_path}")

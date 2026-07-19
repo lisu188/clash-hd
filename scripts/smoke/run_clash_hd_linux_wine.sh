@@ -129,12 +129,21 @@ if kill -0 "$game_pid" >/dev/null 2>&1; then
 fi
 kill "$game_pid" >/dev/null 2>&1 || true
 
+# Escape backslashes and double quotes so Windows-style candidate paths
+# (C:\ClashTests\...) produce valid JSON strings.
+json_escape() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  printf '%s' "$s"
+}
+
 cat > "$out_dir/target-summary.json" <<JSON
 {
-  "candidate": "$candidate",
-  "route": "$route",
-  "route_points": "$route_points",
-  "followup_points": "$followup_points",
+  "candidate": "$(json_escape "$candidate")",
+  "route": "$(json_escape "$route")",
+  "route_points": "$(json_escape "$route_points")",
+  "followup_points": "$(json_escape "$followup_points")",
   "no_crash": $no_crash,
   "artifacts": ["before.png", "after-route.png", "after-followup.png", "wine-launch.log"],
   "note": "operator must review the captured frames and fill observed_result / evidence / pass_fail_notes before assembling the proof"
