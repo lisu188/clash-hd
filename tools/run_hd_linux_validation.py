@@ -57,8 +57,11 @@ APPROVAL_POLICY = (
 # Stage each required target is validated on (authoritative from the checklist).
 _STAGE_BY_ID = {item["id"]: item["stage"] for item in checklist.CHECKLIST_ITEMS}
 
-# apt packages the real run needs (Xvfb is already present in the base image).
-REQUIRED_APT_PACKAGES = ("wine", "wine32", "xvfb", "xdotool", "x11-utils", "ffmpeg")
+# apt packages the real run needs. On Ubuntu 24.04 the i386 wine32 chain can be
+# unavailable behind restricted mirrors; wine 9.0's new WoW64 runs the 32-bit
+# clash95.exe from the amd64 `wine` package alone (verified: syswow64 present),
+# so i386 packages are intentionally not required here.
+REQUIRED_APT_PACKAGES = ("wine", "xvfb", "xdotool", "x11-utils", "ffmpeg")
 
 
 def sha256_of(path: Path) -> str:

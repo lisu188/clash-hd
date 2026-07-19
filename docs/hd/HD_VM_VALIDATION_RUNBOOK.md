@@ -70,8 +70,13 @@ with real DirectInput, and writes
 On a Linux host with the supplied `clash95.exe`:
 
 ```bash
-# 0. One-time deps (Xvfb is already present in the cloud image).
-sudo apt-get update && sudo apt-get install -y wine wine32 xvfb xdotool x11-utils ffmpeg
+# 0. One-time deps. Wine 9.0's new WoW64 runs the 32-bit clash95.exe from the
+#    amd64 wine package alone, so the i386 stack is not required (and may be
+#    blocked behind restricted mirrors on Ubuntu 24.04).
+sudo apt-get update && sudo apt-get install -y wine xvfb xdotool x11-utils ffmpeg
+# Verified end to end here: wine launches a Windows program on a headless Xvfb
+# display, xdotool drives a real click, and ffmpeg captures a frame. The only
+# remaining input is a legitimately owned clash95.exe (base SHA below).
 
 # 1. Dry-run: plan only, no launch, no binary needed. Verifies the target/stage wiring.
 python tools/run_hd_linux_validation.py --dry-run
