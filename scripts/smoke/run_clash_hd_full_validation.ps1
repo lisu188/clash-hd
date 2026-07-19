@@ -131,13 +131,26 @@ try {
         `$fixtureReady = (`$LASTEXITCODE -eq 0)
     }
 
-    # Five manual targets: id -> @(stageKey, points)
+    # Prepare an isolated right-bottom workdir whose save\0.dat IS the addon
+    # fixture, so load-slot0 actually loads the flagged building (the other
+    # targets keep the normal C:\Clash workdir / save).
+    `$rbWork = Join-Path `$TestsRoot 'right-bottom-workdir'
+    if (`$fixtureReady) {
+        if (Test-Path -LiteralPath `$rbWork) { Remove-Item -LiteralPath `$rbWork -Recurse -Force }
+        Copy-Item -LiteralPath `$GameWork -Destination `$rbWork -Recurse -Force
+        `$rbSaveDir = Join-Path `$rbWork 'save'
+        New-Item -ItemType Directory -Path `$rbSaveDir -Force | Out-Null
+        Copy-Item -LiteralPath (Join-Path `$fixtureSaveDir '0.dat') -Destination (Join-Path `$rbSaveDir '0.dat') -Force
+    }
+
+    # Five manual targets: the load-slot0 route reaches gameplay (it ignores
+    # -Points), then followup drives the target-specific validation clicks.
     `$targets = @(
-        @{ id='stable_menu_load';               stage='stable';      points='300,218;320,166;400,226' },
-        @{ id='stable_hd_map_input';            stage='stable';      points='300,218;320,166;400,226;400,300;780,300;400,580;760,560' },
-        @{ id='right_bottom_validation_input';  stage='rightbottom'; points='300,218;320,166;400,226;588,440;450,73;760,560' },
-        @{ id='castle_barracks_centered_input'; stage='castle';      points='300,218;320,166;400,226;400,300;231,366;180,440' },
-        @{ id='castle_overview_centered_input'; stage='castle';      points='300,218;320,166;400,226;231,366;180,440;503,426' }
+        @{ id='stable_menu_load';               stage='stable';      followup='';                             workdir=`$GameWork },
+        @{ id='stable_hd_map_input';            stage='stable';      followup='400,300;780,300;400,580;760,560'; workdir=`$GameWork },
+        @{ id='right_bottom_validation_input';  stage='rightbottom'; followup='588,440;450,73;760,560';        workdir=(if (`$fixtureReady) { `$rbWork } else { `$GameWork }) },
+        @{ id='castle_barracks_centered_input'; stage='castle';      followup='400,300;231,366;180,440';       workdir=`$GameWork },
+        @{ id='castle_overview_centered_input'; stage='castle';      followup='231,366;180,440;503,426';       workdir=`$GameWork }
     )
 
     `$targetResults = @()
@@ -149,11 +162,11 @@ try {
             '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
             (Join-Path `$Repo 'scripts\smoke\run_clash_visual_smoke.ps1'),
             '-Exe', `$exe,
-            '-WorkDir', `$GameWork,
+            '-WorkDir', `$t.workdir,
             '-Python', `$Python,
             '-OutRoot', `$targetOut,
             '-Route', 'load-slot0',
-            '-Points', `$t.points,
+            '-FollowupPoints', `$t.followup,
             '-MoveMode', 'auto',
             '-ClickMode', 'sendinput',
             '-ClickHoldMs', '300',
