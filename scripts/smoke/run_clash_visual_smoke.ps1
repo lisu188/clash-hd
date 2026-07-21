@@ -4,7 +4,6 @@ param(
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
     [string]$OutRoot = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\archive'),
     [string]$Points = '300,218;320,166;400,226',
-    [string]$FollowupPoints = '',
     [ValidateSet('load-slot0', 'campaign-start', 'custom', 'menu-only')]
     [string]$Route = 'load-slot0',
     [int]$RunSeconds = 8,
@@ -1137,36 +1136,10 @@ try {
     $windowHealthSamples += Get-WindowHealthSample -Process $process -Phase 'before-final-capture'
     $mapFrameState = Save-StateFrame -Process $process -Name 'after-route' -Path (Join-Path $outDir 'after-map-path.png') -OutDir $outDir
 
-    # Target-specific follow-up clicks, driven after the load route reaches
-    # gameplay (the fixed load-slot0/campaign routes ignore -Points, so the
-    # per-target validation points must come through -FollowupPoints).
-    $followupRows = @()
-    if (-not [string]::IsNullOrWhiteSpace($FollowupPoints)) {
-        $followupList = $FollowupPoints.Split(';') | Where-Object { $_ -ne '' }
-        $fIndex = 0
-        foreach ($fp in $followupList) {
-            $fJson = Join-Path $outDir ("followup-{0:D2}-path.json" -f $fIndex)
-            $fPath = Invoke-MousePath -Process $process -Json $fJson -PathPoints $fp -Click -AllowUnverified
-            Start-Sleep -Milliseconds ([int]$RouteStepWaitMs)
-            $fFrame = Save-StateFrame `
-                -Process $process `
-                -Name ("followup-{0:D2}" -f $fIndex) `
-                -Path (Join-Path $outDir ("followup-{0:D2}.png" -f $fIndex)) `
-                -OutDir $outDir
-            $followupRows += [pscustomobject]@{
-                Index = $fIndex
-                Points = $fp
-                Json = $fJson
-                PathVerified = $fPath.path_verified
-                ClickPathVerified = $fPath.click_path_verified
-                ProbeExitCode = $fPath.ProbeExitCode
-                Frame = $fFrame.Frame
-                FrameState = $fFrame.State
-            }
-            $fIndex++
-        }
-        Save-StateFrame -Process $process -Name 'after-followup' -Path (Join-Path $outDir 'after-followup.png') -OutDir $outDir | Out-Null
-    }
+    # Per-target follow-up validation clicks run ONLY in the pulse lane (see the
+    # setup guard: legacy move modes are invisible to the engine's DirectInput
+    # accumulator). The pulse route section above already populated
+    # $followupRows; nothing to drive here.
 
     $routePointText = if (@($routeSteps).Count -gt 0) {
         (@($routeSteps) | ForEach-Object { $_.Points }) -join ';'
