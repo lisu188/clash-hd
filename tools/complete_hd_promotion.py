@@ -9,9 +9,13 @@ runs, in order:
    structurally valid and promotion-ready.
 3. ``battle_visible_input_summary.py --require-click-consumed`` (only when a
    ``--battle-run-dir`` is supplied) -> a real battle click was consumed.
-4. ``right_bottom_compose_promotion_decision.py`` and
-   ``castle_overview_promotion_decision.py`` with the proof -> both flip to
+4. The three promotion decisions in FINISH_LINE_RUNBOOK step-4 order --
+   ``hd_layout_promotion_decision.py``,
+   ``right_bottom_compose_promotion_decision.py``,
+   ``castle_overview_promotion_decision.py`` -> all flip to
    ``eligible_for_stable_promotion``.
+5. ``current_evidence_refresh.py`` twice (the runbook's double refresh); the
+   second run carries ``--require-pass`` and is the 165/165 gate.
 
 Every step is a repo-only tool; this launches no game, VM, or visible window --
 it only grades the artifacts an approved run already produced. When all steps
@@ -77,6 +81,18 @@ def plan_steps(args: argparse.Namespace) -> list[tuple[str, list[str]]]:
                 ],
             )
         )
+    # The three promotion decisions in FINISH_LINE_RUNBOOK step-4 order. The
+    # hd-layout decision reads the manual checklist JSON that the
+    # manual_checklist step above regenerates with the validated proof.
+    steps.append(
+        (
+            "hd_layout_promotion",
+            [
+                str(TOOLS / "hd_layout_promotion_decision.py"),
+                "--require-pass",
+            ],
+        )
+    )
     steps.append(
         (
             "right_bottom_promotion",
@@ -97,6 +113,10 @@ def plan_steps(args: argparse.Namespace) -> list[tuple[str, list[str]]]:
             ],
         )
     )
+    # Runbook step 4 ends with the double evidence refresh; --require-pass makes
+    # the second run the 165/165 gate that --update-checklist depends on.
+    steps.append(("evidence_refresh_1", [str(TOOLS / "current_evidence_refresh.py")]))
+    steps.append(("evidence_refresh_2", [str(TOOLS / "current_evidence_refresh.py"), "--require-pass"]))
     return steps
 
 
