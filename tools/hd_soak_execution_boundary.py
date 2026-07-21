@@ -172,14 +172,32 @@ def side_effect_paths(root: Path, case: BoundaryCase) -> dict[str, Path]:
 def run_case(script: Path, root: Path, case: BoundaryCase, runner: Runner = subprocess.run) -> dict[str, Any]:
     command = build_command(script, root, case)
     paths = side_effect_paths(root, case)
-    result = runner(
-        command,
-        cwd=REPO_ROOT,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        check=False,
-    )
+    try:
+        result = runner(
+            command,
+            cwd=REPO_ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    except FileNotFoundError as exc:
+        # No PowerShell on this platform: the refusal contract cannot be
+        # exercised, so the case fails closed with an explicit reason instead
+        # of crashing the whole evidence refresh. Only the Windows rig can turn
+        # this check green.
+        return {
+            "name": case.name,
+            "passed": False,
+            "exit_code": None,
+            "expected_phrase": case.expected_phrase,
+            "expected_phrase_seen": False,
+            "side_effects": {name: path.exists() for name, path in paths.items()},
+            "side_effect_paths": {name: relative_or_absolute(path) for name, path in paths.items()},
+            "stdout_tail": "",
+            "stderr_tail": f"boundary probe runner unavailable on this platform: {exc}",
+            "command": " ".join(command),
+        }
     combined = f"{result.stdout}\n{result.stderr}"
     side_effects = {name: path.exists() for name, path in paths.items()}
     passed = (

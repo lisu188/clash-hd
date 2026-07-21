@@ -176,14 +176,24 @@ def approval_ttl_status(approval_expires_utc: Any) -> dict[str, Any]:
 
 def run_harness_plan(script: Path, step: dict[str, Any]) -> tuple[dict[str, Any] | None, dict[str, Any]]:
     command = dry_run_command(script, step)
-    run = subprocess.run(
-        command,
-        cwd=REPO_ROOT,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        check=False,
-    )
+    try:
+        run = subprocess.run(
+            command,
+            cwd=REPO_ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    except FileNotFoundError as exc:
+        # No PowerShell on this platform: the dry-run harness plan cannot be
+        # extracted, so fail closed with a recorded reason instead of crashing
+        # the evidence refresh. Only the Windows rig can turn this check green.
+        return None, {
+            "command": command_text(command),
+            "exit_code": None,
+            "stderr": f"dry-run harness runner unavailable on this platform: {exc}",
+        }
     detail = {
         "command": command_text(command),
         "exit_code": run.returncode,

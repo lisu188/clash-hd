@@ -36,8 +36,11 @@ def test_step_plan_order_without_battle() -> None:
     assert names == [
         "assemble_proof",
         "manual_checklist",
+        "hd_layout_promotion",
         "right_bottom_promotion",
         "castle_overview_promotion",
+        "evidence_refresh_1",
+        "evidence_refresh_2",
     ], names
 
 
@@ -46,6 +49,15 @@ def test_step_plan_includes_battle_when_dir_given() -> None:
     names = [name for name, _ in steps]
     assert "battle_click_consumed" in names
     assert names.index("battle_click_consumed") == 2, names
+    # Battle check slots in before the three decisions.
+    assert names.index("hd_layout_promotion") == 3, names
+
+
+def test_refresh_gates_the_checklist_update() -> None:
+    steps = dict(promo.plan_steps(_args()))
+    assert "--require-pass" not in steps["evidence_refresh_1"], steps["evidence_refresh_1"]
+    assert "--require-pass" in steps["evidence_refresh_2"], steps["evidence_refresh_2"]
+    assert "hd_layout_promotion_decision.py" in " ".join(steps["hd_layout_promotion"])
 
 
 def test_step_flags_reference_proof_and_manifest() -> None:
@@ -88,6 +100,7 @@ def run_tests() -> None:
     try:
         test_step_plan_order_without_battle()
         test_step_plan_includes_battle_when_dir_given()
+        test_refresh_gates_the_checklist_update()
         test_step_flags_reference_proof_and_manifest()
         test_check_release_boxes_updates_both(fixture)
     finally:
