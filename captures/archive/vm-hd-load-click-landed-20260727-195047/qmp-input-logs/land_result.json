@@ -1,0 +1,15 @@
+{
+  "landed_blob_center": [
+    305.5,
+    212.5
+  ],
+  "dx": 73,
+  "dy": 50,
+  "target": [
+    306,
+    209
+  ],
+  "changed_outside": 51260,
+  "post_png": "ll_post_005.png",
+  "menu_png": "ll_menu_001.png"
+}
