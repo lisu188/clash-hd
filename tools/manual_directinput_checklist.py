@@ -67,6 +67,29 @@ REQUIRED_MANUAL_PROOF_ITEM_FIELDS = [
 EXPECTED_CANDIDATE_ROOT = "C:\\ClashTests"
 FORBIDDEN_LIVE_ORIGINAL = "C:\\Clash\\clash95.exe"
 
+# Repo root, used to resolve guest frame-evidence references that must be
+# existing repo-relative paths.
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+# Additive guest proof class. The headless QEMU-Win98 DirectDraw lane is a
+# DISTINCT proof class from the host manual_directinput lane. It is accepted
+# only alongside its OWN fail-closed required fields (below); accepting it must
+# never let a host manifest skip a host requirement, and the host path stays
+# byte-for-byte unchanged.
+HOST_EVIDENCE_CLASS = "manual_directinput"
+GUEST_EVIDENCE_CLASS = "approved_guest_win98_directdraw"
+VALID_EVIDENCE_CLASSES = (HOST_EVIDENCE_CLASS, GUEST_EVIDENCE_CLASS)
+# Guest-only required fields, enforced IN ADDITION to (never in place of) the
+# shared REQUIRED_MANUAL_PROOF_FIELDS.
+REQUIRED_GUEST_PROOF_FIELDS = [
+    "guest_machine_id",
+    "qmp_input_log_ref",
+    "candidate_sha256_staged_in_guest",
+    "frame_evidence_refs",
+]
+# Guest frame evidence must live in the repo, never under the live game tree.
+FORBIDDEN_FRAME_EVIDENCE_ROOT = "C:\\Clash"
+
 CHECKLIST_ITEMS: list[dict[str, str]] = [
     {
         "id": "stable_menu_load",
@@ -191,12 +214,71 @@ def _is_same_or_under(path_text: Any, root_text: str) -> bool:
     return bool(path and (path == root or path.startswith(root + "\\")))
 
 
-def validate_manual_proof_data(proof: Any) -> list[str]:
+def _validate_guest_proof_fields(
+    proof: dict[str, Any],
+    *,
+    repo_root: Path | None = None,
+) -> list[str]:
+    """Validate the guest-only fields required IN ADDITION to the shared ones.
+
+    These are enforced only for the approved_guest_win98_directdraw class. They
+    never relax a host requirement: a guest manifest must still satisfy every
+    shared REQUIRED_MANUAL_PROOF_FIELD as well as these.
+    """
+    failures: list[str] = []
+    root = repo_root or REPO_ROOT
+    if not _real_text(proof.get("guest_machine_id")):
+        failures.append(
+            f"{GUEST_EVIDENCE_CLASS} proof must include a non-placeholder guest_machine_id"
+        )
+    if not _real_text(proof.get("qmp_input_log_ref")):
+        failures.append(
+            f"{GUEST_EVIDENCE_CLASS} proof must include a non-placeholder qmp_input_log_ref"
+        )
+    staged_sha = proof.get("candidate_sha256_staged_in_guest")
+    if not isinstance(staged_sha, str) or not SHA256_RE.match(staged_sha):
+        failures.append(
+            f"{GUEST_EVIDENCE_CLASS} proof must include a 64-hex candidate_sha256_staged_in_guest"
+        )
+    frame_refs = proof.get("frame_evidence_refs")
+    if not isinstance(frame_refs, list) or not frame_refs:
+        failures.append(
+            f"{GUEST_EVIDENCE_CLASS} proof must include a nonempty frame_evidence_refs list"
+        )
+    else:
+        for index, ref in enumerate(frame_refs):
+            if not _real_text(ref):
+                failures.append(
+                    f"{GUEST_EVIDENCE_CLASS} proof frame_evidence_refs[{index}] "
+                    "must be a non-placeholder repo-relative path"
+                )
+                continue
+            if _is_same_or_under(ref, FORBIDDEN_FRAME_EVIDENCE_ROOT):
+                failures.append(
+                    f"{GUEST_EVIDENCE_CLASS} proof frame_evidence_refs[{index}] "
+                    f"must not be under {FORBIDDEN_FRAME_EVIDENCE_ROOT}"
+                )
+                continue
+            candidate = Path(str(ref))
+            resolved = candidate if candidate.is_absolute() else (root / candidate)
+            if not resolved.exists():
+                failures.append(
+                    f"{GUEST_EVIDENCE_CLASS} proof frame_evidence_refs[{index}] "
+                    f"does not exist: {ref}"
+                )
+    return failures
+
+
+def validate_manual_proof_data(proof: Any, *, repo_root: Path | None = None) -> list[str]:
     failures: list[str] = []
     if not isinstance(proof, dict):
         return ["manual DirectInput proof must be a JSON object"]
-    if proof.get("evidence_class") != "manual_directinput":
-        failures.append("manual DirectInput proof evidence_class must be manual_directinput")
+    evidence_class = proof.get("evidence_class")
+    if evidence_class not in VALID_EVIDENCE_CLASSES:
+        failures.append(
+            "manual DirectInput proof evidence_class must be one of "
+            f"{', '.join(VALID_EVIDENCE_CLASSES)}"
+        )
     if proof.get("approved_visible_runtime") is not True:
         failures.append("manual DirectInput proof must record approved_visible_runtime=true")
     if not _real_text(proof.get("approval_record")):
@@ -213,6 +295,11 @@ def validate_manual_proof_data(proof: Any) -> list[str]:
         failures.append("manual DirectInput proof must include a 64-hex executable_sha256")
     if proof.get("no_stale_processes") is not True:
         failures.append("manual DirectInput proof must record no_stale_processes=true")
+    # Additive guest-class fields. Enforced ON TOP OF every shared check above,
+    # so a guest manifest can never skip a host requirement, and a host manifest
+    # never gains anything by carrying a guest-only field.
+    if evidence_class == GUEST_EVIDENCE_CLASS:
+        failures.extend(_validate_guest_proof_fields(proof, repo_root=repo_root))
     checked_items = proof.get("checked_items")
     if not isinstance(checked_items, list):
         failures.append("manual DirectInput proof must include checked_items list")
@@ -252,7 +339,11 @@ def validate_manual_proof_data(proof: Any) -> list[str]:
     return failures
 
 
-def validate_manual_proof(path: Path) -> tuple[dict[str, Any] | None, list[str]]:
+def validate_manual_proof(
+    path: Path,
+    *,
+    repo_root: Path | None = None,
+) -> tuple[dict[str, Any] | None, list[str]]:
     try:
         proof = json.loads(path.read_text(encoding="utf-8-sig"))
     except OSError as exc:
@@ -262,7 +353,7 @@ def validate_manual_proof(path: Path) -> tuple[dict[str, Any] | None, list[str]]
 
     if not isinstance(proof, dict):
         return None, ["manual DirectInput proof must be a JSON object"]
-    return proof, validate_manual_proof_data(proof)
+    return proof, validate_manual_proof_data(proof, repo_root=repo_root)
 
 
 def build_checklist(
@@ -273,6 +364,7 @@ def build_checklist(
     failures = validate_items(checklist_items)
     manual_proof = getattr(args, "manual_proof", None)
     allow_cdb_only_promotion = bool(getattr(args, "allow_cdb_only_promotion", False))
+    repo_root = getattr(args, "repo_root", None)
     manual_proof_supplied = False
     manual_proof_valid = False
     manual_proof_data: dict[str, Any] | None = None
@@ -280,7 +372,7 @@ def build_checklist(
         manual_proof = Path(manual_proof)
         if manual_proof.exists():
             manual_proof_supplied = True
-            manual_proof_data, proof_failures = validate_manual_proof(manual_proof)
+            manual_proof_data, proof_failures = validate_manual_proof(manual_proof, repo_root=repo_root)
             if proof_failures:
                 failures.extend(proof_failures)
             else:
@@ -307,6 +399,7 @@ def build_checklist(
         "manual_proof_supplied": manual_proof_supplied,
         "manual_proof_valid": manual_proof_valid,
         "manual_proof_summary": {
+            "evidence_class": manual_proof_data.get("evidence_class") if manual_proof_data else None,
             "executable_sha256": manual_proof_data.get("executable_sha256") if manual_proof_data else None,
             "checked_item_count": len(manual_proof_data.get("checked_items", [])) if manual_proof_data else 0,
         },
