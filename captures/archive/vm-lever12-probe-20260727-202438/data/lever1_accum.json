@@ -1,0 +1,166 @@
+{
+ "accum_x": [
+  {
+   "step": 0,
+   "delta": 30,
+   "center": [
+    133.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accX_001.ppm"
+  },
+  {
+   "step": 1,
+   "delta": 31,
+   "center": [
+    137.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accX_002.ppm"
+  },
+  {
+   "step": 2,
+   "delta": 30,
+   "center": [
+    133.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accX_003.ppm"
+  },
+  {
+   "step": 3,
+   "delta": 31,
+   "center": [
+    137.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accX_004.ppm"
+  },
+  {
+   "step": 4,
+   "delta": 30,
+   "center": [
+    133.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accX_005.ppm"
+  },
+  {
+   "step": 5,
+   "delta": 31,
+   "center": [
+    137.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accX_006.ppm"
+  },
+  {
+   "step": 6,
+   "delta": 30,
+   "center": [
+    133.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accX_007.ppm"
+  },
+  {
+   "step": 7,
+   "delta": 31,
+   "center": [
+    137.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accX_008.ppm"
+  }
+ ],
+ "accum_y": [
+  {
+   "step": 0,
+   "delta": 30,
+   "center": [
+    137.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accY_009.ppm"
+  },
+  {
+   "step": 1,
+   "delta": 31,
+   "center": [
+    137.5,
+    136.5
+   ],
+   "cnt": 238,
+   "shot": "accY_010.ppm"
+  },
+  {
+   "step": 2,
+   "delta": 30,
+   "center": [
+    137.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accY_011.ppm"
+  },
+  {
+   "step": 3,
+   "delta": 31,
+   "center": [
+    137.5,
+    136.5
+   ],
+   "cnt": 238,
+   "shot": "accY_012.ppm"
+  },
+  {
+   "step": 4,
+   "delta": 30,
+   "center": [
+    137.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accY_013.ppm"
+  },
+  {
+   "step": 5,
+   "delta": 31,
+   "center": [
+    137.5,
+    136.5
+   ],
+   "cnt": 238,
+   "shot": "accY_014.ppm"
+  },
+  {
+   "step": 6,
+   "delta": 30,
+   "center": [
+    137.5,
+    132.5
+   ],
+   "cnt": 245,
+   "shot": "accY_015.ppm"
+  },
+  {
+   "step": 7,
+   "delta": 31,
+   "center": [
+    137.5,
+    136.5
+   ],
+   "cnt": 238,
+   "shot": "accY_016.ppm"
+  }
+ ]
+}

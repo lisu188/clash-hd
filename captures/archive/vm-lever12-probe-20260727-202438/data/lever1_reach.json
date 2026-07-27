@@ -1,0 +1,204 @@
+{
+ "reach_x": [
+  {
+   "delta": 120,
+   "center": [
+    494.0,
+    252.5
+   ],
+   "cnt": 247,
+   "shot": "rx_001.ppm"
+  },
+  {
+   "delta": 125,
+   "center": [
+    513.5,
+    252.5
+   ],
+   "cnt": 257,
+   "shot": "rx_002.ppm"
+  },
+  {
+   "delta": 130,
+   "center": [
+    522.0,
+    252.5
+   ],
+   "cnt": 250,
+   "shot": "rx_003.ppm"
+  },
+  {
+   "delta": 140,
+   "center": [
+    522.0,
+    252.5
+   ],
+   "cnt": 250,
+   "shot": "rx_004.ppm"
+  },
+  {
+   "delta": 160,
+   "center": [
+    522.0,
+    252.5
+   ],
+   "cnt": 250,
+   "shot": "rx_005.ppm"
+  },
+  {
+   "delta": 200,
+   "center": [
+    522.0,
+    252.5
+   ],
+   "cnt": 250,
+   "shot": "rx_006.ppm"
+  },
+  {
+   "delta": 250,
+   "center": [
+    522.0,
+    252.5
+   ],
+   "cnt": 250,
+   "shot": "rx_007.ppm"
+  },
+  {
+   "delta": 300,
+   "center": [
+    522.0,
+    252.5
+   ],
+   "cnt": 250,
+   "shot": "rx_008.ppm"
+  },
+  {
+   "delta": 400,
+   "center": [
+    522.0,
+    252.5
+   ],
+   "cnt": 250,
+   "shot": "rx_009.ppm"
+  },
+  {
+   "delta": 500,
+   "center": [
+    522.0,
+    252.5
+   ],
+   "cnt": 250,
+   "shot": "rx_010.ppm"
+  },
+  {
+   "delta": 650,
+   "center": [
+    522.0,
+    252.5
+   ],
+   "cnt": 250,
+   "shot": "rx_011.ppm"
+  }
+ ],
+ "reach_y": [
+  {
+   "delta": 120,
+   "center": [
+    521.5,
+    492.5
+   ],
+   "cnt": 196,
+   "shot": "ry_012.ppm"
+  },
+  {
+   "delta": 125,
+   "center": [
+    522.0,
+    513.0
+   ],
+   "cnt": 174,
+   "shot": "ry_013.ppm"
+  },
+  {
+   "delta": 130,
+   "center": [
+    522.0,
+    521.0
+   ],
+   "cnt": 172,
+   "shot": "ry_014.ppm"
+  },
+  {
+   "delta": 140,
+   "center": [
+    522.0,
+    521.0
+   ],
+   "cnt": 172,
+   "shot": "ry_015.ppm"
+  },
+  {
+   "delta": 160,
+   "center": [
+    522.0,
+    521.0
+   ],
+   "cnt": 172,
+   "shot": "ry_016.ppm"
+  },
+  {
+   "delta": 200,
+   "center": [
+    522.0,
+    521.0
+   ],
+   "cnt": 172,
+   "shot": "ry_017.ppm"
+  },
+  {
+   "delta": 250,
+   "center": [
+    522.0,
+    521.0
+   ],
+   "cnt": 172,
+   "shot": "ry_018.ppm"
+  },
+  {
+   "delta": 300,
+   "center": [
+    522.0,
+    521.0
+   ],
+   "cnt": 172,
+   "shot": "ry_019.ppm"
+  },
+  {
+   "delta": 400,
+   "center": [
+    522.0,
+    521.0
+   ],
+   "cnt": 172,
+   "shot": "ry_020.ppm"
+  },
+  {
+   "delta": 500,
+   "center": [
+    522.0,
+    521.0
+   ],
+   "cnt": 172,
+   "shot": "ry_021.ppm"
+  },
+  {
+   "delta": 650,
+   "center": [
+    522.0,
+    521.0
+   ],
+   "cnt": 172,
+   "shot": "ry_022.ppm"
+  }
+ ]
+}

@@ -1,0 +1,50 @@
+[
+ {
+  "i": 0,
+  "key": "down",
+  "chg_vs_ref": 0,
+  "chg_vs_prev": 0,
+  "chg_vs_menu": 57813,
+  "shot": "k_down_002.ppm"
+ },
+ {
+  "i": 1,
+  "key": "down",
+  "chg_vs_ref": 0,
+  "chg_vs_prev": 0,
+  "chg_vs_menu": 57813,
+  "shot": "k_down_003.ppm"
+ },
+ {
+  "i": 2,
+  "key": "down",
+  "chg_vs_ref": 0,
+  "chg_vs_prev": 0,
+  "chg_vs_menu": 57813,
+  "shot": "k_down_004.ppm"
+ },
+ {
+  "i": 3,
+  "key": "up",
+  "chg_vs_ref": 0,
+  "chg_vs_prev": 0,
+  "chg_vs_menu": 57813,
+  "shot": "k_up_005.ppm"
+ },
+ {
+  "i": 4,
+  "key": "home",
+  "chg_vs_ref": 0,
+  "chg_vs_prev": 0,
+  "chg_vs_menu": 57813,
+  "shot": "k_home_006.ppm"
+ },
+ {
+  "i": 5,
+  "key": "end",
+  "chg_vs_ref": 0,
+  "chg_vs_prev": 0,
+  "chg_vs_menu": 57813,
+  "shot": "k_end_007.ppm"
+ }
+]
