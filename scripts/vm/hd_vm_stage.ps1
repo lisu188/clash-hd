@@ -11,11 +11,20 @@
 #
 #   hd_vm_stage.ps1 -Candidate C:\ClashTests\...\clash95_hd_stable.exe
 #   hd_vm_stage.ps1 -Candidate ... -GuestName CLASHHD.EXE -Args '/A5'
+#   hd_vm_stage.ps1 -Candidate ... -SaveFiles C:\ClashTests\...\save\5.dat  # also copy save fixtures
 #   hd_vm_stage.ps1 -Restore                      # point RUN.BAT back at the stock exe
+#
+# -SaveFiles copies one or more host save files into the guest's D:\clash\save
+# directory (the game's save dir; RUN.BAT does `cd \clash`). It uses the same
+# partitioned-image @@1M mtools offset as the candidate copy, so a per-target
+# manual-DirectInput fixture (e.g. a slot5-as-slot0 right-bottom save) can be
+# staged in the same pass. Host save files are never modified.
 param(
   [string]$Candidate,
   [string]$GuestName = 'CLASHHD.EXE',
   [string]$Args = '',
+  [string[]]$SaveFiles = @(),
+  [string]$SaveDest = '::/clash/save',
   [string]$Image = 'C:\clash-hd-vm\game.img',
   [switch]$Restore
 )
@@ -56,6 +65,19 @@ $sha = (Get-FileHash -LiteralPath $Candidate -Algorithm SHA256).Hash
 $candWsl = ConvertTo-WslPath $Candidate
 
 wsl.exe -e bash -lc "mcopy -i '$imgWsl' -o '$candWsl' ::/clash/$GuestName" | Out-Null
+
+# Stage optional save fixtures into the guest save directory. mmd is allowed to
+# fail (directory already exists), so it is guarded; each mcopy overwrites (-o).
+if ($SaveFiles.Count -gt 0) {
+  wsl.exe -e bash -lc "mmd -i '$imgWsl' $SaveDest 2>/dev/null; true" | Out-Null
+  foreach ($save in $SaveFiles) {
+    if (-not (Test-Path -LiteralPath $save)) { throw "Save fixture not found: $save" }
+    $saveWsl = ConvertTo-WslPath $save
+    $leaf = [System.IO.Path]::GetFileName($save)
+    wsl.exe -e bash -lc "mcopy -i '$imgWsl' -o '$saveWsl' $SaveDest/$leaf" | Out-Null
+    Write-Output "staged save fixture $leaf -> $SaveDest/$leaf"
+  }
+}
 
 $argSuffix = if ($Args) { " $Args" } else { '' }
 $bat = "@echo off`r`nD:`r`ncd \clash`r`n$GuestName$argSuffix`r`n"

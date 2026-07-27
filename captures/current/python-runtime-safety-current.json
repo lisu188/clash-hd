@@ -1,22 +1,24 @@
 {
-  "generated_at": "2026-07-18T22:17:24+02:00",
+  "generated_at": "2026-07-27T18:55:07+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
   "root": "C:\\Users\\andrz\\git\\clash-hd",
-  "file_count": 247,
-  "risky_file_count": 121,
+  "file_count": 260,
+  "risky_file_count": 128,
   "classification_counts": {
-    "safe": 126,
+    "safe": 132,
     "user_gated_launcher": 1,
-    "exempt": 28,
-    "manual_visible_runtime_gated": 3,
-    "test_fixture": 89
+    "exempt": 29,
+    "manual_visible_runtime_gated": 5,
+    "test_fixture": 93
   },
   "gated_helpers": {
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
     "raw_sendinput_click.py": "manual/visible-runtime evidence helper; it sends OS input only when explicitly invoked by a guarded harness",
-    "menu_pulse_click.py": "manual/visible-runtime evidence helper; it drives the engine cursor by pulse injection only when explicitly invoked by the approval-gated soak harness"
+    "menu_pulse_click.py": "manual/visible-runtime evidence helper; it drives the engine cursor by pulse injection only when explicitly invoked by the approval-gated soak harness",
+    "vm_guest_click.py": "manual/visible-runtime evidence helper; it encodes QMP input events to aim the Win98 guest cursor and injects them only when a live socket transport is supplied under an approved visible-runtime pass (it opens no socket itself)",
+    "run_hd_linux_validation.py": "manual/visible-runtime evidence helper; it patches, launches the candidate under wine on a headless Xvfb display and drives xdotool input only when --allow-visible-runtime and a SHA-matched --source-exe are both supplied (dry-run by default, launches nothing otherwise)"
   },
   "exempt_helpers": {
     "battle_ui_evidence_matrix.py": "repo-only evidence matrix; process-launch text is a type annotation or fixture reference",
@@ -46,7 +48,8 @@
     "right_bottom_slot_fixture_result_summary.py": "repo-only CDB log parser; Win32/input text appears in evidence markers",
     "python_runtime_safety_guard.py": "this scanner names risky APIs without calling them",
     "launcher_policy_guard.py": "repo-only source scanner; risky API names appear as patterns, not runtime calls",
-    "repo_test_sweep.py": "repo-only validation runner; subprocess is limited to tools/test_*.py Python children"
+    "repo_test_sweep.py": "repo-only validation runner; subprocess is limited to tools/test_*.py Python children",
+    "complete_hd_promotion.py": "repo-only promotion orchestrator; subprocess is limited to grading repo tools (proof assembler, checklist, battle summary, the two promotion decisions, evidence refresh) and launches no game, VM, or visible window"
   },
   "records": [
     {
@@ -122,6 +125,14 @@
     },
     {
       "path": "tools/action_panel_route_summary.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/assemble_manual_directinput_proof.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
@@ -430,6 +441,27 @@
         "process_launch": [
           22,
           31
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/complete_hd_promotion.py",
+      "classification": "exempt",
+      "reason": "repo-only promotion orchestrator; subprocess is limited to grading repo tools (proof assembler, checklist, battle summary, the two promotion decisions, evidence refresh) and launches no game, VM, or visible window",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          26,
+          104,
+          108,
+          109
+        ],
+        "process_launch": [
+          104
         ]
       },
       "failures": []
@@ -986,17 +1018,17 @@
       ],
       "risk_lines": {
         "sendinput": [
-          44,
-          60,
-          62,
-          72,
-          235,
-          440
+          48,
+          64,
+          66,
+          76,
+          255,
+          527
         ],
         "cursor_window_input": [
-          44,
-          151,
-          442
+          48,
+          171,
+          529
         ]
       },
       "failures": []
@@ -1424,6 +1456,22 @@
       "failures": []
     },
     {
+      "path": "tools/ppm_to_png.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/prepare_addon_flags_fixture.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/process_hygiene_guard.py",
       "classification": "exempt",
       "reason": "uses Toolhelp32 read-only process enumeration and does not launch or focus windows",
@@ -1491,6 +1539,7 @@
         "ctypes",
         "cursor_window_input",
         "postmessage",
+        "qmp_input_inject",
         "sendinput",
         "shell_launch",
         "subprocess",
@@ -1499,47 +1548,51 @@
       "risk_lines": {
         "subprocess": [
           23,
-          57,
-          58,
-          59,
           60,
-          77,
-          81
-        ],
-        "ctypes": [
-          25,
-          164
-        ],
-        "win32_user32": [
-          2,
-          64,
-          65,
-          70,
-          78,
-          164
-        ],
-        "sendinput": [
-          27,
-          55,
-          164
-        ],
-        "postmessage": [
-          28,
           61,
           62,
           63,
-          66,
+          80,
+          84,
+          85
+        ],
+        "ctypes": [
+          25,
+          168
+        ],
+        "win32_user32": [
+          2,
           67,
           68,
+          73,
+          81,
+          168
+        ],
+        "sendinput": [
+          27,
+          58,
+          168
+        ],
+        "postmessage": [
+          28,
+          64,
+          65,
+          66,
           69,
-          164
+          70,
+          71,
+          72,
+          168
+        ],
+        "qmp_input_inject": [
+          29
         ],
         "cursor_window_input": [
-          30,
-          31
+          31,
+          32
         ],
         "shell_launch": [
-          34
+          35
         ]
       },
       "failures": []
@@ -1910,6 +1963,27 @@
       "failures": []
     },
     {
+      "path": "tools/run_hd_linux_validation.py",
+      "classification": "manual_visible_runtime_gated",
+      "reason": "manual/visible-runtime evidence helper; it patches, launches the candidate under wine on a headless Xvfb display and drives xdotool input only when --allow-visible-runtime and a SHA-matched --source-exe are both supplied (dry-run by default, launches nothing otherwise)",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          35,
+          240,
+          245,
+          246
+        ],
+        "process_launch": [
+          246
+        ]
+      },
+      "failures": []
+    },
+    {
       "path": "tools/stable_stage_guard.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
@@ -1931,6 +2005,28 @@
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
       "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_assemble_manual_directinput_proof.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          13,
+          26,
+          27,
+          31,
+          32
+        ],
+        "process_launch": [
+          27
+        ]
+      },
       "failures": []
     },
     {
@@ -2359,6 +2455,14 @@
       "failures": []
     },
     {
+      "path": "tools/test_complete_hd_promotion.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/test_current_completion_summary.py",
       "classification": "test_fixture",
       "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
@@ -2558,10 +2662,10 @@
       "risk_lines": {
         "subprocess": [
           8,
-          533
+          598
         ],
         "process_launch": [
-          533
+          598
         ]
       },
       "failures": []
@@ -2836,12 +2940,16 @@
       "risk_lines": {
         "subprocess": [
           7,
-          615,
-          621
+          342,
+          352,
+          822,
+          828
         ],
         "process_launch": [
-          615,
-          621
+          342,
+          352,
+          822,
+          828
         ]
       },
       "failures": []
@@ -2950,6 +3058,14 @@
           237
         ]
       },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_validation_drivers.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
       "failures": []
     },
     {
@@ -3414,6 +3530,36 @@
         "process_launch": [
           536,
           547
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_ppm_to_png.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_prepare_addon_flags_fixture.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          12,
+          24,
+          25,
+          29,
+          30
+        ],
+        "process_launch": [
+          25
         ]
       },
       "failures": []
@@ -4007,6 +4153,28 @@
       "failures": []
     },
     {
+      "path": "tools/test_run_hd_linux_validation.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          8,
+          22,
+          23,
+          27,
+          28
+        ],
+        "process_launch": [
+          23
+        ]
+      },
+      "failures": []
+    },
+    {
       "path": "tools/test_stable_stage_guard.py",
       "classification": "test_fixture",
       "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
@@ -4081,6 +4249,25 @@
       "failures": []
     },
     {
+      "path": "tools/test_vm_guest_click.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "qmp_input_inject"
+      ],
+      "risk_lines": {
+        "qmp_input_inject": [
+          33,
+          90,
+          130,
+          245,
+          262,
+          279
+        ]
+      },
+      "failures": []
+    },
+    {
       "path": "tools/topband_image_summary.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
@@ -4147,6 +4334,24 @@
         "cursor_window_input": [
           42,
           43
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/vm_guest_click.py",
+      "classification": "manual_visible_runtime_gated",
+      "reason": "manual/visible-runtime evidence helper; it encodes QMP input events to aim the Win98 guest cursor and injects them only when a live socket transport is supplied under an approved visible-runtime pass (it opens no socket itself)",
+      "risk_categories": [
+        "qmp_input_inject"
+      ],
+      "risk_lines": {
+        "qmp_input_inject": [
+          18,
+          76,
+          78,
+          95,
+          107
         ]
       },
       "failures": []

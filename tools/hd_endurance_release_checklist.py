@@ -87,6 +87,32 @@ def manual_item_passed(manual: dict[str, Any] | None, item_id: str) -> bool:
     return bool(item.get("proof_valid")) or status in {"accepted", "passed", "valid", "complete"}
 
 
+# The manual DirectInput rows may be satisfied by EITHER the host
+# manual_directinput proof class or the additive
+# approved_guest_win98_directdraw guest DirectDraw class. Each row summary must
+# name the class that satisfied it so a reader sees host vs guest at a glance.
+HOST_EVIDENCE_CLASS = "manual_directinput"
+GUEST_EVIDENCE_CLASS = "approved_guest_win98_directdraw"
+
+
+def manual_item_class(manual: dict[str, Any] | None, *item_ids: str) -> str | None:
+    """Return the evidence class recorded for a manual item (per-item, else top-level)."""
+    for item_id in item_ids:
+        item = manual_item(manual, item_id)
+        if item and item.get("evidence_class"):
+            return str(item.get("evidence_class"))
+    top_level = (manual or {}).get("evidence_class")
+    return str(top_level) if top_level else None
+
+
+def proof_class_label(evidence_class: str | None) -> str:
+    if evidence_class == GUEST_EVIDENCE_CLASS:
+        return "guest (approved_guest_win98_directdraw)"
+    # An unspecified class reads as the host manual DirectInput lane, preserving
+    # the pre-guest reader contract.
+    return "host (manual_directinput)"
+
+
 def continuity_check_passed(continuity: dict[str, Any] | None, check_id: str) -> bool:
     if continuity is None:
         return False
@@ -364,6 +390,26 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         and (manual or {}).get("stable_stage_should_change") is False
     )
 
+    # Which proof class satisfied each manual-DI row (host vs guest), named in
+    # the passing summary so a reader can tell at a glance. The pass/fail logic
+    # is class-agnostic; only the summary text changes.
+    menu_input_ok = manual_item_passed(manual, "stable_menu_load")
+    map_input_ok = manual_item_passed(manual, "stable_hd_map_input")
+    menu_input_class = proof_class_label(manual_item_class(manual, "stable_menu_load"))
+    map_input_class = proof_class_label(manual_item_class(manual, "stable_hd_map_input"))
+    right_bottom_class = proof_class_label(
+        manual_item_class(manual, "right_bottom_validation_input")
+        or (right_bottom or {}).get("evidence_class")
+    )
+    castle_input_class = proof_class_label(
+        manual_item_class(
+            manual,
+            "castle_barracks_centered_input",
+            "castle_overview_centered_input",
+        )
+        or (castle or {}).get("evidence_class")
+    )
+
     requirements = [
         requirement(
             "protected_stable_stage",
@@ -441,10 +487,10 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         requirement(
             "stable_menu_real_input",
             "Stable menu load has real input proof",
-            "pass" if manual_item_passed(manual, "stable_menu_load") else missing_or_blocked(manual),
+            "pass" if menu_input_ok else missing_or_blocked(manual),
             [str(args.manual_json)],
-            "manual menu-load proof is accepted"
-            if manual_item_passed(manual, "stable_menu_load")
+            f"manual menu-load proof is accepted via {menu_input_class}"
+            if menu_input_ok
             else "menu-load proof remains pending manual DirectInput validation",
             "collect approved manual menu-load proof or keep promotion blocked",
             "manual input",
@@ -452,10 +498,10 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         requirement(
             "stable_hd_map_real_input",
             "HD map input has no drift under real input",
-            "pass" if manual_item_passed(manual, "stable_hd_map_input") else missing_or_blocked(manual),
+            "pass" if map_input_ok else missing_or_blocked(manual),
             [str(args.manual_json)],
-            "manual HD map input proof is accepted"
-            if manual_item_passed(manual, "stable_hd_map_input")
+            f"manual HD map input proof is accepted via {map_input_class}"
+            if map_input_ok
             else "HD map input proof remains pending manual DirectInput validation",
             "collect approved manual map input proof after short soak is stable",
             "manual input",
@@ -465,7 +511,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             "Right-bottom action/menu is naturally or manually proven",
             "pass" if rb_ready else missing_or_blocked(right_bottom),
             [str(args.right_bottom_json), str(args.manual_json)],
-            "right-bottom promotion proof is ready"
+            f"right-bottom promotion proof is ready via {right_bottom_class}"
             if rb_ready
             else "right-bottom action/menu remains validation-only or manual-proof blocked",
             "replace debugger-forced action-click proof with natural or approved manual input proof",
@@ -482,7 +528,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             )
             else "blocked",
             [str(args.castle_json), str(args.manual_json)],
-            "castle/barracks centered input proof is release-ready"
+            f"castle/barracks centered input proof is release-ready via {castle_input_class}"
             if castle_ready and manual_valid
             else "castle/barracks centered input remains validation-only or manual-proof blocked",
             "collect approved centered castle/barracks input proof",

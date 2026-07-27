@@ -484,6 +484,71 @@ def test_first_mission_visual_blockers_block_release() -> None:
     assert "black patches: right_below_minimap, bottom_right_panel, minimap_interior" in visual["summary"]
 
 
+MANUAL_ROW_IDS = (
+    "stable_menu_real_input",
+    "stable_hd_map_real_input",
+    "right_bottom_action_menu",
+    "castle_and_barracks_centered_input",
+)
+
+
+def _manual_json_with_class(evidence_class: str) -> dict[str, Any]:
+    manual_items = [
+        "stable_menu_load",
+        "stable_hd_map_input",
+        "right_bottom_validation_input",
+        "castle_barracks_centered_input",
+        "castle_overview_centered_input",
+    ]
+    return {
+        "passed": True,
+        "manual_proof_valid": True,
+        "stable_stage_should_change": False,
+        "evidence_class": evidence_class,
+        "items": [
+            {"id": item_id, "status": "accepted", "evidence_class": evidence_class}
+            for item_id in manual_items
+        ],
+    }
+
+
+def test_guest_class_satisfies_manual_rows_and_names_guest() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        args = fixture_args(Path(directory))
+        write_complete_fixture(args)
+        write_json(args.manual_json, _manual_json_with_class("approved_guest_win98_directdraw"))
+        report = checklist.build_checklist(args)
+    assert report["passed"] is True, report["failures"]
+    for row_id in MANUAL_ROW_IDS:
+        row = req(report, row_id)
+        assert row["passed"] is True, row
+        assert "guest (approved_guest_win98_directdraw)" in row["summary"], row
+
+
+def test_host_class_names_host_in_manual_rows() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        args = fixture_args(Path(directory))
+        write_complete_fixture(args)
+        write_json(args.manual_json, _manual_json_with_class("manual_directinput"))
+        report = checklist.build_checklist(args)
+    assert report["passed"] is True, report["failures"]
+    for row_id in MANUAL_ROW_IDS:
+        row = req(report, row_id)
+        assert row["passed"] is True, row
+        assert "host (manual_directinput)" in row["summary"], row
+
+
+def test_unspecified_class_defaults_to_host_label() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        args = fixture_args(Path(directory))
+        write_complete_fixture(args)  # manual json carries no evidence_class
+        report = checklist.build_checklist(args)
+    assert report["passed"] is True, report["failures"]
+    for row_id in MANUAL_ROW_IDS:
+        row = req(report, row_id)
+        assert "host (manual_directinput)" in row["summary"], row
+
+
 def test_cli_writes_outputs_and_fails_closed() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -548,6 +613,9 @@ def run_tests() -> None:
     test_first_mission_visual_top_level_clean_flag_satisfies_requirement()
     test_first_mission_visual_summary_clean_flag_satisfies_requirement()
     test_first_mission_visual_blockers_block_release()
+    test_guest_class_satisfies_manual_rows_and_names_guest()
+    test_host_class_names_host_in_manual_rows()
+    test_unspecified_class_defaults_to_host_label()
     test_cli_writes_outputs_and_fails_closed()
 
 

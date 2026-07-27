@@ -152,6 +152,213 @@ def pending_approval_report() -> dict:
     }
 
 
+def passing_guest_report() -> dict:
+    """A clean QEMU-Win98 guest soak report.
+
+    Host-only telemetry is recorded as the not_applicable_guest sentinel, and
+    liveness comes from QMP query-status samples plus 800x600 screendump frames.
+    """
+    candidate_sha = "d" * 64
+    return {
+        "executed": True,
+        "passed": True,
+        "failures": [],
+        "environment": soak.GUEST_ENVIRONMENT,
+        "evidence_class": soak.GUEST_EVIDENCE_CLASS,
+        "runtime_policy": "opt-in guest QEMU-Win98 QMP soak; frames captured via screendump",
+        "stage": soak.PROTECTED_STABLE_STAGE,
+        "stable_stage_should_change": False,
+        "tier": "short2",
+        "route": "map-idle",
+        "duration_sec": 120,
+        "sample_interval_sec": 15,
+        "input_sha256": soak.EXPECTED_BASE_SHA256,
+        "candidate_sha256": candidate_sha,
+        "candidate_build_path": r"C:\ClashTests\hd-soak\clash95_hd_guest_fixture.exe",
+        "guest_exe_path": r"D:\CLASHHD.EXE",
+        "report_json": "captures/current/hd-soak-guest-current.json",
+        "frame_sample_count": 2,
+        "frame_hash_unique_count": 2,
+        "frame_progress_expected": False,
+        "frame_stability_class": "progressing",
+        "nonblack_percent_min": 44.5,
+        "nonblack_percent_max": 45.0,
+        "unique_sample_colors_min": 32,
+        "unique_sample_colors_max": 35,
+        # Host-process telemetry cannot be observed from inside a headless guest.
+        "working_set_growth_bytes": soak.NOT_APPLICABLE_GUEST,
+        "private_memory_growth_bytes": soak.NOT_APPLICABLE_GUEST,
+        "handle_growth": soak.NOT_APPLICABLE_GUEST,
+        "exit_code": soak.NOT_APPLICABLE_GUEST,
+        "clean_stop": soak.NOT_APPLICABLE_GUEST,
+        "max_artifact_mb": 250,
+        "artifact_limit_bytes": 250 * 1024 * 1024,
+        "artifact_bytes": 234567,
+        "guest_status_samples": [
+            {"Timestamp": "2026-06-16T12:00:00.0000000+00:00", "Status": "running", "Running": True},
+            {"Timestamp": "2026-06-16T12:02:00.0000000+00:00", "Status": "running", "Running": True},
+        ],
+        "frame_samples": [
+            {
+                "Name": "frame-0000",
+                "Timestamp": "2026-06-16T12:00:00.0000000+00:00",
+                "Width": 800,
+                "Height": 600,
+                "Hash": "a" * 64,
+                "NonblackPercent": 45.0,
+                "UniqueSampleColors": 32,
+                "CaptureMode": "qmp_screendump",
+            },
+            {
+                "Name": "frame-0001",
+                "Timestamp": "2026-06-16T12:01:45.0000000+00:00",
+                "Width": 800,
+                "Height": 600,
+                "Hash": "b" * 64,
+                "NonblackPercent": 44.5,
+                "UniqueSampleColors": 35,
+                "CaptureMode": "qmp_screendump",
+            },
+        ],
+        "capture_errors": [],
+    }
+
+
+def test_guest_passing_report() -> None:
+    evaluation = soak.evaluate_guest_report(passing_guest_report())
+    assert evaluation["overall"] is True, evaluation
+    assert evaluation["environment"] == soak.GUEST_ENVIRONMENT
+    assert evaluation["checks"]["environment"]["passed"] is True
+    assert evaluation["checks"]["host_metrics_not_applicable"]["passed"] is True
+    assert evaluation["checks"]["guest_liveness"]["passed"] is True
+    assert evaluation["checks"]["frame_inventory"]["passed"] is True
+    assert evaluation["checks"]["render_metrics"]["passed"] is True
+    assert evaluation["checks"]["guest_provenance"]["passed"] is True
+
+
+def test_guest_faked_working_set_fails() -> None:
+    report = passing_guest_report()
+    report["working_set_growth_bytes"] = 1024  # a headless guest cannot measure this
+    evaluation = soak.evaluate_guest_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["host_metrics_not_applicable"]["passed"] is False
+    assert any("working_set_growth_bytes" in failure for failure in evaluation["failures"])
+    assert any("not_applicable_guest" in failure for failure in evaluation["failures"])
+
+
+def test_guest_dropped_host_metric_fails() -> None:
+    report = passing_guest_report()
+    report.pop("handle_growth")  # dropping is not allowed either
+    evaluation = soak.evaluate_guest_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["host_metrics_not_applicable"]["passed"] is False
+    assert any("dropped" in failure and "handle_growth" in failure for failure in evaluation["failures"])
+
+
+def test_guest_missing_environment_label_fails() -> None:
+    report = passing_guest_report()
+    report.pop("environment")
+    evaluation = soak.evaluate_guest_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["environment"]["passed"] is False
+    assert any("expected 'guest_win98_qemu'" in failure for failure in evaluation["failures"])
+
+
+def test_guest_wrong_evidence_class_fails() -> None:
+    report = passing_guest_report()
+    report["evidence_class"] = "manual_directinput"  # host class must not pass as guest
+    evaluation = soak.evaluate_guest_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["environment"]["passed"] is False
+    assert any("evidence_class" in failure for failure in evaluation["failures"])
+
+
+def test_host_report_rejected_by_guest_grader() -> None:
+    """A host soak report can never be graded as guest evidence."""
+    with tempfile.TemporaryDirectory() as directory:
+        host_report = passing_report(Path(directory))
+        evaluation = soak.evaluate_guest_report(host_report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["environment"]["passed"] is False
+
+
+def test_guest_liveness_paused_fails() -> None:
+    report = passing_guest_report()
+    report["guest_status_samples"][1]["Status"] = "paused"
+    report["guest_status_samples"][1]["Running"] = False
+    evaluation = soak.evaluate_guest_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["guest_liveness"]["passed"] is False
+    assert any("were not 'running'" in failure for failure in evaluation["failures"])
+
+
+def test_guest_non_hd_frame_size_fails() -> None:
+    report = passing_guest_report()
+    report["frame_samples"][1]["Width"] = 640
+    report["frame_samples"][1]["Height"] = 480
+    evaluation = soak.evaluate_guest_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["frame_inventory"]["passed"] is False
+    assert any("HD-mode proof size" in failure for failure in evaluation["failures"])
+
+
+def test_guest_bad_provenance_path_fails() -> None:
+    report = passing_guest_report()
+    report["candidate_build_path"] = r"D:\CLASHHD.EXE"  # a raw guest path is not provenance
+    evaluation = soak.evaluate_guest_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["guest_provenance"]["passed"] is False
+    assert any("host-side build provenance" in failure for failure in evaluation["failures"])
+
+
+def test_guest_render_metrics_fail() -> None:
+    report = passing_guest_report()
+    report["frame_samples"][1]["NonblackPercent"] = 0.0
+    report["frame_samples"][1]["UniqueSampleColors"] = 1
+    evaluation = soak.evaluate_guest_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["render_metrics"]["passed"] is False
+
+
+def test_guest_map_pan_requires_frame_progression() -> None:
+    report = passing_guest_report()
+    report["route"] = "map-pan"
+    report["frame_progress_expected"] = True
+    report["frame_hash_unique_count"] = 1
+    report["frame_stability_class"] = "stable_idle"
+    report["frame_samples"][1]["Hash"] = report["frame_samples"][0]["Hash"]
+    evaluation = soak.evaluate_guest_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["frame_progression"]["passed"] is False
+
+
+def test_guest_cli_autodetects_and_gates() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        report_path = tmp / "guest-report.json"
+        report_path.write_text(json.dumps(passing_guest_report()), encoding="ascii")
+        script = Path(__file__).resolve().parent / "hd_soak_report.py"
+        # Auto-detected as guest via the environment stamp; no --guest needed.
+        pass_result = subprocess.run(
+            [sys.executable, str(script), str(report_path), "--require-pass"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        faked = passing_guest_report()
+        faked["working_set_growth_bytes"] = 4096
+        faked_path = tmp / "guest-faked.json"
+        faked_path.write_text(json.dumps(faked), encoding="ascii")
+        fail_result = subprocess.run(
+            [sys.executable, str(script), str(faked_path), "--require-pass"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    assert pass_result.returncode == 0, pass_result.stdout + pass_result.stderr
+    assert fail_result.returncode == 1, fail_result.stdout + fail_result.stderr
+
+
 def test_passing_report() -> None:
     with tempfile.TemporaryDirectory() as directory:
         evaluation = soak.evaluate_report(passing_report(Path(directory)))
@@ -629,6 +836,18 @@ def test_cli_honors_max_input_drift_argument() -> None:
 
 
 def run_tests() -> None:
+    test_guest_passing_report()
+    test_guest_faked_working_set_fails()
+    test_guest_dropped_host_metric_fails()
+    test_guest_missing_environment_label_fails()
+    test_guest_wrong_evidence_class_fails()
+    test_host_report_rejected_by_guest_grader()
+    test_guest_liveness_paused_fails()
+    test_guest_non_hd_frame_size_fails()
+    test_guest_bad_provenance_path_fails()
+    test_guest_render_metrics_fail()
+    test_guest_map_pan_requires_frame_progression()
+    test_guest_cli_autodetects_and_gates()
     test_passing_report()
     test_pending_approval_report_fails_without_runtime_metric_noise()
     test_unexpected_exit_fails()
