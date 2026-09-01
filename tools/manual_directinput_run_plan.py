@@ -28,6 +28,10 @@ DEFAULT_BATTLE_VISIBLE_SCRIPT = Path("scripts/cdb/run_cdb_battle_visible_input_p
 DEFAULT_CHECKLIST_SCRIPT = Path("tools/manual_directinput_checklist.py")
 DEFAULT_PULSE_TOOL = Path("tools/menu_pulse_click.py")
 DEFAULT_PROOF_JSON = Path("captures/current/manual-directinput-proof-current.json")
+# The QMP guest-click transport tool the guest lane drives through. It is
+# emitted only as an approval-gated template; this planner never runs it and
+# does not require the file to exist yet (the transport lane builds it).
+DEFAULT_GUEST_CLICK_TOOL = Path("tools/vm_guest_click.py")
 
 RUNTIME_POLICY = (
     "repo-only command planner; reads generated JSON and writes JSON/Markdown reports; "
@@ -90,6 +94,22 @@ PULSE_AIM_TOLERANCE_PX = 10
 # documented result.  The castle targets still need some entry click before any
 # overview descriptor point is reachable; the load route only reaches the map.
 CASTLE_ENTRY_POINT = "castle-entry:470,397"
+
+# --- Additive guest lane (approved_guest_win98_directdraw) ---------------------
+# The guest lane drives the SAME five targets through the headless QEMU-Win98
+# guest instead of the host visible desktop, via the QMP guest-click transport
+# tool. It is emitted ALONGSIDE the host/pulse commands, never in place of them,
+# and stays approval-gated and repo-only (this planner only emits templates).
+GUEST_EVIDENCE_CLASS = manual_directinput_checklist.GUEST_EVIDENCE_CLASS
+GUEST_MACHINE_ID = "clash-hd-vm"
+GUEST_QMP_PORT = 4445
+# Emit constants (used to build the template) vs REQUIRED_* tokens (used to
+# validate it), mirroring INPUT_MODE / REQUIRED_INPUT_MODE_FLAG so a regression
+# that drops the approval gate or the guest class label fails the plan.
+GUEST_APPROVAL_FLAG = "--allow-guest-input"
+REQUIRED_GUEST_APPROVAL_FLAG = "--allow-guest-input"
+REQUIRED_GUEST_EVIDENCE_CLASS = "approved_guest_win98_directdraw"
+REQUIRED_GUEST_TRANSPORT_TOOL = "vm_guest_click.py"
 
 
 COMMAND_SPECS: dict[str, dict[str, Any]] = {
@@ -246,6 +266,35 @@ def visible_command(spec: dict[str, Any]) -> str:
     return command_text(parts)
 
 
+def guest_command(spec: dict[str, Any], item_id: str, guest_click_tool: Path) -> str:
+    """Emit the approval-gated guest-lane template for one target.
+
+    Transports the same reused route/follow-up coordinates through the QMP
+    guest-click tool into the headless Win98 guest. It only ever emits a
+    template string; nothing here runs the guest.
+    """
+    parts = [
+        "python",
+        quote_ps(str(guest_click_tool)),
+        "--target",
+        quote_ps(item_id),
+        "--guest-machine",
+        quote_ps(GUEST_MACHINE_ID),
+        "--qmp-port",
+        str(GUEST_QMP_PORT),
+        "--candidate",
+        quote_ps(str(spec["candidate"])),
+        "--evidence-class",
+        quote_ps(GUEST_EVIDENCE_CLASS),
+        "--pulse-route-steps",
+        quote_ps(str(spec["pulse_route_steps"])),
+    ]
+    if spec.get("followup_points"):
+        parts += ["--followup-points", quote_ps(str(spec["followup_points"]))]
+    parts += [GUEST_APPROVAL_FLAG]
+    return command_text(parts)
+
+
 def validate_proof_command(checklist_script: Path, proof_json: Path) -> str:
     return command_text(
         [
@@ -288,7 +337,9 @@ def pulse_tool_supports_aim_points(path: Path) -> bool:
     return "--aim-points" in text and "--probe-only" in text
 
 
-def build_commands() -> dict[str, dict[str, Any]]:
+def build_commands(
+    guest_click_tool: Path = DEFAULT_GUEST_CLICK_TOOL,
+) -> dict[str, dict[str, Any]]:
     checklist_by_id = {
         item["id"]: item
         for item in manual_directinput_checklist.CHECKLIST_ITEMS
@@ -314,6 +365,12 @@ def build_commands() -> dict[str, dict[str, Any]]:
             "requires_explicit_user_approval": True,
             "contains_allow_visible_runtime": True,
             "command": visible_command(spec),
+            # Additive guest lane, alongside (never replacing) the host command.
+            "guest_transport_tool": str(guest_click_tool),
+            "guest_machine_id": GUEST_MACHINE_ID,
+            "guest_evidence_class": GUEST_EVIDENCE_CLASS,
+            "guest_requires_explicit_user_approval": True,
+            "guest_command": guest_command(spec, item_id, guest_click_tool),
             "notes": spec["notes"],
         }
     return commands
@@ -328,6 +385,7 @@ def build_plan(
     checklist_script: Path = DEFAULT_CHECKLIST_SCRIPT,
     pulse_tool: Path = DEFAULT_PULSE_TOOL,
     proof_json: Path = DEFAULT_PROOF_JSON,
+    guest_click_tool: Path = DEFAULT_GUEST_CLICK_TOOL,
 ) -> dict[str, Any]:
     failures: list[str] = []
     checklist: dict[str, Any] = {}
@@ -385,7 +443,7 @@ def build_plan(
             f"engine-aim pulse tool lacks the --aim-points/--probe-only modes the plan relies on: {pulse_tool}"
         )
 
-    commands = build_commands()
+    commands = build_commands(guest_click_tool)
     for item_id in manual_directinput_checklist.REQUIRED_IDS:
         command = commands.get(item_id, {}).get("command", "")
         if not command:
@@ -426,6 +484,35 @@ def build_plan(
                 f"manual target candidate placeholder points at the live original: {item_id}"
             )
 
+        # Additive guest lane must be present for every target, stay approval
+        # gated, name the guest class, and route through the guest click tool.
+        # It never displaces the host command validated above.
+        guest_cmd = commands.get(item_id, {}).get("guest_command", "")
+        if not guest_cmd:
+            failures.append(f"missing guest-lane command template for manual target: {item_id}")
+        else:
+            if REQUIRED_GUEST_APPROVAL_FLAG not in guest_cmd:
+                failures.append(
+                    f"guest-lane command lacks the {REQUIRED_GUEST_APPROVAL_FLAG} approval gate: {item_id}"
+                )
+            if REQUIRED_GUEST_EVIDENCE_CLASS not in guest_cmd:
+                failures.append(
+                    f"guest-lane command does not record the {REQUIRED_GUEST_EVIDENCE_CLASS} "
+                    f"evidence class: {item_id}"
+                )
+            if REQUIRED_GUEST_TRANSPORT_TOOL not in guest_cmd:
+                failures.append(
+                    f"guest-lane command does not route through the guest click transport tool "
+                    f"({REQUIRED_GUEST_TRANSPORT_TOOL}): {item_id}"
+                )
+            if str(COMMAND_SPECS[item_id]["pulse_route_steps"]) not in guest_cmd:
+                failures.append(f"guest-lane command lacks the reused pulse route steps: {item_id}")
+            expected_followup = COMMAND_SPECS[item_id].get("followup_points") or ""
+            if expected_followup and expected_followup not in guest_cmd:
+                failures.append(
+                    f"guest-lane command lacks the reused follow-up validation points: {item_id}"
+                )
+
     proof_validation = validate_proof_command(checklist_script, proof_json)
     prerequisites = [
         "user explicitly approves a visible/manual DirectInput validation pass",
@@ -441,6 +528,12 @@ def build_plan(
         "castle targets need the documented real-runtime castle-entry click (470,397) before any overview descriptor point is reachable; the load route only reaches the map",
         "castle_barracks_centered_input aims the resolved barracks descriptor 0x86 at displayed (398,228); the 2026-07-12 miss at (371,107) is explained (that session never loaded the save - SetCursorPos never moved the DirectInput accumulator, fixed in 589f5700), and (371,107) itself is the evidence-backed fallback. Record this target as passing only if the run's own frames show the barracks build sub-screen actually entered (the 0044FE70 callback executing), not merely a click at the coordinate",
         "right_bottom_validation_input needs the slot5-as-slot0 right-bottom fixture staged (scripts/smoke/prepare_right_bottom_slot_fixture.ps1) so owner/action descriptors exist to hit",
+        (
+            "the additive guest lane transports the same route/follow-up coordinates through "
+            f"{REQUIRED_GUEST_TRANSPORT_TOOL} into the {GUEST_MACHINE_ID} Win98 guest (QMP {GUEST_QMP_PORT}); "
+            f"it stays a template until explicit approval, requires {REQUIRED_GUEST_APPROVAL_FLAG}, and records "
+            f"the DISTINCT {REQUIRED_GUEST_EVIDENCE_CLASS} class - never silently as host manual_directinput evidence"
+        ),
     ]
 
     return {
@@ -462,6 +555,11 @@ def build_plan(
         "proof_ready": False,
         "visible_runtime_requires_approval": True,
         "manual_target_count": len(manual_directinput_checklist.REQUIRED_IDS),
+        "guest_transport_tool": str(guest_click_tool),
+        "guest_machine_id": GUEST_MACHINE_ID,
+        "guest_qmp_port": GUEST_QMP_PORT,
+        "guest_evidence_class": GUEST_EVIDENCE_CLASS,
+        "guest_lane_requires_approval": True,
         "commands": commands,
         "proof_validation_command": proof_validation,
         "runtime_prerequisites": prerequisites,
@@ -482,6 +580,15 @@ def build_plan(
                 and "-PulseRouteSteps" in command.get("command", "")
                 for command in commands.values()
             ),
+            "all_commands_have_guest_lane": all(
+                command.get("guest_command") for command in commands.values()
+            ),
+            "all_guest_commands_require_approval": all(
+                REQUIRED_GUEST_APPROVAL_FLAG in command.get("guest_command", "")
+                and REQUIRED_GUEST_EVIDENCE_CLASS in command.get("guest_command", "")
+                for command in commands.values()
+            ),
+            "guest_lane_targets": list(commands.keys()),
             "followup_point_targets": [
                 item_id
                 for item_id, command in commands.items()
@@ -515,6 +622,9 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"- All commands have -AllowVisibleRuntime: `{summary.get('all_commands_have_allow_visible_runtime')}`",
         f"- All commands use safe window offset (0,-30): `{summary.get('all_commands_have_safe_window_origin')}`",
         f"- All commands use the engine-visible pulse input mode: `{summary.get('all_commands_use_pulse_input_mode')}`",
+        f"- All commands carry the additive guest lane: `{summary.get('all_commands_have_guest_lane')}`",
+        f"- All guest commands require guest approval: `{summary.get('all_guest_commands_require_approval')}`",
+        f"- Guest transport tool: `{report.get('guest_transport_tool')}` (class `{report.get('guest_evidence_class')}`, machine `{report.get('guest_machine_id')}`)",
         f"- Manual proof valid: `{summary.get('manual_proof_valid')}`",
         f"- Promotion ready: `{summary.get('promotion_ready')}`",
         "",
@@ -542,6 +652,13 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
                 "",
                 "```powershell",
                 item["command"],
+                "```",
+                "",
+                f"- Guest lane transport: `{item['guest_transport_tool']}` -> guest `{item['guest_machine_id']}` "
+                f"(class `{item['guest_evidence_class']}`, approval-gated)",
+                "",
+                "```powershell",
+                item["guest_command"],
                 "```",
                 "",
             ]
@@ -575,6 +692,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--battle-visible-script", type=Path, default=DEFAULT_BATTLE_VISIBLE_SCRIPT)
     parser.add_argument("--checklist-script", type=Path, default=DEFAULT_CHECKLIST_SCRIPT)
     parser.add_argument("--pulse-tool", type=Path, default=DEFAULT_PULSE_TOOL)
+    parser.add_argument("--guest-click-tool", type=Path, default=DEFAULT_GUEST_CLICK_TOOL)
     parser.add_argument("--proof-json", type=Path, default=DEFAULT_PROOF_JSON)
     parser.add_argument("--write-json", type=Path, default=DEFAULT_JSON)
     parser.add_argument("--write-markdown", "--write-md", dest="write_markdown", type=Path, default=DEFAULT_MD)
@@ -592,6 +710,7 @@ def main(argv: list[str] | None = None) -> int:
         checklist_script=args.checklist_script,
         pulse_tool=args.pulse_tool,
         proof_json=args.proof_json,
+        guest_click_tool=args.guest_click_tool,
     )
     print(f"overall: {status_text(bool(report.get('passed')))}")
     print(f"runtime-policy: {report['runtime_policy']}")

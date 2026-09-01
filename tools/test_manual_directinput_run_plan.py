@@ -178,6 +178,73 @@ def test_castle_targets_carry_the_entry_click_and_the_barracks_gap(fixture: Path
     assert any("0044FE70" in item for item in plan["runtime_prerequisites"]), plan
 
 
+def test_guest_lane_emitted_for_every_target_without_dropping_host(fixture: Path) -> None:
+    plan = build_fixture_plan(fixture)
+    assert plan["passed"] is True, plan
+    assert plan["summary"]["all_commands_have_guest_lane"] is True, plan
+    assert plan["summary"]["all_guest_commands_require_approval"] is True, plan
+    assert sorted(plan["summary"]["guest_lane_targets"]) == sorted(
+        manual_directinput_checklist.REQUIRED_IDS
+    ), plan
+    assert plan["guest_evidence_class"] == "approved_guest_win98_directdraw", plan
+    assert plan["guest_machine_id"] == "clash-hd-vm", plan
+    for item_id, command in plan["commands"].items():
+        guest = command["guest_command"]
+        # The host/pulse command is NOT removed by the additive guest lane.
+        assert "-AllowVisibleRuntime" in command["command"], (item_id, command)
+        assert "-InputMode pulse" in command["command"], (item_id, command)
+        # The guest lane is well-formed: transport tool, approval gate, class,
+        # and the SAME reused route coordinates.
+        assert "vm_guest_click.py" in guest, (item_id, guest)
+        assert "--allow-guest-input" in guest, (item_id, guest)
+        assert "approved_guest_win98_directdraw" in guest, (item_id, guest)
+        assert "load-button:302,211;" in guest, (item_id, guest)
+        assert command["candidate_placeholder"] in guest, (item_id, guest)
+        assert command["guest_requires_explicit_user_approval"] is True, (item_id, command)
+        if command["followup_points"]:
+            assert command["followup_points"] in guest, (item_id, guest)
+
+
+def test_guest_lane_missing_approval_flag_fails_closed(fixture: Path) -> None:
+    args = write_current_reports(fixture)
+    original = manual_directinput_run_plan.GUEST_APPROVAL_FLAG
+    try:
+        manual_directinput_run_plan.GUEST_APPROVAL_FLAG = "--no-approval"
+        plan = plan_from_args(args)
+    finally:
+        manual_directinput_run_plan.GUEST_APPROVAL_FLAG = original
+    assert plan["passed"] is False, plan
+    assert any("approval gate" in failure for failure in plan["failures"]), plan
+
+
+def test_guest_lane_missing_evidence_class_fails_closed(fixture: Path) -> None:
+    args = write_current_reports(fixture)
+    original = manual_directinput_run_plan.GUEST_EVIDENCE_CLASS
+    try:
+        manual_directinput_run_plan.GUEST_EVIDENCE_CLASS = "manual_directinput"
+        plan = plan_from_args(args)
+    finally:
+        manual_directinput_run_plan.GUEST_EVIDENCE_CLASS = original
+    assert plan["passed"] is False, plan
+    assert any("evidence class" in failure for failure in plan["failures"]), plan
+
+
+def test_guest_lane_wrong_transport_tool_fails_closed(fixture: Path) -> None:
+    args = write_current_reports(fixture)
+    plan = manual_directinput_run_plan.build_plan(
+        checklist_json=args.checklist_json,
+        template_report_json=args.template_report_json,
+        visual_smoke_script=args.visual_smoke_script,
+        battle_visible_script=args.battle_visible_script,
+        checklist_script=args.checklist_script,
+        pulse_tool=args.pulse_tool,
+        proof_json=args.proof_json,
+        guest_click_tool=Path("tools/some_other_tool.py"),
+    )
+    assert plan["passed"] is False, plan
+    assert any("guest click transport tool" in failure for failure in plan["failures"]), plan
+
+
 def test_harness_without_pulse_lane_fails_closed(fixture: Path) -> None:
     args = write_current_reports(fixture)
     # A harness that only offers the DirectInput-invisible OS-cursor modes must
@@ -315,6 +382,10 @@ def run_tests() -> None:
         test_one_approval_gated_command_per_required_id(fixture / "commands")
         test_every_command_drives_the_engine_cursor(fixture / "engine-cursor")
         test_castle_targets_carry_the_entry_click_and_the_barracks_gap(fixture / "castle-gap")
+        test_guest_lane_emitted_for_every_target_without_dropping_host(fixture / "guest-lane")
+        test_guest_lane_missing_approval_flag_fails_closed(fixture / "guest-no-approval")
+        test_guest_lane_missing_evidence_class_fails_closed(fixture / "guest-no-class")
+        test_guest_lane_wrong_transport_tool_fails_closed(fixture / "guest-wrong-tool")
         test_harness_without_pulse_lane_fails_closed(fixture / "no-pulse-lane")
         test_missing_pulse_tool_fails_closed(fixture / "no-pulse-tool")
         test_pulse_tool_without_aim_points_fails_closed(fixture / "no-aim-points")
