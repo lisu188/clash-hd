@@ -26,6 +26,7 @@ RISK_PATTERNS: dict[str, re.Pattern[str]] = {
     "win32_user32": re.compile(r"\buser32\b|\bwin32\b", re.IGNORECASE),
     "sendinput": re.compile(r"\bSendInput\b", re.IGNORECASE),
     "postmessage": re.compile(r"\bPostMessage[AW]?\b", re.IGNORECASE),
+    "qmp_input_inject": re.compile(r"input-send-event"),
     "cursor_window_input": re.compile(
         r"\b(?:SetCursorPos|GetCursorPos|ScreenToClient|ClientToScreen|"
         r"SetForegroundWindow|BringWindowToTop|ShowWindow|MoveWindow|keybd_event)\b",
@@ -38,6 +39,8 @@ GATED_HELPERS = {
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
     "raw_sendinput_click.py": "manual/visible-runtime evidence helper; it sends OS input only when explicitly invoked by a guarded harness",
     "menu_pulse_click.py": "manual/visible-runtime evidence helper; it drives the engine cursor by pulse injection only when explicitly invoked by the approval-gated soak harness",
+    "vm_guest_click.py": "manual/visible-runtime evidence helper; it encodes QMP input events to aim the Win98 guest cursor and injects them only when a live socket transport is supplied under an approved visible-runtime pass (it opens no socket itself)",
+    "run_hd_linux_validation.py": "manual/visible-runtime evidence helper; it patches, launches the candidate under wine on a headless Xvfb display and drives xdotool input only when --allow-visible-runtime and a SHA-matched --source-exe are both supplied (dry-run by default, launches nothing otherwise)",
 }
 
 EXTRA_SCAN_DIRS = (Path("src/launcher"),)
@@ -79,6 +82,7 @@ EXEMPT_HELPERS = {
     "python_runtime_safety_guard.py": "this scanner names risky APIs without calling them",
     "launcher_policy_guard.py": "repo-only source scanner; risky API names appear as patterns, not runtime calls",
     "repo_test_sweep.py": "repo-only validation runner; subprocess is limited to tools/test_*.py Python children",
+    "complete_hd_promotion.py": "repo-only promotion orchestrator; subprocess is limited to grading repo tools (proof assembler, checklist, battle summary, the two promotion decisions, evidence refresh) and launches no game, VM, or visible window",
 }
 
 

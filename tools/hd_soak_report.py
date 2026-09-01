@@ -28,6 +28,41 @@ RUNTIME_POLICY = (
     "PowerShell harnesses, or visible windows"
 )
 
+# --- Guest (QEMU-Win98 DirectDraw) soak variant ------------------------------
+# A soak captured from inside the headless Win98 guest (scripts/vm/*) is a
+# DISTINCT proof class from a host visible-runtime soak and must never be graded
+# by, or mistaken for, the host path. It is graded by evaluate_guest_report()
+# below, which reuses the environment-neutral render/frame/timing computations
+# but replaces the host-process telemetry (working set / private bytes / handle
+# growth, exit_code / clean_stop / HasExited) with QMP query-status liveness.
+# Those host-only metrics cannot be measured from inside a headless guest, so
+# they must be recorded as the not_applicable_guest sentinel -- never faked with
+# a number and never silently dropped.
+GUEST_ENVIRONMENT = "guest_win98_qemu"
+GUEST_EVIDENCE_CLASS = "approved_guest_win98_directdraw"
+NOT_APPLICABLE_GUEST = "not_applicable_guest"
+# Host-process metrics that a headless guest cannot observe. Each must be present
+# in a guest report and equal to NOT_APPLICABLE_GUEST.
+GUEST_HOST_ONLY_FIELDS = (
+    "working_set_growth_bytes",
+    "private_memory_growth_bytes",
+    "handle_growth",
+    "exit_code",
+    "clean_stop",
+)
+# QMP query-status values that count as a live guest.
+GUEST_RUNNING_STATUS = "running"
+# Host-side build provenance root: the guest stages a D:\ copy, but the SHA-tied
+# candidate is built under C:\ClashTests on the host, which is what the report
+# must record so guest evidence stays traceable to a patch stage.
+GUEST_CANDIDATE_ROOT = r"C:\ClashTests"
+GUEST_RUNTIME_POLICY = (
+    "repo-only guest soak report inspection; grades QEMU-Win98 QMP screendump "
+    "frames and query-status liveness; host-process memory/handle telemetry is "
+    "not obtainable from inside a headless guest and is recorded "
+    "not_applicable_guest, never faked; does not launch anything"
+)
+
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -1032,14 +1067,444 @@ def evaluate_report(
     }
 
 
+def evaluate_guest_report(
+    report: dict[str, Any],
+    *,
+    min_frames: int = 2,
+    min_nonblack_percent: float = 10.0,
+    min_unique_sample_colors: int = 8,
+    max_artifact_mb: int = 250,
+    expected_width: int = 800,
+    expected_height: int = 600,
+    min_guest_status_samples: int = 2,
+) -> dict[str, Any]:
+    """Grade a QEMU-Win98 guest soak report.
+
+    This is a clearly-labeled *variant* of ``evaluate_report`` for the guest
+    lane. It never touches the host path and can never grade a host report as a
+    guest one: the ``environment`` check fails closed unless the report is
+    explicitly stamped ``guest_win98_qemu`` / ``approved_guest_win98_directdraw``.
+
+    Environment-neutral evidence (render metrics, frame inventory, frame
+    progression, capture integrity, timing) is reused verbatim from the shared
+    helpers. Host-process telemetry is replaced by QMP ``query-status``
+    liveness, and the host-only growth/exit metrics MUST be recorded as the
+    ``not_applicable_guest`` sentinel -- a report that fakes a number for them,
+    or drops them, fails.
+    """
+    frame_samples = list(report.get("frame_samples") or [])
+    guest_status_samples = list(report.get("guest_status_samples") or [])
+    capture_errors = list(report.get("capture_errors") or [])
+    artifact_bytes = int(report.get("artifact_bytes") or 0)
+    reported_max_artifact_mb = integer_or_none(report.get("max_artifact_mb"))
+    reported_artifact_limit_bytes = integer_or_none(report.get("artifact_limit_bytes"))
+    default_artifact_limit_bytes = int(max_artifact_mb) * 1024 * 1024
+    effective_max_artifact_mb = reported_max_artifact_mb if reported_max_artifact_mb is not None else max_artifact_mb
+    expected_artifact_limit_bytes = int(effective_max_artifact_mb) * 1024 * 1024
+    artifact_limit_bytes = (
+        reported_artifact_limit_bytes
+        if reported_artifact_limit_bytes is not None
+        else default_artifact_limit_bytes
+    )
+
+    checks: dict[str, Any] = {}
+
+    failures: list[str] = []
+    executed = report.get("executed") is True
+    if not executed:
+        failures.append("guest soak report was not produced by an execution run")
+    checks["executed"] = check_record(executed, {"executed": report.get("executed")}, failures)
+
+    failures = []
+    source_failures = list(report.get("failures") or [])
+    source_passed = report.get("passed") is True
+    if executed and not source_passed:
+        failures.append("source guest soak report did not mark itself passed")
+    if executed and source_failures:
+        failures.append(f"source guest soak report contains {len(source_failures)} failure(s)")
+    checks["source_status"] = check_record(
+        not failures,
+        {"reported_passed": report.get("passed"), "source_failure_count": len(source_failures)},
+        failures,
+    )
+
+    # The label check is what keeps guest and host evidence from ever being
+    # confused. It fails closed for anything not explicitly a guest report.
+    failures = []
+    environment = report.get("environment")
+    evidence_class = report.get("evidence_class")
+    env_ok = environment == GUEST_ENVIRONMENT
+    class_ok = evidence_class == GUEST_EVIDENCE_CLASS
+    if not env_ok:
+        failures.append(
+            f"environment is {environment!r}, expected {GUEST_ENVIRONMENT!r}; this grader only "
+            "accepts guest reports so a host report can never pass as guest evidence"
+        )
+    if not class_ok:
+        failures.append(
+            f"evidence_class is {evidence_class!r}, expected {GUEST_EVIDENCE_CLASS!r} "
+            "(the distinct guest proof class)"
+        )
+    checks["environment"] = check_record(
+        env_ok and class_ok,
+        {
+            "environment": environment,
+            "expected_environment": GUEST_ENVIRONMENT,
+            "evidence_class": evidence_class,
+            "expected_evidence_class": GUEST_EVIDENCE_CLASS,
+        },
+        failures,
+    )
+
+    failures = []
+    stage_ok = report.get("stage") == PROTECTED_STABLE_STAGE
+    stable_unchanged = report.get("stable_stage_should_change") is False
+    if not stage_ok:
+        failures.append(f"stage is {report.get('stage')}, expected protected stable stage")
+    if not stable_unchanged:
+        failures.append("report would change the stable stage")
+    checks["protected_stage"] = check_record(
+        stage_ok and stable_unchanged,
+        {
+            "stage": report.get("stage"),
+            "stable_stage_should_change": report.get("stable_stage_should_change"),
+        },
+        failures,
+    )
+
+    failures = []
+    tier = str(report.get("tier") or "")
+    route = str(report.get("route") or "")
+    duration = integer_or_none(report.get("duration_sec"))
+    sample_interval_sec = integer_or_none(report.get("sample_interval_sec"))
+    fixed_tier_durations = {"short2": 120, "short10": 600, "short30": 1800}
+    allowed_routes = {"menu-idle", "map-idle", "map-pan", "custom"}
+    if tier in fixed_tier_durations:
+        expected_duration = fixed_tier_durations[tier]
+        if duration != expected_duration:
+            failures.append(f"{tier} duration_sec is {duration}, expected {expected_duration}")
+    elif tier == "custom":
+        if duration is None or duration <= 0:
+            failures.append("custom tier requires positive duration_sec")
+    else:
+        failures.append(f"unknown tier: {tier!r}")
+    if route not in allowed_routes:
+        failures.append(f"unknown route: {route!r}")
+    checks["tier_route"] = check_record(
+        not failures,
+        {"tier": tier, "route": route, "duration_sec": duration, "sample_interval_sec": sample_interval_sec},
+        failures,
+    )
+
+    # Guest provenance: the SHA ties the guest frames back to a host patch stage,
+    # and the candidate build path must be the host-side C:\ClashTests build the
+    # guest D:\ copy was staged from (a raw D:\ path is not acceptable
+    # provenance).
+    failures = []
+    input_sha = normalize_sha(report.get("input_sha256"))
+    candidate_sha = normalize_sha(report.get("candidate_sha256"))
+    candidate_build_path = report.get("candidate_build_path")
+    if executed:
+        if input_sha != EXPECTED_BASE_SHA256:
+            failures.append("input_sha256 does not match the expected original Clash95 base SHA-256")
+        if not is_sha256(candidate_sha):
+            failures.append("candidate_sha256 is missing or is not a SHA-256 hex digest")
+        if not is_same_or_under(candidate_build_path, GUEST_CANDIDATE_ROOT):
+            failures.append(
+                f"candidate_build_path {candidate_build_path!r} is not under the host build root "
+                f"{GUEST_CANDIDATE_ROOT} (guest evidence must record its host-side build provenance)"
+            )
+    checks["guest_provenance"] = check_record(
+        (not executed) or not failures,
+        {
+            "input_sha256": report.get("input_sha256"),
+            "expected_base_sha256": EXPECTED_BASE_SHA256,
+            "candidate_sha256": report.get("candidate_sha256"),
+            "candidate_build_path": candidate_build_path,
+            "candidate_build_root": GUEST_CANDIDATE_ROOT,
+            "guest_exe_path": report.get("guest_exe_path"),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    if executed and capture_errors:
+        failures.append(f"capture_errors contains {len(capture_errors)} row(s)")
+    checks["capture_integrity"] = check_record(
+        not failures,
+        {"capture_error_count": len(capture_errors)},
+        failures,
+    )
+
+    # Frame inventory: an 800x600 screendump header IS the HD-mode proof for the
+    # guest (Win98 sits at 640x480), so the size gate is load-bearing here.
+    failures = []
+    frame_count = int(report.get("frame_sample_count") or len(frame_samples))
+    size_bad = [
+        frame
+        for frame in frame_samples
+        if int(frame.get("Width") or 0) != expected_width or int(frame.get("Height") or 0) != expected_height
+    ]
+    bad_hashes = [frame for frame in frame_samples if not is_sha256(frame.get("Hash"))]
+    if executed:
+        if frame_count < min_frames:
+            failures.append(f"frame sample count {frame_count} is below {min_frames}")
+        if size_bad:
+            failures.append(
+                f"{len(size_bad)} frame samples were not {expected_width}x{expected_height} "
+                "(the guest HD-mode proof size)"
+            )
+        if bad_hashes:
+            failures.append(f"{len(bad_hashes)} frame samples have missing or invalid SHA-256 hashes")
+    checks["frame_inventory"] = check_record(
+        (not executed) or (frame_count >= min_frames and not size_bad and not bad_hashes),
+        {
+            "frame_sample_count": frame_count,
+            "expected_size": [expected_width, expected_height],
+            "invalid_hash_count": len(bad_hashes),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    evidence_frames, excluded_frames, capture_modes = partition_render_evidence(frame_samples)
+    nonblack_values = numbers([frame.get("NonblackPercent") for frame in evidence_frames])
+    unique_values = numbers([frame.get("UniqueSampleColors") for frame in evidence_frames])
+    min_nonblack = min(nonblack_values) if nonblack_values else 0.0
+    min_unique = min(unique_values) if unique_values else 0.0
+    if executed:
+        if min_nonblack < min_nonblack_percent:
+            failures.append(f"minimum nonblack percent {min_nonblack} is below {min_nonblack_percent}")
+        if min_unique < min_unique_sample_colors:
+            failures.append(f"minimum unique sampled colors {min_unique} is below {min_unique_sample_colors}")
+    checks["render_metrics"] = check_record(
+        (not executed) or (min_nonblack >= min_nonblack_percent and min_unique >= min_unique_sample_colors),
+        {
+            "min_nonblack_percent": min_nonblack,
+            "min_unique_sample_colors": min_unique,
+            "render_evidence_frame_count": len(evidence_frames),
+            "excluded_frame_count": len(excluded_frames),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    # Gate progression on the unique-hash count COMPUTED from the actual frames,
+    # not the reported field, so a report cannot claim progression it did not
+    # capture (the guest grader has no separate summary-consistency check).
+    failures = []
+    raw_frame_hashes = [str(frame.get("Hash")) for frame in frame_samples if frame.get("Hash")]
+    computed_frame_hash_unique_count = len(set(raw_frame_hashes))
+    reported_frame_hash_unique_count = integer_or_none(report.get("frame_hash_unique_count"))
+    frame_progress_expected = bool(report.get("frame_progress_expected"))
+    if "frame_progress_expected" not in report:
+        frame_progress_expected = route == "map-pan"
+    if frame_count <= 0:
+        stability_class = "no_frames"
+    elif computed_frame_hash_unique_count <= 1:
+        stability_class = "stable_idle"
+    else:
+        stability_class = "progressing"
+    if executed and (
+        reported_frame_hash_unique_count is not None
+        and reported_frame_hash_unique_count != computed_frame_hash_unique_count
+    ):
+        failures.append(
+            f"frame_hash_unique_count summary {reported_frame_hash_unique_count} does not match the "
+            f"{computed_frame_hash_unique_count} unique hashes in frame_samples"
+        )
+    if frame_progress_expected and computed_frame_hash_unique_count < 2:
+        failures.append("frame progression required for this route but fewer than 2 unique frame hashes were recorded")
+    if not frame_progress_expected and frame_count >= min_frames and stability_class not in {"stable_idle", "progressing"}:
+        failures.append(f"frame_stability_class is {stability_class!r}, expected stable_idle or progressing")
+    checks["frame_progression"] = check_record(
+        not failures,
+        {
+            "route": route,
+            "frame_progress_expected": frame_progress_expected,
+            "frame_stability_class": stability_class,
+            "reported_frame_hash_unique_count": reported_frame_hash_unique_count,
+            "computed_frame_hash_unique_count": computed_frame_hash_unique_count,
+        },
+        failures,
+    )
+
+    # Guest liveness replaces the host process_liveness check: there is no host
+    # process to sample, so liveness is proven by QMP query-status reporting a
+    # running guest across the soak plus the frame progression above.
+    failures = []
+    status_texts = [str(sample.get("Status") or "").strip().lower() for sample in guest_status_samples]
+    running_flags = [sample.get("Running") for sample in guest_status_samples]
+    guest_status_sample_count = len(guest_status_samples)
+    non_running_statuses = [text for text in status_texts if text != GUEST_RUNNING_STATUS]
+    not_running_flags = [flag for flag in running_flags if flag is not True]
+    if executed:
+        if guest_status_sample_count < min_guest_status_samples:
+            failures.append(
+                f"guest status sample count {guest_status_sample_count} is below {min_guest_status_samples}"
+            )
+        if non_running_statuses:
+            failures.append(
+                f"{len(non_running_statuses)} guest status samples were not {GUEST_RUNNING_STATUS!r} "
+                f"(observed {sorted(set(non_running_statuses))})"
+            )
+        if not_running_flags:
+            failures.append(f"{len(not_running_flags)} guest status samples did not report Running=true")
+    checks["guest_liveness"] = check_record(
+        (not executed) or not failures,
+        {
+            "guest_status_sample_count": guest_status_sample_count,
+            "non_running_status_count": len(non_running_statuses),
+            "not_running_flag_count": len(not_running_flags),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    # The honesty anchor: host-only telemetry is not obtainable from inside a
+    # headless guest, so every such field must be present and equal to the
+    # not_applicable_guest sentinel. A faked number or a dropped field fails.
+    failures = []
+    faked_host_metrics: list[str] = []
+    dropped_host_metrics: list[str] = []
+    host_metric_values: dict[str, Any] = {}
+    for field in GUEST_HOST_ONLY_FIELDS:
+        host_metric_values[field] = report.get(field)
+        if field not in report:
+            dropped_host_metrics.append(field)
+        elif report.get(field) != NOT_APPLICABLE_GUEST:
+            faked_host_metrics.append(field)
+    if dropped_host_metrics:
+        failures.append(
+            "host-only metric(s) dropped instead of recorded not_applicable_guest: "
+            + ", ".join(dropped_host_metrics)
+        )
+    if faked_host_metrics:
+        failures.append(
+            "host-only metric(s) carry a value that a headless guest cannot measure and must be "
+            "recorded not_applicable_guest: " + ", ".join(faked_host_metrics)
+        )
+    checks["host_metrics_not_applicable"] = check_record(
+        not failures,
+        {
+            "required_not_applicable_fields": list(GUEST_HOST_ONLY_FIELDS),
+            "sentinel": NOT_APPLICABLE_GUEST,
+            "values": host_metric_values,
+            "faked_fields": faked_host_metrics,
+            "dropped_fields": dropped_host_metrics,
+        },
+        failures,
+    )
+
+    failures = []
+    frame_elapsed_sec, invalid_frame_timestamps = timestamp_span_seconds(frame_samples)
+    status_elapsed_sec, invalid_status_timestamps = timestamp_span_seconds(guest_status_samples)
+    if executed and sample_interval_sec is None:
+        failures.append("sample_interval_sec is missing")
+    elif executed and sample_interval_sec <= 0:
+        failures.append("sample_interval_sec must be positive")
+    required_elapsed_sec = None
+    if duration is not None and sample_interval_sec is not None and sample_interval_sec > 0:
+        required_elapsed_sec = max(0, duration - sample_interval_sec - 2)
+    if executed and invalid_frame_timestamps:
+        failures.append(f"{invalid_frame_timestamps} frame samples have missing or invalid timestamps")
+    if executed and invalid_status_timestamps:
+        failures.append(f"{invalid_status_timestamps} guest status samples have missing or invalid timestamps")
+    if executed and required_elapsed_sec is not None:
+        if frame_elapsed_sec is None:
+            failures.append("frame sample elapsed coverage could not be computed")
+        elif frame_elapsed_sec < required_elapsed_sec:
+            failures.append(
+                f"frame sample elapsed coverage {frame_elapsed_sec:.3f}s is below required {required_elapsed_sec:.3f}s"
+            )
+        if status_elapsed_sec is None:
+            failures.append("guest status elapsed coverage could not be computed")
+        elif status_elapsed_sec < required_elapsed_sec:
+            failures.append(
+                f"guest status elapsed coverage {status_elapsed_sec:.3f}s is below required {required_elapsed_sec:.3f}s"
+            )
+    checks["elapsed_coverage"] = check_record(
+        not failures,
+        {
+            "duration_sec": duration,
+            "sample_interval_sec": sample_interval_sec,
+            "required_elapsed_sec": required_elapsed_sec,
+            "frame_elapsed_sec": frame_elapsed_sec,
+            "guest_status_elapsed_sec": status_elapsed_sec,
+            "invalid_frame_timestamps": invalid_frame_timestamps,
+            "invalid_guest_status_timestamps": invalid_status_timestamps,
+        },
+        failures,
+    )
+
+    failures = []
+    if executed:
+        if reported_max_artifact_mb is None:
+            failures.append("max_artifact_mb is missing")
+        elif reported_max_artifact_mb <= 0:
+            failures.append("max_artifact_mb must be positive")
+        if reported_artifact_limit_bytes is None:
+            failures.append("artifact_limit_bytes is missing")
+        elif reported_artifact_limit_bytes != expected_artifact_limit_bytes:
+            failures.append(
+                "artifact_limit_bytes "
+                f"{reported_artifact_limit_bytes} does not match max_artifact_mb-derived limit "
+                f"{expected_artifact_limit_bytes}"
+            )
+        if artifact_bytes > artifact_limit_bytes:
+            failures.append(f"artifact bytes {artifact_bytes} exceeds limit {artifact_limit_bytes}")
+    checks["artifact_budget"] = check_record(
+        (not executed) or not failures,
+        {
+            "artifact_bytes": artifact_bytes,
+            "max_artifact_mb": reported_max_artifact_mb,
+            "artifact_limit_bytes": reported_artifact_limit_bytes,
+            "effective_artifact_limit_bytes": artifact_limit_bytes,
+            "checked": executed,
+        },
+        failures,
+    )
+
+    all_failures = [failure for check in checks.values() for failure in check["failures"]]
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "runtime_policy": GUEST_RUNTIME_POLICY,
+        "environment": environment,
+        "expected_environment": GUEST_ENVIRONMENT,
+        "evidence_class": evidence_class,
+        "expected_evidence_class": GUEST_EVIDENCE_CLASS,
+        "overall": not all_failures,
+        "source_report": report.get("report_json"),
+        "stage": report.get("stage"),
+        "tier": report.get("tier"),
+        "route": report.get("route"),
+        "duration_sec": report.get("duration_sec"),
+        "sample_interval_sec": report.get("sample_interval_sec"),
+        "checks": checks,
+        "failures": all_failures,
+    }
+
+
 def to_markdown(evaluation: dict[str, Any]) -> str:
+    is_guest = evaluation.get("expected_environment") is not None
     lines = [
-        "# HD Soak Report Guard",
+        "# HD Guest Soak Report Guard" if is_guest else "# HD Soak Report Guard",
         "",
         f"- Overall: {status_text(bool(evaluation['overall']))}",
         f"- Generated: `{evaluation['generated_at']}`",
         f"- Runtime policy: `{evaluation['runtime_policy']}`",
     ]
+    if is_guest:
+        lines.append(
+            f"- Environment: `{evaluation.get('environment')}` "
+            f"(expected `{evaluation.get('expected_environment')}`)"
+        )
+        lines.append(
+            f"- Evidence class: `{evaluation.get('evidence_class')}` "
+            f"(expected `{evaluation.get('expected_evidence_class')}`)"
+        )
     if evaluation.get("source_report") is not None:
         lines.append(f"- Source report: `{evaluation.get('source_report')}`")
     if evaluation.get("source_report_selection") is not None:
@@ -1080,10 +1545,21 @@ def main() -> int:
     parser.add_argument("--write-json", type=Path)
     parser.add_argument("--write-markdown", "--write-md", dest="write_markdown", type=Path)
     parser.add_argument("--max-input-drift-px", type=int, default=1)
+    parser.add_argument(
+        "--guest",
+        action="store_true",
+        help="grade a QEMU-Win98 guest soak report (also auto-selected when the report is stamped "
+        f"environment={GUEST_ENVIRONMENT!r})",
+    )
     parser.add_argument("--require-pass", action="store_true")
     args = parser.parse_args()
 
-    evaluation = evaluate_report(load_json(args.report), max_input_drift_px=args.max_input_drift_px)
+    report_data = load_json(args.report)
+    is_guest = args.guest or (isinstance(report_data, dict) and report_data.get("environment") == GUEST_ENVIRONMENT)
+    if is_guest:
+        evaluation = evaluate_guest_report(report_data)
+    else:
+        evaluation = evaluate_report(report_data, max_input_drift_px=args.max_input_drift_px)
     evaluation.setdefault("source_report", str(args.report))
     if args.write_json:
         args.write_json.parent.mkdir(parents=True, exist_ok=True)

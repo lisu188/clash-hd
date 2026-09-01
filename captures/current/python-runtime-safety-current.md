@@ -1,18 +1,18 @@
 # Python Runtime Safety Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T22:17:24+02:00`
+- Generated: `2026-07-27T18:55:07+02:00`
 - Runtime policy: repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt
-- Python files scanned: `247`
-- Risky files: `121`
+- Python files scanned: `260`
+- Risky files: `128`
 
 ## Classification Counts
 
-- `exempt`: `28`
-- `manual_visible_runtime_gated`: `3`
-- `safe`: `126`
-- `test_fixture`: `89`
+- `exempt`: `29`
+- `manual_visible_runtime_gated`: `5`
+- `safe`: `132`
+- `test_fixture`: `93`
 - `user_gated_launcher`: `1`
 
 ## Risky Helpers
@@ -27,6 +27,8 @@
   - cloud fixture builder; risky text is source material/path filtering, not runtime window or input calls
 - `tools/cloud_check.py`: `exempt` risks=`['process_launch', 'subprocess']`
   - cloud-safe validation runner; subprocess is limited to repo tests and does not launch Clash95 or CDB
+- `tools/complete_hd_promotion.py`: `exempt` risks=`['process_launch', 'subprocess']`
+  - repo-only promotion orchestrator; subprocess is limited to grading repo tools (proof assembler, checklist, battle summary, the two promotion decisions, evidence refresh) and launches no game, VM, or visible window
 - `tools/current_evidence_refresh.py`: `exempt` risks=`['postmessage', 'process_launch', 'sendinput', 'win32_user32']`
   - repo-only evidence coordinator; risky API text appears in policy/test descriptions
 - `tools/exe_artifact_guard.py`: `exempt` risks=`['process_launch', 'subprocess']`
@@ -65,7 +67,7 @@
   - manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked
 - `tools/process_hygiene_guard.py`: `exempt` risks=`['ctypes']`
   - uses Toolhelp32 read-only process enumeration and does not launch or focus windows
-- `tools/python_runtime_safety_guard.py`: `exempt` risks=`['ctypes', 'cursor_window_input', 'postmessage', 'sendinput', 'shell_launch', 'subprocess', 'win32_user32']`
+- `tools/python_runtime_safety_guard.py`: `exempt` risks=`['ctypes', 'cursor_window_input', 'postmessage', 'qmp_input_inject', 'sendinput', 'shell_launch', 'subprocess', 'win32_user32']`
   - this scanner names risky APIs without calling them
 - `tools/raw_sendinput_click.py`: `manual_visible_runtime_gated` risks=`['ctypes', 'cursor_window_input', 'sendinput', 'win32_user32']`
   - manual/visible-runtime evidence helper; it sends OS input only when explicitly invoked by a guarded harness
@@ -79,6 +81,10 @@
   - repo-only CDB log parser; Win32/input text appears in evidence markers
 - `tools/right_bottom_slot_fixture_script_guard.py`: `exempt` risks=`['cursor_window_input', 'postmessage', 'sendinput']`
   - repo-only source scanner; risky API names appear as patterns, not runtime calls
+- `tools/run_hd_linux_validation.py`: `manual_visible_runtime_gated` risks=`['process_launch', 'subprocess']`
+  - manual/visible-runtime evidence helper; it patches, launches the candidate under wine on a headless Xvfb display and drives xdotool input only when --allow-visible-runtime and a SHA-matched --source-exe are both supplied (dry-run by default, launches nothing otherwise)
+- `tools/test_assemble_manual_directinput_proof.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_battle_ui_evidence_matrix.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_battle_ui_gate.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
@@ -203,6 +209,8 @@
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_patch_resolution.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_prepare_addon_flags_fixture.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_process_hygiene_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_promotion_override_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
@@ -251,11 +259,17 @@
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_right_bottom_visual_artifact_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_run_hd_linux_validation.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_stable_stage_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_unit_selection_action_bar_summary.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/test_visible_runtime_launcher_guard.py`: `test_fixture` risks=`['process_launch', 'subprocess']`
   - fixture test may spawn Python subprocesses but is not a runtime helper
+- `tools/test_vm_guest_click.py`: `test_fixture` risks=`['qmp_input_inject']`
+  - fixture test may spawn Python subprocesses but is not a runtime helper
 - `tools/visible_runtime_launcher_guard.py`: `exempt` risks=`['cursor_window_input', 'postmessage', 'sendinput']`
   - repo-only source scanner; risky API names appear as patterns, not runtime calls
+- `tools/vm_guest_click.py`: `manual_visible_runtime_gated` risks=`['qmp_input_inject']`
+  - manual/visible-runtime evidence helper; it encodes QMP input events to aim the Win98 guest cursor and injects them only when a live socket transport is supplied under an approved visible-runtime pass (it opens no socket itself)
