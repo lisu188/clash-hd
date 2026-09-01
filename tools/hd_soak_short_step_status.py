@@ -100,9 +100,11 @@ def step_status(
     legacy_report: dict[str, Any] | None,
 ) -> tuple[str, bool, list[str], dict[str, Any]]:
     paths = step.get("paths") or {}
-    report_path = Path(paths.get("report_json") or "")
-    guard_path = Path(paths.get("guard_json") or "")
-    triage_path = Path(paths.get("triage_json") or "")
+    # Manifest paths are Windows-canonical (backslashes); normalize so the
+    # repo-only status derivation also works on POSIX runners.
+    report_path = Path(str(paths.get("report_json") or "").replace("\\", "/"))
+    guard_path = Path(str(paths.get("guard_json") or "").replace("\\", "/"))
+    triage_path = Path(str(paths.get("triage_json") or "").replace("\\", "/"))
     report = load_json(report_path) if paths.get("report_json") else None
     guard = load_json(guard_path) if paths.get("guard_json") else None
     triage = load_json(triage_path) if paths.get("triage_json") else None
@@ -240,6 +242,7 @@ def step_status(
                 },
             )
 
+    wer_followup = triage.get("wer_followup") or {}
     return (
         f"failed_classified_{triage.get('classification')}",
         False,
@@ -255,6 +258,11 @@ def step_status(
             "frame_sample_count": report.get("frame_sample_count"),
             "final_route_marker": report.get("final_route_marker"),
             "candidate_sha256": report.get("candidate_sha256"),
+            "wer_followup_matched": wer_followup.get("matched"),
+            "wer_followup_status": wer_followup.get("status"),
+            "window_health_mitigation_ready": wer_followup.get(
+                "window_health_mitigation_ready"
+            ),
             **triage_visual_summary(triage),
         },
     )
