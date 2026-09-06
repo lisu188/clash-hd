@@ -151,6 +151,12 @@ int main(int argc, char **argv) {
         if (ip_before >= base && ip_before < base + size) throw std::runtime_error("Fixture instructions reached before verification");
         std::vector<std::pair<ULONG, std::vector<unsigned char>>> snapshots;
         snapshots.emplace_back(0, session.read(base, nt->OptionalHeader.SizeOfHeaders));
+        const auto *loaded_nt = reinterpret_cast<const IMAGE_NT_HEADERS32 *>(snapshots[0].second.data() + nt_offset);
+        printf("HARNESS_IMAGE_BASE file=%08lx loaded=%08lx expected=%08lx\n",
+               nt->OptionalHeader.ImageBase, loaded_nt->OptionalHeader.ImageBase, base);
+        for (ULONG i = 0; i < nt->OptionalHeader.SizeOfHeaders; ++i)
+            if (snapshots[0].second[i] != disk[i])
+                printf("HARNESS_HEADER_CHANGE offset=%08lx file=%02x loaded=%02x\n", i, disk[i], snapshots[0].second[i]);
         const auto *sections = IMAGE_FIRST_SECTION(nt);
         for (int i = 0; i < nt->FileHeader.NumberOfSections; ++i) {
             if (sections[i].PointerToRawData && (sections[i].Characteristics & IMAGE_SCN_MEM_EXECUTE))
@@ -306,6 +312,11 @@ class DebuggerEngineTests(unittest.TestCase):
         self.assert_pass(log, facts)
         actual = int(re.search(r"HARNESS_BEGIN base=([0-9a-f]+)", log)[1], 16)
         self.assertNotEqual(actual, probe.pe.inspect_pe(data).image_base, "ASLR fixture did not relocate; coverage is incomplete")
+        self.assertIn(f"HARNESS_IMAGE_BASE file=00400000 loaded={actual:08x} expected={actual:08x}", log)
+        offsets = [int(value, 16) for value in re.findall(r"HARNESS_HEADER_CHANGE offset=([0-9a-f]+)", log)]
+        header = probe.pe.inspect_pe(data).optional_offset + 28
+        self.assertTrue(offsets, "The loader did not normalize ImageBase")
+        self.assertTrue(all(header <= value < header + 4 for value in offsets), log)
 
     def test_corruption_in_headers_hooks_scalars_and_payload_cannot_pass(self):
         data, report, scalar = executable_fixture()
