@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: 245383db8a54061041d9248bcc47fc45f385e723
+          ref: f7bbda5f70f94032894d635da94a31cd7d76efe7
           persist-credentials: false
       - name: Archive only tracked source and configuration
         run: |
@@ -35,12 +35,12 @@ jobs:
                       data = p.read_bytes()
                       manifest[name] = hashlib.sha256(data).hexdigest()
                       archive.writestr(name, data)
-              archive.writestr('source-snapshot.json', json.dumps({'commit': '245383db8a54061041d9248bcc47fc45f385e723', 'sha256': manifest}, indent=2))
+              archive.writestr('source-snapshot.json', json.dumps({'commit': 'f7bbda5f70f94032894d635da94a31cd7d76efe7', 'sha256': manifest}, indent=2))
           print(len(manifest), 'source/configuration files; no game binaries or captures')
           PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: launcher-source-245383d
+          name: launcher-source-f7bbda5
           path: ${{ runner.temp }}/launcher-source.zip
           retention-days: 1
           if-no-files-found: error
