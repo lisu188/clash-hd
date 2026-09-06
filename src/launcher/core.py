@@ -30,6 +30,7 @@ import process_hygiene_guard  # noqa: E402
 
 import ini as ini_mod  # noqa: E402
 import presets  # noqa: E402
+from src.display_plan import DisplayPlan, DisplayPlanError, deployment_identity, resolve_display_plan
 
 
 LAUNCHER_VERSION = "0.1.0"
@@ -102,6 +103,7 @@ class CandidatePlan:
     manifest_path: Path
     base_exe: Path
     expected_base_sha: str
+    renderer: str = "classic"
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -118,7 +120,17 @@ class CandidatePlan:
             "manifest_path": str(self.manifest_path),
             "base_exe": str(self.base_exe),
             "expected_base_sha": self.expected_base_sha,
+            "renderer": self.renderer,
+            "display_plan": display_for_plan(self).to_dict(),
         }
+
+
+def display_for_plan(plan: CandidatePlan) -> DisplayPlan:
+    try:
+        return resolve_display_plan(renderer=plan.renderer, resolution=plan.resolution,
+                                    stage=plan.stage, scaling_mode=plan.scaling_mode)
+    except DisplayPlanError as exc:
+        raise LauncherError(f"{exc.code}: {exc}") from exc
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -236,31 +248,19 @@ def plan_candidate(
     manifest: dict[str, Any] | None = None,
     expected_base_sha: str | None = None,
     allow_repo_candidates: bool = False,
+    renderer: str = "classic",
 ) -> CandidatePlan:
     manifest = manifest if manifest is not None else presets.load_manifest()
-    stage = stage or presets.stable_stage(manifest)
-    if stage not in patch_clash95_hd.STAGE_GROUPS:
-        raise LauncherError(f"Unknown patch stage: {stage}")
-    presets.parse_resolution_key(resolution)
-    default = presets.default_key(manifest)
-    if resolution != default:
-        if not presets.patcher_supports_resolutions(patch_clash95_hd):
-            raise LauncherError(
-                f"Resolution {resolution} is not supported yet: the patcher "
-                f"builds only {default} until multi-resolution support lands."
-            )
-        try:
-            # The patcher owns the resolution constraints (minimum, evenness,
-            # stage compatibility); GUI and CLI reject identically through it.
-            profile = patch_clash95_hd.parse_resolution(resolution)
-            patch_clash95_hd.select_patches_for(stage, profile)
-        except patch_clash95_hd.ResolutionError as exc:
-            raise LauncherError(str(exc)) from exc
-    if scaling_mode not in ini_mod.VERIFIED_SCALING_MODES:
-        known = ", ".join(sorted(ini_mod.VERIFIED_SCALING_MODES))
-        raise LauncherError(
-            f"Unknown scaling mode {scaling_mode!r}; verified modes: {known}"
-        )
+    if renderer == "classic":
+        stage = presets.stable_stage(manifest) if stage is None else stage
+        if type(stage) is not str or stage not in patch_clash95_hd.STAGE_GROUPS:
+            raise LauncherError(f"Unknown patch stage: {stage}")
+    try:
+        display = presets.resolve_plan(renderer=renderer, resolution=resolution, stage=stage,
+                                       scaling_mode=scaling_mode, manifest=manifest)
+    except (DisplayPlanError, presets.ManifestError) as exc:
+        raise LauncherError(f"{getattr(exc, 'code', 'invalid_manifest')}: {exc}") from exc
+    stage = display.stage
 
     clash_dir = Path(clash_dir)
     candidates_root = Path(candidates_root)
@@ -293,6 +293,7 @@ def plan_candidate(
         manifest_path=candidate_dir / MANIFEST_NAME,
         base_exe=base_exe,
         expected_base_sha=expected_base_sha or patch_clash95_hd.EXPECTED_SHA256,
+        renderer=renderer,
     )
 
 
@@ -358,6 +359,9 @@ def ensure_candidate(
 ) -> dict[str, Any]:
     say = progress or (lambda message: None)
     assert_plan_paths(plan)
+    if plan.renderer != "classic":
+        raise LauncherError("Use the matching renderer backend to prepare this profile.")
+    display = display_for_plan(plan)
     if not plan.base_exe.is_file():
         raise LauncherError(f"Base game executable not found: {plan.base_exe}")
     data = plan.base_exe.read_bytes()
@@ -415,6 +419,10 @@ def ensure_candidate(
         "output_sha256": output_sha,
         "patch_count": len(patches),
         "byte_gate": gate,
+        "profile": plan.renderer,
+        "display_plan": display.to_dict(),
+        "build_inputs": {"generated/scalar-patches.json": display.scalar_patch_sha256},
+        "build_id": display.build_identity(base_sha, {"generated/scalar-patches.json": display.scalar_patch_sha256}),
     }
 
 
@@ -460,6 +468,12 @@ def deploy_runtime_files(
         "patch_count": (candidate_result or {}).get("patch_count"),
         "wrapper_dll_sha256": result["wrapper_dll_sha256"],
     }
+    if candidate_result is not None:
+        manifest.update({key: candidate_result[key] for key in
+                         ("profile", "display_plan", "build_id", "build_inputs") if key in candidate_result})
+        if result["wrapper_dll_sha256"] and manifest.get("build_id"):
+            manifest["deployment_id"] = deployment_identity(manifest["build_id"], result["wrapper_dll_sha256"],
+                                                           sha256_bytes(plan.dxcfg_target.read_bytes()))
     plan.manifest_path.write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
     )

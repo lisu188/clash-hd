@@ -46,7 +46,8 @@ jobs:
           python - <<'PY'
           import sys
           import unittest
-          suite = unittest.defaultTestLoader.discover('tools', pattern='test_display_plan.py')
+          suite = unittest.TestSuite(unittest.defaultTestLoader.discover('tools', pattern=name)
+                                    for name in ('test_display_plan.py', 'test_launcher_multiresolution.py'))
           result = unittest.TextTestRunner(verbosity=2).run(suite)
           sys.exit(0 if result.wasSuccessful() and result.testsRun and not result.skipped else 1)
           PY

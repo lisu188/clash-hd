@@ -26,11 +26,16 @@ import framed
 import ini as ini_mod  # noqa: E402
 import presets  # noqa: E402
 import settings as settings_mod  # noqa: E402
+from src.display_plan import PresentationTransform
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--describe-plan", action="store_true", help="inspect a display plan without needing game files")
+    parser.add_argument("--list-resolutions", action="store_true", help="list recipe eligibility and profile-scoped status")
+    parser.add_argument("--map-size", nargs=2, type=int, metavar=("WIDTH", "HEIGHT"), help="world tile dimensions for inspection only")
+    parser.add_argument("--client-size", nargs=2, type=int, metavar=("WIDTH", "HEIGHT"), help="hypothetical client pixels for inspection only")
     parser.add_argument("--profile", choices=("classic", "framed"), default="classic")
     parser.add_argument("--prepare", action="store_true", help="build and deploy without starting the game")
     parser.add_argument("--resolution", default=None)
@@ -52,6 +57,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     args = parser.parse_args(argv)
     if args.prepare and (args.launch or args.dry_run or args.gui_selftest):
         parser.error("--prepare cannot be combined with --launch, --dry-run, or --gui-selftest")
+    if (args.describe_plan or args.list_resolutions) and sum(bool(value) for value in
+            (args.describe_plan, args.list_resolutions, args.dry_run, args.prepare, args.launch, args.gui_selftest)) != 1:
+        parser.error("Inspection modes cannot be combined with other modes.")
+    if (args.map_size or args.client_size) and not args.describe_plan:
+        parser.error("--map-size and --client-size require --describe-plan; they do not change a live game.")
     return args
 
 
@@ -67,8 +77,55 @@ def build_plan(args: argparse.Namespace) -> core.CandidatePlan:
     )
 
 
+def inspect_display(args: argparse.Namespace) -> int:
+    manifest = presets.load_manifest()
+    if args.list_resolutions:
+        resolutions = [presets.resolution_info(option.key, renderer=args.profile, stage=args.stage,
+                        scaling_mode=args.scaling or ini_mod.DEFAULT_SCALING_MODE, manifest=manifest)
+                       for option in presets.load_options(manifest, args.profile)]
+        payload = {"schema": 1, "profile": args.profile, "default": presets.default_key(manifest, args.profile),
+                   "resolutions": resolutions, "game_runtime_executed": False}
+        if args.profile == "framed":
+            payload["source_preflight"] = framed.source_status()
+        print(json.dumps(payload, indent=2))
+        return 0 if payload.get("source_preflight", {"passed": True})["passed"] else 1
+    saved = settings_mod.load_settings()
+    display = presets.resolve_plan(renderer=args.profile, resolution=args.resolution or saved["last_resolution"],
+                                   stage=args.stage, scaling_mode=args.scaling or saved["scaling_mode"], manifest=manifest)
+    payload = {"schema": 1, "inspection_only": True,
+               "plan": {"renderer": display.renderer, "resolution": display.resolution, "stage": display.stage,
+                        "scaling_mode": display.scaling_mode, "display_plan": display.to_dict()},
+               "requested_paths": {"clash_dir": str(args.clash_dir or saved["clash_dir"]),
+                                   "candidates_root": str(args.candidates_root or saved["candidates_root"])},
+               "candidate_paths_validated": False,
+               "path_policy": "Geometry inspection does not validate host deployment paths; use --dry-run before preparation.",
+               "compatibility": presets.resolution_info(display.resolution, renderer=args.profile,
+                    stage=display.stage, scaling_mode=display.scaling_mode, manifest=manifest),
+               "game_runtime_executed": False}
+    compatible = True
+    if args.profile == "framed":
+        payload["source_preflight"] = framed.source_status()
+        compatible = payload["source_preflight"]["passed"]
+    if args.map_size:
+        world = display.world_view(*args.map_size)
+        payload["world_plan"] = world.to_dict()
+        compatible = compatible and world.native_full_loop_safe
+        if not world.native_full_loop_safe:
+            payload["blocked_reason"] = "The current native full renderer cannot admit this world/viewport combination."
+    if args.client_size:
+        transform = PresentationTransform.integer_fit(display.width, display.height, *args.client_size)
+        payload["presentation_plan"] = {"requested_client_size": args.client_size,
+            "content_rectangle": [transform.left, transform.top, transform.width, transform.height],
+            "rectangle_format": "left,top,width,height", "observed_runtime_geometry": False}
+    print(json.dumps(payload, indent=2))
+    return 0 if compatible else 1
+
+
 def _main(args: argparse.Namespace) -> int:
     backend = framed if args.profile == "framed" else core
+
+    if args.describe_plan or args.list_resolutions:
+        return inspect_display(args)
 
     if args.gui_selftest:
         try:
@@ -139,7 +196,7 @@ def _main(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     try:
         return _main(parse_args(argv))
-    except (core.LauncherError, presets.ManifestError, OSError) as exc:
+    except (core.LauncherError, core.DisplayPlanError, presets.ManifestError, OSError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
 
