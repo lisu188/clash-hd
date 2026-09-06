@@ -1775,6 +1775,38 @@ STAGE_GROUPS = {
         "battle-grid-centered-input",
         "battle-ui-centered-input",
     ),
+    # Union of hdlayout-framerestore, rightbottomcompose, and
+    # castlecenter-all-battlecenter-inputprobe. Group and patch selection keep
+    # the frozen PATCHES table order; this adds no bytes or promotion claim.
+    # Larger resolutions use the frame-band tiling recipe below; the frozen
+    # 800x600 PATCHES selection remains unchanged.
+    DEFAULT_STAGE + "-combinedui-validation": (
+        "display",
+        "shared-surface",
+        "gameplay-surface",
+        "surface-blit-hd-aware",
+        "castle-ui-center-present-wrapper",
+        "castle-ui-centered-input",
+        "castle-overview-center-present-wrapper",
+        "castle-overview-centered-input",
+        "right-bottom-compose-proof",
+        "battle-ui-center-present-wrapper",
+        "battle-grid-centered-input",
+        "battle-ui-centered-input",
+        "terrain-tooltip-bottom-center",
+        "selected-unit-command-panel-right-bottom",
+        "menu-center-hitboxes",
+        "mouse-dynamic-origin",
+        *DYNAMIC_VIEWPORT_GROUPS,
+        "main-loops",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "minimap-right-clip",
+        "minimap-hd-right-anchor",
+        "frame-restore-bands",
+        "helpers",
+        "map-surface-upgrade-scrollclamp",
+    ),
     "gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch": (
         "display",
         "shared-surface",
@@ -2080,6 +2112,7 @@ _FIXED_RECIPES: frozenset[tuple[str, int]] = frozenset(
         ("surface-blit-hd-aware", 0x001230),
         ("minimap-right-clip", 0x00C960),
         ("minimap-right-clip", 0x0E8D80),
+        ("frame-restore-bands", 0x17BAF),
         ("viewport-switch-dynamic-surface", 0x060211),
         ("mouse-dynamic-origin", 0x05FE61),
         ("mouse-dynamic-origin", 0x0E8C10),
@@ -2232,6 +2265,53 @@ _RELOCATED_CASTLE_PRESENT_OFFSET = 0x119E20
 _RELOCATED_CASTLE_PRESENT_VA = 0x51BC20
 
 _CAVE_TEMPLATES: dict[tuple[str, int], CaveTemplate] = {
+    # The 800x600 cave copies one native 120px-high left-band tile and one
+    # 160px-wide top-band tile. Merely enlarging its source rectangles would
+    # read outside those authenticated native artwork bands. Instead repeat
+    # (0,360)-(31,479) down [480,H), and (480,0)-(639,15) across [640,W),
+    # clipping the final source rectangle to the remaining destination span.
+    # Both loops are positive and bounded for every ResolutionProfile.
+    #
+    # At entry pushad saves original EBP (the a1 present flag) at [esp+8].
+    # EDI retains that flag; ESI is the destination coordinate, EBP the
+    # remaining span, and EAX=min(remaining,tile size). Nested pushad/popad
+    # around EACH callee-cleaned Render_FillRect call protects all loop state
+    # even if the blitter changes registers/flags. Every chunk paints the
+    # map backbuffer; only a1!=0 also paints the DD-safe dst=0 screen target.
+    # The final popad/test/jz/jmp restores the exact displaced present gate.
+    # 217 bytes fit the existing verified-zero 256-byte allotment; no new
+    # cave region or hook is needed. The native artwork, terrain (x>=32,
+    # y>=16), and moved UI are disjoint from both destination gutter bands.
+    ("frame-restore-bands", 0x11A000): CaveTemplate(
+        template_hex=(
+            "608b7c2408bee0010000bd7800000089e883f8787605b878000000"
+            "60566a008d8067010000506a1fa1e002520089c231dbb968010000"
+            "e8a566eeff6185ff742160566a008d8067010000506a1fa1e0025200"
+            "31d231dbb968010000e88066eeff6101c629c575a8be80020000"
+            "bda000000089e83da00000007605b8a0000000606a00566a0f"
+            "8d80df01000050a1e002520089c2bbe001000031c9e84166eeff61"
+            "85ff7421606a00566a0f8d80df01000050a1e002520031d2"
+            "bbe001000031c9e81c66eeff6101c629c575a66185ed0f84cfcaefff"
+            "e9dec8efff" + "00" * 39
+        ),
+        slots=(TemplateSlot(11, 4, "SHIFTY"), TemplateSlot(109, 4, "SHIFTX")),
+        legacy_va=0x51BE00,
+        param_va=0x51BE00,
+        legacy_branches=(
+            (38, "call", 0x4024E0), (80, "call", 0x4024E0),
+            (91, "jcc8", 0x51BEB7), (133, "call", 0x4024E0),
+            (178, "call", 0x4024E0), (186, "jz32", 0x4189A3),
+            (192, "jmp32", 0x4187B7),
+        ),
+        param_branches=(
+            (20, "jcc8", 0x51BE1B), (54, "call", 0x4024E0),
+            (62, "jcc8", 0x51BE61), (91, "call", 0x4024E0),
+            (101, "jcc8", 0x51BE0F), (120, "jcc8", 0x51BE7F),
+            (154, "call", 0x4024E0), (162, "jcc8", 0x51BEC5),
+            (191, "call", 0x4024E0), (201, "jcc8", 0x51BE71),
+            (206, "jz32", 0x4189A3), (212, "jmp32", 0x4187B7),
+        ),
+    ),
     ("surface-blit-hd-aware", 0x0E8D20): CaveTemplate(
         template_hex=(
             "6089c6bddf010000bf7f02000066813e2003751266817e025802750a"
@@ -2556,6 +2636,7 @@ PARAMETERIZED_STAGES: tuple[str, ...] = (
     _STABLE_STAGE_PREFIX + "-castlecenter-all",
     _STABLE_STAGE_PREFIX + "-castlecenter-all-battlecenter",
     _STABLE_STAGE_PREFIX + "-castlecenter-all-battlecenter-inputprobe",
+    _STABLE_STAGE_PREFIX + "-combinedui-validation",
 )
 PARAMETERIZED_GROUPS: frozenset[str] = frozenset(
     group for stage in PARAMETERIZED_STAGES for group in STAGE_GROUPS[stage]
@@ -2830,6 +2911,7 @@ def parse_args() -> argparse.Namespace:
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all is the current broad castle-interior validation target and uses a present-callback wrapper so stock castle/barracks rendering runs before the 80,60 centering copy, plus a native-render-first full-overview 00422020 visual wrapper and 00422520 hit-test wrapper; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter adds the battle initial-present wrapper after hidden CDB evidence proved the Unit_Attack route and native 640x480 battle frame; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe adds validation-only battle grid and descriptor hit-test mouse wrappers; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation combines hdlayout-framerestore, rightbottomcompose, and castlecenter-all-battlecenter-inputprobe with resolution-aware frame-band tiling for composition validation without changing the stable stage; "
             "gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch keeps that stack but tests hybrid DirectInput; "
             "gameplay-menu640-centered-map12-absinput assigns large DirectInput X/Y samples as coordinates; "
             "gameplay-menu640-absinput keeps native menu placement with absolute mouse; "
