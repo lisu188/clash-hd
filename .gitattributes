@@ -1,0 +1,25 @@
+# Preserve authenticated dependency snapshots: builders hash the exact source bytes.
+/src/patcher/four_sided_frame.py -text whitespace=cr-at-eol
+/src/patcher/framed_army_composition.py -text whitespace=cr-at-eol
+/src/patcher/framed_army_draw.py -text whitespace=cr-at-eol
+/src/patcher/framed_army_input.py -text whitespace=cr-at-eol
+/src/patcher/framed_army_viewport.py -text whitespace=cr-at-eol
+/src/patcher/framed_full_paint.py -text whitespace=cr-at-eol
+/src/patcher/framed_input.py -text whitespace=cr-at-eol
+/src/patcher/framed_minimap.py -text whitespace=cr-at-eol
+/src/patcher/framed_modal_canvas.py -text whitespace=cr-at-eol
+/src/patcher/framed_presentation.py -text whitespace=cr-at-eol
+/src/patcher/framed_recipe.py -text whitespace=cr-at-eol
+/src/patcher/framed_viewport.py -text whitespace=cr-at-eol
+/src/patcher/initial_map_paint.py -text whitespace=cr-at-eol
+/src/patcher/partial_tile_clip.py -text whitespace=cr-at-eol
+/src/patcher/partial_tile_hooks.py -text whitespace=cr-at-eol
+/src/patcher/patch_clash95_hd.py -text whitespace=cr-at-eol
+/src/patcher/pe_army_extension.py -text whitespace=cr-at-eol
+/src/patcher/pe_extension.py -text whitespace=cr-at-eol
+/src/patcher/pe_modal_extension.py -text whitespace=cr-at-eol
+/tools/build_framed_army_candidate.py -text whitespace=cr-at-eol
+/tools/build_framed_candidate.py -text whitespace=cr-at-eol
+/tools/build_framed_modal_candidate.py -text whitespace=cr-at-eol
+/tools/build_partial_tile_candidate.py -text whitespace=cr-at-eol
+/tools/partial_tile_trace_probe.py -text whitespace=cr-at-eol
