@@ -9,10 +9,12 @@ user action that passes ``confirmed=True`` to ``core.launch_game``.
 from __future__ import annotations
 
 import os
+import sys
 import tkinter as tk
 from tkinter import messagebox, ttk
 
 import core
+import framed
 import ini as ini_mod
 import presets
 import settings as settings_mod
@@ -38,7 +40,11 @@ WRAPPER_HELP = (
 
 
 class LauncherApp:
-    def __init__(self, root: tk.Tk) -> None:
+    def __init__(self, root: tk.Tk, initial_profile: str = "classic") -> None:
+        if initial_profile not in ("classic", "framed"):
+            raise core.LauncherError("Unknown launcher profile.")
+        if initial_profile == "framed" and getattr(sys, "frozen", False):
+            raise core.LauncherError("The framed profile requires the source-tree launcher.")
         self.root = root
         self.settings = settings_mod.load_settings()
         self.manifest = presets.load_manifest()
@@ -47,7 +53,7 @@ class LauncherApp:
         self.experimental_warned = False
 
         root.title("Clash95 HD Launcher")
-        root.minsize(560, 520)
+        root.minsize(560, 660)
         if self.settings.get("window_geometry"):
             try:
                 root.geometry(self.settings["window_geometry"])
@@ -59,8 +65,10 @@ class LauncherApp:
         )
         if saved_resolution not in {option.key for option in self.options}:
             saved_resolution = presets.default_key(self.manifest)
+        self.profile_var = tk.StringVar(value=initial_profile)
         self.resolution_var = tk.StringVar(value=saved_resolution)
         self._build_widgets()
+        self.on_profile_change()
         self.refresh_environment()
 
     # -- layout -----------------------------------------------------------
@@ -87,6 +95,17 @@ class LauncherApp:
             anchor="e", padx=4, pady=2
         )
 
+        profile_frame = ttk.LabelFrame(self.root, text="Renderer profile")
+        profile_frame.pack(fill="x", **pad)
+        ttk.Radiobutton(profile_frame, text="Classic (existing profiles)", value="classic",
+                        variable=self.profile_var, command=self.on_profile_change).pack(anchor="w", padx=6)
+        ttk.Radiobutton(profile_frame, text="Framed + minimap correction [Experimental]", value="framed",
+                        variable=self.profile_var, command=self.on_profile_change,
+                        state="disabled" if getattr(sys, "frozen", False) else "normal").pack(anchor="w", padx=6)
+        self.profile_label = ttk.Label(profile_frame, wraplength=520)
+        self.profile_label.pack(fill="x", padx=6, pady=4)
+        self.resolution_buttons = []
+
         res_frame = ttk.LabelFrame(self.root, text="Game resolution")
         res_frame.pack(fill="x", **pad)
         default = presets.default_key(self.manifest)
@@ -106,6 +125,7 @@ class LauncherApp:
                 state=state,
             )
             button.pack(anchor="w", padx=6)
+            self.resolution_buttons.append((button, option))
 
         custom_row = ttk.Frame(res_frame)
         custom_row.pack(anchor="w", padx=6, pady=2)
@@ -228,8 +248,19 @@ class LauncherApp:
             raise core.LauncherError(" ".join(errors))
         return f"{width}x{height}"
 
+    def _backend(self):
+        return framed if self.profile_var.get() == "framed" else core
+
+    def on_profile_change(self) -> None:
+        experimental = self.profile_var.get() == "framed"
+        self.experimental_warned = False
+        self.profile_label.configure(text=framed.WARNING if experimental else "Existing resolution evidence and stable defaults are unchanged.")
+        for button, option in self.resolution_buttons:
+            badge = "Experimental" if experimental else STATUS_BADGES[option.status][0]
+            button.configure(text=f"{option.key}  [{badge}]")
+
     def _selected_plan(self) -> core.CandidatePlan:
-        return core.plan_candidate(
+        return self._backend().plan_candidate(
             resolution=self._current_resolution_key(),
             scaling_mode=self.scaling_var.get(),
             manifest=self.manifest,
@@ -268,9 +299,10 @@ class LauncherApp:
             )
 
         option = self._selected_option()
-        is_experimental = option is None or option.is_experimental
+        is_experimental = self.profile_var.get() == "framed" or option is None or option.is_experimental
         if is_experimental and not self.experimental_warned:
-            if not messagebox.askokcancel("Experimental resolution", EXPERIMENTAL_WARNING):
+            warning = framed.WARNING + " Continue?" if self.profile_var.get() == "framed" else EXPERIMENTAL_WARNING
+            if not messagebox.askokcancel("Experimental profile or resolution", warning):
                 self.log("Cancelled experimental launch.")
                 return
             self.experimental_warned = True
@@ -287,13 +319,16 @@ class LauncherApp:
         plan = self._selected_plan()
         self.log(f"Stage: {plan.stage}")
         self.log(f"Resolution: {plan.resolution}  Scaling: {plan.scaling_mode}")
-        result = core.ensure_candidate(plan, progress=self.log)
-        deploy = core.deploy_runtime_files(plan, result, progress=self.log)
+        backend = self._backend()
+        result = backend.ensure_candidate(plan, progress=self.log)
+        deploy = backend.deploy_runtime_files(plan, result, progress=self.log)
         if deploy["wrapper"] != "copied":
             messagebox.showwarning("DirectDraw wrapper missing", WRAPPER_HELP)
             self.log("Launch blocked: wrapper ddraw.dll missing in C:\\Clash.")
             return
 
+        if backend is framed:
+            framed.verify_launch(plan)
         process = core.launch_game(plan, confirmed=True)
         self.log(f"Launched PID {process.pid}: {plan.candidate_exe}")
         self._save_settings()
@@ -322,6 +357,8 @@ class LauncherApp:
         self.log(f"Removed {len(removed)} candidate file(s).")
 
     def _save_settings(self) -> None:
+        if self.profile_var.get() == "framed":
+            return
         try:
             self.settings["last_resolution"] = self._current_resolution_key()
         except core.LauncherError:
@@ -339,13 +376,13 @@ class LauncherApp:
         self.root.destroy()
 
 
-def start_gui() -> int:
+def start_gui(initial_profile: str = "classic") -> int:
     if not settings_mod.acquire_lock(pid_alive=core.pid_alive):
         print("Another Clash95 HD launcher instance is already running.")
         return 1
     try:
         root = tk.Tk()
-        app = LauncherApp(root)
+        app = LauncherApp(root, initial_profile=initial_profile)
         root.protocol("WM_DELETE_WINDOW", app.on_close)
         root.mainloop()
     finally:

@@ -22,6 +22,7 @@ import bootstrap
 bootstrap.ensure_repo_paths()
 
 import core  # noqa: E402
+import framed
 import ini as ini_mod  # noqa: E402
 import presets  # noqa: E402
 import settings as settings_mod  # noqa: E402
@@ -30,6 +31,8 @@ import settings as settings_mod  # noqa: E402
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--profile", choices=("classic", "framed"), default="classic")
+    parser.add_argument("--prepare", action="store_true", help="build and deploy without starting the game")
     parser.add_argument("--resolution", default=None)
     parser.add_argument("--scaling", default=None)
     parser.add_argument("--stage", default=None)
@@ -46,12 +49,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="second explicit confirmation required by --launch",
     )
     parser.add_argument("--gui-selftest", action="store_true")
-    return parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    if args.prepare and (args.launch or args.dry_run or args.gui_selftest):
+        parser.error("--prepare cannot be combined with --launch, --dry-run, or --gui-selftest")
+    return args
 
 
 def build_plan(args: argparse.Namespace) -> core.CandidatePlan:
     saved = settings_mod.load_settings()
-    return core.plan_candidate(
+    backend = framed if args.profile == "framed" else core
+    return backend.plan_candidate(
         stage=args.stage,
         resolution=args.resolution or saved["last_resolution"],
         scaling_mode=args.scaling or saved["scaling_mode"],
@@ -60,8 +67,8 @@ def build_plan(args: argparse.Namespace) -> core.CandidatePlan:
     )
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
+def _main(args: argparse.Namespace) -> int:
+    backend = framed if args.profile == "framed" else core
 
     if args.gui_selftest:
         try:
@@ -86,25 +93,36 @@ def main(argv: list[str] | None = None) -> int:
             "launch_policy": core.LAUNCH_POLICY,
             "write_policy": core.WRITE_POLICY,
         }
+        payload["profile"] = args.profile
+        if args.profile == "framed":
+            payload["source_preflight"] = framed.source_status()
+            payload["warning"] = framed.WARNING
         print(json.dumps(payload, indent=2))
-        return 0 if report.ready_to_patch else 1
+        return 0 if report.ready_to_patch and payload.get("source_preflight", {"passed": True})["passed"] else 1
 
-    if args.launch:
-        if not args.yes_launch:
+    if args.launch or args.prepare:
+        if args.launch and not args.yes_launch:
             print(
                 "--launch starts a visible game process; pass --yes-launch as "
                 "the second explicit confirmation."
             )
             return 2
         plan = build_plan(args)
-        result = core.ensure_candidate(plan, progress=print)
-        deploy = core.deploy_runtime_files(plan, result, progress=print)
+        result = backend.ensure_candidate(plan, progress=print)
+        deploy = backend.deploy_runtime_files(plan, result, progress=print)
+        if args.prepare:
+            print(json.dumps({"prepared": True, "runtime_deployed": deploy["wrapper"] == "copied",
+                              "profile": args.profile, "plan": plan.to_dict(), "candidate": result,
+                              "game_runtime_executed": False}, indent=2))
+            return 0
         if deploy["wrapper"] != "copied":
             print(
                 f"Launch blocked: {core.WRAPPER_DLL_NAME} missing in "
                 f"{plan.clash_dir}. The launcher never ships DLLs."
             )
             return 1
+        if backend is framed:
+            framed.verify_launch(plan)
         process = core.launch_game(plan, confirmed=True)
         print(f"Launched PID {process.pid}: {plan.candidate_exe}")
         return 0
@@ -115,7 +133,15 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Tk is not available in this Python: {exc}")
         print("Install a python.org Python 3.10+ build with Tk support.")
         return 1
-    return gui.start_gui()
+    return gui.start_gui(initial_profile=args.profile)
+
+
+def main(argv: list[str] | None = None) -> int:
+    try:
+        return _main(parse_args(argv))
+    except (core.LauncherError, presets.ManifestError, OSError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
