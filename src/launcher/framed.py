@@ -47,7 +47,7 @@ def plan_candidate(*, stage: str | None = None, **kwargs: Any) -> core.Candidate
         raise core.LauncherError("The framed profile cannot be combined with another --stage.")
     if getattr(sys, "frozen", False):
         raise core.LauncherError("The framed profile requires the source-tree launcher.")
-    plan = core.plan_candidate(stage=core.patch_clash95_hd.DEFAULT_STAGE, **kwargs)
+    plan = core.plan_candidate(stage=STAGE, renderer=PROFILE, **kwargs)
     profile = core.patch_clash95_hd.parse_resolution(plan.resolution)
     if profile.key != plan.resolution:
         raise core.LauncherError("Framed resolution must use canonical WxH spelling.")
@@ -76,7 +76,7 @@ def _assert_plan(plan: core.CandidatePlan) -> None:
                 expected_dir / BUILD_REPORT, expected_dir / PROBE,
                 expected_dir / core.WRAPPER_DLL_NAME, expected_dir / core.DXCFG_NAME,
                 expected_dir / core.MANIFEST_NAME)
-    if plan.stage != STAGE or plan.candidate_dir != expected_dir or _paths(plan) != expected:
+    if plan.renderer != PROFILE or plan.stage != STAGE or plan.candidate_dir != expected_dir or _paths(plan) != expected:
         raise core.LauncherError("Framed candidate plan does not match its isolated profile.")
     for target in (plan.candidate_dir, *_paths(plan)):
         if (not core.is_under(target, plan.candidates_root)
@@ -111,6 +111,7 @@ def ensure_candidate(plan: core.CandidatePlan, progress: Callable[[str], None] |
     try:
         _assert_plan(plan)
         bindings = _bindings()
+        display = core.display_for_plan(plan)
         original = _original(plan)
         image, metadata, probe = _build(original, plan.resolution)
         output_sha = core.sha256_bytes(image)
@@ -140,6 +141,8 @@ def ensure_candidate(plan: core.CandidatePlan, progress: Callable[[str], None] |
         say(f"{'Reused' if reused else 'Prepared'} framed candidate: {plan.candidate_exe}")
         return {"reused": reused, "base_sha256": core.sha256_bytes(original),
                 "output_sha256": output_sha,
+                "display_plan": display.to_dict(),
+                "build_id": display.build_identity(core.sha256_bytes(original), bindings),
                 "patch_count": len(metadata.get("selected_patches", [])) + len(metadata.get("hooks", [])),
                 "profile": PROFILE, "minimap_viewport": True, "source_sha256": bindings,
                 "artifact_sha256": {path.name: core.sha256_bytes(content) for path, content in artifacts.items()},
@@ -149,9 +152,14 @@ def ensure_candidate(plan: core.CandidatePlan, progress: Callable[[str], None] |
 
 
 def _verify_artifacts(plan: core.CandidatePlan, record: dict[str, Any], *, deployed: bool) -> None:
+    display = core.display_for_plan(plan)
+    bindings = _bindings()
+    original_sha = core.sha256_bytes(_original(plan))
     if (record.get("profile") != PROFILE or record.get("minimap_viewport") is not True
-            or record.get("source_sha256") != _bindings()
-            or record.get("base_sha256") != core.sha256_bytes(_original(plan))
+            or record.get("source_sha256") != bindings
+            or record.get("base_sha256") != original_sha
+            or record.get("display_plan") != display.to_dict()
+            or record.get("build_id") != display.build_identity(original_sha, bindings)
             or any(record.get(key) is not False for key in ("game_runtime_executed", "manual_input_proof", "promotion_ready"))):
         raise core.LauncherError("Framed candidate provenance does not match this source checkout.")
     paths = _paths(plan)[:5 if deployed else 3]
@@ -163,6 +171,9 @@ def _verify_artifacts(plan: core.CandidatePlan, record: dict[str, Any], *, deplo
             raise core.LauncherError(f"Framed artifact changed or is missing: {path}")
     if record.get("output_sha256") != hashes[plan.candidate_exe.name]:
         raise core.LauncherError("Framed output identity does not match its artifact manifest.")
+    if deployed and record.get("deployment_id") != core.deployment_identity(
+            record["build_id"], hashes[core.WRAPPER_DLL_NAME], hashes[core.DXCFG_NAME]):
+        raise core.LauncherError("Framed deployment identity does not match its wrapper and configuration.")
 
 
 def deploy_runtime_files(plan: core.CandidatePlan, candidate_result: dict[str, Any] | None = None,

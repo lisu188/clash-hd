@@ -92,6 +92,7 @@ class DisplayPlan:
     minimap_right_anchor: int | None
     scalar_patch_count: int
     scalar_patch_sha256: str
+    map_geometry_available: bool = True
 
     def to_dict(self) -> dict[str, Any]:
         return json.loads(json.dumps({"schema": PLAN_SCHEMA, **asdict(self),
@@ -107,6 +108,7 @@ class DisplayPlan:
                         "original_sha256": _sha(original_sha256), "source_sha256": _source_hashes(sources)})
 
     def world_view(self, map_width: int, map_height: int, scroll_x: int = 0, scroll_y: int = 0) -> WorldPlan:
+        _require(self.map_geometry_available, "unsupported_map_geometry", "The selected diagnostic stage does not establish an expanded map viewport.")
         _ints(map_width, map_height, scroll_x, scroll_y)
         _require(1 <= map_width <= 100 and 1 <= map_height <= 100,
                  "invalid_world", "The native world backing supports 1..100 tiles per dimension.")
@@ -152,7 +154,8 @@ def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x60
         _require(bool(encoded), "unsupported_stage", "The selected recipe contains no patches.")
         return DisplayPlan(renderer, resolution, selected_stage, RECIPE_REVISION[renderer], width, height,
                            scaling_mode, minimap, (profile.off_x, profile.off_y), terrain, full, coverage, partial,
-                           bands, cells, minimap_anchor, len(encoded), _digest(encoded))
+                           bands, cells, minimap_anchor, len(encoded), _digest(encoded),
+                           renderer == "framed" or set(patcher.STAGE_GROUPS[patcher.DEFAULT_STAGE]) <= set(patcher.STAGE_GROUPS[selected_stage]))
     except DisplayPlanError:
         raise
     except ImportError as exc:
