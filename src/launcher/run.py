@@ -89,11 +89,18 @@ def inspect_display(args: argparse.Namespace) -> int:
             payload["source_preflight"] = framed.source_status()
         print(json.dumps(payload, indent=2))
         return 0 if payload.get("source_preflight", {"passed": True})["passed"] else 1
-    plan = build_plan(args)
-    display = core.display_for_plan(plan)
-    payload = {"schema": 1, "inspection_only": True, "plan": plan.to_dict(),
-               "compatibility": presets.resolution_info(plan.resolution, renderer=args.profile,
-                    stage=plan.stage, scaling_mode=plan.scaling_mode, manifest=manifest),
+    saved = settings_mod.load_settings()
+    display = presets.resolve_plan(renderer=args.profile, resolution=args.resolution or saved["last_resolution"],
+                                   stage=args.stage, scaling_mode=args.scaling or saved["scaling_mode"], manifest=manifest)
+    payload = {"schema": 1, "inspection_only": True,
+               "plan": {"renderer": display.renderer, "resolution": display.resolution, "stage": display.stage,
+                        "scaling_mode": display.scaling_mode, "display_plan": display.to_dict()},
+               "requested_paths": {"clash_dir": str(args.clash_dir or saved["clash_dir"]),
+                                   "candidates_root": str(args.candidates_root or saved["candidates_root"])},
+               "candidate_paths_validated": False,
+               "path_policy": "Geometry inspection does not validate host deployment paths; use --dry-run before preparation.",
+               "compatibility": presets.resolution_info(display.resolution, renderer=args.profile,
+                    stage=display.stage, scaling_mode=display.scaling_mode, manifest=manifest),
                "game_runtime_executed": False}
     compatible = True
     if args.profile == "framed":
