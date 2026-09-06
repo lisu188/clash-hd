@@ -1,0 +1,58 @@
+name: Framed bounded repaint
+on:
+  pull_request:
+    paths:
+      - 'src/patcher/**'
+      - 'tools/build_framed*'
+      - 'tools/test_framed_bounded*.py'
+      - 'tools/test_framed_camera.py'
+      - '.gitattributes'
+      - '.github/workflows/framed-bounded-paint.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/patcher/**'
+      - 'tools/build_framed*'
+      - 'tools/test_framed_bounded*.py'
+      - 'tools/test_framed_camera.py'
+      - '.gitattributes'
+      - '.github/workflows/framed-bounded-paint.yml'
+permissions:
+  contents: read
+concurrency:
+  group: framed-bounded-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  native:
+    name: Bounded repaint x86 (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Execute bounded repaint and actual cell-dispatch instructions
+        run: |
+          python - <<'PY'
+          import sys,unittest
+          suite=unittest.TestSuite(unittest.defaultTestLoader.discover('tools',pattern=name)
+                                  for name in ('test_framed_bounded_paint.py','test_framed_bounded_cli.py'))
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          sys.exit(0 if result.wasSuccessful() and result.testsRun >= 20 and not result.skipped else 1)
+          PY
+      - name: Existing camera and display regressions
+        run: |
+          python tools/test_framed_camera.py
+          python tools/test_framed_viewport.py
+          python tools/test_display_plan.py
+          python tools/launcher_policy_guard.py --require-pass
