@@ -26,3 +26,5 @@
 /src/patcher/complete_hd_candidate.py -text whitespace=cr-at-eol
 # Frozen probe-report hashes use the original Windows CRLF checkout bytes.
 /probes/cdb/render/clash95_surface_dump_probe.cdb text eol=crlf
+/src/patcher/framed_camera.py -text whitespace=cr-at-eol
+/src/patcher/framed_bounded_paint.py -text whitespace=cr-at-eol
