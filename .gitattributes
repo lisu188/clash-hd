@@ -23,3 +23,4 @@
 /tools/build_framed_modal_candidate.py -text whitespace=cr-at-eol
 /tools/build_partial_tile_candidate.py -text whitespace=cr-at-eol
 /tools/partial_tile_trace_probe.py -text whitespace=cr-at-eol
+/src/patcher/complete_hd_candidate.py -text whitespace=cr-at-eol
