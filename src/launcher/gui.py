@@ -9,6 +9,7 @@ user action that passes ``confirmed=True`` to ``core.launch_game``.
 from __future__ import annotations
 
 import os
+from pathlib import Path
 import sys
 import tkinter as tk
 from tkinter import messagebox, ttk
@@ -68,6 +69,8 @@ class LauncherApp:
         self.profile_var = tk.StringVar(value=initial_profile)
         self.resolution_var = tk.StringVar(value=saved_resolution)
         self._build_widgets()
+        for variable in (self.resolution_var, self.custom_width_var, self.custom_height_var, self.scaling_var):
+            variable.trace_add("write", self.refresh_display_plan)
         self.on_profile_change()
         self.refresh_environment()
 
@@ -110,7 +113,9 @@ class LauncherApp:
         res_frame.pack(fill="x", **pad)
         default = presets.default_key(self.manifest)
         supports_multi = presets.patcher_supports_resolutions(core.patch_clash95_hd)
-        for option in self.options:
+        res_options = ttk.Frame(res_frame)
+        res_options.pack(fill="x")
+        for index, option in enumerate(self.options):
             badge, colour = STATUS_BADGES[option.status]
             text = f"{option.key}  [{badge}]"
             state = "normal"
@@ -118,13 +123,13 @@ class LauncherApp:
                 text += "  (awaiting patcher support)"
                 state = "disabled"
             button = ttk.Radiobutton(
-                res_frame,
+                res_options,
                 text=text,
                 value=option.key,
                 variable=self.resolution_var,
                 state=state,
             )
-            button.pack(anchor="w", padx=6)
+            button.grid(row=index // 2, column=index % 2, sticky="w", padx=6)
             self.resolution_buttons.append((button, option))
 
         custom_row = ttk.Frame(res_frame)
@@ -172,6 +177,9 @@ class LauncherApp:
                 text=f"{verified[0]} (from the tracked dxcfg_windowed.ini template)",
             ).pack(anchor="w", padx=6, pady=2)
 
+        self.display_label = ttk.Label(self.root, wraplength=520)
+        self.display_label.pack(fill="x", **pad)
+
         action_frame = ttk.Frame(self.root)
         action_frame.pack(fill="x", **pad)
         self.play_button = ttk.Button(action_frame, text="Play", command=self.on_play)
@@ -185,7 +193,7 @@ class LauncherApp:
 
         log_frame = ttk.LabelFrame(self.root, text="Log")
         log_frame.pack(fill="both", expand=True, **pad)
-        self.log_text = tk.Text(log_frame, height=10, state="disabled", wrap="word")
+        self.log_text = tk.Text(log_frame, height=8, state="disabled", wrap="word")
         scroll = ttk.Scrollbar(log_frame, command=self.log_text.yview)
         self.log_text.configure(yscrollcommand=scroll.set)
         scroll.pack(side="right", fill="y")
@@ -201,7 +209,8 @@ class LauncherApp:
         self.root.update_idletasks()
 
     def refresh_environment(self) -> None:
-        self.environment = core.check_environment()
+        self.environment = core.check_environment(
+            clash_dir=Path(self.settings["clash_dir"]), candidates_root=Path(self.settings["candidates_root"]))
         report = self.environment.to_dict()
         texts = {
             "base_exe": (
@@ -210,7 +219,7 @@ class LauncherApp:
                 else report["base_exe"].get("error", "SHA-256 mismatch — refusing to patch")
             ),
             "wrapper_dll": (
-                "found in C:\\Clash"
+                "found in the selected game directory"
                 if report["wrapper_dll"]["passed"]
                 else "missing (needed before Play)"
             ),
@@ -258,12 +267,41 @@ class LauncherApp:
         for button, option in self.resolution_buttons:
             badge = "Experimental" if experimental else STATUS_BADGES[option.status][0]
             button.configure(text=f"{option.key}  [{badge}]")
+        self.refresh_display_plan()
+
+    def refresh_display_plan(self, *_args) -> None:
+        if not hasattr(self, "display_label"):
+            return
+        self.experimental_warned = False
+        try:
+            renderer = self.profile_var.get()
+            for button, option in self.resolution_buttons:
+                info = presets.resolution_info(option.key, renderer=renderer, manifest=self.manifest)
+                badge = STATUS_BADGES[info["status"]][0] if info["recipe_eligible"] else "Unavailable"
+                button.configure(text=f"{option.key}  [{badge}]", state="normal" if info["recipe_eligible"] else "disabled")
+            plan = self._selected_plan()
+            display = core.display_for_plan(plan)
+            info = presets.resolution_info(plan.resolution, renderer=renderer, stage=plan.stage, manifest=self.manifest)
+            left, top, right, bottom = display.terrain
+            detail = (f"Terrain {right-left+1}x{bottom-top+1} pixels; full tiles "
+                      f"{display.full_tiles[0]}x{display.full_tiles[1]}; coverage "
+                      f"{display.coverage_tiles[0]}x{display.coverage_tiles[1]}. "
+                      f"Current full renderer needs a world of at least {display.full_tiles[0]}x{display.full_tiles[1]} tiles.")
+            if not display.map_geometry_available:
+                detail = "Diagnostic stage: expanded map geometry is not established by this patch selection."
+            self.display_label.configure(text=f"Next launch: {renderer} {plan.resolution} [{info['status']}]. " + detail)
+            self.play_button.configure(state="normal")
+        except (core.LauncherError, presets.ManifestError, core.DisplayPlanError) as exc:
+            self.display_label.configure(text=f"Next launch unavailable: {exc}")
+            self.play_button.configure(state="disabled")
 
     def _selected_plan(self) -> core.CandidatePlan:
         return self._backend().plan_candidate(
             resolution=self._current_resolution_key(),
             scaling_mode=self.scaling_var.get(),
             manifest=self.manifest,
+            clash_dir=Path(self.settings["clash_dir"]),
+            candidates_root=Path(self.settings["candidates_root"]),
         )
 
     def _selected_option(self) -> presets.ResolutionOption | None:
@@ -285,7 +323,7 @@ class LauncherApp:
             self.log(f"ERROR: {exc}")
             messagebox.showerror("Clash95 HD Launcher", str(exc))
         finally:
-            self.play_button.configure(state="normal")
+            self.refresh_display_plan()
 
     def _play_sequence(self) -> None:
         self.refresh_environment()
