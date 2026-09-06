@@ -1,0 +1,46 @@
+name: Patcher source snapshot
+on:
+  push:
+    branches: ['codex/source-snapshot-2ffc202']
+    paths: ['.github/workflows/patcher-source-snapshot.yml']
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 2ffc2024d21a9aa7014918c07a0fbaa7d343c16d
+          persist-credentials: false
+      - name: Archive tracked source and configuration only
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import zipfile
+          names = subprocess.check_output(['git', 'ls-files', '-z']).decode().split('\0')
+          extensions = {'.py', '.ps1', '.ini', '.cdb', '.json', '.md', '.yml', '.yaml', '.spec', '.c', '.h'}
+          roots = {'src', 'tools', 'scripts', 'config', 'configs', 'probes', '.github', 'docs', 'reports'}
+          hashes = {}
+          output = Path(os.environ['RUNNER_TEMP']) / 'patcher-source.zip'
+          with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED) as archive:
+              for name in names:
+                  path = Path(name)
+                  if name and path.is_file() and not path.is_symlink() and (path.suffix in extensions or name == '.gitattributes') and (len(path.parts) == 1 or path.parts[0] in roots):
+                      data = path.read_bytes()
+                      hashes[name] = hashlib.sha256(data).hexdigest()
+                      archive.writestr(name, data)
+              archive.writestr('source-snapshot.json', json.dumps({'commit': '2ffc2024d21a9aa7014918c07a0fbaa7d343c16d', 'sha256': hashes}, indent=2))
+          print(len(hashes), 'source/configuration files; no game binaries, assets, saves or captures')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: patcher-source-2ffc202
+          path: ${{ runner.temp }}/patcher-source.zip
+          retention-days: 1
+          if-no-files-found: error
