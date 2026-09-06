@@ -26,11 +26,12 @@ class Check:
     size: int
     value: int
     relocated: bool
+    loader_image_base: bool = False
 
     def expression(self, preferred_base: int) -> str:
         read = {1: "by", 2: "wo", 4: "dwo"}[self.size]
         expected = (f"((0x{self.value:08x} + @$t19 - 0x{preferred_base:08x}) & 0xffffffff)"
-                    if self.relocated else f"0x{self.value:0{self.size * 2}x}")
+                    if self.relocated or self.loader_image_base else f"0x{self.value:0{self.size * 2}x}")
         return f"({read}(@$t19 + 0x{self.rva:08x}) == {expected})"
 
 
@@ -85,6 +86,10 @@ def _checks(data: bytes, image: pe.PEImage, spans: list[tuple[int, int]],
     fields = sorted(relocations)
     _require(all(a + 4 <= b for a, b in zip(fields, fields[1:])),
              "overlapping HIGHLOW fields")
+    base_field = image.optional_offset + 28
+    _require(not any(base_field < field + 4 and field < base_field + 4 for field in fields),
+             "ImageBase header overlaps a HIGHLOW relocation")
+    fields = sorted([*fields, base_field])
     ranges = _merge(spans)
     ranges = _merge(ranges + [(field, field + 4) for field in fields
                     if any(start < field + 4 and field < end for start, end in ranges)])
@@ -102,7 +107,8 @@ def _checks(data: bytes, image: pe.PEImage, spans: list[tuple[int, int]],
                 at += size
             if stop != end:
                 offset = _offset(image, at, 4)
-                checks.append(Check(at, 4, int.from_bytes(data[offset:offset + 4], "little"), True))
+                checks.append(Check(at, 4, int.from_bytes(data[offset:offset + 4], "little"),
+                                    at != base_field, at == base_field))
                 at += 4
     return checks, ranges
 
@@ -176,10 +182,13 @@ def _contract(data: bytes, report: dict[str, Any], scalar_patches) -> tuple[pe.P
              "source_sha256": report["source_sha256"], "generator_sha256": _sha(Path(__file__).read_bytes()),
              "checked_ranges": [{"rva": start, "bytes": end - start} for start, end in ranges],
              "checked_bytes": sum(end - start for start, end in ranges), "check_count": len(checks),
-             "relocated_checks": sum(check.relocated for check in checks), "hook_count": len(hooks),
+             "relocated_checks": sum(check.relocated for check in checks),
+             "loader_image_base_rva": image.optional_offset + 28,
+             "loader_image_base_policy": "ImageBase equals actual loaded base at initial breakpoint",
+             "hook_count": len(hooks),
              "scalar_patch_count": len(patches), "game_runtime_executed": False,
              "manual_input_proof": False, "promotion_ready": False,
-             "scope": "Loaded PE headers, every selected scalar patch span, every installed hook, and complete final injected code. Not a whole-process hash, gameplay test or rendering/input proof."}
+             "scope": "Loaded PE headers (ImageBase normalized to actual load address), every selected scalar patch span, every installed hook, and complete final injected code. Not a whole-process hash, gameplay test or rendering/input proof."}
     encoded = json.dumps(facts, sort_keys=True, separators=(",", ":")).encode("utf-8")
     facts["contract_id"] = _sha(encoded)
     return image, checks, facts
@@ -202,6 +211,6 @@ def render_probe(data: bytes, report: dict[str, Any]) -> tuple[str, dict[str, An
     lines.append(f'.if ((@$t19 != 0) & (@$t18 == 0n{len(chunks)})) {{ .echo {prefix} result=pass chunks={len(chunks)}; }} .else {{ .echo {prefix} result=fail; }}')
     lines.append(".echo BNDLOAD_STOP target remains paused, no route or gameplay evidence produced")
     _require(all(len(line.encode("ascii")) < MAX_COMMAND_BYTES for line in lines), "CDB command exceeds bounded length")
-    text = "\n".join(lines) + "\n"
+    text = "\r\n".join(lines) + "\r\n"
     return text, {**facts, "probe_sha256": _sha(text.encode("ascii")), "required_chunks": len(chunks),
                   "debugger_scratch": ["$t18", "$t19"], "requires": "x86 CDB at the initial process breakpoint, before other probes or target initialization"}
