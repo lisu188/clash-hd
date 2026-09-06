@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +30,7 @@ class Patch:
 
 class FakeModule:
     DEFAULT_STAGE = patch_definition_guard.EXPECTED_STABLE_STAGE
+    PARAMETERIZED_STAGES = ()
     PATCHES = (
         Patch("display", 0x10, "aaaa", "bbbb"),
         Patch("input", 0x20, "cccc", "dddd"),
@@ -43,8 +45,13 @@ class FakeModule:
         Patch("battle-ui-centered-input", 0xB0, "efef", "fafa"),
         Patch("terrain-tooltip-bottom-center", 0xC0, "0101", "0202"),
         Patch("selected-unit-command-panel-right-bottom", 0xD0, "0303", "0404"),
+        Patch("frame-restore-bands", 0xE0, "0505", "0606"),
     )
     STAGE_GROUPS = {
+        patch_definition_guard.COMBINED_UI_VALIDATION_STAGE: (
+            "display", "input",
+            *sorted(patch_definition_guard.VALIDATION_STAGE_EXTRAS[patch_definition_guard.COMBINED_UI_VALIDATION_STAGE]),
+        ),
         patch_definition_guard.EXPECTED_STABLE_STAGE: ("display", "input"),
         patch_definition_guard.RIGHT_BOTTOM_VALIDATION_STAGE: (
             "display",
@@ -124,6 +131,7 @@ def clone_module(**updates):
         "DEFAULT_STAGE": FakeModule.DEFAULT_STAGE,
         "PATCHES": FakeModule.PATCHES,
         "STAGE_GROUPS": dict(FakeModule.STAGE_GROUPS),
+        "PARAMETERIZED_STAGES": FakeModule.PARAMETERIZED_STAGES,
     }
     attrs.update(updates)
     return type("FixtureModule", (), attrs)
@@ -201,6 +209,72 @@ def test_overlapping_selected_patch_fails() -> None:
     assert any("overlapping selected patches" in failure for failure in guard["failures"]), guard
 
 
+def test_combined_scope_rejects_missing_and_extra_groups() -> None:
+    stage = patch_definition_guard.COMBINED_UI_VALIDATION_STAGE
+    for omitted in patch_definition_guard.VALIDATION_STAGE_EXTRAS[stage]:
+        stages = dict(FakeModule.STAGE_GROUPS)
+        stages[stage] = tuple(group for group in stages[stage] if group != omitted)
+        guard = patch_definition_guard.build_guard(type("Args", (), {})(), clone_module(STAGE_GROUPS=stages))
+        assert not guard["passed"], omitted
+        assert omitted in guard["validation_stage_summaries"][stage]["missing"], guard
+    stages = dict(FakeModule.STAGE_GROUPS)
+    stages[stage] += ("castle-ui-center-present",)
+    guard = patch_definition_guard.build_guard(type("Args", (), {})(), clone_module(STAGE_GROUPS=stages))
+    assert not guard["passed"]
+    assert guard["validation_stage_summaries"][stage]["unexpected"] == ["castle-ui-center-present"], guard
+
+
+def test_combined_only_overlap_and_resolution_leak_fail() -> None:
+    patches = tuple(
+        Patch(p.group, 0xC1, p.old_hex, p.new_hex) if p.group == "frame-restore-bands" else p
+        for p in FakeModule.PATCHES
+    )
+    guard = patch_definition_guard.build_guard(type("Args", (), {})(), clone_module(PATCHES=patches))
+    assert not guard["passed"]
+    assert guard["overlap_failure_count"] == 1, guard
+    assert any(patch_definition_guard.COMBINED_UI_VALIDATION_STAGE in failure and "overlapping selected patches" in failure for failure in guard["failures"]), guard
+    module = clone_module(PARAMETERIZED_STAGES=(patch_definition_guard.COMBINED_UI_VALIDATION_STAGE,))
+    guard = patch_definition_guard.build_guard(type("Args", (), {})(), module)
+    assert not guard["passed"]
+    assert any("requires a complete resolution recipe" in failure for failure in guard["failures"]), guard
+
+
+def test_parameterized_combined_requires_complete_frame_and_group_recipes() -> None:
+    patches = tuple(p for p in FakeModule.PATCHES if p.group != "frame-restore-bands") + (
+        Patch("frame-restore-bands", 0x017BAF, "0505", "0606"),
+        Patch("frame-restore-bands", 0x11A000, "0707", "0808"),
+    )
+    recipes = {(p.group, p.offset): SimpleNamespace(kind="fixed") for p in patches}
+    cave = ("frame-restore-bands", 0x11A000)
+    hook = ("frame-restore-bands", 0x017BAF)
+    recipes[cave] = SimpleNamespace(kind="cave-template")
+
+    def report(supplied):
+        module = clone_module(
+            PATCHES=patches, RECIPES=supplied,
+            PARAMETERIZED_STAGES=(patch_definition_guard.COMBINED_UI_VALIDATION_STAGE,),
+        )
+        return patch_definition_guard.build_guard(type("Args", (), {})(), module)
+
+    assert report(recipes)["passed"]
+    selected_groups = set(FakeModule.STAGE_GROUPS[patch_definition_guard.COMBINED_UI_VALIDATION_STAGE])
+    for key in recipes:
+        missing = dict(recipes)
+        del missing[key]
+        result = report(missing)
+        if key[0] not in selected_groups:
+            assert result["passed"], result
+            continue
+        assert not result["passed"], key
+        assert any(f"0x{key[1]:06x}" in failure for failure in result["failures"]), result
+    for key, kind in ((cave, "fixed"), (hook, "cave-template"), (cave, "cave-pending")):
+        wrong = dict(recipes)
+        wrong[key] = SimpleNamespace(kind=kind)
+        result = report(wrong)
+        assert not result["passed"], (key, kind)
+        assert any("frame restoration requires" in failure for failure in result["failures"]), result
+
+
 def test_cli_writes_current_outputs(fixture: Path) -> None:
     out_json = fixture / "guard.json"
     out_md = fixture / "guard.md"
@@ -222,6 +296,9 @@ def run_tests() -> None:
         test_battlecenter_fixture_has_no_extra_groups()
         test_hd_layout_fixture_has_only_layout_groups()
         test_overlapping_selected_patch_fails()
+        test_combined_scope_rejects_missing_and_extra_groups()
+        test_combined_only_overlap_and_resolution_leak_fail()
+        test_parameterized_combined_requires_complete_frame_and_group_recipes()
         test_cli_writes_current_outputs(fixture / "cli")
     finally:
         shutil.rmtree(fixture, ignore_errors=True)
