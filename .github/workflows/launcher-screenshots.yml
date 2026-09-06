@@ -1,0 +1,111 @@
+name: Requested launcher screenshots
+on:
+  push:
+    branches: ['codex/launcher-screenshots-35ee11e']
+    paths: ['.github/workflows/launcher-screenshots.yml']
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 35ee11e29d98fccb0dfcbee74d03a8ae39f445e5
+          persist-credentials: false
+      - name: Install isolated UI capture dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb xauth python3-tk python3-pil
+      - name: Capture the real launcher without preparing or launching a game
+        shell: bash
+        run: |
+          export LOCALAPPDATA="$RUNNER_TEMP/launcher-screen-settings"
+          export SCREENSHOT_ROOT="$RUNNER_TEMP/launcher-screenshots"
+          xvfb-run -a -s '-screen 0 1600x1200x24 -nolisten tcp' /usr/bin/python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import platform
+          import subprocess
+          import sys
+          import time
+          import tkinter as tk
+          from PIL import ImageGrab
+          root_path = Path.cwd()
+          sys.path.insert(0, str(root_path / 'src/launcher'))
+          import bootstrap
+          bootstrap.ensure_repo_paths()
+          import core
+          import framed
+          import gui
+          import settings
+          target = '35ee11e29d98fccb0dfcbee74d03a8ae39f445e5'
+          actual = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          assert actual == target, actual
+          temp = Path(os.environ['RUNNER_TEMP'])
+          output = Path(os.environ['SCREENSHOT_ROOT'])
+          output.mkdir()
+          game = temp / 'game-not-installed'
+          candidates = temp / 'launcher-screen-candidates'
+          assert not game.exists() and not candidates.exists()
+          saved = dict(settings.DEFAULT_SETTINGS, clash_dir=str(game), candidates_root=str(candidates))
+          settings.save_settings(saved)
+          pins = framed.source_status()
+          assert pins['passed'], pins
+          records = []
+          root = tk.Tk()
+          try:
+              app = gui.LauncherApp(root)
+              root.geometry('760x960+40+40')
+              for renderer, resolution in [('classic', '800x600'), ('framed', '1280x720'), ('framed', '1366x768'), ('framed', '3840x2160')]:
+                  app.profile_var.set(renderer)
+                  app.on_profile_change()
+                  app.resolution_var.set(resolution)
+                  plan = app._selected_plan()
+                  display = core.display_for_plan(plan)
+                  app.log_text.configure(state='normal')
+                  app.log_text.delete('1.0', 'end')
+                  app.log_text.configure(state='disabled')
+                  app.log('Launcher-only screenshot from commit 35ee11e.')
+                  app.log('No game executable or DirectDraw wrapper is installed on this host.')
+                  app.log('No candidate was prepared. No game or debugger was launched.')
+                  app.log(f'Selected next-launch profile: {renderer} {resolution}.')
+                  for _ in range(4):
+                      root.update_idletasks()
+                      root.update()
+                      time.sleep(0.1)
+                  x, y = root.winfo_rootx(), root.winfo_rooty()
+                  width, height = root.winfo_width(), root.winfo_height()
+                  image = ImageGrab.grab(bbox=(x, y, x + width, y + height), xdisplay=os.environ['DISPLAY'])
+                  assert image.size == (width, height) and width >= 560 and height >= 700
+                  assert len(image.getcolors(width * height) or []) > 20, 'Blank capture'
+                  filename = f'launcher-{renderer}-{resolution}.png'
+                  image.save(output / filename)
+                  records.append({'file': filename, 'png_sha256': hashlib.sha256((output / filename).read_bytes()).hexdigest(),
+                                  'renderer': renderer, 'resolution': resolution, 'image_size': list(image.size),
+                                  'display_plan': display.to_dict(), 'environment': app.environment.to_dict()})
+                  print(filename, display.full_tiles, display.coverage_tiles, flush=True)
+          finally:
+              root.destroy()
+          assert not game.exists() and not candidates.exists(), 'A game/candidate path was created'
+          assert not core.find_running_clash(), 'Unexpected game/debugger process'
+          changed = subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], text=True)
+          assert not changed, changed
+          sources = ['src/launcher/gui.py', 'src/launcher/core.py', 'src/launcher/framed.py',
+                     'src/launcher/presets.py', 'src/launcher/resolutions.json', 'src/display_plan.py']
+          evidence = {'source_commit': target, 'platform': platform.platform(), 'ui_runtime': 'actual Tk launcher on Xvfb',
+                      'gui_modified': False, 'candidate_built': False, 'game_runtime_executed': False,
+                      'manual_input_proof': False, 'promotion_ready': False,
+                      'source_sha256': {p: hashlib.sha256((root_path / p).read_bytes()).hexdigest() for p in sources},
+                      'source_preflight': pins, 'screenshots': records}
+          (output / 'screenshot-manifest.json').write_text(json.dumps(evidence, indent=2), encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: launcher-screenshots-35ee11e
+          path: ${{ runner.temp }}/launcher-screenshots/
+          if-no-files-found: error
+          retention-days: 7
