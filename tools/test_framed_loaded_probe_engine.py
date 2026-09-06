@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from copy import deepcopy
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -19,6 +18,8 @@ import framed_loaded_probe as probe
 import test_framed_loaded_probe as fixtures
 
 MAGIC = b"CLASH_HD_DEBUGGER_FIXTURE_V1"
+RESULT = re.compile(r"^BNDLOAD contract=([0-9a-f]{64}) candidate=([0-9a-f]{64}) result=(pass|fail)(?: chunks=([0-9]+))?$", re.MULTILINE)
+MISMATCH = re.compile(r"^BNDLOAD_MISMATCH chunk=([0-9]+)$", re.MULTILINE)
 
 
 def executable_fixture(resolution: str = "1280x720", *, aslr: bool = False):
@@ -127,11 +128,14 @@ int main(int argc, char **argv) {
         check(session.client->QueryInterface(__uuidof(IDebugRegisters), reinterpret_cast<void **>(&session.registers)), "IDebugRegisters");
         check(session.client->QueryInterface(__uuidof(IDebugSymbols), reinterpret_cast<void **>(&session.symbols)), "IDebugSymbols");
         check(session.client->SetOutputCallbacks(&output), "SetOutputCallbacks");
-        check(session.symbols->SetSymbolPath(""), "SetSymbolPath");
+        check(session.symbols->SetSymbolPath("."), "SetSymbolPath");
         check(session.control->AddEngineOptions(DEBUG_ENGOPT_INITIAL_BREAK | DEBUG_ENGOPT_DISALLOW_SHELL_COMMANDS), "AddEngineOptions");
         char target[MAX_PATH];
         if (!GetFullPathNameA("probe-fixture.exe", MAX_PATH, target, nullptr)) throw std::runtime_error("Fixture path resolution failed");
-        check(session.client->CreateProcess(0, target, DEBUG_ONLY_THIS_PROCESS | CREATE_NO_WINDOW), "CreateProcess");
+        std::string command_line = std::string("\"") + target + "\"";
+        std::vector<char> command(command_line.begin(), command_line.end());
+        command.push_back('\0');
+        check(session.client->CreateProcess(0, command.data(), DEBUG_ONLY_THIS_PROCESS | CREATE_NO_WINDOW), "CreateProcess");
         check(session.control->WaitForEvent(0, 15000), "WaitForEvent");
         if (session.control->IsPointer64Bit() != S_FALSE) throw std::runtime_error("Not an x86 debugger context");
         ULONG64 peb = 0, ip_before = 0, ip_after = 0;
@@ -141,6 +145,8 @@ int main(int argc, char **argv) {
         ULONG nt_offset = *reinterpret_cast<const ULONG *>(&disk[60]);
         const auto *nt = reinterpret_cast<const IMAGE_NT_HEADERS32 *>(&disk[nt_offset]);
         ULONG size = nt->OptionalHeader.SizeOfImage;
+        ULONG machine_before = 0;
+        check(session.control->GetEffectiveProcessorType(&machine_before), "GetEffectiveProcessorType");
         check(session.registers->GetInstructionOffset(&ip_before), "GetInstructionOffset");
         if (ip_before >= base && ip_before < base + size) throw std::runtime_error("Fixture instructions reached before verification");
         std::vector<std::pair<ULONG, std::vector<unsigned char>>> snapshots;
@@ -160,6 +166,10 @@ int main(int argc, char **argv) {
             executed = session.control->ExecuteCommandFile(DEBUG_OUTCTL_THIS_CLIENT, argv[1], DEBUG_EXECUTE_NO_REPEAT);
         }
         session.client->FlushCallbacks();
+        ULONG machine_after = 0;
+        check(session.control->GetEffectiveProcessorType(&machine_after), "GetEffectiveProcessorType");
+        printf("HARNESS_CONTEXT before=%04lx after=%04lx\n", machine_before, machine_after);
+        check(session.control->SetEffectiveProcessorType(machine_before), "Restore debugger inspection context");
         ULONG state = 0;
         check(session.control->GetExecutionStatus(&state), "GetExecutionStatus");
         check(session.registers->GetInstructionOffset(&ip_after), "GetInstructionOffset");
@@ -190,6 +200,8 @@ class ExecutableFixtureTests(unittest.TestCase):
                 self.assertEqual(struct.unpack_from("<H", data, parsed.optional_offset + 68)[0], 3)
                 self.assertTrue(checks)
                 script, facts = fixtures.render(data, report, scalar)
+                self.assertTrue(script.endswith("\r\n"))
+                self.assertNotIn("\n", script.replace("\r\n", ""))
                 self.assertEqual(fixtures.evaluate_commands(script, fixtures.mapped(data, parsed.image_base), parsed.image_base), facts["required_chunks"])
 
     def test_dynamic_base_header_preserves_relocation_directory(self):
@@ -261,10 +273,19 @@ class DebuggerEngineTests(unittest.TestCase):
             return combined
 
     def assert_pass(self, log, facts):
-        self.assertIn(f"candidate={facts['candidate_sha256']} result=pass chunks={facts['required_chunks']}", log)
+        self.assertEqual(RESULT.findall(log), [(facts["contract_id"], facts["candidate_sha256"], "pass", str(facts["required_chunks"]))], log)
         self.assertIn("HARNESS_END hr=00000000", log)
-        self.assertNotIn("result=fail", log)
-        self.assertNotIn("BNDLOAD_MISMATCH", log)
+        self.assertIn("HARNESS_CONTEXT before=014c after=014c", log)
+        self.assertFalse(MISMATCH.findall(log), log)
+        self.assertNotIn("Syntax error", log)
+
+    def assert_rejected(self, log, *, syntax_valid=True):
+        records = RESULT.findall(log)
+        self.assertFalse(any(row[2] == "pass" for row in records), log)
+        if syntax_valid:
+            self.assertEqual(len(records), 1, log)
+            self.assertEqual(records[0][2], "fail", log)
+            self.assertNotIn("Syntax error", log)
 
     def test_full_generated_probe_at_all_ten_resolutions(self):
         for resolution in fixtures.fixture.SIZES:
@@ -296,9 +317,8 @@ class DebuggerEngineTests(unittest.TestCase):
             changed[offset] ^= 0x10
             with self.subTest(offset=offset):
                 log = self.execute(bytes(changed), script, label=f"corrupt-{offset:x}")
-                self.assertNotIn("result=pass", log)
-                self.assertIn("BNDLOAD_MISMATCH", log)
-                self.assertIn("result=fail", log)
+                self.assert_rejected(log)
+                self.assertTrue(MISMATCH.findall(log), log)
 
     def test_missing_duplicate_and_reordered_chunks_do_not_replace_coverage(self):
         data, report, scalar = executable_fixture()
@@ -311,9 +331,8 @@ class DebuggerEngineTests(unittest.TestCase):
         reordered[chunks[0]], reordered[chunks[1]] = reordered[chunks[1]], reordered[chunks[0]]
         for label, altered in (("missing", missing), ("duplicate", duplicate), ("reordered", reordered)):
             with self.subTest(case=label):
-                log = self.execute(data, "\n".join(altered) + "\n", label=label)
-                self.assertNotIn("result=pass", log)
-                self.assertIn("result=fail", log)
+                log = self.execute(data, "\r\n".join(altered) + "\r\n", label=label)
+                self.assert_rejected(log)
 
     def test_unreadable_memory_and_syntax_error_never_report_pass(self):
         data, report, scalar = executable_fixture()
@@ -324,13 +343,14 @@ class DebuggerEngineTests(unittest.TestCase):
             self.assertNotEqual(changed, first)
             with self.subTest(case=label):
                 log = self.execute(data, script.replace(first, changed), label=label)
-                self.assertNotIn("result=pass", log)
+                self.assert_rejected(log, syntax_valid=False)
 
     def test_wrong_pointer_context_cannot_pass(self):
         data, report, scalar = executable_fixture()
         script, _ = fixtures.render(data, report, scalar)
-        log = self.execute(data, ".effmach amd64\n" + script, label="wrong-context")
-        self.assertNotIn("result=pass", log)
+        log = self.execute(data, ".effmach amd64\r\n" + script, label="wrong-context")
+        self.assertIn("HARNESS_CONTEXT before=014c after=8664", log)
+        self.assert_rejected(log, syntax_valid=False)
 
     def test_parent_stage_mouse_bytes_are_rejected(self):
         data, report, scalar = executable_fixture()
@@ -340,8 +360,7 @@ class DebuggerEngineTests(unittest.TestCase):
             previous = bytes.fromhex(edit["old_hex"])
             stale[edit["offset"]:edit["offset"] + len(previous)] = previous
         log = self.execute(bytes(stale), script, label="parent-mouse-gate")
-        self.assertNotIn("result=pass", log)
-        self.assertIn("result=fail", log)
+        self.assert_rejected(log)
 
 
 if __name__ == "__main__":
