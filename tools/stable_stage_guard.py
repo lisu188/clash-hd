@@ -55,6 +55,7 @@ CASTLECENTER_ALL_STAGE = (
 )
 BATTLECENTER_STAGE = CASTLECENTER_ALL_STAGE + "-battlecenter"
 BATTLECENTER_INPUTPROBE_STAGE = BATTLECENTER_STAGE + "-inputprobe"
+COMBINED_UI_VALIDATION_STAGE = patch_clash95_hd.DEFAULT_STAGE + "-combinedui-validation"
 
 VALIDATION_ONLY_GROUPS = (
     "right-bottom-compose-proof",
@@ -75,6 +76,19 @@ MENU_SURFACE_GROUP = "menu-surface"
 MAP_SURFACE_UPGRADE_GROUP = "map-surface-upgrade-scrollclamp"
 
 VALIDATION_STAGE_EXPECTATIONS = {
+    COMBINED_UI_VALIDATION_STAGE: (
+        "terrain-tooltip-bottom-center",
+        "selected-unit-command-panel-right-bottom",
+        "frame-restore-bands",
+        "right-bottom-compose-proof",
+        "castle-ui-center-present-wrapper",
+        "castle-ui-centered-input",
+        "castle-overview-center-present-wrapper",
+        "castle-overview-centered-input",
+        "battle-ui-center-present-wrapper",
+        "battle-grid-centered-input",
+        "battle-ui-centered-input",
+    ),
     RIGHT_BOTTOM_VALIDATION_STAGE: ("right-bottom-compose-proof",),
     TOOLTIP_BOTTOM_CENTER_STAGE: ("terrain-tooltip-bottom-center",),
     UNIT_COMMAND_PANEL_STAGE: ("selected-unit-command-panel-right-bottom",),

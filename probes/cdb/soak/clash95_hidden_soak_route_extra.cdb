@@ -1,0 +1,53 @@
+.echo === Clash95 hidden soak route extra v1 (map steady-state soak) ===
+.echo Harness-only hidden-desktop soak probe for the approved hidden_cdb_host
+.echo proof class. Map entry is FORCED by the surface-dump base template loader
+.echo route - the main-menu click force plus load-slot select and accept
+.echo breakpoints - a disclosed forced-entry mechanism and never user input.
+.echo Prior findings this probe is built on: the world-map poll 0040B0C3 fires
+.echo once per poll call, Render_Present 00460EA0 never fires on the map path,
+.echo and the base template owns bp 00406FA0 with its definition composed after
+.echo any extra. The per-frame steady state therefore hooks 00406FA1 - the
+.echo second instruction of the redraw function - which fires every redraw frame
+.echo with no breakpoint conflict. The first poll hit latches the base dump flag
+.echo t7 - taking dump ownership exactly like the proven continuity route - and
+.echo prints SOAK_SURFDUMP_READY with the live surface pointer from 005202e0 so
+.echo the host sampling loop can read the surface bytes periodically with
+.echo ReadProcessMemory for the whole run. The surface base is stable for the
+.echo run. Duration is measured from KUSER_SHARED_DATA ticks at 7ffe0320 at the
+.echo standard 64 ticks per second. After __SOAK_DURATION_TICKS__ ticks the
+.echo probe prints SOAK_ROUTE_END and releases the base dump - t7 back to 0 and
+.echo t13 to 4 - so the base template prints its own final SURFDUMP_READY row as
+.echo the end-of-run marker and the harness stops the run.
+.echo Pan mode flag __SOAK_PAN__ - when 1 the probe derives each live maximum
+.echo from map width/height, selects an inward +1 or -1 per movable axis, and
+.echo writes a bounded four-phase cycle into gameData scroll fields gd+140008
+.echo and gd+140012 every __PAN_INTERVAL_TICKS__ ticks. It prints one structured
+.echo SOAK_PAN_PLAN and a SOAK_PAN_SET row for every write. An invalid base or
+.echo map with no safe inward direction prints SOAK_PAN_UNSAFE and stops routing.
+.echo This is a
+.echo disclosed forced-pan mechanism and never user input - reports must record
+.echo pan_mechanism=cdb_forced_scroll_write.
+.echo NO next-player advances are made anywhere in this probe - a soak holds the
+.echo same turn - so the day-wrap DirectDraw hang can never occur.
+.echo Each active redraw latches one clock tick for deadlines and all marker rows.
+.echo This prevents a clock rollover during CDB command evaluation from giving
+.echo the scheduler and pan observation different timestamps.
+.echo Heartbeat rows print every 0x800 redraw hits with the tick delta.
+.echo Scratch in the DOS stub: state 00400040, start-tick 00400044, hit-count
+.echo 00400048, captured-state then redraw-tick 0040004c, pan-phase 00400050, last-pan-tick
+.echo 00400054, base-scroll-x 00400058, base-scroll-y 0040005c, max-scroll-x
+.echo 00400060, max-scroll-y 00400064, inward-dx 00400068, inward-dy 0040006c.
+ed 00400040 0
+ed 00400044 0
+ed 00400048 0
+ed 0040004c 0
+ed 00400050 0
+ed 00400054 0
+ed 00400058 0
+ed 0040005c 0
+ed 00400060 0
+ed 00400064 0
+ed 00400068 0
+ed 0040006c 0
+bp 0040B0C3 "ed 0040004c poi(00400040); .if (poi(0040004c) == 0) { ed 00400040 2; ed 00400044 poi(7ffe0320); ed 00400054 poi(00400044); ed 00400058 poi(poi(005202e4)+0n140008); ed 0040005c poi(poi(005202e4)+0n140012); r @$t7 = 1; .printf \"SOAK_ROUTE_START route_ticks=%d pan=%d player=%d tick=%d gd=%p scroll=(%d,%d)\\n\", __SOAK_DURATION_TICKS__, __SOAK_PAN__, poi(005202ec), poi(00400044), poi(005202e4), poi(00400058), poi(0040005c); .printf \"SOAK_SURFDUMP_READY redraw_seq=%d surface=%p size=(%d,%d) base=%p bytes=%d\\n\", @$t13, poi(005202e0), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(005202e0)+4), wo(poi(005202e0))*wo(poi(005202e0)+2); .if (__SOAK_PAN__ != 0) { .if (poi(poi(005202e4)+0n140000) < 0n12) { ed 00400060 0; } .else { ed 00400060 (poi(poi(005202e4)+0n140000)-0n12); }; .if (poi(poi(005202e4)+0n140004) < 0n9) { ed 00400064 0; } .else { ed 00400064 (poi(poi(005202e4)+0n140004)-0n9); }; ed 00400068 0; ed 0040006c 0; .if (poi(00400058) < poi(00400060)) { ed 00400068 1; } .else { .if (poi(00400058) > 0) { ed 00400068 0xffffffff; }; }; .if (poi(0040005c) < poi(00400064)) { ed 0040006c 1; } .else { .if (poi(0040005c) > 0) { ed 0040006c 0xffffffff; }; }; .if ((poi(00400058) > poi(00400060)) | (poi(0040005c) > poi(00400064))) { ed 00400040 4; .printf \"SOAK_PAN_UNSAFE base=(%d,%d) max=(%d,%d) reason=base_out_of_bounds\\n\", poi(00400058), poi(0040005c), poi(00400060), poi(00400064); } .else { .if ((poi(00400068) == 0) & (poi(0040006c) == 0)) { ed 00400040 4; .printf \"SOAK_PAN_UNSAFE base=(%d,%d) max=(%d,%d) reason=no_inward_direction\\n\", poi(00400058), poi(0040005c), poi(00400060), poi(00400064); } .else { .printf \"SOAK_PAN_PLAN base=(%d,%d) delta=(%d,%d) max=(%d,%d) safe=1\\n\", poi(00400058), poi(0040005c), poi(00400068), poi(0040006c), poi(00400060), poi(00400064); }; }; }; }; gc"
+bp 00406FA1 "ed 0040004c poi(00400040); .if (poi(0040004c) == 2) { ed 0040004c poi(7ffe0320); ed 00400048 (poi(00400048)+1); .if ((poi(00400048) & 0x7ff) == 0) { .printf \"SOAK_HEARTBEAT hits=%d tickdelta=%d player=%d scroll=(%d,%d)\\n\", poi(00400048), poi(0040004c)-poi(00400044), poi(005202ec), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012); }; .if ((poi(0040004c)-poi(00400044)) >= __SOAK_DURATION_TICKS__) { ed 00400040 3; r @$t7 = 0; r @$t13 = 4; .printf \"SOAK_ROUTE_END route_ticks=%d pan=%d hits=%d tickdelta=%d player=%d scroll=(%d,%d)\\n\", __SOAK_DURATION_TICKS__, __SOAK_PAN__, poi(00400048), poi(0040004c)-poi(00400044), poi(005202ec), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012); } .else { .if ((__SOAK_PAN__ != 0) & ((poi(0040004c)-poi(00400054)) >= __PAN_INTERVAL_TICKS__)) { ed 00400054 poi(0040004c); .if ((poi(00400050) & 0n3) == 0) { ed poi(005202e4)+0n140008 poi(00400058); ed poi(005202e4)+0n140012 poi(0040005c); }; .if ((poi(00400050) & 0n3) == 1) { ed poi(005202e4)+0n140008 (poi(00400058)+poi(00400068)); ed poi(005202e4)+0n140012 poi(0040005c); }; .if ((poi(00400050) & 0n3) == 2) { ed poi(005202e4)+0n140008 (poi(00400058)+poi(00400068)); ed poi(005202e4)+0n140012 (poi(0040005c)+poi(0040006c)); }; .if ((poi(00400050) & 0n3) == 3) { ed poi(005202e4)+0n140008 poi(00400058); ed poi(005202e4)+0n140012 (poi(0040005c)+poi(0040006c)); }; .printf \"SOAK_PAN_SET phase=%d x=%d y=%d hits=%d tickdelta=%d delta=(%d,%d)\\n\", (poi(00400050) & 0n3), poi(poi(005202e4)+0n140008), poi(poi(005202e4)+0n140012), poi(00400048), poi(0040004c)-poi(00400044), poi(00400068), poi(0040006c); ed 00400050 (poi(00400050)+1); }; }; }; gc"

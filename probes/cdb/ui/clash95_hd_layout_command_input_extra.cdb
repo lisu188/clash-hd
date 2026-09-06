@@ -1,0 +1,12 @@
+.echo HDLAYOUT_INPUT_IDENTITY schema_version=1 run_id=__HDLAYOUT_RUN_ID__ candidate_sha256=__HDLAYOUT_CANDIDATE_SHA256__ stage=__HDLAYOUT_STAGE__ environment=__HDLAYOUT_ENVIRONMENT__ input_method=__HDLAYOUT_INPUT_METHOD__ width=800 height=600
+$$ Observation only. Original SHA 500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae.
+$$ Descriptor 00511D40 callback pointer +20h is 00409D80. Native indirect call 00419C5D returns 00419C60.
+$$ Native sprite hit tests exclude x+width-1 and y+height-1. No input, gate, callback, register, or memory writes.
+$$ Use separately from clash95_hd_layout_extra.cdb, whose redraw-invoke marker is forced diagnostic evidence.
+bp 00419B88 ".if (@ebx == 00511d40) { .printf \"HDLAYOUT_INPUT_DESCRIPTOR tid=%x desc=%p x=%d y=%d state=%x state3=%x callback=%p mouse_x=%d mouse_y=%d selected_unit=%d width=%d height=%d cursor_meta=%p cursor_sprite=%d cursor_x=%d cursor_y=%d\n\", @$tid, @ebx, poi(@ebx), poi(@ebx+4), by(@ebx+8), by(00511de7), poi(@ebx+20), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00511b58), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00544d14), poi(poi(00544d14))+poi(poi(00544d14)+20), poi(00544d08), poi(00544d0c); }; gc"
+bp 00419BE5 ".if (@ebx == 00511d40) { .printf \"HDLAYOUT_INPUT_HIT_X tid=%x desc=%p cursor=%d lower=%d upper_exclusive=%d\n\", @$tid, @ebx, @eax, poi(@ebx), @edx; }; gc"
+bp 00419C20 ".if (@ebx == 00511d40) { .printf \"HDLAYOUT_INPUT_HIT_Y tid=%x desc=%p cursor=%d lower=%d upper_exclusive=%d\n\", @$tid, @ebx, @eax, poi(@ebx+4), @edx; }; gc"
+bp 00419C47 ".if (@ebx == 00511d40) { .printf \"HDLAYOUT_INPUT_GATE_BEFORE tid=%x desc=%p callback=%p mouse_x=%d mouse_y=%d click_flag=%x button0=%x\n\", @$tid, @ebx, poi(@ebx+20), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00544d04), by(005451c0); }; gc"
+bp 00419C51 ".if (@ebx == 00511d40) { .printf \"HDLAYOUT_INPUT_GATE_OBSERVED tid=%x desc=%p eax=%d callback=%p mouse_x=%d mouse_y=%d\n\", @$tid, @ebx, @eax, poi(@ebx+20), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+bp 00419C5D ".if (@ebx == 00511d40) { .printf \"HDLAYOUT_INPUT_DISPATCH tid=%x desc=%p argument=%p eip=%p callback=%p mouse_x=%d mouse_y=%d\n\", @$tid, @ebx, @eax, @eip, poi(@ebx+20), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); }; gc"
+bp 00409D80 ".if (@eax == 00511d40) { .printf \"HDLAYOUT_INPUT_CALLBACK tid=%x desc=%p eip=%p ret=%p mouse_x=%d mouse_y=%d selected_unit=%d\n\", @$tid, @eax, @eip, poi(@esp), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c), poi(00511b58); }; gc"

@@ -13,10 +13,15 @@ PowerShell harnesses, or visible windows.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+import hd_soak_report
+import hd_soak_short_step_status
+from hd_soak_short_tier_ladder import SHORT_LADDER_STEPS
 
 
 DEFAULT_TRIAGE_JSON = Path("captures/current/hd-soak-short2-menu-idle-triage-current.json")
@@ -36,12 +41,19 @@ RUNTIME_POLICY = (
 EXPECTED_CLASSIFICATION = "passing_run_no_failure"
 EXPECTED_STEP_ID = "short2_map_idle"
 EXPECTED_STEP_STATUS = "missing_pending_approval"
+EXPECTED_STEP_STATUSES = {
+    EXPECTED_STEP_STATUS,
+    "failed_classified_input_environment_permission_denied",
+    "failed_classified_intro_skip_input_drift_exit",
+}
 EXPECTED_INTRO_SKIP = {
     "click_mode": "postmessage",
     "click_repeat": 8,
+    "stop_click_repeat_on_drift": True,
     "space_pulses": 4,
     "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
 }
+ORDERED_STEP_IDS = ("short2_menu_idle", "short2_map_idle", "short10_map_idle", "short10_map_pan", "short30_map_pan")
 
 
 def status_text(passed: bool) -> str:
@@ -100,6 +112,166 @@ def intro_skip_failures(plan: dict[str, Any]) -> list[str]:
     return failures
 
 
+def prior_step_evidence(step_status: dict[str, Any], *, completed: bool = False) -> tuple[list[dict[str, Any]], list[str]]:
+    """Verify canonical executed predecessors before treating intro readiness as historical."""
+    failures: list[str] = []
+    evidence: list[dict[str, Any]] = []
+    current = step_status.get("current_step")
+    current_id = current.get("id") if isinstance(current, dict) else None
+    if not completed and current_id not in ORDERED_STEP_IDS[1:]:
+        return evidence, ["current step is not a known later short-ladder step"]
+    if step_status.get("passed") is not True:
+        failures.append("short-step status is not passing")
+    records = step_status.get("steps") or []
+    if (not isinstance(records, list) or not all(isinstance(row, dict) for row in records)
+            or [row.get("id") for row in records] != list(ORDERED_STEP_IDS)):
+        return evidence, failures + ["short-step status does not contain the exact ordered five-step ladder"]
+    current_index = len(records) if completed else ORDERED_STEP_IDS.index(current_id)
+    if completed:
+        if step_status.get("ladder_complete") is not True or "current_step" not in step_status or current is not None:
+            failures.append("completed short ladder requires ladder_complete=true and explicit current_step=null")
+        if step_status.get("protected_stable_stage") != hd_soak_short_step_status.PROTECTED_STABLE_STAGE:
+            failures.append("completed short ladder does not identify the protected stable stage")
+        if step_status.get("failures") != []:
+            failures.append("completed short ladder must have an empty failures list")
+        counts = step_status.get("counts") or {}
+        expected_counts = {"total": 5, "passed": 5, "pending_or_missing": 0, "locked": 0, "failed_or_invalid": 0}
+        if not isinstance(counts, dict) or any(type(counts.get(key)) is not int or counts[key] != value for key, value in expected_counts.items()):
+            failures.append("completed short ladder counts do not describe exactly five passing steps")
+    elif records[current_index].get("prerequisites_passed") is not True:
+        failures.append("current step prerequisites have not passed")
+    seen_paths: set[str] = set()
+    for index, row in enumerate(records[:current_index]):
+        step_id = row["id"]
+        if completed:
+            definition = SHORT_LADDER_STEPS[index]
+            for key in ("tier", "route", "duration_sec", "prerequisites"):
+                if row.get(key) != definition[key]:
+                    failures.append(f"completed step {step_id} {key} differs from the canonical ladder")
+            if row.get("prerequisites_passed") is not True:
+                failures.append(f"completed step {step_id} prerequisites have not passed")
+        if row.get("passed") is not True or row.get("status") != "pass":
+            failures.append(f"predecessor {step_id} is not a passing step")
+        paths = row.get("paths") or {}
+        if not isinstance(paths, dict):
+            failures.append(f"predecessor {step_id} artifact paths are invalid")
+            continue
+        source_path = Path(str(paths.get("report_json") or "").replace("\\", "/"))
+        guard_path = Path(str(paths.get("guard_json") or "").replace("\\", "/"))
+        try:
+            source_bytes = source_path.read_bytes() if paths.get("report_json") else b""
+            guard_bytes = guard_path.read_bytes() if paths.get("guard_json") else b""
+            source = json.loads(source_bytes.decode("utf-8-sig")) if source_bytes else None
+            guard = json.loads(guard_bytes.decode("utf-8-sig")) if guard_bytes else None
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            source, guard = None, None
+        if not isinstance(source, dict) or not isinstance(guard, dict):
+            failures.append(f"predecessor {step_id} canonical report/guard is missing or unreadable")
+            continue
+        if completed:
+            for path in (source_path, guard_path):
+                identity = hd_soak_short_step_status.normalized_path_text(path.resolve())
+                if identity in seen_paths:
+                    failures.append(f"completed step {step_id} reuses another report/guard artifact")
+                seen_paths.add(identity)
+            declared_source = Path(str(source.get("report_json") or "").replace("\\", "/")).resolve()
+            if hd_soak_short_step_status.normalized_path_text(declared_source) != hd_soak_short_step_status.normalized_path_text(source_path.resolve()):
+                # Hidden runners preserve their immutable raw-run report path
+                # when publishing the byte-identical canonical current copy.
+                # Authenticate that copy rather than rewriting its provenance.
+                try:
+                    if declared_source.read_bytes() != source_bytes:
+                        failures.append(f"completed step {step_id} canonical copy differs from its declared source report_json")
+                except OSError:
+                    failures.append(f"completed step {step_id} declared source report_json is missing or unreadable")
+            if source.get("duration_sec") != SHORT_LADDER_STEPS[index]["duration_sec"] or guard.get("duration_sec") != source.get("duration_sec"):
+                failures.append(f"completed step {step_id} report/guard duration does not match the canonical tier")
+            if source.get("failures") != [] or guard.get("failures") != []:
+                failures.append(f"completed step {step_id} report/guard retains failures")
+            # Recompute the existing environment-specific guard from actual
+            # source metrics and patch evidence; cached affirmative flags alone
+            # cannot establish completion or hide a subsequently changed source.
+            try:
+                evaluation = hd_soak_report.evaluate_report_for_environment(source)
+                if evaluation.get("overall") is not True:
+                    failures.extend(f"completed step {step_id} source recheck: {failure}" for failure in evaluation.get("failures") or ["not passing"])
+                guard_checks = guard.get("checks")
+                if not isinstance(guard_checks, dict) or any(
+                    not isinstance(guard_checks.get(name), dict) or guard_checks[name].get("passed") is not True
+                    for name in evaluation.get("checks") or {}
+                ):
+                    failures.append(f"completed step {step_id} saved guard omits or fails required source checks")
+            except (OSError, ValueError, TypeError, AttributeError, KeyError) as exc:
+                failures.append(f"completed step {step_id} source could not be rechecked: {exc}")
+        if source.get("executed") is not True or source.get("passed") is not True:
+            failures.append(f"predecessor {step_id} source is not an executed passing run")
+        if not hd_soak_short_step_status.matches_step(source, row):
+            failures.append(f"predecessor {step_id} source stage/route/environment does not match")
+        if guard.get("overall") is not True:
+            failures.append(f"predecessor {step_id} guard is not passing")
+        failures.extend(hd_soak_short_step_status.artifact_mismatch_failures(guard, row, source_path, "guard", source))
+        checks = guard.get("checks") or {}
+        if not isinstance(checks, dict) or any(not isinstance(value, dict) for value in checks.values()):
+            failures.append(f"predecessor {step_id} guard checks are malformed")
+            continue
+        for name in ("executed", "source_status", "protected_stage", "patch_evidence", "promotion_boundary"):
+            if (checks.get(name) or {}).get("passed") is not True:
+                failures.append(f"predecessor {step_id} guard check {name} is not passing")
+        candidate_sha = str(source.get("candidate_sha256") or "").lower()
+        patch_summary = (checks.get("patch_evidence") or {}).get("summary")
+        guard_sha = str((patch_summary if isinstance(patch_summary, dict) else {}).get("candidate_sha256") or "").lower()
+        if not hd_soak_report.is_sha256(candidate_sha) or candidate_sha != guard_sha:
+            failures.append(f"predecessor {step_id} candidate SHA does not match guard provenance")
+        if step_id == ORDERED_STEP_IDS[0] and (
+            source.get("environment", "host_visible") != "host_visible" or source.get("final_route_marker") != "intro-skip"
+        ):
+            failures.append("menu predecessor does not prove the visible-host intro-skip route")
+        evidence.append({"id": step_id, "report": str(source_path), "guard": str(guard_path), "candidate_sha256": candidate_sha,
+                         "declared_source_report": source.get("report_json"),
+                         "environment": hd_soak_short_step_status.evidence_binding(source)[0],
+                         "report_sha256": hashlib.sha256(source_bytes).hexdigest(),
+                         "guard_sha256": hashlib.sha256(guard_bytes).hexdigest()})
+    return evidence, failures
+
+
+def short_ladder_terminal_claim(step_status: dict[str, Any]) -> bool:
+    return bool(step_status.get("ladder_complete")) or ("current_step" in step_status and step_status["current_step"] is None)
+
+
+def completed_short_ladder_report(step_status: dict[str, Any], source: Path, runtime_policy: str) -> dict[str, Any]:
+    evidence, failures = prior_step_evidence(step_status, completed=True)
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(), "passed": not failures,
+        "status": "not_applicable_short_ladder_complete" if not failures else "invalid_short_ladder_completion",
+        "terminal_short_ladder": True, "ladder_complete_verified": not failures,
+        "runtime_policy": runtime_policy, "source_artifacts": {"step_status_json": str(source)},
+        "current_step": None, "completed_predecessor_evidence": evidence,
+        "runtime_authorized": False, "approval_required": False, "approved": False,
+        "promotion_ready": False, "manual_input_proof": False,
+        "safe_dry_run_command": None, "approval_gated_execute_command": None,
+        "hidden_runtime_command": None, "recommended_runtime_command": None,
+        "exact_runtime_command": None, "post_run_validation": [], "commands": {},
+        "plan": {}, "dry_run_plan": {"approval_gated_execute_command": None},
+        "invocation": {"command": None, "exit_code": None, "executed": False},
+        "approval_boundary": "This terminal short-ladder status authorizes no runtime or approval request. Long-soak, manual-input and promotion evidence require their separate gates.",
+        "remaining_requirements": ["long-soak evidence", "manual-input proof and required visible approval", "explicit promotion decision"],
+        "locks": {"stable_stage_should_change": False, "right_bottom_promotion_blocked": True,
+                  "long_tiers_locked": bool(failures), "future_lanes_locked": True},
+        "failures": failures,
+    }
+
+
+def completed_short_ladder_markdown(report: dict[str, Any], title: str) -> str:
+    lines = [f"# {title}", "", f"- Overall: {status_text(report['passed'])}",
+             f"- Status: `{report['status']}`", f"- Evidence records reloaded: `{len(report['completed_predecessor_evidence'])}`",
+             "", report["approval_boundary"], "", "## Separate Requirements", ""]
+    lines.extend(f"- {item}" for item in report["remaining_requirements"])
+    if report["failures"]:
+        lines.extend(["", "## Failures", ""])
+        lines.extend(f"- {failure}" for failure in report["failures"])
+    return "\n".join(lines) + "\n"
+
+
 def build_report(args: argparse.Namespace) -> dict[str, Any]:
     sources = {
         "triage": args.triage_json,
@@ -110,7 +282,33 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "process_hygiene": args.process_hygiene_json,
         "exe_artifact": args.exe_artifact_json,
     }
-    loaded = {name: load_json(path) for name, path in sources.items()}
+    step_status_data = load_json(args.step_status_json) or {}
+    if short_ladder_terminal_claim(step_status_data):
+        return completed_short_ladder_report(step_status_data, args.step_status_json, RUNTIME_POLICY)
+    loaded = {name: step_status_data if name == "step_status" else load_json(path) for name, path in sources.items()}
+    current_data = step_status_data.get("current_step") or {}
+    current_id = current_data.get("id")
+    historical = current_id in ORDERED_STEP_IDS[2:] or (
+        current_id == EXPECTED_STEP_ID and current_data.get("preferred_environment") == "hidden_cdb_host"
+    )
+    if historical:
+        evidence, failures = prior_step_evidence(step_status_data)
+        triage = loaded.get("triage") or {}
+        if triage.get("classification") != EXPECTED_CLASSIFICATION or triage.get("executed") is not True or triage.get("final_route_marker") != "intro-skip":
+            failures.append("historical intro triage does not record an executed passing intro-skip run")
+        if evidence and str(triage.get("candidate_sha256") or "").lower() != evidence[0]["candidate_sha256"]:
+            failures.append("historical intro triage candidate SHA does not match canonical menu proof")
+        return {
+            "generated_at": datetime.now(timezone.utc).isoformat(), "passed": not failures,
+            "runtime_policy": RUNTIME_POLICY, "status": "not_applicable_later_step" if not failures else "not_ready",
+            "source_artifacts": {name: str(sources[name]) for name in ("triage", "step_status")},
+            "current_step": current_data, "completed_predecessor_evidence": evidence,
+            "triage": {"classification": triage.get("classification"), "candidate_sha256": triage.get("candidate_sha256")},
+            "intro_skip_contract": EXPECTED_INTRO_SKIP,
+            "dry_run_plan": {"approval_gated_execute_command": None},
+            "approval_boundary": "Historical intro-skip proof is complete. This status authorizes no runtime; follow the current environment-specific preflight.",
+            "failures": failures,
+        }
     failures: list[str] = []
     for name, data in loaded.items():
         if data is None:
@@ -127,6 +325,12 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     current_step = step_status.get("current_step") or {}
     dry_run_step = dry_run_plan.get("current_step") or {}
     command = str(dry_run_plan.get("approval_gated_execute_command") or (plan.get("commands") or {}).get("execute") or "")
+    current_step_status = str(current_step.get("status") or "")
+    not_applicable_current_failure = (
+        current_step.get("id") == EXPECTED_STEP_ID
+        and current_step_status.startswith("failed_classified_")
+        and current_step_status not in EXPECTED_STEP_STATUSES
+    )
 
     if triage.get("classification") != EXPECTED_CLASSIFICATION:
         failures.append(f"triage classification is {triage.get('classification')!r}, expected {EXPECTED_CLASSIFICATION!r}")
@@ -137,13 +341,21 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
     if current_step.get("id") != EXPECTED_STEP_ID:
         failures.append(f"current short step is {current_step.get('id')!r}, expected {EXPECTED_STEP_ID!r}")
-    if current_step.get("status") != EXPECTED_STEP_STATUS:
-        failures.append(f"current short step status is {current_step.get('status')!r}, expected {EXPECTED_STEP_STATUS!r}")
+    if current_step.get("status") not in EXPECTED_STEP_STATUSES and not not_applicable_current_failure:
+        failures.append(
+            f"current short step status is {current_step.get('status')!r}, "
+            f"expected one of {sorted(EXPECTED_STEP_STATUSES)!r}"
+        )
 
     if harness_guard.get("passed") is not True:
         failures.append("harness guard is not passing")
     checks = harness_guard.get("checks") or {}
-    for check_name in ("intro_skip_policy", "visible_runtime_opt_in", "protected_stage_boundary"):
+    for check_name in (
+        "intro_skip_policy",
+        "visible_runtime_opt_in",
+        "windowed_mode",
+        "protected_stage_boundary",
+    ):
         if (checks.get(check_name) or {}).get("passed") is not True:
             failures.append(f"harness guard check is not passing: {check_name}")
 
@@ -185,7 +397,12 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     if exe_artifact.get("tracked_exes"):
         failures.append("exe artifact guard reports tracked executables")
 
-    status = "ready_for_explicit_visible_rerun_approval" if not failures else "not_ready"
+    if failures:
+        status = "not_ready"
+    elif not_applicable_current_failure:
+        status = "not_applicable_current_failure"
+    else:
+        status = "ready_for_explicit_visible_rerun_approval"
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "passed": not failures,
@@ -218,7 +435,10 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             "exe_artifact_guard_passed": bool(exe_artifact.get("passed")),
         },
         "approval_boundary": (
-            "The next runtime run will open a visible Clash95 game window and still "
+            "No intro-skip rerun is authorized while the current step has an unrelated "
+            "classified failure; follow its repo-only triage instead."
+            if not_applicable_current_failure
+            else "The next runtime run will open a visible Clash95 game window and still "
             "requires explicit user approval."
         ),
         "failures": failures,
@@ -226,6 +446,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
 
 def to_markdown(report: dict[str, Any]) -> str:
+    if report.get("terminal_short_ladder"):
+        return completed_short_ladder_markdown(report, "HD Soak Intro-Skip Rerun Readiness")
     triage = report.get("triage") or {}
     dry_run = report.get("dry_run_plan") or {}
     lines = [

@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -119,11 +121,59 @@ def test_cli_writes_outputs() -> None:
         shutil.rmtree(fixture, ignore_errors=True)
 
 
+def test_source_hashing_without_module_autoload() -> None:
+    """Exercise only the extracted hash helper; never execute the soak harness."""
+    powershell = Path(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
+    if not powershell.is_file():
+        return
+    with tempfile.TemporaryDirectory(prefix="clash-soak-hash-") as temporary:
+        fixture = Path(temporary)
+        sample = fixture / "sample.bin"
+        contents = bytes(range(256)) * 19
+        sample.write_bytes(contents)
+        helper = fixture / "hash-only.ps1"
+        helper.write_text(r'''
+param([string]$Runner, [string]$Sample)
+$ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
+function Get-FileHash { throw 'Get-FileHash must not be called' }
+$tokens = $null
+$parseErrors = $null
+$ast = [System.Management.Automation.Language.Parser]::ParseFile($Runner, [ref]$tokens, [ref]$parseErrors)
+if ($parseErrors.Count) { throw 'Runner has syntax errors' }
+$definition = $ast.Find({ param($node) $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'Get-FileSha256' }, $true)
+if (-not $definition) { throw 'Hash helper not found' }
+. ([scriptblock]::Create($definition.Extent.Text))
+Get-FileSha256 -Path $Sample
+# The helper must release its file handle before returning.
+$exclusive = [System.IO.File]::Open($Sample, [System.IO.FileMode]::Open, [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
+$exclusive.Dispose()
+[System.IO.File]::WriteAllBytes($Sample, [byte[]]@())
+Get-FileSha256 -Path $Sample
+$missingRejected = $false
+try { Get-FileSha256 -Path ($Sample + '.missing') } catch { $missingRejected = $true }
+if (-not $missingRejected) { throw 'Missing input was accepted' }
+''', encoding="ascii")
+        for runner in ("scripts/smoke/run_hd_soak.ps1", "scripts/cdb/run_hidden_soak.ps1"):
+            sample.write_bytes(contents)
+            result = subprocess.run(
+                [str(powershell), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(helper),
+                 "-Runner", str(ROOT / runner), "-Sample", str(sample)],
+                capture_output=True, text=True, check=False,
+            )
+            assert result.returncode == 0, result.stdout + result.stderr
+            assert result.stdout.splitlines() == [
+                hashlib.sha256(contents).hexdigest().upper(),
+                hashlib.sha256(b"").hexdigest().upper(),
+            ], result.stdout
+
+
 def run_tests() -> None:
     test_fake_boundary_report_passes()
     test_boundary_report_rejects_side_effects()
     test_markdown_contains_case_rows()
     test_cli_writes_outputs()
+    test_source_hashing_without_module_autoload()
 
 
 if __name__ == "__main__":

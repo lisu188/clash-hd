@@ -17,11 +17,55 @@ from pathlib import Path
 from typing import Any
 
 from capture_geometry import Image, luminance, read_png
+from action_bar_surface_audit import FRAMED_STAGE, framed_stage
+from src.patcher.framed_viewport import FramedViewport
 
 
 DEFAULT_MASKS = {
     "hd_minimap": (586, 16, 799, 229),
 }
+
+
+def default_masks(logical_width: int) -> dict[str, tuple[int, int, int, int]]:
+    """The 214px minimap is right-anchored; retain the legacy 800px mapping."""
+    return {"hd_minimap": (logical_width - 214, 16, logical_width - 1, 229)}
+
+
+def framed_coverage_geometry(stage: str, width: int, height: int, *,
+                             minimap_enabled: bool, minimap_width: int | None = None,
+                             minimap_height: int | None = None) -> dict[str, Any]:
+    """Exact stage geometry, requiring observed enabled minimap dimensions.
+
+    This capture lane requires the renderer's separately verified in-world
+    ceiling window. It does not reclassify outside-world clears as terrain or
+    derive visibility from PNG colors. UI masks remain explicitly unmeasured;
+    action-bar and four-border source-pixel audits are separate requirements.
+    """
+    if not framed_stage(stage):
+        raise ValueError("framed coverage requires the exact framed stage")
+    layout = FramedViewport(width, height)
+    if type(minimap_enabled) is not bool:
+        raise ValueError("framed coverage requires observed minimap enabled state")
+    masks = [("framed_commands", layout.action_bar.as_tuple())]
+    if minimap_enabled:
+        if type(minimap_width) is not int or type(minimap_height) is not int:
+            raise ValueError("enabled minimap requires actual backing width and height")
+        box = layout.minimap_box(minimap_width, minimap_height)
+        masks.append(("hd_minimap", box.as_tuple()))
+    elif minimap_width is not None or minimap_height is not None:
+        raise ValueError("disabled minimap does not accept an enabled backing mask")
+    cols, rows = layout.ceil_tiles
+    cells = []
+    for row in range(rows):
+        for col in range(cols):
+            rect = layout.cell_rect(col, row)
+            cells.append(dict(id=f"r{row}c{col}", row=row, col=col, active=True,
+                              logical_rect=rect.as_tuple(), partial=rect.width != 64 or rect.height != 64))
+    return dict(stage=stage, terrain=list(layout.terrain.as_tuple()), columns=cols, rows=rows,
+                cells=cells, masks=masks,
+                minimap=dict(enabled=minimap_enabled, width=minimap_width, height=minimap_height,
+                             exclusive_right=width-32),
+                limits="Requires a separately verified in-world ceiling window. Masked UI cells are not terrain proof; frame/action-bar/input/runtime acceptance remains separate.")
 
 
 def region_nonblack_percent(
@@ -31,6 +75,8 @@ def region_nonblack_percent(
     logical_height: int,
     threshold: int,
 ) -> float:
+    if logical_rect[0] > logical_rect[2] or logical_rect[1] > logical_rect[3]:
+        return 0.0
     x0, y0, x1, y1 = logical_rect_to_pixels(image, logical_rect, logical_width, logical_height)
     total = 0
     nonblack = 0
@@ -60,6 +106,13 @@ def gameplay_frame_check(image: Image, args: argparse.Namespace) -> dict[str, An
         args.logical_width - 1,
         args.logical_height - 1,
     )
+    framed = getattr(args, "framed_geometry", None)
+    if framed is not None:
+        left, top, right, bottom = framed["terrain"]
+        minimap = framed["minimap"]
+        below_minimap = top + minimap["height"] if minimap["enabled"] else top
+        right_edge = (max(left, right-63), below_minimap, right, bottom)
+        bottom_edge = (left, max(top, bottom-63), right, bottom)
 
     edge_coverage = {
         "overall_nonblack_percent": region_nonblack_percent(
@@ -264,6 +317,9 @@ def analyze_image(
     args: argparse.Namespace,
 ) -> dict[str, Any]:
     image = read_png(path)
+    if (getattr(args, "framed_geometry", None) is not None and
+            (image.width, image.height) != (args.logical_width, args.logical_height)):
+        raise ValueError("framed capture dimensions differ from the bound physical resolution")
     frame_check = gameplay_frame_check(image, args)
     analyzed_cells = []
     flagged_cells = []
@@ -288,6 +344,8 @@ def analyze_image(
             "active": cell["active"],
             **stats,
         }
+        if "partial" in cell:
+            row["partial"] = cell["partial"]
         if not cell["active"]:
             row["flags"] = ["inactive_bottom_clip", *row["flags"]]
             inactive_cells.append(row["id"])
@@ -401,15 +459,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("png", nargs="+", type=Path, help="PNG gameplay capture(s) to inspect")
     parser.add_argument("--logical-width", type=int, default=800)
     parser.add_argument("--logical-height", type=int, default=600)
+    parser.add_argument("--stage", help="exact producer stage; framed geometry is never inferred from size")
+    parser.add_argument("--minimap-enabled", type=int, choices=(0, 1),
+                        help="observed enabled state, required only by the framed stage")
+    parser.add_argument("--minimap-width", type=int, help="actual enabled minimap backing width")
+    parser.add_argument("--minimap-height", type=int, help="actual enabled minimap backing height")
     parser.add_argument("--origin-x", type=int, default=32)
     parser.add_argument("--origin-y", type=int, default=16)
     parser.add_argument("--tile-size", type=int, default=64)
-    parser.add_argument("--columns", type=int, default=12)
-    parser.add_argument("--rows", type=int, default=9)
+    parser.add_argument("--columns", type=int)
+    parser.add_argument("--rows", type=int)
     parser.add_argument(
         "--bottom-row-active-cols",
         type=int,
-        default=12,
+        default=None,
         help="active cells in the clipped bottom row; 0 treats all columns as active",
     )
     parser.add_argument("--threshold", type=int, default=12, help="max RGB above this counts as nonblack")
@@ -447,21 +510,46 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--no-default-masks", action="store_true")
     parser.add_argument("--write-json", type=Path)
-    return parser.parse_args()
+    args = parser.parse_args()
+    args.framed_geometry = None
+    try:
+        is_framed = framed_stage(args.stage)
+        if is_framed:
+            if args.minimap_enabled is None:
+                raise ValueError("framed stage requires --minimap-enabled from the observed capture")
+            if (args.origin_x, args.origin_y, args.tile_size) != (32, 16, 64):
+                raise ValueError("framed terrain origin and tile size cannot be overridden")
+            if any(v is not None for v in (args.columns, args.rows, args.bottom_row_active_cols)):
+                raise ValueError("framed grid overrides are forbidden; every clipped ceiling cell is required")
+            if args.no_default_masks or args.mask:
+                raise ValueError("framed stage accepts only observed minimap and fixed command masks")
+            geometry = framed_coverage_geometry(args.stage, args.logical_width, args.logical_height,
+                        minimap_enabled=bool(args.minimap_enabled), minimap_width=args.minimap_width,
+                        minimap_height=args.minimap_height)
+            args.framed_geometry = geometry
+            args.columns, args.rows = geometry["columns"], geometry["rows"]
+            args.bottom_row_active_cols = args.columns
+        else:
+            if any(v is not None for v in (args.minimap_enabled, args.minimap_width, args.minimap_height)):
+                raise ValueError("minimap observation options require the exact framed stage")
+            args.columns = 12 if args.columns is None else args.columns
+            args.rows = 9 if args.rows is None else args.rows
+            args.bottom_row_active_cols = 12 if args.bottom_row_active_cols is None else args.bottom_row_active_cols
+    except ValueError as exc:
+        parser.error(str(exc))
+    return args
 
 
 def main() -> int:
     args = parse_args()
-    masks = [] if args.no_default_masks else list(DEFAULT_MASKS.items())
-    masks.extend(args.mask)
-    cells = build_cells(
-        args.origin_x,
-        args.origin_y,
-        args.tile_size,
-        args.columns,
-        args.rows,
-        args.bottom_row_active_cols,
-    )
+    if args.framed_geometry is not None:
+        masks = args.framed_geometry["masks"]
+        cells = args.framed_geometry["cells"]
+    else:
+        masks = [] if args.no_default_masks else list(default_masks(args.logical_width).items())
+        masks.extend(args.mask)
+        cells = build_cells(args.origin_x, args.origin_y, args.tile_size, args.columns,
+                            args.rows, args.bottom_row_active_cols)
     report = {
         "parameters": {
             "logical_width": args.logical_width,
@@ -482,6 +570,8 @@ def main() -> int:
         "masks": [{"name": name, "logical_rect": list(rect)} for name, rect in masks],
         "images": [analyze_image(path, cells, masks, args) for path in args.png],
     }
+    if args.framed_geometry is not None:
+        report["framed_profile"] = {k: v for k, v in args.framed_geometry.items() if k not in ("cells", "masks")}
     if args.write_json:
         args.write_json.parent.mkdir(parents=True, exist_ok=True)
         args.write_json.write_text(json.dumps(report, indent=2), encoding="ascii")

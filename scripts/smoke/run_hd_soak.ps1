@@ -246,6 +246,21 @@ function Test-IsUnderPath {
     return $fullPath.StartsWith($fullRoot + '\', [System.StringComparison]::OrdinalIgnoreCase)
 }
 
+function Get-FileSha256 {
+    param([Parameter(Mandatory = $true)][string]$Path)
+    # Keep approval/source identity checks independent of module autoload.
+    $stream = [System.IO.File]::OpenRead($Path)
+    $hasher = $null
+    try {
+        $hasher = [System.Security.Cryptography.SHA256]::Create()
+        return [System.BitConverter]::ToString($hasher.ComputeHash($stream)).Replace('-', '')
+    }
+    finally {
+        if ($hasher) { $hasher.Dispose() }
+        $stream.Dispose()
+    }
+}
+
 function Get-DxcfgWindowedStatus {
     param([Parameter(Mandatory = $true)][string]$Path)
     $failures = @()
@@ -280,7 +295,7 @@ function Get-DxcfgWindowedStatus {
     [pscustomobject]@{
         Passed = (@($failures).Count -eq 0)
         Path = $Path
-        Sha256 = if (Test-Path -LiteralPath $Path -PathType Leaf) { (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash } else { $null }
+        Sha256 = if (Test-Path -LiteralPath $Path -PathType Leaf) { Get-FileSha256 -Path $Path } else { $null }
         Display = $display
         Presentation = $presentation
         Required = $true
@@ -975,7 +990,7 @@ $inputExists = Test-Path -LiteralPath $InputExeFull -PathType Leaf
 $inputSha256 = $null
 $baseShaStatus = 'missing'
 if ($inputExists) {
-    $inputSha256 = (Get-FileHash -LiteralPath $InputExeFull -Algorithm SHA256).Hash.ToLowerInvariant()
+    $inputSha256 = (Get-FileSha256 -Path $InputExeFull).ToLowerInvariant()
     if ($inputSha256 -ne $ExpectedBaseSha256) {
         throw "Unexpected base SHA-256 for $InputExeFull. Expected $ExpectedBaseSha256 but found $inputSha256."
     }
@@ -1236,7 +1251,7 @@ try {
         throw "SkipPatch was set but candidate does not exist: $CandidateFull"
     }
 
-    $candidateSha256 = (Get-FileHash -LiteralPath $CandidateFull -Algorithm SHA256).Hash
+    $candidateSha256 = Get-FileSha256 -Path $CandidateFull
     $patchArgs = @(
         (Join-Path $RepoRoot 'tools\patch_stage_report.py'),
         '--exe', $CandidateFull,

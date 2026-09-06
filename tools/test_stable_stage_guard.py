@@ -232,6 +232,24 @@ def test_mapsurface_stages_cannot_use_global_menu_surface(fixture: Path) -> None
     with_stage_groups(groups, check)
 
 
+def test_combined_validation_scope_fails_closed(fixture: Path) -> None:
+    args = write_fixture(fixture)
+    stage = stable_stage_guard.COMBINED_UI_VALIDATION_STAGE
+    for changed in (
+        tuple(group for group in stable_stage_guard.patch_clash95_hd.STAGE_GROUPS[stage] if group != "frame-restore-bands"),
+        stable_stage_guard.patch_clash95_hd.STAGE_GROUPS[stage] + ("unit-selection-action-bar-post-redraw",),
+    ):
+        groups = dict(stable_stage_guard.patch_clash95_hd.STAGE_GROUPS)
+        groups[stage] = changed
+
+        def check() -> None:
+            guard = stable_stage_guard.build_guard(args)
+            assert not guard["passed"], guard
+            assert not guard["checks"]["validation_stage_scope_combinedui_validation"]["passed"], guard
+
+        with_stage_groups(groups, check)
+
+
 def test_mapsurface_stages_require_gameplay_upgrade(fixture: Path) -> None:
     args = write_fixture(fixture)
     groups = {
@@ -358,6 +376,7 @@ def run_tests() -> None:
         test_patcher_default_drift_fails(fixture / "default-drift")
         test_validation_group_leak_fails(fixture / "validation-leak")
         test_validation_stage_scope_fails(fixture / "validation-scope")
+        test_combined_validation_scope_fails_closed(fixture / "combined-validation-scope")
         test_mapsurface_stages_cannot_use_global_menu_surface(fixture / "menu-surface-leak")
         test_mapsurface_stages_require_gameplay_upgrade(fixture / "map-surface-upgrade")
         test_promotion_decision_fails(fixture / "promotion-decision")

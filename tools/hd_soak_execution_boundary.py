@@ -2,9 +2,10 @@
 """Probe that bad visible-runtime approval packets fail before side effects.
 
 This is a negative harness check. It invokes scripts/smoke/run_hd_soak.ps1 with
-invalid approval packets, a nonexistent input executable, and repository-local
-temporary paths. Passing means the harness returned failure before creating the
-candidate/output/report paths that would precede a visible runtime launch.
+invalid approval packets, a nonexistent input executable, a controlled windowed
+configuration, and repository-local temporary paths. Passing means the harness
+returned failure before creating the candidate/output/report paths that would
+precede a visible runtime launch.
 """
 
 from __future__ import annotations
@@ -96,6 +97,10 @@ def build_command(script: Path, root: Path, case: BoundaryCase) -> list[str]:
     report_md = case_root / "report.md"
     input_exe = case_root / "missing-clash95.exe"
     workdir.mkdir(parents=True, exist_ok=True)
+    (workdir / "dxcfg.ini").write_text(
+        "[dxcfg]\ndisplay=application\npresentation=windowed\n",
+        encoding="ascii",
+    )
     command = [
         "powershell.exe",
         "-NoProfile",

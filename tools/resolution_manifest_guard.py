@@ -31,8 +31,9 @@ RUNTIME_POLICY = (
 )
 GUARD_POLICY = (
     "exactly one stable resolution (the 800x600 default), stable/validated "
-    "entries backed by passing hidden-desktop evidence, tile counts matching "
-    "the engine formula"
+    "entries backed by passing hidden-desktop evidence whose dimensions, stage, "
+    "candidate SHA and run references agree with its passing patch metadata and "
+    "smoke matrix, tile counts matching the engine formula"
 )
 
 RESOLUTION_KEY_RE = re.compile(r"^([1-9]\d{2,3})x([1-9]\d{2,3})$")
@@ -80,16 +81,125 @@ def patcher_stable_stage() -> str | None:
         return None
 
 
-def run_dir_is_hidden(root: Path, run_rel: str) -> tuple[bool, str]:
-    run_dir = root / run_rel
-    if not run_dir.is_dir():
-        return False, f"run directory missing: {run_rel}"
-    summary = load_json(run_dir / "summary.json")
-    if summary is None:
-        return False, f"run summary.json missing or invalid: {run_rel}"
-    if summary.get("LaunchMode") != "hidden-desktop" or not summary.get("HiddenDesktop"):
-        return False, f"run is not hidden-desktop: {run_rel}"
-    return True, ""
+def metadata_path(root: Path, value: str) -> Path:
+    # Archived metadata uses Windows separators even in portable checkouts.
+    return (root / value.replace("\\", "/")).resolve()
+
+
+def candidate_sha(value: Any) -> str | None:
+    return value.lower() if isinstance(value, str) and re.fullmatch(r"[0-9a-fA-F]{64}", value) else None
+
+
+def surface_matches(surface: Any, width: int, height: int) -> bool:
+    return isinstance(surface, dict) and all(
+        type(surface.get(field)) is int and surface[field] == expected
+        for field, expected in (("Width", width), ("Height", height), ("Bytes", width * height))
+    )
+
+
+def evidence_binding_failures(root: Path, key: str, evidence: dict[str, Any], stage: str | None) -> list[str]:
+    failures: list[str] = []
+    match = RESOLUTION_KEY_RE.fullmatch(key)
+    if not match:
+        return ["cannot bind evidence for an invalid resolution key"]
+    width, height = int(match[1]), int(match[2])
+    smoke_ref = evidence.get("smoke_json")
+    smoke_path = metadata_path(root, smoke_ref) if isinstance(smoke_ref, str) and smoke_ref else None
+    smoke = load_json(smoke_path) if smoke_path and smoke_path.suffix.lower() == ".json" else None
+    if smoke is None:
+        return ["smoke matrix missing or invalid: smoke_json must reference a JSON metadata artifact"]
+    if smoke.get("passed") is not True or smoke.get("failures"):
+        failures.append("smoke matrix is not passing")
+    if smoke.get("resolution") != key:
+        failures.append(f"smoke resolution {smoke.get('resolution')!r} does not match {key}")
+
+    patch = smoke.get("patch_stage")
+    if not isinstance(patch, dict):
+        patch = {}
+    sha = candidate_sha(patch.get("sha256"))
+    if sha is None:
+        failures.append("patch gate candidate SHA-256 is missing or invalid")
+    if not stage or patch.get("stage") != stage:
+        failures.append("patch gate stage does not match manifest stable_stage")
+    patch_gate = patch.get("current_hd_map_gate") or {}
+    if (patch.get("passed") is not True or patch.get("failures")
+            or not isinstance(patch_gate, dict) or patch_gate.get("passed") is not True
+            or patch_gate.get("failures")):
+        failures.append("smoke patch gate is not passing")
+
+    report_ref = smoke.get("patch_report_json")
+    report_path = metadata_path(root, report_ref) if isinstance(report_ref, str) and report_ref else None
+    report = load_json(report_path) if report_path and report_path.suffix.lower() == ".json" else None
+    if report is None:
+        failures.append("smoke must reference an existing patch_report_json metadata artifact")
+    else:
+        # The established archived-report schema predates resolution support.
+        # Only an absent key means 800x600; explicit null never means legacy.
+        report_resolution = report.get("resolution", EXPECTED_DEFAULT)
+        if report_resolution != key:
+            failures.append(f"patch report resolution {report_resolution!r} does not match {key}")
+        if report.get("stage") != stage:
+            failures.append("patch report stage does not match manifest stable_stage")
+        if sha is None or candidate_sha(report.get("exe_sha256")) != sha:
+            failures.append("patch report candidate SHA-256 does not match smoke patch gate")
+        gate = report.get("current_hd_map_gate")
+        if not isinstance(gate, dict) or gate.get("passed") is not True or gate.get("failures"):
+            failures.append("patch report current_hd_map_gate is not passing")
+        count = report.get("patch_count")
+        counts = report.get("status_counts")
+        if (type(count) is not int or count <= 0 or not isinstance(counts, dict)
+                or any(type(value) is not int or value < 0 for value in counts.values())
+                or counts.get("patched") != count or sum(counts.values()) != count
+                or counts.get("original", 0) != 0 or counts.get("unexpected", 0) != 0):
+            failures.append("patch report does not prove every selected byte patched without original/unexpected records")
+        embedded_counts = patch.get("patches")
+        if (not isinstance(embedded_counts, dict)
+                or any(type(embedded_counts.get(field)) is not int or embedded_counts.get(field) != expected
+                       for field, expected in (("total", count), ("patched", count), ("original", 0), ("unexpected", 0)))):
+            failures.append("smoke patch counts do not match the patch report")
+        if patch.get("archived") is True:
+            source = patch.get("source")
+            if not isinstance(source, str) or metadata_path(root, source) != report_path:
+                failures.append("archived patch gate source does not match patch_report_json")
+
+    post_owner = smoke.get("post_owner_evidence")
+    if not isinstance(post_owner, dict):
+        post_owner = {}
+    if post_owner.get("passed") is not True:
+        failures.append("smoke post-owner evidence is not passing")
+    for run_key, smoke_key in (("normal_run", "normal"), ("forced_run", "forced_visible")):
+        run_ref = evidence.get(run_key)
+        if not isinstance(run_ref, str) or not run_ref:
+            failures.append(f"evidence missing {run_key}")
+            continue
+        run_path = metadata_path(root, run_ref)
+        summary = load_json(run_path / "summary.json")
+        if summary is None:
+            failures.append(f"{run_key} summary.json missing or invalid")
+            continue
+        if summary.get("LaunchMode") != "hidden-desktop" or summary.get("HiddenDesktop") is not True:
+            failures.append(f"{run_key} is not hidden-desktop")
+        if summary.get("Passed") is not True:
+            failures.append(f"{run_key} is not passing")
+        if summary.get("Stage") != stage:
+            failures.append(f"{run_key} stage does not match manifest stable_stage")
+        if sha is None or candidate_sha(summary.get("CandidateSha256")) != sha:
+            failures.append(f"{run_key} candidate SHA-256 does not match smoke patch gate")
+        if not surface_matches(summary.get("Surface"), width, height):
+            failures.append(f"{run_key} surface dimensions/bytes do not match {key}")
+        row = post_owner.get(smoke_key)
+        if not isinstance(row, dict):
+            row = {}
+        if row.get("passed") is not True or row.get("present") is not True or row.get("failures"):
+            failures.append(f"smoke {smoke_key} row is missing or not passing")
+        row_run = row.get("run")
+        if not isinstance(row_run, str) or metadata_path(root, row_run) != run_path:
+            failures.append(f"smoke {smoke_key} run does not match manifest {run_key}")
+        if sha is None or candidate_sha(row.get("candidate_sha256")) != sha:
+            failures.append(f"smoke {smoke_key} candidate SHA-256 does not match patch gate")
+        if not surface_matches(row.get("surface"), width, height):
+            failures.append(f"smoke {smoke_key} surface dimensions/bytes do not match {key}")
+    return failures
 
 
 def build_guard(args: argparse.Namespace) -> dict[str, Any]:
@@ -174,23 +284,10 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
         if not isinstance(evidence, dict):
             evidence_failures.append(f"{key}: {status} entry has no evidence block")
             continue
-        for run_key in ("normal_run", "forced_run"):
-            run_rel = evidence.get(run_key)
-            if not run_rel:
-                evidence_failures.append(f"{key}: evidence missing {run_key}")
-                continue
-            hidden, reason = run_dir_is_hidden(root, str(run_rel))
-            if not hidden:
-                evidence_failures.append(f"{key}: {reason}")
-        smoke_rel = evidence.get("smoke_json")
-        if not smoke_rel:
-            evidence_failures.append(f"{key}: evidence missing smoke_json")
-        else:
-            smoke = load_json(root / str(smoke_rel))
-            if smoke is None:
-                evidence_failures.append(f"{key}: smoke matrix missing or invalid: {smoke_rel}")
-            elif not smoke.get("passed"):
-                evidence_failures.append(f"{key}: smoke matrix is not passing: {smoke_rel}")
+        evidence_failures.extend(
+            f"{key}: {failure}"
+            for failure in evidence_binding_failures(root, key, evidence, expected_stage)
+        )
     check_specs["evidence_backed"] = (
         not evidence_failures,
         {"checked": evidence_checked, "failures": evidence_failures},

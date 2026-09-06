@@ -3,6 +3,11 @@
 Read `docs/hd/WORKING_WITH_THIS_REPO.md` before changing the repository. This
 file defines the project-specific operating rules for automated contributors.
 
+Then read [docs/hd/AGENT_HANDOFF.md](docs/hd/AGENT_HANDOFF.md) for current evidence, the active frontier,
+and safe starting commands. It is the tracked handoff for new tasks; ignored
+`.codex-loop/` notes and the historical autonomous prompt are not current
+instructions. Preserve existing uncommitted and untracked work.
+
 ## Project purpose
 
 `clash-hd` is a reverse-engineering and binary-patching project for the 32-bit
@@ -140,6 +145,15 @@ CDB guidance:
 
 ## Capture interpretation
 
+Show actual screenshots in the conversation as frequently as practical during
+visual work, including after meaningful captures and resolution changes. Share
+them as work progresses rather than saving them all for the final response.
+Check the bottom-right action bar in every screenshot and report what is visible
+and whether verification passed. Inspect all four frame edges too; a passing
+action-bar audit does not establish frame continuity. Label the capture path and
+resolution so its evidence limits are clear. The runtime and capture approval
+boundaries above still apply.
+
 Two capture paths have different properties:
 
 ### Hidden CDB software-surface dump
@@ -209,6 +223,19 @@ windows as part of a repo-only check.
 - Do not reactivate obsolete evidence as a current blocker or current proof.
 - Keep handoff documents aligned with the actual stable stage and active
   validation frontier.
+
+## Git checkpoints
+
+- After each meaningful, verified chunk of work, commit it, merge the task
+  branch into `main` when applicable, and push `main` to its configured upstream.
+  When already working on `main`, commit and push there. Do this frequently
+  rather than accumulating a large unpublished change.
+- Review the staged diff and run proportionate checks before each checkpoint.
+  Preserve unfinished and unrelated local work without including it in the
+  checkpoint. Keep proprietary binaries, raw captures and local state untracked.
+- Follow any explicit user request to pause commits or pushes. Do not force-push
+  or rewrite shared history. A Git merge does not promote a validation stage
+  into the protected stable stage.
 
 ## Completion criteria
 

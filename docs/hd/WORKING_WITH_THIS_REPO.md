@@ -70,6 +70,14 @@ Run individual fixtures with `python tools/test_<name>.py`.
   8-bit software surface. It does not capture every minimap, tooltip, or HUD
   layer and can alter palette presentation. Do not classify proxy-only black
   regions as real rendering defects without visible-runtime corroboration.
+- **Hidden CDB soak** (`scripts/cdb/run_hidden_soak.ps1`) is a separate,
+  additive endurance evidence class. It runs on a hidden desktop with the
+  non-presenting memory proxy, samples the software surface through host
+  `ReadProcessMemory`, and keeps full host process telemetry. It must record
+  `environment=hidden_cdb_host` and
+  `input_responsiveness=not_applicable_hidden`; it never proves manual input,
+  visible composition, or promotion readiness. The script is dry-run-only
+  unless `-Execute` is supplied.
 - **Visible runtime** requires explicit approval. It provides real colors and
   final composition, but GDI capture can tear on animated screens. Always
   check a visible grab for tearing before trusting it: run
@@ -83,8 +91,9 @@ Run individual fixtures with `python tools/test_<name>.py`.
 
 ## Current frontier
 
-- Terrain tooltip and selected-unit action-panel anchoring still need a
-  validation-stage implementation and evidence.
+- Terrain tooltip and selected-unit action-panel anchoring have validation-stage
+  implementations and hidden/visible layout evidence. They remain outside the
+  protected stable stage pending the separate manual-input promotion boundary.
 - Right-bottom composition: the rows-present vs rows-absent gate-design
   contradiction is **resolved**. The user's 2026-07-14 ruling (commit
   `96a3d078`) accepts the slot5-as-slot0 fixture run
@@ -101,7 +110,10 @@ Run individual fixtures with `python tools/test_<name>.py`.
   visible-window/CDB wrapper split — the `CLASH_PROXY_PRESENT` painting proxy
   (present-on-`Unlock`) resolved that. Manual DirectInput proof for the five
   checklist targets is still outstanding.
-- Long-duration continuity and soak runs require fresh approval.
+- The hidden-CDB soak class may provide map render/process endurance without a
+  visible-runtime approval, but it must complete the ordered short ladder and
+  both 2h routes honestly. Visible/manual continuity and the five manual-input
+  targets still require fresh approval and remain separate claims.
 
 ## Safe default actions
 
