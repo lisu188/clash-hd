@@ -98,3 +98,96 @@ Runtime qualification, per-screen coordinate adapters, live DPI handling,
 surface-restoration hooks, and bounded small-world native drawing remain open.
 Render resolution is intended to be selected for the next launch, not changed
 inside an already running process.
+
+## Launcher integration
+
+GUI and CLI now resolve every selected profile, stage and resolution through
+the shared planner. The old default-resolution bypass is removed. The Classic
+800x600 patch recipe and binary output remain unchanged. Diagnostic stages
+that do not include the full stable-map patch set explicitly report
+`map_geometry_available=false`; their numeric planning fields do not establish
+a working expanded map, and world planning is rejected for those stages.
+
+The GUI displays next-launch terrain dimensions, full/ceiling tile counts and
+the minimum world size required by the current native full renderer. Each
+resolution is evaluated against the selected profile; unbuildable choices are
+disabled with a reason. Custom sizes share the same validation as CLI requests.
+Saved game/candidate directory settings are honored by planning and environment
+checks. Changing resolution updates only the next-launch plan, not a running
+game or the wrapper's live display mode.
+
+List profile-scoped eligibility without installed game files or a process scan:
+
+```powershell
+python src/launcher/run.py --profile framed --list-resolutions
+```
+
+Inspect a requested custom resolution, also without game files or writes:
+
+```powershell
+python src/launcher/run.py --profile framed --resolution 1366x768 --describe-plan
+```
+
+Inspect a supplied world size and a hypothetical presentation area:
+
+```powershell
+python src/launcher/run.py --profile framed --resolution 1280x720 --describe-plan --map-size 60 60 --client-size 2560 1600
+```
+
+This reports a 1280x720 internal surface and a 2560x1440 image rectangle at
+client offset (0,80). `--client-size` is not a window-size request, and
+`--map-size` is not extracted from a save. Both arguments require
+`--describe-plan`, are clearly labeled inspection-only, and cannot accompany
+a preparation or launch. A supplied small world returns an incompatible result
+and nonzero exit status; no native guard is bypassed.
+
+Prepare through the existing opt-in source-tree Framed path:
+
+```powershell
+python src/launcher/run.py --profile framed --resolution 1366x768 --prepare
+```
+
+Preparation still requires the verified local original. No game is started,
+and no display-resolution, DPI or input API is invoked by inspection.
+
+## Profile registry and candidate metadata
+
+`src/launcher/resolutions.json` uses schema 2 with separate Classic/Framed
+recipe revisions, feature configurations, defaults and evidence scopes. The
+legacy top-level fields remain an exact Classic compatibility projection; the
+reader rejects mismatches rather than silently selecting one copy. Schema 1
+files are still readable. Their historical status applies only to Classic,
+never to the derived experimental Framed profile.
+
+The registry includes 1366x768, 2560x1440, 3440x1440 and 3840x2160 as
+experimental presets alongside the existing choices. Classic 800x600 retains
+its original three evidence references. No new runtime evidence or promoted
+resolution is added. `resolution_info()` reports recipe eligibility separately
+from status and leaves `runtime_evidence_verified=false`; it does not reopen
+or reinterpret the referenced runtime captures.
+
+Preparation manifests include the resolved display plan and deterministic
+`build_id`. Classic binds its exact generated scalar byte records and original
+executable identity; Framed binds the reviewed builder plus all existing
+implementation source identities. Successful wrapper deployment adds a
+`deployment_id` covering the build, actual copied wrapper and configuration
+bytes. Framed launch verification rejects missing or mismatched display, build
+or deployment identity along with the existing artifact/source checks.
+
+Existing candidate directories and build report/probe bytes are preserved.
+Prepare regenerates the deployment manifest for a previously prepared candidate;
+identical executable/report/probe artifacts can still be reused. The identities
+are manifest fields in this implementation, not a content-addressed directory
+migration or a new concurrent-build locking protocol. Classic process-start
+behavior and its byte gate remain unchanged.
+
+Additional source-only integration tests:
+
+```powershell
+python tools/test_launcher_multiresolution.py -v
+```
+
+The multiresolution workflow requires both display-contract and new launcher
+integration suites to execute without skips on Linux and Windows. Candidate
+build/deploy tests use explicitly synthetic bytes and the existing mocked
+Framed builder; they are not retail executable construction or gameplay proof.
