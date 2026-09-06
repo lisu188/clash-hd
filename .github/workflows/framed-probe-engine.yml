@@ -25,7 +25,6 @@ jobs:
     timeout-minutes: 10
     env:
       CLASH_DEBUGGER_INTEGRATION: '1'
-      CLASH_DEBUGGER_REPORT: ${{ runner.temp }}/debugger-engine-report.json
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -47,6 +46,7 @@ jobs:
       - name: Execute the exported commands on marked synthetic PE32 fixtures
         shell: pwsh
         run: |
+          $env:CLASH_DEBUGGER_REPORT = Join-Path $env:RUNNER_TEMP 'debugger-engine-report.json'
           $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
           $installation = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
           if (-not $installation) { throw 'MSVC x86 tools are required.' }
