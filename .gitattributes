@@ -24,3 +24,5 @@
 /tools/build_partial_tile_candidate.py -text whitespace=cr-at-eol
 /tools/partial_tile_trace_probe.py -text whitespace=cr-at-eol
 /src/patcher/complete_hd_candidate.py -text whitespace=cr-at-eol
+# Frozen probe-report hashes use the original Windows CRLF checkout bytes.
+/probes/cdb/render/clash95_surface_dump_probe.cdb text eol=crlf
