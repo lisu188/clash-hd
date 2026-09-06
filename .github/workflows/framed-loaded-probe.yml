@@ -1,0 +1,54 @@
+name: Final bounded-stage loaded-byte probe
+on:
+  pull_request:
+    paths:
+      - 'src/patcher/**'
+      - 'tools/framed_loaded_probe.py'
+      - 'tools/build_framed_bounded_input_candidate.py'
+      - 'tools/test_framed_loaded_probe.py'
+      - '.github/workflows/framed-loaded-probe.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/patcher/**'
+      - 'tools/framed_loaded_probe.py'
+      - 'tools/build_framed_bounded_input_candidate.py'
+      - 'tools/test_framed_loaded_probe.py'
+      - '.github/workflows/framed-loaded-probe.yml'
+permissions:
+  contents: read
+concurrency:
+  group: bounded-loaded-probe-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    name: Loaded-byte contracts (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify final code contracts and independent loaded-image comparisons
+        run: |
+          python - <<'PY'
+          import sys
+          import unittest
+          suite = unittest.defaultTestLoader.discover('tools', pattern='test_framed_loaded_probe.py')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          sys.exit(0 if result.wasSuccessful() and result.testsRun >= 20 and not result.skipped else 1)
+          PY
+      - name: Preserve the existing bounded-input builder and display contracts
+        run: |
+          python tools/test_framed_bounded_input.py
+          python tools/test_display_plan.py
