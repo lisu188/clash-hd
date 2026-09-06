@@ -1,0 +1,235 @@
+{
+  "schema": "clash95_framed_modal_canvas_runtime_checkpoint_v1",
+  "generated_at": "2026-09-06T05:52:41.763115+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "runs": [
+    {
+      "route": "castle_overview",
+      "resolution": "1024x768",
+      "availability": "existing_flags",
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-run-plan-20260906-054333.json",
+        "sha256": "fe7b5757fe22353ac9392cb77bef1a558053f0f5bfac55666a3efede39067dc7"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\summary.json",
+        "sha256": "ade79ffabc0bc30c757ef1a4b04c8a6c4c99c3a50a45906711d57e52ab11f59a"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\cdb.log",
+        "sha256": "b0b919d5e343a9754ecc1ccffc7fc34c9df12d151655a150b69a7ad40882e924"
+      },
+      "runtime_passed": true,
+      "runtime_failures": [],
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\framed-modal-canvas-castle_overview-1024x768-a9c8bd075a8de02c.exe",
+              "creation_filetime": 134331470867809233,
+              "process_id": 35336,
+              "handle_retained": true,
+              "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+              "creation_utc": "2026-09-06T05:44:46.7809233Z",
+              "parent_process_id": 43416
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T05:44:46.5827654Z",
+            "handle_retained": true,
+            "creation_filetime": 134331470865827654,
+            "process_id": 43416
+          }
+        },
+        "desktop_closed": true
+      },
+      "workdir_assets_unchanged": true,
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\post-run-workdir.json",
+        "sha256": "bdfd54e0f737d94005ebd92639c3c2e2cd6ea409d6b6a88eefdd8a0b76cbc4a3"
+      },
+      "snapshot_produced": true,
+      "capture_audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-overview-surface-audit-20260906.json",
+        "sha256": "007e2be42053f090a32c7fd847bb962c4923c1c2946baf3197e18e08c6fe19c8"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\surface.png",
+        "sha256": "58ecfd0475a63d58399d164f09a8f1e1112c5f1f8ad4179b2ba38078289bd93e"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\surface.raw",
+        "sha256": "8aa7436401b87c09aae2f73041ddbe76509c8cfa12a1c4c1f450e7bcd9e0ec4e"
+      },
+      "native_raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\native-surface.raw",
+        "sha256": "bc73c776b2e62a8a611fe5e18466350087b96d21307a401d11df3eeaddacd352"
+      },
+      "actual_observation": "Coherent castle overview in the saved software PNG; previous horizontal corruption is absent in this capture.",
+      "native_mirror_counts": {
+        "native_pixels_compared": 307200,
+        "native_pixels_matched": 307200,
+        "native_copy_mismatches": 0,
+        "margin_pixels_compared": 479232,
+        "margin_pixels_zero": 479232,
+        "margin_nonzero_pixels": 0,
+        "total_mismatches": 0
+      },
+      "native_rect": [
+        192,
+        144,
+        831,
+        623
+      ],
+      "margin_color": {
+        "expected_index": 0,
+        "palette_zero_rgb": [
+          6,
+          5,
+          5
+        ],
+        "zero_index_is_rgb_black": false,
+        "all_margin_pixels_verified_rgb_black": false,
+        "final_visible_wrapper_color_proof": false
+      },
+      "ordinary_map_frame_passed": false,
+      "ordinary_map_bar_matching_cells": 0,
+      "ordinary_map_frame_bar_applicability": "Non-gating ordinary-map measurements on centered castle artwork; castle controls are not accepted.",
+      "protocol_limit": "This first protocol disables its overview loader observer after the first native load. The actual full canvas/mirror is bound, but later native artwork loads are not individually observed."
+    },
+    {
+      "route": "hospital",
+      "resolution": "1024x768",
+      "availability": "construct_all",
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-run-plan-20260906-054619.json",
+        "sha256": "19b7ccd7f4f37014a2bbfea0492ea622fb58698452f90827283aac85dbbd6ce4"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-054619\\summary.json",
+        "sha256": "d4c3fd834479d30bce39e6340a1841fb5d7ad3866dd34533bfabb4508de37557"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-054619\\cdb.log",
+        "sha256": "308b45f8dc5138b55cb75941a5cbed3ed1ce0e3b352a3d096734ccb3dcb2ec4f"
+      },
+      "runtime_passed": false,
+      "runtime_failures": [
+        "Debugger exited before accepted modal readiness."
+      ],
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-054619\\framed-modal-canvas-hospital-1024x768-15f1631b62d4d961.exe",
+              "creation_filetime": 134331472124731537,
+              "process_id": 6120,
+              "handle_retained": true,
+              "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+              "creation_utc": "2026-09-06T05:46:52.4731537Z",
+              "parent_process_id": 17340
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": false,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T05:46:52.2826537Z",
+            "handle_retained": true,
+            "creation_filetime": 134331472122826537,
+            "process_id": 17340
+          }
+        },
+        "desktop_closed": true
+      },
+      "workdir_assets_unchanged": true,
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-054619\\post-run-workdir.json",
+        "sha256": "7ed88c53e787035abcb5bf8c49264d57ab1b14f1704da320896766e1c0404a74"
+      },
+      "snapshot_produced": false,
+      "rejection": "MCAP_REJECT reason=native_load_call actual_t0=2 expected_t0=unbound actual_tid=2fe4 expected_tid=unbound actual_eip=004020a0 expected_eip=unbound actual_esp=000edaa8 expected_esp=unbound",
+      "diagnosis": "The still-armed loader observer rejected an additional normal overview artwork load before the hospital callback. No hospital screenshot was captured in this attempt.",
+      "screenshot": null,
+      "mirror_relation_passed": null
+    }
+  ],
+  "preceding_loader_failure": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-loader-correction-20260906.json",
+    "sha256": "f7c66c219535ac86a16531fe9731c8b0c74f220f3aac2349c8bc9a466fb3d52c"
+  },
+  "protocol_source_archive": {
+    "framed_modal_canvas_probe.py": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\source-before-load-sequence-fix\\framed_modal_canvas_probe.py",
+      "sha256": "151ecd2b98e1cafc25ee4467f3fa4022a7fec3997f79d8d4c1474b36d8767292"
+    },
+    "framed_modal_canvas_surface_audit.py": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\source-before-load-sequence-fix\\framed_modal_canvas_surface_audit.py",
+      "sha256": "0415aafe658a40cef82339fd4cb2d19516dfe66d4b03c241a8738489914cc094"
+    },
+    "framed_modal_canvas_trace.py": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\source-before-load-sequence-fix\\framed_modal_canvas_trace.py",
+      "sha256": "ed46f0b39d6cd626538c5219b5d706276037505ebeee73cf370eeba842b5582a"
+    },
+    "test_framed_modal_canvas_probe.py": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\source-before-load-sequence-fix\\test_framed_modal_canvas_probe.py",
+      "sha256": "31488bdadfa11d74b7316338507ba1730342bfd3d0b1bec975cf1b761c57159b"
+    },
+    "test_framed_modal_canvas_surface_audit.py": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\source-before-load-sequence-fix\\test_framed_modal_canvas_surface_audit.py",
+      "sha256": "df0ac247213b2362355173bd5da264224815bbbdab4075bc5baadf499ae0397c"
+    },
+    "test_framed_modal_canvas_trace.py": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-054333\\source-before-load-sequence-fix\\test_framed_modal_canvas_trace.py",
+      "sha256": "c6cb8c42a717283814c130b9c43503a4ad85212be5bb42284adcbbf0384a11a6"
+    }
+  },
+  "pe_layout_fixture": {
+    "path": "tools/test_pe_modal_extension.py",
+    "sha256": "58f4b25e60ed5eb46f45eadd28041c9c4e3324492f59141b666282c0b8629235",
+    "groups": 18,
+    "passed": true,
+    "native_sec_image_variants_passed": 12,
+    "seconds": 78.26,
+    "provenance": "Agent observed actual fixture output; no separate stdout saved."
+  },
+  "fixtures": {
+    "builder": "7 groups PASS16.257s",
+    "producer": "8 groups PASS3.585s",
+    "trace": "8 groups PASS31.496s",
+    "host": "10 groups PASS25.868s",
+    "mirror": "7 groups PASS0.532s",
+    "surface_audit": "11 groups PASS18.040s",
+    "provenance": "Observed root/agent tool outputs; not raw stdout artifacts."
+  },
+  "stable_stage_changed": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "One source-bound coherent overview capture at1024x768, with exact native-to-physical mirror and near-black palette-index-zero margins, not all-building/resolution acceptance.",
+    "The ordinary-map frame/footer comparison fails and bar is0/6; these are disclosed non-gating measurements on this centered native modal screen.",
+    "Overview first-present state has allocations1/frees0. No native modal exit restoration, destructor/free or return-to-map runtime proof.",
+    "Hospital pre-capture probe failure remains failed, and earlier striped screenshots remain failed. No synthetic/native observation was fabricated.",
+    "The first protocol omitted later overview load observations. Expanded source-bound layer sequencing remains active work; no patch-byte change is needed for that probe limitation.",
+    "Original, candidate/proxy and all54 isolated workdir files remain unchanged by these runs."
+  ]
+}

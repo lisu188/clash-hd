@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-09-05T12:28:33.7765390+00:00",
+  "passed": false,
+  "classification": "probe_rejected_native_pre_hd_initialization",
+  "run_dir": "C:\\ClashCaptures\\hd-completion\\partialtiles-800x600\\cdb-surface-dump-20260905-142409",
+  "candidate_sha256": "B273C16822843D8AA684191E4C2F357E2F7C581BBC3AD7F4175C8D6B057ECAE8",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-validation",
+  "resolution": "800x600",
+  "observed_surface": "640x480",
+  "observed_owner": "004617a0",
+  "convergence_status": 0,
+  "access_violation": false,
+  "screenshot_produced": false,
+  "summary_path": "C:\\ClashCaptures\\hd-completion\\partialtiles-800x600\\cdb-surface-dump-20260905-142409\\summary.json",
+  "summary_sha256": "29705F23B4BE42051BE9DF6C1F72FBDA9274412138E94738BF6C65C5DACBF65A",
+  "cleanup": {
+    "schema": "clash95_hidden_runtime_cleanup_v1",
+    "observed_at": "2026-09-05T12:28:33.7424347+00:00",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-validation",
+    "resolution": "800x600",
+    "candidate_path": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\candidate\\clash95_hd_surfdump_20260905_142409.exe",
+    "candidate_sha256": "B273C16822843D8AA684191E4C2F357E2F7C581BBC3AD7F4175C8D6B057ECAE8",
+    "game_pid": 36744,
+    "cdb_pid": 33772,
+    "game_stopped": true,
+    "cdb_stopped": true,
+    "observation_method": "Recorded live PIDs checked after terminal session89092 exit1",
+    "log_sha256": "62A4F53822F2F60AD83636B07EFCD9F9163ED63062408D49DE739066EE85D0A9",
+    "generated_probe_sha256": "9D4A25106C13558244E53296CD1A57332122C66E55A15FC03C6B6A7B1385AA06"
+  },
+  "prior_run_plan": "captures/current/partialtiles-hidden-run-plan-current.json",
+  "limits": "No requested-resolution render or composition proof. Native initialization correctly used guarded fallback; diagnostic readiness condition was premature."
+}

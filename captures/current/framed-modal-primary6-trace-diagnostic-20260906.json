@@ -1,0 +1,312 @@
+{
+  "schema": "clash95_framed_modal_primary6_trace_diagnostic_v1",
+  "created_at": "2026-09-06T10:55:35.149012+00:00",
+  "status": "failed_runtime_preserved_read_only_diagnosis",
+  "input_runtime_passed": false,
+  "initial_map_trace_passed": false,
+  "primary_sequence_passed": true,
+  "host_capture_authorized": false,
+  "primary_module_enumeration_reached": false,
+  "game_or_debugger_run_by_this_diagnosis": false,
+  "source_or_parser_modified": false,
+  "event_deduplication_applied": false,
+  "rerun_performed": false,
+  "cause": "unknown",
+  "candidate": {
+    "path": "C:\\ClashTests\\hd-completion\\primary6-barracks-20260906-104000\\framed-modal-canvas-barracks-1024x768-326a87e9dce4db08.exe",
+    "sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+    "bytes": 1385472
+  },
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "resolution": "1024x768",
+  "artifacts": {
+    "summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary6-barracks-20260906-104000\\summary.json",
+      "sha256": "45ba9ec909e880c61f39feb90487c124fb5f548e3f5d4c1b58480dd0dc1b781c",
+      "bytes": 912050
+    },
+    "trace.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary6-barracks-20260906-104000\\trace.json",
+      "sha256": "7248279bc72377f2ac07d9befe6a9f32a91ca4dcd19bc7f2500941074e674778",
+      "bytes": 787896
+    },
+    "cdb.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary6-barracks-20260906-104000\\cdb.log",
+      "sha256": "ee60cb35b364212670b69a197647adfcc25d0ebaa9a1d85e6363596ff9ea942b",
+      "bytes": 69186
+    },
+    "packet.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary6-barracks-20260906-104000\\packet.json",
+      "sha256": "06cfd51be9e779c022d422d87e68b37cac70e80c133c29fa920a08e78d904de7",
+      "bytes": 1233014
+    },
+    "plan.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary6-barracks-20260906-104000\\plan.json",
+      "sha256": "435277bb93f59c365f343ae46f2870b4a5a0c4fa77424e42852052d6c376f0c3",
+      "bytes": 5683
+    },
+    "framed-modal-canvas.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary6-barracks-20260906-104000\\framed-modal-canvas.cdb",
+      "sha256": "94edd9ff138ce466a3105b73bbfd14116830a7f369ffcaf25cb626865fc15b16",
+      "bytes": 1163410
+    },
+    "primary-ready.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary6-barracks-20260906-104000\\primary-ready.cdb",
+      "sha256": "79ecf39a21702d267b046522f68195fdf5e6948b4236defe8f345901b5619664",
+      "bytes": 546
+    }
+  },
+  "source_files_observed_at_review": {
+    "scripts/cdb/run_framed_modal_primary_capture.ps1": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\run_framed_modal_primary_capture.ps1",
+      "sha256": "54825b34e53f012231ad5ae86723c88955cf86ef22b34c0205ff975390ffef66",
+      "bytes": 59639,
+      "packet_recorded_sha256": null,
+      "packet_sha_match": null
+    },
+    "tools/framed_modal_primary_capture.py": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_modal_primary_capture.py",
+      "sha256": "d522684af0852054935e108edbaedea58e8fa518cac7a240433316bb339b646f",
+      "bytes": 20454,
+      "packet_recorded_sha256": null,
+      "packet_sha_match": null
+    },
+    "tools/framed_modal_canvas_probe.py": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_modal_canvas_probe.py",
+      "sha256": "52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6",
+      "bytes": 37666,
+      "packet_recorded_sha256": null,
+      "packet_sha_match": null
+    },
+    "tools/framed_modal_canvas_trace.py": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_modal_canvas_trace.py",
+      "sha256": "2f0ef571acdbc6892c775cc97698d535b56355c8086080713d3dfec040a6d3ba",
+      "bytes": 36076,
+      "packet_recorded_sha256": null,
+      "packet_sha_match": null
+    },
+    "tools/initial_map_paint_trace.py": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\initial_map_paint_trace.py",
+      "sha256": "845edda7ac563afe602dc3f6a388fe7e1874d6c6f128d1a938f8ce9ac2aa1021",
+      "bytes": 16757,
+      "packet_recorded_sha256": null,
+      "packet_sha_match": null
+    },
+    "tools/build_framed_candidate.py": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\build_framed_candidate.py",
+      "sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+      "bytes": 10851,
+      "packet_recorded_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+      "packet_sha_match": true
+    },
+    "src/patcher/partial_tile_hooks.py": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\src\\patcher\\partial_tile_hooks.py",
+      "sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+      "bytes": 9796,
+      "packet_recorded_sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+      "packet_sha_match": true
+    }
+  },
+  "host_source_matches_launch_plan": true,
+  "recorded_initial_map_failures": [
+    "line 498: incremental input/exit lacks a fresh matching guard and phase",
+    "line 498: incremental status lacks a fresh guard/input pair",
+    "line 501: incremental input/exit lacks a fresh matching guard and phase",
+    "line 501: incremental status lacks a fresh guard/input pair"
+  ],
+  "raw_lines_493_through_505": [
+    {
+      "line": 493,
+      "text": "PTILE_EVENT seq=118 bp=75 tid=84f0 eip=00563760 esp=000edbe8"
+    },
+    {
+      "line": 494,
+      "text": "PTILE_COMPOSITION_GUARD tid=84f0 esp=000edbe8 status=1 world=(91,8) cell=(91,-9) present=1 caller=0041671b"
+    },
+    {
+      "line": 495,
+      "text": "PTILE_EVENT seq=119 bp=72 tid=84f0 eip=00563955 esp=000edc3c"
+    },
+    {
+      "line": 496,
+      "text": "PTILE_INCREMENTAL_INPUT tid=84f0 esp=000edc3c world=(91,8) caller=0041671b gd=04230030 map=(100,100) scroll=(0,17) vtable=0050ee24"
+    },
+    {
+      "line": 497,
+      "text": "PTILE_STATUS hook=incremental status=0 tid=84f0 esp=000edc3c owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+    },
+    {
+      "line": 498,
+      "text": "PTILE_EVENT seq=120 bp=72 tid=84f0 eip=00563955 esp=000edc3c"
+    },
+    {
+      "line": 499,
+      "text": "PTILE_INCREMENTAL_INPUT tid=84f0 esp=000edc3c world=(91,8) caller=0041671b gd=04230030 map=(100,100) scroll=(0,17) vtable=0050ee24"
+    },
+    {
+      "line": 500,
+      "text": "PTILE_STATUS hook=incremental status=0 tid=84f0 esp=000edc3c owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+    },
+    {
+      "line": 501,
+      "text": "PTILE_EVENT seq=121 bp=72 tid=84f0 eip=00563955 esp=000edc3c"
+    },
+    {
+      "line": 502,
+      "text": "PTILE_INCREMENTAL_INPUT tid=84f0 esp=000edc3c world=(91,8) caller=0041671b gd=04230030 map=(100,100) scroll=(0,17) vtable=0050ee24"
+    },
+    {
+      "line": 503,
+      "text": "PTILE_STATUS hook=incremental status=0 tid=84f0 esp=000edc3c owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+    },
+    {
+      "line": 504,
+      "text": "PTILE_EVENT seq=122 bp=74 tid=84f0 eip=00418afa esp=000edc44"
+    },
+    {
+      "line": 505,
+      "text": "PTILE_NATIVE_NOOP_EXIT tid=84f0 esp=000edc44 world=(91,8) caller=0041671b gd=04230030 map=(100,100) scroll=(0,17) vtable=0050ee24"
+    }
+  ],
+  "whole_log_counts": {
+    "ptile_events": 146,
+    "by_breakpoint": {
+      "70": 2,
+      "71": 2,
+      "72": 51,
+      "73": 1,
+      "74": 39,
+      "75": 49,
+      "76": 1,
+      "77": 1
+    },
+    "composition_guards": 49,
+    "incremental_input_records": 51,
+    "incremental_status_records": 51,
+    "native_noop_exits": 39
+  },
+  "repeated_observation": {
+    "guard_seq": 118,
+    "incremental_seqs": [
+      119,
+      120,
+      121
+    ],
+    "native_exit_seq": 122,
+    "guard_line": 494,
+    "input_lines": [
+      496,
+      499,
+      502
+    ],
+    "status_lines": [
+      497,
+      500,
+      503
+    ],
+    "native_exit_line": 505,
+    "tid": "000084f0",
+    "status_eip": "00563955",
+    "status_esp": "000edc3c",
+    "guard_esp": "000edbe8",
+    "native_exit_esp": "000edc44",
+    "world": [
+      91,
+      8
+    ],
+    "cell": [
+      91,
+      -9
+    ],
+    "map": [
+      100,
+      100
+    ],
+    "scroll": [
+      0,
+      17
+    ],
+    "caller": "0041671b",
+    "gd": "04230030",
+    "vtable": "0050ee24",
+    "raw_status": 0,
+    "additional_identical_packets": 2,
+    "classification": "repeated_observation_without_two_new_guarded_invocations"
+  },
+  "producer_observation": {
+    "breakpoint72_declaration_count": 1,
+    "status_address_occurrences": 1,
+    "declaration_line": 803,
+    "declaration_sha256": "d71d6ba7fe088d2f96e280f30b2c935a976f612a0f0d2c80bbc96664f85c7035",
+    "declaration": "bp72 00563955 \"r @$t9 = @$t9 + 1; .printf \\\"PTILE_EVENT seq=%u bp=72 tid=%x eip=%p esp=%p\\\\n\\\", @$t9, @$tid, @eip, @esp; .if (@$t14 != 0) { .if (poi(005202e0) == 0) { .echo PTILE_REJECT null_surface; q } .else { .if ((wo(poi(005202e0)) == 0n1024) & (wo(poi(005202e0)+2) == 0n768)) { .if (poi(005202e4) == 0) { .echo PTILE_REJECT missing_game_data; q } .else { .printf \\\"PTILE_INCREMENTAL_INPUT tid=%x esp=%p world=(%d,%d) caller=%p gd=%p map=(%d,%d) scroll=(%d,%d) vtable=%p\\\\n\\\", @$tid, @esp, poi(@esp+1c), poi(@esp+14), poi(@esp+24), poi(005202e4), poi(poi(005202e4)+222e0), poi(poi(005202e4)+222e4), poi(poi(005202e4)+222e8), poi(poi(005202e4)+222ec), poi(poi(005202e0)+b8); }; .printf \\\"PTILE_STATUS hook=incremental status=%d tid=%x esp=%p owner=%p tile=%p post=%p lower=%p player=%d\\\\n\\\", @eax, @$tid, @esp, poi(005199d8), poi(0052698c), poi(00526990), poi(00526994), poi(005202ec); .if ((@eax != 1) & (@eax != 2)) { .if ((@eax == 0) & (poi(poi(005202e4)+222e0) >= 1) & (poi(poi(005202e4)+222e0) <= 0n100) & (poi(poi(005202e4)+222e4) >= 1) & (poi(poi(005202e4)+222e4) <= 0n100) & (poi(@esp+1c) >= 0) & (poi(@esp+1c) < poi(poi(005202e4)+222e0)) & (poi(@esp+14) >= 0) & (poi(@esp+14) < poi(poi(005202e4)+222e4)) & (poi(poi(005202e4)+222e8) >= 0) & (poi(poi(005202e4)+222ec) >= 0) & (((poi(poi(005202e4)+222e0) >= 0n15) & (poi(poi(005202e4)+222e8) <= poi(poi(005202e4)+222e0)-0n15)) | ((poi(poi(005202e4)+222e0) < 0n15) & (poi(poi(005202e4)+222e8) == 0))) & (((poi(poi(005202e4)+222e4) >= 0n11) & (poi(poi(005202e4)+222ec) <= poi(poi(005202e4)+222e4)-0n11)) | ((poi(poi(005202e4)+222e4) < 0n11) & (poi(poi(005202e4)+222ec) == 0))) & ((poi(@esp+1c) < poi(poi(005202e4)+222e8)) | (poi(@esp+1c) >= poi(poi(005202e4)+222e8)+0n15) | (poi(@esp+14) < poi(poi(005202e4)+222ec)) | (poi(@esp+14) >= poi(poi(005202e4)+222ec)+0n12)) & (poi(005199d8) == 0040ad40) & (poi(0052698c) == 0) & (poi(00526990) == 0) & (poi(00526994) == 0) & (poi(005202ec) == 0) & (poi(poi(005202e0)+b8) == 0050ee24)) { } .else { .echo PTILE_REJECT incremental; q }; }; } .else { .echo PTILE_REJECT unexpected_surface_size; q }; }; }; gc\"",
+    "terminal_command": "gc",
+    "new_sequence_numbers_rule_out_simple_byte_identical_log_line_duplication": true
+  },
+  "candidate_machine_code": {
+    "entry_va": "0056394e",
+    "file_offset": 1238862,
+    "size": 43,
+    "bytes_hex": "9c60e83dffffff83f8010f840900000083f8020f8503000000619dc3619d535156575583ec08e91f51ebff",
+    "status_va": "00563955",
+    "status_instruction": "CMP EAX,1",
+    "status_zero_path": [
+      "CMP EAX,1",
+      "JE forward handled (not taken)",
+      "CMP EAX,2",
+      "JNE forward reject",
+      "POPAD",
+      "POPFD",
+      "replay native prologue",
+      "JMP 00418A98"
+    ],
+    "backedge_to_status_in_this_span": false,
+    "inspection": "Read-only GNU objdump of the exact candidate; no process entry or debugger execution."
+  },
+  "interpretation": [
+    "The first status0 is paired to an actual guard and later native no-op exit. The next two input/status0 packets consume no new guards and correctly fail the existing phase grammar.",
+    "The unchanged candidate instruction path is forward-only at the repeated status site. One compiled breakpoint declaration and newly incremented sequence values are observed.",
+    "Debugger breakpoint-command re-entry or repeated observation is a hypothesis only. The log does not prove its cause, three distinct game invocations, a missing producer declaration, or a safe basis for deleting events.",
+    "A successful primary sequence does not repair failed initial-map provenance; the host correctly withheld capture before module enumeration."
+  ],
+  "minimal_future_diagnostic_if_separately_authorized": [
+    "Preserve the present strict trace and failed run. Reproduce observer transport first with a synthetic non-game x86 target and the actual bp72 command/gc shape.",
+    "If future runtime diagnosis is authorized, bind an additional read-only post-CMP/fallback observation and record EFLAGS/return-site state to distinguish repeated breakpoint handling from a new invocation; authenticate exact bytes and do not accept duplicated events by heuristic."
+  ],
+  "recorded_cleanup": {
+    "candidates": [
+      {
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\hd-completion\\primary6-barracks-20260906-104000\\framed-modal-canvas-barracks-1024x768-326a87e9dce4db08.exe",
+          "creation_filetime": 134331649695176385,
+          "process_id": 5648,
+          "handle_retained": true,
+          "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+          "creation_utc": "2026-09-06T10:42:49.5176385Z",
+          "parent_process_id": 40216
+        }
+      }
+    ],
+    "cdb": {
+      "termination_requested": true,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T10:42:49.2868953Z",
+        "handle_retained": true,
+        "creation_filetime": 134331649692868953,
+        "process_id": 40216
+      }
+    },
+    "desktop_closed": true
+  },
+  "limits": [
+    "This is a static/raw-log diagnosis only. No game, debugger, input, capture or parser repair was performed.",
+    "Cleanup fields are copied from the hash-bound existing summary; this review did not observe live process identity.",
+    "Current source hashes supplement immutable packet/plan references; a null packet_sha_match means that particular file is not directly named in the packet source map.",
+    "No primary pixels, visible/manual input, complete modal composition or promotion is proved."
+  ]
+}

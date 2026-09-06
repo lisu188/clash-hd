@@ -1,0 +1,373 @@
+{
+  "schema": "clash95_framed_modal_run_authorization_v1",
+  "prepared_at": "2026-09-06T04:12:51.861992+00:00",
+  "executed": false,
+  "approval_source": "user_messages_in_current_task",
+  "approval_messages": [
+    "I approve hidden controle run",
+    "Approve debugger runs"
+  ],
+  "purpose": "Capture initialized castle route using source-bound native dispatch, then inspect all four frame edges and bottom-right controls.",
+  "route": "hospital",
+  "castle_index": 0,
+  "availability": "construct_all",
+  "resolution": "1024x768",
+  "minimap_viewport": true,
+  "source_sha256": {
+    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+    "src/patcher/partial_tile_hooks.py": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+    "src/patcher/initial_map_paint.py": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+    "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+    "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+    "src/patcher/framed_recipe.py": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+    "src/patcher/four_sided_frame.py": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+    "src/patcher/framed_full_paint.py": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+    "src/patcher/framed_presentation.py": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+    "src/patcher/framed_input.py": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+    "tools/build_partial_tile_candidate.py": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+    "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+    "src/patcher/framed_minimap.py": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+    "tools/build_framed_candidate.py": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+    "scripts/cdb/run_cdb_surface_dump.ps1": "ae90b6930a287d4fdc12dc5506780b82af3fbbe1c6cbc49dcc2bc08d5e64e43b",
+    "tools/framed_minimap_probe.py": "6b07fed075517bb163148faa47022fba805b98f964c8ad44e9b50cb2e10b28fb",
+    "tools/framed_noop_progress_probe.py": "521afa648cb13ee6aa0dd8bb291fd0690ecc965f3e0a01423e0fd902ef1acb91",
+    "tools/render_cdb_surface_probe.py": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+    "tools/initial_map_paint_trace.py": "845edda7ac563afe602dc3f6a388fe7e1874d6c6f128d1a938f8ce9ac2aa1021",
+    "tools/map_tile_coverage.py": "6d4a59b6f6c0601b7676165a6482b717f40582acdbf83f64643fb5fe5302a87b",
+    "tools/visibility_coverage.py": "133178fbdad53d1f81fce2c99aac17f63b73593f3f780cea597b61f6b4ad53e0",
+    "tools/frame_surface_audit.py": "1a9d0684cef0bb19a7b0ecd5ecb02c41ef0280033f2307f99d524a521611bfd3",
+    "tools/action_bar_surface_audit.py": "673bc4a925da2d3e77895b7179787f22c67401bc0198c5872ba305fdb637dbad",
+    "tools/cdb_surface_dump_to_png.py": "15d88e91ae65d8d3abc8f060915606437fbdb21b6d17285f99393e50fc271316",
+    "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
+    "scripts/build/build_ddraw_surfdump_proxy.ps1": "ad8d2889c18c53ca78aa6866fd07aa29632977851136ae88fca1ba67f84cd554",
+    "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp": "407d41d0d548e6217c6041181efb6466efa90f447110c5b8857bf92714ecb8eb",
+    "scripts/cdb/run_framed_screen_capture.ps1": "9adeb1dadb62fc2b4be682a7310a3f6df50190141618f89a544aecab7461821f",
+    "tools/framed_screen_probe.py": "52e6957b1a7909dec0a6c7bde1f265f4782e580997794e711757d1944108f984",
+    "tools/framed_screen_trace.py": "40c2d31b2be63e94b0129326d2c77ef9f9946bffe0e02148fcda64b88256c3b6",
+    "tools/test_framed_screen_capture.py": "b82873c80aa116f61a309fddab45eceb9f06b4ac09ce4b95a2c288da606edaf8",
+    "tools/test_framed_screen_probe.py": "c050a58631b789e602a32d699d0a36e072845c0350ced8d6026c1ff5e5cbf03f",
+    "tools/test_framed_screen_trace.py": "a898f7d5e1bed1c6fc4c1718c0fe48d2b84535c6b30cbf4f501a3aa15ed8dbbd"
+  },
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "input_candidate": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\clash95_hd_minimap_1024x768_20260906-031649.exe",
+  "input_candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+  "proxy_manifest": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\ddraw_surfdump_proxy.build.json",
+  "proxy_manifest_sha256": "fce2af106ba1a8011f70fbf2a1fb15652c7682855069c93ab97b1821f10beb8a",
+  "asset_source": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+  "workdir": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\workdir",
+  "assets": [
+    {
+      "relative": "AVI/ATAK_ZAM.AVI",
+      "sha256": "e71f8fe3f549ccd33a71d808bac02975d970a94c5fca7ac04fb91aa8061b86a5",
+      "bytes": 7767514
+    },
+    {
+      "relative": "AVI/ATAK_ZAS.AVI",
+      "sha256": "5895f103bd0a7b4b090d5bd61fc3c872df0cdab03fb8da04694d643419ce69e0",
+      "bytes": 6285084
+    },
+    {
+      "relative": "AVI/BATTLE.AVI",
+      "sha256": "4b9d70869bb4a729c6e61d15825471798cd988f61198b2a08a5d3c95bd3d4d31",
+      "bytes": 1424386
+    },
+    {
+      "relative": "AVI/CHLOP.AVI",
+      "sha256": "7687c05784c318ca752bec9cc40806dab9462261a354f315ddd03c6c2a5ab02b",
+      "bytes": 4261710
+    },
+    {
+      "relative": "AVI/CRE_AN.AVI",
+      "sha256": "89e63a6a35f3ef05730c979c2c34ea4ccc404fab24d172298f26ad1ef6ae28bc",
+      "bytes": 16772400
+    },
+    {
+      "relative": "AVI/INT_A.AVI",
+      "sha256": "556be8637b843f8b193bf42c081c9afc190ddef4dc18a18c2ab2c9c64c8be034",
+      "bytes": 15679090
+    },
+    {
+      "relative": "AVI/INT_CLSA.AVI",
+      "sha256": "556be8637b843f8b193bf42c081c9afc190ddef4dc18a18c2ab2c9c64c8be034",
+      "bytes": 15679090
+    },
+    {
+      "relative": "AVI/KON_POR1.AVI",
+      "sha256": "060e2341485e383df4adb29c1e78a8789710020552200f688b67bd6a24141ba7",
+      "bytes": 9066222
+    },
+    {
+      "relative": "AVI/KOP_BUD.AVI",
+      "sha256": "c191950c5f80092fd5404958dad81e5b98cf361d04dd82990c5865ba0fc1a7c3",
+      "bytes": 5547340
+    },
+    {
+      "relative": "AVI/LOGO.AVI",
+      "sha256": "0727d9343468db91bd31455118c9476eab898618f5a50131f825b141f5ee967a",
+      "bytes": 3487694
+    },
+    {
+      "relative": "AVI/P_POSLA.AVI",
+      "sha256": "c6b6f7e98a4c4600bd20e912fd35af862ebf90bf89fd9c156cf0d76118f4bb1a",
+      "bytes": 7007272
+    },
+    {
+      "relative": "AVI/SW_CHS.AVI",
+      "sha256": "049ef65a20b595f8ad5167e71bbf0bd22c6a729c946454c43fd1c1bd1a9f8841",
+      "bytes": 7318598
+    },
+    {
+      "relative": "AVI/SW_POG.AVI",
+      "sha256": "bbb7048b22f0dd7417754cf63a7dd9188dd00f9a0526cad2cfcd2aeeb3079d0b",
+      "bytes": 7390272
+    },
+    {
+      "relative": "AVI/UKRYCIE.AVI",
+      "sha256": "5c49ea131cd3f73873bcae581c9c33472be7fe51d45b7e872f4f2e805ec1ba79",
+      "bytes": 5955226
+    },
+    {
+      "relative": "AVI/UWIEZIC.AVI",
+      "sha256": "42325f1495dd9c5b7d7b8570b757bea191c6ec2d3caf0a0898aa55751794b690",
+      "bytes": 3730204
+    },
+    {
+      "relative": "AVI/WPAD_PUL.AVI",
+      "sha256": "6eaa2a56dc06cdef39598df3cb93a12166e2b3e7223b329f7f97c1ee161588fe",
+      "bytes": 7242622
+    },
+    {
+      "relative": "AVI/ZAKL_PUL.AVI",
+      "sha256": "6632de496484b6608bc83e4d1578fc5111a788f258e6a2184c026f9047995db1",
+      "bytes": 7025724
+    },
+    {
+      "relative": "AVI/ZARAZA.AVI",
+      "sha256": "0f57853c676170ef53202af57ab233aed89b4cad7c65ba49e5ea0774590bbbf3",
+      "bytes": 8290828
+    },
+    {
+      "relative": "AVI/ZCIECIE.AVI",
+      "sha256": "3cdd44d951c3d158ce1ae07e3dac2ebc072309a1f4d6691454245f740691cf57",
+      "bytes": 8904758
+    },
+    {
+      "relative": "AVI/ZNISZCZE.AVI",
+      "sha256": "4ecd4f4ad98bedb333d190658c95629b5a85a790190cfc6493929f1688e26d0e",
+      "bytes": 6777962
+    },
+    {
+      "relative": "AVI/ZWY01.AVI",
+      "sha256": "44208d512011c62f7cb104d4d6eb40512be538c423494111edc5dbcb6a5b9a19",
+      "bytes": 5806992
+    },
+    {
+      "relative": "AVI/ZWY02.AVI",
+      "sha256": "6e7dd1f8525cd2c6e5c10c9bc0d7277e90a8378c630562d668d3a83b6d9db9ee",
+      "bytes": 20111840
+    },
+    {
+      "relative": "CLASH.CFG",
+      "sha256": "cb62e875c27829bd39bfc4c1c4b22e1b2650bec4e7301297ef8cbbded2cdfb9d",
+      "bytes": 157
+    },
+    {
+      "relative": "DATA/GFX3.RES",
+      "sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525",
+      "bytes": 5514969
+    },
+    {
+      "relative": "DATA/INFOANG.RES",
+      "sha256": "6a3c6f7a70052a230ddb9fd79dd83eb2f183dd86b1c645bc195235ad46f740be",
+      "bytes": 10170649
+    },
+    {
+      "relative": "DATA/INFOPOL.RES",
+      "sha256": "011c029ac109d41cd9dbd50eed466e8c05ac654fa8f7fc3535981bee230ac38e",
+      "bytes": 9659471
+    },
+    {
+      "relative": "DATA/IS.RES",
+      "sha256": "864d9c7c070b73610de938b003e1a0db5d7077094745fea295858ba325c00df9",
+      "bytes": 327623280
+    },
+    {
+      "relative": "DATA/mainmap1.wav",
+      "sha256": "dd032d4fd4b048ded58b7a1f9c53400c394eaf5c967bba9c6909a2245bce3f77",
+      "bytes": 14553368
+    },
+    {
+      "relative": "DATA/mainmap2.wav",
+      "sha256": "c4502c308ed8f561e77be8c791e087f45ac5f510b2f6ae0ca5f86380d0e1998b",
+      "bytes": 21846838
+    },
+    {
+      "relative": "DATA/mainmap3.wav",
+      "sha256": "77440e5b368024382b3273488f3f6d94a0eebce9e0b611ca382ccb14ac54953a",
+      "bytes": 14178278
+    },
+    {
+      "relative": "DATA/MAPS.RES",
+      "sha256": "02d8b33085bf945d99fedb15c5bcaf90bdbb81bcac794ca3e4db3a06a0b1ed1e",
+      "bytes": 11571421
+    },
+    {
+      "relative": "DATA/maximum.res",
+      "sha256": "44f545780f11081cd0d45421eb8b7ed985221ef776319573bbfd89ff6431ccf2",
+      "bytes": 43971758
+    },
+    {
+      "relative": "DATA/minimum.res",
+      "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116",
+      "bytes": 21601784
+    },
+    {
+      "relative": "DATA/MISINFOA.RES",
+      "sha256": "8686a33b383d139940919d207af64c58badf39afbd6f59bb11fe72bb986369c7",
+      "bytes": 19554277
+    },
+    {
+      "relative": "DATA/MISWAVA.RES",
+      "sha256": "90e6abf80e42ee922fb92edefc86ef404b99f3253bc4ef42c893d47a90d8d678",
+      "bytes": 22389782
+    },
+    {
+      "relative": "DATA/MUSIC.RES",
+      "sha256": "1aff45e27614d4d898008ef24ec562dd67d422242ec1aae85cca8d36d9c739db",
+      "bytes": 112388864
+    },
+    {
+      "relative": "DATA/normal.res",
+      "sha256": "cfee4443248ac36e2d19184f436dede9054d0761e50246677716d86b0bfe0f2e",
+      "bytes": 28357077
+    },
+    {
+      "relative": "default.rec",
+      "sha256": "7851518329ea89a4c2d78b3287fbb78fe2264687ce2b1e5a7e7993563f7b044b",
+      "bytes": 27
+    },
+    {
+      "relative": "dxcfg.ini",
+      "sha256": "0f35b74b13284901c07145fb945575a7f5a5f313e13aeb24392843609ecda3fe",
+      "bytes": 158
+    },
+    {
+      "relative": "GFX/CACHE/0723e4a3.s32",
+      "sha256": "13bb10c51a95f9f182424054ce02d2fa03c8bc8edeb92e9cf77e2780c90ce49a",
+      "bytes": 15840
+    },
+    {
+      "relative": "GFX/CACHE/0823e4a3.s32",
+      "sha256": "efa410dd096eec3f1788ca219efc026489b944d88c7f4735474bef16b50151dd",
+      "bytes": 39264
+    },
+    {
+      "relative": "GFX/CACHE/0d23e4a3.s32",
+      "sha256": "dce3277e9111131d1acd08b19d6f61e652a27b3f06fd6d664acd0e7c3f6d88af",
+      "bytes": 15840
+    },
+    {
+      "relative": "GFX/CACHE/126316ed.s32",
+      "sha256": "be14d76510c9a0121e40ac1d8df3b2c3bb6ed412ef1caf6abf29a678572374de",
+      "bytes": 20132
+    },
+    {
+      "relative": "GFX/CACHE/156316ed.s32",
+      "sha256": "b481ca4d6ef8ddf82f918bf5975507ef14979bb52403bdc1d33d51a861d7e0df",
+      "bytes": 14183
+    },
+    {
+      "relative": "GFX/CACHE/m23e4a3.s32",
+      "sha256": "153752e262527283edea05266c3192a22e7e7a3f990e650c0850f00e19c080b1",
+      "bytes": 41875
+    },
+    {
+      "relative": "GFX/CACHE/m6316ed.s32",
+      "sha256": "2b607181afe68848aa4d982675fd378a29533b3ce82e8a6c3e3e501b1abbb8fc",
+      "bytes": 41875
+    },
+    {
+      "relative": "options.cfg",
+      "sha256": "7fc1c3f035950d09d35482deb21869c3e1401c3b82c3ecbe595f03116d181c71",
+      "bytes": 27
+    },
+    {
+      "relative": "palette.data",
+      "sha256": "26b1baa3b2ba498a37e76ec8bd5804206e132c26c6b4a859a9b62566b608b32f",
+      "bytes": 1024
+    },
+    {
+      "relative": "save/0.dat",
+      "sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+      "bytes": 586414
+    },
+    {
+      "relative": "save/0.fac",
+      "sha256": "052f6584bb5ab9a719d57ee9e3c7a9b135d71a9e08ede37b1b0e70ea4ab738a1",
+      "bytes": 5523
+    },
+    {
+      "relative": "save/2.dat",
+      "sha256": "11a1375e746550bf4949cfcefc9904e9b547a3c8b088e1c698182973db7c03b6",
+      "bytes": 586414
+    },
+    {
+      "relative": "save/2.fac",
+      "sha256": "d7eadcb70317b475bbf031f54268c3d770e2543689f43096e3d32bb9cbeb25f0",
+      "bytes": 169
+    },
+    {
+      "relative": "STRATEG/CLASH.DAT",
+      "sha256": "95f25a434a1b61d168149895498f133563fcc3d4f54e225901b7235333b4fbd4",
+      "bytes": 106717
+    },
+    {
+      "relative": "STRATEG/PRIOR",
+      "sha256": "a4e486436855469ecc7c93860debc864bf09540f29f19e50fc7e9f4cb9fecb16",
+      "bytes": 92
+    }
+  ],
+  "candidate_dir": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248",
+  "output_dir": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248",
+  "expected_probe_sha256": "40bfd535f131e44f97c9b33ed0a367d1c646319c273ea807d5b0a9e6dddd3aa1",
+  "dry_run": {
+    "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\modal-dry-run-20260906-041248.json",
+    "sha256": "f40ce6fd2c3985bab4cdb8c782f5ce741c42a9c02a713707f756e3ba48a66578",
+    "executed": false
+  },
+  "command": [
+    "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+    "-NoProfile",
+    "-NonInteractive",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\run_framed_screen_capture.ps1",
+    "-InputCandidate",
+    "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\clash95_hd_minimap_1024x768_20260906-031649.exe",
+    "-ProxyBuildManifest",
+    "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\ddraw_surfdump_proxy.build.json",
+    "-WorkDir",
+    "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\workdir",
+    "-CandidateDir",
+    "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248",
+    "-OutDir",
+    "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248",
+    "-Route",
+    "hospital",
+    "-CastleIndex",
+    "0",
+    "-Availability",
+    "construct_all",
+    "-Resolution",
+    "1024x768",
+    "-MinimapViewport",
+    "-Execute"
+  ],
+  "limits": [
+    "No visible desktop, OS input, manual-input proof or promotion.",
+    "Native route is forced; availability policy recorded explicitly. No natural selection claim.",
+    "A memory-surface screenshot may omit primary-only overlays."
+  ]
+}

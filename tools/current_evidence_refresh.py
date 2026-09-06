@@ -154,6 +154,7 @@ import test_hd_soak_execution_boundary
 import test_hd_soak_intro_skip_rerun_readiness
 import test_hd_soak_long_report_guard
 import test_hd_soak_report
+import test_hidden_soak_report_assembler
 import test_hd_soak_route_coverage
 import test_hd_soak_short_artifact_manifest
 import test_hd_soak_short_step_status
@@ -633,6 +634,12 @@ DEFAULT_HD_SOAK_REPORT_GUARD_JSON = Path("captures/current/hd-soak-report-guard-
 DEFAULT_HD_SOAK_REPORT_GUARD_MD = Path("captures/current/hd-soak-report-guard-current.md")
 DEFAULT_HD_SOAK_REPORT_GUARD_TESTS_JSON = Path("captures/current/hd-soak-report-guard-tests-current.json")
 DEFAULT_HD_SOAK_REPORT_GUARD_TESTS_MD = Path("captures/current/hd-soak-report-guard-tests-current.md")
+DEFAULT_HIDDEN_SOAK_REPORT_ASSEMBLER_TESTS_JSON = Path(
+    "captures/current/hidden-soak-report-assembler-tests-current.json"
+)
+DEFAULT_HIDDEN_SOAK_REPORT_ASSEMBLER_TESTS_MD = Path(
+    "captures/current/hidden-soak-report-assembler-tests-current.md"
+)
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON = hd_soak_failure_triage.DEFAULT_JSON
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD = hd_soak_failure_triage.DEFAULT_MD
 DEFAULT_HD_SOAK_FAILURE_TRIAGE_TESTS_JSON = Path("captures/current/hd-soak-failure-triage-tests-current.json")
@@ -5549,7 +5556,7 @@ def build_hd_soak_report_guard(args: argparse.Namespace) -> dict[str, Any]:
     report_path, report_source = selected_hd_soak_report_path(args)
     selection = hd_soak_report_selection_metadata(args, report_path, report_source)
     if report_path.exists():
-        evaluation = hd_soak_report.evaluate_report(hd_soak_report.load_json(report_path))
+        evaluation = hd_soak_report.evaluate_report_for_environment(hd_soak_report.load_json(report_path))
         evaluation["source_report"] = str(report_path)
         evaluation["source_report_selection"] = report_source
     else:
@@ -5629,6 +5636,28 @@ def build_hd_soak_report_guard_tests(args: argparse.Namespace) -> dict[str, Any]
             "a passing source status, external artifact locations, stable/progressing frame metrics, clean process stop, "
             "elapsed frame/process sample coverage, valid route/input probe rows, and non-promoting input status with bounded working-set, private-memory, "
             "handle growth, artifact budget, valid capture/frame inventories, and consistent raw/sample summary metrics"
+        ),
+    )
+
+
+def build_hidden_soak_report_assembler_tests(args: argparse.Namespace) -> dict[str, Any]:
+    return simple_test_check(
+        test_runner=test_hidden_soak_report_assembler,
+        tests=[
+            "hidden soak startup prose cannot satisfy anchored runtime markers",
+            "hidden soak samples require the exact environment and input sentinel",
+            "hidden soak assembler output passes the shared environment-aware guard",
+            "hidden map-pan evidence requires ordered forced-scroll rows and frame progression",
+            "hidden reports retain host process, proxy, cleanup, patch, and surface-read provenance",
+            "hidden runner remains dry-run-only until explicit execution opt-in",
+        ],
+        title="Hidden-CDB Soak Report Assembler Tests",
+        json_path=args.hidden_soak_report_assembler_tests_json,
+        md_path=args.hidden_soak_report_assembler_tests_md,
+        guard_policy=(
+            "proves hidden-CDB reports are a distinct fail-closed evidence class with anchored runtime "
+            "markers, real host process and ReadProcessMemory telemetry, a non-presenting memory proxy, "
+            "explicit forced-entry disclosure, and input_responsiveness=not_applicable_hidden"
         ),
     )
 
@@ -5847,9 +5876,20 @@ def build_hd_soak_long_report_guard_tests(args: argparse.Namespace) -> dict[str,
     return simple_test_check(
         test_runner=test_hd_soak_long_report_guard,
         tests=[
-            "hd_soak_long_report_guard fails closed while the short ladder and long proof are missing",
+            "hd_soak_long_report_guard rejects incomplete or forged short-ladder identities",
+            "hd_soak_long_report_guard requires every hidden provenance check",
+            "hd_soak_long_report_guard preserves hidden input and forced-route disclosures",
+            "hd_soak_long_report_guard rejects unsupported or mislabeled environments",
+            "hd_soak_long_report_guard rejects conflicting status and invalid duration types",
+            "hd_soak_long_report_guard locks a synthetic incomplete ladder with missing long proof",
+            "hd_soak_long_report_guard keeps a synthetic complete ladder blocked without long proof",
             "hd_soak_long_report_guard accepts a valid future two-route 2h+ proof fixture",
             "hd_soak_long_report_guard accepts candidate SHA-256 from nested patch-evidence summaries",
+            "hd_soak_long_report_guard labels hidden two-route proof and its limitations",
+            "hd_soak_long_report_guard labels host route evidence separately",
+            "hd_soak_long_report_guard rejects mixed hidden candidate SHA-256s",
+            "hd_soak_long_report_guard rejects hidden duration below two hours",
+            "hd_soak_long_report_guard rejects failed hidden required checks",
             "hd_soak_long_report_guard rejects mixed candidate SHA-256s across representative routes",
             "hd_soak_long_report_guard rejects missing representative long routes",
             "hd_soak_long_report_guard rejects short duration and failed required checks",
@@ -5964,12 +6004,19 @@ def build_hd_soak_intro_skip_rerun_readiness_tests(args: argparse.Namespace) -> 
     return simple_test_check(
         test_runner=test_hd_soak_intro_skip_rerun_readiness,
         tests=[
-            "hd_soak_intro_skip_rerun_readiness passes only when the classified failure and guards support an explicit visible rerun",
-            "hd_soak_intro_skip_rerun_readiness rejects wrong failure classifications",
-            "hd_soak_intro_skip_rerun_readiness rejects approval-command intro-skip drift",
-            "hd_soak_intro_skip_rerun_readiness rejects missing visible-runtime approval tokens",
-            "hd_soak_intro_skip_rerun_readiness rejects missing visible-runtime approval expiry",
-            "hd_soak_intro_skip_rerun_readiness CLI writes JSON/Markdown and respects --require-pass",
+            "hd_soak_intro_skip_rerun_readiness: ready packet passes",
+            "hd_soak_intro_skip_rerun_readiness: input environment denied map attempt preserves readiness",
+            "hd_soak_intro_skip_rerun_readiness: intro transition failure preserves readiness after harness fix",
+            "hd_soak_intro_skip_rerun_readiness: unexpected process exit is not applicable not rerun ready",
+            "hd_soak_intro_skip_rerun_readiness: rejects wrong triage classification",
+            "hd_soak_intro_skip_rerun_readiness: rejects intro skip command drift",
+            "hd_soak_intro_skip_rerun_readiness: rejects visible runtime token drift",
+            "hd_soak_intro_skip_rerun_readiness: rejects visible runtime expiry drift",
+            "hd_soak_intro_skip_rerun_readiness: completed ladder requires real bound reports but no current approval packet",
+            "hd_soak_intro_skip_rerun_readiness: completed ladder rejects forged stale or mismatched evidence",
+            "hd_soak_intro_skip_rerun_readiness: real predecessor reports make intro readiness historical",
+            "hd_soak_intro_skip_rerun_readiness: later step label cannot replace canonical predecessor proof",
+            "hd_soak_intro_skip_rerun_readiness: cli writes outputs",
         ],
         title="HD Soak Intro-Skip Rerun Readiness Tests",
         json_path=args.hd_soak_intro_skip_rerun_readiness_tests_json,
@@ -6304,17 +6351,26 @@ def build_hd_soak_dry_run_plan_tests(args: argparse.Namespace) -> dict[str, Any]
     return simple_test_check(
         test_runner=test_hd_soak_dry_run_plan,
         tests=[
-            "hd_soak_dry_run_plan accepts the current-step dry-run plan fixture",
-            "hd_soak_dry_run_plan rejects executed plans",
-            "hd_soak_dry_run_plan rejects protected-stage drift",
-            "hd_soak_dry_run_plan rejects execute commands without -RequirePass or -Json",
-            "hd_soak_dry_run_plan rejects visible-runtime execute commands without the approval token",
-            "hd_soak_dry_run_plan rejects visible-runtime execute commands without the approval expiry",
-            "hd_soak_dry_run_plan rejects visible-runtime approval packets that expire too soon",
-            "hd_soak_dry_run_plan rejects execute commands missing explicit stage/input/workdir/output roots",
-            "hd_soak_dry_run_plan rejects repository candidate output",
-            "hd_soak_dry_run_plan rejects missing or unverified base executable input",
-            "hd_soak_dry_run_plan CLI writes JSON/Markdown and respects --require-pass",
+            "hd_soak_dry_run_plan: valid plan passes",
+            "hd_soak_dry_run_plan: rejects executed plan",
+            "hd_soak_dry_run_plan: rejects stage drift",
+            "hd_soak_dry_run_plan: rejects execute command without require pass or json",
+            "hd_soak_dry_run_plan: rejects missing visible runtime token",
+            "hd_soak_dry_run_plan: rejects missing visible runtime expiry",
+            "hd_soak_dry_run_plan: rejects nearly expired visible runtime approval",
+            "hd_soak_dry_run_plan: rejects missing intro skip plan fields",
+            "hd_soak_dry_run_plan: rejects execute command without explicit stage or io roots",
+            "hd_soak_dry_run_plan: rejects repo candidate path",
+            "hd_soak_dry_run_plan: rejects missing or unverified base input",
+            "hd_soak_dry_run_plan: cli writes outputs",
+            "hd_soak_dry_run_plan: hidden plan uses real schema and preserves no input boundary",
+            "hd_soak_dry_run_plan: hidden plan rejects provenance and command drift",
+            "hd_soak_dry_run_plan: hidden default invokes only hidden dry run",
+            "hd_soak_dry_run_plan: unknown environment never invokes a harness",
+            "hd_soak_dry_run_plan: hidden plan rejects an arbitrary existing interpreter",
+            "hd_soak_dry_run_plan: completed ladder never invokes a harness or reads a plan",
+            "hd_soak_dry_run_plan: invalid completion never falls back to runtime planning",
+            "hd_soak_dry_run_plan: completed ladder cli writes only terminal packet",
         ],
         title="HD Soak Dry-Run Plan Tests",
         json_path=args.hd_soak_dry_run_plan_tests_json,
@@ -6370,31 +6426,40 @@ def build_hd_soak_approval_preflight_tests(args: argparse.Namespace) -> dict[str
     return simple_test_check(
         test_runner=test_hd_soak_approval_preflight,
         tests=[
-            "hd_soak_approval_preflight passes with a canonical first-step approval packet and explicit input-drift limit",
-            "hd_soak_approval_preflight records current-step report, guard, and triage artifact presence",
-            "hd_soak_approval_preflight fails closed when runtime command approval flags or paths drift",
-            "hd_soak_approval_preflight fails closed when dry-run command can execute",
-            "hd_soak_approval_preflight catches next-actions and short-step command mismatches",
-            "hd_soak_approval_preflight catches next-actions and short-step dry-run mismatches",
-            "hd_soak_approval_preflight catches post-run validation mismatches and require-pass guard ordering regressions",
-            "hd_soak_approval_preflight catches next-actions and short-step handoff-refresh mismatches",
-            "hd_soak_approval_preflight catches next-actions and broad evidence-refresh mismatches",
-            "hd_soak_approval_preflight catches stale next-action current-step artifact inventory",
-            "hd_soak_approval_preflight catches next-actions and dry-run plan execute-command mismatches",
-            "hd_soak_approval_preflight catches stale next-actions dry-run plan summaries",
-            "hd_soak_approval_preflight fails closed when the current short-step status is not pending",
-            "hd_soak_approval_preflight accepts a classified intro-skip rerun only when readiness passes",
-            "hd_soak_approval_preflight fails closed when source guards are not passing",
-            "hd_soak_approval_preflight fails closed when the dry-run plan is not passing",
-            "hd_soak_approval_preflight fails closed when the dry-run plan is stale",
-            "hd_soak_approval_preflight fails closed when the visible-runtime approval token expires too soon",
-            "hd_soak_approval_preflight catches dry-run plan current-step and report-path mismatches",
-            "hd_soak_approval_preflight fails closed when the dry-run plan does not verify the base executable",
-            "hd_soak_approval_preflight catches dry-run plan execute commands missing explicit stage/input/root pins",
-            "hd_soak_approval_preflight catches visible-runtime execute commands without the approval token",
-            "hd_soak_approval_preflight catches visible-runtime execute commands without the approval expiry",
-            "hd_soak_approval_preflight can gate the next short step after the first soak passes",
-            "hd_soak_approval_preflight CLI writes JSON/Markdown and respects --require-pass",
+            "hd_soak_approval_preflight: hidden preflight uses emitted plan without visible approval",
+            "hd_soak_approval_preflight: hidden preflight rejects unbound or visible packets",
+            "hd_soak_approval_preflight: current preflight passes with generated reports",
+            "hd_soak_approval_preflight: current preflight records current step artifact inventory",
+            "hd_soak_approval_preflight: runtime command requires visible runtime and canonical paths",
+            "hd_soak_approval_preflight: dry run must not execute",
+            "hd_soak_approval_preflight: step status command must match next actions",
+            "hd_soak_approval_preflight: next actions dry run must match step status",
+            "hd_soak_approval_preflight: next actions post run validation must match step status",
+            "hd_soak_approval_preflight: next actions post run handoff refresh must match step status",
+            "hd_soak_approval_preflight: next actions post run evidence refresh must match preflight",
+            "hd_soak_approval_preflight: next actions artifact inventory must match preflight",
+            "hd_soak_approval_preflight: next actions plan verified command must match dry run plan",
+            "hd_soak_approval_preflight: next actions dry run plan summary must match current dry run plan",
+            "hd_soak_approval_preflight: step status must be pending first step",
+            "hd_soak_approval_preflight: intro skip rerun preflight passes with readiness gate",
+            "hd_soak_approval_preflight: input environment rerun preflight requires fresh approval",
+            "hd_soak_approval_preflight: application hang rerun preflight requires window health stop",
+            "hd_soak_approval_preflight: next actions current failure must match preflight",
+            "hd_soak_approval_preflight: guard source must pass",
+            "hd_soak_approval_preflight: dry run plan source must pass",
+            "hd_soak_approval_preflight: stale dry run plan fails closed",
+            "hd_soak_approval_preflight: nearly expired approval fails closed",
+            "hd_soak_approval_preflight: dry run plan must match current step and paths",
+            "hd_soak_approval_preflight: dry run plan must confirm base input",
+            "hd_soak_approval_preflight: dry run plan execute command must pin stage and roots",
+            "hd_soak_approval_preflight: dry run plan must pin visible runtime token",
+            "hd_soak_approval_preflight: dry run plan must pin visible runtime expiry",
+            "hd_soak_approval_preflight: dry run plan must pin intro skip contract",
+            "hd_soak_approval_preflight: dry run plan must pin windowed contract",
+            "hd_soak_approval_preflight: later short step preflight uses step status without first next action",
+            "hd_soak_approval_preflight: cli writes outputs",
+            "hd_soak_approval_preflight: completed ladder produces no approval or runtime request",
+            "hd_soak_approval_preflight: invalid completion cannot bypass approval preflight",
         ],
         title="HD Soak Approval Preflight Tests",
         json_path=args.hd_soak_approval_preflight_tests_json,
@@ -7864,6 +7929,7 @@ def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks["hd_soak_execution_boundary_tests"] = build_hd_soak_execution_boundary_tests(args)
     checks["hd_soak_report_guard"] = build_hd_soak_report_guard(args)
     checks["hd_soak_report_guard_tests"] = build_hd_soak_report_guard_tests(args)
+    checks["hidden_soak_report_assembler_tests"] = build_hidden_soak_report_assembler_tests(args)
     checks["hd_soak_failure_triage"] = build_hd_soak_failure_triage(args)
     checks["hd_soak_failure_triage_tests"] = build_hd_soak_failure_triage_tests(args)
     checks["hd_soak_short_artifact_manifest"] = build_hd_soak_short_artifact_manifest(args)
@@ -9234,6 +9300,16 @@ def parse_args() -> argparse.Namespace:
         "--hd-soak-report-guard-tests-md",
         type=Path,
         default=DEFAULT_HD_SOAK_REPORT_GUARD_TESTS_MD,
+    )
+    parser.add_argument(
+        "--hidden-soak-report-assembler-tests-json",
+        type=Path,
+        default=DEFAULT_HIDDEN_SOAK_REPORT_ASSEMBLER_TESTS_JSON,
+    )
+    parser.add_argument(
+        "--hidden-soak-report-assembler-tests-md",
+        type=Path,
+        default=DEFAULT_HIDDEN_SOAK_REPORT_ASSEMBLER_TESTS_MD,
     )
     parser.add_argument("--hd-soak-failure-triage-json", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_JSON)
     parser.add_argument("--hd-soak-failure-triage-md", type=Path, default=DEFAULT_HD_SOAK_FAILURE_TRIAGE_MD)

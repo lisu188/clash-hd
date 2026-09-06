@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shlex
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -98,6 +99,10 @@ MAX_HANDLE_GROWTH = 128
 INTRO_SKIP_CLICK_MODE = "postmessage"
 INTRO_SKIP_CLICKS = 8
 SKIP_PULSES = 4
+PAN_INTERVAL_SEC = 10
+HOST_VISIBLE_ENVIRONMENT = "host_visible"
+HOST_VISIBLE_EVIDENCE_CLASS = "host_visible_runtime_soak"
+HIDDEN_ENVIRONMENT = "hidden_cdb_host"
 
 
 def status_text(passed: bool) -> str:
@@ -123,6 +128,8 @@ def canonical_report_paths(step: dict[str, Any]) -> dict[str, str]:
     return {
         "report_json": path_text(Path("captures/current") / f"hd-soak-{slug}-current.json"),
         "report_markdown": path_text(Path("captures/current") / f"hd-soak-{slug}-current.md"),
+        "guard_json": path_text(Path("captures/current") / f"hd-soak-{slug}-guard-current.json"),
+        "guard_markdown": path_text(Path("captures/current") / f"hd-soak-{slug}-guard-current.md"),
     }
 
 
@@ -172,6 +179,47 @@ def command_for_step(step: dict[str, Any], *, execute: bool) -> str:
     return " ".join(parts)
 
 
+def hidden_cdb_command_for_step(step: dict[str, Any], *, execute: bool) -> str | None:
+    if step.get("route") not in {"map-idle", "map-pan"}:
+        return None
+    paths = canonical_report_paths(step)
+    parts = [
+        "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        r".\scripts\cdb\run_hidden_soak.ps1",
+        "-Route",
+        str(step["route"]),
+        "-DurationSec",
+        str(step["duration_sec"]),
+        "-FrameIntervalSec",
+        str(SAMPLE_INTERVAL_SEC),
+        "-PanIntervalSec",
+        str(PAN_INTERVAL_SEC),
+        "-ReportJson",
+        paths["report_json"],
+        "-ReportMarkdown",
+        paths["report_markdown"],
+        "-GuardJson",
+        paths["guard_json"],
+        "-GuardMarkdown",
+        paths["guard_markdown"],
+        "-MaxArtifactMB",
+        str(MAX_ARTIFACT_MB),
+        "-MaxWorkingSetGrowthMB",
+        str(MAX_WORKING_SET_GROWTH_MB),
+        "-MaxPrivateMemoryGrowthMB",
+        str(MAX_PRIVATE_MEMORY_GROWTH_MB),
+        "-MaxHandleGrowth",
+        str(MAX_HANDLE_GROWTH),
+    ]
+    if execute:
+        parts.append("-Execute")
+    return " ".join(parts)
+
+
 def nested(data: dict[str, Any] | None, *keys: str, default: Any = None) -> Any:
     value: Any = data or {}
     for key in keys:
@@ -181,13 +229,34 @@ def nested(data: dict[str, Any] | None, *keys: str, default: Any = None) -> Any:
     return value
 
 
+def evidence_binding(report: dict[str, Any]) -> tuple[Any, Any]:
+    environment = report.get("environment", HOST_VISIBLE_ENVIRONMENT)
+    evidence_class = report.get(
+        "evidence_class", HOST_VISIBLE_EVIDENCE_CLASS if environment == HOST_VISIBLE_ENVIRONMENT else None
+    )
+    return environment, evidence_class
+
+
+def valid_evidence_binding(report: dict[str, Any]) -> bool:
+    environment, evidence_class = evidence_binding(report)
+    classes = {
+        HOST_VISIBLE_ENVIRONMENT: HOST_VISIBLE_EVIDENCE_CLASS,
+        HIDDEN_ENVIRONMENT: "approved_hidden_cdb_host_soak",
+        "guest_win98_qemu": "approved_guest_win98_directdraw",
+    }
+    return isinstance(environment, str) and environment in classes and evidence_class == classes[environment]
+
+
 def soak_report_matches_step(report: dict[str, Any] | None, step: dict[str, Any]) -> bool:
     if not report:
         return False
+    environment, _ = evidence_binding(report)
     return (
-        report.get("stage") == PROTECTED_STABLE_STAGE
+        valid_evidence_binding(report)
+        and report.get("stage") == PROTECTED_STABLE_STAGE
         and report.get("tier") == step["tier"]
         and report.get("route") == step["route"]
+        and not (environment == HIDDEN_ENVIRONMENT and step["route"] == "menu-idle")
     )
 
 
@@ -243,13 +312,31 @@ def build_steps(
         matched_report = soak_report_matches_step(soak_report, step)
         matched_report_passed = bool(matched_report and soak_report and soak_report.get("overall"))
         matched_report_executed = bool(matched_report and nested(soak_report, "checks", "executed", "summary", "executed"))
+        # Label the evidence environment on the step row: host visible runtime
+        # is the default; the approved hidden_cdb_host (and guest) classes are
+        # accepted the same way but must stay visibly labeled.
+        matched_report_environment = (
+            str((soak_report or {}).get("environment") or "host_visible") if matched_report else None
+        )
+        matched_report_evidence_class = (
+            (soak_report or {}).get("evidence_class")
+            or (HOST_VISIBLE_EVIDENCE_CLASS if matched_report_environment == HOST_VISIBLE_ENVIRONMENT else None)
+            if matched_report
+            else None
+        )
+        hidden_dry_run = hidden_cdb_command_for_step(step, execute=False)
+        hidden_runtime = hidden_cdb_command_for_step(step, execute=True)
+        visible_dry_run = command_for_step(step, execute=False)
+        visible_runtime = command_for_step(step, execute=True)
 
         if not harness_ready:
             status = "missing_harness_contract"
-        elif matched_report_passed:
-            status = "pass"
         elif not prerequisites_passed:
             status = "locked_by_prerequisite"
+        elif matched_report_passed:
+            status = "pass"
+        elif hidden_runtime:
+            status = "runtime_required"
         else:
             status = "approval_required"
 
@@ -263,12 +350,30 @@ def build_steps(
             "matched_current_soak_report": matched_report,
             "matched_current_soak_report_executed": matched_report_executed,
             "matched_current_soak_report_overall": bool(matched_report and soak_report and soak_report.get("overall")),
-            "safe_dry_run_command": command_for_step(step, execute=False),
-            "approval_gated_runtime_command": command_for_step(step, execute=True),
+            "environment": matched_report_environment,
+            "evidence_class": matched_report_evidence_class,
+            "safe_dry_run_command": visible_dry_run,
+            "approval_gated_runtime_command": visible_runtime,
+            "hidden_cdb_safe_dry_run_command": hidden_dry_run,
+            "hidden_cdb_runtime_command": hidden_runtime,
+            "preferred_environment": HIDDEN_ENVIRONMENT if hidden_runtime else HOST_VISIBLE_ENVIRONMENT,
+            "supported_environments": (
+                [HIDDEN_ENVIRONMENT, HOST_VISIBLE_ENVIRONMENT]
+                if hidden_runtime
+                else [HOST_VISIBLE_ENVIRONMENT]
+            ),
+            "recommended_safe_dry_run_command": hidden_dry_run or visible_dry_run,
+            "recommended_runtime_command": hidden_runtime or visible_runtime,
             "canonical_report_paths": canonical_report_paths(step),
-            "requires_visible_runtime": status == "approval_required",
-            "requires_explicit_user_approval": status == "approval_required",
-            "writes_outside_repo": [r"C:\ClashTests\hd-soak", r"C:\ClashCaptures\hd-soak"],
+            "requires_visible_runtime": status == "approval_required" and hidden_runtime is None,
+            "requires_explicit_user_approval": status == "approval_required" and hidden_runtime is None,
+            "visible_runtime_alternative_requires_explicit_user_approval": True,
+            "writes_outside_repo": [
+                r"C:\ClashTests\hd-soak",
+                r"C:\ClashCaptures\hd-soak",
+                r"C:\ClashTests\hd-soak\hidden",
+                r"C:\ClashCaptures\hd-soak\hidden",
+            ],
             "must_not_modify": [r"C:\Clash\clash95.exe"],
             "route_coverage": str(route_coverage_json),
         }
@@ -313,6 +418,25 @@ def command_contains_any(command: str, fragments: list[str]) -> bool:
 def plan_command_matches_step(command: str, step: dict[str, Any] | None) -> bool:
     if not command or not step:
         return False
+    hidden_command = hidden_cdb_command_for_step(step, execute=True)
+    if hidden_command and command == hidden_command:
+        return True
+    # Visible plan packets may quote arguments and carry fresh approval tokens.
+    # Require the known PowerShell/script prefix and reject shell operators so
+    # an unrelated executable cannot pass by embedding the expected fragments.
+    if any(character in command for character in ";|&`$\n\r"):
+        return False
+    try:
+        tokens = [token[1:-1] if len(token) >= 2 and token[0] == token[-1] and token[0] in "\"'" else token
+                  for token in shlex.split(command, posix=False)]
+    except ValueError:
+        return False
+    prefix = ["powershell.exe", "-noprofile", "-executionpolicy", "bypass", "-file",
+              r".\scripts\smoke\run_hd_soak.ps1"]
+    if [token.replace("/", "\\").casefold() for token in tokens[:6]] != prefix:
+        return False
+    if any(token.casefold() in {"-file", "-command", "-encodedcommand"} for token in tokens[6:]):
+        return False
     paths = canonical_report_paths(step)
     report_json_name = Path(paths["report_json"]).name
     report_md_name = Path(paths["report_markdown"]).name
@@ -338,12 +462,13 @@ def plan_command_matches_step(command: str, step: dict[str, Any] | None) -> bool
 
 def next_action_alignment(next_actions: dict[str, Any] | None, step: dict[str, Any] | None) -> dict[str, Any]:
     action = (next_actions or {}).get("next_action") or {}
-    expected = step.get("approval_gated_runtime_command") if step else None
+    expected = (step.get("recommended_runtime_command") or step.get("approval_gated_runtime_command")) if step else None
+    visible_expected = step.get("approval_gated_runtime_command") if step else None
     reported = action.get("exact_runtime_command")
     legacy = action.get("legacy_step_runtime_command")
     plan_verified = action.get("plan_verified_execute_command")
     step_match = bool(reported and expected and reported == expected)
-    legacy_match = bool(legacy and expected and legacy == expected)
+    legacy_match = bool(legacy and visible_expected and legacy == visible_expected)
     plan_verified_match = bool(reported and plan_verified and reported == plan_verified)
     plan_verified_step_match = bool(plan_verified_match and plan_command_matches_step(str(plan_verified), step))
     repo_only_triage_match = bool(
@@ -377,6 +502,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         failures.append(f"missing next-action report: {args.next_actions_json}")
     elif not next_actions.get("passed"):
         failures.append("next-action report is not passing")
+    if soak_report is not None and not valid_evidence_binding(soak_report):
+        failures.append("unsupported or inconsistent soak environment/evidence_class binding")
 
     steps = build_steps(route_coverage, soak_report, args.route_coverage_json, args.soak_report_json)
     next_step = current_step(steps)
@@ -394,6 +521,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "total": len(steps),
         "passed": sum(1 for step in steps if step.get("passed")),
         "approval_required": sum(1 for step in steps if step.get("status") == "approval_required"),
+        "runtime_required": sum(1 for step in steps if step.get("status") == "runtime_required"),
         "locked_by_prerequisite": sum(1 for step in steps if step.get("status") == "locked_by_prerequisite"),
         "missing_harness_contract": sum(1 for step in steps if step.get("status") == "missing_harness_contract"),
     }
@@ -418,8 +546,13 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             "route": next_step["route"],
             "status": next_step["status"],
             "requires_explicit_user_approval": next_step["requires_explicit_user_approval"],
+            "preferred_environment": next_step["preferred_environment"],
             "safe_dry_run_command": next_step["safe_dry_run_command"],
             "approval_gated_runtime_command": next_step["approval_gated_runtime_command"],
+            "hidden_cdb_safe_dry_run_command": next_step["hidden_cdb_safe_dry_run_command"],
+            "hidden_cdb_runtime_command": next_step["hidden_cdb_runtime_command"],
+            "recommended_safe_dry_run_command": next_step["recommended_safe_dry_run_command"],
+            "recommended_runtime_command": next_step["recommended_runtime_command"],
         },
         "steps": steps,
         "locks": {
@@ -459,9 +592,12 @@ def to_markdown(report: dict[str, Any]) -> str:
         "",
     ]
     for step in report.get("steps") or []:
+        environment_label = (
+            f" environment=`{step['environment']}`" if step.get("environment") else ""
+        )
         lines.append(
             f"- `{step['id']}`: tier=`{step['tier']}` route=`{step['route']}` "
-            f"status=`{step['status']}` passed=`{step['passed']}`"
+            f"status=`{step['status']}` passed=`{step['passed']}`{environment_label}"
         )
 
     if current:
@@ -470,19 +606,32 @@ def to_markdown(report: dict[str, Any]) -> str:
                 "",
                 "## Current Step Commands",
                 "",
-                "Safe dry-run command:",
+                f"Preferred environment: `{current.get('preferred_environment')}`",
+                "",
+                "Recommended safe dry-run command:",
                 "",
                 "```powershell",
-                current["safe_dry_run_command"],
+                current["recommended_safe_dry_run_command"],
                 "```",
                 "",
-                "Approval-gated runtime command:",
+                "Recommended runtime command:",
                 "",
                 "```powershell",
-                current["approval_gated_runtime_command"],
+                current["recommended_runtime_command"],
                 "```",
             ]
         )
+        if current.get("hidden_cdb_runtime_command"):
+            lines.extend(
+                [
+                    "",
+                    "Separately approval-gated visible-runtime alternative:",
+                    "",
+                    "```powershell",
+                    current["approval_gated_runtime_command"],
+                    "```",
+                ]
+            )
 
     lines.extend(["", "## Locked Future Lanes", ""])
     for lane in report.get("future_lane_locks") or []:

@@ -17,9 +17,11 @@ from typing import Any
 
 DEFAULT_JSON = Path("captures/current/handoff-freshness-guard-current.json")
 DEFAULT_MD = Path("captures/current/handoff-freshness-guard-current.md")
-DEFAULT_NEXT = Path(".codex-loop/NEXT.md")
-DEFAULT_STATE = Path(".codex-loop/STATE.md")
-DEFAULT_TASKS = Path(".codex-loop/TASKS.md")
+DEFAULT_HANDOFF = Path("docs/hd/AGENT_HANDOFF.md")
+# Keep the legacy role names and CLI overrides for callers with separate notes.
+DEFAULT_NEXT = DEFAULT_HANDOFF
+DEFAULT_STATE = DEFAULT_HANDOFF
+DEFAULT_TASKS = DEFAULT_HANDOFF
 DEFAULT_EVIDENCE_INDEX = Path("captures/current/hd-map-evidence-current.md")
 DEFAULT_PROGRESS = Path("docs/hd/HD_MOD_PROGRESS.md")
 DEFAULT_PROJECT_GUIDE = Path("docs/hd/WORKING_WITH_THIS_REPO.md")
@@ -156,22 +158,19 @@ def check_required_groups(
 
 
 def supporting_doc(args: argparse.Namespace) -> Path:
-    requested = Path(getattr(args, "bottom_question_md", DEFAULT_PROJECT_GUIDE))
-    if requested.exists():
-        return requested
-    return DEFAULT_PROJECT_GUIDE
+    return Path(getattr(args, "bottom_question_md", DEFAULT_PROJECT_GUIDE))
 
 
 def build_guard(args: argparse.Namespace) -> dict[str, Any]:
     project_guide = supporting_doc(args)
-    files = [
+    files = list(dict.fromkeys([
         args.next_md,
         args.state_md,
         args.tasks_md,
         args.evidence_index,
         args.progress_md,
         project_guide,
-    ]
+    ]))
     failures: list[str] = []
     file_checks: list[dict[str, Any]] = []
     combined_parts: list[str] = []

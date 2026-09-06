@@ -10,6 +10,7 @@ PowerShell, or visible windows.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -17,6 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import render_cdb_surface_probe as probe_renderer
 
 DEFAULT_DECOMP_C = Path(r"C:\Clash\clash95.c")
 DEFAULT_SURFACE_PROBE_SCRIPT = Path("scripts/cdb/run_cdb_surface_dump.ps1")
@@ -36,7 +38,7 @@ GUARD_POLICY = (
     "passes only when static evidence still shows a ten-row local load menu and "
     "integer save-file checks, the current harness still computes row clicks from "
     "166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived "
-    "slots 3-5 plus the current slot-5 right-bottom attempt all time out before "
+    "slots 3-5 plus the historical slot-5 right-bottom attempt all time out before "
     "force-select, force-accept, LOADSAVE, and PlayGame"
 )
 
@@ -54,12 +56,32 @@ DECOMP_MARKERS = {
 }
 HARNESS_MARKERS = {
     "validate_range_0_9": "[ValidateRange(0,9)]",
-    "load_mouse_x": "$loadMouseX = 320",
-    "load_mouse_y_formula": "$loadMouseY = 166 + (22 * $LoadSlot)",
+    "renderer_path": "$probeRenderer = Join-Path $RepoRoot 'tools\\render_cdb_surface_probe.py'",
+    "renderer_arguments": "$renderArgs = @('-B', $probeRenderer, '--template', $ProbeTemplate, '--resolution', $Resolution, '--stage', $recipeStage, '--load-slot', $LoadSlot)",
+    "extra_recipe_argument": "if ($ExtraProbeTemplate) { $renderArgs += '--extra-probe' }",
+    "renderer_invocation": "$probeRecipeJson = & $pythonExe @renderArgs",
+    "recipe_parse": "$probeRecipe = $probeRecipeJson | ConvertFrom-Json",
+    "geometry_source": "$surfaceGeometry = $probeRecipe.geometry",
+    "resolution_source": "$Resolution = $surfaceGeometry.resolution",
+    "template_source": "$probeText = $probeRecipe.template",
+    "load_mouse_x": "$loadMouseX = $surfaceGeometry.load_mouse[0]",
+    "load_mouse_y_formula": "$loadMouseY = $surfaceGeometry.load_mouse[1]",
     "load_mouse_raw_x": "$loadMouseRawX = $loadMouseX -shl 6",
     "load_mouse_raw_y": "$loadMouseRawY = $loadMouseY -shl 6",
-    "load_slot_replacement": "$probeText = $probeText.Replace('__LOAD_SLOT__'",
+    "load_slot_replacement": "$probeText = $probeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)",
+    "load_raw_x_replacement": "$probeText = $probeText.Replace('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))",
+    "load_raw_y_replacement": "$probeText = $probeText.Replace('__LOAD_MOUSE_RAW_Y__', ('{0:x8}' -f $loadMouseRawY))",
 }
+EXTRA_HARNESS_MARKERS = {
+    "extra_load_slot_replacement": "$extraProbeText = $extraProbeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)",
+    "extra_load_raw_x_replacement": "$extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))",
+    "extra_load_raw_y_replacement": "$extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_Y__', ('{0:x8}' -f $loadMouseRawY))",
+}
+GEOMETRY_STABLE_STAGE = (
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-"
+    "presentbounds-minimapright-dynvswitch"
+)
+GEOMETRY_STAGES = (GEOMETRY_STABLE_STAGE, GEOMETRY_STABLE_STAGE + "-castlecenter-all-battlecenter")
 
 ROUTE_INJECT_RE = re.compile(r"route-injects load slot (?P<slot>\d+)")
 LOAD_COORD_RE = re.compile(
@@ -105,6 +127,98 @@ def expected_mouse(slot: int | None) -> list[int] | None:
     if slot is None:
         return None
     return [320, 166 + (22 * slot)]
+
+
+def check_generated_geometry(*, extra_probe: bool = False) -> dict[str, Any]:
+    """Exercise source-only recipes in memory without launching any process."""
+    failures: list[str] = []
+    rows: list[dict[str, Any]] = []
+    source = Path(probe_renderer.__file__).resolve()
+    source_sha = None
+    try:
+        source_sha = hashlib.sha256(source.read_bytes()).hexdigest()
+        template = probe_renderer.BASE_PROBE.read_text(encoding="utf-8-sig")
+        for stage in GEOMETRY_STAGES:
+            for slot in range(10):
+                recipe = probe_renderer.render_probe(
+                    template, "800x600", stage, load_slot=slot, extra_probe=extra_probe,
+                )
+                geometry = recipe.get("geometry") or {}
+                mouse = geometry.get("load_mouse")
+                passed = (
+                    geometry.get("resolution") == "800x600"
+                    and geometry.get("width") == 800 and geometry.get("height") == 600
+                    and geometry.get("load_input_space") == "native_slot_list"
+                    and isinstance(mouse, list) and all(type(value) is int for value in mouse)
+                    and mouse == expected_mouse(slot) and recipe.get("template") == template
+                )
+                rows.append({"stage": stage, "slot": slot, "mouse": mouse, "passed": passed})
+                if not passed:
+                    failures.append(f"canonical 800x600 geometry disagrees with native load row {slot}: {stage}")
+            for slot in (-1, 10):
+                try:
+                    probe_renderer.render_probe(
+                        template, "800x600", stage, load_slot=slot, extra_probe=extra_probe,
+                    )
+                except ValueError:
+                    continue
+                failures.append(f"canonical geometry accepted out-of-range slot {slot}: {stage}")
+    except (OSError, ValueError, TypeError, AttributeError, KeyError) as exc:
+        failures.append(f"canonical geometry could not be verified: {exc}")
+    return {
+        "source": str(source), "source_sha256": source_sha, "resolution": "800x600",
+        "extra_probe": extra_probe, "rows": rows, "passed": not failures, "failures": failures,
+    }
+
+
+def check_surface_geometry(path: Path, *, extra_probe: bool = False) -> dict[str, Any]:
+    """Check the current source wiring, not the obsolete inline coordinate formula.
+
+    Exact active statements and their order are deliberately checked here. This
+    is a narrow source-contract guard, not a general PowerShell interpreter.
+    """
+    failures: list[str] = []
+    exists = path.is_file()
+    script = read_text(path) if exists else ""
+    if not exists:
+        failures.append(f"missing text file: {path}")
+    script = re.sub(r"<#.*?#>", "", script, flags=re.DOTALL)
+    lines = [line.strip() for line in script.splitlines() if not line.lstrip().startswith("#")]
+    needles = {**HARNESS_MARKERS, **(EXTRA_HARNESS_MARKERS if extra_probe else {})}
+    results = {name: lines.count(marker) == 1 for name, marker in needles.items()}
+    # Reject additional assignment paths rather than accepting a correct but
+    # subsequently overwritten geometry value. Template substitutions are
+    # checked separately because that variable intentionally changes repeatedly.
+    for name, marker in needles.items():
+        if name in {"renderer_path", "renderer_arguments", "renderer_invocation", "recipe_parse",
+                    "geometry_source", "load_mouse_x", "load_mouse_y_formula",
+                    "load_mouse_raw_x", "load_mouse_raw_y"}:
+            variable = marker.split(" =", 1)[0]
+            assignments = [line for line in lines if re.match(re.escape(variable) + r"\s*=", line)]
+            results[name] = results[name] and assignments == [marker]
+    results["geometry_wiring_order"] = all(results.values()) and (
+        [lines.index(marker) for marker in needles.values()]
+        == sorted(lines.index(marker) for marker in needles.values())
+    )
+    # A failed renderer must stop before any recipe is parsed or used.
+    preflight = [
+        HARNESS_MARKERS["renderer_invocation"], "if ($LASTEXITCODE -ne 0) {",
+        "throw 'Surface probe resolution preflight failed; no candidate was built.'", "}",
+        HARNESS_MARKERS["recipe_parse"],
+    ]
+    nonempty = [line for line in lines if line]
+    results["renderer_failure_stops"] = any(
+        nonempty[index:index + len(preflight)] == preflight for index in range(len(nonempty))
+    )
+    for name, present in results.items():
+        if not present:
+            failures.append(f"missing or changed geometry wiring {name}: {needles.get(name, name)}")
+    generated = check_generated_geometry(extra_probe=extra_probe)
+    failures.extend(generated["failures"])
+    return {
+        "path": str(path), "exists": exists, "passed": not failures, "markers": results,
+        "generated_geometry": generated, "failures": failures,
+    }
 
 
 def maybe_int(value: Any) -> int | None:
@@ -291,7 +405,7 @@ def build_report(
 ) -> dict[str, Any]:
     failures: list[str] = []
     static_decomp = check_markers(decomp_c, DECOMP_MARKERS)
-    harness = check_markers(surface_probe_script, HARNESS_MARKERS)
+    harness = check_surface_geometry(surface_probe_script)
     failures.extend(f"decomp: {failure}" for failure in static_decomp["failures"])
     failures.extend(f"harness: {failure}" for failure in harness["failures"])
 
@@ -352,14 +466,15 @@ def build_report(
 
     passed = not failures
     current_boundary = (
-        "static code and harness parameters allow rows 0-9, but current archived hidden "
-        "evidence only proves the slot-2 row path. Slots 3, 4, and 5, plus the current "
-        "slot-5 right-bottom attempt, stall before force-select/accept and LOADSAVE."
+        "static code and canonical harness geometry allow rows 0-9. This historical "
+        "hidden diagnostic cohort proves the slot-2 row path and records rows 3-5 "
+        "stalling before force-select/accept and LOADSAVE. These archived diagnostics "
+        "do not reopen the subsequently resolved right-bottom work or prove current input."
     )
     next_steps = [
-        "debug why rows 3-5 stop before the forced load-select breakpoint under the current CDB route",
-        "or create an isolated test working directory that maps the slot-5 save state to a proven row without editing C:\\Clash\\save",
-        "or use a direct-loader probe, but label it non-natural route evidence until menu selection is proven",
+        "historical diagnostic option: inspect why rows 3-5 stopped before the archived forced load-select breakpoint",
+        "historical diagnostic option: use an isolated test working directory without editing C:\\Clash\\save",
+        "direct-loader evidence remains non-natural route evidence; consult the current handoff before scheduling new work",
     ]
 
     return {

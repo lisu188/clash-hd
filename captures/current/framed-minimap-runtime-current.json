@@ -1,0 +1,1409 @@
+{
+  "schema": "clash95_framed_minimap_runtime_matrix_v1",
+  "generated_at": "2026-09-06T03:48:21.546600+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "minimap_viewport_revision": "framed_minimap_actual_terrain_v1",
+  "evidence_class": "hidden_software_minimap_snapshot",
+  "stable_stage_changed": false,
+  "promotion_ready": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "pan_transition_proof": false,
+  "far_world_capture_proof": false,
+  "overall_runtime_passed": false,
+  "all_minimap_geometry_passed": true,
+  "all_frame_footer_action_bar_pixels_passed": true,
+  "totals": {
+    "resolutions": 6,
+    "runtime_passed": 3,
+    "runtime_failed": 3,
+    "initial_trace_passed": 5,
+    "initial_trace_failed": 1,
+    "minimap_passed": 6,
+    "frame_passed": 6,
+    "footer_passed": 6,
+    "action_bar_passed": 6,
+    "recorded_pid_absence_verified": 5,
+    "late_empty_process_queries": 1
+  },
+  "input_artifact_hashes_verified": 109,
+  "plans": [
+    {
+      "path": "captures/current/framed-minimap-run-plan-20260906-032002.json",
+      "sha256": "ff71ed157e8197e2f3cd8db7be01af59a22e86d1dda124b2bc0fa7df3dfe103e"
+    },
+    {
+      "path": "captures/current/framed-minimap-run-plan-20260906-031649.json",
+      "sha256": "9773cf1f0d58d5b129b1ea57157965620cac44b78c55f184db74a57260d0b676"
+    }
+  ],
+  "process_receipt_bundle": {
+    "path": "captures/current/framed-minimap-process-receipts-20260906.json",
+    "sha256": "8c3158d84fbcca9236fc90618b4056b4a2c5eda2bfb07cf9e70a265cdd24baad"
+  },
+  "scope": "Aggregate of existing immutable plans, viewport/pixel audits, raw artifacts and exported process receipts. No runtime or original report was rerun, replaced or reclassified.",
+  "limits": [
+    "All six captures share world 100x100, scroll 10,17 and scale 2; no actual pan or far-world transition proof.",
+    "1280x720 and 1280x960 retain coverage exit 2 and missing final runtime summaries; no fog decision for this optional candidate revision is substituted.",
+    "1920x1080 retains strict trace failure at line 556 and its original failed summary; exact minimap/frame pixels do not repair that failure.",
+    "Process identities and later absence are derived from the coordinator exported receipt bundle. Raw private receipt files were inaccessible to this task.",
+    "802x602 has only an empty late query, no exact live PID pair or paired stopped receipt.",
+    "Validation-only snapshots do not promote stable, validate modal screens, or establish visible/manual/endurance completion."
+  ],
+  "runs": [
+    {
+      "resolution": "800x600",
+      "run_id": "cdb-surface-dump-20260906-053205",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate_sha256": "c0867837388e93507bc190c0e722717cd904eacd1562db835860ae60ed704373",
+      "runtime_passed": true,
+      "runtime_outcome": "passed",
+      "runtime_error": null,
+      "original_runtime_summary_produced": true,
+      "diagnostic_summary_used": false,
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "minimap_geometry_passed": true,
+      "minimap": {
+        "geometry": {
+          "rect": [
+            580,
+            56,
+            604,
+            75
+          ],
+          "visible_world_pixels": [
+            736,
+            568
+          ],
+          "scaled_pixel_extent": [
+            23,
+            18
+          ],
+          "native_color_index": 76
+        },
+        "draw_line": 265,
+        "draw_count": 52,
+        "memory_draw_count": 52,
+        "memory_target": 148174328,
+        "thread": 36772,
+        "scale": 2,
+        "world": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ],
+        "minimap_origin": [
+          554,
+          16
+        ],
+        "minimap_size": [
+          214,
+          214
+        ],
+        "ready_line": 595,
+        "visibility_line": 596,
+        "viewport_line": 607,
+        "minimap_line": 608,
+        "closed_line": 609,
+        "perimeter_pixels": 86,
+        "mismatched_pixels": 0,
+        "first_mismatches": [],
+        "all_perimeter_pixels_match": true
+      },
+      "frame_passed": true,
+      "footer_passed": true,
+      "action_bar_cells_passed": 6,
+      "coverage": {
+        "artifact": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\map-tile-coverage.json",
+          "sha256": "6149ef1b670f07185d2bce14b76c33be76dcf93e360a4379954a204243e5b860"
+        },
+        "gameplay_frame_likely": true,
+        "warnings": [],
+        "overall_nonblack_percent": 80.382,
+        "blank_active_cells": [
+          "r3c10",
+          "r3c11",
+          "r4c10",
+          "r4c11",
+          "r5c10",
+          "r5c11",
+          "r6c10",
+          "r6c11",
+          "r7c10",
+          "r7c11",
+          "r8c0"
+        ]
+      },
+      "process_observations": {
+        "bundle": {
+          "path": "captures/current/framed-minimap-process-receipts-20260906.json",
+          "sha256": "8c3158d84fbcca9236fc90618b4056b4a2c5eda2bfb07cf9e70a265cdd24baad"
+        },
+        "live_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-800-processes.json",
+        "live_source_sha256": "c1f183251a04468c771310f3838d08fc333bf66e94a5a9099f8433a86a35dc97",
+        "live_observed_at": "2026-09-06T03:32:23.7000342Z",
+        "raw_private_receipt_read_directly": false,
+        "source": "Coordinator export of original parsed receipts; private originals were inaccessible to this matrix task.",
+        "status": "observed_candidate_debugger_pids_later_absent",
+        "recorded_pid_absence_verified": true,
+        "debugger_pid": 42448,
+        "candidate_pid": 29372,
+        "stopped_observed_at": "2026-09-06T03:33:53.5149849Z",
+        "stopped_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-800-processes.json",
+        "stopped_source_sha256": "6b7153d6b3d1b260eeee940f254d1ad64899a743f4d882c9ce55dbad23589ec6",
+        "remaining": []
+      },
+      "artifacts": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\summary.json",
+          "sha256": "6680725aec17c241f144b28a0fcd53609869f228afa9ec5e498799c845aae4a6"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\cdb-surface-dump.log",
+          "sha256": "3c23d04e42c24d9bfc741a3e1072edc8db78d6ef8cf8a8cacd17e04344999b4f"
+        },
+        "observed_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\surface-minimap-probe.cdb",
+          "sha256": "fe9e8d6fb1798ed8006b224715475437636d7446faeddcbd0a68cefdcc73890f"
+        },
+        "original": {
+          "path": "C:\\Clash\\clash95.exe",
+          "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+        },
+        "candidate": {
+          "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\candidate\\clash95_hd_minimap_800x600_20260906-032002.exe",
+          "sha256": "c0867837388e93507bc190c0e722717cd904eacd1562db835860ae60ed704373"
+        },
+        "run_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-run-plan-20260906-032002.json",
+          "sha256": "ff71ed157e8197e2f3cd8db7be01af59a22e86d1dda124b2bc0fa7df3dfe103e"
+        },
+        "canonical_extra": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\partial-tile-installed.extra.cdb",
+          "sha256": "c2d36c86762f01a5687e9ae23894cf0d91f4b62fe17c789b8c8c61e80e098692"
+        },
+        "observer_packet": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\minimap-observer.json",
+          "sha256": "9ef11cd918d8c9c3e8be559a3ef6863fefc5ed76cea4ede2bb54d7d2e98a8142"
+        },
+        "source_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "b842cf5f30a54192c5e4d8079de0416b2a28d4ed8950f831df1c04c9dd274d8d"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\surface.raw",
+          "sha256": "d8ced5911cdf93cd5b81d9a3a2fd94cabf04757f1df08eac73605bc5e5a5c2c0"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\surface.png",
+          "sha256": "3f8f3395ec14e0ee5ac8c4557e81595212e4198ccfa1594d370f1bf4cb12fd99"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\surface.png.json",
+          "sha256": "2cf2427e33f06089b4444251990018b323147c40eab6167019441ecc818325ac"
+        },
+        "viewport_audit": {
+          "path": "captures/current/framed-minimap-v1-800x600-viewport-20260906.json",
+          "sha256": "9d5e05a84bfbf4f326816e898b0e2a18a39d11f89a59943d2fc08ec13bf4d519"
+        },
+        "frame_and_action_bar_audit": {
+          "path": "captures/current/framed-minimap-v1-800x600-pixels-20260906.json",
+          "sha256": "0765f7e491f7b7c73d35d598bd77a52a60fd06a58c42599d5ee476d3b2f61403"
+        },
+        "original_runtime_summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\summary.json",
+          "sha256": "6680725aec17c241f144b28a0fcd53609869f228afa9ec5e498799c845aae4a6"
+        },
+        "coverage": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\map-tile-coverage.json",
+          "sha256": "6149ef1b670f07185d2bce14b76c33be76dcf93e360a4379954a204243e5b860"
+        }
+      },
+      "evaluator": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\minimap_viewport_audit.py",
+        "sha256": "5f55458fd4255315f3d2203d97ba53b7038e3c70335773352a3069b6dc9a0c26"
+      }
+    },
+    {
+      "resolution": "1024x768",
+      "run_id": "cdb-surface-dump-20260906-051740",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+      "runtime_passed": true,
+      "runtime_outcome": "passed",
+      "runtime_error": null,
+      "original_runtime_summary_produced": true,
+      "diagnostic_summary_used": false,
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "minimap_geometry_passed": true,
+      "minimap": {
+        "geometry": {
+          "rect": [
+            804,
+            56,
+            835,
+            80
+          ],
+          "visible_world_pixels": [
+            960,
+            736
+          ],
+          "scaled_pixel_extent": [
+            30,
+            23
+          ],
+          "native_color_index": 76
+        },
+        "draw_line": 294,
+        "draw_count": 64,
+        "memory_draw_count": 64,
+        "memory_target": 172216064,
+        "thread": 42504,
+        "scale": 2,
+        "world": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ],
+        "minimap_origin": [
+          778,
+          16
+        ],
+        "minimap_size": [
+          214,
+          214
+        ],
+        "ready_line": 624,
+        "visibility_line": 625,
+        "viewport_line": 638,
+        "minimap_line": 639,
+        "closed_line": 640,
+        "perimeter_pixels": 110,
+        "mismatched_pixels": 0,
+        "first_mismatches": [],
+        "all_perimeter_pixels_match": true
+      },
+      "frame_passed": true,
+      "footer_passed": true,
+      "action_bar_cells_passed": 6,
+      "coverage": {
+        "artifact": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\map-tile-coverage.json",
+          "sha256": "6e15ba9474b4d0c4758257dabe226a1761ab71ab1181dd6a620085a4ec99c253"
+        },
+        "gameplay_frame_likely": true,
+        "warnings": [],
+        "overall_nonblack_percent": 56.083,
+        "blank_active_cells": [
+          "r0c10",
+          "r0c11",
+          "r1c10",
+          "r1c11",
+          "r2c10",
+          "r2c11",
+          "r3c10",
+          "r3c11",
+          "r3c12",
+          "r3c13",
+          "r3c14",
+          "r4c10",
+          "r4c11",
+          "r4c12",
+          "r4c13",
+          "r4c14",
+          "r5c10",
+          "r5c11",
+          "r5c12",
+          "r5c13",
+          "r5c14",
+          "r6c10",
+          "r6c11",
+          "r6c12",
+          "r6c13",
+          "r6c14",
+          "r7c10",
+          "r7c11",
+          "r7c12",
+          "r7c13",
+          "r7c14",
+          "r8c0",
+          "r8c10",
+          "r8c11",
+          "r8c12",
+          "r8c13",
+          "r8c14",
+          "r9c0",
+          "r9c1",
+          "r9c10",
+          "r9c11",
+          "r9c12",
+          "r9c13",
+          "r9c14",
+          "r10c0",
+          "r10c1",
+          "r10c2",
+          "r10c3",
+          "r10c4",
+          "r10c5",
+          "r10c6",
+          "r10c7",
+          "r10c8",
+          "r10c9",
+          "r10c10",
+          "r10c11",
+          "r10c12",
+          "r10c13",
+          "r10c14",
+          "r11c0",
+          "r11c1",
+          "r11c2",
+          "r11c3",
+          "r11c4",
+          "r11c5",
+          "r11c6",
+          "r11c7",
+          "r11c8",
+          "r11c9",
+          "r11c10",
+          "r11c11"
+        ]
+      },
+      "process_observations": {
+        "bundle": {
+          "path": "captures/current/framed-minimap-process-receipts-20260906.json",
+          "sha256": "8c3158d84fbcca9236fc90618b4056b4a2c5eda2bfb07cf9e70a265cdd24baad"
+        },
+        "live_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-1024-processes.json",
+        "live_source_sha256": "3d46a118a0b0961b6381ee5a4939a5b84a31e67af9ece1eaa1d95faa2d70385b",
+        "live_observed_at": "2026-09-06T03:18:01.5400270Z",
+        "raw_private_receipt_read_directly": false,
+        "source": "Coordinator export of original parsed receipts; private originals were inaccessible to this matrix task.",
+        "status": "observed_candidate_debugger_pids_later_absent",
+        "recorded_pid_absence_verified": true,
+        "debugger_pid": 28632,
+        "candidate_pid": 17920,
+        "stopped_observed_at": "2026-09-06T03:19:01.8047648Z",
+        "stopped_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-1024-processes.json",
+        "stopped_source_sha256": "c111c9d61166b49e60a6e874e5c68866f2c459aed6d5b64cafbb9e2c5ac095bb",
+        "remaining": []
+      },
+      "artifacts": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\summary.json",
+          "sha256": "b4fbb5d1c610a9d1edd4fc1e5c71fc5dec77192d03ff0f92d8fc55d1b0bf4db3"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\cdb-surface-dump.log",
+          "sha256": "1e59a62c113ca0f823720ea3165d7e8915dedc27bac490cba9372a342ebbf467"
+        },
+        "observed_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\surface-minimap-probe.cdb",
+          "sha256": "b1aaa4361a9b7b7b362c146f70f710251dc3abc65f7ffe9d3c400bddbe4bb36b"
+        },
+        "original": {
+          "path": "C:\\Clash\\clash95.exe",
+          "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+        },
+        "candidate": {
+          "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\clash95_hd_minimap_1024x768_20260906-031649.exe",
+          "sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0"
+        },
+        "run_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-run-plan-20260906-031649.json",
+          "sha256": "9773cf1f0d58d5b129b1ea57157965620cac44b78c55f184db74a57260d0b676"
+        },
+        "canonical_extra": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\partial-tile-installed.extra.cdb",
+          "sha256": "82ca3150feb87dbc0b2b888c387656a48a2f048e32da37adb3042aa991f3ba93"
+        },
+        "observer_packet": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\minimap-observer.json",
+          "sha256": "127b7c96b076b81beea3a35bcb2dc7982b542bb745f87421cdb423e4b91eae58"
+        },
+        "source_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "faa0bce745a23a3a6e213c8499e13e6ae8714d7bfaff8d8b41591eef193992c9"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\surface.raw",
+          "sha256": "9bbde23309ec1c1877352f88cb61b2b00f62960f99c6f78f3acbe3ab277bf14d"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\surface.png",
+          "sha256": "8b42b50dff5f86e428358c9205a24ac945205cf98b9e4ac499b89f16eb3b9123"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\surface.png.json",
+          "sha256": "6d2f27269fed9915b97cdec36a02c4e47bd508f9d3ec12601dc368d9be0678ae"
+        },
+        "viewport_audit": {
+          "path": "captures/current/framed-minimap-v1-1024x768-viewport-20260906.json",
+          "sha256": "4093a6ea18de0dc2190be4f1622e77b6722746428ff1ef833122869c33b754ae"
+        },
+        "frame_and_action_bar_audit": {
+          "path": "captures/current/framed-minimap-v1-1024x768-pixels-20260906.json",
+          "sha256": "33a17226b3012286534fd66ef34e6faa13dd8680777697639610f6a89474e7b9"
+        },
+        "original_runtime_summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\summary.json",
+          "sha256": "b4fbb5d1c610a9d1edd4fc1e5c71fc5dec77192d03ff0f92d8fc55d1b0bf4db3"
+        },
+        "coverage": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\map-tile-coverage.json",
+          "sha256": "6e15ba9474b4d0c4758257dabe226a1761ab71ab1181dd6a620085a4ec99c253"
+        }
+      },
+      "evaluator": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\minimap_viewport_audit.py",
+        "sha256": "5f55458fd4255315f3d2203d97ba53b7038e3c70335773352a3069b6dc9a0c26"
+      }
+    },
+    {
+      "resolution": "1280x720",
+      "run_id": "cdb-surface-dump-20260906-052225",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate_sha256": "6329940475c49c0db92398ec29264044cea8a0476b48a40529a3c104f37da78f",
+      "runtime_passed": false,
+      "runtime_outcome": "coverage_heuristic_failure",
+      "runtime_error": "Harness aborted on map_tile_coverage.py exit 2; no final runtime summary was produced.",
+      "original_runtime_summary_produced": false,
+      "diagnostic_summary_used": true,
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "minimap_geometry_passed": true,
+      "minimap": {
+        "geometry": {
+          "rect": [
+            1060,
+            56,
+            1099,
+            79
+          ],
+          "visible_world_pixels": [
+            1216,
+            688
+          ],
+          "scaled_pixel_extent": [
+            38,
+            22
+          ],
+          "native_color_index": 76
+        },
+        "draw_line": 287,
+        "draw_count": 64,
+        "memory_draw_count": 64,
+        "memory_target": 171167488,
+        "thread": 1696,
+        "scale": 2,
+        "world": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ],
+        "minimap_origin": [
+          1034,
+          16
+        ],
+        "minimap_size": [
+          214,
+          214
+        ],
+        "ready_line": 617,
+        "visibility_line": 618,
+        "viewport_line": 634,
+        "minimap_line": 635,
+        "closed_line": 636,
+        "perimeter_pixels": 124,
+        "mismatched_pixels": 0,
+        "first_mismatches": [],
+        "all_perimeter_pixels_match": true
+      },
+      "frame_passed": true,
+      "footer_passed": true,
+      "action_bar_cells_passed": 6,
+      "coverage": {
+        "artifact": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\map-tile-coverage.json",
+          "sha256": "3541a661f29bba1f140f6d8d3f609e8da4dbe58800bd3581e453fd673bd33fe7"
+        },
+        "gameplay_frame_likely": false,
+        "warnings": [
+          "low_overall_gameplay_coverage"
+        ],
+        "overall_nonblack_percent": 48.415,
+        "blank_active_cells": [
+          "r0c10",
+          "r0c11",
+          "r0c12",
+          "r0c13",
+          "r0c14",
+          "r0c15",
+          "r1c10",
+          "r1c11",
+          "r1c12",
+          "r1c13",
+          "r1c14",
+          "r1c15",
+          "r2c10",
+          "r2c11",
+          "r2c12",
+          "r2c13",
+          "r2c14",
+          "r2c15",
+          "r3c10",
+          "r3c11",
+          "r3c12",
+          "r3c13",
+          "r3c14",
+          "r3c15",
+          "r3c16",
+          "r3c17",
+          "r3c18",
+          "r4c10",
+          "r4c11",
+          "r4c12",
+          "r4c13",
+          "r4c14",
+          "r4c15",
+          "r4c16",
+          "r4c17",
+          "r4c18",
+          "r5c10",
+          "r5c11",
+          "r5c12",
+          "r5c13",
+          "r5c14",
+          "r5c15",
+          "r5c16",
+          "r5c17",
+          "r5c18",
+          "r6c10",
+          "r6c11",
+          "r6c12",
+          "r6c13",
+          "r6c14",
+          "r6c15",
+          "r6c16",
+          "r6c17",
+          "r6c18",
+          "r7c10",
+          "r7c11",
+          "r7c12",
+          "r7c13",
+          "r7c14",
+          "r7c15",
+          "r7c16",
+          "r7c17",
+          "r7c18",
+          "r8c0",
+          "r8c10",
+          "r8c11",
+          "r8c12",
+          "r8c13",
+          "r8c14",
+          "r8c15",
+          "r8c16",
+          "r8c17",
+          "r8c18",
+          "r9c0",
+          "r9c1",
+          "r9c10",
+          "r9c11",
+          "r9c12",
+          "r9c13",
+          "r9c14",
+          "r9c15",
+          "r9c16",
+          "r9c17",
+          "r9c18",
+          "r10c0",
+          "r10c1",
+          "r10c2",
+          "r10c3",
+          "r10c4",
+          "r10c5",
+          "r10c6",
+          "r10c7",
+          "r10c8",
+          "r10c9",
+          "r10c10",
+          "r10c11",
+          "r10c12",
+          "r10c13",
+          "r10c14",
+          "r10c15"
+        ]
+      },
+      "process_observations": {
+        "bundle": {
+          "path": "captures/current/framed-minimap-process-receipts-20260906.json",
+          "sha256": "8c3158d84fbcca9236fc90618b4056b4a2c5eda2bfb07cf9e70a265cdd24baad"
+        },
+        "live_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-1280x720-processes.json",
+        "live_source_sha256": "76812a996093b6d3f5b7149678095396298c7b50c275114d368ca184900dd19e",
+        "live_observed_at": "2026-09-06T03:22:43.3375268Z",
+        "raw_private_receipt_read_directly": false,
+        "source": "Coordinator export of original parsed receipts; private originals were inaccessible to this matrix task.",
+        "status": "observed_candidate_debugger_pids_later_absent",
+        "recorded_pid_absence_verified": true,
+        "debugger_pid": 13956,
+        "candidate_pid": 32612,
+        "stopped_observed_at": "2026-09-06T03:24:27.6642978Z",
+        "stopped_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-1280x720-processes.json",
+        "stopped_source_sha256": "a23addd68046db804dfd98347a7cf68a922e42eae009baea88b082c1dc98d632",
+        "remaining": []
+      },
+      "artifacts": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\diagnostic-summary.json",
+          "sha256": "1806da1d1265816ddac269f03749b5ba77df6920f6745be6f2f316fcb53efb9a"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\cdb-surface-dump.log",
+          "sha256": "6779ee43e25209ec2ce4ddc5d78632a2976c6599d68de246562b361e5c3aeee4"
+        },
+        "observed_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\surface-minimap-probe.cdb",
+          "sha256": "065efa741029bfd04de821a1f94f33052df68dcff29abd9fbf4a8060109bdc55"
+        },
+        "original": {
+          "path": "C:\\Clash\\clash95.exe",
+          "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+        },
+        "candidate": {
+          "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\candidate\\clash95_hd_minimap_1280x720_20260906-032002.exe",
+          "sha256": "6329940475c49c0db92398ec29264044cea8a0476b48a40529a3c104f37da78f"
+        },
+        "run_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-run-plan-20260906-032002.json",
+          "sha256": "ff71ed157e8197e2f3cd8db7be01af59a22e86d1dda124b2bc0fa7df3dfe103e"
+        },
+        "canonical_extra": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\partial-tile-installed.extra.cdb",
+          "sha256": "32f2d0ad0e3fd182c9c308e79fc9931f44f2af751e67338cdb044abc860c05a2"
+        },
+        "observer_packet": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\minimap-observer.json",
+          "sha256": "79690003d68115cb0b4bfbd9dee3caeb1ab2065f71098c324fc8e8b74e04c26c"
+        },
+        "source_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "68beba5db55e751b247a1c2b1c62fbf8d48ef9bfefc02e20ab3efe78aaa0c896"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\surface.raw",
+          "sha256": "4f28cc4f3d42d1db41d88794b05b5bb3524a054cfcc8e1fc06736086a82f7f84"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\surface.png",
+          "sha256": "738c84a853d2797d084fc68f287b5b7595411034b6a1dc8be9705410b38f3aa4"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\surface.png.json",
+          "sha256": "88fa033a2a92312288505f657a1e2887f67b36ab6d318dc406a8cd517cf82833"
+        },
+        "viewport_audit": {
+          "path": "captures/current/framed-minimap-v1-1280x720-viewport-20260906.json",
+          "sha256": "86436b3763762f17efefc19c5a49c3e0a706dfbab2674e0f38f2c1818022431d"
+        },
+        "frame_and_action_bar_audit": {
+          "path": "captures/current/framed-minimap-v1-1280x720-pixels-20260906.json",
+          "sha256": "612c9e8390fda04ac3009f1d1797b85e1dea3b7e2b61d56ed143a5edbeeb82c7"
+        },
+        "original_runtime_summary": null,
+        "coverage": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\map-tile-coverage.json",
+          "sha256": "3541a661f29bba1f140f6d8d3f609e8da4dbe58800bd3581e453fd673bd33fe7"
+        }
+      },
+      "evaluator": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\minimap_viewport_audit.py",
+        "sha256": "5f55458fd4255315f3d2203d97ba53b7038e3c70335773352a3069b6dc9a0c26"
+      }
+    },
+    {
+      "resolution": "1280x960",
+      "run_id": "cdb-surface-dump-20260906-052536",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate_sha256": "181b720d759e9c7af62eedcaca74e0dc08cdd5db28048e9b611e70775961c9f9",
+      "runtime_passed": false,
+      "runtime_outcome": "coverage_heuristic_failure",
+      "runtime_error": "Harness aborted on map_tile_coverage.py exit 2; no final runtime summary was produced.",
+      "original_runtime_summary_produced": false,
+      "diagnostic_summary_used": true,
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "minimap_geometry_passed": true,
+      "minimap": {
+        "geometry": {
+          "rect": [
+            1060,
+            56,
+            1099,
+            86
+          ],
+          "visible_world_pixels": [
+            1216,
+            928
+          ],
+          "scaled_pixel_extent": [
+            38,
+            29
+          ],
+          "native_color_index": 76
+        },
+        "draw_line": 281,
+        "draw_count": 65,
+        "memory_draw_count": 65,
+        "memory_target": 170446592,
+        "thread": 26640,
+        "scale": 2,
+        "world": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ],
+        "minimap_origin": [
+          1034,
+          16
+        ],
+        "minimap_size": [
+          214,
+          214
+        ],
+        "ready_line": 611,
+        "visibility_line": 612,
+        "viewport_line": 628,
+        "minimap_line": 629,
+        "closed_line": 630,
+        "perimeter_pixels": 138,
+        "mismatched_pixels": 0,
+        "first_mismatches": [],
+        "all_perimeter_pixels_match": true
+      },
+      "frame_passed": true,
+      "footer_passed": true,
+      "action_bar_cells_passed": 6,
+      "coverage": {
+        "artifact": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\map-tile-coverage.json",
+          "sha256": "a92d6d9030544470d0023c113878fe8a1ec219c434cde8010a7cb8c2cdc17b12"
+        },
+        "gameplay_frame_likely": false,
+        "warnings": [
+          "low_overall_gameplay_coverage"
+        ],
+        "overall_nonblack_percent": 37.562,
+        "blank_active_cells": [
+          "r0c10",
+          "r0c11",
+          "r0c12",
+          "r0c13",
+          "r0c14",
+          "r0c15",
+          "r1c10",
+          "r1c11",
+          "r1c12",
+          "r1c13",
+          "r1c14",
+          "r1c15",
+          "r2c10",
+          "r2c11",
+          "r2c12",
+          "r2c13",
+          "r2c14",
+          "r2c15",
+          "r3c10",
+          "r3c11",
+          "r3c12",
+          "r3c13",
+          "r3c14",
+          "r3c15",
+          "r3c16",
+          "r3c17",
+          "r3c18",
+          "r4c10",
+          "r4c11",
+          "r4c12",
+          "r4c13",
+          "r4c14",
+          "r4c15",
+          "r4c16",
+          "r4c17",
+          "r4c18",
+          "r5c10",
+          "r5c11",
+          "r5c12",
+          "r5c13",
+          "r5c14",
+          "r5c15",
+          "r5c16",
+          "r5c17",
+          "r5c18",
+          "r6c10",
+          "r6c11",
+          "r6c12",
+          "r6c13",
+          "r6c14",
+          "r6c15",
+          "r6c16",
+          "r6c17",
+          "r6c18",
+          "r7c10",
+          "r7c11",
+          "r7c12",
+          "r7c13",
+          "r7c14",
+          "r7c15",
+          "r7c16",
+          "r7c17",
+          "r7c18",
+          "r8c0",
+          "r8c10",
+          "r8c11",
+          "r8c12",
+          "r8c13",
+          "r8c14",
+          "r8c15",
+          "r8c16",
+          "r8c17",
+          "r8c18",
+          "r9c0",
+          "r9c1",
+          "r9c10",
+          "r9c11",
+          "r9c12",
+          "r9c13",
+          "r9c14",
+          "r9c15",
+          "r9c16",
+          "r9c17",
+          "r9c18",
+          "r10c0",
+          "r10c1",
+          "r10c2",
+          "r10c3",
+          "r10c4",
+          "r10c5",
+          "r10c6",
+          "r10c7",
+          "r10c8",
+          "r10c9",
+          "r10c10",
+          "r10c11",
+          "r10c12",
+          "r10c13",
+          "r10c14",
+          "r10c15",
+          "r10c16",
+          "r10c17",
+          "r10c18",
+          "r11c0",
+          "r11c1",
+          "r11c2",
+          "r11c3",
+          "r11c4",
+          "r11c5",
+          "r11c6",
+          "r11c7",
+          "r11c8",
+          "r11c9",
+          "r11c10",
+          "r11c11",
+          "r11c12",
+          "r11c13",
+          "r11c14",
+          "r11c15",
+          "r11c16",
+          "r11c17",
+          "r11c18",
+          "r12c0",
+          "r12c1",
+          "r12c2",
+          "r12c3",
+          "r12c4",
+          "r12c5",
+          "r12c6",
+          "r12c7",
+          "r12c8",
+          "r12c9",
+          "r12c10",
+          "r12c11",
+          "r12c12",
+          "r12c13",
+          "r12c14",
+          "r12c15",
+          "r12c16",
+          "r12c17",
+          "r12c18",
+          "r13c0",
+          "r13c1",
+          "r13c2",
+          "r13c3",
+          "r13c4",
+          "r13c5",
+          "r13c6",
+          "r13c7",
+          "r13c8",
+          "r13c9",
+          "r13c10",
+          "r13c11",
+          "r13c12",
+          "r13c13",
+          "r13c14",
+          "r13c15",
+          "r13c16",
+          "r13c17",
+          "r13c18",
+          "r14c0",
+          "r14c1",
+          "r14c2",
+          "r14c3",
+          "r14c4",
+          "r14c5",
+          "r14c6",
+          "r14c7",
+          "r14c8",
+          "r14c9",
+          "r14c10",
+          "r14c11",
+          "r14c12",
+          "r14c13",
+          "r14c14",
+          "r14c15"
+        ]
+      },
+      "process_observations": {
+        "bundle": {
+          "path": "captures/current/framed-minimap-process-receipts-20260906.json",
+          "sha256": "8c3158d84fbcca9236fc90618b4056b4a2c5eda2bfb07cf9e70a265cdd24baad"
+        },
+        "live_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-1280x960-processes.json",
+        "live_source_sha256": "8622e2fc93bf6a120eae96960351d5f7421a37217b8a95ad9a05a90ea538c953",
+        "live_observed_at": "2026-09-06T03:25:53.4599319Z",
+        "raw_private_receipt_read_directly": false,
+        "source": "Coordinator export of original parsed receipts; private originals were inaccessible to this matrix task.",
+        "status": "observed_candidate_debugger_pids_later_absent",
+        "recorded_pid_absence_verified": true,
+        "debugger_pid": 39100,
+        "candidate_pid": 37684,
+        "stopped_observed_at": "2026-09-06T03:29:51.5041354Z",
+        "stopped_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-1280x960-processes.json",
+        "stopped_source_sha256": "ef71a719eccc9b00c3eece26b075aee3dd8efc8a4d24187fcbba2c1760f36acf",
+        "remaining": []
+      },
+      "artifacts": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\diagnostic-summary.json",
+          "sha256": "ffe5349466bdd07d18424b737b8b852351ea1757c87df32fa19a50caee131641"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\cdb-surface-dump.log",
+          "sha256": "4f55675bccd35ba897e44e3889162154609538f892516c682bd859162073908d"
+        },
+        "observed_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface-minimap-probe.cdb",
+          "sha256": "1c059aa50cdd5d095d5159b367dde6bee5311754ae91877d7cab9bee1a8c306f"
+        },
+        "original": {
+          "path": "C:\\Clash\\clash95.exe",
+          "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+        },
+        "candidate": {
+          "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\candidate\\clash95_hd_minimap_1280x960_20260906-032002.exe",
+          "sha256": "181b720d759e9c7af62eedcaca74e0dc08cdd5db28048e9b611e70775961c9f9"
+        },
+        "run_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-run-plan-20260906-032002.json",
+          "sha256": "ff71ed157e8197e2f3cd8db7be01af59a22e86d1dda124b2bc0fa7df3dfe103e"
+        },
+        "canonical_extra": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\partial-tile-installed.extra.cdb",
+          "sha256": "6ebd8d1d255b5f739aa679947e63dd0dfdc2f64a1f5bef7b41e8f48e6f807e1f"
+        },
+        "observer_packet": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\minimap-observer.json",
+          "sha256": "942d70e6e62aec07756f74a3ad71d2952e9b3a3b4345183bf1c17499bb4d0665"
+        },
+        "source_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "04fad2f05a23edab1b505156499803f32679ce057aa734885188983397ff7da3"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface.raw",
+          "sha256": "69d1de3decaad6554c385e0ce15a4d45f196b5d7981a5a18b4300b0a9a604e11"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface.png",
+          "sha256": "0c608a77b31ff811ab4b28d967d952202dd0999fccc9c29f6c268c335e28dd02"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface.png.json",
+          "sha256": "b1e7847b678f62ede825b3afd2edf65618c4e159848bec346a4dcef52f6dd855"
+        },
+        "viewport_audit": {
+          "path": "captures/current/framed-minimap-v1-1280x960-viewport-20260906.json",
+          "sha256": "a4ed36fe3d250e3c1d787efd7aec862fce86a5ea37fd1573d6a049b74b3edb88"
+        },
+        "frame_and_action_bar_audit": {
+          "path": "captures/current/framed-minimap-v1-1280x960-pixels-20260906.json",
+          "sha256": "afcfdfd78568433680a9f54b2df28b03a046cb5992b602de633683c1c1f8a170"
+        },
+        "original_runtime_summary": null,
+        "coverage": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\map-tile-coverage.json",
+          "sha256": "a92d6d9030544470d0023c113878fe8a1ec219c434cde8010a7cb8c2cdc17b12"
+        }
+      },
+      "evaluator": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\minimap_viewport_audit.py",
+        "sha256": "5f55458fd4255315f3d2203d97ba53b7038e3c70335773352a3069b6dc9a0c26"
+      }
+    },
+    {
+      "resolution": "1920x1080",
+      "run_id": "cdb-surface-dump-20260906-053005",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate_sha256": "034e184ee3c48fbea6a31a2b55a6339451f7f32f11fa77ce97e0e457ebedc3c1",
+      "runtime_passed": false,
+      "runtime_outcome": "strict_trace_failure",
+      "runtime_error": "incremental input or native exit lacks its guard and invocation",
+      "original_runtime_summary_produced": true,
+      "diagnostic_summary_used": true,
+      "initial_trace_passed": false,
+      "initial_trace_failures": [
+        "line 556: incremental input/exit lacks a fresh matching guard and phase"
+      ],
+      "minimap_geometry_passed": true,
+      "minimap": {
+        "geometry": {
+          "rect": [
+            1700,
+            56,
+            1759,
+            90
+          ],
+          "visible_world_pixels": [
+            1856,
+            1048
+          ],
+          "scaled_pixel_extent": [
+            58,
+            33
+          ],
+          "native_color_index": 76
+        },
+        "draw_line": 276,
+        "draw_count": 64,
+        "memory_draw_count": 64,
+        "memory_target": 168881792,
+        "thread": 42760,
+        "scale": 2,
+        "world": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ],
+        "minimap_origin": [
+          1674,
+          16
+        ],
+        "minimap_size": [
+          214,
+          214
+        ],
+        "ready_line": 608,
+        "visibility_line": 609,
+        "viewport_line": 633,
+        "minimap_line": 634,
+        "closed_line": 635,
+        "perimeter_pixels": 186,
+        "mismatched_pixels": 0,
+        "first_mismatches": [],
+        "all_perimeter_pixels_match": true
+      },
+      "frame_passed": true,
+      "footer_passed": true,
+      "action_bar_cells_passed": 6,
+      "coverage": null,
+      "process_observations": {
+        "bundle": {
+          "path": "captures/current/framed-minimap-process-receipts-20260906.json",
+          "sha256": "8c3158d84fbcca9236fc90618b4056b4a2c5eda2bfb07cf9e70a265cdd24baad"
+        },
+        "live_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-1920-processes.json",
+        "live_source_sha256": "1227dbbd9dc9266f792a70866ef25416c6a7e5075ab3d6559eaa2056f64e0022",
+        "live_observed_at": "2026-09-06T03:30:25.4779394Z",
+        "raw_private_receipt_read_directly": false,
+        "source": "Coordinator export of original parsed receipts; private originals were inaccessible to this matrix task.",
+        "status": "observed_candidate_debugger_pids_later_absent",
+        "recorded_pid_absence_verified": true,
+        "debugger_pid": 41400,
+        "candidate_pid": 39448,
+        "stopped_observed_at": "2026-09-06T03:31:49.3134842Z",
+        "stopped_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-1920-processes.json",
+        "stopped_source_sha256": "edf145b2a8ad2ea3185c5a2cf344307aa8b8c3d27c552c9141a1cf043191e7e8",
+        "remaining": []
+      },
+      "artifacts": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\diagnostic-summary.json",
+          "sha256": "a1d087be98d5b894c60531fca98fdcf9e5bbfb4a80c46dddb7b89e36d7666fa8"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\cdb-surface-dump.log",
+          "sha256": "9f87cbf45a5427a99f800a431271ca1c5012c07c7ee4356f719764d3c7377cfc"
+        },
+        "observed_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\surface-minimap-probe.cdb",
+          "sha256": "0d509cfaa24a3b9608e4b4458268af70a1140caa4da9741802ff5aee53a4a6f3"
+        },
+        "original": {
+          "path": "C:\\Clash\\clash95.exe",
+          "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+        },
+        "candidate": {
+          "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\candidate\\clash95_hd_minimap_1920x1080_20260906-032002.exe",
+          "sha256": "034e184ee3c48fbea6a31a2b55a6339451f7f32f11fa77ce97e0e457ebedc3c1"
+        },
+        "run_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-run-plan-20260906-032002.json",
+          "sha256": "ff71ed157e8197e2f3cd8db7be01af59a22e86d1dda124b2bc0fa7df3dfe103e"
+        },
+        "canonical_extra": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\partial-tile-installed.extra.cdb",
+          "sha256": "71fa2c80fceb3fec09e5c53334230a3927f7fe5315a10ab444b03cfb7f370866"
+        },
+        "observer_packet": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\minimap-observer.json",
+          "sha256": "d1e192a533b3f024681da8957e14c1cd80daeecf29e6e3ab21ebc47e83ca36c6"
+        },
+        "source_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "0c95752f5f5644199152670455f303c76a90deb29e0b75793c2e7e7ccbe21484"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\surface.raw",
+          "sha256": "217f511ae0e90473e0c3d0e97ac0280e7d763a80c98750b8408c5d9ca4abe38b"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\surface-diagnostic.png",
+          "sha256": "be629a49a4d01d410194ef8d39964cfdd819411fd3df872d2a2e850a237c7cf1"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\surface-diagnostic.png.json",
+          "sha256": "dbaf3a567e1638c50a3926012e4ec1f3a3cc265babb2913fe15f73f091591249"
+        },
+        "viewport_audit": {
+          "path": "captures/current/framed-minimap-v1-1920x1080-viewport-20260906.json",
+          "sha256": "d84c17ef84f93fefbb7d33ca9a9c2ada0221e2dd889f4f7f41cbc5b616bf17bb"
+        },
+        "frame_and_action_bar_audit": {
+          "path": "captures/current/framed-minimap-v1-1920x1080-pixels-20260906.json",
+          "sha256": "c69f454f7d19e4355c55a21f622dddf4eaa8a156307153754a035d09f4a81df4"
+        },
+        "original_runtime_summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\summary.json",
+          "sha256": "554f5185f171b161258a07520e9ed093f766094a8fd124cb60178e83b8d37bf6"
+        }
+      },
+      "evaluator": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\minimap_viewport_audit.py",
+        "sha256": "5f55458fd4255315f3d2203d97ba53b7038e3c70335773352a3069b6dc9a0c26"
+      }
+    },
+    {
+      "resolution": "802x602",
+      "run_id": "cdb-surface-dump-20260906-052106",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate_sha256": "2a75641f1aa1b3132ae50b5e8ed768458e5e6d6985e9cfba702ced85ffec8161",
+      "runtime_passed": true,
+      "runtime_outcome": "passed",
+      "runtime_error": null,
+      "original_runtime_summary_produced": true,
+      "diagnostic_summary_used": false,
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "minimap_geometry_passed": true,
+      "minimap": {
+        "geometry": {
+          "rect": [
+            582,
+            56,
+            607,
+            75
+          ],
+          "visible_world_pixels": [
+            738,
+            570
+          ],
+          "scaled_pixel_extent": [
+            24,
+            18
+          ],
+          "native_color_index": 76
+        },
+        "draw_line": 270,
+        "draw_count": 52,
+        "memory_draw_count": 52,
+        "memory_target": 168369416,
+        "thread": 25308,
+        "scale": 2,
+        "world": [
+          100,
+          100
+        ],
+        "scroll": [
+          10,
+          17
+        ],
+        "minimap_origin": [
+          556,
+          16
+        ],
+        "minimap_size": [
+          214,
+          214
+        ],
+        "ready_line": 600,
+        "visibility_line": 601,
+        "viewport_line": 612,
+        "minimap_line": 613,
+        "closed_line": 614,
+        "perimeter_pixels": 88,
+        "mismatched_pixels": 0,
+        "first_mismatches": [],
+        "all_perimeter_pixels_match": true
+      },
+      "frame_passed": true,
+      "footer_passed": true,
+      "action_bar_cells_passed": 6,
+      "coverage": {
+        "artifact": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\map-tile-coverage.json",
+          "sha256": "f960cbd76d1af2a45a423b60478d824be81761d17e8853329267ab1966f7f3b8"
+        },
+        "gameplay_frame_likely": true,
+        "warnings": [],
+        "overall_nonblack_percent": 80.255,
+        "blank_active_cells": [
+          "r3c10",
+          "r3c11",
+          "r4c10",
+          "r4c11",
+          "r5c10",
+          "r5c11",
+          "r6c10",
+          "r6c11",
+          "r7c10",
+          "r7c11",
+          "r8c0"
+        ]
+      },
+      "process_observations": {
+        "bundle": {
+          "path": "captures/current/framed-minimap-process-receipts-20260906.json",
+          "sha256": "8c3158d84fbcca9236fc90618b4056b4a2c5eda2bfb07cf9e70a265cdd24baad"
+        },
+        "live_source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-802-processes.json",
+        "live_source_sha256": "21e1dad65844f125898cdec32428645a7ca26773e0b066b62b6cdda996a17f48",
+        "live_observed_at": "2026-09-06T03:21:45.1530930Z",
+        "raw_private_receipt_read_directly": false,
+        "source": "Coordinator export of original parsed receipts; private originals were inaccessible to this matrix task.",
+        "status": "late_empty_query_no_live_pid_identity",
+        "recorded_pid_absence_verified": false,
+        "live_pids": [],
+        "stopped_receipt": null,
+        "limits": "Empty late query is not an exact live PID receipt or paired cleanup proof."
+      },
+      "artifacts": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\summary.json",
+          "sha256": "78e16a33725478298c25beb4e924f903d353d2ce8b751a1fd9a0837fa06eb38d"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\cdb-surface-dump.log",
+          "sha256": "ae12e6d89f7b12c543c2fe011ba28d404e7b417a8b87f258e87678ad08fa643e"
+        },
+        "observed_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface-minimap-probe.cdb",
+          "sha256": "7c12197eee2f5f2a7b3ce41ba326d25936b5b0ff35bb25737c921f524975c595"
+        },
+        "original": {
+          "path": "C:\\Clash\\clash95.exe",
+          "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+        },
+        "candidate": {
+          "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\candidate\\clash95_hd_minimap_802x602_20260906-032002.exe",
+          "sha256": "2a75641f1aa1b3132ae50b5e8ed768458e5e6d6985e9cfba702ced85ffec8161"
+        },
+        "run_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-run-plan-20260906-032002.json",
+          "sha256": "ff71ed157e8197e2f3cd8db7be01af59a22e86d1dda124b2bc0fa7df3dfe103e"
+        },
+        "canonical_extra": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\partial-tile-installed.extra.cdb",
+          "sha256": "1eeb753df58cb13a75e478072082eec73a15c32460f3675eb0113a0a84b7ee13"
+        },
+        "observer_packet": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\minimap-observer.json",
+          "sha256": "6d8d7ffcdaed667f755c8fb85617586b1a4361e5b52b80f2392c48455714b1e0"
+        },
+        "source_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "2cd72876b7ce472595f366b77d30b374f72f77c3c7672a0f012d73a4512eef9a"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface.raw",
+          "sha256": "8bf6993c92098562bc3cdb0c58a1f19fa9213b7fb023c2b09482cd2b05eb35b5"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface.png",
+          "sha256": "a2583bb834881a2256f8b80a6f18da8044e9a0e436d8975d7fd81690f652da10"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface.png.json",
+          "sha256": "b526a0ecfccc782faf306a76e28ad5764084c013163fe62bd62923d5ede436fc"
+        },
+        "viewport_audit": {
+          "path": "captures/current/framed-minimap-v1-802x602-viewport-20260906.json",
+          "sha256": "31670fd0ff3eb429618be05925e826fad23923ec6620fff8d00cd780a32c2f86"
+        },
+        "frame_and_action_bar_audit": {
+          "path": "captures/current/framed-minimap-v1-802x602-pixels-20260906.json",
+          "sha256": "f7d75959f90c1b05694b5fae90072bc9c090d5a2ea401d3ea7d18bef89b00f79"
+        },
+        "original_runtime_summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\summary.json",
+          "sha256": "78e16a33725478298c25beb4e924f903d353d2ce8b751a1fd9a0837fa06eb38d"
+        },
+        "coverage": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\map-tile-coverage.json",
+          "sha256": "f960cbd76d1af2a45a423b60478d824be81761d17e8853329267ab1966f7f3b8"
+        }
+      },
+      "evaluator": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\minimap_viewport_audit.py",
+        "sha256": "5f55458fd4255315f3d2203d97ba53b7038e3c70335773352a3069b6dc9a0c26"
+      }
+    }
+  ]
+}

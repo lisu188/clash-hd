@@ -1,0 +1,117 @@
+{
+  "schema": "clash95_army_movement_failed_attempt_v1",
+  "passed": false,
+  "classification": "producer_input_shift_bound_rejection_before_preview",
+  "resolution": "1024x768",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-army-validation",
+  "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+  "started_at": "2026-09-06T11:06:36.4263078Z",
+  "finished_at": "2026-09-06T11:07:33.9534248Z",
+  "artifacts": {
+    "plan.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-111000\\plan.json",
+      "sha256": "58b1e23f514b138c5250976dfa176cb3cfa4fa013033e7fc3484a43d6920a09a",
+      "bytes": 26653
+    },
+    "packet.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-111000\\packet.json",
+      "sha256": "21eeec2bdda6283ad1dee4748e4811051dbe0e900e1faf2a0259762b1d7d7c73",
+      "bytes": 6327742
+    },
+    "selection.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-111000\\selection.cdb",
+      "sha256": "5b20305b3022fa6fcd57506453e667d6e1fc205517a08c3f5f7f0f7103204bab",
+      "bytes": 3422153
+    },
+    "host.ps1": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-111000\\host.ps1",
+      "sha256": "30fdb06b643d0d5b3e7d3df3aded44f2fff6d71f980fd2e9bb63838e48a79783",
+      "bytes": 13634
+    },
+    "summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-111000\\summary.json",
+      "sha256": "2ae695258c7b97448e465a4aceade899a3bd370f1713c517dc46ec8fcde69bc2",
+      "bytes": 5378
+    },
+    "cdb.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-111000\\cdb.log",
+      "sha256": "abc5d300cf776ed55ded93fbfcc109a4fbdb8811c7c18f342927844922eb1791",
+      "bytes": 55250
+    },
+    "movement-frame-audit.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-111000\\movement-frame-audit.json",
+      "sha256": "50e3fb6d0ebb5876d72e761c6434d57369c1e7e325639c258bf163230d51e6a2",
+      "bytes": 17770
+    }
+  },
+  "host_failures": [
+    "Debugger exited before final selection capture",
+    "Missing movement checkpoint movement-preview.raw",
+    "Missing movement checkpoint movement-preview.header.raw",
+    "Missing movement checkpoint movement-preview.unit.raw",
+    "Missing movement checkpoint movement-after.raw",
+    "Missing movement checkpoint movement-after.header.raw",
+    "Missing movement checkpoint movement-after.unit.raw"
+  ],
+  "preview_observed": false,
+  "movement_observed": false,
+  "screenshot": {
+    "png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-111000\\movement-before.png",
+      "sha256": "6d0b85a973fabac9f0d480d9b8a5b87ebbc7632e93a87021be53b9c958aaf4bf",
+      "bytes": 246592
+    },
+    "raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-111000\\movement-before.raw",
+      "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+      "bytes": 786432
+    },
+    "all_four_frame_bands_passed": true,
+    "matching_action_cells": 6
+  },
+  "cleanup": [
+    {
+      "termination_requested": false,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T11:06:36.7488942Z",
+        "handle_retained": true,
+        "creation_filetime": 134331663967488942,
+        "process_id": 43756
+      }
+    },
+    {
+      "termination_requested": false,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\ClashTests\\hd-completion\\framed-army-movement-20260906-111000\\clash95_army_movement.exe",
+        "creation_filetime": 134331663970459177,
+        "process_id": 24080,
+        "handle_retained": true,
+        "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+        "creation_utc": "2026-09-06T11:06:37.0459177Z",
+        "parent_process_id": 43756
+      }
+    }
+  ],
+  "desktop_closed": true,
+  "original_unchanged": true,
+  "candidate_unchanged": true,
+  "assets_changed": [],
+  "assets_added": [],
+  "source_diagnosis": {
+    "producer_sha256": "7c424030dd8ead9089e0db596b3b9ef94603dea5b337766f0c64518d00fbec54",
+    "defect": "Producer arbitrarily required input shift byte54512C <=3. Native mouse coordinates use CL/SAR and prior actual portrait trace records shift6.",
+    "actual_reject_context_limit": "This first producer emitted a generic rejection only. Shift6 is prior-run evidence and source diagnosis, not a measured shift field in this failing run."
+  },
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "Only the starting surface and unit record exist. Neither preview nor arrival is proved.",
+    "The original failed host summary and incomplete three-frame audit are preserved; no game candidate or original bytes changed."
+  ]
+}

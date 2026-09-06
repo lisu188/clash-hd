@@ -1,0 +1,386 @@
+{
+  "generated_at": "2026-09-05T09:07:19.154335+00:00",
+  "runtime_policy": "repo-only hidden-cdb soak report inspection; grades hidden-desktop CDB host soak frames read via host ReadProcessMemory surface reads plus full host process telemetry; input responsiveness is not measurable on a hidden desktop and is recorded not_applicable_hidden, never faked; forced-entry mechanics are disclosed, never hidden; does not launch anything",
+  "environment": "hidden_cdb_host",
+  "expected_environment": "hidden_cdb_host",
+  "evidence_class": "approved_hidden_cdb_host_soak",
+  "expected_evidence_class": "approved_hidden_cdb_host_soak",
+  "entry_mechanism": "cdb_breakpoint_forced_loader_entry",
+  "pan_mechanism": "cdb_forced_scroll_write",
+  "input_responsiveness": "not_applicable_hidden",
+  "overall": false,
+  "source_report": "captures\\current\\hd-soak-short30-map-pan-current.json",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "tier": "short30",
+  "route": "map-pan",
+  "duration_sec": 1800,
+  "sample_interval_sec": 15,
+  "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "checks": {
+    "executed": {
+      "passed": true,
+      "summary": {
+        "executed": true
+      },
+      "failures": []
+    },
+    "source_status": {
+      "passed": false,
+      "summary": {
+        "reported_passed": false,
+        "source_failure_count": 1
+      },
+      "failures": [
+        "source hidden soak report did not mark itself passed",
+        "source hidden soak report contains 1 failure(s)"
+      ]
+    },
+    "schema": {
+      "passed": true,
+      "summary": {
+        "schema": "hidden_cdb_host_soak_report_v1",
+        "expected_schema": "hidden_cdb_host_soak_report_v1"
+      },
+      "failures": []
+    },
+    "environment": {
+      "passed": true,
+      "summary": {
+        "environment": "hidden_cdb_host",
+        "expected_environment": "hidden_cdb_host",
+        "evidence_class": "approved_hidden_cdb_host_soak",
+        "expected_evidence_class": "approved_hidden_cdb_host_soak"
+      },
+      "failures": []
+    },
+    "protected_stage": {
+      "passed": true,
+      "summary": {
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+        "stable_stage_should_change": false
+      },
+      "failures": []
+    },
+    "tier_route": {
+      "passed": true,
+      "summary": {
+        "tier": "short30",
+        "route": "map-pan",
+        "duration_sec": 1800,
+        "sample_interval_sec": 15
+      },
+      "failures": []
+    },
+    "patch_evidence": {
+      "passed": true,
+      "summary": {
+        "input_sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+        "expected_base_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+        "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+        "patch_stage_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\patch-stage.json",
+        "patch_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+        "patch_count": 118,
+        "patch_status_counts": {
+          "patched": 118
+        },
+        "current_hd_map_gate": {
+          "passed": true,
+          "failures": [],
+          "checks": {
+            "visible_tiles_12x9": {
+              "expected": {
+                "x": 12,
+                "y": 9
+              },
+              "actual": {
+                "x": 12,
+                "y": 9
+              },
+              "passed": true
+            },
+            "main_loops_12x9": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "full_redraw_12x9": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "full_redraw_present_bounds_800": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "minimap_right_clip": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "minimap_hd_right_anchor": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "helpers_12x9": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "input_bounds_800x600": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "viewport_init_800x600": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "viewport_switch_800x600": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "viewport_switch_dynamic_surface": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "saved_scroll_restore_clamp": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            },
+            "map_surface_upgrade_after_menu": {
+              "expected": true,
+              "actual": true,
+              "passed": true
+            }
+          }
+        },
+        "checked": true
+      },
+      "failures": []
+    },
+    "promotion_boundary": {
+      "passed": true,
+      "summary": {
+        "runtime_policy": "opt-in approved hidden-CDB host soak (environment=hidden_cdb_host); the game runs as a real host process on a hidden desktop with no input delivery; input_responsiveness is the not_applicable_hidden sentinel and is never fabricated; all host process metrics stay required; frame metrics come from real periodic ReadProcessMemory surface reads; map entry and any pan are breakpoint-forced and disclosed; never a visible-runtime or guest proof",
+        "input_proof_class": "hidden_cdb_host_no_input_diagnostic_not_manual",
+        "right_bottom_promotion_blocked": true
+      },
+      "failures": []
+    },
+    "artifact_locations": {
+      "passed": true,
+      "summary": {
+        "input_exe": "C:\\Clash\\clash95.exe",
+        "expected_input_exe": "C:\\Clash\\clash95.exe",
+        "workdir": "C:\\Clash",
+        "expected_workdir": "C:\\Clash",
+        "candidate": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\clash95_hd_hidden_soak_20260905_103139_257.exe",
+        "expected_candidate_root": "C:\\ClashTests\\hd-soak",
+        "output_directory": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan",
+        "expected_output_root": "C:\\ClashCaptures\\hd-soak"
+      },
+      "failures": []
+    },
+    "capture_integrity": {
+      "passed": true,
+      "summary": {
+        "capture_error_count": 0,
+        "surface_base": "0x0a4d0030",
+        "surface_base_value": 172818480,
+        "frame_read_method": "host_readprocessmemory",
+        "expected_frame_read_method": "host_readprocessmemory",
+        "checked": true
+      },
+      "failures": []
+    },
+    "wrapper_provenance": {
+      "passed": true,
+      "summary": {
+        "used": true,
+        "path": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\ddraw.dll",
+        "sha256": "8A86AAA55EB5388CDF4651D6D5B1FE161EEA013161F626AB289F2ED322C7552E",
+        "build_manifest": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\ddraw_surfdump_proxy.build.json",
+        "log": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\ddraw_surfdump_proxy.log",
+        "present_enabled": false,
+        "checked": true
+      },
+      "failures": []
+    },
+    "marker_provenance": {
+      "passed": true,
+      "summary": {
+        "ready_marker": {
+          "source": "SOAK_SURFDUMP_READY",
+          "redraw_seq": 0,
+          "surface": "0a1ef370",
+          "base": "0a4d0030",
+          "width": 800,
+          "height": 600,
+          "bytes": 480000
+        },
+        "route_start_marker": {
+          "route_ticks": 115200,
+          "pan": 1,
+          "player": 0,
+          "tick": 20310800,
+          "game_data": "040c0030",
+          "scroll_x": 38,
+          "scroll_y": 41
+        },
+        "route_end_marker": {
+          "route_ticks": 115200,
+          "pan": 1,
+          "hits": 197058,
+          "tick_delta": 115200,
+          "player": 0,
+          "scroll_x": 37,
+          "scroll_y": 40
+        },
+        "pan_event_count": 179,
+        "heartbeat_count": 96,
+        "checked": true
+      },
+      "failures": []
+    },
+    "cleanup_provenance": {
+      "passed": true,
+      "summary": {
+        "game_stopped": true,
+        "cdb_stopped": true,
+        "errors": [],
+        "clean_stop": true,
+        "checked": true
+      },
+      "failures": []
+    },
+    "frame_inventory": {
+      "passed": true,
+      "summary": {
+        "frame_sample_count": 119,
+        "expected_size": [
+          800,
+          600
+        ],
+        "invalid_hash_count": 0,
+        "checked": true
+      },
+      "failures": []
+    },
+    "render_metrics": {
+      "passed": true,
+      "summary": {
+        "min_nonblack_percent": 97.34,
+        "min_unique_sample_colors": 164.0,
+        "render_evidence_frame_count": 119,
+        "excluded_frame_count": 0,
+        "capture_modes": {
+          "hidden-cdb-host-readprocessmemory": 119
+        },
+        "checked": true
+      },
+      "failures": []
+    },
+    "frame_progression": {
+      "passed": true,
+      "summary": {
+        "route": "map-pan",
+        "frame_progress_expected": true,
+        "frame_stability_class": "progressing",
+        "reported_frame_hash_unique_count": 119,
+        "computed_frame_hash_unique_count": 119
+      },
+      "failures": []
+    },
+    "forced_entry_disclosure": {
+      "passed": true,
+      "summary": {
+        "entry_mechanism": "cdb_breakpoint_forced_loader_entry",
+        "pan_mechanism": "cdb_forced_scroll_write",
+        "pan_mechanism_required": true,
+        "route": "map-pan"
+      },
+      "failures": []
+    },
+    "input_responsiveness": {
+      "passed": true,
+      "summary": {
+        "input_responsiveness": "not_applicable_hidden",
+        "required_sentinel": "not_applicable_hidden",
+        "present": true
+      },
+      "failures": []
+    },
+    "process_liveness": {
+      "passed": true,
+      "summary": {
+        "process_exited_unexpectedly": false,
+        "exit_code": null,
+        "clean_stop": true,
+        "exited_sample_count": 0,
+        "checked": true
+      },
+      "failures": []
+    },
+    "process_growth": {
+      "passed": true,
+      "summary": {
+        "process_sample_count": 119,
+        "working_set_growth_bytes": 159744,
+        "working_set_growth_limit_bytes": 67108864,
+        "private_memory_growth_bytes": -102400,
+        "private_memory_growth_limit_bytes": 67108864,
+        "handle_growth": -8,
+        "handle_growth_limit": 128,
+        "checked": true
+      },
+      "failures": []
+    },
+    "elapsed_coverage": {
+      "passed": true,
+      "summary": {
+        "duration_sec": 1800,
+        "sample_interval_sec": 15,
+        "required_elapsed_sec": 1783,
+        "frame_elapsed_sec": 1799.005955,
+        "process_elapsed_sec": 1798.982439,
+        "invalid_frame_timestamps": 0,
+        "invalid_process_timestamps": 0
+      },
+      "failures": []
+    },
+    "summary_consistency": {
+      "passed": true,
+      "summary": {
+        "checked": true,
+        "frame_sample_count": 119,
+        "frame_hash_unique_count": 119,
+        "process_sample_count": 119,
+        "working_set_growth_bytes": 159744,
+        "private_memory_growth_bytes": -102400,
+        "handle_growth": -8
+      },
+      "failures": []
+    },
+    "artifact_budget": {
+      "passed": true,
+      "summary": {
+        "artifact_bytes": 4000501,
+        "max_artifact_mb": 250,
+        "artifact_limit_bytes": 262144000,
+        "effective_artifact_limit_bytes": 262144000,
+        "checked": true
+      },
+      "failures": []
+    }
+  },
+  "failures": [
+    "source hidden soak report did not mark itself passed",
+    "source hidden soak report contains 1 failure(s)"
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "schema": "clash95_army_keypan_observation_v1",
+  "validation_status": "pending_full_source_bound_trace",
+  "passed": false,
+  "host_capture_passed": true,
+  "frame_action_bar_pixels_passed": true,
+  "minimap_outline_pixels_passed": true,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-army-validation",
+  "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+  "resolution": "1024x768",
+  "started_at": "2026-09-06T11:26:58.8223920Z",
+  "finished_at": "2026-09-06T11:27:53.2184461Z",
+  "artifacts": {
+    "plan.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\plan.json",
+      "sha256": "38cbf35cb0e34d6bc588c5d6e396fe93953d767fbea293365db5b82df9556f02",
+      "bytes": 30110
+    },
+    "packet.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\packet.json",
+      "sha256": "c2d8aba42c80400186c61c486f0a174cb1beca4eb3e7f912d7fc97facb208720",
+      "bytes": 5927092
+    },
+    "selection.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\selection.cdb",
+      "sha256": "c12b8ffc3be4d219a22ab2aaa01dc5bfd412621523bed994bf80c513f71177dd",
+      "bytes": 3018338
+    },
+    "host.ps1": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\host.ps1",
+      "sha256": "cdf231efd0d0f13ae77cd21ea57edbd2f96a780b076c2ec2ee56264b7ebacaa7",
+      "bytes": 15125
+    },
+    "summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\summary.json",
+      "sha256": "77ba65dc8795fc266edc6b537857175957c2226582b923a0a68ee9bde520c1cd",
+      "bytes": 9003
+    },
+    "cdb.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\cdb.log",
+      "sha256": "7680a186689d34ea00d006276461d7ec49df76951dcb81464d8e2756acbd1189",
+      "bytes": 62190
+    },
+    "capture-prefix.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\capture-prefix.log",
+      "sha256": "7680a186689d34ea00d006276461d7ec49df76951dcb81464d8e2756acbd1189",
+      "bytes": 62190
+    },
+    "keypan-frame-audit.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-frame-audit.json",
+      "sha256": "0e4bfa67a48d8f905e208d659cc495e69c31592f054461cc563acf5b59e813d7",
+      "bytes": 33301
+    },
+    "keypan-minimap-audit.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-minimap-audit.json",
+      "sha256": "002afdaee34630333a63f39146e5240b13a6eca0f8ace09f7eb7def69c185309",
+      "bytes": 2796
+    }
+  },
+  "frames": {
+    "keypan-before": {
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-before.png",
+        "sha256": "6d0b85a973fabac9f0d480d9b8a5b87ebbc7632e93a87021be53b9c958aaf4bf",
+        "bytes": 246592
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-before.raw",
+        "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+        "bytes": 786432
+      },
+      "header": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-before.header.raw",
+        "sha256": "4f595be8af5762536dd3573f85632b2849a1f8d76c44e253a39682bbbaa56148",
+        "bytes": 188
+      },
+      "unit": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-before.unit.raw",
+        "sha256": "196181c8360a1c70800a86e626e689179c0a5722ded7133bcc7d4a594b485e58",
+        "bytes": 725
+      },
+      "keyboard": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-before.keyboard.raw",
+        "sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+        "bytes": 256
+      },
+      "all_four_frame_bands_passed": true,
+      "matching_action_cells": 6
+    },
+    "keypan-after": {
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-after.png",
+        "sha256": "16ed93dd618b239d84f228a99e14bf4eaecd0e9ab1f5499ada02413ccb392e84",
+        "bytes": 236977
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-after.raw",
+        "sha256": "f7a169cd7451d8c9c208a66e8f57a436da785a93222eb55851ff6d291bbbffcc",
+        "bytes": 786432
+      },
+      "header": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-after.header.raw",
+        "sha256": "4f595be8af5762536dd3573f85632b2849a1f8d76c44e253a39682bbbaa56148",
+        "bytes": 188
+      },
+      "unit": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-after.unit.raw",
+        "sha256": "196181c8360a1c70800a86e626e689179c0a5722ded7133bcc7d4a594b485e58",
+        "bytes": 725
+      },
+      "keyboard": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-after.keyboard.raw",
+        "sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+        "bytes": 256
+      },
+      "all_four_frame_bands_passed": true,
+      "matching_action_cells": 6
+    }
+  },
+  "observed_camera_before": [
+    10,
+    17
+  ],
+  "observed_camera_after": [
+    11,
+    17
+  ],
+  "native_camera_store_observed": true,
+  "controlled_key_query_one_then_zero_observed": true,
+  "unit_record_unchanged": true,
+  "keyboard_snapshots_all_zero": true,
+  "minimap": {
+    "keypan-before": {
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-before.raw",
+        "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee"
+      },
+      "scroll": [
+        10,
+        17
+      ],
+      "geometry": {
+        "rect": [
+          804,
+          56,
+          835,
+          80
+        ],
+        "visible_world_pixels": [
+          960,
+          736
+        ],
+        "scaled_pixel_extent": [
+          30,
+          23
+        ],
+        "native_color_index": 76
+      },
+      "perimeter_pixels": 110,
+      "mismatch_pixels": 0,
+      "mismatches": [],
+      "passed": true
+    },
+    "keypan-after": {
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-keypan-20260906-113000\\keypan-after.raw",
+        "sha256": "f7a169cd7451d8c9c208a66e8f57a436da785a93222eb55851ff6d291bbbffcc"
+      },
+      "scroll": [
+        11,
+        17
+      ],
+      "geometry": {
+        "rect": [
+          806,
+          56,
+          837,
+          80
+        ],
+        "visible_world_pixels": [
+          960,
+          736
+        ],
+        "scaled_pixel_extent": [
+          30,
+          23
+        ],
+        "native_color_index": 76
+      },
+      "perimeter_pixels": 110,
+      "mismatch_pixels": 0,
+      "mismatches": [],
+      "passed": true
+    }
+  },
+  "old_outline": {
+    "old_only_pixels": 50,
+    "before_outline_color": 50,
+    "after_non_outline_color": 50,
+    "still_outline_color": []
+  },
+  "cleanup": [
+    {
+      "termination_requested": true,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T11:26:59.0781540Z",
+        "handle_retained": true,
+        "creation_filetime": 134331676190781540,
+        "process_id": 34952
+      }
+    },
+    {
+      "termination_requested": false,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\ClashTests\\hd-completion\\framed-army-keypan-20260906-113000\\clash95_army_keypan.exe",
+        "creation_filetime": 134331676193589109,
+        "process_id": 40728,
+        "handle_retained": true,
+        "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+        "creation_utc": "2026-09-06T11:26:59.3589109Z",
+        "parent_process_id": 34952
+      }
+    }
+  ],
+  "desktop_closed": true,
+  "original_unchanged": true,
+  "candidate_unchanged": true,
+  "assets_changed": [],
+  "assets_added": [],
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "The retained host and pixel audits passed. The independent complete source-bound trace validator is unfinished, so overall acceptance is pending.",
+    "Controlled native keyboard-state injection is not OS/manual key delivery or ordinary main-loop input dispatch.",
+    "The later movement-v3 plan114000 passed preparation/dry-run only and was not executed before the user requested a Git checkpoint."
+  ]
+}

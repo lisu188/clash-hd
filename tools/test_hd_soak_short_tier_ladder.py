@@ -137,16 +137,11 @@ def args_for(tmp: Path, *, missing_route: str | None = None, soak: dict[str, Any
 
 
 def test_current_pending_approval_ladder_passes_as_plan() -> None:
-    report = ladder.build_report(
-        argparse.Namespace(
-            route_coverage_json=ladder.DEFAULT_ROUTE_COVERAGE_JSON,
-            next_actions_json=ladder.DEFAULT_NEXT_ACTIONS_JSON,
-            soak_report_json=ladder.DEFAULT_SOAK_REPORT_JSON,
-        )
-    )
+    with tempfile.TemporaryDirectory() as directory:
+        report = ladder.build_report(args_for(Path(directory)))
     assert report["passed"] is True, report["failures"]
     assert report["ladder_complete"] is False
-    assert report["current_step"]["id"] == "short2_map_idle"
+    assert report["current_step"]["id"] == "short2_menu_idle"
     assert report["locks"]["stable_stage_should_change"] is False
     assert report["locks"]["right_bottom_promotion_blocked"] is True
     assert report["locks"]["long_tiers_locked"] is True
@@ -160,8 +155,8 @@ def test_current_pending_approval_ladder_passes_as_plan() -> None:
         assert report["current_step"]["requires_explicit_user_approval"] is True
         command = report["current_step"]["approval_gated_runtime_command"]
         assert "-Execute -AllowVisibleRuntime" in command
-        assert "-ReportJson captures\\current\\hd-soak-short2-map-idle-current.json" in command
-        assert "-ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md" in command
+        assert "-ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json" in command
+        assert "-ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md" in command
         for fragment in (
             "-MaxInputDriftPx 1",
             "-IntroSkipClickMode postmessage",
@@ -177,8 +172,11 @@ def test_current_pending_approval_ladder_passes_as_plan() -> None:
         ):
             assert fragment in command
     else:
-        assert alignment["reported_next_action"] == "inspect_short2_map_idle_triage"
+        assert alignment["reported_next_action"] == "inspect_short2_menu_idle_triage"
         assert alignment["reported_runtime_command"] is None
+    assert report["current_step"]["hidden_cdb_runtime_command"] is None
+    assert report["current_step"]["preferred_environment"] == "host_visible"
+    assert report["steps"][0]["requires_visible_runtime"] is True
 
 
 def test_first_pass_advances_to_short2_map_idle() -> None:
@@ -189,12 +187,132 @@ def test_first_pass_advances_to_short2_map_idle() -> None:
     assert report["passed"] is True, report["failures"]
     assert report["counts"]["passed"] == 1
     assert report["current_step"]["id"] == "short2_map_idle"
-    assert report["current_step"]["status"] == "approval_required"
-    assert "-Route map-idle" in report["current_step"]["approval_gated_runtime_command"]
-    assert "hd-soak-short2-map-idle-current.json" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MaxInputDriftPx 1" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-IntroSkipClickMode postmessage" in report["current_step"]["approval_gated_runtime_command"]
-    assert "-MaxArtifactMB 250" in report["current_step"]["approval_gated_runtime_command"]
+    current = report["current_step"]
+    assert current["status"] == "runtime_required"
+    assert current["requires_explicit_user_approval"] is False
+    assert current["preferred_environment"] == "hidden_cdb_host"
+    assert current["recommended_runtime_command"] == current["hidden_cdb_runtime_command"]
+    assert current["recommended_safe_dry_run_command"] == current["hidden_cdb_safe_dry_run_command"]
+    command = current["recommended_runtime_command"]
+    for fragment in (r"scripts\cdb\run_hidden_soak.ps1", "-Route map-idle", "-DurationSec 120",
+                     "-FrameIntervalSec 15", "-PanIntervalSec 10", "-MaxArtifactMB 250", "-Execute"):
+        assert fragment in command
+    paths = ladder.canonical_report_paths(current)
+    for option, key in (("-ReportJson", "report_json"), ("-ReportMarkdown", "report_markdown"),
+                        ("-GuardJson", "guard_json"), ("-GuardMarkdown", "guard_markdown")):
+        assert f"{option} {paths[key]}" in command
+    assert "-AllowVisibleRuntime" not in command
+    assert "-Execute" not in current["recommended_safe_dry_run_command"]
+    assert "-MaxInputDriftPx 1" in current["approval_gated_runtime_command"]
+    assert "-Execute -AllowVisibleRuntime" in current["approval_gated_runtime_command"]
+    assert report["steps"][1]["visible_runtime_alternative_requires_explicit_user_approval"] is True
+
+
+def test_first_pass_labels_host_environment() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = ladder.build_report(
+            args_for(Path(directory), soak=soak_report_fixture(overall=True, tier="short2", route="menu-idle"))
+        )
+    assert report["passed"] is True, report["failures"]
+    assert report["steps"][0]["environment"] == "host_visible"
+    assert report["steps"][1]["environment"] is None
+
+
+def test_hidden_soak_report_counts_and_labels_environment() -> None:
+    """Hidden map evidence stays labeled and cannot stand in for its menu prerequisite."""
+    hidden = soak_report_fixture(overall=True, tier="short2", route="map-idle")
+    hidden["environment"] = "hidden_cdb_host"
+    hidden["evidence_class"] = "approved_hidden_cdb_host_soak"
+    with tempfile.TemporaryDirectory() as directory:
+        report = ladder.build_report(args_for(Path(directory), soak=hidden))
+    assert report["passed"] is True, report["failures"]
+    assert report["counts"]["passed"] == 0
+    assert report["steps"][1]["matched_current_soak_report"] is True
+    assert report["steps"][1]["status"] == "locked_by_prerequisite"
+    assert report["steps"][1]["environment"] == "hidden_cdb_host"
+    assert report["steps"][1]["evidence_class"] == "approved_hidden_cdb_host_soak"
+    assert report["current_step"]["id"] == "short2_menu_idle"
+    markdown = ladder.to_markdown(report)
+    assert "environment=`hidden_cdb_host`" in markdown
+
+
+def test_hidden_report_cannot_replace_visible_menu_evidence() -> None:
+    hidden = dict(soak_report_fixture(overall=True), environment="hidden_cdb_host",
+                  evidence_class="approved_hidden_cdb_host_soak")
+    with tempfile.TemporaryDirectory() as directory:
+        report = ladder.build_report(args_for(Path(directory), soak=hidden))
+    assert report["counts"]["passed"] == 0
+    assert not report["steps"][0]["matched_current_soak_report"]
+    assert report["current_step"]["requires_explicit_user_approval"] is True
+    assert report["current_step"]["preferred_environment"] == "host_visible"
+
+
+def test_generated_hidden_next_action_aligns_with_the_map_step() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        args = args_for(tmp, soak=soak_report_fixture(overall=True))
+        initial = ladder.build_report(args)
+        command = initial["current_step"]["recommended_runtime_command"]
+        action = {
+            "passed": True,
+            "next_action": {
+                "id": "run_short2_map_idle_soak", "requires_visible_runtime": False,
+                "requires_explicit_user_approval": False, "exact_runtime_command": command,
+                "plan_verified_execute_command": command,
+            },
+        }
+        write_json(args.next_actions_json, action)
+        report = ladder.build_report(args)
+    assert report["passed"], report
+    alignment = report["next_action_alignment"]
+    assert alignment["matches_expected_current_step"] is True
+    assert alignment["plan_verified_matches_current_step"] is True
+    assert alignment["expected_runtime_command"] == command
+
+
+def test_plan_alignment_rejects_wrong_executables_and_tampered_hidden_commands() -> None:
+    map_step = ladder.SHORT_LADDER_STEPS[1]
+    hidden = ladder.hidden_cdb_command_for_step(map_step, execute=True)
+    assert hidden is not None
+    assert ladder.plan_command_matches_step(hidden, map_step)
+    for command in (
+        hidden.replace("powershell.exe", "unknown.exe", 1),
+        hidden.replace("run_hidden_soak.ps1", "unrelated.ps1"),
+        hidden.replace("-DurationSec 120", "-DurationSec 119"),
+        hidden.replace("-Execute", ""),
+        hidden + " -AllowVisibleRuntime",
+        hidden + "; unknown.exe",
+    ):
+        assert not ladder.plan_command_matches_step(command, map_step), command
+    visible = next_actions_fixture()["next_action"]["exact_runtime_command"]
+    menu_step = ladder.SHORT_LADDER_STEPS[0]
+    assert ladder.plan_command_matches_step(visible, menu_step)
+    for command in (
+        visible.replace("powershell.exe", "unknown.exe", 1),
+        visible.replace("run_hd_soak.ps1", "unrelated.ps1"),
+        visible + " -Command unknown.exe",
+        visible + "; unknown.exe",
+    ):
+        assert not ladder.plan_command_matches_step(command, menu_step), command
+
+
+def test_unknown_and_explicit_null_evidence_bindings_fail_closed() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        source = soak_report_fixture(overall=True)
+        assert ladder.soak_report_matches_step(source, ladder.SHORT_LADDER_STEPS[0])
+        for environment in (None, "", "unknown", [], {}):
+            report = ladder.build_report(args_for(tmp, soak=dict(source, environment=environment)))
+            assert not report["passed"], report
+            assert report["counts"]["passed"] == 0
+        for evidence_class in (None, "", "manual_directinput", "approved_hidden_cdb_host_soak"):
+            report = ladder.build_report(args_for(tmp, soak=dict(source, evidence_class=evidence_class)))
+            assert not report["passed"], report
+        guest = dict(source, route="map-idle", environment="guest_win98_qemu",
+                     evidence_class="approved_guest_win98_directdraw")
+        assert ladder.soak_report_matches_step(guest, ladder.SHORT_LADDER_STEPS[1])
+        guest.pop("evidence_class")
+        assert not ladder.soak_report_matches_step(guest, ladder.SHORT_LADDER_STEPS[1])
 
 
 def test_missing_harness_route_fails_closed() -> None:
@@ -234,6 +352,7 @@ def test_repo_only_triage_next_action_can_replace_runtime_command() -> None:
 def test_cli_writes_outputs() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
+        args = args_for(tmp)
         json_out = tmp / "ladder.json"
         md_out = tmp / "ladder.md"
         script = Path(__file__).resolve().parent / "hd_soak_short_tier_ladder.py"
@@ -241,6 +360,9 @@ def test_cli_writes_outputs() -> None:
             [
                 sys.executable,
                 str(script),
+                "--route-coverage-json", str(args.route_coverage_json),
+                "--next-actions-json", str(args.next_actions_json),
+                "--soak-report-json", str(args.soak_report_json),
                 "--write-json",
                 str(json_out),
                 "--write-markdown",
@@ -259,6 +381,12 @@ def test_cli_writes_outputs() -> None:
 def run_tests() -> None:
     test_current_pending_approval_ladder_passes_as_plan()
     test_first_pass_advances_to_short2_map_idle()
+    test_first_pass_labels_host_environment()
+    test_hidden_soak_report_counts_and_labels_environment()
+    test_hidden_report_cannot_replace_visible_menu_evidence()
+    test_generated_hidden_next_action_aligns_with_the_map_step()
+    test_plan_alignment_rejects_wrong_executables_and_tampered_hidden_commands()
+    test_unknown_and_explicit_null_evidence_bindings_fail_closed()
     test_missing_harness_route_fails_closed()
     test_mismatched_next_action_fails_for_first_step()
     test_repo_only_triage_next_action_can_replace_runtime_command()

@@ -1,0 +1,424 @@
+{
+  "schema": "clash95_initialpaint_frame_asset_audit_v1",
+  "generated_at": "2026-09-05T19:23:26.728385+00:00",
+  "scope": "Existing saved software-surface PNG/raw/source-asset inspection; no runtime, image edit or promotion",
+  "full_frame_complete": false,
+  "resource": {
+    "path": "C:\\Clash\\DATA\\GFX3.RES",
+    "sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525"
+  },
+  "member": {
+    "name": "FRAME.S32",
+    "directory": "root",
+    "offset": 1884879,
+    "length": 89593,
+    "sha256": "8501cbae69c35aa5a804823227bbd56fb21e84b4f1e5c0f15e4419f522c4053d"
+  },
+  "native_sprite_placements": [
+    {
+      "sprite": 0,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "sprite": 1,
+      "x": 314,
+      "y": 0
+    },
+    {
+      "sprite": 2,
+      "x": 0,
+      "y": 237
+    },
+    {
+      "sprite": 3,
+      "x": 315,
+      "y": 238
+    },
+    {
+      "sprite": 5,
+      "x": 155,
+      "y": 465
+    }
+  ],
+  "source": {
+    "native_draw_va": "00406740",
+    "native_loader_va": "0040B003",
+    "asm_path": "C:/Clash/clash95.asm",
+    "asm_sha256": "b298e8c85086f542ebc8b02c26904019aa8278d531cbf02a88d785170cbb4436",
+    "decoder_path": "tools/hd_layout_asset_composition.py",
+    "decoder_sha256": "50879a915e5cd80ac7f489c1fd3440071627b1ed9eeb199ef5b099731e7c922d",
+    "frame_recipe_path": "src/patcher/patch_clash95_hd.py",
+    "frame_recipe_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1"
+  },
+  "screenshots": [
+    {
+      "run_id": "cdb-surface-dump-20260905-210832",
+      "resolution": "800x600",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-validation",
+      "candidate_sha256": "E72A57FD3BB26509179E0B4360FC9134BEF804E152AC338FCD755CDFA41C548F",
+      "existing_surface_gate_passed": true,
+      "full_frame_complete": false,
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\summary.json",
+        "sha256": "7862a8074612fa66e83713af1effb0f772c7cb1d73b10adc7532bac87446d51f"
+      },
+      "raw_surface": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\surface.raw",
+        "sha256": "c6f0c8c7b260801960fb6ab813ccb45587b7209cafa582c861e0c638c47ee3d7"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\surface.png",
+        "sha256": "f5137f0cafec8616ea6be1f319c23220c208b8851ac568e2fe4eee56124c0dd6"
+      },
+      "binding": {
+        "metadata_path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\surface.png.json",
+        "metadata_sha256": "0c40ecf96443f2f21207d3c7200abac49cecebc3ad9609559225a9091f27ea02",
+        "palette_path": "C:\\ClashTests\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\candidate\\ddraw_surfdump_palette.bin",
+        "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+        "png_raw_palette_binding_verified": true,
+        "candidate_file_sha_verified": true
+      },
+      "bands": [
+        {
+          "name": "top_native",
+          "rectangle_ltrb_exclusive": [
+            0,
+            0,
+            640,
+            16
+          ],
+          "reference": "Native FRAME mosaic",
+          "opaque_reference_pixels": 10240,
+          "exact_matches": 10240,
+          "mismatches": 0,
+          "nonblack_reference_pixels": 10240,
+          "exact_nonblack_art_matches": 10240,
+          "actual_index_0_or_1": 0,
+          "complete_matching_rows": 16
+        },
+        {
+          "name": "top_extension",
+          "rectangle_ltrb_exclusive": [
+            640,
+            0,
+            800,
+            16
+          ],
+          "reference": "Implemented frame-restore top tiling: source x=480+(x-640)%160",
+          "opaque_reference_pixels": 2560,
+          "exact_matches": 2560,
+          "mismatches": 0,
+          "nonblack_reference_pixels": 2560,
+          "exact_nonblack_art_matches": 2560,
+          "actual_index_0_or_1": 0,
+          "complete_matching_rows": 16
+        },
+        {
+          "name": "left_native",
+          "rectangle_ltrb_exclusive": [
+            0,
+            16,
+            32,
+            480
+          ],
+          "reference": "Native FRAME mosaic",
+          "opaque_reference_pixels": 14848,
+          "exact_matches": 14848,
+          "mismatches": 0,
+          "nonblack_reference_pixels": 14848,
+          "exact_nonblack_art_matches": 14848,
+          "actual_index_0_or_1": 0,
+          "complete_matching_rows": 464
+        },
+        {
+          "name": "left_480_600",
+          "rectangle_ltrb_exclusive": [
+            0,
+            480,
+            32,
+            600
+          ],
+          "reference": "Implemented frame-restore left tiling: source y=360+(y-480)%120",
+          "opaque_reference_pixels": 3840,
+          "exact_matches": 3840,
+          "mismatches": 0,
+          "nonblack_reference_pixels": 3840,
+          "exact_nonblack_art_matches": 3840,
+          "actual_index_0_or_1": 0,
+          "complete_matching_rows": 120
+        },
+        {
+          "name": "old_right_upper",
+          "rectangle_ltrb_exclusive": [
+            608,
+            16,
+            640,
+            230
+          ],
+          "reference": "Diagnostic native-position reference; includes overlap with moved minimap at800",
+          "opaque_reference_pixels": 6848,
+          "exact_matches": 26,
+          "mismatches": 6822,
+          "nonblack_reference_pixels": 6848,
+          "exact_nonblack_art_matches": 26,
+          "actual_index_0_or_1": 6070,
+          "complete_matching_rows": 0
+        },
+        {
+          "name": "old_right_lower",
+          "rectangle_ltrb_exclusive": [
+            608,
+            230,
+            640,
+            464
+          ],
+          "reference": "Diagnostic native-position right frame reference",
+          "opaque_reference_pixels": 7488,
+          "exact_matches": 0,
+          "mismatches": 7488,
+          "nonblack_reference_pixels": 7488,
+          "exact_nonblack_art_matches": 0,
+          "actual_index_0_or_1": 1110,
+          "complete_matching_rows": 0
+        },
+        {
+          "name": "translated_right_middle",
+          "rectangle_ltrb_exclusive": [
+            768,
+            230,
+            800,
+            464
+          ],
+          "reference": "Diagnostic translated native right strip, excluding minimap/actionbar. No approved full-border layout recipe inferred.",
+          "opaque_reference_pixels": 7488,
+          "exact_matches": 0,
+          "mismatches": 7488,
+          "nonblack_reference_pixels": 7488,
+          "exact_nonblack_art_matches": 0,
+          "actual_index_0_or_1": 7488,
+          "complete_matching_rows": 0
+        },
+        {
+          "name": "translated_bottom_middle",
+          "rectangle_ltrb_exclusive": [
+            32,
+            584,
+            608,
+            600
+          ],
+          "reference": "Diagnostic native bottom strip translated down, excluding corners. No HD horizontal extension recipe inferred.",
+          "opaque_reference_pixels": 9216,
+          "exact_matches": 8,
+          "mismatches": 9208,
+          "nonblack_reference_pixels": 9208,
+          "exact_nonblack_art_matches": 2,
+          "actual_index_0_or_1": 2642,
+          "complete_matching_rows": 0
+        }
+      ],
+      "observations": [
+        "Top and left bands exactly match native artwork and the implemented tiling recipe.",
+        "The800 left band continues exactly through y599.",
+        "The translated right middle has zero nonblack-art matches; the bottom middle has only 2/9208 isolated matches and no complete matching row.",
+        "No complete matching row of native right-frame artwork survives at its old x608..639 position; a visible seam is not by itself proof of that asset."
+      ]
+    },
+    {
+      "run_id": "cdb-surface-dump-20260905-211004",
+      "resolution": "1024x768",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-validation",
+      "candidate_sha256": "5EBBAF23AD999A97209A5E0CA8883E8D42E31190FB3891F03CFC3C38001BC338",
+      "existing_surface_gate_passed": true,
+      "full_frame_complete": false,
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\summary.json",
+        "sha256": "ef3d95d113edae320d8eaddf55b371a9e45ae2c61d598a9815b95be9e774e70c"
+      },
+      "raw_surface": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\surface.raw",
+        "sha256": "b04ca566ffcaeea2700dfda7f7751f384d4d6cbe8284e86314c2ebd38cec4927"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\surface.png",
+        "sha256": "a0e2ebf6b908a2a396a28962dd5eba16a4815eb532aa220a0168ba03b4980daa"
+      },
+      "binding": {
+        "metadata_path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\surface.png.json",
+        "metadata_sha256": "5720e7134e45227f5f8b9077f060c9b7a7e45eae791fa0af1e7d860b86eb8bbd",
+        "palette_path": "C:\\ClashTests\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\candidate\\ddraw_surfdump_palette.bin",
+        "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+        "png_raw_palette_binding_verified": true,
+        "candidate_file_sha_verified": true
+      },
+      "bands": [
+        {
+          "name": "top_native",
+          "rectangle_ltrb_exclusive": [
+            0,
+            0,
+            640,
+            16
+          ],
+          "reference": "Native FRAME mosaic",
+          "opaque_reference_pixels": 10240,
+          "exact_matches": 10240,
+          "mismatches": 0,
+          "nonblack_reference_pixels": 10240,
+          "exact_nonblack_art_matches": 10240,
+          "actual_index_0_or_1": 0,
+          "complete_matching_rows": 16
+        },
+        {
+          "name": "top_extension",
+          "rectangle_ltrb_exclusive": [
+            640,
+            0,
+            1024,
+            16
+          ],
+          "reference": "Implemented frame-restore top tiling: source x=480+(x-640)%160",
+          "opaque_reference_pixels": 6144,
+          "exact_matches": 6144,
+          "mismatches": 0,
+          "nonblack_reference_pixels": 6144,
+          "exact_nonblack_art_matches": 6144,
+          "actual_index_0_or_1": 0,
+          "complete_matching_rows": 16
+        },
+        {
+          "name": "left_native",
+          "rectangle_ltrb_exclusive": [
+            0,
+            16,
+            32,
+            480
+          ],
+          "reference": "Native FRAME mosaic",
+          "opaque_reference_pixels": 14848,
+          "exact_matches": 14848,
+          "mismatches": 0,
+          "nonblack_reference_pixels": 14848,
+          "exact_nonblack_art_matches": 14848,
+          "actual_index_0_or_1": 0,
+          "complete_matching_rows": 464
+        },
+        {
+          "name": "left_480_600",
+          "rectangle_ltrb_exclusive": [
+            0,
+            480,
+            32,
+            600
+          ],
+          "reference": "Implemented frame-restore left tiling: source y=360+(y-480)%120",
+          "opaque_reference_pixels": 3840,
+          "exact_matches": 3840,
+          "mismatches": 0,
+          "nonblack_reference_pixels": 3840,
+          "exact_nonblack_art_matches": 3840,
+          "actual_index_0_or_1": 0,
+          "complete_matching_rows": 120
+        },
+        {
+          "name": "left_600_to_bottom",
+          "rectangle_ltrb_exclusive": [
+            0,
+            600,
+            32,
+            768
+          ],
+          "reference": "Same implemented left-band tiling continues below600",
+          "opaque_reference_pixels": 5376,
+          "exact_matches": 5376,
+          "mismatches": 0,
+          "nonblack_reference_pixels": 5376,
+          "exact_nonblack_art_matches": 5376,
+          "actual_index_0_or_1": 0,
+          "complete_matching_rows": 168
+        },
+        {
+          "name": "old_right_upper",
+          "rectangle_ltrb_exclusive": [
+            608,
+            16,
+            640,
+            230
+          ],
+          "reference": "Diagnostic native-position reference; includes overlap with moved minimap at800",
+          "opaque_reference_pixels": 6848,
+          "exact_matches": 39,
+          "mismatches": 6809,
+          "nonblack_reference_pixels": 6848,
+          "exact_nonblack_art_matches": 39,
+          "actual_index_0_or_1": 2031,
+          "complete_matching_rows": 0
+        },
+        {
+          "name": "old_right_lower",
+          "rectangle_ltrb_exclusive": [
+            608,
+            230,
+            640,
+            464
+          ],
+          "reference": "Diagnostic native-position right frame reference",
+          "opaque_reference_pixels": 7488,
+          "exact_matches": 0,
+          "mismatches": 7488,
+          "nonblack_reference_pixels": 7488,
+          "exact_nonblack_art_matches": 0,
+          "actual_index_0_or_1": 1110,
+          "complete_matching_rows": 0
+        },
+        {
+          "name": "translated_right_middle",
+          "rectangle_ltrb_exclusive": [
+            992,
+            230,
+            1024,
+            464
+          ],
+          "reference": "Diagnostic translated native right strip, excluding minimap/actionbar. No approved full-border layout recipe inferred.",
+          "opaque_reference_pixels": 7488,
+          "exact_matches": 0,
+          "mismatches": 7488,
+          "nonblack_reference_pixels": 7488,
+          "exact_nonblack_art_matches": 0,
+          "actual_index_0_or_1": 7488,
+          "complete_matching_rows": 0
+        },
+        {
+          "name": "translated_bottom_middle",
+          "rectangle_ltrb_exclusive": [
+            32,
+            752,
+            608,
+            768
+          ],
+          "reference": "Diagnostic native bottom strip translated down, excluding corners. No HD horizontal extension recipe inferred.",
+          "opaque_reference_pixels": 9216,
+          "exact_matches": 8,
+          "mismatches": 9208,
+          "nonblack_reference_pixels": 9208,
+          "exact_nonblack_art_matches": 0,
+          "actual_index_0_or_1": 9216,
+          "complete_matching_rows": 0
+        }
+      ],
+      "observations": [
+        "Top and left bands exactly match native artwork and the implemented tiling recipe.",
+        "The1024 left band continues exactly through y767; it does not end at600.",
+        "No nonblack native artwork matches the translated right-middle/bottom-middle reference.",
+        "No complete matching row of native right-frame artwork survives at its old x608..639 position; a visible seam is not by itself proof of that asset."
+      ]
+    }
+  ],
+  "limits": [
+    "Exact indexed asset pixels only; transparent source pixels are excluded. Coincident index0/1 matches are separately reported and are not ornate-art proof.",
+    "The established frame-restore recipe extends top/left only. Translated right/bottom strips are diagnostic references to original artwork, not a silently selected HD layout contract.",
+    "Native Render_DrawSprite draws these frame sprites to both the map backbuffer and primary target. The incomplete software border is distinct from missing separately composed minimap/HUD layers. Final visible-wrapper appearance still needs its own approved evidence.",
+    "No whole unexplored black region is classified as a rendering defect; terrain visibility/fog and proxy-only minimap/HUD omissions remain separate.",
+    "The current surface gate results and earlier failures remain unchanged."
+  ]
+}

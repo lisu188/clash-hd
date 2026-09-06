@@ -49,8 +49,11 @@ temp/
 /build/
 /dist/
 
+# Share only the project model default; keep all other Codex state local.
+.codex/*
+!.codex/config.toml
+
 # Codex/Claude local state
-.codex
 .codex-loop/
 .agents/
 .claude/

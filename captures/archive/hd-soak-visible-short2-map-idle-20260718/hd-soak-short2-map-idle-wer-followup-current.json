@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-07-15T05:45:00+00:00",
+  "passed": true,
+  "status": "application_hang_confirmed_wer_closed",
+  "runtime_policy": "repo/local read-only failure correlation; reads the existing soak report and Windows Application event log without launching Clash95, CDB, wrappers, input APIs, or capture",
+  "manifest_path": "captures\\current\\hd-soak-short2-map-idle-wer-followup-current.json",
+  "source_visible_report": "captures\\current\\hd-soak-short2-map-idle-current.json",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "route": "map-idle",
+  "candidate": "C:\\ClashTests\\hd-soak\\clash95_hd_soak_20260714_171708.exe",
+  "candidate_name": "clash95_hd_soak_20260714_171708.exe",
+  "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "event_evidence": {
+    "log_name": "Application",
+    "window_start_local": "2026-07-14T17:28:30+02:00",
+    "window_end_local": "2026-07-14T17:32:00+02:00",
+    "event_name": "AppHangB1",
+    "application_hang_1002_count": 1,
+    "wer_apphang_1001_count": 2,
+    "application_error_1000_count": 0,
+    "application_hang_time_local": "2026-07-14T17:30:31+02:00",
+    "final_wer_time_local": "2026-07-14T17:30:33+02:00",
+    "windows_closed_nonresponsive_application": true,
+    "wer_report_id": "f786a5c6-0b39-460c-9443-af6a6c556eba",
+    "wer_fault_bucket": "1706022875950305022",
+    "wer_hashed_bucket": "3293cfb13dac59b367ad02c44bb54efe",
+    "archived_report_acl_readable": false
+  },
+  "timeline_correlation": {
+    "candidate_name_matches": true,
+    "event_within_failed_run_window": true,
+    "last_live_process_sample_local": "2026-07-14T17:30:22.6142905+02:00",
+    "second_capture_window_timeout_local": "2026-07-14T17:30:30.9967415+02:00",
+    "application_hang_close_local": "2026-07-14T17:30:31+02:00",
+    "harness_observed_exit_local": "2026-07-14T17:30:46.0136130+02:00",
+    "harness_exit_code": 1,
+    "last_actual_frame_local": "2026-07-14T17:30:07.6052432+02:00",
+    "last_actual_frame_screen": "main_menu"
+  },
+  "capture_analysis": {
+    "second_capture_reached_foreground_manipulation": false,
+    "second_capture_reached_gdi_capture": false,
+    "second_capture_only_waited_for_visible_target_pid_window": true,
+    "inference": "The second capture timeout detected the already-missing or ghosted target window; it did not close the target. The first successful capture used the approved foreground/screen path and cannot be excluded as a contributing interaction without a controlled comparison."
+  },
+  "input_scope": {
+    "geometry_verified": true,
+    "callback_or_route_transition_verified": false,
+    "reason": "mouse_path_probe verified cursor and button-event geometry only; the last captured screen remained the main menu"
+  },
+  "scope_limit": "WER proves an application hang and OS closure, but provides no readable archived stack under the current ACL and does not identify which route step or wrapper interaction first stopped responding.",
+  "mitigation": {
+    "window_health_instrumentation_added": true,
+    "harness_guard_path": "captures\\current\\hd-soak-harness-guard-current.json",
+    "harness_guard_passed": true,
+    "window_health_stop_check_passed": true,
+    "window_health_api": "EnumWindows/GetClientRect/IsHungAppWindow",
+    "stop_policy": "sample after launch, after intro wait, before and after each route step, and before each frame; stop further input and capture on the first hung or missing live target window"
+  },
+  "stable_stage_should_change": false,
+  "visible_rerun_approved": false
+}

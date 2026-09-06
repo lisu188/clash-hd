@@ -8,6 +8,7 @@ not launch Clash95, CDB, wrappers, PowerShell, or any visible GUI process.
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 from datetime import datetime, timezone
@@ -36,6 +37,7 @@ RISK_PATTERNS: dict[str, re.Pattern[str]] = {
 }
 
 GATED_HELPERS = {
+    "hd_layout_observation_manifest.py": "manual/visible-runtime observer; default invocation only builds/verifies a file-bound plan; execution requires --execute, --allow-visible-runtime and fresh approval matching the exact candidate, wrapper, input plan and source hashes before Win32/process/capture access; producer/parser boundary fixtures cover rejection before launch",
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
     "raw_sendinput_click.py": "manual/visible-runtime evidence helper; it sends OS input only when explicitly invoked by a guarded harness",
     "menu_pulse_click.py": "manual/visible-runtime evidence helper; it drives the engine cursor by pulse injection only when explicitly invoked by the approval-gated soak harness",
@@ -52,6 +54,23 @@ USER_GATED_LAUNCHER_HELPERS = {
         "launcher_policy_guard"
     ),
 }
+
+# Unlike the legacy basename exemptions below, an offline report classification
+# requires the reviewed path, imports, and absence of executable runtime APIs.
+# Names in comments and evidence strings are not API use.
+OFFLINE_REPORT_HELPERS = {
+    "tools/hidden_soak_report_assembler.py": (
+        "repo-only JSON report assembler; reads recorded samples and writes JSON/Markdown, "
+        "while runtime terminology occurs only in evidence descriptions"
+    ),
+}
+OFFLINE_REPORT_IMPORTS = {
+    "tools/hidden_soak_report_assembler.py": {
+        "__future__", "argparse", "json", "sys", "datetime", "pathlib", "typing",
+        "hd_soak_report",
+    },
+}
+DYNAMIC_CODE_NAMES = {"__import__", "eval", "exec", "compile", "getattr", "setattr"}
 
 EXEMPT_HELPERS = {
     "battle_ui_evidence_matrix.py": "repo-only evidence matrix; process-launch text is a type annotation or fixture reference",
@@ -110,6 +129,39 @@ def risky_lines(text: str) -> dict[str, list[int]]:
     return findings
 
 
+def offline_report_failures(text: str, rel: str) -> list[str]:
+    """Fail closed when a reviewed offline helper gains executable API use.
+
+    This is source review enforcement, not a Python sandbox. Check imports and
+    API references as well as calls so aliases cannot bypass the classification.
+    AST inspection ignores prose but retains expressions inside f-strings.
+    """
+    try:
+        tree = ast.parse(text)
+    except SyntaxError as exc:
+        return [f"{rel} offline report source could not be parsed: {exc.msg}"]
+
+    failures: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            modules = (
+                [alias.name for alias in node.names]
+                if isinstance(node, ast.Import)
+                else [node.module or ""]
+            )
+            for module in modules:
+                if module not in OFFLINE_REPORT_IMPORTS[rel] or getattr(node, "level", 0):
+                    failures.add(f"{rel}:{node.lineno} offline report has unreviewed import {module!r}")
+        # Include attribute references even when assigned to an innocuous alias.
+        name = node.id if isinstance(node, ast.Name) else node.attr if isinstance(node, ast.Attribute) else None
+        if name is not None:
+            categories = sorted(risky_lines(name + "("))
+            if categories or name in DYNAMIC_CODE_NAMES:
+                detail = ", ".join(categories) if categories else "dynamic code/API lookup"
+                failures.add(f"{rel}:{node.lineno} offline report references {name!r} ({detail})")
+    return sorted(failures)
+
+
 def classify_python(path: Path, root: Path) -> dict[str, Any]:
     rel = relative_path(path, root)
     text = path.read_text(encoding="utf-8-sig", errors="replace")
@@ -117,7 +169,14 @@ def classify_python(path: Path, root: Path) -> dict[str, Any]:
     name = path.name
     failures: list[str] = []
 
-    if not findings:
+    if rel in OFFLINE_REPORT_HELPERS:
+        failures.extend(offline_report_failures(text, rel))
+        classification = "unclassified_risky" if failures else "offline_report"
+        reason = (
+            "reviewed offline report contract was violated"
+            if failures else OFFLINE_REPORT_HELPERS[rel]
+        )
+    elif not findings:
         classification = "safe"
         reason = "no risky runtime/input/process APIs found"
     elif name.startswith("test_"):
@@ -165,12 +224,13 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "passed": not failures,
         "runtime_policy": RUNTIME_POLICY,
-        "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
+        "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, explicitly exempt, or satisfy a reviewed offline-report source contract",
         "root": str(root),
         "file_count": len(records),
         "risky_file_count": len(risky),
         "classification_counts": by_class,
         "gated_helpers": GATED_HELPERS,
+        "offline_report_helpers": OFFLINE_REPORT_HELPERS,
         "exempt_helpers": EXEMPT_HELPERS,
         "records": records,
         "failures": failures,

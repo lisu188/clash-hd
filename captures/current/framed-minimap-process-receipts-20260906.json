@@ -1,0 +1,191 @@
+{
+  "schema": "clash95_minimap_process_receipts_v1",
+  "limits": [
+    "802 live query arrived after completion; its empty process list is not a live PID identity receipt."
+  ],
+  "receipts": [
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-1024-processes.json",
+      "source_sha256": "3d46a118a0b0961b6381ee5a4939a5b84a31e67af9ece1eaa1d95faa2d70385b",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:18:01.5400270Z",
+        "Processes": [
+          {
+            "ProcessId": 28632,
+            "ParentProcessId": 35276,
+            "Name": "cdb.exe",
+            "ExecutablePath": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "CommandLine": "\"C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe\" -hd -logo C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\cdb-surface-dump.log -c $$><C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\cdb-surface-dump-20260906-051740\\surface-minimap-probe.cdb C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\clash95_hd_minimap_1024x768_20260906-031649.exe"
+          },
+          {
+            "ProcessId": 17920,
+            "ParentProcessId": 28632,
+            "Name": "clash95_hd_minimap_1024x768_20260906-031649.exe",
+            "ExecutablePath": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\clash95_hd_minimap_1024x768_20260906-031649.exe",
+            "CommandLine": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\clash95_hd_minimap_1024x768_20260906-031649.exe"
+          }
+        ]
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-1280x720-processes.json",
+      "source_sha256": "76812a996093b6d3f5b7149678095396298c7b50c275114d368ca184900dd19e",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:22:43.3375268Z",
+        "Processes": [
+          {
+            "ProcessId": 13956,
+            "ParentProcessId": 40552,
+            "Name": "cdb.exe",
+            "ExecutablePath": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "CommandLine": "\"C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe\" -hd -logo C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\cdb-surface-dump.log -c $$><C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\cdb-surface-dump-20260906-052225\\surface-minimap-probe.cdb C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\candidate\\clash95_hd_minimap_1280x720_20260906-032002.exe"
+          },
+          {
+            "ProcessId": 32612,
+            "ParentProcessId": 13956,
+            "Name": "clash95_hd_minimap_1280x720_20260906-032002.exe",
+            "ExecutablePath": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\candidate\\clash95_hd_minimap_1280x720_20260906-032002.exe",
+            "CommandLine": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x720-20260906-032002\\candidate\\clash95_hd_minimap_1280x720_20260906-032002.exe"
+          }
+        ]
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-1280x960-processes.json",
+      "source_sha256": "8622e2fc93bf6a120eae96960351d5f7421a37217b8a95ad9a05a90ea538c953",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:25:53.4599319Z",
+        "Processes": [
+          {
+            "ProcessId": 39100,
+            "ParentProcessId": 7008,
+            "Name": "cdb.exe",
+            "ExecutablePath": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "CommandLine": "\"C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe\" -hd -logo C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\cdb-surface-dump.log -c $$><C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface-minimap-probe.cdb C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\candidate\\clash95_hd_minimap_1280x960_20260906-032002.exe"
+          },
+          {
+            "ProcessId": 37684,
+            "ParentProcessId": 39100,
+            "Name": "clash95_hd_minimap_1280x960_20260906-032002.exe",
+            "ExecutablePath": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\candidate\\clash95_hd_minimap_1280x960_20260906-032002.exe",
+            "CommandLine": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\candidate\\clash95_hd_minimap_1280x960_20260906-032002.exe"
+          }
+        ]
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-1920-processes.json",
+      "source_sha256": "1227dbbd9dc9266f792a70866ef25416c6a7e5075ab3d6559eaa2056f64e0022",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:30:25.4779394Z",
+        "Processes": [
+          {
+            "ProcessId": 41400,
+            "ParentProcessId": 4448,
+            "Name": "cdb.exe",
+            "ExecutablePath": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "CommandLine": "\"C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe\" -hd -logo C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\cdb-surface-dump.log -c $$><C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\cdb-surface-dump-20260906-053005\\surface-minimap-probe.cdb C:\\ClashTests\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\candidate\\clash95_hd_minimap_1920x1080_20260906-032002.exe"
+          },
+          {
+            "ProcessId": 39448,
+            "ParentProcessId": 41400,
+            "Name": "clash95_hd_minimap_1920x1080_20260906-032002.exe",
+            "ExecutablePath": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\candidate\\clash95_hd_minimap_1920x1080_20260906-032002.exe",
+            "CommandLine": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1920x1080-20260906-032002\\candidate\\clash95_hd_minimap_1920x1080_20260906-032002.exe"
+          }
+        ]
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-800-processes.json",
+      "source_sha256": "c1f183251a04468c771310f3838d08fc333bf66e94a5a9099f8433a86a35dc97",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:32:23.7000342Z",
+        "Processes": [
+          {
+            "ProcessId": 42448,
+            "ParentProcessId": 41068,
+            "Name": "cdb.exe",
+            "ExecutablePath": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "CommandLine": "\"C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe\" -hd -logo C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\cdb-surface-dump.log -c $$><C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\cdb-surface-dump-20260906-053205\\surface-minimap-probe.cdb C:\\ClashTests\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\candidate\\clash95_hd_minimap_800x600_20260906-032002.exe"
+          },
+          {
+            "ProcessId": 29372,
+            "ParentProcessId": 42448,
+            "Name": "clash95_hd_minimap_800x600_20260906-032002.exe",
+            "ExecutablePath": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\candidate\\clash95_hd_minimap_800x600_20260906-032002.exe",
+            "CommandLine": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-800x600-20260906-032002\\candidate\\clash95_hd_minimap_800x600_20260906-032002.exe"
+          }
+        ]
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\live-802-processes.json",
+      "source_sha256": "21e1dad65844f125898cdec32428645a7ca26773e0b066b62b6cdda996a17f48",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:21:45.1530930Z",
+        "Processes": []
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-1024-processes.json",
+      "source_sha256": "c111c9d61166b49e60a6e874e5c68866f2c459aed6d5b64cafbb9e2c5ac095bb",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:19:01.8047648Z",
+        "RecordedPids": [
+          28632,
+          17920
+        ],
+        "Remaining": []
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-1280x720-processes.json",
+      "source_sha256": "a23addd68046db804dfd98347a7cf68a922e42eae009baea88b082c1dc98d632",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:24:27.6642978Z",
+        "RecordedPids": [
+          13956,
+          32612
+        ],
+        "Remaining": []
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-1280x960-processes.json",
+      "source_sha256": "ef71a719eccc9b00c3eece26b075aee3dd8efc8a4d24187fcbba2c1760f36acf",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:29:51.5041354Z",
+        "RecordedPids": [
+          39100,
+          37684
+        ],
+        "Remaining": []
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-1920-processes.json",
+      "source_sha256": "edf145b2a8ad2ea3185c5a2cf344307aa8b8c3d27c552c9141a1cf043191e7e8",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:31:49.3134842Z",
+        "RecordedPids": [
+          41400,
+          39448
+        ],
+        "Remaining": []
+      }
+    },
+    {
+      "source_path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-minimap-20260906-ackgzcr5\\stopped-800-processes.json",
+      "source_sha256": "6b7153d6b3d1b260eeee940f254d1ad64899a743f4d882c9ce55dbad23589ec6",
+      "receipt": {
+        "ObservedAt": "2026-09-06T03:33:53.5149849Z",
+        "RecordedPids": [
+          42448,
+          29372
+        ],
+        "Remaining": []
+      }
+    }
+  ]
+}

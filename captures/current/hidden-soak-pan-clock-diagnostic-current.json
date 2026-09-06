@@ -1,0 +1,80 @@
+{
+  "generated_at": "2026-09-05T09:44:49.115647+00:00",
+  "status": "failed_run_preserved_corrected_probe_rerun_passed",
+  "failed_run": "hidden-soak-20260905-103139-257-map-pan",
+  "failed_report": "captures/archive/hidden-soak-short30-20260905-103139/report.json",
+  "failed_guard": "captures/archive/hidden-soak-short30-20260905-103139/guard.json",
+  "failure": [
+    "SOAK_PAN_SET event 8 is not ordered by the requested pan interval and redraw hits"
+  ],
+  "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "runtime_duration_sec": 1800,
+  "cleanup": {
+    "game_stopped": true,
+    "cdb_stopped": true,
+    "errors": [],
+    "stopped_process_ids": [
+      6388
+    ]
+  },
+  "observation": {
+    "event_7": {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 8851,
+      "tick_delta": 5121,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    "event_8": {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 9939,
+      "tick_delta": 5760,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    "interval_ticks": 639,
+    "required_interval_ticks": 640
+  },
+  "source_diagnosis": "The old probe read KUSER_SHARED_DATA separately for scheduling, last-pan timestamp and marker output. A clock advance during those evaluations can produce the observed 641 then 639 tick intervals. The new probe latches one tick per active redraw for both scheduling and output. The old run remains failed; no evidence tolerance was changed.",
+  "raw_artifacts": [
+    {
+      "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\hidden-soak-cdb.log",
+      "sha256": "289ba939d9dfe27b884c45aa71f1a9250e71888c0e1c4fc47a7b39bb65e88ec3"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\clash95_hidden_soak_probe.generated.cdb",
+      "sha256": "32897156592047985057cf4b1928ee51ea5682989d26bc3bc01e2ec978b8e696"
+    }
+  ],
+  "corrected_probe_sha256": "fe2f3857736fe719a4dcff0be4573fc1e9dc7106fa0e952944ab32c9860ddc7f",
+  "regression": "tools/test_hidden_soak_report_assembler.py: split-clock 639-tick pan still fails; single clock sample source invariant passes",
+  "rerun_id": "hidden-soak-20260905-110757-602-map-pan",
+  "rerun_result": "passed",
+  "stable_stage_changed": false,
+  "rerun_evidence": {
+    "report": "captures/current/hd-soak-short30-map-pan-current.json",
+    "report_sha256": "33dd4124dd09d845a401b4006d8faa39540bca5e5ed632151a5e4298bbe25b3c",
+    "guard": "captures/current/hd-soak-short30-map-pan-guard-current.json",
+    "guard_sha256": "be8275b32f3fd25073a05a80e4f638441f8f319c3bff4161bd757c4ba0b928db",
+    "generated_at": "2026-09-05T09:38:35.366898+00:00",
+    "frame_samples": 119,
+    "process_samples": 119,
+    "pan_events": 179,
+    "frame_elapsed_sec": 1798.054608,
+    "process_elapsed_sec": 1798.027515,
+    "cleanup": {
+      "game_stopped": true,
+      "cdb_stopped": true,
+      "errors": [],
+      "stopped_process_ids": [
+        34604
+      ]
+    },
+    "av_observed": false,
+    "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33"
+  }
+}

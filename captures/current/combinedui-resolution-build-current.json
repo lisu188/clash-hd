@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-09-05T08:49:01.916075+00:00",
+  "scope": "isolated candidate construction and byte verification only",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+  "patcher_source_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+  "original_sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+  "original_unchanged": true,
+  "records": [
+    {
+      "resolution": "800x600",
+      "candidate": "C:\\ClashTests\\combinedui-validation\\resolution-build-20260905-104900-264961\\800x600\\clash95_hd_combinedui_800x600.exe",
+      "sha256": "0A75CF35F42EFE1E44FBA1AC4031EAAE5323CDFF51AA19D261C36C5BB84691C2",
+      "byte_report": "captures/current/combinedui-validation-800x600-patch-stage-current.json",
+      "patch_count": 166,
+      "status_counts": {
+        "patched": 166
+      },
+      "byte_gate_passed": true,
+      "runtime_validated": false,
+      "promoted": false
+    },
+    {
+      "resolution": "1024x768",
+      "candidate": "C:\\ClashTests\\combinedui-validation\\resolution-build-20260905-104900-264961\\1024x768\\clash95_hd_combinedui_1024x768.exe",
+      "sha256": "4F8FE0899593B2E2F7477518EE1EA05E1D0F21B0CEEA9091507361D4A3504120",
+      "byte_report": "captures/current/combinedui-validation-1024x768-patch-stage-current.json",
+      "patch_count": 166,
+      "status_counts": {
+        "patched": 166
+      },
+      "byte_gate_passed": true,
+      "runtime_validated": false,
+      "promoted": false
+    },
+    {
+      "resolution": "1280x720",
+      "candidate": "C:\\ClashTests\\combinedui-validation\\resolution-build-20260905-104900-264961\\1280x720\\clash95_hd_combinedui_1280x720.exe",
+      "sha256": "F1475EE51D64FE5CEFAB29339992A2FBBDF382806446BF570F8105198112F3FA",
+      "byte_report": "captures/current/combinedui-validation-1280x720-patch-stage-current.json",
+      "patch_count": 166,
+      "status_counts": {
+        "patched": 166
+      },
+      "byte_gate_passed": true,
+      "runtime_validated": false,
+      "promoted": false
+    },
+    {
+      "resolution": "1280x960",
+      "candidate": "C:\\ClashTests\\combinedui-validation\\resolution-build-20260905-104900-264961\\1280x960\\clash95_hd_combinedui_1280x960.exe",
+      "sha256": "019BA3A7C932606AC35E9A703E86FA0A0672066E4CDDA6407A732EFA460584B6",
+      "byte_report": "captures/current/combinedui-validation-1280x960-patch-stage-current.json",
+      "patch_count": 166,
+      "status_counts": {
+        "patched": 166
+      },
+      "byte_gate_passed": true,
+      "runtime_validated": false,
+      "promoted": false
+    },
+    {
+      "resolution": "1920x1080",
+      "candidate": "C:\\ClashTests\\combinedui-validation\\resolution-build-20260905-104900-264961\\1920x1080\\clash95_hd_combinedui_1920x1080.exe",
+      "sha256": "B4AF9A609F2E90A48941C2404AA71CC794AA9E680D0CD78940662817071A2CEF",
+      "byte_report": "captures/current/combinedui-validation-1920x1080-patch-stage-current.json",
+      "patch_count": 166,
+      "status_counts": {
+        "patched": 166
+      },
+      "byte_gate_passed": true,
+      "runtime_validated": false,
+      "promoted": false
+    },
+    {
+      "resolution": "802x602",
+      "candidate": "C:\\ClashTests\\combinedui-validation\\resolution-build-20260905-104900-264961\\802x602\\clash95_hd_combinedui_802x602.exe",
+      "sha256": "9C45ED3F679DD802EE0D11F8B31DEA6CD8D302556A84E31835A9407DA9CBA4B5",
+      "byte_report": "captures/current/combinedui-validation-802x602-patch-stage-current.json",
+      "patch_count": 166,
+      "status_counts": {
+        "patched": 166
+      },
+      "byte_gate_passed": true,
+      "runtime_validated": false,
+      "promoted": false
+    }
+  ],
+  "runtime_executed": false,
+  "stable_stage_changed": false,
+  "promotion_performed": false
+}

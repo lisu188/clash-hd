@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-18T22:14:48+02:00",
+  "generated_at": "2026-09-06T05:58:05+02:00",
   "passed": false,
   "overall": false,
   "runtime_policy": "repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "2h+ representative-route soak evidence remains locked until the short ladder passes and approved opt-in long-run soak report guards prove clean process, frame, input, artifact, and patch evidence",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-  "status": "locked_short_ladder_incomplete",
+  "status": "blocked_missing_long_proof",
   "tier": "long2h",
   "route": "representative-routes",
   "duration_sec": 0,
@@ -17,14 +17,8 @@
   "short_ladder": {
     "path": "captures\\current\\hd-soak-short-step-status-current.json",
     "present": true,
-    "ladder_complete": false,
-    "current_step": {
-      "id": "short2_map_idle",
-      "tier": "short2",
-      "route": "map-idle",
-      "status": "failed_classified_window_missing_while_process_alive",
-      "next_command": null
-    }
+    "ladder_complete": true,
+    "current_step": null
   },
   "proof_manifest": {
     "path": "captures\\current\\hd-soak-long-proof-current.json",
@@ -39,9 +33,8 @@
     "missing_routes": 2
   },
   "summary": "2h+ representative-route soak evidence is locked or missing",
-  "next_probe": "complete the short-tier ladder first",
+  "next_probe": "run approved opt-in 2h+ map-idle and map-pan soak reports",
   "failures": [
-    "short ladder is not complete; long tiers remain locked",
     "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
     "missing passing 2h+ representative route: map-idle",
     "missing passing 2h+ representative route: map-pan"

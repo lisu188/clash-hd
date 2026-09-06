@@ -1,0 +1,87 @@
+{
+  "schema": "clash95_modal_primary_failed_attempt_v1",
+  "passed": false,
+  "classification": "debugger_breakpoint_command_syntax_before_game_loading",
+  "started_at": "2026-09-06T09:59:53.1577944Z",
+  "finished_at": "2026-09-06T10:02:02.4945147Z",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+  "resolution": "1024x768",
+  "route": "barracks",
+  "availability": "construct_all",
+  "summary": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary-barracks-20260906-100000\\summary.json",
+    "sha256": "cf0ef2fcf259af6b91e1779f30a90f8efebd613b01610bfdfbb0481a2b7c7305"
+  },
+  "log": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary-barracks-20260906-100000\\cdb.log",
+    "sha256": "cd9e217526225fb6572a897843e6ff4379ed71dcb4e8b0444ba483520d3fa013"
+  },
+  "source_archives": [
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary-barracks-20260906-100000\\attempt1-source-framed_modal_primary_capture.py",
+      "sha256": "cae930c53c67379d2dab8e3d0893dce369b8f5cb469c005452e4ffaed0990802"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary-barracks-20260906-100000\\attempt1-source-run_framed_modal_primary_capture.ps1",
+      "sha256": "4b864a723ec57742bbb4902168676e35b37450c86b6312ca1bda26d41f9524d0"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary-barracks-20260906-100000\\attempt1-source-test_framed_modal_primary_capture.py",
+      "sha256": "b1adb692a0bf54e34336074f0952abfdf33503fcdeaee1de4c82d904aa5d91b5"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\primary-barracks-20260906-100000\\attempt1-source-test_framed_modal_primary_host.py",
+      "sha256": "afa65dd7170618b9148916163c8fd28fbdbe5b10cb760b7b152b3c4347c24e31"
+    }
+  ],
+  "actual_errors": [
+    "Unable to insert breakpoint 27 at 00000110, Win32 error 0n299",
+    "bp27 at 00000110 failed",
+    "Unable to insert breakpoint 28 at 00000111, Win32 error 0n299",
+    "bp28 at 00000111 failed"
+  ],
+  "host_failures": [
+    "The 120-second modal capture deadline expired without a snapshot."
+  ],
+  "gameplay_marker_observed": false,
+  "capture_observed": false,
+  "cleanup": {
+    "candidates": [
+      {
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\hd-completion\\primary-barracks-20260906-100000\\framed-modal-canvas-barracks-1024x768-6e0fa41c6e0c8633.exe",
+          "creation_filetime": 134331624022940447,
+          "process_id": 30976,
+          "handle_retained": true,
+          "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+          "creation_utc": "2026-09-06T10:00:02.2940447Z",
+          "parent_process_id": 37844
+        }
+      }
+    ],
+    "cdb": {
+      "termination_requested": true,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T10:00:02.0869617Z",
+        "handle_retained": true,
+        "creation_filetime": 134331624020869617,
+        "process_id": 37844
+      }
+    },
+    "desktop_closed": true
+  },
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "bp 110/111 was interpreted as an address instead of a fixed breakpoint ID; no barracks rendering observation resulted.",
+    "The original failed summary remains unchanged; later syntax and fail-fast fixes cannot reclassify this attempt."
+  ]
+}

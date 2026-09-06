@@ -1,0 +1,33 @@
+{
+  "observed_at": "2026-09-06T05:40:01.247585+00:00",
+  "results": [
+    {
+      "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\clash95_hd_minimap_1024x768_20260906-031649.exe",
+      "sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+      "bytes": 1311232,
+      "sec_image_accepted": true,
+      "win32_error": 0,
+      "handles_closed": true
+    },
+    {
+      "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v1-1024x768-build-20260906-053000\\clash95_modal_canvas_1024x768.exe",
+      "sha256": "17b48dced0e6e75010df67e93c4feb22ca9545cd380084b9a2c383f2eddf5e1b",
+      "bytes": 1385472,
+      "sec_image_accepted": false,
+      "win32_error": 193,
+      "handles_closed": true
+    },
+    {
+      "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-1024x768-build-20260906-054000\\clash95_modal_canvas_1024x768_v2.exe",
+      "sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "bytes": 1385472,
+      "sec_image_accepted": true,
+      "win32_error": 0,
+      "handles_closed": true
+    }
+  ],
+  "api": "CreateFileMappingW(PAGE_READONLY | SEC_IMAGE)",
+  "map_view_created": false,
+  "image_entry_executed": false,
+  "scope": "Windows image section creation only; no process, debugger, thread, relocation execution or renderer proof."
+}

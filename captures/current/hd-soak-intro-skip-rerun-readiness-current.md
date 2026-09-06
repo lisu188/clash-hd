@@ -1,23 +1,13 @@
 # HD Soak Intro-Skip Rerun Readiness
 
 - Overall: PASS
-- Generated: `2026-07-18T20:14:48.359902+00:00`
-- Runtime policy: repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
-- Status: `not_applicable_current_failure`
-- Triage classification: `passing_run_no_failure`
-- Current step: `short2_map_idle` status=`failed_classified_window_missing_while_process_alive`
-- Approval boundary: No intro-skip rerun is authorized while the current step has an unrelated classified failure; follow its repo-only triage instead.
+- Status: `not_applicable_short_ladder_complete`
+- Evidence records reloaded: `5`
 
-## Intro-Skip Contract
+This terminal short-ladder status authorizes no runtime or approval request. Long-soak, manual-input and promotion evidence require their separate gates.
 
-- `click_mode`: `postmessage`
-- `click_repeat`: `8`
-- `stop_click_repeat_on_drift`: `True`
-- `space_pulses`: `4`
-- `proof_class`: `intro_skip_harness_prep_not_manual_directinput_release_proof`
+## Separate Requirements
 
-## Approval-Gated Runtime Command
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260718_221448.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-19T08:14:48.1109442+00:00' -VisibleRuntimeApprovalToken 'c46df7af08260701' -Execute -AllowVisibleRuntime -RequirePass -Json
-```
+- long-soak evidence
+- manual-input proof and required visible approval
+- explicit promotion decision

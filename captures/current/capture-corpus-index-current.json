@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-07-18T22:14:50+02:00",
+  "generated_at": "2026-09-06T05:58:13+02:00",
   "passed": true,
   "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
   "captures_root": "C:\\Users\\andrz\\git\\clash-hd\\captures",
-  "artifact_count": 762,
+  "artifact_count": 913,
   "current_reference_count": 179,
   "archived_reference_count": 348,
   "missing_current_refs": [],
   "reference_status_counts": {
     "archived_referenced": 202,
     "current_referenced": 149,
-    "stale_unreferenced": 411
+    "stale_unreferenced": 562
   },
   "era_counts": {
     "cdb_surface_dump_unverified": 78,
     "hidden_cdb_surface_dump": 164,
-    "other_capture_artifact": 502,
+    "other_capture_artifact": 653,
     "visible_era": 18
   },
   "stale_visible_or_sandbox_count": 18,
@@ -5330,6 +5330,16 @@
   },
   "artifacts": [
     {
+      "name": "archive/action-bar-inventory-20260905-182639",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\action-bar-inventory-20260905-182639",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "archive/battle-visible-input-20260522-superseded.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\battle-visible-input-20260522-superseded.md",
       "artifact_kind": "file",
@@ -8060,6 +8070,36 @@
       "has_run_summary": false
     },
     {
+      "name": "archive/hd-layout-manual-plan-20260905-before-dpi.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\hd-layout-manual-plan-20260905-before-dpi.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/hd-soak-visible-short2-map-idle-20260718",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\hd-soak-visible-short2-map-idle-20260718",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/hidden-soak-short30-20260905-103139",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\hidden-soak-short30-20260905-103139",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "archive/manual-barracks-entry",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\manual-barracks-entry",
       "artifact_kind": "directory",
@@ -8936,6 +8976,146 @@
       "reference_status": "stale_unreferenced",
       "era": "visible_era",
       "classification_reason": "legacy visible/click or visual-smoke artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/vm-absinput-20260727-203159",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\vm-absinput-20260727-203159",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/vm-campaign-probe-20260727-210428",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\vm-campaign-probe-20260727-210428",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/vm-hd-clicktest-20260727-191047",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\vm-hd-clicktest-20260727-191047",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/vm-hd-first-boot-20260719",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\vm-hd-first-boot-20260719",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/vm-hd-load-click-landed-20260727-195047",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\vm-hd-load-click-landed-20260727-195047",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "archive/vm-lever12-probe-20260727-202438",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\vm-lever12-probe-20260727-202438",
+      "artifact_kind": "directory",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/action-bar-complete-screenshot-inventory-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\action-bar-complete-screenshot-inventory-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/action-bar-complete-screenshot-inventory-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\action-bar-complete-screenshot-inventory-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/action-bar-screenshot-audit-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\action-bar-screenshot-audit-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/action-bar-screenshot-audit-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\action-bar-screenshot-audit-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/astra-preparation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\astra-preparation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/astra-preparation-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\astra-preparation-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/astra-preparation-review-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\astra-preparation-review-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/astra-preparation-review-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\astra-preparation-review-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
       "has_run_summary": false
     },
@@ -9930,6 +10110,346 @@
       "has_run_summary": false
     },
     {
+      "name": "current/combinedui-hidden-validation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-hidden-validation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-hidden-validation-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-hidden-validation-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-layout-geometry-hidden-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-layout-geometry-hidden-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-layout-geometry-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-layout-geometry-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-layout-geometry-summary-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-layout-geometry-summary-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-layout-geometry-summary-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-layout-geometry-summary-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-layout-hidden-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-layout-hidden-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-layout-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-layout-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-layout-summary-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-layout-summary-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-layout-summary-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-layout-summary-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-resolution-build-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-resolution-build-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-resolution-build-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-resolution-build-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-validation-1024x768-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-validation-1024x768-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-validation-1280x720-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-validation-1280x720-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-validation-1280x960-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-validation-1280x960-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-validation-1920x1080-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-validation-1920x1080-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-validation-800x600-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-validation-800x600-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-validation-802x602-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-validation-802x602-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/combinedui-validation-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\combinedui-validation-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-control-approval-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-control-approval-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-control-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-control-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-control-run-plan-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-control-run-plan-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-control-run-review-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-control-run-review-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v3-observation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v3-observation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v4-observation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v4-observation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v5-control-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v5-control-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v5-control-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v5-control-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v5-control-recheck-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v5-control-recheck-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v6-control-approval-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v6-control-approval-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v6-control-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v6-control-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v6-control-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v6-control-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v6-control-patch-stage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v6-control-patch-stage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v6-control-run-plan-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v6-control-run-plan-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/continuity-day-v6-control-run-review-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v6-control-run-review-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/current-completion-summary-current.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\current-completion-summary-current.json",
       "artifact_kind": "file",
@@ -10110,6 +10630,366 @@
       "has_run_summary": false
     },
     {
+      "name": "current/four-sided-frame-preparation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\four-sided-frame-preparation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/four-sided-frame-preparation-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\four-sided-frame-preparation-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/four-sided-frame-prospective-audit-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\four-sided-frame-prospective-audit-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-map-resolution-matrix-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-resolution-matrix-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-map-resolution-matrix-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-resolution-matrix-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-map-run-plan-20260906-023304.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-run-plan-20260906-023304.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-map-run-plan-20260906-023937.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-run-plan-20260906-023937.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-map-runtime-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-runtime-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-map-runtime-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-runtime-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-process-receipts-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-process-receipts-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-run-plan-20260906-031649.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-run-plan-20260906-031649.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-run-plan-20260906-032002.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-run-plan-20260906-032002.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-runtime-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-runtime-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-runtime-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-runtime-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-1024x768-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-1024x768-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-1024x768-viewport-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-1024x768-viewport-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-1280x720-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-1280x720-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-1280x720-viewport-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-1280x720-viewport-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-1280x960-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-1280x960-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-1280x960-viewport-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-1280x960-viewport-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-1920x1080-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-1920x1080-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-1920x1080-viewport-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-1920x1080-viewport-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-800x600-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-800x600-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-800x600-viewport-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-800x600-viewport-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-802x602-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-802x602-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-minimap-v1-802x602-viewport-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-v1-802x602-viewport-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-modal-overview-entry-failure-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-overview-entry-failure-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-modal-run-plan-20260906-035304.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-run-plan-20260906-035304.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-v1-1024-frame-audit-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-1024-frame-audit-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-v1-1280x720-fog-evidence-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-1280x720-fog-evidence-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-v1-1280x720-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-1280x720-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-v1-1280x960-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-1280x960-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-v1-1920x1080-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-1920x1080-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-v1-800-frame-audit-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-800-frame-audit-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-v1-802x602-pixels-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-802x602-pixels-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/framed-v1-action-bar-audit-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-action-bar-audit-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/handoff-freshness-guard-current.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\handoff-freshness-guard-current.json",
       "artifact_kind": "file",
@@ -10144,6 +11024,26 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\handoff-freshness-guard-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-completion-refresh-observation-20260905-195856.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-completion-refresh-observation-20260905-195856.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-completion-refresh-observation-20260905-203422.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-completion-refresh-observation-20260905-203422.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -10272,6 +11172,36 @@
     {
       "name": "current/hd-endurance-release-checklist-tests-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-endurance-release-checklist-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-manual-preparation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-manual-preparation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-manual-run-plan-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-manual-run-plan-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-layout-manual-run-review-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-layout-manual-run-review-current.md",
       "artifact_kind": "file",
       "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
@@ -10450,6 +11380,16 @@
       "has_run_summary": false
     },
     {
+      "name": "current/hd-screenshot-verification-review-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-screenshot-verification-review-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/hd-soak-approval-preflight-current.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-approval-preflight-current.json",
       "artifact_kind": "file",
@@ -10484,6 +11424,56 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-approval-preflight-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle-guard.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle-guard.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle-guard.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle-guard.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-cleanup-regression-plan-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-cleanup-regression-plan-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -10724,6 +11714,56 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-long-report-guard-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-long2h-map-idle-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-long2h-map-idle-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-long2h-map-idle-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-long2h-map-idle-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-long2h-map-idle-guard-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-long2h-map-idle-guard-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-long2h-map-idle-guard-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-long2h-map-idle-guard-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-long2h-map-idle-interrupted-20260905-141501.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-long2h-map-idle-interrupted-20260905-141501.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -10990,6 +12030,126 @@
       "has_run_summary": false
     },
     {
+      "name": "current/hd-soak-short10-map-idle-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-idle-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-idle-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-idle-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-idle-guard-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-idle-guard-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-idle-guard-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-idle-guard-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-idle-triage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-idle-triage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-idle-triage-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-idle-triage-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-pan-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-pan-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-pan-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-pan-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-pan-guard-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-pan-guard-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-pan-guard-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-pan-guard-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-pan-triage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-pan-triage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short10-map-pan-triage-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short10-map-pan-triage-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/hd-soak-short2-map-idle-cdb-followup-current.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-map-idle-cdb-followup-current.json",
       "artifact_kind": "file",
@@ -11142,6 +12302,176 @@
     {
       "name": "current/hd-soak-short2-menu-idle-triage-current.md",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-menu-idle-triage-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short30-map-pan-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short30-map-pan-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short30-map-pan-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short30-map-pan-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short30-map-pan-guard-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short30-map-pan-guard-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short30-map-pan-guard-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short30-map-pan-guard-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short30-map-pan-triage-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short30-map-pan-triage-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hd-soak-short30-map-pan-triage-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short30-map-pan-triage-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hidden-soak-pan-clock-diagnostic-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hidden-soak-pan-clock-diagnostic-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hidden-soak-report-assembler-tests-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hidden-soak-report-assembler-tests-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/hidden-soak-report-assembler-tests-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hidden-soak-report-assembler-tests-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/initial-map-paint-1024-action-bar-audit-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\initial-map-paint-1024-action-bar-audit-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/initial-map-paint-800-action-bar-audit-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\initial-map-paint-800-action-bar-audit-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/initial-map-paint-run-plan-20260905-190806.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\initial-map-paint-run-plan-20260905-190806.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/initial-map-paint-runtime-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\initial-map-paint-runtime-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/initial-map-paint-runtime-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\initial-map-paint-runtime-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/initial-paint-frame-preservation-review-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\initial-paint-frame-preservation-review-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/initial-paint-frame-preservation-review-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\initial-paint-frame-preservation-review-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/initialpaint-frame-asset-audit-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\initialpaint-frame-asset-audit-current.json",
       "artifact_kind": "file",
       "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
@@ -11800,6 +13130,156 @@
       "has_run_summary": false
     },
     {
+      "name": "current/partial-tile-allocation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partial-tile-allocation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-800-pre-hd-failure-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-800-pre-hd-failure-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-and-v7-preparation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-and-v7-preparation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-hidden-run-plan-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-hidden-run-plan-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-inputdiag-v3-800-failure-20260905-195807.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-inputdiag-v3-800-failure-20260905-195807.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-inputdiag-v3-fixtures-20260905-195807.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-inputdiag-v3-fixtures-20260905-195807.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-inputdiag-v3-run-plan-20260905-200100.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-inputdiag-v3-run-plan-20260905-200100.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-latearm-v2-800-failure-20260905-195041.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-latearm-v2-800-failure-20260905-195041.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-latearm-v2-run-plan-20260905-194900.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-latearm-v2-run-plan-20260905-194900.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-noop-v4-1024-action-bar-audit-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-noop-v4-1024-action-bar-audit-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-noop-v4-1024-observation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-noop-v4-1024-observation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-noop-v4-800-action-bar-audit-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-noop-v4-800-action-bar-audit-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-noop-v4-800-observation-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-noop-v4-800-observation-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-noop-v4-run-plan-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-noop-v4-run-plan-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/partialtiles-noop-v4b-run-plan-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\partialtiles-noop-v4b-run-plan-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
       "name": "current/patch-definition-current.json",
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\patch-definition-current.json",
       "artifact_kind": "file",
@@ -11944,6 +13424,16 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\post-owner-evidence-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/pre-minimap-refresh-20260906.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\pre-minimap-refresh-20260906.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,
@@ -12814,6 +14304,26 @@
       "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\right-bottom-visual-artifact-guard-tests-current.md",
       "artifact_kind": "file",
       "reference_status": "current_referenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/soak-action-bar-audit-current.json",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\soak-action-bar-audit-current.json",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
+      "era": "other_capture_artifact",
+      "classification_reason": "non-runtime report or unclassified capture artifact",
+      "has_surface_png": false,
+      "has_run_summary": false
+    },
+    {
+      "name": "current/soak-action-bar-audit-current.md",
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\soak-action-bar-audit-current.md",
+      "artifact_kind": "file",
+      "reference_status": "stale_unreferenced",
       "era": "other_capture_artifact",
       "classification_reason": "non-runtime report or unclassified capture artifact",
       "has_surface_png": false,

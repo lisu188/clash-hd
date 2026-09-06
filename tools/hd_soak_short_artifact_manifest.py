@@ -36,6 +36,9 @@ MAX_HANDLE_GROWTH = 128
 INTRO_SKIP_CLICK_MODE = "postmessage"
 INTRO_SKIP_CLICKS = 8
 SKIP_PULSES = 4
+PAN_INTERVAL_SEC = 10
+HOST_VISIBLE_ENVIRONMENT = "host_visible"
+HIDDEN_ENVIRONMENT = "hidden_cdb_host"
 
 
 def status_text(passed: bool) -> str:
@@ -109,6 +112,46 @@ def harness_command(step: dict[str, Any], paths: dict[str, str], *, execute: boo
     return " ".join(parts)
 
 
+def hidden_cdb_command(step: dict[str, Any], paths: dict[str, str], *, execute: bool) -> str | None:
+    if step.get("route") not in {"map-idle", "map-pan"}:
+        return None
+    parts = [
+        "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        r".\scripts\cdb\run_hidden_soak.ps1",
+        "-Route",
+        str(step["route"]),
+        "-DurationSec",
+        str(step["duration_sec"]),
+        "-FrameIntervalSec",
+        str(SAMPLE_INTERVAL_SEC),
+        "-PanIntervalSec",
+        str(PAN_INTERVAL_SEC),
+        "-ReportJson",
+        paths["report_json"],
+        "-ReportMarkdown",
+        paths["report_markdown"],
+        "-GuardJson",
+        paths["guard_json"],
+        "-GuardMarkdown",
+        paths["guard_markdown"],
+        "-MaxArtifactMB",
+        str(MAX_ARTIFACT_MB),
+        "-MaxWorkingSetGrowthMB",
+        str(MAX_WORKING_SET_GROWTH_MB),
+        "-MaxPrivateMemoryGrowthMB",
+        str(MAX_PRIVATE_MEMORY_GROWTH_MB),
+        "-MaxHandleGrowth",
+        str(MAX_HANDLE_GROWTH),
+    ]
+    if execute:
+        parts.append("-Execute")
+    return " ".join(parts)
+
+
 def guard_command(paths: dict[str, str], *, require_pass: bool = True) -> str:
     parts = [
         "python",
@@ -146,6 +189,11 @@ def build_step_records(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
     for index, step in enumerate(steps, start=1):
         paths = canonical_paths(step)
         report_path = Path(paths["report_json"])
+        hidden_dry_run = hidden_cdb_command(step, paths, execute=False)
+        hidden_runtime = hidden_cdb_command(step, paths, execute=True)
+        preferred_environment = HIDDEN_ENVIRONMENT if hidden_runtime else HOST_VISIBLE_ENVIRONMENT
+        visible_dry_run = harness_command(step, paths, execute=False)
+        visible_runtime = harness_command(step, paths, execute=True)
         record = {
             "index": index,
             "id": step["id"],
@@ -155,13 +203,29 @@ def build_step_records(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "prerequisites": step["prerequisites"],
             "paths": paths,
             "report_exists": report_path.exists(),
-            "safe_dry_run_command": harness_command(step, paths, execute=False),
-            "approval_gated_runtime_command": harness_command(step, paths, execute=True),
+            "safe_dry_run_command": visible_dry_run,
+            "approval_gated_runtime_command": visible_runtime,
+            "hidden_cdb_safe_dry_run_command": hidden_dry_run,
+            "hidden_cdb_runtime_command": hidden_runtime,
+            "preferred_environment": preferred_environment,
+            "supported_environments": (
+                [HIDDEN_ENVIRONMENT, HOST_VISIBLE_ENVIRONMENT]
+                if hidden_runtime
+                else [HOST_VISIBLE_ENVIRONMENT]
+            ),
+            "recommended_safe_dry_run_command": hidden_dry_run or visible_dry_run,
+            "recommended_runtime_command": hidden_runtime or visible_runtime,
             "guard_command": guard_command(paths),
             "triage_command": triage_command(paths),
-            "requires_visible_runtime": True,
-            "requires_explicit_user_approval": True,
-            "writes_outside_repo": [r"C:\ClashTests\hd-soak", r"C:\ClashCaptures\hd-soak"],
+            "requires_visible_runtime": hidden_runtime is None,
+            "requires_explicit_user_approval": hidden_runtime is None,
+            "visible_runtime_alternative_requires_explicit_user_approval": True,
+            "writes_outside_repo": [
+                r"C:\ClashTests\hd-soak",
+                r"C:\ClashCaptures\hd-soak",
+                r"C:\ClashTests\hd-soak\hidden",
+                r"C:\ClashCaptures\hd-soak\hidden",
+            ],
             "must_not_modify": [r"C:\Clash\clash95.exe"],
             "stable_stage_should_change": False,
             "right_bottom_promotion_blocked": True,
@@ -208,6 +272,42 @@ def validate_records(records: list[dict[str, Any]]) -> list[str]:
             failures.append(f"{record['id']} guard command does not pin max input drift")
         if "-Execute" in record["safe_dry_run_command"]:
             failures.append(f"{record['id']} safe dry-run command includes -Execute")
+        hidden_runtime = record.get("hidden_cdb_runtime_command")
+        hidden_dry_run = record.get("hidden_cdb_safe_dry_run_command")
+        if record["route"] == "menu-idle":
+            if hidden_runtime is not None or hidden_dry_run is not None:
+                failures.append(f"{record['id']} exposes unsupported hidden menu-idle runtime")
+            if record.get("preferred_environment") != HOST_VISIBLE_ENVIRONMENT:
+                failures.append(f"{record['id']} must preserve the visible-host menu evidence class")
+        else:
+            if not hidden_runtime or not hidden_dry_run:
+                failures.append(f"{record['id']} is missing the hidden-CDB map runtime option")
+            else:
+                for fragment in (
+                    r".\scripts\cdb\run_hidden_soak.ps1",
+                    f"-Route {record['route']}",
+                    f"-DurationSec {record['duration_sec']}",
+                    f"-FrameIntervalSec {SAMPLE_INTERVAL_SEC}",
+                    f"-PanIntervalSec {PAN_INTERVAL_SEC}",
+                    f"-ReportJson {paths['report_json']}",
+                    f"-ReportMarkdown {paths['report_markdown']}",
+                    f"-GuardJson {paths['guard_json']}",
+                    f"-GuardMarkdown {paths['guard_markdown']}",
+                ):
+                    if fragment not in hidden_runtime:
+                        failures.append(f"{record['id']} hidden runtime command does not pin {fragment}")
+                    if fragment not in hidden_dry_run:
+                        failures.append(f"{record['id']} hidden dry-run command does not pin {fragment}")
+                if "-Execute" not in hidden_runtime:
+                    failures.append(f"{record['id']} hidden runtime command omits -Execute")
+                if "-Execute" in hidden_dry_run:
+                    failures.append(f"{record['id']} hidden dry-run command includes -Execute")
+                if "-AllowVisibleRuntime" in hidden_runtime:
+                    failures.append(f"{record['id']} hidden runtime command requests visible runtime")
+            if record.get("preferred_environment") != HIDDEN_ENVIRONMENT:
+                failures.append(f"{record['id']} does not prefer the hidden-CDB map environment")
+            if record.get("requires_visible_runtime") is not False:
+                failures.append(f"{record['id']} incorrectly requires visible runtime despite hidden option")
         if record["stable_stage_should_change"] is not False:
             failures.append(f"{record['id']} would change stable stage")
         if record["right_bottom_promotion_blocked"] is not True:
@@ -269,8 +369,11 @@ def to_markdown(report: dict[str, Any]) -> str:
     for record in report["step_reports"]:
         lines.append(
             f"- `{record['id']}`: report=`{record['paths']['report_json']}` "
-            f"exists=`{record['report_exists']}`"
+            f"exists=`{record['report_exists']}` preferred_environment=`{record['preferred_environment']}`"
         )
+        if record.get("hidden_cdb_runtime_command"):
+            lines.append(f"  - Hidden dry-run: `{record['hidden_cdb_safe_dry_run_command']}`")
+            lines.append(f"  - Hidden runtime: `{record['hidden_cdb_runtime_command']}`")
     lines.extend(["", "## Current First-Step Command", ""])
     first = report["step_reports"][0]
     lines.extend(

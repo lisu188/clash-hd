@@ -1,0 +1,643 @@
+{
+  "schema": "clash95_framed_army_selection_checkpoint_v1",
+  "generated_at": "2026-09-06T09:18:35.130006+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-army-validation",
+  "resolution": "1024x768",
+  "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+  "started_at": "2026-09-06T09:12:15.2908095Z",
+  "finished_at": "2026-09-06T09:12:49.3330283Z",
+  "native_selection_and_software_layout_passed": true,
+  "source_report": {
+    "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-091106\\army-diagnostic.json",
+    "sha256": "2bcdb3f2fe2070f3a63091dc267c79e67eaff9c145b0edb8e2ff6dc28d5273bb"
+  },
+  "source_sha256": {
+    "tools/build_framed_modal_candidate.py": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+    "src/patcher/framed_modal_canvas.py": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+    "src/patcher/pe_modal_extension.py": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623",
+    "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+    "tools/build_framed_candidate.py": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+    "tools/build_partial_tile_candidate.py": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+    "src/patcher/partial_tile_hooks.py": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+    "src/patcher/initial_map_paint.py": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+    "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+    "src/patcher/framed_recipe.py": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+    "src/patcher/four_sided_frame.py": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+    "src/patcher/framed_full_paint.py": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+    "src/patcher/framed_presentation.py": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+    "src/patcher/framed_input.py": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+    "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+    "src/patcher/framed_minimap.py": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+    "src/patcher/pe_army_extension.py": "8b2bf19c59351cf1b625b28e143d0ccfd000380898a81af29e28e7cf7af75161",
+    "src/patcher/framed_army_viewport.py": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+    "src/patcher/framed_army_draw.py": "e6763ae2ebdf038d0b0b574564573fb07e2a2b68c12f7aeafc0b63ca44347cf9",
+    "src/patcher/framed_army_input.py": "c27a0feb17df909dcf9986bfde231d90a79e8c1ad8abbcf2884b52e767a70ee2",
+    "src/patcher/framed_army_composition.py": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c",
+    "tools/build_framed_army_candidate.py": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+    "tools/framed_modal_canvas_trace.py": "2f0ef571acdbc6892c775cc97698d535b56355c8086080713d3dfec040a6d3ba",
+    "tools/framed_modal_canvas_probe.py": "52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6",
+    "tools/render_cdb_surface_probe.py": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+    "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
+    "tools/framed_army_selection_probe.py": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1"
+  },
+  "trace": {
+    "passed": true,
+    "whole_candidate_bound": true,
+    "initial_map_passed": true,
+    "counters": {
+      "entries": 2,
+      "returns": 2,
+      "native": 1,
+      "composition": 1
+    },
+    "native_warmup_fallbacks": 0,
+    "surface": {
+      "tid": 25752,
+      "eip": 4222881,
+      "esp": 973932,
+      "selected": 3,
+      "prior": 3,
+      "lower": 1,
+      "owner": 4238656,
+      "surface": 172208824,
+      "base": 175439920,
+      "width": 1024,
+      "height": 768,
+      "vtable": 5303844,
+      "line": 585
+    },
+    "validator_source": {
+      "validator_sha256": "7f15324c32ccd0aca9641c67e42cbe7e5794b9ab53ee843385db068b13db5fdc",
+      "producer_sha256": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1",
+      "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+      "save_sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+      "probe_raw_sha256": "906f4add12e170bc0257c15d97b6666da4a3f3693a57391d96f44e6974c66825",
+      "probe_canonical_lf_sha256": "906f4add12e170bc0257c15d97b6666da4a3f3693a57391d96f44e6974c66825",
+      "log_text_sha256": "b42e62af4c8e083505033b7b3278c1f0059f9018a6350d4393736b975f7cb939",
+      "packet_sha256": "e9ff906c8cc552ee339b3ff091856f6a600c012260398e77d51db171a287fd10"
+    }
+  },
+  "captures": {
+    "before-redraw": {
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-091106\\before-redraw.raw",
+        "sha256": "6a9c40543d467ff344ccc4c7eac96c8cda189c13d4dcf897ad5bd31898161689",
+        "bytes": 786432
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-091106\\before-redraw.png",
+        "sha256": "f691636af3d2c897c1368c71b4a4b4abc44b87439fdacb7433c248cc9c5f3aab",
+        "bytes": 168410
+      },
+      "frame_passed": true,
+      "frame_band_mismatches": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "action_cells_matching": 6,
+      "portrait_slots_matching": 8,
+      "portrait_body_audit": {
+        "passed": true,
+        "matching_slots": 8,
+        "source_member_sha256": "ba0747966bd3ff5722a41e6374fd2edc4d817215f79d83bb87cf1c1df3e65dcd",
+        "body_rows_inclusive": [
+          20,
+          48
+        ],
+        "slots": [
+          {
+            "slot": 0,
+            "type": 16,
+            "rectangle": [
+              38,
+              687,
+              69,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 1,
+            "type": 16,
+            "rectangle": [
+              76,
+              687,
+              107,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 2,
+            "type": 1,
+            "rectangle": [
+              114,
+              687,
+              145,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 3,
+            "type": 1,
+            "rectangle": [
+              152,
+              687,
+              183,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 4,
+            "type": 1,
+            "rectangle": [
+              190,
+              687,
+              221,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 5,
+            "type": 1,
+            "rectangle": [
+              228,
+              687,
+              259,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 6,
+            "type": 1,
+            "rectangle": [
+              266,
+              687,
+              297,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 7,
+            "type": 1,
+            "rectangle": [
+              304,
+              687,
+              335,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          }
+        ]
+      }
+    },
+    "after-redraw": {
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-091106\\after-redraw.raw",
+        "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+        "bytes": 786432
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-091106\\after-redraw.png",
+        "sha256": "6d0b85a973fabac9f0d480d9b8a5b87ebbc7632e93a87021be53b9c958aaf4bf",
+        "bytes": 246592
+      },
+      "frame_passed": true,
+      "frame_band_mismatches": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "action_cells_matching": 6,
+      "portrait_slots_matching": 8,
+      "portrait_body_audit": {
+        "passed": true,
+        "matching_slots": 8,
+        "source_member_sha256": "ba0747966bd3ff5722a41e6374fd2edc4d817215f79d83bb87cf1c1df3e65dcd",
+        "body_rows_inclusive": [
+          20,
+          48
+        ],
+        "slots": [
+          {
+            "slot": 0,
+            "type": 16,
+            "rectangle": [
+              38,
+              687,
+              69,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 1,
+            "type": 16,
+            "rectangle": [
+              76,
+              687,
+              107,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 2,
+            "type": 1,
+            "rectangle": [
+              114,
+              687,
+              145,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 3,
+            "type": 1,
+            "rectangle": [
+              152,
+              687,
+              183,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 4,
+            "type": 1,
+            "rectangle": [
+              190,
+              687,
+              221,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 5,
+            "type": 1,
+            "rectangle": [
+              228,
+              687,
+              259,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 6,
+            "type": 1,
+            "rectangle": [
+              266,
+              687,
+              297,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 7,
+            "type": 1,
+            "rectangle": [
+              304,
+              687,
+              335,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          }
+        ]
+      }
+    },
+    "surface": {
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-091106\\surface.raw",
+        "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+        "bytes": 786432
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-091106\\surface.png",
+        "sha256": "6d0b85a973fabac9f0d480d9b8a5b87ebbc7632e93a87021be53b9c958aaf4bf",
+        "bytes": 246592
+      },
+      "frame_passed": true,
+      "frame_band_mismatches": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "action_cells_matching": 6,
+      "portrait_slots_matching": 8,
+      "portrait_body_audit": {
+        "passed": true,
+        "matching_slots": 8,
+        "source_member_sha256": "ba0747966bd3ff5722a41e6374fd2edc4d817215f79d83bb87cf1c1df3e65dcd",
+        "body_rows_inclusive": [
+          20,
+          48
+        ],
+        "slots": [
+          {
+            "slot": 0,
+            "type": 16,
+            "rectangle": [
+              38,
+              687,
+              69,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 1,
+            "type": 16,
+            "rectangle": [
+              76,
+              687,
+              107,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 2,
+            "type": 1,
+            "rectangle": [
+              114,
+              687,
+              145,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 3,
+            "type": 1,
+            "rectangle": [
+              152,
+              687,
+              183,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 4,
+            "type": 1,
+            "rectangle": [
+              190,
+              687,
+              221,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 5,
+            "type": 1,
+            "rectangle": [
+              228,
+              687,
+              259,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 6,
+            "type": 1,
+            "rectangle": [
+              266,
+              687,
+              297,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          },
+          {
+            "slot": 7,
+            "type": 1,
+            "rectangle": [
+              304,
+              687,
+              335,
+              750
+            ],
+            "source_pixels": 928,
+            "mismatches": 0,
+            "passed": true
+          }
+        ]
+      }
+    }
+  },
+  "full_portrait_backing_unchanged_through_redraw": true,
+  "paused_final_pair_equal": true,
+  "cleanup_passed": true,
+  "cleanup": [
+    {
+      "handle_closed": true,
+      "absent": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "handle_retained": true,
+        "creation_filetime": 134331595361150534,
+        "process_id": 40620,
+        "creation_utc": "2026-09-06T09:12:16.1150534Z"
+      },
+      "termination_requested": true
+    },
+    {
+      "handle_closed": true,
+      "absent": true,
+      "identity": {
+        "parent_process_id": 40620,
+        "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+        "creation_filetime": 134331595364549089,
+        "path": "C:\\ClashTests\\hd-completion\\framed-army-selection-20260906-091106\\clash95_selection_diagnostic.exe",
+        "handle_retained": true,
+        "process_id": 43316,
+        "creation_utc": "2026-09-06T09:12:16.4549089Z"
+      },
+      "termination_requested": false
+    }
+  ],
+  "original_unchanged": true,
+  "candidate_unchanged": true,
+  "assets_changed": [],
+  "assets_added": [],
+  "packet_receipt_initially_matched": false,
+  "packet_receipt_correction": {
+    "reason": "Private bridge shallow-copy self-pin insertion after hash calculation",
+    "original_packet_preserved": true,
+    "original_packet_sha256": "60bbf186f322c17a9163f1f2d0af725f40345b9ae23df93a1090e7c554285d47",
+    "recovered_packet_path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-091106\\packet-plan-hash-recovered.json",
+    "recovered_packet_sha256": "6b9d6f7388f57bd0d2d268d8b6dcce94a2e1d50a21357903b43c1ce2edfa432e",
+    "recovered_hash_matches_original_plan": true,
+    "runtime_probe_modified": false
+  },
+  "prior_attempts": [
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-085728",
+      "started_at": "2026-09-06T08:58:51.7155788Z",
+      "finished_at": "2026-09-06T08:59:19.7435875Z",
+      "summary_sha256": "152995f7ff103e773391e053bdc5e4a766bd0b0100674c53e1a5cec1e4f16c1a",
+      "log_sha256": "acb3c5a45f8f823bad589ded1a53d8956b3531784611ac6218e744d1e478348f",
+      "runtime_passed": false,
+      "native_selection_executed": false,
+      "snapshots": {},
+      "failures": [
+        "Debugger exited before final selection capture"
+      ],
+      "cleanup": [
+        {
+          "termination_requested": false,
+          "identity": {
+            "process_id": 24500,
+            "handle_retained": true,
+            "creation_filetime": 134331587323684750,
+            "creation_utc": "2026-09-06T08:58:52.3684750Z",
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe"
+          },
+          "handle_closed": true,
+          "absent": true
+        },
+        {
+          "termination_requested": false,
+          "identity": {
+            "creation_utc": "2026-09-06T08:58:52.7658691Z",
+            "parent_process_id": 24500,
+            "creation_filetime": 134331587327658691,
+            "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+            "process_id": 39668,
+            "handle_retained": true,
+            "path": "C:\\ClashTests\\hd-completion\\framed-army-selection-20260906-085728\\clash95_selection_diagnostic.exe"
+          },
+          "handle_closed": true,
+          "absent": true
+        }
+      ],
+      "desktop_closed": true,
+      "reason": "Handoff guard rejected before selection; v2 records sign-extended -1 and false unmasked comparisons."
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-090523",
+      "started_at": "2026-09-06T09:06:24.7846940Z",
+      "finished_at": "2026-09-06T09:07:04.6496595Z",
+      "summary_sha256": "f91124d264ea545e732e02f045cda63681a9d33cc1179404f8d786d3d66e4988",
+      "log_sha256": "4a221ff84b7379eeebdd4ad1f202402a38efa919b308c91caa2b3524a55d5d4a",
+      "runtime_passed": false,
+      "native_selection_executed": false,
+      "snapshots": {},
+      "failures": [
+        "Debugger exited before final selection capture"
+      ],
+      "cleanup": [
+        {
+          "termination_requested": false,
+          "absent": true,
+          "identity": {
+            "creation_filetime": 134331591857728659,
+            "process_id": 42400,
+            "creation_utc": "2026-09-06T09:06:25.7728659Z",
+            "handle_retained": true,
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe"
+          },
+          "handle_closed": true
+        },
+        {
+          "termination_requested": false,
+          "absent": true,
+          "identity": {
+            "creation_utc": "2026-09-06T09:06:26.1526529Z",
+            "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+            "handle_retained": true,
+            "path": "C:\\ClashTests\\hd-completion\\framed-army-selection-20260906-090523\\clash95_selection_diagnostic.exe",
+            "process_id": 27836,
+            "creation_filetime": 134331591861526529,
+            "parent_process_id": 42400
+          },
+          "handle_closed": true
+        }
+      ],
+      "desktop_closed": true,
+      "reason": "Handoff guard rejected before selection; v2 records sign-extended -1 and false unmasked comparisons."
+    }
+  ],
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "Controlled scroll/mouse writes and native call injection are not natural or manual input proof.",
+    "No native click predicate, selected-unit value, squad, visibility or availability is forced.",
+    "The original four-update trace must be separately validated under the exact new-stage projection.",
+    "Native EAX draw returns and paired stopped E0 copies are distinct from visual/frame/input acceptance.",
+    "Native draw status0 means authenticated legacy fallback, not relocated-draw success; composition must return1.",
+    "The stop does not resume the interrupted map call or prove normal exit/destruction.",
+    "Private-host retained process identities, deadline and verified cleanup remain separately required.",
+    "E0 software pixels may omit primary-only tooltip/cursor/HUD composition; no promotion is implied.",
+    "Portrait body audit uses native INFO1.S32 opaque pixels in rows20..48; badges/count text are separate native draw observations.",
+    "The before-redraw picture follows controlled scroll state changes before terrain repaint. It is an intermediate observation, not a scroll rendering proof.",
+    "Only own army3 at1024x768 was exercised; deselection, switching, portrait clicks, additional resolutions and repeated scrolling remain pending.",
+    "Outer frame audits do not prove every interior terrain pixel."
+  ]
+}

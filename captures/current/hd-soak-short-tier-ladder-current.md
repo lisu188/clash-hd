@@ -1,7 +1,7 @@
 # HD Soak Short-Tier Ladder
 
 - Overall: PASS
-- Generated: `2026-07-18T20:14:49.462174+00:00`
+- Generated: `2026-09-06T03:58:08.143955+00:00`
 - Runtime policy: repo-only short-tier soak ladder; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Protected stable stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch`
 - Ladder complete: `False`
@@ -13,21 +13,29 @@
 
 ## Steps
 
-- `short2_menu_idle`: tier=`short2` route=`menu-idle` status=`pass` passed=`True`
-- `short2_map_idle`: tier=`short2` route=`map-idle` status=`approval_required` passed=`False`
+- `short2_menu_idle`: tier=`short2` route=`menu-idle` status=`pass` passed=`True` environment=`host_visible`
+- `short2_map_idle`: tier=`short2` route=`map-idle` status=`runtime_required` passed=`False`
 - `short10_map_idle`: tier=`short10` route=`map-idle` status=`locked_by_prerequisite` passed=`False`
 - `short10_map_pan`: tier=`short10` route=`map-pan` status=`locked_by_prerequisite` passed=`False`
 - `short30_map_pan`: tier=`short30` route=`map-pan` status=`locked_by_prerequisite` passed=`False`
 
 ## Current Step Commands
 
-Safe dry-run command:
+Preferred environment: `hidden_cdb_host`
+
+Recommended safe dry-run command:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\current\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\current\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\current\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\current\hd-soak-short2-map-idle-current.md -GuardJson captures\current\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\current\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128
 ```
 
-Approval-gated runtime command:
+Recommended runtime command:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\current\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\current\hd-soak-short2-map-idle-current.md -GuardJson captures\current\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\current\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute
+```
+
+Separately approval-gated visible-runtime alternative:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\current\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\current\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json

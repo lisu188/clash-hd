@@ -1748,6 +1748,12 @@ Follow-up visual smoke:
   not clean gameplay-entry evidence.
 - A manual or otherwise interactive real-cursor smoke should still be run
   before calling the stage fully stable.
+- Update 2026-07-17 (`589f5700`): the `[WinError 5]` denials above are a real
+  record of that runner, but do not read them as "input automation is
+  impossible here". The engine reads the DirectInput accumulator, so
+  `SetCursorPos`/absolute `SendInput` would have been invisible to it even if
+  permitted; relative **pulse-mode** injection works and has since driven a
+  real click to a battle callback (`c5fe1d70`).
 
 ### Retired Route Notes Removed, 2026-05-12
 

@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-09-05T18:38:09.635112+00:00",
+  "scope": "Screenshot verification and supporting guard/fixture/documentation work in the active HD completion task; earlier Astra preparation artifacts remain separately scoped.",
+  "initial_inventory": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-astra-review-jecpln6o\\initial-hashes.json",
+  "initial_inventory_sha256": "8b36de39a99c1313b7a5462dc315c5d71d9bdd8e017b5a35bfc38ab2c1a27b5d",
+  "initial_file_count": 3686,
+  "missing_initial_files": [],
+  "tracked_executable_dll_raw_dump_files": [],
+  "original_executable_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "original_matches_known_sha": true,
+  "candidate_bytes_changed_during_diagnostic_iterations": false,
+  "protected_stage_promoted": false,
+  "commit_or_push": false,
+  "config": {
+    "path": ".codex/config.toml",
+    "sha256": "397e5f05e79973ed2a4369ebc86d6f5b625ebde6a92377dd0446708a5c75dfe9",
+    "model": "gpt-6-astra",
+    "only_model_key": true,
+    "eligible_for_tracking": true,
+    "other_local_codex_state_ignored": true
+  },
+  "screenshots": {
+    "inventory": "captures/current/action-bar-complete-screenshot-inventory-current.json",
+    "inventory_sha256": "10df09cea2825afa265463c9158fe5cea15e8f21c332461e6d95bf9de933dff4",
+    "audited": 20,
+    "new_complete_bars": 2,
+    "older_failed_bars_preserved": 18,
+    "new_runtime_traces_passed": 0
+  },
+  "frozen_runtime_sources": {
+    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "src/patcher/partial_tile_clip.py": "944119033895bd9e638a31e14a3c6c342e18efa28691679b97c831a989345c5a",
+    "src/patcher/partial_tile_hooks.py": "a5953f662f8d663daa8eb4f7e6f7327a67a4bbd2d382f64fa0815fadefb403f6",
+    "src/patcher/pe_extension.py": "efa974b294df3cdc7268788d6d17c2baf8c3575c4d388167f8939d96ae9a08ab",
+    "tools/build_partial_tile_candidate.py": "81dd7397dece8922700e3a2f631394af1c980fd7433e62354e77fe19b3f81cc9",
+    "scripts/cdb/run_cdb_surface_dump.ps1": "6d0ed8acdb7cc532c2ee409ae643f8b0c3be090fdbfad1d822b809322587946b"
+  },
+  "focused_test_counts": {
+    "builder": 16,
+    "surface_harness": 9,
+    "surface_harness_log_scenarios": 199,
+    "surface_renderer": 10,
+    "action_bar_audit": 7,
+    "route_guard": 10,
+    "transition_geometry_guard": 10,
+    "long_soak_guard": 19,
+    "dry_run_plan": 20,
+    "intro_readiness": 13,
+    "approval_preflight": 34
+  },
+  "fixture_results": "All named suites passed; both documentation guard suites and runtime-safety fixtures passed. Aggregate final result is recorded separately.",
+  "preservation_limits": "The baseline predates broader HD completion work, so this records file preservation rather than claiming every source hash stayed unchanged. No pre-existing file was deleted or cleaned.",
+  "final_aggregate": {
+    "path": "captures\\current\\current-evidence-refresh-current.json",
+    "sha256": "f6c5e2e779e2f7239c68573ec4bed15fa3523856b1739fe9c95a646dadffe9e6",
+    "generated_at": "2026-09-05T20:39:17+02:00",
+    "passing": 164,
+    "total": 166,
+    "failed_checks": [
+      "hd_soak_long_report_guard",
+      "hd_endurance_release_checklist"
+    ]
+  }
+}

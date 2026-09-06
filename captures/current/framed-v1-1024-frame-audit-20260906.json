@@ -1,0 +1,111 @@
+{
+  "schema": "clash95_four_border_asset_audit_v1",
+  "generated_at": "2026-09-06T02:36:35.112249+00:00",
+  "resource_sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525",
+  "member_sha256": "8501cbae69c35aa5a804823227bbd56fb21e84b4f1e5c0f15e4419f522c4053d",
+  "passed": true,
+  "screenshots": [
+    {
+      "profile": "native_four_border_tiles_v1",
+      "resolution": "1024x768",
+      "passed": true,
+      "structural_border_exact": true,
+      "checked_border_pixels": 75012,
+      "bands": [
+        {
+          "name": "top",
+          "rectangle_inclusive": [
+            0,
+            0,
+            1023,
+            15
+          ],
+          "checked_pixels": 16384,
+          "exact_matches": 16384,
+          "mismatches": 0,
+          "first_mismatches": []
+        },
+        {
+          "name": "bottom",
+          "rectangle_inclusive": [
+            0,
+            752,
+            1023,
+            767
+          ],
+          "checked_pixels": 11524,
+          "exact_matches": 11524,
+          "mismatches": 0,
+          "first_mismatches": []
+        },
+        {
+          "name": "left",
+          "rectangle_inclusive": [
+            0,
+            16,
+            31,
+            751
+          ],
+          "checked_pixels": 23552,
+          "exact_matches": 23552,
+          "mismatches": 0,
+          "first_mismatches": []
+        },
+        {
+          "name": "right",
+          "rectangle_inclusive": [
+            992,
+            16,
+            1023,
+            751
+          ],
+          "checked_pixels": 23552,
+          "exact_matches": 23552,
+          "mismatches": 0,
+          "first_mismatches": []
+        }
+      ],
+      "footer": {
+        "sprite": 5,
+        "origin": [
+          347,
+          753
+        ],
+        "size": [
+          324,
+          15
+        ],
+        "checked_pixels": 4860,
+        "exact_matches": 4860,
+        "exact": true,
+        "status": "exact_background"
+      },
+      "opaque_frame_pixels": 79872,
+      "limits": "Prospective exact frame profile only. Active tooltip glyphs need separate source-bound evidence; no ignored footer mismatch produces a full pass. Not runtime/input/promotion acceptance.",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate_sha256": "3E9969A1E9285A9E65290072EA89CB2A3F224BD118EF267794FD1028AC5D7053",
+      "existing_surface_gate_passed": true,
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1024x768-20260906-023304\\cdb-surface-dump-20260906-043513\\summary.json",
+        "sha256": "28c637e1ae7f67a7fe4591bb717d9a736d3f57a740222443e33230e56aa8aabe"
+      },
+      "raw_surface": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1024x768-20260906-023304\\cdb-surface-dump-20260906-043513\\surface.raw",
+        "sha256": "abe44f3497e17218952d8bb2d3caaa2092cff40b8f9b3f0757e1e39e519fa6b3"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1024x768-20260906-023304\\cdb-surface-dump-20260906-043513\\surface.png",
+        "sha256": "25976fb4d4aca8565aff432cf6fee66dd5c280d8586d89fa1a213ebbd0103fac"
+      },
+      "binding": {
+        "metadata_path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1024x768-20260906-023304\\cdb-surface-dump-20260906-043513\\surface.png.json",
+        "metadata_sha256": "92afb8394df584e98d62712782b1ca9f227a7bad58577148506e09095b8c88dc",
+        "palette_path": "C:\\ClashTests\\hd-completion\\framed-v1-1024x768-20260906-023304\\candidate\\ddraw_surfdump_palette.bin",
+        "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+        "png_raw_palette_binding_verified": true,
+        "candidate_file_sha_verified": true
+      }
+    }
+  ],
+  "scope": "Existing surfaces and native assets only; no runtime or image modification"
+}

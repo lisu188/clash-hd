@@ -1,14 +1,18 @@
-# Finish-Line Runbook — the last 2 checks (163/165 → 165/165)
+# HD release validation runbook
 
-Everything below is blocked on ONE precondition: **an unlocked interactive
-session**. Windows denies `SetCursorPos`/`SendInput` into a locked session, so
-the intro-skip never lands, the intro auto-plays, and the GOG wrapper dies on its
-intro→menu mode switch with a modal `DirectDraw Error DDERR_UNSUPPORTED`
-(reproduced 3/3 on 2026-07-18; see commit `e9afefde`). `run_hd_soak.ps1` now
-refuses to launch while locked rather than producing a false render/route
-failure. Check with `Get-Process LogonUI,LockApp` — absent means unlocked.
+The finish line now has two distinct execution boundaries. Map render/process
+endurance can use the approved `hidden_cdb_host` class without an unlocked
+interactive desktop. Manual DirectInput, visible composition, and promotion
+still require an unlocked session plus fresh visible/manual approval. Never use
+hidden evidence to satisfy those latter claims.
 
-## Remaining failing checks
+## Evidence and remaining requirements
+
+Read `captures/current/current-evidence-refresh-current.json` for the latest
+check results. The July 18 baseline had two failing checks; the September 5
+preparation refresh exposed additional unfinished soak integration and
+environment failures. A check count is not the definition of a complete HD
+release. `reports/hd_completion_audit.md` records the wider acceptance gaps.
 
 | Check | Needs |
 |---|---|
@@ -20,42 +24,47 @@ natural click-to-callback is proven (`c5fe1d70`). `battle_ready` requires
 `promotion_status != validation_stage_only`, so it waits on promotion, which
 waits on the manual proof.
 
-## Step 1 — Soak short ladder (~52 min of soak + rests)
+## Step 1 — Hidden-CDB map short ladder (~52 min)
 
-Per rung, canonical two-step, **direct invocation only**. Never `Start-Job` or
-any detached wrapper: that strips input standing, silently denies
-`SetForegroundWindow`, and starves the game's foreground-mode DirectInput (this
-caused a full false-failure cycle on 2026-07-18).
+The existing visible `short2_menu_idle` pass remains the first rung. The four
+remaining map rungs may use the hidden-CDB host runner. Its dry-run is the
+default; only `-Execute` patches an isolated candidate, builds the non-presenting
+memory proxy, and starts CDB on a hidden desktop. Raw artifacts stay under
+`C:\ClashCaptures\hd-soak\hidden` and candidates under
+`C:\ClashTests\hd-soak\hidden`.
 
 ```powershell
-python tools/hd_soak_dry_run_plan.py          # mint plan
-python tools/hd_soak_approval_preflight.py    # emits the tokened -Execute command
-# run the emitted command verbatim, directly
+## Inspect the resolved hidden plan first; omit -Execute.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cdb\run_hidden_soak.ps1 `
+  -Route map-idle -DurationSec 120 -FrameIntervalSec 15
+
+## Execute only the reviewed hidden_runtime_command emitted by the ladder.
 python tools/hd_soak_short_validation_refresh.py
 python tools/hd_soak_short_step_status.py
-python tools/current_evidence_refresh.py      # twice
 ```
 
 Rungs in order: `short2_map_idle` (120s) → `short10_map_idle` (600s) →
-`short10_map_pan` (600s) → `short30_map_pan` (1800s). Rest 5–10 min between
-launches — the wrapper degrades across rapid relaunches. On failure: rest 10+
-min, retry once, then stop and report rather than burning the wrapper.
+`short10_map_pan` (600s) → `short30_map_pan` (1800s). Use 15-second frame
+sampling and 10-second forced-pan intervals. Verify no task-owned process remains
+between rungs. On any failed marker, proxy, frame, process, cleanup, or shared
+guard check, stop and preserve the failing report instead of weakening a gate.
 
-**Known open question:** on the last unlocked attempt (21:09) the route got
+The earlier visible-wrapper question remains separate: on the last unlocked
+attempt (21:09) the route got
 furthest ever — menu verified 60.49% nonblack, cursor probe converged,
 `load-button` click landed a real transition (463k pixels, 60.33% → 97.09%) —
 then the window went missing and `load-slot0` never ran. Whether the window
-*returns* after the load dialog opens is UNMEASURED. Answer it in one run with
-`scratchpad/run_window_timeline_probe.ps1` (250 ms sampling: hwnd, `IsWindow`,
-`IsWindowVisible`, `IsIconic`, client rect, style, class) before tuning any
-retry budget. Note the wrapper does not destroy its window on a failed mode
-switch — it clears `WS_VISIBLE` on the same hwnd — so "missing" may mean hidden.
+*returns* after the load dialog opens is still unmeasured for the visible GOG
+wrapper. Hidden soak success does not answer or erase that failure.
 
 ## Step 2 — Long soak tiers (~4h+)
 
-Two approved 2h+ runs (`map-idle`, `map-pan`, each `duration_sec >= 7200`,
-shared candidate SHA), then assemble `hd-soak-long-proof-current.json` with both
-`report_guards`. Overnight-friendly.
+After the short status is 5/5, run hidden `map-idle` and `map-pan` sequentially
+for at least 7,200 seconds each with 30-second surface/process sampling and a
+shared candidate SHA. Publish the two compact environment-aware guards, then
+assemble `hd-soak-long-proof-current.json` with both `report_guards`. The long
+guard must keep the hidden environment, proxy, forced-entry, elapsed-coverage,
+and `not_applicable_hidden` checks visible. It proves endurance, not input.
 
 ## Step 3 — Manual DirectInput, 5 targets (needs its own fresh approval)
 
@@ -99,11 +108,31 @@ starting aim point awaiting pulse-mode re-verification, not documented evidence.
 
 ## Step 4 — Promotion and final refresh
 
-With the manual proof valid, run the promotion decisions
+The new `-combinedui-validation` stage combines the existing
+HD-layout/frame-restoration, right-bottom, castle, and battle/input groups.
+Its [candidate byte report](../../captures/current/combinedui-validation-patch-stage-current.json)
+records 166 patched records and zero original/unexpected bytes. This is a
+validation candidate, not promoted or runtime-proven composition. See
+[COMBINED_UI_VALIDATION.md](COMBINED_UI_VALIDATION.md) for its identity and
+remaining route requirements.
+
+With real manual proof valid, run the promotion decisions
 (`hd_layout_promotion_decision.py`, `right_bottom_compose_promotion_decision.py`,
-`castle_overview_promotion_decision.py`), then
-`python tools/current_evidence_refresh.py` twice. Target **165/165** with
-`hd_endurance_release_checklist` `full_game_complete: true`.
+`castle_overview_promotion_decision.py`) and inspect affirmative decision
+artifacts. A successful command can merely mean that a deferred decision was
+evaluated correctly. Before release, require the combined candidate's affected
+routes, input, save/load and day transitions, composition, and endurance to pass
+on that exact SHA. Validate each advertised resolution against matching
+dimensions, stage, and candidate identity. The new frame-restoration recipe has
+passing isolated byte builds for the four advertised larger presets and a
+partial-tile custom case; those builds still need dimension-aware runtime,
+composition, input, and continuity evidence.
+
+Refresh the aggregate after sources and evidence are settled. Investigate each
+failure honestly and perform a final acceptance audit across the supported
+configurations. Neither a green aggregate nor the finite endurance checklist's
+`full_game_complete` field substitutes for that audit or an explicit promotion
+decision.
 
 Never promote the stable stage without the real evidence; an honest red beats a
 fabricated green.

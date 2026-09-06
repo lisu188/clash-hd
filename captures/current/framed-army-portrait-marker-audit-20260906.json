@@ -1,0 +1,527 @@
+{
+  "schema": "clash95_framed_army_portrait_marker_audit_v1",
+  "date": "2026-09-06",
+  "audit_kind": "Read-only source mask and raw pixel comparison of previously captured hidden E0 surfaces",
+  "resolution": [
+    1024,
+    768
+  ],
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-army-validation",
+  "candidate": {
+    "path": "C:/ClashTests/hd-completion/framed-army-v1-1024x768-build-20260906-085300/clash95_army_1024x768_v1.exe",
+    "sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+    "size_bytes": 1457152
+  },
+  "original": {
+    "path": "C:/Clash/clash95.exe",
+    "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "size_bytes": 1232384
+  },
+  "capture_run": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900",
+  "frames": {
+    "portrait-before": {
+      "path": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900/portrait-before.raw",
+      "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+      "size_bytes": 786432
+    },
+    "portrait-after-1": {
+      "path": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900/portrait-after-1.raw",
+      "sha256": "5c2d64cf504ffee6897f039626652f9559a136587c7c53c26cd88a1bb338e02d",
+      "size_bytes": 786432
+    },
+    "portrait-after-2": {
+      "path": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900/portrait-after-2.raw",
+      "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+      "size_bytes": 786432
+    }
+  },
+  "capture_provenance": {
+    "packet.json": {
+      "path": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900/packet.json",
+      "sha256": "700097a7dcc1f90dabea8526d0ee02ea392891dff51d3853561ff2eb1fca582a",
+      "size_bytes": 5903473
+    },
+    "plan.json": {
+      "path": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900/plan.json",
+      "sha256": "a0a514c606dbaf88ec3451d209bf4c35ec71daa4663f547c0bab1735696e742c",
+      "size_bytes": 23844
+    },
+    "cdb.log": {
+      "path": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900/cdb.log",
+      "sha256": "7d1aec8f33a93d313974c23fb82d5b9bf865093fb319768bc386185748b90d57",
+      "size_bytes": 66729
+    },
+    "capture-prefix.log": {
+      "path": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900/capture-prefix.log",
+      "sha256": "7d1aec8f33a93d313974c23fb82d5b9bf865093fb319768bc386185748b90d57",
+      "size_bytes": 66729
+    },
+    "summary.json": {
+      "path": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900/summary.json",
+      "sha256": "16d3fc3a3781b2e48ff914d1286259a5919dc86c4f8a8fde56a0c97bda19467f",
+      "size_bytes": 3540
+    }
+  },
+  "source_sha256": {
+    "tools/hd_layout_asset_composition.py": "50879a915e5cd80ac7f489c1fd3440071627b1ed9eeb199ef5b099731e7c922d",
+    "tools/framed_army_portrait_probe.py": "6e857e6f7b9326475eba1b73c29b6b3cb58d8b9c430b6f52aaa632a64bb8dde2",
+    "tools/framed_army_selection_probe.py": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1",
+    "tools/build_framed_army_candidate.py": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+    "src/patcher/framed_army_draw.py": "e6763ae2ebdf038d0b0b574564573fb07e2a2b68c12f7aeafc0b63ca44347cf9",
+    "src/patcher/framed_army_viewport.py": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+    "src/patcher/framed_army_input.py": "c27a0feb17df909dcf9986bfde231d90a79e8c1ad8abbcf2884b52e767a70ee2",
+    "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad"
+  },
+  "minimum_resource": {
+    "path": "C:/Clash/DATA/minimum.res",
+    "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116",
+    "size_bytes": 21601784
+  },
+  "marks_member": {
+    "name": "GFX/MARKS.S32",
+    "sha256": "026e2d549427163b5b9642a1c92f89c98b65885eec54b36a0e28fee812bc7667",
+    "size_bytes": 38879
+  },
+  "save": {
+    "path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\workdir\\save\\0.dat",
+    "sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89"
+  },
+  "unit": {
+    "index": 3,
+    "world_cell": [
+      16,
+      19
+    ],
+    "selected_portrait_slot": 0,
+    "controlled_scroll": [
+      10,
+      17
+    ],
+    "controlled_portrait_mouse": [
+      54,
+      719
+    ]
+  },
+  "native_source": {
+    "decoder": "GNU objdump through WSL, contiguous x86 disassembly of the authenticated original; direct CALL rel32 boundaries independently rechecked from bytes",
+    "unchanged_spans": [
+      {
+        "va_start": "0x423420",
+        "va_end_exclusive": "0x42355a",
+        "original_file_offset": 141344,
+        "candidate_file_offset": 141344,
+        "size_bytes": 314,
+        "sha256": "c8bee6e6b3f2ad2be032e76e74243d3f1f853f7eef321f0f1154c67c817897c9",
+        "candidate_bytes_equal_original": true,
+        "purpose": "Selection prefix retained by HD draw suffix"
+      },
+      {
+        "va_start": "0x418f60",
+        "va_end_exclusive": "0x418fb0",
+        "original_file_offset": 99168,
+        "candidate_file_offset": 99168,
+        "size_bytes": 80,
+        "sha256": "296d4dc672ee1bb1770ceef647a5a621e3bed6f769926b54d7f41c4a7bc13a72",
+        "candidate_bytes_equal_original": true,
+        "purpose": "Append unique admitted highlight cells"
+      },
+      {
+        "va_start": "0x418fe0",
+        "va_end_exclusive": "0x419000",
+        "original_file_offset": 99296,
+        "candidate_file_offset": 99296,
+        "size_bytes": 32,
+        "sha256": "6c68295be4cf3db90a7bad0fa5b0ced2fb86fabe14e93f0b2f1954e550fb34c9",
+        "candidate_bytes_equal_original": true,
+        "purpose": "Clear highlight table"
+      },
+      {
+        "va_start": "0x419000",
+        "va_end_exclusive": "0x4190b0",
+        "original_file_offset": 99328,
+        "candidate_file_offset": 99328,
+        "size_bytes": 176,
+        "sha256": "26553d195fea58546e24044b7c131c820899e7956ab0164c50563c4ff6e267e4",
+        "candidate_bytes_equal_original": true,
+        "purpose": "Centered MARKS 40 tile overlay"
+      },
+      {
+        "va_start": "0x405510",
+        "va_end_exclusive": "0x405560",
+        "original_file_offset": 18704,
+        "candidate_file_offset": 18704,
+        "size_bytes": 80,
+        "sha256": "91fccc498669539089b30a6902bf50d23a9a35b5089f778d1bf8c0303aa6f725",
+        "candidate_bytes_equal_original": true,
+        "purpose": "Native background-dependent sprite path"
+      },
+      {
+        "va_start": "0x417a21",
+        "va_end_exclusive": "0x417a26",
+        "original_file_offset": 93729,
+        "candidate_file_offset": 93729,
+        "size_bytes": 5,
+        "sha256": "061372ce751598da7e7f06a6629907075a0006a3a2f30cb209a4fb086e731f02",
+        "candidate_bytes_equal_original": true,
+        "purpose": "Tile renderer calls marker overlay"
+      },
+      {
+        "va_start": "0x513334",
+        "va_end_exclusive": "0x513394",
+        "original_file_offset": 1119540,
+        "candidate_file_offset": 1119540,
+        "size_bytes": 96,
+        "sha256": "9a5a1ab8cd7bed91f6a548f554821922d6e1a6f4e7b00840e53bcb2d9fd0a2fd",
+        "candidate_bytes_equal_original": true,
+        "purpose": "Twelve signed neighbor pairs"
+      }
+    ],
+    "call_return_boundaries": [
+      {
+        "call_va": "0x423488",
+        "target_va": "0x412b20",
+        "return_va": "0x42348d",
+        "instruction_size": 5
+      },
+      {
+        "call_va": "0x42348d",
+        "target_va": "0x418fe0",
+        "return_va": "0x423492",
+        "instruction_size": 5
+      },
+      {
+        "call_va": "0x4234ac",
+        "target_va": "0x423ac0",
+        "return_va": "0x4234b1",
+        "instruction_size": 5
+      },
+      {
+        "call_va": "0x4234f3",
+        "target_va": "0x422dc0",
+        "return_va": "0x4234f8",
+        "instruction_size": 5
+      },
+      {
+        "call_va": "0x423520",
+        "target_va": "0x418f60",
+        "return_va": "0x423525",
+        "instruction_size": 5
+      },
+      {
+        "call_va": "0x417a21",
+        "target_va": "0x419000",
+        "return_va": "0x417a26",
+        "instruction_size": 5
+      },
+      {
+        "call_va": "0x419048",
+        "target_va": "0x405ee0",
+        "return_va": "0x41904d",
+        "instruction_size": 5
+      },
+      {
+        "call_va": "0x41906f",
+        "target_va": "0x405ef0",
+        "return_va": "0x419074",
+        "instruction_size": 5
+      },
+      {
+        "call_va": "0x419096",
+        "target_va": "0x405ec0",
+        "return_va": "0x41909b",
+        "instruction_size": 5
+      },
+      {
+        "call_va": "0x4190a1",
+        "target_va": "0x405510",
+        "return_va": "0x4190a6",
+        "instruction_size": 5
+      }
+    ],
+    "highlight_table": {
+      "va": "0x5269d8",
+      "size_bytes": 64,
+      "capacity_unique_cells": 8
+    },
+    "selection_flags": {
+      "va": "0x526f78",
+      "size_bytes": 40
+    },
+    "neighbor_offsets": [
+      [
+        0,
+        -1
+      ],
+      [
+        1,
+        -1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        -1,
+        1
+      ],
+      [
+        -1,
+        0
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        0,
+        -1
+      ],
+      [
+        1,
+        -1
+      ],
+      [
+        0,
+        -1
+      ]
+    ],
+    "route": "The retained 423420 prefix forms the selected-squad list, clears the highlight table, tests native placement admission, and adds unique admitted cells. The normal tile renderer calls 419000, which centers MARKS sprite 40 in a 64 by 64 tile and calls 405510 with native mode 1 and parameter 80. These unchanged native calls explain the source-mask placements; admission predicates were not separately observed in this capture."
+  },
+  "map_markers": {
+    "sprite": 40,
+    "size": [
+      19,
+      28
+    ],
+    "source_opaque_pixels_per_marker": 170,
+    "placements": [
+      {
+        "world_cell": [
+          15,
+          18
+        ],
+        "sprite_box_origin": [
+          374,
+          98
+        ],
+        "sprite_size": [
+          19,
+          28
+        ],
+        "source_opaque_pixels": 170,
+        "changed_opaque_pixels": 170,
+        "missing_mask_pixels": 0,
+        "changed_bounds_inclusive": [
+          379,
+          100,
+          387,
+          125
+        ]
+      },
+      {
+        "world_cell": [
+          16,
+          18
+        ],
+        "sprite_box_origin": [
+          438,
+          98
+        ],
+        "sprite_size": [
+          19,
+          28
+        ],
+        "source_opaque_pixels": 170,
+        "changed_opaque_pixels": 170,
+        "missing_mask_pixels": 0,
+        "changed_bounds_inclusive": [
+          443,
+          100,
+          451,
+          125
+        ]
+      },
+      {
+        "world_cell": [
+          17,
+          18
+        ],
+        "sprite_box_origin": [
+          502,
+          98
+        ],
+        "sprite_size": [
+          19,
+          28
+        ],
+        "source_opaque_pixels": 170,
+        "changed_opaque_pixels": 170,
+        "missing_mask_pixels": 0,
+        "changed_bounds_inclusive": [
+          507,
+          100,
+          515,
+          125
+        ]
+      },
+      {
+        "world_cell": [
+          15,
+          19
+        ],
+        "sprite_box_origin": [
+          374,
+          162
+        ],
+        "sprite_size": [
+          19,
+          28
+        ],
+        "source_opaque_pixels": 170,
+        "changed_opaque_pixels": 170,
+        "missing_mask_pixels": 0,
+        "changed_bounds_inclusive": [
+          379,
+          164,
+          387,
+          189
+        ]
+      },
+      {
+        "world_cell": [
+          17,
+          19
+        ],
+        "sprite_box_origin": [
+          502,
+          162
+        ],
+        "sprite_size": [
+          19,
+          28
+        ],
+        "source_opaque_pixels": 170,
+        "changed_opaque_pixels": 170,
+        "missing_mask_pixels": 0,
+        "changed_bounds_inclusive": [
+          507,
+          164,
+          515,
+          189
+        ]
+      },
+      {
+        "world_cell": [
+          16,
+          20
+        ],
+        "sprite_box_origin": [
+          438,
+          226
+        ],
+        "sprite_size": [
+          19,
+          28
+        ],
+        "source_opaque_pixels": 170,
+        "changed_opaque_pixels": 170,
+        "missing_mask_pixels": 0,
+        "changed_bounds_inclusive": [
+          443,
+          228,
+          451,
+          253
+        ]
+      },
+      {
+        "world_cell": [
+          17,
+          20
+        ],
+        "sprite_box_origin": [
+          502,
+          226
+        ],
+        "sprite_size": [
+          19,
+          28
+        ],
+        "source_opaque_pixels": 170,
+        "changed_opaque_pixels": 170,
+        "missing_mask_pixels": 0,
+        "changed_bounds_inclusive": [
+          507,
+          228,
+          515,
+          253
+        ]
+      }
+    ],
+    "origin_formula": "x=32+64*(worldX-10)+(64-19)//2; y=16+64*(worldY-17)+(64-28)//2",
+    "marker_count": 7,
+    "changed_pixels": 1190,
+    "source_mask_equals_map_change_set": true,
+    "map_blend_colors_independently_validated": false
+  },
+  "portrait_badge": {
+    "sprite": 5,
+    "origin": [
+      61,
+      688
+    ],
+    "size": [
+      9,
+      9
+    ],
+    "source_opaque_pixels": 53,
+    "changed_pixels": 53,
+    "literal_source_palette_mismatches": 0
+  },
+  "comparison": {
+    "total_changed_pixels_first_toggle": 1243,
+    "explained_map_mask_pixels": 1190,
+    "explained_badge_pixels": 53,
+    "unexplained_changed_pixels": 0,
+    "missing_expected_mask_pixels": 0,
+    "second_toggle_equals_original_full_frame": true,
+    "second_toggle_changed_pixels": 0
+  },
+  "historical_badge_only_hypothesis": {
+    "artifact": {
+      "path": "C:/ClashCaptures/hd-completion/framed-army-portrait-20260906-103900/portrait-pixels.json",
+      "sha256": "4133acbc4c85d8bf062b56d2177a3a00bc8799ee384d39cc227b7cc4243123f4",
+      "size_bytes": 49458
+    },
+    "original_passed": false,
+    "hypothesis": "Only the portrait badge changes on selection",
+    "hypothesis_supported": false,
+    "preserved_unchanged": true,
+    "explanation": "The badge-only diagnostic correctly failed its incomplete hypothesis: the native selected-squad map markers contribute another 1190 changed pixels. Its failed result is retained; this additive audit has a different explicit scope."
+  },
+  "passed": true,
+  "pass_scope": "Exact native marker mask and placement coverage, exact badge literals, zero unexplained changed pixels, and full second-toggle restoration only",
+  "native_blend_color_proof": false,
+  "strict_runtime_trace_proof": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "This audit executes no game, debugger or capture host and makes no new runtime observation. It reads the preserved actual raw capture bytes.",
+    "Native map marker colors use the unchanged background-dependent draw path. Marker masks and coordinates are checked, but the blend table/color output has no independent oracle here.",
+    "The seven observed cells match seven complete native masks. The native placement predicate and the reason a different neighbor was not admitted are not independently evaluated.",
+    "Strict source-bound route/stack/ownership validation and host cleanup are separate reports; this mask audit cannot establish them.",
+    "The original portrait-pixels.json retains separate frame and bottom-right action-bar checks and its failed badge-only verdict. This report does not replace those checks or imply visible/manual input proof."
+  ]
+}

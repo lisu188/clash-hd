@@ -1,0 +1,931 @@
+{
+  "schema": "continuity_day_diagnostic_summary_v1",
+  "generated_at": "2026-09-05T11:13:30.146470+00:00",
+  "passed": false,
+  "day_transition_passed": false,
+  "observed_classification": "full_day_returned_with_controlled_input_queries",
+  "failures": [
+    "line 309: DAYDIAG_GETDEVICESTATE_CALL: overlapping input call or input outside advance"
+  ],
+  "environment": "hidden_cdb_host",
+  "entry_mechanism": "cdb_breakpoint_forced_loader_entry",
+  "turn_mechanism": "forced_native_nextplayer",
+  "requested_mode": 1,
+  "forced_banner_ack_count": 0,
+  "forced_release_counts": {
+    "left": 1,
+    "right": 1
+  },
+  "controlled_input_query_overrides": true,
+  "native_day_increment_observed": true,
+  "native_day_return_observed": true,
+  "input_responsiveness": "not_applicable_hidden",
+  "manual_input_proof": false,
+  "promotion_evidence": false,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+  "resolution": "800x600",
+  "candidate_sha256": "0a75cf35f42efe1e44fba1ac4031eaae5323cdff51aa19d261c36c5bb84691c2",
+  "generated_probe_sha256": "b138e21b3798729780e28acc76250c99c338d2b37dfcd5c643b51ff63d4eac38",
+  "log_sha256": "4feb9184965fa42e2f7db1912f13e0c565a2090174d34fdd8979126d08ee5ba2",
+  "surface_sha256": "1e441f7a756e241afdcf924e00e935b24ea8ee1bdaaa585732bd7bd4f2def504",
+  "cleanup": {
+    "schema": "continuity_day_cleanup_v1",
+    "observed_at": "2026-09-05T11:06:16.7844251+00:00",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+    "resolution": "800x600",
+    "candidate_sha256": "0A75CF35F42EFE1E44FBA1AC4031EAAE5323CDFF51AA19D261C36C5BB84691C2",
+    "candidate_path": "C:\\ClashTests\\hd-completion\\continuity-daydiag-combined-v5-control-20260905-125300\\candidate\\clash95_hd_surfdump_20260905_130340.exe",
+    "run_dir": "C:\\ClashCaptures\\hd-completion\\continuity-daydiag-combined-v5-control\\cdb-surface-dump-20260905-130340",
+    "generated_probe_sha256": "B138E21B3798729780E28ACC76250C99C338D2B37DFCD5C643B51FF63D4EAC38",
+    "log_sha256": "4FEB9184965FA42E2F7DB1912F13E0C565A2090174D34FDD8979126D08EE5BA2",
+    "game_pid": 33576,
+    "cdb_pid": 37368,
+    "game_stopped": true,
+    "cdb_stopped": true,
+    "errors": [],
+    "process_identity_live_path": "C:\\ClashCaptures\\hd-completion\\continuity-daydiag-combined-v5-control\\cdb-surface-dump-20260905-130340\\process-identity-live.json",
+    "process_identity_live_sha256": "CA0182A4CC545518F466E728166EDFF99477A6707B5F9AEAF24B329374F3BF52",
+    "observation_method": "Get-Process exact recorded live PIDs absent after exec session65463 terminal exit0",
+    "surface_sha256": "1E441F7A756E241AFDCF924E00E935B24EA8EE1BDAAA585732BD7BD4F2DEF504"
+  },
+  "markers": {
+    "errors": [
+      "line 309: DAYDIAG_GETDEVICESTATE_CALL: overlapping input call or input outside advance"
+    ],
+    "events": [
+      {
+        "line": 104,
+        "marker": "DAYDIAG_CONTRACT_PASS"
+      },
+      {
+        "line": 210,
+        "marker": "DAYDIAG_PLAYERS"
+      },
+      {
+        "line": 211,
+        "marker": "DAYDIAG_START"
+      },
+      {
+        "line": 228,
+        "marker": "DAYDIAG_NEXT_CALL"
+      },
+      {
+        "line": 229,
+        "marker": "DAYDIAG_AFTER_DAY_BRANCH"
+      },
+      {
+        "line": 230,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 231,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 232,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 233,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 234,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 235,
+        "marker": "DAYDIAG_NEXT_RETURN"
+      },
+      {
+        "line": 236,
+        "marker": "DAYDIAG_NEXT_CALL"
+      },
+      {
+        "line": 237,
+        "marker": "DAYDIAG_AFTER_DAY_BRANCH"
+      },
+      {
+        "line": 238,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 239,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 240,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 241,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 242,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 243,
+        "marker": "DAYDIAG_NEXT_RETURN"
+      },
+      {
+        "line": 244,
+        "marker": "DAYDIAG_NEXT_CALL"
+      },
+      {
+        "line": 245,
+        "marker": "DAYDIAG_AFTER_DAY_BRANCH"
+      },
+      {
+        "line": 246,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 247,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 248,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 249,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 250,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 251,
+        "marker": "DAYDIAG_NEXT_RETURN"
+      },
+      {
+        "line": 252,
+        "marker": "DAYDIAG_NEXT_CALL"
+      },
+      {
+        "line": 253,
+        "marker": "DAYDIAG_NATIVE_DAY_INCREMENT"
+      },
+      {
+        "line": 254,
+        "marker": "DAYDIAG_AFTER_DAY_BRANCH"
+      },
+      {
+        "line": 255,
+        "marker": "DAYDIAG_BANNER_ENTRY"
+      },
+      {
+        "line": 256,
+        "marker": "DAYDIAG_BANNER_TEST"
+      },
+      {
+        "line": 257,
+        "marker": "DAYDIAG_BANNER_EXIT"
+      },
+      {
+        "line": 258,
+        "marker": "DAYDIAG_RELEASE_WAIT_ENTRY"
+      },
+      {
+        "line": 259,
+        "marker": "DAYDIAG_RELEASE_LEFT_TEST"
+      },
+      {
+        "line": 260,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 261,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 262,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 263,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 264,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 265,
+        "marker": "DAYDIAG_RELEASE_LEFT_TEST"
+      },
+      {
+        "line": 266,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 267,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 268,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 269,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 270,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 271,
+        "marker": "DAYDIAG_RELEASE_LEFT_TEST"
+      },
+      {
+        "line": 272,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 273,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 274,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 275,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 276,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 277,
+        "marker": "DAYDIAG_RELEASE_LEFT_TEST"
+      },
+      {
+        "line": 278,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 279,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 280,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 281,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 282,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 283,
+        "marker": "DAYDIAG_RELEASE_LEFT_TEST"
+      },
+      {
+        "line": 284,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 285,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 286,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 287,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 288,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 289,
+        "marker": "DAYDIAG_RELEASE_LEFT_TEST"
+      },
+      {
+        "line": 290,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 291,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 292,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 293,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 294,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 295,
+        "marker": "DAYDIAG_RELEASE_LEFT_TEST"
+      },
+      {
+        "line": 296,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 297,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 298,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 299,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 300,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 301,
+        "marker": "DAYDIAG_RELEASE_LEFT_TEST"
+      },
+      {
+        "line": 302,
+        "marker": "DAYDIAG_FORCED_RELEASE"
+      },
+      {
+        "line": 303,
+        "marker": "DAYDIAG_RELEASE_RIGHT_TEST"
+      },
+      {
+        "line": 304,
+        "marker": "DAYDIAG_FORCED_RELEASE"
+      },
+      {
+        "line": 305,
+        "marker": "DAYDIAG_RELEASE_RETURN"
+      },
+      {
+        "line": 306,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 307,
+        "marker": "DAYDIAG_INPUT_POLL_ENTRY"
+      },
+      {
+        "line": 308,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 309,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 310,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 311,
+        "marker": "DAYDIAG_GETDEVICESTATE_CALL"
+      },
+      {
+        "line": 312,
+        "marker": "DAYDIAG_GETDEVICESTATE_RETURN"
+      },
+      {
+        "line": 313,
+        "marker": "DAYDIAG_NEXT_RETURN"
+      },
+      {
+        "line": 314,
+        "marker": "DAYDIAG_FULL_DAY_RETURNED"
+      },
+      {
+        "line": 315,
+        "marker": "DAYDIAG_POST_DAY_REDRAW"
+      },
+      {
+        "line": 317,
+        "marker": "SURFDUMP_READY"
+      },
+      {
+        "line": 329,
+        "marker": "SURFDUMP_HOST_READY"
+      }
+    ],
+    "observed_classification": "full_day_returned_with_controlled_input_queries",
+    "diagnostic_version": 5,
+    "native_day_increment_observed": true,
+    "native_day_increment": {
+      "advance": 4,
+      "player": 0,
+      "day": 2
+    },
+    "native_day_return_observed": true,
+    "contract_passed": true,
+    "start": {
+      "mode": 1,
+      "player": 0,
+      "day": 1,
+      "tick": 20895121,
+      "forced_nextplayer": 1,
+      "gd": 135266352
+    },
+    "players": {
+      "active": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "controller": [
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "call_count": 4,
+    "full_day": {
+      "initial_day": 1,
+      "final_day": 2,
+      "player": 0
+    },
+    "surface": {
+      "RedrawSeq": 5,
+      "Surface": "0a30d358",
+      "Width": 800,
+      "Height": 600,
+      "Base": "0a860030",
+      "Bytes": 480000
+    },
+    "surface_completed": true,
+    "forced_ack_count": 0,
+    "input_returns": [
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "device": "keyboard",
+        "hresult": 2147942412
+      }
+    ],
+    "input_return_observations": [
+      {
+        "line": 232,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 234,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 240,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 242,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 248,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 250,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 262,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 264,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 268,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 270,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 274,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 276,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 280,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 282,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 286,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 288,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 292,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 294,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 298,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 300,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 310,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 312,
+        "device": "keyboard",
+        "hresult": 2147942412
+      }
+    ],
+    "forced_release_counts": {
+      "left": 1,
+      "right": 1
+    },
+    "release_waits": [
+      {
+        "advance": 4,
+        "player": 0,
+        "day": 2,
+        "esp": 973848,
+        "left_tests": [
+          {
+            "poll": 1,
+            "observed_eax": 1,
+            "player": 0,
+            "day": 2,
+            "button_flags": 3,
+            "lbtn": 198,
+            "rbtn": 244
+          },
+          {
+            "poll": 2,
+            "observed_eax": 1,
+            "player": 0,
+            "day": 2,
+            "button_flags": 3,
+            "lbtn": 198,
+            "rbtn": 244
+          },
+          {
+            "poll": 3,
+            "observed_eax": 1,
+            "player": 0,
+            "day": 2,
+            "button_flags": 3,
+            "lbtn": 198,
+            "rbtn": 244
+          },
+          {
+            "poll": 4,
+            "observed_eax": 1,
+            "player": 0,
+            "day": 2,
+            "button_flags": 3,
+            "lbtn": 198,
+            "rbtn": 244
+          },
+          {
+            "poll": 5,
+            "observed_eax": 1,
+            "player": 0,
+            "day": 2,
+            "button_flags": 3,
+            "lbtn": 198,
+            "rbtn": 244
+          },
+          {
+            "poll": 6,
+            "observed_eax": 1,
+            "player": 0,
+            "day": 2,
+            "button_flags": 3,
+            "lbtn": 198,
+            "rbtn": 244
+          },
+          {
+            "poll": 7,
+            "observed_eax": 1,
+            "player": 0,
+            "day": 2,
+            "button_flags": 3,
+            "lbtn": 198,
+            "rbtn": 244
+          },
+          {
+            "poll": 8,
+            "observed_eax": 1,
+            "player": 0,
+            "day": 2,
+            "button_flags": 3,
+            "lbtn": 198,
+            "rbtn": 244
+          }
+        ],
+        "right_tests": [
+          {
+            "poll": 8,
+            "observed_eax": 1,
+            "player": 0,
+            "day": 2,
+            "button_flags": 3,
+            "lbtn": 198,
+            "rbtn": 244
+          }
+        ],
+        "left_effective": 0,
+        "right_effective": 0,
+        "returned": true,
+        "next": "return",
+        "return_esp": 973852
+      }
+    ],
+    "bounded_wait": null,
+    "input_trace_phases": [
+      {
+        "advance": 1,
+        "phase": "native_call",
+        "poll_count": 1,
+        "limited": false
+      },
+      {
+        "advance": 2,
+        "phase": "native_call",
+        "poll_count": 1,
+        "limited": false
+      },
+      {
+        "advance": 3,
+        "phase": "native_call",
+        "poll_count": 1,
+        "limited": false
+      },
+      {
+        "advance": 4,
+        "phase": "native_call",
+        "poll_count": 0,
+        "limited": false
+      },
+      {
+        "advance": 4,
+        "phase": "release_wait",
+        "poll_count": 9,
+        "limited": false
+      }
+    ],
+    "input_failure_hresult": [
+      {
+        "line": 232,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 234,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 240,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 242,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 248,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 250,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 262,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 264,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 268,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 270,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 274,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 276,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 280,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 282,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 286,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 288,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 292,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 294,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 298,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 300,
+        "device": "keyboard",
+        "hresult": 2147942412
+      },
+      {
+        "line": 310,
+        "device": "mouse",
+        "hresult": 2147942412
+      },
+      {
+        "line": 312,
+        "device": "keyboard",
+        "hresult": 2147942412
+      }
+    ],
+    "pending_input_call": null
+  },
+  "limits": "Bounded forced native calls with any controlled input-query overrides counted explicitly; no ordinary/manual end-turn, sustained continuity, extended-register preservation, visible composition or promotion proof."
+}

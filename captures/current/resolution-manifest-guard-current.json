@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-18T22:14:35+02:00",
+  "generated_at": "2026-09-06T05:57:41+02:00",
   "passed": true,
   "runtime_policy": "repo-only metadata inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
-  "guard_policy": "exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence, tile counts matching the engine formula",
+  "guard_policy": "exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence whose dimensions, stage, candidate SHA and run references agree with its passing patch metadata and smoke matrix, tile counts matching the engine formula",
   "manifest": "src\\launcher\\resolutions.json",
   "resolution_count": 5,
   "status_counts": {

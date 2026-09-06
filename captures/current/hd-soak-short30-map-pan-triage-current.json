@@ -1,0 +1,123 @@
+{
+  "generated_at": "2026-09-06T03:57:57.715644+00:00",
+  "passed": true,
+  "runtime_policy": "repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "source_report": "captures\\current\\hd-soak-short30-map-pan-current.json",
+  "environment": "hidden_cdb_host",
+  "evidence_class": "approved_hidden_cdb_host_soak",
+  "classification": "passing_run_no_failure",
+  "next_probe": "preserve the hidden-CDB report and guard, then continue the next unlocked hidden map tier",
+  "tier": "short30",
+  "route": "map-pan",
+  "duration_sec": 1800,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "candidate": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-110757-602-map-pan\\clash95_hd_hidden_soak_20260905_110757_602.exe",
+  "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "output_directory": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-110757-602-map-pan",
+  "final_route_marker": null,
+  "last_route_marker": null,
+  "executed": true,
+  "report_passed": true,
+  "process_exited_unexpectedly": false,
+  "exit_code": null,
+  "clean_stop": true,
+  "failure_context": {
+    "classification": "passing_run_no_failure",
+    "crash_hang_class": "passing_run_no_failure",
+    "next_probe": "preserve the hidden-CDB report and guard, then continue the next unlocked hidden map tier",
+    "failure_timestamp": "2026-09-05T11:38:30.6345701+02:00",
+    "failure_timestamp_source": "last_process_sample",
+    "report_generated_at": "2026-09-05T09:38:35.366898+00:00",
+    "last_frame_timestamp": "2026-09-05T11:38:30.6345701+02:00",
+    "last_process_timestamp": "2026-09-05T11:38:30.6345701+02:00",
+    "final_route_marker": null,
+    "last_route_marker": null,
+    "route": "map-pan",
+    "tier": "short30",
+    "duration_sec": 1800,
+    "visual_anomaly_passed": null,
+    "black_patch_risk_count": null,
+    "palette_or_stripe_risk_count": null,
+    "missing_nonblack_bounds_count": null,
+    "input_permission_denied_route_count": 0,
+    "input_permission_denied_routes": [],
+    "foreground_denied_attempt_count": 0,
+    "foreground_denied_attempts": [],
+    "cursor_alive_observed": false
+  },
+  "frame_metrics": {
+    "frame_sample_count": 119,
+    "frame_hash_unique_count": 119,
+    "frame_progress_expected": true,
+    "frame_stability_class": "progressing",
+    "nonblack_percent_min": 97.339,
+    "nonblack_percent_max": 97.341,
+    "mean_luma_min": null,
+    "mean_luma_max": null,
+    "unique_sample_colors_min": 197,
+    "unique_sample_colors_max": 206
+  },
+  "visual_anomalies": {
+    "passed": null,
+    "failures": []
+  },
+  "process_metrics": {
+    "process_sample_count": 119,
+    "working_set_growth_bytes": 192512,
+    "private_memory_growth_bytes": 0,
+    "handle_growth": -10,
+    "artifact_bytes": 4084869
+  },
+  "input_metrics": {
+    "input_max_abs_error": null,
+    "input_max_sample_abs_error": null,
+    "max_input_drift_px": null
+  },
+  "probe_log_diagnostics": {
+    "checked_route_count": 0,
+    "readable_log_count": 0,
+    "permission_denied_route_count": 0,
+    "permission_denied_routes": [],
+    "rows": []
+  },
+  "cursor_probe_diagnostics": {
+    "checked_attempt_count": 0,
+    "readable_probe_count": 0,
+    "foreground_denied_attempt_count": 0,
+    "foreground_denied_attempts": [],
+    "cursor_responded_without_convergence_attempts": [],
+    "cursor_alive_observed": false,
+    "rows": []
+  },
+  "cdb_followup": null,
+  "wer_followup": null,
+  "intro_skip_route_result": null,
+  "last_route_result": null,
+  "last_frame_sample": {
+    "name": "frame-0119",
+    "timestamp": "2026-09-05T11:38:30.6345701+02:00",
+    "hash": "f0c56e6c2aa51b9aceed916469d84971c5d074b44936c5710bdb7610910e0d04",
+    "width": 800,
+    "height": 600,
+    "nonblack_percent": 97.341,
+    "mean_luma": null,
+    "unique_sample_colors": 200,
+    "capture_mode": "hidden-cdb-host-readprocessmemory"
+  },
+  "last_process_sample": {
+    "timestamp": "2026-09-05T11:38:30.6345701+02:00",
+    "has_exited": false,
+    "exit_code": null,
+    "working_set64": 37425152,
+    "private_memory_size64": 15646720,
+    "handle_count": 613,
+    "error": null
+  },
+  "guard_validation": {
+    "evaluated": true,
+    "overall": true,
+    "failure_count": 0,
+    "failures": []
+  },
+  "failures": []
+}

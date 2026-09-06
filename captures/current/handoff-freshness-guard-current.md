@@ -1,7 +1,7 @@
 # Handoff Freshness Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T22:14:43+02:00`
+- Generated: `2026-09-06T05:57:50+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: handoff docs must mention the current route timing guard, keep validation stages out of stable until required proof exists, retain current manual-proof and completion artifacts, preserve the no-popup runtime preference, require the visible-runtime approval guard, and avoid stale route/input or VM blockers
 - Supporting project guide: `docs\hd\WORKING_WITH_THIS_REPO.md`
@@ -27,9 +27,7 @@
 
 ## Files
 
-- `.codex-loop\NEXT.md`: `PASS` exists=`True`
-- `.codex-loop\STATE.md`: `PASS` exists=`True`
-- `.codex-loop\TASKS.md`: `PASS` exists=`True`
+- `docs\hd\AGENT_HANDOFF.md`: `PASS` exists=`True`
 - `captures\current\hd-map-evidence-current.md`: `PASS` exists=`True`
 - `docs\hd\HD_MOD_PROGRESS.md`: `PASS` exists=`True`
 - `docs\hd\WORKING_WITH_THIS_REPO.md`: `PASS` exists=`True`

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T22:16:11+02:00",
+  "generated_at": "2026-09-06T05:58:14+02:00",
   "passed": true,
   "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "guard_policy": "generated project state must agree with Clash95 HD documentation, protected-stage and approval boundaries must remain visible, and the removed knowledge-base scaffold must stay absent",
@@ -31,9 +31,7 @@
   },
   "doc_groups": {
     "handoff": [
-      ".codex-loop\\NEXT.md",
-      ".codex-loop\\STATE.md",
-      ".codex-loop\\TASKS.md"
+      "docs\\hd\\AGENT_HANDOFF.md"
     ],
     "project": [
       "README.md",
@@ -80,9 +78,7 @@
       "passed": true,
       "summary": {
         "paths": [
-          ".codex-loop\\NEXT.md",
-          ".codex-loop\\STATE.md",
-          ".codex-loop\\TASKS.md"
+          "docs\\hd\\AGENT_HANDOFF.md"
         ]
       },
       "failures": []

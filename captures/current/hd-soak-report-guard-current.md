@@ -1,7 +1,7 @@
 # HD Soak Report Guard
 
 - Overall: PASS
-- Generated: `2026-07-18T20:14:46.804239+00:00`
+- Generated: `2026-09-06T03:57:54.411636+00:00`
 - Runtime policy: `repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows`
 - Source report: `captures\current\hd-soak-short2-menu-idle-current.json`
 - Source selection: `canonical_first_short_step`
@@ -18,6 +18,7 @@
 
 - `executed`: `PASS`
 - `source_status`: `PASS`
+- `environment`: `PASS`
 - `protected_stage`: `PASS`
 - `tier_route`: `PASS`
 - `patch_evidence`: `PASS`

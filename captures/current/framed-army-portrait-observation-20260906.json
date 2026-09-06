@@ -1,0 +1,234 @@
+{
+  "schema": "clash95_portrait_toggle_observation_v1",
+  "status": "strict_trace_validation_pending",
+  "started_at": "2026-09-06T10:19:55.3570489Z",
+  "finished_at": "2026-09-06T10:20:13.7382740Z",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-army-validation",
+  "resolution": "1024x768",
+  "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+  "artifacts": {
+    "plan.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\plan.json",
+      "sha256": "a0a514c606dbaf88ec3451d209bf4c35ec71daa4663f547c0bab1735696e742c",
+      "bytes": 23844
+    },
+    "packet.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\packet.json",
+      "sha256": "700097a7dcc1f90dabea8526d0ee02ea392891dff51d3853561ff2eb1fca582a",
+      "bytes": 5903473
+    },
+    "host.ps1": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\host.ps1",
+      "sha256": "1980936d1080ce5ffdf91cb5078cab985813e359eff29ad5c4ef2b0a23df2150",
+      "bytes": 10847
+    },
+    "selection.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\selection.cdb",
+      "sha256": "7a0a9f45f2214f536ecbc03630be40daadc06c9444cbb5ff502385f2a688dc71",
+      "bytes": 3001172
+    },
+    "cdb.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\cdb.log",
+      "sha256": "7d1aec8f33a93d313974c23fb82d5b9bf865093fb319768bc386185748b90d57",
+      "bytes": 66729
+    },
+    "capture-prefix.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\capture-prefix.log",
+      "sha256": "7d1aec8f33a93d313974c23fb82d5b9bf865093fb319768bc386185748b90d57",
+      "bytes": 66729
+    },
+    "summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\summary.json",
+      "sha256": "16d3fc3a3781b2e48ff914d1286259a5919dc86c4f8a8fde56a0c97bda19467f",
+      "bytes": 3540
+    },
+    "portrait-pixels.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-pixels.json",
+      "sha256": "4133acbc4c85d8bf062b56d2177a3a00bc8799ee384d39cc227b7cc4243123f4",
+      "bytes": 49458
+    },
+    "final-flags.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\final-flags.raw",
+      "sha256": "2c34ce1df23b838c5abf2a7f6437cca3d3067ed509ff25f11df6b11b582b51eb",
+      "bytes": 40
+    },
+    "header-before.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\header-before.raw",
+      "sha256": "a08940cf1700cd814e216b9762388083bf225eada2c5df27c06f9b35ab64c68d",
+      "bytes": 188
+    },
+    "header-after.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\header-after.raw",
+      "sha256": "a08940cf1700cd814e216b9762388083bf225eada2c5df27c06f9b35ab64c68d",
+      "bytes": 188
+    },
+    "surface.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\surface.raw",
+      "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+      "bytes": 786432
+    },
+    "portrait-before.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-before.raw",
+      "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+      "bytes": 786432
+    },
+    "portrait-before.header.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-before.header.raw",
+      "sha256": "a08940cf1700cd814e216b9762388083bf225eada2c5df27c06f9b35ab64c68d",
+      "bytes": 188
+    },
+    "portrait-before.png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-before.png",
+      "sha256": "6d0b85a973fabac9f0d480d9b8a5b87ebbc7632e93a87021be53b9c958aaf4bf",
+      "bytes": 246592
+    },
+    "portrait-before.png.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-before.png.json",
+      "sha256": "f6a22623a2c6413d2b64f264dcf1507fc68da3d976b3a0021e1d195d4da0570d",
+      "bytes": 839
+    },
+    "portrait-after-1.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-after-1.raw",
+      "sha256": "5c2d64cf504ffee6897f039626652f9559a136587c7c53c26cd88a1bb338e02d",
+      "bytes": 786432
+    },
+    "portrait-after-1.header.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-after-1.header.raw",
+      "sha256": "a08940cf1700cd814e216b9762388083bf225eada2c5df27c06f9b35ab64c68d",
+      "bytes": 188
+    },
+    "portrait-after-1.png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-after-1.png",
+      "sha256": "61a52482b1649487859f0279b4d7b4153f09520ca96645cd1ecd954472c64c17",
+      "bytes": 247616
+    },
+    "portrait-after-1.png.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-after-1.png.json",
+      "sha256": "4006df3e3d120096628fab0533c018e706b6391e2b990c3fe6123c8cfd560336",
+      "bytes": 841
+    },
+    "portrait-after-2.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-after-2.raw",
+      "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+      "bytes": 786432
+    },
+    "portrait-after-2.header.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-after-2.header.raw",
+      "sha256": "a08940cf1700cd814e216b9762388083bf225eada2c5df27c06f9b35ab64c68d",
+      "bytes": 188
+    },
+    "portrait-after-2.png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-after-2.png",
+      "sha256": "6d0b85a973fabac9f0d480d9b8a5b87ebbc7632e93a87021be53b9c958aaf4bf",
+      "bytes": 246592
+    },
+    "portrait-after-2.png.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-after-2.png.json",
+      "sha256": "52739072aee80e9f5369c941b7243501b36aac87cd4f6c8756d185bc03d0cbf0",
+      "bytes": 841
+    },
+    "portrait-checkpoint-0.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-checkpoint-0.cdb",
+      "sha256": "d2d1a6dc88dfc4088cd6f6f187eb50543a0bcd15d3a83fb90a8917f9c3a309f1",
+      "bytes": 2957
+    },
+    "portrait-checkpoint-1.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-checkpoint-1.cdb",
+      "sha256": "96fee6dd25bfff50d5460c95cce85f79c1f9eac4936cb1ec63145b8a30003019",
+      "bytes": 2757
+    },
+    "portrait-checkpoint-2.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-portrait-20260906-103900\\portrait-checkpoint-2.cdb",
+      "sha256": "506ea6da2c2b19d97539fd51aaf07c1bcff5bdd4cb6341481d92dbe523dbfc66",
+      "bytes": 1857
+    }
+  },
+  "actual_flag_values": [
+    0,
+    1,
+    0
+  ],
+  "observed_native_xor_va": "00423952",
+  "logical_controlled_mouse": [
+    54,
+    719
+  ],
+  "frame_checks": {
+    "portrait-before": {
+      "all_four_edges_passed": true,
+      "matching_action_cells": 6
+    },
+    "portrait-after-1": {
+      "all_four_edges_passed": true,
+      "matching_action_cells": 6
+    },
+    "portrait-after-2": {
+      "all_four_edges_passed": true,
+      "matching_action_cells": 6
+    }
+  },
+  "selection_badge": {
+    "sprite": 5,
+    "rank": 26,
+    "origin": [
+      61,
+      688
+    ],
+    "size": [
+      9,
+      9
+    ],
+    "opaque_pixels": 53,
+    "native_source_mismatch_pixels": 0,
+    "entire_frame_equals_baseline_plus_badge": false,
+    "second_click_restores_baseline": true,
+    "changed_pixels": 1243,
+    "changed_bounds": [
+      61,
+      100,
+      515,
+      696
+    ]
+  },
+  "cleanup": [
+    {
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T10:19:55.8855680Z",
+        "process_id": 40968,
+        "creation_filetime": 134331635958855680,
+        "handle_retained": true
+      },
+      "termination_requested": true,
+      "absent": true
+    },
+    {
+      "handle_closed": true,
+      "identity": {
+        "creation_filetime": 134331635961064561,
+        "handle_retained": true,
+        "path": "C:\\ClashTests\\hd-completion\\framed-army-portrait-20260906-103900\\clash95_army_portrait.exe",
+        "process_id": 34288,
+        "creation_utc": "2026-09-06T10:19:56.1064561Z",
+        "parent_process_id": 40968,
+        "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5"
+      },
+      "termination_requested": false,
+      "absent": true
+    }
+  ],
+  "desktop_closed": true,
+  "original_unchanged": true,
+  "candidate_unchanged": true,
+  "assets_changed": [],
+  "assets_added": [],
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "The complete source-bound trace parser is still pending at this observation; no final runtime acceptance is claimed.",
+    "Controlled input to the native portrait handler; no OS/manual mouse input and no ordinary main-map dispatcher claim.",
+    "The original pixel diagnostic fails its proposed badge-only whole-frame hypothesis: native map feedback also changes. Exact source badge pixels and full restoration pass; the map feedback requires a separate source audit."
+  ]
+}

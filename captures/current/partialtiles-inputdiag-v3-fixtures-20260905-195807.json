@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-09-05T17:59:13.252248+00:00",
+  "run_plan": "captures/current/partialtiles-inputdiag-v3-run-plan-20260905-200100.json",
+  "passed": true,
+  "tests": 11,
+  "command": "python -B tools/test_build_partial_tile_candidate.py",
+  "root_run_elapsed_seconds": 1.974,
+  "builder_sha256": "e7066db567f9f1db8705092bd73ec70b787e2614d88efc967dd233ed15598781",
+  "fixture_sha256": "872cda6bbf3d48fb1969a5ae82b790750a2bd0cc50ee3edb01bd2660b47a1275",
+  "runtime_claim": false,
+  "limits": "Emitted probe/source/byte fixture proof only; no accepted screenshot or runtime composition implied."
+}

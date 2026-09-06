@@ -1,0 +1,692 @@
+{
+  "frame": {
+    "profile": "native_four_border_tiles_v1",
+    "resolution": "802x602",
+    "passed": true,
+    "structural_border_exact": true,
+    "checked_border_pixels": 57284,
+    "bands": [
+      {
+        "name": "top",
+        "rectangle_inclusive": [
+          0,
+          0,
+          801,
+          15
+        ],
+        "checked_pixels": 12832,
+        "exact_matches": 12832,
+        "mismatches": 0,
+        "first_mismatches": []
+      },
+      {
+        "name": "bottom",
+        "rectangle_inclusive": [
+          0,
+          586,
+          801,
+          601
+        ],
+        "checked_pixels": 7972,
+        "exact_matches": 7972,
+        "mismatches": 0,
+        "first_mismatches": []
+      },
+      {
+        "name": "left",
+        "rectangle_inclusive": [
+          0,
+          16,
+          31,
+          585
+        ],
+        "checked_pixels": 18240,
+        "exact_matches": 18240,
+        "mismatches": 0,
+        "first_mismatches": []
+      },
+      {
+        "name": "right",
+        "rectangle_inclusive": [
+          770,
+          16,
+          801,
+          585
+        ],
+        "checked_pixels": 18240,
+        "exact_matches": 18240,
+        "mismatches": 0,
+        "first_mismatches": []
+      }
+    ],
+    "footer": {
+      "sprite": 5,
+      "origin": [
+        236,
+        587
+      ],
+      "size": [
+        324,
+        15
+      ],
+      "checked_pixels": 4860,
+      "exact_matches": 4860,
+      "exact": true,
+      "status": "exact_background"
+    },
+    "opaque_frame_pixels": 62144,
+    "limits": "Prospective exact frame profile only. Active tooltip glyphs need separate source-bound evidence; no ignored footer mismatch produces a full pass. Not runtime/input/promotion acceptance.",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+    "candidate_sha256": "2A75641F1AA1B3132AE50B5E8ED768458E5E6D6985E9CFBA702CED85FFEC8161",
+    "existing_surface_gate_passed": true,
+    "summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\summary.json",
+      "sha256": "78e16a33725478298c25beb4e924f903d353d2ce8b751a1fd9a0837fa06eb38d"
+    },
+    "raw_surface": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface.raw",
+      "sha256": "8bf6993c92098562bc3cdb0c58a1f19fa9213b7fb023c2b09482cd2b05eb35b5"
+    },
+    "screenshot": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface.png",
+      "sha256": "a2583bb834881a2256f8b80a6f18da8044e9a0e436d8975d7fd81690f652da10"
+    },
+    "binding": {
+      "metadata_path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface.png.json",
+      "metadata_sha256": "b526a0ecfccc782faf306a76e28ad5764084c013163fe62bd62923d5ede436fc",
+      "palette_path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\candidate\\ddraw_surfdump_palette.bin",
+      "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+      "png_raw_palette_binding_verified": true,
+      "candidate_file_sha_verified": true
+    }
+  },
+  "action_bar": {
+    "run_id": "cdb-surface-dump-20260906-052106",
+    "resolution": "802x602",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+    "candidate_sha256": "2A75641F1AA1B3132AE50B5E8ED768458E5E6D6985E9CFBA702CED85FFEC8161",
+    "summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\summary.json",
+      "sha256": "78e16a33725478298c25beb4e924f903d353d2ce8b751a1fd9a0837fa06eb38d"
+    },
+    "raw_surface": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface.raw",
+      "sha256": "8bf6993c92098562bc3cdb0c58a1f19fa9213b7fb023c2b09482cd2b05eb35b5"
+    },
+    "screenshot": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface.png",
+      "sha256": "a2583bb834881a2256f8b80a6f18da8044e9a0e436d8975d7fd81690f652da10"
+    },
+    "artifact_binding": {
+      "metadata_path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\cdb-surface-dump-20260906-052106\\surface.png.json",
+      "metadata_sha256": "b526a0ecfccc782faf306a76e28ad5764084c013163fe62bd62923d5ede436fc",
+      "palette_path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-802x602-20260906-032002\\candidate\\ddraw_surfdump_palette.bin",
+      "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+      "png_raw_palette_binding_verified": true,
+      "candidate_file_sha_verified": true
+    },
+    "surface_gate_passed": true,
+    "all_six_cells_match_source": true,
+    "cells": [
+      {
+        "cell": 0,
+        "anchor": [
+          578,
+          522
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 0,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 0,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 1,
+        "anchor": [
+          642,
+          522
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 2,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 2,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 2,
+        "anchor": [
+          706,
+          522
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 4,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 4,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 3,
+        "anchor": [
+          578,
+          554
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 6,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 6,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 4,
+        "anchor": [
+          642,
+          554
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 8,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 8,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "cell": 5,
+        "anchor": [
+          706,
+          554
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": true,
+        "closest_source_variant": {
+          "sprite": 10,
+          "hover_overlay": false,
+          "mismatched_pixels": 0,
+          "exact_rows": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ]
+        },
+        "matching_variants": [
+          {
+            "sprite": 10,
+            "hover_overlay": false,
+            "mismatched_pixels": 0,
+            "exact_rows": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31
+            ]
+          }
+        ]
+      }
+    ],
+    "legacy_matching_cells": [],
+    "visible_composition_proof": false,
+    "manual_input_proof": false,
+    "limits": "Exact indexed pixels only. Closest variants and matching rows are diagnostics, not passes. Unknown cursor overlays can cause mismatch; missing/partial cells require further composition investigation."
+  },
+  "runtime_summary_produced": true,
+  "runtime_gate_passed": true,
+  "evidence_scope": "Bound indexed software pixels; no visible composition, input or promotion proof."
+}

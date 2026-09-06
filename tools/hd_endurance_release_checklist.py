@@ -13,6 +13,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import complete_hd_promotion
+import manual_directinput_checklist
+
 
 PROTECTED_STABLE_STAGE = (
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-"
@@ -72,19 +75,62 @@ def missing_or_blocked(data: dict[str, Any] | None) -> str:
     return "missing" if data is None else "blocked"
 
 
-def manual_item(manual: dict[str, Any] | None, item_id: str) -> dict[str, Any] | None:
-    for item in (manual or {}).get("items") or []:
-        if item.get("id") == item_id:
-            return item
-    return None
+def manual_proof_state(manual: dict[str, Any] | None) -> dict[str, Any]:
+    """Resolve the producer's supplied proof, not its unchanged pending items."""
+    failures: list[str] = []
+    proof: dict[str, Any] | None = None
+    proof_path = None
+    if not isinstance(manual, dict) or not manual:
+        failures.append("manual checklist is missing")
+    elif not (
+        manual.get("passed") is True
+        and not manual.get("failures")
+        and manual.get("manual_proof_supplied") is True
+        and manual.get("manual_proof_valid") is True
+        and manual.get("promotion_ready") is True
+        and manual.get("allow_cdb_only_promotion") is False
+    ):
+        failures.append("checklist does not record valid supplied manual proof without an override")
+    else:
+        value = manual.get("manual_proof")
+        if not isinstance(value, str) or not value:
+            failures.append("checklist manual_proof path is missing")
+        else:
+            proof_path = complete_hd_promotion.repo_path(value)
+            proof, proof_failures = manual_directinput_checklist.validate_manual_proof(proof_path)
+            failures.extend(proof_failures)
+    if proof is not None:
+        items = proof.get("checked_items") or []
+        ids = [item.get("id") for item in items if isinstance(item, dict)]
+        if len(ids) != 5 or any(not isinstance(item_id, str) for item_id in ids) or set(ids) != set(manual_directinput_checklist.REQUIRED_IDS):
+            failures.append("manual proof must contain exactly the five unique required targets")
+        summary = manual.get("manual_proof_summary") or {}
+        if (
+            not isinstance(summary, dict)
+            or summary.get("checked_item_count") != 5
+            or str(summary.get("executable_sha256", "")).casefold() != str(proof.get("executable_sha256", "")).casefold()
+            or summary.get("evidence_class") != proof.get("evidence_class")
+            or nested(manual, "summary", "promotion_ready") is not True
+        ):
+            failures.append("manual checklist summary does not match the supplied five-target proof")
+    return {"passed": not failures, "proof_path": str(proof_path) if proof_path else None,
+            "proof": proof if not failures else None, "failures": failures}
 
 
-def manual_item_passed(manual: dict[str, Any] | None, item_id: str) -> bool:
-    item = manual_item(manual, item_id)
+def manual_item(manual: dict[str, Any] | None, item_id: str, *, proof: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    if proof is None:
+        proof = manual_proof_state(manual)["proof"] or {}
+    items = [item for item in proof.get("checked_items", [])
+             if isinstance(item, dict) and item.get("id") == item_id]
+    return items[0] if len(items) == 1 else None
+
+
+def manual_item_passed(manual: dict[str, Any] | None, item_id: str, *, proof: dict[str, Any] | None = None) -> bool:
+    item = manual_item(manual, item_id, proof=proof)
     if not item:
         return False
     status = str(item.get("status") or "").lower()
-    return bool(item.get("proof_valid")) or status in {"accepted", "passed", "valid", "complete"}
+    return item.get("no_crash") is True and status in manual_directinput_checklist.PASS_STATUSES
 
 
 # The manual DirectInput rows may be satisfied by EITHER the host
@@ -95,14 +141,32 @@ HOST_EVIDENCE_CLASS = "manual_directinput"
 GUEST_EVIDENCE_CLASS = "approved_guest_win98_directdraw"
 
 
-def manual_item_class(manual: dict[str, Any] | None, *item_ids: str) -> str | None:
-    """Return the evidence class recorded for a manual item (per-item, else top-level)."""
-    for item_id in item_ids:
-        item = manual_item(manual, item_id)
-        if item and item.get("evidence_class"):
-            return str(item.get("evidence_class"))
-    top_level = (manual or {}).get("evidence_class")
-    return str(top_level) if top_level else None
+def manual_item_class(manual: dict[str, Any] | None, *item_ids: str, proof: dict[str, Any] | None = None) -> str | None:
+    """Use the validated proof class; unchecked per-item labels cannot change it."""
+    if proof is None:
+        proof = manual_proof_state(manual)["proof"] or {}
+    return proof.get("evidence_class") if any(manual_item(manual, item_id, proof=proof) for item_id in item_ids) else None
+
+
+def component_eligibility(name: str, decision: dict[str, Any] | None, manual_state: dict[str, Any]) -> dict[str, Any]:
+    if not decision:
+        failures = ["component decision is missing"]
+    elif not manual_state["passed"]:
+        failures = ["component eligibility requires a valid supplied five-target manual proof"]
+    else:
+        try:
+            failures = complete_hd_promotion.validate_report(
+                name, decision, argparse.Namespace(proof_json=Path(manual_state["proof_path"])), manual_state["proof"]
+            )
+        except (TypeError, ValueError, AttributeError) as exc:
+            failures = [f"component decision is malformed: {exc}"]
+    return {"passed": not failures, "failures": failures}
+
+
+def recommendation_preserves_boundary(decision: dict[str, Any] | None, eligible: bool) -> bool:
+    """An affirmative recommendation is not an observed patcher-default change."""
+    flag = (decision or {}).get("stable_stage_should_change")
+    return flag is False or (flag is True and eligible)
 
 
 def proof_class_label(evidence_class: str | None) -> str:
@@ -343,8 +407,10 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
     stable_checks = stable.get("checks") if stable else {}
     stable_ok = (
         stable is not None
+        and stable.get("passed") is True
         and stable.get("current_stable_stage") == PROTECTED_STABLE_STAGE
         and stable.get("patcher_default_stage") == PROTECTED_STABLE_STAGE
+        and stable.get("validation_only_groups_in_stable") == []
         and nested(stable_checks, "patcher_default_stage", "passed") is True
         and nested(stable_checks, "stable_stage_validation_groups_absent", "passed") is True
     )
@@ -358,23 +424,18 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         and long_soak.get("overall")
         and int(long_soak.get("duration_sec") or 0) >= 7200
     )
-    manual_valid = bool(manual and manual.get("manual_proof_valid"))
-    rb_manual_ok = bool(right_bottom and right_bottom.get("manual_input_proof_valid"))
-    rb_ready = bool(
-        rb_manual_ok
-        or str((right_bottom or {}).get("decision") or "").lower()
-        in {"ready_for_stable_promotion", "promote_stable", "release_ready"}
-    )
-    castle_manual_ok = bool(castle and castle.get("manual_input_proof_valid"))
-    castle_ready = bool(
-        castle_manual_ok
-        or str((castle or {}).get("decision") or "").lower()
-        in {"ready_for_stable_promotion", "promote_stable", "release_ready"}
-    )
+    manual_state = manual_proof_state(manual)
+    validated_proof = manual_state["proof"] or {}
+    manual_valid = manual_state["passed"]
+    rb_eligibility = component_eligibility("right_bottom_promotion", right_bottom, manual_state)
+    castle_eligibility = component_eligibility("castle_overview_promotion", castle, manual_state)
+    rb_ready = rb_eligibility["passed"]
+    castle_ready = castle_eligibility["passed"]
     battle_ready = bool(
         battle
-        and battle.get("passed")
-        and str(battle.get("promotion_status") or "").lower() not in {"validation_stage_only", "blocked"}
+        and battle.get("passed") is True
+        and not battle.get("failures")
+        and battle.get("promotion_status") == "release_ready"
     )
     first_mission_visual_clean = first_mission_visual_clean_passed(first_mission_visual)
     exe_ok = bool(exe_artifact and exe_artifact.get("passed"))
@@ -384,8 +445,8 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
     campaign_ok = continuity_check_passed(continuity, "campaign_routes")
     no_speculative_promotion = (
         bool(stable_ok)
-        and (right_bottom or {}).get("stable_stage_should_change") is False
-        and (castle or {}).get("stable_stage_should_change") is False
+        and recommendation_preserves_boundary(right_bottom, rb_ready)
+        and recommendation_preserves_boundary(castle, castle_ready)
         and (battle or {}).get("stable_stage_should_change") is False
         and (manual or {}).get("stable_stage_should_change") is False
     )
@@ -393,12 +454,12 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
     # Which proof class satisfied each manual-DI row (host vs guest), named in
     # the passing summary so a reader can tell at a glance. The pass/fail logic
     # is class-agnostic; only the summary text changes.
-    menu_input_ok = manual_item_passed(manual, "stable_menu_load")
-    map_input_ok = manual_item_passed(manual, "stable_hd_map_input")
-    menu_input_class = proof_class_label(manual_item_class(manual, "stable_menu_load"))
-    map_input_class = proof_class_label(manual_item_class(manual, "stable_hd_map_input"))
+    menu_input_ok = manual_item_passed(manual, "stable_menu_load", proof=validated_proof)
+    map_input_ok = manual_item_passed(manual, "stable_hd_map_input", proof=validated_proof)
+    menu_input_class = proof_class_label(manual_item_class(manual, "stable_menu_load", proof=validated_proof))
+    map_input_class = proof_class_label(manual_item_class(manual, "stable_hd_map_input", proof=validated_proof))
     right_bottom_class = proof_class_label(
-        manual_item_class(manual, "right_bottom_validation_input")
+        manual_item_class(manual, "right_bottom_validation_input", proof=validated_proof)
         or (right_bottom or {}).get("evidence_class")
     )
     castle_input_class = proof_class_label(
@@ -406,6 +467,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             manual,
             "castle_barracks_centered_input",
             "castle_overview_centered_input",
+            proof=validated_proof,
         )
         or (castle or {}).get("evidence_class")
     )
@@ -414,7 +476,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         requirement(
             "protected_stable_stage",
             "Protected default HD stage remains clean",
-            "pass" if stable_ok else source_state(stable),
+            "pass" if stable_ok else missing_or_blocked(stable),
             [str(args.stable_stage_json)],
             "default stage and validation-only group boundary are intact"
             if stable_ok
@@ -494,6 +556,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             else "menu-load proof remains pending manual DirectInput validation",
             "collect approved manual menu-load proof or keep promotion blocked",
             "manual input",
+            {"manual_proof_path": manual_state["proof_path"], "failures": manual_state["failures"]},
         ),
         requirement(
             "stable_hd_map_real_input",
@@ -505,6 +568,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             else "HD map input proof remains pending manual DirectInput validation",
             "collect approved manual map input proof after short soak is stable",
             "manual input",
+            {"manual_proof_path": manual_state["proof_path"], "failures": manual_state["failures"]},
         ),
         requirement(
             "right_bottom_action_menu",
@@ -516,6 +580,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             else "right-bottom action/menu remains validation-only or manual-proof blocked",
             "replace debugger-forced action-click proof with natural or approved manual input proof",
             "screen route",
+            rb_eligibility,
         ),
         requirement(
             "castle_and_barracks_centered_input",
@@ -523,8 +588,8 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             "pass"
             if (
                 castle_ready
-                and manual_item_passed(manual, "castle_barracks_centered_input")
-                and manual_item_passed(manual, "castle_overview_centered_input")
+                and manual_item_passed(manual, "castle_barracks_centered_input", proof=validated_proof)
+                and manual_item_passed(manual, "castle_overview_centered_input", proof=validated_proof)
             )
             else "blocked",
             [str(args.castle_json), str(args.manual_json)],
@@ -533,6 +598,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             else "castle/barracks centered input remains validation-only or manual-proof blocked",
             "collect approved centered castle/barracks input proof",
             "screen route",
+            castle_eligibility,
         ),
         requirement(
             "tactical_battle_entry_return",
@@ -541,7 +607,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             [str(args.battle_json)],
             "battle route is release-ready"
             if battle_ready
-            else "battle evidence remains validation-only or missing visible click-to-callback proof",
+            else "battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
             "prove battle entry, UI use, return, and post-return map health on an approved route",
             "screen route",
         ),
@@ -588,7 +654,7 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
             "No validation-only promotion is hidden by endurance work",
             "pass" if no_speculative_promotion else "blocked",
             [str(args.stable_stage_json), str(args.right_bottom_json), str(args.castle_json), str(args.battle_json)],
-            "stable-stage boundary remains unchanged while validation-only lanes stay non-promoting"
+            "stable-stage guard proves no default/group mutation; eligible component recommendations remain separate"
             if no_speculative_promotion
             else "one or more promotion boundaries are not fail-closed",
             "keep DEFAULT_STAGE unchanged until strict natural/manual/input and soak gates pass",
@@ -640,9 +706,11 @@ def build_checklist(args: argparse.Namespace) -> dict[str, Any]:
         if next_milestone
         else None,
         "requirements": requirements,
-        "full_game_complete": not failures,
+        "release_horizon_ready": not failures,
+        "acceptance_scope": "finite endurance release-horizon checklist; HD-layout, combined-candidate and resolution acceptance are additional requirements",
+        "full_game_complete": False,
         "full_game_percent_statement": (
-            "100%; all release-horizon requirements have current evidence"
+            "finite release-horizon checklist passes; whole-HD completion still requires HD-layout, combined-candidate and resolution acceptance"
             if not failures
             else "not 100%; endurance, manual input, state continuity, or validation-route gates remain open"
         ),

@@ -1,0 +1,463 @@
+{
+  "schema": "framed_modal_packed_loader_diagnosis_v1",
+  "generated_at": "2026-09-06T04:24:38.001388+00:00",
+  "classification": "source_and_existing_raw_pixel_diagnosis",
+  "runtime_launched_by_analysis": false,
+  "asset_extraction_files_written": false,
+  "image_transformation_performed": false,
+  "new_runtime_proof": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "original": {
+    "path": "C:\\Clash\\clash95.exe",
+    "bytes": 1232384,
+    "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+  },
+  "native_asm": {
+    "path": "C:\\Clash\\clash95.asm",
+    "bytes": 22196546,
+    "sha256": "b298e8c85086f542ebc8b02c26904019aa8278d531cbf02a88d785170cbb4436"
+  },
+  "patcher_source": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\src\\patcher\\patch_clash95_hd.py",
+    "bytes": 135294,
+    "sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1"
+  },
+  "runs": {
+    "castle_overview": {
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\summary.json",
+        "bytes": 533500,
+        "sha256": "1e4e20c2619871e5a72517158ed27d042fd31ef9f81e13736d5f33642051259d"
+      },
+      "trace": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\trace.json",
+        "bytes": 459584,
+        "sha256": "5bace366b2c89fd05942fef0ee4b108065f385c4b2a7328007574501be718d4b"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\cdb.log",
+        "bytes": 50858,
+        "sha256": "0ea4466cdee4af7f27b229288453723820204a6558bba9820b3dbe2935642547"
+      },
+      "probe": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\framed-screen.cdb",
+        "bytes": 167133,
+        "sha256": "dca7a93f93fcec1648dd4e3b22569aa245951041dfd901981ff2f84517c27e73"
+      },
+      "packet": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\packet.json",
+        "bytes": 182255,
+        "sha256": "3345c02f38c39c36fbfb4dd55a7b2017f6e8bc92e3aba0117070d1a81ff2c4fe"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.raw",
+        "bytes": 786432,
+        "sha256": "5bb28dc03e76e810d99a94ae124c7e463fceef1c221a607e564635051c40730c"
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.png",
+        "bytes": 163681,
+        "sha256": "cafb5f0242340970929ce173e3f5db01b9005cceb3d47b9b405f0d6335ca002f"
+      },
+      "png_metadata": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.png.json",
+        "bytes": 999,
+        "sha256": "84c79cf79dfb1f360f4022d70f1be2369b9bd64a59232ce0f6248381fb22a4dd"
+      },
+      "candidate": {
+        "path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\framed-screen-castle_overview-1024x768-6baddbf0d4832087.exe",
+        "bytes": 1311232,
+        "sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0"
+      },
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "resolution": "1024x768",
+      "availability": "existing_flags",
+      "recorded_runtime_passed": true,
+      "recorded_trace_passed": true,
+      "visual_acceptance": false,
+      "snapshot": {
+        "paused": true,
+        "width": 1024,
+        "pixel_reads": 1,
+        "pitch": 1024,
+        "height": 768,
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.raw",
+        "bytes": 786432,
+        "sha256": "5bb28dc03e76e810d99a94ae124c7e463fceef1c221a607e564635051c40730c"
+      },
+      "manual_input_proof": false,
+      "visible_composition_proof": false,
+      "promotion_ready": false
+    },
+    "hospital": {
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\summary.json",
+        "bytes": 540839,
+        "sha256": "905207f9fe32aea2307a7609df68cbb20b3e9c971226ffef541f894b07d63349"
+      },
+      "trace": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\trace.json",
+        "bytes": 465965,
+        "sha256": "0783a7ee9de6089e00493945a8fe02876c283d0561e34cee5f3ca9e866d67517"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\cdb.log",
+        "bytes": 51448,
+        "sha256": "9bb3812980d09ddcbd5311d831fba9ef7020c1a3a6c322f4fdf1feb35b261753"
+      },
+      "probe": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\framed-screen.cdb",
+        "bytes": 173710,
+        "sha256": "40bfd535f131e44f97c9b33ed0a367d1c646319c273ea807d5b0a9e6dddd3aa1"
+      },
+      "packet": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\packet.json",
+        "bytes": 196887,
+        "sha256": "8979f8c570810966516fd3affcb0067bbd513b2c4faaa093836cdd510f8331fb"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\surface.raw",
+        "bytes": 786432,
+        "sha256": "4a18d3d3a0f19f3a81c49e559cbb410e8c486ec49a0f93dcb2a049e0bfd4da73"
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\surface.png",
+        "bytes": 246887,
+        "sha256": "3680eb20b9cd09266b23be8ce5f33b25c31f492418970a79c3753d32e4d76001"
+      },
+      "png_metadata": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\surface.png.json",
+        "bytes": 971,
+        "sha256": "bd73d530623535fff8d640ad10e6c6195ffe328c1a7fe6046548703c6274b60d"
+      },
+      "candidate": {
+        "path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\framed-screen-hospital-1024x768-ea5f2b16de3d627b.exe",
+        "bytes": 1311232,
+        "sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0"
+      },
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "resolution": "1024x768",
+      "availability": "construct_all",
+      "recorded_runtime_passed": true,
+      "recorded_trace_passed": true,
+      "visual_acceptance": false,
+      "snapshot": {
+        "paused": true,
+        "width": 1024,
+        "pixel_reads": 1,
+        "pitch": 1024,
+        "height": 768,
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\surface.raw",
+        "bytes": 786432,
+        "sha256": "4a18d3d3a0f19f3a81c49e559cbb410e8c486ec49a0f93dcb2a049e0bfd4da73"
+      },
+      "manual_input_proof": false,
+      "visible_composition_proof": false,
+      "promotion_ready": false
+    }
+  },
+  "source_spans": [
+    {
+      "name": "packed_pcx_loader",
+      "va": "004020a0",
+      "rva": "000020a0",
+      "file_offset": 5280,
+      "length": 1088,
+      "original_sha256": "0ac9cd802b196f418c887cb4bf7d9aab74f012fe5ad93170418a87b4804ebb70",
+      "candidate_sha256": "0ac9cd802b196f418c887cb4bf7d9aab74f012fe5ad93170418a87b4804ebb70",
+      "unchanged": true
+    },
+    {
+      "name": "memory_write_iterator",
+      "va": "00403ef0",
+      "rva": "00003ef0",
+      "file_offset": 13040,
+      "length": 64,
+      "original_sha256": "d7f8f377529df22ae5043773a52284b5f5d0aac52149445c962ceff117b878d0",
+      "candidate_sha256": "d7f8f377529df22ae5043773a52284b5f5d0aac52149445c962ceff117b878d0",
+      "unchanged": true
+    },
+    {
+      "name": "flat_iterator_advance",
+      "va": "004057d0",
+      "rva": "000057d0",
+      "file_offset": 19408,
+      "length": 4,
+      "original_sha256": "a12dfc58707e0261ac2e07b7c3cafcec9139f5ad7d47e00dceba5a33249d960a",
+      "candidate_sha256": "a12dfc58707e0261ac2e07b7c3cafcec9139f5ad7d47e00dceba5a33249d960a",
+      "unchanged": true,
+      "original_hex": "015004c3",
+      "candidate_hex": "015004c3"
+    },
+    {
+      "name": "overview_load_vtable30",
+      "va": "004213b4",
+      "rva": "000213b4",
+      "file_offset": 133044,
+      "length": 14,
+      "original_sha256": "021c556d00f23a897d29ca07097d3574fcb9449e9195185003afee0a782b5aed",
+      "candidate_sha256": "021c556d00f23a897d29ca07097d3574fcb9449e9195185003afee0a782b5aed",
+      "unchanged": true,
+      "original_hex": "5f8bb5b800000089e831c9ff5630",
+      "candidate_hex": "5f8bb5b800000089e831c9ff5630"
+    },
+    {
+      "name": "overview_initial_redraw_call",
+      "va": "0042232e",
+      "rva": "0002232e",
+      "file_offset": 137006,
+      "length": 5,
+      "original_sha256": "21baf8d14d4fc090faa8f232ddc9870232f84d62a5be11eec096a9427fbf4f5a",
+      "candidate_sha256": "d67d44fc28d6967d9316ba11f189256210dac576c5c6095089a00a935f4f5a02",
+      "unchanged": false,
+      "original_hex": "e8edfcffff",
+      "candidate_hex": "e89d930f00"
+    },
+    {
+      "name": "overview_center_wrapper",
+      "va": "0051b6d0",
+      "rva": "0011b6d0",
+      "file_offset": 1153232,
+      "length": 208,
+      "original_sha256": "46f531b7ea0428fbf2c3ca2b60e8dc33d6bbfa000e0fd1b489c5e39140a47006",
+      "candidate_sha256": "96b02cecd92e5309fbff331e489939c6a9fdf8e551cbaaeb8423c464621ade9b",
+      "unchanged": false
+    },
+    {
+      "name": "hospital_background_load",
+      "va": "0043dd22",
+      "rva": "0003dd22",
+      "file_offset": 250146,
+      "length": 24,
+      "original_sha256": "f29788e9d3f5f616434d164f657a439203c119d5bb9186fcfee2e2f2f5adaffa",
+      "candidate_sha256": "f29788e9d3f5f616434d164f657a439203c119d5bb9186fcfee2e2f2f5adaffa",
+      "unchanged": true,
+      "original_hex": "51a1e00252008bb8b80000008d5c240431c9ff5730b81010",
+      "candidate_hex": "51a1e00252008bb8b80000008d5c240431c9ff5730b81010"
+    },
+    {
+      "name": "hospital_initial_present",
+      "va": "0043de40",
+      "rva": "0003de40",
+      "file_offset": 250432,
+      "length": 24,
+      "original_sha256": "f68302ecc3f48bc46ffc4e095f41a375a1a73cdd337c7aecf440ddc830064a43",
+      "candidate_sha256": "f68302ecc3f48bc46ffc4e095f41a375a1a73cdd337c7aecf440ddc830064a43",
+      "unchanged": true,
+      "original_hex": "31c9e8392f0200b8d84c540031dbe84d300200890dbc3854",
+      "candidate_hex": "31c9e8392f0200b8d84c540031dbe84d300200890dbc3854"
+    },
+    {
+      "name": "native_base_surface_ctor",
+      "va": "00401e00",
+      "rva": "00001e00",
+      "file_offset": 4608,
+      "length": 37,
+      "original_sha256": "13da14ece5cae85a50f8ccc76f6a26ae558cf3e6346f6a9bb7ec28420056e3b2",
+      "candidate_sha256": "13da14ece5cae85a50f8ccc76f6a26ae558cf3e6346f6a9bb7ec28420056e3b2",
+      "unchanged": true
+    },
+    {
+      "name": "native_memory_surface_ctor",
+      "va": "00403d70",
+      "rva": "00003d70",
+      "file_offset": 12656,
+      "length": 218,
+      "original_sha256": "7bea5de2d1e2621282cecd6d5a2e5bbeb39de90cb1336d25254a87207efeecfa",
+      "candidate_sha256": "7bea5de2d1e2621282cecd6d5a2e5bbeb39de90cb1336d25254a87207efeecfa",
+      "unchanged": true
+    },
+    {
+      "name": "native_memory_surface_dtor",
+      "va": "00403e50",
+      "rva": "00003e50",
+      "file_offset": 12880,
+      "length": 94,
+      "original_sha256": "9f2dbe6bee7edc7fb85fddcfdf444646ba5888cde136d14bf604efe9de3831e8",
+      "candidate_sha256": "9f2dbe6bee7edc7fb85fddcfdf444646ba5888cde136d14bf604efe9de3831e8",
+      "unchanged": true
+    },
+    {
+      "name": "fatal_allocation_wrapper",
+      "va": "00461c00",
+      "rva": "00061c00",
+      "file_offset": 397312,
+      "length": 111,
+      "original_sha256": "0c6970c804420d173f373df153f265e17c6e57e3073241b4d89030b1add64f38",
+      "candidate_sha256": "0c6970c804420d173f373df153f265e17c6e57e3073241b4d89030b1add64f38",
+      "unchanged": true
+    },
+    {
+      "name": "nonfatal_allocator",
+      "va": "00473ff0",
+      "rva": "00073ff0",
+      "file_offset": 472048,
+      "length": 237,
+      "original_sha256": "a18fd9592d3cbed9c905ca7972918df080331fa2df655b064efccb8dc081ba68",
+      "candidate_sha256": "a18fd9592d3cbed9c905ca7972918df080331fa2df655b064efccb8dc081ba68",
+      "unchanged": true
+    },
+    {
+      "name": "base_surface_member_ctor",
+      "va": "00473250",
+      "rva": "00073250",
+      "file_offset": 468560,
+      "length": 80,
+      "original_sha256": "bb259809475cdab8983e2fc8e1317f344e1637dfa72f8c8e8d86a7aa72517af4",
+      "candidate_sha256": "bb259809475cdab8983e2fc8e1317f344e1637dfa72f8c8e8d86a7aa72517af4",
+      "unchanged": true
+    },
+    {
+      "name": "overview_map_reentry_call",
+      "va": "004224b2",
+      "rva": "000224b2",
+      "file_offset": 137394,
+      "length": 5,
+      "original_sha256": "f4c843c12a60eb8c7d53a17805bce354ab640e91cbad15f116aaf048fd621cee",
+      "candidate_sha256": "f4c843c12a60eb8c7d53a17805bce354ab640e91cbad15f116aaf048fd621cee",
+      "unchanged": true,
+      "original_hex": "e88988feff",
+      "candidate_hex": "e88988feff"
+    },
+    {
+      "name": "overview_nested_return",
+      "va": "0042262c",
+      "rva": "0002262c",
+      "file_offset": 137772,
+      "length": 8,
+      "original_sha256": "6f00a37e5f32595f836af4c49f928b85229e6bfbbbbdd96c57913f1d44eb305b",
+      "candidate_sha256": "6f00a37e5f32595f836af4c49f928b85229e6bfbbbbdd96c57913f1d44eb305b",
+      "unchanged": true,
+      "original_hex": "ffd18b0dd8995100",
+      "candidate_hex": "ffd18b0dd8995100"
+    },
+    {
+      "name": "overview_nested_repaint",
+      "va": "00422674",
+      "rva": "00022674",
+      "file_offset": 137844,
+      "length": 5,
+      "original_sha256": "6b6a235abf0b94f039e5295c69d954421237e07c37b428333173a26926f86e81",
+      "candidate_sha256": "c80c805b3e8cf98c67dd44483d2f54422de363758009a9f62485ffe65e123e59",
+      "unchanged": false,
+      "original_hex": "e8a7f9ffff",
+      "candidate_hex": "e857900f00"
+    },
+    {
+      "name": "overview_nested_present",
+      "va": "004226d3",
+      "rva": "000226d3",
+      "file_offset": 137939,
+      "length": 5,
+      "original_sha256": "a9b5ec7f5ab45273c427c233ae7a0dcbc5ee700c8608fa0832764bbfa103d553",
+      "candidate_sha256": "a9b5ec7f5ab45273c427c233ae7a0dcbc5ee700c8608fa0832764bbfa103d553",
+      "unchanged": true,
+      "original_hex": "e8c8e70300",
+      "candidate_hex": "e8c8e70300"
+    },
+    {
+      "name": "inactive_alternate_native_wrapper",
+      "va": "0051b7e0",
+      "rva": "0011b7e0",
+      "file_offset": 1153504,
+      "length": 192,
+      "original_sha256": "5d89f056865052bcb89c910d2d62872e029fb273c3db03f8968a52a41593c1b5",
+      "candidate_sha256": "5d89f056865052bcb89c910d2d62872e029fb273c3db03f8968a52a41593c1b5",
+      "unchanged": true
+    }
+  ],
+  "asset": {
+    "resource": {
+      "path": "C:\\Clash\\DATA\\maximum.res",
+      "bytes": 43971758,
+      "sha256": "44f545780f11081cd0d45421eb8b7ed985221ef776319573bbfd89ff6431ccf2"
+    },
+    "member": "/GFX/CASTLE.CHR/DW_20.GFX",
+    "offset": 1358128,
+    "length": 175520,
+    "sha256": "760bb8908b34b6f268fd4dc75fc676a30e7f10435c9d0591e0ba3a66e0baec3a",
+    "format": "PCX 8-bit indexed RLE",
+    "header": {
+      "xmin": 0,
+      "ymin": 0,
+      "xmax": 639,
+      "ymax": 479,
+      "width": 640,
+      "height": 480,
+      "planes": 1,
+      "bits_per_pixel": 8,
+      "bytes_per_line": 640
+    },
+    "decoded_pixel_count": 307200,
+    "decoded_sha256": "303570ef7ed3f52e04c77855de7e876eac65bd8d90ec11a41aa5f10160c7cd20",
+    "decode_method": "Traverse authenticated LLRS GFX/CASTLE.CHR/DW_20.GFX directory. Read PCX header; from byte128 decode literal bytes or C0..FF length=value&63 plus next repeated byte until exactly640*480 indices. Keep result in RAM only."
+  },
+  "hospital_exact_comparison": {
+    "method": "Compare decoded_index[k] directly with recorded raw[k], k=1024*y+x. This is the observed erroneous packed placement, not a repaired image. All indices use the recorded indexed raw; palette does not enter this comparison.",
+    "physical_size": [
+      1024,
+      768
+    ],
+    "packed_asset_bytes": 307200,
+    "affected_physical_rows": 300,
+    "full_prefix": {
+      "matches": 291499,
+      "compared": 307200,
+      "mismatches": 15701
+    },
+    "right_of_native_ui": {
+      "rectangle_inclusive": [
+        640,
+        0,
+        1023,
+        299
+      ],
+      "matches": 115200,
+      "compared": 115200,
+      "mismatches": 0,
+      "all_exact": true
+    },
+    "remaining_mismatch_limit": "The full prefix includes native title/text/sprite overlays; no mismatch pixels are silently ignored or reclassified."
+  },
+  "overview_historical_comparison": {
+    "archive_summary": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144019\\summary.json",
+      "bytes": 5211,
+      "sha256": "4b59f521770a227db45e02dc933016641dd091c1de43cee478033fc7e16af877"
+    },
+    "archive_raw": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144019\\surface.raw",
+      "bytes": 480000,
+      "sha256": "6cbbf4e77ba7e9d38c362304b590496b5012b86ddaaf1d3c3d3cfc7a132e153c"
+    },
+    "archive_png": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144019\\surface.png",
+      "bytes": 219583,
+      "sha256": "ec62f8cb6833f183283d77c24e6588f2ab8f1fccfb592b9303ff305877fa2805"
+    },
+    "archive_log": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144019\\cdb-surface-dump.log",
+      "bytes": 18003,
+      "sha256": "1fd003dc44fd0c317487d22ca1fb01c9fa590b60e37c5623ab1109ca0223b22a"
+    },
+    "method": "For every x=0..639,y=80..259 in current centered640 crop: k=1024*y+x; compare current_raw[(y+144)*1024+x+192] against archived_raw[(floor(k/640)+60)*800+(k%640)+80]. This tests a packed-load placement hypothesis; it does not create or correct pixels.",
+    "matches": 113245,
+    "compared": 115200,
+    "mismatches": 1955,
+    "limit": "Supplementary historical comparison with different frame/route timing and overlays; hospital asset comparison is the exact source-pixel proof."
+  },
+  "conclusions": [
+    "Native640x480 packed background is decoded onto the existing1024-wide memory target. All115200 hospital pixels outside native UI columns in affected rows exactly follow this incorrect placement.",
+    "Overview wrapper0051B6D0 invokes stock00422020 before enforcing any native640 target, then centers the already distorted top-left640x480 rectangle.",
+    "Hospital0043DCE0 loads and draws on dword005202E0 and its initial present has no route-specific center/clear wrapper, leaving native-position controls and stale prior content.",
+    "Centered640x480 modal margins and absent ordinary-map frame/action bar are not independently classified as defects here.",
+    "Native canvas ownership must cover active modal draws and nested facilities, with physical restoration before overview004224B2 calls the HD map renderer."
+  ],
+  "limits": [
+    "This preserves two already-recorded successful capture traces with visually failed images; it does not change either runtime report.",
+    "No runtime, game-data mutation, debugger, input, candidate generation, promotion or cleanup was performed by this analysis.",
+    "Repair lifecycle below is a source-derived proposal pending independent code review, synthetic ownership/ABI tests and distinct-stage runtime proof."
+  ]
+}

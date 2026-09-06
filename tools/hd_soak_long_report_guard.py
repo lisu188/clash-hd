@@ -15,6 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from hd_soak_short_tier_ladder import SHORT_LADDER_STEPS
+
 
 PROTECTED_STABLE_STAGE = (
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-"
@@ -36,6 +38,12 @@ DEFAULT_PROOF_JSON = Path("captures/current/hd-soak-long-proof-current.json")
 REQUIRED_ROUTES = ["map-idle", "map-pan"]
 MIN_DURATION_SEC = 7200
 SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
+HIDDEN_ENVIRONMENT = "hidden_cdb_host"
+HIDDEN_EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
+HIDDEN_REQUIRED_CHECKS = (
+    "schema", "environment", "wrapper_provenance", "marker_provenance",
+    "cleanup_provenance", "forced_entry_disclosure", "elapsed_coverage",
+)
 
 
 def status_text(passed: bool) -> str:
@@ -63,10 +71,14 @@ def resolve_ref(path_text: str, *, base: Path = Path(".")) -> Path:
 def short_ladder_complete(short_step_status: Any) -> bool:
     if not isinstance(short_step_status, dict):
         return False
+    steps = short_step_status.get("steps")
+    if not isinstance(steps, list) or not all(isinstance(step, dict) for step in steps):
+        return False
     return (
         short_step_status.get("passed") is True
         and short_step_status.get("ladder_complete") is True
-        and all(step.get("passed") is True for step in (short_step_status.get("steps") or []))
+        and [step.get("id") for step in steps] == [step["id"] for step in SHORT_LADDER_STEPS]
+        and all(step.get("passed") is True for step in steps)
     )
 
 
@@ -89,10 +101,40 @@ def validate_long_report(report: Any, *, path: Path | None = None) -> tuple[bool
         return False, ["long soak report guard must be a JSON object"], {}
 
     route = str(report.get("route") or "")
-    duration_sec = int(report.get("duration_sec") or 0)
+    duration_value = report.get("duration_sec")
+    if isinstance(duration_value, bool) or not isinstance(duration_value, (int, float)):
+        duration_sec = 0
+        failures.append("long soak duration_sec must be a number")
+    else:
+        duration_sec = duration_value
     stage = str(report.get("stage") or "")
     candidate_sha256 = candidate_sha_from_report(report)
-    overall = report.get("overall") is True or report.get("passed") is True
+    overall = report.get("overall", report.get("passed")) is True
+    if "overall" in report and "passed" in report and report["overall"] != report["passed"]:
+        failures.append("long soak report guard has conflicting overall/passed status")
+    if report.get("failures"):
+        failures.append("long soak report guard still records failures")
+    # Hidden host endurance keeps its provenance and non-input contract all
+    # the way into release evidence. Guest diagnostics do not supply the host
+    # process checks required by this ladder.
+    environment = str(report.get("environment") or "host_visible")
+    evidence_class = report.get("evidence_class")
+    if environment not in {"host_visible", HIDDEN_ENVIRONMENT}:
+        failures.append(f"unsupported long-soak host environment: {environment!r}")
+    elif environment == "host_visible":
+        if evidence_class not in (None, "host_visible_runtime_soak"):
+            failures.append("visible-host long soak has a mismatched evidence_class")
+    else:
+        if evidence_class != HIDDEN_EVIDENCE_CLASS:
+            failures.append("hidden long soak has a mismatched evidence_class")
+        if report.get("input_responsiveness") != "not_applicable_hidden":
+            failures.append("hidden long soak must disclose input_responsiveness=not_applicable_hidden")
+        for field in ("entry_mechanism", "pan_mechanism") if route == "map-pan" else ("entry_mechanism",):
+            if not isinstance(report.get(field), str) or not report[field].strip():
+                failures.append(f"hidden long soak is missing {field}")
+        for check_name in HIDDEN_REQUIRED_CHECKS:
+            if not report_check_passed(report, check_name):
+                failures.append(f"required hidden soak guard check is not passing: {check_name}")
 
     if not overall:
         failures.append("long soak report guard is not passing")
@@ -100,7 +142,7 @@ def validate_long_report(report: Any, *, path: Path | None = None) -> tuple[bool
         failures.append("long soak report guard stage is not the protected stable stage")
     if route not in REQUIRED_ROUTES:
         failures.append(f"long soak route {route!r} is not in required routes {REQUIRED_ROUTES}")
-    if duration_sec < MIN_DURATION_SEC:
+    if not MIN_DURATION_SEC <= duration_sec < float("inf"):
         failures.append(f"long soak duration_sec {duration_sec} is below {MIN_DURATION_SEC}")
     if not SHA256_RE.match(candidate_sha256):
         failures.append("candidate_sha256 is not a 64-hex digest")
@@ -131,6 +173,11 @@ def validate_long_report(report: Any, *, path: Path | None = None) -> tuple[bool
     summary = {
         "path": str(path) if path else None,
         "route": route,
+        "environment": environment,
+        "evidence_class": evidence_class,
+        "input_responsiveness": report.get("input_responsiveness"),
+        "entry_mechanism": report.get("entry_mechanism"),
+        "pan_mechanism": report.get("pan_mechanism"),
         "duration_sec": duration_sec,
         "stage": stage,
         "candidate_sha256": candidate_sha256 or None,
@@ -263,7 +310,18 @@ def to_markdown(report: dict[str, Any]) -> str:
     ]
     if report["route_records"]:
         for route, record in report["route_records"].items():
-            lines.append(f"- `{route}`: duration=`{record['duration_sec']}` path=`{record['path']}`")
+            lines.append(
+                f"- `{route}`: environment=`{record.get('environment') or 'host_visible'}` "
+                f"duration=`{record['duration_sec']}` path=`{record['path']}`"
+            )
+            if record.get("environment") == HIDDEN_ENVIRONMENT:
+                lines.append(
+                    f"  - Evidence class: `{record.get('evidence_class')}`; "
+                    f"input responsiveness: `{record.get('input_responsiveness')}`."
+                )
+                lines.append(f"  - Entry mechanism: {record.get('entry_mechanism')}")
+                if route == "map-pan":
+                    lines.append(f"  - Pan mechanism: {record.get('pan_mechanism')}")
     else:
         lines.append("- No passing long-route guard records.")
     if report["failures"]:

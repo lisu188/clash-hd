@@ -1,0 +1,157 @@
+{
+  "generated_at": "2026-09-05T09:59:36.849476+00:00",
+  "evidence_scope": "hidden combined-candidate startup and full-tile surface diagnostics",
+  "runs": [
+    {
+      "id": "native_startup_timeout",
+      "run_directory": "C:\\ClashCaptures\\combinedui-hidden\\800x600\\cdb-surface-dump-20260905-114301",
+      "summary": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\800x600\\cdb-surface-dump-20260905-114301\\summary.json",
+        "sha256": "5121164978791cd09127d0eb3557bd5e2e98a45ac5fb55de7d08bcae1b9e406c"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\800x600\\cdb-surface-dump-20260905-114301\\cdb-surface-dump.log",
+        "sha256": "9a7687a04f223b6e814f73c6b91567a1ca335910caceb4942756bae723e09e2b"
+      },
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+      "resolution": "800x600",
+      "candidate": "C:\\ClashTests\\hd-completion\\surface800-20260905-114400\\clash95_hd_surfdump_20260905_114301.exe",
+      "candidate_sha256": "0a75cf35f42efe1e44fba1ac4031eaae5323cdff51aa19d261c36c5bb84691c2",
+      "wrapper_sha256": "0637684A3A47D60E8CAB403059E3F1706229574C87DD42EAE0B7C2B281089A54",
+      "generated_probe_sha256": "1a28493038e79a799084798fa7c7ad07d977dd19338e80351f92fd40da0e4987",
+      "surface_gate_passed": false,
+      "failure": "CDB surface dump timed out after 240 seconds",
+      "av_observed": false,
+      "app_request_quit": false,
+      "timed_out": true,
+      "startup_mode": "native",
+      "hidden_desktop": true,
+      "proxy_present": "0",
+      "post_dump_observation_completed": false,
+      "surface_geometry_matched": false,
+      "partial_pixels": {
+        "right": 0,
+        "bottom": 8
+      },
+      "timeout_stack": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\800x600\\cdb-surface-dump-20260905-114301\\timeout-stack.log",
+        "sha256": "9089cf4d9497fa25e80f0b93cd544e072001f6610f9f4a9745f09b102c2c9358"
+      }
+    },
+    {
+      "id": "whole_startup_bypass_av",
+      "run_directory": "C:\\ClashCaptures\\combinedui-hidden\\800x600-skip\\cdb-surface-dump-20260905-114806",
+      "summary": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\800x600-skip\\cdb-surface-dump-20260905-114806\\summary.json",
+        "sha256": "133895b825f7f16a0089c95c11dca2603a1419c47b47057ed186287085cb1d7e"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\800x600-skip\\cdb-surface-dump-20260905-114806\\cdb-surface-dump.log",
+        "sha256": "91ecd08337c196f6e65d3818e1b8dc186f09f28ff04dab4d516373638ca58db0"
+      },
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+      "resolution": "800x600",
+      "candidate": "C:\\ClashTests\\hd-completion\\surface800-skip-20260905-114750\\clash95_hd_surfdump_20260905_114806.exe",
+      "candidate_sha256": "0a75cf35f42efe1e44fba1ac4031eaae5323cdff51aa19d261c36c5bb84691c2",
+      "wrapper_sha256": "9F7A27746D75E9CB7E4586F0F4C7F0EDA5CF8C94C3EBEA9AFA599D7F0B1F96DF",
+      "generated_probe_sha256": "073b395455d11ff40515c70502a5bf4987d59cfd18dbd0ce59fb31f147ed7575",
+      "surface_gate_passed": false,
+      "failure": "access violation observed during surface capture",
+      "av_observed": true,
+      "app_request_quit": false,
+      "timed_out": false,
+      "startup_mode": "whole_routine_bypass",
+      "hidden_desktop": true,
+      "proxy_present": "0",
+      "post_dump_observation_completed": false,
+      "surface_geometry_matched": false,
+      "partial_pixels": {
+        "right": 0,
+        "bottom": 8
+      }
+    },
+    {
+      "id": "800x600_fast_forward",
+      "run_directory": "C:\\ClashCaptures\\combinedui-hidden\\800x600-fast\\cdb-surface-dump-20260905-115001",
+      "summary": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\800x600-fast\\cdb-surface-dump-20260905-115001\\summary.json",
+        "sha256": "dc704e802727f737128c9b033b73b9437b345fe65658a1493b41ed6d4ef6442c"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\800x600-fast\\cdb-surface-dump-20260905-115001\\cdb-surface-dump.log",
+        "sha256": "5fc67899e9db5f782976864da6dd7a67214d270c72c1c174cb73279e7c75c6b1"
+      },
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+      "resolution": "800x600",
+      "candidate": "C:\\ClashTests\\hd-completion\\surface800-fast-20260905-115100\\clash95_hd_surfdump_20260905_115001.exe",
+      "candidate_sha256": "0a75cf35f42efe1e44fba1ac4031eaae5323cdff51aa19d261c36c5bb84691c2",
+      "wrapper_sha256": "F0AE2913FAD8DA48B8174EF635962560C932E4CD5B5B5267E04351D3E567F821",
+      "generated_probe_sha256": "5b258ce511ca7a71477a7cf6bdfc193599878e24f2a72c1d5b08c6117410b56c",
+      "surface_gate_passed": true,
+      "failure": null,
+      "av_observed": false,
+      "app_request_quit": false,
+      "timed_out": false,
+      "startup_mode": "fast_forward",
+      "hidden_desktop": true,
+      "proxy_present": "0",
+      "post_dump_observation_completed": true,
+      "surface_geometry_matched": true,
+      "partial_pixels": {
+        "right": 0,
+        "bottom": 8
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\800x600-fast\\cdb-surface-dump-20260905-115001\\surface.png",
+        "sha256": "1ae1df9c6dbbe0c7bddd2fcce87b8d943c30341fa5d0ce490c74605f3c7a10fd"
+      },
+      "visibility_unexplained_blank_cells": []
+    },
+    {
+      "id": "1024x768_fast_forward",
+      "run_directory": "C:\\ClashCaptures\\combinedui-hidden\\1024x768-fast\\cdb-surface-dump-20260905-115157",
+      "summary": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\1024x768-fast\\cdb-surface-dump-20260905-115157\\summary.json",
+        "sha256": "8d2b75dc2f1e2bcda1f1f52c2430d105f3fb7abfa8c493567a976c93f0cd5cb4"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\1024x768-fast\\cdb-surface-dump-20260905-115157\\cdb-surface-dump.log",
+        "sha256": "928d2e8af63e0fb6cd59b9a996891b10739f0151b0c8694b10c61f5247893d5a"
+      },
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+      "resolution": "1024x768",
+      "candidate": "C:\\ClashTests\\hd-completion\\surface1024-fast-20260905-115200\\clash95_hd_surfdump_20260905_115157.exe",
+      "candidate_sha256": "4f8fe0899593b2e2f7477518ee1ea05e1d0f21b0ceea9091507361d4a3504120",
+      "wrapper_sha256": "EEB66C796F1DB69F94A466D73370B786A56B4BF30DF65D5D887061D5C23A2601",
+      "generated_probe_sha256": "9f30628a26242f9b2a68fdebcb338641df191785237816a8465aa011b80cbe63",
+      "surface_gate_passed": true,
+      "failure": null,
+      "av_observed": false,
+      "app_request_quit": false,
+      "timed_out": false,
+      "startup_mode": "fast_forward",
+      "hidden_desktop": true,
+      "proxy_present": "0",
+      "post_dump_observation_completed": true,
+      "surface_geometry_matched": true,
+      "partial_pixels": {
+        "right": 32,
+        "bottom": 48
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\combinedui-hidden\\1024x768-fast\\cdb-surface-dump-20260905-115157\\surface.png",
+        "sha256": "b12cce94fedd1bb67f83a3ea84469797248571006f1a108b8690232d6cac9382"
+      },
+      "visibility_unexplained_blank_cells": []
+    }
+  ],
+  "limitations": [
+    "Full-tile geometry and visibility gates do not cover partial tile strips. Native draw counts omit those strips; safe edge clipping and world-boundary handling remain under source review.",
+    "Hidden palette/surface composition cannot prove final visible wrapper output or manual input.",
+    "Native startup timeout and whole-routine-bypass AV are preserved as distinct failures. Fast-forward success does not establish native startup correctness."
+  ],
+  "complete_combined_rendering_proven": false,
+  "manual_input_proven": false,
+  "promotion_performed": false,
+  "original_executable_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+}

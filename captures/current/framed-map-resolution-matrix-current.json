@@ -1,0 +1,230 @@
+{
+  "generated_at": "2026-09-06T02:52:50.764429+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "first_two_run_evidence": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-runtime-current.json",
+    "sha256": "8113e2b8cb3b2a05503b583ed0a496517b45347e3e5217e9915f80fbaacc9458"
+  },
+  "additional_run_plan": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-run-plan-20260906-023937.json",
+    "sha256": "869eff12747517b5c7be31dd92dc68865d35a1eb1447020428f4a936e773a9c1"
+  },
+  "additional_source_pins_match": true,
+  "runs": [
+    {
+      "resolution": "800x600",
+      "runtime_passed": false,
+      "initial_trace_passed": false,
+      "runtime_error": "incremental input or native exit lacks its guard and invocation",
+      "all_four_borders_and_footer": true,
+      "action_cells_exact": 6,
+      "detailed_evidence": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-runtime-current.json",
+        "sha256": "8113e2b8cb3b2a05503b583ed0a496517b45347e3e5217e9915f80fbaacc9458"
+      },
+      "original_runtime_summary_present": true
+    },
+    {
+      "resolution": "1024x768",
+      "runtime_passed": true,
+      "initial_trace_passed": true,
+      "runtime_error": null,
+      "all_four_borders_and_footer": true,
+      "action_cells_exact": 6,
+      "detailed_evidence": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-runtime-current.json",
+        "sha256": "8113e2b8cb3b2a05503b583ed0a496517b45347e3e5217e9915f80fbaacc9458"
+      },
+      "original_runtime_summary_present": true
+    },
+    {
+      "resolution": "1280x720",
+      "candidate_sha256": "883bdeeb388ca294a2bf37195c0d18ee069ed6e668ffbc4e6a9e905ca3ccf913",
+      "runtime_passed": false,
+      "original_runtime_summary_present": false,
+      "runtime_error": "Harness aborted on image gameplay heuristic exit2 before final summary.",
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "trace_event_count": 140,
+      "full_pairs": 1,
+      "all_four_borders_and_footer": true,
+      "exact_frame_pixels": 84992,
+      "action_cells_exact": 6,
+      "image_gameplay_heuristic": false,
+      "image_warnings": [
+        "low_overall_gameplay_coverage"
+      ],
+      "blank_cell_count": 100,
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937\\cdb-surface-dump-20260906-044004\\surface.png",
+        "sha256": "d89879bf1a87201faf33a5906529ca8880f6c73fe987e93fb925a23059305bdf"
+      },
+      "pixel_audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-1280x720-pixels-20260906.json",
+        "sha256": "fb9fe122bd766f86a667668520f5d5f51b0fd44808165a3a5d71638b742216ab"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937\\cdb-surface-dump-20260906-044004\\cdb-surface-dump.log",
+        "sha256": "3658f575ad2d9fd765572e2e4599846c5d04065707c7c893c72af6974c2fa51e"
+      },
+      "installed_probe": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937\\cdb-surface-dump-20260906-044004\\partial-tile-installed.extra.cdb",
+        "sha256": "575c176f39a2ddbca00298ddb07261835703e408031199fc06080e0538fe10e8"
+      },
+      "installed_probe_canonical_lf_matches_plan": true,
+      "coverage": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937\\cdb-surface-dump-20260906-044004\\map-tile-coverage.json",
+        "sha256": "0f5ed733e251f5b155fa014106d4860239da872ec3a6767a6ba88ba20934fb53"
+      },
+      "summary": null,
+      "diagnostic_summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937\\cdb-surface-dump-20260906-044004\\diagnostic-summary.json",
+        "sha256": "0b3dbfacb03f4d3649a234752d49f54fc4191f4b5d72f6927703a84094eddbae"
+      }
+    },
+    {
+      "resolution": "1280x960",
+      "candidate_sha256": "e7d0b80f1af5b2d6821037b212c9e8081c48828e97692124fe9c481b9dab8ddc",
+      "runtime_passed": false,
+      "original_runtime_summary_present": false,
+      "runtime_error": "Harness aborted on image gameplay heuristic exit2 before final summary.",
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "trace_event_count": 140,
+      "full_pairs": 1,
+      "all_four_borders_and_footer": true,
+      "exact_frame_pixels": 100352,
+      "action_cells_exact": 6,
+      "image_gameplay_heuristic": false,
+      "image_warnings": [
+        "low_overall_gameplay_coverage"
+      ],
+      "blank_cell_count": 176,
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x960-20260906-023937\\cdb-surface-dump-20260906-044208\\surface.png",
+        "sha256": "fb413f5b87bc1527d8172ed094937200d0160b7534bbc6cf6769a6f7d046ebb9"
+      },
+      "pixel_audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-1280x960-pixels-20260906.json",
+        "sha256": "e52f75d5a028c60ddb99702a308fd25fd18b2ed63b6cdf540ff4cad536dc350f"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x960-20260906-023937\\cdb-surface-dump-20260906-044208\\cdb-surface-dump.log",
+        "sha256": "1891599a6ceddaf1d14bca8693c0c4af7349e4536a7c92d0713d6f16afe9fcaf"
+      },
+      "installed_probe": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x960-20260906-023937\\cdb-surface-dump-20260906-044208\\partial-tile-installed.extra.cdb",
+        "sha256": "2469a40af0b2e2188da672e3a95b95ad4afb7648401323cf188f6cf13b92673e"
+      },
+      "installed_probe_canonical_lf_matches_plan": true,
+      "coverage": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x960-20260906-023937\\cdb-surface-dump-20260906-044208\\map-tile-coverage.json",
+        "sha256": "1ec994658556e420de7c7f93e0639bb6066103a34f8a9e7af167987e4be155a5"
+      },
+      "summary": null,
+      "diagnostic_summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x960-20260906-023937\\cdb-surface-dump-20260906-044208\\diagnostic-summary.json",
+        "sha256": "4315a050f7478312d42b5df6b70ea0d38570b9d46a4d09b5e1eb1795e3b5192b"
+      }
+    },
+    {
+      "resolution": "1920x1080",
+      "candidate_sha256": "5402ca1cb21dff60e6bb8dfbdcc92db73a12515652451f00df9273029a0564ae",
+      "runtime_passed": false,
+      "original_runtime_summary_present": false,
+      "runtime_error": "Harness aborted on image gameplay heuristic exit2 before final summary.",
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "trace_event_count": 140,
+      "full_pairs": 1,
+      "all_four_borders_and_footer": true,
+      "exact_frame_pixels": 128512,
+      "action_cells_exact": 6,
+      "image_gameplay_heuristic": false,
+      "image_warnings": [
+        "low_overall_gameplay_coverage"
+      ],
+      "blank_cell_count": 384,
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1920x1080-20260906-023937\\cdb-surface-dump-20260906-044437\\surface.png",
+        "sha256": "341c8def3f4bcc275538b15d586998a6969475af408642af54f18cd0ce33092b"
+      },
+      "pixel_audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-1920x1080-pixels-20260906.json",
+        "sha256": "3d5ccf8d2417a5a015c6b608b0a68ebebc865fae908a484adeb70a9f8de33047"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1920x1080-20260906-023937\\cdb-surface-dump-20260906-044437\\cdb-surface-dump.log",
+        "sha256": "e12fa25e8ef7d6a1f20cc8c22fcbdb012e6b4513e553d348480366a06685c75b"
+      },
+      "installed_probe": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1920x1080-20260906-023937\\cdb-surface-dump-20260906-044437\\partial-tile-installed.extra.cdb",
+        "sha256": "e6a8165426e4bc8bdb2b3faa7f32fb7dc47e82aab3ce98ef91234e2a9a62d271"
+      },
+      "installed_probe_canonical_lf_matches_plan": true,
+      "coverage": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1920x1080-20260906-023937\\cdb-surface-dump-20260906-044437\\map-tile-coverage.json",
+        "sha256": "ae7a5fdacc77415770a1c723160aef8e92c77614197266ea976a05cc1d64e829"
+      },
+      "summary": null,
+      "diagnostic_summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1920x1080-20260906-023937\\cdb-surface-dump-20260906-044437\\diagnostic-summary.json",
+        "sha256": "0ed3bde2e77136bfe9d33330c96eba627d21db76584ab5edda8a3d0212eb4f11"
+      }
+    },
+    {
+      "resolution": "802x602",
+      "candidate_sha256": "dd54a298c4ab8e40db67ffff28672854b062c29554a16556a43f872ab28d4e3c",
+      "runtime_passed": true,
+      "original_runtime_summary_present": true,
+      "runtime_error": null,
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "trace_event_count": 140,
+      "full_pairs": 1,
+      "all_four_borders_and_footer": true,
+      "exact_frame_pixels": 62144,
+      "action_cells_exact": 6,
+      "image_gameplay_heuristic": true,
+      "image_warnings": [],
+      "blank_cell_count": 11,
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-802x602-20260906-023937\\cdb-surface-dump-20260906-044603\\surface.png",
+        "sha256": "679d0054913aedc62bf4a5a15c357264ec1d14ee3a42672d54a680d34eed9397"
+      },
+      "pixel_audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-v1-802x602-pixels-20260906.json",
+        "sha256": "3bdaaeaf2d439f104b2cc5f34dcce50c00358e927259b5d3fa0d6a6242129d0a"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-802x602-20260906-023937\\cdb-surface-dump-20260906-044603\\cdb-surface-dump.log",
+        "sha256": "490757141fd124551bf27d739c1f129395a7cd34225b627d06c654847ab6aba9"
+      },
+      "installed_probe": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-802x602-20260906-023937\\cdb-surface-dump-20260906-044603\\partial-tile-installed.extra.cdb",
+        "sha256": "f3a1f4eab66f28ca8af0e138742a8240dedc56ecbcd64fcaa1f0992da4174654"
+      },
+      "installed_probe_canonical_lf_matches_plan": true,
+      "coverage": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-802x602-20260906-023937\\cdb-surface-dump-20260906-044603\\map-tile-coverage.json",
+        "sha256": "de2967c55ad646397351f6f17180de6e13b672aaa1331dd4532822422cd9cc2c"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-802x602-20260906-023937\\cdb-surface-dump-20260906-044603\\summary.json",
+        "sha256": "c1f946aa1efcd18dd9cf21d9631caaf1f8d0055219991b179958350612c32d7e"
+      },
+      "diagnostic_summary": null
+    }
+  ],
+  "bounded_runtime_pass_count": 2,
+  "four_border_and_six_cell_pixel_pass_count": 6,
+  "stable_stage_changed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "All screenshots are hidden indexed software captures of the initial ordinary map.",
+    "800 duplicate exit remains a runtime failure; larger image heuristic failures and missing final summaries remain preserved.",
+    "These border/action-bar audits do not verify the minimap viewport rectangle, castle/battle/building screens, visible input or endurance.",
+    "Additional resolution process IDs were not recorded live; coordinator observed exact framed candidate/matching CDB process absence after completion."
+  ]
+}
