@@ -1,0 +1,46 @@
+name: Launcher source snapshot
+on:
+  push:
+    branches: ['codex/launcher-screenshots-35ee11e']
+    paths: ['.github/workflows/launcher-source-snapshot.yml']
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 35ee11e29d98fccb0dfcbee74d03a8ae39f445e5
+          persist-credentials: false
+      - name: Archive only tracked source and configuration
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import zipfile
+          files = subprocess.check_output(['git', 'ls-files', '-z']).decode().split('\0')
+          allowed = {'.py', '.ps1', '.ini', '.cdb', '.json', '.md', '.yml', '.yaml', '.spec'}
+          roots = {'src', 'tools', 'scripts', 'config', 'configs', 'probes', '.github', 'docs'}
+          output = Path(os.environ['RUNNER_TEMP']) / 'launcher-source.zip'
+          manifest = {}
+          with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED) as archive:
+              for name in files:
+                  p = Path(name)
+                  if name and p.is_file() and not p.is_symlink() and p.suffix in allowed and (len(p.parts) == 1 or p.parts[0] in roots):
+                      data = p.read_bytes()
+                      manifest[name] = hashlib.sha256(data).hexdigest()
+                      archive.writestr(name, data)
+              archive.writestr('source-snapshot.json', json.dumps({'commit': '35ee11e29d98fccb0dfcbee74d03a8ae39f445e5', 'sha256': manifest}, indent=2))
+          print(len(manifest), 'source/configuration files; no game binaries or captures')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: launcher-source-35ee11e
+          path: ${{ runner.temp }}/launcher-source.zip
+          retention-days: 1
+          if-no-files-found: error
