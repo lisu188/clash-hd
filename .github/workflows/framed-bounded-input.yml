@@ -1,0 +1,56 @@
+name: Bounded map mouse patcher
+on:
+  pull_request:
+    paths:
+      - 'src/patcher/**'
+      - 'tools/build_framed*'
+      - 'tools/test_framed_bounded_input.py'
+      - 'tools/test_framed_bounded_paint.py'
+      - '.github/workflows/framed-bounded-input.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/patcher/**'
+      - 'tools/build_framed*'
+      - 'tools/test_framed_bounded_input.py'
+      - 'tools/test_framed_bounded_paint.py'
+      - '.github/workflows/framed-bounded-input.yml'
+permissions:
+  contents: read
+concurrency:
+  group: bounded-map-input-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  native:
+    name: Bounded input bytes and native x86 (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Execute new native mouse and byte contracts without skips
+        run: |
+          python - <<'PY'
+          import sys
+          import unittest
+          suite = unittest.defaultTestLoader.discover('tools', pattern='test_framed_bounded_input.py')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          sys.exit(0 if result.wasSuccessful() and result.testsRun >= 22 and not result.skipped else 1)
+          PY
+      - name: Existing bounded renderer and camera regression suites
+        run: |
+          python tools/test_framed_bounded_paint.py
+          python tools/test_framed_camera.py
+          python tools/test_framed_input.py
+          python tools/test_display_plan.py
