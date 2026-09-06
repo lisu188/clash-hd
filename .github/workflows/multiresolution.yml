@@ -1,0 +1,74 @@
+name: Multiresolution contracts
+on:
+  pull_request:
+    paths:
+      - 'src/display_plan.py'
+      - 'src/launcher/**'
+      - 'src/patcher/**'
+      - 'tools/test_display_plan.py'
+      - 'tools/test_launcher*.py'
+      - '.github/workflows/multiresolution.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/display_plan.py'
+      - 'src/launcher/**'
+      - 'src/patcher/**'
+      - 'tools/test_display_plan.py'
+      - 'tools/test_launcher*.py'
+      - '.github/workflows/multiresolution.yml'
+permissions:
+  contents: read
+concurrency:
+  group: multiresolution-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    name: Display contracts (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Real source contracts and synthetic geometry without skipped tests
+        run: |
+          python - <<'PY'
+          import sys
+          import unittest
+          suite = unittest.defaultTestLoader.discover('tools', pattern='test_display_plan.py')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          sys.exit(0 if result.wasSuccessful() and result.testsRun and not result.skipped else 1)
+          PY
+      - name: Launcher regressions and original launch policy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          import sys
+          suites = sorted(Path('tools').glob('test_launcher*.py'))
+          assert suites, 'Launcher fixtures were not discovered'
+          for suite in suites:
+              subprocess.run([sys.executable, str(suite)], check=True, timeout=120)
+          PY
+          python tools/launcher_policy_guard.py --require-pass
+      - name: Preserve authenticated renderer source
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, 'tools')
+          import run_framed_offline_tests as runner
+          status = runner.source_preflight(runner.ROOT)
+          assert status['passed'], status
+          print('Verified all existing framed implementation source pins.')
+          PY
