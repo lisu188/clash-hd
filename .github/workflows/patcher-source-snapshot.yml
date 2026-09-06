@@ -1,0 +1,39 @@
+name: Patcher source snapshot
+on:
+  push:
+    branches: ['codex/source-aa85cff']
+    paths: ['.github/workflows/patcher-source-snapshot.yml']
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: aa85cff3816040bf4622a3de577641465dcd7ade
+          persist-credentials: false
+      - run: |
+          python3 - <<'PY'
+          import hashlib,json,os,subprocess,zipfile
+          from pathlib import Path
+          root=Path.cwd()
+          files=subprocess.check_output(['git','ls-files','-z']).decode().split('\0')
+          allowed={'.py','.c','.cs','.ps1','.ini','.cdb','.json','.md','.yml','.yaml','.spec'}
+          roots={'src','tools','scripts','config','configs','probes','.github','docs'}
+          manifest={}
+          with zipfile.ZipFile(Path(os.environ['RUNNER_TEMP'])/'patcher-source.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for name in files:
+                  p=Path(name)
+                  if name and p.is_file() and not p.is_symlink() and p.suffix in allowed and (len(p.parts)==1 or p.parts[0] in roots):
+                      data=p.read_bytes();manifest[name]=hashlib.sha256(data).hexdigest();z.writestr(name,data)
+              z.writestr('source-snapshot.json',json.dumps({'commit':'aa85cff3816040bf4622a3de577641465dcd7ade','sha256':manifest},indent=2))
+          print(len(manifest),'source/configuration files; no game assets or binaries')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: patcher-source-aa85cff
+          path: ${{ runner.temp }}/patcher-source.zip
+          retention-days: 1
+          if-no-files-found: error
