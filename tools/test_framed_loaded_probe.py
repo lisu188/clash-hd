@@ -48,6 +48,7 @@ def mapped(image, loaded_base):
     for at in fields:
         value = struct.unpack_from("<I", memory, at)[0]
         struct.pack_into("<I", memory, at, (value + loaded_base - preferred) & 0xffffffff)
+    struct.pack_into("<I", memory, probe.pe.inspect_pe(image).optional_offset + 28, loaded_base)
     return memory
 
 
@@ -133,6 +134,25 @@ class LoadedProbeTests(unittest.TestCase):
             old = bytes.fromhex(edit["old_hex"])
             memory[edit["rva"]:edit["rva"] + len(old)] = old
         self.assertLess(evaluate_commands(script, memory, 0x400000), summary["required_chunks"])
+
+    def test_loader_normalized_image_base_is_checked_not_ignored(self):
+        image, report, scalar = candidate()
+        parsed = probe.pe.inspect_pe(image)
+        _, checks, facts = probe._contract(image, report, scalar)
+        header = [check for check in checks if check.loader_image_base]
+        self.assertEqual(len(header), 1)
+        self.assertEqual((header[0].rva, header[0].size, header[0].value, header[0].relocated),
+                         (parsed.optional_offset + 28, 4, parsed.image_base, False))
+        script, summary = render(image, report, scalar)
+        base = 0x600000
+        memory = mapped(image, base)
+        self.assertEqual(evaluate_commands(script, memory, base), summary["required_chunks"])
+        for wrong in (0, parsed.image_base, base + 0x10000, 0xffffffff):
+            struct.pack_into("<I", memory, header[0].rva, wrong)
+            self.assertLess(evaluate_commands(script, memory, base), summary["required_chunks"])
+        self.assertEqual(facts["loader_image_base_rva"], header[0].rva)
+        with self.assertRaisesRegex(ValueError, "ImageBase header overlaps"):
+            probe._checks(image, parsed, [(0, parsed.headers_size)], (header[0].rva,))
 
     def test_unreadable_memory_does_not_increment_success_counter(self):
         image, report, scalar = candidate()
