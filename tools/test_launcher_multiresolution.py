@@ -174,6 +174,18 @@ class LauncherDisplayIntegrationTests(unittest.TestCase):
         self.assertFalse((self.root / "candidates").exists())
         self.assertFalse((self.root / "missing-game").exists())
 
+    def test_inspection_does_not_construct_host_specific_candidate_paths(self):
+        with patch.object(self.cli_module, "build_plan", side_effect=AssertionError("deployment path validation during geometry inspection")):
+            for renderer in ("classic", "framed"):
+                with self.subTest(renderer=renderer):
+                    code, output, errors = self.command("--profile", renderer, "--describe-plan", "--resolution", "1280x720")
+                    self.assertEqual(code, 0, errors)
+                    data = json.loads(output)
+                    self.assertFalse(data["candidate_paths_validated"])
+                    self.assertEqual(data["plan"]["renderer"], renderer)
+                    self.assertNotIn("candidate_exe", data["plan"])
+                    self.assertIn("candidates_root", data["requested_paths"])
+
     def test_describe_small_world_fails_honestly_without_permission_to_run_it(self):
         code, out, _ = self.command("--profile", "framed", "--describe-plan", "--resolution", "3840x2160", "--map-size", "40", "30")
         self.assertEqual(code, 1)
