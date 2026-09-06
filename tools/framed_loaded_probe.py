@@ -202,6 +202,6 @@ def render_probe(data: bytes, report: dict[str, Any]) -> tuple[str, dict[str, An
     lines.append(f'.if ((@$t19 != 0) & (@$t18 == 0n{len(chunks)})) {{ .echo {prefix} result=pass chunks={len(chunks)}; }} .else {{ .echo {prefix} result=fail; }}')
     lines.append(".echo BNDLOAD_STOP target remains paused, no route or gameplay evidence produced")
     _require(all(len(line.encode("ascii")) < MAX_COMMAND_BYTES for line in lines), "CDB command exceeds bounded length")
-    text = "\n".join(lines) + "\n"
+    text = "\r\n".join(lines) + "\r\n"
     return text, {**facts, "probe_sha256": _sha(text.encode("ascii")), "required_chunks": len(chunks),
                   "debugger_scratch": ["$t18", "$t19"], "requires": "x86 CDB at the initial process breakpoint, before other probes or target initialization"}
