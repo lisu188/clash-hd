@@ -128,6 +128,11 @@ Inspect a requested custom resolution, also without game files or writes:
 python src/launcher/run.py --profile framed --resolution 1366x768 --describe-plan
 ```
 
+Geometry inspection reports requested game/candidate paths as unvalidated
+metadata. It does not resolve Windows deployment paths on a Linux host or
+construct a candidate plan. Use `--dry-run` for host-specific path validation;
+preparation and launch retain their existing path guards.
+
 Inspect a supplied world size and a hypothetical presentation area:
 
 ```powershell
