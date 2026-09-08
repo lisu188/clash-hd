@@ -1,0 +1,702 @@
+{
+  "schema": "clash95_framed_modal_canvas_surface_audit_v1",
+  "generated_at": "2026-09-06T06:29:06.898174+00:00",
+  "source_authenticated": true,
+  "screenshot_binding_verified": true,
+  "frame_pixels_passed": false,
+  "structural_border_exact": false,
+  "footer_exact": false,
+  "input_runtime_passed": true,
+  "input_runtime_failures": [],
+  "runtime_verdict_changed": false,
+  "modal_controls_accepted": false,
+  "natural_availability_proven": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "sources": {
+    "audit_source": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_modal_canvas_surface_audit.py",
+      "sha256": "0415aafe658a40cef82339fd4cb2d19516dfe66d4b03c241a8738489914cc094"
+    },
+    "mirror_oracle_source": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_modal_mirror_audit.py",
+      "sha256": "8436788765a3a38798384a86f5088b694d75cd40f26f8bb70d7650bb05926c0e"
+    },
+    "frame_oracle_source": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\frame_surface_audit.py",
+      "sha256": "1a9d0684cef0bb19a7b0ecd5ecb02c41ef0280033f2307f99d524a521611bfd3"
+    },
+    "bar_oracle_source": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\action_bar_surface_audit.py",
+      "sha256": "673bc4a925da2d3e77895b7179787f22c67401bc0198c5872ba305fdb637dbad"
+    },
+    "summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\summary.json",
+      "sha256": "4773e961bbccafb167a4823079b7664845c85a225b2160ea8e2c2cdc16fee2fd"
+    },
+    "plan": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\plan.json",
+      "sha256": "56d9d5eff087d7f38d2d064e44d6f7c8734721e6d3dd78f047d719bbfabab836"
+    },
+    "producer_host_path": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\run_framed_modal_canvas_capture.ps1",
+      "sha256": "8873f885d7a5405a8a570e70e3b09e31081dcbd339b33b9e92b465274b58d9ba"
+    },
+    "producer_producer": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_modal_canvas_probe.py",
+      "sha256": "52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6"
+    },
+    "producer_trace": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_modal_canvas_trace.py",
+      "sha256": "2f0ef571acdbc6892c775cc97698d535b56355c8086080713d3dfec040a6d3ba"
+    },
+    "producer_converter": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\cdb_surface_dump_to_png.py",
+      "sha256": "15d88e91ae65d8d3abc8f060915606437fbdb21b6d17285f99393e50fc271316"
+    },
+    "producer_proxy_source": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\src\\ddraw_surfdump_proxy\\ddraw_surfdump_proxy.cpp",
+      "sha256": "407d41d0d548e6217c6041181efb6466efa90f447110c5b8857bf92714ecb8eb"
+    },
+    "producer_python": {
+      "path": "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "sha256": "dd5f8d19f6755d6491ee7c4bef2fe35ddd521334cc3ca3ed8fc93ebcadf135d0"
+    },
+    "producer_cdb": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+      "sha256": "0ef2091e7071c86b49bc4a75d6f0c1402bb134e5b5fcc267a8da4735409536c8"
+    },
+    "original": {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+    },
+    "candidate": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\framed-modal-canvas-smith-1024x768-613ffa9311b6e25e.exe",
+      "sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d"
+    },
+    "input_candidate": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-1024x768-build-20260906-054000\\clash95_modal_canvas_1024x768_v2.exe",
+      "sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d"
+    },
+    "proxy_manifest": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\ddraw_surfdump_proxy.build.json",
+      "sha256": "fce2af106ba1a8011f70fbf2a1fb15652c7682855069c93ab97b1821f10beb8a"
+    },
+    "proxy_input": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\ddraw.dll",
+      "sha256": "b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70"
+    },
+    "proxy_copy": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\ddraw.dll",
+      "sha256": "b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70"
+    },
+    "packet": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\packet.json",
+      "sha256": "8f744e01c35f3269f37b24d2f008922a0b1c45bd2dc4cc1c92dc6271a08be4b8"
+    },
+    "probe": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\framed-modal-canvas.cdb",
+      "sha256": "cbc1773790d635c953e4b3aaa2ff57bebdb78eb641602d8738cc7e6490581928"
+    },
+    "capture_prefix": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\capture-prefix.log",
+      "sha256": "1e4c12ecd83f6b7bc1e3ea828785c83310b77476c3d835fae3546182d48b9c94"
+    },
+    "log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\cdb.log",
+      "sha256": "1e4c12ecd83f6b7bc1e3ea828785c83310b77476c3d835fae3546182d48b9c94"
+    },
+    "trace": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\trace.json",
+      "sha256": "abea16fa80a43ee32db4a64d105702f6e27f3a8152840f6bf250bd114c5dde29"
+    },
+    "final_trace": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\trace-final.json",
+      "sha256": "abea16fa80a43ee32db4a64d105702f6e27f3a8152840f6bf250bd114c5dde29"
+    },
+    "raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.raw",
+      "sha256": "7989228629d413576b196a7463d846563c346d69caf654daa71c590344c6bb38"
+    },
+    "native_raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\native-surface.raw",
+      "sha256": "1f11c195b02c3cf8dfdb40a27bd5249272c72826afba08dec9fcd61e4091a7e0"
+    },
+    "snapshot_before_state": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.-before-state.raw",
+      "sha256": "97e66f1ea86763fd939535dfbd46d6cf744b6310810b7b125070e6b2a5c2fa70"
+    },
+    "snapshot_before_e0": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.-before-e0.raw",
+      "sha256": "2f95ef6104a33dd0860dbef9715e70b42f42543b884c03e6e3454774246247c6"
+    },
+    "snapshot_before_physical_header": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.-before-physical_header.raw",
+      "sha256": "8ec775ad81a14cce4fa947462aba3e32618e7baffe45f370f05be397b94ce745"
+    },
+    "snapshot_before_native_header": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.-before-native_header.raw",
+      "sha256": "a19f00e840738c753067690ff267a9377e3ee148d6c667854d39a3336a9622e4"
+    },
+    "snapshot_after_state": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.-after-state.raw",
+      "sha256": "97e66f1ea86763fd939535dfbd46d6cf744b6310810b7b125070e6b2a5c2fa70"
+    },
+    "snapshot_after_e0": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.-after-e0.raw",
+      "sha256": "2f95ef6104a33dd0860dbef9715e70b42f42543b884c03e6e3454774246247c6"
+    },
+    "snapshot_after_physical_header": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.-after-physical_header.raw",
+      "sha256": "8ec775ad81a14cce4fa947462aba3e32618e7baffe45f370f05be397b94ce745"
+    },
+    "snapshot_after_native_header": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.-after-native_header.raw",
+      "sha256": "a19f00e840738c753067690ff267a9377e3ee148d6c667854d39a3336a9622e4"
+    },
+    "native_header_copy": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\native-surface.header.bin",
+      "sha256": "a19f00e840738c753067690ff267a9377e3ee148d6c667854d39a3336a9622e4"
+    },
+    "png_metadata": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.png.json",
+      "sha256": "aa370b406903a28009889c07044b2143eeafac2b6cdd2779d8bab53a12a2e602"
+    },
+    "palette": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\ddraw_surfdump_palette.bin",
+      "sha256": "c20a684217f247df98879062c2e6e38e0624781cd49df01eef8249796b592856"
+    },
+    "png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.png",
+      "sha256": "6dc08c7a9f590c59c2c4b2ea7f5670adfd32d02c09cb70eb3be90f70ce317998"
+    },
+    "frame_resource": {
+      "path": "C:\\Clash\\DATA\\GFX3.RES",
+      "sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525"
+    },
+    "command_resource": {
+      "path": "C:\\Clash\\DATA\\minimum.res",
+      "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116"
+    }
+  },
+  "failures": [],
+  "frame": {
+    "profile": "native_four_border_tiles_v1",
+    "resolution": "1024x768",
+    "passed": false,
+    "structural_border_exact": false,
+    "checked_border_pixels": 75012,
+    "bands": [
+      {
+        "name": "top",
+        "rectangle_inclusive": [
+          0,
+          0,
+          1023,
+          15
+        ],
+        "checked_pixels": 16384,
+        "exact_matches": 0,
+        "mismatches": 16384,
+        "first_mismatches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            0
+          ]
+        ]
+      },
+      {
+        "name": "bottom",
+        "rectangle_inclusive": [
+          0,
+          752,
+          1023,
+          767
+        ],
+        "checked_pixels": 11524,
+        "exact_matches": 0,
+        "mismatches": 11524,
+        "first_mismatches": [
+          [
+            0,
+            752
+          ],
+          [
+            1,
+            752
+          ],
+          [
+            2,
+            752
+          ],
+          [
+            3,
+            752
+          ],
+          [
+            4,
+            752
+          ],
+          [
+            5,
+            752
+          ],
+          [
+            6,
+            752
+          ],
+          [
+            7,
+            752
+          ]
+        ]
+      },
+      {
+        "name": "left",
+        "rectangle_inclusive": [
+          0,
+          16,
+          31,
+          751
+        ],
+        "checked_pixels": 23552,
+        "exact_matches": 0,
+        "mismatches": 23552,
+        "first_mismatches": [
+          [
+            0,
+            16
+          ],
+          [
+            1,
+            16
+          ],
+          [
+            2,
+            16
+          ],
+          [
+            3,
+            16
+          ],
+          [
+            4,
+            16
+          ],
+          [
+            5,
+            16
+          ],
+          [
+            6,
+            16
+          ],
+          [
+            7,
+            16
+          ]
+        ]
+      },
+      {
+        "name": "right",
+        "rectangle_inclusive": [
+          992,
+          16,
+          1023,
+          751
+        ],
+        "checked_pixels": 23552,
+        "exact_matches": 0,
+        "mismatches": 23552,
+        "first_mismatches": [
+          [
+            992,
+            16
+          ],
+          [
+            993,
+            16
+          ],
+          [
+            994,
+            16
+          ],
+          [
+            995,
+            16
+          ],
+          [
+            996,
+            16
+          ],
+          [
+            997,
+            16
+          ],
+          [
+            998,
+            16
+          ],
+          [
+            999,
+            16
+          ]
+        ]
+      }
+    ],
+    "footer": {
+      "sprite": 5,
+      "origin": [
+        347,
+        753
+      ],
+      "size": [
+        324,
+        15
+      ],
+      "checked_pixels": 4860,
+      "exact_matches": 0,
+      "exact": false,
+      "status": "unverified_background_or_active_tooltip_text"
+    },
+    "opaque_frame_pixels": 79872,
+    "limits": "Prospective exact frame profile only. Active tooltip glyphs need separate source-bound evidence; no ignored footer mismatch produces a full pass. Not runtime/input/promotion acceptance."
+  },
+  "action_bar": {
+    "applicability": "ordinary_map_bar_not_required_for_this_modal",
+    "evaluated_as_gate": false,
+    "matching_cell_count": 0,
+    "cells": [
+      {
+        "cell": 0,
+        "anchor": [
+          800,
+          688
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 0,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 1,
+        "anchor": [
+          864,
+          688
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 2,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 2,
+        "anchor": [
+          928,
+          688
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 4,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 3,
+        "anchor": [
+          800,
+          720
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 6,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 4,
+        "anchor": [
+          864,
+          720
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 8,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 5,
+        "anchor": [
+          928,
+          720
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 10,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      }
+    ],
+    "source_member_sha256": "511dd0aa848a8a7582139f7df9bd39ee87580c503dd9f731f3c4206f5206e620",
+    "modal_controls_accepted": false,
+    "measurement_coordinate_profile_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation"
+  },
+  "mirror": {
+    "schema": "framed_modal_mirror_audit_v1",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+    "width": 1024,
+    "height": 768,
+    "input_valid": true,
+    "passed": true,
+    "mirror_relation_passed": true,
+    "native_size": [
+      640,
+      480
+    ],
+    "native_rect_in_physical": [
+      192,
+      144,
+      831,
+      623
+    ],
+    "native_sha256": "1f11c195b02c3cf8dfdb40a27bd5249272c72826afba08dec9fcd61e4091a7e0",
+    "physical_sha256": "7989228629d413576b196a7463d846563c346d69caf654daa71c590344c6bb38",
+    "native_bytes": 307200,
+    "physical_bytes": 786432,
+    "counts": {
+      "native_pixels_compared": 307200,
+      "native_pixels_matched": 307200,
+      "native_copy_mismatches": 0,
+      "margin_pixels_compared": 479232,
+      "margin_pixels_zero": 479232,
+      "margin_nonzero_pixels": 0,
+      "total_mismatches": 0
+    },
+    "mismatch_coordinates": [],
+    "coordinate_limit": 16,
+    "native_content": {
+      "distinct_indices": 233,
+      "nonzero_pixels": 307200,
+      "all_zero": false,
+      "has_variation": true
+    },
+    "native_content_bearing": true,
+    "runtime_binding_verified": false,
+    "visual_proof": false,
+    "controls_proof": false,
+    "manual_input_proof": false,
+    "promotion_ready": false,
+    "failures": [],
+    "limits": [
+      "This is an indexed-buffer mirror relation only; correct artwork and complete modal composition are not established.",
+      "Margins require palette index zero; the palette must be separately bound before describing its final RGB color.",
+      "Native content-bearing means at least two distinct indices, including a nonzero index; it is not artwork recognition.",
+      "The caller must independently bind both buffers to the same paused runtime, candidate, route and source-owned state.",
+      "No runtime, native exit cleanup, visible/manual input, controls or promotion proof is supplied by this pure comparison."
+    ]
+  },
+  "mirror_relation_passed": true,
+  "capture_binding_verified": true,
+  "visual_proof": false,
+  "native_content_bearing": true,
+  "limits": [
+    "Indexed software-memory pixels only; primary-only layers and final visible wrapper composition remain separate.",
+    "Controlled native dispatch and optional availability writes are retained; neither natural selection nor manual input is established.",
+    "Ordinary-map bar matches are measurements only on these modal routes; no building controls, battle, interaction or complete modal composition is accepted.",
+    "Frame and footer mismatches are retained. Footer text can replace background pixels; this audit applies no guessed exclusion mask.",
+    "Source/hash/retained-handle records are cross-checked offline, not an independent live process observation or a digital signature of the capture.",
+    "No runtime verdict, protected stage or promotion decision is changed.",
+    "A centered native modal has its own artwork; ordinary-map four-border/footer/bar comparisons are non-gating measurements.",
+    "Exact native-to-physical copying proves the mirror relation, not artwork correctness or controls. Blank native content can mirror exactly.",
+    "Captured phase1 allocations=1/frees=0 is a first-present observation, not proof of native modal exit/destruction."
+  ],
+  "input_runtime_status": "bounded_hidden_modal_canvas_capture",
+  "run_id": "framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "resolution": "1024x768",
+  "route": "smith",
+  "availability": "construct_all",
+  "castle_index": 0,
+  "minimap_viewport": true,
+  "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+  "process_observations": {
+    "recorded_owned_process_cleanup_verified": true,
+    "cdb": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+      "creation_utc": "2026-09-06T06:27:46.6068784Z",
+      "handle_retained": true,
+      "creation_filetime": 134331496666068784,
+      "process_id": 26720
+    },
+    "candidate": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\framed-modal-canvas-smith-1024x768-613ffa9311b6e25e.exe",
+      "creation_filetime": 134331496668011738,
+      "process_id": 28632,
+      "handle_retained": true,
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "creation_utc": "2026-09-06T06:27:46.8011738Z",
+      "parent_process_id": 26720
+    },
+    "independent_live_query_performed": false
+  },
+  "trace_binding": {
+    "paused_prefix_bytes": 56854,
+    "final_log_bytes": 56854,
+    "paused_prefix_sha256": "1e4c12ecd83f6b7bc1e3ea828785c83310b77476c3d835fae3546182d48b9c94",
+    "final_log_sha256": "1e4c12ecd83f6b7bc1e3ea828785c83310b77476c3d835fae3546182d48b9c94",
+    "final_log_revalidated": true,
+    "final_trace_passed": true,
+    "final_trace_failures": [],
+    "source_packet_probe_reconstructed": true,
+    "surface": {
+      "surface": 171036512,
+      "width": 1024,
+      "height": 768,
+      "base": 176619568,
+      "bytes": 786432,
+      "route": "smith",
+      "tid": 37240,
+      "eip": 4447315,
+      "esp": 972824,
+      "owner": 71223066
+    },
+    "initial_projection": {
+      "projection": "one_exact_initial_contract_stage_token",
+      "source_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+      "projected_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "log_original_sha256": "1e4c12ecd83f6b7bc1e3ea828785c83310b77476c3d835fae3546182d48b9c94",
+      "log_projected_sha256": "5cc3931e2fbef3e86a3c9ea837f3a7cdf881a3309e243bcddc1eca9da5b1b1fa",
+      "log_contract_line": 99,
+      "probe_original_sha256": "5bb8e27b2e0beef0451c104ed4a58fc7f869956aee99246b99acb65916ba0cdf",
+      "probe_projected_sha256": "e4ee50777b35102452b1db0fefb5ebaa08f6a228a51a962081d051de152b8835",
+      "probe_contract_line": 725
+    },
+    "forced_gate_original": 0
+  },
+  "snapshot_binding": {
+    "physical_native_reads_bound": true,
+    "before_after_state_e0_headers_equal": true,
+    "native_header_copy_bound": true,
+    "retained_game_identity_bound": true,
+    "started_at": "2026-09-06T06:28:31.6199869Z",
+    "captured_at": "2026-09-06T06:28:31.7166936Z",
+    "state_va": 5857280,
+    "physical": 171036512,
+    "physical_pixels": 176619568,
+    "native": 173856872,
+    "native_pixels": 177602608,
+    "saved_render_observed": 171036512,
+    "read_counts": {
+      "pixel_reads": 1,
+      "physical_header_reads": 2,
+      "native_header_reads": 2,
+      "state_reads": 2,
+      "e0_reads": 2
+    },
+    "native_pixel_reads": 1,
+    "independent_live_query_performed": false
+  },
+  "screenshot_binding": {
+    "metadata_path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.png.json",
+    "metadata_sha256": "aa370b406903a28009889c07044b2143eeafac2b6cdd2779d8bab53a12a2e602",
+    "palette_path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\ddraw_surfdump_palette.bin",
+    "palette_sha256": "c20a684217f247df98879062c2e6e38e0624781cd49df01eef8249796b592856",
+    "png_raw_palette_binding_verified": true,
+    "candidate_file_sha_verified": true
+  },
+  "mirror_margin_color": {
+    "expected_index": 0,
+    "palette_zero_rgb": [
+      0,
+      0,
+      0
+    ],
+    "zero_index_is_rgb_black": true,
+    "all_margin_pixels_verified_rgb_black": true,
+    "final_visible_wrapper_color_proof": false
+  },
+  "frame_applicability": {
+    "evaluated_as_gate": false,
+    "scope": "ordinary_map_frame_and_footer_comparison_on_native_centered_modal",
+    "measurement_coordinate_profile_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation"
+  },
+  "frame_source": {
+    "member_sha256": "8501cbae69c35aa5a804823227bbd56fb21e84b4f1e5c0f15e4419f522c4053d",
+    "member_offset": 1884879,
+    "member_length": 89593
+  }
+}

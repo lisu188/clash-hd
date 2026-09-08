@@ -1,0 +1,822 @@
+{
+  "schema": "clash95_framed_modal_canvas_runtime_checkpoint_v2",
+  "generated_at": "2026-09-06T06:36:39.737312+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "protocol_revision": "owned_canvas_all_native_artwork_loads_v2",
+  "source_sha256": {
+    "tools/framed_modal_canvas_probe.py": "52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6",
+    "tools/framed_modal_canvas_trace.py": "2f0ef571acdbc6892c775cc97698d535b56355c8086080713d3dfec040a6d3ba",
+    "tools/test_framed_modal_canvas_probe.py": "70dd50582ebba1ef00d3ba1a8b4ffb10f79b400269a4ab897c358f615031dbcb",
+    "tools/test_framed_modal_canvas_trace.py": "27f6dffa4ac5dad4b5d7e88c2dde0360c44b336e22f0adbc79ab5f6b01150c7d",
+    "scripts/cdb/run_framed_modal_canvas_capture.ps1": "8873f885d7a5405a8a570e70e3b09e31081dcbd339b33b9e92b465274b58d9ba",
+    "tools/framed_modal_canvas_surface_audit.py": "0415aafe658a40cef82339fd4cb2d19516dfe66d4b03c241a8738489914cc094",
+    "tools/framed_modal_mirror_audit.py": "8436788765a3a38798384a86f5088b694d75cd40f26f8bb70d7650bb05926c0e"
+  },
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "preceding_checkpoint": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-runtime-20260906-first-protocol.json",
+    "sha256": "e1e769661d9d4d5a53a1210294df1d5e192edc01b84f346d37d310de18f804f7"
+  },
+  "runs": [
+    {
+      "route": "hospital",
+      "resolution": "1024x768",
+      "castle_index": 0,
+      "availability": "construct_all",
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-run-plan-20260906-061737.json",
+        "sha256": "c18a7aaf9d5453e113c081807545d4bb3167848f8ba45f0939d5394841ef1b8c"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-061737\\summary.json",
+        "sha256": "a7584c5d11f503e8257b75e19d1d2cd289c4d586f419d26abfd5f8b9bf0a7de5"
+      },
+      "trace": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-061737\\trace.json",
+        "sha256": "a41fd2e43c73e19e762ae5f06c6b359dbe6ce3dbe26c214031d822fc6e4ee04d"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-061737\\cdb.log",
+        "sha256": "33615ef5138bbd116b632c4b7df8287a7f596f1b8bbc89cf058c7d5c6fe727ad"
+      },
+      "runtime_passed": false,
+      "runtime_failures": [
+        "Full source-bound owned-canvas trace did not authorize host capture."
+      ],
+      "trace_failures": [
+        "initial map trace: line 359: incremental input/exit lacks a fresh matching guard and phase",
+        "initial map trace: line 359: incremental status lacks a fresh guard/input pair"
+      ],
+      "modal_sequence_passed": true,
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-061737\\framed-modal-canvas-hospital-1024x768-0162814c69c3fdbf.exe",
+              "creation_filetime": 134331490946827528,
+              "process_id": 43000,
+              "handle_retained": true,
+              "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+              "creation_utc": "2026-09-06T06:18:14.6827528Z",
+              "parent_process_id": 25896
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T06:18:14.4911218Z",
+            "handle_retained": true,
+            "creation_filetime": 134331490944911218,
+            "process_id": 25896
+          }
+        },
+        "desktop_closed": true
+      },
+      "screenshot_produced": false,
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-061737\\post-run-workdir.json",
+        "sha256": "9c10d0decc183b6ef3e7426ca1a1a793b7b80f05a7114a13e5d12ea0bcc099b2"
+      },
+      "original_and_existing_assets_unchanged": true,
+      "added_cache_files": [],
+      "diagnosis": "Initial PTILE event63 repeats incremental input/status at the same thread/stack/world without a fresh guard. Full native hospital sequence passes, but no host capture is authorized. Failure remains preserved."
+    },
+    {
+      "route": "castle_overview",
+      "resolution": "1024x768",
+      "castle_index": 0,
+      "availability": "existing_flags",
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-run-plan-20260906-061942.json",
+        "sha256": "8a90ff3cfc5ef356ffce669a6a293cb89e00671ae42ac92815975322fff63625"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-061942\\summary.json",
+        "sha256": "ee8d5a954a5b25528b93ba0b1fe978d8b3908f8ba8a1164f690f45a0cc4a3f95"
+      },
+      "trace": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-061942\\trace.json",
+        "sha256": "7fec1207c90985345d163160c8f2b2cb576fbeec01406aedbee3e1da35c7f85a"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-061942\\cdb.log",
+        "sha256": "310638613be68b4fe7e61679a86b8460ff5e5976b948df9d0c734a936d43fc55"
+      },
+      "runtime_passed": true,
+      "runtime_failures": [],
+      "trace_failures": [],
+      "modal_sequence_passed": true,
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-061942\\framed-modal-canvas-castle_overview-1024x768-f2c26679609ceeb3.exe",
+              "creation_filetime": 134331492125381381,
+              "process_id": 22228,
+              "handle_retained": true,
+              "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+              "creation_utc": "2026-09-06T06:20:12.5381381Z",
+              "parent_process_id": 38908
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T06:20:12.3443283Z",
+            "handle_retained": true,
+            "creation_filetime": 134331492123443283,
+            "process_id": 38908
+          }
+        },
+        "desktop_closed": true
+      },
+      "screenshot_produced": true,
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-061942\\post-run-workdir.json",
+        "sha256": "f3cc030ab323478a9f03de895d3d8d710075e64d074709e9835c97a6def99f66"
+      },
+      "original_and_existing_assets_unchanged": true,
+      "added_cache_files": [],
+      "audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-overview-surface-audit-20260906-061942.json",
+        "sha256": "be922dd1aeda0717e6a0d8aab79925082e380913bd888381714c95a1916ad54e"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-061942\\surface.png",
+        "sha256": "58ecfd0475a63d58399d164f09a8f1e1112c5f1f8ad4179b2ba38078289bd93e"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-061942\\surface.raw",
+        "sha256": "8aa7436401b87c09aae2f73041ddbe76509c8cfa12a1c4c1f450e7bcd9e0ec4e"
+      },
+      "native_raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-castle_overview-1024x768-castle0-20260906-061942\\native-surface.raw",
+        "sha256": "bc73c776b2e62a8a611fe5e18466350087b96d21307a401d11df3eeaddacd352"
+      },
+      "mirror_relation_passed": true,
+      "mirror_counts": {
+        "native_pixels_compared": 307200,
+        "native_pixels_matched": 307200,
+        "native_copy_mismatches": 0,
+        "margin_pixels_compared": 479232,
+        "margin_pixels_zero": 479232,
+        "margin_nonzero_pixels": 0,
+        "total_mismatches": 0
+      },
+      "mirror_failures": [],
+      "native_rect": [
+        192,
+        144,
+        831,
+        623
+      ],
+      "margin_color": {
+        "expected_index": 0,
+        "palette_zero_rgb": [
+          6,
+          5,
+          5
+        ],
+        "zero_index_is_rgb_black": false,
+        "all_margin_pixels_verified_rgb_black": false,
+        "final_visible_wrapper_color_proof": false
+      },
+      "actual_screenshot_observation": "Coherent courtyard, back button and bottom status strip. Four outer margins clear; no ordinary-map action bar.",
+      "ordinary_map_frame_passed": false,
+      "ordinary_map_bar_matching_cells": 0,
+      "ordinary_map_frame_bar_applicability": "Nongating ordinary-map template measurements; distinct modal controls are not accepted by those templates."
+    },
+    {
+      "route": "hospital",
+      "resolution": "1024x768",
+      "castle_index": 0,
+      "availability": "construct_all",
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-run-plan-20260906-062131.json",
+        "sha256": "319d94432e8951140a28b13b092bcc910ed1058a8a822c705c51e4e1c97f1f41"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-062131\\summary.json",
+        "sha256": "a1166de964be75b02244f942e241b7a78b96a06cb2d6a37ccc904cb5a7863d1e"
+      },
+      "trace": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-062131\\trace.json",
+        "sha256": "7e288b3c37263f496d1a3aa203dd60d7d27f36c13e1fbe0f278de37b2af89836"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-062131\\cdb.log",
+        "sha256": "d2274c4ed6e0606cf3f3aed112adf154938813179c62b091cd843bc793031a7f"
+      },
+      "runtime_passed": true,
+      "runtime_failures": [],
+      "trace_failures": [],
+      "modal_sequence_passed": true,
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-062131\\framed-modal-canvas-hospital-1024x768-ae4e1366b9c576e2.exe",
+              "creation_filetime": 134331493211140332,
+              "process_id": 31180,
+              "handle_retained": true,
+              "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+              "creation_utc": "2026-09-06T06:22:01.1140332Z",
+              "parent_process_id": 28536
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T06:22:00.9241144Z",
+            "handle_retained": true,
+            "creation_filetime": 134331493209241144,
+            "process_id": 28536
+          }
+        },
+        "desktop_closed": true
+      },
+      "screenshot_produced": true,
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-062131\\post-run-workdir.json",
+        "sha256": "62d9f98b01c5162188f338b04a27a206048fc2debc1b969f1f2c8a35c493f8c8"
+      },
+      "original_and_existing_assets_unchanged": true,
+      "added_cache_files": [],
+      "audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-hospital-surface-audit-20260906-062131.json",
+        "sha256": "0bcc1ac5aaef8035aa135d791e4d2fbecf58009b1839c90fd065da4e0fbcefa2"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-062131\\surface.png",
+        "sha256": "56728baa97f3fb8ed879ac63070a35ad47300f5a8cda65028a0ac00f78146901"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-062131\\surface.raw",
+        "sha256": "a02a06ff0eb5d18975ac6999a26639261cded5af12881a88379cb0f84f40810d"
+      },
+      "native_raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-hospital-1024x768-castle0-20260906-062131\\native-surface.raw",
+        "sha256": "2cd349e548bac1be3266c498d34ecfcddd405fb8a6daf00a731dbbdb32fd660a"
+      },
+      "mirror_relation_passed": true,
+      "mirror_counts": {
+        "native_pixels_compared": 307200,
+        "native_pixels_matched": 307200,
+        "native_copy_mismatches": 0,
+        "margin_pixels_compared": 479232,
+        "margin_pixels_zero": 479232,
+        "margin_nonzero_pixels": 0,
+        "total_mismatches": 0
+      },
+      "mirror_failures": [],
+      "native_rect": [
+        192,
+        144,
+        831,
+        623
+      ],
+      "margin_color": {
+        "expected_index": 0,
+        "palette_zero_rgb": [
+          0,
+          0,
+          0
+        ],
+        "zero_index_is_rgb_black": true,
+        "all_margin_pixels_verified_rgb_black": true,
+        "final_visible_wrapper_color_proof": false
+      },
+      "actual_screenshot_observation": "Readable Hospital title/text, intact four-sided panel border and lower-left back button; no ordinary-map action bar.",
+      "ordinary_map_frame_passed": false,
+      "ordinary_map_bar_matching_cells": 0,
+      "ordinary_map_frame_bar_applicability": "Nongating ordinary-map template measurements; distinct modal controls are not accepted by those templates."
+    },
+    {
+      "route": "school",
+      "resolution": "1024x768",
+      "castle_index": 0,
+      "availability": "construct_all",
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-run-plan-20260906-062311.json",
+        "sha256": "630b215d1451a425b7e063e3e411b6a985832326c89c5acc6cf252da4c19173c"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-school-1024x768-castle0-20260906-062311\\summary.json",
+        "sha256": "173babaa88b3a1b53663cb621169c57501f440b5b40330305e89be1c780ce108"
+      },
+      "trace": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-school-1024x768-castle0-20260906-062311\\trace.json",
+        "sha256": "32bca11d39c7936475c737e6e64d29b5e1338ae941df68892708f38358189a5e"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-school-1024x768-castle0-20260906-062311\\cdb.log",
+        "sha256": "b3605e412ec2d49aefbf53f115ec392f55806f94b395991f42485d0bc8581c1e"
+      },
+      "runtime_passed": true,
+      "runtime_failures": [],
+      "trace_failures": [],
+      "modal_sequence_passed": true,
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-school-1024x768-castle0-20260906-062311\\framed-modal-canvas-school-1024x768-db7ed82ae7e3041c.exe",
+              "creation_filetime": 134331494311516214,
+              "process_id": 22764,
+              "handle_retained": true,
+              "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+              "creation_utc": "2026-09-06T06:23:51.1516214Z",
+              "parent_process_id": 37476
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T06:23:50.9570927Z",
+            "handle_retained": true,
+            "creation_filetime": 134331494309570927,
+            "process_id": 37476
+          }
+        },
+        "desktop_closed": true
+      },
+      "screenshot_produced": true,
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-school-1024x768-castle0-20260906-062311\\post-run-workdir.json",
+        "sha256": "36edfd913bc58f788221c1486c0124510cbe037068727f7360d924df43919887"
+      },
+      "original_and_existing_assets_unchanged": true,
+      "added_cache_files": [],
+      "audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-school-surface-audit-20260906-062311.json",
+        "sha256": "e337df6ca5f06433965703a3c483acadde7ae1286a030feb70f13aa94ee31265"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-school-1024x768-castle0-20260906-062311\\surface.png",
+        "sha256": "7967f859c800ed1bd75784490078eb0c4269b0be44e47e8d5acab4e783e97aab"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-school-1024x768-castle0-20260906-062311\\surface.raw",
+        "sha256": "4e63305307cbf5d8ce5b167352b6b66b8cbe514b656868feae58ad87a84204c4"
+      },
+      "native_raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-school-1024x768-castle0-20260906-062311\\native-surface.raw",
+        "sha256": "7e7b6731d631b9d3945cf780fc3085328b97bd65fedb0f15b12596160ae31f80"
+      },
+      "mirror_relation_passed": true,
+      "mirror_counts": {
+        "native_pixels_compared": 307200,
+        "native_pixels_matched": 307200,
+        "native_copy_mismatches": 0,
+        "margin_pixels_compared": 479232,
+        "margin_pixels_zero": 479232,
+        "margin_nonzero_pixels": 0,
+        "total_mismatches": 0
+      },
+      "mirror_failures": [],
+      "native_rect": [
+        192,
+        144,
+        831,
+        623
+      ],
+      "margin_color": {
+        "expected_index": 0,
+        "palette_zero_rgb": [
+          0,
+          0,
+          0
+        ],
+        "zero_index_is_rgb_black": true,
+        "all_margin_pixels_verified_rgb_black": true,
+        "final_visible_wrapper_color_proof": false
+      },
+      "actual_screenshot_observation": "Readable School title/text, intact four-sided panel border and lower-left back button; no ordinary-map action bar.",
+      "ordinary_map_frame_passed": false,
+      "ordinary_map_bar_matching_cells": 0,
+      "ordinary_map_frame_bar_applicability": "Nongating ordinary-map template measurements; distinct modal controls are not accepted by those templates."
+    },
+    {
+      "route": "workshop",
+      "resolution": "1024x768",
+      "castle_index": 0,
+      "availability": "construct_all",
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-run-plan-20260906-062435.json",
+        "sha256": "bf3f11387926e9f7dbf062f869ef458f221d49d53e8269f2bc4a06909bda22ca"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-workshop-1024x768-castle0-20260906-062435\\summary.json",
+        "sha256": "0ece966fa9ce5cd4c8acace669bc1359a30d4fdae9a8db618d8cb0936768921e"
+      },
+      "trace": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-workshop-1024x768-castle0-20260906-062435\\trace.json",
+        "sha256": "b73b15d9201a22adc5c8c7caeee623e3c6ce83b471e4eacd2b598fc9307e7f6c"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-workshop-1024x768-castle0-20260906-062435\\cdb.log",
+        "sha256": "189fde06bdac67b8ad8317e0b93f0d3cfb51ec989581a8a380d590407fc75aa8"
+      },
+      "runtime_passed": true,
+      "runtime_failures": [],
+      "trace_failures": [],
+      "modal_sequence_passed": true,
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-workshop-1024x768-castle0-20260906-062435\\framed-modal-canvas-workshop-1024x768-4d3d53881f2940a6.exe",
+              "creation_filetime": 134331495386232637,
+              "process_id": 20084,
+              "handle_retained": true,
+              "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+              "creation_utc": "2026-09-06T06:25:38.6232637Z",
+              "parent_process_id": 2492
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T06:25:38.4298445Z",
+            "handle_retained": true,
+            "creation_filetime": 134331495384298445,
+            "process_id": 2492
+          }
+        },
+        "desktop_closed": true
+      },
+      "screenshot_produced": true,
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-workshop-1024x768-castle0-20260906-062435\\post-run-workdir.json",
+        "sha256": "cb999b067b81763bec17054f3440537b9352753401d7beb91e6e05e859ae70bd"
+      },
+      "original_and_existing_assets_unchanged": true,
+      "added_cache_files": [],
+      "audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-workshop-surface-audit-20260906-062435.json",
+        "sha256": "46bd4c39cfe0975944cf736dafd1b6dc74ed2131a256f1ce62d57cf238b324ed"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-workshop-1024x768-castle0-20260906-062435\\surface.png",
+        "sha256": "d1844fbca8c0403e7ad8d41749a60ab6993a1652259151d95299ca16e6827c4c"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-workshop-1024x768-castle0-20260906-062435\\surface.raw",
+        "sha256": "e4b95d426361988360c3a4dc3c6907d8b1862689172eaadbc09333ee44863eb4"
+      },
+      "native_raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-workshop-1024x768-castle0-20260906-062435\\native-surface.raw",
+        "sha256": "1395782974a6f3e540ce1d62bc1e4225c4daf7ac2c9eb4d2fd44923fd20f7219"
+      },
+      "mirror_relation_passed": true,
+      "mirror_counts": {
+        "native_pixels_compared": 307200,
+        "native_pixels_matched": 307200,
+        "native_copy_mismatches": 0,
+        "margin_pixels_compared": 479232,
+        "margin_pixels_zero": 479232,
+        "margin_nonzero_pixels": 0,
+        "total_mismatches": 0
+      },
+      "mirror_failures": [],
+      "native_rect": [
+        192,
+        144,
+        831,
+        623
+      ],
+      "margin_color": {
+        "expected_index": 0,
+        "palette_zero_rgb": [
+          0,
+          0,
+          0
+        ],
+        "zero_index_is_rgb_black": true,
+        "all_margin_pixels_verified_rgb_black": true,
+        "final_visible_wrapper_color_proof": false
+      },
+      "actual_screenshot_observation": "Readable Workshop title/text, intact four-sided panel border and lower-left back button; no ordinary-map action bar.",
+      "ordinary_map_frame_passed": false,
+      "ordinary_map_bar_matching_cells": 0,
+      "ordinary_map_frame_bar_applicability": "Nongating ordinary-map template measurements; distinct modal controls are not accepted by those templates."
+    },
+    {
+      "route": "smith",
+      "resolution": "1024x768",
+      "castle_index": 0,
+      "availability": "construct_all",
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-run-plan-20260906-062637.json",
+        "sha256": "dc6c8a76cf9adb697ce3ab39e6fc8b9b4d82c72cc7ed0d90160f2d149985645c"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\summary.json",
+        "sha256": "4773e961bbccafb167a4823079b7664845c85a225b2160ea8e2c2cdc16fee2fd"
+      },
+      "trace": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\trace.json",
+        "sha256": "abea16fa80a43ee32db4a64d105702f6e27f3a8152840f6bf250bd114c5dde29"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\cdb.log",
+        "sha256": "1e4c12ecd83f6b7bc1e3ea828785c83310b77476c3d835fae3546182d48b9c94"
+      },
+      "runtime_passed": true,
+      "runtime_failures": [],
+      "trace_failures": [],
+      "modal_sequence_passed": true,
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\framed-modal-canvas-smith-1024x768-613ffa9311b6e25e.exe",
+              "creation_filetime": 134331496668011738,
+              "process_id": 28632,
+              "handle_retained": true,
+              "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+              "creation_utc": "2026-09-06T06:27:46.8011738Z",
+              "parent_process_id": 26720
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T06:27:46.6068784Z",
+            "handle_retained": true,
+            "creation_filetime": 134331496666068784,
+            "process_id": 26720
+          }
+        },
+        "desktop_closed": true
+      },
+      "screenshot_produced": true,
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\post-run-workdir.json",
+        "sha256": "ce92db2b43e3fc760b5be7ffd006cde9ce5263f6c9e6aaf6954bfc3bbaa790ac"
+      },
+      "original_and_existing_assets_unchanged": true,
+      "added_cache_files": [],
+      "audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-smith-surface-audit-20260906-062637.json",
+        "sha256": "86c52f6d2a14d5e0b870c3940a90c80b210320848e3e556710658548345fd2a8"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.png",
+        "sha256": "6dc08c7a9f590c59c2c4b2ea7f5670adfd32d02c09cb70eb3be90f70ce317998"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\surface.raw",
+        "sha256": "7989228629d413576b196a7463d846563c346d69caf654daa71c590344c6bb38"
+      },
+      "native_raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-smith-1024x768-castle0-20260906-062637\\native-surface.raw",
+        "sha256": "1f11c195b02c3cf8dfdb40a27bd5249272c72826afba08dec9fcd61e4091a7e0"
+      },
+      "mirror_relation_passed": true,
+      "mirror_counts": {
+        "native_pixels_compared": 307200,
+        "native_pixels_matched": 307200,
+        "native_copy_mismatches": 0,
+        "margin_pixels_compared": 479232,
+        "margin_pixels_zero": 479232,
+        "margin_nonzero_pixels": 0,
+        "total_mismatches": 0
+      },
+      "mirror_failures": [],
+      "native_rect": [
+        192,
+        144,
+        831,
+        623
+      ],
+      "margin_color": {
+        "expected_index": 0,
+        "palette_zero_rgb": [
+          0,
+          0,
+          0
+        ],
+        "zero_index_is_rgb_black": true,
+        "all_margin_pixels_verified_rgb_black": true,
+        "final_visible_wrapper_color_proof": false
+      },
+      "actual_screenshot_observation": "Readable Smiths title/text, intact four-sided panel border and lower-left back button; no ordinary-map action bar.",
+      "ordinary_map_frame_passed": false,
+      "ordinary_map_bar_matching_cells": 0,
+      "ordinary_map_frame_bar_applicability": "Nongating ordinary-map template measurements; distinct modal controls are not accepted by those templates."
+    },
+    {
+      "route": "barracks",
+      "resolution": "1024x768",
+      "castle_index": 0,
+      "availability": "construct_all",
+      "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-run-plan-20260906-062843.json",
+        "sha256": "6157caee8d842ce4ef439ddaf33bfad6f209bc54fca31b1e79c94524a9a350b9"
+      },
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-barracks-1024x768-castle0-20260906-062843\\summary.json",
+        "sha256": "e00be0af415cbb8be13bd52ed2e12a4387c11b2933356c9564ee35cd06689f9d"
+      },
+      "trace": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-barracks-1024x768-castle0-20260906-062843\\trace.json",
+        "sha256": "27a3b0cbd9e9365212c0d48c5de259332348fd4aa1d9d1992154880c5c9dc21c"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-barracks-1024x768-castle0-20260906-062843\\cdb.log",
+        "sha256": "2abd60c0ed4de5740f00c20508f938f800f1e0c7fe4a94267eef6fe2a978d220"
+      },
+      "runtime_passed": true,
+      "runtime_failures": [],
+      "trace_failures": [],
+      "modal_sequence_passed": true,
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-modal-canvas-v2-barracks-1024x768-castle0-20260906-062843\\framed-modal-canvas-barracks-1024x768-0537fed086d59f58.exe",
+              "creation_filetime": 134331497888502864,
+              "process_id": 20784,
+              "handle_retained": true,
+              "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+              "creation_utc": "2026-09-06T06:29:48.8502864Z",
+              "parent_process_id": 39148
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T06:29:48.6515132Z",
+            "handle_retained": true,
+            "creation_filetime": 134331497886515132,
+            "process_id": 39148
+          }
+        },
+        "desktop_closed": true
+      },
+      "screenshot_produced": true,
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-barracks-1024x768-castle0-20260906-062843\\post-run-workdir.json",
+        "sha256": "d127bd3ded0968b518962c73eccbf6b81fbc7a909146fb6935c8570ed52d465a"
+      },
+      "original_and_existing_assets_unchanged": true,
+      "added_cache_files": [
+        {
+          "relative": "GFX/CACHE/0536cc5a.s32",
+          "sha256": "874f27ea0668af9bf750f388feb087b984382da49f9c8c18d8aad1b53ed050f8"
+        },
+        {
+          "relative": "GFX/CACHE/0736cc5a.s32",
+          "sha256": "54428c07b7eb3d5710adfdc011b3f3bb0373286b69a74fabaf48b7423e52538e"
+        },
+        {
+          "relative": "GFX/CACHE/0836cc5a.s32",
+          "sha256": "377396ea3b056ff5e4e3e3a1c9f3af1f2b952405db3939b9f53bf38a87590211"
+        },
+        {
+          "relative": "GFX/CACHE/m36cc5a.s32",
+          "sha256": "625198cce02a778fb832189e8be82d638795a97ef80fe2da3c5a0a48c15fd545"
+        }
+      ],
+      "audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-canvas-barracks-surface-audit-20260906-062843.json",
+        "sha256": "2b52059951c67de56add357d0a8dbd5a4c11d7da910ed0f4ee292e3ecaa9d24a"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-barracks-1024x768-castle0-20260906-062843\\surface.png",
+        "sha256": "21e29cef60eec065afd0a7204ccccc56636b4980b2bacc713a3fc5452a578027"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-barracks-1024x768-castle0-20260906-062843\\surface.raw",
+        "sha256": "8d973937a26820abe14403823bfd51591ec26162231737f71314b6d33cfb3a02"
+      },
+      "native_raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-modal-canvas-v2-barracks-1024x768-castle0-20260906-062843\\native-surface.raw",
+        "sha256": "d63e0d1f10622f8c001fe51acd8de4c464c9afdf9886a3ca5140c94026d4067e"
+      },
+      "mirror_relation_passed": false,
+      "mirror_counts": {
+        "native_pixels_compared": 307200,
+        "native_pixels_matched": 282624,
+        "native_copy_mismatches": 24576,
+        "margin_pixels_compared": 479232,
+        "margin_pixels_zero": 479232,
+        "margin_nonzero_pixels": 0,
+        "total_mismatches": 24576
+      },
+      "mirror_failures": [
+        "24576 centered native-copy indices differ"
+      ],
+      "native_rect": [
+        192,
+        144,
+        831,
+        623
+      ],
+      "margin_color": {
+        "expected_index": 0,
+        "palette_zero_rgb": [
+          0,
+          0,
+          0
+        ],
+        "zero_index_is_rgb_black": true,
+        "all_margin_pixels_verified_rgb_black": true,
+        "final_visible_wrapper_color_proof": false
+      },
+      "actual_screenshot_observation": "Bottom five controls and four panel edges visible. Unit-slot interiors are blank in physical mirror although native snapshot contains artwork. Complete composition fails.",
+      "ordinary_map_frame_passed": false,
+      "ordinary_map_bar_matching_cells": 0,
+      "ordinary_map_frame_bar_applicability": "Nongating ordinary-map template measurements; distinct modal controls are not accepted by those templates."
+    }
+  ],
+  "totals": {
+    "attempts": 7,
+    "runtime_passes": 6,
+    "screenshots": 6,
+    "mirror_passes": 5,
+    "mirror_failures": 1
+  },
+  "fixture_observations": {
+    "producer": "11 groups PASS5.578s; agent tool output",
+    "trace": "10 groups PASS31.311s; agent tool output",
+    "host_integration": "10 groups PASS26.572s; root tool output",
+    "surface_audit_integration": "11 groups PASS22.823s; root tool output",
+    "independent_protocol_review": "No blocker reported against exact producer52edf115... and trace2f0ef571...; read-only review"
+  },
+  "stable_stage_changed": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "pending": [
+    "Peasants plan20260906-062941 is prepared but unexecuted following user tactical-battle priority.",
+    "802x602 native-canvas candidate75062bc2... was built but not run.",
+    "Court/recruitment need complete primary composition evidence; tower has no proven interior callback.",
+    "Barracks mirror omits24576 native pixels after first full blit; this actual mismatch is not reclassified as a pass.",
+    "Native exit/free/return-to-map lifecycle, other resolutions, variant-byte1 third-load runtime, manual input and promotion remain unproven."
+  ],
+  "limits": [
+    "All actual runs use the same c09940fa... candidate. Protocol changes add source-bound native artwork entry/ordered loads/returns and reject extra loads.",
+    "The observed castle byte4 is2, giving two native overview loads. Fixtures cover the optional third load but these captures do not execute that branch.",
+    "Facility runs declare isolated feature flags1A0=1F/1A4=01 and forced native dispatch/gate result; no natural/manual selection proof.",
+    "No earlier failure or capture was deleted or rewritten. First protocol and invalid PE failures remain separately bound.",
+    "Existing workdir files remain unchanged; barracks added four named native cache files, preserved outside repository."
+  ]
+}

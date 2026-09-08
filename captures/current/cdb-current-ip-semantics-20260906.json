@@ -1,0 +1,43 @@
+{
+  "schema": "synthetic_cdb_current_ip_observation_v1",
+  "synthetic_only": true,
+  "no_game_bytes_or_assets": true,
+  "gui_subsystem_without_window_calls": true,
+  "debugger_creationflags": "CREATE_NO_WINDOW",
+  "exit_code": 0,
+  "observed_entry": true,
+  "target_entry_breakpoint_seen": false,
+  "after_first_push_seen": true,
+  "executable": {
+    "path": "C:\\ClashTests\\hd-completion\\cdb-current-ip-20260906-040015\\synthetic-current-ip.exe",
+    "sha256": "5f1c3be280ce3bc5baf9f1d6f0a46454df6a6f298d6bcf2f99e88319a558a020"
+  },
+  "probe": {
+    "path": "C:\\ClashCaptures\\hd-completion\\cdb-current-ip-20260906-040015\\probe.cdb",
+    "sha256": "7e79f2a85899a5578e33efcdecc5ed352a05e5c29679d5c536d5ff3c7560deda"
+  },
+  "log": {
+    "path": "C:\\ClashCaptures\\hd-completion\\cdb-current-ip-20260906-040015\\cdb.log",
+    "sha256": "35dff94a2a68ef1b22fc1f128a00e24dd77df29290a3ab0c3329907d824f76cc"
+  },
+  "limits": [
+    "This tests debugger continuation semantics only; no Clash95 rendering or input proof."
+  ],
+  "source_observation": {
+    "path": "C:\\ClashCaptures\\hd-completion\\cdb-current-ip-20260906-040015\\observation.json",
+    "sha256": "027f03c1a8cba36b19f21d2d188e5cc54bd020d9f4a702a207b07f187a790ccb"
+  },
+  "post_run_absence": {
+    "path": "C:\\ClashCaptures\\hd-completion\\cdb-current-ip-20260906-040015\\post-run-absence.json",
+    "sha256": "c4b1e9abb4fbe8255f78e6ffdcff9aa91be9f271dc53a28f59d377d39e61ff44",
+    "observation": {
+      "MatchingProcesses": [],
+      "ObservedAt": "2026-09-06T04:00:50.0616227Z"
+    },
+    "limit": "No live PID pair recorded; exact synthetic name/matching debugger absence only."
+  },
+  "native_test_bytes": {
+    "preferred_entry401000": "9090ebfe",
+    "redirect_target401020": "535bebfe"
+  }
+}

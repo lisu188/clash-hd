@@ -60,7 +60,7 @@ WHOLE_HD_REQUIREMENTS = {
     ),
     "promotion_decision": (
         "An explicit promotion decision with the complete acceptance set is required before any "
-        "protected stable-stage or release-checklist change. This orchestrator does not implement it."
+        "protected stable-stage or release-checklist change. The component sequence does not evaluate it."
     ),
 }
 COMPONENT_MANUAL_TARGETS = {
@@ -85,7 +85,7 @@ def artifact_paths(directory: Path) -> dict[str, Path]:
 
 
 def plan_steps(args: argparse.Namespace, artifact_dir: Path | None = None) -> list[tuple[str, list[str]]]:
-    """Build the ordered (name, argv) step plan without running anything."""
+    """Build the scoped component plan; release mode uses the fixed evidence evaluator."""
     outputs = artifact_paths(artifact_dir or DEFAULT_SUMMARY_JSON.parent / "complete-hd-promotion-artifacts")
     assemble_argv = [
         str(TOOLS / "assemble_manual_directinput_proof.py"),
@@ -313,7 +313,7 @@ def run_component_sequence(args: argparse.Namespace, artifact_dir: Path, *, runn
     component_ready = len(steps) == len(plan) and all(step["passed"] for step in steps)
     failures = [f"{step['name']}: {failure}" for step in steps for failure in step["failures"]]
     if args.update_checklist:
-        failures.append("--update-checklist is blocked: whole-HD acceptance is not implemented; component eligibility cannot check release boxes")
+        failures.append("--update-checklist is blocked: component eligibility cannot check release boxes; use --release-manifest to evaluate complete evidence separately")
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "runtime_policy": RUNTIME_POLICY,
@@ -352,7 +352,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--battle-run-dir", type=Path, help="Battle visible-input run dir for the click-consumed gate")
     parser.add_argument("--update-checklist", action="store_true", help="Rejected compatibility option; this evaluator never edits release checklists")
     parser.add_argument("--write-json", type=Path, default=DEFAULT_SUMMARY_JSON)
-    parser.add_argument("--require-pass", action="store_true", help="Require the scoped component evaluation to pass; does not assert whole-HD readiness")
+    parser.add_argument("--require-pass", action="store_true", help="Require the selected evidence evaluation to pass; eligibility never changes the stable stage or checklist")
     args = parser.parse_args(argv)
     if args.release_manifest and args.candidate_manifest is None:
         parser.error("--release-manifest requires --candidate-manifest")

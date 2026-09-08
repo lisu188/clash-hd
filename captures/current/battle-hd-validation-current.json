@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-09-08T09:26:42.124553+00:00",
+  "generated_at": "2026-09-08T09:43:00.770851+00:00",
   "status": "reviewable_validation_candidate_with_pending_acceptance",
   "passed": false,
   "stable_stage_should_change": false,
@@ -53,7 +53,7 @@
     "camera_y": 0
   },
   "focused_checks": {
-    "generated_at": "2026-09-08T09:19:10.068829+00:00",
+    "generated_at": "2026-09-08T09:40:15.409312+00:00",
     "runtime_policy": "Python fixtures and x86 emulation only; no game or debugger launches",
     "passed": true,
     "checks": {
@@ -97,7 +97,7 @@
           "--require-machine-tools"
         ],
         "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_hd_hud.log",
-        "log_sha256": "7E6CA46E7EC400DC76A8166FFA2F243B0F6A11791D7391E3C28D350C9B5845F0",
+        "log_sha256": "5717A6BA31A63AFEAAE70EBF0C96405AB00D253EC1DF209EAEFA43E7A7384A37",
         "test_source_sha256": "3AD8DD8FC6FE1FBE096BE1ABE7CEE070E0E91F1F978CF4961D57388ACDAFD629"
       },
       "battle_hd_summary": {
@@ -131,7 +131,7 @@
         ],
         "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\patch_definition_guard.log",
         "log_sha256": "1890DA50F50E8B62DEA92988A1DA3BFBCA91C2C7D719D5676311B28680987CBD",
-        "test_source_sha256": "A401B05DC3BA29F6F43E49E2CF722962075884A2C3B355E244D005FA6EB81432"
+        "test_source_sha256": "FFD52D951878CE49ED8D0364A9D84676A6D4C8D88AF2D7075A6846868D75FBB9"
       },
       "launcher_core": {
         "passed": true,
@@ -228,28 +228,28 @@
       "passed": true,
       "exit_code": 0,
       "log": "C:\\ClashTests\\battle-hd-1280x720\\integration-checks\\render_cdb_surface_probe.log",
-      "log_sha256": "97d678111f2b28d39993917a578db9aa17399e27fb8e16bf2c97b01fba0a4451",
+      "log_sha256": "a48cead859ce44a3aa20902677e61d76c6a026dfabd2f4c14852719cd693c10e",
       "test_source_sha256": "40ce7f7949029e5b6f74818d719ce3173bf28c8fc0f3efd1b74a39b685aaa9a1"
     },
     "complete_hd_hidden_harness": {
       "passed": true,
       "exit_code": 0,
       "log": "C:\\ClashTests\\battle-hd-1280x720\\integration-checks\\complete_hd_hidden_harness.log",
-      "log_sha256": "25b96b0827103d6d41d70cf5bb8dee90867a49d0245fb7b156ee3aa1e1d3dcc9",
-      "test_source_sha256": "844412cc98e32a396d7d16ae65aa814d9f63fcbb9b1eb349ad991105daa4b5c9"
+      "log_sha256": "0058e837f9c3cd60f094714615fa214958e834281d778d92775c1438b58efc63",
+      "test_source_sha256": "da6cb3607e5fd589bbedf7f47fe1880ef7b5c57d741a97d7d104f3a30876d541"
     },
     "launcher_multiresolution": {
       "passed": true,
       "exit_code": 0,
       "log": "C:\\ClashTests\\battle-hd-1280x720\\integration-checks\\launcher_multiresolution.log",
-      "log_sha256": "8b57f9508ca4b98142142597f1d11dbea2a3793430934c8be8d82b0b86445e6e",
+      "log_sha256": "a82b16d62d2d49727ce2db255b6a3b9232de0af476875cfc86c5f4b7d61f33e0",
       "test_source_sha256": "e581c681cf351da2fa8a7a339bafc8037a31496d4e4f611f027eb557674f3546"
     },
     "launcher_completehd": {
       "passed": true,
       "exit_code": 0,
       "log": "C:\\ClashTests\\battle-hd-1280x720\\integration-checks\\launcher_completehd.log",
-      "log_sha256": "3453ee0919868e7fed4069848fc2d26a594e5da31658f5baf70855a28c4c2c41",
+      "log_sha256": "b375b631b63150ab2bd269b67d072e1ef5b191e91276a3870a38082f4a3a5b07",
       "test_source_sha256": "be0ca1dd2eaa31f9b37099180b9e9ead1ce3f1b7a776a5e3817c7f33df4c73b7"
     },
     "hd_validation_drivers": {
@@ -263,6 +263,10 @@
   "source_binding_integration": {
     "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\reports\\battle_hd_source_binding_integration.json",
     "sha256": "B849626B955A3A975FD70E1404800952D76233F10E16CFCEA1C340FA2C341B0C"
+  },
+  "latest_main_integration": {
+    "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\reports\\battle_hd_source_binding_pr60.json",
+    "sha256": "718545F89B70375F55AFA08145AE9B60CDB85735C70B850B0756ECC8EF197CC4"
   },
   "launcher_dry_run": {
     "path": "C:\\ClashTests\\battle-hd-1280x720\\launcher-dry-run-final.json",
@@ -459,7 +463,7 @@
     "input_method": "debugger_memory_register_writes_and_direct_calls",
     "evidence_class": "forced_hidden_primary_surface_snapshot",
     "harness_passed": true,
-    "observation": "Native 640x178 results message centered at origin (256,271); all six battle command cells appear at the right. Four frame edges and black outer padding inspected.",
+    "observation": "Native 640x178 results message centered at origin (256,271); all six native battle command controls appear at the right. Four frame edges and black outer padding inspected.",
     "limitations": [
       "Temporary software buffer receives a native copy from DD primary after dialog drawing. Snapshot stops before dismissal and proves no additional lifecycle.",
       "CDB command-skipping notice follows HOST_READY; no natural post-dump interval is claimed.",
@@ -467,11 +471,13 @@
     ]
   },
   "aggregate_refresh": {
+    "status": "pending_after_latest_main_merge",
     "passed": false,
     "report": {
-      "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\current\\current-evidence-refresh-current.json",
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-after-main-artifacts\\current-evidence-refresh-current.json",
       "sha256": "D5C788225F8B1F81BB87302267ED1E509E52F49703AD73EE2CBB4DC372DC6874"
     },
+    "report_scope": "prior completed refresh before latest main integration",
     "checks_total": 165,
     "checks_failed": 23,
     "failing_checks": {
@@ -766,11 +772,9 @@
         "report": "captures\\current\\docs-consistency-current.json"
       }
     },
-    "stdout_log": {
-      "path": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-after-main.log",
-      "sha256": "554862A7DEE73F1036BB123429AF7209A4C02465DD8FBE05F812152702DC44C6"
-    },
-    "artifact_archive": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-after-main-artifacts"
+    "stdout_log": null,
+    "artifact_archive": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-after-main-artifacts",
+    "superseded_run_note": "The intermediate PR60 aggregate was stopped before further source changes and produced no completed result. The earlier redirected stdout filename was reused; the immutable archived completed JSON is the prior result source."
   },
   "pending_acceptance": [
     "Dedicated phase-14 present observation is absent; expanded present/copy bounds retain separate runtime acceptance.",

@@ -33,8 +33,11 @@ RUNTIME_POLICY = (
 )
 GUARD_POLICY = (
     "exactly one stable resolution (the 800x600 default), stable/validated "
-    "entries backed by passing hidden-desktop evidence, tile counts matching "
-    "the engine formula"
+    "entries backed by passing hidden-desktop evidence whose dimensions, stage, "
+    "candidate SHA and run references agree with its passing patch metadata and "
+    "smoke matrix, tile counts matching the engine formula; schema-2 profiles "
+    "must match launcher contracts and Framed/Complete-HD remain experimental "
+    "until their own scoped runtime evidence can be verified"
 )
 
 RESOLUTION_KEY_RE = re.compile(r"^([1-9]\d{2,3})x([1-9]\d{2,3})$")
@@ -89,16 +92,125 @@ def patcher_stable_stage() -> str | None:
         return None
 
 
-def run_dir_is_hidden(root: Path, run_rel: str) -> tuple[bool, str]:
-    run_dir = root / run_rel
-    if not run_dir.is_dir():
-        return False, f"run directory missing: {run_rel}"
-    summary = load_json(run_dir / "summary.json")
-    if summary is None:
-        return False, f"run summary.json missing or invalid: {run_rel}"
-    if summary.get("LaunchMode") != "hidden-desktop" or not summary.get("HiddenDesktop"):
-        return False, f"run is not hidden-desktop: {run_rel}"
-    return True, ""
+def metadata_path(root: Path, value: str) -> Path:
+    # Archived metadata uses Windows separators even in portable checkouts.
+    return (root / value.replace("\\", "/")).resolve()
+
+
+def candidate_sha(value: Any) -> str | None:
+    return value.lower() if isinstance(value, str) and re.fullmatch(r"[0-9a-fA-F]{64}", value) else None
+
+
+def surface_matches(surface: Any, width: int, height: int) -> bool:
+    return isinstance(surface, dict) and all(
+        type(surface.get(field)) is int and surface[field] == expected
+        for field, expected in (("Width", width), ("Height", height), ("Bytes", width * height))
+    )
+
+
+def evidence_binding_failures(root: Path, key: str, evidence: dict[str, Any], stage: str | None) -> list[str]:
+    failures: list[str] = []
+    match = RESOLUTION_KEY_RE.fullmatch(key)
+    if not match:
+        return ["cannot bind evidence for an invalid resolution key"]
+    width, height = int(match[1]), int(match[2])
+    smoke_ref = evidence.get("smoke_json")
+    smoke_path = metadata_path(root, smoke_ref) if isinstance(smoke_ref, str) and smoke_ref else None
+    smoke = load_json(smoke_path) if smoke_path and smoke_path.suffix.lower() == ".json" else None
+    if smoke is None:
+        return ["smoke matrix missing or invalid: smoke_json must reference a JSON metadata artifact"]
+    if smoke.get("passed") is not True or smoke.get("failures"):
+        failures.append("smoke matrix is not passing")
+    if smoke.get("resolution") != key:
+        failures.append(f"smoke resolution {smoke.get('resolution')!r} does not match {key}")
+
+    patch = smoke.get("patch_stage")
+    if not isinstance(patch, dict):
+        patch = {}
+    sha = candidate_sha(patch.get("sha256"))
+    if sha is None:
+        failures.append("patch gate candidate SHA-256 is missing or invalid")
+    if not stage or patch.get("stage") != stage:
+        failures.append("patch gate stage does not match manifest stable_stage")
+    patch_gate = patch.get("current_hd_map_gate") or {}
+    if (patch.get("passed") is not True or patch.get("failures")
+            or not isinstance(patch_gate, dict) or patch_gate.get("passed") is not True
+            or patch_gate.get("failures")):
+        failures.append("smoke patch gate is not passing")
+
+    report_ref = smoke.get("patch_report_json")
+    report_path = metadata_path(root, report_ref) if isinstance(report_ref, str) and report_ref else None
+    report = load_json(report_path) if report_path and report_path.suffix.lower() == ".json" else None
+    if report is None:
+        failures.append("smoke must reference an existing patch_report_json metadata artifact")
+    else:
+        # The established archived-report schema predates resolution support.
+        # Only an absent key means 800x600; explicit null never means legacy.
+        report_resolution = report.get("resolution", EXPECTED_DEFAULT)
+        if report_resolution != key:
+            failures.append(f"patch report resolution {report_resolution!r} does not match {key}")
+        if report.get("stage") != stage:
+            failures.append("patch report stage does not match manifest stable_stage")
+        if sha is None or candidate_sha(report.get("exe_sha256")) != sha:
+            failures.append("patch report candidate SHA-256 does not match smoke patch gate")
+        gate = report.get("current_hd_map_gate")
+        if not isinstance(gate, dict) or gate.get("passed") is not True or gate.get("failures"):
+            failures.append("patch report current_hd_map_gate is not passing")
+        count = report.get("patch_count")
+        counts = report.get("status_counts")
+        if (type(count) is not int or count <= 0 or not isinstance(counts, dict)
+                or any(type(value) is not int or value < 0 for value in counts.values())
+                or counts.get("patched") != count or sum(counts.values()) != count
+                or counts.get("original", 0) != 0 or counts.get("unexpected", 0) != 0):
+            failures.append("patch report does not prove every selected byte patched without original/unexpected records")
+        embedded_counts = patch.get("patches")
+        if (not isinstance(embedded_counts, dict)
+                or any(type(embedded_counts.get(field)) is not int or embedded_counts.get(field) != expected
+                       for field, expected in (("total", count), ("patched", count), ("original", 0), ("unexpected", 0)))):
+            failures.append("smoke patch counts do not match the patch report")
+        if patch.get("archived") is True:
+            source = patch.get("source")
+            if not isinstance(source, str) or metadata_path(root, source) != report_path:
+                failures.append("archived patch gate source does not match patch_report_json")
+
+    post_owner = smoke.get("post_owner_evidence")
+    if not isinstance(post_owner, dict):
+        post_owner = {}
+    if post_owner.get("passed") is not True:
+        failures.append("smoke post-owner evidence is not passing")
+    for run_key, smoke_key in (("normal_run", "normal"), ("forced_run", "forced_visible")):
+        run_ref = evidence.get(run_key)
+        if not isinstance(run_ref, str) or not run_ref:
+            failures.append(f"evidence missing {run_key}")
+            continue
+        run_path = metadata_path(root, run_ref)
+        summary = load_json(run_path / "summary.json")
+        if summary is None:
+            failures.append(f"{run_key} summary.json missing or invalid")
+            continue
+        if summary.get("LaunchMode") != "hidden-desktop" or summary.get("HiddenDesktop") is not True:
+            failures.append(f"{run_key} is not hidden-desktop")
+        if summary.get("Passed") is not True:
+            failures.append(f"{run_key} is not passing")
+        if summary.get("Stage") != stage:
+            failures.append(f"{run_key} stage does not match manifest stable_stage")
+        if sha is None or candidate_sha(summary.get("CandidateSha256")) != sha:
+            failures.append(f"{run_key} candidate SHA-256 does not match smoke patch gate")
+        if not surface_matches(summary.get("Surface"), width, height):
+            failures.append(f"{run_key} surface dimensions/bytes do not match {key}")
+        row = post_owner.get(smoke_key)
+        if not isinstance(row, dict):
+            row = {}
+        if row.get("passed") is not True or row.get("present") is not True or row.get("failures"):
+            failures.append(f"smoke {smoke_key} row is missing or not passing")
+        row_run = row.get("run")
+        if not isinstance(row_run, str) or metadata_path(root, row_run) != run_path:
+            failures.append(f"smoke {smoke_key} run does not match manifest {run_key}")
+        if sha is None or candidate_sha(row.get("candidate_sha256")) != sha:
+            failures.append(f"smoke {smoke_key} candidate SHA-256 does not match patch gate")
+        if not surface_matches(row.get("surface"), width, height):
+            failures.append(f"smoke {smoke_key} surface dimensions/bytes do not match {key}")
+    return failures
 
 
 def build_legacy_guard(args: argparse.Namespace) -> dict[str, Any]:
@@ -109,9 +221,24 @@ def build_legacy_guard(args: argparse.Namespace) -> dict[str, Any]:
     check_specs: dict[str, tuple[bool, dict[str, Any], str]] = {}
 
     manifest = load_json(manifest_path)
-    if (manifest is None or type(manifest.get("schema")) is not int or manifest.get("schema") != 1
+    manifest_errors: list[str] = []
+    if (manifest is None or type(manifest.get("schema")) is not int
+            or manifest["schema"] not in (1, 2)
             or not isinstance(manifest.get("resolutions"), dict)
             or any(not isinstance(entry, dict) for entry in manifest.get("resolutions", {}).values())):
+        manifest_errors.append(f"manifest missing, invalid, or wrong schema: {manifest_path}")
+    elif manifest["schema"] == 2:
+        try:
+            # Use the launcher's decoder and validator, including duplicate-key
+            # rejection, exact Classic projection and recipe/feature scopes.
+            from src.launcher import presets
+
+            checked_manifest = presets.load_manifest(manifest_path)
+            if checked_manifest != manifest:
+                manifest_errors.append("manifest changed during profile validation")
+        except (ImportError, OSError, ValueError, TypeError) as exc:
+            manifest_errors.append(f"launcher profile manifest rejected: {exc}")
+    if manifest_errors:
         guard = {
             "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
             "passed": False,
@@ -119,7 +246,7 @@ def build_legacy_guard(args: argparse.Namespace) -> dict[str, Any]:
             "guard_policy": GUARD_POLICY,
             "manifest": str(args.manifest),
             "checks": {},
-            "failures": [f"manifest missing, invalid, or wrong schema: {manifest_path}"],
+            "failures": manifest_errors,
         }
         return guard
 
@@ -157,6 +284,42 @@ def build_legacy_guard(args: argparse.Namespace) -> dict[str, Any]:
         "manifest stable_stage must match the patcher DEFAULT_STAGE",
     )
 
+    if manifest["schema"] == 2:
+        from src.patcher.framed_viewport import FramedViewport
+
+        profiles = manifest["profiles"]
+        profile_failures: list[str] = []
+        for renderer, suffix in (
+            ("framed", "-combinedui-partialtiles-initialpaint-framed-validation"),
+            ("completehd", "-completehd-validation"),
+        ):
+            if renderer not in profiles:
+                continue
+            profile = profiles[renderer]
+            expected_profile_stage = f"{expected_stage}{suffix}" if expected_stage else None
+            if profile["stage"] != expected_profile_stage:
+                profile_failures.append(f"{renderer} stage must match its launcher recipe and the protected stable parent")
+            for key, entry in profile["resolutions"].items():
+                if entry["status"] != "experimental":
+                    profile_failures.append(
+                        f"{renderer}/{key}: Classic evidence cannot certify this profile; "
+                        "a dedicated scoped runtime evidence check is required"
+                    )
+                if entry.get("tiles") is not None:
+                    width, height = presets.parse_resolution_key(key)
+                    expected = FramedViewport(width, height).full_tiles
+                    if tuple(entry["tiles"]) != expected:
+                        profile_failures.append(f"{renderer}/{key}: tile counts differ from its renderer geometry {expected}")
+        check_specs["profile_contracts"] = (
+            not profile_failures,
+            {"schema": 2, "classic_projection_matches": True,
+             "framed_resolution_count": len(profiles["framed"]["resolutions"]),
+             "completehd_resolution_count": len(profiles.get("completehd", {}).get("resolutions", {})),
+             "framed_runtime_evidence_verified": False, "completehd_runtime_evidence_verified": False,
+             "failures": profile_failures},
+            "; ".join(profile_failures) or "schema-2 renderer profiles must preserve their distinct evidence scopes",
+        )
+
     tile_mismatches: dict[str, Any] = {}
     for key, entry in resolutions.items():
         match = RESOLUTION_KEY_RE.match(key)
@@ -183,23 +346,10 @@ def build_legacy_guard(args: argparse.Namespace) -> dict[str, Any]:
         if not isinstance(evidence, dict):
             evidence_failures.append(f"{key}: {status} entry has no evidence block")
             continue
-        for run_key in ("normal_run", "forced_run"):
-            run_rel = evidence.get(run_key)
-            if not run_rel:
-                evidence_failures.append(f"{key}: evidence missing {run_key}")
-                continue
-            hidden, reason = run_dir_is_hidden(root, str(run_rel))
-            if not hidden:
-                evidence_failures.append(f"{key}: {reason}")
-        smoke_rel = evidence.get("smoke_json")
-        if not smoke_rel:
-            evidence_failures.append(f"{key}: evidence missing smoke_json")
-        else:
-            smoke = load_json(root / str(smoke_rel))
-            if smoke is None:
-                evidence_failures.append(f"{key}: smoke matrix missing or invalid: {smoke_rel}")
-            elif not smoke.get("passed"):
-                evidence_failures.append(f"{key}: smoke matrix is not passing: {smoke_rel}")
+        evidence_failures.extend(
+            f"{key}: {failure}"
+            for failure in evidence_binding_failures(root, key, evidence, expected_stage)
+        )
     check_specs["evidence_backed"] = (
         not evidence_failures,
         {"checked": evidence_checked, "failures": evidence_failures},
@@ -346,17 +496,23 @@ def _profile_evidence(root: Path, key: str, entry: dict[str, Any], config: dict[
 
 
 def build_guard(args: argparse.Namespace) -> dict[str, Any]:
+    # Preserve Classic patch/smoke/run bindings and the existing check interface
+    # before adding schema-2 source and profile metadata requirements.
+    baseline = build_legacy_guard(args)
     manifest = load_json(Path(args.root) / args.manifest)
-    if not manifest or manifest.get("schema") != 2:
-        return build_legacy_guard(args)
+    if not manifest or manifest.get("schema") != 2 or not baseline["checks"]:
+        return baseline
     root = Path(args.root)
-    checks: dict[str, Any] = {}
-    failures: list[str] = []
+    checks: dict[str, Any] = baseline["checks"].copy()
+    failures: list[str] = list(baseline["failures"])
 
     def check(name: str, errors: list[str], **details: Any) -> None:
+        previous = checks.get(name, {})
+        details = {**previous.get("summary", {}), **details}
+        errors = list(dict.fromkeys([*previous.get("failures", []), *errors]))
         checks[name] = check_record(name, not errors, details)
         checks[name]["failures"] = errors
-        failures.extend(f"{name}: {error}" for error in errors)
+        failures.extend(f"{name}: {error}" for error in errors if f"{name}: {error}" not in failures)
 
     from src.launcher import presets
     try:

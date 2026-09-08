@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T11:22:12+02:00",
+  "generated_at": "2026-09-06T05:58:14+02:00",
   "passed": false,
   "runtime_policy": "repo/local metadata only; does not launch Clash95, CDB, wrappers, or visible windows",
   "checks": {
@@ -147,7 +147,7 @@
       "passed": true,
       "run": "captures\\archive\\cdb-surface-dump-20260712-151015",
       "log": "captures\\archive\\cdb-surface-dump-20260712-151015\\cdb-surface-dump.log",
-      "screenshot": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-151015\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-151015\\surface.png",
       "summary": {
         "ready": true,
         "descriptor_click_ok": true,
@@ -195,7 +195,7 @@
       "run": "captures\\archive\\cdb-surface-dump-20260513-104200",
       "summary_json": "captures\\archive\\cdb-surface-dump-20260513-104200\\right-bottom-ui-summary.json",
       "bounds_json": "captures\\archive\\cdb-surface-dump-20260513-104200\\right-bottom-ui-bounds.json",
-      "screenshot": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-104200\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-104200\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "rbui_markers_seen": true,
@@ -402,7 +402,7 @@
       "summary_json": "captures\\archive\\cdb-surface-dump-20260513-121513\\summary.json",
       "coverage_json": "captures\\archive\\cdb-surface-dump-20260513-121513\\map-tile-coverage.json",
       "visibility_json": "captures\\archive\\cdb-surface-dump-20260513-121513\\visibility-coverage-summary.json",
-      "screenshot": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260513-121513\\surface.png",
       "summary": {
         "surface_dump_passed": true,
         "hidden_desktop": true,
@@ -766,13 +766,13 @@
       "failures": []
     },
     "load_slot_route_limit_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\load-slot-route-limit-current.json",
       "markdown": "captures\\current\\load-slot-route-limit-current.md",
       "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
       "summary": {
         "static_load_rows": "0..9",
-        "harness_mouse_formula": null,
+        "harness_mouse_formula": "x=320, y=166 + 22 * LoadSlot",
         "archived_success_slots": [
           2
         ],
@@ -782,27 +782,24 @@
           5
         ],
         "recent_slot5_blocked": true,
-        "current_boundary": "static code and harness parameters allow rows 0-9, but current archived hidden evidence only proves the slot-2 row path. Slots 3, 4, and 5, plus the current slot-5 right-bottom attempt, stall before force-select/accept and LOADSAVE.",
+        "current_boundary": "static code and canonical harness geometry allow rows 0-9. This historical hidden diagnostic cohort proves the slot-2 row path and records rows 3-5 stalling before force-select/accept and LOADSAVE. These archived diagnostics do not reopen the subsequently resolved right-bottom work or prove current input.",
         "next_proof_options": [
-          "debug why rows 3-5 stop before the forced load-select breakpoint under the current CDB route",
-          "or create an isolated test working directory that maps the slot-5 save state to a proven row without editing C:\\Clash\\save",
-          "or use a direct-loader probe, but label it non-natural route evidence until menu selection is proven"
+          "historical diagnostic option: inspect why rows 3-5 stopped before the archived forced load-select breakpoint",
+          "historical diagnostic option: use an isolated test working directory without editing C:\\Clash\\save",
+          "direct-loader evidence remains non-natural route evidence; consult the current handoff before scheduling new work"
         ],
         "cohort_candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
         "cohort_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter"
       },
-      "failures": [
-        "harness: missing marker load_mouse_x: $loadMouseX = 320",
-        "harness: missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)"
-      ]
+      "failures": []
     },
     "right_bottom_slot_fixture_plan": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\right-bottom-slot-fixture-plan-current.json",
       "markdown": "captures\\current\\right-bottom-slot-fixture-plan-current.md",
       "summary": {
         "candidate_matrix_passed": true,
-        "load_slot_route_limit_passed": false,
+        "load_slot_route_limit_passed": true,
         "baseline_route_index": 0,
         "route_candidate": {
           "save": "C:\\Clash\\save\\5.dat",
@@ -829,9 +826,7 @@
         "promotion_ready": false,
         "stable_stage_should_change": false
       },
-      "failures": [
-        "load-slot route-limit guard is not passing"
-      ]
+      "failures": []
     },
     "right_bottom_slot_fixture_script_guard": {
       "passed": true,
@@ -848,7 +843,7 @@
       "failures": []
     },
     "right_bottom_slot_fixture_runtime_plan": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.json",
       "markdown": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.md",
       "summary": {
@@ -866,9 +861,7 @@
         "result_json_template": "captures\\cdb-surface-dump-FIXTURE-RUN\\right-bottom-slot-fixture-result-summary.json",
         "result_md_template": "captures\\cdb-surface-dump-FIXTURE-RUN\\right-bottom-slot-fixture-result-summary.md"
       },
-      "failures": [
-        "right-bottom slot fixture plan is not passing"
-      ]
+      "failures": []
     },
     "load_slot_timeout_phase": {
       "passed": true,
@@ -955,7 +948,7 @@
       "failures": []
     },
     "load_slot_transition_geometry_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\load-slot-transition-geometry-guard-current.json",
       "markdown": "captures\\current\\load-slot-transition-geometry-guard-current.md",
       "summary": {
@@ -997,14 +990,10 @@
         "run_plan_command_count": 3,
         "run_plan_summary_command_count": 3
       },
-      "failures": [
-        "transition geometry guard failed: surface_formula_present",
-        "surface-dump script missing geometry token: $loadMouseX = 320",
-        "surface-dump script missing geometry token: $loadMouseY = 166 + (22 * $LoadSlot)"
-      ]
+      "failures": []
     },
     "load_slot_transition_probe_preview": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\load-slot-transition-probe-preview-current.json",
       "markdown": "captures\\current\\load-slot-transition-probe-preview-current.md",
       "summary": {
@@ -1049,20 +1038,19 @@
           }
         ]
       },
-      "failures": [
-        "transition probe preview failed: geometry_guard_passed"
-      ]
+      "failures": []
     },
     "right_bottom_owner_flag_inventory": {
       "passed": true,
       "json": "captures\\current\\right-bottom-owner-flag-inventory-current.json",
       "markdown": "captures\\current\\right-bottom-owner-flag-inventory-current.md",
       "summary": {
-        "scanned_log_count": 44,
-        "relevant_run_count": 13,
+        "scanned_log_count": 53,
+        "relevant_run_count": 14,
         "classification_counts": {
           "forced_owner_action_route": 7,
           "natural_state_gated": 1,
+          "natural_ui_descriptor_only": 1,
           "non_natural_isolated_fixture": 5
         },
         "natural_state_gated_count": 1,
@@ -1123,11 +1111,11 @@
       "failures": []
     },
     "right_bottom_blocker_triage": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\right-bottom-blocker-triage-current.json",
       "markdown": "captures\\current\\right-bottom-blocker-triage-current.md",
       "summary": {
-        "classification": "triage_incomplete_or_stale",
+        "classification": "controlled_recovered_but_natural_route_nonpromoting",
         "promotion_ready": false,
         "stable_stage_should_change": false,
         "natural_ui_owner_action_rows": 0,
@@ -1142,16 +1130,14 @@
         "guard_policy": "passes only while the current blocker is explicitly classified as non-promoting: controlled composition is recovered, natural owner/action rows are absent, the natural route is either owner-flag gated, blocked inside the slot5 Render_Begin/DD_Pump/copyback lane, blocked by the documented loop-state/input-resample/source-hold lane, or has only debugger-forced native action-click copyback proof; the next proof path remains hidden diagnosis or approved manual input",
         "runtime_policy": "repo-only evidence triage; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
-      "failures": [
-        "triage check failed: hidden_fixture_plan_ready"
-      ]
+      "failures": []
     },
     "right_bottom_visual_artifact_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\right-bottom-visual-artifact-guard-current.json",
       "markdown": "captures\\current\\right-bottom-visual-artifact-guard-current.md",
       "summary": {
-        "visual_status": "visual_artifact_guard_stale",
+        "visual_status": "fixture_natural_draw_accepted",
         "promotion_ready": false,
         "stable_stage_should_change": false,
         "natural_owner_action_rows": 0,
@@ -1161,9 +1147,7 @@
         "guard_policy": "passes only while the resolved right-bottom state holds: controlled composition is recovered, the accepted slot5-as-slot0 fixture natural-draw evidence remains valid (user ruling 2026-07-14: slot5-as-slot0 fixture accepted as natural-draw evidence), the compose evidence matrix passes with promotion still deferred, and blocker triage remains non-promoting",
         "runtime_policy": "repo-only visual artifact guard; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
-      "failures": [
-        "visual artifact guard failed: blocker_triage_non_promoting"
-      ]
+      "failures": []
     },
     "first_mission_visual_audit": {
       "passed": true,
@@ -1461,7 +1445,7 @@
       "failures": []
     },
     "load_slot_transition_readiness": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\load-slot-transition-readiness-current.json",
       "markdown": "captures\\current\\load-slot-transition-readiness-current.md",
       "summary": {
@@ -1491,10 +1475,7 @@
           "promotion remains blocked until natural owner/action proof or approved manual DirectInput proof exists"
         ]
       },
-      "failures": [
-        "transition readiness check failed: geometry_guard_passed",
-        "transition readiness check failed: probe_preview_passed"
-      ]
+      "failures": []
     },
     "load_slot_transition_readiness_tests": {
       "passed": true,
@@ -1559,7 +1540,7 @@
       "failures": []
     },
     "castle_overview_evidence": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\castle-overview-evidence-current.json",
       "markdown": "captures\\current\\castle-overview-evidence-current.md",
       "summary": {
@@ -1572,10 +1553,7 @@
           "total": 134
         }
       },
-      "failures": [
-        "owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
-        "forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
-      ]
+      "failures": []
     },
     "castle_owner_records_summary_tests": {
       "passed": true,
@@ -1655,7 +1633,7 @@
       "failures": []
     },
     "castle_overview_promotion_decision": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\castle-overview-promotion-decision-current.json",
       "markdown": "captures\\current\\castle-overview-promotion-decision-current.md",
       "summary": {
@@ -1667,9 +1645,7 @@
         "dormant_multihit_completion_ok": true,
         "manual_input_proof_valid": false
       },
-      "failures": [
-        "castle overview evidence matrix is not passing"
-      ]
+      "failures": []
     },
     "castle_overview_promotion_decision_tests": {
       "passed": true,
@@ -1683,7 +1659,7 @@
       "failures": []
     },
     "castle_overview_baseline_recheck": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\castle-overview-baseline-recheck-current.json",
       "markdown": "captures\\current\\castle-overview-baseline-recheck-current.md",
       "summary": {
@@ -1700,10 +1676,7 @@
         "visible_multihit_completion_ok": true,
         "dormant_multihit_completion_ok": true
       },
-      "failures": [
-        "latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
-        "latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
-      ]
+      "failures": []
     },
     "castle_overview_baseline_recheck_tests": {
       "passed": true,
@@ -1852,9 +1825,9 @@
       "markdown": "captures\\current\\patch-definition-current.md",
       "summary": {
         "patcher_default_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-        "patch_count": 480,
-        "patch_group_count": 55,
-        "stage_count": 63,
+        "patch_count": 211,
+        "patch_group_count": 46,
+        "stage_count": 62,
         "validation_groups_in_stable": [],
         "overlap_failure_count": 0,
         "guard_policy": "patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps",
@@ -1874,7 +1847,7 @@
       "failures": []
     },
     "stable_stage_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\stable-stage-guard-current.json",
       "markdown": "captures\\current\\stable-stage-guard-current.md",
       "summary": {
@@ -1891,7 +1864,6 @@
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
-          "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore",
@@ -1912,10 +1884,7 @@
         "mapsurface_with_menu_surface": [],
         "mapsurface_missing_upgrade": []
       },
-      "failures": [
-        "castle_overview_promotion_decision: castle overview promotion decision is not passing",
-        "castle_overview_evidence_matrix: castle overview evidence matrix is not passing"
-      ]
+      "failures": []
     },
     "stable_stage_guard_tests": {
       "passed": true,
@@ -1975,27 +1944,23 @@
       "failures": []
     },
     "python_runtime_safety_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\python-runtime-safety-current.json",
       "markdown": "captures\\current\\python-runtime-safety-current.md",
       "summary": {
-        "risky_file_count": 163,
+        "risky_file_count": 157,
         "classification_counts": {
-          "safe": 178,
+          "safe": 162,
           "user_gated_launcher": 1,
-          "unclassified_risky": 3,
           "exempt": 29,
-          "manual_visible_runtime_gated": 5,
-          "test_fixture": 125
+          "manual_visible_runtime_gated": 6,
+          "offline_report": 1,
+          "test_fixture": 120
         },
-        "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
+        "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, explicitly exempt, or satisfy a reviewed offline-report source contract",
         "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
-      "failures": [
-        "src/launcher/gui.py uses risky Python runtime/input APIs but is not gated or exempt",
-        "tools/hd_layout_observation_manifest.py uses risky Python runtime/input APIs but is not gated or exempt",
-        "tools/run_framed_offline_tests.py uses risky Python runtime/input APIs but is not gated or exempt"
-      ]
+      "failures": []
     },
     "python_runtime_safety_guard_tests": {
       "passed": true,
@@ -2102,18 +2067,20 @@
       "failures": []
     },
     "resolution_manifest_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\resolution-manifest-guard-current.json",
       "markdown": "captures\\current\\resolution-manifest-guard-current.md",
       "summary": {
-        "resolution_count": null,
-        "status_counts": null,
-        "guard_policy": "exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence, tile counts matching the engine formula",
+        "resolution_count": 5,
+        "status_counts": {
+          "stable": 1,
+          "validated": 0,
+          "experimental": 4
+        },
+        "guard_policy": "exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence whose dimensions, stage, candidate SHA and run references agree with its passing patch metadata and smoke matrix, tile counts matching the engine formula",
         "runtime_policy": "repo-only metadata inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
-      "failures": [
-        "manifest missing, invalid, or wrong schema: src\\launcher\\resolutions.json"
-      ]
+      "failures": []
     },
     "resolution_manifest_guard_tests": {
       "passed": true,
@@ -2293,7 +2260,7 @@
       "failures": []
     },
     "handoff_freshness_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\handoff-freshness-guard-current.json",
       "markdown": "captures\\current\\handoff-freshness-guard-current.md",
       "summary": {
@@ -2304,33 +2271,19 @@
           "load_slot_route_limit_artifacts": true,
           "load_slot_transition_readiness_artifacts": true,
           "manual_or_override_blocker": true,
-          "no_visible_runtime_warning": false,
-          "no_popup_operator_preference": false,
-          "right_bottom_safety_done": false,
-          "manual_checklist_artifact": false,
-          "manual_proof_template_artifact": false,
+          "no_visible_runtime_warning": true,
+          "no_popup_operator_preference": true,
+          "right_bottom_safety_done": true,
+          "manual_checklist_artifact": true,
+          "manual_proof_template_artifact": true,
           "completion_summary_artifact": true,
           "visible_runtime_launcher_guard": true
         },
         "loop_phrase_groups": {
-          "loop_load_slot_transition_readiness_artifacts": false
+          "loop_load_slot_transition_readiness_artifacts": true
         }
       },
-      "failures": [
-        "missing handoff file: .codex-loop\\NEXT.md",
-        "missing handoff file: .codex-loop\\STATE.md",
-        "missing handoff file: .codex-loop\\TASKS.md",
-        "missing current handoff phrase for no_visible_runtime_warning: Do not run visible/manual",
-        "missing current handoff phrase for no_visible_runtime_warning: explicit user approval",
-        "missing current handoff phrase for no_popup_operator_preference: Do not launch Clash95, CDB, wrappers, PowerShell harnesses",
-        "missing current handoff phrase for no_popup_operator_preference: visible windows unless the user explicitly approves",
-        "missing current handoff phrase for right_bottom_safety_done: stable-stage promotion",
-        "missing current handoff phrase for manual_checklist_artifact: pending_manual_validation",
-        "missing current handoff phrase for manual_proof_template_artifact: template_valid_as_proof=False",
-        "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-current.md",
-        "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-tests-current.md",
-        "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: ready_for_hidden_transition_probe"
-      ]
+      "failures": []
     },
     "handoff_freshness_guard_tests": {
       "passed": true,
@@ -2362,7 +2315,7 @@
         "full_game_complete": false,
         "full_game_percent_statement": "not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open",
         "percentages": {
-          "current_repo_evidence_gates": 85.89,
+          "current_repo_evidence_gates": 98.78,
           "repo_test_sweep": 100.0,
           "focused_battle_right_bottom_lane": 99.95,
           "right_bottom_promotion_gate": 100.0,
@@ -2394,7 +2347,7 @@
       "failures": []
     },
     "hd_soak_execution_boundary": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\hd-soak-execution-boundary-current.json",
       "markdown": "captures\\current\\hd-soak-execution-boundary-current.md",
       "summary": {
@@ -2404,9 +2357,9 @@
         "cases": [
           {
             "name": "missing_token",
-            "passed": false,
+            "passed": true,
             "exit_code": 1,
-            "expected_phrase_seen": false,
+            "expected_phrase_seen": true,
             "side_effects": {
               "candidate_dir": false,
               "candidate_exe": false,
@@ -2417,9 +2370,9 @@
           },
           {
             "name": "missing_expiry",
-            "passed": false,
+            "passed": true,
             "exit_code": 1,
-            "expected_phrase_seen": false,
+            "expected_phrase_seen": true,
             "side_effects": {
               "candidate_dir": false,
               "candidate_exe": false,
@@ -2430,9 +2383,9 @@
           },
           {
             "name": "expired_packet",
-            "passed": false,
+            "passed": true,
             "exit_code": 1,
-            "expected_phrase_seen": false,
+            "expected_phrase_seen": true,
             "side_effects": {
               "candidate_dir": false,
               "candidate_exe": false,
@@ -2443,9 +2396,9 @@
           },
           {
             "name": "token_mismatch",
-            "passed": false,
+            "passed": true,
             "exit_code": 1,
-            "expected_phrase_seen": false,
+            "expected_phrase_seen": true,
             "side_effects": {
               "candidate_dir": false,
               "candidate_exe": false,
@@ -2456,12 +2409,7 @@
           }
         ]
       },
-      "failures": [
-        "missing_token did not fail closed before side effects",
-        "missing_expiry did not fail closed before side effects",
-        "expired_packet did not fail closed before side effects",
-        "token_mismatch did not fail closed before side effects"
-      ]
+      "failures": []
     },
     "hd_soak_execution_boundary_tests": {
       "passed": true,
@@ -2507,6 +2455,17 @@
       },
       "failures": []
     },
+    "hidden_soak_report_assembler_tests": {
+      "passed": true,
+      "json": "captures\\current\\hidden-soak-report-assembler-tests-current.json",
+      "markdown": "captures\\current\\hidden-soak-report-assembler-tests-current.md",
+      "summary": {
+        "test_count": 6,
+        "guard_policy": "proves hidden-CDB reports are a distinct fail-closed evidence class with anchored runtime markers, real host process and ReadProcessMemory telemetry, a non-presenting memory proxy, explicit forced-entry disclosure, and input_responsiveness=not_applicable_hidden",
+        "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
+      },
+      "failures": []
+    },
     "hd_soak_failure_triage": {
       "passed": true,
       "json": "captures\\current\\hd-soak-failure-triage-current.json",
@@ -2548,7 +2507,7 @@
       "markdown": "captures\\current\\hd-soak-short-artifact-manifest-current.md",
       "summary": {
         "step_count": 5,
-        "existing_step_report_count": 2,
+        "existing_step_report_count": 5,
         "legacy_report_exists": true,
         "long_tiers_locked": true,
         "future_lanes_locked": true,
@@ -2576,10 +2535,10 @@
         "status": "validated_reports",
         "counts": {
           "steps": 5,
-          "reports_found": 2,
-          "guards_written": 2,
-          "triage_written": 2,
-          "validated_failed": 1
+          "reports_found": 5,
+          "guards_written": 5,
+          "triage_written": 5,
+          "validated_failed": 0
         },
         "runtime_policy": "repo-only short-soak validation refresh; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
@@ -2601,17 +2560,17 @@
       "json": "captures\\current\\hd-soak-short-step-status-current.json",
       "markdown": "captures\\current\\hd-soak-short-step-status-current.md",
       "summary": {
-        "ladder_complete": false,
+        "ladder_complete": true,
         "counts": {
           "total": 5,
-          "passed": 1,
+          "passed": 5,
           "pending_or_missing": 0,
-          "locked": 3,
-          "failed_or_invalid": 1
+          "locked": 0,
+          "failed_or_invalid": 0
         },
-        "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_window_missing_while_process_alive",
-        "long_tiers_locked": true,
+        "current_step": null,
+        "current_step_status": null,
+        "long_tiers_locked": false,
         "future_lanes_locked": true,
         "right_bottom_promotion_blocked": true,
         "runtime_policy": "repo-only short-soak step status; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
@@ -2630,13 +2589,13 @@
       "failures": []
     },
     "hd_soak_dry_run_plan": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\hd-soak-dry-run-plan-current.json",
       "markdown": "captures\\current\\hd-soak-dry-run-plan-current.md",
       "summary": {
-        "status": "dry_run_plan_invalid",
-        "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_window_missing_while_process_alive",
+        "status": "not_applicable_short_ladder_complete",
+        "current_step": null,
+        "current_step_status": null,
         "dry_run": null,
         "candidate_dir": null,
         "output_root": null,
@@ -2647,81 +2606,39 @@
         "broad_evidence_refresh_count": 0,
         "runtime_policy": "repo-only soak dry-run plan guard; invokes the PowerShell harness only without -Execute unless --read-plan-json is supplied; does not launch Clash95, CDB, wrappers, or visible windows"
       },
-      "failures": [
-        "dry-run harness did not produce a readable JSON plan"
-      ]
+      "failures": []
     },
     "hd_soak_dry_run_plan_tests": {
       "passed": true,
       "json": "captures\\current\\hd-soak-dry-run-plan-tests-current.json",
       "markdown": "captures\\current\\hd-soak-dry-run-plan-tests-current.md",
       "summary": {
-        "test_count": 11,
+        "test_count": 20,
         "guard_policy": "proves the current short-soak dry-run handoff is machine-readable, non-executing, protected-stage, canonical-path, outside-repo, and fails closed unless copied execute commands include -RequirePass -Json with a fresh approval token, and the base executable exists with the expected SHA",
         "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
       "failures": []
     },
     "hd_soak_intro_skip_rerun_readiness": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\hd-soak-intro-skip-rerun-readiness-current.json",
       "markdown": "captures\\current\\hd-soak-intro-skip-rerun-readiness-current.md",
       "summary": {
-        "status": "not_ready",
-        "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_window_missing_while_process_alive",
-        "triage_classification": "passing_run_no_failure",
-        "approval_boundary": "The next runtime run will open a visible Clash95 game window and still requires explicit user approval.",
+        "status": "not_applicable_short_ladder_complete",
+        "current_step": null,
+        "current_step_status": null,
+        "triage_classification": null,
+        "approval_boundary": "This terminal short-ladder status authorizes no runtime or approval request. Long-soak, manual-input and promotion evidence require their separate gates.",
         "runtime_policy": "repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
-      "failures": [
-        "dry-run plan is not passing",
-        "dry-run plan status is 'dry_run_plan_invalid'",
-        "dry-run plan would change the stable stage",
-        "dry-run plan does not keep right-bottom promotion blocked",
-        "dry-run intro_skip click_mode is None, expected 'postmessage'",
-        "dry-run intro_skip click_repeat is None, expected 8",
-        "dry-run intro_skip space_pulses is None, expected 4",
-        "dry-run intro_skip stop_click_repeat_on_drift is None, expected True",
-        "dry-run intro_skip proof_class is None, expected 'intro_skip_harness_prep_not_manual_directinput_release_proof'",
-        "approval command missing fragment: -IntroSkipClickMode",
-        "approval command missing fragment: postmessage",
-        "approval command missing fragment: -IntroSkipClicks",
-        "approval command missing fragment: 8",
-        "approval command missing fragment: -SkipPulses",
-        "approval command missing fragment: 4",
-        "approval command missing fragment: -SampleIntervalSec",
-        "approval command missing fragment: 15",
-        "approval command missing fragment: -MaxInputDriftPx",
-        "approval command missing fragment: 1",
-        "approval command missing fragment: -MinNonblackPercent",
-        "approval command missing fragment: 10",
-        "approval command missing fragment: -MinUniqueSampleColors",
-        "approval command missing fragment: 8",
-        "approval command missing fragment: -MaxArtifactMB",
-        "approval command missing fragment: 250",
-        "approval command missing fragment: -MaxWorkingSetGrowthMB",
-        "approval command missing fragment: 64",
-        "approval command missing fragment: -MaxPrivateMemoryGrowthMB",
-        "approval command missing fragment: 64",
-        "approval command missing fragment: -MaxHandleGrowth",
-        "approval command missing fragment: 128",
-        "approval command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
-        "approval command missing fragment: -VisibleRuntimeApprovalToken",
-        "approval command missing fragment: -Execute",
-        "approval command missing fragment: -AllowVisibleRuntime",
-        "approval command missing fragment: -RequirePass",
-        "approval command missing fragment: -Json",
-        "dry-run visible runtime approval token is missing or malformed",
-        "dry-run visible runtime approval expires_utc is missing"
-      ]
+      "failures": []
     },
     "hd_soak_intro_skip_rerun_readiness_tests": {
       "passed": true,
       "json": "captures\\current\\hd-soak-intro-skip-rerun-readiness-tests-current.json",
       "markdown": "captures\\current\\hd-soak-intro-skip-rerun-readiness-tests-current.md",
       "summary": {
-        "test_count": 6,
+        "test_count": 13,
         "guard_policy": "proves a classified intro-skip input-drift failure can become a rerun approval packet only after repo-only harness, dry-run, visible-runtime, process, and exe-artifact guards pass",
         "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
@@ -2762,7 +2679,7 @@
       "json": "captures\\current\\hd-soak-long-report-guard-current.json",
       "markdown": "captures\\current\\hd-soak-long-report-guard-current.md",
       "summary": {
-        "status": "locked_short_ladder_incomplete",
+        "status": "blocked_missing_long_proof",
         "duration_sec": 0,
         "counts": {
           "required_routes": 2,
@@ -2772,14 +2689,8 @@
         "short_ladder": {
           "path": "captures\\current\\hd-soak-short-step-status-current.json",
           "present": true,
-          "ladder_complete": false,
-          "current_step": {
-            "id": "short2_map_idle",
-            "tier": "short2",
-            "route": "map-idle",
-            "status": "failed_classified_window_missing_while_process_alive",
-            "next_command": null
-          }
+          "ladder_complete": true,
+          "current_step": null
         },
         "proof_manifest": {
           "path": "captures\\current\\hd-soak-long-proof-current.json",
@@ -2789,7 +2700,6 @@
         "runtime_policy": "repo-only long-soak report guard; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
       "failures": [
-        "short ladder is not complete; long tiers remain locked",
         "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
         "missing passing 2h+ representative route: map-idle",
         "missing passing 2h+ representative route: map-pan"
@@ -2800,7 +2710,7 @@
       "json": "captures\\current\\hd-soak-long-report-guard-tests-current.json",
       "markdown": "captures\\current\\hd-soak-long-report-guard-tests-current.md",
       "summary": {
-        "test_count": 8,
+        "test_count": 19,
         "guard_policy": "proves 2h+ representative-route soak evidence remains locked until the short ladder passes and approved long map-idle/map-pan soak report guards pass for the same candidate SHA-256",
         "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
@@ -2814,8 +2724,8 @@
         "full_game_complete": false,
         "counts": {
           "total": 15,
-          "passed": 7,
-          "blocked": 8,
+          "passed": 9,
+          "blocked": 6,
           "missing": 0
         },
         "next_milestone": {
@@ -2826,14 +2736,12 @@
         "runtime_policy": "repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
       "failures": [
-        "protected_stable_stage: stable-stage guard does not prove the protected boundary",
-        "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+        "long_soak_representative_routes: 2h+ representative-route soak blocked (blocked_missing_long_proof): 2h+ representative-route soak evidence is locked or missing",
         "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
         "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
         "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
         "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
-        "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
-        "no_speculative_promotion: one or more promotion boundaries are not fail-closed"
+        "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion"
       ]
     },
     "hd_endurance_release_checklist_tests": {
@@ -2895,22 +2803,22 @@
       "markdown": "captures\\current\\hd-endurance-next-actions-current.md",
       "summary": {
         "status": "repo_only_followup_available",
-        "next_action": "inspect_short2_map_idle_triage",
+        "next_action": "resolve_stable_menu_real_input",
         "requires_explicit_user_approval": false,
         "has_plan_verified_execute_command": false,
-        "focused_post_run_validation_count": 3,
-        "handoff_refresh_count": 5,
-        "broad_evidence_refresh_count": 4,
+        "focused_post_run_validation_count": 1,
+        "handoff_refresh_count": 0,
+        "broad_evidence_refresh_count": 0,
         "current_step_artifacts": {
-          "report_json": "captures\\current\\hd-soak-short2-map-idle-current.json",
-          "report_json_exists": true,
-          "guard_json": "captures\\current\\hd-soak-short2-map-idle-guard-current.json",
-          "guard_json_exists": true,
-          "triage_json": "captures\\current\\hd-soak-short2-map-idle-triage-current.json",
-          "triage_json_exists": true,
-          "canonical_runtime_report_missing": false,
-          "post_run_guard_missing": false,
-          "post_run_triage_missing": false
+          "report_json": null,
+          "report_json_exists": null,
+          "guard_json": null,
+          "guard_json_exists": null,
+          "triage_json": null,
+          "triage_json_exists": null,
+          "canonical_runtime_report_missing": null,
+          "post_run_guard_missing": null,
+          "post_run_triage_missing": null
         },
         "runtime_policy": "repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
@@ -2934,7 +2842,7 @@
       "summary": {
         "ladder_complete": false,
         "current_step": "short2_map_idle",
-        "current_step_status": "approval_required",
+        "current_step_status": "runtime_required",
         "long_tiers_locked": true,
         "future_lanes_locked": true,
         "right_bottom_promotion_blocked": true,
@@ -2954,97 +2862,28 @@
       "failures": []
     },
     "hd_soak_approval_preflight": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\hd-soak-approval-preflight-current.json",
       "markdown": "captures\\current\\hd-soak-approval-preflight-current.md",
       "summary": {
-        "status": "not_ready",
-        "current_step": "short2_map_idle",
-        "current_step_status": "failed_classified_window_missing_while_process_alive",
-        "dry_run_plan_status": "dry_run_plan_invalid",
-        "dry_run_plan_passed": false,
-        "writes_outside_repo": [
-          "C:\\ClashCaptures\\hd-soak",
-          "C:\\ClashTests\\hd-soak"
-        ],
+        "status": "not_applicable_short_ladder_complete",
+        "current_step": null,
+        "current_step_status": null,
+        "dry_run_plan_status": null,
+        "dry_run_plan_passed": null,
+        "writes_outside_repo": null,
         "stable_stage_should_change": false,
         "right_bottom_promotion_blocked": true,
         "runtime_policy": "repo-only visible-runtime approval preflight; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
-      "failures": [
-        "dry-run plan report is not passing",
-        "dry-run plan status is 'dry_run_plan_invalid'",
-        "dry-run plan payload is not marked as a dry run",
-        "dry-run plan would change the stable stage",
-        "dry-run plan does not keep right-bottom promotion blocked",
-        "dry-run plan tier/route do not match the current step",
-        "dry-run plan does not pin max input drift to 1 px",
-        "dry-run plan sample_interval_sec is not 15",
-        "dry-run plan does not pin min nonblack percent",
-        "dry-run plan does not pin min unique sample colors",
-        "dry-run plan growth limit max_artifact_mb is not 250",
-        "dry-run plan growth limit max_working_set_growth_mb is not 64",
-        "dry-run plan growth limit max_private_memory_growth_mb is not 64",
-        "dry-run plan growth limit max_handle_growth is not 128",
-        "dry-run plan intro_skip click_mode is not postmessage",
-        "dry-run plan intro_skip click_repeat is not 8",
-        "dry-run plan intro_skip does not stop repeated clicks on transition drift",
-        "dry-run plan intro_skip space_pulses is not 4",
-        "dry-run plan intro_skip proof_class is missing the non-manual proof boundary",
-        "dry-run plan windowed-mode check is not required and passing",
-        "dry-run plan window display is not application",
-        "dry-run plan window presentation is not windowed",
-        "dry-run plan windowed config SHA-256 is missing or malformed",
-        "dry-run plan visible runtime approval token is missing or malformed",
-        "dry-run plan visible runtime approval token_kind is not sha256-16",
-        "dry-run plan visible runtime approval expires_utc is missing",
-        "dry-run plan visible runtime approval min_ttl_minutes is not 30",
-        "dry-run plan visible runtime approval expires_utc is missing or invalid",
-        "dry-run plan visible runtime approval purpose is missing",
-        "dry-run plan candidate_dir is not C:\\ClashTests\\hd-soak",
-        "dry-run plan output_root is not C:\\ClashCaptures\\hd-soak",
-        "dry-run plan input_exe does not exist or was not confirmed readable",
-        "dry-run plan base_sha_status is None, expected 'ok'",
-        "dry-run plan execute command missing fragment: -InputExe",
-        "dry-run plan execute command missing fragment: C:\\Clash\\clash95.exe",
-        "dry-run plan execute command missing fragment: -WorkDir",
-        "dry-run plan execute command missing fragment: C:\\Clash",
-        "dry-run plan execute command missing fragment: -Stage",
-        "dry-run plan execute command missing fragment: -OutputRoot",
-        "dry-run plan execute command missing fragment: C:\\ClashCaptures\\hd-soak",
-        "dry-run plan execute command missing fragment: -IntroSkipClickMode",
-        "dry-run plan execute command missing fragment: postmessage",
-        "dry-run plan execute command missing fragment: -IntroSkipClicks",
-        "dry-run plan execute command missing fragment: 8",
-        "dry-run plan execute command missing fragment: -SkipPulses",
-        "dry-run plan execute command missing fragment: 4",
-        "dry-run plan execute command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
-        "dry-run plan execute command missing fragment: -VisibleRuntimeApprovalToken",
-        "dry-run plan execute command missing fragment: -Execute",
-        "dry-run plan execute command missing fragment: -AllowVisibleRuntime",
-        "dry-run plan execute command missing fragment: -RequirePass",
-        "dry-run plan execute command missing fragment: -Json",
-        "dry-run plan execute command missing fragment: -MaxInputDriftPx",
-        "dry-run plan execute command missing fragment: -SampleIntervalSec",
-        "dry-run plan execute command missing fragment: -MinNonblackPercent",
-        "dry-run plan execute command missing fragment: -MinUniqueSampleColors",
-        "dry-run plan execute command missing fragment: -MaxArtifactMB",
-        "dry-run plan execute command missing fragment: -MaxWorkingSetGrowthMB",
-        "dry-run plan execute command missing fragment: -MaxPrivateMemoryGrowthMB",
-        "dry-run plan execute command missing fragment: -MaxHandleGrowth",
-        "dry-run plan execute command does not include the canonical report JSON path",
-        "dry-run plan execute command does not include the canonical report Markdown path",
-        "current short-step status is 'failed_classified_window_missing_while_process_alive'",
-        "dry_run_plan is not passing",
-        "window-missing rerun readiness is missing window-health mitigation and passing harness-guard evidence"
-      ]
+      "failures": []
     },
     "hd_soak_approval_preflight_tests": {
       "passed": true,
       "json": "captures\\current\\hd-soak-approval-preflight-tests-current.json",
       "markdown": "captures\\current\\hd-soak-approval-preflight-tests-current.md",
       "summary": {
-        "test_count": 25,
+        "test_count": 34,
         "guard_policy": "proves the first short2 visible-runtime soak remains explicit-approval gated, pins canonical per-step report paths, keeps dry-runs non-executing, can advance to later short steps, starts focused post-run validation with the failure-safe guard/triage refresh, keeps broad evidence refresh separate, requires next-action artifact inventory to match the preflight state, requires the actual harness dry-run plan and embedded next-action summary to match, requires visible-runtime approval TTL and limit summaries, requires verified base-executable input, and requires clean harness/runtime/process/executable guards before requesting approval",
         "runtime_policy": "repo-only fixture tests; launches only Python child processes for CLI coverage; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
       },
@@ -3055,19 +2894,19 @@
       "json": "captures\\current\\capture-corpus-index-current.json",
       "markdown": "captures\\current\\capture-corpus-index-current.md",
       "summary": {
-        "artifact_count": 742,
+        "artifact_count": 913,
         "current_reference_count": 179,
-        "stale_visible_or_sandbox_count": 16,
+        "stale_visible_or_sandbox_count": 18,
         "reference_status_counts": {
-          "archived_referenced": 200,
+          "archived_referenced": 202,
           "current_referenced": 149,
-          "stale_unreferenced": 393
+          "stale_unreferenced": 562
         },
         "era_counts": {
-          "cdb_surface_dump_unverified": 69,
-          "hidden_cdb_surface_dump": 162,
-          "other_capture_artifact": 495,
-          "visible_era": 16
+          "cdb_surface_dump_unverified": 78,
+          "hidden_cdb_surface_dump": 164,
+          "other_capture_artifact": 653,
+          "visible_era": 18
         },
         "guard_policy": "current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers",
         "runtime_policy": "repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows"
@@ -3086,7 +2925,7 @@
       "failures": []
     },
     "no_popup_boundary_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\no-popup-boundary-guard-current.json",
       "markdown": "captures\\current\\no-popup-boundary-guard-current.md",
       "summary": {
@@ -3302,25 +3141,10 @@
         "evidence_index": "captures\\current\\hd-map-evidence-current.md",
         "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report"
       },
-      "failures": [
-        "stable_stage_guard: refresh check is not passing: stable_stage_guard",
-        "python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
-        "hd_soak_execution_boundary: refresh check is not passing: hd_soak_execution_boundary",
-        "resolution_manifest_guard: refresh check is not passing: resolution_manifest_guard",
-        "handoff_freshness_guard: refresh check is not passing: handoff_freshness_guard",
-        "right_bottom_blocker_triage: refresh check is not passing: right_bottom_blocker_triage",
-        "right_bottom_slot_fixture_plan: refresh check is not passing: right_bottom_slot_fixture_plan",
-        "right_bottom_slot_fixture_runtime_plan: refresh check is not passing: right_bottom_slot_fixture_runtime_plan",
-        "load_slot_route_limit_guard: refresh check is not passing: load_slot_route_limit_guard",
-        "load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard",
-        "load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview",
-        "load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness",
-        "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
-        "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
-      ]
+      "failures": []
     },
     "docs_consistency_guard": {
-      "passed": false,
+      "passed": true,
       "json": "captures\\current\\docs-consistency-current.json",
       "markdown": "captures\\current\\docs-consistency-current.md",
       "summary": {
@@ -3328,12 +3152,7 @@
         "guard_policy": "generated project state must agree with Clash95 HD documentation, protected-stage and approval boundaries must remain visible, and the removed knowledge-base scaffold must stay absent",
         "runtime_policy": "repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows"
       },
-      "failures": [
-        "generated_state: no-popup boundary is failing",
-        "documents_handoff: missing document: .codex-loop\\NEXT.md",
-        "documents_handoff: missing document: .codex-loop\\STATE.md",
-        "documents_handoff: missing document: .codex-loop\\TASKS.md"
-      ]
+      "failures": []
     },
     "docs_consistency_guard_tests": {
       "passed": true,
@@ -3362,180 +3181,14 @@
     }
   },
   "failures": [
-    "load_slot_route_limit_guard: harness: missing marker load_mouse_x: $loadMouseX = 320",
-    "load_slot_route_limit_guard: harness: missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)",
-    "right_bottom_slot_fixture_plan: load-slot route-limit guard is not passing",
-    "right_bottom_slot_fixture_runtime_plan: right-bottom slot fixture plan is not passing",
-    "load_slot_transition_geometry_guard: transition geometry guard failed: surface_formula_present",
-    "load_slot_transition_geometry_guard: surface-dump script missing geometry token: $loadMouseX = 320",
-    "load_slot_transition_geometry_guard: surface-dump script missing geometry token: $loadMouseY = 166 + (22 * $LoadSlot)",
-    "load_slot_transition_probe_preview: transition probe preview failed: geometry_guard_passed",
-    "right_bottom_blocker_triage: triage check failed: hidden_fixture_plan_ready",
-    "right_bottom_visual_artifact_guard: visual artifact guard failed: blocker_triage_non_promoting",
-    "load_slot_transition_readiness: transition readiness check failed: geometry_guard_passed",
-    "load_slot_transition_readiness: transition readiness check failed: probe_preview_passed",
-    "castle_overview_evidence: owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
-    "castle_overview_evidence: forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw",
-    "castle_overview_promotion_decision: castle overview evidence matrix is not passing",
-    "castle_overview_baseline_recheck: latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
-    "castle_overview_baseline_recheck: latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw",
-    "stable_stage_guard: castle_overview_promotion_decision: castle overview promotion decision is not passing",
-    "stable_stage_guard: castle_overview_evidence_matrix: castle overview evidence matrix is not passing",
-    "python_runtime_safety_guard: src/launcher/gui.py uses risky Python runtime/input APIs but is not gated or exempt",
-    "python_runtime_safety_guard: tools/hd_layout_observation_manifest.py uses risky Python runtime/input APIs but is not gated or exempt",
-    "python_runtime_safety_guard: tools/run_framed_offline_tests.py uses risky Python runtime/input APIs but is not gated or exempt",
-    "resolution_manifest_guard: manifest missing, invalid, or wrong schema: src\\launcher\\resolutions.json",
-    "handoff_freshness_guard: missing handoff file: .codex-loop\\NEXT.md",
-    "handoff_freshness_guard: missing handoff file: .codex-loop\\STATE.md",
-    "handoff_freshness_guard: missing handoff file: .codex-loop\\TASKS.md",
-    "handoff_freshness_guard: missing current handoff phrase for no_visible_runtime_warning: Do not run visible/manual",
-    "handoff_freshness_guard: missing current handoff phrase for no_visible_runtime_warning: explicit user approval",
-    "handoff_freshness_guard: missing current handoff phrase for no_popup_operator_preference: Do not launch Clash95, CDB, wrappers, PowerShell harnesses",
-    "handoff_freshness_guard: missing current handoff phrase for no_popup_operator_preference: visible windows unless the user explicitly approves",
-    "handoff_freshness_guard: missing current handoff phrase for right_bottom_safety_done: stable-stage promotion",
-    "handoff_freshness_guard: missing current handoff phrase for manual_checklist_artifact: pending_manual_validation",
-    "handoff_freshness_guard: missing current handoff phrase for manual_proof_template_artifact: template_valid_as_proof=False",
-    "handoff_freshness_guard: missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-current.md",
-    "handoff_freshness_guard: missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-tests-current.md",
-    "handoff_freshness_guard: missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: ready_for_hidden_transition_probe",
-    "hd_soak_execution_boundary: missing_token did not fail closed before side effects",
-    "hd_soak_execution_boundary: missing_expiry did not fail closed before side effects",
-    "hd_soak_execution_boundary: expired_packet did not fail closed before side effects",
-    "hd_soak_execution_boundary: token_mismatch did not fail closed before side effects",
-    "hd_soak_dry_run_plan: dry-run harness did not produce a readable JSON plan",
-    "hd_soak_intro_skip_rerun_readiness: dry-run plan is not passing",
-    "hd_soak_intro_skip_rerun_readiness: dry-run plan status is 'dry_run_plan_invalid'",
-    "hd_soak_intro_skip_rerun_readiness: dry-run plan would change the stable stage",
-    "hd_soak_intro_skip_rerun_readiness: dry-run plan does not keep right-bottom promotion blocked",
-    "hd_soak_intro_skip_rerun_readiness: dry-run intro_skip click_mode is None, expected 'postmessage'",
-    "hd_soak_intro_skip_rerun_readiness: dry-run intro_skip click_repeat is None, expected 8",
-    "hd_soak_intro_skip_rerun_readiness: dry-run intro_skip space_pulses is None, expected 4",
-    "hd_soak_intro_skip_rerun_readiness: dry-run intro_skip stop_click_repeat_on_drift is None, expected True",
-    "hd_soak_intro_skip_rerun_readiness: dry-run intro_skip proof_class is None, expected 'intro_skip_harness_prep_not_manual_directinput_release_proof'",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -IntroSkipClickMode",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: postmessage",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -IntroSkipClicks",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 8",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -SkipPulses",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 4",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -SampleIntervalSec",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 15",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -MaxInputDriftPx",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 1",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -MinNonblackPercent",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 10",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -MinUniqueSampleColors",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 8",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -MaxArtifactMB",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 250",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -MaxWorkingSetGrowthMB",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 64",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -MaxPrivateMemoryGrowthMB",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 64",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -MaxHandleGrowth",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: 128",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -VisibleRuntimeApprovalToken",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -Execute",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -AllowVisibleRuntime",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -RequirePass",
-    "hd_soak_intro_skip_rerun_readiness: approval command missing fragment: -Json",
-    "hd_soak_intro_skip_rerun_readiness: dry-run visible runtime approval token is missing or malformed",
-    "hd_soak_intro_skip_rerun_readiness: dry-run visible runtime approval expires_utc is missing",
-    "hd_soak_long_report_guard: short ladder is not complete; long tiers remain locked",
     "hd_soak_long_report_guard: long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
     "hd_soak_long_report_guard: missing passing 2h+ representative route: map-idle",
     "hd_soak_long_report_guard: missing passing 2h+ representative route: map-pan",
-    "hd_endurance_release_checklist: protected_stable_stage: stable-stage guard does not prove the protected boundary",
-    "hd_endurance_release_checklist: long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+    "hd_endurance_release_checklist: long_soak_representative_routes: 2h+ representative-route soak blocked (blocked_missing_long_proof): 2h+ representative-route soak evidence is locked or missing",
     "hd_endurance_release_checklist: stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
     "hd_endurance_release_checklist: stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
     "hd_endurance_release_checklist: right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
     "hd_endurance_release_checklist: castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
-    "hd_endurance_release_checklist: tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
-    "hd_endurance_release_checklist: no_speculative_promotion: one or more promotion boundaries are not fail-closed",
-    "hd_soak_approval_preflight: dry-run plan report is not passing",
-    "hd_soak_approval_preflight: dry-run plan status is 'dry_run_plan_invalid'",
-    "hd_soak_approval_preflight: dry-run plan payload is not marked as a dry run",
-    "hd_soak_approval_preflight: dry-run plan would change the stable stage",
-    "hd_soak_approval_preflight: dry-run plan does not keep right-bottom promotion blocked",
-    "hd_soak_approval_preflight: dry-run plan tier/route do not match the current step",
-    "hd_soak_approval_preflight: dry-run plan does not pin max input drift to 1 px",
-    "hd_soak_approval_preflight: dry-run plan sample_interval_sec is not 15",
-    "hd_soak_approval_preflight: dry-run plan does not pin min nonblack percent",
-    "hd_soak_approval_preflight: dry-run plan does not pin min unique sample colors",
-    "hd_soak_approval_preflight: dry-run plan growth limit max_artifact_mb is not 250",
-    "hd_soak_approval_preflight: dry-run plan growth limit max_working_set_growth_mb is not 64",
-    "hd_soak_approval_preflight: dry-run plan growth limit max_private_memory_growth_mb is not 64",
-    "hd_soak_approval_preflight: dry-run plan growth limit max_handle_growth is not 128",
-    "hd_soak_approval_preflight: dry-run plan intro_skip click_mode is not postmessage",
-    "hd_soak_approval_preflight: dry-run plan intro_skip click_repeat is not 8",
-    "hd_soak_approval_preflight: dry-run plan intro_skip does not stop repeated clicks on transition drift",
-    "hd_soak_approval_preflight: dry-run plan intro_skip space_pulses is not 4",
-    "hd_soak_approval_preflight: dry-run plan intro_skip proof_class is missing the non-manual proof boundary",
-    "hd_soak_approval_preflight: dry-run plan windowed-mode check is not required and passing",
-    "hd_soak_approval_preflight: dry-run plan window display is not application",
-    "hd_soak_approval_preflight: dry-run plan window presentation is not windowed",
-    "hd_soak_approval_preflight: dry-run plan windowed config SHA-256 is missing or malformed",
-    "hd_soak_approval_preflight: dry-run plan visible runtime approval token is missing or malformed",
-    "hd_soak_approval_preflight: dry-run plan visible runtime approval token_kind is not sha256-16",
-    "hd_soak_approval_preflight: dry-run plan visible runtime approval expires_utc is missing",
-    "hd_soak_approval_preflight: dry-run plan visible runtime approval min_ttl_minutes is not 30",
-    "hd_soak_approval_preflight: dry-run plan visible runtime approval expires_utc is missing or invalid",
-    "hd_soak_approval_preflight: dry-run plan visible runtime approval purpose is missing",
-    "hd_soak_approval_preflight: dry-run plan candidate_dir is not C:\\ClashTests\\hd-soak",
-    "hd_soak_approval_preflight: dry-run plan output_root is not C:\\ClashCaptures\\hd-soak",
-    "hd_soak_approval_preflight: dry-run plan input_exe does not exist or was not confirmed readable",
-    "hd_soak_approval_preflight: dry-run plan base_sha_status is None, expected 'ok'",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -InputExe",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: C:\\Clash\\clash95.exe",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -WorkDir",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: C:\\Clash",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -Stage",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -OutputRoot",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: C:\\ClashCaptures\\hd-soak",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -IntroSkipClickMode",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: postmessage",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -IntroSkipClicks",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: 8",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -SkipPulses",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: 4",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -VisibleRuntimeApprovalToken",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -Execute",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -AllowVisibleRuntime",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -RequirePass",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -Json",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -MaxInputDriftPx",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -SampleIntervalSec",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -MinNonblackPercent",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -MinUniqueSampleColors",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -MaxArtifactMB",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -MaxWorkingSetGrowthMB",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -MaxPrivateMemoryGrowthMB",
-    "hd_soak_approval_preflight: dry-run plan execute command missing fragment: -MaxHandleGrowth",
-    "hd_soak_approval_preflight: dry-run plan execute command does not include the canonical report JSON path",
-    "hd_soak_approval_preflight: dry-run plan execute command does not include the canonical report Markdown path",
-    "hd_soak_approval_preflight: current short-step status is 'failed_classified_window_missing_while_process_alive'",
-    "hd_soak_approval_preflight: dry_run_plan is not passing",
-    "hd_soak_approval_preflight: window-missing rerun readiness is missing window-health mitigation and passing harness-guard evidence",
-    "no_popup_boundary_guard: stable_stage_guard: refresh check is not passing: stable_stage_guard",
-    "no_popup_boundary_guard: python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
-    "no_popup_boundary_guard: hd_soak_execution_boundary: refresh check is not passing: hd_soak_execution_boundary",
-    "no_popup_boundary_guard: resolution_manifest_guard: refresh check is not passing: resolution_manifest_guard",
-    "no_popup_boundary_guard: handoff_freshness_guard: refresh check is not passing: handoff_freshness_guard",
-    "no_popup_boundary_guard: right_bottom_blocker_triage: refresh check is not passing: right_bottom_blocker_triage",
-    "no_popup_boundary_guard: right_bottom_slot_fixture_plan: refresh check is not passing: right_bottom_slot_fixture_plan",
-    "no_popup_boundary_guard: right_bottom_slot_fixture_runtime_plan: refresh check is not passing: right_bottom_slot_fixture_runtime_plan",
-    "no_popup_boundary_guard: load_slot_route_limit_guard: refresh check is not passing: load_slot_route_limit_guard",
-    "no_popup_boundary_guard: load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard",
-    "no_popup_boundary_guard: load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview",
-    "no_popup_boundary_guard: load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness",
-    "no_popup_boundary_guard: castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
-    "no_popup_boundary_guard: docs_consistency_guard: refresh check is not passing: docs_consistency_guard",
-    "docs_consistency_guard: generated_state: no-popup boundary is failing",
-    "docs_consistency_guard: documents_handoff: missing document: .codex-loop\\NEXT.md",
-    "docs_consistency_guard: documents_handoff: missing document: .codex-loop\\STATE.md",
-    "docs_consistency_guard: documents_handoff: missing document: .codex-loop\\TASKS.md"
+    "hd_endurance_release_checklist: tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion"
   ]
 }

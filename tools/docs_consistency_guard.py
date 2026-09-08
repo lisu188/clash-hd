@@ -34,11 +34,9 @@ DEFAULT_EVIDENCE_INDEX = Path("captures/current/hd-map-evidence-current.md")
 DEFAULT_JSON = Path("captures/current/docs-consistency-current.json")
 DEFAULT_MD = Path("captures/current/docs-consistency-current.md")
 
-DEFAULT_CODEX_LOOP_DOCS = (
-    Path(".codex-loop/NEXT.md"),
-    Path(".codex-loop/STATE.md"),
-    Path(".codex-loop/TASKS.md"),
-)
+DEFAULT_HANDOFF_DOCS = (Path("docs/hd/AGENT_HANDOFF.md"),)
+# Compatibility name for existing aggregate-refresh and external callers.
+DEFAULT_CODEX_LOOP_DOCS = DEFAULT_HANDOFF_DOCS
 DEFAULT_README_PROGRESS_DOCS = (
     Path("README.md"),
     Path("docs/hd/HD_MOD_PROGRESS.md"),
@@ -188,12 +186,10 @@ def unique_paths(paths: list[Path]) -> list[Path]:
 
 
 def configured_docs(args: argparse.Namespace) -> dict[str, list[Path]]:
-    codex = list(getattr(args, "codex_loop_docs", DEFAULT_CODEX_LOOP_DOCS))
+    codex = list(getattr(args, "codex_loop_docs", DEFAULT_HANDOFF_DOCS))
     progress = list(getattr(args, "readme_progress_docs", DEFAULT_README_PROGRESS_DOCS))
     supplied_summaries = list(getattr(args, "wiki_summary_docs", ()))
-    project = [path for path in supplied_summaries if not str(path).replace("\\", "/").startswith("wiki/")]
-    if not project:
-        project = list(DEFAULT_PROJECT_SUMMARY_DOCS)
+    project = supplied_summaries or list(DEFAULT_PROJECT_SUMMARY_DOCS)
     evidence = getattr(args, "evidence_index", DEFAULT_EVIDENCE_INDEX)
     return {
         "handoff": unique_paths(codex),
@@ -357,7 +353,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--write-markdown", type=Path, default=DEFAULT_MD)
     parser.add_argument("--require-pass", action="store_true")
     args = parser.parse_args()
-    args.codex_loop_docs = tuple(args.codex_loop_doc or DEFAULT_CODEX_LOOP_DOCS)
+    args.codex_loop_docs = tuple(args.codex_loop_doc or DEFAULT_HANDOFF_DOCS)
     args.readme_progress_docs = tuple(args.readme_progress_doc or DEFAULT_README_PROGRESS_DOCS)
     args.wiki_summary_docs = tuple(args.project_summary_doc or DEFAULT_PROJECT_SUMMARY_DOCS)
     return args

@@ -1,0 +1,88 @@
+{
+  "generated_at": "2026-09-05T10:56:04.670204+00:00",
+  "evidence_class": "hidden_forced_layout_geometry",
+  "geometry_passed": true,
+  "candidate": {
+    "path": "C:\\ClashTests\\hd-completion\\layout-hidden-geometry-20260905-124300\\candidate\\clash95_hd_surfdump_20260905_124215.exe",
+    "sha256": "0a75cf35f42efe1e44fba1ac4031eaae5323cdff51aa19d261c36c5bb84691c2"
+  },
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+  "resolution": "800x600",
+  "wrapper": {
+    "path": "C:\\ClashTests\\hd-completion\\layout-hidden-geometry-20260905-124300\\candidate\\ddraw.dll",
+    "sha256": "d8cfb91090d9161271c55236f6a105ec7c3444b82aed1dbbb51e53fded60592f"
+  },
+  "launch_mode": "hidden-desktop",
+  "proxy_present_setting": "0",
+  "startup_mode": "initialization_preserving_fast_forward",
+  "load_slot": 0,
+  "input_method": "CDB forced load route, synthetic redraw/list scan; no OS input",
+  "synthetic_return": {
+    "begin_count": 1,
+    "return_count": 1,
+    "saved_esp": "000edcd0",
+    "return_esp": "000edcd0",
+    "mouse": [
+      320,
+      166
+    ],
+    "skipped": false
+  },
+  "marker_counts": {
+    "tooltip_init": 1,
+    "tooltip_draw": 0,
+    "panel_setup": 1,
+    "panel_redraw_invoke": 1,
+    "panel_draw": 6,
+    "panel_redraw": 0,
+    "panel_redraw_allowed": 1,
+    "panel_hitscan": 1,
+    "access_violation": 0
+  },
+  "redraw_clip_proved": true,
+  "artifacts": {
+    "outer_summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined-geometry\\cdb-surface-dump-20260905-124215\\summary.json",
+      "sha256": "67e9d47db35dac5bb3a7d03874cc07cd546f2cd8f76ec187d1e900f0ec7f7c70"
+    },
+    "raw_log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined-geometry\\cdb-surface-dump-20260905-124215\\cdb-surface-dump.log",
+      "sha256": "f89cd94e384fd2179f0aa674058cdd3587ec674a70f00344f2136add56dfe5c9"
+    },
+    "generated_probe": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined-geometry\\cdb-surface-dump-20260905-124215\\clash95_surface_dump_probe.generated.cdb",
+      "sha256": "3b6b44591785c7934007386697bc7de4920db167b52a18a6a9bdc34ca83d338b"
+    },
+    "raw_surface": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined-geometry\\cdb-surface-dump-20260905-124215\\surface.raw",
+      "sha256": "d09ececdbab480b569db2633201397d05f6dc1750ef2cf4442765f57a82b6106"
+    },
+    "surface_png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined-geometry\\cdb-surface-dump-20260905-124215\\surface.png",
+      "sha256": "c5d86e2160a35bef9065709f3430e9dbdc883c88a6373b088a1de90953de726a"
+    },
+    "layout_summary": {
+      "path": "captures\\current\\combinedui-layout-geometry-summary-current.json",
+      "sha256": "1ababb7ff67ab4329515a4c26e5c15badd86c11c0d83e9bc6f8394a477a48d98"
+    },
+    "byte_report": {
+      "path": "captures\\current\\combinedui-layout-geometry-patch-stage-current.json",
+      "sha256": "9bf291b7b3694011b4a80ccb6e920cc2e71d6f7cfa62f97c7ba27e6059d87bf1"
+    }
+  },
+  "candidate_process_observation": "Exact candidate process name absent after terminal exec session20852 exit0; remaining CDB PID34356 belongs to ongoing separate soak. This is not an all-process hygiene pass.",
+  "prior_failed_geometry_report": {
+    "path": "captures\\current\\combinedui-layout-hidden-current.json",
+    "sha256": "f7dff162753e93c43df95413ffd9b5e6b1b9b40918d2a25a81bcb7f7f9268c65"
+  },
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "full_game_complete": false,
+  "limits": [
+    "Forced geometry only; no native/user click callback observed.",
+    "Surface gate covers full tiles; partial edges remain unfinished.",
+    "No tooltip draw occurred; tooltip initialization anchor was observed.",
+    "Hidden software colors/composition differ from the visible wrapper."
+  ]
+}

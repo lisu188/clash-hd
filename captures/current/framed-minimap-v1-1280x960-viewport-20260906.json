@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "minimap_viewport_geometry_passed": true,
+  "decision": "minimap_viewport_geometry_verified",
+  "input_passed": false,
+  "initial_trace_passed": true,
+  "runtime_verdict_changed": false,
+  "initial_trace_verdict_changed": false,
+  "frame_pixels_audited": false,
+  "action_bar_pixels_audited": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "cleanup_proven": false,
+  "failures": [],
+  "limits": [
+    "Minimap outline geometry and exact indexed pixels only; frame/footer/action-bar pixels require their separate audits.",
+    "Original runtime and initial-trace verdicts are retained independently, including failures.",
+    "The surrounding source main probe is a hashed prelaunch producer input; only the candidate, installed extra and additive observer transformation are reconstructed canonically.",
+    "No visible composition, manual input, cleanup, endurance, or promotion proof."
+  ],
+  "sources": {
+    "summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\diagnostic-summary.json",
+      "sha256": "ffe5349466bdd07d18424b737b8b852351ea1757c87df32fa19a50caee131641"
+    },
+    "log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\cdb-surface-dump.log",
+      "sha256": "4f55675bccd35ba897e44e3889162154609538f892516c682bd859162073908d"
+    },
+    "observed_main": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface-minimap-probe.cdb",
+      "sha256": "1c059aa50cdd5d095d5159b367dde6bee5311754ae91877d7cab9bee1a8c306f"
+    },
+    "original": {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+    },
+    "candidate": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\candidate\\clash95_hd_minimap_1280x960_20260906-032002.exe",
+      "sha256": "181b720d759e9c7af62eedcaca74e0dc08cdd5db28048e9b611e70775961c9f9"
+    },
+    "run_plan": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-run-plan-20260906-032002.json",
+      "sha256": "ff71ed157e8197e2f3cd8db7be01af59a22e86d1dda124b2bc0fa7df3dfe103e"
+    },
+    "canonical_extra": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\partial-tile-installed.extra.cdb",
+      "sha256": "6ebd8d1d255b5f739aa679947e63dd0dfdc2f64a1f5bef7b41e8f48e6f807e1f"
+    },
+    "observer_packet": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\minimap-observer.json",
+      "sha256": "942d70e6e62aec07756f74a3ad71d2952e9b3a3b4345183bf1c17499bb4d0665"
+    },
+    "source_main": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\clash95_surface_dump_probe.generated.cdb",
+      "sha256": "04fad2f05a23edab1b505156499803f32679ce057aa734885188983397ff7da3"
+    },
+    "raw_surface": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface.raw",
+      "sha256": "69d1de3decaad6554c385e0ce15a4d45f196b5d7981a5a18b4300b0a9a604e11"
+    },
+    "png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface.png",
+      "sha256": "0c608a77b31ff811ab4b28d967d952202dd0999fccc9c29f6c268c335e28dd02"
+    },
+    "png_metadata": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface.png.json",
+      "sha256": "b1e7847b678f62ede825b3afd2edf65618c4e159848bec346a4dcef52f6dd855"
+    }
+  },
+  "input_error": "Harness aborted on map_tile_coverage.py exit2; no final runtime summary was produced.",
+  "candidate_sha256": "181b720d759e9c7af62eedcaca74e0dc08cdd5db28048e9b611e70775961c9f9",
+  "resolution": "1280x960",
+  "initial_trace_failures": [],
+  "screenshot_binding": {
+    "metadata_path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\cdb-surface-dump-20260906-052536\\surface.png.json",
+    "metadata_sha256": "b1e7847b678f62ede825b3afd2edf65618c4e159848bec346a4dcef52f6dd855",
+    "palette_path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1280x960-20260906-032002\\candidate\\ddraw_surfdump_palette.bin",
+    "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+    "png_raw_palette_binding_verified": true,
+    "candidate_file_sha_verified": true
+  },
+  "capture": {
+    "geometry": {
+      "rect": [
+        1060,
+        56,
+        1099,
+        86
+      ],
+      "visible_world_pixels": [
+        1216,
+        928
+      ],
+      "scaled_pixel_extent": [
+        38,
+        29
+      ],
+      "native_color_index": 76
+    },
+    "draw_line": 281,
+    "draw_count": 65,
+    "memory_draw_count": 65,
+    "memory_target": 170446592,
+    "thread": 26640,
+    "scale": 2,
+    "world": [
+      100,
+      100
+    ],
+    "scroll": [
+      10,
+      17
+    ],
+    "minimap_origin": [
+      1034,
+      16
+    ],
+    "minimap_size": [
+      214,
+      214
+    ],
+    "ready_line": 611,
+    "visibility_line": 612,
+    "viewport_line": 628,
+    "minimap_line": 629,
+    "closed_line": 630,
+    "perimeter_pixels": 138,
+    "mismatched_pixels": 0,
+    "first_mismatches": [],
+    "all_perimeter_pixels_match": true
+  },
+  "candidate_reconstructed": true,
+  "canonical_extra_verified": true,
+  "observer_transformation_verified": true,
+  "prelaunch_main_hashes_verified": true,
+  "source_main_fully_reconstructed": false,
+  "evaluator_source": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\minimap_viewport_audit.py",
+    "sha256": "5f55458fd4255315f3d2203d97ba53b7038e3c70335773352a3069b6dc9a0c26"
+  }
+}

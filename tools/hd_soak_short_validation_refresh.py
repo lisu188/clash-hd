@@ -27,6 +27,8 @@ RUNTIME_POLICY = (
 DEFAULT_MANIFEST_JSON = hd_soak_short_artifact_manifest.DEFAULT_JSON
 DEFAULT_JSON = Path("captures/current/hd-soak-short-validation-refresh-current.json")
 DEFAULT_MD = Path("captures/current/hd-soak-short-validation-refresh-current.md")
+HOST_VISIBLE_ENVIRONMENT = "host_visible"
+HOST_VISIBLE_EVIDENCE_CLASS = "host_visible_runtime_soak"
 
 
 def status_text(passed: bool) -> str:
@@ -55,11 +57,34 @@ def path_from_text(value: str | None) -> Path | None:
     return Path(value.replace("\\", "/"))
 
 
+def evidence_binding(report: dict[str, Any]) -> tuple[Any, Any]:
+    """Return the canonical environment/evidence-class binding for a source report.
+
+    Historical visible-host reports predate the explicit labels.  Treat those
+    missing fields as the visible-host class so the durable passing
+    ``short2_menu_idle`` evidence remains valid, while every non-host class is
+    required to carry its explicit label.
+    """
+    environment = report.get("environment", HOST_VISIBLE_ENVIRONMENT)
+    evidence_class = report.get(
+        "evidence_class",
+        HOST_VISIBLE_EVIDENCE_CLASS if environment == HOST_VISIBLE_ENVIRONMENT else None,
+    )
+    return environment, evidence_class
+
+
 def report_matches_step(report: dict[str, Any], step: dict[str, Any]) -> bool:
+    environment, evidence_class = evidence_binding(report)
     return (
-        report.get("stage") == hd_soak_report.PROTECTED_STABLE_STAGE
+        (environment, evidence_class) in (
+            (HOST_VISIBLE_ENVIRONMENT, HOST_VISIBLE_EVIDENCE_CLASS),
+            (hd_soak_report.HIDDEN_ENVIRONMENT, hd_soak_report.HIDDEN_EVIDENCE_CLASS),
+            (hd_soak_report.GUEST_ENVIRONMENT, hd_soak_report.GUEST_EVIDENCE_CLASS),
+        )
+        and report.get("stage") == hd_soak_report.PROTECTED_STABLE_STAGE
         and report.get("tier") == step.get("tier")
         and report.get("route") == step.get("route")
+        and not (environment == hd_soak_report.HIDDEN_ENVIRONMENT and step.get("route") == "menu-idle")
     )
 
 
@@ -107,12 +132,17 @@ def refresh_step(step: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
         record["status"] = "report_mismatch"
         return record, failures
 
-    evaluation = hd_soak_report.evaluate_report(report)
+    report_environment, report_evidence_class = evidence_binding(report)
+    evaluation = hd_soak_report.evaluate_report_for_environment(report, max_input_drift_px=1)
     evaluation["source_report"] = str(report_path)
+    evaluation.setdefault("environment", report_environment)
+    evaluation.setdefault("evidence_class", report_evidence_class)
     write_json(guard_json, evaluation)
     write_text(guard_md, hd_soak_report.to_markdown(evaluation))
 
-    triage = hd_soak_failure_triage.build_triage(report, report_path)
+    cdb_followup = hd_soak_failure_triage.load_cdb_followup_for_report(report_path)
+    wer_followup = hd_soak_failure_triage.load_wer_followup_for_report(report_path)
+    triage = hd_soak_failure_triage.build_triage(report, report_path, cdb_followup, wer_followup)
     hd_soak_failure_triage.write_outputs(triage, triage_json, triage_md)
 
     record.update(
@@ -125,6 +155,8 @@ def refresh_step(step: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
             "triage_passed": triage.get("passed"),
             "executed": report.get("executed"),
             "report_passed": report.get("passed"),
+            "environment": report_environment,
+            "evidence_class": report_evidence_class,
             "frame_sample_count": report.get("frame_sample_count"),
             "final_route_marker": report.get("final_route_marker"),
             "candidate_sha256": report.get("candidate_sha256"),

@@ -1,0 +1,519 @@
+{
+  "schema": "clash95_framed_screen_surface_audit_v1",
+  "generated_at": "2026-09-06T04:10:16.355046+00:00",
+  "source_authenticated": true,
+  "screenshot_binding_verified": true,
+  "frame_pixels_passed": false,
+  "structural_border_exact": false,
+  "footer_exact": false,
+  "input_runtime_passed": true,
+  "input_runtime_failures": [],
+  "runtime_verdict_changed": false,
+  "modal_controls_accepted": false,
+  "natural_availability_proven": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "sources": {
+    "summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\summary.json",
+      "sha256": "1e4e20c2619871e5a72517158ed27d042fd31ef9f81e13736d5f33642051259d"
+    },
+    "plan": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\plan.json",
+      "sha256": "e3818e9578c831f3c8db71f79ce76ed35396f1c25cf9ac9925decd558fa848c5"
+    },
+    "producer_host_path": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\run_framed_screen_capture.ps1",
+      "sha256": "9adeb1dadb62fc2b4be682a7310a3f6df50190141618f89a544aecab7461821f"
+    },
+    "producer_trace": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_screen_trace.py",
+      "sha256": "40c2d31b2be63e94b0129326d2c77ef9f9946bffe0e02148fcda64b88256c3b6"
+    },
+    "producer_converter": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\cdb_surface_dump_to_png.py",
+      "sha256": "15d88e91ae65d8d3abc8f060915606437fbdb21b6d17285f99393e50fc271316"
+    },
+    "producer_proxy_source": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\src\\ddraw_surfdump_proxy\\ddraw_surfdump_proxy.cpp",
+      "sha256": "407d41d0d548e6217c6041181efb6466efa90f447110c5b8857bf92714ecb8eb"
+    },
+    "producer_python": {
+      "path": "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "sha256": "dd5f8d19f6755d6491ee7c4bef2fe35ddd521334cc3ca3ed8fc93ebcadf135d0"
+    },
+    "producer_cdb": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+      "sha256": "0ef2091e7071c86b49bc4a75d6f0c1402bb134e5b5fcc267a8da4735409536c8"
+    },
+    "original": {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+    },
+    "candidate": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\framed-screen-castle_overview-1024x768-6baddbf0d4832087.exe",
+      "sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0"
+    },
+    "input_candidate": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\clash95_hd_minimap_1024x768_20260906-031649.exe",
+      "sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0"
+    },
+    "proxy_manifest": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\ddraw_surfdump_proxy.build.json",
+      "sha256": "fce2af106ba1a8011f70fbf2a1fb15652c7682855069c93ab97b1821f10beb8a"
+    },
+    "proxy_input": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-minimap-v1-1024x768-20260906-031649\\candidate\\ddraw.dll",
+      "sha256": "b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70"
+    },
+    "proxy_copy": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\ddraw.dll",
+      "sha256": "b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70"
+    },
+    "packet": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\packet.json",
+      "sha256": "3345c02f38c39c36fbfb4dd55a7b2017f6e8bc92e3aba0117070d1a81ff2c4fe"
+    },
+    "probe": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\framed-screen.cdb",
+      "sha256": "dca7a93f93fcec1648dd4e3b22569aa245951041dfd901981ff2f84517c27e73"
+    },
+    "log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\cdb.log",
+      "sha256": "0ea4466cdee4af7f27b229288453723820204a6558bba9820b3dbe2935642547"
+    },
+    "trace": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\trace.json",
+      "sha256": "5bace366b2c89fd05942fef0ee4b108065f385c4b2a7328007574501be718d4b"
+    },
+    "raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.raw",
+      "sha256": "5bb28dc03e76e810d99a94ae124c7e463fceef1c221a607e564635051c40730c"
+    },
+    "png_metadata": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.png.json",
+      "sha256": "84c79cf79dfb1f360f4022d70f1be2369b9bd64a59232ce0f6248381fb22a4dd"
+    },
+    "palette": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\ddraw_surfdump_palette.bin",
+      "sha256": "b1d6c83d3016b25010cfadc1e5e93ea1b2a1deb7a0ec96053a54375d5eb17ac9"
+    },
+    "png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.png",
+      "sha256": "cafb5f0242340970929ce173e3f5db01b9005cceb3d47b9b405f0d6335ca002f"
+    },
+    "frame_resource": {
+      "path": "C:\\Clash\\DATA\\GFX3.RES",
+      "sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525"
+    },
+    "command_resource": {
+      "path": "C:\\Clash\\DATA\\minimum.res",
+      "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116"
+    }
+  },
+  "failures": [],
+  "frame": {
+    "profile": "native_four_border_tiles_v1",
+    "resolution": "1024x768",
+    "passed": false,
+    "structural_border_exact": false,
+    "checked_border_pixels": 75012,
+    "bands": [
+      {
+        "name": "top",
+        "rectangle_inclusive": [
+          0,
+          0,
+          1023,
+          15
+        ],
+        "checked_pixels": 16384,
+        "exact_matches": 0,
+        "mismatches": 16384,
+        "first_mismatches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            0
+          ]
+        ]
+      },
+      {
+        "name": "bottom",
+        "rectangle_inclusive": [
+          0,
+          752,
+          1023,
+          767
+        ],
+        "checked_pixels": 11524,
+        "exact_matches": 0,
+        "mismatches": 11524,
+        "first_mismatches": [
+          [
+            0,
+            752
+          ],
+          [
+            1,
+            752
+          ],
+          [
+            2,
+            752
+          ],
+          [
+            3,
+            752
+          ],
+          [
+            4,
+            752
+          ],
+          [
+            5,
+            752
+          ],
+          [
+            6,
+            752
+          ],
+          [
+            7,
+            752
+          ]
+        ]
+      },
+      {
+        "name": "left",
+        "rectangle_inclusive": [
+          0,
+          16,
+          31,
+          751
+        ],
+        "checked_pixels": 23552,
+        "exact_matches": 0,
+        "mismatches": 23552,
+        "first_mismatches": [
+          [
+            0,
+            16
+          ],
+          [
+            1,
+            16
+          ],
+          [
+            2,
+            16
+          ],
+          [
+            3,
+            16
+          ],
+          [
+            4,
+            16
+          ],
+          [
+            5,
+            16
+          ],
+          [
+            6,
+            16
+          ],
+          [
+            7,
+            16
+          ]
+        ]
+      },
+      {
+        "name": "right",
+        "rectangle_inclusive": [
+          992,
+          16,
+          1023,
+          751
+        ],
+        "checked_pixels": 23552,
+        "exact_matches": 0,
+        "mismatches": 23552,
+        "first_mismatches": [
+          [
+            992,
+            16
+          ],
+          [
+            993,
+            16
+          ],
+          [
+            994,
+            16
+          ],
+          [
+            995,
+            16
+          ],
+          [
+            996,
+            16
+          ],
+          [
+            997,
+            16
+          ],
+          [
+            998,
+            16
+          ],
+          [
+            999,
+            16
+          ]
+        ]
+      }
+    ],
+    "footer": {
+      "sprite": 5,
+      "origin": [
+        347,
+        753
+      ],
+      "size": [
+        324,
+        15
+      ],
+      "checked_pixels": 4860,
+      "exact_matches": 0,
+      "exact": false,
+      "status": "unverified_background_or_active_tooltip_text"
+    },
+    "opaque_frame_pixels": 79872,
+    "limits": "Prospective exact frame profile only. Active tooltip glyphs need separate source-bound evidence; no ignored footer mismatch produces a full pass. Not runtime/input/promotion acceptance."
+  },
+  "action_bar": {
+    "applicability": "ordinary_map_bar_not_required_for_this_modal",
+    "evaluated_as_gate": false,
+    "matching_cell_count": 0,
+    "cells": [
+      {
+        "cell": 0,
+        "anchor": [
+          800,
+          688
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 0,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 1,
+        "anchor": [
+          864,
+          688
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 2,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 2,
+        "anchor": [
+          928,
+          688
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 4,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 3,
+        "anchor": [
+          800,
+          720
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 6,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 4,
+        "anchor": [
+          864,
+          720
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 8,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      },
+      {
+        "cell": 5,
+        "anchor": [
+          928,
+          720
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "exact_source_match": false,
+        "closest_source_variant": {
+          "sprite": 10,
+          "hover_overlay": false,
+          "mismatched_pixels": 2048,
+          "exact_rows": []
+        },
+        "matching_variants": []
+      }
+    ],
+    "source_member_sha256": "511dd0aa848a8a7582139f7df9bd39ee87580c503dd9f731f3c4206f5206e620",
+    "modal_controls_accepted": false
+  },
+  "limits": [
+    "Indexed software-memory pixels only; primary-only layers and final visible wrapper composition remain separate.",
+    "Controlled native dispatch and optional availability writes are retained; neither natural selection nor manual input is established.",
+    "Ordinary-map bar matches are measurements only on these modal routes; no building controls, battle, interaction or complete modal composition is accepted.",
+    "Frame and footer mismatches are retained. Footer text can replace background pixels; this audit applies no guessed exclusion mask.",
+    "Source/hash/retained-handle records are cross-checked offline, not an independent live process observation or a digital signature of the capture.",
+    "No runtime verdict, protected stage or promotion decision is changed."
+  ],
+  "input_runtime_status": "bounded_hidden_modal_capture",
+  "run_id": "castle_overview-1024x768-castle0-20260906-040923",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "resolution": "1024x768",
+  "route": "castle_overview",
+  "availability": "existing_flags",
+  "castle_index": 0,
+  "minimap_viewport": true,
+  "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+  "process_observations": {
+    "recorded_owned_process_cleanup_verified": true,
+    "cdb": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+      "creation_utc": "2026-09-06T04:09:37.0912868Z",
+      "handle_retained": true,
+      "creation_filetime": 134331413770912868,
+      "process_id": 41268
+    },
+    "candidate": {
+      "path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\framed-screen-castle_overview-1024x768-6baddbf0d4832087.exe",
+      "creation_filetime": 134331413772909003,
+      "process_id": 33000,
+      "handle_retained": true,
+      "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+      "creation_utc": "2026-09-06T04:09:37.2909003Z",
+      "parent_process_id": 41268
+    },
+    "independent_live_query_performed": false
+  },
+  "trace_binding": {
+    "paused_prefix_bytes": 50858,
+    "final_log_bytes": 50858,
+    "paused_prefix_sha256": "0ea4466cdee4af7f27b229288453723820204a6558bba9820b3dbe2935642547",
+    "final_log_revalidated": true,
+    "source_packet_probe_reconstructed": true,
+    "surface": {
+      "surface": 149566664,
+      "width": 1024,
+      "height": 768,
+      "base": 172490800,
+      "bytes": 786432,
+      "route": "castle_overview",
+      "tid": 5760,
+      "eip": 4334495,
+      "esp": 973872,
+      "owner": 68994842
+    },
+    "forced_gate_original": null
+  },
+  "screenshot_binding": {
+    "metadata_path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.png.json",
+    "metadata_sha256": "84c79cf79dfb1f360f4022d70f1be2369b9bd64a59232ce0f6248381fb22a4dd",
+    "palette_path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\ddraw_surfdump_palette.bin",
+    "palette_sha256": "b1d6c83d3016b25010cfadc1e5e93ea1b2a1deb7a0ec96053a54375d5eb17ac9",
+    "png_raw_palette_binding_verified": true,
+    "candidate_file_sha_verified": true
+  },
+  "frame_source": {
+    "member_sha256": "8501cbae69c35aa5a804823227bbd56fb21e84b4f1e5c0f15e4419f522c4053d",
+    "member_offset": 1884879,
+    "member_length": 89593
+  }
+}

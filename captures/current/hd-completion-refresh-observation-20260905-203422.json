@@ -1,0 +1,34 @@
+{
+  "observed_at": "2026-09-05T18:37:09.596172+00:00",
+  "refresh_generated_at": "2026-09-05T20:34:22+02:00",
+  "refresh_sha256": "4c3f3df4b44ea1f169f209cdb30f11b395a4a728d6bd922bc89edde61e3cbdc4",
+  "passed": false,
+  "passing_checks": 161,
+  "total_checks": 166,
+  "failed_checks": {
+    "python_runtime_safety_guard": [
+      "tools/load_slot_route_limit_guard.py uses risky Python runtime/input APIs but is not gated or exempt"
+    ],
+    "hd_soak_long_report_guard": [
+      "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
+      "missing passing 2h+ representative route: map-idle",
+      "missing passing 2h+ representative route: map-pan"
+    ],
+    "hd_endurance_release_checklist": [
+      "long_soak_representative_routes: 2h+ representative-route soak blocked (blocked_missing_long_proof): 2h+ representative-route soak evidence is locked or missing",
+      "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
+      "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
+      "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
+      "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
+      "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion"
+    ],
+    "no_popup_boundary_guard": [
+      "python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
+      "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
+    ],
+    "docs_consistency_guard": [
+      "generated_state: no-popup boundary is failing"
+    ]
+  },
+  "interpretation": "Three cascading failures originated from the literal word subprocess in a no-process-launch docstring, not executable API use. The guard already invokes its renderer directly in memory. Wording has been clarified without changing the safety scanner or adding an exemption. Focused geometry and safety fixtures pass; fresh aggregate result pending. Two missing long/manual release requirements remain real."
+}

@@ -11,11 +11,11 @@ Reviewable 1280x720 candidate; acceptance remains pending. The stable stage is u
 
 ## Checks
 
-All 14 focused suites pass, including 835 x86 core cases and 17 HUD tests. Five additional merged-harness/launcher suites pass. Source-pin integration and fresh-checkout results are recorded in [the integration report](../../reports/battle_hd_source_binding_integration.md). The launcher dry run passes and starts no process.
+All 14 focused suites pass, including 835 x86 core cases and 17 HUD tests. Five additional merged-harness/launcher suites pass. Source-pin integration and fresh-checkout results are recorded in [the integration report](../../reports/battle_hd_source_binding_integration.md) and [the PR60 follow-up](../../reports/battle_hd_source_binding_pr60.md). The launcher dry run passes and starts no process.
 
 | Final hidden run | Diagnostic result | Evidence boundary |
 |---|---|---|
-| [Helpers](battle-hd-helpers-current.md), 111019 | 6/7 | Full redraw visits all 112 real tiles; dirty redraw reaches column eight; dedicated present marker absent. |
+| [Helpers](battle-hd-helpers-current.md), 111019 | 6/7 | Full redraw visits all 112 real tiles; dirty redraw reaches tile (8,0), using zero-based coordinates; dedicated present marker absent. |
 | [Camera](battle-hd-camera-current.md), 111125 | 7/7 | Forced clamp/recenter cases at widths 17/20, original 16x7 arena restored. |
 | [Lifecycle](battle-hd-lifecycle-current.md), 111326 | 12/14 | Forced commands, modal, results and return/map redraw complete; banner/results cursor polling unresolved. |
 
@@ -29,7 +29,7 @@ Stage `-castlecenter-all-battlehd`, 1280x720, hidden software captures. Geometry
 
 ![Expanded battle after full/dirty diagnostics](C:/ClashTests/battle-hd-1280x720/captures/cdb-surface-dump-20260908-111019/surface.png)
 
-![Centered results and six command cells](C:/ClashTests/battle-hd-1280x720/captures/cdb-surface-dump-20260908-111818/surface.png)
+![Centered results and six native command controls](C:/ClashTests/battle-hd-1280x720/captures/cdb-surface-dump-20260908-111818/surface.png)
 
 ![HD map after forced battle exit](C:/ClashTests/battle-hd-1280x720/captures/cdb-surface-dump-20260908-111326/surface.png)
 
@@ -37,7 +37,7 @@ The results snapshot copies the native primary surface to a debugger-allocated b
 
 ## Aggregate refresh
 
-The required repo-only refresh completed with **23/165 failing checks**. Its detailed [current summary](current-evidence-refresh-current.md) and the JSON companion retain every failure. Existing missing evidence, compatibility guards and environment failures are separate from expanded-battle acceptance; none is converted to a pass.
+The prior completed refresh had **23/165 failing checks**. Its immutable JSON is under `C:\ClashTests\battle-hd-1280x720\aggregate-after-main-artifacts\`. A fresh aggregate after the latest main integration is pending; the stopped intermediate run has no completed result. The incoming main snapshot is not a new validation of this branch.
 
 - `load_slot_route_limit_guard`: harness: missing marker load_mouse_x: $loadMouseX = 320; harness: missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)
 - `right_bottom_slot_fixture_plan`: load-slot route-limit guard is not passing

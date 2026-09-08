@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T09:22:06.644302+00:00",
+  "generated_at": "2026-09-06T03:58:07.729431+00:00",
   "passed": true,
   "runtime_policy": "repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "checklist": "captures\\current\\hd-endurance-release-checklist-current.json",
@@ -7,19 +7,13 @@
   "dry_run_plan": "captures\\current\\hd-soak-dry-run-plan-current.json",
   "intro_skip_readiness": "captures\\current\\hd-soak-intro-skip-rerun-readiness-current.json",
   "harness_guard": "captures\\current\\hd-soak-harness-guard-current.json",
-  "short_ladder_complete": false,
-  "current_short_step": {
-    "id": "short2_map_idle",
-    "tier": "short2",
-    "route": "map-idle",
-    "status": "failed_classified_window_missing_while_process_alive",
-    "next_command": null
-  },
+  "short_ladder_complete": true,
+  "current_short_step": null,
   "full_game_complete": false,
   "release_counts": {
     "total": 15,
-    "passed": 7,
-    "blocked": 8,
+    "passed": 9,
+    "blocked": 6,
     "missing": 0
   },
   "status": "repo_only_followup_available",
@@ -29,88 +23,23 @@
     "next_probe": "collect approved manual menu-load proof or keep promotion blocked"
   },
   "next_action": {
-    "source": "short_soak_step_status",
-    "short_step_id": "short2_map_idle",
-    "tier": "short2",
-    "route": "map-idle",
-    "writes_outside_repo": [
-      "C:\\ClashTests\\hd-soak",
-      "C:\\ClashCaptures\\hd-soak"
-    ],
+    "id": "resolve_stable_menu_real_input",
+    "status": "needs_planning",
+    "requires_visible_runtime": false,
+    "requires_explicit_user_approval": false,
+    "why": "collect approved manual menu-load proof or keep promotion blocked",
+    "exact_runtime_command": null,
+    "safe_dry_run_command": null,
+    "writes_outside_repo": [],
     "must_not_modify": [
       "C:\\Clash\\clash95.exe"
     ],
-    "current_step_artifacts": {
-      "report_json": "captures\\current\\hd-soak-short2-map-idle-current.json",
-      "report_json_exists": true,
-      "report_markdown": "captures\\current\\hd-soak-short2-map-idle-current.md",
-      "report_markdown_exists": true,
-      "guard_json": "captures\\current\\hd-soak-short2-map-idle-guard-current.json",
-      "guard_json_exists": true,
-      "guard_markdown": "captures\\current\\hd-soak-short2-map-idle-guard-current.md",
-      "guard_markdown_exists": true,
-      "triage_json": "captures\\current\\hd-soak-short2-map-idle-triage-current.json",
-      "triage_json_exists": true,
-      "triage_markdown": "captures\\current\\hd-soak-short2-map-idle-triage-current.md",
-      "triage_markdown_exists": true,
-      "canonical_runtime_report_missing": false,
-      "post_run_guard_missing": false,
-      "post_run_triage_missing": false
-    },
-    "current_failure": {
-      "classification": "window_missing_while_process_alive",
-      "next_probe": "inspect window_health_samples and wrapper transitions at the first missing-window phase before requesting any visible rerun",
-      "frame_sample_count": 0,
-      "final_route_marker": "confirm-load",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-      "visual_anomaly_passed": true,
-      "black_patch_risk_count": 0,
-      "palette_or_stripe_risk_count": 0,
-      "missing_nonblack_bounds_count": 0,
-      "wer_followup_matched": null,
-      "wer_followup_status": null,
-      "window_health_mitigation_ready": null
-    },
-    "id": "inspect_short2_map_idle_triage",
-    "status": "triage_followup_required",
-    "requires_visible_runtime": false,
-    "requires_explicit_user_approval": false,
-    "why": "inspect window_health_samples and wrapper transitions at the first missing-window phase before requesting any visible rerun",
-    "exact_runtime_command": null,
-    "safe_dry_run_command": null,
-    "repo_command": null,
-    "triage": {
-      "classification": "window_missing_while_process_alive",
-      "next_probe": "inspect window_health_samples and wrapper transitions at the first missing-window phase before requesting any visible rerun",
-      "frame_sample_count": 0,
-      "final_route_marker": "confirm-load",
-      "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33"
-    },
     "post_run_validation": [
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_soak_short_validation_refresh.py --write-json captures\\current\\hd-soak-short-validation-refresh-current.json --write-markdown captures\\current\\hd-soak-short-validation-refresh-current.md --require-pass",
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_soak_short_step_status.py --write-json captures\\current\\hd-soak-short-step-status-current.json --write-markdown captures\\current\\hd-soak-short-step-status-current.md --require-pass",
-      "git diff --check"
-    ],
-    "post_run_handoff_refresh": [
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_soak_dry_run_plan.py --write-json captures\\current\\hd-soak-dry-run-plan-current.json --write-markdown captures\\current\\hd-soak-dry-run-plan-current.md --require-pass",
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_endurance_release_checklist.py --write-json captures\\current\\hd-endurance-release-checklist-current.json --write-markdown captures\\current\\hd-endurance-release-checklist-current.md",
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_soak_intro_skip_rerun_readiness.py --write-json captures\\current\\hd-soak-intro-skip-rerun-readiness-current.json --write-markdown captures\\current\\hd-soak-intro-skip-rerun-readiness-current.md",
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_endurance_next_actions.py --write-json captures\\current\\hd-endurance-next-actions-current.json --write-markdown captures\\current\\hd-endurance-next-actions-current.md --require-pass",
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\hd_soak_approval_preflight.py --write-json captures\\current\\hd-soak-approval-preflight-current.json --write-markdown captures\\current\\hd-soak-approval-preflight-current.md --require-pass"
-    ],
-    "post_run_evidence_refresh": [
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\current_evidence_refresh.py --write-json captures\\current\\current-evidence-refresh-current.json --write-markdown captures\\current\\current-evidence-refresh-current.md",
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\evidence_index_check.py captures\\current\\hd-map-evidence-current.md --require-pass",
-      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe tools\\current_completion_summary.py --write-json captures\\current\\current-completion-summary-current.json --write-markdown captures\\current\\current-completion-summary-current.md --require-pass",
-      "git diff --check"
+      "tools\\hd_endurance_release_checklist.py"
     ]
   },
-  "open_requirement_count": 8,
+  "open_requirement_count": 6,
   "open_requirement_groups": {
-    "patch boundary": [
-      "protected_stable_stage",
-      "no_speculative_promotion"
-    ],
     "endurance": [
       "long_soak_representative_routes"
     ],
@@ -126,17 +55,10 @@
   },
   "open_requirements": [
     {
-      "id": "protected_stable_stage",
-      "status": "blocked",
-      "category": "patch boundary",
-      "summary": "stable-stage guard does not prove the protected boundary",
-      "next_probe": "fix stable-stage guard failures before considering any soak result"
-    },
-    {
       "id": "long_soak_representative_routes",
       "status": "blocked",
       "category": "endurance",
-      "summary": "2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+      "summary": "2h+ representative-route soak blocked (blocked_missing_long_proof): 2h+ representative-route soak evidence is locked or missing",
       "next_probe": "add long-tier reports only after short2/short10/short30 are stable"
     },
     {
@@ -173,13 +95,6 @@
       "category": "screen route",
       "summary": "battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
       "next_probe": "prove battle entry, UI use, return, and post-return map health on an approved route"
-    },
-    {
-      "id": "no_speculative_promotion",
-      "status": "blocked",
-      "category": "patch boundary",
-      "summary": "one or more promotion boundaries are not fail-closed",
-      "next_probe": "keep DEFAULT_STAGE unchanged until strict natural/manual/input and soak gates pass"
     }
   ],
   "failures": []

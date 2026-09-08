@@ -100,6 +100,49 @@ def test_cli_writes_outputs_and_fails_closed(fixture: Path) -> None:
     assert "Python Runtime Safety Guard" in out_md.read_text(encoding="utf-8")
 
 
+def test_offline_report_source_passes(fixture: Path) -> None:
+    path = fixture / "tools" / "hidden_soak_report_assembler.py"
+    source = (ROOT / "tools" / path.name).read_text(encoding="utf-8-sig")
+    write(path, source)
+    record = python_runtime_safety_guard.classify_python(path, fixture)
+    assert record["classification"] == "offline_report", record
+    assert not record["failures"], record
+    # The original false positive is report prose, not an executable API.
+    assert "process_launch" in record["risk_categories"], record
+
+
+def test_offline_report_name_does_not_hide_runtime_apis(fixture: Path) -> None:
+    cases = {
+        "subprocess_alias": "import subprocess as reports\nreports.Popen(['clash95.exe'])\n",
+        "imported_alias": "from subprocess import Popen as build_report\nbuild_report(['clash95.exe'])\n",
+        "input": "import ctypes\nctypes.windll.user32.SendInput(1, None, 0)\n",
+        "deferred_api": "launch_later = api.CreateProcess\n",
+        "fstring_expression": "report = f'{api.PostMessageW(0, 0, 0, 0)}'\n",
+        "dynamic_import": "loader = __import__\nloader('subprocess')\n",
+        "dynamic_lookup": "launch = getattr(api, 'Popen')\n",
+        "unreviewed_import": "import multiprocessing as reports\n",
+        "invalid_source": "def broken(:\n",
+    }
+    for case, source in cases.items():
+        case_root = fixture / case
+        path = case_root / "tools" / "hidden_soak_report_assembler.py"
+        write(path, source)
+        args = type("Args", (), {"root": case_root, "tools_dir": Path("tools")})()
+        guard = python_runtime_safety_guard.build_guard(args)
+        assert guard["passed"] is False, (case, guard)
+        record = guard["records"][0]
+        assert record["classification"] == "unclassified_risky", (case, record)
+        assert record["failures"], (case, record)
+
+
+def test_offline_report_review_is_path_specific(fixture: Path) -> None:
+    path = fixture / "src" / "launcher" / "hidden_soak_report_assembler.py"
+    write(path, "MESSAGE = 'recorded execution run (offline evidence)'\n")
+    record = python_runtime_safety_guard.classify_python(path, fixture)
+    assert record["classification"] == "unclassified_risky", record
+    assert record["failures"], record
+
+
 def run_tests() -> None:
     fixture = ROOT / ".codex-loop" / "tmp-tests" / "python-runtime-safety-fixture"
     shutil.rmtree(fixture, ignore_errors=True)
@@ -108,6 +151,9 @@ def run_tests() -> None:
         test_unclassified_risky_helper_fails(fixture / "unsafe")
         test_gated_and_exempt_helpers_pass(fixture / "gated")
         test_cli_writes_outputs_and_fails_closed(fixture / "cli")
+        test_offline_report_source_passes(fixture / "offline")
+        test_offline_report_name_does_not_hide_runtime_apis(fixture / "offline-unsafe")
+        test_offline_report_review_is_path_specific(fixture / "offline-path")
     finally:
         shutil.rmtree(fixture, ignore_errors=True)
 

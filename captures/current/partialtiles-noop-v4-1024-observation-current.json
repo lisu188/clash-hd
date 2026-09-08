@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-09-05T18:26:35.608615+00:00",
+  "runtime_passed": false,
+  "strict_error": "repeated or out-of-order incremental input",
+  "run_dir": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-validation",
+  "resolution": "1024x768",
+  "candidate_sha256": "B2D0121EE83C6CF861D5A138CA6126ACB41A92B6BD43D8129DDD5D357645454E",
+  "run_plan": "captures/current/partialtiles-noop-v4b-run-plan-current.json",
+  "artifacts": {
+    "summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\summary.json",
+      "sha256": "5c30e0b290c18b624721285c2882fa3782424def829edddd0ad3804038a6139b"
+    },
+    "cdb-surface-dump.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\cdb-surface-dump.log",
+      "sha256": "b8f42c714b0685d800e320a2d1a4b389c8720557595cba618bf1c536d4dee6b7"
+    },
+    "partial-tile-build.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\partial-tile-build.json",
+      "sha256": "5f1341492fda8f173c596a078c9d34624f084f0e8ac29522ea37927c424179dd"
+    },
+    "clash95_surface_dump_probe.generated.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\clash95_surface_dump_probe.generated.cdb",
+      "sha256": "e11726644a53973846751bfaf4f901f3ad85a15a4c4979466626af3f437e7f0a"
+    },
+    "surface.raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\surface.raw",
+      "sha256": "b8508baf59c47c6d279211602c232769aef0cf8102e504736a119d78f96d2e8c"
+    },
+    "diagnostic-surface.png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\diagnostic-surface.png",
+      "sha256": "55f0ce6bf337ef29c45da2de114c940192bf9740c66c0648265e25b716dc3b0f"
+    },
+    "diagnostic-surface.png.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\diagnostic-surface.png.json",
+      "sha256": "5074029869e5351b70bbab3dbaeded66235b02e5319117a53b4a28e9257aadc5"
+    },
+    "pixel-diagnostic-summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\pixel-diagnostic-summary.json",
+      "sha256": "3631ebea4edc8149e1d6541d3a38b368ffb852109b7d75f1093d31d600a99e8b"
+    },
+    "live-process-receipt.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\live-process-receipt.json",
+      "sha256": "0e560510041946909ca4dde01e4f0b256b75aed39a509ab90e3d208f3138f590"
+    },
+    "terminal-process-receipt.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\partialtiles-noop-v4-1024x768-20260905\\cdb-surface-dump-20260905-202225\\terminal-process-receipt.json",
+      "sha256": "4f9a3b31c6b4742f32b13a865d75d895eafb5e06c2b2fbc6d844ac7a12b08f3b"
+    }
+  },
+  "raw_ready": {
+    "RedrawSeq": 4,
+    "Surface": "0a6bcf80",
+    "Width": 1024,
+    "Height": 768,
+    "Base": "0a990030",
+    "Bytes": 786432
+  },
+  "host_dumped_memory": true,
+  "access_violation": false,
+  "timed_out": false,
+  "marker_counts": {
+    "PTILE_CONTRACT_PASS": 1,
+    "PTILE_SCOPE": 1,
+    "PTILE_MAP_READY": 1,
+    "PTILE_COMPOSITION_GUARD": 359,
+    "PTILE_INCREMENTAL_INPUT": 361,
+    "PTILE_STATUS": 361,
+    "PTILE_NATIVE_NOOP_EXIT": 266
+  },
+  "full_converge_events": 0,
+  "full_present_events": 0,
+  "cleanup": {
+    "observed_at": "2026-09-05T18:25:10.3051995+00:00",
+    "recorded_cdb_pid": 28444,
+    "recorded_game_pid": 35832,
+    "matching_recorded_processes": [],
+    "terminal_exit_code": 1,
+    "passed": false,
+    "observation_method": "Live recorded identities checked after terminal return"
+  },
+  "action_bar_pixel_audit": {
+    "path": "captures\\current\\partialtiles-noop-v4-1024-action-bar-audit-current.json",
+    "sha256": "da63448b1d63e6cde33dbc1f5ba9d1f2553ba9f5debf85f2241b2227331d34a0",
+    "all_six_cells_match_source": true,
+    "runtime_pass": false
+  },
+  "classification": "The captured 1024x768 raw surface has six exact action-bar cells. Strict trace validation failed on repeated or out-of-order input; no full hook pair was observed. The diagnostic PNG uses only the raw bytes and recorded palette. The original failed summary is preserved.",
+  "limits": "Pixel matches are separate from strict trace acceptance, the visible wrapper, manual input, and promotion. SURFDUMP_REDRAW marks simulation/update at 406FA0; it does not prove full redraw at 418700."
+}

@@ -1,7 +1,7 @@
 # Right-Bottom Slot Fixture Plan
 
-- Status: FAIL
-- Generated: `2026-09-08T11:20:25+02:00`
+- Status: PASS
+- Generated: `2026-09-06T05:56:59+02:00`
 - Runtime policy: repo-only fixture planner; reads generated evidence JSON and writes only JSON/Markdown reports; does not copy saves, launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only while the slot-5 route-compatible save remains blocked before LOADSAVE, the row-0 natural route remains proven, and the proposed copied save stays isolated and non-promoting
 - Candidate matrix: `captures\current\right-bottom-natural-route-candidate-matrix-current.json`
@@ -39,7 +39,3 @@
 - manual DirectInput proof is still absent
 - natural slot-5 menu loading is still blocked before LOADSAVE
 - fixture evidence must not change the stable stage by itself
-
-## Failures
-
-- load-slot route-limit guard is not passing

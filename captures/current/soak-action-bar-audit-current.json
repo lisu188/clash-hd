@@ -1,0 +1,2009 @@
+{
+  "schema": "clash95_soak_action_bar_audit_v1",
+  "generated_at": "2026-09-05T12:25:04.766889+00:00",
+  "scope": "All existing saved edge-frame PNGs from the two explicitly named completed hidden-soak runs only; no runtime, live capture, image modification, or new approval.",
+  "source_resource": {
+    "path": "C:\\Clash\\DATA\\minimum.res",
+    "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116"
+  },
+  "source_member": {
+    "name": "MAP_BUTT.S32",
+    "sha256": "511dd0aa848a8a7582139f7df9bd39ee87580c503dd9f731f3c4206f5206e620"
+  },
+  "comparison_tool": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\action_bar_surface_audit.py",
+    "sha256": "d5ee6ede5b4f7c8d4966f879f55f26cc3b7811a8b7ab70b1c1fa2e33436cac2b"
+  },
+  "comparison_tool_fixture": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\test_action_bar_surface_audit.py",
+    "sha256": "57102df4ae510783865917eb7f7e33974d9f27aa9a8812deae869040e954f9f2"
+  },
+  "method": "Exact indexed source sprites: each cell admits its own base pair (2*cell,2*cell+1), with or without native hover sprite14; every one of 2048 cell pixels must match. PNG bytes are independently reconstructed in memory from the bound raw indices and recorded grayscale palette mode.",
+  "audit_completed": true,
+  "inspected_png_count": 12,
+  "hd_action_bar_complete_in_every_saved_png": false,
+  "legacy_action_bar_complete_in_every_saved_png": false,
+  "visible_composition_proof": false,
+  "manual_input_proof": false,
+  "promotion_evidence": false,
+  "stable_stage_should_change": false,
+  "limits": [
+    "The supplied stable candidate has native legacy action-bar placement; an HD-anchor mismatch is a diagnostic and cannot grant or deny promotion by itself.",
+    "No complete action-bar cell matches at either tested anchor in any of these hidden captures. This confirms absence in the captured indexed surface, not the final visible wrapper composition.",
+    "Only first/last retained PNG frames exist for these runs: 6 of 13 samples and 6 of 239 samples. Unsaved intermediate samples were not visually reviewed.",
+    "The failed 114207 long run remains failed for its recorded cleanup errors; this review does not upgrade its soak gate.",
+    "The separately running 141501 long run and any future images are outside this audit and were not checked."
+  ],
+  "runs": [
+    {
+      "run_id": "hidden-soak-20260905-140338-409-map-idle",
+      "report": {
+        "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\report.json",
+        "sha256": "2e0d30555a6db889d81c0946f57235301cbd9a86435af0a94e8cab71cee22a36"
+      },
+      "samples": {
+        "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\hidden-soak-samples.json",
+        "sha256": "eaa427580ebc6eb6ebf4b107b4069159e4b6d412b969b7bd97eb74298b3d6411"
+      },
+      "guard": {
+        "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\guard.json",
+        "sha256": "b5542d6731d6ec42bd4173e07d1e9bc839f71e2a48db400b2c909abdc3659ce4"
+      },
+      "patch_stage_report": {
+        "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\patch-stage.json",
+        "sha256": "a67447fbe45764c997c3ddbe9c8e7875c470f42988b04d0d00534f5a39a77604"
+      },
+      "candidate": {
+        "path": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\clash95_hd_hidden_soak_20260905_140338_409.exe",
+        "sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33"
+      },
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "resolution": "800x600",
+      "reported_soak_passed": true,
+      "reported_guard_overall": true,
+      "reported_cleanup_clean": true,
+      "reported_failures": [],
+      "frame_sample_count": 13,
+      "saved_png_count": 6,
+      "all_saved_pngs_inspected": true,
+      "frame_inventory_matches_report_and_samples": true,
+      "frames": [
+        {
+          "frame": "frame-0001",
+          "timestamp": "2026-09-05T14:04:07.0255420+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0001.raw",
+            "sha256": "497a00ae335ee8f675cd78f44f879b7b5fad62a4d714c8bda46c2356693785a5"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0001.png",
+            "sha256": "ae6be0887cb54a935eb00dbe9104eab233e832de65b61fc87d338c9d5d2dd6c5"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0001.png.json",
+            "sha256": "0ed925365747ced6e8af8bcffcaaf15928d1f0fccb37b8c2444164d859713071"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 1,
+                "hover_overlay": true,
+                "mismatched_pixels": 2032,
+                "exact_rows": []
+              },
+              {
+                "sprite": 3,
+                "hover_overlay": false,
+                "mismatched_pixels": 2034,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2044,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0002",
+          "timestamp": "2026-09-05T14:04:17.4751090+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0002.raw",
+            "sha256": "15c02447287d707841476496caf94e4de44dc26de72c582a64a2f6724edbe4e1"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0002.png",
+            "sha256": "6721ed840aa025ace7512bfec7a5e7c437377496c0c45621d0407c5dca570549"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0002.png.json",
+            "sha256": "aac761a96ef3fe234fb64e89842f860065089928926061a39e2ac0a4ba955b6a"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 1,
+                "hover_overlay": true,
+                "mismatched_pixels": 2032,
+                "exact_rows": []
+              },
+              {
+                "sprite": 3,
+                "hover_overlay": false,
+                "mismatched_pixels": 2033,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2044,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0003",
+          "timestamp": "2026-09-05T14:04:27.8737758+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0003.raw",
+            "sha256": "1ed0675a01b07d18d0d49b29d9612503cbd725f9d02b16bf74f0efcdbfacc905"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0003.png",
+            "sha256": "166a8c957b32d587795e0363c5b01eb2d93981e6092980fd5f3e3b99165c72d3"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0003.png.json",
+            "sha256": "2d678138933e2eeeae419a8f030b8657fcf59ccc11232b1a9926bf3b4b9e65d8"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 1,
+                "hover_overlay": true,
+                "mismatched_pixels": 2032,
+                "exact_rows": []
+              },
+              {
+                "sprite": 3,
+                "hover_overlay": false,
+                "mismatched_pixels": 2035,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2044,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0011",
+          "timestamp": "2026-09-05T14:05:49.3421004+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0011.raw",
+            "sha256": "d2b3b1352506f197209f8f4eb2eb75f0f3752892c80bc8ef7afe8f494ba556c9"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0011.png",
+            "sha256": "e3dda5702120d33026def81fdda65983841ea19187edd0136bf61adb396f0638"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0011.png.json",
+            "sha256": "802c64cc1443274abea905dd0b40f6199213ada9783b0e5b16588198ba90a830"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 1,
+                "hover_overlay": true,
+                "mismatched_pixels": 2032,
+                "exact_rows": []
+              },
+              {
+                "sprite": 3,
+                "hover_overlay": false,
+                "mismatched_pixels": 2035,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2044,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0012",
+          "timestamp": "2026-09-05T14:05:59.4954560+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0012.raw",
+            "sha256": "85db77318866176d1fec5cd7d937698f63520cdb751f13c503c70b2b0d661c83"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0012.png",
+            "sha256": "b29e9adb01215dbe84d3bf2637d38eddcdcc5effe52a7b6e56786dabbd41dac9"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0012.png.json",
+            "sha256": "ccf557c31d4c65dfcfb8f93b1c355145f6a8749cbb0b8a3b046ebe5ec56717e5"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              },
+              {
+                "sprite": 9,
+                "hover_overlay": false,
+                "mismatched_pixels": 2040,
+                "exact_rows": []
+              },
+              {
+                "sprite": 10,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0013",
+          "timestamp": "2026-09-05T14:06:06.0269293+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0013.raw",
+            "sha256": "ec8f928d418ed4fdf1e9b03351b96ecd4288f13e43b55f209a471250ef003fea"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0013.png",
+            "sha256": "7f47780df2bf48ff8828544281cc82eb88364d5e7a3f5ebc9551908ede752f33"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140338-409-map-idle\\frames\\frame-0013.png.json",
+            "sha256": "920f90ca7a4d0fadbaf364ecf1465ca50a2d8d14737a46df2e33660b8cf560ac"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              },
+              {
+                "sprite": 9,
+                "hover_overlay": false,
+                "mismatched_pixels": 2040,
+                "exact_rows": []
+              },
+              {
+                "sprite": 10,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        }
+      ]
+    },
+    {
+      "run_id": "hidden-soak-20260905-114207-433-map-idle",
+      "report": {
+        "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\report.json",
+        "sha256": "6a772943d5b7435e233c2c41d6290ed35cecace23a7ecb559af1d9b55d9fd7c0"
+      },
+      "samples": {
+        "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\hidden-soak-samples.json",
+        "sha256": "68f26b292c616a62819d942db9e58e6488141c8246ddc84b0be18697333209b4"
+      },
+      "guard": {
+        "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\guard.json",
+        "sha256": "831073ab9e946d5936a412d16a6a405b40740307d12d8ac8297bdcfc6f6a230b"
+      },
+      "patch_stage_report": {
+        "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\patch-stage.json",
+        "sha256": "1aed22db683f24e9fa50a8db1cb6ef6f98dcf5a3a02c23a41af56dacf0bcce42"
+      },
+      "candidate": {
+        "path": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\clash95_hd_hidden_soak_20260905_114207_433.exe",
+        "sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33"
+      },
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "resolution": "800x600",
+      "reported_soak_passed": false,
+      "reported_guard_overall": false,
+      "reported_cleanup_clean": false,
+      "reported_failures": [
+        "failed to stop process 1336: process 1336 did not exit within 5 seconds",
+        "cleanup contains 1 error(s)",
+        "the harness did not stop the run cleanly after SOAK_ROUTE_END"
+      ],
+      "frame_sample_count": 239,
+      "saved_png_count": 6,
+      "all_saved_pngs_inspected": true,
+      "frame_inventory_matches_report_and_samples": true,
+      "frames": [
+        {
+          "frame": "frame-0001",
+          "timestamp": "2026-09-05T11:42:40.9629028+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0001.raw",
+            "sha256": "b70cad486105b226f695a6c1e993e915925d69546861747947c7edb014ac5a86"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0001.png",
+            "sha256": "fe9974acb925903f6163b98a0e6caf01d37cedced231cb3e27e4e4908d08e9ed"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0001.png.json",
+            "sha256": "2abfa5dd125a34b9011a509ee1988af42a7950e429246d468773d0ce97e38ca6"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 1,
+                "hover_overlay": true,
+                "mismatched_pixels": 2032,
+                "exact_rows": []
+              },
+              {
+                "sprite": 3,
+                "hover_overlay": false,
+                "mismatched_pixels": 2035,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2044,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0002",
+          "timestamp": "2026-09-05T11:43:10.9437352+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0002.raw",
+            "sha256": "ee89880c6cc28b20c1ded82a563e362d4f84deab553a6b83d159f1cb679a60c7"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0002.png",
+            "sha256": "bca8d88f6fe9390871070052f2f7a7ddfb5291a9074a371976ed2f9e818ca8ab"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0002.png.json",
+            "sha256": "6bb31828bfd86ca64795511b350ded203ac7a50fe48c3527407c6a82c26adb4f"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              },
+              {
+                "sprite": 9,
+                "hover_overlay": false,
+                "mismatched_pixels": 2040,
+                "exact_rows": []
+              },
+              {
+                "sprite": 10,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0003",
+          "timestamp": "2026-09-05T11:43:41.3251974+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0003.raw",
+            "sha256": "8f4987ae3a30a243d3de223e96caa10f17bb8a687327305ae79a7ff25bc96292"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0003.png",
+            "sha256": "7562a261b33fe430b069b86b56914e6484e664c25a71c6c718e76f2c0316b949"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0003.png.json",
+            "sha256": "1dcc347a45c84f9f6515b202de81d9e693678e3ae3a419b08b430b5ec85b96f1"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              },
+              {
+                "sprite": 9,
+                "hover_overlay": false,
+                "mismatched_pixels": 2040,
+                "exact_rows": []
+              },
+              {
+                "sprite": 10,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0237",
+          "timestamp": "2026-09-05T13:41:52.8415594+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0237.raw",
+            "sha256": "acbc7a44641a13025bd18eea19156f06e654b1b9c507585ebcc03de2956caa44"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0237.png",
+            "sha256": "10197570de0b2c89c7467e10d22cdc4f2de8f2b4f9874e221b67db0c667f31e0"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0237.png.json",
+            "sha256": "f16d41d032c7be2612349999943193daa830836b0e941a8089096c9f23d91f79"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              },
+              {
+                "sprite": 9,
+                "hover_overlay": false,
+                "mismatched_pixels": 2040,
+                "exact_rows": []
+              },
+              {
+                "sprite": 10,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0238",
+          "timestamp": "2026-09-05T13:42:22.9439224+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0238.raw",
+            "sha256": "ade358e6579684b199005ce1001f3af93e5eb837c18f04d80f79df336c6545b9"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0238.png",
+            "sha256": "c08bb5ca34fcf4c9e2dda8f23ac699d2a7010289fb8801169e5bfb1d2889a518"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0238.png.json",
+            "sha256": "6e838f3071dd2707e1039a38e59d236d4243204100f1e6e6fcd1e702786a7af5"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              },
+              {
+                "sprite": 9,
+                "hover_overlay": false,
+                "mismatched_pixels": 2040,
+                "exact_rows": []
+              },
+              {
+                "sprite": 10,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        },
+        {
+          "frame": "frame-0239",
+          "timestamp": "2026-09-05T13:42:39.4710466+02:00",
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0239.raw",
+            "sha256": "c0502abc4c7b8c8bfd78badec974879e134743924eb517083d98b9a1badd4b9c"
+          },
+          "png": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0239.png",
+            "sha256": "7a1d95478d891dd1a31be67248846180f360a8f2f147329eddc866210bed2875"
+          },
+          "png_metadata": {
+            "path": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-114207-433-map-idle\\frames\\frame-0239.png.json",
+            "sha256": "ab9cdd183b9e82cad1c868c020a73d82b63826cfc1e3a697b3da5d98b8c8e5a6"
+          },
+          "raw_matches_report_and_samples": true,
+          "png_raw_binding_verified": true,
+          "palette_mode": "grayscale-index",
+          "hd": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                608,
+                528
+              ],
+              [
+                672,
+                528
+              ],
+              [
+                736,
+                528
+              ],
+              [
+                608,
+                560
+              ],
+              [
+                672,
+                560
+              ],
+              [
+                736,
+                560
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 6,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 8,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 11,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "legacy": {
+            "matching_cells": [],
+            "anchors": [
+              [
+                416,
+                400
+              ],
+              [
+                480,
+                400
+              ],
+              [
+                544,
+                400
+              ],
+              [
+                416,
+                432
+              ],
+              [
+                480,
+                432
+              ],
+              [
+                544,
+                432
+              ]
+            ],
+            "closest_variant": [
+              {
+                "sprite": 0,
+                "hover_overlay": false,
+                "mismatched_pixels": 2045,
+                "exact_rows": []
+              },
+              {
+                "sprite": 2,
+                "hover_overlay": false,
+                "mismatched_pixels": 2047,
+                "exact_rows": []
+              },
+              {
+                "sprite": 4,
+                "hover_overlay": false,
+                "mismatched_pixels": 2048,
+                "exact_rows": []
+              },
+              {
+                "sprite": 7,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              },
+              {
+                "sprite": 9,
+                "hover_overlay": false,
+                "mismatched_pixels": 2040,
+                "exact_rows": []
+              },
+              {
+                "sprite": 10,
+                "hover_overlay": false,
+                "mismatched_pixels": 2046,
+                "exact_rows": []
+              }
+            ]
+          },
+          "visual_inspection": {
+            "completed": true,
+            "method": "direct review of existing unmodified PNG through view_image",
+            "observation": "Terrain occupies the tested HD and legacy action-bar regions; no recognizable six-cell command strip is visible."
+          }
+        }
+      ]
+    }
+  ]
+}

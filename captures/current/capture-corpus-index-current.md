@@ -1,28 +1,28 @@
 # Capture Corpus Index
 
 - Overall: PASS
-- Generated: `2026-09-08T11:22:11+02:00`
+- Generated: `2026-09-06T05:58:13+02:00`
 - Runtime policy: repo-only capture index; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current evidence capture references must resolve and must not reactivate visible-era or sandbox/VM artifacts as active blockers
-- Captures root: `C:\Users\andrz\.codex\worktrees\7d0c\clash-hd\captures`
-- Artifact count: `742`
+- Captures root: `C:\Users\andrz\git\clash-hd\captures`
+- Artifact count: `913`
 - Current references: `179`
-- Archived references: `334`
+- Archived references: `348`
 - Missing current refs: `[]`
-- Stale visible/sandbox artifacts: `16`
+- Stale visible/sandbox artifacts: `18`
 
 ## Reference Status Counts
 
-- `archived_referenced`: `200`
+- `archived_referenced`: `202`
 - `current_referenced`: `149`
-- `stale_unreferenced`: `393`
+- `stale_unreferenced`: `562`
 
 ## Era Counts
 
-- `cdb_surface_dump_unverified`: `69`
-- `hidden_cdb_surface_dump`: `162`
-- `other_capture_artifact`: `495`
-- `visible_era`: `16`
+- `cdb_surface_dump_unverified`: `78`
+- `hidden_cdb_surface_dump`: `164`
+- `other_capture_artifact`: `653`
+- `visible_era`: `18`
 
 ## Stale Visible Or Sandbox Examples
 
@@ -42,3 +42,5 @@
 - `captures/archive/visual-smoke-20260713-144505`
 - `captures/archive/visual-smoke-20260713-145714`
 - `captures/archive/visual-smoke-20260713-150843`
+- `captures/archive/visual-smoke-20260714-140443`
+- `captures/archive/visual-smoke-20260714-155327`

@@ -14,6 +14,7 @@ from typing import Any
 import hd_soak_report
 import hd_soak_short_artifact_manifest as manifest
 import hd_soak_short_validation_refresh as refresh
+from test_hd_soak_report import passing_hidden_report
 
 
 def write_json(path: Path, data: dict[str, Any]) -> Path:
@@ -205,6 +206,74 @@ def test_failed_report_writes_guard_and_classified_triage() -> None:
     assert triage["classification"] == "input_route_failure"
 
 
+def test_hidden_map_report_keeps_environment_and_disclosures_through_refresh() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        manifest_data = manifest_fixture(tmp)
+        step = manifest_data["step_reports"][1]
+        payload = passing_hidden_report(tmp)
+        payload["report_json"] = step["paths"]["report_json"]
+        write_json(Path(payload["report_json"]), payload)
+        result = refresh.build_report(args_for(tmp, manifest_data))
+        evaluated = json.loads(Path(step["paths"]["guard_json"]).read_text())
+        triage = json.loads(Path(step["paths"]["triage_json"]).read_text())
+        assert result["passed"], result["failures"]
+        assert result["steps"][1]["status"] == "validated_pass"
+        for artifact in (evaluated, triage):
+            assert artifact["environment"] == hd_soak_report.HIDDEN_ENVIRONMENT
+            assert artifact["evidence_class"] == hd_soak_report.HIDDEN_EVIDENCE_CLASS
+            assert artifact["source_report"] == str(Path(payload["report_json"]))
+        assert evaluated["input_responsiveness"] == "not_applicable_hidden"
+        assert evaluated["checks"]["wrapper_provenance"]["passed"]
+        assert triage["classification"] == "passing_run_no_failure"
+
+
+def test_failed_hidden_provenance_is_not_refreshed_as_a_passing_run() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        manifest_data = manifest_fixture(tmp)
+        step = manifest_data["step_reports"][1]
+        payload = passing_hidden_report(tmp)
+        payload["report_json"] = step["paths"]["report_json"]
+        payload["proxy"]["present_enabled"] = True
+        write_json(Path(payload["report_json"]), payload)
+        result = refresh.build_report(args_for(tmp, manifest_data))
+        evaluated = json.loads(Path(step["paths"]["guard_json"]).read_text())
+        triage = json.loads(Path(step["paths"]["triage_json"]).read_text())
+        assert result["passed"], result["failures"]  # The failure was processed successfully.
+        assert result["steps"][1]["status"] == "validated_failed"
+        assert not evaluated["overall"]
+        assert not evaluated["checks"]["wrapper_provenance"]["passed"]
+        assert triage["classification"] != "passing_run_no_failure"
+
+
+def test_hidden_report_cannot_replace_visible_menu_rung() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        manifest_data = manifest_fixture(tmp)
+        step = manifest_data["step_reports"][0]
+        payload = passing_hidden_report(tmp)
+        payload.update(route="menu-idle", report_json=step["paths"]["report_json"])
+        write_json(Path(payload["report_json"]), payload)
+        result = refresh.build_report(args_for(tmp, manifest_data))
+        assert not result["passed"]
+        assert result["steps"][0]["status"] == "report_mismatch"
+        assert not Path(step["paths"]["guard_json"]).exists()
+
+
+def test_explicit_invalid_environment_binding_cannot_become_legacy_visible() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        step = manifest_fixture(tmp)["step_reports"][0]
+        legacy = soak_report(step, passed=True)
+        assert refresh.report_matches_step(legacy, step)
+        for field, value in (("environment", None), ("environment", ""),
+                             ("environment", "unknown"), ("evidence_class", None),
+                             ("evidence_class", ""), ("evidence_class", "unknown")):
+            payload = {**legacy, field: value}
+            assert not refresh.report_matches_step(payload, step), (field, value)
+
+
 def test_mismatched_report_fails_closed() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -259,6 +328,10 @@ def run_tests() -> None:
     test_no_reports_is_pending_and_passes()
     test_passing_report_writes_guard_and_triage()
     test_failed_report_writes_guard_and_classified_triage()
+    test_hidden_map_report_keeps_environment_and_disclosures_through_refresh()
+    test_failed_hidden_provenance_is_not_refreshed_as_a_passing_run()
+    test_hidden_report_cannot_replace_visible_menu_rung()
+    test_explicit_invalid_environment_binding_cannot_become_legacy_visible()
     test_mismatched_report_fails_closed()
     test_missing_manifest_fails_closed()
     test_cli_writes_outputs()

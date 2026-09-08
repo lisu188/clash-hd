@@ -1,0 +1,132 @@
+{
+  "generated_at": "2026-09-05T08:30:01.215828+00:00",
+  "status": "prepared_with_reported_release_failures",
+  "scope": "Astra configuration, canonical onboarding, documentation guard compatibility and fixtures, and repo-only evidence refresh",
+  "runtime_policy": "No game/debugger execution, patch changes, promotion, cleanup, commit or push in this preparation review. The documented aggregate runs bounded dry-run and negative-approval checks only.",
+  "model_config": {
+    "toml_passed": true,
+    "ignore_passed": true,
+    "config": {
+      "model": "gpt-6-astra"
+    },
+    "reasoning_effort_inherited": "ultra",
+    "ignore_records": [
+      {
+        "path": ".codex/config.toml",
+        "pattern": "!.codex/config.toml",
+        "ignored": false
+      },
+      {
+        "path": ".codex/session.json",
+        "pattern": ".codex/*",
+        "ignored": true
+      },
+      {
+        "path": ".codex/hooks.json",
+        "pattern": ".codex/*",
+        "ignored": true
+      },
+      {
+        "path": ".codex/nested/state.json",
+        "pattern": ".codex/*",
+        "ignored": true
+      },
+      {
+        "path": ".codex-loop/NEXT.md",
+        "pattern": ".codex-loop/",
+        "ignored": true
+      }
+    ],
+    "global_config_unchanged": true
+  },
+  "focused_fixtures": {
+    "handoff-freshness-guard-tests": {
+      "path": "captures/current/handoff-freshness-guard-tests-current.json",
+      "generated_at": "2026-09-05T10:26:31+02:00",
+      "passed": true,
+      "failures": []
+    },
+    "docs-consistency-tests": {
+      "path": "captures/current/docs-consistency-tests-current.json",
+      "generated_at": "2026-09-05T10:26:47+02:00",
+      "passed": true,
+      "failures": []
+    }
+  },
+  "aggregate": {
+    "command": [
+      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "tools/current_evidence_refresh.py"
+    ],
+    "started_at": "2026-09-05T08:24:35.172301+00:00",
+    "finished_at": "2026-09-05T08:26:47.718537+00:00",
+    "exit_code": 0,
+    "summary": "captures/current/current-evidence-refresh-current.json",
+    "summary_generated_at": "2026-09-05T10:26:47+02:00",
+    "check_count": 166,
+    "passing_count": 164,
+    "failing_count": 2,
+    "failures": {
+      "hd_soak_long_report_guard": [
+        "short ladder is not complete; long tiers remain locked",
+        "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
+        "missing passing 2h+ representative route: map-idle",
+        "missing passing 2h+ representative route: map-pan"
+      ],
+      "hd_endurance_release_checklist": [
+        "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+        "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
+        "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
+        "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
+        "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
+        "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion"
+      ]
+    }
+  },
+  "preservation_review": {
+    "initial_inventory": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-astra-review-jecpln6o\\initial-hashes.json",
+    "original_astra_inventory": "C:/Users/andrz/AppData/Local/Temp/clash-astra-prep-cjmtodx5/tracked-hashes.json",
+    "review_initial_file_count": 3686,
+    "missing_review_initial_files": [],
+    "missing_original_tracked_files": [],
+    "unexpected_nonreport_changes_since_review": [],
+    "changed_nonreport_files_since_review": [
+      "docs/hd/AGENT_HANDOFF.md",
+      "tools/docs_consistency_guard.py",
+      "tools/test_docs_consistency_guard.py"
+    ],
+    "changed_existing_current_reports": 327,
+    "patcher_source_unchanged_since_review": true,
+    "aggregate_source_unchanged_since_review": true,
+    "note": "Separate unfinished HD completion work was already present in the review baseline and is preserved; it is excluded from the Astra deliverables."
+  },
+  "original_preparation_snapshot": "captures/current/astra-preparation-current.json",
+  "final_documentation_guards": {
+    "handoff-freshness-guard": {
+      "path": "captures/current/handoff-freshness-guard-current.json",
+      "generated_at": "2026-09-05T10:29:14+02:00",
+      "passed": true,
+      "failures": []
+    },
+    "docs-consistency": {
+      "path": "captures/current/docs-consistency-current.json",
+      "generated_at": "2026-09-05T10:29:15+02:00",
+      "passed": true,
+      "failures": []
+    }
+  },
+  "astra_source_sha256": {
+    ".codex/config.toml": "397e5f05e79973ed2a4369ebc86d6f5b625ebde6a92377dd0446708a5c75dfe9",
+    ".gitignore": "c1161f4343445d947939b6a06b4ad34b04160880cef6470034188c800d4003b1",
+    "AGENTS.md": "17ba61f7481dafc39db0a5feff60c419db0ba0ca1ae5a9cc5879be4f63ce9cad",
+    "README.md": "edd395ca1af504bfb9e0015560a7938a24a1c5a67f64b59b3cf622aa6ef4381c",
+    "docs/hd/AGENT_HANDOFF.md": "580308bfce56c53c087f8eff6990eb86f25ad63f653a6c363d5cad26be1ea33f",
+    "docs/hd/AUTONOMOUS_HD_MOD_CODEX_PROMPT.md": "a2f1f8ff2d99bcf49d5e50f48386df3ed0774bf51948bc8d39d86320843cfcaf",
+    "tools/handoff_freshness_guard.py": "4dc8ac73e32c71803bffcb5199449a70de73e02934d0cb873041915157a242ca",
+    "tools/docs_consistency_guard.py": "f8418fe9b4a75d11c127ffc65b59b274bb9f004d4bcf72fceb1b2da79bb18e49",
+    "tools/test_handoff_freshness_guard.py": "ac77f523837a0582535abe0dff30b4bf7ae3562e6ad1e15a64c62761c8c9546a",
+    "tools/test_docs_consistency_guard.py": "616e38694a2b244ece6eec4593385cb5412bde3be8b9a110edf0961bd1765b82"
+  },
+  "diff_check_passed": true
+}

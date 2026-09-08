@@ -1,0 +1,939 @@
+{
+  "schema": "hidden_cdb_host_soak_report_v1",
+  "generated_at": "2026-09-05T07:58:43.424019+00:00",
+  "runtime_policy": "opt-in approved hidden-CDB host soak (environment=hidden_cdb_host); the game runs as a real host process on a hidden desktop with no input delivery; input_responsiveness is the not_applicable_hidden sentinel and is never fabricated; all host process metrics stay required; frame metrics come from real periodic ReadProcessMemory surface reads; map entry and any pan are breakpoint-forced and disclosed; never a visible-runtime or guest proof",
+  "environment": "hidden_cdb_host",
+  "evidence_class": "approved_hidden_cdb_host_soak",
+  "executed": true,
+  "passed": true,
+  "failures": [],
+  "tier": "short10",
+  "route": "map-idle",
+  "duration_sec": 600,
+  "sample_interval_sec": 15,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "stable_stage_should_change": false,
+  "input_exe": "C:\\Clash\\clash95.exe",
+  "input_sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+  "candidate": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\clash95_hd_hidden_soak_20260905_094801_748.exe",
+  "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "patch_stage_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\patch-stage.json",
+  "workdir": "C:\\Clash",
+  "output_directory": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle",
+  "report_json": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\report.json",
+  "report_markdown": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\RUN-SUMMARY.md",
+  "cdb_log": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\hidden-soak-cdb.log",
+  "generated_probe": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\clash95_hidden_soak_probe.generated.cdb",
+  "launch_mode": "hidden-desktop",
+  "entry_mechanism": "cdb_breakpoint_forced_loader_entry",
+  "entry_mechanism_detail": {
+    "mechanism": "cdb_breakpoint_forced_loader_entry",
+    "forced": true,
+    "disclosure": "map entry was FORCED by CDB breakpoints riding the surface-dump base template loader route (forced main-menu click, forced load-slot select and accept); it was not reached by user input",
+    "load_slot": 2
+  },
+  "pan_mechanism": "none",
+  "pan_mechanism_detail": {
+    "mechanism": "none",
+    "forced": false,
+    "pan_event_count": 0
+  },
+  "input_responsiveness": "not_applicable_hidden",
+  "input_responsiveness_reason": "hidden-desktop run delivers no user input; responsiveness cannot be measured and is recorded as the sentinel, never fabricated",
+  "input_proof_class": "hidden_cdb_host_no_input_diagnostic_not_manual",
+  "right_bottom_promotion_blocked": true,
+  "capture_mode": "hidden-cdb-host-readprocessmemory",
+  "surface": {
+    "Base": "0a390030",
+    "Width": 800,
+    "Height": 600,
+    "Bytes": 480000,
+    "Source": "SOAK_SURFDUMP_READY"
+  },
+  "surface_base": "0x0a390030",
+  "frame_read_method": "host_readprocessmemory",
+  "ready_marker": {
+    "source": "SOAK_SURFDUMP_READY",
+    "redraw_seq": 0,
+    "surface": "0a0af350",
+    "base": "0a390030",
+    "width": 800,
+    "height": 600,
+    "bytes": 480000
+  },
+  "route_start_marker": {
+    "route_ticks": 38400,
+    "pan": 0,
+    "player": 0,
+    "tick": 20143381,
+    "game_data": "03e70030",
+    "scroll_x": 38,
+    "scroll_y": 41
+  },
+  "route_end_marker": {
+    "route_ticks": 38400,
+    "pan": 0,
+    "hits": 68612,
+    "tick_delta": 38400,
+    "player": 0,
+    "scroll_x": 0,
+    "scroll_y": 41
+  },
+  "pan_events": [],
+  "proxy": {
+    "used": true,
+    "path": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\ddraw.dll",
+    "sha256": "B4C39141C1C743F13DA1F899E4CD377023C85C71161DA2ADC8C92BD29E33A6AA",
+    "build_manifest": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\ddraw_surfdump_proxy.build.json",
+    "build_log": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\ddraw-proxy-build\\build.log",
+    "log": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\ddraw_surfdump_proxy.log",
+    "present_enabled": false
+  },
+  "cleanup": {
+    "game_stopped": true,
+    "cdb_stopped": true,
+    "errors": [],
+    "stopped_process_ids": [
+      2140
+    ]
+  },
+  "ready_observed": true,
+  "soak_route_start_observed": true,
+  "soak_route_end_observed": true,
+  "heartbeat_count": 33,
+  "pan_event_count": 0,
+  "av_observed": false,
+  "frame_sample_count": 41,
+  "frame_hash_unique_count": 32,
+  "frame_progress_expected": false,
+  "frame_stability_class": "progressing",
+  "nonblack_percent_min": 97.339,
+  "nonblack_percent_max": 97.34,
+  "unique_sample_colors_min": 166,
+  "unique_sample_colors_max": 198,
+  "nonblack_definition": "percent of surface bytes with a nonzero 8-bit palette index, computed from real ReadProcessMemory surface bytes (palette index 0 is the engine clear color)",
+  "unique_colors_definition": "count of distinct 8-bit palette indices present in the full surface read",
+  "frame_elapsed_sec": 599.488652,
+  "process_elapsed_sec": 599.46966,
+  "required_elapsed_sec": 583,
+  "elapsed_coverage": {
+    "formula": "duration_sec - sample_interval_sec - 2",
+    "required_sec": 583,
+    "frame_elapsed_sec": 599.488652,
+    "process_elapsed_sec": 599.46966,
+    "passed": true
+  },
+  "process_sample_count": 41,
+  "working_set_growth_bytes": 110592,
+  "private_memory_growth_bytes": -102400,
+  "handle_growth": -9,
+  "max_working_set_growth_mb": 64,
+  "max_private_memory_growth_mb": 64,
+  "max_handle_growth": 128,
+  "working_set_growth_limit_bytes": 67108864,
+  "private_memory_growth_limit_bytes": 67108864,
+  "process_exited_unexpectedly": false,
+  "exit_code": null,
+  "clean_stop": true,
+  "clean_stop_mechanism": "verified_game_and_cdb_termination",
+  "max_artifact_mb": 250,
+  "artifact_limit_bytes": 262144000,
+  "artifact_bytes": 4054990,
+  "frame_samples": [
+    {
+      "Name": "frame-0001",
+      "Timestamp": "2026-09-05T09:48:36.0759505+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "c99d50dcc43963d0ee9d4b5a6e1b6a1ca037df6b1e4d6697d31e626c8dddfff2",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 166,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0001.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0001.png"
+    },
+    {
+      "Name": "frame-0002",
+      "Timestamp": "2026-09-05T09:48:50.9809290+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "7b7de4dc3a4b2370b0f35417ad01d8076d6c5fb9345f45a9bde5e7ba021fee88",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0002.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0002.png"
+    },
+    {
+      "Name": "frame-0003",
+      "Timestamp": "2026-09-05T09:49:06.5889815+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "26bef1017d67d6f5ad8055857b6c66177bcd153a3aa290d601466cc05d0c582b",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0003.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0003.png"
+    },
+    {
+      "Name": "frame-0004",
+      "Timestamp": "2026-09-05T09:49:21.4466964+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6a9ebd1c12177fbad1dea911982beb0da4d09ebea3ec76e3c128d950e3628068",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0005",
+      "Timestamp": "2026-09-05T09:49:36.9491348+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "87f8ff855a2a7e736eab844e6ce7521df590a36aa1c2c2d38a3662517734a6d3",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0006",
+      "Timestamp": "2026-09-05T09:49:52.3066416+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "63f36a42d8bdcd1cef722be84b0e9f2addacc3ff1ca292d385382310205a3d96",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0007",
+      "Timestamp": "2026-09-05T09:50:07.6051046+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "dad892c5a4f27acab10e7959e978a138246591981f726964f1ba37392fdf948d",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0008",
+      "Timestamp": "2026-09-05T09:50:22.7029406+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "09b9c95ec51c381a5a7d56a17538f6353021c28029bab37d47826d06e600539f",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0009",
+      "Timestamp": "2026-09-05T09:50:38.2112390+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "c8c7aac0b8371a7e0bc8c1242ceacc827988b11a3ee0f5bcd16cf722179c4040",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0010",
+      "Timestamp": "2026-09-05T09:50:53.2039305+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "1c1194564c24d2414b8fe80d4af88c7970a80c8af7f568f151a28e9053f2a009",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0011",
+      "Timestamp": "2026-09-05T09:51:08.5822074+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "765bac9920776ad566f1620be437bf2ac89ade3223607ad43372ba868776b1a4",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0012",
+      "Timestamp": "2026-09-05T09:51:24.1743473+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "20ebeb5368f958d3cf0f5cdcc2003811ad550b8f5118472f5c29ed89aa02730b",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0013",
+      "Timestamp": "2026-09-05T09:51:39.3717728+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "b569c101a88967e04962bf4fb640df1d01c5c99a1f12656511e561e3c557c17e",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0014",
+      "Timestamp": "2026-09-05T09:51:54.3675737+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "b569c101a88967e04962bf4fb640df1d01c5c99a1f12656511e561e3c557c17e",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0015",
+      "Timestamp": "2026-09-05T09:52:10.4838457+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "e277f211d35fc92fa11f42bcad2adb264cd20d3d85d3346502a07014a13a80e1",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0016",
+      "Timestamp": "2026-09-05T09:52:25.1684852+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "0a3b62603a98e85405a3d8c94eb1550d5ab490e745c7867e53bb90a08801b655",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0017",
+      "Timestamp": "2026-09-05T09:52:40.3744988+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4a840f3f756877cd2654ef60de79cdcab617b6a947b0409f05c37eddb61d275b",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0018",
+      "Timestamp": "2026-09-05T09:52:55.8388142+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a25619cd5efe18b9285f74ba5017cd93cf6b450e57fd4132ef042c6229fc9546",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0019",
+      "Timestamp": "2026-09-05T09:53:11.1143515+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a9ff88c9904d07e9420cb78800d859293b552985df005bdea38493beb2a1a748",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0020",
+      "Timestamp": "2026-09-05T09:53:26.1858416+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d563a7a6b968e99d42cdc7c6c53ffb3e056e123e6d1553fcc59ce33875d7bc14",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0021",
+      "Timestamp": "2026-09-05T09:53:41.7386335+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "01d85b6164d8cebb3b1984edcbdf6aa131c820184708b08de59b82b0eccc19a0",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0022",
+      "Timestamp": "2026-09-05T09:53:56.8523429+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "01d85b6164d8cebb3b1984edcbdf6aa131c820184708b08de59b82b0eccc19a0",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0023",
+      "Timestamp": "2026-09-05T09:54:12.1719593+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6226298b611ad32d31790ba20af8e82b8cb2e95a9e9de6b1111af7d4875ebb28",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0024",
+      "Timestamp": "2026-09-05T09:54:28.1752709+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "0751e8c941889b577de8166d76dc81b64e9d7ebc586044b9ff4edc2c553bbf31",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0025",
+      "Timestamp": "2026-09-05T09:54:43.3486797+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4c2d66638394ce789e81c0f8489e1874987f4300d26dc4867c28a3b3bdfe9a1e",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0026",
+      "Timestamp": "2026-09-05T09:54:58.4553449+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "01d85b6164d8cebb3b1984edcbdf6aa131c820184708b08de59b82b0eccc19a0",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0027",
+      "Timestamp": "2026-09-05T09:55:13.6995196+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a9ff88c9904d07e9420cb78800d859293b552985df005bdea38493beb2a1a748",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0028",
+      "Timestamp": "2026-09-05T09:55:29.6354895+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4c2d66638394ce789e81c0f8489e1874987f4300d26dc4867c28a3b3bdfe9a1e",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0029",
+      "Timestamp": "2026-09-05T09:55:44.4281406+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "01d85b6164d8cebb3b1984edcbdf6aa131c820184708b08de59b82b0eccc19a0",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0030",
+      "Timestamp": "2026-09-05T09:55:59.1840800+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "38483d8b6c39a444c6dda5e96d67a058f9ac55caf6e73af179f76c8eee266c05",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 198,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0031",
+      "Timestamp": "2026-09-05T09:56:14.6663570+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "01d85b6164d8cebb3b1984edcbdf6aa131c820184708b08de59b82b0eccc19a0",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0032",
+      "Timestamp": "2026-09-05T09:56:29.8282663+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6226298b611ad32d31790ba20af8e82b8cb2e95a9e9de6b1111af7d4875ebb28",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0033",
+      "Timestamp": "2026-09-05T09:56:45.0356829+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4c2d66638394ce789e81c0f8489e1874987f4300d26dc4867c28a3b3bdfe9a1e",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0034",
+      "Timestamp": "2026-09-05T09:57:00.4741445+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "521eefe48a0e7d784037cf47e864a382d51c7013bcd64b1119731adf29aa65d7",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0035",
+      "Timestamp": "2026-09-05T09:57:15.8094641+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "cde4ca3e232773d2fa718a8ba6914242130351048bfda16683d659615c3445db",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0036",
+      "Timestamp": "2026-09-05T09:57:31.1076461+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "7797ff9c8ef86e6af8d7a53bef677b4c4b0eb899b8df573cfdf7780cd72e15f7",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0037",
+      "Timestamp": "2026-09-05T09:57:46.5970758+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "7235bda971c59c0daae35faf6eab45a16d06e7475eb32b0463e453df754f44b3",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0038",
+      "Timestamp": "2026-09-05T09:58:01.6484658+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "186f12fa2919433605d350ac56d626416f47924dbf49f1a633f69f5b12e27df3",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0039",
+      "Timestamp": "2026-09-05T09:58:16.7030529+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6b5c32255118436e7bd79bde71d8380b42fb03638b484134a80b051437f329de",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 198,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0039.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0039.png"
+    },
+    {
+      "Name": "frame-0040",
+      "Timestamp": "2026-09-05T09:58:32.1232966+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "0b0434b31f666c9ab8c32f7ebd25fa6191b35d8267a8174ca4f911eb2069862a",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0040.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0040.png"
+    },
+    {
+      "Name": "frame-0041",
+      "Timestamp": "2026-09-05T09:58:35.5646028+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "302a0e5a0861ff082f6e7d734295daaef89cefca71ca224d837462b3e44c9d06",
+      "NonblackPercent": 97.339,
+      "UniqueSampleColors": 197,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0041.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\frames\\frame-0041.png"
+    }
+  ],
+  "process_samples": [
+    {
+      "Timestamp": "2026-09-05T09:48:36.0959614+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37101568,
+      "PrivateMemorySize64": 14901248,
+      "HandleCount": 616
+    },
+    {
+      "Timestamp": "2026-09-05T09:48:50.9809290+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37101568,
+      "PrivateMemorySize64": 14901248,
+      "HandleCount": 616
+    },
+    {
+      "Timestamp": "2026-09-05T09:49:06.5919818+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37101568,
+      "PrivateMemorySize64": 14901248,
+      "HandleCount": 614
+    },
+    {
+      "Timestamp": "2026-09-05T09:49:21.4486965+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37101568,
+      "PrivateMemorySize64": 14901248,
+      "HandleCount": 614
+    },
+    {
+      "Timestamp": "2026-09-05T09:49:36.9501346+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37101568,
+      "PrivateMemorySize64": 14901248,
+      "HandleCount": 614
+    },
+    {
+      "Timestamp": "2026-09-05T09:49:52.3066416+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37072896,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:50:07.6061047+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37072896,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:50:22.7029406+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:50:38.2122390+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:50:53.2049309+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:51:08.5832076+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:51:24.1743473+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:51:39.3747727+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:51:54.3685732+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:52:10.4848529+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:52:25.1745424+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:52:40.3744988+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37076992,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:52:55.8398143+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37085184,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:53:11.1153714+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:53:26.1868418+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:53:41.7386335+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:53:56.8533437+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:54:12.1729618+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:54:28.1752709+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:54:43.3486797+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:54:58.4553449+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:55:13.7095446+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:55:29.6439653+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:55:44.4281406+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:55:59.1860805+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:56:14.6663570+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:56:29.8327815+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:56:45.0396839+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:57:00.4741445+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:57:15.8094641+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37195776,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:57:31.1191536+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37208064,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:57:46.5970758+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37208064,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:58:01.6494631+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37208064,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:58:16.7035561+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37212160,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:58:32.1232966+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37212160,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T09:58:35.5656210+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37212160,
+      "PrivateMemorySize64": 14798848,
+      "HandleCount": 607
+    }
+  ],
+  "capture_errors": []
+}

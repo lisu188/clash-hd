@@ -1,0 +1,333 @@
+{
+  "generated_at": "2026-09-05T07:44:46+00:00",
+  "status": "prepared_with_reported_repository_failures",
+  "scope": "Astra configuration, onboarding, documentation guards and fixtures, and requested repository evidence refresh",
+  "runtime_policy": "No game/debugger execution, input injection, live capture, patch changes, promotion, cleanup of existing artifacts, or commit/push during this preparation validation.",
+  "model_config": {
+    "path": ".codex/config.toml",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "inherited; no project override",
+    "sha256": "397e5f05e79973ed2a4369ebc86d6f5b625ebde6a92377dd0446708a5c75dfe9",
+    "toml_passed": true,
+    "ignore_passed": true,
+    "ignore_records": [
+      {
+        "path": ".codex/config.toml",
+        "pattern": "!.codex/config.toml",
+        "ignored": false
+      },
+      {
+        "path": ".codex/session.json",
+        "pattern": ".codex/*",
+        "ignored": true
+      },
+      {
+        "path": ".codex/hooks.json",
+        "pattern": ".codex/*",
+        "ignored": true
+      },
+      {
+        "path": ".codex/nested/state.json",
+        "pattern": ".codex/*",
+        "ignored": true
+      },
+      {
+        "path": ".codex-loop/NEXT.md",
+        "pattern": ".codex-loop/",
+        "ignored": true
+      }
+    ],
+    "official_guidance": "https://learn.chatgpt.com/docs/config-file/config-basic"
+  },
+  "focused_fixtures": {
+    "tools/test_handoff_freshness_guard.py": {
+      "passed": true,
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "-B",
+        "tools/test_handoff_freshness_guard.py"
+      ],
+      "source_sha256": "ac77f523837a0582535abe0dff30b4bf7ae3562e6ad1e15a64c62761c8c9546a",
+      "stdout": "handoff freshness guard tests passed\n",
+      "stderr": ""
+    },
+    "tools/test_docs_consistency_guard.py": {
+      "passed": true,
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "-B",
+        "tools/test_docs_consistency_guard.py"
+      ],
+      "source_sha256": "2461ddfe564c494e431d5af839b75654186e6376144eef98134006f45d14e3e2",
+      "stdout": "docs consistency guard tests: PASS\n",
+      "stderr": ""
+    }
+  },
+  "pre_refresh_guards": {
+    "tools/handoff_freshness_guard.py": {
+      "passed": true,
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "-B",
+        "tools/handoff_freshness_guard.py",
+        "--require-pass"
+      ],
+      "source_sha256": "4dc8ac73e32c71803bffcb5199449a70de73e02934d0cb873041915157a242ca",
+      "stdout": "overall: PASS\nruntime-policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows\nguard-policy: handoff docs must mention the current route timing guard, keep validation stages out of stable until required proof exists, retain current manual-proof and completion artifacts, preserve the no-popup runtime preference, require the visible-runtime approval guard, and avoid stale route/input or VM blockers\nroute_timing_artifacts: PASS\nowner_flag_inventory_artifacts: PASS\nload_slot_route_limit_artifacts: PASS\nload_slot_transition_readiness_artifacts: PASS\nmanual_or_override_blocker: PASS\nno_visible_runtime_warning: PASS\nno_popup_operator_preference: PASS\nright_bottom_safety_done: PASS\nmanual_checklist_artifact: PASS\nmanual_proof_template_artifact: PASS\ncompletion_summary_artifact: PASS\nvisible_runtime_launcher_guard: PASS\nloop_load_slot_transition_readiness_artifacts: PASS\n",
+      "stderr": ""
+    },
+    "tools/docs_consistency_guard.py": {
+      "passed": true,
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "-B",
+        "tools/docs_consistency_guard.py",
+        "--require-pass"
+      ],
+      "source_sha256": "5bbc91ba1498964e21161f81d123a94df139375fef57cd11a95adb7a8aa89c8e",
+      "stdout": "overall: PASS\nruntime-policy: repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows\nstable-stage: gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch\ngenerated_state: PASS\ndocuments_handoff: PASS\ndocuments_project: PASS\ndocuments_evidence: PASS\nproject_identity: PASS\nlegacy_scaffold_absent: PASS\n",
+      "stderr": ""
+    }
+  },
+  "final_guards": {
+    "tools/handoff_freshness_guard.py": {
+      "passed": true,
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "-B",
+        "tools/handoff_freshness_guard.py",
+        "--require-pass"
+      ],
+      "source_sha256": "4dc8ac73e32c71803bffcb5199449a70de73e02934d0cb873041915157a242ca",
+      "stdout": "overall: PASS\nruntime-policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows\nguard-policy: handoff docs must mention the current route timing guard, keep validation stages out of stable until required proof exists, retain current manual-proof and completion artifacts, preserve the no-popup runtime preference, require the visible-runtime approval guard, and avoid stale route/input or VM blockers\nroute_timing_artifacts: PASS\nowner_flag_inventory_artifacts: PASS\nload_slot_route_limit_artifacts: PASS\nload_slot_transition_readiness_artifacts: PASS\nmanual_or_override_blocker: PASS\nno_visible_runtime_warning: PASS\nno_popup_operator_preference: PASS\nright_bottom_safety_done: PASS\nmanual_checklist_artifact: PASS\nmanual_proof_template_artifact: PASS\ncompletion_summary_artifact: PASS\nvisible_runtime_launcher_guard: PASS\nloop_load_slot_transition_readiness_artifacts: PASS\n",
+      "stderr": ""
+    },
+    "tools/docs_consistency_guard.py": {
+      "passed": false,
+      "exit_code": 2,
+      "command": [
+        "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "-B",
+        "tools/docs_consistency_guard.py",
+        "--require-pass"
+      ],
+      "source_sha256": "5bbc91ba1498964e21161f81d123a94df139375fef57cd11a95adb7a8aa89c8e",
+      "stdout": "overall: FAIL\nruntime-policy: repo-only docs/source inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows\nstable-stage: gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch\ngenerated_state: FAIL\ndocuments_handoff: PASS\ndocuments_project: PASS\ndocuments_evidence: PASS\nproject_identity: PASS\nlegacy_scaffold_absent: PASS\nfailures:\n  - generated_state: no-popup boundary is failing\n",
+      "stderr": ""
+    }
+  },
+  "aggregate_attempt": {
+    "completed": true,
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-B",
+      "tools/current_evidence_refresh.py"
+    ],
+    "started_at": "2026-09-05T07:39:29.888821+00:00",
+    "finished_at": "2026-09-05T07:41:47.772208+00:00",
+    "summary": "captures/current/current-evidence-refresh-current.json",
+    "summary_generated_at": "2026-09-05T09:41:47+02:00",
+    "overall": false,
+    "check_count": 166,
+    "passing_count": 157,
+    "failing_count": 9,
+    "failing_checks": {
+      "python_runtime_safety_guard": [
+        "tools/hidden_soak_report_assembler.py uses risky Python runtime/input APIs but is not gated or exempt"
+      ],
+      "hd_soak_execution_boundary": [
+        "missing_token did not fail closed before side effects",
+        "missing_expiry did not fail closed before side effects",
+        "expired_packet did not fail closed before side effects",
+        "token_mismatch did not fail closed before side effects"
+      ],
+      "hd_soak_dry_run_plan": [
+        "dry-run harness did not produce a readable JSON plan"
+      ],
+      "hd_soak_intro_skip_rerun_readiness": [
+        "current short step is 'short10_map_idle', expected 'short2_map_idle'",
+        "current short step status is 'missing_pending_hidden_runtime', expected one of ['failed_classified_input_environment_permission_denied', 'failed_classified_intro_skip_input_drift_exit', 'missing_pending_approval']",
+        "dry-run plan is not passing",
+        "dry-run plan status is 'dry_run_plan_invalid'",
+        "dry-run plan current step is 'short10_map_idle', expected 'short2_map_idle'",
+        "dry-run plan would change the stable stage",
+        "dry-run plan does not keep right-bottom promotion blocked",
+        "dry-run intro_skip click_mode is None, expected 'postmessage'",
+        "dry-run intro_skip click_repeat is None, expected 8",
+        "dry-run intro_skip stop_click_repeat_on_drift is None, expected True",
+        "dry-run intro_skip space_pulses is None, expected 4",
+        "dry-run intro_skip proof_class is None, expected 'intro_skip_harness_prep_not_manual_directinput_release_proof'",
+        "approval command missing fragment: -IntroSkipClickMode",
+        "approval command missing fragment: postmessage",
+        "approval command missing fragment: -IntroSkipClicks",
+        "approval command missing fragment: 8",
+        "approval command missing fragment: -SkipPulses",
+        "approval command missing fragment: 4",
+        "approval command missing fragment: -SampleIntervalSec",
+        "approval command missing fragment: 15",
+        "approval command missing fragment: -MaxInputDriftPx",
+        "approval command missing fragment: 1",
+        "approval command missing fragment: -MinNonblackPercent",
+        "approval command missing fragment: 10",
+        "approval command missing fragment: -MinUniqueSampleColors",
+        "approval command missing fragment: 8",
+        "approval command missing fragment: -MaxArtifactMB",
+        "approval command missing fragment: 250",
+        "approval command missing fragment: -MaxWorkingSetGrowthMB",
+        "approval command missing fragment: 64",
+        "approval command missing fragment: -MaxPrivateMemoryGrowthMB",
+        "approval command missing fragment: 64",
+        "approval command missing fragment: -MaxHandleGrowth",
+        "approval command missing fragment: 128",
+        "approval command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
+        "approval command missing fragment: -VisibleRuntimeApprovalToken",
+        "approval command missing fragment: -Execute",
+        "approval command missing fragment: -AllowVisibleRuntime",
+        "approval command missing fragment: -RequirePass",
+        "approval command missing fragment: -Json",
+        "dry-run visible runtime approval token is missing or malformed",
+        "dry-run visible runtime approval expires_utc is missing"
+      ],
+      "hd_soak_long_report_guard": [
+        "short ladder is not complete; long tiers remain locked",
+        "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
+        "missing passing 2h+ representative route: map-idle",
+        "missing passing 2h+ representative route: map-pan"
+      ],
+      "hd_endurance_release_checklist": [
+        "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+        "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
+        "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
+        "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
+        "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
+        "tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof"
+      ],
+      "hd_soak_approval_preflight": [
+        "runtime command missing fragment: .\\scripts\\smoke\\run_hd_soak.ps1",
+        "runtime command missing fragment: -Tier short10",
+        "runtime command missing fragment: -IntroSkipClickMode postmessage",
+        "runtime command missing fragment: -IntroSkipClicks 8",
+        "runtime command missing fragment: -SkipPulses 4",
+        "runtime command missing fragment: -SampleIntervalSec 15",
+        "runtime command missing fragment: -MaxInputDriftPx 1",
+        "runtime command missing fragment: -MinNonblackPercent 10",
+        "runtime command missing fragment: -MinUniqueSampleColors 8",
+        "runtime command missing fragment: -Execute -AllowVisibleRuntime -RequirePass",
+        "runtime command missing fragment: -Json",
+        "dry-run plan report is not passing",
+        "dry-run plan status is 'dry_run_plan_invalid'",
+        "dry-run plan payload is not marked as a dry run",
+        "dry-run plan would change the stable stage",
+        "dry-run plan does not keep right-bottom promotion blocked",
+        "dry-run plan tier/route do not match the current step",
+        "dry-run plan does not pin max input drift to 1 px",
+        "dry-run plan sample_interval_sec is not 15",
+        "dry-run plan does not pin min nonblack percent",
+        "dry-run plan does not pin min unique sample colors",
+        "dry-run plan growth limit max_artifact_mb is not 250",
+        "dry-run plan growth limit max_working_set_growth_mb is not 64",
+        "dry-run plan growth limit max_private_memory_growth_mb is not 64",
+        "dry-run plan growth limit max_handle_growth is not 128",
+        "dry-run plan intro_skip click_mode is not postmessage",
+        "dry-run plan intro_skip click_repeat is not 8",
+        "dry-run plan intro_skip does not stop repeated clicks on transition drift",
+        "dry-run plan intro_skip space_pulses is not 4",
+        "dry-run plan intro_skip proof_class is missing the non-manual proof boundary",
+        "dry-run plan windowed-mode check is not required and passing",
+        "dry-run plan window display is not application",
+        "dry-run plan window presentation is not windowed",
+        "dry-run plan windowed config SHA-256 is missing or malformed",
+        "dry-run plan visible runtime approval token is missing or malformed",
+        "dry-run plan visible runtime approval token_kind is not sha256-16",
+        "dry-run plan visible runtime approval expires_utc is missing",
+        "dry-run plan visible runtime approval min_ttl_minutes is not 30",
+        "dry-run plan visible runtime approval expires_utc is missing or invalid",
+        "dry-run plan visible runtime approval purpose is missing",
+        "dry-run plan candidate_dir is not C:\\ClashTests\\hd-soak",
+        "dry-run plan output_root is not C:\\ClashCaptures\\hd-soak",
+        "dry-run plan input_exe does not exist or was not confirmed readable",
+        "dry-run plan base_sha_status is None, expected 'ok'",
+        "dry-run plan execute command missing fragment: -InputExe",
+        "dry-run plan execute command missing fragment: C:\\Clash\\clash95.exe",
+        "dry-run plan execute command missing fragment: -WorkDir",
+        "dry-run plan execute command missing fragment: C:\\Clash",
+        "dry-run plan execute command missing fragment: -Stage",
+        "dry-run plan execute command missing fragment: -OutputRoot",
+        "dry-run plan execute command missing fragment: C:\\ClashCaptures\\hd-soak",
+        "dry-run plan execute command missing fragment: -IntroSkipClickMode",
+        "dry-run plan execute command missing fragment: postmessage",
+        "dry-run plan execute command missing fragment: -IntroSkipClicks",
+        "dry-run plan execute command missing fragment: 8",
+        "dry-run plan execute command missing fragment: -SkipPulses",
+        "dry-run plan execute command missing fragment: 4",
+        "dry-run plan execute command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
+        "dry-run plan execute command missing fragment: -VisibleRuntimeApprovalToken",
+        "dry-run plan execute command missing fragment: -Execute",
+        "dry-run plan execute command missing fragment: -AllowVisibleRuntime",
+        "dry-run plan execute command missing fragment: -RequirePass",
+        "dry-run plan execute command missing fragment: -Json",
+        "dry-run plan execute command missing fragment: -MaxInputDriftPx",
+        "dry-run plan execute command missing fragment: -SampleIntervalSec",
+        "dry-run plan execute command missing fragment: -MinNonblackPercent",
+        "dry-run plan execute command missing fragment: -MinUniqueSampleColors",
+        "dry-run plan execute command missing fragment: -MaxArtifactMB",
+        "dry-run plan execute command missing fragment: -MaxWorkingSetGrowthMB",
+        "dry-run plan execute command missing fragment: -MaxPrivateMemoryGrowthMB",
+        "dry-run plan execute command missing fragment: -MaxHandleGrowth",
+        "dry-run plan execute command does not include the canonical report JSON path",
+        "dry-run plan execute command does not include the canonical report Markdown path",
+        "current short-step status is 'missing_pending_hidden_runtime'",
+        "writes_outside_repo is [], expected ['C:\\\\ClashCaptures\\\\hd-soak', 'C:\\\\ClashTests\\\\hd-soak']",
+        "dry_run_plan is not passing"
+      ],
+      "no_popup_boundary_guard": [
+        "python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
+        "hd_soak_execution_boundary: refresh check is not passing: hd_soak_execution_boundary",
+        "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
+      ],
+      "docs_consistency_guard": [
+        "generated_state: no-popup boundary is failing"
+      ]
+    },
+    "diagnostics_log": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-astra-final-nutrm3rh\\aggregate-refresh.log"
+  },
+  "failure_interpretation": [
+    "python_runtime_safety_guard flags the existing hidden_soak_report_assembler.py as unclassified; no safety classification was weakened.",
+    "The four negative approval probes and visible-harness dry-run fail because their PowerShell child cannot resolve Get-FileHash. All reported candidate/output side-effect flags remain false.",
+    "Intro-skip readiness still assumes short2_map_idle although existing hidden evidence advances the status to short10_map_idle; related dry-run and preflight checks also fail.",
+    "The short ladder is incomplete and both 2h representative routes lack passing proof. The endurance release checklist remains incomplete.",
+    "no_popup_boundary_guard propagates these failures; docs_consistency_guard fails only with generated_state: no-popup boundary is failing. Both documentation fixture suites pass."
+  ],
+  "historical_preparation_attempt": {
+    "generated_at": "2026-09-05T07:11:12+00:00",
+    "completed": false,
+    "exit_code": 1,
+    "error": "AttributeError: module 'hd_soak_report' has no attribute 'evaluate_report_for_environment'",
+    "status": "historical; dispatcher exists in current unfinished soak sources"
+  },
+  "preservation_review": {
+    "inventory": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-astra-final-nutrm3rh\\initial-status.txt",
+    "hash_inventory": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-astra-final-nutrm3rh\\initial-hashes.json",
+    "initial_file_count": 3670,
+    "missing_initial_files": [],
+    "unexpected_nonreport_changes": [],
+    "source_changes_since_validation_inventory": [
+      "AGENTS.md",
+      "tools/handoff_freshness_guard.py",
+      "tools/test_handoff_freshness_guard.py",
+      "docs/hd/AGENT_HANDOFF.md"
+    ],
+    "changed_existing_current_reports": 317,
+    "existing_nonreport_work_preserved": true,
+    "aggregate_interface_changed": false,
+    "patcher_source_unchanged": true
+  },
+  "stable_stage_changed": false,
+  "promotion_performed": false
+}

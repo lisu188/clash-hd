@@ -305,29 +305,64 @@ def test_actual_resolution_manifest_is_replayed(root):
     fixture = Fixture(root)
     report = fixture.reports["resolution_coverage"]
     source = write(fixture.repo / "tools/complete_hd_evidence.py", b"fixture-only validator source")
-    manifest = {"schema": 2, "default_renderer": "classic", "default": "800x600", "stable_stage": evidence.STABLE_STAGE,
-                "resolutions": {"800x600": {"status": "stable"}, "1920x1080": {"status": "experimental"}}}
-    manifest["profiles"] = {
-        "classic": {"default": "800x600", "stage": evidence.STABLE_STAGE,
-                    "resolutions": copy.deepcopy(manifest["resolutions"])},
-        "complete": {"default": "800x600", "stage": evidence.STAGE, "recipe_revision": evidence.RECIPE_REVISION,
-                     "features": {"minimap_viewport": True},
-                     "resolutions": {"800x600": {"status": "experimental"}, "1920x1080": {"status": "experimental"}}},
-    }
+    manifest = json.loads((evidence.ROOT / "src/launcher/resolutions.json").read_text(encoding="utf-8"))
     report["producer"] = source
     manifest_path = fixture.repo / "src/launcher/resolutions.json"
-    report["resolution_manifest"] = write(manifest_path, manifest)
-    fixture.save_lane("resolution_coverage")
     context = {"identity": fixture.identity, "byte_rebuild_passed": True}
-    result = evidence.evaluate_lane("resolution_coverage", fixture.manifest["lanes"]["resolution_coverage"], context,
-                                    fixture.path.parent, repo_root=fixture.repo)
+
+    def evaluate(current):
+        report["resolution_manifest"] = write(manifest_path, current)
+        fixture.save_lane("resolution_coverage")
+        return evidence.evaluate_lane("resolution_coverage", fixture.manifest["lanes"]["resolution_coverage"], context,
+                                      fixture.path.parent, repo_root=fixture.repo)
+
+    # The supported Complete-HD profile establishes metadata coverage only;
+    # the other fifteen production lane verifiers remain incomplete.
+    result = evaluate(manifest)
     assert result["passed"], result
-    manifest["resolutions"]["1920x1080"]["status"] = "stable"
+    missing = copy.deepcopy(manifest)
+    missing["profiles"].pop("completehd")
+    result = evaluate(missing)
+    assert not result["passed"] and any("advertised_resolution_matches" in row for row in result["failures"]), result
+    unsupported = copy.deepcopy(manifest)
+    unsupported["profiles"]["unknown"] = copy.deepcopy(manifest["profiles"]["completehd"])
+    result = evaluate(unsupported)
+    assert not result["passed"] and any("Schema 2 requires" in row for row in result["failures"]), result
+    for mutation in ("malformed-profile", "projection", "recipe", "features", "complete-stage", "complete-recipe",
+                     "complete-features", "complete-default", "complete-resolutions", "complete-stable", "complete-validated"):
+        invalid = copy.deepcopy(manifest)
+        if mutation == "malformed-profile": invalid["profiles"]["framed"] = []
+        elif mutation == "projection": invalid["resolutions"]["800x600"]["status"] = "experimental"
+        elif mutation == "recipe": invalid["profiles"]["framed"]["recipe_revision"] = "unsupported-recipe"
+        elif mutation == "features": invalid["profiles"]["framed"]["features"]["minimap_viewport"] = 1
+        elif mutation == "complete-stage": invalid["profiles"]["completehd"]["stage"] = evidence.STABLE_STAGE
+        elif mutation == "complete-recipe": invalid["profiles"]["completehd"]["recipe_revision"] = "unsupported-recipe"
+        elif mutation == "complete-features": invalid["profiles"]["completehd"]["features"]["minimap_viewport"] = False
+        elif mutation == "complete-default": invalid["profiles"]["completehd"]["default"] = "1920x1080"
+        elif mutation == "complete-resolutions": invalid["profiles"]["completehd"]["resolutions"] = None
+        else: invalid["profiles"]["completehd"]["resolutions"]["1920x1080"]["status"] = mutation.removeprefix("complete-")
+        result = evaluate(invalid)
+        assert not result["passed"], (mutation, result)
+
+    # Unit-test the remaining metadata predicates using a supported profile.
+    # This assumed context is not a reconstructed complete-HD candidate and
+    # cannot be used to claim whole-release or runtime acceptance.
+    framed = manifest["profiles"]["framed"]
+    supported_context = {"identity": {**fixture.identity, "stage": framed["stage"],
+                                      "recipe_revision": framed["recipe_revision"]}, "byte_rebuild_passed": True}
     report["resolution_manifest"] = write(manifest_path, manifest)
-    fixture.save_lane("resolution_coverage")
-    result = evidence.evaluate_lane("resolution_coverage", fixture.manifest["lanes"]["resolution_coverage"], context,
-                                    fixture.path.parent, repo_root=fixture.repo)
-    assert not result["passed"] and any("other_resolutions_not_promoted" in row for row in result["failures"]), result
+    result = evidence._resolution_verifier(report, fixture.path, supported_context, fixture.repo)
+    assert result["passed"], result
+    wrong_recipe = copy.deepcopy(supported_context)
+    wrong_recipe["identity"]["recipe_revision"] = "different-recipe"
+    result = evidence._resolution_verifier(report, fixture.path, wrong_recipe, fixture.repo)
+    assert not result["passed"] and "advertised_resolution_matches" in result["failures"], result
+    framed["resolutions"]["1920x1080"].update(
+        status="validated", evidence={"fixture": "fixture-only-not-runtime-proof.json"},
+        evidence_scope={key: copy.deepcopy(framed[key]) for key in ("stage", "recipe_revision", "features")})
+    report["resolution_manifest"] = write(manifest_path, manifest)
+    result = evidence._resolution_verifier(report, fixture.path, supported_context, fixture.repo)
+    assert not result["passed"] and "other_resolutions_not_promoted" in result["failures"], result
 
 
 def test_shared_candidate_manifest_argument_cannot_rebind_index(root):

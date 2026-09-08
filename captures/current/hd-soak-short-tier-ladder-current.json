@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T09:22:07.163998+00:00",
+  "generated_at": "2026-09-06T03:58:08.143955+00:00",
   "passed": true,
   "runtime_policy": "repo-only short-tier soak ladder; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -12,7 +12,8 @@
   "counts": {
     "total": 5,
     "passed": 1,
-    "approval_required": 1,
+    "approval_required": 0,
+    "runtime_required": 1,
     "locked_by_prerequisite": 3,
     "missing_harness_contract": 0
   },
@@ -20,10 +21,15 @@
     "id": "short2_map_idle",
     "tier": "short2",
     "route": "map-idle",
-    "status": "approval_required",
-    "requires_explicit_user_approval": true,
+    "status": "runtime_required",
+    "requires_explicit_user_approval": false,
+    "preferred_environment": "hidden_cdb_host",
     "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json",
-    "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json"
+    "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json",
+    "hidden_cdb_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -GuardJson captures\\current\\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+    "hidden_cdb_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -GuardJson captures\\current\\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
+    "recommended_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -GuardJson captures\\current\\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+    "recommended_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -GuardJson captures\\current\\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute"
   },
   "steps": [
     {
@@ -44,17 +50,32 @@
       "matched_current_soak_report": true,
       "matched_current_soak_report_executed": true,
       "matched_current_soak_report_overall": true,
+      "environment": "host_visible",
+      "evidence_class": "host_visible_runtime_soak",
       "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json",
       "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "hidden_cdb_safe_dry_run_command": null,
+      "hidden_cdb_runtime_command": null,
+      "preferred_environment": "host_visible",
+      "supported_environments": [
+        "host_visible"
+      ],
+      "recommended_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json",
+      "recommended_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route menu-idle -ReportJson captures\\current\\hd-soak-short2-menu-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-menu-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json",
       "canonical_report_paths": {
         "report_json": "captures\\current\\hd-soak-short2-menu-idle-current.json",
-        "report_markdown": "captures\\current\\hd-soak-short2-menu-idle-current.md"
+        "report_markdown": "captures\\current\\hd-soak-short2-menu-idle-current.md",
+        "guard_json": "captures\\current\\hd-soak-short2-menu-idle-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short2-menu-idle-guard-current.md"
       },
       "requires_visible_runtime": false,
       "requires_explicit_user_approval": false,
+      "visible_runtime_alternative_requires_explicit_user_approval": true,
       "writes_outside_repo": [
         "C:\\ClashTests\\hd-soak",
-        "C:\\ClashCaptures\\hd-soak"
+        "C:\\ClashCaptures\\hd-soak",
+        "C:\\ClashTests\\hd-soak\\hidden",
+        "C:\\ClashCaptures\\hd-soak\\hidden"
       ],
       "must_not_modify": [
         "C:\\Clash\\clash95.exe"
@@ -71,7 +92,7 @@
         "short2_menu_idle"
       ],
       "purpose": "representative save-load route with stable HD map rendering",
-      "status": "approval_required",
+      "status": "runtime_required",
       "passed": false,
       "harness_ready": true,
       "route_steps": [
@@ -83,17 +104,33 @@
       "matched_current_soak_report": false,
       "matched_current_soak_report_executed": false,
       "matched_current_soak_report_overall": false,
+      "environment": null,
+      "evidence_class": null,
       "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json",
       "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "hidden_cdb_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -GuardJson captures\\current\\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+      "hidden_cdb_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -GuardJson captures\\current\\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
+      "preferred_environment": "hidden_cdb_host",
+      "supported_environments": [
+        "hidden_cdb_host",
+        "host_visible"
+      ],
+      "recommended_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -GuardJson captures\\current\\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+      "recommended_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -GuardJson captures\\current\\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
       "canonical_report_paths": {
         "report_json": "captures\\current\\hd-soak-short2-map-idle-current.json",
-        "report_markdown": "captures\\current\\hd-soak-short2-map-idle-current.md"
+        "report_markdown": "captures\\current\\hd-soak-short2-map-idle-current.md",
+        "guard_json": "captures\\current\\hd-soak-short2-map-idle-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short2-map-idle-guard-current.md"
       },
-      "requires_visible_runtime": true,
-      "requires_explicit_user_approval": true,
+      "requires_visible_runtime": false,
+      "requires_explicit_user_approval": false,
+      "visible_runtime_alternative_requires_explicit_user_approval": true,
       "writes_outside_repo": [
         "C:\\ClashTests\\hd-soak",
-        "C:\\ClashCaptures\\hd-soak"
+        "C:\\ClashCaptures\\hd-soak",
+        "C:\\ClashTests\\hd-soak\\hidden",
+        "C:\\ClashCaptures\\hd-soak\\hidden"
       ],
       "must_not_modify": [
         "C:\\Clash\\clash95.exe"
@@ -122,17 +159,33 @@
       "matched_current_soak_report": false,
       "matched_current_soak_report_executed": false,
       "matched_current_soak_report_overall": false,
+      "environment": null,
+      "evidence_class": null,
       "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json",
       "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-idle -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "hidden_cdb_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 600 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -GuardJson captures\\current\\hd-soak-short10-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short10-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+      "hidden_cdb_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 600 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -GuardJson captures\\current\\hd-soak-short10-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short10-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
+      "preferred_environment": "hidden_cdb_host",
+      "supported_environments": [
+        "hidden_cdb_host",
+        "host_visible"
+      ],
+      "recommended_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 600 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -GuardJson captures\\current\\hd-soak-short10-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short10-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+      "recommended_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 600 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short10-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-idle-current.md -GuardJson captures\\current\\hd-soak-short10-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short10-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
       "canonical_report_paths": {
         "report_json": "captures\\current\\hd-soak-short10-map-idle-current.json",
-        "report_markdown": "captures\\current\\hd-soak-short10-map-idle-current.md"
+        "report_markdown": "captures\\current\\hd-soak-short10-map-idle-current.md",
+        "guard_json": "captures\\current\\hd-soak-short10-map-idle-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short10-map-idle-guard-current.md"
       },
       "requires_visible_runtime": false,
       "requires_explicit_user_approval": false,
+      "visible_runtime_alternative_requires_explicit_user_approval": true,
       "writes_outside_repo": [
         "C:\\ClashTests\\hd-soak",
-        "C:\\ClashCaptures\\hd-soak"
+        "C:\\ClashCaptures\\hd-soak",
+        "C:\\ClashTests\\hd-soak\\hidden",
+        "C:\\ClashCaptures\\hd-soak\\hidden"
       ],
       "must_not_modify": [
         "C:\\Clash\\clash95.exe"
@@ -162,17 +215,33 @@
       "matched_current_soak_report": false,
       "matched_current_soak_report_executed": false,
       "matched_current_soak_report_overall": false,
+      "environment": null,
+      "evidence_class": null,
       "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json",
       "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short10 -Route map-pan -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "hidden_cdb_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-pan -DurationSec 600 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -GuardJson captures\\current\\hd-soak-short10-map-pan-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short10-map-pan-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+      "hidden_cdb_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-pan -DurationSec 600 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -GuardJson captures\\current\\hd-soak-short10-map-pan-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short10-map-pan-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
+      "preferred_environment": "hidden_cdb_host",
+      "supported_environments": [
+        "hidden_cdb_host",
+        "host_visible"
+      ],
+      "recommended_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-pan -DurationSec 600 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -GuardJson captures\\current\\hd-soak-short10-map-pan-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short10-map-pan-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+      "recommended_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-pan -DurationSec 600 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short10-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short10-map-pan-current.md -GuardJson captures\\current\\hd-soak-short10-map-pan-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short10-map-pan-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
       "canonical_report_paths": {
         "report_json": "captures\\current\\hd-soak-short10-map-pan-current.json",
-        "report_markdown": "captures\\current\\hd-soak-short10-map-pan-current.md"
+        "report_markdown": "captures\\current\\hd-soak-short10-map-pan-current.md",
+        "guard_json": "captures\\current\\hd-soak-short10-map-pan-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short10-map-pan-guard-current.md"
       },
       "requires_visible_runtime": false,
       "requires_explicit_user_approval": false,
+      "visible_runtime_alternative_requires_explicit_user_approval": true,
       "writes_outside_repo": [
         "C:\\ClashTests\\hd-soak",
-        "C:\\ClashCaptures\\hd-soak"
+        "C:\\ClashCaptures\\hd-soak",
+        "C:\\ClashTests\\hd-soak\\hidden",
+        "C:\\ClashCaptures\\hd-soak\\hidden"
       ],
       "must_not_modify": [
         "C:\\Clash\\clash95.exe"
@@ -202,17 +271,33 @@
       "matched_current_soak_report": false,
       "matched_current_soak_report_executed": false,
       "matched_current_soak_report_overall": false,
+      "environment": null,
+      "evidence_class": null,
       "safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json",
       "approval_gated_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short30 -Route map-pan -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json",
+      "hidden_cdb_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-pan -DurationSec 1800 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -GuardJson captures\\current\\hd-soak-short30-map-pan-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short30-map-pan-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+      "hidden_cdb_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-pan -DurationSec 1800 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -GuardJson captures\\current\\hd-soak-short30-map-pan-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short30-map-pan-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
+      "preferred_environment": "hidden_cdb_host",
+      "supported_environments": [
+        "hidden_cdb_host",
+        "host_visible"
+      ],
+      "recommended_safe_dry_run_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-pan -DurationSec 1800 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -GuardJson captures\\current\\hd-soak-short30-map-pan-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short30-map-pan-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128",
+      "recommended_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-pan -DurationSec 1800 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short30-map-pan-current.json -ReportMarkdown captures\\current\\hd-soak-short30-map-pan-current.md -GuardJson captures\\current\\hd-soak-short30-map-pan-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short30-map-pan-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
       "canonical_report_paths": {
         "report_json": "captures\\current\\hd-soak-short30-map-pan-current.json",
-        "report_markdown": "captures\\current\\hd-soak-short30-map-pan-current.md"
+        "report_markdown": "captures\\current\\hd-soak-short30-map-pan-current.md",
+        "guard_json": "captures\\current\\hd-soak-short30-map-pan-guard-current.json",
+        "guard_markdown": "captures\\current\\hd-soak-short30-map-pan-guard-current.md"
       },
       "requires_visible_runtime": false,
       "requires_explicit_user_approval": false,
+      "visible_runtime_alternative_requires_explicit_user_approval": true,
       "writes_outside_repo": [
         "C:\\ClashTests\\hd-soak",
-        "C:\\ClashCaptures\\hd-soak"
+        "C:\\ClashCaptures\\hd-soak",
+        "C:\\ClashTests\\hd-soak\\hidden",
+        "C:\\ClashCaptures\\hd-soak\\hidden"
       ],
       "must_not_modify": [
         "C:\\Clash\\clash95.exe"
@@ -296,16 +381,16 @@
   "next_action_alignment": {
     "next_actions_report_present": true,
     "next_actions_passed": true,
-    "reported_next_action": "inspect_short2_map_idle_triage",
+    "reported_next_action": "resolve_stable_menu_real_input",
     "reported_runtime_command": null,
     "legacy_step_runtime_command": null,
     "plan_verified_execute_command": null,
-    "expected_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute -AllowVisibleRuntime -RequirePass -Json",
+    "expected_runtime_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\cdb\\run_hidden_soak.ps1 -Route map-idle -DurationSec 120 -FrameIntervalSec 15 -PanIntervalSec 10 -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -GuardJson captures\\current\\hd-soak-short2-map-idle-guard-current.json -GuardMarkdown captures\\current\\hd-soak-short2-map-idle-guard-current.md -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Execute",
     "matches_expected_current_step": false,
     "legacy_matches_expected_current_step": false,
     "reported_matches_plan_verified": false,
     "plan_verified_matches_current_step": false,
-    "repo_only_triage_matches_current_step": true
+    "repo_only_triage_matches_current_step": false
   },
   "failures": []
 }

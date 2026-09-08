@@ -9,7 +9,10 @@ param(
     [switch]$ForceVisibleEdges,
     [switch]$FastForwardStartAnims,
     [switch]$AllowVisibleDesktop,
-    [switch]$AllowDescriptorOnly
+    [switch]$AllowDescriptorOnly,
+    [string]$ExtraProbeTemplate = '',
+    [ValidateSet('natural_gameplay_ui_observation', 'fixture_owner_action_debugger_route')]
+    [string]$ProofClass = 'natural_gameplay_ui_observation'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -37,7 +40,12 @@ function Count-Markers {
 }
 
 $surfaceRunner = Join-Path $RepoRoot 'scripts\cdb\run_cdb_surface_dump.ps1'
-$extraProbe = Join-Path $RepoRoot 'probes\cdb\ui\clash95_right_bottom_ui_extra.cdb'
+$extraProbe = if ($ExtraProbeTemplate) {
+    [System.IO.Path]::GetFullPath($ExtraProbeTemplate)
+}
+else {
+    Join-Path $RepoRoot 'probes\cdb\ui\clash95_right_bottom_ui_extra.cdb'
+}
 foreach ($path in @($surfaceRunner, $extraProbe, $InputExe, $WorkDir, $Cdb, $Python)) {
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Required path was not found: $path"
@@ -151,6 +159,8 @@ $rbuiSummary = [pscustomobject]@{
     CandidatePath = $summary.CandidatePath
     CandidateSha256 = $summary.CandidateSha256
     ExtraProbeTemplate = $extraProbe
+    ProofClass = $ProofClass
+    FixtureOwnerRoute = ($ProofClass -eq 'fixture_owner_action_debugger_route')
     ForceVisibleEdges = [bool]$ForceVisibleEdges
 }
 $rbuiSummaryPath = Join-Path $run.FullName 'right-bottom-ui-summary.json'
@@ -166,6 +176,8 @@ $rbuiTextPath = Join-Path $run.FullName 'right-bottom-ui-summary.txt'
     "owner_action_rows_seen=$ownerActionRowsSeen"
     "requires_owner_action_rows=$requiresOwnerActionRows"
     "allow_descriptor_only=$([bool]$AllowDescriptorOnly)"
+    "proof_class=$ProofClass"
+    "fixture_owner_route=$($ProofClass -eq 'fixture_owner_action_debugger_route')"
     "markers=$countText"
     "run_dir=$($run.FullName)"
     "png=$($summary.PngPath)"
@@ -183,6 +195,7 @@ if (Test-Path -LiteralPath $runSummary) {
         "- Descriptor or viewport rows seen: $descriptorOrViewportSeen"
         "- Owner/action rows seen: $ownerActionRowsSeen"
         "- Requires owner/action rows: $requiresOwnerActionRows"
+        "- Proof class: $ProofClass"
         "- Marker counts: $countText"
         "- Summary: $rbuiSummaryPath"
     )

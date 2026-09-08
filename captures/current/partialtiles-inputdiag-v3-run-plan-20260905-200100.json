@@ -1,0 +1,73 @@
+{
+  "prepared_at": "2026-09-05T17:55:22.757039+00:00",
+  "approved": true,
+  "approval_source": "user_message_in_current_task",
+  "user_message": "Approve debugger runs",
+  "scope": "One bounded hidden 800x600 incremental input-context diagnostic",
+  "source_sha256": {
+    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "src/patcher/partial_tile_clip.py": "944119033895bd9e638a31e14a3c6c342e18efa28691679b97c831a989345c5a",
+    "src/patcher/partial_tile_hooks.py": "a5953f662f8d663daa8eb4f7e6f7327a67a4bbd2d382f64fa0815fadefb403f6",
+    "src/patcher/pe_extension.py": "efa974b294df3cdc7268788d6d17c2baf8c3575c4d388167f8939d96ae9a08ab",
+    "tools/build_partial_tile_candidate.py": "e7066db567f9f1db8705092bd73ec70b787e2614d88efc967dd233ed15598781",
+    "scripts/cdb/run_cdb_surface_dump.ps1": "b3c8cdea482edafd803c0b3865f981b6dce40f192c40cf72a480a60c0353d345",
+    "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8"
+  },
+  "assets_preparation": "captures/current/partialtiles-and-v7-preparation-current.json",
+  "assets_preparation_sha256": "d89f71acd5e1410e7eb716ace75a62e8257e5e1c3712b9a796829198fe69f9d9",
+  "runs": [
+    {
+      "resolution": "800x600",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-validation",
+      "expected_candidate_sha256": "b273c16822843d8aa684191e4c2f357e2f7c581bbc3ad7f4175c8d6b057ecae8",
+      "workdir": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+      "candidate_dir": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\candidate-inputdiag-v3-20260905-200100",
+      "output_root": "C:/ClashCaptures/hd-completion/partialtiles-inputdiag-v3-800x600-20260905-200100",
+      "expected_code_sha256": "6b2f701e6a17140e4f9a062128b763bb618dea6ce148c8b74a836398544655db",
+      "status_vas": {
+        "full_converge": 5649006,
+        "full_present": 5649062,
+        "incremental": 5649097
+      },
+      "command": [
+        "scripts/cdb/run_cdb_surface_dump.ps1",
+        "-PartialTileValidation",
+        "-Stage",
+        "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-validation",
+        "-Resolution",
+        "800x600",
+        "-WorkDir",
+        "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+        "-CandidateDir",
+        "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\candidate-inputdiag-v3-20260905-200100",
+        "-OutRoot",
+        "C:/ClashCaptures/hd-completion/partialtiles-inputdiag-v3-800x600-20260905-200100",
+        "-UseDdrawProxy",
+        "-LoadSlot",
+        "0",
+        "-FastForwardStartAnims",
+        "-RequireGameplay",
+        "-ContinueAfterDumpSec",
+        "5",
+        "-RunSeconds",
+        "180"
+      ],
+      "asset_files_reverified": 50,
+      "extra_probe_sha256": "d923cdf2e4c75169a03ff7349e5d9b3851bee9adf46510dd328eaad57469b57d"
+    }
+  ],
+  "executed": false,
+  "visible_runtime": false,
+  "os_input": false,
+  "manual_input_proof": false,
+  "promotion": false,
+  "limits": "Validation-stage hooks only; native fallback is not complete HD proof. Existing failed screenshots preserved. Require source-pixel action bar audit for every new screenshot.",
+  "prior_plan": "captures\\current\\partialtiles-latearm-v2-run-plan-20260905-194900.json",
+  "change": "Only logs saved native worldXY/caller and guarded map/scroll/vtable before strict status check. Status0 still rejects; executable bytes unchanged.",
+  "tests": {
+    "builder": 10,
+    "harness": 7,
+    "render_probe": 10
+  },
+  "tests_pending": "Updated emitted-diagnostic fixture run required before execution"
+}

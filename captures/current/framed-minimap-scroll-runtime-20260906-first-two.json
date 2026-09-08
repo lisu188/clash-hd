@@ -1,0 +1,367 @@
+{
+  "schema": "clash95_framed_minimap_scroll_checkpoint_v1",
+  "generated_at": "2026-09-06T05:23:21.121202+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "minimap_viewport": true,
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "runs": [
+    {
+      "resolution": "1024x768",
+      "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-scroll-run-plan-20260906-051203.json",
+        "sha256": "a64910f3c250fd3eb63ab079d5ece6c54e74606a73ec6051ee1ed0316e0886c3"
+      },
+      "pixel_audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-scroll-1024x768-pixels-20260906-051203.json",
+        "sha256": "87650a12702fdd5e0440579fea7aafb49ad00c2a4752ad863f88165e6ff7582d"
+      },
+      "runtime_summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\summary.json",
+        "sha256": "5aed6f70e56140832a6fe2bc82304d290ad5a356ac3049f8b460a8170b116ab3"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\cdb.log",
+        "sha256": "34e9a2e66aa9640293e3c4bb0882a9a3c89e2269313c06df8be0b3e88667cfaf"
+      },
+      "requested_scroll": [
+        11,
+        17
+      ],
+      "captures": {
+        "before": {
+          "scroll": [
+            0,
+            17
+          ],
+          "world": [
+            100,
+            100
+          ],
+          "scale": 2,
+          "minimap_origin": [
+            778,
+            16
+          ],
+          "geometry": {
+            "rect": [
+              784,
+              56,
+              815,
+              80
+            ],
+            "visible_world_pixels": [
+              960,
+              736
+            ],
+            "scaled_pixel_extent": [
+              30,
+              23
+            ],
+            "native_color_index": 76
+          },
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\before-frame.raw",
+            "sha256": "8cb3aa37ba55e35a7d9c98b574d37c87083a71f9ddbfe60e5c42751529b5681b"
+          },
+          "screenshot": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\before-frame.png",
+            "sha256": "88b1fd7114b66aa9cb40dacc2a05993c9fe8fb9d0b47130826e8298c7fedbdd3"
+          },
+          "all_four_frame_edges_passed": true,
+          "footer_passed": true,
+          "action_bar_matching_cells": 6,
+          "receipt": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\before-receipt.json",
+            "sha256": "555e1c5373cbdbbecf6530c761f2191a5a88f509f46650d46966fbc3e8de804f"
+          }
+        },
+        "after": {
+          "scroll": [
+            11,
+            17
+          ],
+          "world": [
+            100,
+            100
+          ],
+          "scale": 2,
+          "minimap_origin": [
+            778,
+            16
+          ],
+          "geometry": {
+            "rect": [
+              806,
+              56,
+              837,
+              80
+            ],
+            "visible_world_pixels": [
+              960,
+              736
+            ],
+            "scaled_pixel_extent": [
+              30,
+              23
+            ],
+            "native_color_index": 76
+          },
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\after-frame.raw",
+            "sha256": "96f423e1e2972fdce33a76677146690942052afbb85e1142a9bfb619af03b2aa"
+          },
+          "screenshot": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\after-frame.png",
+            "sha256": "09609cfbaf312919b72c8ebf36d207b1ae2ed512827818e5c28419bf2f58a9ac"
+          },
+          "all_four_frame_edges_passed": true,
+          "footer_passed": true,
+          "action_bar_matching_cells": 6,
+          "receipt": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\after-receipt.json",
+            "sha256": "fe4db16c22a069241c3388c420927523835a292ff7477150246590d37620b36d"
+          }
+        }
+      },
+      "controlled_native_scroll_passed": true,
+      "outline_and_erasure_passed": true,
+      "erasure_evidence": {
+        "before_perimeter": 110,
+        "after_perimeter": 110,
+        "old_only_pixels": 90,
+        "informative_old_only_pixels": 90,
+        "repaired_old_only_pixels": 90,
+        "before_mismatches": [],
+        "after_mismatches": [],
+        "erasure_mismatches": [],
+        "unchanged_backing_sha256": "455b7e12a683cbbe03cc4e5581d648a7e63f8a2fc84f692f8a031842965e16f8"
+      },
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\framed-minimap-scroll-scroll-1024x768-41f30816dab8c006.exe",
+              "creation_filetime": 134331451468375570,
+              "process_id": 35928,
+              "handle_retained": true,
+              "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+              "creation_utc": "2026-09-06T05:12:26.8375570Z",
+              "parent_process_id": 36456
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T05:12:26.6461518Z",
+            "handle_retained": true,
+            "creation_filetime": 134331451466461518,
+            "process_id": 36456
+          }
+        },
+        "desktop_closed": true,
+        "input_closed": true
+      },
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-1024x768-20260906-051203\\post-run-workdir.json",
+        "sha256": "fecd26d4b2ed8fbc44346f22578c2c1ee45173909b64ca8f8c738f7e862e5391"
+      },
+      "workdir_assets_unchanged": true
+    },
+    {
+      "resolution": "802x602",
+      "candidate_sha256": "2a75641f1aa1b3132ae50b5e8ed768458e5e6d6985e9cfba702ced85ffec8161",
+      "plan": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-scroll-run-plan-20260906-051538.json",
+        "sha256": "6c4849349358a64972c86d6fb63a787388df644a7c5a0145d788263639a36b65"
+      },
+      "pixel_audit": {
+        "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-minimap-scroll-802x602-pixels-20260906-051538.json",
+        "sha256": "4c1d5cf82ef440dc6715cc1ab5101c738affa01a30fc9460f8166a30edca38e2"
+      },
+      "runtime_summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\summary.json",
+        "sha256": "a04195763bc16e8e99c205a72298b007f50d39583e4e09212a081d3830da51da"
+      },
+      "debugger_log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\cdb.log",
+        "sha256": "b67a3eda29b4cc146c11322b0d1197ba0ef252dd833bd7e86d4094a70db8a925"
+      },
+      "requested_scroll": [
+        90,
+        93
+      ],
+      "captures": {
+        "before": {
+          "scroll": [
+            0,
+            17
+          ],
+          "world": [
+            100,
+            100
+          ],
+          "scale": 2,
+          "minimap_origin": [
+            556,
+            16
+          ],
+          "geometry": {
+            "rect": [
+              562,
+              56,
+              587,
+              75
+            ],
+            "visible_world_pixels": [
+              738,
+              570
+            ],
+            "scaled_pixel_extent": [
+              24,
+              18
+            ],
+            "native_color_index": 76
+          },
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\before-frame.raw",
+            "sha256": "871c2ff43889d6c87e00d7588ccbb253a038720719f7130ffde1ba3bcc3319db"
+          },
+          "screenshot": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\before-frame.png",
+            "sha256": "254813bcfbb117b04ea442d97856ef3cb81dd10d97da63064a21a6dc6acf50ef"
+          },
+          "all_four_frame_edges_passed": true,
+          "footer_passed": true,
+          "action_bar_matching_cells": 6,
+          "receipt": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\before-receipt.json",
+            "sha256": "7fa59abb0790997da23880511c3331e3e056f8cc696c6d4203c454ad7ca30f0d"
+          }
+        },
+        "after": {
+          "scroll": [
+            89,
+            92
+          ],
+          "world": [
+            100,
+            100
+          ],
+          "scale": 2,
+          "minimap_origin": [
+            556,
+            16
+          ],
+          "geometry": {
+            "rect": [
+              740,
+              206,
+              763,
+              223
+            ],
+            "visible_world_pixels": [
+              704,
+              512
+            ],
+            "scaled_pixel_extent": [
+              22,
+              16
+            ],
+            "native_color_index": 76
+          },
+          "raw": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\after-frame.raw",
+            "sha256": "c3978ebccabf966def4ced97c17e01f5b4225b88d0d43f9cd69144f11c23200b"
+          },
+          "screenshot": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\after-frame.png",
+            "sha256": "f1b0081b6a550bcb83a2dc26aab23821a817e12db7093b6099f88bf5e7e199c5"
+          },
+          "all_four_frame_edges_passed": true,
+          "footer_passed": true,
+          "action_bar_matching_cells": 6,
+          "receipt": {
+            "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\after-receipt.json",
+            "sha256": "f4dfec8b7017f6af6ac0a160e4913dfe042b9f7e25d27a892b88ce2be13069a3"
+          }
+        }
+      },
+      "controlled_native_scroll_passed": true,
+      "outline_and_erasure_passed": true,
+      "erasure_evidence": {
+        "before_perimeter": 88,
+        "after_perimeter": 80,
+        "old_only_pixels": 88,
+        "informative_old_only_pixels": 88,
+        "repaired_old_only_pixels": 88,
+        "before_mismatches": [],
+        "after_mismatches": [],
+        "erasure_mismatches": [],
+        "unchanged_backing_sha256": "455b7e12a683cbbe03cc4e5581d648a7e63f8a2fc84f692f8a031842965e16f8"
+      },
+      "cleanup": {
+        "candidates": [
+          {
+            "termination_requested": false,
+            "absent": true,
+            "handle_closed": true,
+            "identity": {
+              "path": "C:\\ClashTests\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\framed-minimap-scroll-scroll-802x602-88e01c59f7e4c6a3.exe",
+              "creation_filetime": 134331456469168448,
+              "process_id": 1268,
+              "handle_retained": true,
+              "candidate_sha256": "2a75641f1aa1b3132ae50b5e8ed768458e5e6d6985e9cfba702ced85ffec8161",
+              "creation_utc": "2026-09-06T05:20:46.9168448Z",
+              "parent_process_id": 26640
+            }
+          }
+        ],
+        "cdb": {
+          "termination_requested": true,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+            "creation_utc": "2026-09-06T05:20:46.7206757Z",
+            "handle_retained": true,
+            "creation_filetime": 134331456467206757,
+            "process_id": 26640
+          }
+        },
+        "desktop_closed": true,
+        "input_closed": true
+      },
+      "post_workdir": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-minimap-scroll-v1-802x602-20260906-051538\\post-run-workdir.json",
+        "sha256": "2bf9ebe0f0be9e2e087020ace8d59d70641a13392aa6490ff5dfc8da27aae399"
+      },
+      "workdir_assets_unchanged": true
+    }
+  ],
+  "source_sha256": {
+    "src/patcher/framed_minimap.py": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+    "tools/build_framed_candidate.py": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+    "scripts/cdb/run_framed_minimap_scroll_capture.ps1": "2a0776b898f4ea9843e9c61471a44ac15501748323b3e415e8340fd53f44b4f4",
+    "tools/framed_minimap_scroll_probe.py": "8919a74d9aa09c4236f7f2eb87abc2179e9a7b2981c34009c2f2b89f40c5bda5",
+    "tools/framed_minimap_scroll_trace.py": "0d5454d7135f23043c021eeb636811fee5445888df703ee55d5d115affe8d7c9"
+  },
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "Actual approved hidden controlled native CALL dispatch, native mouse-global writes/restoration and a disclosed query-result override; not a natural/manual click.",
+    "Both runs actually began at scroll (0,17). The 1024 run is an eleven-tile horizontal pan, not a one-tile test.",
+    "802 requested (90,93) and reached native clamp (89,92); the captured far-corner map area is black. Rectangle/erasure evidence does not prove unseen terrain contents.",
+    "Indexed software captures may omit separately composed layers. Four-sided ordinary-map frames, footer and six action cells were independently checked in all four screenshots.",
+    "Scale-4 runtime, vertical-only/one-tile moves, no-op control, natural input and other resolutions remain separate pending cases.",
+    "Earlier static-resolution coverage/trace failures and modal visual failures are preserved; no stable promotion."
+  ]
+}

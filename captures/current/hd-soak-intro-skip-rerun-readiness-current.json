@@ -1,88 +1,98 @@
 {
-  "generated_at": "2026-09-08T09:22:02.994176+00:00",
-  "passed": false,
+  "generated_at": "2026-09-06T03:58:02.070139+00:00",
+  "passed": true,
+  "status": "not_applicable_short_ladder_complete",
+  "terminal_short_ladder": true,
+  "ladder_complete_verified": true,
   "runtime_policy": "repo-only intro-skip rerun readiness gate; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
-  "status": "not_ready",
   "source_artifacts": {
-    "triage": "captures\\current\\hd-soak-short2-menu-idle-triage-current.json",
-    "step_status": "captures\\current\\hd-soak-short-step-status-current.json",
-    "harness_guard": "captures\\current\\hd-soak-harness-guard-current.json",
-    "dry_run_plan": "captures\\current\\hd-soak-dry-run-plan-current.json",
-    "visible_runtime_guard": "captures\\current\\visible-runtime-launcher-guard-current.json",
-    "process_hygiene": "captures\\current\\process-hygiene-guard-current.json",
-    "exe_artifact": "captures\\current\\exe-artifact-guard-current.json"
+    "step_status_json": "captures\\current\\hd-soak-short-step-status-current.json"
   },
-  "triage": {
-    "classification": "passing_run_no_failure",
-    "final_route_marker": "intro-skip",
-    "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-    "next_probe": "repeat short2 or move to short10 only after preserving the report and validation guard output"
-  },
-  "current_step": {
-    "id": "short2_map_idle",
-    "status": "failed_classified_window_missing_while_process_alive"
-  },
-  "intro_skip_contract": {
-    "click_mode": "postmessage",
-    "click_repeat": 8,
-    "space_pulses": 4,
-    "stop_click_repeat_on_drift": true,
-    "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof"
-  },
+  "current_step": null,
+  "completed_predecessor_evidence": [
+    {
+      "id": "short2_menu_idle",
+      "report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
+      "guard": "captures\\current\\hd-soak-short2-menu-idle-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-menu-idle-current.json",
+      "environment": "host_visible",
+      "report_sha256": "9f70dfaf14073800a9ac7fca319852d8cf8c2d45982ac01d50a6f59920ffd6b4",
+      "guard_sha256": "df50f21d6505a8c168a82aad9490697db16f0b2fd596e54374e1ea3f3c4c7d31"
+    },
+    {
+      "id": "short2_map_idle",
+      "report": "captures\\current\\hd-soak-short2-map-idle-current.json",
+      "guard": "captures\\current\\hd-soak-short2-map-idle-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-092939-516-map-idle\\report.json",
+      "environment": "hidden_cdb_host",
+      "report_sha256": "c3a0decaa7cb8a7ba3d41258f3f41e9f35d1e14bd706e6e5f8cefd6e59213440",
+      "guard_sha256": "5c1b427368eb01ed91a33531cd42acd023b4730165b60c9701b0ec073282a4ca"
+    },
+    {
+      "id": "short10_map_idle",
+      "report": "captures\\current\\hd-soak-short10-map-idle-current.json",
+      "guard": "captures\\current\\hd-soak-short10-map-idle-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\report.json",
+      "environment": "hidden_cdb_host",
+      "report_sha256": "83e1c4e303b000a01eab25b84f92ffbc16f7b0ce5758dc74ee0afaf6c72d5d8c",
+      "guard_sha256": "0601afd0618cb0b4fee56108740285785a2e63c54881f95b936bf50c7e31073f"
+    },
+    {
+      "id": "short10_map_pan",
+      "report": "captures\\current\\hd-soak-short10-map-pan-current.json",
+      "guard": "captures\\current\\hd-soak-short10-map-pan-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\report.json",
+      "environment": "hidden_cdb_host",
+      "report_sha256": "381ee76c3cae500d8b2658a442bad0d861305b786dd743a4e9ab5b4de3c4b37c",
+      "guard_sha256": "46c9ea5e5c460289a8f9e90c3591aecaacbf2d0a6d5ba82834ae1f0cec92a0b7"
+    },
+    {
+      "id": "short30_map_pan",
+      "report": "captures\\current\\hd-soak-short30-map-pan-current.json",
+      "guard": "captures\\current\\hd-soak-short30-map-pan-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-110757-602-map-pan\\report.json",
+      "environment": "hidden_cdb_host",
+      "report_sha256": "33dd4124dd09d845a401b4006d8faa39540bca5e5ed632151a5e4298bbe25b3c",
+      "guard_sha256": "495b0db9dd8ad794269afc39d63cce78fbc12a92ae4f1268970684adfb5293c8"
+    }
+  ],
+  "runtime_authorized": false,
+  "approval_required": false,
+  "approved": false,
+  "promotion_ready": false,
+  "manual_input_proof": false,
+  "safe_dry_run_command": null,
+  "approval_gated_execute_command": null,
+  "hidden_runtime_command": null,
+  "recommended_runtime_command": null,
+  "exact_runtime_command": null,
+  "post_run_validation": [],
+  "commands": {},
+  "plan": {},
   "dry_run_plan": {
-    "passed": false,
-    "status": "dry_run_plan_invalid",
-    "current_step": "short2_map_idle",
-    "candidate_path": null,
-    "output_root": null,
-    "approval_gated_execute_command": ""
+    "approval_gated_execute_command": null
   },
-  "guards": {
-    "harness_guard_passed": true,
-    "visible_runtime_guard_passed": true,
-    "process_hygiene_passed": true,
-    "exe_artifact_guard_passed": true
+  "invocation": {
+    "command": null,
+    "exit_code": null,
+    "executed": false
   },
-  "approval_boundary": "The next runtime run will open a visible Clash95 game window and still requires explicit user approval.",
-  "failures": [
-    "dry-run plan is not passing",
-    "dry-run plan status is 'dry_run_plan_invalid'",
-    "dry-run plan would change the stable stage",
-    "dry-run plan does not keep right-bottom promotion blocked",
-    "dry-run intro_skip click_mode is None, expected 'postmessage'",
-    "dry-run intro_skip click_repeat is None, expected 8",
-    "dry-run intro_skip space_pulses is None, expected 4",
-    "dry-run intro_skip stop_click_repeat_on_drift is None, expected True",
-    "dry-run intro_skip proof_class is None, expected 'intro_skip_harness_prep_not_manual_directinput_release_proof'",
-    "approval command missing fragment: -IntroSkipClickMode",
-    "approval command missing fragment: postmessage",
-    "approval command missing fragment: -IntroSkipClicks",
-    "approval command missing fragment: 8",
-    "approval command missing fragment: -SkipPulses",
-    "approval command missing fragment: 4",
-    "approval command missing fragment: -SampleIntervalSec",
-    "approval command missing fragment: 15",
-    "approval command missing fragment: -MaxInputDriftPx",
-    "approval command missing fragment: 1",
-    "approval command missing fragment: -MinNonblackPercent",
-    "approval command missing fragment: 10",
-    "approval command missing fragment: -MinUniqueSampleColors",
-    "approval command missing fragment: 8",
-    "approval command missing fragment: -MaxArtifactMB",
-    "approval command missing fragment: 250",
-    "approval command missing fragment: -MaxWorkingSetGrowthMB",
-    "approval command missing fragment: 64",
-    "approval command missing fragment: -MaxPrivateMemoryGrowthMB",
-    "approval command missing fragment: 64",
-    "approval command missing fragment: -MaxHandleGrowth",
-    "approval command missing fragment: 128",
-    "approval command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
-    "approval command missing fragment: -VisibleRuntimeApprovalToken",
-    "approval command missing fragment: -Execute",
-    "approval command missing fragment: -AllowVisibleRuntime",
-    "approval command missing fragment: -RequirePass",
-    "approval command missing fragment: -Json",
-    "dry-run visible runtime approval token is missing or malformed",
-    "dry-run visible runtime approval expires_utc is missing"
-  ]
+  "approval_boundary": "This terminal short-ladder status authorizes no runtime or approval request. Long-soak, manual-input and promotion evidence require their separate gates.",
+  "remaining_requirements": [
+    "long-soak evidence",
+    "manual-input proof and required visible approval",
+    "explicit promotion decision"
+  ],
+  "locks": {
+    "stable_stage_should_change": false,
+    "right_bottom_promotion_blocked": true,
+    "long_tiers_locked": false,
+    "future_lanes_locked": true
+  },
+  "failures": []
 }

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import subprocess
 import sys
@@ -13,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 import hd_endurance_next_actions as next_actions
+from test_hd_soak_dry_run_plan import build_fixture_report, hidden_step_status, valid_hidden_plan
 
 APPROVAL_TOKEN = "1234567890abcdef"
 APPROVAL_EXPIRES_UTC = "2999-01-01T00:00:00.0000000+00:00"
@@ -909,6 +911,140 @@ def test_apphang_with_window_health_guard_requests_fresh_windowed_approval() -> 
     assert "AppHangB1" in action["why"]
 
 
+def hidden_invocation_fixture() -> tuple[dict[str, Any], dict[str, Any]]:
+    """Synthetic packet matching a successful real dry-run; never runs a harness."""
+    status = hidden_step_status()
+    status["steps"][0]["status"] = status["current_step"]["status"]
+    plan = build_fixture_report(valid_hidden_plan(), status)
+    plan["source_artifacts"]["read_plan_json"] = None
+    plan["invocation"] = {
+        "used_fixture_plan": False, "exit_code": 0,
+        "command": next_actions.soak_plan.command_text(next_actions.soak_plan.dry_run_command(
+            next_actions.soak_plan.HIDDEN_SCRIPT, status["steps"][0])),
+    }
+    return status, plan
+
+
+def test_hidden_step_uses_only_matching_emitted_plan() -> None:
+    status, plan = hidden_invocation_fixture()
+    action, failures = next_actions.next_action_for_short_step(status, plan)
+    assert not failures, failures
+    assert action["status"] == "runtime_required", action
+    assert action["environment"] == "hidden_cdb_host"
+    assert action["evidence_class"] == "approved_hidden_cdb_host_soak"
+    assert action["input_responsiveness"] == "not_applicable_hidden"
+    assert action["requires_visible_runtime"] is False
+    assert action["requires_explicit_user_approval"] is False
+    assert action["exact_runtime_command"] == plan["plan"]["hidden_runtime_command"]
+    assert "run_hd_soak.ps1" not in action["exact_runtime_command"]
+
+
+def test_hidden_step_missing_or_invalid_plan_never_falls_back_to_visible() -> None:
+    status, good = hidden_invocation_fixture()
+    action, failures = next_actions.next_action_for_short_step(status, None)
+    assert not failures, failures
+    assert action["status"] == "dry_run_plan_required"
+    assert action["exact_runtime_command"] is None
+    assert "hd_soak_dry_run_plan.py" in action["safe_dry_run_command"]
+    variants = []
+    bad = copy.deepcopy(good)
+    bad["environment"] = "host_visible"
+    variants.append(bad)
+    bad = copy.deepcopy(good)
+    bad["current_step"]["id"] = "short30_map_pan"
+    variants.append(bad)
+    bad = copy.deepcopy(good)
+    bad["runner_source"]["sha256"] = "0" * 64
+    variants.append(bad)
+    bad = copy.deepcopy(good)
+    bad["input_responsiveness"] = "manual_input_passed"
+    variants.append(bad)
+    bad = copy.deepcopy(good)
+    bad["generated_at"] = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
+    variants.append(bad)
+    bad = copy.deepcopy(good)
+    bad["plan"]["hidden_runtime_command"] += " -AllowVisibleRuntime"
+    bad["hidden_runtime_command"] = bad["plan"]["hidden_runtime_command"]
+    variants.append(bad)
+    variants.append(build_fixture_report(valid_hidden_plan(), status))
+    for key, value in (("used_fixture_plan", True), ("exit_code", 1), ("command", "powershell.exe -Execute")):
+        bad = copy.deepcopy(good)
+        bad["invocation"][key] = value
+        variants.append(bad)
+    for key, value in (("status", "failed_unclassified"), ("preferred_environment", None)):
+        bad = copy.deepcopy(good)
+        bad["current_step"][key] = value
+        variants.append(bad)
+    for key in ("stable_stage_should_change", "right_bottom_promotion_blocked", "long_tiers_locked", "future_lanes_locked"):
+        bad = copy.deepcopy(good)
+        bad["locks"][key] = not bad["locks"][key]
+        variants.append(bad)
+    for key, value in (("script", "scripts/smoke/run_hd_soak.ps1"), ("read_plan_json", "fixture.json")):
+        bad = copy.deepcopy(good)
+        bad["source_artifacts"][key] = value
+        variants.append(bad)
+    bad = copy.deepcopy(good)
+    bad["recommended_runtime_command"] = "foreign command"
+    variants.append(bad)
+    for plan in variants:
+        action, failures = next_actions.next_action_for_short_step(status, plan)
+        assert failures, plan
+        assert action["status"] == "dry_run_plan_required", action
+        assert action["exact_runtime_command"] is None, action
+        assert action["requires_visible_runtime"] is False
+    locked = copy.deepcopy(status)
+    locked["steps"][0]["prerequisites_passed"] = False
+    action, failures = next_actions.next_action_for_short_step(locked, good)
+    assert failures and action["exact_runtime_command"] is None
+
+
+def test_environment_labels_fail_closed_before_any_runtime_branch() -> None:
+    for environment in (None, "unknown", ["hidden_cdb_host"], "hidden_cdb_host"):
+        row = step_record("short2_map_idle", "short2", "map-idle", status="missing_pending_approval")
+        row["preferred_environment"] = environment
+        status = {"passed": True, "steps": [row], "current_step": {
+            "id": row["id"], "status": row["status"], "preferred_environment": environment}}
+        action, failures = next_actions.next_action_for_short_step(status, dry_run_plan_for_step(row))
+        assert failures, (environment, action)
+        assert action["requires_visible_runtime"] is False
+        assert action["exact_runtime_command"] is None
+        assert action["safe_dry_run_command"] is None
+    for header in (None, "host_visible", "unknown", "omitted"):
+        status, plan = hidden_invocation_fixture()
+        if header == "omitted":
+            status["current_step"].pop("preferred_environment")
+        else:
+            status["current_step"]["preferred_environment"] = header
+        action, failures = next_actions.next_action_for_short_step(status, plan)
+        assert failures, (header, action)
+        assert action["exact_runtime_command"] is None
+    status, plan = hidden_invocation_fixture()
+    status["steps"][0]["status"] = "failed_unclassified"
+    action, failures = next_actions.next_action_for_short_step(status, plan)
+    assert failures and action["exact_runtime_command"] is None
+
+
+def test_failed_hidden_steps_never_use_visible_rerun_readiness() -> None:
+    for classification in ("intro_skip_input_drift_exit", "input_environment_permission_denied",
+                           "application_hang_wer_closed", "window_missing_while_process_alive"):
+        status, _ = hidden_invocation_fixture()
+        step = status["steps"][0]
+        step["status"] = status["current_step"]["status"] = f"failed_classified_{classification}"
+        step["summary"] = {"classification": classification, "wer_followup_matched": True,
+                           "wer_followup_status": "application_hang_confirmed_wer_closed", "window_health_mitigation_ready": True}
+        action, failures = next_actions.next_action_for_short_step(
+            status, dry_run_plan_for_step(step), intro_skip_readiness_for_step(step),
+            {"passed": True, "checks": {"window_health_stop": {"passed": True}}})
+        assert not failures, failures
+        assert action["status"] == "triage_followup_required"
+        assert action["environment"] == "hidden_cdb_host"
+        assert action["requires_visible_runtime"] is False
+        assert action["requires_explicit_user_approval"] is False
+        assert action["exact_runtime_command"] is None
+        assert action["safe_dry_run_command"] is None
+        assert "hd_soak_short_validation_refresh.py" in action["repo_command"]
+
+
 def test_cli_writes_outputs() -> None:
     with tempfile.TemporaryDirectory() as directory:
         tmp = Path(directory)
@@ -963,6 +1099,10 @@ def run_tests() -> None:
     test_postmessage_intro_transition_requires_repo_harness_fix()
     test_unexpected_exit_ignores_unrelated_intro_readiness_failure()
     test_apphang_with_window_health_guard_requests_fresh_windowed_approval()
+    test_hidden_step_uses_only_matching_emitted_plan()
+    test_hidden_step_missing_or_invalid_plan_never_falls_back_to_visible()
+    test_environment_labels_fail_closed_before_any_runtime_branch()
+    test_failed_hidden_steps_never_use_visible_rerun_readiness()
     test_cli_writes_outputs()
 
 

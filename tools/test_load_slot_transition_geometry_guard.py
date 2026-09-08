@@ -9,15 +9,14 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 import load_slot_transition_geometry_guard as guard
+import load_slot_route_limit_guard as route_guard
+from test_load_slot_route_limit_guard import HARNESS_TEXT
 
 
-SCRIPT_FORMULA = """
-$loadMouseX = 320
-$loadMouseY = 166 + (22 * $LoadSlot)
-$loadMouseRawX = $loadMouseX -shl 6
-$loadMouseRawY = $loadMouseY -shl 6
+SCRIPT_FORMULA = HARNESS_TEXT + """
 $extraProbeText = $extraProbeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)
 $extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))
 $extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_Y__', ('{0:x8}' -f $loadMouseRawY))
@@ -71,6 +70,9 @@ def write_inputs(root: Path, *, plan_payload: dict[str, object] | None = None, s
     script_path = root / "scripts/cdb/run_cdb_surface_dump.ps1"
     script_path.parent.mkdir(parents=True, exist_ok=True)
     script_path.write_text(script, encoding="utf-8")
+    renderer_path = root / "tools/render_cdb_surface_probe.py"
+    renderer_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(Path(route_guard.probe_renderer.__file__), renderer_path)
     probe_path = root / "transition.cdb"
     probe_path.write_text(probe, encoding="utf-8")
     return {"plan": plan_json, "script": script_path, "probe": probe_path}
@@ -100,10 +102,67 @@ def test_passes_and_records_expected_row_geometry() -> None:
 
 def test_fails_when_formula_drifts() -> None:
     with tempfile.TemporaryDirectory() as tmp:
-        bad_script = SCRIPT_FORMULA.replace("166 + (22 * $LoadSlot)", "160 + (22 * $LoadSlot)")
+        bad_script = SCRIPT_FORMULA.replace("$loadMouseY = $surfaceGeometry.load_mouse[1]", "$loadMouseY = 160 + (22 * $LoadSlot)")
         report = build(write_inputs(Path(tmp), script=bad_script))
     assert not report["passed"]
     assert any("surface_formula_present" in failure for failure in report["failures"]), report
+
+
+def test_current_extra_probe_wiring_and_all_native_slots() -> None:
+    report = route_guard.check_surface_geometry(guard.DEFAULT_SURFACE_DUMP_SCRIPT, extra_probe=True)
+    assert report["passed"], report
+    assert report["generated_geometry"]["extra_probe"] is True
+    assert len(report["generated_geometry"]["rows"]) == 20
+    for slot in range(10):
+        row = guard.row_geometry(slot)
+        assert (row["mouse_y"] - 155) // 22 == slot
+        assert row["raw_x"] == 20480
+        assert row["raw_y"] == (166 + 22 * slot) * 64
+        assert int(row["raw_x_hex"], 16) == row["raw_x"]
+        assert int(row["raw_y_hex"], 16) == row["raw_y"]
+
+
+def test_fails_when_extra_probe_recipe_or_substitution_is_wrong() -> None:
+    mutations = [
+        ("if ($ExtraProbeTemplate) { $renderArgs += '--extra-probe' }", ""),
+        ("('__LOAD_SLOT__', [string]$LoadSlot)", "('__LOAD_SLOT__', '2')"),
+        ("('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))", "('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawY))"),
+        ("('__LOAD_MOUSE_RAW_Y__', ('{0:x8}' -f $loadMouseRawY))", "('__LOAD_MOUSE_RAW_Y__', '00004500')"),
+        ("$extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_Y__'", "# $extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_Y__'"),
+    ]
+    with tempfile.TemporaryDirectory() as tmp:
+        paths = write_inputs(Path(tmp))
+        for old, new in mutations:
+            assert old in SCRIPT_FORMULA
+            paths["script"].write_text(SCRIPT_FORMULA.replace(old, new), encoding="utf-8")
+            report = build(paths)
+            assert not report["passed"], (old, report)
+            assert report["checks"]["surface_formula_present"] is False
+
+
+def test_fails_if_extra_recipe_geometry_drifts_for_another_slot() -> None:
+    render = route_guard.probe_renderer.render_probe
+    def bad_recipe(*args: object, **kwargs: object) -> dict[str, object]:
+        result = render(*args, **kwargs)
+        if kwargs.get("extra_probe") and kwargs.get("load_slot") == 0:
+            result["geometry"]["load_mouse"] = [320, 188]
+        return result
+    with tempfile.TemporaryDirectory() as tmp:
+        paths = write_inputs(Path(tmp))
+        with patch.object(route_guard.probe_renderer, "render_probe", side_effect=bad_recipe):
+            report = build(paths)
+    assert not report["passed"]
+    assert any("row 0" in failure for failure in report["failures"]), report
+
+
+def test_missing_supplied_inputs_fail() -> None:
+    for missing in ("plan", "script", "probe"):
+        with tempfile.TemporaryDirectory() as tmp:
+            paths = write_inputs(Path(tmp))
+            paths[missing].unlink()
+            report = build(paths)
+        assert not report["passed"], (missing, report)
+        assert any("missing" in failure for failure in report["failures"]), report
 
 
 def test_fails_when_placeholder_missing() -> None:
@@ -173,7 +232,7 @@ def test_shared_renderer_path_and_rejects_wrong_wiring() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         paths = write_inputs(Path(tmp), script=original)
         renderer_path = Path(tmp) / "tools/render_cdb_surface_probe.py"
-        renderer_path.parent.mkdir()
+        renderer_path.parent.mkdir(exist_ok=True)
         shutil.copyfile(repo / "tools/render_cdb_surface_probe.py", renderer_path)
         report = build(paths)
         assert report["passed"], report["failures"]
@@ -194,7 +253,11 @@ def test_shared_renderer_path_and_rejects_wrong_wiring() -> None:
 def run_tests() -> None:
     test_shared_renderer_path_and_rejects_wrong_wiring()
     test_passes_and_records_expected_row_geometry()
+    test_current_extra_probe_wiring_and_all_native_slots()
     test_fails_when_formula_drifts()
+    test_fails_when_extra_probe_recipe_or_substitution_is_wrong()
+    test_fails_if_extra_recipe_geometry_drifts_for_another_slot()
+    test_missing_supplied_inputs_fail()
     test_fails_when_placeholder_missing()
     test_fails_when_commands_target_wrong_rows()
     test_fails_when_summary_does_not_require_entry()

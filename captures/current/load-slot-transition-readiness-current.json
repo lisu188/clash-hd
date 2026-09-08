@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-09-08T11:21:05+02:00",
-  "passed": false,
+  "generated_at": "2026-09-06T05:57:27+02:00",
+  "passed": true,
   "runtime_policy": "repo-only transition readiness matrix; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when rows 3-5 are still classified as pre-0044895A blockers, the late-entry probe, row geometry, generated previews, and summary parser are all passing, every future command is hidden-desktop, target-slot acceptance is strict, and the result acceptance remains non-promoting",
-  "classification": "transition_readiness_incomplete_or_stale",
+  "classification": "ready_for_hidden_transition_probe",
   "promotion_ready": false,
   "stable_stage_should_change": false,
   "source_artifacts": {
@@ -24,9 +24,9 @@
     "run_plan_targets_rows_3_4_5": true,
     "run_plan_hidden_commands": true,
     "summary_commands_strict": true,
-    "geometry_guard_passed": false,
+    "geometry_guard_passed": true,
     "geometry_rows_match_targets": true,
-    "probe_preview_passed": false,
+    "probe_preview_passed": true,
     "probe_preview_rows_match_targets": true,
     "probe_preview_hashes_present": true,
     "summary_parser_tests_passed": true,
@@ -66,8 +66,5 @@
     "treat LOADSAVE/PlayGame rows as success only after rerunning the summary with --require-success and matching slot rows",
     "keep the evidence non-promoting until natural owner/action proof or approved manual DirectInput proof exists"
   ],
-  "failures": [
-    "transition readiness check failed: geometry_guard_passed",
-    "transition readiness check failed: probe_preview_passed"
-  ]
+  "failures": []
 }

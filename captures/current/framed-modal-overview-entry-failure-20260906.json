@@ -1,0 +1,4239 @@
+{
+  "schema": "clash95_framed_modal_failed_observation_v1",
+  "recorded_at": "2026-09-06T03:56:00.411144+00:00",
+  "passed": false,
+  "run_started_at": "2026-09-06T03:53:18.0387114Z",
+  "run_finished_at": "2026-09-06T03:53:40.2557544Z",
+  "route": "castle_overview",
+  "resolution": "1024x768",
+  "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "minimap_viewport": true,
+  "runtime_failures": [
+    "Debugger exited before accepted modal readiness."
+  ],
+  "observed_modal_rows": [
+    "MODAL_BYTE_CONTRACT_PASS candidate_sha256=69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0 route=castle_overview",
+    "MODAL_CONTRACT stage=gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation resolution=1024x768 candidate_sha256=69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0 route=castle_overview availability=existing_flags castle_index=0 runtime_acceptance=0",
+    "MODAL_MAP_HANDOFF tid=8a38 eip=00406fa0 esp=000edca4 render_hook=0040ad40 lower=00000000 post=00000000 surface=09fbe540 size=(1024,768)",
+    "MODAL_CASTLE_STATE index=0 ptr=0453c71a owner=0 xy=(14,20) flags=(0,0) style=1",
+    "MODAL_FORCE_CALL route=castle_overview availability=existing_flags entry=00422180 index=0 tid=8a38 original_esp=000edca4 return_sentinel=00406fa1 forced=1",
+    "MODAL_REJECT reason=overview_present_call"
+  ],
+  "initial_map_trace": {
+    "passed": true,
+    "status": "initial_paint_observed",
+    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+    "resolution": "1024x768",
+    "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+    "trace_contract": {
+      "profile": "native_four_border_tiles_v1",
+      "terrain_inclusive": [
+        32,
+        16,
+        991,
+        751
+      ],
+      "full_tiles": [
+        15,
+        11
+      ],
+      "ceil_tiles": [
+        15,
+        12
+      ],
+      "full_status_to_ready_stack_bytes": 148
+    },
+    "initial_sequence": {
+      "admission": {
+        "line": 206,
+        "seq": 1,
+        "bp": 76,
+        "tid": 35384,
+        "eip": 5651365,
+        "esp": 973996,
+        "records": [
+          {
+            "line": 207,
+            "marker": "PTILE_INITIAL_ADMISSION",
+            "text": "PTILE_INITIAL_ADMISSION status=1 tid=8a38 esp=000edcac"
+          }
+        ]
+      },
+      "ready": {
+        "line": 208,
+        "seq": 2,
+        "bp": 73,
+        "tid": 35384,
+        "eip": 5651374,
+        "esp": 973996,
+        "records": [
+          {
+            "line": 209,
+            "marker": "PTILE_MAP_READY",
+            "text": "PTILE_MAP_READY owner=0040ad40 size=(1024,768)"
+          }
+        ]
+      },
+      "pair": {
+        "converge_line": 210,
+        "present_line": 212,
+        "tid": 35384,
+        "esp": 973848
+      },
+      "return": {
+        "line": 214,
+        "seq": 5,
+        "bp": 77,
+        "tid": 35384,
+        "eip": 5651384,
+        "esp": 973996,
+        "records": [
+          {
+            "line": 215,
+            "marker": "PTILE_INITIAL_RETURN",
+            "text": "PTILE_INITIAL_RETURN tid=8a38 esp=000edcac result=3a0"
+          }
+        ]
+      },
+      "return_eax": 928
+    },
+    "full_pairs": [
+      {
+        "converge_line": 210,
+        "present_line": 212,
+        "tid": 35384,
+        "esp": 973848
+      }
+    ],
+    "event_integrity": {
+      "passed": true,
+      "errors": [],
+      "events": [
+        {
+          "line": 206,
+          "seq": 1,
+          "bp": 76,
+          "tid": 35384,
+          "eip": 5651365,
+          "esp": 973996,
+          "records": [
+            {
+              "line": 207,
+              "marker": "PTILE_INITIAL_ADMISSION",
+              "text": "PTILE_INITIAL_ADMISSION status=1 tid=8a38 esp=000edcac"
+            }
+          ]
+        },
+        {
+          "line": 208,
+          "seq": 2,
+          "bp": 73,
+          "tid": 35384,
+          "eip": 5651374,
+          "esp": 973996,
+          "records": [
+            {
+              "line": 209,
+              "marker": "PTILE_MAP_READY",
+              "text": "PTILE_MAP_READY owner=0040ad40 size=(1024,768)"
+            }
+          ]
+        },
+        {
+          "line": 210,
+          "seq": 3,
+          "bp": 70,
+          "tid": 35384,
+          "eip": 5650682,
+          "esp": 973848,
+          "records": [
+            {
+              "line": 211,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=full_converge status=1 tid=8a38 esp=000edc18 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 212,
+          "seq": 4,
+          "bp": 71,
+          "tid": 35384,
+          "eip": 5650738,
+          "esp": 973848,
+          "records": [
+            {
+              "line": 213,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=full_present status=1 tid=8a38 esp=000edc18 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 214,
+          "seq": 5,
+          "bp": 77,
+          "tid": 35384,
+          "eip": 5651384,
+          "esp": 973996,
+          "records": [
+            {
+              "line": 215,
+              "marker": "PTILE_INITIAL_RETURN",
+              "text": "PTILE_INITIAL_RETURN tid=8a38 esp=000edcac result=3a0"
+            }
+          ]
+        },
+        {
+          "line": 217,
+          "seq": 6,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 218,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,20) cell=(4,3) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 219,
+          "seq": 7,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 220,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,20) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 221,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 222,
+          "seq": 8,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 223,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,20) cell=(5,3) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 224,
+          "seq": 9,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 225,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,20) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 226,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 227,
+          "seq": 10,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 228,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,21) cell=(4,4) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 229,
+          "seq": 11,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 230,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,21) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 231,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 232,
+          "seq": 12,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 233,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,21) cell=(5,4) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 234,
+          "seq": 13,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 235,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,21) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 236,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 237,
+          "seq": 14,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 238,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,7) cell=(80,-10) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 239,
+          "seq": 15,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 240,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 241,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 242,
+          "seq": 16,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 243,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 244,
+          "seq": 17,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 245,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,7) cell=(81,-10) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 246,
+          "seq": 18,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 247,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 248,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 249,
+          "seq": 19,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 250,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 251,
+          "seq": 20,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 252,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,8) cell=(80,-9) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 253,
+          "seq": 21,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 254,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 255,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 256,
+          "seq": 22,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 257,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 258,
+          "seq": 23,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 259,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,8) cell=(81,-9) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 260,
+          "seq": 24,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 261,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 262,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 263,
+          "seq": 25,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 264,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 265,
+          "seq": 26,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 266,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,46) cell=(50,29) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 267,
+          "seq": 27,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 268,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 269,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 270,
+          "seq": 28,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 271,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 272,
+          "seq": 29,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 273,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,46) cell=(51,29) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 274,
+          "seq": 30,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 275,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 276,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 277,
+          "seq": 31,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 278,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 279,
+          "seq": 32,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 280,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,47) cell=(50,30) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 281,
+          "seq": 33,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 282,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 283,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 284,
+          "seq": 34,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 285,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 286,
+          "seq": 35,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 287,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,47) cell=(51,30) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 288,
+          "seq": 36,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 289,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 290,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 291,
+          "seq": 37,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 292,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 293,
+          "seq": 38,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 294,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,72) cell=(80,55) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 295,
+          "seq": 39,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 296,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 297,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 298,
+          "seq": 40,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 299,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 300,
+          "seq": 41,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 301,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,72) cell=(81,55) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 302,
+          "seq": 42,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 303,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 304,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 305,
+          "seq": 43,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 306,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 307,
+          "seq": 44,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 308,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,73) cell=(80,56) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 309,
+          "seq": 45,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 310,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 311,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 312,
+          "seq": 46,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 313,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 314,
+          "seq": 47,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 315,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,73) cell=(81,56) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 316,
+          "seq": 48,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 317,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 318,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 319,
+          "seq": 49,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 320,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 321,
+          "seq": 50,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973852,
+          "records": [
+            {
+              "line": 322,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc1c status=1 world=(0,0) cell=(-10,-17) present=1 caller=00418f4b"
+            }
+          ]
+        },
+        {
+          "line": 323,
+          "seq": 51,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973936,
+          "records": [
+            {
+              "line": 324,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc70 world=(0,0) caller=00418f4b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 325,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc70 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 326,
+          "seq": 52,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973944,
+          "records": [
+            {
+              "line": 327,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc78 world=(0,0) caller=00418f4b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 329,
+          "seq": 53,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 330,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,20) cell=(4,3) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 331,
+          "seq": 54,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 332,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,20) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 333,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 334,
+          "seq": 55,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 335,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,20) cell=(5,3) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 336,
+          "seq": 56,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 337,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,20) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 338,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 339,
+          "seq": 57,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 340,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,21) cell=(4,4) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 341,
+          "seq": 58,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 342,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,21) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 343,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 344,
+          "seq": 59,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 345,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,21) cell=(5,4) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 346,
+          "seq": 60,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 347,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,21) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 348,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 349,
+          "seq": 61,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 350,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,7) cell=(80,-10) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 351,
+          "seq": 62,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 352,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 353,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 354,
+          "seq": 63,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 355,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 356,
+          "seq": 64,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 357,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,7) cell=(81,-10) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 358,
+          "seq": 65,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 359,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 360,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 361,
+          "seq": 66,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 362,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 363,
+          "seq": 67,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 364,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,8) cell=(80,-9) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 365,
+          "seq": 68,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 366,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 367,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 368,
+          "seq": 69,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 369,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 370,
+          "seq": 70,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 371,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,8) cell=(81,-9) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 372,
+          "seq": 71,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 373,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 374,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 375,
+          "seq": 72,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 376,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 377,
+          "seq": 73,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 378,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,46) cell=(50,29) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 379,
+          "seq": 74,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 380,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 381,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 382,
+          "seq": 75,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 383,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 384,
+          "seq": 76,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 385,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,46) cell=(51,29) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 386,
+          "seq": 77,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 387,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 388,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 389,
+          "seq": 78,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 390,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 391,
+          "seq": 79,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 392,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,47) cell=(50,30) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 393,
+          "seq": 80,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 394,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 395,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 396,
+          "seq": 81,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 397,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 398,
+          "seq": 82,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 399,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,47) cell=(51,30) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 400,
+          "seq": 83,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 401,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 402,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 403,
+          "seq": 84,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 404,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 405,
+          "seq": 85,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 406,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,72) cell=(80,55) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 407,
+          "seq": 86,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 408,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 409,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 410,
+          "seq": 87,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 411,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 412,
+          "seq": 88,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 413,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,72) cell=(81,55) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 414,
+          "seq": 89,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 415,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 416,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 417,
+          "seq": 90,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 418,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 419,
+          "seq": 91,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 420,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,73) cell=(80,56) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 421,
+          "seq": 92,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 422,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 423,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 424,
+          "seq": 93,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 425,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 426,
+          "seq": 94,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 427,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,73) cell=(81,56) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 428,
+          "seq": 95,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 429,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 430,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 431,
+          "seq": 96,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 432,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 434,
+          "seq": 97,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 435,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,20) cell=(4,3) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 436,
+          "seq": 98,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 437,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,20) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 438,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 439,
+          "seq": 99,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 440,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,20) cell=(5,3) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 441,
+          "seq": 100,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 442,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,20) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 443,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 444,
+          "seq": 101,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 445,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,21) cell=(4,4) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 446,
+          "seq": 102,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 447,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,21) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 448,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 449,
+          "seq": 103,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 450,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,21) cell=(5,4) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 451,
+          "seq": 104,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 452,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,21) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 453,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 454,
+          "seq": 105,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 455,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,7) cell=(80,-10) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 456,
+          "seq": 106,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 457,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 458,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 459,
+          "seq": 107,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 460,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 461,
+          "seq": 108,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 462,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,7) cell=(81,-10) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 463,
+          "seq": 109,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 464,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 465,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 466,
+          "seq": 110,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 467,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 468,
+          "seq": 111,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 469,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,8) cell=(80,-9) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 470,
+          "seq": 112,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 471,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 472,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 473,
+          "seq": 113,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 474,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 475,
+          "seq": 114,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 476,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,8) cell=(81,-9) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 477,
+          "seq": 115,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 478,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 479,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 480,
+          "seq": 116,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 481,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 482,
+          "seq": 117,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 483,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,46) cell=(50,29) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 484,
+          "seq": 118,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 485,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 486,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 487,
+          "seq": 119,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 488,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 489,
+          "seq": 120,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 490,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,46) cell=(51,29) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 491,
+          "seq": 121,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 492,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 493,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 494,
+          "seq": 122,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 495,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 496,
+          "seq": 123,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 497,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,47) cell=(50,30) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 498,
+          "seq": 124,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 499,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 500,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 501,
+          "seq": 125,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 502,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 503,
+          "seq": 126,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 504,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,47) cell=(51,30) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 505,
+          "seq": 127,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 506,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 507,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 508,
+          "seq": 128,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 509,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 510,
+          "seq": 129,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 511,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,72) cell=(80,55) present=1 caller=004166ba"
+            }
+          ]
+        },
+        {
+          "line": 512,
+          "seq": 130,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 513,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 514,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 515,
+          "seq": 131,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 516,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 517,
+          "seq": 132,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 518,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,72) cell=(81,55) present=1 caller=004166da"
+            }
+          ]
+        },
+        {
+          "line": 519,
+          "seq": 133,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 520,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 521,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 522,
+          "seq": 134,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 523,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 524,
+          "seq": 135,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 525,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,73) cell=(80,56) present=1 caller=004166fa"
+            }
+          ]
+        },
+        {
+          "line": 526,
+          "seq": 136,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 527,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 528,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 529,
+          "seq": 137,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 530,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 531,
+          "seq": 138,
+          "bp": 75,
+          "tid": 35384,
+          "eip": 5650272,
+          "esp": 973856,
+          "records": [
+            {
+              "line": 532,
+              "marker": "PTILE_COMPOSITION_GUARD",
+              "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,73) cell=(81,56) present=1 caller=0041671b"
+            }
+          ]
+        },
+        {
+          "line": 533,
+          "seq": 139,
+          "bp": 72,
+          "tid": 35384,
+          "eip": 5650773,
+          "esp": 973940,
+          "records": [
+            {
+              "line": 534,
+              "marker": "PTILE_INCREMENTAL_INPUT",
+              "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            },
+            {
+              "line": 535,
+              "marker": "PTILE_STATUS",
+              "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+            }
+          ]
+        },
+        {
+          "line": 536,
+          "seq": 140,
+          "bp": 74,
+          "tid": 35384,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 537,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        }
+      ],
+      "raw_records": [
+        {
+          "line": 96,
+          "marker": "PTILE_CONTRACT_PASS",
+          "text": "PTILE_CONTRACT_PASS stage=gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation resolution=1024x768 candidate_sha256=69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0"
+        },
+        {
+          "line": 97,
+          "marker": "PTILE_SCOPE",
+          "text": "PTILE_SCOPE guarded_map_only manual_input_proof=false promotion_ready=false"
+        },
+        {
+          "line": 206,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=1 bp=76 tid=8a38 eip=00563ba5 esp=000edcac"
+        },
+        {
+          "line": 207,
+          "marker": "PTILE_INITIAL_ADMISSION",
+          "text": "PTILE_INITIAL_ADMISSION status=1 tid=8a38 esp=000edcac"
+        },
+        {
+          "line": 208,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=2 bp=73 tid=8a38 eip=00563bae esp=000edcac"
+        },
+        {
+          "line": 209,
+          "marker": "PTILE_MAP_READY",
+          "text": "PTILE_MAP_READY owner=0040ad40 size=(1024,768)"
+        },
+        {
+          "line": 210,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=3 bp=70 tid=8a38 eip=005638fa esp=000edc18"
+        },
+        {
+          "line": 211,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=full_converge status=1 tid=8a38 esp=000edc18 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 212,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=4 bp=71 tid=8a38 eip=00563932 esp=000edc18"
+        },
+        {
+          "line": 213,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=full_present status=1 tid=8a38 esp=000edc18 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 214,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=5 bp=77 tid=8a38 eip=00563bb8 esp=000edcac"
+        },
+        {
+          "line": 215,
+          "marker": "PTILE_INITIAL_RETURN",
+          "text": "PTILE_INITIAL_RETURN tid=8a38 esp=000edcac result=3a0"
+        },
+        {
+          "line": 217,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=6 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 218,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,20) cell=(4,3) present=1 caller=004166ba"
+        },
+        {
+          "line": 219,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=7 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 220,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,20) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 221,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 222,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=8 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 223,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,20) cell=(5,3) present=1 caller=004166da"
+        },
+        {
+          "line": 224,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=9 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 225,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,20) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 226,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 227,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=10 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 228,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,21) cell=(4,4) present=1 caller=004166fa"
+        },
+        {
+          "line": 229,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=11 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 230,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,21) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 231,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 232,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=12 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 233,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,21) cell=(5,4) present=1 caller=0041671b"
+        },
+        {
+          "line": 234,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=13 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 235,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,21) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 236,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 237,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=14 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 238,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,7) cell=(80,-10) present=1 caller=004166ba"
+        },
+        {
+          "line": 239,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=15 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 240,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 241,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 242,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=16 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 243,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 244,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=17 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 245,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,7) cell=(81,-10) present=1 caller=004166da"
+        },
+        {
+          "line": 246,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=18 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 247,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 248,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 249,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=19 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 250,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 251,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=20 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 252,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,8) cell=(80,-9) present=1 caller=004166fa"
+        },
+        {
+          "line": 253,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=21 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 254,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 255,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 256,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=22 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 257,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 258,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=23 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 259,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,8) cell=(81,-9) present=1 caller=0041671b"
+        },
+        {
+          "line": 260,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=24 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 261,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 262,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 263,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=25 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 264,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 265,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=26 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 266,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,46) cell=(50,29) present=1 caller=004166ba"
+        },
+        {
+          "line": 267,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=27 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 268,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 269,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 270,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=28 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 271,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 272,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=29 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 273,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,46) cell=(51,29) present=1 caller=004166da"
+        },
+        {
+          "line": 274,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=30 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 275,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 276,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 277,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=31 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 278,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 279,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=32 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 280,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,47) cell=(50,30) present=1 caller=004166fa"
+        },
+        {
+          "line": 281,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=33 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 282,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 283,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 284,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=34 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 285,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 286,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=35 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 287,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,47) cell=(51,30) present=1 caller=0041671b"
+        },
+        {
+          "line": 288,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=36 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 289,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 290,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 291,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=37 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 292,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 293,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=38 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 294,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,72) cell=(80,55) present=1 caller=004166ba"
+        },
+        {
+          "line": 295,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=39 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 296,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 297,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 298,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=40 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 299,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 300,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=41 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 301,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,72) cell=(81,55) present=1 caller=004166da"
+        },
+        {
+          "line": 302,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=42 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 303,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 304,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 305,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=43 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 306,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 307,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=44 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 308,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,73) cell=(80,56) present=1 caller=004166fa"
+        },
+        {
+          "line": 309,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=45 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 310,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 311,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 312,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=46 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 313,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 314,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=47 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 315,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,73) cell=(81,56) present=1 caller=0041671b"
+        },
+        {
+          "line": 316,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=48 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 317,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 318,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 319,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=49 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 320,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 321,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=50 bp=75 tid=8a38 eip=00563760 esp=000edc1c"
+        },
+        {
+          "line": 322,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc1c status=1 world=(0,0) cell=(-10,-17) present=1 caller=00418f4b"
+        },
+        {
+          "line": 323,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=51 bp=72 tid=8a38 eip=00563955 esp=000edc70"
+        },
+        {
+          "line": 324,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc70 world=(0,0) caller=00418f4b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 325,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc70 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 326,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=52 bp=74 tid=8a38 eip=00418afa esp=000edc78"
+        },
+        {
+          "line": 327,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc78 world=(0,0) caller=00418f4b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 329,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=53 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 330,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,20) cell=(4,3) present=1 caller=004166ba"
+        },
+        {
+          "line": 331,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=54 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 332,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,20) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 333,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 334,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=55 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 335,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,20) cell=(5,3) present=1 caller=004166da"
+        },
+        {
+          "line": 336,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=56 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 337,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,20) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 338,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 339,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=57 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 340,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,21) cell=(4,4) present=1 caller=004166fa"
+        },
+        {
+          "line": 341,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=58 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 342,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,21) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 343,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 344,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=59 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 345,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,21) cell=(5,4) present=1 caller=0041671b"
+        },
+        {
+          "line": 346,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=60 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 347,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,21) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 348,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 349,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=61 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 350,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,7) cell=(80,-10) present=1 caller=004166ba"
+        },
+        {
+          "line": 351,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=62 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 352,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 353,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 354,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=63 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 355,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 356,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=64 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 357,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,7) cell=(81,-10) present=1 caller=004166da"
+        },
+        {
+          "line": 358,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=65 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 359,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 360,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 361,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=66 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 362,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 363,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=67 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 364,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,8) cell=(80,-9) present=1 caller=004166fa"
+        },
+        {
+          "line": 365,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=68 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 366,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 367,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 368,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=69 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 369,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 370,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=70 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 371,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,8) cell=(81,-9) present=1 caller=0041671b"
+        },
+        {
+          "line": 372,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=71 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 373,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 374,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 375,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=72 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 376,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 377,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=73 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 378,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,46) cell=(50,29) present=1 caller=004166ba"
+        },
+        {
+          "line": 379,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=74 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 380,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 381,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 382,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=75 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 383,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 384,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=76 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 385,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,46) cell=(51,29) present=1 caller=004166da"
+        },
+        {
+          "line": 386,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=77 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 387,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 388,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 389,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=78 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 390,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 391,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=79 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 392,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,47) cell=(50,30) present=1 caller=004166fa"
+        },
+        {
+          "line": 393,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=80 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 394,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 395,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 396,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=81 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 397,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 398,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=82 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 399,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,47) cell=(51,30) present=1 caller=0041671b"
+        },
+        {
+          "line": 400,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=83 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 401,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 402,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 403,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=84 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 404,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 405,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=85 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 406,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,72) cell=(80,55) present=1 caller=004166ba"
+        },
+        {
+          "line": 407,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=86 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 408,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 409,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 410,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=87 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 411,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 412,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=88 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 413,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,72) cell=(81,55) present=1 caller=004166da"
+        },
+        {
+          "line": 414,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=89 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 415,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 416,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 417,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=90 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 418,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 419,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=91 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 420,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,73) cell=(80,56) present=1 caller=004166fa"
+        },
+        {
+          "line": 421,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=92 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 422,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 423,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 424,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=93 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 425,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 426,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=94 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 427,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,73) cell=(81,56) present=1 caller=0041671b"
+        },
+        {
+          "line": 428,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=95 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 429,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 430,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 431,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=96 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 432,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 434,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=97 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 435,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,20) cell=(4,3) present=1 caller=004166ba"
+        },
+        {
+          "line": 436,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=98 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 437,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,20) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 438,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 439,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=99 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 440,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,20) cell=(5,3) present=1 caller=004166da"
+        },
+        {
+          "line": 441,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=100 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 442,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,20) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 443,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 444,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=101 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 445,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(14,21) cell=(4,4) present=1 caller=004166fa"
+        },
+        {
+          "line": 446,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=102 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 447,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(14,21) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 448,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 449,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=103 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 450,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(15,21) cell=(5,4) present=1 caller=0041671b"
+        },
+        {
+          "line": 451,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=104 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 452,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(15,21) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 453,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=1 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 454,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=105 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 455,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,7) cell=(80,-10) present=1 caller=004166ba"
+        },
+        {
+          "line": 456,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=106 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 457,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 458,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 459,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=107 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 460,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,7) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 461,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=108 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 462,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,7) cell=(81,-10) present=1 caller=004166da"
+        },
+        {
+          "line": 463,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=109 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 464,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 465,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 466,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=110 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 467,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,7) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 468,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=111 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 469,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,8) cell=(80,-9) present=1 caller=004166fa"
+        },
+        {
+          "line": 470,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=112 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 471,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 472,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 473,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=113 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 474,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,8) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 475,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=114 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 476,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,8) cell=(81,-9) present=1 caller=0041671b"
+        },
+        {
+          "line": 477,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=115 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 478,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 479,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 480,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=116 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 481,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,8) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 482,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=117 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 483,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,46) cell=(50,29) present=1 caller=004166ba"
+        },
+        {
+          "line": 484,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=118 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 485,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 486,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 487,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=119 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 488,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,46) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 489,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=120 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 490,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,46) cell=(51,29) present=1 caller=004166da"
+        },
+        {
+          "line": 491,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=121 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 492,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 493,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 494,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=122 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 495,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,46) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 496,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=123 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 497,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(60,47) cell=(50,30) present=1 caller=004166fa"
+        },
+        {
+          "line": 498,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=124 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 499,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 500,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 501,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=125 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 502,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(60,47) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 503,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=126 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 504,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(61,47) cell=(51,30) present=1 caller=0041671b"
+        },
+        {
+          "line": 505,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=127 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 506,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 507,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 508,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=128 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 509,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(61,47) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 510,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=129 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 511,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,72) cell=(80,55) present=1 caller=004166ba"
+        },
+        {
+          "line": 512,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=130 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 513,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 514,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 515,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=131 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 516,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,72) caller=004166ba gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 517,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=132 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 518,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,72) cell=(81,55) present=1 caller=004166da"
+        },
+        {
+          "line": 519,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=133 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 520,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 521,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 522,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=134 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 523,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,72) caller=004166da gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 524,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=135 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 525,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(90,73) cell=(80,56) present=1 caller=004166fa"
+        },
+        {
+          "line": 526,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=136 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 527,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 528,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 529,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=137 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 530,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(90,73) caller=004166fa gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 531,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=138 bp=75 tid=8a38 eip=00563760 esp=000edc20"
+        },
+        {
+          "line": 532,
+          "marker": "PTILE_COMPOSITION_GUARD",
+          "text": "PTILE_COMPOSITION_GUARD tid=8a38 esp=000edc20 status=1 world=(91,73) cell=(81,56) present=1 caller=0041671b"
+        },
+        {
+          "line": 533,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=139 bp=72 tid=8a38 eip=00563955 esp=000edc74"
+        },
+        {
+          "line": 534,
+          "marker": "PTILE_INCREMENTAL_INPUT",
+          "text": "PTILE_INCREMENTAL_INPUT tid=8a38 esp=000edc74 world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 535,
+          "marker": "PTILE_STATUS",
+          "text": "PTILE_STATUS hook=incremental status=0 tid=8a38 esp=000edc74 owner=0040ad40 tile=00000000 post=00000000 lower=00000000 player=0"
+        },
+        {
+          "line": 536,
+          "marker": "PTILE_EVENT",
+          "text": "PTILE_EVENT seq=140 bp=74 tid=8a38 eip=00418afa esp=000edc7c"
+        },
+        {
+          "line": 537,
+          "marker": "PTILE_NATIVE_NOOP_EXIT",
+          "text": "PTILE_NATIVE_NOOP_EXIT tid=8a38 esp=000edc7c world=(91,73) caller=0041671b gd=044c0030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+        },
+        {
+          "line": 553,
+          "marker": "PTILE_TRACE_CLOSED",
+          "text": "PTILE_TRACE_CLOSED tid=8a38 eip=00406fa0 esp=000edca4"
+        }
+      ],
+      "boundary_records": [
+        {
+          "line": 553,
+          "marker": "PTILE_TRACE_CLOSED",
+          "text": "PTILE_TRACE_CLOSED tid=8a38 eip=00406fa0 esp=000edca4",
+          "tid": 35384,
+          "eip": 4222880,
+          "esp": 973988
+        }
+      ],
+      "scope": "Debugger-command output integrity only; native call/return, complete rendering, cleanup, visible input and promotion require separate evidence."
+    },
+    "manual_input_proof": false,
+    "promotion_ready": false,
+    "limits": [
+      "Initial-paint native sequence and logged auxiliary call integrity only; generic partial-tile status and loaded-byte gates remain separately required.",
+      "No screenshot, final visible composition, manual input, endurance or promotion proof is established.",
+      "Native paint-return EAX is recorded without interpreting it as success.",
+      "Trace closure checks native site, thread, ordering and an aligned observed stack; no closure-to-initial stack delta is claimed.",
+      "The four-update stop and host pause are harness source contracts, not an update count encoded in the close marker."
+    ],
+    "failures": []
+  },
+  "snapshot": null,
+  "frame_pixel_acceptance": false,
+  "action_bar_pixel_acceptance": false,
+  "cleanup": {
+    "candidates": [
+      {
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\framed-screen-castle_overview-1024x768-4001da8eefcced3a.exe",
+          "creation_filetime": 134331403999661419,
+          "process_id": 10068,
+          "handle_retained": true,
+          "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+          "creation_utc": "2026-09-06T03:53:19.9661419Z",
+          "parent_process_id": 12608
+        }
+      }
+    ],
+    "cdb": {
+      "termination_requested": false,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T03:53:19.7611916Z",
+        "handle_retained": true,
+        "creation_filetime": 134331403997611916,
+        "process_id": 12608
+      }
+    },
+    "desktop_closed": true
+  },
+  "artifacts": [
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\summary.json",
+      "sha256": "490cea4113911aca4d91317f831c8446eea68d9353da20018aa5370fe1ab45f2"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\plan.json",
+      "sha256": "a222ad12a183dc99ec2010d4779e37547c6b20f46fea1463020043d4860e6366"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\packet.json",
+      "sha256": "6d65ca514a1be1918e9a4eb041d655fd2ebc720f9a5613759fb73c7175a5c038"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\framed-screen.cdb",
+      "sha256": "1dd96e58cf687ea76d4a692926058cb5cc448e2640af45e707899044781bf3bf"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\cdb.log",
+      "sha256": "d34dbc528aab1fab0600a76b869fc5b2d8f4d8e4a487df1d5cc09b626aad286b"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\host-stdout.json",
+      "sha256": "07f031fe936246a03cc45f6b083ba1e8d3cddde0efd582a81cd7b75a07b411dc"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\reviewed-sources\\framed_screen_probe.py",
+      "sha256": "088e41e93a20900d942f51fd03c96b469a247735eb9fc2703c200a9edbda11e7"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\reviewed-sources\\framed_screen_trace.py",
+      "sha256": "65448b6c8a6853a14e4873d406383cd20f9556bac7fb09ffec2a70f1c4a89935"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\reviewed-sources\\run_framed_screen_capture.ps1",
+      "sha256": "7acf7bbaa6a5173b10fc80b3491a872025942dcc5db371da490ee9c13751e53f"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\reviewed-sources\\test_framed_screen_capture.py",
+      "sha256": "e333bad7eb1ccf99f6a5376807c64f32b52dedf11165e612ef0c0c05dd3d5c0c"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\reviewed-sources\\test_framed_screen_probe.py",
+      "sha256": "152df1d3753c58958c70616a49db50aa9a1666eead1f4a4bba4a9db265bc2a1d"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\reviewed-sources\\test_framed_screen_trace.py",
+      "sha256": "50782f65086949bb6b1f5df23d4f6eeeeca54f98511cd209a5507262ef740cd4"
+    }
+  ],
+  "diagnosis": {
+    "status": "inference_to_verify_in_distinct_run",
+    "observation": "Forced EIP422180 was followed by present-call rejection without an overview-entry marker.",
+    "candidate_cause": "CDB continuation skipped the breakpoint at the newly assigned current EIP. Observe the authenticated first PUSH EBX at422181 in a separately prepared revision."
+  },
+  "limits": [
+    "No screenshot or modal rendering result was produced.",
+    "Game and debugger handles were both observed signaled and closed; hidden desktop closed.",
+    "The separately passing initial-map trace does not make modal execution pass.",
+    "No visible/manual-input/promotion proof."
+  ]
+}

@@ -1,7 +1,7 @@
 # Castle Overview Evidence Matrix
 
-- Overall: FAIL
-- Generated: `2026-09-08T11:21:09+02:00`
+- Overall: PASS
+- Generated: `2026-09-06T05:57:29+02:00`
 - Stage: `castlecenter-all`
 - Promotion status: `validation_stage_only`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, or visible windows
@@ -24,7 +24,7 @@
 - Surface size: `[800, 600]`
 - Centered geometry: PASS
 
-![castle overview surface](C:\Users\andrz\.codex\worktrees\7d0c\clash-hd\captures\archive\cdb-surface-dump-20260712-144019\surface.png)
+![castle overview surface](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144019\surface.png)
 
 ## Input Hitboxes
 
@@ -37,21 +37,16 @@
 
 ## Owner/Hitmap State
 
-- Current owner records: FAIL
-- Active records: `None`
-- Interesting feature-flag records: `None`
-- Forced owner-feature hitmap: FAIL
-- Present forced raw IDs:
+- Current owner records: PASS
+- Active records: `4`
+- Interesting feature-flag records: `0`
+- Forced owner-feature hitmap: PASS
+- Present forced raw IDs: 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF
 
 ## Additional Screenshots
 
-![focused overview hitbox surface](C:\Users\andrz\.codex\worktrees\7d0c\clash-hd\captures\archive\cdb-surface-dump-20260712-144151\surface.png)
+![focused overview hitbox surface](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144151\surface.png)
 
-![visible-command overview multi-hit surface](C:\Users\andrz\.codex\worktrees\7d0c\clash-hd\captures\archive\cdb-surface-dump-20260712-144245\surface.png)
+![visible-command overview multi-hit surface](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144245\surface.png)
 
-![dormant-command overview multi-hit surface](C:\Users\andrz\.codex\worktrees\7d0c\clash-hd\captures\archive\cdb-surface-dump-20260712-144327\surface.png)
-
-## Failures
-
-- owner_records: missing owner records raw dump: captures\current\castle-owner-records-current.raw
-- forced_hitmap: missing forced hitmap raw dump: captures\archive\castle-overview-hitmap-flags1f.raw
+![dormant-command overview multi-hit surface](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144327\surface.png)

@@ -1,10 +1,10 @@
 # Right-Bottom Blocker Triage
 
-- Overall: FAIL
-- Generated: `2026-09-08T11:20:26+02:00`
+- Overall: PASS
+- Generated: `2026-09-06T05:56:59+02:00`
 - Runtime policy: repo-only evidence triage; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only while the current blocker is explicitly classified as non-promoting: controlled composition is recovered, natural owner/action rows are absent, the natural route is either owner-flag gated, blocked inside the slot5 Render_Begin/DD_Pump/copyback lane, blocked by the documented loop-state/input-resample/source-hold lane, or has only debugger-forced native action-click copyback proof; the next proof path remains hidden diagnosis or approved manual input
-- Classification: `triage_incomplete_or_stale`
+- Classification: `controlled_recovered_but_natural_route_nonpromoting`
 - Promotion ready: `False`
 - stable_stage_should_change: `False`
 - Conclusion: The right-bottom action/menu surface is not stable-promotable yet. Controlled composition recovers the lower/right UI, and the v17b natural slot-5 diagnostic proves the right-bottom wrapper can allocate the native surface, enter stock 00435BC0, force a native action-button click at (81,441), reach descriptor 0051519a and callback 00435620, set the modal exit state, return from stock, and copy the native surface back into the 800x600 HD surface without an AV. That is debugger-forced proof, not a real input-source or manual DirectInput proof, so stable promotion remains deferred.
@@ -14,7 +14,7 @@
 - `controlled_composition_recovered`: `PASS`
 - `natural_ui_owner_action_rows_absent`: `PASS`
 - `natural_route_blocker_documented`: `PASS`
-- `hidden_fixture_plan_ready`: `FAIL`
+- `hidden_fixture_plan_ready`: `PASS`
 - `manual_plan_waiting_for_approval`: `PASS`
 - `promotion_deferred`: `PASS`
 
@@ -79,7 +79,3 @@
 - decide whether the HD wrapper should drive a native-modal input transform or preserve the stock modal loop while copying back only after exit
 - reduce the v17b diagnostic into a patch-stage decision that excludes debugger-only coordinate injection
 - collect approved visible/manual DirectInput proof and validate the manual proof manifest
-
-## Failures
-
-- triage check failed: hidden_fixture_plan_ready

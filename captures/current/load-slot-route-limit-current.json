@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-08T11:20:25+02:00",
-  "passed": false,
+  "generated_at": "2026-09-06T05:56:59+02:00",
+  "passed": true,
   "runtime_policy": "repo-only; reads decompilation text, harness text, and existing hidden-desktop CDB artifacts; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
-  "guard_policy": "passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the current slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame",
+  "guard_policy": "passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the historical slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame",
   "promotion_ready": false,
   "static_decomp": {
     "path": "C:\\Clash\\clash95.c",
@@ -25,19 +25,218 @@
   "harness": {
     "path": "scripts\\cdb\\run_cdb_surface_dump.ps1",
     "exists": true,
-    "passed": false,
+    "passed": true,
     "markers": {
       "validate_range_0_9": true,
-      "load_mouse_x": false,
-      "load_mouse_y_formula": false,
+      "renderer_path": true,
+      "renderer_arguments": true,
+      "extra_recipe_argument": true,
+      "renderer_invocation": true,
+      "recipe_parse": true,
+      "geometry_source": true,
+      "resolution_source": true,
+      "template_source": true,
+      "load_mouse_x": true,
+      "load_mouse_y_formula": true,
       "load_mouse_raw_x": true,
       "load_mouse_raw_y": true,
-      "load_slot_replacement": true
+      "load_slot_replacement": true,
+      "load_raw_x_replacement": true,
+      "load_raw_y_replacement": true,
+      "geometry_wiring_order": true,
+      "renderer_failure_stops": true
     },
-    "failures": [
-      "missing marker load_mouse_x: $loadMouseX = 320",
-      "missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)"
-    ]
+    "generated_geometry": {
+      "source": "C:\\Users\\andrz\\git\\clash-hd\\tools\\render_cdb_surface_probe.py",
+      "source_sha256": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+      "resolution": "800x600",
+      "extra_probe": false,
+      "rows": [
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 0,
+          "mouse": [
+            320,
+            166
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 1,
+          "mouse": [
+            320,
+            188
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 2,
+          "mouse": [
+            320,
+            210
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 3,
+          "mouse": [
+            320,
+            232
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 4,
+          "mouse": [
+            320,
+            254
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 5,
+          "mouse": [
+            320,
+            276
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 6,
+          "mouse": [
+            320,
+            298
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 7,
+          "mouse": [
+            320,
+            320
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 8,
+          "mouse": [
+            320,
+            342
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+          "slot": 9,
+          "mouse": [
+            320,
+            364
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 0,
+          "mouse": [
+            320,
+            166
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 1,
+          "mouse": [
+            320,
+            188
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 2,
+          "mouse": [
+            320,
+            210
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 3,
+          "mouse": [
+            320,
+            232
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 4,
+          "mouse": [
+            320,
+            254
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 5,
+          "mouse": [
+            320,
+            276
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 6,
+          "mouse": [
+            320,
+            298
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 7,
+          "mouse": [
+            320,
+            320
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 8,
+          "mouse": [
+            320,
+            342
+          ],
+          "passed": true
+        },
+        {
+          "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
+          "slot": 9,
+          "mouse": [
+            320,
+            364
+          ],
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "failures": []
+    },
+    "failures": []
   },
   "slot_status": {
     "slot2_success": {
@@ -347,7 +546,7 @@
   },
   "summary": {
     "static_load_rows": "0..9",
-    "harness_mouse_formula": null,
+    "harness_mouse_formula": "x=320, y=166 + 22 * LoadSlot",
     "archived_success_slots": [
       2
     ],
@@ -357,18 +556,15 @@
       5
     ],
     "recent_slot5_blocked": true,
-    "current_boundary": "static code and harness parameters allow rows 0-9, but current archived hidden evidence only proves the slot-2 row path. Slots 3, 4, and 5, plus the current slot-5 right-bottom attempt, stall before force-select/accept and LOADSAVE.",
+    "current_boundary": "static code and canonical harness geometry allow rows 0-9. This historical hidden diagnostic cohort proves the slot-2 row path and records rows 3-5 stalling before force-select/accept and LOADSAVE. These archived diagnostics do not reopen the subsequently resolved right-bottom work or prove current input.",
     "next_proof_options": [
-      "debug why rows 3-5 stop before the forced load-select breakpoint under the current CDB route",
-      "or create an isolated test working directory that maps the slot-5 save state to a proven row without editing C:\\Clash\\save",
-      "or use a direct-loader probe, but label it non-natural route evidence until menu selection is proven"
+      "historical diagnostic option: inspect why rows 3-5 stopped before the archived forced load-select breakpoint",
+      "historical diagnostic option: use an isolated test working directory without editing C:\\Clash\\save",
+      "direct-loader evidence remains non-natural route evidence; consult the current handoff before scheduling new work"
     ],
     "cohort_candidate_sha256": "F3BC31F22EC15765D525ED3EADD00183C78BB1B8F76B3B1C3978AF3480A546EF",
     "cohort_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter"
   },
   "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
-  "failures": [
-    "harness: missing marker load_mouse_x: $loadMouseX = 320",
-    "harness: missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)"
-  ]
+  "failures": []
 }

@@ -70,6 +70,14 @@ Run individual fixtures with `python tools/test_<name>.py`.
   8-bit software surface. It does not capture every minimap, tooltip, or HUD
   layer and can alter palette presentation. Do not classify proxy-only black
   regions as real rendering defects without visible-runtime corroboration.
+- **Hidden CDB soak** (`scripts/cdb/run_hidden_soak.ps1`) is a separate,
+  additive endurance evidence class. It runs on a hidden desktop with the
+  non-presenting memory proxy, samples the software surface through host
+  `ReadProcessMemory`, and keeps full host process telemetry. It must record
+  `environment=hidden_cdb_host` and
+  `input_responsiveness=not_applicable_hidden`; it never proves manual input,
+  visible composition, or promotion readiness. The script is dry-run-only
+  unless `-Execute` is supplied.
 - **Visible runtime** requires explicit approval. It provides real colors and
   final composition, but GDI capture can tear on animated screens. Always
   check a visible grab for tearing before trusting it: run
@@ -90,12 +98,13 @@ The stable stage and 800x600 default remain unchanged.
 
 - Expanded tactical battle has a separate `-castlecenter-all-battlehd`
   implementation lane at 1280x720 (17x7 tile capacity, native right sidebar).
-  See `reports/battle_hd_1280_validation.md` and the separate current battle-HD
-  validation report. Centered-battle evidence does not prove expanded geometry
-  or input; this lane remains validation-only.
-
-- Terrain tooltip and selected-unit action-panel anchoring still need a
-  validation-stage implementation and evidence.
+  See the [validation report](../../reports/battle_hd_1280_validation.md)
+  and [current evidence](../../captures/current/battle-hd-validation-current.md).
+  Centered-battle evidence does not prove expanded geometry or input; this lane
+  remains validation-only.
+- Terrain tooltip and selected-unit action-panel anchoring have validation-stage
+  implementations and hidden/visible layout evidence. They remain outside the
+  protected stable stage pending the separate manual-input promotion boundary.
 - Right-bottom composition: the rows-present vs rows-absent gate-design
   contradiction is **resolved**. The user's 2026-07-14 ruling (commit
   `96a3d078`) accepts the slot5-as-slot0 fixture run
@@ -112,7 +121,10 @@ The stable stage and 800x600 default remain unchanged.
   visible-window/CDB wrapper split — the `CLASH_PROXY_PRESENT` painting proxy
   (present-on-`Unlock`) resolved that. Manual DirectInput proof for the five
   checklist targets is still outstanding.
-- Long-duration continuity and soak runs require fresh approval.
+- The hidden-CDB soak class may provide map render/process endurance without a
+  visible-runtime approval, but it must complete the ordered short ladder and
+  both 2h routes honestly. Visible/manual continuity and the five manual-input
+  targets still require fresh approval and remain separate claims.
 
 ## Safe default actions
 

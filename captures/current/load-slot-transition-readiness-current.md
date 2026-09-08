@@ -1,10 +1,10 @@
 # Load Slot Transition Readiness Matrix
 
-- Overall: FAIL
-- Generated: `2026-09-08T11:21:05+02:00`
+- Overall: PASS
+- Generated: `2026-09-06T05:57:27+02:00`
 - Runtime policy: repo-only transition readiness matrix; reads generated JSON reports and does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when rows 3-5 are still classified as pre-0044895A blockers, the late-entry probe, row geometry, generated previews, and summary parser are all passing, every future command is hidden-desktop, target-slot acceptance is strict, and the result acceptance remains non-promoting
-- Classification: `transition_readiness_incomplete_or_stale`
+- Classification: `ready_for_hidden_transition_probe`
 - Promotion ready: `False`
 - stable_stage_should_change: `False`
 - Target rows: `[3, 4, 5]`
@@ -25,9 +25,9 @@
 - `run_plan_targets_rows_3_4_5`: `PASS`
 - `run_plan_hidden_commands`: `PASS`
 - `summary_commands_strict`: `PASS`
-- `geometry_guard_passed`: `FAIL`
+- `geometry_guard_passed`: `PASS`
 - `geometry_rows_match_targets`: `PASS`
-- `probe_preview_passed`: `FAIL`
+- `probe_preview_passed`: `PASS`
 - `probe_preview_rows_match_targets`: `PASS`
 - `probe_preview_hashes_present`: `PASS`
 - `summary_parser_tests_passed`: `PASS`
@@ -53,8 +53,3 @@
 - summarize each resulting LSTRANS log with --require-entry --require-slot-match so target_slot values must stay row-consistent
 - treat LOADSAVE/PlayGame rows as success only after rerunning the summary with --require-success and matching slot rows
 - keep the evidence non-promoting until natural owner/action proof or approved manual DirectInput proof exists
-
-## Failures
-
-- transition readiness check failed: geometry_guard_passed
-- transition readiness check failed: probe_preview_passed

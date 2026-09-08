@@ -1,52 +1,98 @@
 {
-  "generated_at": "2026-09-08T09:22:02.590807+00:00",
-  "passed": false,
+  "generated_at": "2026-09-06T03:57:58.445006+00:00",
+  "passed": true,
+  "status": "not_applicable_short_ladder_complete",
+  "terminal_short_ladder": true,
+  "ladder_complete_verified": true,
   "runtime_policy": "repo-only soak dry-run plan guard; invokes the PowerShell harness only without -Execute unless --read-plan-json is supplied; does not launch Clash95, CDB, wrappers, or visible windows",
-  "status": "dry_run_plan_invalid",
   "source_artifacts": {
-    "step_status_json": "captures\\current\\hd-soak-short-step-status-current.json",
-    "script": "scripts\\smoke\\run_hd_soak.ps1",
-    "read_plan_json": null
+    "step_status_json": "captures\\current\\hd-soak-short-step-status-current.json"
   },
-  "current_step": {
-    "id": "short2_map_idle",
-    "status": "failed_classified_window_missing_while_process_alive",
-    "tier": "short2",
-    "route": "map-idle",
-    "duration_sec": 120,
-    "paths": {
-      "report_json": "captures\\current\\hd-soak-short2-map-idle-current.json",
-      "report_markdown": "captures\\current\\hd-soak-short2-map-idle-current.md",
-      "guard_json": "captures\\current\\hd-soak-short2-map-idle-guard-current.json",
-      "guard_markdown": "captures\\current\\hd-soak-short2-map-idle-guard-current.md",
-      "triage_json": "captures\\current\\hd-soak-short2-map-idle-triage-current.json",
-      "triage_markdown": "captures\\current\\hd-soak-short2-map-idle-triage-current.md"
+  "current_step": null,
+  "completed_predecessor_evidence": [
+    {
+      "id": "short2_menu_idle",
+      "report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
+      "guard": "captures\\current\\hd-soak-short2-menu-idle-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-short2-menu-idle-current.json",
+      "environment": "host_visible",
+      "report_sha256": "9f70dfaf14073800a9ac7fca319852d8cf8c2d45982ac01d50a6f59920ffd6b4",
+      "guard_sha256": "df50f21d6505a8c168a82aad9490697db16f0b2fd596e54374e1ea3f3c4c7d31"
+    },
+    {
+      "id": "short2_map_idle",
+      "report": "captures\\current\\hd-soak-short2-map-idle-current.json",
+      "guard": "captures\\current\\hd-soak-short2-map-idle-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-092939-516-map-idle\\report.json",
+      "environment": "hidden_cdb_host",
+      "report_sha256": "c3a0decaa7cb8a7ba3d41258f3f41e9f35d1e14bd706e6e5f8cefd6e59213440",
+      "guard_sha256": "5c1b427368eb01ed91a33531cd42acd023b4730165b60c9701b0ec073282a4ca"
+    },
+    {
+      "id": "short10_map_idle",
+      "report": "captures\\current\\hd-soak-short10-map-idle-current.json",
+      "guard": "captures\\current\\hd-soak-short10-map-idle-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-094801-748-map-idle\\report.json",
+      "environment": "hidden_cdb_host",
+      "report_sha256": "83e1c4e303b000a01eab25b84f92ffbc16f7b0ce5758dc74ee0afaf6c72d5d8c",
+      "guard_sha256": "0601afd0618cb0b4fee56108740285785a2e63c54881f95b936bf50c7e31073f"
+    },
+    {
+      "id": "short10_map_pan",
+      "report": "captures\\current\\hd-soak-short10-map-pan-current.json",
+      "guard": "captures\\current\\hd-soak-short10-map-pan-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\report.json",
+      "environment": "hidden_cdb_host",
+      "report_sha256": "381ee76c3cae500d8b2658a442bad0d861305b786dd743a4e9ab5b4de3c4b37c",
+      "guard_sha256": "46c9ea5e5c460289a8f9e90c3591aecaacbf2d0a6d5ba82834ae1f0cec92a0b7"
+    },
+    {
+      "id": "short30_map_pan",
+      "report": "captures\\current\\hd-soak-short30-map-pan-current.json",
+      "guard": "captures\\current\\hd-soak-short30-map-pan-guard-current.json",
+      "candidate_sha256": "5e162fa81df59533e0b99a0dcbc9ea24280dbec46411ae871e968d6536c08b33",
+      "declared_source_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-110757-602-map-pan\\report.json",
+      "environment": "hidden_cdb_host",
+      "report_sha256": "33dd4124dd09d845a401b4006d8faa39540bca5e5ed632151a5e4298bbe25b3c",
+      "guard_sha256": "495b0db9dd8ad794269afc39d63cce78fbc12a92ae4f1268970684adfb5293c8"
     }
+  ],
+  "runtime_authorized": false,
+  "approval_required": false,
+  "approved": false,
+  "promotion_ready": false,
+  "manual_input_proof": false,
+  "safe_dry_run_command": null,
+  "approval_gated_execute_command": null,
+  "hidden_runtime_command": null,
+  "recommended_runtime_command": null,
+  "exact_runtime_command": null,
+  "post_run_validation": [],
+  "commands": {},
+  "plan": {},
+  "dry_run_plan": {
+    "approval_gated_execute_command": null
   },
   "invocation": {
-    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\smoke\\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\\current\\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\\current\\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10.0 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json",
-    "exit_code": 1,
-    "stderr": "Get-DxcfgWindowedStatus : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or \noperable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try \nagain.\nAt C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\scripts\\smoke\\run_hd_soak.ps1:935 char:17\n+ ... dowedMode = Get-DxcfgWindowedStatus -Path (Join-Path $WorkDirFull 'dx ...\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [Get-DxcfgWindowedStatus], CommandNotFoundExceptio \n   n\n    + FullyQualifiedErrorId : CommandNotFoundException,Get-DxcfgWindowedStatus",
-    "used_fixture_plan": false
+    "command": null,
+    "exit_code": null,
+    "executed": false
   },
-  "plan": {},
-  "approval_ttl": {
-    "expires_utc": null,
-    "remaining_seconds": null,
-    "min_remaining_minutes": 30,
-    "passed": false,
-    "failures": [
-      "plan visible runtime approval expires_utc is missing or invalid"
-    ]
-  },
-  "approval_gated_execute_command": null,
+  "approval_boundary": "This terminal short-ladder status authorizes no runtime or approval request. Long-soak, manual-input and promotion evidence require their separate gates.",
+  "remaining_requirements": [
+    "long-soak evidence",
+    "manual-input proof and required visible approval",
+    "explicit promotion decision"
+  ],
   "locks": {
     "stable_stage_should_change": false,
     "right_bottom_promotion_blocked": true,
-    "long_tiers_locked": true,
+    "long_tiers_locked": false,
     "future_lanes_locked": true
   },
-  "failures": [
-    "dry-run harness did not produce a readable JSON plan"
-  ]
+  "failures": []
 }

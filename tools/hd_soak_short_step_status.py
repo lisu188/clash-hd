@@ -28,6 +28,9 @@ DEFAULT_MANIFEST_JSON = Path("captures/current/hd-soak-short-artifact-manifest-c
 DEFAULT_LEGACY_REPORT_JSON = Path("captures/current/hd-soak-short-current.json")
 DEFAULT_JSON = Path("captures/current/hd-soak-short-step-status-current.json")
 DEFAULT_MD = Path("captures/current/hd-soak-short-step-status-current.md")
+HOST_VISIBLE_ENVIRONMENT = "host_visible"
+HOST_VISIBLE_EVIDENCE_CLASS = "host_visible_runtime_soak"
+HIDDEN_ENVIRONMENT = "hidden_cdb_host"
 
 
 def status_text(passed: bool) -> str:
@@ -40,13 +43,34 @@ def load_json(path: Path) -> dict[str, Any] | None:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
+def evidence_binding(report: dict[str, Any]) -> tuple[Any, Any]:
+    environment = report.get("environment", HOST_VISIBLE_ENVIRONMENT)
+    evidence_class = report.get(
+        "evidence_class", HOST_VISIBLE_EVIDENCE_CLASS if environment == HOST_VISIBLE_ENVIRONMENT else None
+    )
+    return environment, evidence_class
+
+
+def valid_evidence_binding(report: dict[str, Any]) -> bool:
+    environment, evidence_class = evidence_binding(report)
+    classes = {
+        HOST_VISIBLE_ENVIRONMENT: HOST_VISIBLE_EVIDENCE_CLASS,
+        HIDDEN_ENVIRONMENT: "approved_hidden_cdb_host_soak",
+        "guest_win98_qemu": "approved_guest_win98_directdraw",
+    }
+    return isinstance(environment, str) and environment in classes and evidence_class == classes[environment]
+
+
 def matches_step(report: dict[str, Any] | None, step: dict[str, Any]) -> bool:
     if not report:
         return False
+    environment, _ = evidence_binding(report)
     return (
-        report.get("stage") == PROTECTED_STABLE_STAGE
+        valid_evidence_binding(report)
+        and report.get("stage") == PROTECTED_STABLE_STAGE
         and report.get("tier") == step.get("tier")
         and report.get("route") == step.get("route")
+        and not (environment == HIDDEN_ENVIRONMENT and step.get("route") == "menu-idle")
     )
 
 
@@ -68,6 +92,7 @@ def artifact_mismatch_failures(
     step: dict[str, Any],
     report_path: Path,
     artifact_name: str,
+    source_report_data: dict[str, Any],
 ) -> list[str]:
     failures: list[str] = []
     if artifact.get("stage") != PROTECTED_STABLE_STAGE:
@@ -80,16 +105,44 @@ def artifact_mismatch_failures(
     expected_report = normalized_path_text(report_path)
     if source_report != expected_report:
         failures.append(f"{step['id']} {artifact_name} source_report does not match canonical report")
+    report_environment, report_evidence_class = evidence_binding(source_report_data)
+    artifact_environment, artifact_evidence_class = evidence_binding(artifact)
+    if artifact_environment != report_environment:
+        failures.append(
+            f"{step['id']} {artifact_name} environment does not match canonical report environment"
+        )
+    if artifact_evidence_class != report_evidence_class:
+        failures.append(
+            f"{step['id']} {artifact_name} evidence_class does not match canonical report evidence_class"
+        )
     return failures
+
+
+def recommended_runtime_command(step: dict[str, Any]) -> str | None:
+    return step.get("recommended_runtime_command") or step.get("approval_gated_runtime_command")
+
+
+def missing_runtime_status(step: dict[str, Any]) -> str:
+    if step.get("preferred_environment") == HIDDEN_ENVIRONMENT:
+        return "missing_pending_hidden_runtime"
+    return "missing_pending_approval"
 
 
 def triage_visual_summary(triage: dict[str, Any]) -> dict[str, Any]:
     visual = triage.get("visual_anomalies") or {}
+    intro = triage.get("intro_skip_route_result") or {}
+    wer = triage.get("wer_followup") or {}
     return {
         "visual_anomaly_passed": visual.get("passed"),
         "black_patch_risk_count": visual.get("black_patch_risk_count"),
         "palette_or_stripe_risk_count": visual.get("palette_or_stripe_risk_count"),
         "missing_nonblack_bounds_count": visual.get("missing_nonblack_bounds_count"),
+        "intro_skip_click_mode": intro.get("click_mode"),
+        "intro_skip_click_repeat": intro.get("click_repeat"),
+        "intro_skip_click_path_verified": intro.get("click_path_verified"),
+        "wer_followup_matched": wer.get("matched"),
+        "wer_followup_status": wer.get("status"),
+        "window_health_mitigation_ready": wer.get("window_health_mitigation_ready"),
     }
 
 
@@ -121,7 +174,7 @@ def step_status(
                     "canonical_report_present": False,
                     "legacy_report_matches": True,
                     "legacy_report_pending_approval": True,
-                    "next_command": step.get("approval_gated_runtime_command"),
+                    "next_command": recommended_runtime_command(step),
                 },
             )
         if not prerequisites_passed:
@@ -136,13 +189,13 @@ def step_status(
                 },
             )
         return (
-            "missing_pending_approval",
+            missing_runtime_status(step),
             False,
             failures,
             {
                 "canonical_report_present": False,
                 "legacy_report_matches": legacy_matches,
-                "next_command": step.get("approval_gated_runtime_command"),
+                "next_command": recommended_runtime_command(step),
             },
         )
 
@@ -173,7 +226,7 @@ def step_status(
             },
         )
 
-    guard_mismatches = artifact_mismatch_failures(guard, step, report_path, "guard")
+    guard_mismatches = artifact_mismatch_failures(guard, step, report_path, "guard", report)
     if guard_mismatches:
         failures.extend(guard_mismatches)
         return (
@@ -191,7 +244,42 @@ def step_status(
         )
 
     guard_passed = bool(guard.get("overall"))
+    # Label the evidence environment on the step row: host visible runtime is
+    # the default; the approved hidden_cdb_host (and guest) classes are
+    # accepted the same way but must stay visibly labeled.
+    report_environment = str(report.get("environment") or "host_visible")
+    _, report_evidence_class = evidence_binding(report)
+    triage_mismatches = (
+        artifact_mismatch_failures(triage, step, report_path, "triage", report)
+        if triage is not None
+        else []
+    )
+    if triage_mismatches:
+        failures.extend(triage_mismatches)
+        return (
+            "invalid_triage_mismatch",
+            False,
+            failures,
+            {
+                "canonical_report_present": True,
+                "guard_present": True,
+                "guard_overall": guard.get("overall"),
+                "triage_present": True,
+                "triage_source_report": triage.get("source_report"),
+                "expected_source_report": str(report_path),
+                "classification": triage.get("classification"),
+            },
+        )
     if report.get("passed") is True and guard_passed:
+        if not prerequisites_passed:
+            return (
+                "locked_by_prerequisite", False, failures,
+                {
+                    "canonical_report_present": True, "guard_present": True,
+                    "guard_overall": guard.get("overall"), "environment": report_environment,
+                    "evidence_class": report_evidence_class, "next_command": None,
+                },
+            )
         return (
             "pass",
             True,
@@ -202,6 +290,8 @@ def step_status(
                 "triage_present": triage is not None,
                 "guard_overall": guard.get("overall"),
                 "executed": report.get("executed"),
+                "environment": report_environment,
+                "evidence_class": report_evidence_class,
                 "frame_sample_count": report.get("frame_sample_count"),
                 "final_route_marker": report.get("final_route_marker"),
                 "candidate_sha256": report.get("candidate_sha256"),
@@ -223,26 +313,6 @@ def step_status(
             },
         )
 
-    if triage is not None:
-        triage_mismatches = artifact_mismatch_failures(triage, step, report_path, "triage")
-        if triage_mismatches:
-            failures.extend(triage_mismatches)
-            return (
-                "invalid_triage_mismatch",
-                False,
-                failures,
-                {
-                    "canonical_report_present": True,
-                    "guard_present": True,
-                    "guard_overall": guard.get("overall"),
-                    "triage_present": True,
-                    "triage_source_report": triage.get("source_report"),
-                    "expected_source_report": str(report_path),
-                    "classification": triage.get("classification"),
-                },
-            )
-
-    wer_followup = triage.get("wer_followup") or {}
     return (
         f"failed_classified_{triage.get('classification')}",
         False,
@@ -255,14 +325,11 @@ def step_status(
             "triage_passed": triage.get("passed"),
             "classification": triage.get("classification"),
             "next_probe": triage.get("next_probe"),
+            "environment": report_environment,
+            "evidence_class": report_evidence_class,
             "frame_sample_count": report.get("frame_sample_count"),
             "final_route_marker": report.get("final_route_marker"),
             "candidate_sha256": report.get("candidate_sha256"),
-            "wer_followup_matched": wer_followup.get("matched"),
-            "wer_followup_status": wer_followup.get("status"),
-            "window_health_mitigation_ready": wer_followup.get(
-                "window_health_mitigation_ready"
-            ),
             **triage_visual_summary(triage),
         },
     )
@@ -308,6 +375,10 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             "summary": summary,
             "safe_dry_run_command": step.get("safe_dry_run_command"),
             "approval_gated_runtime_command": step.get("approval_gated_runtime_command"),
+            "hidden_cdb_safe_dry_run_command": step.get("hidden_cdb_safe_dry_run_command"),
+            "hidden_cdb_runtime_command": step.get("hidden_cdb_runtime_command"),
+            "recommended_runtime_command": step.get("recommended_runtime_command"),
+            "preferred_environment": step.get("preferred_environment"),
         }
         passed_by_id[str(step.get("id"))] = bool(passed)
         steps.append(record)
@@ -346,6 +417,10 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             "route": current_step.get("route"),
             "status": current_step.get("status"),
             "next_command": (current_step.get("summary") or {}).get("next_command"),
+            "preferred_environment": current_step.get("preferred_environment"),
+            "recommended_runtime_command": current_step.get("recommended_runtime_command"),
+            "hidden_cdb_runtime_command": current_step.get("hidden_cdb_runtime_command"),
+            "visible_runtime_alternative_command": current_step.get("approval_gated_runtime_command"),
         },
         "steps": steps,
         "locks": {
@@ -377,9 +452,11 @@ def to_markdown(report: dict[str, Any]) -> str:
         "",
     ]
     for step in report.get("steps") or []:
+        step_environment = (step.get("summary") or {}).get("environment")
+        environment_label = f" environment=`{step_environment}`" if step_environment else ""
         lines.append(
             f"- `{step['id']}`: tier=`{step['tier']}` route=`{step['route']}` "
-            f"status=`{step['status']}` passed=`{step['passed']}`"
+            f"status=`{step['status']}` passed=`{step['passed']}`{environment_label}"
         )
     if current.get("next_command"):
         lines.extend(

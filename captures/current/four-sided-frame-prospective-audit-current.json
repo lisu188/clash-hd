@@ -1,0 +1,476 @@
+{
+  "schema": "clash95_four_border_asset_audit_v1",
+  "generated_at": "2026-09-05T19:45:10.194390+00:00",
+  "resource_sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525",
+  "member_sha256": "8501cbae69c35aa5a804823227bbd56fb21e84b4f1e5c0f15e4419f522c4053d",
+  "passed": false,
+  "screenshots": [
+    {
+      "profile": "native_four_border_tiles_v1",
+      "resolution": "800x600",
+      "passed": false,
+      "structural_border_exact": false,
+      "checked_border_pixels": 57092,
+      "bands": [
+        {
+          "name": "top",
+          "rectangle_inclusive": [
+            0,
+            0,
+            799,
+            15
+          ],
+          "checked_pixels": 12800,
+          "exact_matches": 10454,
+          "mismatches": 2346,
+          "first_mismatches": [
+            [
+              608,
+              0
+            ],
+            [
+              609,
+              0
+            ],
+            [
+              611,
+              0
+            ],
+            [
+              612,
+              0
+            ],
+            [
+              613,
+              0
+            ],
+            [
+              614,
+              0
+            ],
+            [
+              615,
+              0
+            ],
+            [
+              616,
+              0
+            ]
+          ]
+        },
+        {
+          "name": "bottom",
+          "rectangle_inclusive": [
+            0,
+            584,
+            799,
+            599
+          ],
+          "checked_pixels": 7940,
+          "exact_matches": 517,
+          "mismatches": 7423,
+          "first_mismatches": [
+            [
+              32,
+              584
+            ],
+            [
+              33,
+              584
+            ],
+            [
+              34,
+              584
+            ],
+            [
+              35,
+              584
+            ],
+            [
+              36,
+              584
+            ],
+            [
+              37,
+              584
+            ],
+            [
+              38,
+              584
+            ],
+            [
+              39,
+              584
+            ]
+          ]
+        },
+        {
+          "name": "left",
+          "rectangle_inclusive": [
+            0,
+            16,
+            31,
+            583
+          ],
+          "checked_pixels": 18176,
+          "exact_matches": 14505,
+          "mismatches": 3671,
+          "first_mismatches": [
+            [
+              0,
+              464
+            ],
+            [
+              1,
+              464
+            ],
+            [
+              2,
+              464
+            ],
+            [
+              4,
+              464
+            ],
+            [
+              5,
+              464
+            ],
+            [
+              6,
+              464
+            ],
+            [
+              7,
+              464
+            ],
+            [
+              8,
+              464
+            ]
+          ]
+        },
+        {
+          "name": "right",
+          "rectangle_inclusive": [
+            768,
+            16,
+            799,
+            583
+          ],
+          "checked_pixels": 18176,
+          "exact_matches": 84,
+          "mismatches": 18092,
+          "first_mismatches": [
+            [
+              768,
+              16
+            ],
+            [
+              769,
+              16
+            ],
+            [
+              770,
+              16
+            ],
+            [
+              771,
+              16
+            ],
+            [
+              772,
+              16
+            ],
+            [
+              773,
+              16
+            ],
+            [
+              774,
+              16
+            ],
+            [
+              775,
+              16
+            ]
+          ]
+        }
+      ],
+      "footer": {
+        "sprite": 5,
+        "origin": [
+          235,
+          585
+        ],
+        "size": [
+          324,
+          15
+        ],
+        "checked_pixels": 4860,
+        "exact_matches": 1,
+        "exact": false,
+        "status": "unverified_background_or_active_tooltip_text"
+      },
+      "opaque_frame_pixels": 61952,
+      "limits": "Prospective exact frame profile only. Active tooltip glyphs need separate source-bound evidence; no ignored footer mismatch produces a full pass. Not runtime/input/promotion acceptance.",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-validation",
+      "candidate_sha256": "E72A57FD3BB26509179E0B4360FC9134BEF804E152AC338FCD755CDFA41C548F",
+      "existing_surface_gate_passed": true,
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\summary.json",
+        "sha256": "7862a8074612fa66e83713af1effb0f772c7cb1d73b10adc7532bac87446d51f"
+      },
+      "raw_surface": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\surface.raw",
+        "sha256": "c6f0c8c7b260801960fb6ab813ccb45587b7209cafa582c861e0c638c47ee3d7"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\surface.png",
+        "sha256": "f5137f0cafec8616ea6be1f319c23220c208b8851ac568e2fe4eee56124c0dd6"
+      },
+      "binding": {
+        "metadata_path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\surface.png.json",
+        "metadata_sha256": "0c40ecf96443f2f21207d3c7200abac49cecebc3ad9609559225a9091f27ea02",
+        "palette_path": "C:\\ClashTests\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\candidate\\ddraw_surfdump_palette.bin",
+        "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+        "png_raw_palette_binding_verified": true,
+        "candidate_file_sha_verified": true
+      }
+    },
+    {
+      "profile": "native_four_border_tiles_v1",
+      "resolution": "1024x768",
+      "passed": false,
+      "structural_border_exact": false,
+      "checked_border_pixels": 75012,
+      "bands": [
+        {
+          "name": "top",
+          "rectangle_inclusive": [
+            0,
+            0,
+            1023,
+            15
+          ],
+          "checked_pixels": 16384,
+          "exact_matches": 10155,
+          "mismatches": 6229,
+          "first_mismatches": [
+            [
+              608,
+              0
+            ],
+            [
+              609,
+              0
+            ],
+            [
+              611,
+              0
+            ],
+            [
+              612,
+              0
+            ],
+            [
+              613,
+              0
+            ],
+            [
+              614,
+              0
+            ],
+            [
+              615,
+              0
+            ],
+            [
+              616,
+              0
+            ]
+          ]
+        },
+        {
+          "name": "bottom",
+          "rectangle_inclusive": [
+            0,
+            752,
+            1023,
+            767
+          ],
+          "checked_pixels": 11524,
+          "exact_matches": 77,
+          "mismatches": 11447,
+          "first_mismatches": [
+            [
+              0,
+              752
+            ],
+            [
+              1,
+              752
+            ],
+            [
+              2,
+              752
+            ],
+            [
+              3,
+              752
+            ],
+            [
+              4,
+              752
+            ],
+            [
+              5,
+              752
+            ],
+            [
+              6,
+              752
+            ],
+            [
+              7,
+              752
+            ]
+          ]
+        },
+        {
+          "name": "left",
+          "rectangle_inclusive": [
+            0,
+            16,
+            31,
+            751
+          ],
+          "checked_pixels": 23552,
+          "exact_matches": 14704,
+          "mismatches": 8848,
+          "first_mismatches": [
+            [
+              0,
+              464
+            ],
+            [
+              1,
+              464
+            ],
+            [
+              2,
+              464
+            ],
+            [
+              4,
+              464
+            ],
+            [
+              5,
+              464
+            ],
+            [
+              6,
+              464
+            ],
+            [
+              7,
+              464
+            ],
+            [
+              8,
+              464
+            ]
+          ]
+        },
+        {
+          "name": "right",
+          "rectangle_inclusive": [
+            992,
+            16,
+            1023,
+            751
+          ],
+          "checked_pixels": 23552,
+          "exact_matches": 81,
+          "mismatches": 23471,
+          "first_mismatches": [
+            [
+              992,
+              16
+            ],
+            [
+              993,
+              16
+            ],
+            [
+              994,
+              16
+            ],
+            [
+              995,
+              16
+            ],
+            [
+              996,
+              16
+            ],
+            [
+              997,
+              16
+            ],
+            [
+              998,
+              16
+            ],
+            [
+              999,
+              16
+            ]
+          ]
+        }
+      ],
+      "footer": {
+        "sprite": 5,
+        "origin": [
+          347,
+          753
+        ],
+        "size": [
+          324,
+          15
+        ],
+        "checked_pixels": 4860,
+        "exact_matches": 8,
+        "exact": false,
+        "status": "unverified_background_or_active_tooltip_text"
+      },
+      "opaque_frame_pixels": 79872,
+      "limits": "Prospective exact frame profile only. Active tooltip glyphs need separate source-bound evidence; no ignored footer mismatch produces a full pass. Not runtime/input/promotion acceptance.",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-validation",
+      "candidate_sha256": "5EBBAF23AD999A97209A5E0CA8883E8D42E31190FB3891F03CFC3C38001BC338",
+      "existing_surface_gate_passed": true,
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\summary.json",
+        "sha256": "ef3d95d113edae320d8eaddf55b371a9e45ae2c61d598a9815b95be9e774e70c"
+      },
+      "raw_surface": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\surface.raw",
+        "sha256": "b04ca566ffcaeea2700dfda7f7751f384d4d6cbe8284e86314c2ebd38cec4927"
+      },
+      "screenshot": {
+        "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\surface.png",
+        "sha256": "a0e2ebf6b908a2a396a28962dd5eba16a4815eb532aa220a0168ba03b4980daa"
+      },
+      "binding": {
+        "metadata_path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\surface.png.json",
+        "metadata_sha256": "5720e7134e45227f5f8b9077f060c9b7a7e45eae791fa0af1e7d860b86eb8bbd",
+        "palette_path": "C:\\ClashTests\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\candidate\\ddraw_surfdump_palette.bin",
+        "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+        "png_raw_palette_binding_verified": true,
+        "candidate_file_sha_verified": true
+      }
+    }
+  ],
+  "scope": "Existing surfaces and native assets only; no runtime or image modification"
+}

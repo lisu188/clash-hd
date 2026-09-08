@@ -1,0 +1,616 @@
+{
+  "schema": "clash95_framed_map_runtime_observation_v1",
+  "generated_at": "2026-09-06T02:42:26.350627+00:00",
+  "status": "mixed_runtime_results_pixels_pass",
+  "all_runs_passed": false,
+  "bounded_runtime_pass_count": 1,
+  "pixel_pass_count": 2,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "plan": {
+    "path": "C:/Users/andrz/git/clash-hd/captures/current/framed-map-run-plan-20260906-023304.json",
+    "sha256": "5bf1925f13a08c1994674b264e79c9516a2cdc5b16202e93300d0e253e8e2a2e"
+  },
+  "approval_reference": {
+    "plan": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-run-plan-20260906-023304.json",
+    "source": "user_messages_in_current_active_task",
+    "quoted_user_messages": [
+      "I approve hidden controle run",
+      "Approve debugger runs"
+    ]
+  },
+  "source_verification": {
+    "checked": 25,
+    "passed": true,
+    "mismatches": [],
+    "expected_hashes": {
+      "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+      "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+      "src/patcher/partial_tile_hooks.py": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+      "src/patcher/initial_map_paint.py": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+      "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+      "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+      "src/patcher/framed_recipe.py": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+      "src/patcher/four_sided_frame.py": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+      "src/patcher/framed_full_paint.py": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+      "src/patcher/framed_presentation.py": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+      "src/patcher/framed_input.py": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+      "tools/build_partial_tile_candidate.py": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+      "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+      "tools/build_framed_candidate.py": "eadc8e0be719eb78de54bd9a0079e3e6f1028823be0292cf19274ba528d71314",
+      "scripts/cdb/run_cdb_surface_dump.ps1": "bc910d26223b12ce9248b06bf6eee1033263ff2b28703937aea98ae92d015ab2",
+      "tools/render_cdb_surface_probe.py": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+      "tools/initial_map_paint_trace.py": "845edda7ac563afe602dc3f6a388fe7e1874d6c6f128d1a938f8ce9ac2aa1021",
+      "tools/map_tile_coverage.py": "6d4a59b6f6c0601b7676165a6482b717f40582acdbf83f64643fb5fe5302a87b",
+      "tools/visibility_coverage.py": "133178fbdad53d1f81fce2c99aac17f63b73593f3f780cea597b61f6b4ad53e0",
+      "tools/frame_surface_audit.py": "1a9d0684cef0bb19a7b0ecd5ecb02c41ef0280033f2307f99d524a521611bfd3",
+      "tools/action_bar_surface_audit.py": "673bc4a925da2d3e77895b7179787f22c67401bc0198c5872ba305fdb637dbad",
+      "tools/cdb_surface_dump_to_png.py": "15d88e91ae65d8d3abc8f060915606437fbdb21b6d17285f99393e50fc271316",
+      "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
+      "scripts/build/build_ddraw_surfdump_proxy.ps1": "ad8d2889c18c53ca78aa6866fd07aa29632977851136ae88fca1ba67f84cd554",
+      "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp": "407d41d0d548e6217c6041181efb6466efa90f447110c5b8857bf92714ecb8eb"
+    }
+  },
+  "runs": [
+    {
+      "run_id": "cdb-surface-dump-20260906-043323",
+      "resolution": "800x600",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate": {
+        "path": "C:/ClashTests/hd-completion/framed-v1-800x600-20260906-023304/candidate/clash95_hd_framed_800x600_20260906-023304.exe",
+        "sha256": "7fad16f167205fb34ecbc99a6a1ff6180c710807f99b19f25efb48a8b1c8d15b"
+      },
+      "outcome": "pixel_pass_runtime_trace_failed",
+      "runtime_passed": false,
+      "initial_trace_passed": false,
+      "runtime_error": "incremental input or native exit lacks its guard and invocation",
+      "trace_failures": [
+        "line 395: incremental input/exit lacks a fresh matching guard and phase"
+      ],
+      "event_integrity_passed": true,
+      "trace_event_count": 141,
+      "observed_full_pair_count": 1,
+      "marker_counts": {
+        "PTILE_INITIAL_ADMISSION": 1,
+        "PTILE_MAP_READY": 1,
+        "PTILE_STATUS": 51,
+        "PTILE_INITIAL_RETURN": 1,
+        "PTILE_COMPOSITION_GUARD": 49,
+        "PTILE_INCREMENTAL_INPUT": 49,
+        "PTILE_NATIVE_NOOP_EXIT": 38
+      },
+      "duplicate_native_exit_events": [
+        {
+          "line": 393,
+          "seq": 81,
+          "bp": 74,
+          "tid": 10792,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 394,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=2a28 esp=000edc7c world=(60,47) caller=004166fa gd=03f70030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        },
+        {
+          "line": 395,
+          "seq": 82,
+          "bp": 74,
+          "tid": 10792,
+          "eip": 4295418,
+          "esp": 973948,
+          "records": [
+            {
+              "line": 396,
+              "marker": "PTILE_NATIVE_NOOP_EXIT",
+              "text": "PTILE_NATIVE_NOOP_EXIT tid=2a28 esp=000edc7c world=(60,47) caller=004166fa gd=03f70030 map=(100,100) scroll=(10,17) vtable=0050ee24"
+            }
+          ]
+        }
+      ],
+      "loaded_contract": {
+        "line": 96,
+        "text": "PTILE_CONTRACT_PASS stage=gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation resolution=800x600 candidate_sha256=7fad16f167205fb34ecbc99a6a1ff6180c710807f99b19f25efb48a8b1c8d15b",
+        "exact_candidate_and_stage_match": true
+      },
+      "surface": {
+        "RedrawSeq": 4,
+        "Surface": "0a0bf650",
+        "Width": 800,
+        "Height": 600,
+        "Base": "0a360030",
+        "Bytes": 480000
+      },
+      "framed_minimap": {
+        "Enabled": 1,
+        "Left": 554,
+        "Top": 16,
+        "Width": 214,
+        "Height": 214
+      },
+      "surface_geometry": {
+        "resolution": "800x600",
+        "width": 800,
+        "height": 600,
+        "columns": 12,
+        "rows": 9,
+        "origin": [
+          32,
+          16
+        ],
+        "tile_size": 64,
+        "partial_col_px": 32,
+        "partial_row_px": 56,
+        "visibility_dump_max_bytes": 145,
+        "edge_columns": [
+          0,
+          9,
+          10
+        ],
+        "edge_rows": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "expected_vedge_count": 45,
+        "visibility_recipe": "bounded_player0_map100",
+        "force_recipe": "none",
+        "main_menu_mouse": [
+          300,
+          218
+        ],
+        "load_mouse": [
+          320,
+          166
+        ],
+        "load_input_space": "native_slot_list",
+        "layout_profile": "native_four_border_tiles_v1",
+        "terrain": [
+          32,
+          16,
+          767,
+          583
+        ],
+        "frame_insets": [
+          32,
+          16,
+          32,
+          16
+        ],
+        "surface": [
+          0,
+          0,
+          799,
+          599
+        ],
+        "full_columns": 11,
+        "full_rows": 8,
+        "visibility_scope": "all_ceiling_cells_in_world",
+        "visibility_limit": "This initial screenshot lane rejects a ceiling cell outside the world; it provides no far-world clear proof.",
+        "vedge_scope": "native_full_cells_only"
+      },
+      "pixel_proof": {
+        "passed": true,
+        "diagnostic_from_failed_run": true,
+        "four_borders_exact": true,
+        "checked_border_pixels": 57092,
+        "footer_exact_pixels": 4860,
+        "total_frame_pixels": 61952,
+        "six_action_cells_exact": true,
+        "matching_action_cells": 6,
+        "raw_png_palette_candidate_bindings_reverified": true
+      },
+      "visibility_explained_gate": null,
+      "launch": {
+        "mode": "hidden-desktop",
+        "hidden_desktop": true,
+        "allow_visible_desktop": false,
+        "proxy": {
+          "path": "C:/ClashTests/hd-completion/framed-v1-800x600-20260906-023304/candidate/ddraw.dll",
+          "sha256": "f77e9cb5b7621f4ee290838d86e2b46069f6e1a997e71a2cb763074a946f39a1"
+        },
+        "proxy_present_setting": "0",
+        "load_slot": 0,
+        "fast_forward_start_anims": true,
+        "dump_method": "host-readprocessmemory",
+        "stopped_after_dump": true
+      },
+      "observed_errors": {
+        "av": false,
+        "timeout": false,
+        "app_request_quit": false,
+        "host_dump_error": null
+      },
+      "plan_binding": {
+        "candidate_sha_match": true,
+        "build_source_pins_match": true,
+        "layout_contract_match": true,
+        "installed_extra_raw_sha256": "3149bffab98f7f8960e10a523c1083d984ee4920069cafd749b2524186192dca",
+        "installed_extra_canonical_lf_sha256": "8925d06db832c4d63d4e544a5b79d45d498641fe62ebea6bc88dd682c0bc5425",
+        "expected_probe_sha256": "8925d06db832c4d63d4e544a5b79d45d498641fe62ebea6bc88dd682c0bc5425",
+        "canonical_lf_probe_match": true,
+        "probe_materialization": "Windows CRLF file; only CRLF-to-LF normalization matches the planned canonical UTF-8 text hash; raw and final generated hashes retained"
+      },
+      "cleanup": {
+        "observed_at": "2026-09-06T02:39:37.7159976Z",
+        "method": "Get-Process -Id; all returned NoProcessFoundForGivenId",
+        "live_pid_binding_source": "Runtime coordinator observed these exact CDB/game PIDs during this run",
+        "cdb_pid": 14244,
+        "game_pid": 39120,
+        "cdb_present": false,
+        "game_present": false,
+        "recorded_pids_absent": true,
+        "query_limit": "Get-CimInstance was denied in this reviewer sandbox; explicit Get-Process process-not-found observations are reported instead"
+      },
+      "artifacts": {
+        "original_summary": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-800x600-20260906-023304/cdb-surface-dump-20260906-043323/summary.json",
+          "sha256": "cd29dab939512e93376d7d3fdbfe86e9add4b115f41bc4504dbb0f962879d957"
+        },
+        "pixel_summary": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-800x600-20260906-023304/cdb-surface-dump-20260906-043323/diagnostic-summary.json",
+          "sha256": "b81eb015fe5a87a04d9ce44633d3f49f151d877b6583d99b40e97dc972df016b"
+        },
+        "log": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-800x600-20260906-023304/cdb-surface-dump-20260906-043323/cdb-surface-dump.log",
+          "sha256": "fe7ae9e1de9b82b767fc7516e300891d4fb21f1300cd349e44ac76b3b282084d"
+        },
+        "build_report": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-800x600-20260906-023304/cdb-surface-dump-20260906-043323/partial-tile-build.json",
+          "sha256": "7ed9bdfe9a423cf6734af3aff4e776ce347e6ac8088077c33219b3012c7a466a"
+        },
+        "generated_probe": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-800x600-20260906-023304/cdb-surface-dump-20260906-043323/clash95_surface_dump_probe.generated.cdb",
+          "sha256": "978f84357cb827d89d6f0db93321eeef06dfa70a482fe71658139bac2936ac64"
+        },
+        "installed_extra_probe": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-800x600-20260906-023304/cdb-surface-dump-20260906-043323/partial-tile-installed.extra.cdb",
+          "sha256": "3149bffab98f7f8960e10a523c1083d984ee4920069cafd749b2524186192dca"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-800x600-20260906-023304\\cdb-surface-dump-20260906-043323\\surface.raw",
+          "sha256": "929e4083730c5525d03769ae6f14f3c3378360b56559c3910926e87ee9439410"
+        },
+        "screenshot": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-800x600-20260906-023304\\cdb-surface-dump-20260906-043323\\surface-diagnostic.png",
+          "sha256": "b96800571ad537454294c8e618797abdaa4b0b874261dbc01c1091ddacd65efa"
+        },
+        "png_metadata": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-800x600-20260906-023304/cdb-surface-dump-20260906-043323/surface-diagnostic.png.json",
+          "sha256": "38344bfc318399db3361096af6af2eec54e4c3bf1fb0bf1598bf98b662efebbe"
+        },
+        "palette": {
+          "path": "C:/ClashTests/hd-completion/framed-v1-800x600-20260906-023304/candidate/ddraw_surfdump_palette.bin",
+          "sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2"
+        },
+        "frame_audit": {
+          "path": "C:/Users/andrz/git/clash-hd/captures/current/framed-v1-800-frame-audit-20260906.json",
+          "sha256": "5467be65b4414e23c57b7139e62183fc7dc0abe180097e7ccf838e9a229f4495"
+        },
+        "action_bar_audit": {
+          "path": "C:/Users/andrz/git/clash-hd/captures/current/framed-v1-action-bar-audit-20260906.json",
+          "sha256": "12c989f2c24078f8f41ba73912757232e019cd3e9d93bed62be2957c2d88b036"
+        },
+        "proxy_build_manifest": {
+          "path": "C:/ClashTests/hd-completion/framed-v1-800x600-20260906-023304/candidate/ddraw_surfdump_proxy.build.json",
+          "sha256": "b7a712cd66da6bd3a88c75fabcc9c5c21ebf2ddf0795f12302c4a1a5c690752f"
+        }
+      }
+    },
+    {
+      "run_id": "cdb-surface-dump-20260906-043513",
+      "resolution": "1024x768",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "candidate": {
+        "path": "C:/ClashTests/hd-completion/framed-v1-1024x768-20260906-023304/candidate/clash95_hd_framed_1024x768_20260906-023304.exe",
+        "sha256": "3e9969a1e9285a9e65290072ea89cb2a3f224bd118ef267794fd1028ac5d7053"
+      },
+      "outcome": "bounded_hidden_runtime_pass",
+      "runtime_passed": true,
+      "initial_trace_passed": true,
+      "runtime_error": null,
+      "trace_failures": [],
+      "event_integrity_passed": true,
+      "trace_event_count": 140,
+      "observed_full_pair_count": 1,
+      "marker_counts": {
+        "PTILE_INITIAL_ADMISSION": 1,
+        "PTILE_MAP_READY": 1,
+        "PTILE_STATUS": 51,
+        "PTILE_INITIAL_RETURN": 1,
+        "PTILE_COMPOSITION_GUARD": 49,
+        "PTILE_INCREMENTAL_INPUT": 49,
+        "PTILE_NATIVE_NOOP_EXIT": 37
+      },
+      "duplicate_native_exit_events": [],
+      "loaded_contract": {
+        "line": 95,
+        "text": "PTILE_CONTRACT_PASS stage=gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation resolution=1024x768 candidate_sha256=3e9969a1e9285a9e65290072ea89cb2a3f224bd118ef267794fd1028ac5d7053",
+        "exact_candidate_and_stage_match": true
+      },
+      "surface": {
+        "RedrawSeq": 4,
+        "Surface": "0a45f370",
+        "Width": 1024,
+        "Height": 768,
+        "Base": "0a700030",
+        "Bytes": 786432
+      },
+      "framed_minimap": {
+        "Enabled": 1,
+        "Left": 778,
+        "Top": 16,
+        "Width": 214,
+        "Height": 214
+      },
+      "surface_geometry": {
+        "resolution": "1024x768",
+        "width": 1024,
+        "height": 768,
+        "columns": 15,
+        "rows": 12,
+        "origin": [
+          32,
+          16
+        ],
+        "tile_size": 64,
+        "partial_col_px": 0,
+        "partial_row_px": 32,
+        "visibility_dump_max_bytes": 185,
+        "edge_columns": [
+          0,
+          13,
+          14
+        ],
+        "edge_rows": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "expected_vedge_count": 72,
+        "visibility_recipe": "bounded_player0_map100",
+        "force_recipe": "none",
+        "main_menu_mouse": [
+          412,
+          302
+        ],
+        "load_mouse": [
+          320,
+          166
+        ],
+        "load_input_space": "native_slot_list",
+        "layout_profile": "native_four_border_tiles_v1",
+        "terrain": [
+          32,
+          16,
+          991,
+          751
+        ],
+        "frame_insets": [
+          32,
+          16,
+          32,
+          16
+        ],
+        "surface": [
+          0,
+          0,
+          1023,
+          767
+        ],
+        "full_columns": 15,
+        "full_rows": 11,
+        "visibility_scope": "all_ceiling_cells_in_world",
+        "visibility_limit": "This initial screenshot lane rejects a ceiling cell outside the world; it provides no far-world clear proof.",
+        "vedge_scope": "native_full_cells_only"
+      },
+      "pixel_proof": {
+        "passed": true,
+        "diagnostic_from_failed_run": false,
+        "four_borders_exact": true,
+        "checked_border_pixels": 75012,
+        "footer_exact_pixels": 4860,
+        "total_frame_pixels": 79872,
+        "six_action_cells_exact": true,
+        "matching_action_cells": 6,
+        "raw_png_palette_candidate_bindings_reverified": true
+      },
+      "visibility_explained_gate": {
+        "Required": true,
+        "Passed": true,
+        "Skipped": false,
+        "ExitCode": 0,
+        "BlankActiveCells": [
+          "r0c10",
+          "r0c11",
+          "r1c10",
+          "r1c11",
+          "r2c10",
+          "r2c11",
+          "r3c10",
+          "r3c11",
+          "r3c12",
+          "r3c13",
+          "r3c14",
+          "r4c10",
+          "r4c11",
+          "r4c12",
+          "r4c13",
+          "r4c14",
+          "r5c10",
+          "r5c11",
+          "r5c12",
+          "r5c13",
+          "r5c14",
+          "r6c10",
+          "r6c11",
+          "r6c12",
+          "r6c13",
+          "r6c14",
+          "r7c10",
+          "r7c11",
+          "r7c12",
+          "r7c13",
+          "r7c14",
+          "r8c0",
+          "r8c10",
+          "r8c11",
+          "r8c12",
+          "r8c13",
+          "r8c14",
+          "r9c0",
+          "r9c1",
+          "r9c10",
+          "r9c11",
+          "r9c12",
+          "r9c13",
+          "r9c14",
+          "r10c0",
+          "r10c1",
+          "r10c2",
+          "r10c3",
+          "r10c4",
+          "r10c5",
+          "r10c6",
+          "r10c7",
+          "r10c8",
+          "r10c9",
+          "r10c10",
+          "r10c11",
+          "r10c12",
+          "r10c13",
+          "r10c14",
+          "r11c0",
+          "r11c1",
+          "r11c2",
+          "r11c3",
+          "r11c4",
+          "r11c5",
+          "r11c6",
+          "r11c7",
+          "r11c8",
+          "r11c9",
+          "r11c10",
+          "r11c11"
+        ],
+        "UnexplainedBlankCells": []
+      },
+      "launch": {
+        "mode": "hidden-desktop",
+        "hidden_desktop": true,
+        "allow_visible_desktop": false,
+        "proxy": {
+          "path": "C:/ClashTests/hd-completion/framed-v1-1024x768-20260906-023304/candidate/ddraw.dll",
+          "sha256": "c84bb94193c80b9b4941c3797ad53173360d883b06cf477d7588892225e666a5"
+        },
+        "proxy_present_setting": "0",
+        "load_slot": 0,
+        "fast_forward_start_anims": true,
+        "dump_method": "host-readprocessmemory",
+        "stopped_after_dump": true
+      },
+      "observed_errors": {
+        "av": false,
+        "timeout": false,
+        "app_request_quit": false,
+        "host_dump_error": null
+      },
+      "plan_binding": {
+        "candidate_sha_match": true,
+        "build_source_pins_match": true,
+        "layout_contract_match": true,
+        "installed_extra_raw_sha256": "a92cf4c2abe556258a4b76d04370b2147ebaba98dfccb5e5014138b660ae2450",
+        "installed_extra_canonical_lf_sha256": "57b0f34fe8cb2f0d3fa927a3b3c862a6c742b5752bb468be08272445fab6a38d",
+        "expected_probe_sha256": "57b0f34fe8cb2f0d3fa927a3b3c862a6c742b5752bb468be08272445fab6a38d",
+        "canonical_lf_probe_match": true,
+        "probe_materialization": "Windows CRLF file; only CRLF-to-LF normalization matches the planned canonical UTF-8 text hash; raw and final generated hashes retained"
+      },
+      "cleanup": {
+        "observed_at": "2026-09-06T02:39:37.7159976Z",
+        "method": "Get-Process -Id; all returned NoProcessFoundForGivenId",
+        "live_pid_binding_source": "Runtime coordinator observed these exact CDB/game PIDs during this run",
+        "cdb_pid": 33104,
+        "game_pid": 31664,
+        "cdb_present": false,
+        "game_present": false,
+        "recorded_pids_absent": true,
+        "query_limit": "Get-CimInstance was denied in this reviewer sandbox; explicit Get-Process process-not-found observations are reported instead"
+      },
+      "artifacts": {
+        "original_summary": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-1024x768-20260906-023304/cdb-surface-dump-20260906-043513/summary.json",
+          "sha256": "28c637e1ae7f67a7fe4591bb717d9a736d3f57a740222443e33230e56aa8aabe"
+        },
+        "pixel_summary": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-1024x768-20260906-023304/cdb-surface-dump-20260906-043513/summary.json",
+          "sha256": "28c637e1ae7f67a7fe4591bb717d9a736d3f57a740222443e33230e56aa8aabe"
+        },
+        "log": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-1024x768-20260906-023304/cdb-surface-dump-20260906-043513/cdb-surface-dump.log",
+          "sha256": "be7e219fb751a0df114c12af0211c4f6932e6c88744c71c70e38a738c6659eab"
+        },
+        "build_report": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-1024x768-20260906-023304/cdb-surface-dump-20260906-043513/partial-tile-build.json",
+          "sha256": "ccc83f691454ec0d44cca5879b662da89e4d136e7198cd6cb7516d651c22aff5"
+        },
+        "generated_probe": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-1024x768-20260906-023304/cdb-surface-dump-20260906-043513/clash95_surface_dump_probe.generated.cdb",
+          "sha256": "fd0227ba2e852e3949369ac67bb968fc829f5a7a5d4fb3d05c09437f265b93b6"
+        },
+        "installed_extra_probe": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-1024x768-20260906-023304/cdb-surface-dump-20260906-043513/partial-tile-installed.extra.cdb",
+          "sha256": "a92cf4c2abe556258a4b76d04370b2147ebaba98dfccb5e5014138b660ae2450"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1024x768-20260906-023304\\cdb-surface-dump-20260906-043513\\surface.raw",
+          "sha256": "abe44f3497e17218952d8bb2d3caaa2092cff40b8f9b3f0757e1e39e519fa6b3"
+        },
+        "screenshot": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1024x768-20260906-023304\\cdb-surface-dump-20260906-043513\\surface.png",
+          "sha256": "25976fb4d4aca8565aff432cf6fee66dd5c280d8586d89fa1a213ebbd0103fac"
+        },
+        "png_metadata": {
+          "path": "C:/ClashCaptures/hd-completion/framed-v1-1024x768-20260906-023304/cdb-surface-dump-20260906-043513/surface.png.json",
+          "sha256": "92afb8394df584e98d62712782b1ca9f227a7bad58577148506e09095b8c88dc"
+        },
+        "palette": {
+          "path": "C:/ClashTests/hd-completion/framed-v1-1024x768-20260906-023304/candidate/ddraw_surfdump_palette.bin",
+          "sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2"
+        },
+        "frame_audit": {
+          "path": "C:/Users/andrz/git/clash-hd/captures/current/framed-v1-1024-frame-audit-20260906.json",
+          "sha256": "a7d9e280d155322b0497114443066840a392b0b2c0b1817de37af120476d03a2"
+        },
+        "action_bar_audit": {
+          "path": "C:/Users/andrz/git/clash-hd/captures/current/framed-v1-action-bar-audit-20260906.json",
+          "sha256": "12c989f2c24078f8f41ba73912757232e019cd3e9d93bed62be2957c2d88b036"
+        },
+        "proxy_build_manifest": {
+          "path": "C:/ClashTests/hd-completion/framed-v1-1024x768-20260906-023304/candidate/ddraw_surfdump_proxy.build.json",
+          "sha256": "08a8f259aa9ea29ae654178b1628cc4720a0c8ee2aad8f62e24085b839498253"
+        }
+      }
+    }
+  ],
+  "visible_composition_proof": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "stable_stage_changed": false,
+  "historical_reports_and_original_summaries_preserved": true,
+  "limits": [
+    "Only the two recorded initial ordinary-map hidden runs are covered; larger-resolution runs are separate.",
+    "1024x768 passes its bounded hidden surface/status/initial trace; 800x600 remains failed despite exact diagnostic pixels.",
+    "Current capture lane is player0 with every ceiling cell in the world. No far-world, modal/army owner, interactive input, active tooltip, final wrapper composition, endurance or promotion proof.",
+    "One initial full pair is observed in each log, but the invalid 800 auxiliary call trace is not discarded or deduplicated.",
+    "Plan remains an immutable pre-execution artifact; its executed=false field is not rewritten by this observation report."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "clash95_hidden_run_terminal_observation_v1",
+  "observed_at": "2026-09-05T17:53:24.3247986+00:00",
+  "terminal_exit_code": 1,
+  "run_dir": "C:\\ClashCaptures\\hd-completion\\partialtiles-latearm-v2-800x600-20260905-194900\\cdb-surface-dump-20260905-195041",
+  "passed": false,
+  "screenshot_produced": false,
+  "candidate_path": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\candidate-latearm-v2-20260905-194900\\clash95_hd_surfdump_20260905_195041.exe",
+  "candidate_sha256": "B273C16822843D8AA684191E4C2F357E2F7C581BBC3AD7F4175C8D6B057ECAE8",
+  "summary_sha256": "85CF4B194EDF6D8C799D1CC0A3A2BE9B031F9D1070A71C6336973ED416AEBA15",
+  "log_sha256": "8640BB7B8B48B100DCE97DF2BB96F005A8835410B69211F0DF94903CF9F70028",
+  "generated_probe_sha256": "3856243F4DE472BC931794099D03CAC62805A268CDF42BFF42420C3AB3D935AF",
+  "matching_live_processes": [],
+  "live_pids_not_captured": true,
+  "classification": "Initialized 800x600 map; four incremental status1 followed by status0, then diagnostic rejected before full composition or screenshot",
+  "access_violation": false,
+  "run_plan": "captures/current/partialtiles-latearm-v2-run-plan-20260905-194900.json",
+  "limits": "No accepted screenshot, full composition, manual input, or promotion proof. Status0 requires source-backed diagnosis."
+}

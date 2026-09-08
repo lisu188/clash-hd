@@ -1,0 +1,70 @@
+{
+  "schema": "clash95_framed_army_selection_attempt_v1",
+  "generated_at": "2026-09-06T09:03:31.130629+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-army-validation",
+  "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+  "started_at": "2026-09-06T08:58:51.7155788Z",
+  "finished_at": "2026-09-06T08:59:19.7435875Z",
+  "runtime_passed": false,
+  "native_selection_executed": false,
+  "images_produced": false,
+  "failure": "SHSEL_REJECT native_contract immediately after PTILE_TRACE_CLOSED; no SHSEL_BEGIN. Exact failed handoff predicate not yet observed.",
+  "loaded_byte_checks_passed": true,
+  "source_files": {
+    "summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-085728\\summary.json",
+      "sha256": "152995f7ff103e773391e053bdc5e4a766bd0b0100674c53e1a5cec1e4f16c1a"
+    },
+    "plan.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-085728\\plan.json",
+      "sha256": "f909be92a6ac6b6fdba7ed3f7755ffc074523820b2f2cafacf496f4e4343a914"
+    },
+    "selection.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-085728\\selection.cdb",
+      "sha256": "f43b27316344cc5bb898475f83aa4d56af74402abf409f2d36adaa81f8ea783f"
+    },
+    "host.ps1": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-085728\\host.ps1",
+      "sha256": "047d6ae97f4b0ff2c6604b3764df248cd748d26715285a0d6d070d3af62feaf6"
+    },
+    "cdb.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-085728\\cdb.log",
+      "sha256": "acb3c5a45f8f823bad589ded1a53d8956b3531784611ac6218e744d1e478348f"
+    }
+  },
+  "cleanup": [
+    {
+      "termination_requested": false,
+      "identity": {
+        "process_id": 24500,
+        "handle_retained": true,
+        "creation_filetime": 134331587323684750,
+        "creation_utc": "2026-09-06T08:58:52.3684750Z",
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe"
+      },
+      "handle_closed": true,
+      "absent": true
+    },
+    {
+      "termination_requested": false,
+      "identity": {
+        "creation_utc": "2026-09-06T08:58:52.7658691Z",
+        "parent_process_id": 24500,
+        "creation_filetime": 134331587327658691,
+        "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+        "process_id": 39668,
+        "handle_retained": true,
+        "path": "C:\\ClashTests\\hd-completion\\framed-army-selection-20260906-085728\\clash95_selection_diagnostic.exe"
+      },
+      "handle_closed": true,
+      "absent": true
+    }
+  ],
+  "desktop_closed": true,
+  "original_unchanged": true,
+  "candidate_unchanged": true,
+  "assets_changed": [],
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false
+}

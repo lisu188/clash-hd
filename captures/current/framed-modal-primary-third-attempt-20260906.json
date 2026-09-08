@@ -1,0 +1,82 @@
+{
+  "schema": "clash95_modal_primary_failed_attempt_v1",
+  "passed": false,
+  "classification": "debugger_supplemental_script_transport_after_barracks_route",
+  "started_at": "2026-09-06T10:22:30.2730408Z",
+  "finished_at": "2026-09-06T10:22:57.7523097Z",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+  "resolution": "1024x768",
+  "route": "barracks",
+  "availability": "construct_all",
+  "summary": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary3-barracks-20260906-102300\\summary.json",
+    "sha256": "c462cc94bd166b59549f8eaf7b1a3fd8782b5d8ca19b3d55ecf205e587aa3780"
+  },
+  "log": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary3-barracks-20260906-102300\\cdb.log",
+    "sha256": "215edd2422415a6cb16c46d39df59e87929ac80005c06b38ef0ee0f0cf983655"
+  },
+  "primary_ready_script": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary3-barracks-20260906-102300\\primary-ready.cdb",
+    "sha256": "79ecf39a21702d267b046522f68195fdf5e6948b4236defe8f345901b5619664"
+  },
+  "main_script": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary3-barracks-20260906-102300\\framed-modal-canvas.cdb",
+    "sha256": "dd590ecce8a63235843904a289b4222f166f50eb34005eb56439de594e997139"
+  },
+  "actual_errors": [
+    "Command file execution failed, Win32 error 0n2",
+    "The system cannot find the file specified."
+  ],
+  "host_failures": [
+    "Debugger command failure (not a game crash): Command file execution failed, Win32 error 0n2"
+  ],
+  "old_modal_ready_observed": true,
+  "primary_capture_observed": false,
+  "cleanup": {
+    "candidates": [
+      {
+        "identity": {
+          "handle_retained": true,
+          "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+          "path": "C:\\ClashTests\\hd-completion\\primary3-barracks-20260906-102300\\framed-modal-canvas-barracks-1024x768-544631264cac524f.exe",
+          "process_id": 41824,
+          "creation_filetime": 134331637577907657,
+          "parent_process_id": 34988,
+          "creation_utc": "2026-09-06T10:22:37.7907657Z"
+        },
+        "handle_closed": true,
+        "termination_requested": false,
+        "absent": true
+      }
+    ],
+    "desktop_closed": true,
+    "cdb": {
+      "identity": {
+        "process_id": 34988,
+        "handle_retained": true,
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T10:22:37.5883972Z",
+        "creation_filetime": 134331637575883972
+      },
+      "handle_closed": true,
+      "termination_requested": true,
+      "absent": true
+    }
+  },
+  "postrun_identity": {
+    "proxy_sha256": "b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+    "input_candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d"
+  },
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "The native barracks route and old modal-ready marker were reached; no primary snapshot was produced.",
+    "The existing supplemental file could not be executed by this debugger command. This failure does not establish a game rendering defect.",
+    "This attempt detects the command-file failure promptly and preserves the error prefix; it still captures no primary image."
+  ]
+}
