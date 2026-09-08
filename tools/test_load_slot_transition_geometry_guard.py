@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -69,6 +70,9 @@ def write_inputs(root: Path, *, plan_payload: dict[str, object] | None = None, s
     script_path = root / "scripts/cdb/run_cdb_surface_dump.ps1"
     script_path.parent.mkdir(parents=True, exist_ok=True)
     script_path.write_text(script, encoding="utf-8")
+    renderer_path = root / "tools/render_cdb_surface_probe.py"
+    renderer_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(Path(route_guard.probe_renderer.__file__), renderer_path)
     probe_path = root / "transition.cdb"
     probe_path.write_text(probe, encoding="utf-8")
     return {"plan": plan_json, "script": script_path, "probe": probe_path}
@@ -222,7 +226,32 @@ def test_cli_writes_outputs_and_requires_pass() -> None:
         assert "Load Slot Transition Geometry Guard" in out_md.read_text(encoding="utf-8")
 
 
+def test_shared_renderer_path_and_rejects_wrong_wiring() -> None:
+    repo = Path(__file__).resolve().parents[1]
+    original = (repo / "scripts/cdb/run_cdb_surface_dump.ps1").read_text(encoding="utf-8-sig")
+    with tempfile.TemporaryDirectory() as tmp:
+        paths = write_inputs(Path(tmp), script=original)
+        renderer_path = Path(tmp) / "tools/render_cdb_surface_probe.py"
+        renderer_path.parent.mkdir(exist_ok=True)
+        shutil.copyfile(repo / "tools/render_cdb_surface_probe.py", renderer_path)
+        report = build(paths)
+        assert report["passed"], report["failures"]
+        assert report["harness"]["source_mode"] == "shared_python_recipe"
+        for bad in (
+            original.replace("$loadMouseY = $surfaceGeometry.load_mouse[1]", "$loadMouseY = $surfaceGeometry.main_menu_mouse[1]"),
+            original.replace("$surfaceGeometry = $probeRecipe.geometry", "# $surfaceGeometry = $probeRecipe.geometry"),
+            original + "\n$loadMouseX = 321\n",
+            original.replace("'--load-slot', $LoadSlot", "'--load-slot', 0"),
+            original.replace("$loadMouseRawY = $loadMouseY -shl 6", "$loadMouseRawY = $loadMouseY -shl 5"),
+            original.replace("$probeRecipeJson = & $pythonExe @renderArgs", "$probeRecipeJson = '{}'"),
+        ):
+            paths["script"].write_text(bad, encoding="utf-8")
+            report = build(paths)
+            assert not report["checks"]["surface_formula_present"], report
+
+
 def run_tests() -> None:
+    test_shared_renderer_path_and_rejects_wrong_wiring()
     test_passes_and_records_expected_row_geometry()
     test_current_extra_probe_wiring_and_all_native_slots()
     test_fails_when_formula_drifts()

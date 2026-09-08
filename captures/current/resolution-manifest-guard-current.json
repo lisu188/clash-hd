@@ -1,15 +1,18 @@
 {
-  "generated_at": "2026-09-08T10:59:55+02:00",
+  "generated_at": "2026-09-08T11:22:53+02:00",
   "passed": true,
   "runtime_policy": "repo-only metadata inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
-  "guard_policy": "exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence whose dimensions, stage, candidate SHA and run references agree with its passing patch metadata and smoke matrix, tile counts matching the engine formula; schema-2 profiles must match launcher contracts and Framed/Complete-HD remain experimental until their own scoped runtime evidence can be verified",
+  "guard_policy": "schema-2 exact profile recipe, evidence scope and source context; Classic 800x600 stable default; other renderers experimental",
   "manifest": "src\\launcher\\resolutions.json",
+  "schema": 2,
+  "profile_count": 3,
   "resolution_count": 9,
   "status_counts": {
     "stable": 1,
     "validated": 0,
-    "experimental": 8
+    "experimental": 23
   },
+  "promotion_ready": false,
   "checks": {
     "resolution_keys_valid": {
       "name": "resolution_keys_valid",
@@ -27,7 +30,10 @@
         "stable_keys": [
           "800x600"
         ],
-        "default": "800x600"
+        "default": "800x600",
+        "stable": [
+          "classic/800x600"
+        ]
       },
       "failures": []
     },
@@ -58,7 +64,8 @@
       "name": "tiles_formula",
       "passed": true,
       "summary": {
-        "mismatches": {}
+        "mismatches": {},
+        "framed_formula": "FramedViewport.full_tiles; four reserved borders"
       },
       "failures": []
     },
@@ -69,7 +76,8 @@
         "checked": [
           "800x600"
         ],
-        "failures": []
+        "failures": [],
+        "scope": "retained hidden component evidence; no whole-release eligibility"
       },
       "failures": []
     },
@@ -85,6 +93,168 @@
           3840,
           2160
         ]
+      },
+      "failures": []
+    },
+    "profile_schema": {
+      "name": "profile_schema",
+      "passed": true,
+      "summary": {},
+      "failures": []
+    },
+    "profile_recipes": {
+      "name": "profile_recipes",
+      "passed": true,
+      "summary": {},
+      "failures": []
+    },
+    "experimental_profiles": {
+      "name": "experimental_profiles",
+      "passed": true,
+      "summary": {},
+      "failures": []
+    },
+    "source_context": {
+      "name": "source_context",
+      "passed": true,
+      "summary": {
+        "sources": {
+          "src/patcher/patch_clash95_hd.py": {
+            "expected_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+            "actual_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+            "passed": true
+          },
+          "src/patcher/partial_tile_clip.py": {
+            "expected_sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+            "actual_sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+            "passed": true
+          },
+          "src/patcher/partial_tile_hooks.py": {
+            "expected_sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+            "actual_sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+            "passed": true
+          },
+          "src/patcher/pe_extension.py": {
+            "expected_sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+            "actual_sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+            "passed": true
+          },
+          "src/patcher/initial_map_paint.py": {
+            "expected_sha256": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+            "actual_sha256": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+            "passed": true
+          },
+          "src/patcher/framed_viewport.py": {
+            "expected_sha256": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+            "actual_sha256": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+            "passed": true
+          },
+          "src/patcher/framed_recipe.py": {
+            "expected_sha256": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+            "actual_sha256": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+            "passed": true
+          },
+          "src/patcher/four_sided_frame.py": {
+            "expected_sha256": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+            "actual_sha256": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+            "passed": true
+          },
+          "src/patcher/framed_full_paint.py": {
+            "expected_sha256": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+            "actual_sha256": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+            "passed": true
+          },
+          "src/patcher/framed_presentation.py": {
+            "expected_sha256": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+            "actual_sha256": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+            "passed": true
+          },
+          "src/patcher/framed_input.py": {
+            "expected_sha256": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+            "actual_sha256": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+            "passed": true
+          },
+          "tools/build_partial_tile_candidate.py": {
+            "expected_sha256": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+            "actual_sha256": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+            "passed": true
+          },
+          "tools/partial_tile_trace_probe.py": {
+            "expected_sha256": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+            "actual_sha256": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+            "passed": true
+          },
+          "src/patcher/framed_minimap.py": {
+            "expected_sha256": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+            "actual_sha256": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+            "passed": true
+          },
+          "src/patcher/framed_modal_canvas.py": {
+            "expected_sha256": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+            "actual_sha256": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+            "passed": true
+          },
+          "src/patcher/pe_modal_extension.py": {
+            "expected_sha256": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623",
+            "actual_sha256": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623",
+            "passed": true
+          },
+          "src/patcher/pe_army_extension.py": {
+            "expected_sha256": "8b2bf19c59351cf1b625b28e143d0ccfd000380898a81af29e28e7cf7af75161",
+            "actual_sha256": "8b2bf19c59351cf1b625b28e143d0ccfd000380898a81af29e28e7cf7af75161",
+            "passed": true
+          },
+          "src/patcher/framed_army_viewport.py": {
+            "expected_sha256": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+            "actual_sha256": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+            "passed": true
+          },
+          "src/patcher/framed_army_draw.py": {
+            "expected_sha256": "e6763ae2ebdf038d0b0b574564573fb07e2a2b68c12f7aeafc0b63ca44347cf9",
+            "actual_sha256": "e6763ae2ebdf038d0b0b574564573fb07e2a2b68c12f7aeafc0b63ca44347cf9",
+            "passed": true
+          },
+          "src/patcher/framed_army_input.py": {
+            "expected_sha256": "c27a0feb17df909dcf9986bfde231d90a79e8c1ad8abbcf2884b52e767a70ee2",
+            "actual_sha256": "c27a0feb17df909dcf9986bfde231d90a79e8c1ad8abbcf2884b52e767a70ee2",
+            "passed": true
+          },
+          "src/patcher/framed_army_composition.py": {
+            "expected_sha256": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c",
+            "actual_sha256": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c",
+            "passed": true
+          },
+          "src/display_plan.py": {
+            "expected_sha256": "16482783a4c01dad0617824644f64a173bddaffc554b8717e3fb601166217282",
+            "actual_sha256": "16482783a4c01dad0617824644f64a173bddaffc554b8717e3fb601166217282",
+            "passed": true
+          },
+          "src/launcher/presets.py": {
+            "expected_sha256": "3561ab482c42db05771049b43c1bbdd6e102ed7c232ba722a7681ce67e8dcdbe",
+            "actual_sha256": "3561ab482c42db05771049b43c1bbdd6e102ed7c232ba722a7681ce67e8dcdbe",
+            "passed": true
+          },
+          "src/patcher/complete_hd_candidate.py": {
+            "expected_sha256": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06",
+            "actual_sha256": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06",
+            "passed": true
+          },
+          "tools/build_framed_candidate.py": {
+            "expected_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+            "actual_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+            "passed": true
+          },
+          "tools/build_framed_modal_candidate.py": {
+            "expected_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+            "actual_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+            "passed": true
+          },
+          "tools/build_framed_army_candidate.py": {
+            "expected_sha256": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+            "actual_sha256": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+            "passed": true
+          }
+        }
       },
       "failures": []
     }

@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 import render_cdb_surface_probe as probe_renderer
+from load_slot_geometry_contract import active_lines, check_harness
 
 DEFAULT_DECOMP_C = Path(r"C:\Clash\clash95.c")
 DEFAULT_SURFACE_PROBE_SCRIPT = Path("scripts/cdb/run_cdb_surface_dump.ps1")
@@ -182,8 +183,11 @@ def check_surface_geometry(path: Path, *, extra_probe: bool = False) -> dict[str
     script = read_text(path) if exists else ""
     if not exists:
         failures.append(f"missing text file: {path}")
-    script = re.sub(r"<#.*?#>", "", script, flags=re.DOTALL)
-    lines = [line.strip() for line in script.splitlines() if not line.lstrip().startswith("#")]
+    try:
+        lines = active_lines(script)
+    except ValueError as exc:
+        failures.append(str(exc))
+        lines = []
     needles = {**HARNESS_MARKERS, **(EXTRA_HARNESS_MARKERS if extra_probe else {})}
     results = {name: lines.count(marker) == 1 for name, marker in needles.items()}
     # Reject additional assignment paths rather than accepting a correct but
@@ -215,9 +219,13 @@ def check_surface_geometry(path: Path, *, extra_probe: bool = False) -> dict[str
             failures.append(f"missing or changed geometry wiring {name}: {needles.get(name, name)}")
     generated = check_generated_geometry(extra_probe=extra_probe)
     failures.extend(generated["failures"])
+    shared = check_harness(path, extra_probe=extra_probe, require_slot_range=True)
+    failures.extend(shared["failures"])
     return {
         "path": str(path), "exists": exists, "passed": not failures, "markers": results,
         "generated_geometry": generated, "failures": failures,
+        "source_mode": shared["source_mode"], "row_geometry": shared["row_geometry"],
+        "shared_geometry_contract": shared,
     }
 
 
