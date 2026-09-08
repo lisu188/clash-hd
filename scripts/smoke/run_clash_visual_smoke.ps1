@@ -1258,7 +1258,6 @@ try {
         MapClickPathVerified = $routeClickPathVerified
         MapProbeExitCode = if (@($lastRouteRow).Count -gt 0) { $lastRouteRow[0].ProbeExitCode } else { $null }
         Points = $routePointText
-        FollowupPoints = $FollowupPoints
         FollowupSteps = $followupRows
         Route = $Route
         RouteSteps = $routeRows

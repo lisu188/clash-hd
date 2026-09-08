@@ -112,6 +112,8 @@ cloud/        Portable fixture material used by repository checks
 
 Start with:
 
+- [Current agent handoff](docs/hd/AGENT_HANDOFF.md) for Astra setup, interpreter
+  discovery, current evidence, and task entrypoints.
 - `docs/hd/WORKING_WITH_THIS_REPO.md`
 - `AGENTS.md`
 - `docs/hd/LAUNCHER.md`

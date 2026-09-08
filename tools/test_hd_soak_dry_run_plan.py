@@ -5,12 +5,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import subprocess
 import sys
+import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,6 +19,7 @@ SCRIPT = ROOT / "tools" / "hd_soak_dry_run_plan.py"
 sys.path.insert(0, str(ROOT / "tools"))
 
 import hd_soak_dry_run_plan as dry_run_plan  # noqa: E402
+import test_hd_soak_intro_skip_rerun_readiness as intro_fixtures  # noqa: E402
 
 
 STEP_ID = "short2_menu_idle"
@@ -197,22 +199,52 @@ def valid_plan() -> dict[str, Any]:
     }
 
 
-def args_for(tmp: Path, plan: dict[str, Any]) -> argparse.Namespace:
+def hidden_step_status() -> dict[str, Any]:
+    data = step_status()
+    step = data["steps"][0]
+    step.update(id="short10_map_idle", tier="short10", route="map-idle", duration_sec=600,
+                preferred_environment="hidden_cdb_host", prerequisites_passed=True)
+    step["paths"] = {name: path.replace("short2-menu-idle", "short10-map-idle") for name, path in step["paths"].items()}
+    data["current_step"] = {"id": step["id"], "status": "missing_pending_hidden_runtime", "preferred_environment": "hidden_cdb_host"}
+    return data
+
+
+def valid_hidden_plan() -> dict[str, Any]:
+    step = hidden_step_status()["steps"][0]
+    options = {
+        "Route": "map-idle", "DurationSec": 600, "FrameIntervalSec": 15, "PanIntervalSec": 10,
+        "LoadSlot": 2, "ReadyTimeoutSec": 240, "EndGraceSec": 180, "PngEdgeCount": 3,
+        "MaxArtifactMB": 250, "MaxWorkingSetGrowthMB": 64, "MaxPrivateMemoryGrowthMB": 64,
+        "MaxHandleGrowth": 128, "Python": sys.executable,
+        "ProbeTemplate": ROOT / "probes/cdb/render/clash95_surface_dump_probe.cdb",
+        "SoakProbeTemplate": ROOT / "probes/cdb/soak/clash95_hidden_soak_route_extra.cdb",
+        "DdrawProxyBuildScript": ROOT / "scripts/build/build_ddraw_surfdump_proxy.ps1",
+        "ReportJson": step["paths"]["report_json"], "ReportMarkdown": step["paths"]["report_markdown"],
+        "GuardJson": step["paths"]["guard_json"], "GuardMarkdown": step["paths"]["guard_markdown"],
+    }
+    command = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File '" + str(ROOT / dry_run_plan.HIDDEN_SCRIPT) + "'"
+    command += "".join(f" -{name} '{value}'" for name, value in options.items())
+    command += " -Execute -RequirePass -Json"
+    return {
+        "executed": False, "preflight_passed": True, "environment": "hidden_cdb_host",
+        "route": "map-idle", "duration_sec": 600, "input_sha256": dry_run_plan.EXPECTED_BASE_SHA256,
+        "candidate_run_directory": dry_run_plan.HIDDEN_CANDIDATE_ROOT + r"\fixture",
+        "output_directory": dry_run_plan.HIDDEN_OUTPUT_ROOT + r"\fixture",
+        "hidden_runtime_command": command,
+    }
+
+
+def args_for(tmp: Path, plan: dict[str, Any], status_data: dict[str, Any] | None = None) -> argparse.Namespace:
     return argparse.Namespace(
-        step_status_json=write_json(tmp / "step-status.json", step_status()),
+        step_status_json=write_json(tmp / "step-status.json", status_data or step_status()),
         script=Path("scripts/smoke/run_hd_soak.ps1"),
         read_plan_json=write_json(tmp / "plan.json", plan),
     )
 
 
-def build_fixture_report(plan: dict[str, Any]) -> dict[str, Any]:
-    fixture = ROOT / ".codex-loop" / "tmp-tests" / "hd-soak-dry-run-plan-fixture"
-    shutil.rmtree(fixture, ignore_errors=True)
-    fixture.mkdir(parents=True)
-    try:
-        return dry_run_plan.build_report(args_for(fixture, plan))
-    finally:
-        shutil.rmtree(fixture, ignore_errors=True)
+def build_fixture_report(plan: dict[str, Any], status_data: dict[str, Any] | None = None) -> dict[str, Any]:
+    with tempfile.TemporaryDirectory() as temporary:
+        return dry_run_plan.build_report(args_for(Path(temporary), plan, status_data))
 
 
 def test_valid_plan_passes() -> None:
@@ -348,10 +380,8 @@ def test_rejects_missing_or_unverified_base_input() -> None:
 
 
 def test_cli_writes_outputs() -> None:
-    fixture = ROOT / ".codex-loop" / "tmp-tests" / "hd-soak-dry-run-plan-cli"
-    shutil.rmtree(fixture, ignore_errors=True)
-    fixture.mkdir(parents=True)
-    try:
+    with tempfile.TemporaryDirectory() as temporary:
+        fixture = Path(temporary)
         status_path = write_json(fixture / "step-status.json", step_status())
         plan_path = write_json(fixture / "plan.json", valid_plan())
         out_json = fixture / "out.json"
@@ -372,11 +402,147 @@ def test_cli_writes_outputs() -> None:
         markdown = out_md.read_text(encoding="ascii")
         assert "HD Soak Dry-Run Plan" in markdown
         assert "Approval TTL" in markdown
-    finally:
-        shutil.rmtree(fixture, ignore_errors=True)
+
+
+def test_hidden_plan_uses_real_schema_and_preserves_no_input_boundary() -> None:
+    report = build_fixture_report(valid_hidden_plan(), hidden_step_status())
+    assert report["passed"], report["failures"]
+    assert report["status"] == "ready_for_hidden_runtime"
+    assert report["input_responsiveness"] == "not_applicable_hidden"
+    assert report["evidence_class"] == "approved_hidden_cdb_host_soak"
+    assert report["approval_gated_execute_command"] is None
+    assert report["runner_source"]["protected_stage"] == dry_run_plan.PROTECTED_STABLE_STAGE
+    assert len(report["runner_source"]["sha256"]) == 64
+    assert report["recommended_runtime_command"] == valid_hidden_plan()["hidden_runtime_command"]
+
+
+def test_hidden_plan_rejects_provenance_and_command_drift() -> None:
+    for field, value in (("executed", True), ("preflight_passed", False), ("environment", "host_visible"),
+                         ("duration_sec", 120), ("input_sha256", "0" * 64),
+                         ("candidate_run_directory", str(ROOT / "candidate")),
+                         ("output_directory", dry_run_plan.HIDDEN_OUTPUT_ROOT + r"\..\escape")):
+        plan = valid_hidden_plan()
+        plan[field] = value
+        assert not build_fixture_report(plan, hidden_step_status())["passed"], field
+    for before, after in (("-RequirePass", ""), ("-Json", ""), ("run_hidden_soak.ps1", "other.ps1"),
+                          ("-MaxArtifactMB '250'", "-MaxArtifactMB '999'"),
+                          ("short10-map-idle-current.json", "wrong.json"),
+                          ("-FrameIntervalSec '15'", "-FrameIntervalSec '1'"),
+                          ("-Execute", "-Execute -AllowVisibleRuntime")):
+        plan = valid_hidden_plan()
+        plan["hidden_runtime_command"] = plan["hidden_runtime_command"].replace(before, after)
+        assert not build_fixture_report(plan, hidden_step_status())["passed"], before
+
+
+def test_hidden_default_invokes_only_hidden_dry_run() -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        args = args_for(Path(temporary), valid_hidden_plan(), hidden_step_status())
+        args.read_plan_json = None
+        with patch.object(dry_run_plan, "run_harness_plan", return_value=(valid_hidden_plan(), {"exit_code": 0})) as run:
+            report = dry_run_plan.build_report(args)
+        assert report["passed"], report["failures"]
+        assert run.call_args.args[0] == dry_run_plan.HIDDEN_SCRIPT
+        command = dry_run_plan.dry_run_command(*run.call_args.args)
+        assert "-Execute" not in command and "-AllowVisibleRuntime" not in command
+        assert "-Json" in command and "-GuardJson" in command
+        assert "-Tier" not in command
+
+
+def test_unknown_environment_never_invokes_a_harness() -> None:
+    for environment in (None, "unknown", ["hidden_cdb_host"]):
+        with tempfile.TemporaryDirectory() as temporary:
+            status = hidden_step_status()
+            status["steps"][0]["preferred_environment"] = environment
+            args = args_for(Path(temporary), valid_hidden_plan(), status)
+            args.read_plan_json = None
+            with patch.object(dry_run_plan, "run_harness_plan") as run:
+                report = dry_run_plan.build_report(args)
+            run.assert_not_called()
+        assert not report["passed"], report
+        assert any("unsupported" in failure for failure in report["failures"])
+
+
+def test_hidden_plan_rejects_an_arbitrary_existing_interpreter() -> None:
+    plan = valid_hidden_plan()
+    plan["hidden_runtime_command"] = plan["hidden_runtime_command"].replace(sys.executable, str(Path(__file__).resolve()))
+    report = build_fixture_report(plan, hidden_step_status())
+    assert not report["passed"], report
+    assert any("verified guard interpreter" in failure for failure in report["failures"])
+
+
+def test_completed_ladder_never_invokes_a_harness_or_reads_a_plan() -> None:
+    for fixture_plan in (False, True):
+        with tempfile.TemporaryDirectory() as temporary:
+            tmp = Path(temporary)
+            args = args_for(tmp, {}, intro_fixtures.completed_ladder_status(tmp))
+            if fixture_plan:
+                args.read_plan_json.write_text("not JSON", encoding="utf-8")
+            else:
+                args.read_plan_json = None
+            with patch.object(dry_run_plan, "run_harness_plan", side_effect=AssertionError("terminal state must not invoke a harness")) as run:
+                report = dry_run_plan.build_report(args)
+            run.assert_not_called()
+        assert report["passed"], report["failures"]
+        assert report["status"] == "not_applicable_short_ladder_complete"
+        intro_fixtures.assert_terminal_no_authorization(report)
+        assert "authorizes no runtime" in dry_run_plan.to_markdown(report)
+
+
+def test_invalid_completion_never_falls_back_to_runtime_planning() -> None:
+    for mutation in intro_fixtures.COMPLETION_MUTATIONS:
+        with tempfile.TemporaryDirectory() as temporary:
+            tmp = Path(temporary)
+            status = intro_fixtures.completed_ladder_status(tmp)
+            intro_fixtures.mutate_completed_ladder(status, mutation)
+            args = args_for(tmp, {}, status)
+            args.read_plan_json = None
+            with patch.object(dry_run_plan, "run_harness_plan", side_effect=AssertionError("invalid completion must fail closed")) as run:
+                report = dry_run_plan.build_report(args)
+            run.assert_not_called()
+        assert not report["passed"], (mutation, report)
+        assert report["status"] == "invalid_short_ladder_completion"
+        intro_fixtures.assert_terminal_no_authorization(report)
+
+
+def test_completed_ladder_cli_writes_only_terminal_packet() -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        tmp = Path(temporary)
+        status_path = write_json(tmp / "status.json", intro_fixtures.completed_ladder_status(tmp))
+        output_json, output_md = tmp / "terminal.json", tmp / "terminal.md"
+        result = subprocess.run([sys.executable, "-B", str(SCRIPT), "--step-status-json", str(status_path),
+                                 "--write-json", str(output_json), "--write-markdown", str(output_md), "--require-pass"],
+                                capture_output=True, text=True, check=False)
+        assert result.returncode == 0, result.stdout + result.stderr
+        report = json.loads(output_json.read_text(encoding="utf-8"))
+        intro_fixtures.assert_terminal_no_authorization(report)
+        assert report["status"] == "not_applicable_short_ladder_complete"
+        assert "Approval-Gated Execute Command" not in output_md.read_text(encoding="utf-8")
+
+
+def test_missing_harness_runner_fails_closed_without_a_plan() -> None:
+    for environment in (dry_run_plan.HOST_ENVIRONMENT, dry_run_plan.HIDDEN_ENVIRONMENT):
+        step = {"tier": TIER, "route": ROUTE, "duration_sec": DURATION,
+                "preferred_environment": environment}
+        with patch.object(dry_run_plan.subprocess, "run", side_effect=FileNotFoundError("missing PowerShell")) as run:
+            plan, invocation = dry_run_plan.run_harness_plan(Path("fixture.ps1"), step)
+        assert plan is None
+        assert invocation["exit_code"] is None
+        assert "runner unavailable" in invocation["stderr"]
+        assert "missing PowerShell" in invocation["stderr"]
+        assert "-Execute" not in run.call_args.args[0]
+        run.assert_called_once()
 
 
 def run_tests() -> None:
+    test_missing_harness_runner_fails_closed_without_a_plan()
+    test_completed_ladder_never_invokes_a_harness_or_reads_a_plan()
+    test_invalid_completion_never_falls_back_to_runtime_planning()
+    test_completed_ladder_cli_writes_only_terminal_packet()
+    test_unknown_environment_never_invokes_a_harness()
+    test_hidden_plan_rejects_an_arbitrary_existing_interpreter()
+    test_hidden_plan_uses_real_schema_and_preserves_no_input_boundary()
+    test_hidden_plan_rejects_provenance_and_command_drift()
+    test_hidden_default_invokes_only_hidden_dry_run()
     test_valid_plan_passes()
     test_rejects_executed_plan()
     test_rejects_stage_drift()

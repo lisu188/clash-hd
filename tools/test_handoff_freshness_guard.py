@@ -6,12 +6,13 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import shutil
 import subprocess
 import sys
+import tempfile
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +46,7 @@ def run_script(cwd: Path, *args: str) -> subprocess.CompletedProcess[str]:
 def write_good_handoff(
     root: Path,
     *,
+    tracked_defaults: bool = False,
     stale_phrase: str | None = None,
     omit_route_link: bool = False,
     omit_owner_flag_inventory: bool = False,
@@ -54,12 +56,12 @@ def write_good_handoff(
     omit_visible_launcher_guard: bool = False,
     omit_completion_summary: bool = False,
 ) -> argparse.Namespace:
-    next_md = root / ".codex-loop" / "NEXT.md"
-    state_md = root / ".codex-loop" / "STATE.md"
-    tasks_md = root / ".codex-loop" / "TASKS.md"
-    evidence = root / "captures" / "hd-map-evidence-current.md"
+    next_md = root / (handoff_freshness_guard.DEFAULT_HANDOFF if tracked_defaults else ".codex-loop/NEXT.md")
+    state_md = next_md if tracked_defaults else root / ".codex-loop/STATE.md"
+    tasks_md = next_md if tracked_defaults else root / ".codex-loop/TASKS.md"
+    evidence = root / handoff_freshness_guard.DEFAULT_EVIDENCE_INDEX
     progress = root / "docs/hd/HD_MOD_PROGRESS.md"
-    question = root / "wiki" / "questions" / "how-should-the-bottom-tooltip-be-recovered.md"
+    question = root / handoff_freshness_guard.DEFAULT_PROJECT_GUIDE
     for path in [next_md, state_md, tasks_md, evidence, progress, question]:
         path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -131,9 +133,10 @@ def write_good_handoff(
     loop_common = common
     if omit_loop_load_slot_transition_readiness and load_slot_transition_readiness:
         loop_common = loop_common.replace(load_slot_transition_readiness, "")
+    if not tracked_defaults:
+        state_md.write_text(loop_common, encoding="utf-8")
+        tasks_md.write_text("[x] Gather broader route/input safety.\n" + loop_common, encoding="utf-8")
     next_md.write_text(loop_common + extra, encoding="utf-8")
-    state_md.write_text(loop_common, encoding="utf-8")
-    tasks_md.write_text("[x] Gather broader route/input safety.\n" + loop_common, encoding="utf-8")
     evidence.write_text(common, encoding="utf-8")
     progress.write_text(common, encoding="utf-8")
     question.write_text(common, encoding="utf-8")
@@ -153,6 +156,103 @@ def test_guard_passes_current_handoff(fixture: Path) -> None:
         guard = handoff_freshness_guard.build_guard(args)
     assert guard["passed"] is True, guard
     assert not guard["failures"], guard
+
+
+def test_tracked_defaults_work_without_local_handoff_notes(fixture: Path) -> None:
+    write_good_handoff(fixture, tracked_defaults=True)
+    assert not (fixture / ".codex-loop").exists()
+    with pushd(fixture), patch.object(sys, "argv", [str(SCRIPT)]):
+        args = handoff_freshness_guard.parse_args()
+        assert args.next_md == args.state_md == args.tasks_md == handoff_freshness_guard.DEFAULT_HANDOFF
+        with patch.object(handoff_freshness_guard, "read_text", wraps=handoff_freshness_guard.read_text) as reads:
+            guard = handoff_freshness_guard.build_guard(args)
+    assert guard["passed"], guard
+    assert len(guard["files"]) == reads.call_count == 4, guard
+    assert sum(file["path"] == str(handoff_freshness_guard.DEFAULT_HANDOFF) for file in guard["files"]) == 1
+    assert all(group["passed"] for group in guard["loop_phrase_groups"].values()), guard
+    result = run_script(
+        fixture, "--write-json", str(fixture / "default.json"),
+        "--write-markdown", str(fixture / "default.md"), "--require-pass",
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_defaults_reject_missing_canonical_handoff(fixture: Path) -> None:
+    args = write_good_handoff(fixture, tracked_defaults=True)
+    args.next_md.unlink()
+    result = run_script(
+        fixture, "--write-json", str(fixture / "missing.json"),
+        "--write-markdown", str(fixture / "missing.md"), "--require-pass",
+    )
+    assert result.returncode == 2, result.stdout + result.stderr
+    guard = json.loads((fixture / "missing.json").read_text(encoding="utf-8"))
+    missing = [failure for failure in guard["failures"] if "missing handoff file" in failure]
+    assert missing == [f"missing handoff file: {handoff_freshness_guard.DEFAULT_HANDOFF}"], guard
+
+
+def test_explicit_missing_legacy_override_fails(fixture: Path) -> None:
+    write_good_handoff(fixture, tracked_defaults=True)
+    for role in ("next", "state", "tasks"):
+        missing_path = fixture / ".codex-loop" / f"{role.upper()}.md"
+        result = run_script(
+            fixture, f"--{role}-md", str(missing_path),
+            "--write-json", str(fixture / f"missing-{role}.json"),
+            "--write-markdown", str(fixture / f"missing-{role}.md"), "--require-pass",
+        )
+        assert result.returncode == 2, result.stdout + result.stderr
+        guard = json.loads((fixture / f"missing-{role}.json").read_text(encoding="utf-8"))
+        assert f"missing handoff file: {missing_path}" in guard["failures"], guard
+
+
+def test_explicit_supporting_doc_is_honored_and_missing_fails(fixture: Path) -> None:
+    args = write_good_handoff(fixture, tracked_defaults=True)
+    legacy_support = fixture / ".codex-loop" / "bottom-question.md"
+    legacy_support.parent.mkdir(parents=True)
+    legacy_support.write_text(args.bottom_question_md.read_text(encoding="utf-8"), encoding="utf-8")
+    output_json = fixture / "support.json"
+    command_args = (
+        "--bottom-question-md", str(legacy_support), "--write-json", str(output_json),
+        "--write-markdown", str(fixture / "support.md"), "--require-pass",
+    )
+    good = run_script(fixture, *command_args)
+    assert good.returncode == 0, good.stdout + good.stderr
+    guard = json.loads(output_json.read_text(encoding="utf-8"))
+    assert guard["supporting_project_guide"] == str(legacy_support), guard
+
+    legacy_support.unlink()
+    assert args.bottom_question_md.is_file(), "the default guide still exists"
+    bad = run_script(fixture, *command_args)
+    assert bad.returncode == 2, bad.stdout + bad.stderr
+    guard = json.loads(output_json.read_text(encoding="utf-8"))
+    assert not guard["passed"], guard
+    assert guard["supporting_project_guide"] == str(legacy_support), guard
+    assert f"missing handoff file: {legacy_support}" in guard["failures"], guard
+
+    del args.bottom_question_md
+    with pushd(fixture):
+        omitted = handoff_freshness_guard.build_guard(args)
+    assert omitted["passed"], omitted
+    assert omitted["supporting_project_guide"] == str(handoff_freshness_guard.DEFAULT_PROJECT_GUIDE)
+
+
+def test_defaults_reject_stale_canonical_claims(fixture: Path) -> None:
+    write_good_handoff(
+        fixture, tracked_defaults=True,
+        stale_phrase="The next right-bottom target is broader route/input safety.",
+    )
+    with pushd(fixture), patch.object(sys, "argv", [str(SCRIPT)]):
+        guard = handoff_freshness_guard.build_guard(handoff_freshness_guard.parse_args())
+    assert not guard["passed"], guard
+    assert any("stale blocker phrase" in failure for failure in guard["failures"]), guard
+
+
+def test_defaults_require_transition_references_in_canonical_handoff(fixture: Path) -> None:
+    write_good_handoff(fixture, tracked_defaults=True, omit_loop_load_slot_transition_readiness=True)
+    with pushd(fixture), patch.object(sys, "argv", [str(SCRIPT)]):
+        guard = handoff_freshness_guard.build_guard(handoff_freshness_guard.parse_args())
+    assert not guard["passed"], guard
+    assert guard["phrase_groups"]["load_slot_transition_readiness_artifacts"]["passed"], guard
+    assert not guard["loop_phrase_groups"]["loop_load_slot_transition_readiness_artifacts"]["passed"], guard
 
 
 def test_guard_rejects_stale_route_safety_phrase(fixture: Path) -> None:
@@ -324,6 +424,7 @@ def test_guard_rejects_missing_visible_runtime_launcher_guard(fixture: Path) -> 
 
 def test_cli_writes_outputs_and_fails_closed(fixture: Path) -> None:
     args = write_good_handoff(fixture)
+    assert not (fixture / handoff_freshness_guard.DEFAULT_HANDOFF).exists()
     out_json = fixture / "guard.json"
     out_md = fixture / "guard.md"
     good = run_script(
@@ -383,11 +484,15 @@ def test_cli_writes_outputs_and_fails_closed(fixture: Path) -> None:
 
 
 def run_tests() -> None:
-    fixture = ROOT / ".codex-loop" / "tmp-tests" / "handoff-freshness-fixture"
-    shutil.rmtree(fixture, ignore_errors=True)
-    fixture.mkdir(parents=True)
-    try:
+    with tempfile.TemporaryDirectory(prefix="handoff-freshness-fixture-") as temporary:
+        fixture = Path(temporary)
         test_guard_passes_current_handoff(fixture / "passes")
+        test_tracked_defaults_work_without_local_handoff_notes(fixture / "tracked-defaults")
+        test_defaults_reject_missing_canonical_handoff(fixture / "missing-canonical")
+        test_explicit_missing_legacy_override_fails(fixture / "missing-legacy-override")
+        test_explicit_supporting_doc_is_honored_and_missing_fails(fixture / "supporting-override")
+        test_defaults_reject_stale_canonical_claims(fixture / "stale-canonical")
+        test_defaults_require_transition_references_in_canonical_handoff(fixture / "canonical-missing-transition")
         test_guard_rejects_stale_route_safety_phrase(fixture / "stale")
         test_guard_rejects_stale_legacy_visible_capture_tasks(fixture / "stale-legacy-visible-capture")
         test_guard_rejects_stale_vm_visual_smoke_tasks(fixture / "stale-vm-visual-smoke")
@@ -407,8 +512,6 @@ def run_tests() -> None:
         test_guard_rejects_missing_no_popup_operator_preference(fixture / "missing-no-popup-preference")
         test_guard_rejects_missing_visible_runtime_launcher_guard(fixture / "missing-visible-launcher")
         test_cli_writes_outputs_and_fails_closed(fixture / "cli")
-    finally:
-        shutil.rmtree(fixture, ignore_errors=True)
 
 
 def main() -> int:

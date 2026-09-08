@@ -14,6 +14,9 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+import hd_soak_dry_run_plan as soak_plan
+import hd_soak_intro_skip_rerun_readiness as intro_readiness
+
 
 RUNTIME_POLICY = (
     "repo-only visible-runtime approval preflight; does not launch Clash95, CDB, "
@@ -514,6 +517,120 @@ def post_run_evidence_refresh_commands() -> list[str]:
     ]
 
 
+def hidden_preflight(sources: dict[str, Path], loaded: dict[str, Any]) -> dict[str, Any]:
+    """Validate a hidden opt-in packet without borrowing visible approval proof."""
+    required = ("next_actions", "step_status", "dry_run_plan", "process_hygiene", "exe_artifact")
+    failures = []
+    for name in required:
+        if (loaded.get(name) or {}).get("passed") is not True:
+            failures.append(f"{name} source report is missing or not passing")
+    step_status = loaded.get("step_status") or {}
+    current = step_status.get("current_step") or {}
+    step = current_step_record(step_status) or {}
+    paths = step.get("paths") or {}
+    if step.get("preferred_environment") != soak_plan.HIDDEN_ENVIRONMENT:
+        failures.append("current step does not select the hidden environment")
+    if current.get("preferred_environment") != soak_plan.HIDDEN_ENVIRONMENT:
+        failures.append("current-step header does not select the hidden environment")
+    if current.get("status") != "missing_pending_hidden_runtime" or step.get("status") != current.get("status"):
+        failures.append("current step is not pending hidden runtime")
+    if step_status.get("ladder_complete") is True or step.get("passed") is True:
+        failures.append("completed steps cannot request another hidden soak")
+    predecessor_evidence, predecessor_failures = intro_readiness.prior_step_evidence(step_status)
+    failures.extend(predecessor_failures)
+
+    envelope = loaded.get("dry_run_plan") or {}
+    plan = envelope.get("plan") or {}
+    expected_envelope = {
+        "passed": True, "status": "ready_for_hidden_runtime", "environment": soak_plan.HIDDEN_ENVIRONMENT,
+        "evidence_class": soak_plan.HIDDEN_EVIDENCE_CLASS,
+        "input_responsiveness": soak_plan.HIDDEN_INPUT_RESPONSIVENESS,
+        "approval_gated_execute_command": None,
+    }
+    for key, expected in expected_envelope.items():
+        if key not in envelope or envelope[key] != expected or (isinstance(expected, bool) and envelope[key] is not expected):
+            failures.append(f"hidden dry-run {key} differs from {expected!r}")
+    for key in ("id", "status", "tier", "route", "duration_sec", "paths", "preferred_environment"):
+        if (envelope.get("current_step") or {}).get(key) != step.get(key):
+            failures.append(f"hidden dry-run current step {key} differs from the pending step")
+    freshness = dry_run_plan_freshness(envelope)
+    failures.extend(freshness["failures"])
+    failures.extend(soak_plan.validate_hidden_plan(plan, step))
+    runner_source = soak_plan.hidden_runner_source_binding()
+    if runner_source["passed"] is not True or envelope.get("runner_source") != runner_source:
+        failures.append("hidden dry-run runner source binding is stale or invalid")
+    command = plan.get("hidden_runtime_command")
+    for key in ("hidden_runtime_command", "recommended_runtime_command"):
+        if envelope.get(key) != command:
+            failures.append(f"hidden dry-run {key} differs from the emitted runner command")
+    source_script = (envelope.get("source_artifacts") or {}).get("script")
+    script = soak_plan.resolve_repo_path(str(source_script or ""))
+    if normalized_text(script) != normalized_text(soak_plan.REPO_ROOT / soak_plan.HIDDEN_SCRIPT):
+        failures.append("hidden dry-run source does not identify the repository runner")
+    invocation = envelope.get("invocation") or {}
+    expected_invocation = soak_plan.command_text(soak_plan.dry_run_command(Path(str(source_script or "")), step))
+    if (invocation.get("exit_code") != 0 or invocation.get("used_fixture_plan") is not False
+            or invocation.get("command") != expected_invocation
+            or (envelope.get("source_artifacts") or {}).get("read_plan_json") is not None):
+        failures.append("hidden dry-run must record a successful non-executing runner invocation, not a fixture")
+
+    action = (loaded.get("next_actions") or {}).get("next_action") or {}
+    expected_action = {
+        "id": f"run_{step.get('id')}_soak", "status": "runtime_required",
+        "short_step_id": step.get("id"), "tier": step.get("tier"), "route": step.get("route"),
+        "environment": soak_plan.HIDDEN_ENVIRONMENT, "evidence_class": soak_plan.HIDDEN_EVIDENCE_CLASS,
+        "input_responsiveness": soak_plan.HIDDEN_INPUT_RESPONSIVENESS,
+        "requires_visible_runtime": False, "requires_explicit_user_approval": False,
+        "exact_runtime_command": command, "plan_verified_execute_command": command,
+        "exact_runtime_command_source": "dry_run_plan",
+        "post_run_validation": post_run_validation_for_step(step),
+        "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+        "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
+    }
+    for key, expected in expected_action.items():
+        if key not in action or action[key] != expected or (isinstance(expected, bool) and action[key] is not expected):
+            failures.append(f"hidden next action {key} differs from the current plan")
+    writes = [soak_plan.HIDDEN_CANDIDATE_ROOT, soak_plan.HIDDEN_OUTPUT_ROOT]
+    if sorted(action.get("writes_outside_repo") or []) != sorted(writes):
+        failures.append("hidden next action does not limit writes to the hidden artifact roots")
+    if MUST_NOT_MODIFY not in (action.get("must_not_modify") or []):
+        failures.append("hidden next action does not protect the original executable")
+    if (loaded.get("process_hygiene") or {}).get("matching_process_count") != 0:
+        failures.append("process hygiene has not confirmed zero stale cdb/clash95 processes")
+    if (loaded.get("exe_artifact") or {}).get("tracked_exes") != []:
+        failures.append("exe artifact guard has not confirmed zero tracked executables")
+    locks = {"stable_stage_should_change": False, "right_bottom_promotion_blocked": True,
+             "long_tiers_locked": True, "future_lanes_locked": True}
+    if envelope.get("locks") != locks:
+        failures.append("hidden dry-run must preserve all stage and promotion locks")
+
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(), "passed": not failures,
+        "runtime_policy": "repo-only hidden-runtime preflight; does not launch game or debugger processes",
+        "status": "ready_for_hidden_runtime" if not failures else "not_ready",
+        "environment": soak_plan.HIDDEN_ENVIRONMENT, "evidence_class": soak_plan.HIDDEN_EVIDENCE_CLASS,
+        "input_responsiveness": soak_plan.HIDDEN_INPUT_RESPONSIVENESS,
+        "requires_visible_runtime": False, "requires_explicit_user_approval": False,
+        "source_artifacts": {name: str(sources[name]) for name in required},
+        "current_step": current, "step": {key: step.get(key) for key in ("id", "tier", "route", "paths")},
+        "current_step_artifacts": current_step_artifact_inventory(paths), "current_failure": current_failure_summary(step),
+        "completed_predecessor_evidence": predecessor_evidence, "runner_source": runner_source,
+        "safe_dry_run_command": expected_invocation,
+        "hidden_runtime_command": command if not failures else None,
+        "recommended_runtime_command": command if not failures else None,
+        "approval_gated_runtime_command": None,
+        "approval_boundary": "Hidden runtime remains opt-in. It proves no visible rendering, manual input, or promotion; visible runtime still requires fresh explicit approval.",
+        "post_run_validation": post_run_validation_for_step(step),
+        "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+        "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
+        "dry_run_plan_consistency": {"path": str(sources["dry_run_plan"]), "freshness": freshness,
+                                     "status": envelope.get("status"), "passed": envelope.get("passed"),
+                                     "current_step": (envelope.get("current_step") or {}).get("id")},
+        "writes_outside_repo": writes, "must_not_modify": [MUST_NOT_MODIFY],
+        "locks": locks, "failures": failures,
+    }
+
+
 def build_report(args: argparse.Namespace) -> dict[str, Any]:
     sources = {
         "next_actions": args.next_actions_json,
@@ -525,8 +642,21 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "process_hygiene": args.process_hygiene_json,
         "exe_artifact": args.exe_artifact_json,
     }
-    loaded = {name: load_json(path) for name, path in sources.items()}
+    step_status = load_json(args.step_status_json) or {}
+    if intro_readiness.short_ladder_terminal_claim(step_status):
+        return intro_readiness.completed_short_ladder_report(step_status, args.step_status_json, RUNTIME_POLICY)
+    loaded = {name: step_status if name == "step_status" else load_json(path) for name, path in sources.items()}
+    current = step_status.get("current_step") or {}
+    step = current_step_record(step_status) or {}
+    if (step.get("preferred_environment") == soak_plan.HIDDEN_ENVIRONMENT
+            or current.get("preferred_environment") == soak_plan.HIDDEN_ENVIRONMENT
+            or current.get("status") == "missing_pending_hidden_runtime"):
+        return hidden_preflight(sources, loaded)
     failures: list[str] = []
+    if step.get("preferred_environment", soak_plan.HOST_ENVIRONMENT) != soak_plan.HOST_ENVIRONMENT:
+        failures.append("current step has an unsupported runtime environment")
+    if current.get("preferred_environment", soak_plan.HOST_ENVIRONMENT) != soak_plan.HOST_ENVIRONMENT:
+        failures.append("current-step header has an unsupported runtime environment")
     for name, data in loaded.items():
         if data is None:
             failures.append(f"missing source report: {sources[name]}")
@@ -857,6 +987,24 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
 
 def to_markdown(report: dict[str, Any]) -> str:
+    if report.get("terminal_short_ladder"):
+        return intro_readiness.completed_short_ladder_markdown(report, "HD Soak Approval Preflight")
+    if report.get("environment") == soak_plan.HIDDEN_ENVIRONMENT:
+        lines = ["# HD Soak Hidden Runtime Preflight", "",
+                 f"- Overall: {status_text(report['passed'])}", f"- Status: `{report['status']}`",
+                 f"- Current step: `{report['current_step'].get('id')}`",
+                 f"- Environment: `{report['environment']}`", f"- Evidence class: `{report['evidence_class']}`",
+                 f"- Input responsiveness: `{report['input_responsiveness']}`", "", report["approval_boundary"], "",
+                 "## Safe Dry Run", "", "```powershell", report["safe_dry_run_command"], "```", "",
+                 "## Hidden Runtime Command", "", "```powershell", str(report.get("hidden_runtime_command") or ""), "```", "",
+                 "## Focused Post-Run Validation", ""]
+        lines.extend(f"- `{command}`" for command in report["post_run_validation"])
+        lines.extend(["", "## Boundaries", ""])
+        lines.extend(f"- {key}: `{value}`" for key, value in report["locks"].items())
+        if report["failures"]:
+            lines.extend(["", "## Failures", ""])
+            lines.extend(f"- {failure}" for failure in report["failures"])
+        return "\n".join(lines) + "\n"
     lines = [
         "# HD Soak Approval Preflight",
         "",

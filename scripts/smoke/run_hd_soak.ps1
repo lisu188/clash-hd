@@ -248,14 +248,15 @@ function Test-IsUnderPath {
 
 function Get-SoakFileSha256 {
     param([Parameter(Mandatory = $true)][string]$Path)
-    # The bundled host may not expose Get-FileHash through module discovery.
-    # Hash the exact file without depending on that optional command lookup.
+    # Keep approval/source identity checks independent of module autoload.
     $stream = [System.IO.File]::OpenRead($Path)
-    $hasher = [System.Security.Cryptography.SHA256]::Create()
+    $hasher = $null
     try {
+        $hasher = [System.Security.Cryptography.SHA256]::Create()
         return [System.BitConverter]::ToString($hasher.ComputeHash($stream)).Replace('-', '')
-    } finally {
-        $hasher.Dispose()
+    }
+    finally {
+        if ($hasher) { $hasher.Dispose() }
         $stream.Dispose()
     }
 }

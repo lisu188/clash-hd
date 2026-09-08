@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 import hd_soak_report as soak
 
@@ -222,6 +223,350 @@ def passing_guest_report() -> dict:
         ],
         "capture_errors": [],
     }
+
+
+def passing_hidden_report(tmp: Path) -> dict:
+    """A clean hidden-desktop CDB host soak report (environment=hidden_cdb_host).
+
+    The game is a real host process, so all host process telemetry is present
+    as real numbers; frames are host ReadProcessMemory surface reads; input
+    responsiveness is the not_applicable_hidden sentinel; forced-entry
+    mechanics are disclosed via entry_mechanism.
+    """
+    candidate_sha = "e" * 64
+    patch_path = tmp / "patch-stage-hidden.json"
+    patch_path.write_text(json.dumps(patch_stage_report(candidate_sha)), encoding="ascii")
+    return {
+        "executed": True,
+        "passed": True,
+        "failures": [],
+        "environment": soak.HIDDEN_ENVIRONMENT,
+        "evidence_class": soak.HIDDEN_EVIDENCE_CLASS,
+        "schema": "hidden_cdb_host_soak_report_v1",
+        "runtime_policy": "opt-in hidden-desktop CDB host soak; frames read via host ReadProcessMemory",
+        "stage": soak.PROTECTED_STABLE_STAGE,
+        "stable_stage_should_change": False,
+        "tier": "short2",
+        "route": "map-idle",
+        "duration_sec": 120,
+        "sample_interval_sec": 15,
+        "input_exe": soak.EXPECTED_INPUT_EXE,
+        "workdir": soak.EXPECTED_WORKDIR,
+        "candidate": r"C:\ClashTests\hd-soak\clash95_hd_hidden_fixture.exe",
+        "candidate_sha256": candidate_sha,
+        "input_sha256": soak.EXPECTED_BASE_SHA256,
+        "patch_stage_report": str(patch_path),
+        "output_directory": r"C:\ClashCaptures\hd-soak\hidden-fixture",
+        "report_json": "captures/current/hd-soak-hidden-current.json",
+        "input_proof_class": "hidden_cdb_forced_route_diagnostic_not_manual_directinput_release_proof",
+        "right_bottom_promotion_blocked": True,
+        # Disclosed forcing + honesty sentinel + surface-read provenance.
+        "entry_mechanism": soak.HIDDEN_ENTRY_MECHANISM,
+        "pan_mechanism": soak.HIDDEN_NO_PAN_MECHANISM,
+        "input_responsiveness": soak.NOT_APPLICABLE_HIDDEN,
+        "surface_base": "0x00c80000",
+        "frame_read_method": soak.HIDDEN_FRAME_READ_METHOD,
+        "proxy": {
+            "used": True,
+            "path": r"C:\ClashTests\hd-soak\ddraw.dll",
+            "sha256": "f" * 64,
+            "build_manifest": r"C:\ClashTests\hd-soak\ddraw_surfdump_proxy.build.json",
+            "log": r"C:\ClashTests\hd-soak\ddraw_surfdump_proxy.log",
+            "present_enabled": False,
+        },
+        "ready_marker": {
+            "source": "SOAK_SURFDUMP_READY", "base": "00c80000", "surface": "00d80000",
+            "redraw_seq": 1, "width": 800, "height": 600, "bytes": 480000,
+        },
+        "route_start_marker": {
+            "route_ticks": 7680, "pan": 0, "player": 0, "tick": 100,
+            "scroll_x": 10, "scroll_y": 10, "game_data": "00600000",
+        },
+        "route_end_marker": {
+            "hits": 128, "tick_delta": 7680, "player": 0, "scroll_x": 10, "scroll_y": 10,
+        },
+        "pan_events": [],
+        "pan_event_count": 0,
+        "heartbeat_count": 128,
+        "cleanup": {"game_stopped": True, "cdb_stopped": True, "errors": []},
+        "frame_sample_count": 2,
+        "frame_hash_unique_count": 2,
+        "frame_progress_expected": False,
+        "frame_stability_class": "progressing",
+        "nonblack_percent_min": 44.5,
+        "nonblack_percent_max": 45.0,
+        "unique_sample_colors_min": 32,
+        "unique_sample_colors_max": 35,
+        "process_sample_count": 2,
+        "working_set_growth_bytes": 1024,
+        "private_memory_growth_bytes": 2048,
+        "handle_growth": 1,
+        "process_exited_unexpectedly": False,
+        "exit_code": None,
+        "clean_stop": True,
+        "max_artifact_mb": 250,
+        "artifact_limit_bytes": 250 * 1024 * 1024,
+        "artifact_bytes": 345678,
+        "process_samples": [
+            {
+                "Timestamp": "2026-06-16T12:00:00.0000000+00:00",
+                "HasExited": False,
+                "WorkingSet64": 1000,
+                "PrivateMemorySize64": 2000,
+                "HandleCount": 10,
+            },
+            {
+                "Timestamp": "2026-06-16T12:02:00.0000000+00:00",
+                "HasExited": False,
+                "WorkingSet64": 2024,
+                "PrivateMemorySize64": 4048,
+                "HandleCount": 11,
+            },
+        ],
+        "frame_samples": [
+            {
+                "Name": "frame-0000",
+                "Timestamp": "2026-06-16T12:00:00.0000000+00:00",
+                "Width": 800,
+                "Height": 600,
+                "Hash": "a" * 64,
+                "NonblackPercent": 45.0,
+                "UniqueSampleColors": 32,
+                "CaptureMode": "host_readprocessmemory_surface",
+            },
+            {
+                "Name": "frame-0001",
+                "Timestamp": "2026-06-16T12:01:45.0000000+00:00",
+                "Width": 800,
+                "Height": 600,
+                "Hash": "b" * 64,
+                "NonblackPercent": 44.5,
+                "UniqueSampleColors": 35,
+                "CaptureMode": "host_readprocessmemory_surface",
+            },
+        ],
+        "capture_errors": [],
+    }
+
+
+def passing_hidden_pan_report(tmp: Path) -> dict:
+    report = passing_hidden_report(tmp)
+    report["route"] = "map-pan"
+    report["pan_mechanism"] = soak.HIDDEN_PAN_MECHANISM
+    report["frame_progress_expected"] = True
+    report["route_start_marker"]["pan"] = 1
+    report["pan_events"] = [
+        {"phase": phase, "x": x, "y": y, "hits": phase + 1, "tick_delta": (phase + 1) * 100}
+        for phase, (x, y) in enumerate(((11, 10), (11, 11), (10, 11), (10, 10)))
+    ]
+    report["pan_event_count"] = len(report["pan_events"])
+    return report
+
+
+def test_hidden_passing_report() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        evaluation = soak.evaluate_hidden_report(passing_hidden_report(Path(directory)))
+    assert evaluation["overall"] is True, evaluation
+    assert evaluation["environment"] == soak.HIDDEN_ENVIRONMENT
+    assert evaluation["checks"]["environment"]["passed"] is True
+    assert evaluation["checks"]["input_responsiveness"]["passed"] is True
+    assert evaluation["checks"]["input_responsiveness"]["summary"]["input_responsiveness"] == soak.NOT_APPLICABLE_HIDDEN
+    assert evaluation["checks"]["forced_entry_disclosure"]["passed"] is True
+    assert evaluation["checks"]["capture_integrity"]["passed"] is True
+    assert evaluation["checks"]["patch_evidence"]["passed"] is True
+    assert evaluation["checks"]["process_liveness"]["passed"] is True
+    assert evaluation["checks"]["process_growth"]["passed"] is True
+    assert evaluation["checks"]["frame_inventory"]["passed"] is True
+    assert evaluation["checks"]["render_metrics"]["passed"] is True
+    assert evaluation["checks"]["summary_consistency"]["passed"] is True
+
+
+def test_hidden_markdown_banners_environment_and_disclosures() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        evaluation = soak.evaluate_hidden_report(passing_hidden_report(Path(directory)))
+    markdown = soak.to_markdown(evaluation)
+    assert "HD Hidden-CDB Host Soak Report Guard" in markdown
+    assert "ENVIRONMENT: hidden_cdb_host" in markdown
+    assert soak.HIDDEN_ENTRY_MECHANISM in markdown
+    assert "not_applicable_hidden" in markdown
+
+
+def test_hidden_faked_input_responsiveness_number_fails() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report["input_responsiveness"] = 1  # a hidden run cannot measure this
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["input_responsiveness"]["passed"] is False
+    assert any("fabricated" in failure for failure in evaluation["failures"])
+    assert any("not_applicable_hidden" in failure for failure in evaluation["failures"])
+
+
+def test_hidden_faked_input_responsiveness_true_fails() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report["input_responsiveness"] = True  # claiming responsiveness is also faking
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["input_responsiveness"]["passed"] is False
+
+
+def test_hidden_dropped_input_responsiveness_fails() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report.pop("input_responsiveness")  # dropping hides the gap; fail closed
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["input_responsiveness"]["passed"] is False
+    assert any("dropped" in failure for failure in evaluation["failures"])
+
+
+def test_hidden_dropped_entry_mechanism_disclosure_fails() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report.pop("entry_mechanism")  # undisclosed forcing is dishonest
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["forced_entry_disclosure"]["passed"] is False
+    assert any("entry_mechanism disclosure is missing" in failure for failure in evaluation["failures"])
+
+
+def test_hidden_map_pan_requires_pan_mechanism_disclosure() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_pan_report(Path(directory))
+        report.pop("pan_mechanism")
+        undisclosed = soak.evaluate_hidden_report(report)
+        report["pan_mechanism"] = soak.HIDDEN_PAN_MECHANISM
+        disclosed = soak.evaluate_hidden_report(report)
+    assert undisclosed["overall"] is False
+    assert undisclosed["checks"]["forced_entry_disclosure"]["passed"] is False
+    assert any("pan_mechanism disclosure is missing" in failure for failure in undisclosed["failures"])
+    assert disclosed["overall"] is True, disclosed
+    assert disclosed["checks"]["forced_entry_disclosure"]["passed"] is True
+    assert disclosed["pan_mechanism"] == soak.HIDDEN_PAN_MECHANISM
+
+
+def test_hidden_map_pan_requires_frame_progression() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_pan_report(Path(directory))
+        report["frame_hash_unique_count"] = 1
+        report["frame_samples"][1]["Hash"] = report["frame_samples"][0]["Hash"]
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["frame_progression"]["passed"] is False
+    assert any("frame progression required" in failure for failure in evaluation["failures"])
+
+
+def test_hidden_claimed_frame_progression_must_match_actual_hashes() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report["frame_hash_unique_count"] = 5  # claimed progression the frames do not show
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["frame_progression"]["passed"] is False
+    assert any("unique hashes in frame_samples" in failure for failure in evaluation["failures"])
+
+
+def test_hidden_host_process_metrics_stay_required() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report.pop("working_set_growth_bytes")
+        report.pop("private_memory_growth_bytes")
+        report.pop("handle_growth")
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["process_growth"]["passed"] is False
+    assert any("working_set_growth_bytes is missing" in failure for failure in evaluation["failures"])
+
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report["working_set_growth_bytes"] = 65 * 1024 * 1024
+        report["process_samples"][1]["WorkingSet64"] = report["process_samples"][0]["WorkingSet64"] + 65 * 1024 * 1024
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["process_growth"]["passed"] is False
+
+
+def test_hidden_process_liveness_stays_required() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report["process_exited_unexpectedly"] = True
+        report["exit_code"] = 3221225477
+        report["clean_stop"] = False
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["process_liveness"]["passed"] is False
+    assert any("unexpectedly" in failure for failure in evaluation["failures"])
+
+
+def test_hidden_missing_surface_read_provenance_fails() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        report = passing_hidden_report(Path(directory))
+        report.pop("surface_base")
+        report["frame_read_method"] = "window_capture"
+        evaluation = soak.evaluate_hidden_report(report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["capture_integrity"]["passed"] is False
+    assert any("surface_base is missing" in failure for failure in evaluation["failures"])
+    assert any("host_readprocessmemory" in failure for failure in evaluation["failures"])
+
+
+def test_host_report_rejected_by_hidden_grader() -> None:
+    """A host visible-runtime soak report can never pass as hidden evidence."""
+    with tempfile.TemporaryDirectory() as directory:
+        host_report = passing_report(Path(directory))
+        evaluation = soak.evaluate_hidden_report(host_report)
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["environment"]["passed"] is False
+
+
+def test_hidden_report_rejected_by_guest_grader() -> None:
+    """The hidden and guest classes must never be confused with each other."""
+    with tempfile.TemporaryDirectory() as directory:
+        evaluation = soak.evaluate_guest_report(passing_hidden_report(Path(directory)))
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["environment"]["passed"] is False
+
+
+def test_guest_report_rejected_by_hidden_grader() -> None:
+    evaluation = soak.evaluate_hidden_report(passing_guest_report())
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["environment"]["passed"] is False
+
+
+def test_hidden_report_not_accepted_by_host_grader() -> None:
+    """The host grader fails a hidden report closed (no route/input rows)."""
+    with tempfile.TemporaryDirectory() as directory:
+        evaluation = soak.evaluate_report(passing_hidden_report(Path(directory)))
+    assert evaluation["overall"] is False
+    assert evaluation["checks"]["input_responsiveness"]["passed"] is False
+
+
+def test_hidden_cli_autodetects_and_gates() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        report_path = tmp / "hidden-report.json"
+        report_path.write_text(json.dumps(passing_hidden_report(tmp)), encoding="ascii")
+        script = Path(__file__).resolve().parent / "hd_soak_report.py"
+        # Auto-detected as hidden via the environment stamp; no --hidden needed.
+        pass_result = subprocess.run(
+            [sys.executable, str(script), str(report_path), "--require-pass"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        faked = passing_hidden_report(tmp)
+        faked["input_responsiveness"] = 0  # faked numeric responsiveness
+        faked_path = tmp / "hidden-faked.json"
+        faked_path.write_text(json.dumps(faked), encoding="ascii")
+        fail_result = subprocess.run(
+            [sys.executable, str(script), str(faked_path), "--require-pass"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    assert pass_result.returncode == 0, pass_result.stdout + pass_result.stderr
+    assert fail_result.returncode == 1, fail_result.stdout + fail_result.stderr
 
 
 def test_guest_passing_report() -> None:
@@ -835,7 +1180,183 @@ def test_cli_honors_max_input_drift_argument() -> None:
     assert pass_result.returncode == 0, pass_result.stdout + pass_result.stderr
 
 
+def test_environment_dispatch_preserves_distinct_proof_classes() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        host = passing_report(tmp)
+        assert "environment" not in host and "schema" not in host
+        reports = (
+            (host, soak.HOST_ENVIRONMENT),
+            (dict(host, environment=soak.HOST_ENVIRONMENT, evidence_class=soak.HOST_EVIDENCE_CLASS), soak.HOST_ENVIRONMENT),
+            (passing_guest_report(), soak.GUEST_ENVIRONMENT),
+            (passing_hidden_report(tmp), soak.HIDDEN_ENVIRONMENT),
+            (passing_hidden_pan_report(tmp), soak.HIDDEN_ENVIRONMENT),
+        )
+        for report, environment in reports:
+            before = json.dumps(report)
+            evaluation = soak.evaluate_report_for_environment(report)
+            assert evaluation["overall"], evaluation
+            assert evaluation["expected_environment"] == environment
+            assert evaluation["checks"]["environment"]["passed"]
+            assert json.dumps(report) == before, "dispatcher must not relabel evidence"
+        hidden = reports[-1][0]
+        assert not soak.evaluate_report(hidden)["checks"]["environment"]["passed"]
+        assert not soak.evaluate_guest_report(hidden)["checks"]["environment"]["passed"]
+        assert not soak.evaluate_report(passing_guest_report())["checks"]["environment"]["passed"]
+
+
+def test_dispatch_rejects_unknown_labels_and_foreign_unlabeled_classes() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        host = passing_report(Path(directory))
+        for environment in ("unknown", "", None, 17, [], {}):
+            report = dict(host, environment=environment)
+            evaluation = soak.evaluate_report_for_environment(report)
+            assert not evaluation["overall"], evaluation
+            assert not evaluation["checks"]["environment"]["passed"]
+            assert "unsupported soak environment" in evaluation["failures"][0]
+            assert not soak.evaluate_report(report)["checks"]["environment"]["passed"]
+        for evidence_class in (soak.GUEST_EVIDENCE_CLASS, soak.HIDDEN_EVIDENCE_CLASS, "manual_directinput", None):
+            evaluation = soak.evaluate_report_for_environment(dict(host, evidence_class=evidence_class))
+            assert not evaluation["overall"], evaluation
+            assert not evaluation["checks"]["environment"]["passed"]
+        evaluation = soak.evaluate_report_for_environment(dict(host, schema="hidden_cdb_host_soak_report_v1"))
+        assert not evaluation["checks"]["environment"]["passed"]
+
+
+def test_dispatch_forwards_every_applicable_threshold() -> None:
+    common = {
+        "min_frames": 5, "min_nonblack_percent": 20.0, "min_unique_sample_colors": 9,
+        "max_artifact_mb": 90, "expected_width": 1024, "expected_height": 768,
+    }
+    host_process = {
+        "max_working_set_growth_mb": 21, "max_private_memory_growth_mb": 22, "max_handle_growth": 23,
+    }
+    supplied = dict(common, **host_process, max_input_drift_px=4, min_guest_status_samples=6)
+    for environment, grader, expected in (
+        (soak.HOST_ENVIRONMENT, "evaluate_report", dict(common, **host_process, max_input_drift_px=4)),
+        (soak.HIDDEN_ENVIRONMENT, "evaluate_hidden_report", dict(common, **host_process)),
+        (soak.GUEST_ENVIRONMENT, "evaluate_guest_report", dict(common, min_guest_status_samples=6)),
+    ):
+        report = {"environment": environment}
+        with patch.object(soak, grader, return_value={"grader": grader}) as grading:
+            result = soak.evaluate_report_for_environment(report, **supplied)
+        assert result == {"grader": grader}
+        grading.assert_called_once_with(report, **expected)
+
+
+def test_dispatch_thresholds_change_actual_grading() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        for report in (passing_report(tmp), passing_hidden_report(tmp), passing_guest_report()):
+            strict = soak.evaluate_report_for_environment(report, min_frames=3, min_nonblack_percent=46.0)
+            assert not strict["checks"]["frame_inventory"]["passed"]
+            assert not strict["checks"]["render_metrics"]["passed"]
+        for report in (passing_report(tmp), passing_hidden_report(tmp)):
+            strict = soak.evaluate_report_for_environment(report, max_handle_growth=0)
+            assert not strict["checks"]["process_growth"]["passed"]
+        strict_host = soak.evaluate_report_for_environment(passing_report(tmp), max_input_drift_px=0)
+        assert not strict_host["checks"]["input_responsiveness"]["passed"]
+        strict_guest = soak.evaluate_report_for_environment(passing_guest_report(), min_guest_status_samples=3)
+        assert not strict_guest["checks"]["guest_liveness"]["passed"]
+
+
+def test_hidden_missing_structured_provenance_fails_closed() -> None:
+    fields = {
+        "schema": "schema", "proxy": "wrapper_provenance", "ready_marker": "marker_provenance",
+        "route_start_marker": "marker_provenance", "route_end_marker": "marker_provenance",
+        "pan_events": "marker_provenance", "heartbeat_count": "marker_provenance",
+        "cleanup": "cleanup_provenance",
+    }
+    with tempfile.TemporaryDirectory() as directory:
+        for field, check in fields.items():
+            report = passing_hidden_report(Path(directory))
+            report.pop(field)
+            # Legacy success booleans cannot stand in for parsed observation rows.
+            report.update(ready_observed=True, soak_route_start_observed=True, soak_route_end_observed=True)
+            evaluation = soak.evaluate_report_for_environment(report)
+            assert not evaluation["overall"], (field, evaluation)
+            assert not evaluation["checks"][check]["passed"], (field, evaluation)
+
+
+def test_hidden_contradictory_provenance_fails_closed() -> None:
+    mutations = (
+        ("wrapper_provenance", lambda r: r["proxy"].update(present_enabled=True)),
+        ("wrapper_provenance", lambda r: r["proxy"].update(sha256="invalid")),
+        ("marker_provenance", lambda r: r["ready_marker"].update(base="00c90000")),
+        ("marker_provenance", lambda r: r["route_end_marker"].update(tick_delta=1)),
+        ("marker_provenance", lambda r: r["pan_events"][0].update(x=100)),
+        ("cleanup_provenance", lambda r: r["cleanup"].update(cdb_stopped=False)),
+        ("forced_entry_disclosure", lambda r: r.update(entry_mechanism="natural_input")),
+        ("forced_entry_disclosure", lambda r: r.update(pan_mechanism="none")),
+    )
+    with tempfile.TemporaryDirectory() as directory:
+        for check, mutate in mutations:
+            report = passing_hidden_pan_report(Path(directory))
+            mutate(report)
+            evaluation = soak.evaluate_report_for_environment(report)
+            assert not evaluation["overall"], (check, evaluation)
+            assert not evaluation["checks"][check]["passed"], (check, evaluation)
+
+
+def test_map_pan_cannot_disable_frame_progression_in_any_environment() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        for report in (passing_report(tmp), passing_guest_report(), passing_hidden_pan_report(tmp)):
+            report["route"] = "map-pan"
+            report["frame_progress_expected"] = False
+            report["frame_stability_class"] = "stable_idle"
+            report["frame_hash_unique_count"] = 1
+            report["frame_samples"][1]["Hash"] = report["frame_samples"][0]["Hash"]
+            evaluation = soak.evaluate_report_for_environment(report)
+            assert not evaluation["checks"]["frame_progression"]["passed"], evaluation
+
+
+def test_cli_rejects_unknown_and_contradictory_environment_selection() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        report_path = tmp / "report.json"
+        script = Path(__file__).resolve().parent / "hd_soak_report.py"
+        command = [sys.executable, str(script), str(report_path), "--require-pass"]
+        hidden = passing_hidden_report(tmp)
+        report_path.write_text(json.dumps(hidden), encoding="ascii")
+        wrong_lane = subprocess.run(command + ["--guest"], capture_output=True, text=True, check=False)
+        assert wrong_lane.returncode == 1, wrong_lane.stdout + wrong_lane.stderr
+        assert "expected 'guest_win98_qemu'" in wrong_lane.stdout
+        both_lanes = subprocess.run(command + ["--guest", "--hidden"], capture_output=True, text=True, check=False)
+        assert both_lanes.returncode == 2, both_lanes.stdout + both_lanes.stderr
+        host = dict(passing_report(tmp), environment="unsupported")
+        report_path.write_text(json.dumps(host), encoding="ascii")
+        unsupported = subprocess.run(command, capture_output=True, text=True, check=False)
+        assert unsupported.returncode == 1, unsupported.stdout + unsupported.stderr
+        assert "unsupported soak environment" in unsupported.stdout
+
+
 def run_tests() -> None:
+    test_environment_dispatch_preserves_distinct_proof_classes()
+    test_dispatch_rejects_unknown_labels_and_foreign_unlabeled_classes()
+    test_dispatch_forwards_every_applicable_threshold()
+    test_dispatch_thresholds_change_actual_grading()
+    test_hidden_missing_structured_provenance_fails_closed()
+    test_hidden_contradictory_provenance_fails_closed()
+    test_map_pan_cannot_disable_frame_progression_in_any_environment()
+    test_cli_rejects_unknown_and_contradictory_environment_selection()
+    test_hidden_passing_report()
+    test_hidden_markdown_banners_environment_and_disclosures()
+    test_hidden_faked_input_responsiveness_number_fails()
+    test_hidden_faked_input_responsiveness_true_fails()
+    test_hidden_dropped_input_responsiveness_fails()
+    test_hidden_dropped_entry_mechanism_disclosure_fails()
+    test_hidden_map_pan_requires_pan_mechanism_disclosure()
+    test_hidden_map_pan_requires_frame_progression()
+    test_hidden_claimed_frame_progression_must_match_actual_hashes()
+    test_hidden_host_process_metrics_stay_required()
+    test_hidden_process_liveness_stays_required()
+    test_hidden_missing_surface_read_provenance_fails()
+    test_host_report_rejected_by_hidden_grader()
+    test_hidden_report_rejected_by_guest_grader()
+    test_guest_report_rejected_by_hidden_grader()
+    test_hidden_report_not_accepted_by_host_grader()
+    test_hidden_cli_autodetects_and_gates()
     test_guest_passing_report()
     test_guest_faked_working_set_fails()
     test_guest_dropped_host_metric_fails()
