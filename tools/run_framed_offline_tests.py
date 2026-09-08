@@ -43,6 +43,15 @@ SUITES = (
     "test_partial_tile_trace_probe",
     "test_pe_extension",
     "test_render_cdb_surface_probe",
+    "test_framed_modal_canvas",
+    "test_pe_modal_extension",
+    "test_build_framed_modal_candidate",
+    "test_framed_army_composition",
+    "test_framed_army_draw",
+    "test_framed_army_input",
+    "test_framed_army_viewport",
+    "test_pe_army_extension",
+    "test_build_framed_army_candidate",
 )
 
 
@@ -202,7 +211,7 @@ def summarize(preflight: dict[str, Any], records: list[dict[str, Any]], selected
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--suite", action="append", choices=SUITES)
-    parser.add_argument("--timeout", type=float, default=180)
+    parser.add_argument("--timeout", type=float, default=300)
     parser.add_argument("--report-json", type=Path)
     parser.add_argument("--require-complete", action="store_true")
     parser.add_argument("--worker", choices=SUITES, help=argparse.SUPPRESS)

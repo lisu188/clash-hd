@@ -11,6 +11,7 @@ param(
     [switch]$MinimapViewportValidation,
     [switch]$CompleteHdValidation,
     [switch]$NoopProgressDiagnostic,
+    [switch]$FullPaintProgressDiagnostic,
     [string]$CandidateName = '',
     [string]$CandidateDir = '',
     [switch]$UseDdrawProxy,
@@ -51,6 +52,9 @@ if ($CompleteHdValidation) {
 }
 if ($NoopProgressDiagnostic -and -not $CompleteHdValidation) {
     throw 'NoopProgressDiagnostic requires the bound complete HD hidden lane.'
+}
+if ($FullPaintProgressDiagnostic -and -not $CompleteHdValidation) {
+    throw 'FullPaintProgressDiagnostic requires the bound complete HD hidden lane.'
 }
 $recipeStage = $Stage
 $partialTileBuilder = Join-Path $RepoRoot 'tools\build_partial_tile_candidate.py'
@@ -853,6 +857,31 @@ if ($MinimapViewportValidation) {
     $generatedProbe = $minimapObservedProbe
 }
 
+$fullProgressReport = $null
+if ($FullPaintProgressDiagnostic) {
+    $fullProgressTool = Join-Path $RepoRoot 'tools\framed_full_progress_probe.py'
+    $fullProgressReport = Join-Path $runDir 'full-paint-progress-observer.json'
+    $fullObservedProbe = Join-Path $runDir 'surface-full-paint-progress-probe.cdb'
+    # Reserve83..85 after minimap80/81 and before optional no-op82. The three
+    # extra observers preserve all canonical PTILE declarations and records.
+    $fullJson = & $pythonExe -B $fullProgressTool --original $inputFull --candidate $candidateFull --candidate-sha256 $candidateSha.ToLowerInvariant() --stage $Stage --resolution $Resolution --rendered-probe $generatedProbe --candidate-manifest $candidateManifestPath --first-breakpoint-id 83
+    if ($LASTEXITCODE -ne 0) { throw 'Full-paint progress observer preparation failed before runtime.' }
+    $fullPacket = $fullJson | ConvertFrom-Json
+    if (-not $fullPacket.snippet -or $fullPacket.candidate_sha256 -cne $candidateSha.ToLowerInvariant() -or
+        $fullPacket.stage -cne $Stage -or $fullPacket.resolution -cne $Resolution -or $fullPacket.acceptance -ne $false) {
+        throw 'Full-paint progress observer identity or scope differs.'
+    }
+    $mainText = (Get-Content -LiteralPath $generatedProbe -Raw).Replace("`r`n", "`n")
+    if ($mainText -notmatch '(?s)\ng\n*\z') { throw 'No final standalone g for full-paint observer.' }
+    $finalGo = [regex]::Match($mainText, '(?s)g\n*\z')
+    $composed = $mainText.Substring(0, $finalGo.Index) + $fullPacket.snippet + "g`n"
+    [System.IO.File]::WriteAllText($fullObservedProbe, $composed, [System.Text.Encoding]::ASCII)
+    $fullPacket | Add-Member -NotePropertyName ComposedProbeSha256 -NotePropertyValue (Get-FileSha256 -Path $fullObservedProbe)
+    $fullPacket | Add-Member -NotePropertyName ComposedProbe -NotePropertyValue $fullObservedProbe
+    $fullPacket | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath $fullProgressReport -Encoding UTF8
+    $generatedProbe = $fullObservedProbe
+}
+
 $noopProgressReport = $null
 if ($NoopProgressDiagnostic) {
     $noopTool = Join-Path $RepoRoot 'tools\framed_noop_progress_probe.py'
@@ -917,6 +946,7 @@ $timeoutStackSaved = $false
 $launchMode = 'hidden-desktop'
 $stoppedAfterDump = $false
 $hostDumpedMemory = $false
+$surfaceCaptureSet = @()
 $hostDumpError = $null
 $surfaceGeometryFailure = $null
 $postDumpObservationStarted = $false
@@ -978,6 +1008,17 @@ try {
                             -BaseAddress (Convert-CdbHexToUInt64 -Value $currentReady.Base) `
                             -ByteCount $currentReady.Bytes `
                             -OutputPath $rawPath
+                        $surfaceCaptureSet = @([pscustomobject]@{ Path = $rawPath; Sha256 = (Get-FileSha256 -Path $rawPath); Bytes = $currentReady.Bytes })
+                        if ($CompleteHdValidation) {
+                            # The complete initial-paint lane is stopped at its
+                            # trace-closed boundary. Preserve three consecutive
+                            # independent reads for the visual checkpoint.
+                            foreach ($captureIndex in @(2, 3)) {
+                                $capturePath = Join-Path $runDir "surface-$captureIndex.raw"
+                                Save-ProcessMemory -ProcessId $target.Id -BaseAddress (Convert-CdbHexToUInt64 -Value $currentReady.Base) -ByteCount $currentReady.Bytes -OutputPath $capturePath
+                                $surfaceCaptureSet += [pscustomobject]@{ Path = $capturePath; Sha256 = (Get-FileSha256 -Path $capturePath); Bytes = $currentReady.Bytes }
+                            }
+                        }
                         $hostDumpedMemory = $true
                     }
                 }
@@ -1318,6 +1359,9 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists -or $surfaceGeometryFailu
     CompleteHdValidation = [bool]$CompleteHdValidation
     NoopProgressDiagnostic = [bool]$NoopProgressDiagnostic
     NoopProgressReport = $noopProgressReport
+    FullPaintProgressDiagnostic = [bool]$FullPaintProgressDiagnostic
+    FullPaintProgressReport = $fullProgressReport
+    SurfaceCaptureSet = $surfaceCaptureSet
     RuntimeError = $runtimeError
     RuntimeExceptionId = $runtimeExceptionId
     RuntimeExceptionStack = $runtimeExceptionStack
@@ -1643,6 +1687,9 @@ $summaryObject = [pscustomobject]@{
     CompleteHdValidation = [bool]$CompleteHdValidation
     NoopProgressDiagnostic = [bool]$NoopProgressDiagnostic
     NoopProgressReport = $noopProgressReport
+    FullPaintProgressDiagnostic = [bool]$FullPaintProgressDiagnostic
+    FullPaintProgressReport = $fullProgressReport
+    SurfaceCaptureSet = $surfaceCaptureSet
     RuntimeError = $runtimeError
     RuntimeExceptionId = $runtimeExceptionId
     RuntimeExceptionStack = $runtimeExceptionStack
@@ -1823,6 +1870,9 @@ Write-Host "Summary: $runSummary"
         CompleteHdValidation = [bool]$CompleteHdValidation
     NoopProgressDiagnostic = [bool]$NoopProgressDiagnostic
     NoopProgressReport = $noopProgressReport
+    FullPaintProgressDiagnostic = [bool]$FullPaintProgressDiagnostic
+    FullPaintProgressReport = $fullProgressReport
+    SurfaceCaptureSet = $surfaceCaptureSet
     RuntimeError = $runtimeError
     RuntimeExceptionId = $runtimeExceptionId
     RuntimeExceptionStack = $runtimeExceptionStack

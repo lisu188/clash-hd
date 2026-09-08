@@ -30,3 +30,6 @@
 /src/patcher/framed_bounded_paint.py -text whitespace=cr-at-eol
 /src/patcher/framed_bounded_input.py -text whitespace=cr-at-eol
 /src/launcher/framed.py -text whitespace=cr-at-eol
+/src/patcher/framed_modal_slots.py -text whitespace=cr-at-eol
+/src/patcher/pe_modal_slots_extension.py -text whitespace=cr-at-eol
+/tools/build_framed_modal_slots_candidate.py -text whitespace=cr-at-eol

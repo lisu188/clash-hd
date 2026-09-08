@@ -246,6 +246,20 @@ function Test-IsUnderPath {
     return $fullPath.StartsWith($fullRoot + '\', [System.StringComparison]::OrdinalIgnoreCase)
 }
 
+function Get-SoakFileSha256 {
+    param([Parameter(Mandatory = $true)][string]$Path)
+    # The bundled host may not expose Get-FileHash through module discovery.
+    # Hash the exact file without depending on that optional command lookup.
+    $stream = [System.IO.File]::OpenRead($Path)
+    $hasher = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        return [System.BitConverter]::ToString($hasher.ComputeHash($stream)).Replace('-', '')
+    } finally {
+        $hasher.Dispose()
+        $stream.Dispose()
+    }
+}
+
 function Get-DxcfgWindowedStatus {
     param([Parameter(Mandatory = $true)][string]$Path)
     $failures = @()
@@ -280,7 +294,7 @@ function Get-DxcfgWindowedStatus {
     [pscustomobject]@{
         Passed = (@($failures).Count -eq 0)
         Path = $Path
-        Sha256 = if (Test-Path -LiteralPath $Path -PathType Leaf) { (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash } else { $null }
+        Sha256 = if (Test-Path -LiteralPath $Path -PathType Leaf) { Get-SoakFileSha256 -Path $Path } else { $null }
         Display = $display
         Presentation = $presentation
         Required = $true
@@ -933,10 +947,17 @@ $ReportJsonFull = Resolve-PlanPath $ReportJson
 $ReportMarkdownFull = Resolve-PlanPath $ReportMarkdown
 $PythonFull = Find-Python $Python
 $windowedMode = Get-DxcfgWindowedStatus -Path (Join-Path $WorkDirFull 'dxcfg.ini')
-if (-not $windowedMode.Passed) {
+if (-not $Execute -and -not $windowedMode.Passed) {
     throw "Windowed DirectDraw config check failed: $($windowedMode.Failures -join '; ')"
 }
-$inputStanding = Get-InputStandingStatus
+$inputStanding = [pscustomobject]@{
+    Passed = $false
+    Status = 'not_observed_before_visible_runtime_approval'
+    ForegroundProcess = $null
+    ForegroundTitle = $null
+    ForegroundClass = $null
+    Failures = @('input standing is measured only after valid visible-runtime approval')
+}
 
 function Test-AcceptedIntroTransition {
     param([Parameter(Mandatory = $true)][object]$Row)
@@ -975,7 +996,7 @@ $inputExists = Test-Path -LiteralPath $InputExeFull -PathType Leaf
 $inputSha256 = $null
 $baseShaStatus = 'missing'
 if ($inputExists) {
-    $inputSha256 = (Get-FileHash -LiteralPath $InputExeFull -Algorithm SHA256).Hash.ToLowerInvariant()
+    $inputSha256 = (Get-SoakFileSha256 -Path $InputExeFull).ToLowerInvariant()
     if ($inputSha256 -ne $ExpectedBaseSha256) {
         throw "Unexpected base SHA-256 for $InputExeFull. Expected $ExpectedBaseSha256 but found $inputSha256."
     }
@@ -998,7 +1019,7 @@ $approvalExpiresUtc = if ($VisibleRuntimeApprovalExpiresUtc) {
 $approvalTokenFields = @(
     $InputExeFull,
     $WorkDirFull,
-    $windowedMode.Sha256,
+    $(if ($windowedMode.Sha256) { $windowedMode.Sha256 } else { 'missing-windowed-config' }),
     $Stage,
     $Tier,
     $Route,
@@ -1175,6 +1196,10 @@ if ($approvalRemaining -lt [System.TimeSpan]::FromMinutes($minApprovalTtlMinutes
 if ($VisibleRuntimeApprovalToken -ne $expectedVisibleRuntimeApprovalToken) {
     throw "Visible runtime approval token does not match this command shape. Expected $expectedVisibleRuntimeApprovalToken."
 }
+if (-not $windowedMode.Passed) {
+    throw "Windowed DirectDraw config check failed: $($windowedMode.Failures -join '; ')"
+}
+$inputStanding = Get-InputStandingStatus
 if (-not $inputStanding.Passed) {
     # Fail closed BEFORE launching. A run started without input standing cannot
     # deliver the intro-skip stimulus, cannot focus the game, and leaves the
@@ -1236,7 +1261,7 @@ try {
         throw "SkipPatch was set but candidate does not exist: $CandidateFull"
     }
 
-    $candidateSha256 = (Get-FileHash -LiteralPath $CandidateFull -Algorithm SHA256).Hash
+    $candidateSha256 = Get-SoakFileSha256 -Path $CandidateFull
     $patchArgs = @(
         (Join-Path $RepoRoot 'tools\patch_stage_report.py'),
         '--exe', $CandidateFull,
