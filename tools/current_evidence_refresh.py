@@ -7784,8 +7784,22 @@ def build_right_bottom_compose_normal_gate(args: argparse.Namespace) -> dict[str
     }
 
 
+def build_framed_offline_refresh() -> dict[str, Any]:
+    """Run the authenticated framed suites; keep skips distinct from coverage."""
+    import run_framed_offline_tests as framed
+
+    preflight = framed.source_preflight(framed.ROOT)
+    records = []
+    if preflight["passed"]:
+        for suite in framed.SUITES:
+            records.append(framed.run_suite(framed.ROOT, suite, 300))
+    report = framed.summarize(preflight, records, framed.SUITES)
+    return {**report, "passed": report["offline_passed"] and report["selected_coverage_complete"]}
+
+
 def build_refresh(args: argparse.Namespace) -> dict[str, Any]:
     checks = {
+        "framed_offline_fixtures": build_framed_offline_refresh(),
         "hd_map_smoke": build_hd_map_smoke(args),
         "hd_layout_summary": build_hd_layout_summary(args),
         "hd_layout_summary_tests": build_hd_layout_summary_tests(args),
