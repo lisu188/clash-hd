@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import argparse
+import base64
 from contextlib import ExitStack
 import ctypes
 import json
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 import unittest
@@ -161,11 +163,18 @@ class PowerShellTests(unittest.TestCase):
         shell = shutil.which("powershell.exe") or shutil.which("pwsh")
         if shell is None:
             self.skipTest("PowerShell unavailable; Python geometry/input fixtures still run")
-        script = "$tokens=$null;$errors=$null;$ast=[System.Management.Automation.Language.Parser]::ParseFile($args[0],[ref]$tokens,[ref]$errors);" + body
-        with tempfile.TemporaryDirectory() as temp:
-            path = Path(temp) / "fixture.ps1"
-            path.write_text(script, encoding="utf-8")
-            result = subprocess.run([shell, "-NoProfile", "-File", str(path), str(HARNESS)], text=True, capture_output=True)
+        source_path = str(HARNESS)
+        if sys.platform != "win32" and shell.lower().endswith(".exe"):
+            translator = shutil.which("wslpath")
+            self.assertIsNotNone(translator, "Windows PowerShell on POSIX requires wslpath")
+            source_path = subprocess.run([translator, "-w", source_path], text=True, capture_output=True,
+                                         check=True, timeout=10).stdout.rstrip("\r\n")
+            self.assertTrue(source_path)
+        script = ("$ErrorActionPreference='Stop';$sourcePath='" + source_path.replace("'", "''")
+                  + "';$tokens=$null;$errors=$null;$ast=[System.Management.Automation.Language.Parser]::ParseFile($sourcePath,[ref]$tokens,[ref]$errors);" + body)
+        encoded = base64.b64encode(script.encode("utf-16-le")).decode("ascii")
+        result = subprocess.run([shell, "-NoProfile", "-NonInteractive", "-EncodedCommand", encoded],
+                                text=True, capture_output=True, timeout=30)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         return json.loads(result.stdout)
 
@@ -203,6 +212,91 @@ Assert-ExternalCaptureRoot -Path 'C:\ClashCaptures\visible-input' -Repository 'C
 @{refused=$refused}|ConvertTo-Json -Compress
 """)
         self.assertEqual(report["refused"], [True, True, True])
+
+    def test_sandbox_callers_map_external_outputs_and_preserve_approval(self):
+        shell = shutil.which("powershell.exe") or shutil.which("pwsh")
+        if sys.platform != "win32" and shell and not shell.lower().endswith(".exe"):
+            self.skipTest("Sandbox output-mapping fixture requires Windows drive-path semantics")
+        report = self.powershell(r"""
+if($errors.Count){throw ($errors|Out-String)}
+$guard=$ast.Find({param($n)$n -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq 'Assert-ExternalCaptureRoot'},$true)
+Invoke-Expression $guard.Extent.Text
+$rows=@()
+foreach($callerName in @('run_clash_windows_sandbox.ps1','run_clash_hd_full_validation.ps1')) {
+    $callerPath=Join-Path (Split-Path -Parent $sourcePath) $callerName
+    $callerAst=[System.Management.Automation.Language.Parser]::ParseFile($callerPath,[ref]$tokens,[ref]$errors)
+    if($errors.Count){throw ($errors|Out-String)}
+    foreach($functionName in @('New-SandboxCapturePlan','ConvertTo-XmlText')) {
+        $definition=$callerAst.Find({param($n)$n -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq $functionName},$true)
+        if(-not $definition){throw "Missing function $functionName"}
+        Invoke-Expression $definition.Extent.Text
+    }
+    $repo='C:\fixture\repo';$game='C:\fixture\game';$pythonDir='C:\fixture\python'
+    $customRoot="C:\fixture\custom & team's captures"
+    $capturePlan=New-SandboxCapturePlan -Path $customRoot -Repository $repo -Prefix 'fixture'
+    if($capturePlan.OutputRoot -ne $customRoot){throw 'Custom external root changed'}
+    $second=New-SandboxCapturePlan -Path $customRoot -Repository $repo -Prefix 'fixture'
+    if($capturePlan.HostRunDirectory -eq $second.HostRunDirectory){throw 'Run directories are not unique'}
+    $driveRootPlan=New-SandboxCapturePlan -Path 'C:\' -Repository $repo -Prefix 'fixture'
+    if($driveRootPlan.OutputRoot -ne 'C:\'){throw 'Drive-root output lost its absolute path'}
+    foreach($badRoot in @($repo, "$repo\captures", 'C:\fixture\elsewhere\..\repo\captures')) {
+        $refused=$false
+        try {New-SandboxCapturePlan -Path $badRoot -Repository $repo -Prefix 'fixture'|Out-Null} catch {$refused=$true}
+        if(-not $refused){throw "Repository capture root accepted: $badRoot"}
+    }
+    $defaultExpression=$callerAst.ParamBlock.Parameters|Where-Object {$_.Name.VariablePath.UserPath -eq 'OutRoot'}
+    if($defaultExpression.DefaultValue.Value -ne 'C:\ClashCaptures\windows-sandbox'){throw 'External capture default drifted'}
+    foreach($variableName in @('runHostDir','runSandboxDir')) {
+        $assignment=$callerAst.Find({param($n)$n -is [System.Management.Automation.Language.AssignmentStatementAst] -and $n.Left.Extent.Text -eq ('$'+$variableName)},$true)
+        Invoke-Expression $assignment.Extent.Text
+    }
+    Assert-ExternalCaptureRoot -Path $runHostDir -Repository $repo
+    Assert-ExternalCaptureRoot -Path $runSandboxDir -Repository 'C:\Repo'
+    $command='fixture-only command, never executed'
+    $wsbAssignment=$callerAst.Find({param($n)$n -is [System.Management.Automation.Language.AssignmentStatementAst] -and $n.Left.Extent.Text -eq '$wsb'},$true)
+    $configuration=[xml](Invoke-Expression $wsbAssignment.Right.Extent.Text)
+    $mappings=@($configuration.Configuration.MappedFolders.MappedFolder)
+    $captureMappings=@($mappings|Where-Object {$_.SandboxFolder -eq $runSandboxDir})
+    if($captureMappings.Count -ne 1 -or $captureMappings[0].HostFolder -ne $runHostDir -or $captureMappings[0].ReadOnly -ne 'false'){throw 'External capture mapping does not match the run plan'}
+    $gameMappings=@($mappings|Where-Object {$_.SandboxFolder -eq 'C:\HostClash'})
+    if($gameMappings.Count -ne 1 -or $gameMappings[0].ReadOnly -ne 'true'){throw 'Original game mapping changed'}
+    $entryAssignment=$callerAst.Find({param($n)$n -is [System.Management.Automation.Language.AssignmentStatementAst] -and $n.Left.Extent.Text -eq '$entryScript'},$true)
+    $sandboxSmokeRoot="$runSandboxDir\visual-smoke";$entrySandboxPath="$runSandboxDir\sandbox-entry.ps1"
+    $sandboxPython='C:\HostPython\python.exe';$sandboxCandidate='C:\ClashTests\fixture.exe'
+    $approvedCases=@()
+    foreach($AllowVisibleRuntime in @($false,$true)) {
+        # Evaluate only the here-string template, then parse its guest program.
+        $entryText=Invoke-Expression $entryAssignment.Right.Extent.Text
+        $entryAst=[System.Management.Automation.Language.Parser]::ParseInput($entryText,[ref]$tokens,[ref]$errors)
+        if($errors.Count){throw ($errors|Out-String)}
+        $Repo='C:\Repo';$RunDir=$runSandboxDir;$Python=$sandboxPython;$Candidate=$sandboxCandidate;$GameWork='C:\Clash'
+        $t=@{id='fixture-target';workdir=$GameWork;followup='';pulse_route_steps='load:302,211'};$exe=$Candidate
+        $targetAssignment=$entryAst.Find({param($n)$n -is [System.Management.Automation.Language.AssignmentStatementAst] -and $n.Left.Extent.Text -eq '$targetOut'},$true)
+        if($targetAssignment){Invoke-Expression $targetAssignment.Extent.Text}
+        $smokeAssignment=$entryAst.Find({param($n)$n -is [System.Management.Automation.Language.AssignmentStatementAst] -and $n.Left.Extent.Text -eq '$smokeArgs'},$true)
+        Invoke-Expression $smokeAssignment.Extent.Text
+        if($callerName -eq 'run_clash_windows_sandbox.ps1') {
+            $forwarding=$entryAst.Find({param($n)$n -is [System.Management.Automation.Language.IfStatementAst] -and $n.Clauses[0].Item1.Extent.Text -like '[[]bool]::Parse*'},$true)
+            if(-not $forwarding){throw 'Conditional approval forwarding missing'}
+            Invoke-Expression $forwarding.Extent.Text
+            if(($smokeArgs -contains '-AllowVisibleRuntime') -ne $AllowVisibleRuntime){throw 'Approval switch was not preserved'}
+        }
+        $outIndex=[Array]::IndexOf($smokeArgs,'-OutRoot')
+        if($outIndex -lt 0){throw 'Smoke output argument missing'}
+        $guestOutput=$smokeArgs[$outIndex+1]
+        Assert-ExternalCaptureRoot -Path $guestOutput -Repository 'C:\Repo'
+        if(-not $guestOutput.StartsWith($runSandboxDir+'\')){throw 'Smoke output bypasses capture mapping'}
+        $approvedCases+=($smokeArgs -contains '-AllowVisibleRuntime')
+    }
+    $rows+=@{caller=$callerName;approval_forwarded=$approvedCases;external_mapping=$true;guest_program_parsed=$true}
+}
+@{rows=$rows}|ConvertTo-Json -Depth 4 -Compress
+""")
+        self.assertEqual(len(report["rows"]), 2)
+        for row in report["rows"]:
+            self.assertTrue(row["external_mapping"])
+            self.assertTrue(row["guest_program_parsed"])
+        self.assertEqual(report["rows"][0]["approval_forwarded"], [False, True])
 
     def test_framed_quality_stays_incomplete_without_candidate_and_minimap_context(self):
         report = self.powershell(r"""
