@@ -9,7 +9,8 @@ from typing import Any, Mapping
 
 
 PLAN_SCHEMA = 1
-RECIPE_REVISION = {"classic": "classic-frozen-800-v1", "framed": "four-border-partial-initial-v1"}
+RECIPE_REVISION = {"classic": "classic-frozen-800-v1", "framed": "four-border-partial-initial-v1",
+                   "completehd": "complete_hd_v1"}
 DEFAULT_BOUNDS = ((800, 600), (3840, 2160))
 SHA256_RE = re.compile(r"[0-9a-f]{64}")
 RESOLUTION_RE = re.compile(r"[1-9][0-9]{2,4}x[1-9][0-9]{2,4}")
@@ -99,7 +100,7 @@ class DisplayPlan:
             "recipe_eligible": True, "candidate_built": False,
             "game_runtime_executed": False, "manual_input_proof": False, "promotion_ready": False,
             "map_policy": "native full loop requires world >= full_tiles; smaller worlds remain blocked",
-            "coverage_policy": "clipped ceiling cells" if self.renderer == "framed" else "native full-tile grid; legacy strips unchanged"}))
+            "coverage_policy": "clipped ceiling cells" if self.renderer != "classic" else "native full-tile grid; legacy strips unchanged"}))
 
     def build_identity(self, original_sha256: str, sources: Mapping[str, str]) -> str:
         state = asdict(self)
@@ -120,20 +121,26 @@ class DisplayPlan:
 def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x600", stage: str | None = None,
                          scaling_mode: str = "integer", minimap_viewport: bool | None = None,
                          bounds: tuple[tuple[int, int], tuple[int, int]] = DEFAULT_BOUNDS) -> DisplayPlan:
-    _require(type(renderer) is str and renderer in RECIPE_REVISION, "unknown_profile", "Renderer must be classic or framed.")
+    _require(type(renderer) is str and renderer in RECIPE_REVISION, "unknown_profile", "Renderer must be classic, framed or completehd.")
     width, height = parse_dimensions(resolution, bounds)
     _require(scaling_mode == "integer", "unsupported_presentation", "Only the verified integer wrapper scaling mode is supported.")
     _require(minimap_viewport is None or type(minimap_viewport) is bool,
              "invalid_feature", "minimap_viewport must be an explicit boolean.")
-    minimap = renderer == "framed" if minimap_viewport is None else minimap_viewport
-    _require(renderer == "framed" or not minimap, "invalid_feature", "Minimap viewport correction requires Framed.")
+    minimap = renderer != "classic" if minimap_viewport is None else minimap_viewport
+    _require(renderer != "classic" or not minimap, "invalid_feature", "Minimap viewport correction requires a framed renderer.")
+    _require(renderer != "completehd" or minimap, "invalid_feature", "The complete-HD recipe requires minimap correction.")
     try:
         patcher = importlib.import_module("patch_clash95_hd")
         selected_stage = patcher.DEFAULT_STAGE if stage is None else stage
         profile = patcher.parse_resolution(resolution)
-        if renderer == "framed":
+        if renderer in ("framed", "completehd"):
             required_stage = patcher.DEFAULT_STAGE + "-combinedui-partialtiles-initialpaint-framed-validation"
-            _require(stage in (None, required_stage), "unsupported_stage", "Framed cannot use a Classic or unrelated stage.")
+            if renderer == "completehd":
+                complete = importlib.import_module("src.patcher.complete_hd_candidate")
+                required_stage = complete.STAGE
+                _require(resolution in complete.RESOLUTIONS, "unsupported_resolution", "Complete-HD currently supports only its six fixture resolutions.")
+                _require(complete.REVISION == RECIPE_REVISION[renderer], "unsupported_recipe", "Complete-HD recipe revision differs from display planning.")
+            _require(stage in (None, required_stage), "unsupported_stage", "A framed renderer cannot use another recipe's stage.")
             selected_stage = required_stage
             recipe = importlib.import_module("src.patcher.framed_recipe")
             viewport = importlib.import_module("src.patcher.framed_viewport").FramedViewport(width, height)
@@ -155,7 +162,7 @@ def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x60
         return DisplayPlan(renderer, resolution, selected_stage, RECIPE_REVISION[renderer], width, height,
                            scaling_mode, minimap, (profile.off_x, profile.off_y), terrain, full, coverage, partial,
                            bands, cells, minimap_anchor, len(encoded), _digest(encoded),
-                           renderer == "framed" or set(patcher.STAGE_GROUPS[patcher.DEFAULT_STAGE]) <= set(patcher.STAGE_GROUPS[selected_stage]))
+                           renderer != "classic" or set(patcher.STAGE_GROUPS[patcher.DEFAULT_STAGE]) <= set(patcher.STAGE_GROUPS[selected_stage]))
     except DisplayPlanError:
         raise
     except ImportError as exc:
