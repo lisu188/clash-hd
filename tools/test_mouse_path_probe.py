@@ -13,6 +13,15 @@ import ctypes
 import mouse_path_probe as probe
 
 
+def win_error(winerror: int, text: str) -> OSError:
+    """Portable stand-in for ctypes.WinError so the fixtures also run on POSIX."""
+    if hasattr(ctypes, "WinError"):
+        return ctypes.WinError(winerror, text)
+    error = OSError(text)
+    error.winerror = winerror
+    return error
+
+
 def test_click_sample_abs_error() -> None:
     click = {
         "events": [
@@ -122,7 +131,7 @@ def test_geometry_retries_invalid_window_handle_then_succeeds() -> None:
             if hwnd == 0x111:
                 # The handle passed IsWindow and still died before the read;
                 # that race is exactly what must be retried, not raised.
-                raise ctypes.WinError(probe.ERROR_INVALID_WINDOW_HANDLE, "GetClientRect")
+                raise win_error(probe.ERROR_INVALID_WINDOW_HANDLE, "GetClientRect")
             rect = probe.RECT(0, 0, 800, 600)
             return rect, probe.POINT(10, 20)
 
@@ -148,7 +157,7 @@ def test_geometry_reraises_unrelated_win32_errors() -> None:
         install(fake)
 
         def denied(_hwnd: int):
-            raise ctypes.WinError(5, "GetClientRect")
+            raise win_error(5, "GetClientRect")
 
         probe.client_rect_and_origin = denied
         target = probe.WindowTarget(1234, reacquire_attempts=3, reacquire_delay=0.0)

@@ -18,7 +18,39 @@ from ctypes import wintypes
 from pathlib import Path
 
 
-user32 = ctypes.WinDLL("user32", use_last_error=True)
+if sys.platform == "win32":
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    _FUNCTYPE = ctypes.WINFUNCTYPE
+else:
+    class _PosixWin32FunctionStub:
+        """Stands in for one user32 entry point on POSIX.
+
+        Accepts the module's argtypes/restype prototype assignments; calling it
+        fails loudly because the runtime probe is Windows-only.
+        """
+
+        def __init__(self, name: str) -> None:
+            self._name = name
+
+        def __call__(self, *args, **kwargs):
+            raise OSError(f"user32.{self._name} is unavailable off Windows; repo-only tests must stub it")
+
+    class _PosixUser32Stub:
+        """Attribute bag standing in for user32 on POSIX.
+
+        The runtime probe is Windows-only; repo-only tests import this module
+        for its pure helpers and monkey-patch the Win32 entry points they
+        exercise. Each attribute resolves to a memoized per-name stub so the
+        prototype block and save/restore patterns work without a real DLL.
+        """
+
+        def __getattr__(self, name: str):
+            stub = _PosixWin32FunctionStub(name)
+            setattr(self, name, stub)
+            return stub
+
+    user32 = _PosixUser32Stub()
+    _FUNCTYPE = ctypes.CFUNCTYPE
 
 
 class RECT(ctypes.Structure):
@@ -53,7 +85,7 @@ class INPUT(ctypes.Structure):
     _fields_ = [("type", wintypes.DWORD), ("union", INPUT_UNION)]
 
 
-WNDENUMPROC = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+WNDENUMPROC = _FUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
 
 user32.EnumWindows.argtypes = [WNDENUMPROC, wintypes.LPARAM]
 user32.EnumWindows.restype = wintypes.BOOL

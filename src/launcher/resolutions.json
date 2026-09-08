@@ -1,15 +1,26 @@
 {
-  "schema": 1,
+  "schema": 2,
+  "default_renderer": "classic",
   "default": "800x600",
   "stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
   "resolutions": {
     "800x600": {
       "status": "stable",
-      "tiles": [12, 9],
+      "tiles": [
+        12,
+        9
+      ],
       "evidence": {
         "normal_run": "captures/archive/cdb-surface-dump-20260506-190037",
         "forced_run": "captures/archive/cdb-surface-dump-20260506-201114",
         "smoke_json": "captures/current/hd-map-smoke-current.json"
+      },
+      "evidence_scope": {
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+        "recipe_revision": "classic-frozen-800-v1",
+        "features": {
+          "minimap_viewport": false
+        }
       }
     },
     "1024x768": {
@@ -27,7 +38,27 @@
       "tiles": null,
       "evidence": null
     },
+    "1366x768": {
+      "status": "experimental",
+      "tiles": null,
+      "evidence": null
+    },
     "1920x1080": {
+      "status": "experimental",
+      "tiles": null,
+      "evidence": null
+    },
+    "2560x1440": {
+      "status": "experimental",
+      "tiles": null,
+      "evidence": null
+    },
+    "3440x1440": {
+      "status": "experimental",
+      "tiles": null,
+      "evidence": null
+    },
+    "3840x2160": {
       "status": "experimental",
       "tiles": null,
       "evidence": null
@@ -35,7 +66,179 @@
   },
   "custom_allowed": true,
   "custom_bounds": {
-    "min": [800, 600],
-    "max": [3840, 2160]
+    "min": [
+      800,
+      600
+    ],
+    "max": [
+      3840,
+      2160
+    ]
+  },
+  "profiles": {
+    "classic": {
+      "default": "800x600",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+      "recipe_revision": "classic-frozen-800-v1",
+      "features": {
+        "minimap_viewport": false
+      },
+      "resolutions": {
+        "800x600": {
+          "status": "stable",
+          "tiles": [
+            12,
+            9
+          ],
+          "evidence": {
+            "normal_run": "captures/archive/cdb-surface-dump-20260506-190037",
+            "forced_run": "captures/archive/cdb-surface-dump-20260506-201114",
+            "smoke_json": "captures/current/hd-map-smoke-current.json"
+          },
+          "evidence_scope": {
+            "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+            "recipe_revision": "classic-frozen-800-v1",
+            "features": {
+              "minimap_viewport": false
+            }
+          }
+        },
+        "1024x768": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1280x720": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1280x960": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1366x768": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1920x1080": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "2560x1440": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "3440x1440": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "3840x2160": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        }
+      }
+    },
+    "framed": {
+      "default": "800x600",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+      "recipe_revision": "four-border-partial-initial-v1",
+      "features": {
+        "minimap_viewport": true
+      },
+      "resolutions": {
+        "800x600": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1024x768": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1280x720": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1280x960": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1366x768": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1920x1080": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "2560x1440": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "3440x1440": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "3840x2160": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        }
+      }
+    },
+    "completehd": {
+      "default": "800x600",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+      "recipe_revision": "complete_hd_v1",
+      "features": {
+        "minimap_viewport": true
+      },
+      "resolutions": {
+        "800x600": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1024x768": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1280x720": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1280x960": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "1920x1080": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        },
+        "802x602": {
+          "status": "experimental",
+          "tiles": null,
+          "evidence": null
+        }
+      }
+    }
   }
 }

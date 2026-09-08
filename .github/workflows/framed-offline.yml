@@ -1,0 +1,71 @@
+name: Framed offline validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: framed-offline-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fixtures:
+    name: Offline fixtures (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Test the evidence runner
+        run: python tools/test_run_framed_offline_tests.py -v
+      - name: Check source pins and run framed fixtures
+        run: python tools/run_framed_offline_tests.py --report-json "$RUNNER_TEMP/framed-offline.json"
+      - name: Summarize coverage boundaries
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          report = Path(os.environ['RUNNER_TEMP']) / 'framed-offline.json'
+          with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as output:
+              output.write('## Framed offline validation\n\n')
+              if report.is_file():
+                  data = json.loads(report.read_text(encoding='utf-8'))
+                  output.write(f"Offline passed: **{data['offline_passed']}**. "
+                               f"Selected coverage complete: **{data['selected_coverage_complete']}**.\n\n")
+                  output.write(f"Successful tests: {data['successful_tests']}; "
+                               f"skip records: {data['skipped_records']}; "
+                               f"expected failures: {data['expected_failure_records']}.\n\n")
+                  output.write('| Suite | Status | Successful | Skip records |\n|---|---|---:|---:|\n')
+                  for suite in data['suites']:
+                      output.write(f"| {suite['suite']} | {suite['status']} | "
+                                   f"{len(suite.get('successful', []))} | {len(suite.get('skipped', []))} |\n")
+              else:
+                  output.write('No runner report was produced. See failed steps.\n')
+              output.write('\nNo game runtime, manual input proof, or stable promotion is established by this job.\n')
+          PY
+      - name: Retain the source-only fixture report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: framed-offline-${{ matrix.os }}
+          path: ${{ runner.temp }}/framed-offline.json
+          if-no-files-found: warn
+          retention-days: 7

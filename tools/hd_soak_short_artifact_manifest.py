@@ -46,6 +46,12 @@ def path_text(path: Path) -> str:
     return str(path).replace("/", "\\")
 
 
+def path_from_text(text: str) -> Path:
+    # Manifest paths are stored Windows-canonical (backslashes); convert back so
+    # existence checks also work on POSIX runners of the repo-only harness.
+    return Path(str(text).replace("\\", "/"))
+
+
 def step_slug(step: dict[str, Any]) -> str:
     tier = str(step["tier"]).replace("_", "-")
     route = str(step["route"]).replace("_", "-")
@@ -145,7 +151,7 @@ def build_step_records(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for index, step in enumerate(steps, start=1):
         paths = canonical_paths(step)
-        report_path = Path(paths["report_json"])
+        report_path = path_from_text(paths["report_json"])
         record = {
             "index": index,
             "id": step["id"],

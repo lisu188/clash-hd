@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+  "resolution": "800x600",
+  "candidate_sha256": "e785d202140942959b973f462a9eded27531fd12c5668fac40af61248e875a84",
+  "recipe_revision": "complete_hd_v1",
+  "summary": {
+    "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-a\\cdb-surface-dump-20260908-103759\\summary.json",
+    "sha256": "dedfdd4e2b2ee85a1027d8884cebe27b050e3b9666cba6abaeefc0b9d38eb353"
+  },
+  "run_plan": {
+    "path": "C:\\ClashTests\\completehd-validation-20260908\\hidden-run-plan.json",
+    "sha256": "9a438abc232046a65dc707f486f0c0c03f5cc39d41ab1b532616db27de082c20"
+  },
+  "candidate_manifest": {
+    "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-800x600-a\\clash95_completehd_800x600_a.candidate.json",
+    "sha256": "b109ae3dfd356b8aff299e6184e6953bca6a2b72903e17af7d03a12069f5c3a9"
+  },
+  "canonical_probe_sha256": "92b13ab50e0dc621c308dcc7dd546cc336a1c96c7717ecfcb2e099bbb1907f27",
+  "runtime_probe_sha256": "4f3743bde31d299817fe8f0b755bac05412d3b99b2d202ecfd4e6effa107c0cd",
+  "diagnostic_image": {
+    "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-a\\cdb-surface-dump-20260908-103759\\diagnostic-800.png",
+    "sha256": "6d954ebb171a3ec406968c52458ee7abb76ab35e2a8f4af779b4c2b9978d345c"
+  },
+  "diagnostic_conversion": {
+    "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-a\\cdb-surface-dump-20260908-103759\\diagnostic-800.png.json",
+    "sha256": "e18ce894cca8e9b897780081b40af7a5ab56dc06773e79904fc5368e728e1ab1"
+  },
+  "capture_method": "hidden paused software surface via ReadProcessMemory; single capture",
+  "runtime_executed": true,
+  "runtime_passed": false,
+  "failures": [
+    "Initial map paint trace failed; see InitialMapPaintTrace.",
+    "line 520: duplicate convergence before matching presentation"
+  ],
+  "event_output_integrity_passed": true,
+  "cleanup": {
+    "Passed": true,
+    "RemainingProcessIds": [],
+    "InspectionErrors": [],
+    "Scope": "launched CDB id/path/start and exact candidate path/start",
+    "WaitMilliseconds": 5000
+  },
+  "av": false,
+  "timed_out": false,
+  "raw_bytes": 480000,
+  "original_unchanged": true,
+  "live_saves_unchanged": true,
+  "isolated_saves_unchanged": true,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "limitations": [
+    "Only one paused surface capture; no stable pair is claimed.",
+    "Trace failure is preserved; visible composition and unexplained blank terrain remain unaccepted.",
+    "Modal/army transitions, ordinary controls, battle return, continuity and endurance remain incomplete."
+  ]
+}

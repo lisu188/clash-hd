@@ -83,6 +83,11 @@ Run individual fixtures with `python tools/test_<name>.py`.
 
 ## Current frontier
 
+The active September integration is documented in
+[`AGENT_HANDOFF.md`](AGENT_HANDOFF.md). Its complete-HD candidate and failing
+runtime evidence are separate from the historical component results below.
+The stable stage and 800x600 default remain unchanged.
+
 - Expanded tactical battle has a separate `-castlecenter-all-battlehd`
   implementation lane at 1280x720 (17x7 tile capacity, native right sidebar).
   See `reports/battle_hd_1280_validation.md` and the separate current battle-HD

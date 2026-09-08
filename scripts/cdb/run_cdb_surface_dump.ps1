@@ -5,6 +5,12 @@ param(
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
     [string]$Stage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch',
     [string]$Resolution = '800x600',
+    [switch]$PartialTileValidation,
+    [switch]$InitialMapPaintValidation,
+    [switch]$FramedValidation,
+    [switch]$MinimapViewportValidation,
+    [switch]$CompleteHdValidation,
+    [switch]$NoopProgressDiagnostic,
     [string]$CandidateName = '',
     [string]$CandidateDir = '',
     [switch]$UseDdrawProxy,
@@ -14,6 +20,8 @@ param(
     [string]$ProbeTemplate = (Join-Path (Join-Path $PSScriptRoot '..\..') 'probes\cdb\render\clash95_surface_dump_probe.cdb'),
     [string]$ExtraProbeTemplate = '',
     [int]$RunSeconds = 90,
+    [ValidateRange(0,600)]
+    [int]$ContinueAfterDumpSec = 0,
     [switch]$NoSkipStartAnims,
     [switch]$FastForwardStartAnims,
     [switch]$ForceVisibleEdges,
@@ -30,8 +38,78 @@ param(
 $ErrorActionPreference = 'Stop'
 $RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 
+$completeStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation'
+$framedRecipeStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation'
+if ($CompleteHdValidation) {
+    if ($Stage -cne $completeStage) { throw 'CompleteHdValidation requires the exact completehd-validation stage.' }
+    $PartialTileValidation = $true
+    $InitialMapPaintValidation = $true
+    $FramedValidation = $true
+    $MinimapViewportValidation = $true
+} elseif ($Stage -ceq $completeStage) {
+    throw 'The complete HD stage requires -CompleteHdValidation; legacy probe geometry is forbidden.'
+}
+if ($NoopProgressDiagnostic -and -not $CompleteHdValidation) {
+    throw 'NoopProgressDiagnostic requires the bound complete HD hidden lane.'
+}
+$recipeStage = $Stage
+$partialTileBuilder = Join-Path $RepoRoot 'tools\build_partial_tile_candidate.py'
+if ($MinimapViewportValidation -and -not $FramedValidation) {
+    throw 'MinimapViewportValidation requires the exact framed validation lane.'
+}
+if ($FramedValidation -and (-not $PartialTileValidation -or -not $InitialMapPaintValidation)) {
+    throw 'FramedValidation requires PartialTileValidation and InitialMapPaintValidation.'
+}
+if ($InitialMapPaintValidation -and -not $PartialTileValidation) {
+    throw 'InitialMapPaintValidation requires PartialTileValidation.'
+}
+if ($PartialTileValidation) {
+    $partialBase = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation'
+    $partialStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-validation'
+    $partialBuilderOptions = @()
+    if ($InitialMapPaintValidation) {
+        $partialStage = $partialStage.Replace('-partialtiles-validation', '-partialtiles-initialpaint-validation')
+        $partialBuilderOptions = @('--initial-map-paint')
+        if ($ContinueAfterDumpSec -ne 0) {
+            throw 'Initial paint capture pauses at a complete update boundary; ContinueAfterDumpSec must be zero.'
+        }
+    }
+    if ($FramedValidation) {
+        $partialStage = $partialStage.Replace('-initialpaint-validation', '-initialpaint-framed-validation')
+        $partialTileBuilder = Join-Path $RepoRoot 'tools\build_framed_candidate.py'
+        $partialBuilderOptions = @()
+        if ($MinimapViewportValidation) { $partialBuilderOptions = @('--minimap-viewport') }
+    }
+    if ($CompleteHdValidation) {
+        $partialStage = $completeStage
+        $partialTileBuilder = Join-Path $RepoRoot 'patch_clash95_hd.py'
+        $partialBuilderOptions = @()
+    }
+    if ($Stage -ne $partialStage -or -not $UseDdrawProxy -or $AllowVisibleDesktop -or
+        $ExtraProbeTemplate -or $ForceVisibleEdges -or $PostOwnerForceVisibleSeven -or
+        $SkipMapValidation -or $UseCdbWriteMem -or $LoadSlot -ne 0 -or
+        [System.IO.Path]::GetFullPath($ProbeTemplate) -ne (Join-Path $RepoRoot 'probes\cdb\render\clash95_surface_dump_probe.cdb')) {
+        throw 'PartialTileValidation requires its distinct stage, hidden proxy, canonical map probe, LoadSlot 0 and no custom/forced/skipped evidence paths.'
+    }
+    $recipeStage = $partialBase
+    if ($FramedValidation) { $recipeStage = $framedRecipeStage }
+    $RequireGameplay = $true
+    if (-not (Test-Path -LiteralPath $partialTileBuilder -PathType Leaf)) {
+        throw 'Partial-tile builder is missing.'
+    }
+    if (-not $CandidateDir -or
+        -not [System.IO.Path]::GetFullPath($CandidateDir).StartsWith('C:\ClashTests\', [StringComparison]::OrdinalIgnoreCase) -or
+        -not [System.IO.Path]::GetFullPath($WorkDir).StartsWith('C:\ClashTests\', [StringComparison]::OrdinalIgnoreCase) -or
+        -not [System.IO.Path]::GetFullPath($OutRoot).StartsWith('C:\ClashCaptures\', [StringComparison]::OrdinalIgnoreCase)) {
+        throw 'Partial-tile candidates/workdirs require isolated C:\ClashTests folders and outputs under C:\ClashCaptures.'
+    }
+}
+
 if ($PostOwnerForceVisibleSeven -and $SkipMapValidation) {
     throw '-PostOwnerForceVisibleSeven requires map validation; do not use -SkipMapValidation.'
+}
+if ($ContinueAfterDumpSec -gt 0 -and $UseCdbWriteMem) {
+    throw '-ContinueAfterDumpSec requires host ReadProcessMemory dumping; do not combine it with -UseCdbWriteMem.'
 }
 
 if (-not ([System.Management.Automation.PSTypeName]'ClashSurfaceDumpNative').Type) {
@@ -144,6 +222,24 @@ function Convert-CdbHexToUInt64 {
     [Convert]::ToUInt64($clean, 16)
 }
 
+function Get-SurfaceRuntimeFailure {
+    param(
+        [bool]$AccessViolation,
+        [bool]$AppRequestQuit,
+        [AllowNull()][string]$RuntimeError
+    )
+    if ($AccessViolation) {
+        return 'access violation observed during surface capture'
+    }
+    if ($RuntimeError) {
+        return $RuntimeError
+    }
+    if ($AppRequestQuit) {
+        return 'game requested App_RequestQuit during surface capture'
+    }
+    return $null
+}
+
 function Save-ProcessMemory {
     param(
         [int]$ProcessId,
@@ -249,14 +345,19 @@ function Stop-LaunchedProcesses {
     param(
         [Nullable[int]]$CdbPid,
         [string]$CandidatePath,
-        [datetime]$RunStart
+        [datetime]$RunStart,
+        [string]$CdbPath
     )
 
     $toStop = @()
     if ($CdbPid) {
         $cdbProcess = Get-Process -Id $CdbPid -ErrorAction SilentlyContinue
         if ($cdbProcess) {
-            $toStop += $cdbProcess
+            try {
+                if ($cdbProcess.Path -eq (Get-FullPath -Path $CdbPath) -and $cdbProcess.StartTime -ge $RunStart.AddSeconds(-5)) {
+                    $toStop += $cdbProcess
+                }
+            } catch { }
         }
     }
     $candidateFull = Get-FullPath -Path $CandidatePath
@@ -297,6 +398,47 @@ function Get-LaunchedCandidateProcesses {
                 $false
             }
         })
+}
+
+function Test-LaunchedProcessesStopped {
+    param([Nullable[int]]$CdbPid, [string]$CandidatePath, [datetime]$RunStart,
+          [string]$CdbPath, [ValidateRange(0,10000)][int]$WaitMilliseconds = 5000)
+    $deadline = (Get-Date).AddMilliseconds($WaitMilliseconds)
+    do {
+        $remaining = @()
+        $inspectionErrors = @()
+        $candidateFull = Get-FullPath -Path $CandidatePath
+        $candidateProcessName = [System.IO.Path]::GetFileNameWithoutExtension($candidateFull)
+        foreach ($process in @(Get-Process -Name $candidateProcessName -ErrorAction SilentlyContinue)) {
+            try {
+                if ([string]::IsNullOrWhiteSpace($process.Path)) { throw 'Candidate process path is unavailable.' }
+                if ($process.Path -eq $candidateFull -and $process.StartTime -ge $RunStart.AddSeconds(-5)) {
+                    $remaining += $process
+                }
+            } catch { $inspectionErrors += "Cannot verify candidate identity: $($_.Exception.Message)" }
+        }
+        if ($CdbPid) {
+            $process = Get-Process -Id $CdbPid -ErrorAction SilentlyContinue
+            if ($process) {
+                try {
+                    if ([string]::IsNullOrWhiteSpace($process.Path)) { throw 'CDB process path is unavailable.' }
+                    if ($process.Path -eq (Get-FullPath -Path $CdbPath) -and $process.StartTime -ge $RunStart.AddSeconds(-5)) {
+                        $remaining += $process
+                    }
+                } catch { $inspectionErrors += "Cannot verify launched CDB identity: $($_.Exception.Message)" }
+            }
+        }
+        if (-not $remaining.Count -and -not $inspectionErrors.Count) { break }
+        if ((Get-Date) -ge $deadline) { break }
+        Start-Sleep -Milliseconds 100
+    } while ($true)
+    [pscustomobject]@{
+        Passed = (-not $remaining.Count -and -not $inspectionErrors.Count)
+        RemainingProcessIds = @($remaining | Select-Object -ExpandProperty Id -Unique)
+        InspectionErrors = $inspectionErrors
+        Scope = 'launched CDB id/path/start and exact candidate path/start'
+        WaitMilliseconds = $WaitMilliseconds
+    }
 }
 
 function Save-TimeoutStack {
@@ -347,6 +489,34 @@ function Parse-SurfaceDumpReady {
     $null
 }
 
+function Test-RequestedSurfaceReady {
+    param($Ready, $Geometry)
+    ($null -ne $Ready -and $Ready.Width -eq $Geometry.width -and
+        $Ready.Height -eq $Geometry.height -and
+        $Ready.Bytes -eq ($Geometry.width * $Geometry.height) -and
+        (Convert-CdbHexToUInt64 -Value $Ready.Base) -ne 0 -and
+        (Convert-CdbHexToUInt64 -Value $Ready.Surface) -ne 0)
+}
+
+function Set-SurfaceProxyPresentSetting {
+    param([bool]$HiddenDesktop)
+    $previous = [Environment]::GetEnvironmentVariable('CLASH_PROXY_PRESENT', 'Process')
+    if ($HiddenDesktop) {
+        [Environment]::SetEnvironmentVariable('CLASH_PROXY_PRESENT', '0', 'Process')
+    }
+    [pscustomobject]@{
+        Previous = $previous
+        Effective = [Environment]::GetEnvironmentVariable('CLASH_PROXY_PRESENT', 'Process')
+    }
+}
+
+function Restore-SurfaceProxyPresentSetting {
+    param($Setting)
+    if ($null -ne $Setting) {
+        [Environment]::SetEnvironmentVariable('CLASH_PROXY_PRESENT', $Setting.Previous, 'Process')
+    }
+}
+
 foreach ($path in @($InputExe, $WorkDir, $Cdb, $ProbeTemplate)) {
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Required path was not found: $path"
@@ -363,13 +533,47 @@ $coverageTool = Join-Path $RepoRoot 'tools\map_tile_coverage.py'
 $visibilityTool = Join-Path $RepoRoot 'tools\visibility_coverage.py'
 $forcedVisibleTool = Join-Path $RepoRoot 'tools\forced_visible_summary.py'
 $postOwnerForcedVisibleTool = Join-Path $RepoRoot 'tools\post_owner_forced_visible_summary.py'
-foreach ($path in @($patcher, $converter, $coverageTool, $visibilityTool, $forcedVisibleTool, $postOwnerForcedVisibleTool)) {
+$probeRenderer = Join-Path $RepoRoot 'tools\render_cdb_surface_probe.py'
+$initialTraceTool = Join-Path $RepoRoot 'tools\initial_map_paint_trace.py'
+if ($InitialMapPaintValidation -and -not (Test-Path -LiteralPath $initialTraceTool -PathType Leaf)) {
+    throw 'Initial map paint trace verifier is missing; no candidate was built.'
+}
+foreach ($path in @($patcher, $converter, $coverageTool, $visibilityTool, $forcedVisibleTool, $postOwnerForcedVisibleTool, $probeRenderer)) {
     if (-not (Test-Path -LiteralPath $path)) {
         throw "Required helper was not found: $path"
     }
 }
 if ($UseDdrawProxy -and -not (Test-Path -LiteralPath $DdrawProxyBuildScript)) {
     throw "DirectDraw proxy build script was not found: $DdrawProxyBuildScript"
+}
+
+# Pure source preflight happens before building a proxy or patching a candidate.
+# The base probe is also consumed by soak runs: render a copy, never edit it.
+$renderArgs = @('-B', $probeRenderer, '--template', $ProbeTemplate, '--resolution', $Resolution, '--stage', $recipeStage, '--load-slot', $LoadSlot)
+if ($ForceVisibleEdges) { $renderArgs += '--force-visible-edges' }
+if ($PostOwnerForceVisibleSeven) { $renderArgs += '--post-owner-force-visible-seven' }
+if ($ExtraProbeTemplate) { $renderArgs += @('--extra-probe', '--extra-probe-path', $ExtraProbeTemplate) }
+if ($SkipMapValidation) { $renderArgs += '--skip-map-validation' }
+$probeRecipeJson = & $pythonExe @renderArgs
+if ($LASTEXITCODE -ne 0) {
+    throw 'Surface probe resolution preflight failed; no candidate was built.'
+}
+$probeRecipe = $probeRecipeJson | ConvertFrom-Json
+$surfaceGeometry = $probeRecipe.geometry
+$Resolution = $surfaceGeometry.resolution
+if ($Resolution -ne '800x600') { $RequireGameplay = $true }
+if ($PartialTileValidation) {
+    if ($CompleteHdValidation) {
+        $partialPreflightJson = & $pythonExe -B $partialTileBuilder --input ([System.IO.Path]::GetFullPath($InputExe)) --stage $Stage --resolution $Resolution --preflight
+    } else {
+        $partialPreflightJson = & $pythonExe -B $partialTileBuilder --original ([System.IO.Path]::GetFullPath($InputExe)) --resolution $Resolution --preflight @partialBuilderOptions
+    }
+    if ($LASTEXITCODE -ne 0) { throw 'Partial-tile source/byte preflight failed; no proxy or candidate was built.' }
+    $partialPreflight = $partialPreflightJson | ConvertFrom-Json
+    if ((-not $CompleteHdValidation -and -not $partialPreflight.preflight_passed) -or
+        $partialPreflight.stage -cne $Stage -or $partialPreflight.resolution -cne $Resolution) {
+        throw 'Partial-tile preflight identity mismatch.'
+    }
 }
 
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
@@ -400,7 +604,8 @@ if (Test-Path -LiteralPath $candidateFull) {
 }
 
 $runDir = Join-Path $OutRoot "cdb-surface-dump-$stamp"
-New-Item -ItemType Directory -Path $runDir -Force | Out-Null
+if (Test-Path -LiteralPath $runDir) { throw "Run output already exists; preserve its evidence: $runDir" }
+New-Item -ItemType Directory -Path $runDir | Out-Null
 $logPath = Join-Path $runDir 'cdb-surface-dump.log'
 $rawPath = Join-Path $runDir 'surface.raw'
 $pngPath = Join-Path $runDir 'surface.png'
@@ -455,25 +660,49 @@ if ($UseDdrawProxy) {
 }
 
 $inputSha = Get-FileSha256 -Path $inputFull
-& $pythonExe $patcher --input $inputFull --output $candidateFull --stage $Stage --resolution $Resolution
+$candidateManifestPath = $null
+$candidateManifest = $null
+$partialContractStage = $Stage
+if ($CompleteHdValidation) {
+    & $pythonExe -B $partialTileBuilder --input $inputFull --output $candidateFull --stage $Stage --resolution $Resolution
+    $patchExit = $LASTEXITCODE
+    if ($patchExit -ne 0) { throw "Complete candidate builder failed with exit code $patchExit" }
+    $candidateManifestPath = [System.IO.Path]::ChangeExtension($candidateFull, '.candidate.json')
+    $candidateManifest = Get-Content -LiteralPath $candidateManifestPath -Raw | ConvertFrom-Json
+    $partialBuildReport = $candidateManifestPath
+    $ExtraProbeTemplate = [System.IO.Path]::ChangeExtension($candidateFull, '.cdb')
+    $partialContractStage = $candidateManifest.probe_contract.inherited_stage
+    if ($candidateManifest.stage -cne $Stage -or $candidateManifest.resolution -cne $Resolution -or
+        $candidateManifest.base_sha256 -cne $inputSha.ToLowerInvariant() -or
+        $candidateManifest.probe_sha256 -cne (Get-FileSha256 -Path $ExtraProbeTemplate).ToLowerInvariant() -or
+        -not $candidateManifest.probe_contract.requires_loaded_byte_checks -or
+        -not $candidateManifest.probe_contract.all_inherited_checks_required) {
+        throw 'Complete candidate bundle identity or inherited probe contract differs.'
+    }
+}
+elseif ($PartialTileValidation) {
+    $partialBuildReport = Join-Path $runDir 'partial-tile-build.json'
+    $ExtraProbeTemplate = Join-Path $runDir 'partial-tile-installed.extra.cdb'
+    & $pythonExe -B $partialTileBuilder --original $inputFull --output $candidateFull --resolution $Resolution --report-json $partialBuildReport --probe-out $ExtraProbeTemplate @partialBuilderOptions
+}
+else {
+    & $pythonExe $patcher --input $inputFull --output $candidateFull --stage $Stage --resolution $Resolution
+}
 $patchExit = $LASTEXITCODE
 if ($patchExit -ne 0) {
     throw "patch_clash95_hd.py failed with exit code $patchExit"
 }
 $candidateSha = Get-FileSha256 -Path $candidateFull
+if ($PartialTileValidation -and $candidateSha.ToLowerInvariant() -ne $partialPreflight.candidate_sha256) {
+    throw 'Partial-tile candidate differs from the preflight recipe.'
+}
 
-$probeText = Get-Content -LiteralPath $ProbeTemplate -Raw
-# The injected route points were measured at 800x600. Follow the same native
-# menu positions when the patcher centers that menu on a larger surface.
-$resolutionParts = $Resolution.ToLowerInvariant().Split('x')
-$menuDeltaX = ([int]$resolutionParts[0] - 800) / 2
-$menuDeltaY = ([int]$resolutionParts[1] - 600) / 2
-$mainMouseRawX = [int](300 + $menuDeltaX) -shl 6
-$mainMouseRawY = [int](218 + $menuDeltaY) -shl 6
-# The load-list helper compares native coordinates directly, unlike the
-# relocated main-menu descriptors; this remains a forced native route.
-$loadMouseX = 320
-$loadMouseY = 166 + (22 * $LoadSlot)
+$probeText = $probeRecipe.template
+# Preserve placeholder-based legacy/extra templates using the source-checked recipe.
+$mainMouseRawX = [int]$surfaceGeometry.main_menu_mouse[0] -shl 6
+$mainMouseRawY = [int]$surfaceGeometry.main_menu_mouse[1] -shl 6
+$loadMouseX = $surfaceGeometry.load_mouse[0]
+$loadMouseY = $surfaceGeometry.load_mouse[1]
 $loadMouseRawX = $loadMouseX -shl 6
 $loadMouseRawY = $loadMouseY -shl 6
 $preEntryLoadCoordAction = if ($LateLoadSlotForcingOnly) {
@@ -492,6 +721,10 @@ if ($PostOwnerForceVisibleSeven -and -not $ExtraProbeTemplate) {
     throw '-PostOwnerForceVisibleSeven requires -ExtraProbeTemplate with the post-owner visibility probe.'
 }
 if ($ExtraProbeTemplate) {
+    if ($probeRecipe.extra_probe_sha256 -and
+        (Get-FileSha256 -Path $ExtraProbeTemplate).ToLowerInvariant() -cne $probeRecipe.extra_probe_sha256) {
+        throw 'Extra probe changed after source preflight; refusing a mixed probe recipe.'
+    }
     $extraProbeText = (Get-Content -LiteralPath $ExtraProbeTemplate -Raw).Trim()
     $extraProbeText = $extraProbeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)
     $extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))
@@ -574,6 +807,9 @@ elseif ($PostOwnerForceVisibleSeven) {
 else {
     ''
 }
+if ($ForceVisibleEdges -and $probeRecipe.force_playgame_action) {
+    $visibilityPlayGameAction = $probeRecipe.force_playgame_action
+}
 $probeText = $probeText.Replace('__VISIBILITY_PLAYGAME_ACTION__', $visibilityPlayGameAction)
 $visibilityRedrawAction = if ($ForceVisibleEdges) {
     'ed @$t10+0n140008 0n10; ed @$t10+0n140012 0n17; ed 00544cfc 00004b00; ed 00544d00 00003680; eb 005451c0 00; ed 00544d04 0; .if (@$t13 < 0n4) { .printf \"SURFDUMP_FORCE_VIEWPORT scroll=(%d,%d) mouse=(%d,%d) timing=redraw\\n\", poi(@$t10+0n140008), poi(@$t10+0n140012), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); };'
@@ -582,15 +818,89 @@ else {
     ''
 }
 $probeText = $probeText.Replace('__VISIBILITY_PATCH_ACTION__', $visibilityRedrawAction)
-$surfaceDumpAction = if ($UseCdbWriteMem) {
+$surfaceDumpAction = if ($InitialMapPaintValidation) {
+    # This is the existing update-entry breakpoint after prior calls returned.
+    # Leave CDB stopped here so the host reads a coherent surface and cannot
+    # terminate a PTILE printf or an in-flight incremental invocation.
+    '.printf \"PTILE_TRACE_CLOSED tid=%x eip=%p esp=%p\\n\", @$tid, @eip, @esp; .echo SURFDUMP_HOST_READY;'
+}
+elseif ($UseCdbWriteMem) {
     '.writemem ' + (Get-CdbFileToken -Path $rawPath) + ' @$t16 L@$t17; .echo SURFDUMP_DONE; q;'
 }
 else {
     '.echo SURFDUMP_HOST_READY; gc'
 }
-$probeText = $probeText.Replace('__SURFACE_DUMP_ACTION__', $surfaceDumpAction)
+$framedMinimapAction = if ($FramedValidation) {
+    # Observe the actual enabled backing at this same stopped capture boundary.
+    # The selector and per-player flag mirror native40DD60; never guess a mask.
+    '.if (poi(005202e4) == 0) { .echo FRAMED_CAPTURE_REJECT missing_game_data; q } .else { .if ((poi(poi(005202e4)+23ec7) != 0) & (poi(poi(005202e4)+23ec7) != 1) & (poi(poi(005202e4)+23ec7) != 2) & (poi(poi(005202e4)+23ec7) != 3) & (poi(poi(005202e4)+23ec7) != 4)) { .echo FRAMED_CAPTURE_REJECT minimap_selector; q } .else { .printf \"FRAMED_MINIMAP enabled=%d origin=(%d,%d) size=(%d,%d)\\n\", (poi(poi(005202e4)+2230f+poi(poi(005202e4)+23ec7)*58f) != 0), wo(00523344), wo(00523346), wo(00523348), wo(0052334a); }; };'
+} else { '' }
+$probeText = $probeText.Replace('__SURFACE_DUMP_ACTION__', ($framedMinimapAction + $surfaceDumpAction))
 $probeText = $probeText.Replace('__RAW_PATH__', (Get-CdbFileToken -Path $rawPath))
 Set-Content -LiteralPath $generatedProbe -Value $probeText -Encoding ASCII
+
+$minimapObserverReport = $null
+if ($MinimapViewportValidation) {
+    # The canonical map probe and installed-byte extra remain preserved. The
+    # additive observer reconstructs this exact candidate and records only
+    # native draw arguments and state at the existing stopped capture boundary.
+    $minimapObserverTool = Join-Path $RepoRoot 'tools\framed_minimap_probe.py'
+    $minimapObserverReport = Join-Path $runDir 'minimap-observer.json'
+    $minimapObservedProbe = Join-Path $runDir 'surface-minimap-probe.cdb'
+    $minimapContextArgs = if ($CompleteHdValidation) { @('--candidate-manifest', $candidateManifestPath) } else { @() }
+    & $pythonExe -B $minimapObserverTool --original $inputFull --candidate $candidateFull --resolution $Resolution --rendered-probe $generatedProbe --output $minimapObservedProbe --report $minimapObserverReport @minimapContextArgs
+    if ($LASTEXITCODE -ne 0) { throw 'Minimap observer preparation failed before runtime.' }
+    $generatedProbe = $minimapObservedProbe
+}
+
+$noopProgressReport = $null
+if ($NoopProgressDiagnostic) {
+    $noopTool = Join-Path $RepoRoot 'tools\framed_noop_progress_probe.py'
+    $noopProgressReport = Join-Path $runDir 'noop-progress-observer.json'
+    $noopObservedProbe = Join-Path $runDir 'surface-noop-progress-probe.cdb'
+    # Minimap owns 80/81. The diagnostic independently inventories 82 before
+    # observing it and keeps every existing PTILE record unchanged.
+    $noopJson = & $pythonExe -B $noopTool --original $inputFull --candidate $candidateFull --candidate-sha256 $candidateSha --stage $Stage --resolution $Resolution --rendered-probe $generatedProbe --candidate-manifest $candidateManifestPath --breakpoint-id 82 --json
+    if ($LASTEXITCODE -ne 0) { throw 'Native no-op progress observer preparation failed before runtime.' }
+    $noopPacket = $noopJson | ConvertFrom-Json
+    if (-not $noopPacket.snippet -or $noopPacket.candidate_sha256 -cne $candidateSha.ToLowerInvariant() -or
+        $noopPacket.stage -cne $Stage -or $noopPacket.resolution -cne $Resolution) {
+        throw 'Native no-op progress observer identity differs.'
+    }
+    $mainText = (Get-Content -LiteralPath $generatedProbe -Raw).Replace("`r`n", "`n")
+    if ($mainText -notmatch '(?s)\ng\n*\z') { throw 'No final standalone g for the native no-op observer.' }
+    $finalGo = [regex]::Match($mainText, '(?s)g\n*\z')
+    $composed = $mainText.Substring(0, $finalGo.Index) + $noopPacket.snippet + "g`n"
+    # Export only this new composed run file with explicit CRLF. The canonical
+    # candidate probe and prior main remain immutable, separately hashed files.
+    [System.IO.File]::WriteAllText($noopObservedProbe, $composed.Replace("`r`n", "`n").Replace("`n", "`r`n"), [System.Text.Encoding]::ASCII)
+    $noopPacket | Add-Member -NotePropertyName ComposedProbeSha256 -NotePropertyValue (Get-FileSha256 -Path $noopObservedProbe)
+    $noopPacket | Add-Member -NotePropertyName ComposedProbe -NotePropertyValue $noopObservedProbe
+    $noopPacket | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath $noopProgressReport -Encoding UTF8
+    $generatedProbe = $noopObservedProbe
+}
+
+function Export-CompleteRuntimeProbe {
+    param([string]$SourcePath, [string]$OutputPath)
+    if ([System.IO.Path]::GetFullPath($SourcePath) -eq [System.IO.Path]::GetFullPath($OutputPath)) {
+        throw 'Complete runtime probe export must preserve its source.'
+    }
+    $sourceBytes = [System.IO.File]::ReadAllBytes($SourcePath)
+    $strictAscii = [System.Text.Encoding]::GetEncoding('us-ascii', [System.Text.EncoderFallback]::ExceptionFallback, [System.Text.DecoderFallback]::ExceptionFallback)
+    $text = $strictAscii.GetString($sourceBytes).Replace("`r`n", "`n")
+    if ($text.Contains([char]0)) { throw 'Complete runtime probe must not contain NUL.' }
+    if ($text.Contains("`r")) { throw 'Complete runtime probe contains a lone carriage return.' }
+    $bytes = [System.Text.Encoding]::ASCII.GetBytes($text.Replace("`n", "`r`n"))
+    $stream = [System.IO.File]::Open($OutputPath, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
+    try { $stream.Write($bytes, 0, $bytes.Length) } finally { $stream.Dispose() }
+}
+if ($CompleteHdValidation) {
+    # CDB consumes an explicit CRLF run file. The manifest-bound candidate
+    # extra and LF observer intermediates remain unchanged and inspectable.
+    $completeRuntimeProbe = Join-Path $runDir 'completehd-runtime-probe.cdb'
+    Export-CompleteRuntimeProbe -SourcePath $generatedProbe -OutputPath $completeRuntimeProbe
+    $generatedProbe = $completeRuntimeProbe
+}
 
 $runStart = Get-Date
 $desktopName = "ClashSurfaceDump_$($stamp -replace '[^0-9A-Za-z_]', '_')"
@@ -600,14 +910,26 @@ $launch = $null
 $cdbExitCode = $null
 $timedOut = $false
 $runtimeError = $null
+$runtimeExceptionId = $null
+$runtimeExceptionStack = $null
+$cleanupResult = $null
 $timeoutStackSaved = $false
 $launchMode = 'hidden-desktop'
 $stoppedAfterDump = $false
 $hostDumpedMemory = $false
 $hostDumpError = $null
+$surfaceGeometryFailure = $null
+$postDumpObservationStarted = $false
+$postDumpObservationCompleted = $false
+$postDumpObservationStart = $null
+$postDumpExitObserved = $false
 $dumpMethod = if ($UseCdbWriteMem) { 'cdb-writemem' } else { 'host-readprocessmemory' }
+$proxyPresentEnvironment = $null
 
 try {
+    # CreateProcess inherits this process environment. A hidden run must not
+    # inherit present-on-Unlock painting from an earlier visible experiment.
+    $proxyPresentEnvironment = Set-SurfaceProxyPresentSetting -HiddenDesktop (-not $AllowVisibleDesktop)
     if ($AllowVisibleDesktop) {
         $launchMode = 'visible-desktop-explicit'
         $cdbProcess = Start-Process -FilePath $Cdb -ArgumentList $cdbArgs -WorkingDirectory $WorkDir -PassThru -WindowStyle Hidden
@@ -633,7 +955,19 @@ try {
         }
         if (-not $UseCdbWriteMem) {
             $currentReady = Parse-SurfaceDumpReady -LogPath $logPath
-            if ($currentReady -and -not (Test-Path -LiteralPath $rawPath)) {
+            if ($currentReady -and -not (Test-RequestedSurfaceReady -Ready $currentReady -Geometry $surfaceGeometry)) {
+                $surfaceGeometryFailure = "Observed surface does not match requested $Resolution or its byte count/base pointers."
+                Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
+                break
+            }
+            $currentLogText = if (Test-Path -LiteralPath $logPath) { Get-Content -LiteralPath $logPath -Raw } else { '' }
+            # Nonlegacy geometry/map bounds are checked by the generated probe
+            # before HOST_READY; READY itself is only an observation marker.
+            $probeBoundsReady = ($Resolution -eq '800x600') -or $currentLogText.Contains('SURFDUMP_HOST_READY')
+            if ($InitialMapPaintValidation) {
+                $probeBoundsReady = $currentLogText.Contains('SURFDUMP_HOST_READY') -and $currentLogText.Contains('PTILE_TRACE_CLOSED')
+            }
+            if ($currentReady -and $probeBoundsReady -and -not $currentLogText.Contains('SURFDUMP_INVALID') -and -not (Test-Path -LiteralPath $rawPath)) {
                 try {
                     $target = Get-LaunchedCandidateProcesses -CandidatePath $candidateFull -RunStart $runStart |
                         Sort-Object StartTime -Descending |
@@ -662,13 +996,30 @@ try {
             }
         }
         if ($dumpObserved) {
-            $stoppedAfterDump = $true
-            Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart
-            Start-Sleep -Milliseconds 500
-            $cdbProcess.Refresh()
-            break
+            if ($ContinueAfterDumpSec -le 0) {
+                $stoppedAfterDump = $true
+                Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
+                Start-Sleep -Milliseconds 500
+                $cdbProcess.Refresh()
+                break
+            }
+            if (-not $postDumpObservationStarted) {
+                $postDumpObservationStarted = $true
+                $postDumpObservationStart = Get-Date
+            }
+            elseif (((Get-Date) - $postDumpObservationStart).TotalSeconds -ge $ContinueAfterDumpSec) {
+                $postDumpObservationCompleted = $true
+                $stoppedAfterDump = $true
+                Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
+                Start-Sleep -Milliseconds 500
+                $cdbProcess.Refresh()
+                break
+            }
         }
     }
+
+    $cdbProcess.Refresh()
+    $postDumpExitObserved = $postDumpObservationStarted -and $cdbProcess.HasExited -and (-not $postDumpObservationCompleted)
 
     if (-not $cdbProcess.HasExited -and -not $stoppedAfterDump) {
         $timedOut = $true
@@ -682,8 +1033,23 @@ try {
         }
     }
 }
+catch {
+    $runtimeError = $_.Exception.Message
+    $runtimeExceptionId = $_.FullyQualifiedErrorId
+    $runtimeExceptionStack = $_.ScriptStackTrace
+}
 finally {
-    Stop-LaunchedProcesses -CdbPid $(if ($launch) { $launch.ProcessId } else { $null }) -CandidatePath $candidateFull -RunStart $runStart
+    Restore-SurfaceProxyPresentSetting -Setting $proxyPresentEnvironment
+    $launchedCdbId = if ($launch) { $launch.ProcessId } else { $null }
+    Stop-LaunchedProcesses -CdbPid $launchedCdbId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
+    try {
+        $cleanupResult = Test-LaunchedProcessesStopped -CdbPid $launchedCdbId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
+    } catch {
+        $cleanupResult = [pscustomobject]@{ Passed = $false; InspectionErrors = @($_.Exception.Message); RemainingProcessIds = @() }
+    }
+    if (-not $cleanupResult.Passed -and -not $runtimeError) {
+        $runtimeError = 'Launched process cleanup could not be verified; see CleanupResult.'
+    }
     if ($launch -and $launch.ProcessHandle -ne [IntPtr]::Zero) {
         [ClashSurfaceDumpNative]::CloseHandle($launch.ProcessHandle) | Out-Null
     }
@@ -694,6 +1060,227 @@ finally {
 
 $ready = Parse-SurfaceDumpReady -LogPath $logPath
 $logText = if (Test-Path -LiteralPath $logPath) { Get-Content -LiteralPath $logPath -Raw } else { '' }
+function Get-PartialTileValidationFailure {
+    param([string]$LogText, [string]$Stage, [string]$Resolution, [string]$CandidateSha256,
+          [string]$ContractStage = $Stage)
+    $contractLine = "PTILE_CONTRACT_PASS stage=$ContractStage resolution=$Resolution candidate_sha256=$($CandidateSha256.ToLowerInvariant())"
+    $lines = @($LogText -split "`r?`n")
+    $readyLine = "PTILE_MAP_READY owner=0040ad40 size=($($Resolution.Replace('x',',')))"
+    $exactContract = @($lines | Where-Object { $_ -ceq $contractLine })
+    $allContracts = @($lines | Where-Object { $_ -match '^PTILE_CONTRACT_PASS\b' })
+    $allReady = @($lines | Where-Object { $_ -match '^PTILE_MAP_READY\b' })
+    if ($exactContract.Count -ne 1 -or $allContracts.Count -ne 1 -or $LogText -match '(?m)^PTILE_(CONTRACT_FAIL|REJECT)\b') {
+        return 'partial-tile loaded contract missing, repeated or rejected'
+    }
+    if ($allReady.Count -ne 1 -or $allReady[0] -cne $readyLine) { return 'native map-owner readiness missing or mismatched' }
+    $geometry = [regex]::Match($Resolution, '^(\d{1,4})x(\d{1,4})$')
+    if (-not $geometry.Success) { return 'invalid partial-tile resolution' }
+    $width = [int]$geometry.Groups[1].Value
+    $height = [int]$geometry.Groups[2].Value
+    if ($width -lt 96 -or $height -lt 80 -or $width -gt 8192 -or $height -gt 8192) {
+        return 'invalid partial-tile resolution'
+    }
+    $framedStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation'
+    $insetX = 32
+    $insetY = 16
+    $completeStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation'
+    if ($Stage -ceq $framedStage -or $Stage -ceq $completeStage) {
+        if ($width -lt 640 -or $height -lt 480 -or $width % 2 -ne 0 -or $height % 2 -ne 0) {
+            return 'invalid framed partial-tile resolution'
+        }
+        $insetX = 64
+        $insetY = 32
+    } elseif ($Stage -match 'framed') { return 'unknown framed partial-tile stage' }
+    $floorCols = [Math]::Floor(($width - $insetX) / 64)
+    $floorRows = [Math]::Floor(($height - $insetY) / 64)
+    $ceilCols = [Math]::Ceiling(($width - $insetX) / 64)
+    $ceilRows = [Math]::Ceiling(($height - $insetY) / 64)
+    $hex = '[0-9a-fA-F]{1,8}'
+    $integer = '-?\d{1,10}'
+    $identityPattern = "tid=(?<tid>$hex) esp=(?<esp>$hex)"
+    $worldPattern = "world=\((?<wx>$integer),(?<wy>$integer)\)"
+    $inputPattern = "^PTILE_(?:INCREMENTAL_INPUT|NATIVE_NOOP_EXIT) $identityPattern $worldPattern caller=(?<caller>$hex) gd=(?<gd>$hex) map=\((?<mw>$integer),(?<mh>$integer)\) scroll=\((?<sx>$integer),(?<sy>$integer)\) vtable=(?<vtable>$hex)$"
+    $guardPattern = "^PTILE_COMPOSITION_GUARD $identityPattern status=(?<status>$integer) $worldPattern cell=\((?<col>$integer),(?<row>$integer)\) present=(?<present>$integer) caller=(?<caller>$hex)$"
+    $statusPattern = "^PTILE_STATUS hook=(?<hook>full_converge|full_present|incremental) status=(?<status>$integer) $identityPattern owner=(?<owner>$hex) tile=(?<tile>$hex) post=(?<post>$hex) lower=(?<lower>$hex) player=0$"
+    $pending = @{}
+    $incremental = @{}
+    $presentCount = 0
+    $contractObserved = $false
+    $mapReady = $false
+    foreach ($line in $lines) {
+        if ($line -ceq $contractLine) { $contractObserved = $true; continue }
+        if ($line -ceq $readyLine) {
+            if (-not $contractObserved) { return 'map readiness precedes loaded contract' }
+            $mapReady = $true
+            continue
+        }
+        $kind = if ($line -match '^PTILE_COMPOSITION_GUARD') { 'guard' }
+            elseif ($line -match '^PTILE_INCREMENTAL_INPUT') { 'input' }
+            elseif ($line -match '^PTILE_NATIVE_NOOP_EXIT') { 'exit' }
+            elseif ($line -match '^PTILE_STATUS') { 'status' }
+            else { '' }
+        if (-not $kind) { continue }
+        $pattern = if ($kind -eq 'guard') { $guardPattern }
+            elseif ($kind -eq 'status') { $statusPattern } else { $inputPattern }
+        $match = [regex]::Match($line, $pattern)
+        if (-not $mapReady -or -not $match.Success) { return 'malformed or premature partial-tile status' }
+        $values = @{}
+        foreach ($field in @('tid','esp','caller','gd','vtable','owner','tile','post','lower')) {
+            if ($match.Groups[$field].Success) { $values[$field] = [Convert]::ToUInt64($match.Groups[$field].Value,16) }
+        }
+        foreach ($field in @('wx','wy','mw','mh','sx','sy','col','row','status','present')) {
+            if ($match.Groups[$field].Success) {
+                $number = [long]$match.Groups[$field].Value
+                if ($number -lt -2147483648 -or $number -gt 2147483647) { return 'partial-tile signed value outside x86 range' }
+                $values[$field] = $number
+            }
+        }
+        if ($values.tid -eq 0 -or $values.esp -eq 0) {
+            return 'invalid partial-tile thread or stack identity'
+        }
+        # The three observation sites have different real ESPs. Normalize to
+        # the original sub_418A90 entry, which still holds the caller address:
+        # guard +120, hook status/input +36, native early epilogue +28 bytes.
+        $delta = if ($kind -eq 'guard') { 120 } elseif ($kind -eq 'exit') { 28 } else { 36 }
+        $nativeSp = $values.esp + $delta
+        if ($nativeSp -gt 4294967295) { return 'partial-tile native stack identity overflow' }
+        $key = "$($values.tid):$nativeSp"
+        foreach ($activeKey in $incremental.Keys) {
+            $activeGuard = $incremental[$activeKey].Guard
+            $activeOutside = $activeGuard.col -lt 0 -or $activeGuard.col -ge $ceilCols -or
+                $activeGuard.row -lt 0 -or $activeGuard.row -ge $ceilRows
+            # An offscreen helper and its native fallback have no calls: a
+            # different invocation on this thread cannot occur inside them.
+            # Visible calls may nest; other threads may interleave normally.
+            if ($activeOutside -and $activeGuard.tid -eq $values.tid -and $activeKey -ne $key) {
+                return 'offscreen incremental sequence interrupted by another invocation'
+            }
+        }
+        if ($kind -eq 'guard') {
+            if ($values.status -ne 1 -or $values.present -ne 1 -or $values.caller -eq 0) {
+                return 'incremental composition guard did not approve the actual call'
+            }
+            if ($incremental.ContainsKey($key)) { return 'repeated or stale incremental guard' }
+            $incremental[$key] = @{ Phase='guard'; Guard=$values }
+            continue
+        }
+        if ($kind -eq 'input' -or $kind -eq 'exit') {
+            if (-not $incremental.ContainsKey($key)) { return 'incremental input or native exit lacks its guard and invocation' }
+            $call = $incremental[$key]
+            if ($kind -eq 'exit') {
+                if ($call.Phase -ne 'exit') { return 'unexpected or repeated native no-op exit' }
+                foreach ($field in @('caller','wx','wy','gd','mw','mh','sx','sy','vtable')) {
+                    if ($values[$field] -ne $call.Input[$field]) { return 'native no-op exit changed its input or context' }
+                }
+                # These are exactly the emitted exit fields. Owner/callback/
+                # player were checked at status; unlogged state at exit is
+                # not claimed as a separate concurrency or visual proof.
+                $incremental.Remove($key)
+                # An observed no-op consumes the raw zero-status call; it is
+                # never a draw, world-edge clear, or complete presentation.
+                continue
+            }
+            if ($call.Phase -ne 'guard') { return 'repeated or out-of-order incremental input' }
+            if ($values.caller -ne $call.Guard.caller -or $values.wx -ne $call.Guard.wx -or $values.wy -ne $call.Guard.wy) {
+                return 'incremental input differs from its actual guarded call'
+            }
+            if ($values.gd -eq 0 -or $values.vtable -eq 0 -or $values.mw -lt 1 -or $values.mw -gt 100 -or
+                $values.mh -lt 1 -or $values.mh -gt 100 -or $values.sx -lt 0 -or $values.sy -lt 0 -or
+                $values.sx -gt [Math]::Max(0, $values.mw - $floorCols) -or
+                $values.sy -gt [Math]::Max(0, $values.mh - $floorRows)) {
+                return 'invalid incremental map or scroll context'
+            }
+            if ($call.Guard.col -ne ($values.wx - $values.sx) -or $call.Guard.row -ne ($values.wy - $values.sy)) {
+                return 'actual guarded cell differs from world and scroll coordinates'
+            }
+            $call.Input = $values
+            $call.Phase = 'input'
+            continue
+        }
+        $name = $match.Groups['hook'].Value
+        $status = $values.status
+        if ($name -eq 'incremental') {
+            if ($status -notin @(0,1,2)) { return 'unsupported partial-tile status' }
+            if (-not $incremental.ContainsKey($key) -or $incremental[$key].Phase -ne 'input') {
+                return 'incremental status lacks a fresh guard and input'
+            }
+            $call = $incremental[$key]
+            $inputRow = $call.Input
+            $visible = $call.Guard.col -ge 0 -and $call.Guard.col -lt $ceilCols -and
+                $call.Guard.row -ge 0 -and $call.Guard.row -lt $ceilRows
+            $inWorld = $inputRow.wx -ge 0 -and $inputRow.wx -lt $inputRow.mw -and $inputRow.wy -ge 0 -and $inputRow.wy -lt $inputRow.mh
+            if ($values.owner -ne 0x40AD40 -or $values.post -ne 0 -or $values.lower -ne 0 -or
+                $values.tile -notin @(0,0x425120,0x429EC0)) {
+                return 'incremental status has unsupported composition context'
+            }
+            if ($status -eq 0) {
+                if ($visible -or -not $inWorld -or $values.tile -ne 0 -or $inputRow.vtable -ne 0x50EE24) {
+                    return 'zero status is not a supported native offscreen no-op'
+                }
+                $call.Phase = 'exit'
+            } else {
+                if (-not $visible -or ($status -eq 1 -and -not $inWorld) -or ($status -eq 2 -and $inWorld)) {
+                    return 'incremental draw or clear status contradicts actual cell bounds'
+                }
+                $incremental.Remove($key)
+            }
+            continue
+        }
+        if ($status -ne 1) { return 'unsupported partial-tile status' }
+        $context = @($values.owner, $values.tile, $values.post, $values.lower) -join ':'
+        if ($name -eq 'full_converge') { $pending[$key] = $context }
+        elseif ($name -eq 'full_present') {
+            if (-not $pending.ContainsKey($key) -or $pending[$key] -ne $context) {
+                return 'partial presentation lacks preceding convergence on the same thread, stack and owner context'
+            }
+            $pending.Remove($key)
+            $presentCount++
+        }
+    }
+    if ($incremental.Count -ne 0) { return 'unfinished incremental guard, input, status or native-exit sequence' }
+    # Native EBP=0 permits convergence without presentation. A successful
+    # presentation must still consume a matching preceding convergence row.
+    if ($presentCount -eq 0) { return 'no complete partial-tile composition/presentation pair' }
+    return $null
+}
+$partialValidationFailure = if ($PartialTileValidation) {
+    Get-PartialTileValidationFailure -LogText $logText -Stage $Stage -Resolution $Resolution -CandidateSha256 $candidateSha -ContractStage $partialContractStage
+} else { $null }
+$initialPaintTrace = $null
+if ($InitialMapPaintValidation) {
+    $traceContextArgs = if ($CompleteHdValidation) { @('--candidate-manifest', $candidateManifestPath, '--original', $inputFull) } else { @() }
+    $initialTraceJson = & $pythonExe -B $initialTraceTool --log $logPath --probe $ExtraProbeTemplate --resolution $Resolution --candidate-sha256 $candidateSha --stage $Stage @traceContextArgs
+    $initialTraceExit = $LASTEXITCODE
+    try { $initialPaintTrace = $initialTraceJson | ConvertFrom-Json } catch { $initialPaintTrace = $null }
+    if ($initialTraceExit -ne 0 -or -not $initialPaintTrace -or -not $initialPaintTrace.passed) {
+        if (-not $partialValidationFailure) { $partialValidationFailure = 'Initial map paint trace failed; see InitialMapPaintTrace.' }
+    }
+}
+$framedMinimap = $null
+if ($FramedValidation) {
+    $minimapRows = @($logText -split "`r?`n" | Where-Object { $_ -match '^FRAMED_MINIMAP\b' })
+    $minimapMatch = if ($minimapRows.Count -eq 1) {
+        [regex]::Match($minimapRows[0], '^FRAMED_MINIMAP enabled=([01]) origin=\((\d{1,4}),(\d{1,4})\) size=\((\d{1,4}),(\d{1,4})\)$')
+    } else { $null }
+    if (-not $minimapMatch -or -not $minimapMatch.Success -or $logText -match '(?m)^FRAMED_CAPTURE_REJECT\b') {
+        if (-not $partialValidationFailure) { $partialValidationFailure = 'Framed capture lacks one valid minimap observation.' }
+    } else {
+        $framedMinimap = [pscustomobject]@{
+            Enabled = [int]$minimapMatch.Groups[1].Value
+            Left = [int]$minimapMatch.Groups[2].Value
+            Top = [int]$minimapMatch.Groups[3].Value
+            Width = [int]$minimapMatch.Groups[4].Value
+            Height = [int]$minimapMatch.Groups[5].Value
+        }
+        if ($framedMinimap.Enabled -eq 1 -and
+            ($framedMinimap.Width -le 0 -or $framedMinimap.Height -le 0 -or
+             $framedMinimap.Left -lt 32 -or $framedMinimap.Top -ne 16 -or
+             $framedMinimap.Left + $framedMinimap.Width -ne $surfaceGeometry.width - 32 -or
+             $framedMinimap.Top + $framedMinimap.Height -gt $surfaceGeometry.height - 16)) {
+            if (-not $partialValidationFailure) { $partialValidationFailure = 'Framed minimap backing violates the observed inner viewport.' }
+        }
+    }
+}
 $dumpDone = $logText.Contains('SURFDUMP_DONE')
 if ($hostDumpedMemory) {
     $dumpDone = $true
@@ -704,25 +1291,57 @@ $appRequestQuit = $logText.Contains('SURFDUMP_APP_REQUEST_QUIT')
 $appRequestQuitLine = @($logText -split "`r?`n" | Where-Object { $_ -match 'SURFDUMP_APP_REQUEST_QUIT' } | Select-Object -First 1)
 $rawExists = Test-Path -LiteralPath $rawPath
 $rawBytes = if ($rawExists) { (Get-Item -LiteralPath $rawPath).Length } else { 0 }
+if ($ready -and -not (Test-RequestedSurfaceReady -Ready $ready -Geometry $surfaceGeometry)) {
+    $surfaceGeometryFailure = "Observed surface does not match requested $Resolution or its byte count/base pointers."
+}
 
-if (-not $ready -or -not $dumpDone -or -not $rawExists) {
-    $failureReason = if ($runtimeError) {
-        $runtimeError
+$runtimeFailure = Get-SurfaceRuntimeFailure -AccessViolation $av -AppRequestQuit $appRequestQuit -RuntimeError $(if ($runtimeError) { $runtimeError } else { $partialValidationFailure })
+if (-not $ready -or -not $dumpDone -or -not $rawExists -or $surfaceGeometryFailure -or $dumpInvalid -or $runtimeFailure) {
+    $failureReason = if ($runtimeFailure) {
+        $runtimeFailure
     }
-    elseif ($appRequestQuit) {
-        'game requested App_RequestQuit before surface dump'
+    elseif ($surfaceGeometryFailure) {
+        $surfaceGeometryFailure
+    }
+    elseif ($dumpInvalid) {
+        'generated probe rejected the surface or map/player bounds'
     }
     else {
         'surface dump was not completed'
     }
     $summary = [pscustomobject]@{
         Passed = $false
+        PartialTileValidation = [bool]$PartialTileValidation
+        InitialMapPaintValidation = [bool]$InitialMapPaintValidation
+        FramedValidation = [bool]$FramedValidation
+        MinimapViewportValidation = [bool]$MinimapViewportValidation
+    CompleteHdValidation = [bool]$CompleteHdValidation
+    NoopProgressDiagnostic = [bool]$NoopProgressDiagnostic
+    NoopProgressReport = $noopProgressReport
+    RuntimeError = $runtimeError
+    RuntimeExceptionId = $runtimeExceptionId
+    RuntimeExceptionStack = $runtimeExceptionStack
+    CleanupResult = $cleanupResult
+    CandidateManifest = $candidateManifestPath
+    CandidateManifestSha256 = if ($candidateManifestPath) { Get-FileSha256 -Path $candidateManifestPath } else { $null }
+    RecipeRevision = if ($candidateManifest) { $candidateManifest.recipe_revision } else { $null }
+    CandidateProbeSha256 = if ($candidateManifest) { $candidateManifest.probe_sha256 } else { $null }
+    GeneratedProbeSha256 = Get-FileSha256 -Path $generatedProbe
+    PartialContractStage = $partialContractStage
+        MinimapObserverReport = $minimapObserverReport
+        FramedMinimap = $framedMinimap
+        InitialMapPaintTrace = $initialPaintTrace
+        PartialTileBuildReport = if ($PartialTileValidation) { $partialBuildReport } else { $null }
         Error = $failureReason
         LaunchMode = $launchMode
         HiddenDesktop = (-not $AllowVisibleDesktop)
         AllowVisibleDesktop = [bool]$AllowVisibleDesktop
         TimedOut = $timedOut
         StoppedAfterDump = $stoppedAfterDump
+        ContinueAfterDumpSec = $ContinueAfterDumpSec
+        PostDumpObservationStarted = $postDumpObservationStarted
+        PostDumpObservationCompleted = $postDumpObservationCompleted
+        PostDumpExitObserved = $postDumpExitObserved
         DumpMethod = $dumpMethod
         HostDumpedMemory = $hostDumpedMemory
         HostDumpError = $hostDumpError
@@ -738,6 +1357,7 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists) {
         CandidateSha256 = $candidateSha
         LoadSlot = $LoadSlot
         UseDdrawProxy = [bool]$UseDdrawProxy
+        ProxyPresentSetting = $proxyPresentEnvironment.Effective
         NoSkipStartAnims = [bool]$NoSkipStartAnims
         FastForwardStartAnims = [bool]$FastForwardStartAnims
         ForceVisibleEdges = [bool]$ForceVisibleEdges
@@ -753,6 +1373,10 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists) {
         GeneratedProbe = $generatedProbe
         Stage = $Stage
         Resolution = $Resolution
+        SurfaceGeometry = $surfaceGeometry
+        SurfaceGeometryMatched = (Test-RequestedSurfaceReady -Ready $ready -Geometry $surfaceGeometry)
+        BaseProbeSha256 = $probeRecipe.base_probe_sha256
+        ExtraProbeSourceSha256 = $probeRecipe.extra_probe_sha256
         Ready = $ready
         RawExists = $rawExists
         RawBytes = $rawBytes
@@ -764,9 +1388,14 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists) {
         ''
         '- Passed: false'
         "- Error: $failureReason"
+        "- Resolution: $Resolution"
         "- Launch mode: $launchMode"
         "- Timed out: $timedOut"
         "- Stopped after dump: $stoppedAfterDump"
+        "- Continue after dump seconds: $ContinueAfterDumpSec"
+        "- Post-dump observation started: $postDumpObservationStarted"
+        "- Post-dump observation completed: $postDumpObservationCompleted"
+        "- Post-dump exit observed: $postDumpExitObserved"
         "- Dump method: $dumpMethod"
         "- Host dumped memory: $hostDumpedMemory"
         "- Host dump error: $(if ($hostDumpError) { $hostDumpError } else { 'not observed' })"
@@ -791,6 +1420,45 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists) {
     throw "Surface dump failed. See $runSummary"
 }
 
+function Write-SurfacePostprocessingFailure {
+    param([string]$SummaryPath, [string]$MarkdownPath, [hashtable]$Context,
+          [string]$FailureMessage, [string]$FailureId, [string]$FailureStack)
+    # Preserve any earlier summary/failure verbatim. Exclusive creation also
+    # refuses a racing writer; no original evidence is replaced on error.
+    if (Test-Path -LiteralPath $SummaryPath) { return }
+    $record = $Context.Clone()
+    $record.Passed = $false
+    $record.FailurePhase = 'postprocessing'
+    $record.Error = $FailureMessage
+    $record.ExceptionId = $FailureId
+    $record.ExceptionStack = $FailureStack
+    $record.ManualInputProof = $false
+    $record.PromotionReady = $false
+    $json = $record | ConvertTo-Json -Depth 12
+    $stream = [System.IO.File]::Open($SummaryPath, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
+    try {
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($json + "`n")
+        $stream.Write($bytes, 0, $bytes.Length)
+    } finally { $stream.Dispose() }
+    if (-not (Test-Path -LiteralPath $MarkdownPath)) {
+        $text = "# CDB Surface Dump Run`n`n- Passed: false`n- Failure phase: postprocessing`n- Error: $FailureMessage`n- Stage: $($record.Stage)`n- Resolution: $($record.Resolution)`n- Candidate SHA-256: $($record.CandidateSha256)`n- Summary: $SummaryPath`n"
+        $stream = [System.IO.File]::Open($MarkdownPath, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
+        try {
+            $bytes = [System.Text.Encoding]::UTF8.GetBytes($text)
+            $stream.Write($bytes, 0, $bytes.Length)
+        } finally { $stream.Dispose() }
+    }
+}
+
+$convertExit = $null
+$coverageExit = $null
+$visibilityExit = $null
+$coverageReport = $null
+$visibilityReport = $null
+$visibilityFailure = $null
+$forceVisibleFailure = $null
+$postOwnerForcedVisibleFailure = $null
+try {
 if ($rawBytes -lt $ready.Bytes) {
     throw "Surface dump is shorter than expected: expected $($ready.Bytes), found $rawBytes"
 }
@@ -835,6 +1503,17 @@ if ($SkipMapValidation) {
 }
 else {
     $coverageArgs = @($coverageTool, $pngPath, '--logical-width', $ready.Width, '--logical-height', $ready.Height, '--write-json', $coverageJson)
+    if ($FramedValidation) {
+        $coverageArgs += @('--stage', $Stage, '--minimap-enabled', $framedMinimap.Enabled)
+        if ($CompleteHdValidation) {
+            $coverageArgs += @('--candidate-manifest', $candidateManifestPath, '--original', $inputFull)
+        }
+        if ($framedMinimap.Enabled -eq 1) {
+            $coverageArgs += @('--minimap-width', $framedMinimap.Width, '--minimap-height', $framedMinimap.Height)
+        }
+    } else {
+        $coverageArgs += @('--columns', $surfaceGeometry.columns, '--rows', $surfaceGeometry.rows, '--bottom-row-active-cols', $surfaceGeometry.columns)
+    }
     if ($RequireGameplay) {
         $coverageArgs += '--require-gameplay'
     }
@@ -872,7 +1551,7 @@ else {
     }
 
     if ($ForceVisibleEdges) {
-        $forcedVisibleOutput = & $pythonExe $forcedVisibleTool $coverageJson --log $logPath --write-json $forcedVisibleJson --require-forced-visible 2>&1
+        $forcedVisibleOutput = & $pythonExe $forcedVisibleTool $coverageJson --log $logPath --write-json $forcedVisibleJson --expect-vedge-visret $surfaceGeometry.expected_vedge_count --expect-vedge-post $surfaceGeometry.expected_vedge_count --require-forced-visible 2>&1
         $forcedVisibleExit = $LASTEXITCODE
         $forcedVisibleOutput | Set-Content -LiteralPath $forcedVisibleText -Encoding UTF8
         if (Test-Path -LiteralPath $forcedVisibleJson) {
@@ -923,7 +1602,19 @@ if ($visibilityReport -and $visibilityReport.status_counts) {
             ForEach-Object { "$($_.Name)=$($_.Value)" }
     )
 }
-$validationFailure = if ($postOwnerForcedVisibleFailure) {
+$postDumpObservationFailure = if ($ContinueAfterDumpSec -gt 0 -and $timedOut) {
+    "post-dump observation did not complete within the overall $RunSeconds-second run limit"
+}
+elseif ($ContinueAfterDumpSec -gt 0 -and $postDumpExitObserved) {
+    "CDB or target exited during post-dump crash logging with code $cdbExitCode"
+}
+else {
+    $null
+}
+$validationFailure = if ($postDumpObservationFailure) {
+    $postDumpObservationFailure
+}
+elseif ($postOwnerForcedVisibleFailure) {
     $postOwnerForcedVisibleFailure
 }
 elseif ($forceVisibleFailure) {
@@ -945,6 +1636,28 @@ $visibilityExplainedGate = [pscustomobject]@{
 }
 $summaryObject = [pscustomobject]@{
     Passed = ($null -eq $validationFailure)
+    PartialTileValidation = [bool]$PartialTileValidation
+    InitialMapPaintValidation = [bool]$InitialMapPaintValidation
+    FramedValidation = [bool]$FramedValidation
+    MinimapViewportValidation = [bool]$MinimapViewportValidation
+    CompleteHdValidation = [bool]$CompleteHdValidation
+    NoopProgressDiagnostic = [bool]$NoopProgressDiagnostic
+    NoopProgressReport = $noopProgressReport
+    RuntimeError = $runtimeError
+    RuntimeExceptionId = $runtimeExceptionId
+    RuntimeExceptionStack = $runtimeExceptionStack
+    CleanupResult = $cleanupResult
+    CandidateManifest = $candidateManifestPath
+    CandidateManifestSha256 = if ($candidateManifestPath) { Get-FileSha256 -Path $candidateManifestPath } else { $null }
+    RecipeRevision = if ($candidateManifest) { $candidateManifest.recipe_revision } else { $null }
+    CandidateProbeSha256 = if ($candidateManifest) { $candidateManifest.probe_sha256 } else { $null }
+    GeneratedProbeSha256 = Get-FileSha256 -Path $generatedProbe
+    PartialContractStage = $partialContractStage
+    MinimapObserverReport = $minimapObserverReport
+    FramedMinimap = $framedMinimap
+    InitialMapPaintTrace = $initialPaintTrace
+    PartialTileBuildReport = if ($PartialTileValidation) { $partialBuildReport } else { $null }
+    PartialTileStatusGatePassed = if ($PartialTileValidation) { $null -eq $partialValidationFailure } else { $null }
     Error = $validationFailure
     LaunchMode = $launchMode
     HiddenDesktop = (-not $AllowVisibleDesktop)
@@ -953,6 +1666,10 @@ $summaryObject = [pscustomobject]@{
     RunDir = $runDir
     Stage = $Stage
     Resolution = $Resolution
+    SurfaceGeometry = $surfaceGeometry
+    SurfaceGeometryMatched = (Test-RequestedSurfaceReady -Ready $ready -Geometry $surfaceGeometry)
+    BaseProbeSha256 = $probeRecipe.base_probe_sha256
+    ExtraProbeSourceSha256 = $probeRecipe.extra_probe_sha256
     InputExe = $inputFull
     InputSha256 = $inputSha
     CandidatePath = $candidateFull
@@ -960,6 +1677,7 @@ $summaryObject = [pscustomobject]@{
     CandidateSha256 = $candidateSha
     LoadSlot = $LoadSlot
     UseDdrawProxy = [bool]$UseDdrawProxy
+    ProxyPresentSetting = $proxyPresentEnvironment.Effective
     NoSkipStartAnims = [bool]$NoSkipStartAnims
     FastForwardStartAnims = [bool]$FastForwardStartAnims
     ForceVisibleEdges = [bool]$ForceVisibleEdges
@@ -975,6 +1693,13 @@ $summaryObject = [pscustomobject]@{
     CdbExitCode = $cdbExitCode
     TimedOut = $timedOut
     StoppedAfterDump = $stoppedAfterDump
+    ContinueAfterDumpSec = $ContinueAfterDumpSec
+    PostDumpObservationStarted = $postDumpObservationStarted
+    PostDumpObservationCompleted = $postDumpObservationCompleted
+    PostDumpExitObserved = $postDumpExitObserved
+    Av = $av
+    AppRequestQuit = $appRequestQuit
+    AppRequestQuitLine = if ($appRequestQuitLine.Count) { $appRequestQuitLine[0] } else { $null }
     DumpMethod = $dumpMethod
     HostDumpedMemory = $hostDumpedMemory
     HostDumpError = $hostDumpError
@@ -990,6 +1715,8 @@ $summaryObject = [pscustomobject]@{
     PngMetadata = $pngMetaPath
     PngPaletteMode = $pngMeta.palette_mode
     CoverageJson = $coverageJson
+    CoverageExitCode = $coverageExit
+    ConverterExitCode = $convertExit
     CoverageText = $coverageText
     CoverageBlankActiveCells = $blankActiveCells
     VisibilityJson = $visibilityJson
@@ -1019,9 +1746,16 @@ $summaryObject | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $summaryJson
     "- Launch mode: $launchMode"
     "- Hidden desktop: $(-not $AllowVisibleDesktop)"
     "- Stopped after dump: $stoppedAfterDump"
+    "- Continue after dump seconds: $ContinueAfterDumpSec"
+    "- Post-dump observation started: $postDumpObservationStarted"
+    "- Post-dump observation completed: $postDumpObservationCompleted"
+    "- Post-dump exit observed: $postDumpExitObserved"
+    "- AV: $av"
+    "- App_RequestQuit: $appRequestQuit"
     "- Dump method: $dumpMethod"
     "- Host dumped memory: $hostDumpedMemory"
     "- Stage: $Stage"
+    "- Resolution: $Resolution"
     "- Candidate: $candidateFull"
     "- Candidate SHA-256: $candidateSha"
     "- Load slot: $LoadSlot"
@@ -1066,6 +1800,67 @@ if ($visibilityFailure) {
     throw "Surface dump failed visibility explanation validation. See $runSummary"
 }
 
+if ($validationFailure) {
+    throw "Surface dump failed validation: $validationFailure. See $runSummary"
+}
 Write-Host "CDB surface dump passed: $runDir"
 Write-Host "PNG: $pngPath"
 Write-Host "Summary: $runSummary"
+
+} catch {
+    $postprocessingError = $_
+    $failureContext = @{
+        Stage = $Stage
+        Resolution = $Resolution
+        CandidatePath = $candidateFull
+        CandidateSha256 = $candidateSha
+        InputExe = $inputFull
+        InputSha256 = $inputSha
+        CandidateManifest = $candidateManifestPath
+        RecipeRevision = if ($candidateManifest) { $candidateManifest.recipe_revision } else { $null }
+        CandidateProbeSha256 = if ($candidateManifest) { $candidateManifest.probe_sha256 } else { $null }
+        PartialContractStage = $partialContractStage
+        CompleteHdValidation = [bool]$CompleteHdValidation
+    NoopProgressDiagnostic = [bool]$NoopProgressDiagnostic
+    NoopProgressReport = $noopProgressReport
+    RuntimeError = $runtimeError
+    RuntimeExceptionId = $runtimeExceptionId
+    RuntimeExceptionStack = $runtimeExceptionStack
+    CleanupResult = $cleanupResult
+        LaunchMode = $launchMode
+        HiddenDesktop = (-not $AllowVisibleDesktop)
+        DumpMethod = $dumpMethod
+        RunDir = $runDir
+        Log = $logPath
+        RawPath = $rawPath
+        RawBytes = $rawBytes
+        PngPath = $pngPath
+        PngMetadata = $pngMetaPath
+        GeneratedProbe = $generatedProbe
+        ExtraProbeTemplate = $ExtraProbeTemplate
+        SurfaceGeometry = $surfaceGeometry
+        Ready = $ready
+        InitialMapPaintTrace = $initialPaintTrace
+        PartialTileValidationFailure = $partialValidationFailure
+        FramedMinimap = $framedMinimap
+        MinimapObserverReport = $minimapObserverReport
+        ConverterExitCode = $convertExit
+        CoverageExitCode = $coverageExit
+        CoverageJson = $coverageJson
+        CoverageText = $coverageText
+        VisibilityExitCode = $visibilityExit
+        VisibilityJson = $visibilityJson
+        VisibilityText = $visibilityText
+        VisibilityFailure = $visibilityFailure
+        ForceVisibleFailure = $forceVisibleFailure
+        PostOwnerForcedVisibleFailure = $postOwnerForcedVisibleFailure
+        TimedOut = $timedOut
+        StoppedAfterDump = $stoppedAfterDump
+        CdbExitCode = $cdbExitCode
+        HostDumpError = $hostDumpError
+        Av = $av
+        AppRequestQuit = $appRequestQuit
+    }
+    Write-SurfacePostprocessingFailure -SummaryPath $summaryJson -MarkdownPath $runSummary -Context $failureContext -FailureMessage $postprocessingError.Exception.Message -FailureId $postprocessingError.FullyQualifiedErrorId -FailureStack $postprocessingError.ScriptStackTrace
+    throw $postprocessingError
+}
