@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import shutil
 import subprocess
@@ -207,6 +208,127 @@ def test_cli_writes_outputs_and_fails_closed(fixture: Path) -> None:
     assert "- Overall: FAIL" in (fixture / "bad.md").read_text(encoding="utf-8")
 
 
+def profile_fixture(root: Path, *, complete: bool = True) -> argparse.Namespace:
+    manifest = json.loads((ROOT / "src/launcher/resolutions.json").read_text(encoding="utf-8"))
+    original_stage = manifest["stable_stage"]
+    manifest["stable_stage"] = STABLE_STAGE
+    if not complete:
+        manifest["profiles"].pop("completehd", None)
+    for config in manifest["profiles"].values():
+        config["stage"] = config["stage"].replace(original_stage, STABLE_STAGE)
+    classic = manifest["profiles"]["classic"]
+    classic["resolutions"] = good_manifest()["resolutions"]
+    classic["resolutions"]["800x600"]["evidence_scope"] = {
+        key: copy.deepcopy(classic[key]) for key in ("stage", "recipe_revision", "features")}
+    manifest["resolutions"] = copy.deepcopy(classic["resolutions"])
+    args = make_good_fixture(root, manifest)
+    from patch_clash95_hd import EXPECTED_SHA256
+    digest = "a" * 64
+    for name in ("normal", "forced"):
+        write_json(root / f"captures/archive/run-{name}/summary.json", {
+            "Passed": True, "LaunchMode": "hidden-desktop", "HiddenDesktop": True,
+            "Stage": STABLE_STAGE, "InputSha256": EXPECTED_SHA256, "CandidateSha256": digest,
+            "Surface": {"Width": 800, "Height": 600, "Bytes": 480000}})
+    write_json(root / "captures/current/smoke.json", {
+        "passed": True, "resolution": "800x600",
+        "patch_stage": {"passed": True, "stage": STABLE_STAGE, "sha256": digest},
+        "post_owner_evidence": {name: {"passed": True, "run": f"captures/archive/run-{run}", "candidate_sha256": digest}
+                                for name, run in (("normal", "normal"), ("forced_visible", "forced"))}})
+    for name in resolution_manifest_guard.source_pins(set(manifest["profiles"])):
+        target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / name, target)
+    return args
+
+
+def test_profiles_and_bound_evidence(fixture: Path) -> None:
+    for complete in (False, True):
+        args = profile_fixture(fixture / str(complete), complete=complete)
+        guard = resolution_manifest_guard.build_guard(args)
+        assert guard["passed"], guard["failures"]
+        assert guard["status_counts"]["stable"] == 1 and guard["promotion_ready"] is False
+        assert len(guard["checks"]["source_context"]["summary"]["sources"]) > 10
+
+
+def test_profile_metadata_failures(fixture: Path) -> None:
+    args = profile_fixture(fixture)
+    path = fixture / args.manifest
+    original = json.loads(path.read_text(encoding="utf-8"))
+    mutations = [
+        lambda m: m.update(default_renderer="framed"),
+        lambda m: m["profiles"]["framed"].update(stage=STABLE_STAGE),
+        lambda m: m["profiles"]["framed"].update(recipe_revision="wrong"),
+        lambda m: m["profiles"]["completehd"]["features"].update(minimap_viewport=False),
+        lambda m: m["profiles"]["framed"].update(default="1920x1080"),
+        lambda m: m["profiles"]["completehd"]["resolutions"].pop("802x602"),
+        lambda m: m["profiles"]["completehd"]["resolutions"]["1920x1080"].update(status="validated"),
+        lambda m: m["profiles"]["framed"]["resolutions"]["1920x1080"].update(status="stable"),
+        lambda m: m["profiles"]["classic"]["resolutions"]["800x600"]["evidence_scope"].update(recipe_revision="wrong"),
+        lambda m: m["profiles"]["classic"]["resolutions"]["800x600"]["evidence_scope"]["features"].update(minimap_viewport=0),
+        lambda m: m["profiles"]["framed"]["resolutions"]["802x602"].update(tiles=[12, 9]),
+    ]
+    # Framed terrain excludes its right and bottom borders; 802x602 has 11x8 full cells.
+    original["profiles"]["framed"]["resolutions"]["802x602"] = {"status": "experimental", "tiles": [11, 8], "evidence": None}
+    write_json(path, original)
+    assert resolution_manifest_guard.build_guard(args)["passed"]
+    for mutate in mutations:
+        manifest = copy.deepcopy(original)
+        mutate(manifest)
+        write_json(path, manifest)
+        result = resolution_manifest_guard.build_guard(args)
+        assert not result["passed"], manifest
+
+
+def test_profile_evidence_and_source_failures(fixture: Path) -> None:
+    args = profile_fixture(fixture)
+    path = fixture / "captures/archive/run-normal/summary.json"
+    original = json.loads(path.read_text(encoding="utf-8"))
+    for mutation in ({"Passed": False}, {"HiddenDesktop": "true"}, {"Stage": "wrong"},
+                     {"CandidateSha256": "b" * 64}, {"InputSha256": "b" * 64},
+                     {"Resolution": "1024x768"}, {"Surface": {"Width": 1024, "Height": 768, "Bytes": 786432}}):
+        write_json(path, {**original, **mutation})
+        report = resolution_manifest_guard.build_guard(args)
+        assert not report["checks"]["evidence_backed"]["passed"], mutation
+    write_json(path, original)
+    smoke_path = fixture / "captures/current/smoke.json"
+    smoke = json.loads(smoke_path.read_text(encoding="utf-8"))
+    smoke["post_owner_evidence"]["normal"]["run"] = "captures/archive/unrelated"
+    write_json(smoke_path, smoke)
+    assert not resolution_manifest_guard.build_guard(args)["checks"]["evidence_backed"]["passed"]
+    minimap = fixture / "src/patcher/framed_minimap.py"
+    minimap.write_bytes(minimap.read_bytes() + b"\n# altered fixture source\n")
+    report = resolution_manifest_guard.build_guard(args)
+    assert not report["checks"]["source_context"]["passed"], report
+
+
+def test_duplicate_keys_fail(fixture: Path) -> None:
+    args = make_good_fixture(fixture)
+    path = fixture / args.manifest
+    path.write_text(path.read_text(encoding="utf-8").replace('"schema": 1', '"schema": 2, "schema": 1'), encoding="utf-8")
+    assert not resolution_manifest_guard.build_guard(args)["passed"]
+
+
+def test_malformed_profiles_fail_without_exception(fixture: Path) -> None:
+    args = profile_fixture(fixture)
+    path = fixture / args.manifest
+    original = json.loads(path.read_text(encoding="utf-8"))
+    for mutate in (
+        lambda m: m.update(profiles=[]),
+        lambda m: m["profiles"].update(framed=None),
+        lambda m: m["profiles"]["framed"].update(resolutions=[]),
+        lambda m: m["profiles"]["completehd"].update(resolutions=None),
+        lambda m: m["profiles"]["framed"]["resolutions"].update({"640x480": {"status": "experimental", "tiles": [10, 7]}}),
+        lambda m: m.update(custom_bounds="bad"),
+    ):
+        bad = copy.deepcopy(original)
+        mutate(bad)
+        write_json(path, bad)
+        assert not resolution_manifest_guard.build_guard(args)["passed"], bad
+    for mutation in ({"schema": True}, {"resolutions": {"800x600": None}}, {"custom_bounds": "bad"}):
+        write_json(path, {**good_manifest(), **mutation})
+        assert not resolution_manifest_guard.build_guard(args)["passed"], mutation
+
+
 def run_tests() -> None:
     fixture = ROOT / ".codex-loop" / "tmp-tests" / "resolution-manifest-guard-fixture"
     shutil.rmtree(fixture, ignore_errors=True)
@@ -224,6 +346,11 @@ def run_tests() -> None:
         test_bad_bounds_fail(fixture / "bounds")
         test_bad_key_fails(fixture / "key")
         test_cli_writes_outputs_and_fails_closed(fixture / "cli")
+        test_profiles_and_bound_evidence(fixture / "profiles")
+        test_profile_metadata_failures(fixture / "profile-metadata")
+        test_profile_evidence_and_source_failures(fixture / "profile-evidence")
+        test_duplicate_keys_fail(fixture / "duplicates")
+        test_malformed_profiles_fail_without_exception(fixture / "malformed")
     finally:
         shutil.rmtree(fixture, ignore_errors=True)
 
