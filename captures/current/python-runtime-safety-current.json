@@ -1,24 +1,29 @@
 {
-  "generated_at": "2026-07-27T18:55:07+02:00",
+  "generated_at": "2026-09-06T05:57:40+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
-  "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, or explicitly exempt",
+  "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, explicitly exempt, or satisfy a reviewed offline-report source contract",
   "root": "C:\\Users\\andrz\\git\\clash-hd",
-  "file_count": 260,
-  "risky_file_count": 128,
+  "file_count": 319,
+  "risky_file_count": 157,
   "classification_counts": {
-    "safe": 132,
+    "safe": 162,
     "user_gated_launcher": 1,
     "exempt": 29,
-    "manual_visible_runtime_gated": 5,
-    "test_fixture": 93
+    "manual_visible_runtime_gated": 6,
+    "offline_report": 1,
+    "test_fixture": 120
   },
   "gated_helpers": {
+    "hd_layout_observation_manifest.py": "manual/visible-runtime observer; default invocation only builds/verifies a file-bound plan; execution requires --execute, --allow-visible-runtime and fresh approval matching the exact candidate, wrapper, input plan and source hashes before Win32/process/capture access; producer/parser boundary fixtures cover rejection before launch",
     "mouse_path_probe.py": "manual/visible-runtime evidence helper; it launches/moves/clicks only when explicitly invoked",
     "raw_sendinput_click.py": "manual/visible-runtime evidence helper; it sends OS input only when explicitly invoked by a guarded harness",
     "menu_pulse_click.py": "manual/visible-runtime evidence helper; it drives the engine cursor by pulse injection only when explicitly invoked by the approval-gated soak harness",
     "vm_guest_click.py": "manual/visible-runtime evidence helper; it encodes QMP input events to aim the Win98 guest cursor and injects them only when a live socket transport is supplied under an approved visible-runtime pass (it opens no socket itself)",
     "run_hd_linux_validation.py": "manual/visible-runtime evidence helper; it patches, launches the candidate under wine on a headless Xvfb display and drives xdotool input only when --allow-visible-runtime and a SHA-matched --source-exe are both supplied (dry-run by default, launches nothing otherwise)"
+  },
+  "offline_report_helpers": {
+    "tools/hidden_soak_report_assembler.py": "repo-only JSON report assembler; reads recorded samples and writes JSON/Markdown, while runtime terminology occurs only in evidence descriptions"
   },
   "exempt_helpers": {
     "battle_ui_evidence_matrix.py": "repo-only evidence matrix; process-launch text is a type annotation or fixture reference",
@@ -117,6 +122,14 @@
     },
     {
       "path": "src/launcher/settings.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/action_bar_surface_audit.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
@@ -260,6 +273,22 @@
           102
         ]
       },
+      "failures": []
+    },
+    {
+      "path": "tools/build_framed_candidate.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/build_partial_tile_candidate.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
       "failures": []
     },
     {
@@ -455,15 +484,24 @@
       ],
       "risk_lines": {
         "subprocess": [
-          26,
-          104,
-          108,
-          109
+          16,
+          153,
+          157,
+          158,
+          293
         ],
         "process_launch": [
-          104
+          153
         ]
       },
+      "failures": []
+    },
+    {
+      "path": "tools/continuity_day_diagnostic_summary.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
       "failures": []
     },
     {
@@ -486,17 +524,17 @@
       ],
       "risk_lines": {
         "process_launch": [
-          581
+          582
         ],
         "win32_user32": [
-          1059
+          1066
         ],
         "sendinput": [
-          582,
-          4523
+          583,
+          4530
         ],
         "postmessage": [
-          4523
+          4530
         ]
       },
       "failures": []
@@ -586,6 +624,54 @@
       "failures": []
     },
     {
+      "path": "tools/frame_surface_audit.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/framed_gameplay_evidence.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/framed_minimap_probe.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/framed_noop_progress_probe.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/framed_screen_probe.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/framed_screen_trace.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/handoff_freshness_guard.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
@@ -610,11 +696,11 @@
       ],
       "risk_lines": {
         "postmessage": [
-          39,
-          730,
-          777,
-          796,
-          805
+          41,
+          876,
+          923,
+          942,
+          951
         ]
       },
       "failures": []
@@ -625,6 +711,93 @@
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
       "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_layout_asset_composition.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_layout_command_input_summary.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_layout_completion_decision.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/hd_layout_observation_manifest.py",
+      "classification": "manual_visible_runtime_gated",
+      "reason": "manual/visible-runtime observer; default invocation only builds/verifies a file-bound plan; execution requires --execute, --allow-visible-runtime and fresh approval matching the exact candidate, wrapper, input plan and source hashes before Win32/process/capture access; producer/parser boundary fixtures cover rejection before launch",
+      "risk_categories": [
+        "ctypes",
+        "cursor_window_input",
+        "process_launch",
+        "subprocess",
+        "win32_user32"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          17,
+          490,
+          491,
+          492,
+          493,
+          564,
+          567
+        ],
+        "process_launch": [
+          490
+        ],
+        "ctypes": [
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          208,
+          214,
+          215,
+          216,
+          219,
+          220,
+          221,
+          227,
+          238,
+          244,
+          259,
+          294,
+          295,
+          311,
+          313,
+          325,
+          353
+        ],
+        "win32_user32": [
+          194,
+          201,
+          458
+        ],
+        "cursor_window_input": [
+          221,
+          330
+        ]
+      },
       "failures": []
     },
     {
@@ -687,9 +860,9 @@
       ],
       "risk_lines": {
         "postmessage": [
-          49,
-          352,
-          772
+          52,
+          355,
+          902
         ]
       },
       "failures": []
@@ -705,17 +878,17 @@
       ],
       "risk_lines": {
         "subprocess": [
-          15,
-          179,
-          183,
-          184
+          17,
+          205,
+          209,
+          210
         ],
         "process_launch": [
-          179
+          205
         ],
         "postmessage": [
-          45,
-          257
+          56,
+          395
         ]
       },
       "failures": []
@@ -754,23 +927,23 @@
       ],
       "risk_lines": {
         "sendinput": [
-          262,
-          263,
-          902,
-          904
+          320,
+          321,
+          962,
+          964
         ],
         "postmessage": [
-          538,
-          905,
-          911,
-          914,
-          916
+          596,
+          965,
+          971,
+          974,
+          976
         ],
         "cursor_window_input": [
-          269,
-          270,
-          316,
-          848
+          327,
+          328,
+          374,
+          908
         ]
       },
       "failures": []
@@ -801,8 +974,8 @@
       ],
       "risk_lines": {
         "postmessage": [
-          45,
-          67
+          50,
+          73
         ]
       },
       "failures": []
@@ -862,7 +1035,7 @@
       ],
       "risk_lines": {
         "postmessage": [
-          98
+          99
         ]
       },
       "failures": []
@@ -876,7 +1049,29 @@
       "failures": []
     },
     {
+      "path": "tools/hidden_soak_report_assembler.py",
+      "classification": "offline_report",
+      "reason": "repo-only JSON report assembler; reads recorded samples and writes JSON/Markdown, while runtime terminology occurs only in evidence descriptions",
+      "risk_categories": [
+        "process_launch"
+      ],
+      "risk_lines": {
+        "process_launch": [
+          162
+        ]
+      },
+      "failures": []
+    },
+    {
       "path": "tools/hover_selection_ui_summary.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/initial_map_paint_trace.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
@@ -1161,6 +1356,14 @@
       "failures": []
     },
     {
+      "path": "tools/minimap_viewport_audit.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/mouse_edge_summary.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
@@ -1416,6 +1619,14 @@
       "failures": []
     },
     {
+      "path": "tools/partial_tile_trace_probe.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/patch_definition_guard.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
@@ -1547,52 +1758,53 @@
       ],
       "risk_lines": {
         "subprocess": [
-          23,
-          60,
-          61,
-          62,
-          63,
+          24,
+          79,
           80,
-          84,
-          85
+          81,
+          82,
+          99,
+          103,
+          104
         ],
         "ctypes": [
-          25,
-          168
+          26,
+          227
         ],
         "win32_user32": [
           2,
-          67,
-          68,
-          73,
-          81,
-          168
+          40,
+          86,
+          87,
+          92,
+          100,
+          227
         ],
         "sendinput": [
-          27,
-          58,
-          168
+          28,
+          77,
+          227
         ],
         "postmessage": [
-          28,
-          64,
-          65,
-          66,
-          69,
-          70,
-          71,
-          72,
-          168
+          29,
+          83,
+          84,
+          85,
+          88,
+          89,
+          90,
+          91,
+          227
         ],
         "qmp_input_inject": [
-          29
+          30
         ],
         "cursor_window_input": [
-          31,
-          32
+          32,
+          33
         ],
         "shell_launch": [
-          35
+          36
         ]
       },
       "failures": []
@@ -1715,6 +1927,14 @@
           376
         ]
       },
+      "failures": []
+    },
+    {
+      "path": "tools/render_cdb_surface_probe.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
       "failures": []
     },
     {
@@ -2008,6 +2228,14 @@
       "failures": []
     },
     {
+      "path": "tools/test_action_bar_surface_audit.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/test_assemble_manual_directinput_proof.py",
       "classification": "test_fixture",
       "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
@@ -2212,6 +2440,22 @@
     },
     {
       "path": "tools/test_border_tooltip_summary.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_build_framed_candidate.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_build_partial_tile_candidate.py",
       "classification": "safe",
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
@@ -2455,11 +2699,68 @@
       "failures": []
     },
     {
+      "path": "tools/test_combined_layout_geometry_probe.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "postmessage",
+        "sendinput"
+      ],
+      "risk_lines": {
+        "sendinput": [
+          77
+        ],
+        "postmessage": [
+          77
+        ]
+      },
+      "failures": []
+    },
+    {
       "path": "tools/test_complete_hd_promotion.py",
-      "classification": "safe",
-      "reason": "no risky runtime/input/process APIs found",
-      "risk_categories": [],
-      "risk_lines": {},
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch"
+      ],
+      "risk_lines": {
+        "process_launch": [
+          100
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_continuity_day_diagnostic_probe.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch"
+      ],
+      "risk_lines": {
+        "process_launch": [
+          247
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_continuity_day_diagnostic_summary.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          8,
+          722
+        ],
+        "process_launch": [
+          722
+        ]
+      },
       "failures": []
     },
     {
@@ -2503,12 +2804,14 @@
       "risk_lines": {
         "subprocess": [
           8,
-          223,
-          229
+          320,
+          328,
+          337
         ],
         "process_launch": [
-          223,
-          229
+          320,
+          328,
+          337
         ]
       },
       "failures": []
@@ -2579,7 +2882,111 @@
       "failures": []
     },
     {
-      "path": "tools/test_handoff_freshness_guard.py",
+      "path": "tools/test_four_sided_frame.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_four_sided_frame_x86.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          15,
+          123,
+          126,
+          163,
+          164
+        ],
+        "process_launch": [
+          123,
+          163
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_frame_surface_audit.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_full_paint.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          15,
+          145,
+          147,
+          241,
+          242
+        ],
+        "process_launch": [
+          145,
+          241
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_gameplay_evidence.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          14,
+          298
+        ],
+        "process_launch": [
+          298
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_input.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          14,
+          192,
+          194,
+          216,
+          217
+        ],
+        "process_launch": [
+          192,
+          216
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_minimap.py",
       "classification": "test_fixture",
       "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
       "risk_categories": [
@@ -2589,13 +2996,209 @@
       "risk_lines": {
         "subprocess": [
           10,
-          34,
-          35,
-          39,
-          40
+          135,
+          137,
+          183,
+          184
         ],
         "process_launch": [
-          35
+          135,
+          183
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_minimap_integration.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_noop_progress_probe.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_partial_tile.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          14,
+          114,
+          116,
+          166,
+          167
+        ],
+        "process_launch": [
+          114,
+          166
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_presentation.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          9,
+          103,
+          106,
+          148,
+          149
+        ],
+        "process_launch": [
+          103,
+          148
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_recipe.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_screen_capture.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "cursor_window_input",
+        "postmessage",
+        "process_launch",
+        "sendinput",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          13,
+          215,
+          219
+        ],
+        "process_launch": [
+          215
+        ],
+        "sendinput": [
+          246
+        ],
+        "postmessage": [
+          246
+        ],
+        "cursor_window_input": [
+          246
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_screen_probe.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "postmessage",
+        "process_launch",
+        "sendinput"
+      ],
+      "risk_lines": {
+        "process_launch": [
+          22,
+          82,
+          93,
+          150,
+          166,
+          169,
+          177,
+          183,
+          187,
+          241,
+          244
+        ],
+        "sendinput": [
+          264
+        ],
+        "postmessage": [
+          264
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_screen_trace.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_surface_harness.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess",
+        "win32_user32"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          14,
+          295
+        ],
+        "process_launch": [
+          295
+        ],
+        "win32_user32": [
+          287
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_framed_viewport.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_handoff_freshness_guard.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          9,
+          35,
+          36,
+          40,
+          41
+        ],
+        "process_launch": [
+          36
         ]
       },
       "failures": []
@@ -2633,20 +3236,20 @@
       ],
       "risk_lines": {
         "subprocess": [
-          8,
-          920
+          9,
+          1056
         ],
         "process_launch": [
-          920
+          1056
         ],
         "postmessage": [
-          164,
-          183,
-          304,
-          408,
-          709,
-          775,
-          803
+          166,
+          185,
+          306,
+          410,
+          711,
+          777,
+          805
         ]
       },
       "failures": []
@@ -2662,10 +3265,94 @@
       "risk_lines": {
         "subprocess": [
           8,
-          598
+          710
         ],
         "process_launch": [
-          598
+          710
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_layout_asset_composition.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_layout_command_input_summary.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          7,
+          331,
+          336
+        ],
+        "process_launch": [
+          331,
+          336
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_layout_completion_decision.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          9,
+          454
+        ],
+        "process_launch": [
+          454
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hd_layout_observation_manifest.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "ctypes",
+        "cursor_window_input",
+        "subprocess",
+        "win32_user32"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          91,
+          142,
+          339
+        ],
+        "ctypes": [
+          188,
+          191,
+          212,
+          215,
+          224,
+          385,
+          386,
+          394
+        ],
+        "win32_user32": [
+          90,
+          263
+        ],
+        "cursor_window_input": [
+          396
         ]
       },
       "failures": []
@@ -2745,16 +3432,16 @@
       "risk_lines": {
         "subprocess": [
           8,
-          930
+          1027
         ],
         "process_launch": [
-          930
+          1027
         ],
         "sendinput": [
-          828
+          925
         ],
         "postmessage": [
-          465
+          562
         ]
       },
       "failures": []
@@ -2771,23 +3458,25 @@
       ],
       "risk_lines": {
         "subprocess": [
-          9,
-          36,
-          37,
-          40,
-          41
+          8,
+          38,
+          39,
+          42,
+          43,
+          512
         ],
         "process_launch": [
-          37
+          39,
+          512
         ],
         "sendinput": [
-          305
+          337
         ],
         "postmessage": [
-          70,
-          157,
-          187,
-          306
+          72,
+          159,
+          189,
+          338
         ]
       },
       "failures": []
@@ -2797,15 +3486,20 @@
       "classification": "test_fixture",
       "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
       "risk_categories": [
+        "process_launch",
         "subprocess"
       ],
       "risk_lines": {
         "subprocess": [
-          9,
-          20,
-          21,
-          32,
-          43
+          10,
+          22,
+          23,
+          34,
+          45,
+          159
+        ],
+        "process_launch": [
+          159
         ]
       },
       "failures": []
@@ -2891,19 +3585,19 @@
       ],
       "risk_lines": {
         "subprocess": [
-          8,
-          213
+          9,
+          431
         ],
         "process_launch": [
-          213
+          431
         ],
         "sendinput": [
-          173
+          177
         ],
         "postmessage": [
-          31,
-          116,
-          170
+          35,
+          120,
+          174
         ]
       },
       "failures": []
@@ -2918,13 +3612,13 @@
       ],
       "risk_lines": {
         "subprocess": [
-          8,
-          160,
-          175,
-          176
+          7,
+          325,
+          340,
+          341
         ],
         "process_launch": [
-          160
+          325
         ]
       },
       "failures": []
@@ -2940,16 +3634,26 @@
       "risk_lines": {
         "subprocess": [
           7,
-          342,
-          352,
-          822,
-          828
+          552,
+          562,
+          687,
+          697,
+          1167,
+          1173,
+          1322,
+          1325,
+          1329
         ],
         "process_launch": [
-          342,
-          352,
-          822,
-          828
+          552,
+          562,
+          687,
+          697,
+          1167,
+          1173,
+          1322,
+          1325,
+          1329
         ]
       },
       "failures": []
@@ -3008,10 +3712,10 @@
       "risk_lines": {
         "subprocess": [
           8,
-          227
+          331
         ],
         "process_launch": [
-          227
+          331
         ]
       },
       "failures": []
@@ -3028,15 +3732,14 @@
       "risk_lines": {
         "subprocess": [
           8,
-          240
+          359
         ],
         "process_launch": [
-          240
+          359
         ],
         "postmessage": [
           83,
-          167,
-          196
+          162
         ]
       },
       "failures": []
@@ -3052,10 +3755,10 @@
       "risk_lines": {
         "subprocess": [
           8,
-          237
+          306
         ],
         "process_launch": [
-          237
+          306
         ]
       },
       "failures": []
@@ -3066,6 +3769,111 @@
       "reason": "no risky runtime/input/process APIs found",
       "risk_categories": [],
       "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_hidden_soak_cleanup.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess",
+        "win32_user32"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          14,
+          192,
+          196
+        ],
+        "process_launch": [
+          192
+        ],
+        "win32_user32": [
+          179
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_hidden_soak_report_assembler.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          9,
+          373,
+          420,
+          432,
+          433,
+          451,
+          454,
+          455
+        ],
+        "process_launch": [
+          373,
+          420,
+          451
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_initial_map_candidate.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
+      "path": "tools/test_initial_map_paint.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          17,
+          198,
+          200,
+          284,
+          285
+        ],
+        "process_launch": [
+          198,
+          284
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_initial_map_paint_trace.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          8,
+          334,
+          343,
+          348
+        ],
+        "process_launch": [
+          334,
+          343,
+          348
+        ]
+      },
       "failures": []
     },
     {
@@ -3128,10 +3936,10 @@
       "risk_lines": {
         "subprocess": [
           7,
-          208
+          306
         ],
         "process_launch": [
-          208
+          306
         ]
       },
       "failures": []
@@ -3168,10 +3976,10 @@
       "risk_lines": {
         "subprocess": [
           7,
-          144
+          200
         ],
         "process_launch": [
-          144
+          200
         ]
       },
       "failures": []
@@ -3345,6 +4153,54 @@
       "failures": []
     },
     {
+      "path": "tools/test_map_tile_coverage.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          6,
+          49,
+          56,
+          114,
+          126,
+          129,
+          135
+        ],
+        "process_launch": [
+          49,
+          56,
+          114,
+          126,
+          129,
+          135
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_minimap_viewport_audit.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          9,
+          322
+        ],
+        "process_launch": [
+          322
+        ]
+      },
+      "failures": []
+    },
+    {
       "path": "tools/test_mouse_edge_summary.py",
       "classification": "test_fixture",
       "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
@@ -3466,6 +4322,82 @@
       "failures": []
     },
     {
+      "path": "tools/test_partial_tile_clip.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          16,
+          203,
+          252
+        ],
+        "process_launch": [
+          203,
+          252
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_partial_tile_hooks.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          16,
+          87,
+          90,
+          157,
+          158
+        ],
+        "process_launch": [
+          87,
+          157
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_partial_tile_surface_harness.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess",
+        "win32_user32"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          13,
+          479,
+          482
+        ],
+        "process_launch": [
+          479
+        ],
+        "win32_user32": [
+          469
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_partial_tile_trace_probe.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
+      "failures": []
+    },
+    {
       "path": "tools/test_patch_definition_guard.py",
       "classification": "test_fixture",
       "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
@@ -3476,13 +4408,13 @@
       "risk_lines": {
         "subprocess": [
           9,
-          112,
-          113,
-          116,
-          117
+          119,
+          120,
+          123,
+          124
         ],
         "process_launch": [
-          113
+          120
         ]
       },
       "failures": []
@@ -3520,18 +4452,26 @@
       "risk_lines": {
         "subprocess": [
           14,
-          536,
-          539,
-          540,
-          547,
-          550,
-          551
+          778,
+          781,
+          782,
+          789,
+          792,
+          793
         ],
         "process_launch": [
-          536,
-          547
+          778,
+          789
         ]
       },
+      "failures": []
+    },
+    {
+      "path": "tools/test_pe_extension.py",
+      "classification": "safe",
+      "reason": "no risky runtime/input/process APIs found",
+      "risk_categories": [],
+      "risk_lines": {},
       "failures": []
     },
     {
@@ -3639,7 +4579,9 @@
         "postmessage",
         "process_launch",
         "sendinput",
-        "subprocess"
+        "shell_launch",
+        "subprocess",
+        "win32_user32"
       ],
       "risk_lines": {
         "subprocess": [
@@ -3653,7 +4595,10 @@
           50,
           53,
           60,
-          63
+          63,
+          116,
+          117,
+          121
         ],
         "process_launch": [
           21,
@@ -3662,23 +4607,34 @@
           50,
           53,
           60,
-          63
+          63,
+          116,
+          140
         ],
         "ctypes": [
           45,
           46,
           48,
-          85
+          85,
+          118
+        ],
+        "win32_user32": [
+          118
         ],
         "sendinput": [
           45,
           46,
           47,
-          59
+          59,
+          118
         ],
         "postmessage": [
           57,
-          85
+          85,
+          120
+        ],
+        "shell_launch": [
+          119
         ]
       },
       "failures": []
@@ -3707,6 +4663,35 @@
           2,
           73,
           86
+        ]
+      },
+      "failures": []
+    },
+    {
+      "path": "tools/test_render_cdb_surface_probe.py",
+      "classification": "test_fixture",
+      "reason": "fixture test may spawn Python subprocesses but is not a runtime helper",
+      "risk_categories": [
+        "process_launch",
+        "subprocess",
+        "win32_user32"
+      ],
+      "risk_lines": {
+        "subprocess": [
+          10,
+          170,
+          175,
+          266,
+          399
+        ],
+        "process_launch": [
+          170,
+          175,
+          266,
+          399
+        ],
+        "win32_user32": [
+          190
         ]
       },
       "failures": []
@@ -3791,13 +4776,13 @@
       "risk_lines": {
         "subprocess": [
           9,
-          75,
-          76,
-          79,
-          80
+          122,
+          123,
+          126,
+          127
         ],
         "process_launch": [
-          76
+          123
         ]
       },
       "failures": []

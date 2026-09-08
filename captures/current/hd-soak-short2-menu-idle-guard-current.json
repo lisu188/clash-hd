@@ -1,6 +1,10 @@
 {
-  "generated_at": "2026-07-18T20:14:47.237634+00:00",
+  "generated_at": "2026-09-06T03:57:57.664641+00:00",
   "runtime_policy": "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
+  "environment": "host_visible",
+  "expected_environment": "host_visible",
+  "evidence_class": "host_visible_runtime_soak",
+  "expected_evidence_class": "host_visible_runtime_soak",
   "overall": true,
   "source_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
   "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -21,6 +25,17 @@
       "summary": {
         "reported_passed": true,
         "source_failure_count": 0
+      },
+      "failures": []
+    },
+    "environment": {
+      "passed": true,
+      "summary": {
+        "environment": null,
+        "expected_environment": "host_visible",
+        "evidence_class": null,
+        "expected_evidence_class": "host_visible_runtime_soak",
+        "legacy_unlabeled": true
       },
       "failures": []
     },

@@ -1,8 +1,10 @@
 {
-  "generated_at": "2026-07-18T20:14:47.240634+00:00",
+  "generated_at": "2026-09-06T03:57:57.668641+00:00",
   "passed": true,
   "runtime_policy": "repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "source_report": "captures\\current\\hd-soak-short2-menu-idle-current.json",
+  "environment": "host_visible",
+  "evidence_class": "host_visible_runtime_soak",
   "classification": "passing_run_no_failure",
   "next_probe": "repeat short2 or move to short10 only after preserving the report and validation guard output",
   "tier": "short2",

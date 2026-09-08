@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T22:14:32+02:00",
+  "generated_at": "2026-09-06T05:57:38+02:00",
   "passed": true,
   "runtime_policy": "repo-only patch-table inspection; does not read, build, or execute game executables",
   "guard_policy": "patch stage definitions must reference real groups, keep validation-only groups out of stable, keep validation stages scoped to stable plus expected extras, and avoid incompatible selected offset overlaps",
@@ -7,7 +7,7 @@
   "patcher_default_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
   "patch_count": 211,
   "patch_group_count": 46,
-  "stage_count": 61,
+  "stage_count": 62,
   "patch_group_counts": {
     "battle-grid-centered-input": 2,
     "battle-ui-center-present-wrapper": 2,
@@ -83,12 +83,59 @@
     "castle-ui-center-present",
     "castle-ui-center-present-wrapper",
     "castle-ui-centered-input",
+    "frame-restore-bands",
     "right-bottom-compose-proof",
     "selected-unit-command-panel-right-bottom",
     "terrain-tooltip-bottom-center"
   ],
   "validation_groups_in_stable": [],
   "validation_stage_summaries": {
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation": {
+      "groups": [
+        "battle-grid-centered-input",
+        "battle-ui-center-present-wrapper",
+        "battle-ui-centered-input",
+        "castle-overview-center-present-wrapper",
+        "castle-overview-centered-input",
+        "castle-ui-center-present-wrapper",
+        "castle-ui-centered-input",
+        "display",
+        "frame-restore-bands",
+        "full-redraw-12x9",
+        "full-redraw-present-bounds-800",
+        "gameplay-surface",
+        "helpers",
+        "input-bounds",
+        "main-loops",
+        "map-surface-upgrade-scrollclamp",
+        "menu-center-hitboxes",
+        "minimap-hd-right-anchor",
+        "minimap-right-clip",
+        "mouse-dynamic-origin",
+        "right-bottom-compose-proof",
+        "selected-unit-command-panel-right-bottom",
+        "shared-surface",
+        "surface-blit-hd-aware",
+        "terrain-tooltip-bottom-center",
+        "viewport-init",
+        "viewport-switch-dynamic-surface"
+      ],
+      "expected_extras": [
+        "battle-grid-centered-input",
+        "battle-ui-center-present-wrapper",
+        "battle-ui-centered-input",
+        "castle-overview-center-present-wrapper",
+        "castle-overview-centered-input",
+        "castle-ui-center-present-wrapper",
+        "castle-ui-centered-input",
+        "frame-restore-bands",
+        "right-bottom-compose-proof",
+        "selected-unit-command-panel-right-bottom",
+        "terrain-tooltip-bottom-center"
+      ],
+      "missing": [],
+      "unexpected": []
+    },
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose": {
       "groups": [
         "display",

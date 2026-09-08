@@ -1,0 +1,557 @@
+{
+  "schema": "clash95_framed_modal_runtime_checkpoint_v1",
+  "generated_at": "2026-09-06T04:18:40.309995+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+  "resolution": "1024x768",
+  "minimap_viewport": true,
+  "protected_stable_stage_changed": false,
+  "promotion_ready": false,
+  "overall_modal_validation_passed": false,
+  "runtime_verdicts_changed": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "gameplay_acceptance": false,
+  "modal_controls_accepted": false,
+  "natural_availability_proven": false,
+  "counts": {
+    "attempts": 4,
+    "original_runtime_passed": 2,
+    "original_runtime_failed": 2,
+    "captured_screens": 2,
+    "visual_composition_passed": 0,
+    "visual_composition_failed": 2,
+    "recorded_handle_cleanup_verified": 4
+  },
+  "screen_inventory": {
+    "castle_overview_1024": "bounded_runtime_pass_visual_failure",
+    "hospital_1024_construct_all": "bounded_runtime_pass_visual_failure",
+    "other_routes_artwork_variants_and_resolutions": "pending; no result inherited from these controlled captures"
+  },
+  "runs": [
+    {
+      "run_id": "castle_overview-1024x768-castle0-20260906-035304",
+      "route": "castle_overview",
+      "resolution": "1024x768",
+      "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+      "availability": "existing_flags",
+      "castle_index": 0,
+      "started_at": "2026-09-06T03:53:18.0387114Z",
+      "finished_at": "2026-09-06T03:53:40.2557544Z",
+      "input_runtime_passed": false,
+      "input_runtime_failures": [
+        "Debugger exited before accepted modal readiness."
+      ],
+      "initial_map_trace_passed": true,
+      "modal_trace_passed": null,
+      "snapshot_produced": false,
+      "modal_visual_verdict": "not_observed_no_snapshot",
+      "modal_controls_accepted": false,
+      "diagnosis": "Debugger skipped the breakpoint at the newly assigned current EIP; the preserved run rejected before completed overview entry/readiness. The later post-PUSH observer is a separate producer revision.",
+      "cleanup": {
+        "cdb_process_id": 12608,
+        "candidate_process_id": 10068,
+        "recorded_handle_absence_and_close_verified": true,
+        "hidden_desktop_closed": true,
+        "method": "Producer retained-handle identity and signaled/closed observations; offline consistency validation only.",
+        "independent_live_query_performed": false
+      },
+      "evidence": {
+        "preserved_failure": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-overview-entry-failure-20260906.json",
+          "sha256": "102962d5a18d9270a2bb35ede2578348a3e38465d4c7c75ebe83d6c32745b4e2"
+        },
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\summary.json",
+          "sha256": "490cea4113911aca4d91317f831c8446eea68d9353da20018aa5370fe1ab45f2"
+        },
+        "capture_plan": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\plan.json",
+          "sha256": "a222ad12a183dc99ec2010d4779e37547c6b20f46fea1463020043d4860e6366"
+        },
+        "authorization_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-run-plan-20260906-035304.json",
+          "sha256": "d5b4d3bca1739a998f3aa981a86c0380f2b6cbc4bb38ef01d12908fb9c31c547"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-035304\\cdb.log",
+          "sha256": "d34dbc528aab1fab0600a76b869fc5b2d8f4d8e4a487df1d5cc09b626aad286b"
+        }
+      },
+      "failure_artifacts_verified": 12
+    },
+    {
+      "run_id": "castle_overview-1024x768-castle0-20260906-040604",
+      "route": "castle_overview",
+      "resolution": "1024x768",
+      "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+      "availability": "existing_flags",
+      "castle_index": 0,
+      "started_at": "2026-09-06T04:06:17.2821056Z",
+      "finished_at": "2026-09-06T04:06:43.2342170Z",
+      "input_runtime_passed": false,
+      "input_runtime_failures": [
+        "Cannot convert the \"188\" value of type \"System.Int32\" to type \"System.UIntPtr\"."
+      ],
+      "initial_map_trace_passed": true,
+      "modal_trace_passed": true,
+      "snapshot_produced": false,
+      "modal_visual_verdict": "not_observed_no_snapshot",
+      "modal_controls_accepted": false,
+      "diagnosis": "PowerShell Int32-to-UIntPtr cast failed before the first 188-byte surface header read; later explicit UIntPtr construction is a separate host revision.",
+      "cleanup": {
+        "cdb_process_id": 30484,
+        "candidate_process_id": 3396,
+        "recorded_handle_absence_and_close_verified": true,
+        "hidden_desktop_closed": true,
+        "method": "Producer retained-handle identity and signaled/closed observations; offline consistency validation only.",
+        "independent_live_query_performed": false
+      },
+      "evidence": {
+        "preserved_failure": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-overview-host-read-failure-20260906.json",
+          "sha256": "1af7e928d31bb0168aa8d61fdc1d584a28a7bcae8337af9545eee503424d1634"
+        },
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\summary.json",
+          "sha256": "0cf993613c63e9b37b56f6c8a31fb3fd500d82c3825f5b931348318c7965351d"
+        },
+        "capture_plan": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\plan.json",
+          "sha256": "de5dcd05d89e3a7750a83afe9a08f0161715085c8ec3cb99029e252f36daa71c"
+        },
+        "authorization_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-run-plan-20260906-040604.json",
+          "sha256": "94ce0eff4976d558a2a56377e56fb5d33ff0f1930293c1fe375552b6e1138428"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\cdb.log",
+          "sha256": "b925dbae263e22bf2a21ee0ab0505bc78e7d5b6797ed241b4c32d44209f38321"
+        }
+      },
+      "failure_artifacts_verified": 13
+    },
+    {
+      "run_id": "castle_overview-1024x768-castle0-20260906-040923",
+      "route": "castle_overview",
+      "resolution": "1024x768",
+      "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+      "availability": "existing_flags",
+      "castle_index": 0,
+      "started_at": "2026-09-06T04:09:35.3347743Z",
+      "finished_at": "2026-09-06T04:09:58.1747654Z",
+      "input_runtime_passed": true,
+      "input_runtime_failures": [],
+      "initial_map_trace_passed": true,
+      "modal_trace_passed": true,
+      "snapshot_produced": true,
+      "raw_sha256": "5bb28dc03e76e810d99a94ae124c7e463fceef1c221a607e564635051c40730c",
+      "png_sha256": "cafb5f0242340970929ce173e3f5db01b9005cceb3d47b9b405f0d6335ca002f",
+      "modal_visual_verdict": "failed_hidden_software_composition",
+      "modal_controls_accepted": false,
+      "visual_review": {
+        "method": "Existing PNG inspected by root and independently by guard_implementation; no live capture.",
+        "observations": [
+          "Displaced horizontal rows inside the centered castle rectangle.",
+          "Large corrupt red lower region within the modal content, with isolated retained fragments.",
+          "A back control is visible near the lower-left of the centered modal; no click or callback proof is inferred."
+        ],
+        "root_reported_visual_failure": true,
+        "independently_viewed_existing_png": true,
+        "screenshot": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.png",
+          "sha256": "cafb5f0242340970929ce173e3f5db01b9005cceb3d47b9b405f0d6335ca002f"
+        }
+      },
+      "expected_centered_native_modal_rectangle_inclusive": [
+        192,
+        144,
+        831,
+        623
+      ],
+      "centering_status": "Overview content occupies the expected centered native rectangle; internal composition fails.",
+      "map_frame_measurement": {
+        "profile": "native_four_border_tiles_v1",
+        "passed": false,
+        "applicability": "ordinary_map_full_window_frame_not_a_modal_acceptance_gate",
+        "expected_modal_black_margins_are_not_automatically_a_defect": true,
+        "bands": [
+          {
+            "name": "top",
+            "rectangle_inclusive": [
+              0,
+              0,
+              1023,
+              15
+            ],
+            "checked_pixels": 16384,
+            "exact_matches": 0,
+            "mismatches": 16384
+          },
+          {
+            "name": "bottom",
+            "rectangle_inclusive": [
+              0,
+              752,
+              1023,
+              767
+            ],
+            "checked_pixels": 11524,
+            "exact_matches": 0,
+            "mismatches": 11524
+          },
+          {
+            "name": "left",
+            "rectangle_inclusive": [
+              0,
+              16,
+              31,
+              751
+            ],
+            "checked_pixels": 23552,
+            "exact_matches": 0,
+            "mismatches": 23552
+          },
+          {
+            "name": "right",
+            "rectangle_inclusive": [
+              992,
+              16,
+              1023,
+              751
+            ],
+            "checked_pixels": 23552,
+            "exact_matches": 0,
+            "mismatches": 23552
+          }
+        ],
+        "footer": {
+          "sprite": 5,
+          "origin": [
+            347,
+            753
+          ],
+          "size": [
+            324,
+            15
+          ],
+          "checked_pixels": 4860,
+          "exact_matches": 0,
+          "exact": false,
+          "status": "unverified_background_or_active_tooltip_text"
+        }
+      },
+      "map_action_bar_measurement": {
+        "matching_cell_count": 0,
+        "applicability": "ordinary_map_bar_not_required_for_this_modal",
+        "evaluated_as_gate": false,
+        "cell_anchors": [
+          [
+            800,
+            688
+          ],
+          [
+            864,
+            688
+          ],
+          [
+            928,
+            688
+          ],
+          [
+            800,
+            720
+          ],
+          [
+            864,
+            720
+          ],
+          [
+            928,
+            720
+          ]
+        ]
+      },
+      "cleanup": {
+        "cdb_process_id": 41268,
+        "candidate_process_id": 33000,
+        "recorded_handle_absence_and_close_verified": true,
+        "hidden_desktop_closed": true,
+        "method": "Producer retained-handle identity and signaled/closed observations; offline consistency validation only.",
+        "independent_live_query_performed": false
+      },
+      "evidence": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\summary.json",
+          "sha256": "1e4e20c2619871e5a72517158ed27d042fd31ef9f81e13736d5f33642051259d"
+        },
+        "capture_plan": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\plan.json",
+          "sha256": "e3818e9578c831f3c8db71f79ce76ed35396f1c25cf9ac9925decd558fa848c5"
+        },
+        "authorization_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-run-plan-20260906-040923.json",
+          "sha256": "f18d309c903d368aa8c0e2868f7ece78b9f5890c1d095274a96b2d3503ca508c"
+        },
+        "source_bound_pixel_audit": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-overview-1024x768-pixels-20260906.json",
+          "sha256": "68ffe77f58a9b3a3487e8dc3849cc65a418f404bf605f37447c4faa6ac40684f"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\cdb.log",
+          "sha256": "0ea4466cdee4af7f27b229288453723820204a6558bba9820b3dbe2935642547"
+        },
+        "trace": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\trace.json",
+          "sha256": "5bace366b2c89fd05942fef0ee4b108065f385c4b2a7328007574501be718d4b"
+        },
+        "packet": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\packet.json",
+          "sha256": "3345c02f38c39c36fbfb4dd55a7b2017f6e8bc92e3aba0117070d1a81ff2c4fe"
+        },
+        "probe": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\framed-screen.cdb",
+          "sha256": "dca7a93f93fcec1648dd4e3b22569aa245951041dfd901981ff2f84517c27e73"
+        },
+        "raw": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.raw",
+          "sha256": "5bb28dc03e76e810d99a94ae124c7e463fceef1c221a607e564635051c40730c"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.png",
+          "sha256": "cafb5f0242340970929ce173e3f5db01b9005cceb3d47b9b405f0d6335ca002f"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040923\\surface.png.json",
+          "sha256": "84c79cf79dfb1f360f4022d70f1be2369b9bd64a59232ce0f6248381fb22a4dd"
+        }
+      }
+    },
+    {
+      "run_id": "hospital-1024x768-castle0-20260906-041248",
+      "route": "hospital",
+      "resolution": "1024x768",
+      "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+      "availability": "construct_all",
+      "castle_index": 0,
+      "started_at": "2026-09-06T04:13:00.6662878Z",
+      "finished_at": "2026-09-06T04:13:23.8363392Z",
+      "input_runtime_passed": true,
+      "input_runtime_failures": [],
+      "initial_map_trace_passed": true,
+      "modal_trace_passed": true,
+      "snapshot_produced": true,
+      "raw_sha256": "4a18d3d3a0f19f3a81c49e559cbb410e8c486ec49a0f93dcb2a049e0bfd4da73",
+      "png_sha256": "3680eb20b9cd09266b23be8ce5f33b25c31f492418970a79c3753d32e4d76001",
+      "modal_visual_verdict": "failed_hidden_software_composition",
+      "modal_controls_accepted": false,
+      "visual_review": {
+        "method": "Existing PNG inspected by root and independently by guard_implementation; no live capture.",
+        "observations": [
+          "Horizontal row corruption in the hospital background and retained castle content.",
+          "Hospital title/body and back arrow are near native640 coordinates; stale centered castle content remains below.",
+          "Two back-control images are visible: hospital near(40,430) and retained castle near(225,580); no input proof is inferred."
+        ],
+        "root_reported_visual_failure": true,
+        "independently_viewed_existing_png": true,
+        "screenshot": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\surface.png",
+          "sha256": "3680eb20b9cd09266b23be8ce5f33b25c31f492418970a79c3753d32e4d76001"
+        }
+      },
+      "expected_centered_native_modal_rectangle_inclusive": [
+        192,
+        144,
+        831,
+        623
+      ],
+      "centering_status": "Mixed native-position hospital and retained centered castle content; correct hospital centering is not accepted.",
+      "map_frame_measurement": {
+        "profile": "native_four_border_tiles_v1",
+        "passed": false,
+        "applicability": "ordinary_map_full_window_frame_not_a_modal_acceptance_gate",
+        "expected_modal_black_margins_are_not_automatically_a_defect": true,
+        "bands": [
+          {
+            "name": "top",
+            "rectangle_inclusive": [
+              0,
+              0,
+              1023,
+              15
+            ],
+            "checked_pixels": 16384,
+            "exact_matches": 177,
+            "mismatches": 16207
+          },
+          {
+            "name": "bottom",
+            "rectangle_inclusive": [
+              0,
+              752,
+              1023,
+              767
+            ],
+            "checked_pixels": 11524,
+            "exact_matches": 0,
+            "mismatches": 11524
+          },
+          {
+            "name": "left",
+            "rectangle_inclusive": [
+              0,
+              16,
+              31,
+              751
+            ],
+            "checked_pixels": 23552,
+            "exact_matches": 18,
+            "mismatches": 23534
+          },
+          {
+            "name": "right",
+            "rectangle_inclusive": [
+              992,
+              16,
+              1023,
+              751
+            ],
+            "checked_pixels": 23552,
+            "exact_matches": 51,
+            "mismatches": 23501
+          }
+        ],
+        "footer": {
+          "sprite": 5,
+          "origin": [
+            347,
+            753
+          ],
+          "size": [
+            324,
+            15
+          ],
+          "checked_pixels": 4860,
+          "exact_matches": 0,
+          "exact": false,
+          "status": "unverified_background_or_active_tooltip_text"
+        }
+      },
+      "map_action_bar_measurement": {
+        "matching_cell_count": 0,
+        "applicability": "ordinary_map_bar_not_required_for_this_modal",
+        "evaluated_as_gate": false,
+        "cell_anchors": [
+          [
+            800,
+            688
+          ],
+          [
+            864,
+            688
+          ],
+          [
+            928,
+            688
+          ],
+          [
+            800,
+            720
+          ],
+          [
+            864,
+            720
+          ],
+          [
+            928,
+            720
+          ]
+        ]
+      },
+      "cleanup": {
+        "cdb_process_id": 17736,
+        "candidate_process_id": 12832,
+        "recorded_handle_absence_and_close_verified": true,
+        "hidden_desktop_closed": true,
+        "method": "Producer retained-handle identity and signaled/closed observations; offline consistency validation only.",
+        "independent_live_query_performed": false
+      },
+      "evidence": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\summary.json",
+          "sha256": "905207f9fe32aea2307a7609df68cbb20b3e9c971226ffef541f894b07d63349"
+        },
+        "capture_plan": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\plan.json",
+          "sha256": "8d7956306fcf50cadad7111a220b90a3d9fe9b73a0da1f9a689ec289916a1977"
+        },
+        "authorization_plan": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-run-plan-20260906-041248.json",
+          "sha256": "0609752d4cdb210128fa6b0492a3ce3f2d13f05966e7cae3bc24aafd13f093a6"
+        },
+        "source_bound_pixel_audit": {
+          "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-modal-hospital-1024x768-pixels-20260906.json",
+          "sha256": "41f4e403f55f1ac5c928c32d090ff4c867b9e3a762cecb159e95bb82099d45aa"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\cdb.log",
+          "sha256": "9bb3812980d09ddcbd5311d831fba9ef7020c1a3a6c322f4fdf1feb35b261753"
+        },
+        "trace": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\trace.json",
+          "sha256": "0783a7ee9de6089e00493945a8fe02876c283d0561e34cee5f3ca9e866d67517"
+        },
+        "packet": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\packet.json",
+          "sha256": "8979f8c570810966516fd3affcb0067bbd513b2c4faaa093836cdd510f8331fb"
+        },
+        "probe": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\framed-screen.cdb",
+          "sha256": "40bfd535f131e44f97c9b33ed0a367d1c646319c273ea807d5b0a9e6dddd3aa1"
+        },
+        "raw": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\surface.raw",
+          "sha256": "4a18d3d3a0f19f3a81c49e559cbb410e8c486ec49a0f93dcb2a049e0bfd4da73"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\surface.png",
+          "sha256": "3680eb20b9cd09266b23be8ce5f33b25c31f492418970a79c3753d32e4d76001"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\hospital-1024x768-castle0-20260906-041248\\surface.png.json",
+          "sha256": "bd73d530623535fff8d640ad10e6c6195ffe328c1a7fe6046548703c6274b60d"
+        }
+      }
+    }
+  ],
+  "verification": {
+    "artifact_hash_references_checked": 136,
+    "unique_files_read": 72,
+    "historical_failed_producers_reexecuted": false,
+    "source_bound_pixel_audits_reclassified": false,
+    "failed_attempt_current_source_reconstruction_claimed": false
+  },
+  "sources": {
+    "pixel_auditor": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_screen_surface_audit.py",
+      "sha256": "57382ee1828fe504c05affb49366ed0d89eaca704ae0d28021017c3491ef2788"
+    },
+    "pixel_fixture": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\test_framed_screen_surface_audit.py",
+      "sha256": "5b3b2bcffa041b6020b5b9096c32060a3d6ee2f1ebfe1dc2d2ec5e50e3e5e56e"
+    },
+    "current_eip_diagnostic": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\cdb-current-ip-semantics-20260906.json",
+      "sha256": "d366d4621045a0132da88c03e3bb740bb3ce5853ceb46f102f011fb83994c4f4"
+    }
+  },
+  "limits": [
+    "Controlled native dispatch and explicit isolated availability construction do not prove natural building selection or manual input.",
+    "The initial-map/route/host capture gates passing does not make corrupted modal pixels acceptable.",
+    "The centered640x480 modal has expected outer margins. Full-window ordinary-map frame/footer mismatches are diagnostic measurements, not automatically castle defects.",
+    "The actual visual failures are corruption inside the displayed modal and mixed/stale hospital composition, independently inspected in the existing PNGs.",
+    "The hidden software surface can omit primary-only overlays; final visible wrapper composition and input require separate evidence.",
+    "Recorded retained-handle cleanup is bound to each run; this checkpoint performs no live process query, runtime or cleanup action.",
+    "Original failed artifacts and source revisions remain preserved. No stage promotion, gameplay acceptance, modal-controls acceptance or full-mod completion claim."
+  ]
+}

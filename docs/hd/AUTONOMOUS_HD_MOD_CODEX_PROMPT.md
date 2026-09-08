@@ -1,5 +1,13 @@
 # Autonomous Codex Prompt: Build a Clash95 HD Mod
 
+> **Historical prompt, superseded.** This document records an earlier WSL and
+> recovered-SDL exploration phase. Its paths, architecture choices, automatic
+> Git operations, and runtime instructions are not the current operating plan.
+> Start with [AGENT_HANDOFF.md](AGENT_HANDOFF.md),
+> [WORKING_WITH_THIS_REPO.md](WORKING_WITH_THIS_REPO.md), and the root
+> [AGENTS.md](../../AGENTS.md). The text below is retained as historical context,
+> not instructions for a new task.
+
 You are Codex running as an autonomous senior reverse-engineering and game-porting agent.
 Your mission is to build a practical HD mod for Clash / clash95.exe using the local install at /mnt/c/clash, the local mod repository at /home/andrz/git/clash-hd, and the public disassembly reference at https://github.com/lisu188/clash-disassembly.
 Work until the goal is genuinely advanced, validated, committed, pushed, and described in a pull request, unless blocked by missing tools or an explicit user stop.

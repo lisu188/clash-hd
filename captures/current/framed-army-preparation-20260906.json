@@ -1,0 +1,254 @@
+{
+  "schema": "clash95_framed_army_preparation_v1",
+  "generated_at": "2026-09-06T08:55:40.031763+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-army-validation",
+  "resolution": "1024x768",
+  "candidate": {
+    "path": "C:\\ClashTests\\hd-completion\\framed-army-v1-1024x768-build-20260906-085300\\clash95_army_1024x768_v1.exe",
+    "sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5"
+  },
+  "build": {
+    "path": "C:\\ClashTests\\hd-completion\\framed-army-v1-1024x768-build-20260906-085300\\build.json",
+    "sha256": "907fb7521ece105f93e195bba56fcc158386fa4dd2188ab2eda2dad55293225a"
+  },
+  "initial_probe": {
+    "path": "C:\\ClashTests\\hd-completion\\framed-army-v1-1024x768-build-20260906-085300\\initial.cdb",
+    "sha256": "ab975a2e71a64f4547649c48db0fdc16603c55b7226c05f406cd171ca1bf19b3"
+  },
+  "builder_sha256": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+  "source_sha256": {
+    "tools/build_framed_modal_candidate.py": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+    "src/patcher/framed_modal_canvas.py": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+    "src/patcher/pe_modal_extension.py": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623",
+    "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+    "tools/build_framed_candidate.py": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+    "tools/build_partial_tile_candidate.py": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+    "src/patcher/partial_tile_hooks.py": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+    "src/patcher/initial_map_paint.py": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+    "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+    "src/patcher/framed_recipe.py": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+    "src/patcher/four_sided_frame.py": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+    "src/patcher/framed_full_paint.py": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+    "src/patcher/framed_presentation.py": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+    "src/patcher/framed_input.py": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+    "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+    "src/patcher/framed_minimap.py": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+    "src/patcher/pe_army_extension.py": "8b2bf19c59351cf1b625b28e143d0ccfd000380898a81af29e28e7cf7af75161",
+    "src/patcher/framed_army_viewport.py": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+    "src/patcher/framed_army_draw.py": "e6763ae2ebdf038d0b0b574564573fb07e2a2b68c12f7aeafc0b63ca44347cf9",
+    "src/patcher/framed_army_input.py": "c27a0feb17df909dcf9986bfde231d90a79e8c1ad8abbcf2884b52e767a70ee2",
+    "src/patcher/framed_army_composition.py": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c"
+  },
+  "test_groups": {
+    "test_framed_army_viewport": {
+      "passed": true,
+      "groups": 4,
+      "seconds": 0.002
+    },
+    "test_framed_army_draw": {
+      "passed": true,
+      "groups": 6,
+      "seconds": 70.589
+    },
+    "test_framed_army_input": {
+      "passed": true,
+      "groups": 7,
+      "seconds": 91.748
+    },
+    "test_framed_army_composition": {
+      "passed": true,
+      "groups": 7,
+      "seconds": 40.356
+    },
+    "test_pe_army_extension": {
+      "passed": true,
+      "groups": 12,
+      "seconds": 76.939
+    },
+    "test_build_framed_army_candidate_matrix": {
+      "passed": true,
+      "groups": 4,
+      "seconds": 127.724
+    },
+    "test_build_framed_army_candidate_boundaries": {
+      "passed": true,
+      "groups": 2,
+      "seconds": 0.01
+    }
+  },
+  "six_resolution_in_memory_matrix": [
+    "800x600",
+    "1024x768",
+    "1280x720",
+    "1280x960",
+    "1920x1080",
+    "802x602"
+  ],
+  "sec_image_admission": {
+    "passed": true,
+    "error": 0,
+    "observed_at": "2026-09-06T08:48:37.614163Z",
+    "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+    "both_handles_closed": true,
+    "view_mapped": false,
+    "game_process_started": false,
+    "observation_source": "allocator reviewer actual read-only CreateFileMappingW test"
+  },
+  "geometry": {
+    "backing": [
+      32,
+      686,
+      418,
+      751
+    ],
+    "hit": [
+      38,
+      686,
+      417,
+      749
+    ],
+    "portrait_size": [
+      32,
+      64
+    ],
+    "slot_pitch": 38
+  },
+  "installed_hooks": [
+    {
+      "offset": 142453,
+      "rva": 145525,
+      "va": 4339829,
+      "old_hex": "8b15fc4c5400",
+      "new_hex": "e97b3d170090",
+      "purpose": "portrait_hit"
+    },
+    {
+      "offset": 142724,
+      "rva": 145796,
+      "va": 4340100,
+      "old_hex": "e867cf0300",
+      "new_hex": "e8ee3b1700",
+      "purpose": "guarded_map_click"
+    },
+    {
+      "offset": 97156,
+      "rva": 100228,
+      "va": 4294532,
+      "old_hex": "8b1594695200",
+      "new_hex": "e8a5f4170090",
+      "purpose": "render complete terrain underneath admitted own-army overlay"
+    },
+    {
+      "offset": 1236534,
+      "rva": 1454134,
+      "va": 5648438,
+      "old_hex": "813d94695200000000000f8593020000",
+      "new_hex": "e8c04b030085c00f8496020000909090",
+      "purpose": "admit exact own-army in composition_guard"
+    },
+    {
+      "offset": 1241799,
+      "rva": 1459399,
+      "va": 5653703,
+      "old_hex": "813d94695200000000000f85be000000",
+      "new_hex": "e82f37030085c00f84c1000000909090",
+      "purpose": "admit exact own-army in framed_input.context_guard"
+    },
+    {
+      "offset": 1241044,
+      "rva": 1458644,
+      "va": 5652948,
+      "old_hex": "813d94695200000000000f85c4000000",
+      "new_hex": "e8223a030085c00f84c7000000909090",
+      "purpose": "admit exact own-army in frame_presentation.frame_presentation_admission"
+    },
+    {
+      "offset": 1233678,
+      "rva": 1451278,
+      "va": 5645582,
+      "old_hex": "833d94695200000f856d020000",
+      "new_hex": "e8e856030085c00f846d020000",
+      "purpose": "admit exact own-army in edge"
+    },
+    {
+      "offset": 1237546,
+      "rva": 1455146,
+      "va": 5649450,
+      "old_hex": "6089e583ec0c",
+      "new_hex": "e92f48030090",
+      "purpose": "recompose native-size portraits after terrain and command dock"
+    },
+    {
+      "offset": 1242016,
+      "rva": 1459616,
+      "va": 5653920,
+      "old_hex": "9c608b35e4025200",
+      "new_hex": "e93e370300909090",
+      "purpose": "exclude full army backing from ordinary map input"
+    },
+    {
+      "offset": 141658,
+      "rva": 144730,
+      "va": 4339034,
+      "old_hex": "ba23000000",
+      "new_hex": "e97a461700",
+      "purpose": "own-army-native-draw-suffix"
+    }
+  ],
+  "removed_highlow": [
+    {
+      "rva": 100230,
+      "va": 4294534,
+      "offset": 97158,
+      "old_hex": "94695200"
+    },
+    {
+      "rva": 145527,
+      "va": 4339831,
+      "offset": 142455,
+      "old_hex": "fc4c5400"
+    },
+    {
+      "rva": 1451280,
+      "va": 5645584,
+      "offset": 1233680,
+      "old_hex": "94695200"
+    },
+    {
+      "rva": 1454136,
+      "va": 5648440,
+      "offset": 1236536,
+      "old_hex": "94695200"
+    },
+    {
+      "rva": 1458646,
+      "va": 5652950,
+      "offset": 1241046,
+      "old_hex": "94695200"
+    },
+    {
+      "rva": 1459401,
+      "va": 5653705,
+      "offset": 1241801,
+      "old_hex": "94695200"
+    },
+    {
+      "rva": 1459620,
+      "va": 5653924,
+      "offset": 1242020,
+      "old_hex": "e4025200"
+    }
+  ],
+  "runtime_executed": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "Preparation and synthetic execution only; runtime selection and all pixel audits remain pending.",
+    "Own interactive players0..3 with2..10 supported squads only. Foreign/player4 panels are outside this lane.",
+    "Unexecuted first build084700 retains its incomplete startup probe; corrected085300 checks all prior modal wrapper continuations. Candidate bytes are identical.",
+    "No stable-stage change, original executable edit, commit or push."
+  ]
+}

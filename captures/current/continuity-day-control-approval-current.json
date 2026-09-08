@@ -1,0 +1,15 @@
+{
+  "schema": "clash95-hidden-control-approval-v1",
+  "recorded_at": "2026-09-05T11:06:17.9812725+00:00",
+  "approval_source": "user_message_in_current_task",
+  "user_message": "I approve hidden controle run",
+  "approved": true,
+  "plan_path": "captures/current/continuity-day-control-run-plan-current.json",
+  "plan_sha256": "eead77570a177b064875ba2256334eab414532c9119ba9e406c199e49cac036f",
+  "scope": "The prepared v5 hidden day-transition control, maximum 180 seconds, isolated workdir, non-presenting proxy, bounded native calls and query-result overrides described in the plan.",
+  "visible_runtime_approved": false,
+  "os_input_injection_approved": false,
+  "manual_input_proof": false,
+  "promotion_approved": false,
+  "execution_result": "recorded_separately_after_run"
+}

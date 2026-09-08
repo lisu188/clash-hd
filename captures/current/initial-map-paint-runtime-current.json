@@ -1,0 +1,394 @@
+{
+  "generated_at": "2026-09-05T19:14:55.265511+00:00",
+  "proof_class": "bounded_initial_paint_hidden_software_capture",
+  "run_plan": {
+    "path": "captures\\current\\initial-map-paint-run-plan-20260905-190806.json",
+    "sha256": "ebb4acf5c49bc8c5a679312466df6edb3991e194ece47cbac1b8352c164e7214"
+  },
+  "source_sha256": {
+    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "src/patcher/partial_tile_clip.py": "944119033895bd9e638a31e14a3c6c342e18efa28691679b97c831a989345c5a",
+    "src/patcher/partial_tile_hooks.py": "a5953f662f8d663daa8eb4f7e6f7327a67a4bbd2d382f64fa0815fadefb403f6",
+    "src/patcher/pe_extension.py": "efa974b294df3cdc7268788d6d17c2baf8c3575c4d388167f8939d96ae9a08ab",
+    "src/patcher/initial_map_paint.py": "a4dfce3dd267d109417a04f6d63f1d7dfc2e7e862525e8e7446748606f24955b",
+    "tools/build_partial_tile_candidate.py": "285b20813b6a05bfb373b41b86c4def3746abaf3ecb1065142d0f6c5e636408f",
+    "scripts/cdb/run_cdb_surface_dump.ps1": "289e069f613e4e60092e7cda1c7f9511859faff4a2d6855a71ea717c00b9d0b4",
+    "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
+    "tools/render_cdb_surface_probe.py": "c4cf0e55b5c26894a657846f5ae15179bb79d50a2dd6eb20780965f3f81bd3bc",
+    "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+    "tools/initial_map_paint_trace.py": "2df578e3fa58781404bf1131c6d8debd3c633ffad0e1a3f60b15f395b671d43e"
+  },
+  "sources_still_match_plan": true,
+  "fixtures": {
+    "tools/test_initial_map_paint.py": {
+      "tests_passed": 11,
+      "sha256": "00a302f9db039a71e89b9160d4ca5f17ab9b27f05b5e20e25750f5329bca56b6"
+    },
+    "tools/test_initial_map_candidate.py": {
+      "tests_passed": 4,
+      "sha256": "04ffa58b2a01697a38a8474de9f77a9fc1913628c7cd5e433692a51de86afdb9"
+    },
+    "tools/test_build_partial_tile_candidate.py": {
+      "tests_passed": 16,
+      "sha256": "70d0318c4fa422eba694dee1f5ae790ed91a6aa64e105583e7ada23b7456d52c"
+    },
+    "tools/test_partial_tile_surface_harness.py": {
+      "tests_passed": 10,
+      "sha256": "b75f11a8ed708c71899b33b8f7c6beef1dbd343958aa943a3d786981876c6517"
+    },
+    "tools/test_partial_tile_trace_probe.py": {
+      "tests_passed": 16,
+      "sha256": "263866820b6c96710de7713d59f503a8bddb2472ff647c3b9204e36f977693ad"
+    },
+    "tools/test_initial_map_paint_trace.py": {
+      "tests_passed": 11,
+      "sha256": "9e9668382457cf10079a3750ee64fb15f7f6fedc56d456ae30e6dfcd5708ac9b"
+    },
+    "tools/test_render_cdb_surface_probe.py": {
+      "tests_passed": 10,
+      "sha256": "53d8a0423c680dc4ce3bc073a634d43dc47516782a07cfa0f8d41d91e71c055b"
+    }
+  },
+  "runs": [
+    {
+      "resolution": "800x600",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-validation",
+      "candidate_sha256": "e72a57fd3bb26509179e0b4360fc9134bef804e152ac338fcd755cdfa41c548f",
+      "runtime_passed": true,
+      "partial_status_passed": true,
+      "initial_trace_passed": true,
+      "initial_sequence": {
+        "admission": {
+          "line": 202,
+          "seq": 1,
+          "bp": 76,
+          "tid": 43796,
+          "eip": 5649361,
+          "esp": 973996,
+          "records": [
+            {
+              "line": 203,
+              "marker": "PTILE_INITIAL_ADMISSION",
+              "text": "PTILE_INITIAL_ADMISSION status=1 tid=ab14 esp=000edcac"
+            }
+          ]
+        },
+        "ready": {
+          "line": 204,
+          "seq": 2,
+          "bp": 73,
+          "tid": 43796,
+          "eip": 5649370,
+          "esp": 973996,
+          "records": [
+            {
+              "line": 205,
+              "marker": "PTILE_MAP_READY",
+              "text": "PTILE_MAP_READY owner=0040ad40 size=(800,600)"
+            }
+          ]
+        },
+        "pair": {
+          "converge_line": 206,
+          "present_line": 208,
+          "tid": 43796,
+          "esp": 973908
+        },
+        "return": {
+          "line": 210,
+          "seq": 5,
+          "bp": 77,
+          "tid": 43796,
+          "eip": 5649380,
+          "esp": 973996,
+          "records": [
+            {
+              "line": 211,
+              "marker": "PTILE_INITIAL_RETURN",
+              "text": "PTILE_INITIAL_RETURN tid=ab14 esp=000edcac result=2e0"
+            }
+          ]
+        },
+        "return_eax": 736
+      },
+      "full_pairs": [
+        {
+          "converge_line": 206,
+          "present_line": 208,
+          "tid": 43796,
+          "esp": 973908
+        }
+      ],
+      "event_counts_by_breakpoint": {
+        "76": 1,
+        "73": 1,
+        "70": 1,
+        "71": 1,
+        "77": 1,
+        "75": 49,
+        "72": 49,
+        "74": 37
+      },
+      "trace_close": [
+        {
+          "line": 547,
+          "marker": "PTILE_TRACE_CLOSED",
+          "text": "PTILE_TRACE_CLOSED tid=ab14 eip=00406fa0 esp=000edca4",
+          "tid": 43796,
+          "eip": 4222880,
+          "esp": 973988
+        }
+      ],
+      "artifacts": {
+        "summary.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\summary.json",
+          "sha256": "7862a8074612fa66e83713af1effb0f772c7cb1d73b10adc7532bac87446d51f"
+        },
+        "cdb-surface-dump.log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\cdb-surface-dump.log",
+          "sha256": "5f57af5ef458733de7895646a3cd3f67e53becfe329e9899587ae12d60bce1f2"
+        },
+        "partial-tile-build.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\partial-tile-build.json",
+          "sha256": "548dfd12c32fde1e0495c6bf1083f31ae24f7925c7491e7ca9c57fe1ab43844f"
+        },
+        "partial-tile-installed.extra.cdb": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\partial-tile-installed.extra.cdb",
+          "sha256": "4c6a063e8ab683d2dcee6fe5e81aad3e781a2b77297553909ebe51294db31cb8"
+        },
+        "clash95_surface_dump_probe.generated.cdb": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "4e40efdc38ea4176e3f1891490caba5212676558aeb37ccf4a3968e390c71bea"
+        },
+        "surface.raw": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\surface.raw",
+          "sha256": "c6f0c8c7b260801960fb6ab813ccb45587b7209cafa582c861e0c638c47ee3d7"
+        },
+        "surface.png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\surface.png",
+          "sha256": "f5137f0cafec8616ea6be1f319c23220c208b8851ac568e2fe4eee56124c0dd6"
+        },
+        "surface.png.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\surface.png.json",
+          "sha256": "0c40ecf96443f2f21207d3c7200abac49cecebc3ad9609559225a9091f27ea02"
+        },
+        "map-tile-coverage.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\map-tile-coverage.json",
+          "sha256": "afcc03f32de41b9a7f52f074138c779f08450c3ba749a38c60e625dd41aee29d"
+        },
+        "visibility-coverage-summary.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\visibility-coverage-summary.json",
+          "sha256": "9beac373c043647ccfae0acb32ad2f030543bf881ee171d21f4829235a73bf5f"
+        },
+        "live-process-receipt.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\live-process-receipt.json",
+          "sha256": "ae95123978c452dbeecb3fdbf9e54b1be75ad6f04146606804406e0a5cf6e9ba"
+        },
+        "terminal-process-receipt.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-800x600-20260905-190806\\cdb-surface-dump-20260905-210832\\terminal-process-receipt.json",
+          "sha256": "7ed7977fdaf3a393ff102d8fab477e8c476bbe54c9f8be182a3545e77b7e6ab1"
+        }
+      },
+      "action_bar_audit": {
+        "path": "captures\\current\\initial-map-paint-800-action-bar-audit-current.json",
+        "sha256": "138e418dca6854c613af10a7ed2079551f4e1de44fdd4c40ac8a81b221e78ef6",
+        "matching_cells": 6
+      },
+      "cleanup": {
+        "observed_at": "2026-09-05T19:09:39.7553877Z",
+        "recorded_cdb_pid": 41588,
+        "recorded_game_pid": 43528,
+        "matching_recorded_processes": [],
+        "terminal_exit_code": 0
+      },
+      "no_av": true,
+      "no_timeout": true,
+      "visibility_unexplained_blank_cells": [],
+      "captured_after_update": 4,
+      "proxy_sha256": "9CE60134D27FB1CBECF4694DA62C020E0F784E9C9BAFD48135B9C336B5139B6D",
+      "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+      "probe_serialization": {
+        "planned_sha256_is_generated_lf_text": "624b9a2b4f62df361a0af56e4656564713f71286b20eda828520e73320eb92ea",
+        "actual_crlf_sha256": "4c6a063e8ab683d2dcee6fe5e81aad3e781a2b77297553909ebe51294db31cb8",
+        "exact_lf_to_crlf_roundtrip_verified": true
+      }
+    },
+    {
+      "resolution": "1024x768",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-validation",
+      "candidate_sha256": "5ebbaf23ad999a97209a5e0ca8883e8d42e31190fb3891f03cfc3c38001bc338",
+      "runtime_passed": true,
+      "partial_status_passed": true,
+      "initial_trace_passed": true,
+      "initial_sequence": {
+        "admission": {
+          "line": 210,
+          "seq": 1,
+          "bp": 76,
+          "tid": 41888,
+          "eip": 5649886,
+          "esp": 973996,
+          "records": [
+            {
+              "line": 211,
+              "marker": "PTILE_INITIAL_ADMISSION",
+              "text": "PTILE_INITIAL_ADMISSION status=1 tid=a3a0 esp=000edcac"
+            }
+          ]
+        },
+        "ready": {
+          "line": 212,
+          "seq": 2,
+          "bp": 73,
+          "tid": 41888,
+          "eip": 5649895,
+          "esp": 973996,
+          "records": [
+            {
+              "line": 213,
+              "marker": "PTILE_MAP_READY",
+              "text": "PTILE_MAP_READY owner=0040ad40 size=(1024,768)"
+            }
+          ]
+        },
+        "pair": {
+          "converge_line": 214,
+          "present_line": 216,
+          "tid": 41888,
+          "esp": 973908
+        },
+        "return": {
+          "line": 218,
+          "seq": 5,
+          "bp": 77,
+          "tid": 41888,
+          "eip": 5649905,
+          "esp": 973996,
+          "records": [
+            {
+              "line": 219,
+              "marker": "PTILE_INITIAL_RETURN",
+              "text": "PTILE_INITIAL_RETURN tid=a3a0 esp=000edcac result=3a0"
+            }
+          ]
+        },
+        "return_eax": 928
+      },
+      "full_pairs": [
+        {
+          "converge_line": 214,
+          "present_line": 216,
+          "tid": 41888,
+          "esp": 973908
+        }
+      ],
+      "event_counts_by_breakpoint": {
+        "76": 1,
+        "73": 1,
+        "70": 1,
+        "71": 1,
+        "77": 1,
+        "75": 49,
+        "72": 49,
+        "74": 37
+      },
+      "trace_close": [
+        {
+          "line": 557,
+          "marker": "PTILE_TRACE_CLOSED",
+          "text": "PTILE_TRACE_CLOSED tid=a3a0 eip=00406fa0 esp=000edca4",
+          "tid": 41888,
+          "eip": 4222880,
+          "esp": 973988
+        }
+      ],
+      "artifacts": {
+        "summary.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\summary.json",
+          "sha256": "ef3d95d113edae320d8eaddf55b371a9e45ae2c61d598a9815b95be9e774e70c"
+        },
+        "cdb-surface-dump.log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\cdb-surface-dump.log",
+          "sha256": "e363fb7d899958cb9d3a83a5dd238ab83c49346df26282ad7349a34e2d14577c"
+        },
+        "partial-tile-build.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\partial-tile-build.json",
+          "sha256": "b30136bd909e1c1601a20851512b6a6417841e4d7f1a41e6fb44642f651c8bef"
+        },
+        "partial-tile-installed.extra.cdb": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\partial-tile-installed.extra.cdb",
+          "sha256": "2b1d8930551e08da591bb69e235852c37cc3b3fd6bf72a7aa9a113f6e151ad17"
+        },
+        "clash95_surface_dump_probe.generated.cdb": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "1006894aab72f5fd89b3c7740b8d339b27f28a72dede1be92f895cd176621203"
+        },
+        "surface.raw": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\surface.raw",
+          "sha256": "b04ca566ffcaeea2700dfda7f7751f384d4d6cbe8284e86314c2ebd38cec4927"
+        },
+        "surface.png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\surface.png",
+          "sha256": "a0e2ebf6b908a2a396a28962dd5eba16a4815eb532aa220a0168ba03b4980daa"
+        },
+        "surface.png.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\surface.png.json",
+          "sha256": "5720e7134e45227f5f8b9077f060c9b7a7e45eae791fa0af1e7d860b86eb8bbd"
+        },
+        "map-tile-coverage.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\map-tile-coverage.json",
+          "sha256": "5baee61c7378402a55b33df4e47175c77528cb433d5dda8f74bf4d0056bf0a00"
+        },
+        "visibility-coverage-summary.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\visibility-coverage-summary.json",
+          "sha256": "f4c8d61b0d88a34eeb881c96c4b315ec597abf6d884873d1155d2b5d59644238"
+        },
+        "live-process-receipt.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\live-process-receipt.json",
+          "sha256": "8346e5d57eae88b795307b40f497c929be1c6e4a291f2c3e36692daeb577eca7"
+        },
+        "terminal-process-receipt.json": {
+          "path": "C:\\ClashCaptures\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\cdb-surface-dump-20260905-211004\\terminal-process-receipt.json",
+          "sha256": "bf4b5bf4156fcbe8d683c9eccd55462b39a7e9bd34fca1e6175f00e63e9409cf"
+        }
+      },
+      "action_bar_audit": {
+        "path": "captures\\current\\initial-map-paint-1024-action-bar-audit-current.json",
+        "sha256": "4afe5d460dcca265aa48a104ebb0c4071c03a8a0f1585bfb9c45cbe33eb4d4e0",
+        "matching_cells": 6
+      },
+      "cleanup": {
+        "observed_at": "2026-09-05T19:12:32.5329812Z",
+        "candidate_path": "C:\\ClashTests\\hd-completion\\initialpaint-v1-1024x768-20260905-190806\\candidate\\clash95_hd_initialpaint_1024x768_20260905-190806.exe",
+        "matching_processes": [],
+        "terminal_exit_code": 0,
+        "live_pids_recorded": false,
+        "observation_limit": "Exact candidate path and debugger command absence after terminal return; the earlier live query arrived after completion, so this is not retrospective PID provenance."
+      },
+      "no_av": true,
+      "no_timeout": true,
+      "visibility_unexplained_blank_cells": [],
+      "captured_after_update": 4,
+      "proxy_sha256": "8AB1CE0BDBA0387C18C0F08147321A9019652575DB9F90C2D4127DE1C8BCE056",
+      "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+      "probe_serialization": {
+        "planned_sha256_is_generated_lf_text": "e423573729a6c6a57333f2c05b26b4ab1e7fec69f4aa396ac0aca009e1b52142",
+        "actual_crlf_sha256": "2b1d8930551e08da591bb69e235852c37cc3b3fd6bf72a7aa9a113f6e151ad17",
+        "exact_lf_to_crlf_roundtrip_verified": true
+      }
+    }
+  ],
+  "visible_composition_proof": false,
+  "manual_input_proof": false,
+  "endurance_proof": false,
+  "promotion_ready": false,
+  "full_mod_complete": false,
+  "passed": true,
+  "limits": [
+    "Only the admitted initial map paint and four-update hidden interval are proven. Each trace contains 140 events, one full pair and 49 incremental calls, including 37 source-bound native offscreen no-op exits.",
+    "Earlier v4b duplicate/unpaired traces and failed summaries remain unchanged; the new accepted interval does not establish the old repetition mechanism or longer-term behavior.",
+    "The prepared extra-probe hash describes generated LF text. Windows text-mode output uses CRLF; exact bidirectional newline-only serialization was verified, and both hashes are recorded without rewriting the immutable plan.",
+    "Software pixels and visibility explanations do not establish final visible wrapper composition, input, army/modal composition, other resolutions, continuity, long endurance or stable promotion.",
+    "1024x768 cleanup has exact-path/debugger-command absence evidence without captured live PIDs;800x600 has observed live PIDs and their terminal absence."
+  ]
+}

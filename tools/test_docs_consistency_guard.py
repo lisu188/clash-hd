@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -156,6 +157,102 @@ def test_passes_project_documentation() -> None:
         assert guard["checks"]["legacy_scaffold_absent"]["passed"]
 
 
+def test_tracked_defaults_work_without_local_handoff_notes() -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        root = Path(temporary)
+        args = fixture_args(root)
+        canonical = Path("docs/hd/AGENT_HANDOFF.md")
+        write_text(root / canonical, args.codex_loop_docs[0].read_text(encoding="utf-8"))
+        assert not (root / ".codex-loop").exists()
+        with patch.object(sys, "argv", [str(SCRIPT)]):
+            defaults = docs_consistency_guard.parse_args()
+        assert defaults.codex_loop_docs == (canonical,)
+        assert docs_consistency_guard.DEFAULT_CODEX_LOOP_DOCS == docs_consistency_guard.DEFAULT_HANDOFF_DOCS
+        args.codex_loop_docs = defaults.codex_loop_docs
+        with patch.object(docs_consistency_guard, "REPO_ROOT", root):
+            guard = docs_consistency_guard.build_guard(args)
+            del args.codex_loop_docs
+            implicit_guard = docs_consistency_guard.build_guard(args)
+        for result in (guard, implicit_guard):
+            assert result["passed"], result["failures"]
+            assert result["doc_groups"]["handoff"] == [str(canonical)]
+
+
+def test_defaults_reject_missing_canonical_handoff() -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        root = Path(temporary)
+        args = fixture_args(root)
+        del args.codex_loop_docs
+        with patch.object(docs_consistency_guard, "REPO_ROOT", root):
+            guard = docs_consistency_guard.build_guard(args)
+        assert not guard["passed"]
+        assert guard["checks"]["documents_handoff"]["failures"] == [
+            f"missing document: {docs_consistency_guard.DEFAULT_HANDOFF_DOCS[0]}"
+        ], guard
+
+
+def test_rejects_missing_evidence_document() -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        args = fixture_args(Path(temporary))
+        args.evidence_index.unlink()
+        guard = docs_consistency_guard.build_guard(args)
+        assert not guard["passed"]
+        assert not guard["checks"]["documents_evidence"]["passed"]
+
+
+def test_explicit_relative_wiki_summary_is_read() -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        root = Path(temporary)
+        args = fixture_args(root)
+        relative = Path("wiki/current-summary.md")
+        write_text(root / relative, args.wiki_summary_docs[0].read_text(encoding="utf-8"))
+        with patch.object(sys, "argv", [str(SCRIPT), "--project-summary-doc", str(relative)]):
+            supplied = docs_consistency_guard.parse_args()
+        args.wiki_summary_docs = supplied.wiki_summary_docs
+        args.readme_progress_docs = ()
+        with patch.object(docs_consistency_guard, "REPO_ROOT", root):
+            guard = docs_consistency_guard.build_guard(args)
+        assert guard["doc_groups"]["project"] == [str(relative)], guard
+        assert guard["checks"]["documents_project"]["passed"], guard
+        assert guard["checks"]["project_identity"]["passed"], guard
+        # Honoring an override must not weaken the separate legacy-scaffold guard.
+        assert guard["failures"] == ["legacy_scaffold_absent: legacy scaffold still exists: wiki"], guard
+
+
+def test_explicit_missing_relative_wiki_summary_fails_without_default_fallback() -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        root = Path(temporary)
+        args = fixture_args(root)
+        relative = Path("wiki/MISSING.md")
+        # Good defaults exist, but must not replace a requested missing document.
+        for default in docs_consistency_guard.DEFAULT_PROJECT_SUMMARY_DOCS:
+            write_text(root / default, args.wiki_summary_docs[0].read_text(encoding="utf-8"))
+        with patch.object(sys, "argv", [str(SCRIPT), "--project-summary-doc", str(relative)]):
+            supplied = docs_consistency_guard.parse_args()
+        args.wiki_summary_docs = supplied.wiki_summary_docs
+        args.readme_progress_docs = ()
+        with patch.object(docs_consistency_guard, "REPO_ROOT", root):
+            guard = docs_consistency_guard.build_guard(args)
+        assert not guard["passed"], guard
+        assert guard["doc_groups"]["project"] == [str(relative)], guard
+        assert guard["checks"]["documents_project"]["failures"] == [f"missing document: {relative}"], guard
+        assert guard["checks"]["legacy_scaffold_absent"]["passed"], guard
+
+
+def test_rejects_weakened_manual_approval_boundaries() -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        args = fixture_args(Path(temporary))
+        checklist = json.loads(args.manual_checklist_json.read_text(encoding="utf-8"))
+        checklist.update(promotion_ready=True, visible_runtime_requires_approval=False)
+        write_json(args.manual_checklist_json, checklist)
+        guard = docs_consistency_guard.build_guard(args)
+        assert not guard["passed"]
+        assert guard["checks"]["generated_state"]["failures"] == [
+            "manual promotion is unexpectedly ready",
+            "visible runtime no longer requires approval",
+        ]
+
+
 def test_rejects_legacy_repository_identity() -> None:
     with tempfile.TemporaryDirectory() as temporary:
         root = Path(temporary)
@@ -224,6 +321,17 @@ def test_cli_writes_outputs_and_fails_closed() -> None:
         assert result.returncode == 0, result.stdout + result.stderr
         assert output_json.exists()
         assert output_md.exists()
+        guard = json.loads(output_json.read_text(encoding="utf-8"))
+        assert guard["doc_groups"]["handoff"] == [str(args.codex_loop_docs[0])]
+
+        missing_handoff = root / ".codex-loop" / "MISSING.md"
+        result = subprocess.run(
+            command + ["--codex-loop-doc", str(missing_handoff)],
+            capture_output=True, text=True, cwd=ROOT,
+        )
+        assert result.returncode == 2, result.stdout + result.stderr
+        guard = json.loads(output_json.read_text(encoding="utf-8"))
+        assert f"missing document: {missing_handoff}" in guard["checks"]["documents_handoff"]["failures"]
 
         write_text(args.wiki_summary_docs[0], "# LLM Wiki\n")
         result = subprocess.run(command, capture_output=True, text=True, cwd=ROOT)
@@ -232,6 +340,12 @@ def test_cli_writes_outputs_and_fails_closed() -> None:
 
 def run_tests() -> None:
     test_passes_project_documentation()
+    test_tracked_defaults_work_without_local_handoff_notes()
+    test_defaults_reject_missing_canonical_handoff()
+    test_rejects_missing_evidence_document()
+    test_explicit_relative_wiki_summary_is_read()
+    test_explicit_missing_relative_wiki_summary_fails_without_default_fallback()
+    test_rejects_weakened_manual_approval_boundaries()
     test_rejects_legacy_repository_identity()
     test_rejects_stable_stage_drift()
     test_cli_writes_outputs_and_fails_closed()

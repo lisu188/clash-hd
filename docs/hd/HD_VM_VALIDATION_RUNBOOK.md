@@ -1,11 +1,11 @@
 # HD VM Validation Runbook
 
-This runbook completes the Clash95 HD mod by capturing the one thing that is
-still outstanding: **approved, real, visible mouse-click ("manual DirectInput")
-evidence** for the five required targets, plus the battle click-consumed gate,
-feeding the promotion-decision tools. The mod is already mechanically complete
-and disassembly-verified (`reports/hd_completion_certainty.md`); this is the
-evidence-capture step, run in a VM.
+This runbook describes an approval-gated VM validation lane for the five
+manual-input targets. Automated pulse clicks and captured frames require
+separate human observations and matching evidence before they can support
+manual DirectInput proof. Read [AGENT_HANDOFF.md](AGENT_HANDOFF.md) for current
+completion gaps and existing battle evidence; this lane alone does not finish
+the HD mod or authorize stable promotion.
 
 Two runners are provided. The **Windows Sandbox** runner is authoritative. The
 **Linux/wine** runner is the "run it here" attempt and carries a fidelity caveat.
@@ -33,14 +33,16 @@ The five manual targets (`tools/manual_directinput_checklist.py`):
 | `castle_barracks_centered_input` | `…-castlecenter-all` | centered barracks descriptor/action callbacks reachable |
 | `castle_overview_centered_input` | `…-castlecenter-all` | centered overview commands respond without debugger-forced state |
 
-Plus the battle click-consumed gate (`tools/battle_visible_input_summary.py
---require-click-consumed`) from a battle command run, using a real melee+range
-roster (e.g. Dragon cavalry) — never a faked/enabled-command override.
+Use the existing battle click-consumed evidence identified in the current
+handoff when it matches the required candidate and proof scope. The historical
+callback result is resolved; this runbook does not make it a new task. Any
+separately required battle run must use a real melee+range roster and preserve
+the `tools/battle_visible_input_summary.py --require-click-consumed` gate.
 
 Guardrails from the disassembly cross-check (do not violate): use the
 `addon_flags & 0x02` save fixture instead of forcing the right-bottom panel; use
 a real roster instead of faking an enabled battle command; keep the single
-centered mouse-offset model; and never hand-write a passing observation — the
+centered mouse-offset model; and never invent a passing observation — the
 assembler fails closed.
 
 ## Runner A — Windows Sandbox (authoritative)
@@ -63,7 +65,11 @@ Inside the disposable VM this: copies the game (host `C:\Clash` mapped
 read-only), builds the three candidate stages, prepares the right-bottom
 addon_flags fixture, runs all five targets through `run_clash_visual_smoke.ps1`
 with real DirectInput, and writes
-`captures\archive\full-validation-<stamp>\run-manifest.json`.
+`C:\ClashCaptures\windows-sandbox\full-validation-<stamp>-<guid>\run-manifest.json`
+on the host. Both Sandbox callers accept an external `-OutRoot` override and
+reject output roots inside the repository. Each unique host run directory is
+mapped to `C:\ClashCaptures\run` in the guest, keeping raw captures, generated
+scripts and manifests outside the repository.
 
 ## Runner B — Linux/wine ("run it here")
 
@@ -86,7 +92,7 @@ python tools/run_hd_linux_validation.py --dry-run
 python tools/run_hd_linux_validation.py --execute --allow-visible-runtime \
     --source-exe /path/to/clash95.exe --source-save /path/to/5.dat \
     --approval-record "approved by <you> on <date>" \
-    --run-dir captures/archive/linux-wine-run
+    --run-dir /path/to/external/linux-wine-run
 ```
 
 **Fidelity caveat:** wine may not reproduce the Windows DirectDraw/DirectInput
@@ -95,32 +101,34 @@ here, fall back to Runner A on Windows and assemble from that run instead.
 
 ## After the run (either runner)
 
-1. Review each target's captured frames (`before.png` / `after-*.png`) and, for
-   every target in the run manifest, fill in a real `observed_result`,
-   `evidence` (screenshot filename or notes), `pass_fail_notes`, set
-   `no_crash: true`, and `status: "pass"`. You may edit the run manifest in place
-   or supply a separate `--observations` JSON with the same per-target fields.
+1. Review each target's captured frames and fill in the actual
+   `observed_result`, `evidence` and `pass_fail_notes`. Set `no_crash: true`
+   and `status: "pass"` only when matching observations support those claims;
+   retain failures and missing observations. You may edit the run manifest or
+   supply a separate `--observations` JSON with the same per-target fields.
 
-2. Assemble and validate the proof, then run every promotion gate in one step:
+2. Assemble and validate the proof, then run the scoped component decisions:
 
    ```bash
    python tools/complete_hd_promotion.py \
-       --run-manifest captures/archive/<run>/run-manifest.json \
-       --battle-run-dir captures/archive/<battle-run-dir> \
-       --update-checklist --require-pass
+       --run-manifest /path/to/external/run/run-manifest.json \
+       --battle-run-dir /path/to/matching/battle-evidence \
+       --require-pass
    ```
 
-   This writes `captures/current/manual-directinput-proof-current.json`, runs
-   `manual_directinput_checklist.py --require-promotion-ready`,
-   `battle_visible_input_summary.py --require-click-consumed`, and both
-   promotion-decision tools with the proof. On a full pass it checks the two
-   remaining boxes in `reports/final_hd_release_checklist.md`.
+   This evaluates fresh, candidate-bound manual and component decision reports.
+   Inspect `component_promotion_ready` and each report's failures. Whole-HD
+   `promotion_ready` remains false; `--update-checklist` stays blocked in this
+   component mode. It does not check release boxes. The separate release-manifest
+   mode is described in [COMPLETE_HD_EVIDENCE.md](COMPLETE_HD_EVIDENCE.md) and
+   still has incomplete acceptance adapters.
 
-3. On `promotion-ready: True`, both decision tools report
-   `eligible_for_stable_promotion`. Promote the validation patch groups
-   (`rightbottomcompose`, `castlecenter-all`) into the stable stage intentionally,
-   or cut the `complete-hd` alias — and the mod is release-complete.
+3. Follow [FINISH_LINE_RUNBOOK.md](FINISH_LINE_RUNBOOK.md) and the current
+   handoff for the remaining whole-HD evidence. Any stable-stage promotion
+   requires a separate explicit decision supported by the required evidence;
+   component eligibility alone does not establish release completion.
 
-If the assembler or any gate fails, it reports exactly which target/field is
-missing. Nothing here fabricates evidence: a target only passes when the
-approved run actually observed a consumed real click.
+If the assembler or a gate fails, inspect its reported target and field
+failures. The assembler validates supplied records; it cannot independently
+prove that a person made a click. Every passing observation must be supported
+by the approved run and matching evidence.

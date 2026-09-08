@@ -19,6 +19,10 @@ lane now reruns its native callback parser over the original recorded log,
 loaded-byte guards, approval, plan and owned-process receipt. The other 14
 runtime, composition, input, continuity and endurance adapters remain incomplete.
 Historical component reports are not rewritten into integrated proof.
+The launcher now exposes an experimental `completehd` profile. Resolution
+metadata is checked through the actual launcher validator; unknown or malformed
+profiles cannot establish evidence. This metadata coverage does not satisfy
+the remaining incomplete runtime adapters or establish complete-release eligibility.
 
 `candidate_manifest_context()` in `tools/complete_hd_evidence.py` loads the
 complete builder's `.candidate.json`, `.exe` and `.cdb` bundle. It delegates

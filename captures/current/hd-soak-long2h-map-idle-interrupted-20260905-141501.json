@@ -1,0 +1,18 @@
+{
+  "schema": "clash95_incomplete_hidden_run_observation_v1",
+  "observed_at": "2026-09-05T17:41:01.5064417+00:00",
+  "run_dir": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-141501-448-map-idle",
+  "classification": "not_running_without_completion_artifacts",
+  "passed": false,
+  "session_handle": "36110",
+  "session_observation": "write_stdin returned Unknown process id",
+  "recorded_candidate_process_present": false,
+  "any_cdb_present": false,
+  "log_sha256": "5F89529FD551870E3692261C9911AC8233DEF1719CEB60FB13577FF1616ACDA9",
+  "last_heartbeat": "SOAK_HEARTBEAT hits=210944 tickdelta=419791 player=0 scroll=(0,41)",
+  "route_end_observed": false,
+  "final_report_exists": false,
+  "final_guard_exists": false,
+  "samples_manifest_exists": false,
+  "limits": "Cause of interruption unverified. Missing host telemetry/final cleanup/report prevents any long-soak pass. Preserve existing raw artifacts; do not synthesize a completed soak report."
+}

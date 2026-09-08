@@ -1,9 +1,9 @@
 # Load Slot Route Limit Guard
 
 - Status: PASS
-- Generated: `2026-07-18T22:13:53+02:00`
+- Generated: `2026-09-06T05:56:59+02:00`
 - Runtime policy: repo-only; reads decompilation text, harness text, and existing hidden-desktop CDB artifacts; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
-- Guard policy: passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the current slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame
+- Guard policy: passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the historical slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame
 - Promotion ready: `False`
 - Static load rows: `0..9`
 - Harness mouse formula: `x=320, y=166 + 22 * LoadSlot`
@@ -15,7 +15,7 @@
 
 ## Boundary
 
-static code and harness parameters allow rows 0-9, but current archived hidden evidence only proves the slot-2 row path. Slots 3, 4, and 5, plus the current slot-5 right-bottom attempt, stall before force-select/accept and LOADSAVE.
+static code and canonical harness geometry allow rows 0-9. This historical hidden diagnostic cohort proves the slot-2 row path and records rows 3-5 stalling before force-select/accept and LOADSAVE. These archived diagnostics do not reopen the subsequently resolved right-bottom work or prove current input.
 
 ## Slot Status
 
@@ -31,8 +31,8 @@ static code and harness parameters allow rows 0-9, but current archived hidden e
 
 ## Next Proof Options
 
-- debug why rows 3-5 stop before the forced load-select breakpoint under the current CDB route
-- or create an isolated test working directory that maps the slot-5 save state to a proven row without editing C:\Clash\save
-- or use a direct-loader probe, but label it non-natural route evidence until menu selection is proven
+- historical diagnostic option: inspect why rows 3-5 stopped before the archived forced load-select breakpoint
+- historical diagnostic option: use an isolated test working directory without editing C:\Clash\save
+- direct-loader evidence remains non-natural route evidence; consult the current handoff before scheduling new work
 
 ![slot2 load route surface](C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-153805\surface.png)

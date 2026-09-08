@@ -1,3 +1,31 @@
+# SUPERSEDED — archived hand-written snapshot (do not cite as current evidence)
+
+> **Hand-written 2026-05-22 snapshot, superseded and archived 2026-07-18.**
+> It is NOT machine-generated and was never regenerated: no tool writes this
+> path (`tools/battle_visible_input_summary.py` writes
+> `captures/current/battle-visible-input-summary-current.md` and reads
+> `battle-visible-input-current.json`; `tools/battle_ui_evidence_matrix.py`
+> reads only the `.json`).
+>
+> The canonical current file is
+> **`captures/current/battle-visible-input-summary-current.md`**.
+>
+> What is now false below:
+> - "Focused completion: 99.91%" → the generated summary reports **99.95%**.
+> - The "## Open gap" section ("has not yet proven that a real visible
+>   `SendInput` click is consumed by the battle command descriptor gate") is
+>   DEAD. Proven in `c5fe1d70`; run
+>   `captures/archive/battle-visible-input-present-20260717-133221` has
+>   `real_visible_click_consumed: true`, click gate `eax=1`, callback
+>   `0042d4e0` consumed, 0 breakpoint failures, 0 break-instruction exceptions.
+> - "remaining 0.09% is real visible click-to-callback proof" → that proof
+>   exists; what remains is broader manual DirectInput cadence validation
+>   (`captures/current/manual-directinput-validation-checklist-current.md`,
+>   still 0 of 5 accepted).
+>
+> The "## Next pass" instructions are historical; the failed-attempt list under
+> "Failed/invalid attempts" is retained as the record of the May 2026 dead ends.
+
 # Battle Visible Input Current
 
 Date: 2026-05-22

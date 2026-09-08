@@ -1,0 +1,281 @@
+{
+  "generated_at": "2026-09-05T19:46:16.328104+00:00",
+  "proof_class": "repo_only_uninstalled_four_sided_frame_preparation",
+  "repo_only_checks_passed": true,
+  "frame_game_runtime_executed": false,
+  "frame_hook_installed": false,
+  "existing_game_captures_fixed": false,
+  "promotion_ready": false,
+  "sources": [
+    {
+      "path": "src/patcher/framed_viewport.py",
+      "sha256": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42"
+    },
+    {
+      "path": "src/patcher/four_sided_frame.py",
+      "sha256": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9"
+    },
+    {
+      "path": "tools/frame_surface_audit.py",
+      "sha256": "1a9d0684cef0bb19a7b0ecd5ecb02c41ef0280033f2307f99d524a521611bfd3"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "tools/test_framed_viewport.py",
+      "sha256": "f6b64244490ac56c99420d17f87f12de1885f0caecf78ef7e2e9f7939326da2f",
+      "tests_passed": 10
+    },
+    {
+      "path": "tools/test_frame_surface_audit.py",
+      "sha256": "fa3e04960b50c0f36f0a7feea317375030193fbe78e05edb21b80f1745a7d55c",
+      "tests_passed": 10
+    },
+    {
+      "path": "tools/test_four_sided_frame.py",
+      "sha256": "64e6482f83c67f0105bfa23a267fe572c02a8e92e60b205e31e90b6cd001a352",
+      "tests_passed": 7
+    },
+    {
+      "path": "tools/test_four_sided_frame_x86.py",
+      "sha256": "4489ad89367b24cd1a9a821f5a3f8b52b6cccf4dd54b12261d63076014c4142b",
+      "tests_passed": 4
+    }
+  ],
+  "total_focused_tests": 31,
+  "synthetic_x86_executions": 903,
+  "synthetic_x86_code_bases": [
+    "0x20000000",
+    "0x22000000",
+    "0x24000000"
+  ],
+  "layouts": [
+    {
+      "resolution": "640x480",
+      "geometry_oracle_only": true,
+      "terrain_inclusive": [
+        32,
+        16,
+        607,
+        463
+      ],
+      "action_bar_inclusive": [
+        416,
+        400,
+        607,
+        463
+      ],
+      "full_tiles": [
+        9,
+        7
+      ],
+      "ceil_tiles": [
+        9,
+        7
+      ],
+      "sprite_calls": 13,
+      "code_bytes": 1076,
+      "highlow_fields": 19,
+      "installation_ready": false
+    },
+    {
+      "resolution": "800x600",
+      "geometry_oracle_only": false,
+      "terrain_inclusive": [
+        32,
+        16,
+        767,
+        583
+      ],
+      "action_bar_inclusive": [
+        576,
+        520,
+        767,
+        583
+      ],
+      "full_tiles": [
+        11,
+        8
+      ],
+      "ceil_tiles": [
+        12,
+        9
+      ],
+      "sprite_calls": 17,
+      "code_bytes": 1296,
+      "highlow_fields": 23,
+      "installation_ready": false
+    },
+    {
+      "resolution": "1024x768",
+      "geometry_oracle_only": false,
+      "terrain_inclusive": [
+        32,
+        16,
+        991,
+        751
+      ],
+      "action_bar_inclusive": [
+        800,
+        688,
+        991,
+        751
+      ],
+      "full_tiles": [
+        15,
+        11
+      ],
+      "ceil_tiles": [
+        15,
+        12
+      ],
+      "sprite_calls": 21,
+      "code_bytes": 1516,
+      "highlow_fields": 27,
+      "installation_ready": false
+    },
+    {
+      "resolution": "1280x720",
+      "geometry_oracle_only": false,
+      "terrain_inclusive": [
+        32,
+        16,
+        1247,
+        703
+      ],
+      "action_bar_inclusive": [
+        1056,
+        640,
+        1247,
+        703
+      ],
+      "full_tiles": [
+        19,
+        10
+      ],
+      "ceil_tiles": [
+        19,
+        11
+      ],
+      "sprite_calls": 23,
+      "code_bytes": 1626,
+      "highlow_fields": 29,
+      "installation_ready": false
+    },
+    {
+      "resolution": "1280x960",
+      "geometry_oracle_only": false,
+      "terrain_inclusive": [
+        32,
+        16,
+        1247,
+        943
+      ],
+      "action_bar_inclusive": [
+        1056,
+        880,
+        1247,
+        943
+      ],
+      "full_tiles": [
+        19,
+        14
+      ],
+      "ceil_tiles": [
+        19,
+        15
+      ],
+      "sprite_calls": 25,
+      "code_bytes": 1736,
+      "highlow_fields": 31,
+      "installation_ready": false
+    },
+    {
+      "resolution": "1920x1080",
+      "geometry_oracle_only": false,
+      "terrain_inclusive": [
+        32,
+        16,
+        1887,
+        1063
+      ],
+      "action_bar_inclusive": [
+        1696,
+        1000,
+        1887,
+        1063
+      ],
+      "full_tiles": [
+        29,
+        16
+      ],
+      "ceil_tiles": [
+        29,
+        17
+      ],
+      "sprite_calls": 29,
+      "code_bytes": 1956,
+      "highlow_fields": 35,
+      "installation_ready": false
+    },
+    {
+      "resolution": "802x602",
+      "geometry_oracle_only": false,
+      "terrain_inclusive": [
+        32,
+        16,
+        769,
+        585
+      ],
+      "action_bar_inclusive": [
+        578,
+        522,
+        769,
+        585
+      ],
+      "full_tiles": [
+        11,
+        8
+      ],
+      "ceil_tiles": [
+        12,
+        9
+      ],
+      "sprite_calls": 17,
+      "code_bytes": 1296,
+      "highlow_fields": 23,
+      "installation_ready": false
+    }
+  ],
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "source_bound_current_frame_findings": {
+    "path": "captures/current/initialpaint-frame-asset-audit-current.json",
+    "sha256": "59194f70ac58b8561db1aea48ede1302f6924d7f60380259bbe8a0a4685fac7f"
+  },
+  "prospective_profile_current_capture_failures": {
+    "path": "captures/current/four-sided-frame-prospective-audit-current.json",
+    "sha256": "73e877d40e9c0cdb16f0bf02571bf88d3e57f208e7a43b3f14e42ae5bd6799f1"
+  },
+  "initial_paint_runtime_evidence": {
+    "path": "captures/current/initial-map-paint-runtime-current.json",
+    "sha256": "2f265d5595045f2805806728b2b6f43c61fad67fc89f817af6c5ae4c9f9992c9"
+  },
+  "integration_contract": {
+    "path": "docs/hd/FOUR_SIDED_FRAME.md",
+    "sha256": "762742d91f7b50d484374174f795be353f8d05bd6fc50322b952fb22441b01f6"
+  },
+  "review_findings_corrected": [
+    "S32 runtime descriptor header is width-low/height-high; 406260 copies the source header unchanged.",
+    "All five native descriptors require encoding 0 and a nonnull encoded stream before the first draw.",
+    "Every native draw receives DF=0; the caller direction flag is restored on helper return."
+  ],
+  "limits": [
+    "Both current actual 800x600 and1024x768 PNGs retain incomplete right/bottom artwork; top/left match their existing two-band source recipe.",
+    "The prospective four-band oracle uses different repeat strips and is not a retroactive gate for the older top/left recipe.",
+    "Helper status1 means admitted native calls returned; fixture native sprite calls are recorders, not actual game drawing.",
+    "Pixel fixtures use decoded source sprites only in an in-memory reference canvas; no screenshot/image file is generated or modified.",
+    "Stage installation, framed terrain/control/input geometry, owner/tooltip order, full frame presentation and new candidate-bound hidden runtime remain unfinished.",
+    "Native resource-loader lifetime and source asset identity remain runtime prerequisites.",
+    "No visible/manual runtime, OS input, stable-stage change or promotion was performed for frame preparation."
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T22:14:32+02:00",
+  "generated_at": "2026-09-06T05:57:38+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
   "current_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -20,6 +20,19 @@
   ],
   "validation_only_groups_in_stable": [],
   "validation_stage_expectations": {
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation": [
+      "terrain-tooltip-bottom-center",
+      "selected-unit-command-panel-right-bottom",
+      "frame-restore-bands",
+      "right-bottom-compose-proof",
+      "castle-ui-center-present-wrapper",
+      "castle-ui-centered-input",
+      "castle-overview-center-present-wrapper",
+      "castle-overview-centered-input",
+      "battle-ui-center-present-wrapper",
+      "battle-grid-centered-input",
+      "battle-ui-centered-input"
+    ],
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose": [
       "right-bottom-compose-proof"
     ],
@@ -82,6 +95,7 @@
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout",
     "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore",
@@ -121,6 +135,28 @@
       "summary": {
         "stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
         "validation_only_groups_in_stable": []
+      },
+      "failures": []
+    },
+    "validation_stage_scope_combinedui_validation": {
+      "passed": true,
+      "summary": {
+        "validation_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+        "expected_extra_groups": [
+          "terrain-tooltip-bottom-center",
+          "selected-unit-command-panel-right-bottom",
+          "frame-restore-bands",
+          "right-bottom-compose-proof",
+          "castle-ui-center-present-wrapper",
+          "castle-ui-centered-input",
+          "castle-overview-center-present-wrapper",
+          "castle-overview-centered-input",
+          "battle-ui-center-present-wrapper",
+          "battle-grid-centered-input",
+          "battle-ui-centered-input"
+        ],
+        "unexpected_groups": [],
+        "missing_groups": []
       },
       "failures": []
     },
@@ -287,6 +323,7 @@
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-hitbox",
+          "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-framerestore",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout",
           "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-hdlayout-framerestore",

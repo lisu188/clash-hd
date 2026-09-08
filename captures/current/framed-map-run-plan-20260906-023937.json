@@ -1,0 +1,396 @@
+{
+  "prepared_at": "2026-09-06T02:39:37.755381+00:00",
+  "executed": false,
+  "approved": true,
+  "approval_source": "user_messages_in_current_active_task",
+  "user_messages": [
+    "I approve hidden controle run",
+    "Approve debugger runs"
+  ],
+  "purpose": "Observe actual initial framed map composition at two resolutions and source-audit all four borders and all six action-bar cells",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "source_sha256": {
+    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+    "src/patcher/partial_tile_hooks.py": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+    "src/patcher/initial_map_paint.py": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+    "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+    "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+    "src/patcher/framed_recipe.py": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+    "src/patcher/four_sided_frame.py": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+    "src/patcher/framed_full_paint.py": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+    "src/patcher/framed_presentation.py": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+    "src/patcher/framed_input.py": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+    "tools/build_partial_tile_candidate.py": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+    "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+    "tools/build_framed_candidate.py": "eadc8e0be719eb78de54bd9a0079e3e6f1028823be0292cf19274ba528d71314",
+    "scripts/cdb/run_cdb_surface_dump.ps1": "bc910d26223b12ce9248b06bf6eee1033263ff2b28703937aea98ae92d015ab2",
+    "tools/render_cdb_surface_probe.py": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+    "tools/initial_map_paint_trace.py": "845edda7ac563afe602dc3f6a388fe7e1874d6c6f128d1a938f8ce9ac2aa1021",
+    "tools/map_tile_coverage.py": "6d4a59b6f6c0601b7676165a6482b717f40582acdbf83f64643fb5fe5302a87b",
+    "tools/visibility_coverage.py": "133178fbdad53d1f81fce2c99aac17f63b73593f3f780cea597b61f6b4ad53e0",
+    "tools/frame_surface_audit.py": "1a9d0684cef0bb19a7b0ecd5ecb02c41ef0280033f2307f99d524a521611bfd3",
+    "tools/action_bar_surface_audit.py": "673bc4a925da2d3e77895b7179787f22c67401bc0198c5872ba305fdb637dbad",
+    "tools/cdb_surface_dump_to_png.py": "15d88e91ae65d8d3abc8f060915606437fbdb21b6d17285f99393e50fc271316",
+    "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
+    "scripts/build/build_ddraw_surfdump_proxy.ps1": "ad8d2889c18c53ca78aa6866fd07aa29632977851136ae88fca1ba67f84cd554",
+    "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp": "407d41d0d548e6217c6041181efb6466efa90f447110c5b8857bf92714ecb8eb"
+  },
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "assets_reference": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v6-control-run-plan-current.json",
+    "sha256": "a9d5d89d42a1558ba8b2db352c7656915fc902d969d409801184f0c9e755926a"
+  },
+  "runs": [
+    {
+      "resolution": "1280x720",
+      "expected_candidate_sha256": "883bdeeb388ca294a2bf37195c0d18ee069ed6e668ffbc4e6a9e905ca3ccf913",
+      "expected_probe_sha256": "962d846dd52c3087141283d8b98af0d6afdcf47cb30c0b2e921f0a10d3c1aa87",
+      "candidate_dir": "C:\\ClashTests\\hd-completion\\framed-v1-1280x720-20260906-023937\\candidate",
+      "candidate_path": "C:\\ClashTests\\hd-completion\\framed-v1-1280x720-20260906-023937\\candidate\\clash95_hd_framed_1280x720_20260906-023937.exe",
+      "workdir": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+      "output_root": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937",
+      "command": [
+        "scripts/cdb/run_cdb_surface_dump.ps1",
+        "-PartialTileValidation",
+        "-InitialMapPaintValidation",
+        "-FramedValidation",
+        "-Stage",
+        "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+        "-Resolution",
+        "1280x720",
+        "-WorkDir",
+        "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+        "-CandidateDir",
+        "C:\\ClashTests\\hd-completion\\framed-v1-1280x720-20260906-023937\\candidate",
+        "-CandidateName",
+        "clash95_hd_framed_1280x720_20260906-023937.exe",
+        "-OutRoot",
+        "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937",
+        "-UseDdrawProxy",
+        "-LoadSlot",
+        "0",
+        "-FastForwardStartAnims",
+        "-RequireGameplay",
+        "-RunSeconds",
+        "180"
+      ],
+      "asset_files_reverified": 50,
+      "status_vas": {
+        "full_converge": 5650932,
+        "full_present": 5650988,
+        "incremental": 5651023
+      },
+      "initial_status_vas": {
+        "ui_return": 5651602,
+        "admission": 5651615,
+        "ready": 5651624,
+        "paint_return": 5651634
+      },
+      "layout_contract": {
+        "profile": "native_four_border_tiles_v1",
+        "physical_surface": [
+          0,
+          0,
+          1279,
+          719
+        ],
+        "terrain": [
+          32,
+          16,
+          1247,
+          703
+        ],
+        "full_tiles": [
+          19,
+          10
+        ],
+        "ceil_tiles": [
+          19,
+          11
+        ],
+        "action_bar": [
+          1056,
+          640,
+          1247,
+          703
+        ],
+        "full_entry_extra_stack_bytes": 60,
+        "full_status_to_caller_before_call": 148,
+        "full_entry_native_old_bytes": "53515256575583ec18",
+        "full_entry_va": 4294400,
+        "full_native_body_va": 4294409,
+        "full_entry_admitted_va": 5651261,
+        "full_return_observer_va": 5651300,
+        "unsupported_context_is_native_fallback": true,
+        "smaller_world_is_rejection_not_rendered_proof": true
+      },
+      "code_bytes": 10430,
+      "new_highlow_count": 231
+    },
+    {
+      "resolution": "1280x960",
+      "expected_candidate_sha256": "e7d0b80f1af5b2d6821037b212c9e8081c48828e97692124fe9c481b9dab8ddc",
+      "expected_probe_sha256": "2a047f3280c978ec63ba61a99e111d61c4a38b99568c7cc3dc5988fcab1e6c04",
+      "candidate_dir": "C:\\ClashTests\\hd-completion\\framed-v1-1280x960-20260906-023937\\candidate",
+      "candidate_path": "C:\\ClashTests\\hd-completion\\framed-v1-1280x960-20260906-023937\\candidate\\clash95_hd_framed_1280x960_20260906-023937.exe",
+      "workdir": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+      "output_root": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x960-20260906-023937",
+      "command": [
+        "scripts/cdb/run_cdb_surface_dump.ps1",
+        "-PartialTileValidation",
+        "-InitialMapPaintValidation",
+        "-FramedValidation",
+        "-Stage",
+        "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+        "-Resolution",
+        "1280x960",
+        "-WorkDir",
+        "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+        "-CandidateDir",
+        "C:\\ClashTests\\hd-completion\\framed-v1-1280x960-20260906-023937\\candidate",
+        "-CandidateName",
+        "clash95_hd_framed_1280x960_20260906-023937.exe",
+        "-OutRoot",
+        "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x960-20260906-023937",
+        "-UseDdrawProxy",
+        "-LoadSlot",
+        "0",
+        "-FastForwardStartAnims",
+        "-RequireGameplay",
+        "-RunSeconds",
+        "180"
+      ],
+      "asset_files_reverified": 50,
+      "status_vas": {
+        "full_converge": 5651042,
+        "full_present": 5651098,
+        "incremental": 5651133
+      },
+      "initial_status_vas": {
+        "ui_return": 5651712,
+        "admission": 5651725,
+        "ready": 5651734,
+        "paint_return": 5651744
+      },
+      "layout_contract": {
+        "profile": "native_four_border_tiles_v1",
+        "physical_surface": [
+          0,
+          0,
+          1279,
+          959
+        ],
+        "terrain": [
+          32,
+          16,
+          1247,
+          943
+        ],
+        "full_tiles": [
+          19,
+          14
+        ],
+        "ceil_tiles": [
+          19,
+          15
+        ],
+        "action_bar": [
+          1056,
+          880,
+          1247,
+          943
+        ],
+        "full_entry_extra_stack_bytes": 60,
+        "full_status_to_caller_before_call": 148,
+        "full_entry_native_old_bytes": "53515256575583ec18",
+        "full_entry_va": 4294400,
+        "full_native_body_va": 4294409,
+        "full_entry_admitted_va": 5651371,
+        "full_return_observer_va": 5651410,
+        "unsupported_context_is_native_fallback": true,
+        "smaller_world_is_rejection_not_rendered_proof": true
+      },
+      "code_bytes": 10650,
+      "new_highlow_count": 235
+    },
+    {
+      "resolution": "1920x1080",
+      "expected_candidate_sha256": "5402ca1cb21dff60e6bb8dfbdcc92db73a12515652451f00df9273029a0564ae",
+      "expected_probe_sha256": "6fcce614872a69c2416bad103c398a2441ef28c51316c698d379315e51b373d6",
+      "candidate_dir": "C:\\ClashTests\\hd-completion\\framed-v1-1920x1080-20260906-023937\\candidate",
+      "candidate_path": "C:\\ClashTests\\hd-completion\\framed-v1-1920x1080-20260906-023937\\candidate\\clash95_hd_framed_1920x1080_20260906-023937.exe",
+      "workdir": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+      "output_root": "C:\\ClashCaptures\\hd-completion\\framed-v1-1920x1080-20260906-023937",
+      "command": [
+        "scripts/cdb/run_cdb_surface_dump.ps1",
+        "-PartialTileValidation",
+        "-InitialMapPaintValidation",
+        "-FramedValidation",
+        "-Stage",
+        "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+        "-Resolution",
+        "1920x1080",
+        "-WorkDir",
+        "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+        "-CandidateDir",
+        "C:\\ClashTests\\hd-completion\\framed-v1-1920x1080-20260906-023937\\candidate",
+        "-CandidateName",
+        "clash95_hd_framed_1920x1080_20260906-023937.exe",
+        "-OutRoot",
+        "C:\\ClashCaptures\\hd-completion\\framed-v1-1920x1080-20260906-023937",
+        "-UseDdrawProxy",
+        "-LoadSlot",
+        "0",
+        "-FastForwardStartAnims",
+        "-RequireGameplay",
+        "-RunSeconds",
+        "180"
+      ],
+      "asset_files_reverified": 50,
+      "status_vas": {
+        "full_converge": 5651612,
+        "full_present": 5651668,
+        "incremental": 5651703
+      },
+      "initial_status_vas": {
+        "ui_return": 5652282,
+        "admission": 5652295,
+        "ready": 5652304,
+        "paint_return": 5652314
+      },
+      "layout_contract": {
+        "profile": "native_four_border_tiles_v1",
+        "physical_surface": [
+          0,
+          0,
+          1919,
+          1079
+        ],
+        "terrain": [
+          32,
+          16,
+          1887,
+          1063
+        ],
+        "full_tiles": [
+          29,
+          16
+        ],
+        "ceil_tiles": [
+          29,
+          17
+        ],
+        "action_bar": [
+          1696,
+          1000,
+          1887,
+          1063
+        ],
+        "full_entry_extra_stack_bytes": 60,
+        "full_status_to_caller_before_call": 148,
+        "full_entry_native_old_bytes": "53515256575583ec18",
+        "full_entry_va": 4294400,
+        "full_native_body_va": 4294409,
+        "full_entry_admitted_va": 5651941,
+        "full_return_observer_va": 5651980,
+        "unsupported_context_is_native_fallback": true,
+        "smaller_world_is_rejection_not_rendered_proof": true
+      },
+      "code_bytes": 11440,
+      "new_highlow_count": 243
+    },
+    {
+      "resolution": "802x602",
+      "expected_candidate_sha256": "dd54a298c4ab8e40db67ffff28672854b062c29554a16556a43f872ab28d4e3c",
+      "expected_probe_sha256": "7360f286825de736944b8196642c53fc2e0686c9d416edf081afbc2ed8f864f9",
+      "candidate_dir": "C:\\ClashTests\\hd-completion\\framed-v1-802x602-20260906-023937\\candidate",
+      "candidate_path": "C:\\ClashTests\\hd-completion\\framed-v1-802x602-20260906-023937\\candidate\\clash95_hd_framed_802x602_20260906-023937.exe",
+      "workdir": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+      "output_root": "C:\\ClashCaptures\\hd-completion\\framed-v1-802x602-20260906-023937",
+      "command": [
+        "scripts/cdb/run_cdb_surface_dump.ps1",
+        "-PartialTileValidation",
+        "-InitialMapPaintValidation",
+        "-FramedValidation",
+        "-Stage",
+        "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+        "-Resolution",
+        "802x602",
+        "-WorkDir",
+        "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+        "-CandidateDir",
+        "C:\\ClashTests\\hd-completion\\framed-v1-802x602-20260906-023937\\candidate",
+        "-CandidateName",
+        "clash95_hd_framed_802x602_20260906-023937.exe",
+        "-OutRoot",
+        "C:\\ClashCaptures\\hd-completion\\framed-v1-802x602-20260906-023937",
+        "-UseDdrawProxy",
+        "-LoadSlot",
+        "0",
+        "-FastForwardStartAnims",
+        "-RequireGameplay",
+        "-RunSeconds",
+        "180"
+      ],
+      "asset_files_reverified": 50,
+      "status_vas": {
+        "full_converge": 5650637,
+        "full_present": 5650693,
+        "incremental": 5650728
+      },
+      "initial_status_vas": {
+        "ui_return": 5651307,
+        "admission": 5651320,
+        "ready": 5651329,
+        "paint_return": 5651339
+      },
+      "layout_contract": {
+        "profile": "native_four_border_tiles_v1",
+        "physical_surface": [
+          0,
+          0,
+          801,
+          601
+        ],
+        "terrain": [
+          32,
+          16,
+          769,
+          585
+        ],
+        "full_tiles": [
+          11,
+          8
+        ],
+        "ceil_tiles": [
+          12,
+          9
+        ],
+        "action_bar": [
+          578,
+          522,
+          769,
+          585
+        ],
+        "full_entry_extra_stack_bytes": 60,
+        "full_status_to_caller_before_call": 148,
+        "full_entry_native_old_bytes": "53515256575583ec18",
+        "full_entry_va": 4294400,
+        "full_native_body_va": 4294409,
+        "full_entry_admitted_va": 5650966,
+        "full_return_observer_va": 5651005,
+        "unsupported_context_is_native_fallback": true,
+        "smaller_world_is_rejection_not_rendered_proof": true
+      },
+      "code_bytes": 9805,
+      "new_highlow_count": 219
+    }
+  ],
+  "visible_runtime": false,
+  "os_input": false,
+  "manual_input_proof": false,
+  "promotion": false,
+  "prior_runtime_failures_preserved": true,
+  "limits": "Initial ordinary map only, bounded player0 in-world ceiling window. Hidden software pixels do not prove final wrapper composition, input, modal owners, endurance or promotion."
+}

@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-09-05T10:32:17.181777+00:00",
+  "status": "file_bound_plan_prepared_unapproved",
+  "candidate": {
+    "path": "C:\\ClashTests\\hd-completion\\layout-manual-20260905-111700\\clash95_hd_combinedui_800x600.exe",
+    "sha256": "0a75cf35f42efe1e44fba1ac4031eaae5323cdff51aa19d261c36c5bb84691c2"
+  },
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+  "resolution": [
+    800,
+    600
+  ],
+  "wrapper": {
+    "path": "C:\\ClashTests\\hd-completion\\layout-manual-20260905-111700\\ddraw.dll",
+    "sha256": "c9da5b54f017bdfc75cbcecfd8709138406480ce2b5b5c966cdf3f37db6426eb"
+  },
+  "wrapper_config": {
+    "path": "C:\\ClashTests\\hd-completion\\layout-manual-20260905-111700\\dxcfg.ini",
+    "sha256": "0f35b74b13284901c07145fb945575a7f5a5f313e13aeb24392843609ecda3fe"
+  },
+  "wrapper_build_manifest": {
+    "path": "C:\\ClashTests\\hd-completion\\layout-manual-20260905-111700\\ddraw_surfdump_proxy.build.json",
+    "sha256": "4e36d25d48e60da2cde51764a5afa809b70eaace438830075267a793d298d26f"
+  },
+  "workdir": "C:\\ClashTests\\hd-completion\\layout-manual-20260905-111700",
+  "asset_copy_manifest": {
+    "path": "C:\\ClashTests\\hd-completion\\layout-manual-20260905-111700\\workspace-preparation.json",
+    "sha256": "aac19e39fe6533792f42e981cadfc5dff0f8a223482341f9502924e65bfb7e93"
+  },
+  "verified_copied_file_count": 47,
+  "source_copy_hashes_match": true,
+  "runtime_executed": false,
+  "approval_received": false,
+  "manual_proof_created": false,
+  "ready_for_visible_execution": false,
+  "remaining": [
+    "Choose the candidate after partial-edge rendering work before requesting a manual session.",
+    "Obtain fresh explicit approval bound to the current plan before visible runtime, proxy window activation or capture."
+  ],
+  "protected_original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "execution_plan": {
+    "path": "captures/current/hd-layout-manual-run-plan-current.json",
+    "sha256": "fe5b8fe93c91b1cf1e4d1d6c4414e5342d06b69019ee6b57ba67ed215eb177b9"
+  },
+  "superseded_plan": {
+    "path": "captures/archive/hd-layout-manual-plan-20260905-before-dpi.json",
+    "sha256": "68478306b0695bb0eb24ccaf4dbff79ab8f59052fc8a51428076d63bca884fde",
+    "reason": "producer/parser now bind per-child native-DPI policy and measured process/window awareness"
+  },
+  "bound_starting_asset_count": 50,
+  "hidden_geometry": {
+    "path": "captures\\current\\combinedui-layout-geometry-hidden-current.json",
+    "sha256": "b118f391fc8b515e83eedab24342586df834a35ee5af4aebbb95d567503ba61d"
+  }
+}

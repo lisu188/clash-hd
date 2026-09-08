@@ -1,0 +1,73 @@
+{
+  "schema": "clash95_modal_primary_failed_attempt_v1",
+  "passed": false,
+  "classification": "host_proxy_module_identification_rejected_after_source_bound_primary_ready",
+  "started_at": "2026-09-06T10:29:54.2641534Z",
+  "finished_at": "2026-09-06T10:30:41.1094593Z",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+  "resolution": "1024x768",
+  "route": "barracks",
+  "availability": "construct_all",
+  "summary": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary5-barracks-20260906-103100\\summary.json",
+    "sha256": "a12a5943d7e0be6a8f40099c72bb869947ac9c8710362230ae5289e6db8c6999"
+  },
+  "log": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary5-barracks-20260906-103100\\cdb.log",
+    "sha256": "cfd5979a480257f34f6391e49dc58da48fbb512f755f2a88d595ad5bd33f94dc"
+  },
+  "host_failures": [
+    "Owned process does not contain the pinned local proxy module."
+  ],
+  "actual_proxy_load": [
+    "ModLoad: 6cdb0000 6cdd6000   C:\\ClashTests\\hd-completion\\primary5-barracks-20260906-103100\\DDRAW.dll"
+  ],
+  "primary_ready_observed": true,
+  "primary_capture_observed": false,
+  "cleanup": {
+    "candidates": [
+      {
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\hd-completion\\primary5-barracks-20260906-103100\\framed-modal-canvas-barracks-1024x768-ed7ac559571c2227.exe",
+          "creation_filetime": 134331642008213093,
+          "process_id": 4348,
+          "handle_retained": true,
+          "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+          "creation_utc": "2026-09-06T10:30:00.8213093Z",
+          "parent_process_id": 6180
+        }
+      }
+    ],
+    "cdb": {
+      "termination_requested": true,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T10:30:00.6191759Z",
+        "handle_retained": true,
+        "creation_filetime": 134331642006191759,
+        "process_id": 6180
+      }
+    },
+    "desktop_closed": true
+  },
+  "postrun_identity": {
+    "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "input_candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+    "proxy_sha256": "b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70"
+  },
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "The pinned proxy load is observed in the debugger log, but the host module-enumeration check rejected capture.",
+    "Native/physical diagnostic bytes, if present, do not establish the missing primary image or final composition.",
+    "The module-identification cause requires a separate diagnosis; do not weaken its path/hash checks to obtain a pass."
+  ]
+}

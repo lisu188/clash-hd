@@ -1,0 +1,82 @@
+{
+  "schema": "clash95_framed_modal_preparation_v1",
+  "generated_at": "2026-09-06T05:13:30.371724+00:00",
+  "evidence_class": "offline_candidate_preparation",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "source_sha256": {
+    "src/patcher/framed_modal_canvas.py": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+    "tools/test_framed_modal_canvas.py": "8a18f92e41582878ea0bd1e74dca742b831cb760936adc97314601ed2e482fa3",
+    "src/patcher/pe_modal_extension.py": "5b41f5f52f1995aea5f028085c78bb0c81e05381dcfb47f8b9349250e7f23b72",
+    "tools/test_pe_modal_extension.py": "a2e29e8cb1d7b8a2a64a36fb2f296d41fbc98f485853e1b72a9c2e4359d0941c",
+    "tools/build_framed_modal_candidate.py": "26c297252f580f354fa18ee4e9b7176841318e0477791f448c2ce9b940f6fa78",
+    "tools/test_build_framed_modal_candidate.py": "f72437a1d9bcfc23e1d9a2857d916812c8dbe04447270169ac24a17856123935"
+  },
+  "preflight": {
+    "resolution": "1024x768",
+    "minimap_viewport": true,
+    "passed": true,
+    "exit_code": 0,
+    "candidate_sha256": "17b48dced0e6e75010df67e93c4feb22ca9545cd380084b9a2c383f2eddf5e1b",
+    "evidence_source": "coordinator observed tools/build_framed_modal_candidate.py --original C:/Clash/clash95.exe --resolution 1024x768 --minimap-viewport --preflight tool output"
+  },
+  "tests": [
+    {
+      "path": "tools/test_framed_modal_canvas.py",
+      "groups": 11,
+      "passed": true,
+      "seconds": 14.87,
+      "reported_by": "onboarding_audit; actual emitted x86 plus cloned constructor/destructor in synthetic memory"
+    },
+    {
+      "path": "tools/test_pe_modal_extension.py",
+      "groups": 16,
+      "passed": true,
+      "seconds": 80.426,
+      "reported_by": "refresh_safety; real emitter/PE integration across six resolutions and both minimap profiles"
+    },
+    {
+      "path": "tools/test_build_framed_modal_candidate.py",
+      "groups": 7,
+      "passed": true,
+      "seconds": 17.36,
+      "reported_by": "coordinator exec session40620; exit0"
+    }
+  ],
+  "tests_log_limitation": "These are coordinator-observed tool/agent result summaries; separate persistent raw fixture stdout files were not produced.",
+  "contract": {
+    "code_section": ".hdmodal RX",
+    "state_section": ".hdstate RW",
+    "state_page_bytes": 4096,
+    "state_record_bytes": 128,
+    "code_bytes": 2161,
+    "hook_count": 6,
+    "absolute_fixups": 118,
+    "relative_fixups": 15,
+    "hook_relative_fixups": 6,
+    "original_highlow_removals": [],
+    "existing_wrapper_permissions_changed": false,
+    "restore_before_native_map_call": "004224B2",
+    "native_canvas": [
+      640,
+      480
+    ],
+    "six_resolution_byte_replay": true
+  },
+  "new_modal_executable_written": false,
+  "new_modal_runtime_executed": false,
+  "repaired_modal_visual_proof": false,
+  "stable_stage_changed": false,
+  "installation_ready": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "preserved_failures": [
+    "Two earlier overview capture attempts failed.",
+    "Later original 1024 overview/hospital captures pass bounded runtime but fail visual composition."
+  ],
+  "remaining": [
+    "New stage-specific route/physical-mirror capture protocol and hidden runtime.",
+    "Actual modal entry/exit lifecycle and all screen/resolution coverage.",
+    "Separately composed primary layers, natural/manual input and promotion."
+  ]
+}

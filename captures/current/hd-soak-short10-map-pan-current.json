@@ -1,0 +1,1477 @@
+{
+  "schema": "hidden_cdb_host_soak_report_v1",
+  "generated_at": "2026-09-05T08:11:17.443827+00:00",
+  "runtime_policy": "opt-in approved hidden-CDB host soak (environment=hidden_cdb_host); the game runs as a real host process on a hidden desktop with no input delivery; input_responsiveness is the not_applicable_hidden sentinel and is never fabricated; all host process metrics stay required; frame metrics come from real periodic ReadProcessMemory surface reads; map entry and any pan are breakpoint-forced and disclosed; never a visible-runtime or guest proof",
+  "environment": "hidden_cdb_host",
+  "evidence_class": "approved_hidden_cdb_host_soak",
+  "executed": true,
+  "passed": true,
+  "failures": [],
+  "tier": "short10",
+  "route": "map-pan",
+  "duration_sec": 600,
+  "sample_interval_sec": 15,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "stable_stage_should_change": false,
+  "input_exe": "C:\\Clash\\clash95.exe",
+  "input_sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+  "candidate": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\clash95_hd_hidden_soak_20260905_100041_704.exe",
+  "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "patch_stage_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\patch-stage.json",
+  "workdir": "C:\\Clash",
+  "output_directory": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan",
+  "report_json": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\report.json",
+  "report_markdown": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\RUN-SUMMARY.md",
+  "cdb_log": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\hidden-soak-cdb.log",
+  "generated_probe": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\clash95_hidden_soak_probe.generated.cdb",
+  "launch_mode": "hidden-desktop",
+  "entry_mechanism": "cdb_breakpoint_forced_loader_entry",
+  "entry_mechanism_detail": {
+    "mechanism": "cdb_breakpoint_forced_loader_entry",
+    "forced": true,
+    "disclosure": "map entry was FORCED by CDB breakpoints riding the surface-dump base template loader route (forced main-menu click, forced load-slot select and accept); it was not reached by user input",
+    "load_slot": 2
+  },
+  "pan_mechanism": "cdb_forced_scroll_write",
+  "pan_mechanism_detail": {
+    "mechanism": "cdb_forced_scroll_write",
+    "forced": true,
+    "disclosure": "map pan was FORCED by periodic CDB writes of a bounded four-phase cycle into the gameData scroll fields gd+140008/gd+140012 (SOAK_PAN_SET rows); it was not user input",
+    "pan_interval_sec": 10,
+    "pan_event_count": 59,
+    "scroll_fields": [
+      "gd+140008",
+      "gd+140012"
+    ]
+  },
+  "input_responsiveness": "not_applicable_hidden",
+  "input_responsiveness_reason": "hidden-desktop run delivers no user input; responsiveness cannot be measured and is recorded as the sentinel, never fabricated",
+  "input_proof_class": "hidden_cdb_host_no_input_diagnostic_not_manual",
+  "right_bottom_promotion_blocked": true,
+  "capture_mode": "hidden-cdb-host-readprocessmemory",
+  "surface": {
+    "Base": "0a390030",
+    "Width": 800,
+    "Height": 600,
+    "Bytes": 480000,
+    "Source": "SOAK_SURFDUMP_READY"
+  },
+  "surface_base": "0x0a390030",
+  "frame_read_method": "host_readprocessmemory",
+  "ready_marker": {
+    "source": "SOAK_SURFDUMP_READY",
+    "redraw_seq": 0,
+    "surface": "0a0af370",
+    "base": "0a390030",
+    "width": 800,
+    "height": 600,
+    "bytes": 480000
+  },
+  "route_start_marker": {
+    "route_ticks": 38400,
+    "pan": 1,
+    "player": 0,
+    "tick": 20191846,
+    "game_data": "040d0030",
+    "scroll_x": 38,
+    "scroll_y": 41
+  },
+  "route_end_marker": {
+    "route_ticks": 38400,
+    "pan": 1,
+    "hits": 66778,
+    "tick_delta": 38400,
+    "player": 0,
+    "scroll_x": 37,
+    "scroll_y": 40
+  },
+  "pan_events": [
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 1104,
+      "tick_delta": 640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 2224,
+      "tick_delta": 1280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 3352,
+      "tick_delta": 1920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 4460,
+      "tick_delta": 2560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 5571,
+      "tick_delta": 3200,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 6682,
+      "tick_delta": 3840,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 7776,
+      "tick_delta": 4480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 8872,
+      "tick_delta": 5120,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 9986,
+      "tick_delta": 5760,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 11091,
+      "tick_delta": 6400,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 12188,
+      "tick_delta": 7040,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 13304,
+      "tick_delta": 7680,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 14398,
+      "tick_delta": 8320,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 15509,
+      "tick_delta": 8960,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 16626,
+      "tick_delta": 9600,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 17746,
+      "tick_delta": 10240,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 18850,
+      "tick_delta": 10880,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 19973,
+      "tick_delta": 11520,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 21099,
+      "tick_delta": 12160,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 22219,
+      "tick_delta": 12800,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 23337,
+      "tick_delta": 13440,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 24445,
+      "tick_delta": 14080,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 25551,
+      "tick_delta": 14720,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 26698,
+      "tick_delta": 15360,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 27849,
+      "tick_delta": 16000,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 28985,
+      "tick_delta": 16640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 30093,
+      "tick_delta": 17280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 31194,
+      "tick_delta": 17920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 32315,
+      "tick_delta": 18560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 33459,
+      "tick_delta": 19200,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 34585,
+      "tick_delta": 19840,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 35681,
+      "tick_delta": 20480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 36764,
+      "tick_delta": 21120,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 37862,
+      "tick_delta": 21760,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 38968,
+      "tick_delta": 22400,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 40041,
+      "tick_delta": 23040,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 41145,
+      "tick_delta": 23680,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 42268,
+      "tick_delta": 24320,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 43398,
+      "tick_delta": 24960,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 44520,
+      "tick_delta": 25600,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 45632,
+      "tick_delta": 26240,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 46751,
+      "tick_delta": 26880,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 47853,
+      "tick_delta": 27520,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 48971,
+      "tick_delta": 28160,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 50090,
+      "tick_delta": 28800,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 51207,
+      "tick_delta": 29440,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 52322,
+      "tick_delta": 30080,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 53432,
+      "tick_delta": 30720,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 54553,
+      "tick_delta": 31360,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 55677,
+      "tick_delta": 32000,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 56800,
+      "tick_delta": 32640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 57918,
+      "tick_delta": 33280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 59040,
+      "tick_delta": 33920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 60159,
+      "tick_delta": 34560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 61271,
+      "tick_delta": 35200,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 62394,
+      "tick_delta": 35840,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 63511,
+      "tick_delta": 36480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 64601,
+      "tick_delta": 37120,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 65692,
+      "tick_delta": 37760,
+      "delta_x": -1,
+      "delta_y": -1
+    }
+  ],
+  "proxy": {
+    "used": true,
+    "path": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\ddraw.dll",
+    "sha256": "0B66979CFC512198F9205E6590FD85D6BA2137DB2D6C17BFB223EF300BFFE655",
+    "build_manifest": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\ddraw_surfdump_proxy.build.json",
+    "build_log": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\ddraw-proxy-build\\build.log",
+    "log": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\ddraw_surfdump_proxy.log",
+    "present_enabled": false
+  },
+  "cleanup": {
+    "game_stopped": true,
+    "cdb_stopped": true,
+    "errors": [],
+    "stopped_process_ids": [
+      29504
+    ]
+  },
+  "ready_observed": true,
+  "soak_route_start_observed": true,
+  "soak_route_end_observed": true,
+  "heartbeat_count": 32,
+  "pan_event_count": 59,
+  "av_observed": false,
+  "frame_sample_count": 41,
+  "frame_hash_unique_count": 41,
+  "frame_progress_expected": true,
+  "frame_stability_class": "progressing",
+  "nonblack_percent_min": 97.34,
+  "nonblack_percent_max": 97.34,
+  "unique_sample_colors_min": 164,
+  "unique_sample_colors_max": 166,
+  "nonblack_definition": "percent of surface bytes with a nonzero 8-bit palette index, computed from real ReadProcessMemory surface bytes (palette index 0 is the engine clear color)",
+  "unique_colors_definition": "count of distinct 8-bit palette indices present in the full surface read",
+  "frame_elapsed_sec": 599.536016,
+  "process_elapsed_sec": 599.514498,
+  "required_elapsed_sec": 583,
+  "elapsed_coverage": {
+    "formula": "duration_sec - sample_interval_sec - 2",
+    "required_sec": 583,
+    "frame_elapsed_sec": 599.536016,
+    "process_elapsed_sec": 599.514498,
+    "passed": true
+  },
+  "process_sample_count": 41,
+  "working_set_growth_bytes": 200704,
+  "private_memory_growth_bytes": 208896,
+  "handle_growth": -6,
+  "max_working_set_growth_mb": 64,
+  "max_private_memory_growth_mb": 64,
+  "max_handle_growth": 128,
+  "working_set_growth_limit_bytes": 67108864,
+  "private_memory_growth_limit_bytes": 67108864,
+  "process_exited_unexpectedly": false,
+  "exit_code": null,
+  "clean_stop": true,
+  "clean_stop_mechanism": "verified_game_and_cdb_termination",
+  "max_artifact_mb": 250,
+  "artifact_limit_bytes": 262144000,
+  "artifact_bytes": 3896428,
+  "frame_samples": [
+    {
+      "Name": "frame-0001",
+      "Timestamp": "2026-09-05T10:01:13.1897866+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "b90ffb293ea463b1d662334e8cb52c02ab1ea83b5afb4951444e7d18cafc7036",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 166,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0001.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0001.png"
+    },
+    {
+      "Name": "frame-0002",
+      "Timestamp": "2026-09-05T10:01:28.4593461+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "f40e21d478af7a63c8ed090cc2c94f0e76b244a81dd412bbc38c4b46ad8fe8ac",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 166,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0002.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0002.png"
+    },
+    {
+      "Name": "frame-0003",
+      "Timestamp": "2026-09-05T10:01:43.7612015+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d3720453de7def6a5328dce99ac4357cf15a3115c1645fe0635d2d096a2838cf",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 165,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0003.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0003.png"
+    },
+    {
+      "Name": "frame-0004",
+      "Timestamp": "2026-09-05T10:01:59.0839654+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "7f67da03934b56a8068e9debc2d3d9fe80453635bcf07a0c5899ece8d4658474",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0005",
+      "Timestamp": "2026-09-05T10:02:14.4523476+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "c4b64db42472904c5fdab1d86654dfa968cc2e67cd70e5ae6bd0ff6171a2ca2a",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0006",
+      "Timestamp": "2026-09-05T10:02:29.8174812+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "3efeb695fb3a8bb3653d4135aa054f7a1a4ef7eb99543930a2330c2e5f7f55d6",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0007",
+      "Timestamp": "2026-09-05T10:02:45.1166819+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "78c97cdbcff11a73d4db00a2596b8ef0cee93de7a81ab1ade610b654d34b536c",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0008",
+      "Timestamp": "2026-09-05T10:03:00.4540787+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "8a003976a0d305dd7b4d35ef8a4e535280e9df962bfa3c71da8a9c71b6600495",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0009",
+      "Timestamp": "2026-09-05T10:03:15.7272089+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "db8a63834f93d9d06818c6482dbe5b202a5a81562268761b630cc994121963f9",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0010",
+      "Timestamp": "2026-09-05T10:03:31.1070731+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "eea4e0da116f733b92a3b824ce35be054a69b442e7565792172fb8310403b431",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0011",
+      "Timestamp": "2026-09-05T10:03:46.4233356+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "2321f453fe4d3ebef4d0fbd564357c4b324bba8f411b5bba02815df7831bf5ad",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0012",
+      "Timestamp": "2026-09-05T10:04:01.7854632+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "60f0476eb354b78bb6c7835bcdd36e760633702107dec69525765de9ce70ac92",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0013",
+      "Timestamp": "2026-09-05T10:04:17.1521447+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "88e2efa4431398741c9af4fbf2dbb670b7a7e101767e4eba9a3a9c7472b13ffa",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0014",
+      "Timestamp": "2026-09-05T10:04:32.2614875+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "2807ec4c9cacc2044c17991b1da7635af090f2a75d210e4f28a123e71ae1c311",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0015",
+      "Timestamp": "2026-09-05T10:04:47.7221783+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "42c303bc7a3d3a4facc0cbb4a44ce1f2c279dd3508431e694a273e06615e8e2e",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0016",
+      "Timestamp": "2026-09-05T10:05:03.1866482+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "2398b0ba0b303151db76d0ac9f6b3b08657e6a1143ecb661c0b6f567cbc8a60d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0017",
+      "Timestamp": "2026-09-05T10:05:18.2178751+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d1223ab699b731e56f33f79b1174dfbcdb2156b120993aa62773590f3bec090b",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0018",
+      "Timestamp": "2026-09-05T10:05:33.3727974+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "0e3ffb71b0bc630f873b877fbcc3cdf775591766ea6f7de46c6ce90d9fb69ad1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0019",
+      "Timestamp": "2026-09-05T10:05:48.4151871+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "bfbffea463bb45197a87b542c69266198ffa64d20b0667a0f11a5e2901c5f68d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0020",
+      "Timestamp": "2026-09-05T10:06:03.7019158+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "2faad7617adeb0b572ee5b6d4c30c92164f826fd3241dca43b0ec78f1642736f",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0021",
+      "Timestamp": "2026-09-05T10:06:19.0799522+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "cc288d55d741081e34e3ee15376db6fbf97f8132b31fcc58f0398356998ee016",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0022",
+      "Timestamp": "2026-09-05T10:06:34.5281664+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "362254fe0f3685ccfb1e5e2372774295b1ceb7237e83acd955cfec63153bbde8",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0023",
+      "Timestamp": "2026-09-05T10:06:49.7098200+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "3ed7930e9a67b8c47cd5db8839cef253de5807c8621a5225f0aebc232ac35234",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0024",
+      "Timestamp": "2026-09-05T10:07:04.6270663+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4866a092638afe6dc34d64f2da1bb2bc28cb30f57a7379594b7a4b4713cb4a51",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0025",
+      "Timestamp": "2026-09-05T10:07:19.9757162+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "ed2df5b7ce73d5441666184bc544d7512fca5c5e5acfc5267ebe69d550dfd0da",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0026",
+      "Timestamp": "2026-09-05T10:07:35.3642439+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "1cd96cbaa7d1271da5458eb83e334468a83a4a6c80a9aed7d43740f9a229abab",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0027",
+      "Timestamp": "2026-09-05T10:07:50.6354162+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a274b5f79cdc259e9f9c0d35590cb388ab4773f36b4ade0c979f6751691c0e49",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0028",
+      "Timestamp": "2026-09-05T10:08:05.9379159+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d9d5a21784c40b71d1d0797740854679f14f523773292861c6110a28b9b30ff3",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0029",
+      "Timestamp": "2026-09-05T10:08:21.3878252+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "3cfc5f1cbf1db1b36218bfd5a3307f6b535a2711343ceb9b59eea7a65df972ff",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0030",
+      "Timestamp": "2026-09-05T10:08:36.7663744+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d657b3bd85159eacc8c450ed1d285ae0ac4b53ac617d68c101ac54b6448f6083",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0031",
+      "Timestamp": "2026-09-05T10:08:52.0547643+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "f985f903c3cd21ba690b16300dc234f89e291a29ff6f0a19d58aa0f687dd8f50",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0032",
+      "Timestamp": "2026-09-05T10:09:07.3515119+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "9a4307729a1f0e5f2904ec0094e80f730ea9b62cd1541c3aa959c835c750ea71",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0033",
+      "Timestamp": "2026-09-05T10:09:22.6367330+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "5da4c9d6231f2953d37b18a6a9a006a8d348f2ae4aa6369a64a1d2232fc91546",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0034",
+      "Timestamp": "2026-09-05T10:09:37.9176506+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "5747bf3690c8130e8918de019a4e5f9d5d9294338869df5b46dedd909b0c9b55",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0035",
+      "Timestamp": "2026-09-05T10:09:53.4940290+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "90b727dca5256902456c0e5b1e45a779a42d7063403cf55b3d171deff06258b3",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0036",
+      "Timestamp": "2026-09-05T10:10:08.8064755+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d9fe9da49b767215cd74eab27570497fc6dd52b7f7e7208eb550184434f8a49d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0037",
+      "Timestamp": "2026-09-05T10:10:24.2408361+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "cd8215ecbfecacab5867de79421db30caaadd16a025eb40010e31aadeeb181e0",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0038",
+      "Timestamp": "2026-09-05T10:10:39.6412346+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "889c8f270bc31e388630dc70ca8f107f1841f542cec413541cb82cddd4aa787f",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0039",
+      "Timestamp": "2026-09-05T10:10:55.0362613+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "15bb26cd1164497455c0bc27f4f4e11500dad475e1449e4b3a3e868c247ffd32",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0039.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0039.png"
+    },
+    {
+      "Name": "frame-0040",
+      "Timestamp": "2026-09-05T10:11:10.4652358+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "1c16572a837f09a36d0d9b37df68680be5e091496b698273cc53f54b32e0dd7b",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0040.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0040.png"
+    },
+    {
+      "Name": "frame-0041",
+      "Timestamp": "2026-09-05T10:11:12.7258024+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "03f6ec59b7fbb72396f9e535c5abc23f819c8a1be2fd4c7adbc766247d68c80e",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0041.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-100041-704-map-pan\\frames\\frame-0041.png"
+    }
+  ],
+  "process_samples": [
+    {
+      "Timestamp": "2026-09-05T10:01:13.2123048+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37089280,
+      "PrivateMemorySize64": 14815232,
+      "HandleCount": 613
+    },
+    {
+      "Timestamp": "2026-09-05T10:01:28.4593461+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37158912,
+      "PrivateMemorySize64": 15024128,
+      "HandleCount": 616
+    },
+    {
+      "Timestamp": "2026-09-05T10:01:43.7622019+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37158912,
+      "PrivateMemorySize64": 15024128,
+      "HandleCount": 616
+    },
+    {
+      "Timestamp": "2026-09-05T10:01:59.0869658+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37158912,
+      "PrivateMemorySize64": 15024128,
+      "HandleCount": 614
+    },
+    {
+      "Timestamp": "2026-09-05T10:02:14.4523476+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37158912,
+      "PrivateMemorySize64": 15024128,
+      "HandleCount": 614
+    },
+    {
+      "Timestamp": "2026-09-05T10:02:29.8194820+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37134336,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:02:45.1166819+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37134336,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:03:00.4550792+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37134336,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:03:15.7282078+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37134336,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:03:31.1070731+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37134336,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:03:46.4233356+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37134336,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:04:01.7864637+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37134336,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:04:17.1531486+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37134336,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:04:32.2639933+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37138432,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:04:47.7221783+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37138432,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:05:03.1896481+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37138432,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:05:18.2221243+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37138432,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:05:33.3727974+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37138432,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:05:48.4161907+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37244928,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:06:03.7019158+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37244928,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:06:19.0799522+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37244928,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:06:34.5281664+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37244928,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:06:49.7098200+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37244928,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:07:04.6286057+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37244928,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:07:19.9767159+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37249024,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:07:35.3652412+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:07:50.6354162+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:08:05.9379159+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:08:21.3878252+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:08:36.7673741+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:08:52.0557635+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:09:07.3525118+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:09:22.6387328+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:09:37.9176506+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:09:53.4940290+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:10:08.8064755+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:10:24.2418361+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:10:39.6419637+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37257216,
+      "PrivateMemorySize64": 14921728,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:10:55.0362613+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37289984,
+      "PrivateMemorySize64": 15024128,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:11:10.4652358+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37289984,
+      "PrivateMemorySize64": 15024128,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:11:12.7268029+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37289984,
+      "PrivateMemorySize64": 15024128,
+      "HandleCount": 607
+    }
+  ],
+  "capture_errors": []
+}

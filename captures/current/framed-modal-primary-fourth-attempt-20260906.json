@@ -1,0 +1,77 @@
+{
+  "schema": "clash95_modal_primary_failed_attempt_v1",
+  "passed": false,
+  "classification": "powershell7_json_integer_type_rejected_by_reviewed_windows_powershell_capture_host",
+  "started_at": "2026-09-06T10:26:39.0879151Z",
+  "finished_at": "2026-09-06T10:27:30.7138947Z",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+  "resolution": "1024x768",
+  "route": "barracks",
+  "availability": "construct_all",
+  "summary": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary4-barracks-20260906-102800\\summary.json",
+    "sha256": "dbc8852401a108a9064e03e61f38334aa10bd34c854c957c20f577bbca83b54f"
+  },
+  "log": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary4-barracks-20260906-102800\\cdb.log",
+    "sha256": "467be25a6f69e22356ed85b868123947ad7abe8d03fa355cbe46ce301ce89dc7"
+  },
+  "host_failures": [
+    "Unreviewed canvas state offset: mirror_status"
+  ],
+  "primary_ready_observed": true,
+  "primary_capture_observed": false,
+  "diagnosis": {
+    "calling_shell": "PowerShell 7.6.5",
+    "json_integer_type": "System.Int64",
+    "mirror_status_offset": 28,
+    "reviewed_windows_powershell_json_type": "System.Int32",
+    "expected_offset": 28,
+    "action": "Use explicit powershell.exe as in the reviewed host fixtures and prior runtime workflow; preserve exact offset/type checks."
+  },
+  "cleanup": {
+    "candidates": [
+      {
+        "termination_requested": false,
+        "handle_closed": true,
+        "identity": {
+          "creation_utc": "2026-09-06T10:26:46.1668327Z",
+          "process_id": 39296,
+          "creation_filetime": 134331640061668327,
+          "handle_retained": true,
+          "path": "C:\\ClashTests\\hd-completion\\primary4-barracks-20260906-102800\\framed-modal-canvas-barracks-1024x768-74d5728d8f6c04dc.exe",
+          "parent_process_id": 25400,
+          "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d"
+        },
+        "absent": true
+      }
+    ],
+    "cdb": {
+      "termination_requested": true,
+      "handle_closed": true,
+      "identity": {
+        "handle_retained": true,
+        "process_id": 25400,
+        "creation_utc": "2026-09-06T10:26:45.9655885Z",
+        "creation_filetime": 134331640059655885,
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe"
+      },
+      "absent": true
+    },
+    "desktop_closed": true
+  },
+  "postrun_identity": {
+    "proxy_sha256": "b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "input_candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+    "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d"
+  },
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "The source-bound native primary-ready marker was reached; this host type check stopped capture.",
+    "No game rendering defect or primary image is established by this failed attempt."
+  ]
+}

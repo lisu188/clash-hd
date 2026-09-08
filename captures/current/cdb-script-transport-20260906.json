@@ -1,0 +1,148 @@
+{
+  "schema": "clash95_synthetic_cdb_transport_checkpoint_v1",
+  "generated_at": "2026-09-06T04:54:58.420551+00:00",
+  "synthetic_only": true,
+  "game_runtime_executed": false,
+  "attempts": [
+    {
+      "observation": {
+        "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045230\\observation.json",
+        "sha256": "c0f87631fcbecb644a9159a41db8a8e0001ed32fb593d08a7d43761b0677c065"
+      },
+      "result": {
+        "schema": "clash95_synthetic_cdb_script_transport_v1",
+        "synthetic_only": true,
+        "no_game_bytes_or_assets": true,
+        "created_at": "2026-09-06T04:52:30.582009+00:00",
+        "finished_at": "2026-09-06T04:52:30.898011+00:00",
+        "debugger_pid": 43224,
+        "debugger_returncode": 2147942509,
+        "debugger_process_waited": true,
+        "game_pid_recorded": false,
+        "failure": null,
+        "stdin_commands": [
+          "$$>a<\"C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045230\\before.cdb\"\n",
+          "$$>a<\"C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045230\\after.cdb\"\n"
+        ],
+        "literal_records": 499,
+        "command_source_echoed": false,
+        "before_standalone": true,
+        "after_standalone": false,
+        "files": [
+          {
+            "path": "C:\\ClashTests\\hd-completion\\cdb-script-transport-20260906-045230\\synthetic-script-transport.exe",
+            "sha256": "5f1c3be280ce3bc5baf9f1d6f0a46454df6a6f298d6bcf2f99e88319a558a020",
+            "bytes": 1024
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045230\\startup.cdb",
+            "sha256": "207fec725d9a6d37dc2d74305cc184f6ea1655d8cefa24a3f8f38ab7f774256e",
+            "bytes": 51
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045230\\before.cdb",
+            "sha256": "6bfa34c4b72e3fb65cc2f75f8791eaa07d700f943304c3d606d76a37da1d8307",
+            "bytes": 50420
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045230\\after.cdb",
+            "sha256": "9517783e08234529d1312e0886da857880fbe427904c2ca59a7509431cce114d",
+            "bytes": 96
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045230\\cdb.log",
+            "sha256": "db5b3ae29c10b354cfca096dcbcb037388673e53a3e9e0bcdfc55d399bbd4e12",
+            "bytes": 20579
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045230\\stdout.log",
+            "sha256": "d8916c52f059ecb8e6532695e3c24883d1bcd336ba09b7196c1c26467c1e873d",
+            "bytes": 18352
+          }
+        ],
+        "limits": [
+          "Synthetic command transport only; no game/render/input proof.",
+          "No live synthetic-child identity receipt; debugger was waited to terminal."
+        ],
+        "passed": false
+      }
+    },
+    {
+      "observation": {
+        "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045348\\observation.json",
+        "sha256": "d65350d1dcdc1deb9e297294519f12528646d099b0037f78c091c1ce5ee8f3a0"
+      },
+      "result": {
+        "schema": "clash95_synthetic_cdb_script_transport_v1",
+        "synthetic_only": true,
+        "no_game_bytes_or_assets": true,
+        "created_at": "2026-09-06T04:53:48.495988+00:00",
+        "finished_at": "2026-09-06T04:53:48.770965+00:00",
+        "debugger_pid": 21908,
+        "debugger_returncode": 0,
+        "debugger_process_waited": true,
+        "game_pid_recorded": false,
+        "failure": null,
+        "stdin_commands": [
+          "$$>a<\"C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045348\\before.cdb\"\n",
+          "$$>a<\"C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045348\\after.cdb\"\n",
+          "q\r\n"
+        ],
+        "literal_records": 500,
+        "command_source_echoed": false,
+        "before_standalone": true,
+        "after_standalone": true,
+        "files": [
+          {
+            "path": "C:\\ClashTests\\hd-completion\\cdb-script-transport-20260906-045348\\synthetic-script-transport.exe",
+            "sha256": "5f1c3be280ce3bc5baf9f1d6f0a46454df6a6f298d6bcf2f99e88319a558a020",
+            "bytes": 1024
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045348\\startup.cdb",
+            "sha256": "207fec725d9a6d37dc2d74305cc184f6ea1655d8cefa24a3f8f38ab7f774256e",
+            "bytes": 51
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045348\\before.cdb",
+            "sha256": "6bfa34c4b72e3fb65cc2f75f8791eaa07d700f943304c3d606d76a37da1d8307",
+            "bytes": 50420
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045348\\after.cdb",
+            "sha256": "1d8318a840e8176e4424d2564ef2a3f25d7c026f36361b38bd981608f1b4e790",
+            "bytes": 93
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045348\\cdb.log",
+            "sha256": "8396f37bd5094157f0de7f6329487199015319ed024177ebb158cf3fde66a46b",
+            "bytes": 20381
+          },
+          {
+            "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045348\\stdout.log",
+            "sha256": "cf13ce64e0fdcbbbb089666b906ab9a3936bb80c03f8ed1019e460547a01d536",
+            "bytes": 18144
+          }
+        ],
+        "limits": [
+          "Synthetic command transport only; no game/render/input proof.",
+          "No live synthetic-child identity receipt; debugger was waited to terminal."
+        ],
+        "passed": true
+      }
+    }
+  ],
+  "absence": {
+    "path": "C:\\ClashCaptures\\hd-completion\\cdb-script-transport-20260906-045348\\post-run-absence.json",
+    "sha256": "c400a354e01b6f9b4dbad73ddd106c533f9bbdf50e0c3220c51734f4846e2a96",
+    "observation": {
+      "ObservedAt": "2026-09-06T04:54:23.9642784Z",
+      "MatchingProcesses": []
+    }
+  },
+  "interpretation": [
+    "First attempt is failed: q inside a condensed script produced syntax error, then closed stdin produced broken-pipe exit. Its stdout prompt also prefixed the first emitted record.",
+    "Corrected attempt passed: actual CDB -logo file contains all 500 exact records and both phase readiness lines, without script source echo. A separate final stdin q completed with exit0.",
+    "The final absence query covers both synthetic run names and matching debugger commands, but no live child PID was retained. No game rendering, input or promotion claim."
+  ]
+}

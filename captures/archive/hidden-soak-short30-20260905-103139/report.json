@@ -1,0 +1,4041 @@
+{
+  "schema": "hidden_cdb_host_soak_report_v1",
+  "generated_at": "2026-09-05T09:02:15.947315+00:00",
+  "runtime_policy": "opt-in approved hidden-CDB host soak (environment=hidden_cdb_host); the game runs as a real host process on a hidden desktop with no input delivery; input_responsiveness is the not_applicable_hidden sentinel and is never fabricated; all host process metrics stay required; frame metrics come from real periodic ReadProcessMemory surface reads; map entry and any pan are breakpoint-forced and disclosed; never a visible-runtime or guest proof",
+  "environment": "hidden_cdb_host",
+  "evidence_class": "approved_hidden_cdb_host_soak",
+  "executed": true,
+  "passed": false,
+  "failures": [
+    "SOAK_PAN_SET event 8 is not ordered by the requested pan interval and redraw hits"
+  ],
+  "tier": "short30",
+  "route": "map-pan",
+  "duration_sec": 1800,
+  "sample_interval_sec": 15,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
+  "stable_stage_should_change": false,
+  "input_exe": "C:\\Clash\\clash95.exe",
+  "input_sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+  "candidate": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\clash95_hd_hidden_soak_20260905_103139_257.exe",
+  "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "patch_stage_report": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\patch-stage.json",
+  "workdir": "C:\\Clash",
+  "output_directory": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan",
+  "report_json": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\report.json",
+  "report_markdown": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\RUN-SUMMARY.md",
+  "cdb_log": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\hidden-soak-cdb.log",
+  "generated_probe": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\clash95_hidden_soak_probe.generated.cdb",
+  "launch_mode": "hidden-desktop",
+  "entry_mechanism": "cdb_breakpoint_forced_loader_entry",
+  "entry_mechanism_detail": {
+    "mechanism": "cdb_breakpoint_forced_loader_entry",
+    "forced": true,
+    "disclosure": "map entry was FORCED by CDB breakpoints riding the surface-dump base template loader route (forced main-menu click, forced load-slot select and accept); it was not reached by user input",
+    "load_slot": 2
+  },
+  "pan_mechanism": "cdb_forced_scroll_write",
+  "pan_mechanism_detail": {
+    "mechanism": "cdb_forced_scroll_write",
+    "forced": true,
+    "disclosure": "map pan was FORCED by periodic CDB writes of a bounded four-phase cycle into the gameData scroll fields gd+140008/gd+140012 (SOAK_PAN_SET rows); it was not user input",
+    "pan_interval_sec": 10,
+    "pan_event_count": 179,
+    "scroll_fields": [
+      "gd+140008",
+      "gd+140012"
+    ]
+  },
+  "input_responsiveness": "not_applicable_hidden",
+  "input_responsiveness_reason": "hidden-desktop run delivers no user input; responsiveness cannot be measured and is recorded as the sentinel, never fabricated",
+  "input_proof_class": "hidden_cdb_host_no_input_diagnostic_not_manual",
+  "right_bottom_promotion_blocked": true,
+  "capture_mode": "hidden-cdb-host-readprocessmemory",
+  "surface": {
+    "Base": "0a4d0030",
+    "Width": 800,
+    "Height": 600,
+    "Bytes": 480000,
+    "Source": "SOAK_SURFDUMP_READY"
+  },
+  "surface_base": "0x0a4d0030",
+  "frame_read_method": "host_readprocessmemory",
+  "ready_marker": {
+    "source": "SOAK_SURFDUMP_READY",
+    "redraw_seq": 0,
+    "surface": "0a1ef370",
+    "base": "0a4d0030",
+    "width": 800,
+    "height": 600,
+    "bytes": 480000
+  },
+  "route_start_marker": {
+    "route_ticks": 115200,
+    "pan": 1,
+    "player": 0,
+    "tick": 20310800,
+    "game_data": "040c0030",
+    "scroll_x": 38,
+    "scroll_y": 41
+  },
+  "route_end_marker": {
+    "route_ticks": 115200,
+    "pan": 1,
+    "hits": 197058,
+    "tick_delta": 115200,
+    "player": 0,
+    "scroll_x": 37,
+    "scroll_y": 40
+  },
+  "pan_events": [
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 1112,
+      "tick_delta": 640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 2232,
+      "tick_delta": 1280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 3321,
+      "tick_delta": 1920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 4429,
+      "tick_delta": 2560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 5540,
+      "tick_delta": 3200,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 6642,
+      "tick_delta": 3840,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 7742,
+      "tick_delta": 4480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 8851,
+      "tick_delta": 5121,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 9939,
+      "tick_delta": 5760,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 11036,
+      "tick_delta": 6400,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 12151,
+      "tick_delta": 7040,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 13272,
+      "tick_delta": 7680,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 14407,
+      "tick_delta": 8321,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 15517,
+      "tick_delta": 8960,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 16636,
+      "tick_delta": 9600,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 17756,
+      "tick_delta": 10240,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 18873,
+      "tick_delta": 10881,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 19969,
+      "tick_delta": 11520,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 21094,
+      "tick_delta": 12160,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 22227,
+      "tick_delta": 12800,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 23347,
+      "tick_delta": 13440,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 24480,
+      "tick_delta": 14080,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 25589,
+      "tick_delta": 14720,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 26682,
+      "tick_delta": 15360,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 27799,
+      "tick_delta": 16000,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 28903,
+      "tick_delta": 16640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 29991,
+      "tick_delta": 17280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 31074,
+      "tick_delta": 17920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 32166,
+      "tick_delta": 18560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 33251,
+      "tick_delta": 19200,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 34356,
+      "tick_delta": 19840,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 35455,
+      "tick_delta": 20480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 36575,
+      "tick_delta": 21120,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 37678,
+      "tick_delta": 21760,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 38790,
+      "tick_delta": 22400,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 39903,
+      "tick_delta": 23040,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 41014,
+      "tick_delta": 23680,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 42120,
+      "tick_delta": 24320,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 43235,
+      "tick_delta": 24960,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 44328,
+      "tick_delta": 25600,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 45437,
+      "tick_delta": 26240,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 46535,
+      "tick_delta": 26880,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 47642,
+      "tick_delta": 27520,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 48719,
+      "tick_delta": 28160,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 49784,
+      "tick_delta": 28800,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 50859,
+      "tick_delta": 29440,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 51947,
+      "tick_delta": 30080,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 53062,
+      "tick_delta": 30720,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 54192,
+      "tick_delta": 31360,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 55313,
+      "tick_delta": 32000,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 56424,
+      "tick_delta": 32640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 57536,
+      "tick_delta": 33280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 58653,
+      "tick_delta": 33920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 59723,
+      "tick_delta": 34560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 60837,
+      "tick_delta": 35200,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 61961,
+      "tick_delta": 35840,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 63087,
+      "tick_delta": 36480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 64204,
+      "tick_delta": 37120,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 65300,
+      "tick_delta": 37760,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 66424,
+      "tick_delta": 38400,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 67548,
+      "tick_delta": 39040,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 68671,
+      "tick_delta": 39680,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 69801,
+      "tick_delta": 40320,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 70912,
+      "tick_delta": 40961,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 72035,
+      "tick_delta": 41600,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 73130,
+      "tick_delta": 42240,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 74235,
+      "tick_delta": 42880,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 75371,
+      "tick_delta": 43520,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 76481,
+      "tick_delta": 44160,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 77576,
+      "tick_delta": 44800,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 78664,
+      "tick_delta": 45440,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 79768,
+      "tick_delta": 46080,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 80872,
+      "tick_delta": 46720,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 81979,
+      "tick_delta": 47364,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 83059,
+      "tick_delta": 48000,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 84162,
+      "tick_delta": 48640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 85271,
+      "tick_delta": 49280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 86358,
+      "tick_delta": 49920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 87459,
+      "tick_delta": 50560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 88569,
+      "tick_delta": 51200,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 89696,
+      "tick_delta": 51840,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 90817,
+      "tick_delta": 52480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 91927,
+      "tick_delta": 53120,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 93061,
+      "tick_delta": 53760,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 94210,
+      "tick_delta": 54401,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 95327,
+      "tick_delta": 55040,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 96437,
+      "tick_delta": 55680,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 97538,
+      "tick_delta": 56320,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 98664,
+      "tick_delta": 56960,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 99804,
+      "tick_delta": 57600,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 100934,
+      "tick_delta": 58241,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 102105,
+      "tick_delta": 58881,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 103229,
+      "tick_delta": 59520,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 104332,
+      "tick_delta": 60160,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 105441,
+      "tick_delta": 60800,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 106556,
+      "tick_delta": 61440,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 107690,
+      "tick_delta": 62080,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 108745,
+      "tick_delta": 62720,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 109772,
+      "tick_delta": 63360,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 110801,
+      "tick_delta": 64001,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 111841,
+      "tick_delta": 64640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 112849,
+      "tick_delta": 65281,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 113909,
+      "tick_delta": 65920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 114945,
+      "tick_delta": 66560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 115973,
+      "tick_delta": 67201,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 117007,
+      "tick_delta": 67840,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 118041,
+      "tick_delta": 68480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 119068,
+      "tick_delta": 69120,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 120152,
+      "tick_delta": 69760,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 121208,
+      "tick_delta": 70400,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 122214,
+      "tick_delta": 71041,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 123232,
+      "tick_delta": 71680,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 124284,
+      "tick_delta": 72320,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 125331,
+      "tick_delta": 72961,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 126374,
+      "tick_delta": 73601,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 127420,
+      "tick_delta": 74240,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 128494,
+      "tick_delta": 74880,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 129586,
+      "tick_delta": 75520,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 130653,
+      "tick_delta": 76160,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 131740,
+      "tick_delta": 76800,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 132828,
+      "tick_delta": 77440,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 133873,
+      "tick_delta": 78080,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 134966,
+      "tick_delta": 78720,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 136047,
+      "tick_delta": 79362,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 137114,
+      "tick_delta": 80000,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 138174,
+      "tick_delta": 80641,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 139244,
+      "tick_delta": 81280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 140314,
+      "tick_delta": 81920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 141367,
+      "tick_delta": 82560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 142458,
+      "tick_delta": 83201,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 143544,
+      "tick_delta": 83842,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 144605,
+      "tick_delta": 84480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 145694,
+      "tick_delta": 85121,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 146787,
+      "tick_delta": 85760,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 147884,
+      "tick_delta": 86400,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 148977,
+      "tick_delta": 87040,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 150016,
+      "tick_delta": 87680,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 151056,
+      "tick_delta": 88320,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 152095,
+      "tick_delta": 88960,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 153105,
+      "tick_delta": 89600,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 154201,
+      "tick_delta": 90241,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 155309,
+      "tick_delta": 90882,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 156388,
+      "tick_delta": 91521,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 157481,
+      "tick_delta": 92160,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 158569,
+      "tick_delta": 92800,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 159667,
+      "tick_delta": 93440,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 160752,
+      "tick_delta": 94080,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 161856,
+      "tick_delta": 94720,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 162964,
+      "tick_delta": 95360,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 164074,
+      "tick_delta": 96000,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 165180,
+      "tick_delta": 96640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 166259,
+      "tick_delta": 97280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 167351,
+      "tick_delta": 97920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 168467,
+      "tick_delta": 98560,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 169584,
+      "tick_delta": 99200,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 170706,
+      "tick_delta": 99840,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 171822,
+      "tick_delta": 100480,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 172930,
+      "tick_delta": 101120,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 174031,
+      "tick_delta": 101761,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 175152,
+      "tick_delta": 102400,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 176252,
+      "tick_delta": 103040,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 177357,
+      "tick_delta": 103680,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 178484,
+      "tick_delta": 104321,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 179562,
+      "tick_delta": 104960,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 180642,
+      "tick_delta": 105601,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 181736,
+      "tick_delta": 106240,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 182827,
+      "tick_delta": 106880,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 183894,
+      "tick_delta": 107520,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 184976,
+      "tick_delta": 108160,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 186073,
+      "tick_delta": 108800,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 187129,
+      "tick_delta": 109440,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 188234,
+      "tick_delta": 110080,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 189313,
+      "tick_delta": 110721,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 190414,
+      "tick_delta": 111360,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 191529,
+      "tick_delta": 112000,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 3,
+      "x": 38,
+      "y": 40,
+      "hits": 192628,
+      "tick_delta": 112640,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 0,
+      "x": 38,
+      "y": 41,
+      "hits": 193736,
+      "tick_delta": 113280,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 1,
+      "x": 37,
+      "y": 41,
+      "hits": 194844,
+      "tick_delta": 113920,
+      "delta_x": -1,
+      "delta_y": -1
+    },
+    {
+      "phase": 2,
+      "x": 37,
+      "y": 40,
+      "hits": 195961,
+      "tick_delta": 114560,
+      "delta_x": -1,
+      "delta_y": -1
+    }
+  ],
+  "proxy": {
+    "used": true,
+    "path": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\ddraw.dll",
+    "sha256": "8A86AAA55EB5388CDF4651D6D5B1FE161EEA013161F626AB289F2ED322C7552E",
+    "build_manifest": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\ddraw_surfdump_proxy.build.json",
+    "build_log": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\ddraw-proxy-build\\build.log",
+    "log": "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\ddraw_surfdump_proxy.log",
+    "present_enabled": false
+  },
+  "cleanup": {
+    "game_stopped": true,
+    "cdb_stopped": true,
+    "errors": [],
+    "stopped_process_ids": [
+      6388
+    ]
+  },
+  "ready_observed": true,
+  "soak_route_start_observed": true,
+  "soak_route_end_observed": true,
+  "heartbeat_count": 96,
+  "pan_event_count": 179,
+  "av_observed": false,
+  "frame_sample_count": 119,
+  "frame_hash_unique_count": 119,
+  "frame_progress_expected": true,
+  "frame_stability_class": "progressing",
+  "nonblack_percent_min": 97.34,
+  "nonblack_percent_max": 97.34,
+  "unique_sample_colors_min": 164,
+  "unique_sample_colors_max": 204,
+  "nonblack_definition": "percent of surface bytes with a nonzero 8-bit palette index, computed from real ReadProcessMemory surface bytes (palette index 0 is the engine clear color)",
+  "unique_colors_definition": "count of distinct 8-bit palette indices present in the full surface read",
+  "frame_elapsed_sec": 1799.005955,
+  "process_elapsed_sec": 1798.982439,
+  "required_elapsed_sec": 1783,
+  "elapsed_coverage": {
+    "formula": "duration_sec - sample_interval_sec - 2",
+    "required_sec": 1783,
+    "frame_elapsed_sec": 1799.005955,
+    "process_elapsed_sec": 1798.982439,
+    "passed": true
+  },
+  "process_sample_count": 119,
+  "working_set_growth_bytes": 159744,
+  "private_memory_growth_bytes": -102400,
+  "handle_growth": -8,
+  "max_working_set_growth_mb": 64,
+  "max_private_memory_growth_mb": 64,
+  "max_handle_growth": 128,
+  "working_set_growth_limit_bytes": 67108864,
+  "private_memory_growth_limit_bytes": 67108864,
+  "process_exited_unexpectedly": false,
+  "exit_code": null,
+  "clean_stop": true,
+  "clean_stop_mechanism": "verified_game_and_cdb_termination",
+  "max_artifact_mb": 250,
+  "artifact_limit_bytes": 262144000,
+  "artifact_bytes": 4000501,
+  "frame_samples": [
+    {
+      "Name": "frame-0001",
+      "Timestamp": "2026-09-05T10:32:12.7849446+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "309a56cc809d944fbff740ebf9b4f2be44edaaa49b2cff76b4ca4346e3b0bbf4",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 166,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0001.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0001.png"
+    },
+    {
+      "Name": "frame-0002",
+      "Timestamp": "2026-09-05T10:32:28.2161568+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "570ddad894082770edc808dc10bb3375127d124991c0e11edc46a4e71ef04f57",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 166,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0002.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0002.png"
+    },
+    {
+      "Name": "frame-0003",
+      "Timestamp": "2026-09-05T10:32:43.6064868+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6abddf8fd715b70562a32e9ea7d0564eb9456226ee11cd7436e0006ce98f40d2",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 165,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0003.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0003.png"
+    },
+    {
+      "Name": "frame-0004",
+      "Timestamp": "2026-09-05T10:32:59.1040205+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "26ca28b2fe3de86a68dadfbfe28d17233412f1a67a02d1c9fe2daa272eb655d4",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0005",
+      "Timestamp": "2026-09-05T10:33:14.6258575+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "485362f5e09ec281262d0c92a2c946c1182fd2a8a8968e1e41048498a119d7db",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0006",
+      "Timestamp": "2026-09-05T10:33:29.7335146+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "967265308aa45ed7bfc4c94d702aef0cb38421a30f42992f830ecf5b91890bd8",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0007",
+      "Timestamp": "2026-09-05T10:33:44.7463058+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6c1100ea89dfd7c84892e01df885cec5e1c2acd178c25f4d0f574f81786b4c43",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0008",
+      "Timestamp": "2026-09-05T10:33:59.6199847+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a670ed341dc3921d2b51fe41ce5d5e1eb6a54075358901a0ccea7d8dc9e1d068",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0009",
+      "Timestamp": "2026-09-05T10:34:15.0403534+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "32a1d6a2e1decbec45a80d83d571a5e4605ecab43488a0e384e21226f841bebe",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0010",
+      "Timestamp": "2026-09-05T10:34:30.4628904+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "2912f7cdf75943e6d7bccce46b9a954d5b7ae01c0a778912d124c6de9260f931",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0011",
+      "Timestamp": "2026-09-05T10:34:45.8048726+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "2a150ccc4eddee005d8e136cd14e349653b1dc7461b73ad4ebff7cff73859480",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0012",
+      "Timestamp": "2026-09-05T10:35:01.2116254+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "7c48021e9425a2e564acbb8071b27533576e414035b269cc56f70a98e613a727",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0013",
+      "Timestamp": "2026-09-05T10:35:16.1850709+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "3b8de7a683988b935ee6536bfb6dfc50d643370c3e4ca1f43cb7680d17ba7c47",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 164,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0014",
+      "Timestamp": "2026-09-05T10:35:31.7106779+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "2adf2211cb3c1e4ee08f3bb3b1d484767324f3aed22fe4237e77fc650ec58c94",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 204,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0015",
+      "Timestamp": "2026-09-05T10:35:47.0439623+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4618e1a916e80394eabbcd9b06274c790d92a22584d053f01dec78e5baddaf4d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 200,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0016",
+      "Timestamp": "2026-09-05T10:36:02.5336260+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "9b8ee92175e8651dea2626c78794ecc0b208acff78d509dad24246c4ec80ea90",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0017",
+      "Timestamp": "2026-09-05T10:36:17.4598405+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "71b3d6d8650b3324d9852362ed2a904c71bc93d087baa520f39e7dee11aed6f1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0018",
+      "Timestamp": "2026-09-05T10:36:33.0144065+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d89fd0776c7a160ea9a3404c0bd233fdfc0cb364c9f5789c6bcf309e381ce662",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0019",
+      "Timestamp": "2026-09-05T10:36:47.9699669+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "e60579b3d8dabc6a5867fc6419e1a933bbed56330ad70d9547eb6d075750c02c",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0020",
+      "Timestamp": "2026-09-05T10:37:03.3849714+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a4e23eed94c92ae0640ccf42ff823b6b0b9de5f8f1cfe577c59c16aea6e22234",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0021",
+      "Timestamp": "2026-09-05T10:37:18.7155933+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "ed872c2e1806621707e6d92bb4af8c823124a5909bf119afd6499f179f873c9e",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0022",
+      "Timestamp": "2026-09-05T10:37:33.9665120+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "dfe969a87b55962b2a2c5baafee5bb9447afe9390ff0fd9462a1ce0462a8f488",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0023",
+      "Timestamp": "2026-09-05T10:37:49.2490465+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6f561cd7a281c0ed000c530c238753801f71a498811640353224170e758a5897",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0024",
+      "Timestamp": "2026-09-05T10:38:04.5017411+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "c61851d1a79896c0e16d00d61b0fed331d6732839601dd869781b2c24f11ffc1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0025",
+      "Timestamp": "2026-09-05T10:38:19.8256400+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "3b699b48e960dd4b5dd813f4a08ad4c309d22ad6d823f944fc211d70f05cd6e1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0026",
+      "Timestamp": "2026-09-05T10:38:35.1263628+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "b1b61af31098bca89b0a1d3f4b2724cca5c3712e464a9bc9a8dc5c8dc8fe990e",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0027",
+      "Timestamp": "2026-09-05T10:38:50.7151885+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d0a6091f98027c4eab3dc5b4bcdad7da8edc2e2d673250f95299ed8d91572476",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0028",
+      "Timestamp": "2026-09-05T10:39:05.5499654+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "82617516c4bf0732a7dc9b54131b449ec90d31ba753c3f2dccfb72dab681f047",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0029",
+      "Timestamp": "2026-09-05T10:39:20.9819860+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "b0570b3f954a4483a469fff0379278db21ee5dc06579c212ed50a2acdc6e168d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0030",
+      "Timestamp": "2026-09-05T10:39:36.2600812+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "74a2a90df61b2467dec3374a34e0530821f64cfc7437a2c04dc5e6668d0499bb",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0031",
+      "Timestamp": "2026-09-05T10:39:51.4432970+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "831781f17b9ed4d3c2f9fbba3b1f4930836755185c2445e1c6f135ab184d5d75",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0032",
+      "Timestamp": "2026-09-05T10:40:06.5572462+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "f96d919fa030c321404f0fe7c34a4c34f8268c448bbff4cbd7cfbf5dfb239ded",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0033",
+      "Timestamp": "2026-09-05T10:40:21.8601100+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d7c00fe7d467d73770190678c4322479e4b4c0a88dfc8563923106e75f437da7",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0034",
+      "Timestamp": "2026-09-05T10:40:37.2961366+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "3c0189bb9271649c71ff83ca0ff32958167f123f591055b37963b282a159ddf1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0035",
+      "Timestamp": "2026-09-05T10:40:52.6538267+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "9e9f3dd7fe9dfbc4df6c0d2a8020875a4519899a2fd562afdc610cc71d9057fd",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0036",
+      "Timestamp": "2026-09-05T10:41:08.0383785+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "7401a9e1fe3f15211e3329c1f916574bc3586137dc25e04c850461d26f011a8a",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0037",
+      "Timestamp": "2026-09-05T10:41:23.0144983+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "261200065769938277c33eef1417416967058da32d0721f948a655ecb123aad3",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0038",
+      "Timestamp": "2026-09-05T10:41:38.3802490+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6ea8ee94da20050d95f01a0eafc5a4eb114d9825f7f100b74a74462fcd14785e",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0039",
+      "Timestamp": "2026-09-05T10:41:53.9612631+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "1be6e5b83688e5c20f9082534aebc7c1dcd57a78e18fdf8f4ed15bf361fab0cf",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0040",
+      "Timestamp": "2026-09-05T10:42:08.9722293+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "400388b1db9b58d581b7af6438e3355fa565e37aaab6d99b4453fe5c10bfee7d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0041",
+      "Timestamp": "2026-09-05T10:42:24.4309437+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "826adaf78443e8ee510fe7df641ca1b9bdb3989a56672f0f84aed3c52d5f27e8",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0042",
+      "Timestamp": "2026-09-05T10:42:39.8730140+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "93562c3ac26744252caeb606d02bf1858df5d3d99f36d59becbde580aa2f1d77",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0043",
+      "Timestamp": "2026-09-05T10:42:55.1094570+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "28eea1091cf29933082af2fa654569126cd5361ff13bdf393f5fd4e2468f46f9",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0044",
+      "Timestamp": "2026-09-05T10:43:10.6625886+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "62b5956e8615c8c814971486f55ef1e92564f4a8183096f02104216ad6bb59e7",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0045",
+      "Timestamp": "2026-09-05T10:43:26.2746179+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "11d3c35c2e82323bbdbf509ff11e6d8589c03c7727370150f7121e1c09e676ce",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0046",
+      "Timestamp": "2026-09-05T10:43:41.0681300+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "efba7081e5cf831be661123b9f7e3639a695c1f772c24330cfa0e6053a893c71",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0047",
+      "Timestamp": "2026-09-05T10:43:56.2534703+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4c476210e06cb7f807ce5ee290953c095ba922adbbd4fa389ad9729b515b2f0a",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0048",
+      "Timestamp": "2026-09-05T10:44:11.4837548+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "e248ca23f6bbc398a52212056f5dca5dcbcd5a2fcaa402e45ae1a9aad6690ed5",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0049",
+      "Timestamp": "2026-09-05T10:44:26.9436162+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "c6c5ecb2fce97682d9af67e5ebc11c7f8648766802667268d1c2b35569ca02a6",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0050",
+      "Timestamp": "2026-09-05T10:44:42.6904192+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "c0605a63d80f6f0ff2ded255bac29bec02eecc32f04a4e83c59294177cc3213d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0051",
+      "Timestamp": "2026-09-05T10:44:57.4794013+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "37c8680f2f44f12d1f5d5c1fcfefddc239daacb80ae1eaa88c1b956fc29f8fa1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0052",
+      "Timestamp": "2026-09-05T10:45:12.9132622+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "e95db4ccd1cc955d1ca0b069bec785cf732b4b7089441038621f02ab2715128d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0053",
+      "Timestamp": "2026-09-05T10:45:27.8879869+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4264d6f8c1a96d29b59c04d165a29000a02545bd269437fca8667d4511dadf0d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0054",
+      "Timestamp": "2026-09-05T10:45:43.4825430+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "0dfa0c0874a6084615c61691d0fd432a0a1470ac7e8b5214ec603f3b938f6bbf",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0055",
+      "Timestamp": "2026-09-05T10:45:58.9069060+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6ee887555a4d8998136e14f4af8ce8a1eed4b63c97dfcd5ee5743f9a326faebc",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0056",
+      "Timestamp": "2026-09-05T10:46:14.2201644+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "41de134e92de15e7e6a171b1a939f9047ea1e13eaa0a5f4468c91b76f4c49ef8",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0057",
+      "Timestamp": "2026-09-05T10:46:29.6875496+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "ce9f55b7a4baa40395df0cbffefbd84481f9cef3ac095da8456ecb475d6c5feb",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0058",
+      "Timestamp": "2026-09-05T10:46:44.5128275+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "9f8713484eeaa1bcc276b929e497847acce8c8193a55ba6ebee9be82f60374a1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0059",
+      "Timestamp": "2026-09-05T10:46:59.9970862+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "017e78c374105e2ce05f5a33495b071cd47b50d48f0356e39790e56178258ac0",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0060",
+      "Timestamp": "2026-09-05T10:47:15.0767078+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "abb8f34cd8e46a7b089b6f23ca26952993738c10e3cbbaac7fd86f4127a467f6",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0061",
+      "Timestamp": "2026-09-05T10:47:30.0096607+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "5235e25b8b088b706c362e71d40c3ed5e155f60d02dc1b413549b728eceef4ee",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0062",
+      "Timestamp": "2026-09-05T10:47:45.1889364+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "8e8c73cc94c39d1b1ff67ada078c1d1c2d99aa0699b652e4f317be7cc6f6cb99",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0063",
+      "Timestamp": "2026-09-05T10:48:00.3399404+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "ba0290110e79905007d1678cb9e7b6c688334ffeaf41b2b1a19b410239818263",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0064",
+      "Timestamp": "2026-09-05T10:48:15.5113413+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "07a35d0d6dc3bef84936bd2535eca337c81713036c987c1bb0a7381ded0b3051",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0065",
+      "Timestamp": "2026-09-05T10:48:30.4742783+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "fa5fddef2168cd3d559f47a83fcd4d96729d5de2ca252e87f391081c41623552",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0066",
+      "Timestamp": "2026-09-05T10:48:45.7735440+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "897719a3b01ea7c9bb4358527a4d2561b6d0b3a4f2b046e69cadbda5d84ea9aa",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0067",
+      "Timestamp": "2026-09-05T10:49:01.3210886+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "b59f3326faae7c81421742361ec5558c55d9656940bfca07f8d51310367c04e6",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0068",
+      "Timestamp": "2026-09-05T10:49:16.5671655+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "490cd9b0543ff1b46131f9da385e85da054599b2da9640c5933566e4fd78cf95",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0069",
+      "Timestamp": "2026-09-05T10:49:31.5025026+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "02f7f21603cd528370e9383f936735edbe823ea36f3b37afa5e2e86c20e6be48",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0070",
+      "Timestamp": "2026-09-05T10:49:46.7476824+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a1c2febbebeda16b19348879b9ec4d435e945244614d3d697731aabe3fe8c453",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0071",
+      "Timestamp": "2026-09-05T10:50:02.1980613+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "f6b7c80a6c4d10b2673a3cbbaf56e61aa88ea42c0b9a2998d38903d033405d81",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0072",
+      "Timestamp": "2026-09-05T10:50:17.6029936+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6d678d15de7791a3bef8c82ead2726fa912eccc952108de254a00646688379b1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0073",
+      "Timestamp": "2026-09-05T10:50:32.9562123+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "2c570f1959765514eb0c8656b503c6fa54f9852a17ab78a22eb3aa08410e64b7",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0074",
+      "Timestamp": "2026-09-05T10:50:48.3166503+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "c7f53ee748cfd01ea7853941f070e935502175a2d50e34bf80f65addb57ffc36",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0075",
+      "Timestamp": "2026-09-05T10:51:03.2787193+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "07799c1206d0a730824d136b78e9bccaad7fce80b8025a36c414e72f183f7559",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0076",
+      "Timestamp": "2026-09-05T10:51:18.6133198+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "689b976dcb0284fe53aa1803363e86562515121db397fdc2851a98dab700eca8",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0077",
+      "Timestamp": "2026-09-05T10:51:34.2361061+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "7821d822c46e2018b724bf9004d0712bd6514914329b7e15cfb51c12cdc38abb",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0078",
+      "Timestamp": "2026-09-05T10:51:49.4236783+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "dd865ede6175fd2d28b8660106008e7e91b76a545ecb0edc026d60edcd906314",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0079",
+      "Timestamp": "2026-09-05T10:52:04.8113992+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a00b9d2558f56a8b8bdb57fa6bac2e1ae60d9eb839b0bb008800d36a0f85f516",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0080",
+      "Timestamp": "2026-09-05T10:52:19.9522596+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "684f2bfefc7f71e78c08633b1aee03fe7d5f5d08854ee04642d6bae7346ba79f",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0081",
+      "Timestamp": "2026-09-05T10:52:35.3979205+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4eecdfbb2c3e7498644f1a005e25381dc585832450b3276368a76ba6388bb9b0",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0082",
+      "Timestamp": "2026-09-05T10:52:50.6445186+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "aff91b4822c63aefe28acf534bfb554cc6de3480307e26c2616039dd3f286b56",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0083",
+      "Timestamp": "2026-09-05T10:53:05.6858429+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "bfdbf6de0353ddf4800a9333a2a491c9a6be5bd9786d7445e3ca16d89926ddc1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0084",
+      "Timestamp": "2026-09-05T10:53:20.8777981+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "5781127e08eb347f8cbcac633c6bae8fb85af1bbe4f0c5cd537059e573c7ced3",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0085",
+      "Timestamp": "2026-09-05T10:53:36.1471577+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "b955fa50f37e6f37227bacac117d20d5c1f8aa46eab13c02013a8718be50e22d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0086",
+      "Timestamp": "2026-09-05T10:53:51.1796119+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "b8d123c6e823fbd4dc26b62c8ed4b55ac3fdb9c4706f3ce430214966c23c173f",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0087",
+      "Timestamp": "2026-09-05T10:54:06.1632690+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "473524c3d8fc3c5cc5500121883cb1e114113608f09047c43fb3564d3d944662",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0088",
+      "Timestamp": "2026-09-05T10:54:21.5328124+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "cf5a2b93189be2767e60c7b5f51ed23f0b2a3ac5bf36b6978a73c6126a95707c",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0089",
+      "Timestamp": "2026-09-05T10:54:36.6123671+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "22495c6e24a2e3f8b00113e257c7822bf890164ea2c193081ef4492b1f4e0bcd",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0090",
+      "Timestamp": "2026-09-05T10:54:51.8192924+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "36d5d97d0dc421c35941f49d83b9aecab1f1dc6c231a8db4c0289b8ebbb822a1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0091",
+      "Timestamp": "2026-09-05T10:55:06.9767853+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a6a40c06faa3eee039cedb4d65b1ae5d7bc78f79ea15a5027e94084a62f5ed7b",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0092",
+      "Timestamp": "2026-09-05T10:55:22.4875826+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "128615370bca97cc171fcfe931bfbc975c1aabd25708df5aa4c8a3bf8a566716",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0093",
+      "Timestamp": "2026-09-05T10:55:38.0030552+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "bb85dbbae092c0489db459c523aa9fc93937b12af5879cfee9027545049d19b3",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0094",
+      "Timestamp": "2026-09-05T10:55:53.2194298+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "1280ccff9dde68d9acb6211365cc44158cf6993ba4c72c5f4c0051612cc3371f",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0095",
+      "Timestamp": "2026-09-05T10:56:08.2024875+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "d9931be8c6a8305c8d7ae4ec63a69a6297e4b07a8f8d0e0194e309ff9fefcbaf",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0096",
+      "Timestamp": "2026-09-05T10:56:23.2536346+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "e075898dad897c4469930e3b7813909c681a350124e31ed2823fe2a4cb092540",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0097",
+      "Timestamp": "2026-09-05T10:56:38.4245308+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "4c6584df2ac69c9255dbca6f2fd451c8f60201e10050f197abcc142d72ff0680",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0098",
+      "Timestamp": "2026-09-05T10:56:53.7612728+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "290aa9f8d503c53838a3909f23cb1401de596656aa6843cc24af325a0ac9c3b3",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0099",
+      "Timestamp": "2026-09-05T10:57:08.7475667+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "b292d160b02e4e953b13a3ad478ec759b542c87c44bbbe5d522fa27e48eba628",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0100",
+      "Timestamp": "2026-09-05T10:57:23.7790539+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "434678d09e52a08311bead71d6e10bd813a9a3f4b075ce3e38c199890b0e2c10",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0101",
+      "Timestamp": "2026-09-05T10:57:39.1309985+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "06c36f50b5bdff6a5df5b466c95a8daeb1249721b5a5c8843dcbfe373b9f0a16",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0102",
+      "Timestamp": "2026-09-05T10:57:54.4422767+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "40701c8058d17916716bd0abf2cbe8af7e017523a1cac5fe27abda9916a7183a",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0103",
+      "Timestamp": "2026-09-05T10:58:09.7962323+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "506ec66d42545f1a348bc9f7591903df0b3bee0bcb33e9313bb6517415c91c54",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0104",
+      "Timestamp": "2026-09-05T10:58:25.2426615+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "43b147856745ad5946dc59793bf3e81d9eb79a0f2bf9dd2229f29a9d3f0dfc4b",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0105",
+      "Timestamp": "2026-09-05T10:58:40.9731409+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "969ce3c174889162fcf543986d2c0a1ea9ab3ef2ef2a5300725a7dd52afe21be",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0106",
+      "Timestamp": "2026-09-05T10:58:55.7504115+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "5dabe7c6b78a410de03f01a12858bb445f744852c428c058dbc45cb2c3f0fe9d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0107",
+      "Timestamp": "2026-09-05T10:59:11.3928696+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "309a8b75255772f225ee7d42e73c57da01f4132850e0deef75959b20d1590e80",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0108",
+      "Timestamp": "2026-09-05T10:59:26.6825827+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "80caf85aae599d7dcf87404815aa6928acb37cfa3687b7cc395b6f614aca2633",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0109",
+      "Timestamp": "2026-09-05T10:59:41.8963502+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "a3894d922cd27adf3d6f0d53ae159908e96b3e3e3f9a5dee68afb239951e2600",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0110",
+      "Timestamp": "2026-09-05T10:59:57.2055338+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "ac611696ed6977e66a8d960d1910c77c090b8a157d17faea4722bf24cda74b94",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0111",
+      "Timestamp": "2026-09-05T11:00:12.3534065+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "3cca5904dfdfd717b2dab46c92849eab0fe03f8e3b2f5862516c67ce721dd0b0",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0112",
+      "Timestamp": "2026-09-05T11:00:27.3504714+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "824478da6dc17619661fc689e9490091eded1cbdab13f5424814141433460502",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0113",
+      "Timestamp": "2026-09-05T11:00:42.4540306+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "16c42f8522cd1a33761c9d975a7dc50bd387964b5d9a017b49fc543d135033bf",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0114",
+      "Timestamp": "2026-09-05T11:00:58.0362814+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "e36188657c6d4c73b67a31a87a386d64ea98eec0c5625a444f943df4d0dceb7e",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0115",
+      "Timestamp": "2026-09-05T11:01:13.2026925+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "6f4c60f5c635a31f82ebd357ad613ffaa014d9fd46224515d273b946a43f4b3e",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0116",
+      "Timestamp": "2026-09-05T11:01:28.5530611+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "0c119aa7c9686fa1f9e0a9d7899fd9b9df625a4c5b343447d26bca3a4527a1af",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true
+    },
+    {
+      "Name": "frame-0117",
+      "Timestamp": "2026-09-05T11:01:43.8982047+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "98ce1f71dabe4c0d9a27c5989755b8a8e810c22f5343915e6021b862c7c584a1",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0117.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0117.png"
+    },
+    {
+      "Name": "frame-0118",
+      "Timestamp": "2026-09-05T11:01:58.9213943+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "5772e309c75c508c1564763cb0e86a59b8a7d7799fbc920dcf75a7f46e17939d",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0118.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0118.png"
+    },
+    {
+      "Name": "frame-0119",
+      "Timestamp": "2026-09-05T11:02:11.7908991+02:00",
+      "Width": 800,
+      "Height": 600,
+      "Hash": "30d35c8a5220ca5dde36d4aee430a53d5217bef56e145816b8dfcd42e27d786b",
+      "NonblackPercent": 97.34,
+      "UniqueSampleColors": 201,
+      "CaptureMode": "hidden-cdb-host-readprocessmemory",
+      "RenderEvidence": true,
+      "RawPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0119.raw",
+      "PngPath": "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-103139-257-map-pan\\frames\\frame-0119.png"
+    }
+  ],
+  "process_samples": [
+    {
+      "Timestamp": "2026-09-05T10:32:12.8094612+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37433344,
+      "PrivateMemorySize64": 15314944,
+      "HandleCount": 617
+    },
+    {
+      "Timestamp": "2026-09-05T10:32:28.2186602+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37433344,
+      "PrivateMemorySize64": 15314944,
+      "HandleCount": 617
+    },
+    {
+      "Timestamp": "2026-09-05T10:32:43.6064868+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37433344,
+      "PrivateMemorySize64": 15314944,
+      "HandleCount": 615
+    },
+    {
+      "Timestamp": "2026-09-05T10:32:59.1085257+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37433344,
+      "PrivateMemorySize64": 15314944,
+      "HandleCount": 615
+    },
+    {
+      "Timestamp": "2026-09-05T10:33:14.6258575+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37445632,
+      "PrivateMemorySize64": 15314944,
+      "HandleCount": 614
+    },
+    {
+      "Timestamp": "2026-09-05T10:33:29.7335146+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37421056,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:33:44.7469467+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37421056,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:33:59.6199847+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37421056,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:34:15.0403534+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:34:30.4638902+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:34:45.8048726+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:35:01.2136254+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:35:16.1860708+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:35:31.7106779+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:35:47.0439623+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:36:02.5336260+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:36:17.4613440+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:36:33.0154063+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37425152,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:36:47.9709681+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:37:03.3849714+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:37:18.7165923+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:37:33.9665120+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:37:49.2490465+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:38:04.5017411+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:38:19.8266404+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:38:35.1273624+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:38:50.7151885+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:39:05.5499654+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:39:20.9819860+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:39:36.2600812+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:39:51.4458059+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:40:06.5572462+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:40:21.8621098+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:40:37.2961366+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:40:52.6538267+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:41:08.0383785+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37535744,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:41:23.0144983+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37539840,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:41:38.3812489+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37539840,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:41:53.9612631+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:42:08.9722293+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:42:24.4319437+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:42:39.8740141+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:42:55.1094570+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:43:10.6625886+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:43:26.2746179+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:43:41.0681300+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:43:56.2544708+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:44:11.4837548+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:44:26.9446162+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:44:42.6914190+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:44:57.4799046+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:45:12.9141545+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:45:27.8879869+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:45:43.4835429+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:45:58.9069060+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:46:14.2211681+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:46:29.6880518+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:46:44.5128275+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:46:59.9980860+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 607
+    },
+    {
+      "Timestamp": "2026-09-05T10:47:15.0767078+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37548032,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:47:30.0096607+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37556224,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:47:45.1889364+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37556224,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:48:00.3414429+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37556224,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:48:15.5113413+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37556224,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:48:30.4757867+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:48:45.7745472+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:49:01.3210886+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:49:16.5671655+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:49:31.5025026+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:49:46.7486793+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:50:02.1980613+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:50:17.6029936+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:50:32.9582240+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:50:48.3186546+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:51:03.2849589+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:51:18.6143708+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37564416,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:51:34.2361061+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:51:49.4246916+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:52:04.8113992+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:52:19.9532657+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:52:35.4024449+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:52:50.6490520+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:53:05.6888931+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:53:20.8777981+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:53:36.1481603+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:53:51.1796119+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:54:06.1632690+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:54:21.5393383+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:54:36.6158761+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:54:51.8208052+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:55:06.9808432+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:55:22.4875826+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37568512,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:55:38.0040597+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:55:53.2194298+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:56:08.2064890+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:56:23.2546344+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:56:38.4245308+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:56:53.7612728+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:57:08.7475667+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:57:23.7800535+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:57:39.1319985+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:57:54.4422767+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:58:09.7962323+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:58:25.2436615+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:58:40.9731409+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37572608,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:58:55.7504115+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:59:11.3938697+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:59:26.6825827+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:59:41.8973506+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T10:59:57.2055338+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T11:00:12.3534065+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T11:00:27.3504714+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T11:00:42.4540306+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T11:00:58.0362814+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T11:01:13.2036961+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T11:01:28.5540616+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37576704,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T11:01:43.8982047+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37584896,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T11:01:58.9223945+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37593088,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    },
+    {
+      "Timestamp": "2026-09-05T11:02:11.7919001+02:00",
+      "HasExited": false,
+      "ExitCode": null,
+      "WorkingSet64": 37593088,
+      "PrivateMemorySize64": 15212544,
+      "HandleCount": 609
+    }
+  ],
+  "capture_errors": []
+}

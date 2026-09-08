@@ -1,0 +1,121 @@
+{
+  "schema": "clash95_framed_modal_failed_observation_v1",
+  "recorded_at": "2026-09-06T04:10:21.859121+00:00",
+  "passed": false,
+  "route": "castle_overview",
+  "resolution": "1024x768",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+  "runtime_failures": [
+    "Cannot convert the \"188\" value of type \"System.Int32\" to type \"System.UIntPtr\"."
+  ],
+  "initial_map_trace_passed": true,
+  "modal_trace_passed": true,
+  "observed_surface": {
+    "surface": 169735312,
+    "width": 1024,
+    "height": 768,
+    "base": 172490800,
+    "bytes": 786432,
+    "route": "castle_overview",
+    "tid": 7072,
+    "eip": 4334495,
+    "esp": 973928,
+    "owner": 71091994
+  },
+  "snapshot": null,
+  "frame_pixel_acceptance": false,
+  "action_bar_pixel_acceptance": false,
+  "cleanup": {
+    "candidates": [
+      {
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\framed-screen-castle_overview-1024x768-9b097d69bca00817.exe",
+          "creation_filetime": 134331411791544536,
+          "process_id": 3396,
+          "handle_retained": true,
+          "candidate_sha256": "69899e07f70dde2094264be694300e00c7a778f1391ac7797b74c59c56ee1ce0",
+          "creation_utc": "2026-09-06T04:06:19.1544536Z",
+          "parent_process_id": 30484
+        }
+      }
+    ],
+    "cdb": {
+      "termination_requested": true,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T04:06:18.9546367Z",
+        "handle_retained": true,
+        "creation_filetime": 134331411789546367,
+        "process_id": 30484
+      }
+    },
+    "desktop_closed": true
+  },
+  "artifacts": [
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\summary.json",
+      "sha256": "0cf993613c63e9b37b56f6c8a31fb3fd500d82c3825f5b931348318c7965351d"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\plan.json",
+      "sha256": "de5dcd05d89e3a7750a83afe9a08f0161715085c8ec3cb99029e252f36daa71c"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\packet.json",
+      "sha256": "3345c02f38c39c36fbfb4dd55a7b2017f6e8bc92e3aba0117070d1a81ff2c4fe"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\framed-screen.cdb",
+      "sha256": "dca7a93f93fcec1648dd4e3b22569aa245951041dfd901981ff2f84517c27e73"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\trace.json",
+      "sha256": "5b7aa6ff210bbe1b2eee7ffdc78847c04c471e014c9f89fc2615b695f70177c3"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\cdb.log",
+      "sha256": "b925dbae263e22bf2a21ee0ab0505bc78e7d5b6797ed241b4c32d44209f38321"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\host-stdout.json",
+      "sha256": "f6ba56852145af744d6a6860372f3e333f065ac16679bc11a48b752ff7482670"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\reviewed-sources\\framed_screen_probe.py",
+      "sha256": "52e6957b1a7909dec0a6c7bde1f265f4782e580997794e711757d1944108f984"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\reviewed-sources\\framed_screen_trace.py",
+      "sha256": "40c2d31b2be63e94b0129326d2c77ef9f9946bffe0e02148fcda64b88256c3b6"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\reviewed-sources\\run_framed_screen_capture.ps1",
+      "sha256": "7acf7bbaa6a5173b10fc80b3491a872025942dcc5db371da490ee9c13751e53f"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\reviewed-sources\\test_framed_screen_capture.py",
+      "sha256": "e333bad7eb1ccf99f6a5376807c64f32b52dedf11165e612ef0c0c05dd3d5c0c"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\reviewed-sources\\test_framed_screen_probe.py",
+      "sha256": "c050a58631b789e602a32d699d0a36e072845c0350ced8d6026c1ff5e5cbf03f"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-screens-20260906-034725\\castle_overview-1024x768-castle0-20260906-040604\\reviewed-sources\\test_framed_screen_trace.py",
+      "sha256": "a898f7d5e1bed1c6fc4c1718c0fe48d2b84535c6b30cbf4f501a3aa15ed8dbbd"
+    }
+  ],
+  "cause": "Windows PowerShell5.1 cannot cast the Int32 count directly to UIntPtr. The failed call preceded the 188-byte header read. A separately prepared host revision constructs UIntPtr from UInt64 explicitly.",
+  "limits": [
+    "No screenshot or raw snapshot was produced.",
+    "Source-bound castle presentation readiness does not make this failed host capture pass.",
+    "The new managed-signature fixture exercises the actual PowerShell read function, with no native process memory read.",
+    "No visible/manual-input/promotion proof."
+  ]
+}

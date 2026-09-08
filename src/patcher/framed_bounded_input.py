@@ -10,7 +10,7 @@ from . import pe_extension as pe
 from .framed_viewport import FramedViewport
 
 ROOT = Path(__file__).resolve().parents[2]
-BOUNDED_SOURCE_SHA256 = "c55f0ff1ad9c16d6bc64af03c5f95a398cb67b5c9b6dd2572bcf80c56c02a411"
+BOUNDED_SOURCE_SHA256 = "4fcadd0130058d0f6d0f542ff4579a96c72e5030b5d5784e53563271dbf822ff"
 STAGE = bounded.STAGE.removesuffix("-validation") + "-input-validation"
 AXIS_BYTES = 84
 LIMIT_OFFSET = 24

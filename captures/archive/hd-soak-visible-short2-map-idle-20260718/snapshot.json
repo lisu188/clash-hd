@@ -1,0 +1,70 @@
+{
+  "archived_at": "2026-09-05T07:29:01+00:00",
+  "source_generated_at": "2026-07-18T21:10:32.6935237+02:00",
+  "purpose": "Preserve the failing visible map route before a separately labeled hidden-CDB attempt updates canonical short-rung paths. Internal source paths remain the historical original paths; use this snapshot mapping, not replacement current files, to interpret these diagnostics.",
+  "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
+  "source_passed": false,
+  "source_failures": [
+    "visible application window disappeared while the process remained alive",
+    "capture errors: 1",
+    "expected at least 2 frame samples",
+    "expected at least 2 render-evidence frame samples",
+    "nonblack percent dropped below 10",
+    "unique sampled colors dropped below 8",
+    "route/input probe failures: 2",
+    "input drift exceeded 1px or metric missing: 3",
+    "route did not reach the gameplay map"
+  ],
+  "files": [
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-cdb-followup-current.json",
+      "snapshot": "hd-soak-short2-map-idle-cdb-followup-current.json",
+      "sha256": "f7a12a180dfc4225cf25cbc61b22b67d393d377e261a64354f2ca99f0ef3c050"
+    },
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-current.json",
+      "snapshot": "hd-soak-short2-map-idle-current.json",
+      "sha256": "779aff9de18c698326c9581f8921bf117740a6af8b528e4d419566e06d8b7d01"
+    },
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-guard-current.json",
+      "snapshot": "hd-soak-short2-map-idle-guard-current.json",
+      "sha256": "0377721b891b852de456a4de75ede9f806cb4bd9313ff42cf5aa7dec21f05745"
+    },
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-triage-current.json",
+      "snapshot": "hd-soak-short2-map-idle-triage-current.json",
+      "sha256": "31836e6aa9347d6e5655caa9e9af39cefdcacfbe1125c92ebb6cd3dadb27151e"
+    },
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-wer-followup-current.json",
+      "snapshot": "hd-soak-short2-map-idle-wer-followup-current.json",
+      "sha256": "ffca689c94adec613a1f51a574845f1d4bf6ec7fb59393d9b7ecfd60c2967940"
+    },
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-cdb-followup-current.md",
+      "snapshot": "hd-soak-short2-map-idle-cdb-followup-current.md",
+      "sha256": "99314acd4a638a8559c56dccab417b87d7852a421807c350ad8a39dd2e8866c2"
+    },
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-current.md",
+      "snapshot": "hd-soak-short2-map-idle-current.md",
+      "sha256": "ee24618ca249a1cc990f398ff80c392714f80803ff4168121826eefb3541ce49"
+    },
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-guard-current.md",
+      "snapshot": "hd-soak-short2-map-idle-guard-current.md",
+      "sha256": "b042e8336690f8dd3aa34a1cdaf7bf6a8c35672aa480eb8d0c3881e230ca1e57"
+    },
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-triage-current.md",
+      "snapshot": "hd-soak-short2-map-idle-triage-current.md",
+      "sha256": "4a1f095a84887764c60a0c00632fb42fc5e28720178ad7d1a4c5fbec817a8440"
+    },
+    {
+      "source": "captures/current/hd-soak-short2-map-idle-wer-followup-current.md",
+      "snapshot": "hd-soak-short2-map-idle-wer-followup-current.md",
+      "sha256": "a23f1cf601e6b2889d8de77df861c76aa6bfd81f683751d5aa974f3f854f26d6"
+    }
+  ]
+}

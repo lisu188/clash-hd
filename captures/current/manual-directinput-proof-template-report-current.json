@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T22:14:42+02:00",
+  "generated_at": "2026-09-06T05:57:49+02:00",
   "passed": true,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "manual proof template must document the accepted manifest shape while remaining invalid as proof until approved manual evidence replaces every placeholder",
@@ -8,7 +8,7 @@
   "template_json": "captures\\current\\manual-directinput-proof-template-current.json",
   "template_valid_as_proof": false,
   "template_validation_failures": [
-    "manual DirectInput proof evidence_class must be manual_directinput",
+    "manual DirectInput proof evidence_class must be one of manual_directinput, approved_guest_win98_directdraw",
     "manual DirectInput proof must record approved_visible_runtime=true",
     "manual DirectInput proof must include a non-placeholder approval_record",
     "manual DirectInput proof must include a non-placeholder candidate_path",

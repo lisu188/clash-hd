@@ -1,0 +1,1065 @@
+{
+  "schema_version": 1,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation",
+  "input_passed": false,
+  "guarded_gameplay_evidence": true,
+  "decision": "guarded_gameplay_evidence",
+  "runtime_verdict_changed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "cleanup_proven": false,
+  "failures": [],
+  "limits": [
+    "A separate software gameplay-evidence decision; the original runtime and image-heuristic verdicts remain unchanged.",
+    "Requires one in-world ceiling-window visibility snapshot at the authenticated paused capture boundary; no historical visibility merging or far-world clear proof.",
+    "Masked minimap pixels remain unmeasured terrain; four frame bands/footer and all six action cells are independently source-pixel checked.",
+    "No cleanup, visible composition, input, endurance, or promotion acceptance is inferred."
+  ],
+  "sources": {
+    "summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937\\cdb-surface-dump-20260906-044004\\diagnostic-summary.json",
+      "sha256": "0b3dbfacb03f4d3649a234752d49f54fc4191f4b5d72f6927703a84094eddbae"
+    },
+    "coverage": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937\\cdb-surface-dump-20260906-044004\\map-tile-coverage.json",
+      "sha256": "0f5ed733e251f5b155fa014106d4860239da872ec3a6767a6ba88ba20934fb53"
+    },
+    "log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937\\cdb-surface-dump-20260906-044004\\cdb-surface-dump.log",
+      "sha256": "3658f575ad2d9fd765572e2e4599846c5d04065707c7c893c72af6974c2fa51e"
+    },
+    "probe": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-v1-1280x720-20260906-023937\\cdb-surface-dump-20260906-044004\\partial-tile-installed.extra.cdb",
+      "sha256": "575c176f39a2ddbca00298ddb07261835703e408031199fc06080e0538fe10e8"
+    },
+    "frame_resource": {
+      "path": "C:\\Clash\\DATA\\GFX3.RES",
+      "sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525"
+    },
+    "command_resource": {
+      "path": "C:\\Clash\\DATA\\minimum.res",
+      "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116"
+    },
+    "original": {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+    },
+    "run_plan": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\framed-map-run-plan-20260906-023937.json",
+      "sha256": "869eff12747517b5c7be31dd92dc68865d35a1eb1447020428f4a936e773a9c1"
+    }
+  },
+  "input_error": "Harness aborted on map_tile_coverage.py exit2; no final runtime summary was produced.",
+  "resolution": "1280x720",
+  "candidate_sha256": "883bdeeb388ca294a2bf37195c0d18ee069ed6e668ffbc4e6a9e905ca3ccf913",
+  "canonical_probe_sha256": "962d846dd52c3087141283d8b98af0d6afdcf47cb30c0b2e921f0a10d3c1aa87",
+  "raw_image_gameplay_likely": false,
+  "raw_image_warnings": [
+    "low_overall_gameplay_coverage"
+  ],
+  "raw_overall_nonblack_percent": 48.407,
+  "candidate_reconstruction_verified": true,
+  "canonical_probe_verified": true,
+  "coverage_recomputed": true,
+  "frame_source_pixels_verified": true,
+  "footer_source_pixels_verified": true,
+  "action_cells_verified": 6,
+  "snapshot": {
+    "ready_line": 544,
+    "visibility_line": 545,
+    "minimap_line": 561,
+    "closed_line": 562,
+    "map_origin": [
+      10,
+      17
+    ],
+    "map_size": [
+      100,
+      100
+    ],
+    "columns": 19,
+    "rows": 11,
+    "dump_start": 70722533,
+    "dump_count": 236,
+    "minimap": {
+      "enabled": true,
+      "width": 214,
+      "height": 214
+    }
+  },
+  "visibility_zero_blank_cells": [
+    {
+      "id": "r0c10",
+      "world": [
+        20,
+        17
+      ],
+      "visibility": 0,
+      "address": 70722663
+    },
+    {
+      "id": "r0c11",
+      "world": [
+        21,
+        17
+      ],
+      "visibility": 0,
+      "address": 70722676
+    },
+    {
+      "id": "r0c12",
+      "world": [
+        22,
+        17
+      ],
+      "visibility": 0,
+      "address": 70722689
+    },
+    {
+      "id": "r0c13",
+      "world": [
+        23,
+        17
+      ],
+      "visibility": 0,
+      "address": 70722702
+    },
+    {
+      "id": "r0c14",
+      "world": [
+        24,
+        17
+      ],
+      "visibility": 0,
+      "address": 70722715
+    },
+    {
+      "id": "r0c15",
+      "world": [
+        25,
+        17
+      ],
+      "visibility": 0,
+      "address": 70722728
+    },
+    {
+      "id": "r1c10",
+      "world": [
+        20,
+        18
+      ],
+      "visibility": 0,
+      "address": 70722663
+    },
+    {
+      "id": "r1c11",
+      "world": [
+        21,
+        18
+      ],
+      "visibility": 0,
+      "address": 70722676
+    },
+    {
+      "id": "r1c12",
+      "world": [
+        22,
+        18
+      ],
+      "visibility": 0,
+      "address": 70722689
+    },
+    {
+      "id": "r1c13",
+      "world": [
+        23,
+        18
+      ],
+      "visibility": 0,
+      "address": 70722702
+    },
+    {
+      "id": "r1c14",
+      "world": [
+        24,
+        18
+      ],
+      "visibility": 0,
+      "address": 70722715
+    },
+    {
+      "id": "r1c15",
+      "world": [
+        25,
+        18
+      ],
+      "visibility": 0,
+      "address": 70722728
+    },
+    {
+      "id": "r2c10",
+      "world": [
+        20,
+        19
+      ],
+      "visibility": 0,
+      "address": 70722663
+    },
+    {
+      "id": "r2c11",
+      "world": [
+        21,
+        19
+      ],
+      "visibility": 0,
+      "address": 70722676
+    },
+    {
+      "id": "r2c12",
+      "world": [
+        22,
+        19
+      ],
+      "visibility": 0,
+      "address": 70722689
+    },
+    {
+      "id": "r2c13",
+      "world": [
+        23,
+        19
+      ],
+      "visibility": 0,
+      "address": 70722702
+    },
+    {
+      "id": "r2c14",
+      "world": [
+        24,
+        19
+      ],
+      "visibility": 0,
+      "address": 70722715
+    },
+    {
+      "id": "r2c15",
+      "world": [
+        25,
+        19
+      ],
+      "visibility": 0,
+      "address": 70722728
+    },
+    {
+      "id": "r3c10",
+      "world": [
+        20,
+        20
+      ],
+      "visibility": 0,
+      "address": 70722663
+    },
+    {
+      "id": "r3c11",
+      "world": [
+        21,
+        20
+      ],
+      "visibility": 0,
+      "address": 70722676
+    },
+    {
+      "id": "r3c12",
+      "world": [
+        22,
+        20
+      ],
+      "visibility": 0,
+      "address": 70722689
+    },
+    {
+      "id": "r3c13",
+      "world": [
+        23,
+        20
+      ],
+      "visibility": 0,
+      "address": 70722702
+    },
+    {
+      "id": "r3c14",
+      "world": [
+        24,
+        20
+      ],
+      "visibility": 0,
+      "address": 70722715
+    },
+    {
+      "id": "r3c15",
+      "world": [
+        25,
+        20
+      ],
+      "visibility": 0,
+      "address": 70722728
+    },
+    {
+      "id": "r3c16",
+      "world": [
+        26,
+        20
+      ],
+      "visibility": 0,
+      "address": 70722741
+    },
+    {
+      "id": "r3c17",
+      "world": [
+        27,
+        20
+      ],
+      "visibility": 0,
+      "address": 70722754
+    },
+    {
+      "id": "r3c18",
+      "world": [
+        28,
+        20
+      ],
+      "visibility": 0,
+      "address": 70722767
+    },
+    {
+      "id": "r4c10",
+      "world": [
+        20,
+        21
+      ],
+      "visibility": 0,
+      "address": 70722663
+    },
+    {
+      "id": "r4c11",
+      "world": [
+        21,
+        21
+      ],
+      "visibility": 0,
+      "address": 70722676
+    },
+    {
+      "id": "r4c12",
+      "world": [
+        22,
+        21
+      ],
+      "visibility": 0,
+      "address": 70722689
+    },
+    {
+      "id": "r4c13",
+      "world": [
+        23,
+        21
+      ],
+      "visibility": 0,
+      "address": 70722702
+    },
+    {
+      "id": "r4c14",
+      "world": [
+        24,
+        21
+      ],
+      "visibility": 0,
+      "address": 70722715
+    },
+    {
+      "id": "r4c15",
+      "world": [
+        25,
+        21
+      ],
+      "visibility": 0,
+      "address": 70722728
+    },
+    {
+      "id": "r4c16",
+      "world": [
+        26,
+        21
+      ],
+      "visibility": 0,
+      "address": 70722741
+    },
+    {
+      "id": "r4c17",
+      "world": [
+        27,
+        21
+      ],
+      "visibility": 0,
+      "address": 70722754
+    },
+    {
+      "id": "r4c18",
+      "world": [
+        28,
+        21
+      ],
+      "visibility": 0,
+      "address": 70722767
+    },
+    {
+      "id": "r5c10",
+      "world": [
+        20,
+        22
+      ],
+      "visibility": 0,
+      "address": 70722663
+    },
+    {
+      "id": "r5c11",
+      "world": [
+        21,
+        22
+      ],
+      "visibility": 0,
+      "address": 70722676
+    },
+    {
+      "id": "r5c12",
+      "world": [
+        22,
+        22
+      ],
+      "visibility": 0,
+      "address": 70722689
+    },
+    {
+      "id": "r5c13",
+      "world": [
+        23,
+        22
+      ],
+      "visibility": 0,
+      "address": 70722702
+    },
+    {
+      "id": "r5c14",
+      "world": [
+        24,
+        22
+      ],
+      "visibility": 0,
+      "address": 70722715
+    },
+    {
+      "id": "r5c15",
+      "world": [
+        25,
+        22
+      ],
+      "visibility": 0,
+      "address": 70722728
+    },
+    {
+      "id": "r5c16",
+      "world": [
+        26,
+        22
+      ],
+      "visibility": 0,
+      "address": 70722741
+    },
+    {
+      "id": "r5c17",
+      "world": [
+        27,
+        22
+      ],
+      "visibility": 0,
+      "address": 70722754
+    },
+    {
+      "id": "r5c18",
+      "world": [
+        28,
+        22
+      ],
+      "visibility": 0,
+      "address": 70722767
+    },
+    {
+      "id": "r6c10",
+      "world": [
+        20,
+        23
+      ],
+      "visibility": 0,
+      "address": 70722663
+    },
+    {
+      "id": "r6c11",
+      "world": [
+        21,
+        23
+      ],
+      "visibility": 0,
+      "address": 70722676
+    },
+    {
+      "id": "r6c12",
+      "world": [
+        22,
+        23
+      ],
+      "visibility": 0,
+      "address": 70722689
+    },
+    {
+      "id": "r6c13",
+      "world": [
+        23,
+        23
+      ],
+      "visibility": 0,
+      "address": 70722702
+    },
+    {
+      "id": "r6c14",
+      "world": [
+        24,
+        23
+      ],
+      "visibility": 0,
+      "address": 70722715
+    },
+    {
+      "id": "r6c15",
+      "world": [
+        25,
+        23
+      ],
+      "visibility": 0,
+      "address": 70722728
+    },
+    {
+      "id": "r6c16",
+      "world": [
+        26,
+        23
+      ],
+      "visibility": 0,
+      "address": 70722741
+    },
+    {
+      "id": "r6c17",
+      "world": [
+        27,
+        23
+      ],
+      "visibility": 0,
+      "address": 70722754
+    },
+    {
+      "id": "r6c18",
+      "world": [
+        28,
+        23
+      ],
+      "visibility": 0,
+      "address": 70722767
+    },
+    {
+      "id": "r7c10",
+      "world": [
+        20,
+        24
+      ],
+      "visibility": 0,
+      "address": 70722664
+    },
+    {
+      "id": "r7c11",
+      "world": [
+        21,
+        24
+      ],
+      "visibility": 0,
+      "address": 70722677
+    },
+    {
+      "id": "r7c12",
+      "world": [
+        22,
+        24
+      ],
+      "visibility": 0,
+      "address": 70722690
+    },
+    {
+      "id": "r7c13",
+      "world": [
+        23,
+        24
+      ],
+      "visibility": 0,
+      "address": 70722703
+    },
+    {
+      "id": "r7c14",
+      "world": [
+        24,
+        24
+      ],
+      "visibility": 0,
+      "address": 70722716
+    },
+    {
+      "id": "r7c15",
+      "world": [
+        25,
+        24
+      ],
+      "visibility": 0,
+      "address": 70722729
+    },
+    {
+      "id": "r7c16",
+      "world": [
+        26,
+        24
+      ],
+      "visibility": 0,
+      "address": 70722742
+    },
+    {
+      "id": "r7c17",
+      "world": [
+        27,
+        24
+      ],
+      "visibility": 0,
+      "address": 70722755
+    },
+    {
+      "id": "r7c18",
+      "world": [
+        28,
+        24
+      ],
+      "visibility": 0,
+      "address": 70722768
+    },
+    {
+      "id": "r8c0",
+      "world": [
+        10,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722534
+    },
+    {
+      "id": "r8c10",
+      "world": [
+        20,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722664
+    },
+    {
+      "id": "r8c11",
+      "world": [
+        21,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722677
+    },
+    {
+      "id": "r8c12",
+      "world": [
+        22,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722690
+    },
+    {
+      "id": "r8c13",
+      "world": [
+        23,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722703
+    },
+    {
+      "id": "r8c14",
+      "world": [
+        24,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722716
+    },
+    {
+      "id": "r8c15",
+      "world": [
+        25,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722729
+    },
+    {
+      "id": "r8c16",
+      "world": [
+        26,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722742
+    },
+    {
+      "id": "r8c17",
+      "world": [
+        27,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722755
+    },
+    {
+      "id": "r8c18",
+      "world": [
+        28,
+        25
+      ],
+      "visibility": 0,
+      "address": 70722768
+    },
+    {
+      "id": "r9c0",
+      "world": [
+        10,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722534
+    },
+    {
+      "id": "r9c1",
+      "world": [
+        11,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722547
+    },
+    {
+      "id": "r9c10",
+      "world": [
+        20,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722664
+    },
+    {
+      "id": "r9c11",
+      "world": [
+        21,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722677
+    },
+    {
+      "id": "r9c12",
+      "world": [
+        22,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722690
+    },
+    {
+      "id": "r9c13",
+      "world": [
+        23,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722703
+    },
+    {
+      "id": "r9c14",
+      "world": [
+        24,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722716
+    },
+    {
+      "id": "r9c15",
+      "world": [
+        25,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722729
+    },
+    {
+      "id": "r9c16",
+      "world": [
+        26,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722742
+    },
+    {
+      "id": "r9c17",
+      "world": [
+        27,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722755
+    },
+    {
+      "id": "r9c18",
+      "world": [
+        28,
+        26
+      ],
+      "visibility": 0,
+      "address": 70722768
+    },
+    {
+      "id": "r10c0",
+      "world": [
+        10,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722534
+    },
+    {
+      "id": "r10c1",
+      "world": [
+        11,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722547
+    },
+    {
+      "id": "r10c2",
+      "world": [
+        12,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722560
+    },
+    {
+      "id": "r10c3",
+      "world": [
+        13,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722573
+    },
+    {
+      "id": "r10c4",
+      "world": [
+        14,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722586
+    },
+    {
+      "id": "r10c5",
+      "world": [
+        15,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722599
+    },
+    {
+      "id": "r10c6",
+      "world": [
+        16,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722612
+    },
+    {
+      "id": "r10c7",
+      "world": [
+        17,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722625
+    },
+    {
+      "id": "r10c8",
+      "world": [
+        18,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722638
+    },
+    {
+      "id": "r10c9",
+      "world": [
+        19,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722651
+    },
+    {
+      "id": "r10c10",
+      "world": [
+        20,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722664
+    },
+    {
+      "id": "r10c11",
+      "world": [
+        21,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722677
+    },
+    {
+      "id": "r10c12",
+      "world": [
+        22,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722690
+    },
+    {
+      "id": "r10c13",
+      "world": [
+        23,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722703
+    },
+    {
+      "id": "r10c14",
+      "world": [
+        24,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722716
+    },
+    {
+      "id": "r10c15",
+      "world": [
+        25,
+        27
+      ],
+      "visibility": 0,
+      "address": 70722729
+    }
+  ],
+  "blank_cells": 100,
+  "explained_blank_cells": 100,
+  "unexplained_blank_cells": [],
+  "initial_trace": {
+    "passed": true,
+    "initial_sequence": {
+      "admission": {
+        "line": 211,
+        "seq": 1,
+        "bp": 76,
+        "tid": 26772,
+        "eip": 5651615,
+        "esp": 973996,
+        "records": [
+          {
+            "line": 212,
+            "marker": "PTILE_INITIAL_ADMISSION",
+            "text": "PTILE_INITIAL_ADMISSION status=1 tid=6894 esp=000edcac"
+          }
+        ]
+      },
+      "ready": {
+        "line": 213,
+        "seq": 2,
+        "bp": 73,
+        "tid": 26772,
+        "eip": 5651624,
+        "esp": 973996,
+        "records": [
+          {
+            "line": 214,
+            "marker": "PTILE_MAP_READY",
+            "text": "PTILE_MAP_READY owner=0040ad40 size=(1280,720)"
+          }
+        ]
+      },
+      "pair": {
+        "converge_line": 215,
+        "present_line": 217,
+        "tid": 26772,
+        "esp": 973848
+      },
+      "return": {
+        "line": 219,
+        "seq": 5,
+        "bp": 77,
+        "tid": 26772,
+        "eip": 5651634,
+        "esp": 973996,
+        "records": [
+          {
+            "line": 220,
+            "marker": "PTILE_INITIAL_RETURN",
+            "text": "PTILE_INITIAL_RETURN tid=6894 esp=000edcac result=4a0"
+          }
+        ]
+      },
+      "return_eax": 1184
+    },
+    "full_pairs": [
+      {
+        "converge_line": 215,
+        "present_line": 217,
+        "tid": 26772,
+        "esp": 973848
+      }
+    ]
+  },
+  "original_coverage_verdict_preserved": true,
+  "evaluator_source": {
+    "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\framed_gameplay_evidence.py",
+    "sha256": "1ccf89a08475a8995e0f2822d25e497768c1c829deafc2f331af96d3add0f469"
+  }
+}

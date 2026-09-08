@@ -840,6 +840,10 @@ with the Python click mapper plus the combined CDB probe.
   `PermissionError: [WinError 5] SetCursorPos` before the probe reached
   gameplay. Treat this as a harness/foreground permission failure, not as a
   candidate failure.
+  - Update 2026-07-17 (`589f5700`): `SetCursorPos` was also the *wrong
+    mechanism* — the engine reads the DirectInput accumulator, which
+    `SetCursorPos` never touches. Relative pulse-mode injection is the working
+    path. The "Next step" below was correct to avoid `SetCursorPos`.
 - Next step:
   prove the bound writes at `00460B20` and mouse rows at `00460A9D` for the
   vswitch candidate without relying first on `SetCursorPos`; only rerun the
@@ -1019,9 +1023,19 @@ with the Python click mapper plus the combined CDB probe.
 - Current interpretation:
   the v2 candidate is promoted as the best patcher default because the
   breakpoint-backed gameplay evidence is strong and the normal liveness smoke
-  did not crash. A true clean gameplay smoke remains blocked in this runner by
+  did not crash. ~~A true clean gameplay smoke remains blocked in this runner by
   Windows cursor API permission failures (`SetCursorPos`, absolute
-  `SendInput`, and `GetCursorPos` all returned `[WinError 5]`).
+  `SendInput`, and `GetCursorPos` all returned `[WinError 5]`).~~
+  - **Interpretation corrected 2026-07-17 (`589f5700`).** The `[WinError 5]`
+    observations above are real and stay on the record, but they were **not**
+    the reason input could not drive the game, and automation is **not**
+    blocked by environment privilege or exclusive DirectInput. The engine reads
+    the DirectInput *accumulator*: `SetCursorPos` and absolute `SendInput` move
+    only the OS cursor and are invisible to it, so even a successful call would
+    not have entered gameplay. Relative **pulse-mode** injection does work and
+    has since driven real clicks to callbacks (see `c5fe1d70`). Treat
+    `move_method=setcursor` with `logical_delta [0,0]` as the fingerprint of
+    this old broken path.
 
 ## Top-Band Probe Parser, 2026-04-24
 
@@ -3686,3 +3700,123 @@ and its strict parser now have fixture/source-guard coverage in
 `captures\current\right-bottom-natural-slot2-summary-tests-current.md`. The
 real hidden-CDB run remains pending: its launch was blocked before execution by
 the external approval quota, so there is no natural slot-2 runtime pass claim.
+
+## Windowed Soak Contract And Transition-Safe Intro Prep, 2026-07-14
+
+- The short2 map-idle retry was already windowed: the observed client was
+  800x600 at screen origin `(80,80)`, and `C:\Clash\dxcfg.ini` selected
+  `display=application` plus `presentation=windowed`. The run failed before
+  frame sampling because the seventh repeated intro `postmessage` click caused
+  the expected screen transition and the eighth click was then posted after
+  that transition; this is not classified as a fullscreen failure.
+- `scripts\smoke\run_hd_soak.ps1` now fails closed unless the work directory's
+  `dxcfg.ini` explicitly selects application/windowed presentation. The
+  configuration SHA-256 is included in the visible-runtime approval token and
+  the window contract is written to both dry-run and runtime reports.
+- `tools\mouse_path_probe.py` now supports transition-safe click repetition.
+  The soak harness enables it only for intro preparation and stops repeats when
+  a click is followed by sampled cursor/client drift. The report gate accepts
+  that drift only for a verified `intro-skip` path with an allowed probe exit
+  and an explicit `sample_drift_after_click` stop marker; every other drift
+  path remains failing.
+- Repo-only fixture tests and the harness dry run pass. The approved retry at
+  `C:\ClashCaptures\hd-soak\hd-soak-20260714-172948-short2-map-idle`
+  remained explicitly windowed at 800x600 with screen origin `(80,80)`.
+  Transition-safe intro prep worked: it stopped after three clicks with a
+  verified pre-click path and `sample_drift_after_click`; the subsequent
+  `load-button`, `load-slot0`, and `confirm-load` input paths all reported zero
+  drift.
+- The retry is an honest failure, not map-route proof. The only captured frame
+  remained on the main menu, passed the tear heuristic (`ratio=1.202`), and the
+  process then exited with code 1 after about 39 seconds. The second capture
+  timed out waiting for the now-absent window, leaving one of the required two
+  frames. Current triage classifies `unexpected_process_exit` and directs the
+  next investigation to collect crash-focused CDB evidence; visible rerun
+  approval is blocked. The protected stable stage and original executable are
+  unchanged.
+
+## Hidden CDB Follow-up For The Windowed Soak Exit, 2026-07-15
+
+- Added a bounded `-ContinueAfterDumpSec` option to the hidden-desktop surface
+  dump harness. Its default remains zero, it cannot be combined with CDB-side
+  `.writemem`, and it records whether the observation completed, the process
+  exited, an access violation occurred, or `App_RequestQuit` ran.
+- The one permitted follow-up used the same stable stage and exact candidate
+  SHA-256 as the failed visible soak,
+  `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`.
+  Live preflight reverified the original executable, protected stage, zero
+  stale processes, and the pinned application/windowed `dxcfg.ini` SHA-256.
+  The run stayed on a hidden desktop with the memory-only proxy presentation
+  explicitly disabled, so it did not switch or present on the active display.
+- `SURFDUMP_PLAYGAME` and `SURFDUMP_READY` proved that load slot 0 reached an
+  800x600 gameplay surface. The harness then completed a 45-second post-dump
+  observation with no exit, access violation, `App_RequestQuit`, or timeout.
+  The harness stopped its own processes afterward; none remained, and the
+  original executable hash was unchanged.
+- This pass narrows but does not resolve the visible failure. The hidden
+  memory-only proxy does not reproduce the application/windowed wrapper,
+  visible input, or screen-capture path. The visible soak therefore remains
+  failed and blocked from rerun; the next investigation is the differing
+  wrapper/input/capture path. The stable stage is not promoted or changed.
+- Small current evidence is recorded in
+  `captures\current\hd-soak-short2-map-idle-cdb-followup-current.json`; raw
+  debugger and surface artifacts remain outside the repository under
+  `C:\ClashCaptures\hd-soak-cdb-crash\cdb-surface-dump-20260715-070814`.
+
+## OS-Confirmed Windowed Soak Hang Classification, 2026-07-15
+
+- Windows Application events correlate the failed visible candidate to
+  `AppHangB1`, not an access-violation crash or voluntary exit. Application
+  Hang event 1002 says Windows closed the nonresponsive
+  `clash95_hd_soak_20260714_171708.exe` at 17:30:31; two WER event-1001 rows
+  carry the same executable and event name. No Application Error 1000 row was
+  present in the run window.
+- The second frame attempt timed out at 17:30:30.996 while still inside its
+  visible-window enumeration loop. Because it never acquired a target handle,
+  it did not reach foreground manipulation or GDI capture. The later harness
+  exit code 1 is therefore classified as the OS-closed hang outcome rather
+  than a self-selected game exit. The first successful capture remains a
+  possible interaction difference and is not exonerated without a controlled
+  comparison.
+- Exact cursor and button-event geometry for `load-button`, `load-slot0`, and
+  `confirm-load` did not prove game callbacks or screen transitions. The last
+  actual frame remained on the main menu. Combined with the non-reproducing
+  hidden CDB proxy observation, this established the next diagnostic boundary.
+  The soak harness now samples `EnumWindows`/`GetClientRect`/
+  `IsHungAppWindow` after launch and intro wait, before and after every route
+  step, and before every frame. It stops further input and capture at the first
+  hung or missing live target; the harness guard's `window_health_stop` check
+  passes. The remaining next step is a fresh tokened, explicitly approved,
+  application/windowed retry.
+- `captures\current\hd-soak-short2-map-idle-wer-followup-current.json` records
+  the event counts, WER report ID, timestamps, capture-path limits, unreadable
+  archived-report ACL, and implemented window-health mitigation. It does not
+  claim a hang stack, approve a visible rerun, or change the protected stable
+  stage.
+
+## Instrumented Window-Missing Soak Result, 2026-07-15
+
+- The explicitly approved retry at
+  `C:\ClashCaptures\hd-soak\hd-soak-20260715-091839-short2-map-idle`
+  used the protected stable stage, an 800x600 application/windowed client, and
+  candidate SHA-256
+  `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`.
+  Intro transition-safe repetition stopped on `sample_drift_after_click`;
+  `load-button`, `load-slot0`, and `confirm-load` each completed with exact
+  cursor/button geometry and zero ordinary drift.
+- Window-health samples stayed responsive through `after-confirm-load-wait`
+  and the first two capture phases. At `before-frame-0002`, the process was
+  still alive but `EnumWindows` could no longer find its visible window. The
+  harness stopped further input/capture, cleaned up the candidate, and recorded
+  a clean stop with no unexpected process exit. Current triage classifies
+  `window_missing_while_process_alive` and keeps visible rerun approval closed
+  pending inspection of the first missing-window wrapper transition.
+- Both 800x600 frames passed the tear heuristic (`ratio=1.202` and `1.266`),
+  but neither proves gameplay. Frame 0000 shows the main menu with unused black
+  right/bottom area. Frame 0001 still shows main-menu artwork and includes
+  desktop bands plus clipped game content. The two-frame count therefore does
+  not override the missing-window, route-coverage, or visual-proof failures.
+- Resource growth and artifact size remained bounded. No Clash95/debugger
+  process remained after cleanup, the original executable SHA-256 remained
+  `500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE`,
+  and the protected stable stage was not changed or promoted.

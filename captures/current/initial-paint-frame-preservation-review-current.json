@@ -1,0 +1,121 @@
+{
+  "generated_at": "2026-09-05T19:48:46.323285+00:00",
+  "scope": "Initial paint validation and four-sided frame investigation/preparation; preservation audit against the 3806-file initial inventory.",
+  "baseline": {
+    "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-initialpaint-6ezc4qbk\\initial-hashes.json",
+    "sha256": "73d33be227dc0d12a71be64669077cc72f6993585cf68a46e60d59489183be86",
+    "eligible_file_count": 3806
+  },
+  "missing_initial_files": [],
+  "modified_initial_files": {
+    "docs/hd/AGENT_HANDOFF.md": {
+      "before_sha256": "a8301025c15387d2c1965294baa8c7b0ae3d6bc7c47cd4cd8db3be6725bb31e7",
+      "after_sha256": "c76dff38556945785d52a54626ad6225f4723ac43bccc5f724a991553a87d90a"
+    },
+    "scripts/cdb/run_cdb_surface_dump.ps1": {
+      "before_sha256": "6d0ed8acdb7cc532c2ee409ae643f8b0c3be090fdbfad1d822b809322587946b",
+      "after_sha256": "289e069f613e4e60092e7cda1c7f9511859faff4a2d6855a71ea717c00b9d0b4"
+    },
+    "tools/build_partial_tile_candidate.py": {
+      "before_sha256": "81dd7397dece8922700e3a2f631394af1c980fd7433e62354e77fe19b3f81cc9",
+      "after_sha256": "285b20813b6a05bfb373b41b86c4def3746abaf3ecb1065142d0f6c5e636408f"
+    },
+    "captures/current/action-bar-complete-screenshot-inventory-current.json": {
+      "before_sha256": "10df09cea2825afa265463c9158fe5cea15e8f21c332461e6d95bf9de933dff4",
+      "after_sha256": "47aa8e82d87b960edf250f7ec15752ae36be86b266d16d9793fa7e7ebb3390d1"
+    },
+    "docs/hd/INITIAL_MAP_PAINT.md": {
+      "before_sha256": "96ad5824f348c8302101ca255ec4f4e65843831472fc1f56b04f03a4fe523a61",
+      "after_sha256": "8d238feee8bef3b7a8510e0785c23d89b47140bb6faaf573f75d2b55c1009966"
+    },
+    "captures/current/action-bar-complete-screenshot-inventory-current.md": {
+      "before_sha256": "fe6c01739c53a83c0a0d3a61c97905343b2d4128d1254a8fcb18b532ecf68d66",
+      "after_sha256": "04d0b5383096cf3900034fc2ee526bf8e087f5162a15082e136c225f95afc146"
+    },
+    "reports/hd_completion_audit.md": {
+      "before_sha256": "898619f1aee1b4abd2a8a420c78bb11b01ca61c254ec6e70c5d89d371c465a4e",
+      "after_sha256": "f8ae752021be91c0ea4a37854e02591c9d9fbf637009fd41ad068bf0b521528b"
+    },
+    "tools/test_partial_tile_surface_harness.py": {
+      "before_sha256": "02cb70c5562c211c1878629f0facfec2774580b8ccf9a3552aa6c6768db29806",
+      "after_sha256": "b75f11a8ed708c71899b33b8f7c6beef1dbd343958aa943a3d786981876c6517"
+    },
+    "docs/hd/PARTIAL_TILE_RENDERING.md": {
+      "before_sha256": "968577f044d4412b5ea6e1b9506daa457d11727aa87f3f3f06a1d1f20a1a95cd",
+      "after_sha256": "eb5ab4d45178c015e0a283731e967c904e416a834b828bfbe9e5705faa07335c"
+    },
+    "AGENTS.md": {
+      "before_sha256": "95ce09c2430edbf0511556234f1e9384895d3b209c5da03a098d0f02878f7447",
+      "after_sha256": "dcd7fe61cc5baa375a68d342db9accb248eae25c71345b85997ff593a6138cfd"
+    }
+  },
+  "unmodified_initial_file_count": 3796,
+  "added_files_before_this_review": {
+    "captures/archive/action-bar-inventory-20260905-182639/action-bar-complete-screenshot-inventory-current.json": "10df09cea2825afa265463c9158fe5cea15e8f21c332461e6d95bf9de933dff4",
+    "captures/archive/action-bar-inventory-20260905-182639/action-bar-complete-screenshot-inventory-current.md": "fe6c01739c53a83c0a0d3a61c97905343b2d4128d1254a8fcb18b532ecf68d66",
+    "captures/current/four-sided-frame-preparation-current.json": "c92d0cd4fd0dd216af1b4fa02b64172045e494032dc454403579bd655f8a5943",
+    "captures/current/four-sided-frame-preparation-current.md": "47846be7d0da2e9d72104b2fa03ad28cd2044712c704a4a206fdf85481f07f84",
+    "captures/current/four-sided-frame-prospective-audit-current.json": "73e877d40e9c0cdb16f0bf02571bf88d3e57f208e7a43b3f14e42ae5bd6799f1",
+    "captures/current/initial-map-paint-1024-action-bar-audit-current.json": "4afe5d460dcca265aa48a104ebb0c4071c03a8a0f1585bfb9c45cbe33eb4d4e0",
+    "captures/current/initial-map-paint-800-action-bar-audit-current.json": "138e418dca6854c613af10a7ed2079551f4e1de44fdd4c40ac8a81b221e78ef6",
+    "captures/current/initial-map-paint-run-plan-20260905-190806.json": "ebb4acf5c49bc8c5a679312466df6edb3991e194ece47cbac1b8352c164e7214",
+    "captures/current/initial-map-paint-runtime-current.json": "2f265d5595045f2805806728b2b6f43c61fad67fc89f817af6c5ae4c9f9992c9",
+    "captures/current/initial-map-paint-runtime-current.md": "fcae104025f27ffc8ac2bc4e89a4cb37e31843d23d9da8fa85bc3b7c485e61f1",
+    "captures/current/initialpaint-frame-asset-audit-current.json": "59194f70ac58b8561db1aea48ede1302f6924d7f60380259bbe8a0a4685fac7f",
+    "docs/hd/FOUR_SIDED_FRAME.md": "762742d91f7b50d484374174f795be353f8d05bd6fc50322b952fb22441b01f6",
+    "reports/initialpaint-frame-asset-audit-20260905.md": "6cf935537099027d6a6471eb66a460d8b27c061828bc6a26dfb648799968c9a4",
+    "src/patcher/four_sided_frame.py": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+    "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+    "src/patcher/initial_map_paint.py": "a4dfce3dd267d109417a04f6d63f1d7dfc2e7e862525e8e7446748606f24955b",
+    "tools/frame_surface_audit.py": "1a9d0684cef0bb19a7b0ecd5ecb02c41ef0280033f2307f99d524a521611bfd3",
+    "tools/initial_map_paint_trace.py": "2df578e3fa58781404bf1131c6d8debd3c633ffad0e1a3f60b15f395b671d43e",
+    "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+    "tools/test_four_sided_frame.py": "64e6482f83c67f0105bfa23a267fe572c02a8e92e60b205e31e90b6cd001a352",
+    "tools/test_four_sided_frame_x86.py": "4489ad89367b24cd1a9a821f5a3f8b52b6cccf4dd54b12261d63076014c4142b",
+    "tools/test_frame_surface_audit.py": "fa3e04960b50c0f36f0a7feea317375030193fbe78e05edb21b80f1745a7d55c",
+    "tools/test_framed_viewport.py": "f6b64244490ac56c99420d17f87f12de1885f0caecf78ef7e2e9f7939326da2f",
+    "tools/test_initial_map_candidate.py": "04ffa58b2a01697a38a8474de9f77a9fc1913628c7cd5e433692a51de86afdb9",
+    "tools/test_initial_map_paint.py": "00a302f9db039a71e89b9160d4ca5f17ab9b27f05b5e20e25750f5329bca56b6",
+    "tools/test_initial_map_paint_trace.py": "9e9668382457cf10079a3750ee64fb15f7f6fedc56d456ae30e6dfcd5708ac9b",
+    "tools/test_partial_tile_trace_probe.py": "263866820b6c96710de7713d59f503a8bddb2472ff647c3b9204e36f977693ad"
+  },
+  "unexpected_scope_changes": [],
+  "protected_source_config_paths_unchanged": {
+    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "src/patcher/partial_tile_clip.py": "944119033895bd9e638a31e14a3c6c342e18efa28691679b97c831a989345c5a",
+    "src/patcher/partial_tile_hooks.py": "a5953f662f8d663daa8eb4f7e6f7327a67a4bbd2d382f64fa0815fadefb403f6",
+    "src/patcher/pe_extension.py": "efa974b294df3cdc7268788d6d17c2baf8c3575c4d388167f8939d96ae9a08ab",
+    "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
+    ".codex/config.toml": "397e5f05e79973ed2a4369ebc86d6f5b625ebde6a92377dd0446708a5c75dfe9",
+    ".gitignore": "c1161f4343445d947939b6a06b4ad34b04160880cef6470034188c800d4003b1",
+    "README.md": "edd395ca1af504bfb9e0015560a7938a24a1c5a67f64b59b3cf622aa6ef4381c"
+  },
+  "original_executable_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "previous_screenshot_inventory_archived_byte_identically": true,
+  "new_files_are_source_docs_or_small_json_manifests": true,
+  "current_frame_preparation": "captures/current/four-sided-frame-preparation-current.json",
+  "initial_paint_runtime": "captures/current/initial-map-paint-runtime-current.json",
+  "scoped_git_diff_check_passed": true,
+  "new_text_whitespace_check_passed": true,
+  "documentation_guard_fixture_suites_passed": true,
+  "aggregate_not_rerun_in_this_checkpoint": {
+    "generated_at": "2026-09-05T20:39:17+02:00",
+    "passing": 164,
+    "total": 166,
+    "failing": [
+      "hd_soak_long_report_guard",
+      "hd_endurance_release_checklist"
+    ]
+  },
+  "fresh_process_inventory_attempt": "Win32_Process CIM read was denied by the sandbox; no fresh absence claim was inferred. Earlier completed-run terminal receipts remain bound in the initial-paint runtime evidence.",
+  "limitations": [
+    "Hash/path inventory proves which existing files changed and that none vanished; original file contents were not separately snapshotted for a per-hunk initial-tree diff.",
+    "Frame helper is not installed and no new frame game/debugger run was performed. Current actual bottom/right frame remains incomplete.",
+    "No proprietary game files or new screenshots were written inside the repository; actual runtime binaries/raw captures remain outside.",
+    "No stable-stage promotion, manual/visible input proof, cleanup of prior artifacts, commit or push."
+  ],
+  "review_outputs_created_after_inventory": [
+    "captures/current/initial-paint-frame-preservation-review-current.json",
+    "captures/current/initial-paint-frame-preservation-review-current.md"
+  ]
+}

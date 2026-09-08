@@ -1,0 +1,41 @@
+{
+  "schema": "clash95_hidden_run_terminal_observation_v1",
+  "observed_at": "2026-09-05T18:00:57.6480575+00:00",
+  "terminal_exit_code": 1,
+  "run_dir": "C:\\ClashCaptures\\hd-completion\\partialtiles-inputdiag-v3-800x600-20260905-200100\\cdb-surface-dump-20260905-195807",
+  "passed": false,
+  "screenshot_produced": false,
+  "candidate_path": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\candidate-inputdiag-v3-20260905-200100\\clash95_hd_surfdump_20260905_195807.exe",
+  "candidate_sha256": "B273C16822843D8AA684191E4C2F357E2F7C581BBC3AD7F4175C8D6B057ECAE8",
+  "summary_sha256": "C2ED0517928ABB5F102D2A8BDA453A662BF2C21BBE1459FA86088C0300A8523A",
+  "log_sha256": "2129D872779D435A8598F4911CB32D55D5FA8DD4AFE8403A014DB85E5A1CD220",
+  "generated_probe_sha256": "7BE3841538122788B29C2B2896EDBCC31FE7112C2A50C4D697A6FD31F27F8105",
+  "recorded_cdb_pid": 32676,
+  "recorded_game_pid": 42256,
+  "live_process_receipt_sha256": "5112AF1C3A931C607DFD0318CEB84916AA3C955B08FAB94D1B9BB2623F26728D",
+  "matching_recorded_processes": [],
+  "classification": "Status0 input world90,7 lies outside ceil HD viewport; strict probe rejected before native fallback return observation",
+  "world_xy": [
+    90,
+    7
+  ],
+  "map_size": [
+    100,
+    100
+  ],
+  "scroll_xy": [
+    10,
+    17
+  ],
+  "visible_world_x_inclusive": [
+    10,
+    21
+  ],
+  "visible_world_y_inclusive": [
+    17,
+    26
+  ],
+  "access_violation": false,
+  "run_plan": "captures/current/partialtiles-inputdiag-v3-run-plan-20260905-200100.json",
+  "limits": "Failed runtime preserved. No screenshot/full composition or native no-op return observed in this run. No manual input or promotion proof."
+}

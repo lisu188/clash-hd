@@ -1,5 +1,6 @@
 param(
     [string]$RepoRoot = (Join-Path $PSScriptRoot '..\..'),
+    [string]$OutRoot = 'C:\ClashCaptures\windows-sandbox',
     [string]$GameRoot = 'C:\Clash',
     [string]$PythonHostPath = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
     [string]$SourceSave = 'C:\Clash\save\5.dat',
@@ -48,6 +49,22 @@ function Resolve-RequiredPath {
     return (Resolve-Path -LiteralPath $Path).Path
 }
 
+function New-SandboxCapturePlan {
+    param([string]$Path, [string]$Repository, [string]$Prefix)
+    $captureRoot = [System.IO.Path]::GetFullPath($Path)
+    $repositoryRoot = [System.IO.Path]::GetFullPath($Repository).TrimEnd('\', '/')
+    if ($captureRoot.TrimEnd('\', '/').Equals($repositoryRoot, [System.StringComparison]::OrdinalIgnoreCase) -or
+        $captureRoot.StartsWith($repositoryRoot + '\', [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw 'Sandbox captures must be written outside the repository.'
+    }
+    $runName = '{0}-{1}-{2}' -f $Prefix, (Get-Date -Format 'yyyyMMdd-HHmmss'), [Guid]::NewGuid().ToString('N')
+    [pscustomobject]@{
+        OutputRoot = $captureRoot
+        HostRunDirectory = Join-Path $captureRoot $runName
+        GuestRunDirectory = 'C:\ClashCaptures\run'
+    }
+}
+
 $repo = Resolve-RequiredPath -Path $RepoRoot -Description 'Repository root'
 $game = Resolve-RequiredPath -Path $GameRoot -Description 'Game root'
 $python = Resolve-RequiredPath -Path $PythonHostPath -Description 'Python runtime'
@@ -58,15 +75,14 @@ $stableStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp
 $rightBottomStage = "$stableStage-rightbottomcompose"
 $castleStage = "$stableStage-castlecenter-all"
 
-$stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$runHostDir = Join-Path $repo "captures\archive\full-validation-$stamp"
-New-Item -ItemType Directory -Path $runHostDir -Force | Out-Null
+$capturePlan = New-SandboxCapturePlan -Path $OutRoot -Repository $repo -Prefix 'full-validation'
+$runHostDir = $capturePlan.HostRunDirectory
+New-Item -ItemType Directory -Path $runHostDir | Out-Null
 
 $entryHostPath = Join-Path $runHostDir 'sandbox-entry.ps1'
 $wsbHostPath = Join-Path $runHostDir 'clash-hd-full-validation.wsb'
 $summaryHostPath = Join-Path $runHostDir 'host-summary.json'
-$runRel = "captures\archive\full-validation-$stamp"
-$runSandboxDir = "C:\Repo\$runRel"
+$runSandboxDir = $capturePlan.GuestRunDirectory
 $entrySandboxPath = "$runSandboxDir\sandbox-entry.ps1"
 $sandboxPython = "C:\HostPython\$pythonName"
 
@@ -258,6 +274,11 @@ $wsb = @"
       <SandboxFolder>C:\HostPython</SandboxFolder>
       <ReadOnly>true</ReadOnly>
     </MappedFolder>
+    <MappedFolder>
+      <HostFolder>$(ConvertTo-XmlText $runHostDir)</HostFolder>
+      <SandboxFolder>$(ConvertTo-XmlText $runSandboxDir)</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
   </MappedFolders>
   <LogonCommand>
     <Command>$(ConvertTo-XmlText $command)</Command>
@@ -269,6 +290,8 @@ $wsb | Set-Content -LiteralPath $wsbHostPath -Encoding ASCII
 
 $summary = [pscustomobject]@{
     RunDirectory = $runHostDir
+    CaptureRoot = $capturePlan.OutputRoot
+    CaptureMappedAs = $runSandboxDir
     Wsb = $wsbHostPath
     EntryScript = $entryHostPath
     RepoMappedAs = 'C:\Repo'

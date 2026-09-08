@@ -1,0 +1,77 @@
+{
+  "schema": "clash95_modal_primary_failed_attempt_v1",
+  "passed": false,
+  "classification": "strict_initial_map_trace_unmatched_incremental_events",
+  "started_at": "2026-09-06T10:42:38.8392364Z",
+  "finished_at": "2026-09-06T10:44:24.4450303Z",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-validation",
+  "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+  "resolution": "1024x768",
+  "route": "barracks",
+  "availability": "construct_all",
+  "summary": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary6-barracks-20260906-104000\\summary.json",
+    "sha256": "45ba9ec909e880c61f39feb90487c124fb5f548e3f5d4c1b58480dd0dc1b781c"
+  },
+  "log": {
+    "path": "C:\\ClashCaptures\\hd-completion\\primary6-barracks-20260906-104000\\cdb.log",
+    "sha256": "ee60cb35b364212670b69a197647adfcc25d0ebaa9a1d85e6363596ff9ea942b"
+  },
+  "host_failures": [
+    "Full source-bound owned-canvas trace did not authorize host capture."
+  ],
+  "trace_failures": [
+    "initial map trace: line 498: incremental input/exit lacks a fresh matching guard and phase",
+    "initial map trace: line 498: incremental status lacks a fresh guard/input pair",
+    "initial map trace: line 501: incremental input/exit lacks a fresh matching guard and phase",
+    "initial map trace: line 501: incremental status lacks a fresh guard/input pair"
+  ],
+  "primary_sequence_passed": true,
+  "primary_capture_observed": false,
+  "module_enumeration_reached": false,
+  "cleanup": {
+    "candidates": [
+      {
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\hd-completion\\primary6-barracks-20260906-104000\\framed-modal-canvas-barracks-1024x768-326a87e9dce4db08.exe",
+          "creation_filetime": 134331649695176385,
+          "process_id": 5648,
+          "handle_retained": true,
+          "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+          "creation_utc": "2026-09-06T10:42:49.5176385Z",
+          "parent_process_id": 40216
+        }
+      }
+    ],
+    "cdb": {
+      "termination_requested": true,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T10:42:49.2868953Z",
+        "handle_retained": true,
+        "creation_filetime": 134331649692868953,
+        "process_id": 40216
+      }
+    },
+    "desktop_closed": true
+  },
+  "postrun_identity": {
+    "candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "input_candidate_sha256": "c09940fac48e903538dd3a35688efb5ca5a65edaa6ad42cf6c804ca1c008d18d",
+    "proxy_sha256": "b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70"
+  },
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "The full source-bound initial map trace rejects unmatched incremental events at lines498/501; its stricter gate remains unchanged.",
+    "The primary Lock/ready sequence passes its own parser, but this cannot override the initial-trace failure or authorize the missing primary screenshot.",
+    "The new explicit x86 module enumerator has synthetic fixture proof only; this attempt stops before reaching it."
+  ]
+}

@@ -1,0 +1,370 @@
+{
+  "schema": "clash95_framed_army_transitions_runtime_v1",
+  "generated_at": "2026-09-06T09:55:04.219233+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-army-validation",
+  "resolution": "1024x768",
+  "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+  "started_at": "2026-09-06T09:49:52.7111501Z",
+  "finished_at": "2026-09-06T09:51:12.5857021Z",
+  "passed": true,
+  "proof_class": "controlled_native_transitions_and_e0_software_layout",
+  "artifacts": {
+    "plan.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\plan.json",
+      "sha256": "5a02109ad696aab1aa6fd35326af5ef48b681a96a8ba78ca1e63100dd7f5f763",
+      "bytes": 26826
+    },
+    "packet.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\packet.json",
+      "sha256": "837cf528826fae608c8442bd0f048eed0c3cce12660bf17615f9b6ad3f2aca35",
+      "bytes": 5876571
+    },
+    "selection.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\selection.cdb",
+      "sha256": "f076b91d09b38ff7ce8322ce7fdf14dc8007195fe85225ed1786655297cc423d",
+      "bytes": 2971468
+    },
+    "host.ps1": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\host.ps1",
+      "sha256": "cba4e47d11229b9f309e9c1ae2096811906566ddc222af50d8fd939a7033fbcd",
+      "bytes": 10035
+    },
+    "summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\summary.json",
+      "sha256": "dc55dcd54aececd62c20dd48ce5833ae551a55c23b9dc127eff2fc9b633bef90",
+      "bytes": 6296
+    },
+    "cdb.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\cdb.log",
+      "sha256": "00f8ccfcec3e05073379bae3996156c12ffc998d04b9da93f1edefe05d377f20",
+      "bytes": 68164
+    },
+    "trace-validation.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\trace-validation.json",
+      "sha256": "ef37114398e707dc36904bca4e92a659cdb5aca8afa93b05874fa882d1377a92",
+      "bytes": 239266
+    },
+    "transition-pixels.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\transition-pixels.json",
+      "sha256": "4c7632a5faa9e21fa0f09d4f284b40be067a94ad9ba6b28beb3aa444dd0bddcf",
+      "bytes": 97309
+    }
+  },
+  "supplemental_commands": {
+    "C:/ClashCaptures/hd-completion/framed-army-transitions-20260906-101900/transition-1.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\transition-1.cdb",
+      "sha256": "dd8eaf3add18c8b0fb8691127640cbfdc48694cc19876b0bdf9f0d9a0c6638cc",
+      "bytes": 1811
+    },
+    "C:/ClashCaptures/hd-completion/framed-army-transitions-20260906-101900/transition-2.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\transition-2.cdb",
+      "sha256": "f85152c2806c186b0579974f7835955de6285c775605a19e99b67760f4ba437e",
+      "bytes": 1811
+    },
+    "C:/ClashCaptures/hd-completion/framed-army-transitions-20260906-101900/transition-3.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\transition-3.cdb",
+      "sha256": "8175f1ce53235b2b13a50fcd695ca686c43912947795673d0e1ba27919030b7d",
+      "bytes": 1811
+    },
+    "C:/ClashCaptures/hd-completion/framed-army-transitions-20260906-101900/transition-4.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\transition-4.cdb",
+      "sha256": "8f29f3b2336c77eea2d1b80dc8af12f797fe114e6bc417ddb58a5412215389b6",
+      "bytes": 1816
+    },
+    "C:/ClashCaptures/hd-completion/framed-army-transitions-20260906-101900/transition-5.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\transition-5.cdb",
+      "sha256": "e12427f620cfad67ed4aae30474548ba21429b97331c7e6ca2d1f7fa956df0e3",
+      "bytes": 1698
+    },
+    "C:/ClashCaptures/hd-completion/framed-army-transitions-20260906-101900/transition-6.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\transition-6.cdb",
+      "sha256": "ebbafdbada9a61fc805949bba16f863483d185be9a3125d1e9acadd193af9ff2",
+      "bytes": 1117
+    }
+  },
+  "trace_passed": true,
+  "source_authenticated": true,
+  "whole_candidate_bound": true,
+  "steps": [
+    {
+      "step": 1,
+      "name": "select-eight",
+      "selected": 3,
+      "prior": 3,
+      "lower": 1,
+      "portraits_matching": 8,
+      "unused_slots_matching": 2,
+      "frame_passed": true,
+      "frame_band_mismatches": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "action_bar_matching_cells": 6,
+      "closed_panel": null,
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-1.raw",
+        "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+        "bytes": 786432
+      },
+      "header": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-1.header.raw",
+        "sha256": "e7c17f7e6d05599f1348657bd90c0d55b66e3467b9b3fab8a8380b0a906c297b",
+        "bytes": 188
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-1.png",
+        "sha256": "6d0b85a973fabac9f0d480d9b8a5b87ebbc7632e93a87021be53b9c958aaf4bf",
+        "bytes": 246592
+      }
+    },
+    {
+      "step": 2,
+      "name": "switch-four",
+      "selected": 1,
+      "prior": 1,
+      "lower": 1,
+      "portraits_matching": 4,
+      "unused_slots_matching": 6,
+      "frame_passed": true,
+      "frame_band_mismatches": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "action_bar_matching_cells": 6,
+      "closed_panel": null,
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-2.raw",
+        "sha256": "0d3e17b6772e7bff758e1d110c4f1563b78a5d79fed54b8fea26ec025df32a23",
+        "bytes": 786432
+      },
+      "header": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-2.header.raw",
+        "sha256": "e7c17f7e6d05599f1348657bd90c0d55b66e3467b9b3fab8a8380b0a906c297b",
+        "bytes": 188
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-2.png",
+        "sha256": "998447b482102fc5330ac51bf1ed26beeb0fcaa1065255658a1d2f1ebebed63a",
+        "bytes": 247774
+      }
+    },
+    {
+      "step": 3,
+      "name": "switch-two",
+      "selected": 2,
+      "prior": 2,
+      "lower": 1,
+      "portraits_matching": 2,
+      "unused_slots_matching": 8,
+      "frame_passed": true,
+      "frame_band_mismatches": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "action_bar_matching_cells": 6,
+      "closed_panel": null,
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-3.raw",
+        "sha256": "1d4b480e87270a3a5a1ff7a4d3782bb394c6ae6f731996095da55c21d0dc5163",
+        "bytes": 786432
+      },
+      "header": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-3.header.raw",
+        "sha256": "e7c17f7e6d05599f1348657bd90c0d55b66e3467b9b3fab8a8380b0a906c297b",
+        "bytes": 188
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-3.png",
+        "sha256": "e810deb5aacace84a19f5d6a8532bd3f830f3b028668be1fad223495396db540",
+        "bytes": 246809
+      }
+    },
+    {
+      "step": 4,
+      "name": "single-unit",
+      "selected": 0,
+      "prior": -1,
+      "lower": 0,
+      "portraits_matching": 0,
+      "unused_slots_matching": 0,
+      "frame_passed": true,
+      "frame_band_mismatches": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "action_bar_matching_cells": 6,
+      "closed_panel": {
+        "pixels": 25542,
+        "uniform_index": 1,
+        "palette_rgb": [
+          0,
+          0,
+          0
+        ],
+        "matching_previous_panel_pixels": 0,
+        "passed": true
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-4.raw",
+        "sha256": "09f2596f82aa7fd0690bd7479b949cb79e5b4f9073d714f3fa2e94086199a8b8",
+        "bytes": 786432
+      },
+      "header": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-4.header.raw",
+        "sha256": "e7c17f7e6d05599f1348657bd90c0d55b66e3467b9b3fab8a8380b0a906c297b",
+        "bytes": 188
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-4.png",
+        "sha256": "4e0804e29a758cae15d9b42ecf2c072939807ad1053c81f3f269a602807ca0df",
+        "bytes": 241998
+      }
+    },
+    {
+      "step": 5,
+      "name": "reselect-eight",
+      "selected": 3,
+      "prior": 3,
+      "lower": 1,
+      "portraits_matching": 8,
+      "unused_slots_matching": 2,
+      "frame_passed": true,
+      "frame_band_mismatches": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "action_bar_matching_cells": 6,
+      "closed_panel": null,
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-5.raw",
+        "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+        "bytes": 786432
+      },
+      "header": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-5.header.raw",
+        "sha256": "e7c17f7e6d05599f1348657bd90c0d55b66e3467b9b3fab8a8380b0a906c297b",
+        "bytes": 188
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-5.png",
+        "sha256": "6d0b85a973fabac9f0d480d9b8a5b87ebbc7632e93a87021be53b9c958aaf4bf",
+        "bytes": 246592
+      }
+    },
+    {
+      "step": 6,
+      "name": "map-mode-deselect",
+      "selected": -1,
+      "prior": -1,
+      "lower": 0,
+      "portraits_matching": 0,
+      "unused_slots_matching": 0,
+      "frame_passed": true,
+      "frame_band_mismatches": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "action_bar_matching_cells": 6,
+      "closed_panel": {
+        "pixels": 25542,
+        "uniform_index": 1,
+        "palette_rgb": [
+          0,
+          0,
+          0
+        ],
+        "matching_previous_panel_pixels": 0,
+        "passed": true
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-6.raw",
+        "sha256": "9bbde23309ec1c1877352f88cb61b2b00f62960f99c6f78f3acbe3ab277bf14d",
+        "bytes": 786432
+      },
+      "header": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-6.header.raw",
+        "sha256": "e7c17f7e6d05599f1348657bd90c0d55b66e3467b9b3fab8a8380b0a906c297b",
+        "bytes": 188
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\framed-army-transitions-20260906-101900\\step-6.png",
+        "sha256": "8b42b50dff5f86e428358c9205a24ac945205cf98b9e4ac499b89f16eb3b9123",
+        "bytes": 241936
+      }
+    }
+  ],
+  "palette": {
+    "path": "C:\\ClashTests\\hd-completion\\framed-army-transitions-20260906-101900\\ddraw_surfdump_palette.bin",
+    "sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+    "bytes": 1024
+  },
+  "asset_sources": {
+    "minimum_sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116",
+    "info_sha256": "ba0747966bd3ff5722a41e6374fd2edc4d817215f79d83bb87cf1c1df3e65dcd",
+    "marks_sha256": "026e2d549427163b5b9642a1c92f89c98b65885eec54b36a0e28fee812bc7667"
+  },
+  "cleanup_passed": true,
+  "cleanup": [
+    {
+      "termination_requested": true,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T09:49:52.9208774Z",
+        "handle_retained": true,
+        "creation_filetime": 134331617929208774,
+        "process_id": 30704
+      }
+    },
+    {
+      "termination_requested": false,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\ClashTests\\hd-completion\\framed-army-transitions-20260906-101900\\clash95_army_transition.exe",
+        "creation_filetime": 134331617933236689,
+        "process_id": 33568,
+        "handle_retained": true,
+        "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+        "creation_utc": "2026-09-06T09:49:53.3236689Z",
+        "parent_process_id": 30704
+      }
+    }
+  ],
+  "desktop_closed": true,
+  "original_unchanged": true,
+  "candidate_unchanged": true,
+  "assets_checked": 61,
+  "assets_changed": [],
+  "assets_added": [],
+  "repeat_selection_raw_identical": true,
+  "paused_final_raw_identical": true,
+  "manual_input_proof": false,
+  "ordinary_map_input_dispatch_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "The frozen initial-map startup uses controlled menu entry; transition predicate claims begin after its trace closes.",
+    "Direct native408030 calls are not the ordinary40B10C/4084A0 map click-dispatch route.",
+    "Controlled mouse/button state and native Map mode callback injection are not manual or OS input proof.",
+    "No selected index, squad, visibility, occupancy, native predicate result or callback result is forced.",
+    "Each stopped E0 copy is software composition; primary-only layers and final visible wrapper remain separate.",
+    "These six transitions at1024x768 do not prove portrait clicking, other resolutions, endurance or promotion.",
+    "The final sentinel does not resume the interrupted ordinary map call; the host must prove owned cleanup.",
+    "Portrait body audit uses opaque native pixels in rows20..48; badges/count text are excluded.",
+    "Panel close clears25,542pixels to palette index1(black) in this scene; this is not complete terrain/fog proof."
+  ]
+}

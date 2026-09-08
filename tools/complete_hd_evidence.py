@@ -198,6 +198,12 @@ def _resolution_verifier(report: dict[str, Any], report_path: Path, context: dic
     source, manifest = read_reference(report.get("resolution_manifest"), report_path.parent, json_object=True)
     if source != (repo_root / "src/launcher/resolutions.json").resolve():
         raise ValueError("resolution verifier requires the actual launcher resolution manifest")
+    from src.launcher import presets
+
+    # An indexed profile is not advertised if the actual launcher rejects it.
+    # A supported experimental profile can satisfy this metadata lane, while
+    # an unknown profile or a promoted status cannot replace its contract.
+    presets.validate_manifest(manifest)
     resolution = context["identity"]["resolution"]
     entries = _object(manifest.get("resolutions"), "launcher resolutions")
     profiles = _object(manifest.get("profiles"), "launcher renderer profiles")

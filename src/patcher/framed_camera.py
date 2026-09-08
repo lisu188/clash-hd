@@ -12,7 +12,7 @@ from . import pe_extension as pe
 from .framed_viewport import FramedViewport
 
 ROOT = Path(__file__).resolve().parents[2]
-PARENT_BUILDER_SHA256 = "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a"
+PARENT_BUILDER_SHA256 = "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
 PARENT_STAGE = ("gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-"
                 "presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation")
 STAGE = PARENT_STAGE.removesuffix("-validation") + "-camera-clamp-validation"

@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-09-05T10:33:28.484270+00:00",
+  "evidence_class": "hidden_cdb_forced_route_layout_geometry",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation",
+  "resolution": "800x600",
+  "candidate": {
+    "path": "C:\\ClashTests\\hd-completion\\layout-hidden-combined-20260905-122500\\candidate\\clash95_hd_surfdump_20260905_122508.exe",
+    "sha256": "0a75cf35f42efe1e44fba1ac4031eaae5323cdff51aa19d261c36c5bb84691c2"
+  },
+  "wrapper": {
+    "path": "C:\\ClashTests\\hd-completion\\layout-hidden-combined-20260905-122500\\candidate\\ddraw.dll",
+    "sha256": "8defc9e6a828d4a04bbfe26ab6c25aaea64c99e842477b62b70c186eb888a63c"
+  },
+  "input_method": "debugger_forced_load_slot_0; no manual or OS-injected input",
+  "launch_mode": "hidden-desktop",
+  "proxy_present_setting": "0",
+  "fast_forward_start_animations": true,
+  "surface_run_passed": true,
+  "layout_report_passed": false,
+  "redraw_clip_proved": false,
+  "failed_layout_checks": [
+    "panel_hitscan_anchor"
+  ],
+  "marker_counts": {
+    "tooltip_init": 1,
+    "tooltip_draw": 0,
+    "panel_setup": 1,
+    "panel_redraw_invoke": 0,
+    "panel_draw": 6,
+    "panel_redraw": 0,
+    "panel_redraw_allowed": 0,
+    "panel_hitscan": 0,
+    "access_violation": 0
+  },
+  "artifacts": {
+    "run_summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined\\cdb-surface-dump-20260905-122508\\summary.json",
+      "sha256": "46edfbbf68e2acddba4ebdd18bf905f8c70dfaf64f13eeca5300dfca4ff11e19"
+    },
+    "raw_log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined\\cdb-surface-dump-20260905-122508\\cdb-surface-dump.log",
+      "sha256": "f913192a691561a55fd5c500682211234b325c3c22d2dced896a97fa8d5106b5"
+    },
+    "generated_probe": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined\\cdb-surface-dump-20260905-122508\\clash95_surface_dump_probe.generated.cdb",
+      "sha256": "1a1c9c4796e35286e3b28be2bee9136787f74b6e0f0e78be3706235d57f73e9b"
+    },
+    "raw_surface": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined\\cdb-surface-dump-20260905-122508\\surface.raw",
+      "sha256": "83ec9d6eddf921d6f1d346dc06b8a85d0d37bba683743049065602cc1848f5a1"
+    },
+    "surface_png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\layout-hidden-combined\\cdb-surface-dump-20260905-122508\\surface.png",
+      "sha256": "a7561f108d0a8898eb0fbb70f20d6385958388aa9caf53d84febf8b5d161bcd7"
+    },
+    "layout_report": {
+      "path": "captures\\current\\combinedui-layout-summary-current.json",
+      "sha256": "cfc87eb6886d201045a51c631487b84e9ba7bad8f7126b6664d19ba486f16259"
+    },
+    "byte_report": {
+      "path": "captures\\current\\combinedui-layout-patch-stage-current.json",
+      "sha256": "04cf371fb8f25093487e65278b4b453a585cd324ee047d9721b2e5dbe5949ba3"
+    }
+  },
+  "limits": [
+    "Six panel draw routes and tooltip initialization anchors observed; missing hit-scan prevents layout report acceptance.",
+    "No direct redraw invocation occurred, so optional redraw subcheck PASS is not redraw-clip proof.",
+    "Full-tile surface gate omits the known bottom partial strip.",
+    "Hidden proxy pixels are not final visible composition, manual-input or promotion proof."
+  ],
+  "manual_input_proven": false,
+  "promotion_ready": false,
+  "full_game_complete": false
+}

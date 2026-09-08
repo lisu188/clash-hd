@@ -1,0 +1,28 @@
+{
+  "prepared_at": "2026-09-05T12:22:30.1780805+00:00",
+  "source_assets_plan": "C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\continuity-day-v6-control-run-plan-current.json",
+  "source_assets_plan_sha256": "A9D5D89D42A1558BA8B2DB352C7656915FC902D969D409801184F0C9E755926A",
+  "prepared": [
+    {
+      "label": "partialtiles-800x600",
+      "workdir": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\workdir",
+      "candidate_dir": "C:\\ClashTests\\hd-completion\\partialtiles-800x600-20260905-142000\\candidate",
+      "copied_files": 50
+    },
+    {
+      "label": "partialtiles-1024x768",
+      "workdir": "C:\\ClashTests\\hd-completion\\partialtiles-1024x768-20260905-142000\\workdir",
+      "candidate_dir": "C:\\ClashTests\\hd-completion\\partialtiles-1024x768-20260905-142000\\candidate",
+      "copied_files": 50
+    },
+    {
+      "label": "continuity-v7-control",
+      "workdir": "C:\\ClashTests\\hd-completion\\continuity-v7-control-20260905-142000\\workdir",
+      "candidate_dir": "C:\\ClashTests\\hd-completion\\continuity-v7-control-20260905-142000\\candidate",
+      "copied_files": 50
+    }
+  ],
+  "v7_probe_path": "C:\\ClashTests\\hd-completion\\continuity-v7-control-20260905-142000\\day-diagnostic-control.extra.cdb",
+  "v7_probe_sha256": "B55189E01622D94CD9B29730DB7B571E1EDEB10BF05C2FB7BF5B31F9F0DD9A60",
+  "runtime_executed": false
+}

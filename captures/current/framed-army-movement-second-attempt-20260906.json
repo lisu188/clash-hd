@@ -1,0 +1,152 @@
+{
+  "schema": "clash95_army_movement_failed_attempt_v1",
+  "passed": false,
+  "classification": "producer_held_button_assumption_after_native_pathfinder_poll",
+  "resolution": "1024x768",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-modalcanvas-army-validation",
+  "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+  "started_at": "2026-09-06T11:14:43.9057321Z",
+  "finished_at": "2026-09-06T11:15:18.6592441Z",
+  "artifacts": {
+    "plan.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-112000\\plan.json",
+      "sha256": "8696e76c5998c28ec167b3123686819a892e4ac18796536117a0bdbcdb7b81de",
+      "bytes": 27517
+    },
+    "packet.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-112000\\packet.json",
+      "sha256": "eca48350c8dd4a7409bbf9aa05ab446512983d84aba59315bf4c40527a310609",
+      "bytes": 6334459
+    },
+    "selection.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-112000\\selection.cdb",
+      "sha256": "3fe9952eaf9ebd96378fa6f02cde86f92a911be2fd23b2283904d49d9558b60e",
+      "bytes": 3427790
+    },
+    "host.ps1": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-112000\\host.ps1",
+      "sha256": "30fdb06b643d0d5b3e7d3df3aded44f2fff6d71f980fd2e9bb63838e48a79783",
+      "bytes": 13634
+    },
+    "summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-112000\\summary.json",
+      "sha256": "4147fbb716123fd692c82c140ea6b1b7fb71de900aa61b1bafd7fafec4201c4d",
+      "bytes": 5380
+    },
+    "cdb.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-112000\\cdb.log",
+      "sha256": "48f450f65245c655ed65ee9361bdd0f1e54d4f3df89532f4932966f48fafc874",
+      "bytes": 57156
+    },
+    "movement-frame-audit.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-112000\\movement-frame-audit.json",
+      "sha256": "a517cde5ca6b96328aa0b857a2eaed6e08aa4a6eb34d379731025176b50bba87",
+      "bytes": 17770
+    }
+  },
+  "observed": [
+    {
+      "line": 585,
+      "text": "WMOV_MOUSE click=1 tid=15dc eip=00406fa1 esp=000edc6c raw=(9000,2c00) shift=6"
+    },
+    {
+      "line": 594,
+      "text": "WMOV_OBS kind=track-call click=1 phase=28 tid=15dc eip=00409a6c esp=000edbf4 caller=00000013 eax=3 ebx=13 ecx=12 edx=10 esi=13 edi=3 ebp=12 selected=3 prior=3 lower=1 unit=04074795 xy=(16,19) path=(0,0,0) ap=(26,22,16,16,16,16,16,16) occupancy=(3,ffff,ffff) buttons=1 accumulator=80 steps=0 draws=(0,0,0)"
+    },
+    {
+      "line": 595,
+      "text": "WMOV_OBS kind=track-entry click=1 phase=29 tid=15dc eip=004147a0 esp=000edbf0 caller=00409a71 eax=3 ebx=13 ecx=12 edx=10 esi=13 edi=3 ebp=12 selected=3 prior=3 lower=1 unit=04074795 xy=(16,19) path=(0,0,0) ap=(26,22,16,16,16,16,16,16) occupancy=(3,ffff,ffff) buttons=1 accumulator=80 steps=0 draws=(0,0,0)"
+    },
+    {
+      "line": 596,
+      "text": "WMOV_OBS kind=track-return click=1 phase=30 tid=15dc eip=00409a71 esp=000edbf8 caller=0054df30 eax=a6df398 ebx=10 ecx=4073f16 edx=b0 esi=13 edi=3 ebp=12 selected=3 prior=3 lower=1 unit=04074795 xy=(16,19) path=(0,0,0) ap=(26,22,16,16,16,16,16,16) occupancy=(3,ffff,ffff) buttons=3 accumulator=90 steps=0 draws=(0,0,0)"
+    },
+    {
+      "line": 597,
+      "text": "WMOV_OBS kind=track-copied click=1 phase=31 tid=15dc eip=00409ab5 esp=000edbf8 caller=0054df30 eax=a6df398 ebx=10 ecx=0 edx=4074795 esi=a6df52c edi=4074a65 ebp=87f selected=3 prior=3 lower=1 unit=04074795 xy=(16,19) path=(2,a1312,51311) ap=(26,22,16,16,16,16,16,16) occupancy=(3,ffff,ffff) buttons=3 accumulator=90 steps=0 draws=(0,0,0)"
+    },
+    {
+      "line": 598,
+      "text": "WMOV_REJECT_CONTEXT phase=31 tid=15dc eip=00409ca6 esp=000edbf8 shift=6 raw=(2600,2c00)"
+    },
+    {
+      "line": 599,
+      "text": "WMOV_REJECT native_contract"
+    }
+  ],
+  "host_failures": [
+    "Army movement probe rejected its native contract",
+    "Missing movement checkpoint movement-preview.raw",
+    "Missing movement checkpoint movement-preview.header.raw",
+    "Missing movement checkpoint movement-preview.unit.raw",
+    "Missing movement checkpoint movement-after.raw",
+    "Missing movement checkpoint movement-after.header.raw",
+    "Missing movement checkpoint movement-after.unit.raw"
+  ],
+  "pathfinder_route_observed": true,
+  "preview_screenshot_observed": false,
+  "movement_observed": false,
+  "screenshot": {
+    "png": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-112000\\movement-before.png",
+      "sha256": "6d0b85a973fabac9f0d480d9b8a5b87ebbc7632e93a87021be53b9c958aaf4bf",
+      "bytes": 246592
+    },
+    "raw": {
+      "path": "C:\\ClashCaptures\\hd-completion\\framed-army-movement-20260906-112000\\movement-before.raw",
+      "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+      "bytes": 786432
+    },
+    "all_four_frame_bands_passed": true,
+    "matching_action_cells": 6,
+    "equals_first_attempt_starting_pixels": true
+  },
+  "source_diagnosis": {
+    "producer_sha256": "17c11901dbee741e466516fd42c62133b743a8256ccbf603c1b6bddca83b104f",
+    "poll_call_va": "00414B3F",
+    "poll_return_va": "00414B44",
+    "poll_target_va": "004605D0",
+    "defect": "Pathfinder calls the native input pump. Held buttons/raw coordinates are not invariant across it; the producer incorrectly required1/80 at the later preview-wait call.",
+    "observation_limit": "The first recorded input change is at pathfinder return; this version did not instrument the internal poll call/return. Do not invent a measured pump count."
+  },
+  "cleanup": [
+    {
+      "termination_requested": false,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-06T11:14:44.1753154Z",
+        "handle_retained": true,
+        "creation_filetime": 134331668841753154,
+        "process_id": 37676
+      }
+    },
+    {
+      "termination_requested": false,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\ClashTests\\hd-completion\\framed-army-movement-20260906-112000\\clash95_army_movement.exe",
+        "creation_filetime": 134331668844520332,
+        "process_id": 42616,
+        "handle_retained": true,
+        "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+        "creation_utc": "2026-09-06T11:14:44.4520332Z",
+        "parent_process_id": 37676
+      }
+    }
+  ],
+  "desktop_closed": true,
+  "original_unchanged": true,
+  "candidate_unchanged": true,
+  "assets_changed": [],
+  "assets_added": [],
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "limits": [
+    "The exact native queued path has two waypoints with cumulative5/10 costs and unchanged initial XY/AP. The host and complete movement result remain failed.",
+    "No confirmation, movement animation, arrival or preview screenshot is claimed. All original failed artifacts remain unchanged."
+  ]
+}

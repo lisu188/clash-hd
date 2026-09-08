@@ -1,0 +1,11 @@
+{
+    "executed":  false,
+    "preflight_passed":  true,
+    "environment":  "hidden_cdb_host",
+    "route":  "map-idle",
+    "duration_sec":  120,
+    "input_sha256":  "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+    "candidate_run_directory":  "C:\\ClashTests\\hd-soak\\hidden\\hidden-soak-20260905-140238-831-map-idle",
+    "output_directory":  "C:\\ClashCaptures\\hd-soak\\hidden\\hidden-soak-20260905-140238-831-map-idle",
+    "hidden_runtime_command":  "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \u0027C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\run_hidden_soak.ps1\u0027 -Route \u0027map-idle\u0027 -DurationSec \u0027120\u0027 -FrameIntervalSec \u002710\u0027 -PanIntervalSec \u002710\u0027 -LoadSlot \u00272\u0027 -ReadyTimeoutSec \u0027240\u0027 -EndGraceSec \u0027180\u0027 -PngEdgeCount \u00273\u0027 -MaxArtifactMB \u0027250\u0027 -MaxWorkingSetGrowthMB \u002764\u0027 -MaxPrivateMemoryGrowthMB \u002764\u0027 -MaxHandleGrowth \u0027128\u0027 -Python \u0027C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe\u0027 -ProbeTemplate \u0027C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\render\\clash95_surface_dump_probe.cdb\u0027 -SoakProbeTemplate \u0027C:\\Users\\andrz\\git\\clash-hd\\probes\\cdb\\soak\\clash95_hidden_soak_route_extra.cdb\u0027 -DdrawProxyBuildScript \u0027C:\\Users\\andrz\\git\\clash-hd\\scripts\\build\\build_ddraw_surfdump_proxy.ps1\u0027 -ReportJson \u0027C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle.json\u0027 -ReportMarkdown \u0027C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle.md\u0027 -GuardJson \u0027C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle-guard.json\u0027 -GuardMarkdown \u0027C:\\Users\\andrz\\git\\clash-hd\\captures\\current\\hd-soak-cleanup-regression-20260905-cdbfirst-01-map-idle-guard.md\u0027 -Execute -RequirePass -Json"
+}
