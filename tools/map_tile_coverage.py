@@ -460,6 +460,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--logical-width", type=int, default=800)
     parser.add_argument("--logical-height", type=int, default=600)
     parser.add_argument("--stage", help="exact producer stage; framed geometry is never inferred from size")
+    parser.add_argument("--candidate-manifest", type=Path)
+    parser.add_argument("--original", type=Path)
     parser.add_argument("--minimap-enabled", type=int, choices=(0, 1),
                         help="observed enabled state, required only by the framed stage")
     parser.add_argument("--minimap-width", type=int, help="actual enabled minimap backing width")
@@ -512,8 +514,23 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--write-json", type=Path)
     args = parser.parse_args()
     args.framed_geometry = None
+    args.candidate_context = None
     try:
-        is_framed = framed_stage(args.stage)
+        geometry_stage = args.stage
+        from complete_hd_runtime_context import complete, load_context
+        if args.stage == complete.STAGE or args.candidate_manifest is not None or args.original is not None:
+            if args.stage != complete.STAGE or args.candidate_manifest is None or args.original is None:
+                raise ValueError("complete coverage requires exact stage, --candidate-manifest and --original")
+            context = load_context(args.candidate_manifest, args.original,
+                                   resolution=f"{args.logical_width}x{args.logical_height}")
+            geometry_stage = context["framed"]["stage"]
+            args.candidate_context = {key: context["manifest"][key] for key in
+                                     ("stage", "resolution", "candidate_sha256", "base_sha256", "recipe_revision", "probe_sha256")}
+            args.candidate_context.update(manifest_path=context["manifest_path"],
+                                          manifest_sha256=context["manifest_sha256"])
+        elif args.stage and "completehd" in args.stage.lower():
+            raise ValueError("unsupported complete candidate stage identity")
+        is_framed = framed_stage(geometry_stage)
         if is_framed:
             if args.minimap_enabled is None:
                 raise ValueError("framed stage requires --minimap-enabled from the observed capture")
@@ -523,7 +540,7 @@ def parse_args() -> argparse.Namespace:
                 raise ValueError("framed grid overrides are forbidden; every clipped ceiling cell is required")
             if args.no_default_masks or args.mask:
                 raise ValueError("framed stage accepts only observed minimap and fixed command masks")
-            geometry = framed_coverage_geometry(args.stage, args.logical_width, args.logical_height,
+            geometry = framed_coverage_geometry(geometry_stage, args.logical_width, args.logical_height,
                         minimap_enabled=bool(args.minimap_enabled), minimap_width=args.minimap_width,
                         minimap_height=args.minimap_height)
             args.framed_geometry = geometry
@@ -535,7 +552,7 @@ def parse_args() -> argparse.Namespace:
             args.columns = 12 if args.columns is None else args.columns
             args.rows = 9 if args.rows is None else args.rows
             args.bottom_row_active_cols = 12 if args.bottom_row_active_cols is None else args.bottom_row_active_cols
-    except ValueError as exc:
+    except (ValueError, OSError) as exc:
         parser.error(str(exc))
     return args
 
@@ -572,6 +589,8 @@ def main() -> int:
     }
     if args.framed_geometry is not None:
         report["framed_profile"] = {k: v for k, v in args.framed_geometry.items() if k not in ("cells", "masks")}
+    if args.candidate_context is not None:
+        report["candidate_context"] = args.candidate_context
     if args.write_json:
         args.write_json.parent.mkdir(parents=True, exist_ok=True)
         args.write_json.write_text(json.dumps(report, indent=2), encoding="ascii")

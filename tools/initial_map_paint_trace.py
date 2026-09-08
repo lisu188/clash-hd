@@ -44,7 +44,8 @@ LIMITS = [
 ]
 
 
-def evaluate_trace(log: str, probe: str, *, resolution: str, candidate_sha256: str, stage: str) -> dict:
+def evaluate_trace(log: str, probe: str, *, resolution: str, candidate_sha256: str, stage: str,
+                   candidate_manifest: dict | None = None, original: bytes | None = None) -> dict:
     integrity = validate_event_integrity(log, probe, reset_bp=76)
     failures = list(integrity["errors"])
     events = integrity["events"]
@@ -59,14 +60,25 @@ def evaluate_trace(log: str, probe: str, *, resolution: str, candidate_sha256: s
     width, height = map(int, dimensions.groups()) if dimensions else (0, 0)
     if not 96 <= width <= 8192 or not 80 <= height <= 8192:
         failures.append("resolution must be canonical WxH within supported geometry bounds")
-    framed = stage == FRAMED_STAGE
-    if stage not in (STAGE, FRAMED_STAGE):
+    contract_stage = stage
+    complete_context = None
+    if candidate_manifest is not None:
+        from complete_hd_runtime_context import complete, verify_context, loaded_contract_failures
+        if stage != complete.STAGE or original is None:
+            raise ValueError("complete trace requires exact stage and original for reconstruction")
+        complete_context = verify_context(candidate_manifest, original, resolution=resolution, probe=probe)
+        if candidate_sha256.lower() != complete_context["manifest"]["candidate_sha256"]:
+            raise ValueError("complete trace candidate SHA differs from reconstructed manifest")
+        contract_stage = complete_context["inherited_stage"]
+        failures.extend(loaded_contract_failures(log, probe, complete_context))
+    framed = stage == FRAMED_STAGE or complete_context is not None
+    if stage not in (STAGE, FRAMED_STAGE) and complete_context is None:
         failures.append("stage must be an exact supported combinedui-partialtiles-initialpaint validation stage")
     if framed and not (640 <= width <= 8192 and 480 <= height <= 8192 and width % 2 == height % 2 == 0):
         failures.append("framed resolution requires even 640..8192 by 480..8192 physical dimensions")
     if not re.fullmatch(r"[0-9a-fA-F]{64}", candidate_sha256):
         failures.append("candidate SHA-256 must be exactly 64 hexadecimal digits")
-    contract = f"PTILE_CONTRACT_PASS stage={stage} resolution={resolution} candidate_sha256={candidate_sha256.lower()}"
+    contract = f"PTILE_CONTRACT_PASS stage={contract_stage} resolution={resolution} candidate_sha256={candidate_sha256.lower()}"
     scope = "PTILE_SCOPE guarded_map_only manual_input_proof=false promotion_ready=false"
     for text, name in ((contract, "loaded contract"), (scope, "non-promoting scope")):
         rows = [row for row in integrity["raw_records"] if row["marker"] == text.split()[0]]
@@ -246,11 +258,17 @@ def main() -> int:
     parser.add_argument("--resolution", required=True)
     parser.add_argument("--candidate-sha256", required=True)
     parser.add_argument("--stage", required=True)
+    parser.add_argument("--candidate-manifest", type=Path)
+    parser.add_argument("--original", type=Path)
     args = parser.parse_args()
+    if bool(args.candidate_manifest) != bool(args.original):
+        parser.error("--candidate-manifest and --original are required together")
     try:
         log_bytes, probe_bytes = args.log.read_bytes(), args.probe.read_bytes()
         report = evaluate_trace(log_bytes.decode("utf-8-sig"), probe_bytes.decode("ascii"),
-                                resolution=args.resolution, candidate_sha256=args.candidate_sha256, stage=args.stage)
+                                resolution=args.resolution, candidate_sha256=args.candidate_sha256, stage=args.stage,
+                                candidate_manifest=json.loads(args.candidate_manifest.read_text(encoding="utf-8")) if args.candidate_manifest else None,
+                                original=args.original.read_bytes() if args.original else None)
         report["sources"] = {"log": {"path": str(args.log), "sha256": hashlib.sha256(log_bytes).hexdigest()},
                              "probe": {"path": str(args.probe), "sha256": hashlib.sha256(probe_bytes).hexdigest()}}
     except (OSError, UnicodeError, ValueError) as exc:
