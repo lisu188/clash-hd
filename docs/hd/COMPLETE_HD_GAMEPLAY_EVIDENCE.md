@@ -37,6 +37,40 @@ and missing, duplicate or mismatched snapshot observations fail. Out-of-world
 clearing remains a separate acceptance requirement; this evaluator requires
 the whole ceiling window to remain in the world.
 
+The complete candidate also consumes the actual minimap observer protocol. Its
+report and generated probe are reconstructed from the authenticated candidate
+and retained source main probe. Before observer reconstruction,
+`tools/complete_hd_main_probe.py` reconstructs the exact normal slot-zero main
+commands from the canonical framed template, complete probe and supported
+producer substitutions. It accepts only the original or uniform LF/CRLF
+serialization; added commands fail even when artifact hashes are refreshed.
+This complete-only recipe reader requires the already verified candidate
+context and does not authenticate historical, custom or progress recipes.
+Its own source and template/producer sources are bound into the derivative
+report. One `FRAMED_MINIMAP_VIEWPORT` record must follow
+the complete visibility byte span immediately before `FRAMED_MINIMAP`; its
+world, scroll, scale and backing dimensions must agree with the native paused
+map context. Duplicate, misplaced or mismatched records fail. Historical framed
+parsing remains unchanged, and arbitrary diagnostic/native records are never
+filtered to make a snapshot pass.
+
+The complete-only compatibility reader supports the producer's retained
+coverage-postprocessing failure summaries. Those summaries store the measured
+surface as `Ready` and can omit the manifest and PNG digest fields. This narrow
+path requires a failed coverage exit, the exact hidden complete lane, no runtime
+failure and an explicit source-bound run plan. It exposes `Ready` to the existing
+native surface checks, reconstructs the exact candidate/manifest/installed probe,
+and verifies raw captures, palette, converter serialization, PNG, log and coverage
+artifacts. A supplied contradictory hash or `Surface` object still fails; missing
+fields outside this known failure shape are not defaulted. The report identifies
+each adapted field and preserves original errors, exception details and cleanup
+records without treating them as newly verified cleanup evidence.
+
+`FullPaintProgressDiagnostic` and `NoopProgressDiagnostic` remain outside the
+normal accepted command lane. Separate external diagnostics may inspect their
+source-bound snapshots, but they do not obtain normal gameplay acceptance from
+this reader.
+
 A guarded software gameplay result preserves `input_passed`, `input_error` and
 any original `Failures` list. It does not change the original runtime verdict,
 prove final visible composition or controls, or accept modal/army transitions,
