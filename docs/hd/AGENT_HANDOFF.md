@@ -655,7 +655,8 @@ The **2026-09-08** integration adds the separate
 [complete-HD candidate builder](COMPLETE_HD_CANDIDATE.md) and
 [release-manifest evaluator](COMPLETE_HD_EVIDENCE.md). This is source
 preparation: the experimental `completehd` launcher profile is available, but
-the 15 runtime/visual/input/endurance adapters remain incomplete. Unsupported
+the native panel-command adapter still needs real matching evidence and the
+other 14 runtime/visual/input/endurance adapters remain incomplete. Unsupported
 or launcher-rejected evidence fails closed. Existing component eligibility,
 manual proof and explicit stable promotion remain separate requirements.
 
