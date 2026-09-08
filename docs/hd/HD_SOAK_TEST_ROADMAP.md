@@ -17,6 +17,14 @@ change the protected stable stage:
   visible-runtime approval token.
 - Dry-run-emitted execute commands must also include `-RequirePass -Json` so a
   copied runtime command fails closed and preserves machine-readable output.
+- Visible-soak dry-run planning reads local files only. It leaves input-standing inspection
+  explicitly unobserved; foreground/window inspection happens after the exact
+  fresh approval packet passes. Invalid execution packets fail before that
+  inspection or candidate, output, report, patch, and launch side effects.
+- File SHA-256 checks in the visible harness use the .NET cryptography API so
+  planning does not depend on `Get-FileHash` module discovery. Missing or
+  invalid windowed configuration still rejects both dry-run planning and
+  approved execution before launch.
 - Candidates are generated under `C:\ClashTests\...`.
 - Raw frame artifacts are written outside the repo under `C:\ClashCaptures`.
 - Repo output is limited to compact JSON/Markdown summaries in

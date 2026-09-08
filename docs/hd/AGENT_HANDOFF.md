@@ -154,9 +154,13 @@ probes. Preserve all original failures. Validate scrolling, minimap erasure,
 partial/full painting, clamps and out-of-world clearing separately.
 
 Barracks evidence demonstrates twelve late 32x64 rectangles missing from the
-physical mirror after native slot draws. A narrow additive copy hook is being
-prepared; native primary destination misplacement remains a static inference
-until primary-surface evidence is captured. Court, recruitment, peasants,
+physical mirror after native slot draws. The separate
+[modal-slot adapter and validation builder](FRAMED_MODAL_SLOTS_DIAGNOSIS.md)
+now target `-completehd-modalslots-validation`. Source-bound synthetic fixtures
+cover the inclusive 33x65 dirty copy and ABI; complete-HD v1 remains unchanged.
+A new-stage runtime consumer and matching captures are still required. Native
+primary destination misplacement remains a static inference until
+primary-surface evidence is captured. Court, recruitment, peasants,
 ownership/exit restoration and destruction still require complete routes.
 
 Ordinary army selection/movement, all portraits, map redraw/scroll/reselection,
