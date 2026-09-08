@@ -33,7 +33,9 @@ GUARD_POLICY = (
     "exactly one stable resolution (the 800x600 default), stable/validated "
     "entries backed by passing hidden-desktop evidence whose dimensions, stage, "
     "candidate SHA and run references agree with its passing patch metadata and "
-    "smoke matrix, tile counts matching the engine formula"
+    "smoke matrix, tile counts matching the engine formula; schema-2 profiles "
+    "must match launcher contracts and Framed remains experimental until its "
+    "own scoped runtime evidence can be verified"
 )
 
 RESOLUTION_KEY_RE = re.compile(r"^([1-9]\d{2,3})x([1-9]\d{2,3})$")
@@ -210,9 +212,23 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
     check_specs: dict[str, tuple[bool, dict[str, Any], str]] = {}
 
     manifest = load_json(manifest_path)
-    if manifest is None or manifest.get("schema") != 1 or not isinstance(
-        manifest.get("resolutions"), dict
-    ):
+    manifest_errors: list[str] = []
+    if (manifest is None or type(manifest.get("schema")) is not int
+            or manifest["schema"] not in (1, 2)
+            or not isinstance(manifest.get("resolutions"), dict)):
+        manifest_errors.append(f"manifest missing, invalid, or wrong schema: {manifest_path}")
+    elif manifest["schema"] == 2:
+        try:
+            # Use the launcher's decoder and validator, including duplicate-key
+            # rejection, exact Classic projection and recipe/feature scopes.
+            from src.launcher import presets
+
+            checked_manifest = presets.load_manifest(manifest_path)
+            if checked_manifest != manifest:
+                manifest_errors.append("manifest changed during profile validation")
+        except (ImportError, OSError, ValueError) as exc:
+            manifest_errors.append(f"launcher profile manifest rejected: {exc}")
+    if manifest_errors:
         guard = {
             "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
             "passed": False,
@@ -220,7 +236,7 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
             "guard_policy": GUARD_POLICY,
             "manifest": str(args.manifest),
             "checks": {},
-            "failures": [f"manifest missing, invalid, or wrong schema: {manifest_path}"],
+            "failures": manifest_errors,
         }
         return guard
 
@@ -257,6 +273,36 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
         },
         "manifest stable_stage must match the patcher DEFAULT_STAGE",
     )
+
+    if manifest["schema"] == 2:
+        from src.patcher.framed_viewport import FramedViewport
+
+        framed = manifest["profiles"]["framed"]
+        framed_failures: list[str] = []
+        expected_framed_stage = (
+            f"{expected_stage}-combinedui-partialtiles-initialpaint-framed-validation"
+            if expected_stage else None
+        )
+        if framed["stage"] != expected_framed_stage:
+            framed_failures.append("Framed stage must match its launcher recipe and the protected stable parent")
+        for key, entry in framed["resolutions"].items():
+            if entry["status"] != "experimental":
+                framed_failures.append(
+                    f"framed/{key}: Classic evidence cannot certify this profile; "
+                    "a dedicated scoped Framed runtime evidence check is required"
+                )
+            if entry.get("tiles") is not None:
+                width, height = presets.parse_resolution_key(key)
+                expected = FramedViewport(width, height).full_tiles
+                if tuple(entry["tiles"]) != expected:
+                    framed_failures.append(f"framed/{key}: tile counts differ from its renderer geometry {expected}")
+        check_specs["profile_contracts"] = (
+            not framed_failures,
+            {"schema": 2, "classic_projection_matches": True,
+             "framed_resolution_count": len(framed["resolutions"]),
+             "framed_runtime_evidence_verified": False, "failures": framed_failures},
+            "; ".join(framed_failures) or "schema-2 renderer profiles must preserve their distinct evidence scopes",
+        )
 
     tile_mismatches: dict[str, Any] = {}
     for key, entry in resolutions.items():

@@ -784,3 +784,6 @@
 /tools/test_resolution_manifest_guard.py -text whitespace=cr-at-eol
 /tools/test_stable_stage_guard.py -text whitespace=cr-at-eol
 /.gitattributes -text whitespace=cr-at-eol
+/src/patcher/complete_hd_candidate.py -text whitespace=cr-at-eol
+/src/patcher/framed_camera.py -text whitespace=cr-at-eol
+/src/patcher/framed_bounded_paint.py -text whitespace=cr-at-eol

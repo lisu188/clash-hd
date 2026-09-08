@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-09-06T05:57:41+02:00",
+  "generated_at": "2026-09-08T10:28:26+02:00",
   "passed": true,
   "runtime_policy": "repo-only metadata inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
-  "guard_policy": "exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence whose dimensions, stage, candidate SHA and run references agree with its passing patch metadata and smoke matrix, tile counts matching the engine formula",
+  "guard_policy": "exactly one stable resolution (the 800x600 default), stable/validated entries backed by passing hidden-desktop evidence whose dimensions, stage, candidate SHA and run references agree with its passing patch metadata and smoke matrix, tile counts matching the engine formula; schema-2 profiles must match launcher contracts and Framed remains experimental until its own scoped runtime evidence can be verified",
   "manifest": "src\\launcher\\resolutions.json",
-  "resolution_count": 5,
+  "resolution_count": 9,
   "status_counts": {
     "stable": 1,
     "validated": 0,
-    "experimental": 4
+    "experimental": 8
   },
   "checks": {
     "resolution_keys_valid": {
@@ -37,6 +37,18 @@
       "summary": {
         "manifest_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
         "expected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch"
+      },
+      "failures": []
+    },
+    "profile_contracts": {
+      "name": "profile_contracts",
+      "passed": true,
+      "summary": {
+        "schema": 2,
+        "classic_projection_matches": true,
+        "framed_resolution_count": 9,
+        "framed_runtime_evidence_verified": false,
+        "failures": []
       },
       "failures": []
     },
