@@ -199,6 +199,8 @@ def payload(original,bundle,cases):
         map_stub=STUBS[0x40AD40],thread_stub=THREAD,cases=cases)
 
 
+@unittest.skipUnless(os.name == 'nt' and CSC.is_file() and Path('C:/Clash/clash95.exe').is_file(),
+                     'user-owned original and Windows x86 compiler required')
 class CanvasTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

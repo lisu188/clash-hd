@@ -3,8 +3,8 @@
 
 The transition probe is useful only if the generated row-specific commands
 route to the intended load rows. This repo-only guard checks the PowerShell
-formula that replaces the CDB placeholders and records the expected logical and
-raw mouse coordinates for rows 3-5.
+data path that replaces the CDB placeholders, replays its shared Python recipe,
+and records the expected logical and raw mouse coordinates for rows 3-5.
 """
 
 from __future__ import annotations
@@ -14,6 +14,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+from load_slot_geometry_contract import check_harness
 
 
 DEFAULT_RUN_PLAN_JSON = Path("captures/current/load-slot-transition-run-plan-current.json")
@@ -76,9 +78,6 @@ def build_guard(
 
     if not surface_dump_script.exists():
         failures.append(f"missing surface-dump script: {surface_dump_script}")
-        script_text = ""
-    else:
-        script_text = surface_dump_script.read_text(encoding="utf-8-sig", errors="replace")
 
     if not extra_probe.exists():
         failures.append(f"missing transition extra probe: {extra_probe}")
@@ -92,15 +91,7 @@ def build_guard(
     commands = (run_plan.get("commands") or {}).get("hidden_transition_probes") or {}
     summary_commands = (run_plan.get("commands") or {}).get("summaries") or {}
 
-    expected_script_needles = [
-        "$loadMouseX = 320",
-        "$loadMouseY = 166 + (22 * $LoadSlot)",
-        "$loadMouseRawX = $loadMouseX -shl 6",
-        "$loadMouseRawY = $loadMouseY -shl 6",
-        "$extraProbeText = $extraProbeText.Replace('__LOAD_SLOT__'",
-        "$extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_X__'",
-        "$extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_Y__'",
-    ]
+    harness = check_harness(surface_dump_script, extra_probe=True)
     expected_probe_needles = [
         "__LOAD_SLOT__",
         "__LOAD_MOUSE_RAW_X__",
@@ -108,7 +99,7 @@ def build_guard(
         "LSTRANS_LATE_MOUSE_SET",
         "LSTRANS_LATE_FORCE_SELECT",
     ]
-    missing_script = _contains_all(script_text, expected_script_needles)
+    missing_script = harness["failures"]
     missing_probe = _contains_all(probe_text, expected_probe_needles)
 
     checks = {
@@ -133,8 +124,8 @@ def build_guard(
     for name, passed in checks.items():
         if not passed:
             failures.append(f"transition geometry guard failed: {name}")
-    for needle in missing_script:
-        failures.append(f"surface-dump script missing geometry token: {needle}")
+    for failure in missing_script:
+        failures.append(f"surface-dump geometry contract: {failure}")
     for needle in missing_probe:
         failures.append(f"transition probe missing placeholder/token: {needle}")
 
@@ -151,6 +142,7 @@ def build_guard(
             "extra_probe": str(extra_probe),
         },
         "checks": checks,
+        "harness": harness,
         "summary": {
             "target_rows": target_rows,
             "row_geometry": geometry,

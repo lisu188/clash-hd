@@ -59,6 +59,14 @@ The 1080p candidate is
 The initial run plan records producer hashes; later producer edits require a
 new immutable run plan. Its unexecuted 1024/1080 entries are not evidence.
 
+A separate full-progress diagnostic retained in
+`captures/current/completehd-full-progress-800x600-20260908.json` passed its
+strict native trace and produced three identical paused captures. The prior
+duplicate did not recur and remains unexplained. Image coverage still failed
+on 82 blank cells; no overall rendering acceptance is claimed. Its preceding
+uppercase-SHA preparation failure happened before debugger launch and is also
+preserved. See `FULL_PAINT_PROGRESS_DIAGNOSTIC.md`.
+
 ## Remaining work
 
 Diagnose repeated native observations with additional progress/call-identity
