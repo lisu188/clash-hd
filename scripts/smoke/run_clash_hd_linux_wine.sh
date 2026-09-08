@@ -88,13 +88,15 @@ capture_frame() {
 }
 
 drive_points() {
-  # semicolon-separated "x,y" points; held left-click at each.
+  # semicolon-separated points, each "x,y" or "name:x,y" (the run-plan specs
+  # name their aim points); held left-click at each.
   local points="$1"
   local hold_s
   hold_s=$(awk "BEGIN { printf \"%.3f\", $click_hold_ms/1000 }")
   IFS=';' read -ra parts <<< "$points"
   for p in "${parts[@]}"; do
     [[ -z "$p" ]] && continue
+    p="${p##*:}"
     local x="${p%,*}" y="${p#*,}"
     for _ in $(seq 1 "$click_repeat"); do
       xdotool mousemove --sync "$x" "$y" >/dev/null 2>&1 || true

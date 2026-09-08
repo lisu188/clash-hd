@@ -22,6 +22,46 @@ JSON without writing anything; `--gui-selftest` constructs and destroys the
 widget tree headlessly. A headless launch needs the explicit double flag
 `--launch --yes-launch`.
 
+## Complete-HD Validation Profile
+
+The source-tree launcher offers `completehd`, which uses the shared
+`src/patcher/complete_hd_candidate.py` builder for the framed map, minimap
+correction, native modal canvas and army panel. Menus, castle interiors and
+battles retain the centered native layout. All six supported resolutions
+(800x600, 1024x768, 1280x720, 1280x960, 1920x1080 and 802x602) remain
+experimental. Other/custom resolutions are unavailable for this recipe.
+Classic remains the default profile and 800x600 remains the default resolution.
+
+Inspect geometry without game execution or file writes:
+
+```powershell
+python src/launcher/run.py --profile completehd --resolution 1920x1080 --describe-plan
+python src/launcher/run.py --profile completehd --list-resolutions
+```
+
+Prepare an isolated bundle and the user-owned wrapper without starting a game:
+
+```powershell
+python src/launcher/run.py --profile completehd --resolution 1920x1080 --prepare
+```
+
+The bundle lives under
+`C:/ClashTests/launcher/completehd-validation/<WxH>/`. Its `.exe`,
+`.candidate.json`, and `.cdb` bytes match the shared patcher/runtime builder.
+Existing bundle files are reused only when byte-identical; a changed recipe
+requires a new candidates root or explicit user cleanup. The deployment
+manifest additionally binds the wrapper and configuration. Preparation and
+launch verification rebuild the source-bound candidate and reject changed
+bytes, metadata, probes, or sources.
+
+The optional GUI profile uses the same backend. Play and the CLI
+`--launch --yes-launch` combination retain the existing user-initiated launch
+boundary. Packaged launchers reject this source-only profile. A prepared
+candidate is not accepted runtime evidence; the complete profile cannot be
+marked validated by a build, a partial component pass, or a deferred report.
+See [COMPLETE_HD_EVIDENCE.md](COMPLETE_HD_EVIDENCE.md) for the separate
+candidate-bound release evaluator and its currently incomplete lanes.
+
 ## What It Does
 
 1. Verifies `C:\Clash\clash95.exe` against the known-good SHA-256

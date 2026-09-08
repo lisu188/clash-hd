@@ -13,6 +13,7 @@ import hashlib
 import importlib.util
 import subprocess
 import sys
+from collections import Counter
 from pathlib import Path
 
 
@@ -34,6 +35,7 @@ _SPEC.loader.exec_module(impl)
 # Pin of the frozen legacy table. Any edit to PATCHES must be deliberate:
 # update this hash together with the archived-SHA reproduction check.
 FROZEN_TABLE_SHA256 = "6683ee66851d23a28d856a8576e6b58c9b1285e0766bb592b9cdb0847bc8c55c"
+FROZEN_STABLE_SELECTION_SHA256 = "1c334f12bcc3206ee98b239733689bdb6982b9ce7ab0007487e105e7d1f688f9"
 
 # 4-byte value slots where more than one formula matches the legacy bytes at
 # 800x600. Each entry records why the chosen formula is right; the audit test
@@ -257,9 +259,9 @@ def test_recipe_coverage_and_old_bytes_invariance() -> None:
     assert kinds == {
         "value": 67,
         "old-plus": 60,
-        "fixed": 26,
+        "fixed": 27,
         "splice": 21,
-        "cave-template": 7,
+        "cave-template": 8,
         "cave-hook": 3,
     }, kinds
 
@@ -278,7 +280,7 @@ def decode_branch(data: bytes, offset: int, kind: str, base_va: int) -> int:
         disp = int.from_bytes(data[offset + 2 : offset + 6], "little", signed=True)
         return base_va + offset + 6 + disp
     if kind == "jcc8":
-        assert data[offset] in (0x74, 0x75, 0x77, 0xEB), hex(offset)
+        assert data[offset] in (0x74, 0x75, 0x76, 0x77, 0xEB), hex(offset)
         disp = int.from_bytes(data[offset + 1 : offset + 2], "little", signed=True)
         return base_va + offset + 2 + disp
     raise AssertionError(kind)
@@ -305,16 +307,19 @@ def test_cave_templates() -> None:
             assert actual == target, (key, "param", hex(offset), hex(actual))
 
         # External targets (outside the cave span) must agree across variants.
-        assert len(template.legacy_branches) == len(template.param_branches), key
         legacy_span = range(
             template.legacy_va, template.legacy_va + len(legacy_patch.new)
         )
-        for (_, lk, lt), (_, pk, pt) in zip(
-            template.legacy_branches, template.param_branches
-        ):
-            assert lk == pk, key
-            if lt not in legacy_span:
-                assert lt == pt, (key, hex(lt), hex(pt))
+        param_span = range(template.param_va, template.param_va + len(template_bytes))
+        # Tiling introduces internal loop branches, but it must keep every
+        # external call/return target and its multiplicity exactly unchanged.
+        assert Counter(
+            (kind, target) for _, kind, target in template.legacy_branches
+            if target not in legacy_span
+        ) == Counter(
+            (kind, target) for _, kind, target in template.param_branches
+            if target not in param_span
+        ), key
 
         # Slots carry the 800x600 values in the template.
         for slot in template.slots:
@@ -414,6 +419,243 @@ def test_stage_gating() -> None:
         legacy_selection = impl.select_patches(stage)
         parameterized_selection = impl.select_patches_for(stage, impl.PROFILE_800)
         assert legacy_selection == parameterized_selection, stage
+
+
+def test_combined_ui_validation_is_exact_frozen_union() -> None:
+    stable_stage = "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch"
+    assert impl.DEFAULT_STAGE == stable_stage
+    stable_selection = impl.select_patches(stable_stage)
+    stable_text = "\n".join(
+        f"{p.group}|{p.offset:06X}|{p.old_hex}|{p.new_hex}|{p.note}" for p in stable_selection
+    )
+    assert hashlib.sha256(stable_text.encode("utf-8")).hexdigest() == FROZEN_STABLE_SELECTION_SHA256
+    stage = stable_stage + "-combinedui-validation"
+    expected_groups = set().union(*(
+        set(impl.STAGE_GROUPS[stable_stage + suffix])
+        for suffix in ("", "-hdlayout-framerestore", "-rightbottomcompose", "-castlecenter-all-battlecenter-inputprobe")
+    ))
+    expected_patches = [patch for patch in impl.PATCHES if patch.group in expected_groups]
+    assert len(expected_groups) == 27
+    assert len(expected_patches) == 166
+    assert impl.STAGE_GROUPS[stage] == tuple(dict.fromkeys(p.group for p in expected_patches))
+    selected = impl.select_patches_for(stage, impl.PROFILE_800)
+    assert selected == expected_patches
+    assert all(actual is expected for actual, expected in zip(selected, expected_patches))
+    spans = sorted((patch.offset, patch.offset + len(patch.old)) for patch in selected)
+    assert all(left_end <= right_start for (_, left_end), (right_start, _) in zip(spans, spans[1:]))
+    assert stage in impl.PARAMETERIZED_STAGES
+    for resolution in (*impl.RESOLUTION_PRESETS[1:], "800x604", "1600x900"):
+        selected = impl.select_patches_for(stage, impl.parse_resolution(resolution))
+        assert len(selected) == 166, resolution
+        assert {p.group for p in selected} == expected_groups, resolution
+        assert all((p.group, p.offset) in impl.RECIPES for p in expected_patches)
+
+
+def trace_frame_restore_machine_code(data: bytes, present: int) -> dict:
+    """Interpret only the x86 instructions used by the tiling cave.
+
+    No native code or game runs. Render_FillRect is a callee-cleaned recording
+    stub that deliberately clobbers every non-ESP register and both modeled
+    flags. This tests the actual emitted stack/control-flow bytes, independently
+    of the recipe's slot and branch metadata. Unknown instructions fail closed.
+    """
+    base = 0x51BE00
+    eax, ecx, edx, ebx, esp, ebp, esi, edi = range(8)
+    initial = [0x12340000 + index for index in range(8)]
+    initial[esp], initial[ebp] = 0x900000, present
+    regs = initial.copy()
+    memory = {0x5202E0: 0x700000, initial[esp]: 0xBADCAFE}
+    zf, cf = False, False
+    pc = base
+    calls, branches = [], set()
+
+    def push(value: int) -> None:
+        regs[esp] -= 4
+        memory[regs[esp]] = value & 0xFFFFFFFF
+
+    def pop() -> int:
+        value = memory[regs[esp]]
+        regs[esp] += 4
+        return value
+
+    def imm(at: int, size: int, signed: bool = False) -> int:
+        return int.from_bytes(data[at:at + size], "little", signed=signed)
+
+    for _ in range(100000):
+        if pc in (0x4189A3, 0x4187B7):
+            assert regs == initial, (regs, initial)
+            assert memory[initial[esp]] == 0xBADCAFE
+            assert zf == (present == 0)
+            assert pc == (0x4189A3 if present == 0 else 0x4187B7)
+            return {"calls": calls, "branches": branches}
+        at = pc - base
+        assert 0 <= at < len(data), hex(pc)
+        op = data[at]
+        if op == 0x60:  # PUSHAD saves the pre-instruction ESP in its fifth slot.
+            before = regs.copy()
+            for value in before:
+                push(value)
+            pc += 1
+        elif op == 0x61:
+            for index in reversed(range(8)):
+                value = pop()
+                if index != esp:
+                    regs[index] = value
+            pc += 1
+        elif data[at:at + 4] == bytes.fromhex("8b7c2408"):
+            regs[edi] = memory[regs[esp] + 8]
+            pc += 4
+        elif 0xB8 <= op <= 0xBF:
+            regs[op - 0xB8] = imm(at + 1, 4)
+            pc += 5
+        elif 0x50 <= op <= 0x57:
+            push(regs[op - 0x50])
+            pc += 1
+        elif op == 0x6A:
+            push(imm(at + 1, 1, signed=True))
+            pc += 2
+        elif data[at:at + 2] == bytes.fromhex("8d80"):
+            regs[eax] = (regs[eax] + imm(at + 2, 4, signed=True)) & 0xFFFFFFFF
+            pc += 6
+        elif op == 0xA1:
+            regs[eax] = memory[imm(at + 1, 4)]
+            pc += 5
+        elif op in (0x89, 0x31, 0x85, 0x01, 0x29):
+            modrm = data[at + 1]
+            assert modrm >= 0xC0, (hex(pc), hex(modrm))
+            src, dst = (modrm >> 3) & 7, modrm & 7
+            left, right = regs[dst], regs[src]
+            if op == 0x89:
+                regs[dst] = right
+            else:
+                value = {0x31: left ^ right, 0x85: left & right,
+                         0x01: left + right, 0x29: left - right}[op]
+                zf = (value & 0xFFFFFFFF) == 0
+                cf = left < right if op == 0x29 else value > 0xFFFFFFFF if op == 0x01 else False
+                if op != 0x85:
+                    regs[dst] = value & 0xFFFFFFFF
+            pc += 2
+        elif op == 0x3D or data[at:at + 2] == bytes.fromhex("83f8"):
+            size = 5 if op == 0x3D else 3
+            value = imm(at + 1, 4) if op == 0x3D else imm(at + 2, 1, signed=True) & 0xFFFFFFFF
+            zf, cf = regs[eax] == value, regs[eax] < value
+            pc += size
+        elif op in (0x74, 0x75, 0x76):
+            branches.add(at)
+            take = {0x74: zf, 0x75: not zf, 0x76: cf or zf}[op]
+            pc += 2 + (imm(at + 1, 1, signed=True) if take else 0)
+        elif op == 0xE8:
+            branches.add(at)
+            assert pc + 5 + imm(at + 1, 4, signed=True) == 0x4024E0
+            assert regs[eax] == 0x700000
+            calls.append((regs[edx], regs[ebx], regs[ecx],
+                          memory[regs[esp]], memory[regs[esp] + 4],
+                          memory[regs[esp] + 8], memory[regs[esp] + 12]))
+            regs[esp] += 16  # CALL/RET cancel, RET 16 consumes four arguments.
+            for index in range(8):
+                if index != esp:
+                    regs[index] = 0xDEAD0000 + index
+            zf, cf = True, True
+            pc += 5
+        elif data[at:at + 2] == bytes.fromhex("0f84"):
+            branches.add(at)
+            pc += 6 + (imm(at + 2, 4, signed=True) if zf else 0)
+        elif op == 0xE9:
+            branches.add(at)
+            pc += 5 + imm(at + 1, 4, signed=True)
+        else:
+            raise AssertionError(f"unsupported frame-cave instruction at {pc:08X}: {data[at:at + 8].hex()}")
+    raise AssertionError("frame-band loop did not terminate")
+
+
+def assert_frame_restore_rectangles(data: bytes, width: int, height: int, present: int) -> set[int]:
+    trace = trace_frame_restore_machine_code(data, present)
+    expected = []
+    targets = (0x700000, 0) if present else (0x700000,)
+    # Independent geometry oracle: tile authentic source pixels, clip the
+    # final tile, and cover exactly each HD gutter without touching terrain.
+    for y in range(480, height, 120):
+        bottom = 359 + min(120, height - y)
+        expected.extend((target, 0, 360, 31, bottom, 0, y) for target in targets)
+    for x in range(640, width, 160):
+        right = 479 + min(160, width - x)
+        expected.extend((target, 480, 0, right, 15, x, 0) for target in targets)
+    assert trace["calls"] == expected, (width, height, present, trace["calls"], expected)
+    for target, left, top, right, bottom, x, y in trace["calls"]:
+        assert target in targets
+        assert 0 <= left <= right < 640 and 0 <= top <= bottom < 480
+        assert 0 <= x <= x + right - left < width
+        assert 0 <= y <= y + bottom - top < height
+        assert x + right - left < 32 or y + bottom - top < 16
+    return trace["branches"]
+
+
+def test_frame_restore_tiling_machine_code() -> None:
+    key = ("frame-restore-bands", 0x11A000)
+    legacy = next(p for p in impl.PATCHES if (p.group, p.offset) == key)
+    template = impl._CAVE_TEMPLATES[key]
+    assert len(legacy.old) == len(legacy.new) == 256
+    assert legacy.old == bytes(256)
+    assert bytes.fromhex(template.template_hex)[217:] == bytes(39)
+    profiles = {impl.parse_resolution(key) for key in impl.RESOLUTION_PRESETS}
+    profiles.update(impl.ResolutionProfile(width, 600) for width in range(800, 1122, 2))
+    profiles.update(impl.ResolutionProfile(800, height) for height in range(600, 842, 2))
+    profiles.update((impl.ResolutionProfile(3840, 2160), impl.ResolutionProfile(8222, 8206)))
+    visited = set()
+    for profile in profiles:
+        # Exercise the new loop's minimum too, although production 800x600
+        # deliberately dispatches to the frozen legacy bytes instead.
+        patch = impl._apply_cave_template(legacy, profile)
+        assert patch.old == legacy.old and patch.offset == legacy.offset
+        assert len(patch.new) == 256
+        for present in (0, 1, 0xFFFFFFFF):
+            visited.update(assert_frame_restore_rectangles(patch.new, profile.width, profile.height, present))
+    assert visited == {at for at, _, _ in template.param_branches}
+    hook = next(p for p in impl.PATCHES if p.group == key[0] and p.offset == 0x17BAF)
+    assert decode_branch(hook.new, 0, "jmp32", 0x4187AF) == template.param_va
+
+    # The entire original 256-byte cave, including unused padding, must still
+    # be verified as zero before writing any generated variant.
+    generated = impl._apply_cave_template(legacy, impl.parse_resolution("1024x768"))
+    original_region = bytes(legacy.offset + len(legacy.old))
+    impl.validate_input(original_region, (generated,))
+    corrupt_region = bytearray(original_region)
+    corrupt_region[-1] = 1
+    try:
+        impl.validate_input(bytes(corrupt_region), (generated,))
+    except SystemExit as exc:
+        assert "byte validation failure" in str(exc)
+    else:
+        raise AssertionError("generated frame cave bypassed old-byte verification")
+
+    # A wrong extension or reversed screen-present condition is detected by
+    # the semantic oracle, not just by the frozen-template byte assertions.
+    correct = impl._apply_cave_template(legacy, impl.parse_resolution("1024x768")).new
+    for at, replacement in ((11, (289).to_bytes(4, "little")), (62, b"\x75")):
+        bad = bytearray(correct)
+        bad[at:at + len(replacement)] = replacement
+        try:
+            assert_frame_restore_rectangles(bytes(bad), 1024, 768, 1)
+        except AssertionError:
+            pass
+        else:
+            raise AssertionError("corrupt frame tiling escaped semantic checks")
+
+
+def test_combined_custom_resolution_limits() -> None:
+    stage = impl.DEFAULT_STAGE + "-combinedui-validation"
+    for resolution in ("800x604", "802x602", "1600x900", "3840x2160", "8222x8206"):
+        selected = impl.select_patches_for(stage, impl.parse_resolution(resolution))
+        spans = sorted((p.offset, p.offset + len(p.new)) for p in selected)
+        assert len(selected) == 166
+        assert all(end <= following for (_, end), (following, _) in zip(spans, spans[1:])), resolution
+    for resolution in ("8224x8206", "8222x8208", "32768x600", "800x601", "640x480"):
+        try:
+            impl.select_patches_for(stage, impl.parse_resolution(resolution))
+        except impl.ResolutionError:
+            pass
+        else:
+            raise AssertionError(f"combined validation bypassed existing resolution limits: {resolution}")
 
 
 def test_coincidence_audit() -> None:
@@ -579,6 +821,9 @@ def run_tests() -> None:
     test_presets_generate_full_tables()
     test_range_fail_closed()
     test_stage_gating()
+    test_combined_ui_validation_is_exact_frozen_union()
+    test_frame_restore_tiling_machine_code()
+    test_combined_custom_resolution_limits()
     test_coincidence_audit()
     test_gate_checks_pin_and_parameterization()
     test_archived_report_still_passes_smoke_gate()

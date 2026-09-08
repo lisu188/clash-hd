@@ -44,6 +44,7 @@ BATTLE_HD_GROUPS = {
     "battle-hd-frame", "battle-hd-hud", "battle-hd-dialogs",
     "battle-hd-descriptors", "battle-hd-tooltip",
 }
+COMBINED_UI_VALIDATION_STAGE = EXPECTED_STABLE_STAGE + "-combinedui-validation"
 VALIDATION_ONLY_GROUPS = {
     "right-bottom-compose-proof",
     "terrain-tooltip-bottom-center",
@@ -57,8 +58,22 @@ VALIDATION_ONLY_GROUPS = {
     "battle-grid-centered-input",
     "battle-ui-centered-input",
     *BATTLE_HD_GROUPS,
+    "frame-restore-bands",
 }
 VALIDATION_STAGE_EXTRAS = {
+    COMBINED_UI_VALIDATION_STAGE: {
+        "terrain-tooltip-bottom-center",
+        "selected-unit-command-panel-right-bottom",
+        "frame-restore-bands",
+        "right-bottom-compose-proof",
+        "castle-ui-center-present-wrapper",
+        "castle-ui-centered-input",
+        "castle-overview-center-present-wrapper",
+        "castle-overview-centered-input",
+        "battle-ui-center-present-wrapper",
+        "battle-grid-centered-input",
+        "battle-ui-centered-input",
+    },
     RIGHT_BOTTOM_VALIDATION_STAGE: {"right-bottom-compose-proof"},
     TOOLTIP_BOTTOM_CENTER_STAGE: {"terrain-tooltip-bottom-center"},
     UNIT_COMMAND_PANEL_STAGE: {"selected-unit-command-panel-right-bottom"},
@@ -140,6 +155,32 @@ def incompatible_overlaps(module: Any, stage: str) -> list[str]:
     return failures
 
 
+def combined_resolution_recipe_failures(module: Any, patches: list[Any]) -> list[str]:
+    """An enabled combined stage needs recipes for every selected patch."""
+    if COMBINED_UI_VALIDATION_STAGE not in getattr(module, "PARAMETERIZED_STAGES", ()):
+        return []
+    recipes = getattr(module, "RECIPES", {})
+    failures: list[str] = []
+    supported_kinds = {"value", "old-plus", "fixed", "splice", "cave-template", "cave-hook"}
+    for patch in patches:
+        key = (patch.group, patch.offset)
+        recipe = recipes.get(key)
+        if getattr(recipe, "kind", None) not in supported_kinds:
+            failures.append(
+                "parameterized combined UI validation requires a complete resolution recipe: "
+                f"{patch.group}@0x{patch.offset:06x}"
+            )
+    for key, expected_kind in (
+        (("frame-restore-bands", 0x017BAF), "fixed"),
+        (("frame-restore-bands", 0x11A000), "cave-template"),
+    ):
+        if getattr(recipes.get(key), "kind", None) != expected_kind:
+            failures.append(
+                f"parameterized frame restoration requires {expected_kind} recipe at 0x{key[1]:06x}"
+            )
+    return failures
+
+
 def build_guard(args: argparse.Namespace, module: Any = patch_clash95_hd) -> dict[str, Any]:
     failures: list[str] = []
     patches = list(module.PATCHES)
@@ -164,6 +205,10 @@ def build_guard(args: argparse.Namespace, module: Any = patch_clash95_hd) -> dic
         failures.append(f"patcher DEFAULT_STAGE is {stable_stage!r}, expected {EXPECTED_STABLE_STAGE!r}")
     if EXPECTED_STABLE_STAGE not in stage_groups:
         failures.append(f"expected stable stage is missing: {EXPECTED_STABLE_STAGE}")
+    if COMBINED_UI_VALIDATION_STAGE in stage_groups:
+        failures.extend(combined_resolution_recipe_failures(
+            module, stage_selected_patches(module, COMBINED_UI_VALIDATION_STAGE)
+        ))
 
     unknown_group_refs: dict[str, list[str]] = {}
     for stage, groups in stage_groups.items():

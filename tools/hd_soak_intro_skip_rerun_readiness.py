@@ -36,10 +36,29 @@ RUNTIME_POLICY = (
 EXPECTED_CLASSIFICATION = "passing_run_no_failure"
 EXPECTED_STEP_ID = "short2_map_idle"
 EXPECTED_STEP_STATUS = "missing_pending_approval"
+# A classified environmental failure (locked session, WER hang close, hidden
+# window, intro-skip drift exit) does not invalidate rerun readiness -- the
+# packet stays ready for the next unlocked attempt. The enumeration mirrors
+# hd_soak_approval_preflight's rerun-readiness handling; any OTHER classified
+# failure (e.g. unexpected_process_exit) keeps the report valid but marks the
+# packet not applicable so no rerun is authorized on top of an unexplained
+# failure.
+ACCEPTED_STEP_STATUSES = {EXPECTED_STEP_STATUS, "pending_approval_legacy_compat"}
+CLASSIFIED_FAILURE_PREFIX = "failed_classified_"
+RERUN_READY_CLASSIFIED_STATUSES = {
+    "failed_classified_intro_skip_input_drift_exit",
+    "failed_classified_input_environment_permission_denied",
+    "failed_classified_application_hang_wer_closed",
+    "failed_classified_window_missing_while_process_alive",
+}
 EXPECTED_INTRO_SKIP = {
     "click_mode": "postmessage",
     "click_repeat": 8,
     "space_pulses": 4,
+    # The harness stops repeating intro-skip clicks the moment input drift is
+    # detected (the contract hd_soak_approval_preflight enforces on the real
+    # dry-run plan); the readiness packet documents the same contract.
+    "stop_click_repeat_on_drift": True,
     "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
 }
 
@@ -137,8 +156,14 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
     if current_step.get("id") != EXPECTED_STEP_ID:
         failures.append(f"current short step is {current_step.get('id')!r}, expected {EXPECTED_STEP_ID!r}")
-    if current_step.get("status") != EXPECTED_STEP_STATUS:
-        failures.append(f"current short step status is {current_step.get('status')!r}, expected {EXPECTED_STEP_STATUS!r}")
+    step_status = str(current_step.get("status"))
+    if step_status not in ACCEPTED_STEP_STATUSES and not step_status.startswith(
+        CLASSIFIED_FAILURE_PREFIX
+    ):
+        failures.append(
+            f"current short step status is {current_step.get('status')!r}, expected one of "
+            f"{sorted(ACCEPTED_STEP_STATUSES)} or a {CLASSIFIED_FAILURE_PREFIX}* classification"
+        )
 
     if harness_guard.get("passed") is not True:
         failures.append("harness guard is not passing")
@@ -185,7 +210,25 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     if exe_artifact.get("tracked_exes"):
         failures.append("exe artifact guard reports tracked executables")
 
-    status = "ready_for_explicit_visible_rerun_approval" if not failures else "not_ready"
+    current_status_text = str(current_step.get("status"))
+    not_applicable_failure = current_status_text.startswith(
+        CLASSIFIED_FAILURE_PREFIX
+    ) and current_status_text not in RERUN_READY_CLASSIFIED_STATUSES
+    if failures:
+        status = "not_ready"
+    elif not_applicable_failure:
+        status = "not_applicable_current_failure"
+    else:
+        status = "ready_for_explicit_visible_rerun_approval"
+    approval_boundary = (
+        "No intro-skip rerun is authorized on top of an unexplained current-step "
+        "failure; triage the classification first."
+        if not_applicable_failure
+        else (
+            "The next runtime run will open a visible Clash95 game window and still "
+            "requires explicit user approval."
+        )
+    )
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "passed": not failures,
@@ -217,10 +260,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             "process_hygiene_passed": bool(process_hygiene.get("passed")),
             "exe_artifact_guard_passed": bool(exe_artifact.get("passed")),
         },
-        "approval_boundary": (
-            "The next runtime run will open a visible Clash95 game window and still "
-            "requires explicit user approval."
-        ),
+        "approval_boundary": approval_boundary,
         "failures": failures,
     }
 

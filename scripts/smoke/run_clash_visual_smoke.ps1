@@ -1,13 +1,18 @@
 param(
     [string]$Exe = 'C:\Clash\clash95_hd_mousedynorigin_menusurface_scrollclamp_20260423.exe',
     [string]$WorkDir = 'C:\Clash',
+    [string]$Resolution = '800x600',
+    [string]$Stage = '',
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
-    [string]$OutRoot = (Join-Path (Join-Path $PSScriptRoot '..\..') 'captures\archive'),
+    [string]$OutRoot = 'C:\ClashCaptures\visible-input',
     [string]$Points = '300,218;320,166;400,226',
-    [string]$FollowupPoints = '',
     [ValidateSet('load-slot0', 'campaign-start', 'custom', 'menu-only')]
     [string]$Route = 'load-slot0',
+    [ValidateRange(1,3600)]
     [int]$RunSeconds = 8,
+    [int]$ObserveProcessId = 0,
+    [ValidateRange(100,60000)]
+    [int]$ObserveIntervalMs = 1500,
     [int]$WindowTimeoutSec = 12,
     [int]$SkipPulses = 4,
     [int]$IntroSkipClicks = 8,
@@ -33,8 +38,8 @@ param(
     # routes and aims through tools/menu_pulse_click.py instead (one relative
     # MOUSEEVENTF_MOVE per ~28ms poll, frame-diff position feedback, button
     # held while pulsing). 'legacy' keeps the historic behaviour selectable.
-    [ValidateSet('legacy', 'pulse')]
-    [string]$InputMode = 'legacy',
+    [ValidateSet('legacy', 'pulse', 'manual')]
+    [string]$InputMode = 'pulse',
     [string]$PulseRouteSteps = 'load-button:302,211;load-slot0:320,166;confirm-load:400,226',
     [string]$FollowupPoints = '',
     [switch]$FollowupAimOnly,
@@ -154,12 +159,10 @@ public static class ClashVisualSmokeWin32 {
 '@
 
 function Stop-ClashProcesses {
+    # This harness owns only its selected candidate, never other game/debugger tasks.
+    $selectedPath = [System.IO.Path]::GetFullPath($Exe)
     Get-Process -ErrorAction SilentlyContinue |
-        Where-Object {
-            $_.ProcessName -like 'clash95*' -or
-            $_.ProcessName -eq 'cdb' -or
-            ($_.Path -and $_.Path -like (Join-Path $WorkDir 'clash95*.exe'))
-        } |
+        Where-Object { $_.Path -and [System.IO.Path]::GetFullPath($_.Path) -eq $selectedPath } |
         Stop-Process -Force -ErrorAction SilentlyContinue
 }
 
@@ -248,7 +251,9 @@ function Test-MenuFingerprint {
     if (-not $FrameMeta) {
         return $false
     }
-    $nonblack = [double]$FrameMeta.NonblackPercent
+    # The centered native menu occupies fewer physical pixels at larger resolutions.
+    # Retain the legacy fingerprint band in its original 800x600 area units.
+    $nonblack = [double]$FrameMeta.NonblackPercent * $logicalWidth * $logicalHeight / (800 * 600)
     $colors = [int]$FrameMeta.UniqueSampleColors
     # Menu fingerprint: nonblack inside the menu band AND a small static
     # palette. Bright intro/logo/movie frames clear a plain nonblack floor but
@@ -323,7 +328,7 @@ function Invoke-MenuPulseTool {
     if (-not (Test-Path -LiteralPath $pulseTool -PathType Leaf)) {
         throw "Required pulse click tool was not found: $pulseTool"
     }
-    $allArgs = @($pulseTool, '--pid', "$($Process.Id)") + $ToolArgs + @('--json', $Json)
+    $allArgs = @($pulseTool, '--pid', "$($Process.Id)", '--resolution', $Resolution) + $ToolArgs + @('--json', $Json)
     $log = [System.IO.Path]::ChangeExtension($Json, '.log')
     $previousErrorActionPreference = $ErrorActionPreference
     $ErrorActionPreference = 'Continue'
@@ -599,6 +604,22 @@ function Invoke-GameplayFrameCheck {
         [string]$Json
     )
 
+    # Framed candidates have a clipped ceiling grid and observed minimap masks.
+    # The generic legacy image diagnostic cannot authenticate that context yet.
+    # Keep collecting input/captures, but never pass this quality claim by using
+    # the older unframed tile counts for a framed or integrated candidate.
+    if ($Stage -match '(?i)framed|completehd') {
+        return [pscustomobject]@{
+            Attempted = $false
+            ExitCode = 2
+            Json = $null
+            GameplayFrameLikely = $false
+            Status = 'incomplete'
+            Warnings = @('framed-quality-requires-candidate-context-and-observed-minimap')
+            Summary = $null
+        }
+    }
+
     $coverageTool = Join-Path $RepoRoot 'tools\map_tile_coverage.py'
     if ($NoGameplayCheck -or -not (Test-Path -LiteralPath $coverageTool)) {
         return [pscustomobject]@{
@@ -614,7 +635,7 @@ function Invoke-GameplayFrameCheck {
     $previousErrorActionPreference = $ErrorActionPreference
     $ErrorActionPreference = 'Continue'
     try {
-        $output = & $Python $coverageTool $Path --require-gameplay --write-json $Json 2>&1
+        $output = & $Python $coverageTool $Path --logical-width $logicalWidth --logical-height $logicalHeight --columns $logicalColumns --rows $logicalRows --bottom-row-active-cols $logicalColumns --require-gameplay --write-json $Json 2>&1
         $exitCode = $LASTEXITCODE
     } catch {
         $output = @($_.ToString())
@@ -881,6 +902,34 @@ foreach ($path in @($Exe, $WorkDir, $Python)) {
         throw "Required path was not found: $path"
     }
 }
+
+function Assert-ExternalCaptureRoot {
+    param([string]$Path, [string]$Repository)
+    $captureRoot = [System.IO.Path]::GetFullPath($Path).TrimEnd('\', '/')
+    $repositoryRoot = [System.IO.Path]::GetFullPath($Repository).TrimEnd('\', '/')
+    if ($captureRoot.Equals($repositoryRoot, [System.StringComparison]::OrdinalIgnoreCase) -or
+        $captureRoot.StartsWith($repositoryRoot + '\', [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw 'Raw visible captures must be written outside the repository.'
+    }
+}
+if ($ObserveProcessId -lt 0 -or ($ObserveProcessId -gt 0 -and $InputMode -ne 'manual')) {
+    throw '-ObserveProcessId is available only with -InputMode manual.'
+}
+$geometryJson = & $Python -B -c 'import json,sys;sys.path.insert(0,sys.argv[1]);import patch_clash95_hd as p;q=p.parse_resolution(sys.argv[2]);print(json.dumps(dict(width=q.width,height=q.height,columns=q.tiles_x,rows=q.tiles_y)))' $RepoRoot $Resolution
+if ($LASTEXITCODE -ne 0) { throw 'Patcher rejected the requested logical resolution.' }
+$logicalGeometry = $geometryJson | ConvertFrom-Json
+$logicalWidth = [int]$logicalGeometry.width
+$logicalHeight = [int]$logicalGeometry.height
+$Resolution = '{0}x{1}' -f $logicalWidth, $logicalHeight
+$logicalColumns = [int]$logicalGeometry.columns
+$logicalRows = [int]$logicalGeometry.rows
+if ($Resolution -ne '800x600' -and $InputMode -eq 'legacy') {
+    throw 'Non800 visible input requires -InputMode pulse or manual; legacy OS-cursor routes have no resolution contract.'
+}
+if (-not $PSBoundParameters.ContainsKey('PulseRouteSteps')) {
+    # Only the main-menu control is centered. The native load list retains its own coordinates.
+    $PulseRouteSteps = 'load-button:{0},{1};load-slot0:320,166;confirm-load:400,226' -f (302 + ($logicalWidth - 800) / 2), (211 + ($logicalHeight - 600) / 2)
+}
 $mousePath = Join-Path $RepoRoot 'tools\mouse_path_probe.py'
 if (-not (Test-Path -LiteralPath $mousePath)) {
     throw "Required path was not found: $mousePath"
@@ -907,20 +956,57 @@ if ($FollowupPoints) {
 }
 
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$outDir = Join-Path $OutRoot "visual-smoke-$stamp"
-New-Item -ItemType Directory -Path $outDir -Force | Out-Null
+Assert-ExternalCaptureRoot -Path $OutRoot -Repository $RepoRoot
+$runId = [Guid]::NewGuid().ToString('N')
+$outDir = Join-Path $OutRoot "visual-smoke-$stamp-$runId"
+New-Item -ItemType Directory -Path $outDir | Out-Null
 $introSkipPoints = @(for ($i = 0; $i -lt $IntroSkipClicks; $i++) { '400,300' }) -join ';'
 
 $process = $null
 $result = $null
 $launchInfo = $null
 $scriptError = $null
-Stop-ClashProcesses
+$ownsProcess = $false
+if ($ObserveProcessId -eq 0) { Stop-ClashProcesses }
 try {
-    $launchInfo = Start-ClashProcessWithRetry -Path $Exe -Directory $WorkDir
-    $process = $launchInfo.Process
+    if ($ObserveProcessId -gt 0) {
+        $process = Get-Process -Id $ObserveProcessId -ErrorAction Stop
+        if (-not $process.Path -or [System.IO.Path]::GetFullPath($process.Path) -ne [System.IO.Path]::GetFullPath($Exe)) {
+            throw 'Observed process does not match the exact selected candidate executable.'
+        }
+    } else {
+        $launchInfo = Start-ClashProcessWithRetry -Path $Exe -Directory $WorkDir
+        $process = $launchInfo.Process
+        $ownsProcess = $true
+    }
     Wait-ClashWindow -Process $process -TimeoutSec $WindowTimeoutSec | Out-Null
 
+    if ($InputMode -eq 'manual') {
+        # The operator controls the game. This branch never calls a pulse, legacy
+        # input, or foreground-manipulating capture helper.
+        $observation = Invoke-MenuPulseTool -Process $process -Json (Join-Path $outDir 'manual-observation.json') -ToolArgs @(
+            '--observe-only', '--observe-seconds', "$RunSeconds", '--observe-interval-ms', "$ObserveIntervalMs"
+        )
+        $result = [pscustomobject]@{
+            Exe = $Exe
+            ExeSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $Exe).Hash
+            Stage = $Stage
+            Resolution = $Resolution
+            ProcessId = $process.Id
+            ProcessOwnedByHarness = $ownsProcess
+            OutputDirectory = $outDir
+            InputMode = 'manual'
+            InputMechanism = 'none_observation_only'
+            InputProofClass = 'manual_observation_capture_not_release_proof'
+            ManualInputAccepted = $false
+            PromotionReady = $false
+            OperatorObservationRequired = $true
+            CaptureComplete = [bool]($observation.Result -and $observation.Result.capture_complete)
+            ObservationJson = $observation.Json
+            ObservationExitCode = $observation.ExitCode
+        }
+        if ($observation.ExitCode -ne 0) { throw "Manual observation capture failed; see $($observation.Json)" }
+    } else {
     $readinessFrames = @()
     $introProbeRows = @()
     $windowHealthSamples = @()
@@ -956,7 +1042,7 @@ try {
                     if ($stabilityMeta -and $readiness.Frame -and $stabilityMeta.Hash -eq $readiness.Frame.Hash) {
                         $roundMenuVerified = $true
                         $introMenuVerified = $true
-                        $introMenuVerifyNonblack = [double]$readiness.Frame.NonblackPercent
+                        $introMenuVerifyNonblack = [double]$readiness.Frame.NonblackPercent * $logicalWidth * $logicalHeight / (800 * 600)
                         $introMenuVerifyColors = [int]$readiness.Frame.UniqueSampleColors
                     }
                 } catch {
@@ -1137,36 +1223,10 @@ try {
     $windowHealthSamples += Get-WindowHealthSample -Process $process -Phase 'before-final-capture'
     $mapFrameState = Save-StateFrame -Process $process -Name 'after-route' -Path (Join-Path $outDir 'after-map-path.png') -OutDir $outDir
 
-    # Target-specific follow-up clicks, driven after the load route reaches
-    # gameplay (the fixed load-slot0/campaign routes ignore -Points, so the
-    # per-target validation points must come through -FollowupPoints).
-    $followupRows = @()
-    if (-not [string]::IsNullOrWhiteSpace($FollowupPoints)) {
-        $followupList = $FollowupPoints.Split(';') | Where-Object { $_ -ne '' }
-        $fIndex = 0
-        foreach ($fp in $followupList) {
-            $fJson = Join-Path $outDir ("followup-{0:D2}-path.json" -f $fIndex)
-            $fPath = Invoke-MousePath -Process $process -Json $fJson -PathPoints $fp -Click -AllowUnverified
-            Start-Sleep -Milliseconds ([int]$RouteStepWaitMs)
-            $fFrame = Save-StateFrame `
-                -Process $process `
-                -Name ("followup-{0:D2}" -f $fIndex) `
-                -Path (Join-Path $outDir ("followup-{0:D2}.png" -f $fIndex)) `
-                -OutDir $outDir
-            $followupRows += [pscustomobject]@{
-                Index = $fIndex
-                Points = $fp
-                Json = $fJson
-                PathVerified = $fPath.path_verified
-                ClickPathVerified = $fPath.click_path_verified
-                ProbeExitCode = $fPath.ProbeExitCode
-                Frame = $fFrame.Frame
-                FrameState = $fFrame.State
-            }
-            $fIndex++
-        }
-        Save-StateFrame -Process $process -Name 'after-followup' -Path (Join-Path $outDir 'after-followup.png') -OutDir $outDir | Out-Null
-    }
+    # Per-target follow-up validation clicks run ONLY in the pulse lane (see the
+    # setup guard: legacy move modes are invisible to the engine's DirectInput
+    # accumulator). The pulse route section above already populated
+    # $followupRows; nothing to drive here.
 
     $routePointText = if (@($routeSteps).Count -gt 0) {
         (@($routeSteps) | ForEach-Object { $_.Points }) -join ';'
@@ -1181,6 +1241,8 @@ try {
     $result = [pscustomobject]@{
         Exe = $Exe
         ExeSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $Exe).Hash
+        Stage = $Stage
+        Resolution = $Resolution
         ProcessId = $process.Id
         LaunchAttempts = $launchInfo.Attempts
         LaunchErrors = @($launchInfo.Errors)
@@ -1222,6 +1284,7 @@ try {
         }
         IntroMenuVerified = $introMenuVerified
         IntroMenuVerifyNonblackPercent = $introMenuVerifyNonblack
+        IntroMenuFingerprintReferenceArea = 480000
         IntroMenuVerifyUniqueColors = $introMenuVerifyColors
         IntroMenuVerifyBand = @($IntroMenuVerifyNonblackPercent, $IntroMenuVerifyNonblackMaxPercent)
         IntroMenuVerifyMaxUniqueColors = $IntroMenuVerifyMaxUniqueColors
@@ -1237,7 +1300,6 @@ try {
         MapRouteReached = $mapRouteReached
         RouteFinalNonblackPercent = $routeFinalNonblack
         RouteBlockedReason = $routeBlockedReason
-        FollowupPoints = $FollowupPoints
         FollowupAimOnly = [bool]$FollowupAimOnly
         FollowupRows = $followupRows
         FollowupPointCount = @($followupPointList).Count
@@ -1249,13 +1311,14 @@ try {
         ProcessExitedBeforeCleanup = $process.HasExited
         ExitCode = if ($process.HasExited) { $process.ExitCode } else { $null }
     }
+    }
 } catch {
     $scriptError = $_
 } finally {
-    if ($process -and -not $process.HasExited -and -not $KeepOpen) {
+    if ($ownsProcess -and $process -and -not $process.HasExited -and -not $KeepOpen) {
         Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
     }
-    if (-not $KeepOpen) {
+    if ($ownsProcess -and -not $KeepOpen) {
         Stop-ClashProcesses
     }
 }
