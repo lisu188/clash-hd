@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 
-from action_bar_surface_audit import compare_cells, load_sprites, audit_summary, digest, FRAMED_STAGE
+from action_bar_surface_audit import compare_cells, load_sprites, audit_summary, digest, FRAMED_STAGE, COMPLETE_HD_STAGE
 from cdb_surface_dump_to_png import convert
 from hd_layout_asset_composition import Sprite
 
@@ -91,6 +91,16 @@ class ActionBarAuditTests(unittest.TestCase):
             with self.assertRaises(ValueError):compare_cells(raw,800,600,self.sprites,stage=stage)
         with self.assertRaises(ValueError):compare_cells(raw,800,600,self.sprites,stage=FRAMED_STAGE,legacy=True)
         with self.assertRaises(ValueError):compare_cells(bytes(801*600),801,600,self.sprites,stage=FRAMED_STAGE)
+
+    def test_complete_candidate_uses_exact_framed_geometry_without_aliasing_stage(self):
+        for width, height in ((800,600),(1024,768),(1280,720),(1280,960),(1920,1080),(802,602)):
+            raw=self.frame(width,height,framed=True,hover=True)
+            complete=compare_cells(raw,width,height,self.sprites,stage=COMPLETE_HD_STAGE)
+            self.assertEqual(complete,compare_cells(raw,width,height,self.sprites,stage=FRAMED_STAGE))
+            self.assertTrue(all(row['exact_source_match'] for row in complete))
+        for stage in (COMPLETE_HD_STAGE+'-typo',COMPLETE_HD_STAGE.upper(),'completehd-validation'):
+            with self.assertRaises(ValueError):compare_cells(raw,width,height,self.sprites,stage=stage)
+        with self.assertRaises(ValueError):compare_cells(raw,width,height,self.sprites,stage=COMPLETE_HD_STAGE,legacy=True)
 
     def test_framed_summary_uses_its_bound_stage_and_keeps_failed_runtime_separate(self):
         with tempfile.TemporaryDirectory() as directory:

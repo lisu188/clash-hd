@@ -91,6 +91,11 @@ Run individual fixtures with `python tools/test_<name>.py`.
 
 ## Current frontier
 
+The active September integration is documented in
+[`AGENT_HANDOFF.md`](AGENT_HANDOFF.md). Its complete-HD candidate and failing
+runtime evidence are separate from the historical component results below.
+The stable stage and 800x600 default remain unchanged.
+
 - Terrain tooltip and selected-unit action-panel anchoring have validation-stage
   implementations and hidden/visible layout evidence. They remain outside the
   protected stable stage pending the separate manual-input promotion boundary.
