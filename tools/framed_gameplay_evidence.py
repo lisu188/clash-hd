@@ -23,12 +23,15 @@ import frame_surface_audit as frame
 import initial_map_paint_trace as trace
 import map_tile_coverage as coverage
 import visibility_coverage as visibility
+import complete_hd_runtime_context as complete_context
 from src.patcher.framed_viewport import FramedViewport
 
 STAGE=bar.FRAMED_STAGE
 PRODUCER_SOURCES=("scripts/cdb/run_cdb_surface_dump.ps1","tools/render_cdb_surface_probe.py",
     "tools/initial_map_paint_trace.py","tools/map_tile_coverage.py","tools/cdb_surface_dump_to_png.py",
     "probes/cdb/render/clash95_surface_dump_probe.cdb")
+COMPLETE_PRODUCER_SOURCES=("tools/complete_hd_runtime_context.py","tools/complete_hd_evidence.py",
+                          "tools/framed_minimap_probe.py")
 H=r"[0-9a-fA-F]{1,8}"
 READY=re.compile(rf"SURFDUMP_READY redraw_seq=(\d+) surface=({H}) size=\((\d+),(\d+)\) base=({H}) bytes=(\d+)")
 REDRAW=re.compile(rf"SURFDUMP_REDRAW seq=(\d+) scroll=\((\d+),(\d+)\) endgrid=\((\d+),(\d+)\) map=\((\d+),(\d+)\) surface=({H}) size=\((\d+),(\d+)\)")
@@ -57,24 +60,28 @@ def _one(lines,prefix,pattern):
     return i,match
 
 
-def validate_command(run,layout,candidate_path):
+def validate_command(run,layout,candidate_path,*,stage=STAGE):
     """Bind the exact supported observation lane, not merely four switch names."""
     command=run["command"]
     require(isinstance(command,list) and command and all(isinstance(v,str) for v in command),"invalid run command")
     require(_path(command[0])==(ROOT/"scripts/cdb/run_cdb_surface_dump.ps1").resolve(),"unrecognized capture producer command")
     switches={"-PartialTileValidation","-InitialMapPaintValidation","-FramedValidation","-UseDdrawProxy",
               "-FastForwardStartAnims","-RequireGameplay"}
+    optional=set()
+    if stage==complete_context.complete.STAGE:
+        switches={"-CompleteHdValidation","-UseDdrawProxy","-FastForwardStartAnims","-RequireGameplay"}
+        optional={"-PartialTileValidation","-InitialMapPaintValidation","-FramedValidation","-MinimapViewportValidation"}
     valued={"-Stage","-Resolution","-WorkDir","-CandidateDir","-CandidateName","-OutRoot","-LoadSlot","-RunSeconds"}
     options={};i=1
     while i<len(command):
         key=command[i]
-        require(key in switches|valued and key not in options,"unknown or repeated capture option")
-        if key in switches:options[key]=True;i+=1
+        require(key in switches|optional|valued and key not in options,"unknown or repeated capture option")
+        if key in switches|optional:options[key]=True;i+=1
         else:
             require(i+1<len(command),"capture option lacks value")
             options[key]=command[i+1];i+=2
-    require(set(options)==switches|valued,"capture command lacks required safe options")
-    require(options["-Stage"]==STAGE and options["-Resolution"]==layout.resolution and options["-LoadSlot"]=="0","capture route/stage/resolution differs")
+    require(switches|valued<=set(options),"capture command lacks required safe options")
+    require(options["-Stage"]==stage and options["-Resolution"]==layout.resolution and options["-LoadSlot"]=="0","capture route/stage/resolution differs")
     require(Path(options["-WorkDir"]).resolve()==Path(run["workdir"]).resolve() and
             Path(options["-CandidateDir"]).resolve()==Path(run["candidate_dir"]).resolve()==candidate_path.parent and
             options["-CandidateName"]==candidate_path.name and
@@ -142,21 +149,32 @@ def paused_snapshot(log,summary,layout,trace_report):
                 minimap=dict(enabled=bool(enabled),width=mwidth if enabled else None,height=mheight if enabled else None))
 
 
-def reconstruct_coverage(png_path,layout,minimap):
-    geometry=coverage.framed_coverage_geometry(STAGE,layout.width,layout.height,
+def candidate_identity(context):
+    identity={key:context["manifest"][key] for key in
+              ("stage","resolution","candidate_sha256","base_sha256","recipe_revision","probe_sha256")}
+    return identity|dict(manifest_path=context["manifest_path"],manifest_sha256=context["manifest_sha256"])
+
+
+def reconstruct_coverage(png_path,layout,minimap,*,context=None):
+    geometry_stage=context["framed"]["stage"] if context is not None else STAGE
+    geometry=coverage.framed_coverage_geometry(geometry_stage,layout.width,layout.height,
         minimap_enabled=minimap["enabled"],minimap_width=minimap["width"],minimap_height=minimap["height"])
     values=dict(logical_width=layout.width,logical_height=layout.height,origin_x=32,origin_y=16,tile_size=64,
                 columns=geometry["columns"],rows=geometry["rows"],bottom_row_active_cols=geometry["columns"],
                 threshold=12,black_percent=5.0,min_gameplay_border_percent=20.0,min_gameplay_overall_percent=50.0,
                 low_detail_bins=0,min_unmasked_percent=20.0)
     args=argparse.Namespace(**values,framed_geometry=geometry)
-    return dict(parameters=values,masks=[dict(name=name,logical_rect=list(rect)) for name,rect in geometry["masks"]],
+    report=dict(parameters=values,masks=[dict(name=name,logical_rect=list(rect)) for name,rect in geometry["masks"]],
                 images=[coverage.analyze_image(png_path,geometry["cells"],geometry["masks"],args)],
                 framed_profile={k:v for k,v in geometry.items() if k not in ("cells","masks")})
+    if context is not None:report["candidate_context"]=candidate_identity(context)
+    return report
 
 
-def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource,command_resource,original_path,run_plan_path=None):
-    report=dict(schema_version=1,stage=STAGE,input_passed=None,guarded_gameplay_evidence=False,
+def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource,command_resource,original_path,
+                 run_plan_path=None,candidate_manifest_path=None):
+    stage=complete_context.complete.STAGE if candidate_manifest_path is not None else STAGE
+    report=dict(schema_version=1,stage=stage,input_passed=None,guarded_gameplay_evidence=False,
                 decision="framed_gameplay_evidence_rejected",runtime_verdict_changed=False,manual_input_proof=False,
                 promotion_ready=False,cleanup_proven=False,failures=[],limits=LIMITS,sources={})
     try:
@@ -165,8 +183,9 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
         report["sources"]={name:reference(path) for name,path in paths.items()}
         summary=read_json(paths["summary"]);report["input_passed"]=summary.get("Passed")
         report["input_error"]=summary.get("Error")
+        if "Failures" in summary:report["input_failures"]=summary["Failures"]
         require(type(report["input_passed"])is bool,"input Passed must remain an explicit boolean")
-        require(summary.get("Stage")==STAGE,"exact framed stage required")
+        require(summary.get("Stage")==stage,"exact framed stage or complete stage with --candidate-manifest required")
         w,h=summary["Surface"]["Width"],summary["Surface"]["Height"];layout=FramedViewport(w,h)
         require(summary["Resolution"]==layout.resolution,"summary resolution mismatch")
         for key in ("Av","AppRequestQuit","TimedOut","AllowVisibleDesktop","ForceVisibleEdges","PostOwnerForceVisibleSeven","SkipMapValidation"):
@@ -183,16 +202,37 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
         report["sources"]["run_plan"]=reference(plan_path)
         if plan_ref:
             require(_path(plan_ref["path"])==plan_path and plan_ref["sha256"]==report["sources"]["run_plan"]["sha256"],"run plan reference mismatch")
-        plan=read_json(plan_path);require(plan["stage"]==STAGE,"run plan stage mismatch")
+        plan=read_json(plan_path);require(plan["stage"]==stage,"run plan stage mismatch")
         candidate_path=Path(summary["CandidatePath"]).resolve()
         runs=[r for r in plan["runs"] if r.get("resolution")==layout.resolution and Path(r["candidate_path"]).resolve()==candidate_path]
         require(len(runs)==1,"missing/ambiguous source-bound run")
         run=runs[0];require(run["expected_candidate_sha256"]==report["candidate_sha256"],"run plan candidate mismatch")
         require(paths["summary"].parent.parent==Path(run["output_root"]).resolve(),"run plan output directory mismatch")
-        validate_command(run,layout,candidate_path)
-        for name in (*builder.PINNED_SOURCES,*PRODUCER_SOURCES):
+        validate_command(run,layout,candidate_path,stage=stage)
+        original=paths["original"].read_bytes()
+        context=None
+        sources=(*builder.PINNED_SOURCES,*PRODUCER_SOURCES)
+        if candidate_manifest_path is not None:
+            manifest_path=Path(candidate_manifest_path).resolve()
+            report["sources"]["candidate_manifest"]=reference(manifest_path)
+            require(_path(summary["CandidateManifest"])==manifest_path and
+                    summary["CandidateManifestSha256"].lower()==report["sources"]["candidate_manifest"]["sha256"],
+                    "summary candidate manifest binding differs")
+            require(manifest_path.name.endswith(".candidate.json") and
+                    manifest_path.with_name(manifest_path.name[:-len(".candidate.json")]+".exe")==candidate_path,
+                    "candidate manifest does not belong to the summary executable")
+            context=complete_context.load_context(manifest_path,paths["original"],resolution=layout.resolution,
+                                                  candidate=candidate_path.read_bytes())
+            image,metadata,canonical_probe=context["candidate"],context["manifest"],context["probe"]
+            require(context["framed"]["stage"]==STAGE,"integrated candidate has a different framed geometry contract")
+            require(summary["RecipeRevision"]==metadata["recipe_revision"] and
+                    summary["CandidateProbeSha256"].lower()==metadata["probe_sha256"],"summary candidate recipe/probe differs")
+            sources=(*sources,*COMPLETE_PRODUCER_SOURCES,*metadata["source_hashes"])
+            report["candidate_context"]=candidate_identity(context)
+        else:
+            image,metadata,canonical_probe=builder.build_candidate(original,layout.resolution)
+        for name in sources:
             require(plan["source_sha256"].get(name)==sha((ROOT/name).read_bytes()),f"capture producer source changed: {name}")
-        original=paths["original"].read_bytes();image,metadata,canonical_probe=builder.build_candidate(original,layout.resolution)
         require(plan["original_sha256"]==sha(original),"run plan original identity differs")
         require(image==candidate_path.read_bytes() and sha(image)==report["candidate_sha256"],"candidate differs from canonical framed bytes")
         canonical_bytes=canonical_probe.encode("ascii");probe_bytes=paths["probe"].read_bytes()
@@ -203,7 +243,9 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
         probe=canonical_probe
         report["canonical_probe_sha256"]=sha(canonical_bytes)
         log=paths["log"].read_text(encoding="utf-8-sig")
-        initial=trace.evaluate_trace(log,probe,resolution=layout.resolution,candidate_sha256=report["candidate_sha256"],stage=STAGE)
+        trace_options=dict(candidate_manifest=context["manifest"],original=original) if context is not None else {}
+        initial=trace.evaluate_trace(log,probe,resolution=layout.resolution,candidate_sha256=report["candidate_sha256"],stage=stage,
+                                     **trace_options)
         require(initial["passed"],"initial trace failed: "+"; ".join(initial["failures"]))
         snapshot=paused_snapshot(log,summary,layout,initial)
         metadata_png=read_json(Path(summary["PngMetadata"]))
@@ -215,7 +257,7 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
         require(frame_result["passed"] and frame_result["footer"]["exact"],"four frame bands/footer do not exactly match source pixels")
         require(bar_result["all_six_cells_match_source"],"action bar does not have all six complete source cells")
         observed=read_json(paths["coverage"])
-        regenerated=reconstruct_coverage(Path(summary["PngPath"]),layout,snapshot["minimap"])
+        regenerated=reconstruct_coverage(Path(summary["PngPath"]),layout,snapshot["minimap"],context=context)
         require(observed==regenerated,"coverage report differs from exact bound PNG/default recipe")
         photo=regenerated["images"][0];check=photo["frame_check"]
         report.update(raw_image_gameplay_likely=check["gameplay_frame_likely"],raw_image_warnings=check["warnings"],
@@ -247,11 +289,14 @@ def main():
     for name in ("summary","coverage","log","probe","frame-resource","command-resource","original"):
         parser.add_argument("--"+name,type=Path,required=True)
     parser.add_argument("--run-plan",type=Path)
+    parser.add_argument("--candidate-manifest",type=Path,
+                        help="authenticate the integrated candidate bundle; required for the exact complete HD stage")
     parser.add_argument("--output",type=Path,required=True)
     args=parser.parse_args()
     if args.output.exists():parser.error("output already exists; refusing overwrite")
     report=build_report(args.summary,coverage_path=args.coverage,log_path=args.log,probe_path=args.probe,
-        frame_resource=args.frame_resource,command_resource=args.command_resource,original_path=args.original,run_plan_path=args.run_plan)
+        frame_resource=args.frame_resource,command_resource=args.command_resource,original_path=args.original,run_plan_path=args.run_plan,
+        candidate_manifest_path=args.candidate_manifest)
     try:
         with args.output.open("x",encoding="utf-8") as stream:json.dump(report,stream,indent=2)
     except OSError as exc:parser.error(str(exc))

@@ -18,6 +18,7 @@ import unittest
 from unittest.mock import patch
 
 import framed_gameplay_evidence as decision
+import complete_hd_evidence as release_evidence
 from cdb_surface_dump_to_png import convert
 from hd_layout_asset_composition import Sprite
 import test_frame_surface_audit as frame_fixture
@@ -298,6 +299,140 @@ class FramedGameplayEvidenceTests(unittest.TestCase):
         result=subprocess.run(command,capture_output=True,text=True)
         self.assertEqual(result.returncode,2);self.assertIn("refusing overwrite",result.stderr)
         self.assertEqual(output.read_text(),"preserve me")
+
+
+class CompleteGameplayEvidenceTests(unittest.TestCase):
+    """Exercise the real shared bundle verifier with a synthetic builder only."""
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.a=Artifacts(Path(self.temp.name));self.addCleanup(self.a.mocks().close)
+        self.stage=decision.complete_context.complete.STAGE
+        self.inherited=decision.STAGE.removesuffix('-validation')+'-modalcanvas-army-validation'
+        self.a.candidate=self.a.candidate.rename(self.a.root/'candidate.exe')
+        identity=f'resolution=800x600 candidate_sha256={self.a.sha}'
+        army=f'ARMY_CONTRACT_PASS stage={self.inherited} {identity} revision=synthetic_army_v1'
+        complete=f'COMPLETEHD_CONTRACT_PASS stage={self.stage} {identity} revision=complete_hd_v1'
+        ptile=f'PTILE_CONTRACT_PASS stage={self.inherited} {identity}'
+        old=f'PTILE_CONTRACT_PASS stage={decision.STAGE} {identity}'
+        log=self.a.log.read_text().replace(old,army+'\n'+complete+'\n'+ptile)
+        self.a.log.write_text(log,encoding='ascii')
+        self.a.canonical_probe=self.a.canonical_probe.replace('.echo '+old,
+            '.echo '+army+'\n.echo '+complete+'\n.echo '+ptile)
+        self.a.probe.write_text(self.a.canonical_probe,encoding='ascii',newline='\n')
+        self.bundle_probe=self.a.root/'candidate.cdb';self.bundle_probe.write_bytes(self.a.probe.read_bytes())
+        self.manifest=self.a.root/'candidate.candidate.json'
+        self.metadata=dict(schema=1,stage=self.stage,resolution='800x600',recipe_revision='complete_hd_v1',
+            base_sha256=decision.sha(self.a.original.read_bytes()),candidate_sha256=self.a.sha,
+            probe_sha256=decision.sha(self.bundle_probe.read_bytes()),
+            source_hashes={'src/patcher/complete_hd_candidate.py':decision.sha((decision.ROOT/'src/patcher/complete_hd_candidate.py').read_bytes())},
+            patch_records=[dict(synthetic_fixture=True)],
+            predecessor=dict(stage=self.inherited,army_revision='synthetic_army_v1',
+                base_candidate=dict(base_candidate=dict(stage=decision.STAGE))))
+        write_json(self.manifest,self.metadata)
+        self.a.summary_data.update(Stage=self.stage,CandidatePath=str(self.a.candidate),
+            CandidateManifest=str(self.manifest),CandidateManifestSha256=decision.sha(self.manifest.read_bytes()),
+            RecipeRevision='complete_hd_v1',CandidateProbeSha256=self.metadata['probe_sha256'],
+            Failures=['Synthetic initial image-heuristic failure remains recorded.'])
+        self.a.plan_data['stage']=self.stage
+        self.a.plan_data['source_sha256'].update({name:decision.sha((decision.ROOT/name).read_bytes())
+            for name in (*decision.COMPLETE_PRODUCER_SOURCES,*self.metadata['source_hashes'])})
+        run=self.a.plan_data['runs'][0]
+        run.update(candidate_path=str(self.a.candidate),expected_probe_sha256=self.metadata['probe_sha256'])
+        command=run['command'];command[command.index('-Stage')+1]=self.stage
+        command[command.index('-CandidateName')+1]=self.a.candidate.name
+        command[:]=[value for value in command if value not in
+                    ('-PartialTileValidation','-InitialMapPaintValidation','-FramedValidation')]
+        command.append('-CompleteHdValidation')
+        self.context=dict(manifest=self.metadata,candidate=self.a.candidate.read_bytes(),probe=self.a.canonical_probe,
+            framed=dict(stage=decision.STAGE),inherited_stage=self.inherited,
+            manifest_path=str(self.manifest.resolve()),manifest_sha256=decision.sha(self.manifest.read_bytes()))
+        write_json(self.a.coverage,decision.reconstruct_coverage(self.a.png,self.a.layout,
+            dict(enabled=False,width=None,height=None),context=self.context))
+        self.a.save()
+        stack=ExitStack();self.addCleanup(stack.close)
+        stack.enter_context(patch.object(release_evidence,'BASE_SHA256',self.metadata['base_sha256']))
+        stack.enter_context(patch.object(release_evidence,'CANDIDATE_ROOT',self.a.root))
+        def build(original,resolution):
+            decision.require(original==b'synthetic original; not an executable' and resolution=='800x600',
+                             'synthetic complete original identity rejected')
+            return b'synthetic canonical candidate; not an executable',copy.deepcopy(self.metadata),self.a.canonical_probe
+        stack.enter_context(patch.object(decision.complete_context.complete,'build_candidate',side_effect=build))
+        self.baseline={p:p.read_bytes() for p in self.a.root.rglob('*') if p.is_file()}
+
+    def reset(self):
+        for path,data in self.baseline.items():path.write_bytes(data)
+
+    def evaluate(self):
+        return decision.build_report(self.a.summary,**self.a.kwargs(),candidate_manifest_path=self.manifest)
+
+    def rejected(self,contains=None):
+        result=self.evaluate();self.assertFalse(result['guarded_gameplay_evidence'],result)
+        if contains:self.assertIn(contains,';'.join(result['failures']))
+        return result
+
+    def test_complete_rebuild_preserves_stage_failed_inputs_and_framed_pixel_contract(self):
+        before={p:decision.sha(p.read_bytes()) for p in self.baseline}
+        result=self.evaluate();self.assertTrue(result['guarded_gameplay_evidence'],result['failures'])
+        self.assertEqual(result['stage'],self.stage)
+        self.assertEqual(result['candidate_context'],decision.candidate_identity(self.context))
+        self.assertFalse(result['input_passed']);self.assertFalse(result['runtime_verdict_changed'])
+        self.assertEqual(result['input_failures'],self.a.summary_data['Failures'])
+        self.assertEqual(result['action_cells_verified'],6);self.assertFalse(result['promotion_ready'])
+        self.assertEqual(before,{p:decision.sha(p.read_bytes()) for p in self.baseline})
+
+    def test_complete_stage_requires_manifest_and_never_accepts_legacy_coverage(self):
+        result=decision.build_report(self.a.summary,**self.a.kwargs())
+        self.assertFalse(result['guarded_gameplay_evidence'])
+        for mutation in (lambda d:d.pop('candidate_context'),
+                         lambda d:d['candidate_context'].update(resolution='1024x768'),
+                         lambda d:d['candidate_context'].update(candidate_sha256='0'*64),
+                         lambda d:d['candidate_context'].update(recipe_revision='other'),
+                         lambda d:d['framed_profile'].update(stage=self.stage)):
+            self.reset();data=decision.read_json(self.a.coverage);mutation(data);write_json(self.a.coverage,data)
+            summary=decision.read_json(self.a.summary);summary['CoverageDiagnostic']=decision.reference(self.a.coverage)
+            write_json(self.a.summary,summary);self.rejected('coverage report differs')
+
+    def test_bundle_and_summary_identity_mismatches_fail_even_if_claims_are_rehashed(self):
+        for key,value in (('CandidateManifestSha256','0'*64),('RecipeRevision','other'),
+                          ('CandidateProbeSha256','0'*64),('Stage',decision.STAGE),('Resolution','1024x768')):
+            self.reset();summary=decision.read_json(self.a.summary);summary[key]=value
+            write_json(self.a.summary,summary);self.rejected()
+        for path in (self.a.candidate,self.bundle_probe,self.manifest):
+            self.reset();path.write_bytes(path.read_bytes()+b' ')
+            summary=decision.read_json(self.a.summary)
+            summary['CandidateManifestSha256']=decision.sha(self.manifest.read_bytes())
+            write_json(self.a.summary,summary);self.rejected()
+        self.reset();manifest=decision.read_json(self.manifest);manifest['source_hashes']={}
+        write_json(self.manifest,manifest);summary=decision.read_json(self.a.summary)
+        summary['CandidateManifestSha256']=decision.sha(self.manifest.read_bytes());write_json(self.a.summary,summary)
+        self.rejected('source reconstruction')
+
+    def test_missing_repeated_or_mismatched_loaded_contracts_and_trace_never_pass(self):
+        original=self.a.log.read_text()
+        for prefix in ('COMPLETEHD_CONTRACT_PASS','ARMY_CONTRACT_PASS','PTILE_CONTRACT_PASS'):
+            for mode in ('missing','duplicate','mismatched'):
+                self.reset();rows=original.splitlines();index=next(i for i,line in enumerate(rows) if line.startswith(prefix))
+                if mode=='missing':del rows[index]
+                elif mode=='duplicate':rows.insert(index,rows[index])
+                else:rows[index]=rows[index].replace(self.a.sha,'0'*64)
+                self.a.log.write_text('\n'.join(rows)+'\n');self.update_log_binding();self.rejected('initial trace failed')
+        self.reset();self.a.log.write_text(original.replace('PTILE_NATIVE_NOOP_EXIT','REMOVED_NATIVE_NOOP_EXIT'))
+        self.update_log_binding();self.rejected('initial trace failed')
+
+    def update_log_binding(self):
+        summary=decision.read_json(self.a.summary);summary['SourceLog']=decision.reference(self.a.log)
+        write_json(self.a.summary,summary)
+
+    def test_complete_visibility_still_requires_one_matching_paused_snapshot(self):
+        baseline=self.evaluate();self.assertTrue(baseline['guarded_gameplay_evidence'],baseline['failures'])
+        point=baseline['visibility_zero_blank_cells'][0];data=bytearray(self.a.count)
+        data[point['address']-self.a.start]|=1<<(point['world'][1]&7)
+        log=self.a.log.read_text().replace(self.a.dump_rows(bytes(self.a.count)),self.a.dump_rows(data))
+        self.a.log.write_text('SCROLL_VIS player=0 screen=(32,16) world=(10,17) value=0\n'+log)
+        self.update_log_binding();self.rejected('blank cell lacks zero visibility')
+        self.reset();log=self.a.log.read_text();line=next(row for row in log.splitlines() if row.startswith('FRAMED_MINIMAP'))
+        self.a.log.write_text(log.replace(line,line+'\n'+line));self.update_log_binding()
+        self.rejected('expected one FRAMED_MINIMAP')
 
 
 if __name__=="__main__":unittest.main()
