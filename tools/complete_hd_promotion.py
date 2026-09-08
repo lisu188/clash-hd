@@ -5,7 +5,11 @@ Fresh affirmative JSON decisions, bound to the assembled manual proof, are
 required; a successful tool exit can also describe a valid deferred decision.
 This component sequence does not implement whole-HD release acceptance or
 change the stable stage. --update-checklist remains accepted but fails closed
-until the missing whole-HD acceptance path exists. No runtime is launched.
+until the missing whole-HD acceptance path exists. The runbook also requires
+HD-layout and final aggregate acceptance; its historical HD-layout parser has
+no affirmative promotion path, and refreshing reports cannot replace those
+requirements. This scoped sequence launches neither runtime nor an aggregate
+refresh.
 """
 
 from __future__ import annotations
@@ -83,7 +87,7 @@ def artifact_paths(directory: Path) -> dict[str, Path]:
 
 
 def plan_steps(args: argparse.Namespace, artifact_dir: Path | None = None) -> list[tuple[str, list[str]]]:
-    """Build the ordered (name, argv) step plan without running anything."""
+    """Build the scoped component plan; whole-HD acceptance remains separate."""
     outputs = artifact_paths(artifact_dir or DEFAULT_SUMMARY_JSON.parent / "complete-hd-promotion-artifacts")
     assemble_argv = [
         str(TOOLS / "assemble_manual_directinput_proof.py"),

@@ -27,6 +27,7 @@ from __future__ import annotations
 import argparse
 import ctypes
 import json
+import sys
 import time
 from ctypes import wintypes
 from pathlib import Path
@@ -35,8 +36,26 @@ from typing import Any
 import numpy as np
 from PIL import Image, ImageGrab
 
-user32 = ctypes.WinDLL("user32", use_last_error=True)
-user32.SetProcessDPIAware()
+if sys.platform == "win32":
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    user32.SetProcessDPIAware()
+    _FUNCTYPE = ctypes.WINFUNCTYPE
+else:
+    class _PosixWin32FunctionStub:
+        def __init__(self, name: str) -> None:
+            self._name = name
+
+        def __call__(self, *args, **kwargs):
+            raise OSError(f"user32.{self._name} is unavailable off Windows")
+
+    class _PosixUser32Stub:
+        def __getattr__(self, name: str):
+            stub = _PosixWin32FunctionStub(name)
+            setattr(self, name, stub)
+            return stub
+
+    user32 = _PosixUser32Stub()
+    _FUNCTYPE = ctypes.CFUNCTYPE
 
 INPUT_MECHANISM = "pulse-relative-engine-aim"
 ENGINE_MODEL = (
@@ -66,7 +85,7 @@ class INPUT(ctypes.Structure):
     _fields_ = [("type", wintypes.DWORD), ("union", INPUT_UNION)]
 
 
-WNDENUMPROC = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+WNDENUMPROC = _FUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
 user32.EnumWindows.argtypes = [WNDENUMPROC, wintypes.LPARAM]
 user32.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
 user32.SendInput.argtypes = [wintypes.UINT, ctypes.POINTER(INPUT), ctypes.c_int]
@@ -564,6 +583,9 @@ def run_aim_points(
 
 
 def main() -> int:
+    if sys.platform != "win32":
+        raise SystemExit("menu_pulse_click.py requires Windows")
+
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid", type=int, required=True)
     ap.add_argument("--steps",

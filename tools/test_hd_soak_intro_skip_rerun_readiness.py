@@ -148,6 +148,24 @@ def test_intro_transition_failure_preserves_readiness_after_harness_fix() -> Non
     assert report["intro_skip_contract"]["stop_click_repeat_on_drift"] is True
 
 
+def test_legacy_pending_and_known_environment_failures_still_require_approval() -> None:
+    for status in (
+        "pending_approval_legacy_compat",
+        "failed_classified_application_hang_wer_closed",
+        "failed_classified_window_missing_while_process_alive",
+    ):
+        data = reports()
+        data["step_status"]["current_step"]["status"] = status
+        report = build_fixture_report(data)
+        assert report["passed"] is True, (status, report["failures"])
+        assert report["status"] == "ready_for_explicit_visible_rerun_approval"
+        assert "requires explicit user approval" in report["approval_boundary"]
+        data["dry_run_plan"]["plan"]["visible_runtime_approval"]["token"] = ""
+        report = build_fixture_report(data)
+        assert report["passed"] is False, (status, report)
+        assert report["status"] == "not_ready"
+
+
 def test_unexpected_process_exit_is_not_applicable_not_rerun_ready() -> None:
     data = reports()
     data["step_status"]["current_step"]["status"] = (
@@ -469,6 +487,7 @@ def run_tests() -> None:
     test_ready_packet_passes()
     test_input_environment_denied_map_attempt_preserves_readiness()
     test_intro_transition_failure_preserves_readiness_after_harness_fix()
+    test_legacy_pending_and_known_environment_failures_still_require_approval()
     test_unexpected_process_exit_is_not_applicable_not_rerun_ready()
     test_rejects_wrong_triage_classification()
     test_rejects_intro_skip_command_drift()

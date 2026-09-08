@@ -52,6 +52,27 @@ def test_step_plan_includes_battle_when_dir_given() -> None:
     assert names.index("battle_click_consumed") == 2, names
 
 
+def test_every_planned_step_has_an_isolated_artifact() -> None:
+    artifact_dir = Path("fixture-promotion-artifacts")
+    for args in (_args(), _args(battle_run_dir="captures/archive/battle")):
+        steps = promo.plan_steps(args, artifact_dir)
+        outputs = promo.artifact_paths(artifact_dir)
+        names = [name for name, _ in steps]
+        assert set(names) <= outputs.keys(), names
+        assert len(names) == len(set(names)), names
+        for name, argv in steps:
+            flag = "--write-report-json" if name == "assemble_proof" else "--write-json"
+            assert argv.count(flag) == 1, (name, argv)
+            assert Path(argv[argv.index(flag) + 1]) == outputs[name], (name, argv)
+            if name != "assemble_proof":
+                assert argv.count("--write-markdown") == 1, (name, argv)
+                assert Path(argv[argv.index("--write-markdown") + 1]) == outputs[name].with_suffix(".md")
+        # Neither the deferred-only historical parser nor an aggregate refresh
+        # is an affirmative, candidate-bound whole-HD acceptance gate.
+        assert "hd_layout_promotion" not in names, names
+        assert all(Path(argv[0]).name != "current_evidence_refresh.py" for _, argv in steps), steps
+
+
 def test_step_flags_reference_proof_and_manifest() -> None:
     args = _args(observations="obs.json", proof_json="p.json")
     steps = dict(promo.plan_steps(args))
@@ -292,6 +313,7 @@ def run_tests() -> None:
     try:
         test_step_plan_order_without_battle()
         test_step_plan_includes_battle_when_dir_given()
+        test_every_planned_step_has_an_isolated_artifact()
         test_step_flags_reference_proof_and_manifest()
         test_affirmative_components_are_not_whole_hd_readiness(fixture / "affirmative")
         test_exit_zero_deferred_decision_fails(fixture / "deferred")
