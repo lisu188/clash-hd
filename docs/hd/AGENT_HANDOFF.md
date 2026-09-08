@@ -568,6 +568,14 @@ the corrected v3 movement plan `20260906-114000` was dry-run-only before
 the checkpoint. Preserve the unfinished local movement/keypan validators.
 Do not describe army arrival or full keyboard-input validation as proved.
 
+The **2026-09-08** integration adds the separate
+[complete-HD candidate builder](COMPLETE_HD_CANDIDATE.md) and
+[release-manifest evaluator](COMPLETE_HD_EVIDENCE.md). This is source
+preparation: the launcher has no matching complete-HD profile, and the 15
+runtime/visual/input/endurance adapters remain incomplete. Unsupported or
+launcher-rejected evidence fails closed. Existing component eligibility,
+manual proof and explicit stable promotion remain separate requirements.
+
 | Work | Start with | Focused verification |
 | --- | --- | --- |
 | Patcher/resolutions | `src/patcher/patch_clash95_hd.py`; root `patch_clash95_hd.py` is the CLI wrapper | `tools/test_patch_resolution.py`, `tools/test_patch_definition_guard.py`, `tools/test_stable_stage_guard.py` |

@@ -21,5 +21,21 @@ for _name, _value in vars(_IMPL).items():
         globals()[_name] = _value
 
 
+def main() -> None:
+    # Keep the authenticated legacy implementation unchanged. Extended PE
+    # candidates have their own builder/manifest rather than a flat-patch lie.
+    from src.patcher.complete_hd_candidate import STAGE, main as complete_main
+
+    argv = sys.argv[1:]
+    complete_requested = any(
+        value == "--stage=" + STAGE
+        or (value == "--stage" and index + 1 < len(argv) and argv[index + 1] == STAGE)
+        for index, value in enumerate(argv)
+    )
+    if complete_requested:
+        raise SystemExit(complete_main(argv))
+    _IMPL.main()
+
+
 if __name__ == "__main__":
     main()

@@ -118,8 +118,10 @@ here, fall back to Runner A on Windows and assemble from that run instead.
 
    This evaluates fresh, candidate-bound manual and component decision reports.
    Inspect `component_promotion_ready` and each report's failures. Whole-HD
-   `promotion_ready` remains false; `--update-checklist` is blocked until the
-   separate whole-HD acceptance path exists. It does not check release boxes.
+   `promotion_ready` remains false; `--update-checklist` stays blocked in this
+   component mode. It does not check release boxes. The separate release-manifest
+   mode is described in [COMPLETE_HD_EVIDENCE.md](COMPLETE_HD_EVIDENCE.md) and
+   still has incomplete acceptance adapters.
 
 3. Follow [FINISH_LINE_RUNBOOK.md](FINISH_LINE_RUNBOOK.md) and the current
    handoff for the remaining whole-HD evidence. Any stable-stage promotion
