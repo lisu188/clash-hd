@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import ctypes
+import hashlib
 import json
 import sys
 import time
@@ -72,6 +73,11 @@ class POINT(ctypes.Structure):
     _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
 
 
+class MONITORINFO(ctypes.Structure):
+    _fields_ = [("cbSize", wintypes.DWORD), ("rcMonitor", RECT),
+                ("rcWork", RECT), ("dwFlags", wintypes.DWORD)]
+
+
 class MOUSEINPUT(ctypes.Structure):
     _fields_ = [("dx", wintypes.LONG), ("dy", wintypes.LONG), ("mouseData", wintypes.DWORD),
                 ("dwFlags", wintypes.DWORD), ("time", wintypes.DWORD), ("dwExtraInfo", ctypes.POINTER(ctypes.c_ulong))]
@@ -95,6 +101,17 @@ user32.GetClientRect.argtypes = [wintypes.HWND, ctypes.POINTER(RECT)]
 user32.GetClientRect.restype = wintypes.BOOL
 user32.ClientToScreen.argtypes = [wintypes.HWND, ctypes.POINTER(POINT)]
 user32.ClientToScreen.restype = wintypes.BOOL
+user32.MonitorFromWindow.argtypes = [wintypes.HWND, wintypes.DWORD]
+user32.MonitorFromWindow.restype = wintypes.HANDLE
+user32.GetMonitorInfoW.argtypes = [wintypes.HANDLE, ctypes.POINTER(MONITORINFO)]
+user32.GetMonitorInfoW.restype = wintypes.BOOL
+user32.GetWindowRect.argtypes = [wintypes.HWND, ctypes.POINTER(RECT)]
+user32.MoveWindow.argtypes = [wintypes.HWND, ctypes.c_int, ctypes.c_int,
+                            ctypes.c_int, ctypes.c_int, wintypes.BOOL]
+user32.WindowFromPoint.argtypes = [POINT]
+user32.WindowFromPoint.restype = wintypes.HWND
+user32.GetAncestor.argtypes = [wintypes.HWND, wintypes.UINT]
+user32.GetAncestor.restype = wintypes.HWND
 
 MOUSEEVENTF_MOVE = 0x0001
 MOUSEEVENTF_LEFTDOWN = 0x0002
@@ -102,6 +119,83 @@ MOUSEEVENTF_LEFTUP = 0x0004
 
 MENU_EXIT_ZONE = (245, 258, 360, 310)
 MENU_NONBLACK_RANGE = (50.0, 75.0)
+
+
+def parse_resolution(value: str) -> tuple[int, int]:
+    # Keep the patcher as the authority for resolution constraints.
+    root = str(Path(__file__).resolve().parents[1])
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    import patch_clash95_hd
+    profile = patch_clash95_hd.parse_resolution(value)
+    return profile.width, profile.height
+
+
+def logical_to_screen(target: tuple[int, int], geometry: tuple[int, int, int, int],
+                      logical_size: tuple[int, int]) -> tuple[int, int]:
+    x, y = target
+    ox, oy, width, height = geometry
+    lw, lh = logical_size
+    if not (0 <= x < lw and 0 <= y < lh and width > 0 and height > 0):
+        raise ValueError("target is outside the requested logical surface or client is missing")
+    # A differently shaped client might be letterboxed. Do not infer its content box.
+    if abs(width * lh - height * lw) > max(lw, lh):
+        raise ValueError("client aspect ratio differs from the requested resolution")
+    return ox + min(width - 1, int((x + 0.5) * width / lw)), oy + min(height - 1, int((y + 0.5) * height / lh))
+
+
+def client_placement(geometry: tuple[int, int, int, int], window: tuple[int, int, int, int],
+                     monitor: tuple[int, int, int, int]) -> tuple[int, int]:
+    """Fit the measured client, allowing nonclient chrome beyond monitor edges."""
+    ox, oy, width, height = geometry
+    left, top, right, bottom = monitor
+    if width <= 0 or height <= 0 or width > right - left or height > bottom - top:
+        raise ValueError("the full client cannot fit on its measured monitor")
+    cx = min(max(ox, left), right - width)
+    cy = min(max(oy, top), bottom - height)
+    return window[0] + cx - ox, window[1] + cy - oy
+
+
+def monitor_rect(hwnd: int) -> tuple[int, int, int, int]:
+    monitor = user32.MonitorFromWindow(hwnd, 2)
+    info = MONITORINFO()
+    info.cbSize = ctypes.sizeof(info)
+    if not monitor or not user32.GetMonitorInfoW(monitor, ctypes.byref(info)):
+        raise ValueError("could not measure target monitor")
+    r = info.rcMonitor
+    return int(r.left), int(r.top), int(r.right), int(r.bottom)
+
+
+def fit_client(hwnd: int) -> dict[str, Any]:
+    before = client_geometry(hwnd)
+    bounds = monitor_rect(hwnd)
+    window = RECT()
+    if not user32.GetWindowRect(hwnd, ctypes.byref(window)):
+        raise ValueError("could not measure outer window")
+    rect = (window.left, window.top, window.right, window.bottom)
+    x, y = client_placement(before, rect, bounds)
+    moved = (x, y) != rect[:2]
+    if moved:
+        if not user32.MoveWindow(hwnd, x, y, rect[2] - rect[0], rect[3] - rect[1], True):
+            raise ValueError("could not place the measured client inside its monitor")
+        time.sleep(0.15)
+    after = client_geometry(hwnd)
+    if client_placement(after, (x, y, x + rect[2] - rect[0], y + rect[3] - rect[1]), bounds) != (x, y):
+        raise ValueError("client remains outside its monitor after placement")
+    return {"before": list(before), "after": list(after), "monitor": list(bounds), "moved": moved}
+
+
+def target_accessibility(hwnd: int, target: tuple[int, int], logical_size: tuple[int, int]) -> dict[str, Any]:
+    geometry = client_geometry(hwnd)
+    screen = logical_to_screen(target, geometry, logical_size)
+    bounds = monitor_rect(hwnd)
+    window = user32.WindowFromPoint(POINT(*screen))
+    root = user32.GetAncestor(window, 2) if window else None
+    return {"accessible": bounds[0] <= screen[0] < bounds[2] and bounds[1] <= screen[1] < bounds[3]
+            and (window == hwnd or root == hwnd), "client": list(geometry),
+            "logical_size": list(logical_size), "screen_target": list(screen),
+            "monitor": list(bounds), "target_hwnd": int(hwnd),
+            "point_hwnd": int(window or 0), "point_root_hwnd": int(root or 0)}
 
 
 def find_window(pid: int) -> int | None:
@@ -133,7 +227,10 @@ def live_hwnd(pid: int, hwnd: int | None, attempts: int = 8, delay: float = 0.25
     None - fail closed - only once the retries are exhausted.
     """
     if hwnd and user32.IsWindow(hwnd):
-        return int(hwnd)
+        owner = wintypes.DWORD()
+        user32.GetWindowThreadProcessId(hwnd, ctypes.byref(owner))
+        if owner.value == pid:
+            return int(hwnd)
     for _ in range(max(1, attempts)):
         found = find_window(pid)
         if found:
@@ -201,7 +298,7 @@ def send_button(flag: int) -> None:
     user32.SendInput(1, ctypes.byref(ev), ctypes.sizeof(INPUT))
 
 
-def grab(hwnd: int) -> np.ndarray | None:
+def grab_image(hwnd: int) -> Image.Image | None:
     ox, oy, w, h = client_geometry(hwnd)
     if w <= 0 or h <= 0:
         return None
@@ -216,9 +313,24 @@ def grab(hwnd: int) -> np.ndarray | None:
             time.sleep(0.25)
     else:
         return None
-    if img.size != (800, 600):
-        img = img.resize((800, 600), Image.NEAREST)
+    return img.convert("RGB")
+
+
+def normalize_frame(img: Image.Image, logical_size: tuple[int, int]) -> np.ndarray:
+    logical_to_screen((0, 0), (0, 0, *img.size), logical_size)
+    if img.size != logical_size:
+        img = img.resize(logical_size, Image.Resampling.NEAREST)
     return np.asarray(img.convert("RGB"), dtype=np.int16)
+
+
+def grab(hwnd: int, logical_size: tuple[int, int] = (800, 600)) -> np.ndarray | None:
+    image = grab_image(hwnd)
+    if image is None:
+        return None
+    try:
+        return normalize_frame(image, logical_size)
+    except ValueError:
+        return None
 
 
 def wake_foreground(hwnd: int) -> bool:
@@ -239,12 +351,13 @@ def wake_foreground(hwnd: int) -> bool:
     return user32.GetForegroundWindow() == hwnd
 
 
-def grab_retry(pid: int, hwnd: int, attempts: int = 5) -> tuple[int, np.ndarray | None]:
+def grab_retry(pid: int, hwnd: int, attempts: int = 5,
+               logical_size: tuple[int, int] = (800, 600)) -> tuple[int, np.ndarray | None]:
     for _ in range(attempts):
         found = find_window(pid)
         if found:
             hwnd = found
-            frame = grab(hwnd)
+            frame = grab(hwnd, logical_size)
             if frame is not None:
                 return hwnd, frame
         time.sleep(0.6)
@@ -349,7 +462,8 @@ def click_while_pulsing(delta: tuple[int, int], hold_ms: int, repeats: int, inte
 
 def aim(pid: int, hwnd: int, target: tuple[int, int], gain: float, prev: np.ndarray,
         last_pos: tuple[int, int] | None, interval: float, tolerance: int,
-        deadline: float, max_iterations: int = 8) -> dict[str, Any]:
+        deadline: float, max_iterations: int = 8,
+        logical_size: tuple[int, int] = (800, 600)) -> dict[str, Any]:
     result: dict[str, Any] = {"target": list(target), "iterations": [], "converged": False,
                               "aimed_pos": None, "aim_error_px": None, "pulse_delta": None, "gain": gain,
                               "wakes": 0}
@@ -365,6 +479,12 @@ def aim(pid: int, hwnd: int, target: tuple[int, int], gain: float, prev: np.ndar
         result["last_pos"] = pos
         return result
     hwnd = primed
+    try:
+        result["placement"] = fit_client(hwnd)
+        logical_to_screen(target, client_geometry(hwnd), logical_size)
+    except ValueError as exc:
+        result.update(error=str(exc), frame=frame, hwnd=hwnd, last_pos=pos)
+        return result
     wake_foreground(hwnd)
     no_motion_streak = 0
     for it in range(max_iterations):
@@ -383,9 +503,19 @@ def aim(pid: int, hwnd: int, target: tuple[int, int], gain: float, prev: np.ndar
             result["reacquired"] = int(result.get("reacquired") or 0) + 1
             hwnd = fresh
         foreground_ok = focus(hwnd)
+        try:
+            access = target_accessibility(hwnd, target, logical_size)
+        except ValueError as exc:
+            result["error"] = str(exc)
+            break
+        result["target_accessibility"] = access
+        if not foreground_ok or not access["accessible"]:
+            result["foreground_denied"] = not foreground_ok
+            result["target_inaccessible"] = not access["accessible"]
+            break
         pulse_stream(delta, 0.6, interval)
         time.sleep(0.15)
-        hwnd, curr = grab_retry(pid, hwnd, attempts=3)
+        hwnd, curr = grab_retry(pid, hwnd, attempts=3, logical_size=logical_size)
         if curr is None:
             result["window_lost"] = True
             break
@@ -401,7 +531,7 @@ def aim(pid: int, hwnd: int, target: tuple[int, int], gain: float, prev: np.ndar
             if no_motion_streak <= 3:
                 wake_foreground(hwnd)
                 result["wakes"] += 1
-                hwnd, refreshed = grab_retry(pid, hwnd, attempts=2)
+                hwnd, refreshed = grab_retry(pid, hwnd, attempts=2, logical_size=logical_size)
                 if refreshed is not None:
                     frame = refreshed
             continue
@@ -426,6 +556,12 @@ def aim(pid: int, hwnd: int, target: tuple[int, int], gain: float, prev: np.ndar
     result["hwnd"] = hwnd
     result["last_pos"] = pos
     return result
+
+
+def in_menu_exit_zone(pos: tuple[int, int], logical_size: tuple[int, int]) -> bool:
+    dx, dy = (logical_size[0] - 800) // 2, (logical_size[1] - 600) // 2
+    left, top, right, bottom = MENU_EXIT_ZONE
+    return left + dx <= pos[0] <= right + dx and top + dy <= pos[1] <= bottom + dy
 
 
 def parse_steps(text: str) -> list[tuple[str, int, int]]:
@@ -503,7 +639,7 @@ def run_aim_points(
             break
 
         aimed = aim(args.pid, hwnd, (tx, ty), gain, frame, last_pos, interval,
-                    args.aim_tolerance, deadline)
+                    args.aim_tolerance, deadline, logical_size=args.logical_size)
         frame = aimed.pop("frame")
         hwnd = aimed.pop("hwnd")
         last_pos = aimed.pop("last_pos")
@@ -527,9 +663,9 @@ def run_aim_points(
 
         pos = tuple(aimed["aimed_pos"])
         nb = row["pre_nonblack"]
-        menu_like = MENU_NONBLACK_RANGE[0] <= nb <= MENU_NONBLACK_RANGE[1]
-        if menu_like and (MENU_EXIT_ZONE[0] <= pos[0] <= MENU_EXIT_ZONE[2]
-                          and MENU_EXIT_ZONE[1] <= pos[1] <= MENU_EXIT_ZONE[3]):
+        menu_nb = nb * args.logical_size[0] * args.logical_size[1] / (800 * 600)
+        menu_like = MENU_NONBLACK_RANGE[0] <= menu_nb <= MENU_NONBLACK_RANGE[1]
+        if menu_like and in_menu_exit_zone(pos, args.logical_size):
             # The expected screen never loaded and the aim landed on the menu
             # Exit control; refuse rather than quit the game.
             row["clicked"] = False
@@ -555,12 +691,21 @@ def run_aim_points(
             result["steps"].append(row)
             continue
 
+        try:
+            row["click_target_accessibility"] = target_accessibility(hwnd, (tx, ty), args.logical_size)
+        except ValueError as exc:
+            row["click_target_accessibility"] = {"accessible": False, "error": str(exc)}
+        if not row["click_target_accessibility"]["accessible"]:
+            row.update(clicked=False, transition_verified=False, target_inaccessible=True)
+            result["steps"].append(row)
+            continue
+
         pre_click = frame
         delta = tuple(aimed["pulse_delta"])
         row["clicked"] = True
         row["click_count"] = click_while_pulsing(delta, args.click_hold_ms, args.click_repeats, interval)
         time.sleep(args.point_settle_ms / 1000.0)
-        hwnd, after = grab_retry(args.pid, hwnd)
+        hwnd, after = grab_retry(args.pid, hwnd, logical_size=args.logical_size)
         if after is None:
             row["transition_verified"] = False
             row["window_lost_after_click"] = True
@@ -579,7 +724,60 @@ def run_aim_points(
     result["aim_points_total"] = len(points)
     result["aim_points_converged"] = converged
     emit(result, args.json)
-    return 0 if (converged == len(points) and result["all_steps_accounted"]) else 2
+    completed = all(row.get("aim_only") or row.get("clicked") for row in result["steps"])
+    return 0 if (converged == len(points) and completed and result["all_steps_accounted"]) else 2
+
+
+def observe_only(args: argparse.Namespace, result: dict[str, Any], hwnd: int) -> int:
+    """Record original client pixels while the operator acts; never focus or inject."""
+    import capture_tear_check
+
+    output = args.json.parent / (args.json.stem + "-frames")
+    output.mkdir(parents=True, exist_ok=False)
+    result.update(input_mechanism="none_observation_only", input_proof_class="manual_observation_capture_not_release_proof",
+                  manual_input_accepted=False, promotion_ready=False, operator_observation_required=True,
+                  observations=[], capture_complete=False)
+    deadline = time.monotonic() + args.observe_seconds
+    while time.monotonic() < deadline:
+        fresh = live_hwnd(args.pid, hwnd, attempts=1)
+        if fresh is None:
+            result["error"] = "target window disappeared during manual observation"
+            break
+        hwnd = fresh
+        row: dict[str, Any] = {"index": len(result["observations"]), "timestamp_unix": time.time(),
+                               "hwnd": hwnd, "frames": [], "operator_result": "pending"}
+        paths = []
+        try:
+            for index in range(2):
+                geometry = client_geometry(hwnd)
+                corners = [(0, 0), (args.logical_size[0] - 1, 0),
+                           (0, args.logical_size[1] - 1),
+                           (args.logical_size[0] - 1, args.logical_size[1] - 1),
+                           (args.logical_size[0] // 2, args.logical_size[1] // 2)]
+                access = [target_accessibility(hwnd, point, args.logical_size) for point in corners]
+                row["accessibility"] = access
+                if not all(p["accessible"] for p in access):
+                    raise ValueError("manual capture target is occluded or outside its monitor")
+                image = grab_image(hwnd)
+                if image is None or image.size != geometry[2:] or client_geometry(hwnd) != geometry:
+                    raise ValueError("client geometry changed or capture failed")
+                path = output / f"{row['index']:04d}-{index}.png"
+                image.save(path)
+                paths.append(path)
+                row["frames"].append({"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                                      "client": list(geometry), "corners_and_center_accessible": True,
+                                      "accessibility": access})
+            row["tear_check"] = capture_tear_check.build_report(paths, None)
+        except (OSError, ValueError) as exc:
+            row["error"] = str(exc)
+            result["error"] = "manual capture incomplete"
+        result["observations"].append(row)
+        if result.get("error"):
+            break
+        time.sleep(min(args.observe_interval_ms / 1000.0, max(0, deadline - time.monotonic())))
+    result["capture_complete"] = bool(result["observations"]) and not result.get("error")
+    emit(result, args.json)
+    return 0 if result["capture_complete"] else 2
 
 
 def main() -> int:
@@ -588,6 +786,10 @@ def main() -> int:
 
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pid", type=int, required=True)
+    ap.add_argument("--resolution", default="800x600", help="actual patched logical resolution; never inferred from a capture")
+    ap.add_argument("--observe-only", action="store_true", help="capture human-operated runtime without focus, cursor movement or injected input")
+    ap.add_argument("--observe-seconds", type=int, default=30)
+    ap.add_argument("--observe-interval-ms", type=int, default=1500)
     ap.add_argument("--steps",
                     help="ROUTE mode: semicolon list of name:engineX,engineY steps, e.g. "
                          "'load-button:302,211;load-slot0:320,166'. Routes menu screens and stops "
@@ -626,8 +828,17 @@ def main() -> int:
     ap.add_argument("--json", type=Path)
     args = ap.parse_args()
 
-    if bool(args.steps) == bool(args.aim_points):
-        ap.error("exactly one of --steps or --aim-points is required")
+    try:
+        args.logical_size = parse_resolution(args.resolution)
+    except ValueError as exc:
+        ap.error(str(exc))
+    args.resolution = f"{args.logical_size[0]}x{args.logical_size[1]}"
+    if sum((bool(args.steps), bool(args.aim_points), args.observe_only)) != 1:
+        ap.error("exactly one of --steps, --aim-points or --observe-only is required")
+    if args.observe_only and (not args.json or args.probe_only or args.aim_only):
+        ap.error("--observe-only requires --json and cannot use input modes")
+    if not 1 <= args.observe_seconds <= 3600 or not 100 <= args.observe_interval_ms <= 60000:
+        ap.error("observation duration must be 1..3600 seconds and interval 100..60000 ms")
 
     deadline = time.time() + args.deadline_sec
     interval = args.pulse_interval_ms / 1000.0
@@ -637,6 +848,8 @@ def main() -> int:
         "engine_model": ENGINE_MODEL,
         "mode": "aim-points" if args.aim_points else ("probe-only" if args.probe_only else "route-steps"),
         "pid": args.pid,
+        "resolution": args.resolution,
+        "logical_size": list(args.logical_size),
         "steps": [],
         "map_reached": False,
         "final_nonblack": None,
@@ -654,7 +867,10 @@ def main() -> int:
         emit(result, args.json)
         return 3
 
-    hwnd, frame = grab_retry(args.pid, hwnd)
+    if args.observe_only:
+        return observe_only(args, result, hwnd)
+
+    hwnd, frame = grab_retry(args.pid, hwnd, logical_size=args.logical_size)
     if frame is None:
         result["error"] = "could not grab client frame"
         emit(result, args.json)
@@ -667,7 +883,7 @@ def main() -> int:
         name, tx, ty = steps[0]
         result["probe_only"] = True
         probe = aim(args.pid, hwnd, (tx, ty), args.initial_gain, frame, (0, 0),
-                    interval, args.aim_tolerance, deadline, max_iterations=4)
+                    interval, args.aim_tolerance, deadline, max_iterations=4, logical_size=args.logical_size)
         probe.pop("frame", None)
         probe.pop("hwnd", None)
         probe.pop("last_pos", None)
@@ -695,7 +911,8 @@ def main() -> int:
             result["steps"].append(row)
             ok = False
             break
-        aimed = aim(args.pid, hwnd, (tx, ty), gain, frame, last_pos, interval, args.aim_tolerance, deadline)
+        aimed = aim(args.pid, hwnd, (tx, ty), gain, frame, last_pos, interval, args.aim_tolerance, deadline,
+                    logical_size=args.logical_size)
         frame = aimed.pop("frame")
         hwnd = aimed.pop("hwnd")
         last_pos = aimed.pop("last_pos")
@@ -708,8 +925,9 @@ def main() -> int:
             ok = False
             break
         pos = tuple(aimed["aimed_pos"])
-        menu_like = MENU_NONBLACK_RANGE[0] <= nb <= MENU_NONBLACK_RANGE[1]
-        if menu_like and MENU_EXIT_ZONE[0] <= pos[0] <= MENU_EXIT_ZONE[2] and MENU_EXIT_ZONE[1] <= pos[1] <= MENU_EXIT_ZONE[3]:
+        menu_nb = nb * args.logical_size[0] * args.logical_size[1] / (800 * 600)
+        menu_like = MENU_NONBLACK_RANGE[0] <= menu_nb <= MENU_NONBLACK_RANGE[1]
+        if menu_like and in_menu_exit_zone(pos, args.logical_size):
             row["clicked"] = False
             row["transition_verified"] = False
             row["refused_exit_zone"] = True
@@ -735,12 +953,21 @@ def main() -> int:
             result["steps"].append(row)
             ok = False
             break
+        try:
+            row["click_target_accessibility"] = target_accessibility(hwnd, (tx, ty), args.logical_size)
+        except ValueError as exc:
+            row["click_target_accessibility"] = {"accessible": False, "error": str(exc)}
+        if not row["click_target_accessibility"]["accessible"]:
+            row.update(clicked=False, transition_verified=False, target_inaccessible=True)
+            result["steps"].append(row)
+            ok = False
+            break
         delta = tuple(aimed["pulse_delta"])
         row["clicked"] = True
         row["click_count"] = click_while_pulsing(delta, args.click_hold_ms, args.click_repeats, interval)
         settle = args.final_settle_ms if index == len(steps) - 1 else args.settle_ms
         time.sleep(settle / 1000.0)
-        hwnd, after = grab_retry(args.pid, hwnd)
+        hwnd, after = grab_retry(args.pid, hwnd, logical_size=args.logical_size)
         if after is None:
             row["transition_verified"] = False
             row["window_lost_after_click"] = True
@@ -763,7 +990,7 @@ def main() -> int:
     if not result["map_reached"] and ok and args.map_nonblack > 0:
         for _ in range(6):
             time.sleep(1.2)
-            hwnd, f = grab_retry(args.pid, hwnd, attempts=2)
+            hwnd, f = grab_retry(args.pid, hwnd, attempts=2, logical_size=args.logical_size)
             if f is None:
                 break
             frame = f
