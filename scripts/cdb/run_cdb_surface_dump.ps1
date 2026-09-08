@@ -9,6 +9,8 @@ param(
     [switch]$InitialMapPaintValidation,
     [switch]$FramedValidation,
     [switch]$MinimapViewportValidation,
+    [switch]$CompleteHdValidation,
+    [switch]$NoopProgressDiagnostic,
     [string]$CandidateName = '',
     [string]$CandidateDir = '',
     [switch]$UseDdrawProxy,
@@ -36,6 +38,20 @@ param(
 $ErrorActionPreference = 'Stop'
 $RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 
+$completeStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation'
+$framedRecipeStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation'
+if ($CompleteHdValidation) {
+    if ($Stage -cne $completeStage) { throw 'CompleteHdValidation requires the exact completehd-validation stage.' }
+    $PartialTileValidation = $true
+    $InitialMapPaintValidation = $true
+    $FramedValidation = $true
+    $MinimapViewportValidation = $true
+} elseif ($Stage -ceq $completeStage) {
+    throw 'The complete HD stage requires -CompleteHdValidation; legacy probe geometry is forbidden.'
+}
+if ($NoopProgressDiagnostic -and -not $CompleteHdValidation) {
+    throw 'NoopProgressDiagnostic requires the bound complete HD hidden lane.'
+}
 $recipeStage = $Stage
 $partialTileBuilder = Join-Path $RepoRoot 'tools\build_partial_tile_candidate.py'
 if ($MinimapViewportValidation -and -not $FramedValidation) {
@@ -64,6 +80,11 @@ if ($PartialTileValidation) {
         $partialBuilderOptions = @()
         if ($MinimapViewportValidation) { $partialBuilderOptions = @('--minimap-viewport') }
     }
+    if ($CompleteHdValidation) {
+        $partialStage = $completeStage
+        $partialTileBuilder = Join-Path $RepoRoot 'patch_clash95_hd.py'
+        $partialBuilderOptions = @()
+    }
     if ($Stage -ne $partialStage -or -not $UseDdrawProxy -or $AllowVisibleDesktop -or
         $ExtraProbeTemplate -or $ForceVisibleEdges -or $PostOwnerForceVisibleSeven -or
         $SkipMapValidation -or $UseCdbWriteMem -or $LoadSlot -ne 0 -or
@@ -71,7 +92,7 @@ if ($PartialTileValidation) {
         throw 'PartialTileValidation requires its distinct stage, hidden proxy, canonical map probe, LoadSlot 0 and no custom/forced/skipped evidence paths.'
     }
     $recipeStage = $partialBase
-    if ($FramedValidation) { $recipeStage = $Stage }
+    if ($FramedValidation) { $recipeStage = $framedRecipeStage }
     $RequireGameplay = $true
     if (-not (Test-Path -LiteralPath $partialTileBuilder -PathType Leaf)) {
         throw 'Partial-tile builder is missing.'
@@ -324,14 +345,19 @@ function Stop-LaunchedProcesses {
     param(
         [Nullable[int]]$CdbPid,
         [string]$CandidatePath,
-        [datetime]$RunStart
+        [datetime]$RunStart,
+        [string]$CdbPath
     )
 
     $toStop = @()
     if ($CdbPid) {
         $cdbProcess = Get-Process -Id $CdbPid -ErrorAction SilentlyContinue
         if ($cdbProcess) {
-            $toStop += $cdbProcess
+            try {
+                if ($cdbProcess.Path -eq (Get-FullPath -Path $CdbPath) -and $cdbProcess.StartTime -ge $RunStart.AddSeconds(-5)) {
+                    $toStop += $cdbProcess
+                }
+            } catch { }
         }
     }
     $candidateFull = Get-FullPath -Path $CandidatePath
@@ -372,6 +398,47 @@ function Get-LaunchedCandidateProcesses {
                 $false
             }
         })
+}
+
+function Test-LaunchedProcessesStopped {
+    param([Nullable[int]]$CdbPid, [string]$CandidatePath, [datetime]$RunStart,
+          [string]$CdbPath, [ValidateRange(0,10000)][int]$WaitMilliseconds = 5000)
+    $deadline = (Get-Date).AddMilliseconds($WaitMilliseconds)
+    do {
+        $remaining = @()
+        $inspectionErrors = @()
+        $candidateFull = Get-FullPath -Path $CandidatePath
+        $candidateProcessName = [System.IO.Path]::GetFileNameWithoutExtension($candidateFull)
+        foreach ($process in @(Get-Process -Name $candidateProcessName -ErrorAction SilentlyContinue)) {
+            try {
+                if ([string]::IsNullOrWhiteSpace($process.Path)) { throw 'Candidate process path is unavailable.' }
+                if ($process.Path -eq $candidateFull -and $process.StartTime -ge $RunStart.AddSeconds(-5)) {
+                    $remaining += $process
+                }
+            } catch { $inspectionErrors += "Cannot verify candidate identity: $($_.Exception.Message)" }
+        }
+        if ($CdbPid) {
+            $process = Get-Process -Id $CdbPid -ErrorAction SilentlyContinue
+            if ($process) {
+                try {
+                    if ([string]::IsNullOrWhiteSpace($process.Path)) { throw 'CDB process path is unavailable.' }
+                    if ($process.Path -eq (Get-FullPath -Path $CdbPath) -and $process.StartTime -ge $RunStart.AddSeconds(-5)) {
+                        $remaining += $process
+                    }
+                } catch { $inspectionErrors += "Cannot verify launched CDB identity: $($_.Exception.Message)" }
+            }
+        }
+        if (-not $remaining.Count -and -not $inspectionErrors.Count) { break }
+        if ((Get-Date) -ge $deadline) { break }
+        Start-Sleep -Milliseconds 100
+    } while ($true)
+    [pscustomobject]@{
+        Passed = (-not $remaining.Count -and -not $inspectionErrors.Count)
+        RemainingProcessIds = @($remaining | Select-Object -ExpandProperty Id -Unique)
+        InspectionErrors = $inspectionErrors
+        Scope = 'launched CDB id/path/start and exact candidate path/start'
+        WaitMilliseconds = $WaitMilliseconds
+    }
 }
 
 function Save-TimeoutStack {
@@ -496,10 +563,15 @@ $surfaceGeometry = $probeRecipe.geometry
 $Resolution = $surfaceGeometry.resolution
 if ($Resolution -ne '800x600') { $RequireGameplay = $true }
 if ($PartialTileValidation) {
-    $partialPreflightJson = & $pythonExe -B $partialTileBuilder --original ([System.IO.Path]::GetFullPath($InputExe)) --resolution $Resolution --preflight @partialBuilderOptions
+    if ($CompleteHdValidation) {
+        $partialPreflightJson = & $pythonExe -B $partialTileBuilder --input ([System.IO.Path]::GetFullPath($InputExe)) --stage $Stage --resolution $Resolution --preflight
+    } else {
+        $partialPreflightJson = & $pythonExe -B $partialTileBuilder --original ([System.IO.Path]::GetFullPath($InputExe)) --resolution $Resolution --preflight @partialBuilderOptions
+    }
     if ($LASTEXITCODE -ne 0) { throw 'Partial-tile source/byte preflight failed; no proxy or candidate was built.' }
     $partialPreflight = $partialPreflightJson | ConvertFrom-Json
-    if (-not $partialPreflight.preflight_passed -or $partialPreflight.stage -ne $Stage -or $partialPreflight.resolution -ne $Resolution) {
+    if ((-not $CompleteHdValidation -and -not $partialPreflight.preflight_passed) -or
+        $partialPreflight.stage -cne $Stage -or $partialPreflight.resolution -cne $Resolution) {
         throw 'Partial-tile preflight identity mismatch.'
     }
 }
@@ -532,7 +604,8 @@ if (Test-Path -LiteralPath $candidateFull) {
 }
 
 $runDir = Join-Path $OutRoot "cdb-surface-dump-$stamp"
-New-Item -ItemType Directory -Path $runDir -Force | Out-Null
+if (Test-Path -LiteralPath $runDir) { throw "Run output already exists; preserve its evidence: $runDir" }
+New-Item -ItemType Directory -Path $runDir | Out-Null
 $logPath = Join-Path $runDir 'cdb-surface-dump.log'
 $rawPath = Join-Path $runDir 'surface.raw'
 $pngPath = Join-Path $runDir 'surface.png'
@@ -587,7 +660,27 @@ if ($UseDdrawProxy) {
 }
 
 $inputSha = Get-FileSha256 -Path $inputFull
-if ($PartialTileValidation) {
+$candidateManifestPath = $null
+$candidateManifest = $null
+$partialContractStage = $Stage
+if ($CompleteHdValidation) {
+    & $pythonExe -B $partialTileBuilder --input $inputFull --output $candidateFull --stage $Stage --resolution $Resolution
+    $patchExit = $LASTEXITCODE
+    if ($patchExit -ne 0) { throw "Complete candidate builder failed with exit code $patchExit" }
+    $candidateManifestPath = [System.IO.Path]::ChangeExtension($candidateFull, '.candidate.json')
+    $candidateManifest = Get-Content -LiteralPath $candidateManifestPath -Raw | ConvertFrom-Json
+    $partialBuildReport = $candidateManifestPath
+    $ExtraProbeTemplate = [System.IO.Path]::ChangeExtension($candidateFull, '.cdb')
+    $partialContractStage = $candidateManifest.probe_contract.inherited_stage
+    if ($candidateManifest.stage -cne $Stage -or $candidateManifest.resolution -cne $Resolution -or
+        $candidateManifest.base_sha256 -cne $inputSha.ToLowerInvariant() -or
+        $candidateManifest.probe_sha256 -cne (Get-FileSha256 -Path $ExtraProbeTemplate).ToLowerInvariant() -or
+        -not $candidateManifest.probe_contract.requires_loaded_byte_checks -or
+        -not $candidateManifest.probe_contract.all_inherited_checks_required) {
+        throw 'Complete candidate bundle identity or inherited probe contract differs.'
+    }
+}
+elseif ($PartialTileValidation) {
     $partialBuildReport = Join-Path $runDir 'partial-tile-build.json'
     $ExtraProbeTemplate = Join-Path $runDir 'partial-tile-installed.extra.cdb'
     & $pythonExe -B $partialTileBuilder --original $inputFull --output $candidateFull --resolution $Resolution --report-json $partialBuildReport --probe-out $ExtraProbeTemplate @partialBuilderOptions
@@ -745,9 +838,59 @@ if ($MinimapViewportValidation) {
     $minimapObserverTool = Join-Path $RepoRoot 'tools\framed_minimap_probe.py'
     $minimapObserverReport = Join-Path $runDir 'minimap-observer.json'
     $minimapObservedProbe = Join-Path $runDir 'surface-minimap-probe.cdb'
-    & $pythonExe -B $minimapObserverTool --original $inputFull --candidate $candidateFull --resolution $Resolution --rendered-probe $generatedProbe --output $minimapObservedProbe --report $minimapObserverReport
+    $minimapContextArgs = if ($CompleteHdValidation) { @('--candidate-manifest', $candidateManifestPath) } else { @() }
+    & $pythonExe -B $minimapObserverTool --original $inputFull --candidate $candidateFull --resolution $Resolution --rendered-probe $generatedProbe --output $minimapObservedProbe --report $minimapObserverReport @minimapContextArgs
     if ($LASTEXITCODE -ne 0) { throw 'Minimap observer preparation failed before runtime.' }
     $generatedProbe = $minimapObservedProbe
+}
+
+$noopProgressReport = $null
+if ($NoopProgressDiagnostic) {
+    $noopTool = Join-Path $RepoRoot 'tools\framed_noop_progress_probe.py'
+    $noopProgressReport = Join-Path $runDir 'noop-progress-observer.json'
+    $noopObservedProbe = Join-Path $runDir 'surface-noop-progress-probe.cdb'
+    # Minimap owns 80/81. The diagnostic independently inventories 82 before
+    # observing it and keeps every existing PTILE record unchanged.
+    $noopJson = & $pythonExe -B $noopTool --original $inputFull --candidate $candidateFull --candidate-sha256 $candidateSha --stage $Stage --resolution $Resolution --rendered-probe $generatedProbe --candidate-manifest $candidateManifestPath --breakpoint-id 82 --json
+    if ($LASTEXITCODE -ne 0) { throw 'Native no-op progress observer preparation failed before runtime.' }
+    $noopPacket = $noopJson | ConvertFrom-Json
+    if (-not $noopPacket.snippet -or $noopPacket.candidate_sha256 -cne $candidateSha.ToLowerInvariant() -or
+        $noopPacket.stage -cne $Stage -or $noopPacket.resolution -cne $Resolution) {
+        throw 'Native no-op progress observer identity differs.'
+    }
+    $mainText = (Get-Content -LiteralPath $generatedProbe -Raw).Replace("`r`n", "`n")
+    if ($mainText -notmatch '(?s)\ng\n*\z') { throw 'No final standalone g for the native no-op observer.' }
+    $finalGo = [regex]::Match($mainText, '(?s)g\n*\z')
+    $composed = $mainText.Substring(0, $finalGo.Index) + $noopPacket.snippet + "g`n"
+    # Export only this new composed run file with explicit CRLF. The canonical
+    # candidate probe and prior main remain immutable, separately hashed files.
+    [System.IO.File]::WriteAllText($noopObservedProbe, $composed.Replace("`r`n", "`n").Replace("`n", "`r`n"), [System.Text.Encoding]::ASCII)
+    $noopPacket | Add-Member -NotePropertyName ComposedProbeSha256 -NotePropertyValue (Get-FileSha256 -Path $noopObservedProbe)
+    $noopPacket | Add-Member -NotePropertyName ComposedProbe -NotePropertyValue $noopObservedProbe
+    $noopPacket | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath $noopProgressReport -Encoding UTF8
+    $generatedProbe = $noopObservedProbe
+}
+
+function Export-CompleteRuntimeProbe {
+    param([string]$SourcePath, [string]$OutputPath)
+    if ([System.IO.Path]::GetFullPath($SourcePath) -eq [System.IO.Path]::GetFullPath($OutputPath)) {
+        throw 'Complete runtime probe export must preserve its source.'
+    }
+    $sourceBytes = [System.IO.File]::ReadAllBytes($SourcePath)
+    $strictAscii = [System.Text.Encoding]::GetEncoding('us-ascii', [System.Text.EncoderFallback]::ExceptionFallback, [System.Text.DecoderFallback]::ExceptionFallback)
+    $text = $strictAscii.GetString($sourceBytes).Replace("`r`n", "`n")
+    if ($text.Contains([char]0)) { throw 'Complete runtime probe must not contain NUL.' }
+    if ($text.Contains("`r")) { throw 'Complete runtime probe contains a lone carriage return.' }
+    $bytes = [System.Text.Encoding]::ASCII.GetBytes($text.Replace("`n", "`r`n"))
+    $stream = [System.IO.File]::Open($OutputPath, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
+    try { $stream.Write($bytes, 0, $bytes.Length) } finally { $stream.Dispose() }
+}
+if ($CompleteHdValidation) {
+    # CDB consumes an explicit CRLF run file. The manifest-bound candidate
+    # extra and LF observer intermediates remain unchanged and inspectable.
+    $completeRuntimeProbe = Join-Path $runDir 'completehd-runtime-probe.cdb'
+    Export-CompleteRuntimeProbe -SourcePath $generatedProbe -OutputPath $completeRuntimeProbe
+    $generatedProbe = $completeRuntimeProbe
 }
 
 $runStart = Get-Date
@@ -758,6 +901,9 @@ $launch = $null
 $cdbExitCode = $null
 $timedOut = $false
 $runtimeError = $null
+$runtimeExceptionId = $null
+$runtimeExceptionStack = $null
+$cleanupResult = $null
 $timeoutStackSaved = $false
 $launchMode = 'hidden-desktop'
 $stoppedAfterDump = $false
@@ -802,7 +948,7 @@ try {
             $currentReady = Parse-SurfaceDumpReady -LogPath $logPath
             if ($currentReady -and -not (Test-RequestedSurfaceReady -Ready $currentReady -Geometry $surfaceGeometry)) {
                 $surfaceGeometryFailure = "Observed surface does not match requested $Resolution or its byte count/base pointers."
-                Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart
+                Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
                 break
             }
             $currentLogText = if (Test-Path -LiteralPath $logPath) { Get-Content -LiteralPath $logPath -Raw } else { '' }
@@ -843,7 +989,7 @@ try {
         if ($dumpObserved) {
             if ($ContinueAfterDumpSec -le 0) {
                 $stoppedAfterDump = $true
-                Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart
+                Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
                 Start-Sleep -Milliseconds 500
                 $cdbProcess.Refresh()
                 break
@@ -855,7 +1001,7 @@ try {
             elseif (((Get-Date) - $postDumpObservationStart).TotalSeconds -ge $ContinueAfterDumpSec) {
                 $postDumpObservationCompleted = $true
                 $stoppedAfterDump = $true
-                Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart
+                Stop-LaunchedProcesses -CdbPid $launch.ProcessId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
                 Start-Sleep -Milliseconds 500
                 $cdbProcess.Refresh()
                 break
@@ -878,9 +1024,23 @@ try {
         }
     }
 }
+catch {
+    $runtimeError = $_.Exception.Message
+    $runtimeExceptionId = $_.FullyQualifiedErrorId
+    $runtimeExceptionStack = $_.ScriptStackTrace
+}
 finally {
     Restore-SurfaceProxyPresentSetting -Setting $proxyPresentEnvironment
-    Stop-LaunchedProcesses -CdbPid $(if ($launch) { $launch.ProcessId } else { $null }) -CandidatePath $candidateFull -RunStart $runStart
+    $launchedCdbId = if ($launch) { $launch.ProcessId } else { $null }
+    Stop-LaunchedProcesses -CdbPid $launchedCdbId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
+    try {
+        $cleanupResult = Test-LaunchedProcessesStopped -CdbPid $launchedCdbId -CandidatePath $candidateFull -RunStart $runStart -CdbPath $Cdb
+    } catch {
+        $cleanupResult = [pscustomobject]@{ Passed = $false; InspectionErrors = @($_.Exception.Message); RemainingProcessIds = @() }
+    }
+    if (-not $cleanupResult.Passed -and -not $runtimeError) {
+        $runtimeError = 'Launched process cleanup could not be verified; see CleanupResult.'
+    }
     if ($launch -and $launch.ProcessHandle -ne [IntPtr]::Zero) {
         [ClashSurfaceDumpNative]::CloseHandle($launch.ProcessHandle) | Out-Null
     }
@@ -892,8 +1052,9 @@ finally {
 $ready = Parse-SurfaceDumpReady -LogPath $logPath
 $logText = if (Test-Path -LiteralPath $logPath) { Get-Content -LiteralPath $logPath -Raw } else { '' }
 function Get-PartialTileValidationFailure {
-    param([string]$LogText, [string]$Stage, [string]$Resolution, [string]$CandidateSha256)
-    $contractLine = "PTILE_CONTRACT_PASS stage=$Stage resolution=$Resolution candidate_sha256=$($CandidateSha256.ToLowerInvariant())"
+    param([string]$LogText, [string]$Stage, [string]$Resolution, [string]$CandidateSha256,
+          [string]$ContractStage = $Stage)
+    $contractLine = "PTILE_CONTRACT_PASS stage=$ContractStage resolution=$Resolution candidate_sha256=$($CandidateSha256.ToLowerInvariant())"
     $lines = @($LogText -split "`r?`n")
     $readyLine = "PTILE_MAP_READY owner=0040ad40 size=($($Resolution.Replace('x',',')))"
     $exactContract = @($lines | Where-Object { $_ -ceq $contractLine })
@@ -913,7 +1074,8 @@ function Get-PartialTileValidationFailure {
     $framedStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-validation'
     $insetX = 32
     $insetY = 16
-    if ($Stage -ceq $framedStage) {
+    $completeStage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation'
+    if ($Stage -ceq $framedStage -or $Stage -ceq $completeStage) {
         if ($width -lt 640 -or $height -lt 480 -or $width % 2 -ne 0 -or $height % 2 -ne 0) {
             return 'invalid framed partial-tile resolution'
         }
@@ -1073,11 +1235,12 @@ function Get-PartialTileValidationFailure {
     return $null
 }
 $partialValidationFailure = if ($PartialTileValidation) {
-    Get-PartialTileValidationFailure -LogText $logText -Stage $Stage -Resolution $Resolution -CandidateSha256 $candidateSha
+    Get-PartialTileValidationFailure -LogText $logText -Stage $Stage -Resolution $Resolution -CandidateSha256 $candidateSha -ContractStage $partialContractStage
 } else { $null }
 $initialPaintTrace = $null
 if ($InitialMapPaintValidation) {
-    $initialTraceJson = & $pythonExe -B $initialTraceTool --log $logPath --probe $ExtraProbeTemplate --resolution $Resolution --candidate-sha256 $candidateSha --stage $Stage
+    $traceContextArgs = if ($CompleteHdValidation) { @('--candidate-manifest', $candidateManifestPath, '--original', $inputFull) } else { @() }
+    $initialTraceJson = & $pythonExe -B $initialTraceTool --log $logPath --probe $ExtraProbeTemplate --resolution $Resolution --candidate-sha256 $candidateSha --stage $Stage @traceContextArgs
     $initialTraceExit = $LASTEXITCODE
     try { $initialPaintTrace = $initialTraceJson | ConvertFrom-Json } catch { $initialPaintTrace = $null }
     if ($initialTraceExit -ne 0 -or -not $initialPaintTrace -or -not $initialPaintTrace.passed) {
@@ -1143,6 +1306,19 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists -or $surfaceGeometryFailu
         InitialMapPaintValidation = [bool]$InitialMapPaintValidation
         FramedValidation = [bool]$FramedValidation
         MinimapViewportValidation = [bool]$MinimapViewportValidation
+    CompleteHdValidation = [bool]$CompleteHdValidation
+    NoopProgressDiagnostic = [bool]$NoopProgressDiagnostic
+    NoopProgressReport = $noopProgressReport
+    RuntimeError = $runtimeError
+    RuntimeExceptionId = $runtimeExceptionId
+    RuntimeExceptionStack = $runtimeExceptionStack
+    CleanupResult = $cleanupResult
+    CandidateManifest = $candidateManifestPath
+    CandidateManifestSha256 = if ($candidateManifestPath) { Get-FileSha256 -Path $candidateManifestPath } else { $null }
+    RecipeRevision = if ($candidateManifest) { $candidateManifest.recipe_revision } else { $null }
+    CandidateProbeSha256 = if ($candidateManifest) { $candidateManifest.probe_sha256 } else { $null }
+    GeneratedProbeSha256 = Get-FileSha256 -Path $generatedProbe
+    PartialContractStage = $partialContractStage
         MinimapObserverReport = $minimapObserverReport
         FramedMinimap = $framedMinimap
         InitialMapPaintTrace = $initialPaintTrace
@@ -1234,6 +1410,45 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists -or $surfaceGeometryFailu
     throw "Surface dump failed. See $runSummary"
 }
 
+function Write-SurfacePostprocessingFailure {
+    param([string]$SummaryPath, [string]$MarkdownPath, [hashtable]$Context,
+          [string]$FailureMessage, [string]$FailureId, [string]$FailureStack)
+    # Preserve any earlier summary/failure verbatim. Exclusive creation also
+    # refuses a racing writer; no original evidence is replaced on error.
+    if (Test-Path -LiteralPath $SummaryPath) { return }
+    $record = $Context.Clone()
+    $record.Passed = $false
+    $record.FailurePhase = 'postprocessing'
+    $record.Error = $FailureMessage
+    $record.ExceptionId = $FailureId
+    $record.ExceptionStack = $FailureStack
+    $record.ManualInputProof = $false
+    $record.PromotionReady = $false
+    $json = $record | ConvertTo-Json -Depth 12
+    $stream = [System.IO.File]::Open($SummaryPath, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
+    try {
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($json + "`n")
+        $stream.Write($bytes, 0, $bytes.Length)
+    } finally { $stream.Dispose() }
+    if (-not (Test-Path -LiteralPath $MarkdownPath)) {
+        $text = "# CDB Surface Dump Run`n`n- Passed: false`n- Failure phase: postprocessing`n- Error: $FailureMessage`n- Stage: $($record.Stage)`n- Resolution: $($record.Resolution)`n- Candidate SHA-256: $($record.CandidateSha256)`n- Summary: $SummaryPath`n"
+        $stream = [System.IO.File]::Open($MarkdownPath, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
+        try {
+            $bytes = [System.Text.Encoding]::UTF8.GetBytes($text)
+            $stream.Write($bytes, 0, $bytes.Length)
+        } finally { $stream.Dispose() }
+    }
+}
+
+$convertExit = $null
+$coverageExit = $null
+$visibilityExit = $null
+$coverageReport = $null
+$visibilityReport = $null
+$visibilityFailure = $null
+$forceVisibleFailure = $null
+$postOwnerForcedVisibleFailure = $null
+try {
 if ($rawBytes -lt $ready.Bytes) {
     throw "Surface dump is shorter than expected: expected $($ready.Bytes), found $rawBytes"
 }
@@ -1280,6 +1495,9 @@ else {
     $coverageArgs = @($coverageTool, $pngPath, '--logical-width', $ready.Width, '--logical-height', $ready.Height, '--write-json', $coverageJson)
     if ($FramedValidation) {
         $coverageArgs += @('--stage', $Stage, '--minimap-enabled', $framedMinimap.Enabled)
+        if ($CompleteHdValidation) {
+            $coverageArgs += @('--candidate-manifest', $candidateManifestPath, '--original', $inputFull)
+        }
         if ($framedMinimap.Enabled -eq 1) {
             $coverageArgs += @('--minimap-width', $framedMinimap.Width, '--minimap-height', $framedMinimap.Height)
         }
@@ -1412,6 +1630,19 @@ $summaryObject = [pscustomobject]@{
     InitialMapPaintValidation = [bool]$InitialMapPaintValidation
     FramedValidation = [bool]$FramedValidation
     MinimapViewportValidation = [bool]$MinimapViewportValidation
+    CompleteHdValidation = [bool]$CompleteHdValidation
+    NoopProgressDiagnostic = [bool]$NoopProgressDiagnostic
+    NoopProgressReport = $noopProgressReport
+    RuntimeError = $runtimeError
+    RuntimeExceptionId = $runtimeExceptionId
+    RuntimeExceptionStack = $runtimeExceptionStack
+    CleanupResult = $cleanupResult
+    CandidateManifest = $candidateManifestPath
+    CandidateManifestSha256 = if ($candidateManifestPath) { Get-FileSha256 -Path $candidateManifestPath } else { $null }
+    RecipeRevision = if ($candidateManifest) { $candidateManifest.recipe_revision } else { $null }
+    CandidateProbeSha256 = if ($candidateManifest) { $candidateManifest.probe_sha256 } else { $null }
+    GeneratedProbeSha256 = Get-FileSha256 -Path $generatedProbe
+    PartialContractStage = $partialContractStage
     MinimapObserverReport = $minimapObserverReport
     FramedMinimap = $framedMinimap
     InitialMapPaintTrace = $initialPaintTrace
@@ -1473,6 +1704,8 @@ $summaryObject = [pscustomobject]@{
     PngMetadata = $pngMetaPath
     PngPaletteMode = $pngMeta.palette_mode
     CoverageJson = $coverageJson
+    CoverageExitCode = $coverageExit
+    ConverterExitCode = $convertExit
     CoverageText = $coverageText
     CoverageBlankActiveCells = $blankActiveCells
     VisibilityJson = $visibilityJson
@@ -1556,6 +1789,67 @@ if ($visibilityFailure) {
     throw "Surface dump failed visibility explanation validation. See $runSummary"
 }
 
+if ($validationFailure) {
+    throw "Surface dump failed validation: $validationFailure. See $runSummary"
+}
 Write-Host "CDB surface dump passed: $runDir"
 Write-Host "PNG: $pngPath"
 Write-Host "Summary: $runSummary"
+
+} catch {
+    $postprocessingError = $_
+    $failureContext = @{
+        Stage = $Stage
+        Resolution = $Resolution
+        CandidatePath = $candidateFull
+        CandidateSha256 = $candidateSha
+        InputExe = $inputFull
+        InputSha256 = $inputSha
+        CandidateManifest = $candidateManifestPath
+        RecipeRevision = if ($candidateManifest) { $candidateManifest.recipe_revision } else { $null }
+        CandidateProbeSha256 = if ($candidateManifest) { $candidateManifest.probe_sha256 } else { $null }
+        PartialContractStage = $partialContractStage
+        CompleteHdValidation = [bool]$CompleteHdValidation
+    NoopProgressDiagnostic = [bool]$NoopProgressDiagnostic
+    NoopProgressReport = $noopProgressReport
+    RuntimeError = $runtimeError
+    RuntimeExceptionId = $runtimeExceptionId
+    RuntimeExceptionStack = $runtimeExceptionStack
+    CleanupResult = $cleanupResult
+        LaunchMode = $launchMode
+        HiddenDesktop = (-not $AllowVisibleDesktop)
+        DumpMethod = $dumpMethod
+        RunDir = $runDir
+        Log = $logPath
+        RawPath = $rawPath
+        RawBytes = $rawBytes
+        PngPath = $pngPath
+        PngMetadata = $pngMetaPath
+        GeneratedProbe = $generatedProbe
+        ExtraProbeTemplate = $ExtraProbeTemplate
+        SurfaceGeometry = $surfaceGeometry
+        Ready = $ready
+        InitialMapPaintTrace = $initialPaintTrace
+        PartialTileValidationFailure = $partialValidationFailure
+        FramedMinimap = $framedMinimap
+        MinimapObserverReport = $minimapObserverReport
+        ConverterExitCode = $convertExit
+        CoverageExitCode = $coverageExit
+        CoverageJson = $coverageJson
+        CoverageText = $coverageText
+        VisibilityExitCode = $visibilityExit
+        VisibilityJson = $visibilityJson
+        VisibilityText = $visibilityText
+        VisibilityFailure = $visibilityFailure
+        ForceVisibleFailure = $forceVisibleFailure
+        PostOwnerForcedVisibleFailure = $postOwnerForcedVisibleFailure
+        TimedOut = $timedOut
+        StoppedAfterDump = $stoppedAfterDump
+        CdbExitCode = $cdbExitCode
+        HostDumpError = $hostDumpError
+        Av = $av
+        AppRequestQuit = $appRequestQuit
+    }
+    Write-SurfacePostprocessingFailure -SummaryPath $summaryJson -MarkdownPath $runSummary -Context $failureContext -FailureMessage $postprocessingError.Exception.Message -FailureId $postprocessingError.FullyQualifiedErrorId -FailureStack $postprocessingError.ScriptStackTrace
+    throw $postprocessingError
+}
