@@ -123,3 +123,8 @@ manifest retains its historical hashes.
 The subsequent [PR60 integration check](battle_hd_source_binding_pr60.md)
 confirms the latest modal-slot producers and harness changes remain compatible
 without additional source repins or changes to the battle candidate bytes.
+
+The [subsequent checkpoint integration](battle_hd_source_binding_checkpoint326.md)
+records compatibility with main `326e703a`, including the source SHA updates
+for its newly imported framed battle and army diagnostic producers. Historical
+runtime identities and independently stale diagnostic pins remain preserved.
