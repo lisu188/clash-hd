@@ -1,0 +1,530 @@
+{
+  "schema_version": 1,
+  "source_checkout": "C:\\Users\\andrz\\git\\clash-hd",
+  "source_head": "61daf0937e9a2d6a65cebdf38c30e55b772405e4",
+  "target_base": "009aefa7e9e7fe1634e6f75bf2ee4cd97e47cdec",
+  "purpose": "Reviewed foundation source import only; no runtime, promotion or release claim",
+  "records": [
+    {
+      "batch": "b1",
+      "path": "src/patcher/patch_clash95_hd.py",
+      "source_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+      "prior_sha256": "daf354b635e23a551471734de611b95ed0adaec6cd513cc433147c75b96420c5",
+      "source_bytes": 135294
+    },
+    {
+      "batch": "b1",
+      "path": "tools/patch_definition_guard.py",
+      "source_sha256": "f5e73ca4ed4524caee8b51d7139e65bd7f4120436ba70cb57df73243264323cc",
+      "prior_sha256": "faf31c312d2732b373ea12c465ce9b7f7e3bcc912f2dbfe2fe2f73a4d8eb7b5a",
+      "source_bytes": 13189
+    },
+    {
+      "batch": "b1",
+      "path": "tools/stable_stage_guard.py",
+      "source_sha256": "219e93aed1e1607829854363278ade7e423d5b082b9af3e3bc2a18de006b4a1b",
+      "prior_sha256": "a0c0db1987c42ac9c1a80e5a404922443b6dbea407a5015784742a585b5225ed",
+      "source_bytes": 23786
+    },
+    {
+      "batch": "b1",
+      "path": "tools/test_patch_definition_guard.py",
+      "source_sha256": "ffd52d951878ce49ed8d0364a9d84676a6d4c8d88af2d7075a6846868d75fbb9",
+      "prior_sha256": "515d7e138a65adf6e8d93607454d60ceec5cfd0905acd15903ca73d260c63e62",
+      "source_bytes": 12796
+    },
+    {
+      "batch": "b1",
+      "path": "tools/test_patch_resolution.py",
+      "source_sha256": "8822d41157146db87c4de4dfc2f0f6c01b8f9ab05fbb9292edf7f3e08da92cf5",
+      "prior_sha256": "6575d713fa6308142747ed86d66f1d06f5fc5c9d52ff3cb364413bfafbaf6b1a",
+      "source_bytes": 34525
+    },
+    {
+      "batch": "b1",
+      "path": "tools/test_stable_stage_guard.py",
+      "source_sha256": "066182bcda43377ce7e129c3011bd1afc7d10f356bfb7395ca698939f4e5a5a2",
+      "prior_sha256": "2a93c2eca6f9ce4be8dc5abb378f02c0935a9a8a8cb1d121ef354c75780c9cf1",
+      "source_bytes": 15048
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/four_sided_frame.py",
+      "source_sha256": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+      "prior_sha256": null,
+      "source_bytes": 8207
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/framed_full_paint.py",
+      "source_sha256": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+      "prior_sha256": null,
+      "source_bytes": 7420
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/framed_input.py",
+      "source_sha256": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+      "prior_sha256": null,
+      "source_bytes": 12840
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/framed_minimap.py",
+      "source_sha256": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+      "prior_sha256": null,
+      "source_bytes": 15732
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/framed_presentation.py",
+      "source_sha256": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+      "prior_sha256": null,
+      "source_bytes": 11629
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/framed_recipe.py",
+      "source_sha256": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+      "prior_sha256": null,
+      "source_bytes": 17816
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/framed_viewport.py",
+      "source_sha256": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+      "prior_sha256": null,
+      "source_bytes": 9796
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/initial_map_paint.py",
+      "source_sha256": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+      "prior_sha256": null,
+      "source_bytes": 10568
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/partial_tile_clip.py",
+      "source_sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+      "prior_sha256": null,
+      "source_bytes": 48138
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/partial_tile_hooks.py",
+      "source_sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+      "prior_sha256": null,
+      "source_bytes": 9796
+    },
+    {
+      "batch": "b2",
+      "path": "src/patcher/pe_extension.py",
+      "source_sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+      "prior_sha256": null,
+      "source_bytes": 35177
+    },
+    {
+      "batch": "b2",
+      "path": "tools/action_bar_surface_audit.py",
+      "source_sha256": "673bc4a925da2d3e77895b7179787f22c67401bc0198c5872ba305fdb637dbad",
+      "prior_sha256": null,
+      "source_bytes": 10679
+    },
+    {
+      "batch": "b2",
+      "path": "tools/build_framed_candidate.py",
+      "source_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+      "prior_sha256": null,
+      "source_bytes": 10851
+    },
+    {
+      "batch": "b2",
+      "path": "tools/build_partial_tile_candidate.py",
+      "source_sha256": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+      "prior_sha256": null,
+      "source_bytes": 17378
+    },
+    {
+      "batch": "b2",
+      "path": "tools/frame_surface_audit.py",
+      "source_sha256": "1a9d0684cef0bb19a7b0ecd5ecb02c41ef0280033f2307f99d524a521611bfd3",
+      "prior_sha256": null,
+      "source_bytes": 11719
+    },
+    {
+      "batch": "b2",
+      "path": "tools/framed_minimap_probe.py",
+      "source_sha256": "6b07fed075517bb163148faa47022fba805b98f964c8ad44e9b50cb2e10b28fb",
+      "prior_sha256": null,
+      "source_bytes": 6888
+    },
+    {
+      "batch": "b2",
+      "path": "tools/framed_noop_progress_probe.py",
+      "source_sha256": "521afa648cb13ee6aa0dd8bb291fd0690ecc965f3e0a01423e0fd902ef1acb91",
+      "prior_sha256": null,
+      "source_bytes": 13269
+    },
+    {
+      "batch": "b2",
+      "path": "tools/hd_layout_asset_composition.py",
+      "source_sha256": "50879a915e5cd80ac7f489c1fd3440071627b1ed9eeb199ef5b099731e7c922d",
+      "prior_sha256": null,
+      "source_bytes": 9762
+    },
+    {
+      "batch": "b2",
+      "path": "tools/initial_map_paint_trace.py",
+      "source_sha256": "845edda7ac563afe602dc3f6a388fe7e1874d6c6f128d1a938f8ce9ac2aa1021",
+      "prior_sha256": null,
+      "source_bytes": 16757
+    },
+    {
+      "batch": "b2",
+      "path": "tools/map_tile_coverage.py",
+      "source_sha256": "6d4a59b6f6c0601b7676165a6482b717f40582acdbf83f64643fb5fe5302a87b",
+      "prior_sha256": "31d3d2f7b46a3ccfe03dc5dcc502c522e6084259001bad6eb67a45e46f262f8f",
+      "source_bytes": 25261
+    },
+    {
+      "batch": "b2",
+      "path": "tools/partial_tile_trace_probe.py",
+      "source_sha256": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+      "prior_sha256": null,
+      "source_bytes": 10442
+    },
+    {
+      "batch": "b2",
+      "path": "tools/render_cdb_surface_probe.py",
+      "source_sha256": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+      "prior_sha256": null,
+      "source_bytes": 11403
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_action_bar_surface_audit.py",
+      "source_sha256": "bb07efebb7c52c871073a9534441e63c0d065a630304768421455da7b7910fc1",
+      "prior_sha256": null,
+      "source_bytes": 9502
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_build_framed_candidate.py",
+      "source_sha256": "9fd1a437d16320a7968094c2c8e600940ece19a7547fabc3d93bd5ed2100b8cf",
+      "prior_sha256": null,
+      "source_bytes": 22070
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_build_partial_tile_candidate.py",
+      "source_sha256": "70d0318c4fa422eba694dee1f5ae790ed91a6aa64e105583e7ada23b7456d52c",
+      "prior_sha256": null,
+      "source_bytes": 45598
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_four_sided_frame.py",
+      "source_sha256": "64e6482f83c67f0105bfa23a267fe572c02a8e92e60b205e31e90b6cd001a352",
+      "prior_sha256": null,
+      "source_bytes": 10067
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_four_sided_frame_x86.py",
+      "source_sha256": "4489ad89367b24cd1a9a821f5a3f8b52b6cccf4dd54b12261d63076014c4142b",
+      "prior_sha256": null,
+      "source_bytes": 13535
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_frame_surface_audit.py",
+      "source_sha256": "fa3e04960b50c0f36f0a7feea317375030193fbe78e05edb21b80f1745a7d55c",
+      "prior_sha256": null,
+      "source_bytes": 9726
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_framed_full_paint.py",
+      "source_sha256": "2126cf557fc74897e77a0ce0a8dda60043e52437b55cc693fe68eee10c3dc0fc",
+      "prior_sha256": null,
+      "source_bytes": 22177
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_framed_input.py",
+      "source_sha256": "a938b24f4014ecff73778efd553c6f751869a0a36f0bed42eb0a12a2b37545f9",
+      "prior_sha256": null,
+      "source_bytes": 18398
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_framed_minimap.py",
+      "source_sha256": "b6e94af547e6ec6aef499e08b625959c5819fead59fa8466b382cfd75a29073d",
+      "prior_sha256": null,
+      "source_bytes": 17689
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_framed_minimap_integration.py",
+      "source_sha256": "14d638272ca4cb898c6174522a235f167f1d2e37dd70d0605dd39e9e1097b98b",
+      "prior_sha256": null,
+      "source_bytes": 8819
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_framed_partial_tile.py",
+      "source_sha256": "a96b8cf3ef5a45582e4b04e472fc81c40d69b800ae33f1943fce965d3772d516",
+      "prior_sha256": null,
+      "source_bytes": 20241
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_framed_presentation.py",
+      "source_sha256": "e362face537253c593aa64966e3baa3010eaad0fdad9bf08c16df5ccd8a53119",
+      "prior_sha256": null,
+      "source_bytes": 16674
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_framed_recipe.py",
+      "source_sha256": "a5f2ca52675dd5fa39b408c141fa7fba608a46475c0eb49ea9782e5bffb6a1e0",
+      "prior_sha256": null,
+      "source_bytes": 16852
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_framed_viewport.py",
+      "source_sha256": "f6b64244490ac56c99420d17f87f12de1885f0caecf78ef7e2e9f7939326da2f",
+      "prior_sha256": null,
+      "source_bytes": 10491
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_initial_map_candidate.py",
+      "source_sha256": "04ffa58b2a01697a38a8474de9f77a9fc1913628c7cd5e433692a51de86afdb9",
+      "prior_sha256": null,
+      "source_bytes": 7177,
+      "imported_sha256": "73283cd2f3e5defcd0966f37e6037c592b09cd97fef572d352722db40a680f1a",
+      "imported_bytes": 7175,
+      "import_adjustment": "Removed one final empty CRLF after the existing final LF to satisfy git diff --check; no test statements or authenticated builder dependencies changed. Original source digest is retained above."
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_initial_map_paint.py",
+      "source_sha256": "00a302f9db039a71e89b9160d4ca5f17ab9b27f05b5e20e25750f5329bca56b6",
+      "prior_sha256": null,
+      "source_bytes": 22395
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_initial_map_paint_trace.py",
+      "source_sha256": "ca3200a2bdd06da93115f988b7c2a909c30f2b8039edc40c06b6fc268c6d0319",
+      "prior_sha256": null,
+      "source_bytes": 22348
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_map_tile_coverage.py",
+      "source_sha256": "9b06d8c33c249d51d82503d7d04e5f062e048c07d3fc045d995bcd089b8159a0",
+      "prior_sha256": null,
+      "source_bytes": 9273
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_partial_tile_clip.py",
+      "source_sha256": "4538af4515157e1452fe1ae7acec55e44a1993225617d10da046a6cc5c741819",
+      "prior_sha256": null,
+      "source_bytes": 37176
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_partial_tile_hooks.py",
+      "source_sha256": "53a104b362822da23a1fce0ae0dac2a672ff6cd2c347b22c9c93b592502a1c94",
+      "prior_sha256": null,
+      "source_bytes": 17921
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_partial_tile_trace_probe.py",
+      "source_sha256": "263866820b6c96710de7713d59f503a8bddb2472ff647c3b9204e36f977693ad",
+      "prior_sha256": null,
+      "source_bytes": 13850
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_pe_extension.py",
+      "source_sha256": "5a8ba46031d6a6d2774a34d7e58f00649619d625611da28d925dd80cce4abd3c",
+      "prior_sha256": null,
+      "source_bytes": 27267
+    },
+    {
+      "batch": "b2",
+      "path": "tools/test_render_cdb_surface_probe.py",
+      "source_sha256": "dd5422d7a8fc6536f51f50c49f21cfdccc9f6d957281592320fcd211d4579314",
+      "prior_sha256": null,
+      "source_bytes": 25856
+    },
+    {
+      "batch": "b2",
+      "path": "scripts/cdb/run_cdb_surface_dump.ps1",
+      "source_sha256": "ae90b6930a287d4fdc12dc5506780b82af3fbbe1c6cbc49dcc2bc08d5e64e43b",
+      "prior_sha256": "dba7f575e719379ab4a42ff9dcd6c4516a790ba348a7d15f39e37cbfa7d32030",
+      "source_bytes": 79427,
+      "import_note": "Matching source harness imported with the framed-renderer batch after its runtime-harness contract fixture exposed the missing dependency. No CDB runtime was executed by this import."
+    },
+    {
+      "batch": "b3",
+      "path": "src/patcher/framed_modal_canvas.py",
+      "source_sha256": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+      "prior_sha256": null,
+      "source_bytes": 17210
+    },
+    {
+      "batch": "b3",
+      "path": "src/patcher/pe_modal_extension.py",
+      "source_sha256": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623",
+      "prior_sha256": null,
+      "source_bytes": 27113
+    },
+    {
+      "batch": "b3",
+      "path": "src/patcher/framed_army_composition.py",
+      "source_sha256": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c",
+      "prior_sha256": null,
+      "source_bytes": 9274
+    },
+    {
+      "batch": "b3",
+      "path": "src/patcher/framed_army_draw.py",
+      "source_sha256": "e6763ae2ebdf038d0b0b574564573fb07e2a2b68c12f7aeafc0b63ca44347cf9",
+      "prior_sha256": null,
+      "source_bytes": 15152
+    },
+    {
+      "batch": "b3",
+      "path": "src/patcher/framed_army_input.py",
+      "source_sha256": "c27a0feb17df909dcf9986bfde231d90a79e8c1ad8abbcf2884b52e767a70ee2",
+      "prior_sha256": null,
+      "source_bytes": 12118
+    },
+    {
+      "batch": "b3",
+      "path": "src/patcher/framed_army_viewport.py",
+      "source_sha256": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+      "prior_sha256": null,
+      "source_bytes": 2540
+    },
+    {
+      "batch": "b3",
+      "path": "src/patcher/pe_army_extension.py",
+      "source_sha256": "8b2bf19c59351cf1b625b28e143d0ccfd000380898a81af29e28e7cf7af75161",
+      "prior_sha256": null,
+      "source_bytes": 17044
+    },
+    {
+      "batch": "b3",
+      "path": "tools/build_framed_modal_candidate.py",
+      "source_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+      "prior_sha256": null,
+      "source_bytes": 12778
+    },
+    {
+      "batch": "b3",
+      "path": "tools/build_framed_army_candidate.py",
+      "source_sha256": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+      "prior_sha256": null,
+      "source_bytes": 10515
+    },
+    {
+      "batch": "b3",
+      "path": "tools/test_framed_modal_canvas.py",
+      "source_sha256": "8a18f92e41582878ea0bd1e74dca742b831cb760936adc97314601ed2e482fa3",
+      "prior_sha256": null,
+      "source_bytes": 19736
+    },
+    {
+      "batch": "b3",
+      "path": "tools/test_pe_modal_extension.py",
+      "source_sha256": "58f4b25e60ed5eb46f45eadd28041c9c4e3324492f59141b666282c0b8629235",
+      "prior_sha256": null,
+      "source_bytes": 34646
+    },
+    {
+      "batch": "b3",
+      "path": "tools/test_build_framed_modal_candidate.py",
+      "source_sha256": "f72437a1d9bcfc23e1d9a2857d916812c8dbe04447270169ac24a17856123935",
+      "prior_sha256": null,
+      "source_bytes": 14090
+    },
+    {
+      "batch": "b3",
+      "path": "tools/test_framed_army_composition.py",
+      "source_sha256": "acafe8b55bf1a36f9fe331da5023e2dcec68c95739dfd5445038d83ab3614625",
+      "prior_sha256": null,
+      "source_bytes": 15987
+    },
+    {
+      "batch": "b3",
+      "path": "tools/test_framed_army_draw.py",
+      "source_sha256": "672813f2edf281b5594ffa1db2a3fc79ed8529787f852700fb34d03ce40fe2bd",
+      "prior_sha256": null,
+      "source_bytes": 19162
+    },
+    {
+      "batch": "b3",
+      "path": "tools/test_framed_army_input.py",
+      "source_sha256": "bf09b92f133983b73f1b986e5594b2b19373eeca9b57e2745d50647987122e88",
+      "prior_sha256": null,
+      "source_bytes": 18913
+    },
+    {
+      "batch": "b3",
+      "path": "tools/test_framed_army_viewport.py",
+      "source_sha256": "2abaaef64a775e997d5f96d3f90d5137fbacd01efcc8444ce26724a024020282",
+      "prior_sha256": null,
+      "source_bytes": 2280
+    },
+    {
+      "batch": "b3",
+      "path": "tools/test_pe_army_extension.py",
+      "source_sha256": "7cd4098c71d947434c175e2f2a119971ee8655b84c14008e4aadd194b23b2848",
+      "prior_sha256": null,
+      "source_bytes": 15570
+    },
+    {
+      "batch": "b3",
+      "path": "tools/test_build_framed_army_candidate.py",
+      "source_sha256": "811f5b041599b17c3a96932079bf5598319a45f036e01e57d2c51bc42683fae8",
+      "prior_sha256": null,
+      "source_bytes": 8994
+    }
+  ],
+  "raw_byte_attributes": [
+    "src/patcher/four_sided_frame.py",
+    "src/patcher/framed_army_composition.py",
+    "src/patcher/framed_army_draw.py",
+    "src/patcher/framed_army_input.py",
+    "src/patcher/framed_army_viewport.py",
+    "src/patcher/framed_full_paint.py",
+    "src/patcher/framed_input.py",
+    "src/patcher/framed_minimap.py",
+    "src/patcher/framed_modal_canvas.py",
+    "src/patcher/framed_presentation.py",
+    "src/patcher/framed_recipe.py",
+    "src/patcher/framed_viewport.py",
+    "src/patcher/initial_map_paint.py",
+    "src/patcher/partial_tile_clip.py",
+    "src/patcher/partial_tile_hooks.py",
+    "src/patcher/patch_clash95_hd.py",
+    "src/patcher/pe_army_extension.py",
+    "src/patcher/pe_extension.py",
+    "src/patcher/pe_modal_extension.py",
+    "tools/build_framed_army_candidate.py",
+    "tools/build_framed_candidate.py",
+    "tools/build_framed_modal_candidate.py",
+    "tools/build_partial_tile_candidate.py",
+    "tools/partial_tile_trace_probe.py"
+  ],
+  "hash_scope": "Source digests identify the original selected raw checkout bytes. imported_sha256 is provided only for a documented import adjustment. Git may normalize CRLF in unpinned guards, fixtures and harnesses; the authenticated dependency files protected by .gitattributes must retain their raw bytes in Git blobs."
+}
