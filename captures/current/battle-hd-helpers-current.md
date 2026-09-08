@@ -2,13 +2,13 @@
 
 - Overall: FAIL
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd`
-- Candidate SHA: `34AF0AEF07B11D2336B91AB33BFB9B72F86A3CBA2F1312A66CFED25BF0BE1D66`
-- Runtime candidate: `C:\ClashTests\battle-hd-1280x720\candidate\clash95_hd_surfdump_20260908_105207.exe`
-- Byte-verification candidate: `C:\ClashTests\battle-hd-1280x720\clash95_battlehd_review_v2.exe` (same SHA-256)
+- Candidate SHA: `7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47`
+- Runtime candidate: `C:\ClashTests\battle-hd-1280x720\candidate\clash95_hd_surfdump_20260908_111019.exe`
+- Byte-verification candidate: `C:\ClashTests\battle-hd-1280x720\clash95_battlehd_review_v3.exe` (same SHA-256)
 - Resolution: `[1280, 720]`
 - Evidence class: `forced_validation`
 - Launch/input: `hidden-desktop-cdb` / `debugger_memory_register_writes_and_direct_calls`
-- Wrapper: `memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=AC0989FB869F5AFED7032B3DBECCC095529EA4C789E1039330B9AA2720FF4EFA`
+- Wrapper: `memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=08812F07A5F1A98588E861E1FBB81ED0340FD843A58758A631986093AD6614CD`
 - Promotion: `validation_stage_only`
 - Stable stage should change: `False`
 
@@ -47,6 +47,7 @@ These forced debugger calls cannot satisfy end-to-end input, rendering, modal, l
 - No OS input, manual observation, visible-wrapper capture, or approval is inferred.
 - Actual arena is 16 by 7; this run does not prove a 17-column or horizontally scrollable live arena.
 - The dedicated phase14 present-entry marker was absent; accepted tile and helper observations do not imply copy bounds or final composition.
+- CDB emitted its command-skipping notice after the completed measurement and SURFDUMP_HOST_READY markers; claims are restricted to recorded measurements and the host dump, with no post-dump execution inference.
 - route_catalog: owner BANNER was not observed
 - route_catalog: owner CAMERA was not observed
 - route_catalog: owner DIALOG was not observed

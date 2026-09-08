@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T20:14:47.245634+00:00",
+  "generated_at": "2026-09-08T09:22:01.274600+00:00",
   "passed": false,
   "runtime_policy": "repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "source_report": "captures\\current\\hd-soak-short2-map-idle-current.json",
@@ -139,98 +139,8 @@
       }
     ]
   },
-  "cdb_followup": {
-    "path": "captures\\current\\hd-soak-short2-map-idle-cdb-followup-current.json",
-    "matched": true,
-    "status": "cdb_exit_not_reproduced_hidden_memory_proxy",
-    "source_cdb_summary": "C:\\ClashCaptures\\hd-soak-cdb-crash\\cdb-surface-dump-20260715-070814\\summary.json",
-    "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-    "route": "map-idle",
-    "hidden_desktop": true,
-    "presentation": {
-      "class": "memory_only_no_active_display_switch",
-      "proxy_present_enabled": false,
-      "window_config_path": "C:\\Clash\\dxcfg.ini",
-      "window_config_sha256": "0F35B74B13284901C07145FB945575A7F5A5F313E13AEB24392843609ECDA3FE",
-      "window_display": "application",
-      "window_presentation": "windowed"
-    },
-    "route_evidence": {
-      "gameplay_observed": true,
-      "playgame_marker": true,
-      "surface_ready_marker": true,
-      "surface_width": 800,
-      "surface_height": 600,
-      "surface_png": "C:\\ClashCaptures\\hd-soak-cdb-crash\\cdb-surface-dump-20260715-070814\\surface.png",
-      "surface_png_sha256": "4DDCBD9C8075D0FF90D569B7BCBC1312D4F79EF7A144CFBA6B0875BD2D3112E0",
-      "visibility_explained_gate_passed": true
-    },
-    "observation": {
-      "continue_after_dump_sec": 45,
-      "post_dump_observation_started": true,
-      "post_dump_observation_completed": true,
-      "post_dump_exit_observed": false,
-      "access_violation_observed": false,
-      "app_request_quit_observed": false,
-      "timed_out": false,
-      "stopped_by_harness_after_observation": true
-    },
-    "scope_limit": "The hidden memory-only DirectDraw proxy differs from the approved application/windowed wrapper plus visible input and capture path, so this pass does not clear or replace the visible unexpected-exit failure.",
-    "failures": []
-  },
-  "wer_followup": {
-    "path": "captures\\current\\hd-soak-short2-map-idle-wer-followup-current.json",
-    "matched": true,
-    "status": "application_hang_confirmed_wer_closed",
-    "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
-    "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
-    "route": "map-idle",
-    "event_evidence": {
-      "log_name": "Application",
-      "window_start_local": "2026-07-14T17:28:30+02:00",
-      "window_end_local": "2026-07-14T17:32:00+02:00",
-      "event_name": "AppHangB1",
-      "application_hang_1002_count": 1,
-      "wer_apphang_1001_count": 2,
-      "application_error_1000_count": 0,
-      "application_hang_time_local": "2026-07-14T17:30:31+02:00",
-      "final_wer_time_local": "2026-07-14T17:30:33+02:00",
-      "windows_closed_nonresponsive_application": true,
-      "wer_report_id": "f786a5c6-0b39-460c-9443-af6a6c556eba",
-      "wer_fault_bucket": "1706022875950305022",
-      "wer_hashed_bucket": "3293cfb13dac59b367ad02c44bb54efe",
-      "archived_report_acl_readable": false
-    },
-    "timeline_correlation": {
-      "candidate_name_matches": true,
-      "event_within_failed_run_window": true,
-      "last_live_process_sample_local": "2026-07-14T17:30:22.6142905+02:00",
-      "second_capture_window_timeout_local": "2026-07-14T17:30:30.9967415+02:00",
-      "application_hang_close_local": "2026-07-14T17:30:31+02:00",
-      "harness_observed_exit_local": "2026-07-14T17:30:46.0136130+02:00",
-      "harness_exit_code": 1,
-      "last_actual_frame_local": "2026-07-14T17:30:07.6052432+02:00",
-      "last_actual_frame_screen": "main_menu"
-    },
-    "capture_analysis": {
-      "second_capture_reached_foreground_manipulation": false,
-      "second_capture_reached_gdi_capture": false,
-      "second_capture_only_waited_for_visible_target_pid_window": true,
-      "inference": "The second capture timeout detected the already-missing or ghosted target window; it did not close the target. The first successful capture used the approved foreground/screen path and cannot be excluded as a contributing interaction without a controlled comparison."
-    },
-    "mitigation": {
-      "window_health_instrumentation_added": true,
-      "harness_guard_path": "captures\\current\\hd-soak-harness-guard-current.json",
-      "harness_guard_passed": true,
-      "window_health_stop_check_passed": true,
-      "window_health_api": "EnumWindows/GetClientRect/IsHungAppWindow",
-      "stop_policy": "sample after launch, after intro wait, before and after each route step, and before each frame; stop further input and capture on the first hung or missing live target window"
-    },
-    "window_health_mitigation_ready": true,
-    "scope_limit": "WER proves an application hang and OS closure, but provides no readable archived stack under the current ACL and does not identify which route step or wrapper interaction first stopped responding.",
-    "failures": []
-  },
+  "cdb_followup": null,
+  "wer_followup": null,
   "intro_skip_route_result": {
     "name": "intro-skip",
     "points": "400,300",

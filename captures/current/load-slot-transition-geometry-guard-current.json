@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-18T22:13:54+02:00",
-  "passed": true,
+  "generated_at": "2026-09-08T11:20:25+02:00",
+  "passed": false,
   "runtime_policy": "repo-only source/plan inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when the transition run plan targets rows 3-5 and the surface-dump launcher still replaces extra-probe load-slot mouse placeholders using x=320 and y=166+22*slot shifted into raw mouse globals",
   "promotion_ready": false,
@@ -13,7 +13,7 @@
   "checks": {
     "run_plan_passed": true,
     "target_rows_3_4_5": true,
-    "surface_formula_present": true,
+    "surface_formula_present": false,
     "probe_placeholders_present": true,
     "commands_row_specific": true,
     "summary_commands_require_entry": true,
@@ -58,5 +58,9 @@
     "run_plan_command_count": 3,
     "run_plan_summary_command_count": 3
   },
-  "failures": []
+  "failures": [
+    "transition geometry guard failed: surface_formula_present",
+    "surface-dump script missing geometry token: $loadMouseX = 320",
+    "surface-dump script missing geometry token: $loadMouseY = 166 + (22 * $LoadSlot)"
+  ]
 }

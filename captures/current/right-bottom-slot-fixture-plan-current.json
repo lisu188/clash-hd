@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-18T22:13:53+02:00",
-  "passed": true,
+  "generated_at": "2026-09-08T11:20:25+02:00",
+  "passed": false,
   "runtime_policy": "repo-only fixture planner; reads generated evidence JSON and writes only JSON/Markdown reports; does not copy saves, launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only while the slot-5 route-compatible save remains blocked before LOADSAVE, the row-0 natural route remains proven, and the proposed copied save stays isolated and non-promoting",
   "candidate_matrix_json": "captures\\current\\right-bottom-natural-route-candidate-matrix-current.json",
   "load_slot_route_limit_json": "captures\\current\\load-slot-route-limit-current.json",
   "summary": {
     "candidate_matrix_passed": true,
-    "load_slot_route_limit_passed": true,
+    "load_slot_route_limit_passed": false,
     "baseline_route_index": 0,
     "route_candidate": {
       "save": "C:\\Clash\\save\\5.dat",
@@ -53,7 +53,7 @@
     "target_row_already_proven": true,
     "must_not_mutate": [
       "C:\\Clash\\save",
-      "C:\\Users\\andrz\\git\\clash-hd"
+      "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd"
     ],
     "runtime_followup_needed": [
       "create the isolated workdir outside the repository",
@@ -68,5 +68,7 @@
       "fixture evidence must not change the stable stage by itself"
     ]
   },
-  "failures": []
+  "failures": [
+    "load-slot route-limit guard is not passing"
+  ]
 }

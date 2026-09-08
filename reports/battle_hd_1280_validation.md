@@ -86,3 +86,36 @@ hidden route, its immediate device poll sometimes replaces X with a cached
 sample of `4`; both pre-poll and post-poll values are reported. This is an open
 input observation for visible validation, not evidence that the displayed
 cursor is correct and not justification to alter generic map input.
+
+## Current review candidate
+
+The final 283-patch executable is
+`C:\ClashTests\battle-hd-1280x720\clash95_battlehd_review_v3.exe`, SHA-256
+`7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47`.
+The adjacent `patch-stage-review-v3.json` records every offset, VA/RVA,
+old/new byte sequence and rationale; all 283 records verify as patched.
+
+Final hidden runs `20260908-111019`, `20260908-111125`, and
+`20260908-111326` bind identical executable bytes and separate wrapper hashes.
+They establish 6/7 helper diagnostics, 7/7 forced camera cases, and 12/14
+forced lifecycle diagnostics respectively. The helper's dedicated phase-14
+present marker is absent; banner/results post-poll cursor targets remain
+unresolved. Full redraw visited all 112 cells of the real 16x7 arena and
+dirty redraw reached column eight. The 17th slot remains cleared. Camera
+fixtures temporarily used widths 17 and 20 without rendering artificial cells.
+
+The final results snapshot `20260908-111818` copied the native primary surface
+after dialog drawing and stopped before dismissal. It shows the centered
+640x178 results message and all six battle command cells. Its explicit
+debugger allocation/copy is diagnostic software-surface evidence, not visible
+runtime or an additional completed lifecycle. Raw logs retain CDB's command
+skipping notice after `SURFDUMP_HOST_READY`; no natural post-dump interval is
+claimed. The earlier snapshot `20260908-105738` also logged a later probe
+failure and remains an archived diagnostic.
+
+The current evidence report records focused tests, aggregate refresh failures,
+launcher dry run, screenshots and remaining acceptance items. The separate
+[source-binding integration report](battle_hd_source_binding_integration.md)
+documents compatibility with merged `main` and the reviewed source-hash
+updates required by its existing builders. The original foundation import
+manifest retains its historical hashes.

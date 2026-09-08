@@ -6,6 +6,16 @@ and Classic launcher default at 800x600 remain unchanged. Complete HD is
 experimental at every resolution. Native 640x480 menus, castles and battles
 remain centered; the widened-battle experiment is excluded.
 
+The separate 1280x720 `-castlecenter-all-battlehd` validation stage now has
+an expanded 17x7-capacity battlefield and native right sidebar. Its candidate,
+forced hidden diagnostics, unresolved cursor polling, and pending visible/input
+acceptance are recorded in
+[`battle_hd_1280_validation.md`](../../reports/battle_hd_1280_validation.md)
+and [`battle-hd-validation-current.md`](../../captures/current/battle-hd-validation-current.md).
+This lane is independent of the Complete HD recipe and does not promote either
+candidate. Its source-binding integration report preserves the original
+foundation manifest while documenting the reviewed updated producer hashes.
+
 ## Implemented and checked
 
 The reviewed combined/framed/minimap/native-modal/army dependency chain is in

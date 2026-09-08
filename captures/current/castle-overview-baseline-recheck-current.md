@@ -1,7 +1,7 @@
 # Castle Overview Baseline Recheck
 
-- Overall: PASS
-- Generated: `2026-07-18T22:14:30+02:00`
+- Overall: FAIL
+- Generated: `2026-09-08T11:21:18+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 
 ## Overview Visual Baseline
@@ -26,7 +26,7 @@
 
 ## Latest Castle Overview Matrix
 
-- Status: PASS
+- Status: FAIL
 - Stage: `castlecenter-all`
 - Promotion status: `validation_stage_only`
 - Candidate SHA-256: `1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6`
@@ -34,6 +34,11 @@
 - Visible target completion: index 0 0x86/0xF8 completion=True, index 1 0x63/0xFE completion=True, index 2 0x87/0xFF completion=True
 - Dormant target completion: index 0 0x99/0xFA completion=True, index 1 0x9C/0xFB completion=True, index 2 0x9F/0xFC completion=True, index 3 0xA6/0xFD completion=True
 
+## Failures
+
+- latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\current\castle-owner-records-current.raw
+- latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\archive\castle-overview-hitmap-flags1f.raw
+
 ## Screenshot
 
-![castle overview baseline](C:\Users\andrz\git\clash-hd\captures\archive\cdb-surface-dump-20260712-144019\surface.png)
+![castle overview baseline](C:\Users\andrz\.codex\worktrees\7d0c\clash-hd\captures\archive\cdb-surface-dump-20260712-144019\surface.png)

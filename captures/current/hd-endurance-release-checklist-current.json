@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T20:14:48.789615+00:00",
+  "generated_at": "2026-09-08T09:22:03.971145+00:00",
   "passed": false,
   "runtime_policy": "repo-only endurance release checklist; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows",
   "protected_stable_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch",
@@ -37,8 +37,8 @@
   },
   "counts": {
     "total": 15,
-    "passed": 9,
-    "blocked": 6,
+    "passed": 7,
+    "blocked": 8,
     "missing": 0
   },
   "next_milestone": {
@@ -51,12 +51,12 @@
       "id": "protected_stable_stage",
       "title": "Protected default HD stage remains clean",
       "category": "patch boundary",
-      "status": "pass",
-      "passed": true,
+      "status": "blocked",
+      "passed": false,
       "evidence": [
         "captures\\current\\stable-stage-guard-current.json"
       ],
-      "summary": "default stage and validation-only group boundary are intact",
+      "summary": "stable-stage guard does not prove the protected boundary",
       "next_probe": "fix stable-stage guard failures before considering any soak result"
     },
     {
@@ -155,7 +155,13 @@
         "captures\\current\\manual-directinput-validation-checklist-current.json"
       ],
       "summary": "menu-load proof remains pending manual DirectInput validation",
-      "next_probe": "collect approved manual menu-load proof or keep promotion blocked"
+      "next_probe": "collect approved manual menu-load proof or keep promotion blocked",
+      "details": {
+        "manual_proof_path": null,
+        "failures": [
+          "checklist does not record valid supplied manual proof without an override"
+        ]
+      }
     },
     {
       "id": "stable_hd_map_real_input",
@@ -167,7 +173,13 @@
         "captures\\current\\manual-directinput-validation-checklist-current.json"
       ],
       "summary": "HD map input proof remains pending manual DirectInput validation",
-      "next_probe": "collect approved manual map input proof after short soak is stable"
+      "next_probe": "collect approved manual map input proof after short soak is stable",
+      "details": {
+        "manual_proof_path": null,
+        "failures": [
+          "checklist does not record valid supplied manual proof without an override"
+        ]
+      }
     },
     {
       "id": "right_bottom_action_menu",
@@ -180,7 +192,13 @@
         "captures\\current\\manual-directinput-validation-checklist-current.json"
       ],
       "summary": "right-bottom action/menu remains validation-only or manual-proof blocked",
-      "next_probe": "replace debugger-forced action-click proof with natural or approved manual input proof"
+      "next_probe": "replace debugger-forced action-click proof with natural or approved manual input proof",
+      "details": {
+        "passed": false,
+        "failures": [
+          "component eligibility requires a valid supplied five-target manual proof"
+        ]
+      }
     },
     {
       "id": "castle_and_barracks_centered_input",
@@ -193,7 +211,13 @@
         "captures\\current\\manual-directinput-validation-checklist-current.json"
       ],
       "summary": "castle/barracks centered input remains validation-only or manual-proof blocked",
-      "next_probe": "collect approved centered castle/barracks input proof"
+      "next_probe": "collect approved centered castle/barracks input proof",
+      "details": {
+        "passed": false,
+        "failures": [
+          "component eligibility requires a valid supplied five-target manual proof"
+        ]
+      }
     },
     {
       "id": "tactical_battle_entry_return",
@@ -204,7 +228,7 @@
       "evidence": [
         "captures\\current\\battle-ui-evidence-current.json"
       ],
-      "summary": "battle evidence remains validation-only or missing visible click-to-callback proof",
+      "summary": "battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
       "next_probe": "prove battle entry, UI use, return, and post-return map health on an approved route"
     },
     {
@@ -260,18 +284,20 @@
       "id": "no_speculative_promotion",
       "title": "No validation-only promotion is hidden by endurance work",
       "category": "patch boundary",
-      "status": "pass",
-      "passed": true,
+      "status": "blocked",
+      "passed": false,
       "evidence": [
         "captures\\current\\stable-stage-guard-current.json",
         "captures\\current\\right-bottom-compose-promotion-decision-current.json",
         "captures\\current\\castle-overview-promotion-decision-current.json",
         "captures\\current\\battle-ui-evidence-current.json"
       ],
-      "summary": "stable-stage boundary remains unchanged while validation-only lanes stay non-promoting",
+      "summary": "one or more promotion boundaries are not fail-closed",
       "next_probe": "keep DEFAULT_STAGE unchanged until strict natural/manual/input and soak gates pass"
     }
   ],
+  "release_horizon_ready": false,
+  "acceptance_scope": "finite endurance release-horizon checklist; HD-layout, combined-candidate and resolution acceptance are additional requirements",
   "full_game_complete": false,
   "full_game_percent_statement": "not 100%; endurance, manual input, state continuity, or validation-route gates remain open",
   "current_completion_summary": {
@@ -279,11 +305,13 @@
     "full_game_percent_statement": "not 100%; manual DirectInput proof, stable promotion, endurance soaks, continuity, and current visual blockers remain open"
   },
   "failures": [
+    "protected_stable_stage: stable-stage guard does not prove the protected boundary",
     "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
     "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
     "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
     "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
     "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
-    "tactical_battle_entry_return: battle evidence remains validation-only or missing visible click-to-callback proof"
+    "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
+    "no_speculative_promotion: one or more promotion boundaries are not fail-closed"
   ]
 }

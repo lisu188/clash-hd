@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T22:14:32+02:00",
+  "generated_at": "2026-09-08T11:21:23+02:00",
   "passed": true,
   "runtime_policy": "repo-only source inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "legacy visible-runtime launchers/helpers must fail closed unless -AllowVisibleRuntime is explicitly supplied after user approval; guarded child helpers must receive the same switch; root PowerShell risky-call inventory must be guarded or explicitly exempt",
@@ -7,7 +7,7 @@
   "passing_script_count": 8,
   "inventory": {
     "checked": true,
-    "root": "C:\\Users\\andrz\\git\\clash-hd",
+    "root": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd",
     "risky_script_count": 0,
     "guarded_risky_script_count": 0,
     "exempt_risky_script_count": 0,
@@ -21,18 +21,18 @@
       "passed": true,
       "exists": true,
       "allow_visible_runtime_lines": [
-        59
-      ],
-      "guard_lines": [
         65
       ],
+      "guard_lines": [
+        71
+      ],
       "approval_phrase_lines": [
-        66
+        72
       ],
       "throw_lines": [
-        66
+        72
       ],
-      "first_risky_line": 490,
+      "first_risky_line": 496,
       "child_visible_runtime_invocation_lines": [],
       "failures": []
     },

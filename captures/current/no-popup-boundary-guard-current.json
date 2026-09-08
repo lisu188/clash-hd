@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-18T22:14:51+02:00",
-  "passed": true,
+  "generated_at": "2026-09-08T11:22:12+02:00",
+  "passed": false,
   "runtime_policy": "repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "current refresh must include all no-popup boundary reports and the evidence index must link each report",
   "evidence_index": "captures\\current\\hd-map-evidence-current.md",
@@ -215,18 +215,20 @@
   ],
   "checks": {
     "stable_stage_guard": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "validation-only groups stay out of the stable HD map stage",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "stable-stage-guard-current.md",
         "refresh_markdown": "captures\\current\\stable-stage-guard-current.md",
         "refresh_json": "captures\\current\\stable-stage-guard-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: stable_stage_guard"
+      ]
     },
     "exe_artifact_guard": {
       "passed": true,
@@ -411,18 +413,20 @@
       "failures": []
     },
     "python_runtime_safety_guard": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "Python helpers with runtime/window/input APIs are gated, exempt, or fail closed",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "python-runtime-safety-current.md",
         "refresh_markdown": "captures\\current\\python-runtime-safety-current.md",
         "refresh_json": "captures\\current\\python-runtime-safety-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: python_runtime_safety_guard"
+      ]
     },
     "python_runtime_safety_guard_tests": {
       "passed": true,
@@ -439,18 +443,20 @@
       "failures": []
     },
     "hd_soak_execution_boundary": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "negative soak harness execution-boundary proof for bad visible-runtime approval packets",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "hd-soak-execution-boundary-current.md",
         "refresh_markdown": "captures\\current\\hd-soak-execution-boundary-current.md",
         "refresh_json": "captures\\current\\hd-soak-execution-boundary-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: hd_soak_execution_boundary"
+      ]
     },
     "hd_soak_execution_boundary_tests": {
       "passed": true,
@@ -607,18 +613,20 @@
       "failures": []
     },
     "resolution_manifest_guard": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "launcher resolution statuses stay evidence-backed with one stable default",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "resolution-manifest-guard-current.md",
         "refresh_markdown": "captures\\current\\resolution-manifest-guard-current.md",
         "refresh_json": "captures\\current\\resolution-manifest-guard-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: resolution_manifest_guard"
+      ]
     },
     "resolution_manifest_guard_tests": {
       "passed": true,
@@ -775,18 +783,20 @@
       "failures": []
     },
     "handoff_freshness_guard": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "current handoff docs point at the latest no-popup blockers",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "handoff-freshness-guard-current.md",
         "refresh_markdown": "captures\\current\\handoff-freshness-guard-current.md",
         "refresh_json": "captures\\current\\handoff-freshness-guard-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: handoff_freshness_guard"
+      ]
     },
     "handoff_freshness_guard_tests": {
       "passed": true,
@@ -831,18 +841,20 @@
       "failures": []
     },
     "right_bottom_blocker_triage": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "compact non-promoting triage of the current right-bottom action-menu blocker",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "right-bottom-blocker-triage-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-blocker-triage-current.md",
         "refresh_json": "captures\\current\\right-bottom-blocker-triage-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: right_bottom_blocker_triage"
+      ]
     },
     "right_bottom_blocker_triage_tests": {
       "passed": true,
@@ -863,7 +875,7 @@
       "summary": {
         "purpose": "right-bottom natural UI stripe/layout artifact remains explicitly non-promoting",
         "expected_pass": false,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "right-bottom-visual-artifact-guard-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-visual-artifact-guard-current.md",
         "refresh_json": "captures\\current\\right-bottom-visual-artifact-guard-current.json",
@@ -999,18 +1011,20 @@
       "failures": []
     },
     "right_bottom_slot_fixture_plan": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "non-promoting isolated slot5-as-slot0 fixture plan for the right-bottom owner/action route",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "right-bottom-slot-fixture-plan-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-plan-current.md",
         "refresh_json": "captures\\current\\right-bottom-slot-fixture-plan-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: right_bottom_slot_fixture_plan"
+      ]
     },
     "right_bottom_slot_fixture_plan_tests": {
       "passed": true,
@@ -1055,18 +1069,20 @@
       "failures": []
     },
     "right_bottom_slot_fixture_runtime_plan": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "hidden-desktop command plan for the non-promoting right-bottom isolated slot fixture",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "right-bottom-slot-fixture-runtime-plan-current.md",
         "refresh_markdown": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.md",
         "refresh_json": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: right_bottom_slot_fixture_runtime_plan"
+      ]
     },
     "right_bottom_slot_fixture_runtime_plan_tests": {
       "passed": true,
@@ -1097,18 +1113,20 @@
       "failures": []
     },
     "load_slot_route_limit_guard": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "load-slot route boundary keeps slot5/right-bottom save-state candidate classified as route-harness blocked",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "load-slot-route-limit-current.md",
         "refresh_markdown": "captures\\current\\load-slot-route-limit-current.md",
         "refresh_json": "captures\\current\\load-slot-route-limit-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: load_slot_route_limit_guard"
+      ]
     },
     "load_slot_route_limit_guard_tests": {
       "passed": true,
@@ -1237,18 +1255,20 @@
       "failures": []
     },
     "load_slot_transition_geometry_guard": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "row geometry guard for the rows 3-5 load-slot transition plan",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "load-slot-transition-geometry-guard-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-geometry-guard-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-geometry-guard-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: load_slot_transition_geometry_guard"
+      ]
     },
     "load_slot_transition_geometry_guard_tests": {
       "passed": true,
@@ -1265,18 +1285,20 @@
       "failures": []
     },
     "load_slot_transition_probe_preview": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "row-specific generated CDB preview for the rows 3-5 load-slot transition probes",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "load-slot-transition-probe-preview-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-probe-preview-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-probe-preview-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: load_slot_transition_probe_preview"
+      ]
     },
     "load_slot_transition_probe_preview_tests": {
       "passed": true,
@@ -1293,18 +1315,20 @@
       "failures": []
     },
     "load_slot_transition_readiness": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "aggregate hidden transition readiness matrix for rows 3-5",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "load-slot-transition-readiness-current.md",
         "refresh_markdown": "captures\\current\\load-slot-transition-readiness-current.md",
         "refresh_json": "captures\\current\\load-slot-transition-readiness-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: load_slot_transition_readiness"
+      ]
     },
     "load_slot_transition_readiness_tests": {
       "passed": true,
@@ -1419,18 +1443,20 @@
       "failures": []
     },
     "castle_overview_baseline_recheck": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "current fixed castle overview and barracks no-popup baselines remain attached",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "castle-overview-baseline-recheck-current.md",
         "refresh_markdown": "captures\\current\\castle-overview-baseline-recheck-current.md",
         "refresh_json": "captures\\current\\castle-overview-baseline-recheck-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: castle_overview_baseline_recheck"
+      ]
     },
     "castle_overview_baseline_recheck_tests": {
       "passed": true,
@@ -1587,18 +1613,20 @@
       "failures": []
     },
     "docs_consistency_guard": {
-      "passed": true,
+      "passed": false,
       "summary": {
         "purpose": "current docs and handoff files match generated stable-stage/no-popup/manual-proof facts",
         "expected_pass": true,
-        "observed_passed": true,
+        "observed_passed": false,
         "expected_markdown": "docs-consistency-current.md",
         "refresh_markdown": "captures\\current\\docs-consistency-current.md",
         "refresh_json": "captures\\current\\docs-consistency-current.json",
         "linked_from_evidence_index": true,
         "markdown_exists": true
       },
-      "failures": []
+      "failures": [
+        "refresh check is not passing: docs_consistency_guard"
+      ]
     },
     "docs_consistency_guard_tests": {
       "passed": true,
@@ -1615,5 +1643,20 @@
       "failures": []
     }
   },
-  "failures": []
+  "failures": [
+    "stable_stage_guard: refresh check is not passing: stable_stage_guard",
+    "python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
+    "hd_soak_execution_boundary: refresh check is not passing: hd_soak_execution_boundary",
+    "resolution_manifest_guard: refresh check is not passing: resolution_manifest_guard",
+    "handoff_freshness_guard: refresh check is not passing: handoff_freshness_guard",
+    "right_bottom_blocker_triage: refresh check is not passing: right_bottom_blocker_triage",
+    "right_bottom_slot_fixture_plan: refresh check is not passing: right_bottom_slot_fixture_plan",
+    "right_bottom_slot_fixture_runtime_plan: refresh check is not passing: right_bottom_slot_fixture_runtime_plan",
+    "load_slot_route_limit_guard: refresh check is not passing: load_slot_route_limit_guard",
+    "load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard",
+    "load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview",
+    "load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness",
+    "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
+    "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
+  ]
 }

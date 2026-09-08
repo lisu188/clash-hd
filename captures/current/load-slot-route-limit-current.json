@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-18T22:13:53+02:00",
-  "passed": true,
+  "generated_at": "2026-09-08T11:20:25+02:00",
+  "passed": false,
   "runtime_policy": "repo-only; reads decompilation text, harness text, and existing hidden-desktop CDB artifacts; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "guard_policy": "passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the current slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame",
   "promotion_ready": false,
@@ -25,16 +25,19 @@
   "harness": {
     "path": "scripts\\cdb\\run_cdb_surface_dump.ps1",
     "exists": true,
-    "passed": true,
+    "passed": false,
     "markers": {
       "validate_range_0_9": true,
-      "load_mouse_x": true,
-      "load_mouse_y_formula": true,
+      "load_mouse_x": false,
+      "load_mouse_y_formula": false,
       "load_mouse_raw_x": true,
       "load_mouse_raw_y": true,
       "load_slot_replacement": true
     },
-    "failures": []
+    "failures": [
+      "missing marker load_mouse_x: $loadMouseX = 320",
+      "missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)"
+    ]
   },
   "slot_status": {
     "slot2_success": {
@@ -344,7 +347,7 @@
   },
   "summary": {
     "static_load_rows": "0..9",
-    "harness_mouse_formula": "x=320, y=166 + 22 * LoadSlot",
+    "harness_mouse_formula": null,
     "archived_success_slots": [
       2
     ],
@@ -364,5 +367,8 @@
     "cohort_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter"
   },
   "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\scripts\\cdb\\..\\..\\captures\\archive\\cdb-surface-dump-20260712-153805\\surface.png",
-  "failures": []
+  "failures": [
+    "harness: missing marker load_mouse_x: $loadMouseX = 320",
+    "harness: missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)"
+  ]
 }

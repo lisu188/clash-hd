@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-18T22:14:23+02:00",
-  "passed": true,
+  "generated_at": "2026-09-08T11:21:09+02:00",
+  "passed": false,
   "stage": "castlecenter-all",
   "promotion_status": "validation_stage_only",
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, or visible windows",
@@ -104,7 +104,7 @@
       "failures": []
     },
     "overview_visual": {
-      "generated_at": "2026-07-18T22:14:23+02:00",
+      "generated_at": "2026-09-08T11:21:09+02:00",
       "run_dir": "captures\\archive\\cdb-surface-dump-20260712-144019",
       "log": "captures\\archive\\cdb-surface-dump-20260712-144019\\cdb-surface-dump.log",
       "screenshot": "captures\\archive\\cdb-surface-dump-20260712-144019\\surface.png",
@@ -564,7 +564,7 @@
       "passed": true,
       "run": "captures\\archive\\cdb-surface-dump-20260712-144151",
       "log": "captures\\archive\\cdb-surface-dump-20260712-144151\\cdb-surface-dump.log",
-      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144151\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144151\\surface.png",
       "ready": true,
       "ready_size": [
         800,
@@ -630,7 +630,7 @@
       "label": "visible-command multi-hit",
       "run": "captures\\archive\\cdb-surface-dump-20260712-144245",
       "log": "captures\\archive\\cdb-surface-dump-20260712-144245\\cdb-surface-dump.log",
-      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144245\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144245\\surface.png",
       "ready": true,
       "ready_size": [
         800,
@@ -683,246 +683,25 @@
       "failures": []
     },
     "owner_records": {
-      "passed": true,
+      "passed": false,
       "raw": "captures\\current\\castle-owner-records-current.raw",
-      "record_count": 64,
-      "active_records": 4,
-      "nonempty_records": 64,
-      "interesting_records": 0,
-      "flag_1a0_values": [
-        0
-      ],
-      "flag_1a4_values": [
-        0
-      ],
-      "failures": []
+      "failures": [
+        "missing owner records raw dump: captures\\current\\castle-owner-records-current.raw"
+      ]
     },
     "forced_hitmap": {
-      "passed": true,
+      "passed": false,
       "raw": "captures\\archive\\castle-overview-hitmap-flags1f.raw",
-      "present_raw_ids": [
-        "0xF8",
-        "0xF9",
-        "0xFA",
-        "0xFB",
-        "0xFC",
-        "0xFD",
-        "0xFE",
-        "0xFF"
-      ],
-      "visible_command_raws": [
-        "0xF8",
-        "0xFE",
-        "0xFF"
-      ],
-      "dormant_command_raws": [
-        "0xFA",
-        "0xFB",
-        "0xFC",
-        "0xFD"
-      ],
-      "values": {
-        "0xF8": {
-          "raw": 248,
-          "command": 134,
-          "count": 18356,
-          "present": true,
-          "bbox": [
-            181,
-            47,
-            457,
-            223
-          ],
-          "first_native": [
-            291,
-            47
-          ],
-          "first_displayed": [
-            371,
-            107
-          ],
-          "mean_native": [
-            328.9163216387012,
-            153.1588581390281
-          ]
-        },
-        "0xF9": {
-          "raw": 249,
-          "command": null,
-          "count": 7524,
-          "present": true,
-          "bbox": [
-            31,
-            89,
-            602,
-            171
-          ],
-          "first_native": [
-            57,
-            89
-          ],
-          "first_displayed": [
-            137,
-            149
-          ],
-          "mean_native": [
-            449.0717703349282,
-            126.20162147793727
-          ]
-        },
-        "0xFA": {
-          "raw": 250,
-          "command": 153,
-          "count": 19447,
-          "present": true,
-          "bbox": [
-            24,
-            74,
-            375,
-            277
-          ],
-          "first_native": [
-            90,
-            74
-          ],
-          "first_displayed": [
-            170,
-            134
-          ],
-          "mean_native": [
-            202.6916233866406,
-            191.68956651411528
-          ]
-        },
-        "0xFB": {
-          "raw": 251,
-          "command": 156,
-          "count": 13545,
-          "present": true,
-          "bbox": [
-            458,
-            163,
-            639,
-            277
-          ],
-          "first_native": [
-            465,
-            163
-          ],
-          "first_displayed": [
-            545,
-            223
-          ],
-          "mean_native": [
-            549.7182724252492,
-            216.6076042820229
-          ]
-        },
-        "0xFC": {
-          "raw": 252,
-          "command": 159,
-          "count": 4859,
-          "present": true,
-          "bbox": [
-            224,
-            269,
-            340,
-            340
-          ],
-          "first_native": [
-            270,
-            269
-          ],
-          "first_displayed": [
-            350,
-            329
-          ],
-          "mean_native": [
-            271.9164437126981,
-            304.5575221238938
-          ]
-        },
-        "0xFD": {
-          "raw": 253,
-          "command": 166,
-          "count": 6265,
-          "present": true,
-          "bbox": [
-            476,
-            255,
-            623,
-            319
-          ],
-          "first_native": [
-            519,
-            255
-          ],
-          "first_displayed": [
-            599,
-            315
-          ],
-          "mean_native": [
-            545.7575418994413,
-            286.1980845969673
-          ]
-        },
-        "0xFE": {
-          "raw": 254,
-          "command": 99,
-          "count": 43533,
-          "present": true,
-          "bbox": [
-            18,
-            153,
-            233,
-            426
-          ],
-          "first_native": [
-            147,
-            153
-          ],
-          "first_displayed": [
-            227,
-            213
-          ],
-          "mean_native": [
-            130.11460271518158,
-            300.6902809363012
-          ]
-        },
-        "0xFF": {
-          "raw": 255,
-          "command": 135,
-          "count": 13307,
-          "present": true,
-          "bbox": [
-            458,
-            345,
-            639,
-            479
-          ],
-          "first_native": [
-            555,
-            345
-          ],
-          "first_displayed": [
-            635,
-            405
-          ],
-          "mean_native": [
-            551.8748778838205,
-            418.7637333734125
-          ]
-        }
-      },
-      "failures": []
+      "failures": [
+        "missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+      ]
     },
     "dormant_multihit": {
       "passed": true,
       "label": "dormant-command multi-hit",
       "run": "captures\\archive\\cdb-surface-dump-20260712-144327",
       "log": "captures\\archive\\cdb-surface-dump-20260712-144327\\cdb-surface-dump.log",
-      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144327\\surface.png",
+      "screenshot": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\archive\\cdb-surface-dump-20260712-144327\\surface.png",
       "ready": true,
       "ready_size": [
         800,
@@ -987,5 +766,8 @@
       "failures": []
     }
   },
-  "failures": []
+  "failures": [
+    "owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+    "forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+  ]
 }

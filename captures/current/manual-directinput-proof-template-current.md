@@ -1,7 +1,7 @@
 # Manual DirectInput Proof Template
 
 - Overall: PASS
-- Generated: `2026-07-18T22:14:42+02:00`
+- Generated: `2026-09-08T11:21:49+02:00`
 - Runtime policy: repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: manual proof template must document the accepted manifest shape while remaining invalid as proof until approved manual evidence replaces every placeholder
 - Candidate path policy: candidate_path must be a freshly built, hashed executable under C:\ClashTests; never use C:\Clash\clash95.exe or a repository-local executable
@@ -29,7 +29,7 @@
 
 ## Why The Template Fails Closed
 
-- manual DirectInput proof evidence_class must be manual_directinput
+- manual DirectInput proof evidence_class must be one of manual_directinput, approved_guest_win98_directdraw
 - manual DirectInput proof must record approved_visible_runtime=true
 - manual DirectInput proof must include a non-placeholder approval_record
 - manual DirectInput proof must include a non-placeholder candidate_path

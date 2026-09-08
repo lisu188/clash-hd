@@ -2,13 +2,13 @@
 
 - Overall: FAIL
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd`
-- Candidate SHA: `34AF0AEF07B11D2336B91AB33BFB9B72F86A3CBA2F1312A66CFED25BF0BE1D66`
-- Runtime candidate: `C:\ClashTests\battle-hd-1280x720\candidate\clash95_hd_surfdump_20260908_105408.exe`
-- Byte-verification candidate: `C:\ClashTests\battle-hd-1280x720\clash95_battlehd_review_v2.exe` (same SHA-256)
+- Candidate SHA: `7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47`
+- Runtime candidate: `C:\ClashTests\battle-hd-1280x720\candidate\clash95_hd_surfdump_20260908_111326.exe`
+- Byte-verification candidate: `C:\ClashTests\battle-hd-1280x720\clash95_battlehd_review_v3.exe` (same SHA-256)
 - Resolution: `[1280, 720]`
 - Evidence class: `forced_validation`
 - Launch/input: `hidden-desktop-cdb` / `debugger_memory_register_writes_and_direct_calls`
-- Wrapper: `memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=A515F5D101B73F06786FCEBE44921062F1D10A0C5DA403D9BD424EC3957B2EBF`
+- Wrapper: `memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=0F9644A40E1969C6B162354CD367FCE1A5EB192225FF50AE95F4551628580053`
 - Promotion: `validation_stage_only`
 - Stable stage should change: `False`
 
@@ -67,11 +67,12 @@ These forced debugger calls cannot satisfy end-to-end input, rendering, modal, l
 
 ## Missing or failing evidence
 
-- The previously observed right-edge battle-sidebar residue is absent from this candidate's hidden post-return PNG. This verifies removal of that specific software-surface residue, not full map composition or visible-wrapper rendering.
-- New queued/post-poll markers separate cursor assignment from polling: banner, modal, and results queue(576,360), while banner/results polls produce(4,360). The parser keeps those two cursor-return checks unproven.
+- Inspection of this run's saved hidden post-return PNG confirms the earlier right-edge battle-sidebar residue is absent. This is evidence for removal of that specific software-surface residue; the mostly black right-hand map region does not prove full map composition or visible-wrapper rendering.
+- Actual queued/post-poll markers show banner, modal, and results queue (576,360), while the banner and results polls produce (4,360). Modal return retains (576,360). The banner/results cursor-return checks remain unproven.
 - No natural or manual command input is inferred from direct callback calls.
 - The hidden software surface does not prove final visible-wrapper colors, composed HUD/minimap layers, or natural map input.
 - Banner and results queued logical cursor(576,360), but their immediate input polls replaced X with4. Modal cursor retained(576,360); visible input behavior remains unproven.
+- CDB emitted its command-skipping notice after SURFDUMP_HOST_READY, followed by another map-redraw-return/HOST_READY record. Claims use the recorded completed route and host dump only; this does not establish a natural post-return run interval.
 - route_catalog: owner BANNER was not observed
 - route_catalog: owner CAMERA was not observed
 - route_catalog: owner DIALOG was not observed

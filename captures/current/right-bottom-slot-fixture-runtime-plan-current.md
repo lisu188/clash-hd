@@ -1,7 +1,7 @@
 # Right-Bottom Slot Fixture Runtime Plan
 
-- Status: PASS
-- Generated: `2026-07-18T22:13:53+02:00`
+- Status: FAIL
+- Generated: `2026-09-08T11:20:25+02:00`
 - Runtime policy: repo-only command planner; reads generated JSON and writes JSON/Markdown reports; does not run PowerShell, copy saves, launch Clash95, CDB, wrappers, or visible windows
 - Guard policy: passes only when the right-bottom slot fixture remains non-promoting, the dry-run preparation helper is source-guarded, and the future CDB command stays hidden-desktop with an isolated workdir/candidate dir
 - Fixture plan: `captures\current\right-bottom-slot-fixture-plan-current.json`
@@ -68,3 +68,7 @@ python 'tools\right_bottom_slot_fixture_result_summary.py' 'captures\cdb-surface
 - `NOWNER_4338E0_ENTRY or owner/action renderer rows`
 - `fixture result summary status=owner_action_reached`
 - `no AV_SURFDUMP rows`
+
+## Failures
+
+- right-bottom slot fixture plan is not passing

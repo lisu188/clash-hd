@@ -1,19 +1,19 @@
 # HD Endurance Next Actions
 
 - Overall: PASS
-- Generated: `2026-07-18T20:14:49.217175+00:00`
+- Generated: `2026-09-08T09:22:06.644302+00:00`
 - Runtime policy: repo-only endurance next-action triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
-- Status: `waiting_for_explicit_visible_runtime_approval`
+- Status: `repo_only_followup_available`
 - Current short step: `short2_map_idle`
 - Full game complete: `False`
-- Open requirements: `6`
+- Open requirements: `8`
 
 ## Next Action
 
-- `rerun_short2_map_idle_soak`: `approval_required`
-- Requires visible runtime: `True`
-- Requires explicit user approval: `True`
-- Why: The previous visible run lost its application/windowed target window while the process stayed alive. The harness now grace-retries transient window loss, verifies the menu before route input, drives menu clicks with the pulse-mode engine-aim mechanism, and verifies the gameplay map on screen, while still stopping at the first persistently missing live target window.
+- `inspect_short2_map_idle_triage`: `triage_followup_required`
+- Requires visible runtime: `False`
+- Requires explicit user approval: `False`
+- Why: inspect window_health_samples and wrapper transitions at the first missing-window phase before requesting any visible rerun
 
 Current step artifacts:
 
@@ -24,27 +24,12 @@ Current step artifacts:
 - Post-run guard missing: `False`
 - Post-run triage missing: `False`
 
-Safe dry-run command:
+Triage:
 
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\smoke\run_hd_soak.ps1 -Tier short2 -Route map-idle -ReportJson captures\current\hd-soak-short2-map-idle-current.json -ReportMarkdown captures\current\hd-soak-short2-map-idle-current.md -IntroSkipClickMode postmessage -IntroSkipClicks 8 -SkipPulses 4 -SampleIntervalSec 15 -MaxInputDriftPx 1 -MinNonblackPercent 10 -MinUniqueSampleColors 8 -MaxArtifactMB 250 -MaxWorkingSetGrowthMB 64 -MaxPrivateMemoryGrowthMB 64 -MaxHandleGrowth 128 -Json
-```
-
-Approval-gated runtime command (plan-verified):
-
-- Dry-run plan status: `ready_for_explicit_approval`
-- Candidate path: `C:\ClashTests\hd-soak\clash95_hd_soak_20260718_221448.exe`
-- Output root: `C:\ClashCaptures\hd-soak`
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'C:\Users\andrz\git\clash-hd\scripts\smoke\run_hd_soak.ps1' -InputExe 'C:\Clash\clash95.exe' -WorkDir 'C:\Clash' -Stage 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch' -Tier 'short2' -Route 'map-idle' -CandidateDir 'C:\ClashTests\hd-soak' -CandidateName 'clash95_hd_soak_20260718_221448.exe' -OutputRoot 'C:\ClashCaptures\hd-soak' -ReportJson 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.json' -ReportMarkdown 'C:\Users\andrz\git\clash-hd\captures\current\hd-soak-short2-map-idle-current.md' -IntroSkipClickMode 'postmessage' -IntroSkipClicks '8' -SkipPulses '4' -SampleIntervalSec '15' -MaxInputDriftPx '1' -MinNonblackPercent '10' -MinUniqueSampleColors '8' -MaxArtifactMB '250' -MaxWorkingSetGrowthMB '64' -MaxPrivateMemoryGrowthMB '64' -MaxHandleGrowth '128' -VisibleRuntimeApprovalExpiresUtc '2026-07-19T08:14:48.1109442+00:00' -VisibleRuntimeApprovalToken 'c46df7af08260701' -Execute -AllowVisibleRuntime -RequirePass -Json
-```
-
-Rejected legacy runtime command:
-
-- Safe to run: `False`
-- Reason: superseded by the current dry-run plan command with visible-runtime approval token
-- Command body: omitted from Markdown; retained in JSON for audit.
+- Classification: `window_missing_while_process_alive`
+- Next probe: inspect window_health_samples and wrapper transitions at the first missing-window phase before requesting any visible rerun
+- Final route marker: `confirm-load`
+- Candidate SHA-256: `5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33`
 
 Current failure:
 
@@ -80,15 +65,18 @@ Broad evidence refresh:
 
 ## Open Requirement Groups
 
+- `patch boundary`: `protected_stable_stage, no_speculative_promotion`
 - `endurance`: `long_soak_representative_routes`
 - `manual input`: `stable_menu_real_input, stable_hd_map_real_input`
 - `screen route`: `right_bottom_action_menu, castle_and_barracks_centered_input, tactical_battle_entry_return`
 
 ## Open Requirement Details
 
+- `protected_stable_stage` (`patch boundary`, `blocked`): stable-stage guard does not prove the protected boundary Next probe: fix stable-stage guard failures before considering any soak result
 - `long_soak_representative_routes` (`endurance`, `blocked`): 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing Next probe: add long-tier reports only after short2/short10/short30 are stable
 - `stable_menu_real_input` (`manual input`, `blocked`): menu-load proof remains pending manual DirectInput validation Next probe: collect approved manual menu-load proof or keep promotion blocked
 - `stable_hd_map_real_input` (`manual input`, `blocked`): HD map input proof remains pending manual DirectInput validation Next probe: collect approved manual map input proof after short soak is stable
 - `right_bottom_action_menu` (`screen route`, `blocked`): right-bottom action/menu remains validation-only or manual-proof blocked Next probe: replace debugger-forced action-click proof with natural or approved manual input proof
 - `castle_and_barracks_centered_input` (`screen route`, `blocked`): castle/barracks centered input remains validation-only or manual-proof blocked Next probe: collect approved centered castle/barracks input proof
-- `tactical_battle_entry_return` (`screen route`, `blocked`): battle evidence remains validation-only or missing visible click-to-callback proof Next probe: prove battle entry, UI use, return, and post-return map health on an approved route
+- `tactical_battle_entry_return` (`screen route`, `blocked`): battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion Next probe: prove battle entry, UI use, return, and post-return map health on an approved route
+- `no_speculative_promotion` (`patch boundary`, `blocked`): one or more promotion boundaries are not fail-closed Next probe: keep DEFAULT_STAGE unchanged until strict natural/manual/input and soak gates pass

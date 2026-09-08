@@ -1,12 +1,12 @@
 # Load Slot Route Limit Guard
 
-- Status: PASS
-- Generated: `2026-07-18T22:13:53+02:00`
+- Status: FAIL
+- Generated: `2026-09-08T11:20:25+02:00`
 - Runtime policy: repo-only; reads decompilation text, harness text, and existing hidden-desktop CDB artifacts; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: passes only when static evidence still shows a ten-row local load menu and integer save-file checks, the current harness still computes row clicks from 166 + 22 * LoadSlot, archived slot 2 reaches LOADSAVE/PlayGame, and archived slots 3-5 plus the current slot-5 right-bottom attempt all time out before force-select, force-accept, LOADSAVE, and PlayGame
 - Promotion ready: `False`
 - Static load rows: `0..9`
-- Harness mouse formula: `x=320, y=166 + 22 * LoadSlot`
+- Harness mouse formula: `None`
 - Archived success slots: `[2]`
 - Archived blocked slots: `[3, 4, 5]`
 - Recent slot-5 blocked: `True`
@@ -36,3 +36,8 @@ static code and harness parameters allow rows 0-9, but current archived hidden e
 - or use a direct-loader probe, but label it non-natural route evidence until menu selection is proven
 
 ![slot2 load route surface](C:\Users\andrz\git\clash-hd\scripts\cdb\..\..\captures\archive\cdb-surface-dump-20260712-153805\surface.png)
+
+## Failures
+
+- harness: missing marker load_mouse_x: $loadMouseX = 320
+- harness: missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)

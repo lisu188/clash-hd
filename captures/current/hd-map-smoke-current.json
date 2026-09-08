@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T22:13:29+02:00",
+  "generated_at": "2026-09-08T11:19:45+02:00",
   "captures_root": "captures\\archive",
   "patch_report_json": "captures\\current\\patch-stage-current-hd-map.json",
   "resolution": "800x600",
@@ -134,8 +134,8 @@
       "present": true,
       "passed": true,
       "run": "captures\\archive\\cdb-surface-dump-20260506-190037",
-      "mtime": "2026-07-12T08:17:43+02:00",
-      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
+      "mtime": "2026-09-06T13:23:43+02:00",
+      "screenshot": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-190037\\surface.png",
       "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
       "surface": {
         "RedrawSeq": 951,
@@ -189,8 +189,8 @@
       "present": true,
       "passed": true,
       "run": "captures\\archive\\cdb-surface-dump-20260506-201114",
-      "mtime": "2026-07-12T08:17:43+02:00",
-      "screenshot": "C:\\Users\\andrz\\git\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
+      "mtime": "2026-09-06T13:23:43+02:00",
+      "screenshot": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\archive\\cdb-surface-dump-20260506-201114\\surface.png",
       "candidate_sha256": "5E162FA81DF59533E0B99A0DCBC9EA24280DBEC46411AE871E968D6536C08B33",
       "surface": {
         "RedrawSeq": 951,

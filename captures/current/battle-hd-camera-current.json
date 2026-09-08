@@ -1,27 +1,27 @@
 {
   "schema": 1,
-  "generated_at": "2026-09-08T08:49:31.504575+00:00",
+  "generated_at": "2026-09-08T09:13:55.406076+00:00",
   "runtime_policy": "repo-only evidence parsing; launches no game, debugger, wrapper, or visible window",
   "passed": false,
   "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
-  "candidate": "C:\\ClashTests\\battle-hd-1280x720\\candidate\\clash95_hd_surfdump_20260908_104050.exe",
-  "candidate_sha256": "FACE6859084183EC1F221D966DF6FDB54756746324D136E967AF6CE9A2E44DAA",
+  "candidate": "C:\\ClashTests\\battle-hd-1280x720\\candidate\\clash95_hd_surfdump_20260908_111125.exe",
+  "candidate_sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
   "resolution": [
     1280,
     720
   ],
   "patch_verification": {
-    "report": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\patch-stage.json",
-    "candidate": "C:\\ClashTests\\battle-hd-1280x720\\clash95_battlehd_review.exe",
-    "candidate_sha256": "FACE6859084183EC1F221D966DF6FDB54756746324D136E967AF6CE9A2E44DAA",
-    "patch_count": 275,
+    "report": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\patch-stage.json",
+    "candidate": "C:\\ClashTests\\battle-hd-1280x720\\clash95_battlehd_review_v3.exe",
+    "candidate_sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
+    "patch_count": 283,
     "status_counts": {
-      "patched": 275
+      "patched": 283
     },
     "binding": "identical executable SHA-256; runtime and verification paths are recorded independently"
   },
   "runtime_context": {
-    "wrapper": "memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=CB7F65867E9AFAA2DC5659D9B2647E26919B328205970858B56872793BEA9654",
+    "wrapper": "memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=59E9FC28F1F06EE3D673DF3BD2C79CCEB2330C5AF821E482AA26B64092A2D3D8",
     "launch_mode": "hidden-desktop-cdb",
     "input_method": "debugger_memory_register_writes_and_direct_calls",
     "input_evidence_class": "forced_hidden_camera_fixture",
@@ -31,35 +31,39 @@
       "timed_out": false,
       "cdb_exit_code": null,
       "stopped_after_dump": true,
-      "dump_method": "host-readprocessmemory"
+      "dump_method": "host-readprocessmemory",
+      "cleanup_passed": true,
+      "remaining_process_ids": [],
+      "runtime_error": null
     }
   },
   "source_artifacts": {
     "harness_summary": {
-      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\summary.json",
-      "sha256": "391801D1F6FCB5F60B71D9D89F3DB9FA4709890D6C70474FA1477D3623DF448C"
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\summary.json",
+      "sha256": "8B4904256C1219030269E7F5E0E0B182007E3AEBD7186711631306C5FDF14637"
     },
     "generated_probe": {
-      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\clash95_surface_dump_probe.generated.cdb",
-      "sha256": "D3563C4A7771E10525CE165CC6A1DDD857CCB43C86139277BD6029AF636BB2A5"
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\clash95_surface_dump_probe.generated.cdb",
+      "sha256": "755D66BB098C5E36DEA950DC34D1B0850EC77A077A0CD6F7FB4D666A9E03C978"
     },
     "patch_stage_report": {
-      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\patch-stage.json",
-      "sha256": "D88F618AF8632DEF68E7AD22742274245102190207D2BE530BB82A4B6B1F623D"
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\patch-stage.json",
+      "sha256": "99FD9418C7A6908188AB0C426FBD35AF81117C4E901F97AE0D8983F48AF8BCCC"
     },
     "software_surface_raw": {
-      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\surface.raw",
-      "sha256": "164AC9B3FA99F8EEF9E89AEA3778809C641FE709CA0D5B38BCCCA30E50DB5D57"
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\surface.raw",
+      "sha256": "DD0F23777E2C56FDEE5FCC0E1B516D8C25E1F138D23549185687E7508271AF78"
     },
     "software_surface_png": {
-      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\surface.png",
-      "sha256": "180A815179A34C8CFEB25A4D00BC625E41B20BF806F22A224B7EFF0F24D8DFFA"
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\surface.png",
+      "sha256": "EA045D44100C64A2B41193A711FA2CA8B7078E7EB319B39BEE4D0E441672E882"
     }
   },
   "recorded_observations": [],
   "limitations": [
     "Width17/20 are explicit debugger fixtures, not naturally generated arena dimensions.",
-    "No rendering occurred while fixture arena state was installed. Natural scrolling, real input, and final composition remain unproven."
+    "No rendering occurred while fixture arena state was installed. Natural scrolling, real input, and final composition remain unproven.",
+    "CDB emitted its command-skipping notice after the completed measurement and SURFDUMP_HOST_READY markers; claims are restricted to recorded measurements and the host dump, with no post-dump execution inference."
   ],
   "visual_mode": "unproven",
   "promotion_status": "validation_stage_only",
@@ -67,9 +71,9 @@
   "evidence_class": "forced_validation",
   "manual_input_claim_accepted": false,
   "manual_input_note": "No manual release approval is inferred from input mechanism or parser success.",
-  "run_manifest": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\battle-hd-run.json",
-  "log": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\cdb-surface-dump.log",
-  "log_sha256": "1816F5D8D952FF62F9ED052C899985D48E7E5636E16754B2433F08EF6AA5CD01",
+  "run_manifest": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\battle-hd-run.json",
+  "log": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\cdb-surface-dump.log",
+  "log_sha256": "10B2AE7D3C5E848D0FA2D96479DEEAA60E29CC07D7285A2BFD782C42F2A72574",
   "claims": {
     "identity": {
       "passed": true,
@@ -285,6 +289,31 @@
         "measurement_matches": false,
         "note": "The logical cursor must actually read (576,360) after modal restoration."
       },
+      "results_geometry": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "The shared results message measured native size at the battlefield center while battle-specific scope was1."
+      },
+      "results_copy_rectangles": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Results background save/restore copy calls used matching rectangles and the same temporary buffer; final pixels remain separate."
+      },
+      "results_scope_restore": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "After results dismissal, battle-specific scope returned0 and the renderer matched its saved pointer."
+      },
+      "cursor_targets_queued": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Banner, modal, and results queued(576,360) before the immediate input poll; this does not prove the poll retained that target."
+      },
+      "results_cursor_return": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "The results cursor must still read(576,360) after its immediate input poll."
+      },
       "owner_hook_and_map_state_restore": {
         "passed": false,
         "measurement_matches": false,
@@ -302,6 +331,9 @@
     "observed_modal_return_mouse": [],
     "observed_owner_state": [],
     "observed_map_poll_state": [],
+    "observed_results_geometry": [],
+    "observed_cursor_queued": [],
+    "observed_cursor_post_poll": [],
     "post_return_composition_proven": false,
     "acceptance_claims_satisfied_by_forced_lifecycle": false
   },

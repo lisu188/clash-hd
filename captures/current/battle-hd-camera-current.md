@@ -2,13 +2,13 @@
 
 - Overall: FAIL
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd`
-- Candidate SHA: `FACE6859084183EC1F221D966DF6FDB54756746324D136E967AF6CE9A2E44DAA`
-- Runtime candidate: `C:\ClashTests\battle-hd-1280x720\candidate\clash95_hd_surfdump_20260908_104050.exe`
-- Byte-verification candidate: `C:\ClashTests\battle-hd-1280x720\clash95_battlehd_review.exe` (same SHA-256)
+- Candidate SHA: `7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47`
+- Runtime candidate: `C:\ClashTests\battle-hd-1280x720\candidate\clash95_hd_surfdump_20260908_111125.exe`
+- Byte-verification candidate: `C:\ClashTests\battle-hd-1280x720\clash95_battlehd_review_v3.exe` (same SHA-256)
 - Resolution: `[1280, 720]`
 - Evidence class: `forced_validation`
 - Launch/input: `hidden-desktop-cdb` / `debugger_memory_register_writes_and_direct_calls`
-- Wrapper: `memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=CB7F65867E9AFAA2DC5659D9B2647E26919B328205970858B56872793BEA9654`
+- Wrapper: `memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=59E9FC28F1F06EE3D673DF3BD2C79CCEB2330C5AF821E482AA26B64092A2D3D8`
 - Promotion: `validation_stage_only`
 - Stable stage should change: `False`
 
@@ -73,6 +73,11 @@ Arena widths17/20 and unit0 coordinates were forced only around direct clamp/rec
 | enabled_callback_state | UNPROVEN | Unit type and descriptor state were forced before a direct callback; returned state is observed, without physical click or grid-action proof. |
 | modal_yes_and_render_restore | UNPROVEN | Centered modal geometry, directly forced Yes callback result, and render-pointer restoration were observed in order; No and real input remain unproven. |
 | modal_cursor_return | UNPROVEN | The logical cursor must actually read (576,360) after modal restoration. |
+| results_geometry | UNPROVEN | The shared results message measured native size at the battlefield center while battle-specific scope was1. |
+| results_copy_rectangles | UNPROVEN | Results background save/restore copy calls used matching rectangles and the same temporary buffer; final pixels remain separate. |
+| results_scope_restore | UNPROVEN | After results dismissal, battle-specific scope returned0 and the renderer matched its saved pointer. |
+| cursor_targets_queued | UNPROVEN | Banner, modal, and results queued(576,360) before the immediate input poll; this does not prove the poll retained that target. |
+| results_cursor_return | UNPROVEN | The results cursor must still read(576,360) after its immediate input poll. |
 | owner_hook_and_map_state_restore | UNPROVEN | Battle owner hook/input bounds matched entry; after Unit_Attack continuation the map poll also matched entry render pointer. This does not prove correct restored pixels or map input. |
 | results_and_forced_map_redraw | UNPROVEN | Results and their return preceded the restored map poll and a direct map-redraw return; this is a forced lifecycle diagnostic. |
 
@@ -80,6 +85,7 @@ Arena widths17/20 and unit0 coordinates were forced only around direct clamp/rec
 
 - Width17/20 are explicit debugger fixtures, not naturally generated arena dimensions.
 - No rendering occurred while fixture arena state was installed. Natural scrolling, real input, and final composition remain unproven.
+- CDB emitted its command-skipping notice after the completed measurement and SURFDUMP_HOST_READY markers; claims are restricted to recorded measurements and the host dump, with no post-dump execution inference.
 - route_catalog: owner BANNER was not observed
 - route_catalog: owner CAMERA was not observed
 - route_catalog: owner DIALOG was not observed

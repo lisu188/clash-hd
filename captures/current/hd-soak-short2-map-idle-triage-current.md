@@ -1,7 +1,7 @@
 # HD Soak Failure Triage
 
 - Overall: FAIL
-- Generated: `2026-07-18T20:14:47.245634+00:00`
+- Generated: `2026-09-08T09:22:01.274600+00:00`
 - Runtime policy: repo-only soak failure triage; does not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows
 - Source report: `captures\current\hd-soak-short2-map-idle-current.json`
 - Source selection: `None`
@@ -40,21 +40,6 @@
 - Cursor probes checked: `1`
 - Foreground-denied attempts: `0`
 - Engine cursor responded at least once: `True`
-
-## Hidden CDB Follow-up
-
-- Matched: `True`
-- Status: `cdb_exit_not_reproduced_hidden_memory_proxy`
-- Summary: `C:\ClashCaptures\hd-soak-cdb-crash\cdb-surface-dump-20260715-070814\summary.json`
-- Scope limit: The hidden memory-only DirectDraw proxy differs from the approved application/windowed wrapper plus visible input and capture path, so this pass does not clear or replace the visible unexpected-exit failure.
-
-## Windows Error Reporting Follow-up
-
-- Matched: `True`
-- Status: `application_hang_confirmed_wer_closed`
-- Event: `AppHangB1`
-- Window-health mitigation ready: `True`
-- Scope limit: WER proves an application hang and OS closure, but provides no readable archived stack under the current ACL and does not identify which route step or wrapper interaction first stopped responding.
 
 ## Last Evidence
 

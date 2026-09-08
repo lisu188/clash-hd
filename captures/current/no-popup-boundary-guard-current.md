@@ -1,7 +1,7 @@
 # No-Popup Boundary Guard
 
-- Overall: PASS
-- Generated: `2026-07-18T22:14:51+02:00`
+- Overall: FAIL
+- Generated: `2026-09-08T11:22:12+02:00`
 - Runtime policy: repo-only aggregate inspection; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows
 - Guard policy: current refresh must include all no-popup boundary reports and the evidence index must link each report
 - Evidence index: `captures\current\hd-map-evidence-current.md`
@@ -11,7 +11,8 @@
 
 ## Required Reports
 
-- `stable_stage_guard`: `PASS` report=`captures\current\stable-stage-guard-current.md` linked=`True`
+- `stable_stage_guard`: `FAIL` report=`captures\current\stable-stage-guard-current.md` linked=`True`
+  - refresh check is not passing: stable_stage_guard
 - `exe_artifact_guard`: `PASS` report=`captures\current\exe-artifact-guard-current.md` linked=`True`
 - `surface_dump_policy_guard`: `PASS` report=`captures\current\surface-dump-policy-guard-current.md` linked=`True`
 - `visible_runtime_launcher_guard`: `PASS` report=`captures\current\visible-runtime-launcher-guard-current.md` linked=`True`
@@ -25,9 +26,11 @@
 - `no_visible_runtime_guard_tests`: `PASS` report=`captures\current\no-visible-runtime-guard-tests-current.md` linked=`True`
 - `no_popup_guard_tests`: `PASS` report=`captures\current\no-popup-guard-tests-current.md` linked=`True`
 - `visible_runtime_launcher_guard_tests`: `PASS` report=`captures\current\visible-runtime-launcher-guard-tests-current.md` linked=`True`
-- `python_runtime_safety_guard`: `PASS` report=`captures\current\python-runtime-safety-current.md` linked=`True`
+- `python_runtime_safety_guard`: `FAIL` report=`captures\current\python-runtime-safety-current.md` linked=`True`
+  - refresh check is not passing: python_runtime_safety_guard
 - `python_runtime_safety_guard_tests`: `PASS` report=`captures\current\python-runtime-safety-tests-current.md` linked=`True`
-- `hd_soak_execution_boundary`: `PASS` report=`captures\current\hd-soak-execution-boundary-current.md` linked=`True`
+- `hd_soak_execution_boundary`: `FAIL` report=`captures\current\hd-soak-execution-boundary-current.md` linked=`True`
+  - refresh check is not passing: hd_soak_execution_boundary
 - `hd_soak_execution_boundary_tests`: `PASS` report=`captures\current\hd-soak-execution-boundary-tests-current.md` linked=`True`
 - `patch_definition_guard`: `PASS` report=`captures\current\patch-definition-current.md` linked=`True`
 - `patch_definition_guard_tests`: `PASS` report=`captures\current\patch-definition-tests-current.md` linked=`True`
@@ -39,7 +42,8 @@
 - `launcher_policy_guard_tests`: `PASS` report=`captures\current\launcher-policy-guard-tests-current.md` linked=`True`
 - `patch_resolution_tests`: `PASS` report=`captures\current\patch-resolution-tests-current.md` linked=`True`
 - `launcher_core_tests`: `PASS` report=`captures\current\launcher-core-tests-current.md` linked=`True`
-- `resolution_manifest_guard`: `PASS` report=`captures\current\resolution-manifest-guard-current.md` linked=`True`
+- `resolution_manifest_guard`: `FAIL` report=`captures\current\resolution-manifest-guard-current.md` linked=`True`
+  - refresh check is not passing: resolution_manifest_guard
 - `resolution_manifest_guard_tests`: `PASS` report=`captures\current\resolution-manifest-guard-tests-current.md` linked=`True`
 - `manual_directinput_checklist`: `PASS` report=`captures\current\manual-directinput-validation-checklist-current.md` linked=`True`
 - `manual_directinput_checklist_tests`: `PASS` report=`captures\current\manual-directinput-validation-checklist-tests-current.md` linked=`True`
@@ -51,11 +55,13 @@
 - `promotion_override_guard_tests`: `PASS` report=`captures\current\promotion-override-guard-tests-current.md` linked=`True`
 - `promotion_override_manifest`: `PASS` report=`captures\current\promotion-override-manifest-current.md` linked=`True`
 - `promotion_override_manifest_tests`: `PASS` report=`captures\current\promotion-override-manifest-tests-current.md` linked=`True`
-- `handoff_freshness_guard`: `PASS` report=`captures\current\handoff-freshness-guard-current.md` linked=`True`
+- `handoff_freshness_guard`: `FAIL` report=`captures\current\handoff-freshness-guard-current.md` linked=`True`
+  - refresh check is not passing: handoff_freshness_guard
 - `handoff_freshness_guard_tests`: `PASS` report=`captures\current\handoff-freshness-guard-tests-current.md` linked=`True`
 - `right_bottom_compose_promotion_decision_tests`: `PASS` report=`captures\current\right-bottom-compose-promotion-decision-tests-current.md` linked=`True`
 - `right_bottom_compose_evidence_matrix_tests`: `PASS` report=`captures\current\right-bottom-compose-evidence-matrix-tests-current.md` linked=`True`
-- `right_bottom_blocker_triage`: `PASS` report=`captures\current\right-bottom-blocker-triage-current.md` linked=`True`
+- `right_bottom_blocker_triage`: `FAIL` report=`captures\current\right-bottom-blocker-triage-current.md` linked=`True`
+  - refresh check is not passing: right_bottom_blocker_triage
 - `right_bottom_blocker_triage_tests`: `PASS` report=`captures\current\right-bottom-blocker-triage-tests-current.md` linked=`True`
 - `right_bottom_visual_artifact_guard`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-current.md` linked=`True`
 - `right_bottom_visual_artifact_guard_tests`: `PASS` report=`captures\current\right-bottom-visual-artifact-guard-tests-current.md` linked=`True`
@@ -67,14 +73,17 @@
 - `right_bottom_grid_hit_probe_guard_tests`: `PASS` report=`captures\current\right-bottom-grid-hit-probe-guard-tests-current.md` linked=`True`
 - `right_bottom_natural_route_guard`: `PASS` report=`captures\current\right-bottom-natural-route-guard-current.md` linked=`True`
 - `right_bottom_natural_route_guard_tests`: `PASS` report=`captures\current\right-bottom-natural-route-guard-tests-current.md` linked=`True`
-- `right_bottom_slot_fixture_plan`: `PASS` report=`captures\current\right-bottom-slot-fixture-plan-current.md` linked=`True`
+- `right_bottom_slot_fixture_plan`: `FAIL` report=`captures\current\right-bottom-slot-fixture-plan-current.md` linked=`True`
+  - refresh check is not passing: right_bottom_slot_fixture_plan
 - `right_bottom_slot_fixture_plan_tests`: `PASS` report=`captures\current\right-bottom-slot-fixture-plan-tests-current.md` linked=`True`
 - `right_bottom_slot_fixture_script_guard`: `PASS` report=`captures\current\right-bottom-slot-fixture-script-guard-current.md` linked=`True`
 - `right_bottom_slot_fixture_script_guard_tests`: `PASS` report=`captures\current\right-bottom-slot-fixture-script-guard-tests-current.md` linked=`True`
-- `right_bottom_slot_fixture_runtime_plan`: `PASS` report=`captures\current\right-bottom-slot-fixture-runtime-plan-current.md` linked=`True`
+- `right_bottom_slot_fixture_runtime_plan`: `FAIL` report=`captures\current\right-bottom-slot-fixture-runtime-plan-current.md` linked=`True`
+  - refresh check is not passing: right_bottom_slot_fixture_runtime_plan
 - `right_bottom_slot_fixture_runtime_plan_tests`: `PASS` report=`captures\current\right-bottom-slot-fixture-runtime-plan-tests-current.md` linked=`True`
 - `right_bottom_slot_fixture_result_summary_tests`: `PASS` report=`captures\current\right-bottom-slot-fixture-result-summary-tests-current.md` linked=`True`
-- `load_slot_route_limit_guard`: `PASS` report=`captures\current\load-slot-route-limit-current.md` linked=`True`
+- `load_slot_route_limit_guard`: `FAIL` report=`captures\current\load-slot-route-limit-current.md` linked=`True`
+  - refresh check is not passing: load_slot_route_limit_guard
 - `load_slot_route_limit_guard_tests`: `PASS` report=`captures\current\load-slot-route-limit-tests-current.md` linked=`True`
 - `load_slot_timeout_phase`: `PASS` report=`captures\current\load-slot-timeout-phase-current.md` linked=`True`
 - `load_slot_timeout_phase_tests`: `PASS` report=`captures\current\load-slot-timeout-phase-tests-current.md` linked=`True`
@@ -84,11 +93,14 @@
 - `load_slot_transition_probe_guard_tests`: `PASS` report=`captures\current\load-slot-transition-probe-guard-tests-current.md` linked=`True`
 - `load_slot_transition_run_plan`: `PASS` report=`captures\current\load-slot-transition-run-plan-current.md` linked=`True`
 - `load_slot_transition_run_plan_tests`: `PASS` report=`captures\current\load-slot-transition-run-plan-tests-current.md` linked=`True`
-- `load_slot_transition_geometry_guard`: `PASS` report=`captures\current\load-slot-transition-geometry-guard-current.md` linked=`True`
+- `load_slot_transition_geometry_guard`: `FAIL` report=`captures\current\load-slot-transition-geometry-guard-current.md` linked=`True`
+  - refresh check is not passing: load_slot_transition_geometry_guard
 - `load_slot_transition_geometry_guard_tests`: `PASS` report=`captures\current\load-slot-transition-geometry-guard-tests-current.md` linked=`True`
-- `load_slot_transition_probe_preview`: `PASS` report=`captures\current\load-slot-transition-probe-preview-current.md` linked=`True`
+- `load_slot_transition_probe_preview`: `FAIL` report=`captures\current\load-slot-transition-probe-preview-current.md` linked=`True`
+  - refresh check is not passing: load_slot_transition_probe_preview
 - `load_slot_transition_probe_preview_tests`: `PASS` report=`captures\current\load-slot-transition-probe-preview-tests-current.md` linked=`True`
-- `load_slot_transition_readiness`: `PASS` report=`captures\current\load-slot-transition-readiness-current.md` linked=`True`
+- `load_slot_transition_readiness`: `FAIL` report=`captures\current\load-slot-transition-readiness-current.md` linked=`True`
+  - refresh check is not passing: load_slot_transition_readiness
 - `load_slot_transition_readiness_tests`: `PASS` report=`captures\current\load-slot-transition-readiness-tests-current.md` linked=`True`
 - `load_slot_transition_summary_tests`: `PASS` report=`captures\current\load-slot-transition-summary-tests-current.md` linked=`True`
 - `right_bottom_owner_flag_static_guard`: `PASS` report=`captures\current\right-bottom-owner-flag-static-guard-current.md` linked=`True`
@@ -97,7 +109,8 @@
 - `right_bottom_owner_flag_inventory_tests`: `PASS` report=`captures\current\right-bottom-owner-flag-inventory-tests-current.md` linked=`True`
 - `right_bottom_route_timing_guard`: `PASS` report=`captures\current\right-bottom-route-timing-guard-current.md` linked=`True`
 - `right_bottom_route_timing_guard_tests`: `PASS` report=`captures\current\right-bottom-route-timing-guard-tests-current.md` linked=`True`
-- `castle_overview_baseline_recheck`: `PASS` report=`captures\current\castle-overview-baseline-recheck-current.md` linked=`True`
+- `castle_overview_baseline_recheck`: `FAIL` report=`captures\current\castle-overview-baseline-recheck-current.md` linked=`True`
+  - refresh check is not passing: castle_overview_baseline_recheck
 - `castle_overview_baseline_recheck_tests`: `PASS` report=`captures\current\castle-overview-baseline-recheck-tests-current.md` linked=`True`
 - `castle_owner_records_summary_tests`: `PASS` report=`captures\current\castle-owner-records-summary-tests-current.md` linked=`True`
 - `castle_overview_evidence_matrix_tests`: `PASS` report=`captures\current\castle-overview-evidence-matrix-tests-current.md` linked=`True`
@@ -109,5 +122,23 @@
 - `castle_overview_probe_guard`: `PASS` report=`captures\current\castle-overview-probe-guard-current.md` linked=`True`
 - `castle_overview_probe_guard_tests`: `PASS` report=`captures\current\castle-overview-probe-guard-tests-current.md` linked=`True`
 - `stable_stage_guard_tests`: `PASS` report=`captures\current\stable-stage-guard-tests-current.md` linked=`True`
-- `docs_consistency_guard`: `PASS` report=`captures\current\docs-consistency-current.md` linked=`True`
+- `docs_consistency_guard`: `FAIL` report=`captures\current\docs-consistency-current.md` linked=`True`
+  - refresh check is not passing: docs_consistency_guard
 - `docs_consistency_guard_tests`: `PASS` report=`captures\current\docs-consistency-tests-current.md` linked=`True`
+
+## Failures
+
+- stable_stage_guard: refresh check is not passing: stable_stage_guard
+- python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard
+- hd_soak_execution_boundary: refresh check is not passing: hd_soak_execution_boundary
+- resolution_manifest_guard: refresh check is not passing: resolution_manifest_guard
+- handoff_freshness_guard: refresh check is not passing: handoff_freshness_guard
+- right_bottom_blocker_triage: refresh check is not passing: right_bottom_blocker_triage
+- right_bottom_slot_fixture_plan: refresh check is not passing: right_bottom_slot_fixture_plan
+- right_bottom_slot_fixture_runtime_plan: refresh check is not passing: right_bottom_slot_fixture_runtime_plan
+- load_slot_route_limit_guard: refresh check is not passing: load_slot_route_limit_guard
+- load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard
+- load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview
+- load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness
+- castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck
+- docs_consistency_guard: refresh check is not passing: docs_consistency_guard

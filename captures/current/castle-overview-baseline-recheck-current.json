@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-18T22:14:30+02:00",
-  "passed": true,
+  "generated_at": "2026-09-08T11:21:18+02:00",
+  "passed": false,
   "runtime_policy": "repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows",
   "checks": {
     "overview_visual_baseline": {
@@ -52,7 +52,7 @@
       "failures": []
     },
     "latest_castle_overview_matrix": {
-      "passed": true,
+      "passed": false,
       "stage": "castlecenter-all",
       "promotion_status": "validation_stage_only",
       "candidate_sha256": "1902213ADF825A7D7612A14C74AC5468BEBFCC4F00B43E60601FD8A832806DF6",
@@ -143,10 +143,16 @@
           "ok": true
         }
       ],
-      "failures": [],
+      "failures": [
+        "owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+        "forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+      ],
       "visible_multihit_completion_ok": true,
       "dormant_multihit_completion_ok": true
     }
   },
-  "failures": []
+  "failures": [
+    "latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+    "latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+  ]
 }
