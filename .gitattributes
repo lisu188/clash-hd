@@ -790,3 +790,7 @@
 /src/patcher/framed_modal_slots.py -text whitespace=cr-at-eol
 /src/patcher/pe_modal_slots_extension.py -text whitespace=cr-at-eol
 /tools/build_framed_modal_slots_candidate.py -text whitespace=cr-at-eol
+/tools/army_probe_startup.py -text whitespace=cr-at-eol
+/tools/complete_hd_army_selection_probe.py -text whitespace=cr-at-eol
+/tools/complete_hd_army_selection_trace.py -text whitespace=cr-at-eol
+/tools/complete_hd_army_movement_probe.py -text whitespace=cr-at-eol
