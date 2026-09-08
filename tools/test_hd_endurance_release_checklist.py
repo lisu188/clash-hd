@@ -39,12 +39,58 @@ def fixture_args(tmp: Path) -> argparse.Namespace:
     )
 
 
+def write_manual_fixture(args: argparse.Namespace, evidence_class: str = "manual_directinput") -> dict[str, Any]:
+    proof_path = args.manual_json.with_name("manual-proof.json")
+    proof = {
+        "evidence_class": evidence_class,
+        "approved_visible_runtime": True,
+        "approval_record": "synthetic fixture approval; no runtime performed",
+        "candidate_path": r"C:\ClashTests\fixture\stable.exe",
+        "executable_sha256": "a" * 64,
+        "no_stale_processes": True,
+        "checked_items": [
+            {"id": item["id"], "stage": item["stage"], "status": "pass", "no_crash": True,
+             "observed_result": "fixture observation", "evidence": "fixture evidence",
+             "pass_fail_notes": "fixture pass", "candidate_path": rf"C:\ClashTests\fixture\{item['id']}.exe",
+             "executable_sha256": ("a" if item["stage"] == checklist.PROTECTED_STABLE_STAGE
+                                   else "b" if item["id"] == "right_bottom_validation_input" else "c") * 64}
+            for item in checklist.manual_directinput_checklist.CHECKLIST_ITEMS
+        ],
+    }
+    if evidence_class == "approved_guest_win98_directdraw":
+        frame = args.manual_json.with_name("guest-frame-fixture.txt")
+        frame.write_text("synthetic frame reference fixture", encoding="ascii")
+        proof.update(guest_machine_id="fixture guest", qmp_input_log_ref="fixture input log",
+                     candidate_sha256_staged_in_guest="a" * 64, frame_evidence_refs=[str(frame)])
+    write_json(proof_path, proof)
+    manual = checklist.manual_directinput_checklist.build_checklist(
+        argparse.Namespace(manual_proof=proof_path, allow_cdb_only_promotion=False)
+    )
+    write_json(args.manual_json, manual)
+    return manual
+
+
+def component_fixture(manual: dict[str, Any], *, castle: bool = False) -> dict[str, Any]:
+    resolved = checklist.PROTECTED_STABLE_STAGE + ("-castlecenter-all" if castle else "-rightbottomcompose")
+    return {
+        "passed": True, "failures": [], "decision": "eligible_for_stable_promotion",
+        "stable_stage_should_change": True, "current_stable_stage": checklist.PROTECTED_STABLE_STAGE,
+        "validation_stage": "castlecenter-all" if castle else resolved,
+        "resolved_validation_stage": resolved, "candidate_sha256": ("c" if castle else "b") * 64,
+        "manual_input_proof": manual["manual_proof"], "manual_input_proof_supplied": True,
+        "manual_input_proof_valid": True, "manual_input_proof_summary": manual["manual_proof_summary"],
+        "allow_cdb_only_promotion": False, "promotion_override_manifest_supplied": False,
+    }
+
+
 def write_complete_fixture(args: argparse.Namespace) -> None:
     write_json(
         args.stable_stage_json,
         {
+            "passed": True,
             "current_stable_stage": checklist.PROTECTED_STABLE_STAGE,
             "patcher_default_stage": checklist.PROTECTED_STABLE_STAGE,
+            "validation_only_groups_in_stable": [],
             "checks": {
                 "patcher_default_stage": {"passed": True},
                 "stable_stage_validation_groups_absent": {"passed": True},
@@ -70,40 +116,9 @@ def write_complete_fixture(args: argparse.Namespace) -> None:
         },
     )
     write_json(args.long_soak_json, {"overall": True, "tier": "custom", "route": "map-pan", "duration_sec": 7200})
-    manual_items = [
-        "stable_menu_load",
-        "stable_hd_map_input",
-        "right_bottom_validation_input",
-        "castle_barracks_centered_input",
-        "castle_overview_centered_input",
-    ]
-    write_json(
-        args.manual_json,
-        {
-            "passed": True,
-            "manual_proof_valid": True,
-            "stable_stage_should_change": False,
-            "items": [{"id": item_id, "status": "accepted"} for item_id in manual_items],
-        },
-    )
-    write_json(
-        args.right_bottom_json,
-        {
-            "passed": True,
-            "decision": "ready_for_stable_promotion",
-            "manual_input_proof_valid": True,
-            "stable_stage_should_change": False,
-        },
-    )
-    write_json(
-        args.castle_json,
-        {
-            "passed": True,
-            "decision": "ready_for_stable_promotion",
-            "manual_input_proof_valid": True,
-            "stable_stage_should_change": False,
-        },
-    )
+    manual = write_manual_fixture(args)
+    write_json(args.right_bottom_json, component_fixture(manual))
+    write_json(args.castle_json, component_fixture(manual, castle=True))
     write_json(
         args.battle_json,
         {
@@ -158,8 +173,14 @@ def test_complete_fixture_passes() -> None:
         write_complete_fixture(args)
         report = checklist.build_checklist(args)
         assert report["passed"] is True, report["failures"]
-        assert report["full_game_complete"] is True
+        assert report["release_horizon_ready"] is True
+        assert report["full_game_complete"] is False
+        assert "HD-layout" in report["acceptance_scope"]
         assert report["counts"]["passed"] == report["counts"]["total"]
+        manual = checklist.load_json(args.manual_json)
+        assert all(item["status"] == "pending_manual" for item in manual["items"])
+        assert checklist.manual_item_passed(manual, "stable_menu_load") is True
+        assert req(report, "no_speculative_promotion")["passed"] is True
 
 
 def test_pending_short_soak_blocks_next_milestone() -> None:
@@ -492,31 +513,11 @@ MANUAL_ROW_IDS = (
 )
 
 
-def _manual_json_with_class(evidence_class: str) -> dict[str, Any]:
-    manual_items = [
-        "stable_menu_load",
-        "stable_hd_map_input",
-        "right_bottom_validation_input",
-        "castle_barracks_centered_input",
-        "castle_overview_centered_input",
-    ]
-    return {
-        "passed": True,
-        "manual_proof_valid": True,
-        "stable_stage_should_change": False,
-        "evidence_class": evidence_class,
-        "items": [
-            {"id": item_id, "status": "accepted", "evidence_class": evidence_class}
-            for item_id in manual_items
-        ],
-    }
-
-
 def test_guest_class_satisfies_manual_rows_and_names_guest() -> None:
     with tempfile.TemporaryDirectory() as directory:
         args = fixture_args(Path(directory))
         write_complete_fixture(args)
-        write_json(args.manual_json, _manual_json_with_class("approved_guest_win98_directdraw"))
+        write_manual_fixture(args, "approved_guest_win98_directdraw")
         report = checklist.build_checklist(args)
     assert report["passed"] is True, report["failures"]
     for row_id in MANUAL_ROW_IDS:
@@ -529,7 +530,7 @@ def test_host_class_names_host_in_manual_rows() -> None:
     with tempfile.TemporaryDirectory() as directory:
         args = fixture_args(Path(directory))
         write_complete_fixture(args)
-        write_json(args.manual_json, _manual_json_with_class("manual_directinput"))
+        write_manual_fixture(args, "manual_directinput")
         report = checklist.build_checklist(args)
     assert report["passed"] is True, report["failures"]
     for row_id in MANUAL_ROW_IDS:
@@ -547,6 +548,117 @@ def test_unspecified_class_defaults_to_host_label() -> None:
     for row_id in MANUAL_ROW_IDS:
         row = req(report, row_id)
         assert "host (manual_directinput)" in row["summary"], row
+
+
+def test_forged_summary_cannot_replace_valid_five_target_proof() -> None:
+    cases = (
+        "missing_proof", "partial", "duplicate", "unapproved", "malformed_json",
+        "summary_sha", "summary_count", "summary_class", "malformed_summary", "override",
+    )
+    for case in cases:
+        with tempfile.TemporaryDirectory() as directory:
+            args = fixture_args(Path(directory))
+            write_complete_fixture(args)
+            manual = checklist.load_json(args.manual_json)
+            proof_path = Path(manual["manual_proof"])
+            proof = checklist.load_json(proof_path)
+            if case == "missing_proof":
+                proof_path.unlink()
+            elif case == "partial":
+                proof["checked_items"][0]["status"] = "pending"
+                write_json(proof_path, proof)
+            elif case == "duplicate":
+                proof["checked_items"].append(dict(proof["checked_items"][0]))
+                write_json(proof_path, proof)
+            elif case == "unapproved":
+                proof["approved_visible_runtime"] = False
+                write_json(proof_path, proof)
+            elif case == "malformed_json":
+                proof_path.write_text("{broken", encoding="ascii")
+            elif case == "summary_sha":
+                manual["manual_proof_summary"]["executable_sha256"] = "d" * 64
+            elif case == "summary_count":
+                manual["manual_proof_summary"]["checked_item_count"] = 4
+            elif case == "summary_class":
+                manual["manual_proof_summary"]["evidence_class"] = "approved_guest_win98_directdraw"
+            elif case == "malformed_summary":
+                manual["manual_proof_summary"] = "forged summary"
+            elif case == "override":
+                manual["allow_cdb_only_promotion"] = True
+            # Even all-green labels in the pending template cannot substitute
+            # for the producer's actual, validated checked_items evidence.
+            for item in manual["items"]:
+                item.update(status="accepted", proof_valid=True)
+            write_json(args.manual_json, manual)
+            report = checklist.build_checklist(args)
+            for row_id in MANUAL_ROW_IDS:
+                assert req(report, row_id)["passed"] is False, (case, row_id, report)
+            assert req(report, "stable_menu_real_input")["details"]["failures"], (case, report)
+
+
+def test_component_decisions_require_real_eligibility_and_identity() -> None:
+    for case in ("failed", "deferred", "unrelated_proof", "wrong_candidate", "wrong_castle_target"):
+        with tempfile.TemporaryDirectory() as directory:
+            args = fixture_args(Path(directory))
+            write_complete_fixture(args)
+            path = args.castle_json if case == "wrong_castle_target" else args.right_bottom_json
+            decision = checklist.load_json(path)
+            if case == "failed":
+                decision.update(passed=False, failures=["component evidence gate failed"])
+            elif case == "deferred":
+                decision.update(decision="defer_stable_promotion", stable_stage_should_change=False)
+            elif case == "unrelated_proof":
+                decision["manual_input_proof"] = "unrelated-proof.json"
+            elif case == "wrong_candidate":
+                decision["candidate_sha256"] = "d" * 64
+            else:
+                manual = checklist.load_json(args.manual_json)
+                proof_path = Path(manual["manual_proof"])
+                proof = checklist.load_json(proof_path)
+                target = next(item for item in proof["checked_items"] if item["id"] == "castle_barracks_centered_input")
+                target["executable_sha256"] = "d" * 64
+                write_json(proof_path, proof)
+            write_json(path, decision)
+            report = checklist.build_checklist(args)
+            row = req(report, "castle_and_barracks_centered_input" if case == "wrong_castle_target" else "right_bottom_action_menu")
+            assert row["passed"] is False and row["details"]["failures"], (case, report)
+
+
+def test_actual_stable_changes_fail_even_with_affirmative_recommendations() -> None:
+    changes = (
+        {"current_stable_stage": checklist.PROTECTED_STABLE_STAGE + "-experimental"},
+        {"patcher_default_stage": checklist.PROTECTED_STABLE_STAGE + "-experimental"},
+        {"validation_only_groups_in_stable": ["right-bottom-compose-proof"]},
+        {"passed": False},
+    )
+    for change in changes:
+        with tempfile.TemporaryDirectory() as directory:
+            args = fixture_args(Path(directory))
+            write_complete_fixture(args)
+            stable = checklist.load_json(args.stable_stage_json)
+            stable.update(change)
+            write_json(args.stable_stage_json, stable)
+            report = checklist.build_checklist(args)
+            assert req(report, "protected_stable_stage")["passed"] is False, report
+            assert req(report, "no_speculative_promotion")["passed"] is False, report
+
+
+def test_pending_decisions_preserve_boundary_and_battle_callback_is_not_promotion() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        args = fixture_args(Path(directory))
+        write_complete_fixture(args)
+        pending = checklist.manual_directinput_checklist.build_checklist(argparse.Namespace(manual_proof=None))
+        write_json(args.manual_json, pending)
+        for path in (args.right_bottom_json, args.castle_json):
+            write_json(path, {"passed": True, "decision": "defer_stable_promotion",
+                              "manual_input_proof_valid": False, "stable_stage_should_change": False})
+        for status in (None, "validation_stage_only", "unrecognized"):
+            write_json(args.battle_json, {"passed": True, "real_visible_click_consumed": True,
+                                         "promotion_status": status, "stable_stage_should_change": False})
+            report = checklist.build_checklist(args)
+            assert req(report, "no_speculative_promotion")["passed"] is True, report
+            assert req(report, "stable_menu_real_input")["passed"] is False, report
+            assert req(report, "tactical_battle_entry_return")["passed"] is False, report
 
 
 def test_cli_writes_outputs_and_fails_closed() -> None:
@@ -616,6 +728,10 @@ def run_tests() -> None:
     test_guest_class_satisfies_manual_rows_and_names_guest()
     test_host_class_names_host_in_manual_rows()
     test_unspecified_class_defaults_to_host_label()
+    test_forged_summary_cannot_replace_valid_five_target_proof()
+    test_component_decisions_require_real_eligibility_and_identity()
+    test_actual_stable_changes_fail_even_with_affirmative_recommendations()
+    test_pending_decisions_preserve_boundary_and_battle_callback_is_not_promotion()
     test_cli_writes_outputs_and_fails_closed()
 
 
