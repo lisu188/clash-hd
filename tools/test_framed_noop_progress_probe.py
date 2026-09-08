@@ -202,6 +202,23 @@ class BoundDiagnosticTests(unittest.TestCase):
         self.assertEqual(result["inventory"]["rendered_probe_sha256"], diagnostic.sha(probe.encode("ascii")))
         self.assertIn('bp81 00418afd "', result["snippet"])
 
+    def test_complete_candidate_requires_exact_context_and_preserves_events(self):
+        from complete_hd_runtime_context import complete
+        image, manifest, extra = complete.build_candidate(self.original, "800x600")
+        values = dict(original=self.original, candidate=image, candidate_sha256=diagnostic.sha(image),
+                      stage=complete.STAGE, resolution="800x600", rendered_probe=rendered(extra),
+                      candidate_manifest=manifest, breakpoint_id=82)
+        result = diagnostic.build_diagnostic(**values)
+        self.assertEqual(result["stage"], complete.STAGE)
+        self.assertFalse(result["acceptance"])
+        self.assertIn('bp82 00418afd "', result["snippet"])
+        self.assertNotIn("PTILE_", result["snippet"])
+        for bad in (None, {**manifest, "resolution": "1920x1080"}, {**manifest, "recipe_revision": "unknown"}):
+            with self.subTest(manifest=bad is None), self.assertRaises(ValueError):
+                diagnostic.build_diagnostic(**{**values, "candidate_manifest": bad})
+        with self.assertRaises(ValueError):
+            self.prepare(candidate_manifest=manifest)
+
     def test_saved_failed_run_complete_probe_inventory_when_available(self):
         path = Path("C:/ClashCaptures/hd-completion/framed-v1-800x600-20260906-023304/"
                     "cdb-surface-dump-20260906-043323/clash95_surface_dump_probe.generated.cdb")

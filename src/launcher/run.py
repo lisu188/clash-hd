@@ -23,6 +23,7 @@ bootstrap.ensure_repo_paths()
 
 import core  # noqa: E402
 import framed
+import completehd
 import ini as ini_mod  # noqa: E402
 import presets  # noqa: E402
 import settings as settings_mod  # noqa: E402
@@ -36,7 +37,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--list-resolutions", action="store_true", help="list recipe eligibility and profile-scoped status")
     parser.add_argument("--map-size", nargs=2, type=int, metavar=("WIDTH", "HEIGHT"), help="world tile dimensions for inspection only")
     parser.add_argument("--client-size", nargs=2, type=int, metavar=("WIDTH", "HEIGHT"), help="hypothetical client pixels for inspection only")
-    parser.add_argument("--profile", choices=("classic", "framed"), default="classic")
+    parser.add_argument("--profile", choices=("classic", "framed", "completehd"), default="classic")
     parser.add_argument("--prepare", action="store_true", help="build and deploy without starting the game")
     parser.add_argument("--resolution", default=None)
     parser.add_argument("--scaling", default=None)
@@ -67,10 +68,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def build_plan(args: argparse.Namespace) -> core.CandidatePlan:
     saved = settings_mod.load_settings()
-    backend = framed if args.profile == "framed" else core
+    backend = {"classic": core, "framed": framed, "completehd": completehd}[args.profile]
     return backend.plan_candidate(
         stage=args.stage,
-        resolution=args.resolution or saved["last_resolution"],
+        resolution=args.resolution or ("800x600" if args.profile == "completehd" else saved["last_resolution"]),
         scaling_mode=args.scaling or saved["scaling_mode"],
         clash_dir=args.clash_dir or Path(saved["clash_dir"]),
         candidates_root=args.candidates_root or Path(saved["candidates_root"]),
@@ -85,12 +86,12 @@ def inspect_display(args: argparse.Namespace) -> int:
                        for option in presets.load_options(manifest, args.profile)]
         payload = {"schema": 1, "profile": args.profile, "default": presets.default_key(manifest, args.profile),
                    "resolutions": resolutions, "game_runtime_executed": False}
-        if args.profile == "framed":
-            payload["source_preflight"] = framed.source_status()
+        if args.profile != "classic":
+            payload["source_preflight"] = {"framed": framed, "completehd": completehd}[args.profile].source_status()
         print(json.dumps(payload, indent=2))
         return 0 if payload.get("source_preflight", {"passed": True})["passed"] else 1
     saved = settings_mod.load_settings()
-    display = presets.resolve_plan(renderer=args.profile, resolution=args.resolution or saved["last_resolution"],
+    display = presets.resolve_plan(renderer=args.profile, resolution=args.resolution or ("800x600" if args.profile == "completehd" else saved["last_resolution"]),
                                    stage=args.stage, scaling_mode=args.scaling or saved["scaling_mode"], manifest=manifest)
     payload = {"schema": 1, "inspection_only": True,
                "plan": {"renderer": display.renderer, "resolution": display.resolution, "stage": display.stage,
@@ -103,8 +104,8 @@ def inspect_display(args: argparse.Namespace) -> int:
                     stage=display.stage, scaling_mode=display.scaling_mode, manifest=manifest),
                "game_runtime_executed": False}
     compatible = True
-    if args.profile == "framed":
-        payload["source_preflight"] = framed.source_status()
+    if args.profile != "classic":
+        payload["source_preflight"] = {"framed": framed, "completehd": completehd}[args.profile].source_status()
         compatible = payload["source_preflight"]["passed"]
     if args.map_size:
         world = display.world_view(*args.map_size)
@@ -122,7 +123,7 @@ def inspect_display(args: argparse.Namespace) -> int:
 
 
 def _main(args: argparse.Namespace) -> int:
-    backend = framed if args.profile == "framed" else core
+    backend = {"classic": core, "framed": framed, "completehd": completehd}[args.profile]
 
     if args.describe_plan or args.list_resolutions:
         return inspect_display(args)
@@ -151,9 +152,9 @@ def _main(args: argparse.Namespace) -> int:
             "write_policy": core.WRITE_POLICY,
         }
         payload["profile"] = args.profile
-        if args.profile == "framed":
-            payload["source_preflight"] = framed.source_status()
-            payload["warning"] = framed.WARNING
+        if args.profile != "classic":
+            payload["source_preflight"] = backend.source_status()
+            payload["warning"] = backend.WARNING
         print(json.dumps(payload, indent=2))
         return 0 if report.ready_to_patch and payload.get("source_preflight", {"passed": True})["passed"] else 1
 
@@ -178,8 +179,8 @@ def _main(args: argparse.Namespace) -> int:
                 f"{plan.clash_dir}. The launcher never ships DLLs."
             )
             return 1
-        if backend is framed:
-            framed.verify_launch(plan)
+        if backend is not core:
+            backend.verify_launch(plan)
         process = core.launch_game(plan, confirmed=True)
         print(f"Launched PID {process.pid}: {plan.candidate_exe}")
         return 0

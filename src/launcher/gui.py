@@ -16,6 +16,7 @@ from tkinter import filedialog, font as tkfont, messagebox, ttk
 
 import core
 import framed
+import completehd
 import ini as ini_mod
 import presets
 import settings as settings_mod
@@ -40,16 +41,16 @@ WRAPPER_HELP = (
 )
 
 
-PROFILE_NAMES = {"classic": "Classic", "framed": "Framed + minimap"}
+PROFILE_NAMES = {"classic": "Classic", "framed": "Framed + minimap", "completehd": "Complete HD (experimental)"}
 TAB_NAMES = ("Main settings", "Launcher settings", "Information", "Diagnostics")
 
 
 class LauncherApp:
     def __init__(self, root: tk.Tk, initial_profile: str = "classic") -> None:
-        if initial_profile not in ("classic", "framed"):
+        if initial_profile not in PROFILE_NAMES:
             raise core.LauncherError("Unknown launcher profile.")
-        if initial_profile == "framed" and getattr(sys, "frozen", False):
-            raise core.LauncherError("The framed profile requires the source-tree launcher.")
+        if initial_profile != "classic" and getattr(sys, "frozen", False):
+            raise core.LauncherError("Experimental renderer profiles require the source-tree launcher.")
         self.root = root
         self.settings = settings_mod.load_settings()
         self.manifest = presets.load_manifest()
@@ -408,20 +409,25 @@ class LauncherApp:
         return f"{width}x{height}"
 
     def _backend(self):
-        return framed if self.profile_var.get() == "framed" else core
+        return {"classic": core, "framed": framed, "completehd": completehd}[self.profile_var.get()]
 
     def on_profile_change(self) -> None:
-        experimental = self.profile_var.get() == "framed"
+        experimental = self.profile_var.get() != "classic"
         self.experimental_warned = False
-        self.profile_label.configure(text=framed.WARNING if experimental else "Existing resolution evidence and stable defaults are unchanged.")
+        self.profile_label.configure(text=self._backend().WARNING if experimental else "Existing resolution evidence and stable defaults are unchanged.")
         for button, option in self.resolution_buttons:
             badge = "Experimental" if experimental else STATUS_BADGES[option.status][0]
             button.configure(text=f"{option.key}  [{badge}]")
         if hasattr(self, "renderer_choice"):
             self.renderer_choice.set(PROFILE_NAMES[self.profile_var.get()])
-            self.resolution_combo.configure(values=tuple(option.key for option in presets.load_options(self.manifest, self.profile_var.get())) + ("custom",))
+            options = tuple(option.key for option in presets.load_options(self.manifest, self.profile_var.get()))
+            self.resolution_combo.configure(values=options + (() if self.profile_var.get() == "completehd" else ("custom",)))
+            if self.profile_var.get() == "completehd" and self.resolution_var.get() not in options:
+                self.resolution_var.set("800x600")
             components = (("Four-sided adventure frame", "Clipped edge tiles", "Minimap viewport correction", "Native fallback on other screens")
                           if experimental else ("Classic adventure-map layout", "Centered main menu", "Right-anchored minimap", "Existing stable patch recipe"))
+            if self.profile_var.get() == "completehd":
+                components = ("Four-sided adventure frame", "Clipped edge tiles and minimap correction", "Native modal canvas and army panel", "Centered native menu, castle and battle")
             self.component_list.delete(0, "end")
             for component in components:
                 self.component_list.insert("end", component)
@@ -554,9 +560,9 @@ class LauncherApp:
             )
 
         option = self._selected_option()
-        is_experimental = self.profile_var.get() == "framed" or option is None or option.is_experimental
+        is_experimental = self.profile_var.get() != "classic" or option is None or option.is_experimental
         if is_experimental and not self.experimental_warned:
-            warning = framed.WARNING + " Continue?" if self.profile_var.get() == "framed" else EXPERIMENTAL_WARNING
+            warning = self._backend().WARNING + " Continue?" if self.profile_var.get() != "classic" else EXPERIMENTAL_WARNING
             if not messagebox.askokcancel("Experimental profile or resolution", warning):
                 self.log("Cancelled experimental launch.")
                 return
@@ -582,8 +588,8 @@ class LauncherApp:
             self.log("Launch blocked: wrapper ddraw.dll missing in C:\\Clash.")
             return
 
-        if backend is framed:
-            framed.verify_launch(plan)
+        if backend is not core:
+            backend.verify_launch(plan)
         process = core.launch_game(plan, confirmed=True)
         self.log(f"Launched PID {process.pid}: {plan.candidate_exe}")
         self._save_settings()
@@ -612,7 +618,7 @@ class LauncherApp:
         self.log(f"Removed {len(removed)} candidate file(s).")
 
     def _save_settings(self) -> None:
-        if self.profile_var.get() == "framed":
+        if self.profile_var.get() != "classic":
             return
         try:
             self.settings["last_resolution"] = self._current_resolution_key()

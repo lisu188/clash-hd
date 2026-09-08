@@ -68,7 +68,7 @@ def good_manifest() -> dict:
     }
 
 
-def good_profile_manifest() -> dict:
+def good_profile_manifest(*, completehd: bool = False) -> dict:
     manifest = good_manifest()
     classic = {
         "default": manifest["default"], "stage": manifest["stable_stage"],
@@ -87,6 +87,13 @@ def good_profile_manifest() -> dict:
     }
     manifest.update(schema=2, default_renderer="classic", profiles={"classic": classic, "framed": framed},
                     resolutions=copy.deepcopy(classic["resolutions"]))
+    if completehd:
+        manifest["profiles"]["completehd"] = {
+            "default": "800x600", "stage": manifest["stable_stage"] + "-completehd-validation",
+            "recipe_revision": "complete_hd_v1", "features": {"minimap_viewport": True},
+            "resolutions": {key: {"status": "experimental", "tiles": None, "evidence": None}
+                            for key in ("800x600", "1024x768", "1280x720", "1280x960", "1920x1080", "802x602")},
+        }
     return manifest
 
 
@@ -277,7 +284,8 @@ def test_binding_mismatches_fail(fixture: Path) -> None:
         ("run-fail", "captures/archive/run-normal/summary.json", lambda d: d.update(Passed=False)),
         ("null-resolution", "captures/current/patch-report.json", lambda d: d.update(resolution=None)),
     ]
-    for schema, factory in ((1, good_manifest), (2, good_profile_manifest)):
+    for schema, factory in ((1, good_manifest), (2, good_profile_manifest),
+                            ("2-completehd", lambda: good_profile_manifest(completehd=True))):
         for name, path, update in cases:
             case_root = fixture / str(schema) / name
             args = make_good_fixture(case_root, factory())
@@ -364,6 +372,42 @@ def test_profile_manifest_rejects_duplicate_keys_and_schema_aliases(fixture: Pat
         assert not guard["passed"], (schema, guard)
 
 
+def test_completehd_profile_remains_experimental_and_geometry_checked(fixture: Path) -> None:
+    manifest = good_profile_manifest(completehd=True)
+    manifest["profiles"]["completehd"]["resolutions"]["800x600"]["tiles"] = [11, 8]
+    args = make_good_fixture(fixture, manifest)
+    guard = resolution_manifest_guard.build_guard(args)
+    assert guard["passed"], guard["failures"]
+    summary = guard["checks"]["profile_contracts"]["summary"]
+    assert summary["completehd_resolution_count"] == 6
+    assert summary["completehd_runtime_evidence_verified"] is False
+    assert guard["checks"]["evidence_backed"]["summary"]["checked"] == ["800x600"]
+    manifest["profiles"]["completehd"]["resolutions"]["800x600"]["tiles"] = [12, 9]
+    write_json(fixture / args.manifest, manifest)
+    guard = resolution_manifest_guard.build_guard(args)
+    assert not guard["checks"]["profile_contracts"]["passed"], guard
+
+
+def test_completehd_profile_rejects_contract_drift_and_promotion(fixture: Path) -> None:
+    for mutation in ("unknown-profile", "stage", "recipe", "features", "default", "missing-resolution",
+                     "extra-resolution", "malformed-resolutions", "malformed-entry", "stable", "validated"):
+        manifest = good_profile_manifest(completehd=True)
+        profile = manifest["profiles"]["completehd"]
+        if mutation == "unknown-profile": manifest["profiles"]["unknown"] = copy.deepcopy(profile)
+        elif mutation == "stage": profile["stage"] = manifest["stable_stage"]
+        elif mutation == "recipe": profile["recipe_revision"] = "unreviewed-recipe"
+        elif mutation == "features": profile["features"]["minimap_viewport"] = 1
+        elif mutation == "default": profile["default"] = "1920x1080"
+        elif mutation == "missing-resolution": profile["resolutions"].pop("802x602")
+        elif mutation == "extra-resolution": profile["resolutions"]["1366x768"] = {"status": "experimental"}
+        elif mutation == "malformed-resolutions": profile["resolutions"] = None
+        elif mutation == "malformed-entry": profile["resolutions"]["800x600"] = None
+        else: profile["resolutions"]["800x600"]["status"] = mutation
+        args = make_good_fixture(fixture / mutation, manifest)
+        guard = resolution_manifest_guard.build_guard(args)
+        assert not guard["passed"], (mutation, guard)
+
+
 def test_legacy_missing_patch_resolution_is_800_only(fixture: Path) -> None:
     args = make_good_fixture(fixture)
     rewrite_json(fixture / "captures/current/patch-report.json", lambda d: d.pop("resolution"))
@@ -445,6 +489,8 @@ def run_tests() -> None:
         test_profile_manifest_cannot_relabel_classic_evidence(fixture / "profile-evidence")
         test_profile_manifest_uses_framed_tile_geometry(fixture / "profile-tiles")
         test_profile_manifest_rejects_duplicate_keys_and_schema_aliases(fixture / "profile-schema")
+        test_completehd_profile_remains_experimental_and_geometry_checked(fixture / "completehd-profile")
+        test_completehd_profile_rejects_contract_drift_and_promotion(fixture / "completehd-contract")
         test_legacy_missing_patch_resolution_is_800_only(fixture / "legacy-resolution")
         test_bad_bounds_fail(fixture / "bounds")
         test_bad_key_fails(fixture / "key")

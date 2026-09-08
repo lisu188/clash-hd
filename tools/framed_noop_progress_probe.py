@@ -126,8 +126,9 @@ def _span(image: bytes, va: int, size: int) -> tuple[int, bytes]:
 
 def build_diagnostic(original: bytes, candidate: bytes, *, candidate_sha256: str,
                      stage: str, resolution: str, rendered_probe: str,
-                     breakpoint_id: int = 80) -> dict:
-    if stage != STAGE:
+                     breakpoint_id: int = 80, candidate_manifest: dict | None = None) -> dict:
+    from complete_hd_runtime_context import complete, verify_context
+    if stage not in (STAGE, complete.STAGE):
         raise ValueError("stage must equal the exact reviewed framed validation stage")
     if not re.fullmatch(r"[0-9a-fA-F]{64}", candidate_sha256 or ""):
         raise ValueError("candidate SHA-256 must contain exactly64 hexadecimal digits")
@@ -135,7 +136,15 @@ def build_diagnostic(original: bytes, candidate: bytes, *, candidate_sha256: str
         raise ValueError("candidate SHA-256 mismatch")
     # The builder verifies the known original, every source pin, and all hooks,
     # scalars, payload and relocation bytes; no candidate file is written here.
-    reconstructed, _, canonical_extra = builder.build_candidate(original, resolution)
+    if stage == complete.STAGE:
+        if candidate_manifest is None:
+            raise ValueError("complete diagnostic requires its exact candidate manifest")
+        context = verify_context(candidate_manifest, original, resolution=resolution, candidate=candidate)
+        reconstructed, canonical_extra = context["candidate"], context["probe"]
+    else:
+        if candidate_manifest is not None:
+            raise ValueError("historical diagnostic must not use a complete candidate manifest")
+        reconstructed, _, canonical_extra = builder.build_candidate(original, resolution)
     if reconstructed != candidate:
         raise ValueError("candidate differs from exact framed reconstruction")
     inventory = inspect_breakpoints(rendered_probe, breakpoint_id=breakpoint_id)
@@ -204,6 +213,7 @@ def main() -> int:
     parser.add_argument("--stage", required=True)
     parser.add_argument("--resolution", required=True)
     parser.add_argument("--rendered-probe", type=Path, required=True)
+    parser.add_argument("--candidate-manifest", type=Path)
     parser.add_argument("--breakpoint-id", type=int, default=80)
     parser.add_argument("--json", action="store_true", help="emit binding metadata and snippet as JSON")
     args = parser.parse_args()
@@ -212,7 +222,9 @@ def main() -> int:
                                   candidate_sha256=args.candidate_sha256, stage=args.stage,
                                   resolution=args.resolution,
                                   rendered_probe=args.rendered_probe.read_bytes().decode("ascii"),
-                                  breakpoint_id=args.breakpoint_id)
+                                  breakpoint_id=args.breakpoint_id,
+                                  candidate_manifest=json.loads(args.candidate_manifest.read_text(encoding="utf-8"))
+                                  if args.candidate_manifest is not None else None)
     except (OSError, UnicodeError, ValueError) as error:
         print(f"diagnostic preparation failed: {error}", file=sys.stderr)
         return 1

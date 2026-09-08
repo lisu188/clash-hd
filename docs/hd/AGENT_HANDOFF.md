@@ -571,10 +571,18 @@ Do not describe army arrival or full keyboard-input validation as proved.
 The **2026-09-08** integration adds the separate
 [complete-HD candidate builder](COMPLETE_HD_CANDIDATE.md) and
 [release-manifest evaluator](COMPLETE_HD_EVIDENCE.md). This is source
-preparation: the launcher has no matching complete-HD profile, and the 15
-runtime/visual/input/endurance adapters remain incomplete. Unsupported or
-launcher-rejected evidence fails closed. Existing component eligibility,
+preparation: the experimental `completehd` launcher profile is available, but
+the 15 runtime/visual/input/endurance adapters remain incomplete. Unsupported
+or launcher-rejected evidence fails closed. Existing component eligibility,
 manual proof and explicit stable promotion remain separate requirements.
+
+The newer [complete hidden harness](COMPLETE_HD_HIDDEN_HARNESS.md) changes the
+shared harness and initial-trace helper source hashes. Older framed screen/modal
+and army transition/portrait validators still pin the previous versions and
+reject the new checkout sources. Preserve their recorded evidence and hash
+checks; replay historical runs from their recorded source revision. New runs
+through those older validators need a separately reviewed compatibility update.
+The unfinished local movement/keypan validators remain preserved as well.
 
 | Work | Start with | Focused verification |
 | --- | --- | --- |
