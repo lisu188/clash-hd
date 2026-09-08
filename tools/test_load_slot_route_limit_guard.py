@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -238,7 +239,38 @@ def test_cli_writes_outputs_and_requires_pass() -> None:
         assert output_md.exists()
 
 
+def test_shared_renderer_path_and_actual_rows() -> None:
+    repo = Path(__file__).resolve().parents[1]
+    with tempfile.TemporaryDirectory() as tmp:
+        paths = write_fixture(Path(tmp))
+        shutil.copyfile(repo / "scripts/cdb/run_cdb_surface_dump.ps1", paths["harness"])
+        renderer_path = Path(tmp) / "tools/render_cdb_surface_probe.py"
+        renderer_path.parent.mkdir()
+        shutil.copyfile(repo / "tools/render_cdb_surface_probe.py", renderer_path)
+        report = build(paths)
+        assert report["passed"], report["failures"]
+        contract = report["harness"]
+        assert contract["source_mode"] == "shared_python_recipe"
+        assert [row["logical"] for row in contract["row_geometry"]] == [[320, 166 + 22 * slot] for slot in range(10)]
+        raw = renderer_path.read_text(encoding="utf-8")
+        renderer_path.write_text(raw.replace('"load_mouse": [320, 166 + 22 * load_slot]', '"load_mouse": [320, 160 + 22 * load_slot]'), encoding="utf-8")
+        report = build(paths)
+        assert not report["harness"]["passed"], report
+
+
+def test_commented_inline_formula_is_not_code() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        paths = write_fixture(Path(tmp))
+        for fake in ("\n".join("# " + line for line in HARNESS_TEXT.splitlines()),
+                     "<#\n" + HARNESS_TEXT + "\n#>", "$example = @'\n" + HARNESS_TEXT + "\n'@"):
+            paths["harness"].write_text(fake, encoding="utf-8")
+            report = build(paths)
+            assert not report["harness"]["passed"], report
+
+
 def run_tests() -> None:
+    test_shared_renderer_path_and_actual_rows()
+    test_commented_inline_formula_is_not_code()
     test_passes_current_route_limit_shape()
     test_fails_without_static_ten_row_evidence()
     test_fails_when_slot2_no_longer_loads()
