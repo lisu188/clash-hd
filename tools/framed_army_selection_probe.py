@@ -30,10 +30,10 @@ RESOLUTION = "1024x768"
 SAVE_SHA256 = "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89"
 REVISION = "controlled_own_army_native_selection_v3"
 PINNED_SOURCES = {
-    "tools/build_framed_army_candidate.py": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+    "tools/build_framed_army_candidate.py": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
     "tools/framed_modal_canvas_trace.py": "2f0ef571acdbc6892c775cc97698d535b56355c8086080713d3dfec040a6d3ba",
-    "tools/framed_modal_canvas_probe.py": "52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6",
-    "tools/render_cdb_surface_probe.py": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+    "tools/framed_modal_canvas_probe.py": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d",
+    "tools/render_cdb_surface_probe.py": "1cd3103c434a898e0104b519932f1ce30be259888885f251422a8b71d3a9d02f",
     "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
 }
 NATIVE_BOUNDARIES = {

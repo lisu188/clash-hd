@@ -16,7 +16,7 @@ import re
 import framed_army_selection_probe as base
 
 ROOT = base.ROOT
-BASE_SHA256 = "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1"
+BASE_SHA256 = "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8"
 REVISION = "controlled_native_army_transitions_v1"
 STEPS = (
     dict(step=1, name="select-eight", unit=3, old=-1, prior=-1, lower=1, xy=[16, 19], screen=[448, 176], types=[16, 16, 1, 1, 1, 1, 1, 1], branch="open"),

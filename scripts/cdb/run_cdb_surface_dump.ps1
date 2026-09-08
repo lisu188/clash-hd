@@ -556,7 +556,7 @@ if ($UseDdrawProxy -and -not (Test-Path -LiteralPath $DdrawProxyBuildScript)) {
 $renderArgs = @('-B', $probeRenderer, '--template', $ProbeTemplate, '--resolution', $Resolution, '--stage', $recipeStage, '--load-slot', $LoadSlot)
 if ($ForceVisibleEdges) { $renderArgs += '--force-visible-edges' }
 if ($PostOwnerForceVisibleSeven) { $renderArgs += '--post-owner-force-visible-seven' }
-if ($ExtraProbeTemplate) { $renderArgs += '--extra-probe' }
+if ($ExtraProbeTemplate) { $renderArgs += @('--extra-probe', '--extra-probe-path', $ExtraProbeTemplate) }
 if ($SkipMapValidation) { $renderArgs += '--skip-map-validation' }
 $probeRecipeJson = & $pythonExe @renderArgs
 if ($LASTEXITCODE -ne 0) {
@@ -702,6 +702,9 @@ if ($PartialTileValidation -and $candidateSha.ToLowerInvariant() -ne $partialPre
 }
 
 $probeText = $probeRecipe.template
+# Preserve placeholder-based legacy/extra templates using the source-checked recipe.
+$mainMouseRawX = [int]$surfaceGeometry.main_menu_mouse[0] -shl 6
+$mainMouseRawY = [int]$surfaceGeometry.main_menu_mouse[1] -shl 6
 $loadMouseX = $surfaceGeometry.load_mouse[0]
 $loadMouseY = $surfaceGeometry.load_mouse[1]
 $loadMouseRawX = $loadMouseX -shl 6
@@ -714,12 +717,18 @@ else {
 }
 $probeText = $probeText.Replace('__PRE_ENTRY_LOAD_COORD_ACTION__', $preEntryLoadCoordAction)
 $probeText = $probeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)
+$probeText = $probeText.Replace('__MAIN_MOUSE_RAW_X__', ('{0:x8}' -f $mainMouseRawX))
+$probeText = $probeText.Replace('__MAIN_MOUSE_RAW_Y__', ('{0:x8}' -f $mainMouseRawY))
 $probeText = $probeText.Replace('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))
 $probeText = $probeText.Replace('__LOAD_MOUSE_RAW_Y__', ('{0:x8}' -f $loadMouseRawY))
 if ($PostOwnerForceVisibleSeven -and -not $ExtraProbeTemplate) {
     throw '-PostOwnerForceVisibleSeven requires -ExtraProbeTemplate with the post-owner visibility probe.'
 }
 if ($ExtraProbeTemplate) {
+    if ($probeRecipe.extra_probe_sha256 -and
+        (Get-FileSha256 -Path $ExtraProbeTemplate).ToLowerInvariant() -cne $probeRecipe.extra_probe_sha256) {
+        throw 'Extra probe changed after source preflight; refusing a mixed probe recipe.'
+    }
     $extraProbeText = (Get-Content -LiteralPath $ExtraProbeTemplate -Raw).Trim()
     $extraProbeText = $extraProbeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)
     $extraProbeText = $extraProbeText.Replace('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))
@@ -1411,6 +1420,7 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists -or $surfaceGeometryFailu
         SurfaceGeometry = $surfaceGeometry
         SurfaceGeometryMatched = (Test-RequestedSurfaceReady -Ready $ready -Geometry $surfaceGeometry)
         BaseProbeSha256 = $probeRecipe.base_probe_sha256
+        ExtraProbeSourceSha256 = $probeRecipe.extra_probe_sha256
         Ready = $ready
         RawExists = $rawExists
         RawBytes = $rawBytes
@@ -1706,6 +1716,7 @@ $summaryObject = [pscustomobject]@{
     SurfaceGeometry = $surfaceGeometry
     SurfaceGeometryMatched = (Test-RequestedSurfaceReady -Ready $ready -Geometry $surfaceGeometry)
     BaseProbeSha256 = $probeRecipe.base_probe_sha256
+    ExtraProbeSourceSha256 = $probeRecipe.extra_probe_sha256
     InputExe = $inputFull
     InputSha256 = $inputSha
     CandidatePath = $candidateFull
