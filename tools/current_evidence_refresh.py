@@ -7727,7 +7727,7 @@ def build_framed_offline_refresh() -> dict[str, Any]:
     records = []
     if preflight["passed"]:
         for suite in framed.SUITES:
-            records.append(framed.run_suite(framed.ROOT, suite, 300))
+            records.append(framed.run_suite(framed.ROOT, suite, 600))
     report = framed.summarize(preflight, records, framed.SUITES)
     return {**report, "passed": report["offline_passed"] and report["selected_coverage_complete"]}
 
