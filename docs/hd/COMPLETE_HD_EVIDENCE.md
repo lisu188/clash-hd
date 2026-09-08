@@ -22,7 +22,7 @@ Historical component reports are not rewritten into integrated proof.
 The launcher now exposes an experimental `completehd` profile. Resolution
 metadata is checked through the actual launcher validator; unknown or malformed
 profiles cannot establish evidence. This metadata coverage does not satisfy
-the 15 incomplete runtime adapters or establish complete-release eligibility.
+the remaining incomplete runtime adapters or establish complete-release eligibility.
 
 `candidate_manifest_context()` in `tools/complete_hd_evidence.py` loads the
 complete builder's `.candidate.json`, `.exe` and `.cdb` bundle. It delegates
