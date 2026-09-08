@@ -363,7 +363,7 @@ class CompleteGameplayEvidenceTests(unittest.TestCase):
         for path,data in self.baseline.items():path.write_bytes(data)
 
     def evaluate(self):
-        return decision.build_report(self.a.summary,**self.a.kwargs(),candidate_manifest_path=self.manifest)
+        return decision.build_report(self.a.summary,**self.a.kwargs(),candidate_manifest_path=self.manifest,run_plan_path=self.a.plan)
 
     def rejected(self,contains=None):
         result=self.evaluate();self.assertFalse(result['guarded_gameplay_evidence'],result)
@@ -433,6 +433,133 @@ class CompleteGameplayEvidenceTests(unittest.TestCase):
         self.reset();log=self.a.log.read_text();line=next(row for row in log.splitlines() if row.startswith('FRAMED_MINIMAP'))
         self.a.log.write_text(log.replace(line,line+'\n'+line));self.update_log_binding()
         self.rejected('expected one FRAMED_MINIMAP')
+
+    def failure_summary(self):
+        data=decision.read_json(self.a.summary)
+        data['Ready']=data.pop('Surface')
+        for key in ('PngSha256','CandidateManifestSha256','SourceLog','CoverageDiagnostic','RunPlan'):
+            data.pop(key,None)
+        data.update(FailurePhase='postprocessing',CoverageExitCode=2,CompleteHdValidation=True,
+            LaunchMode='hidden-desktop',HiddenDesktop=True,Av=False,TimedOut=False,AppRequestQuit=False,
+            FullPaintProgressDiagnostic=False,NoopProgressDiagnostic=False,RuntimeError=None,
+            RuntimeExceptionId=None,HostDumpError=None,InputExe=str(self.a.original),
+            InputSha256=decision.sha(self.a.original.read_bytes()),Log=str(self.a.log),CoverageJson=str(self.a.coverage),
+            GeneratedProbe=str(self.a.probe),RunDir=str(self.a.run),ExceptionId='synthetic retained coverage error',
+            ExceptionStack='synthetic original exception stack')
+        captures=[]
+        for path in (self.a.raw,self.a.run/'surface-2.raw',self.a.run/'surface-3.raw'):
+            if path!=self.a.raw:path.write_bytes(self.a.raw.read_bytes())
+            captures.append(dict(Path=str(path),Bytes=480000,Sha256=decision.sha(path.read_bytes())))
+        data['SurfaceCaptureSet']=captures
+        write_json(self.a.summary,data)
+        return data
+
+    def test_complete_failure_summary_preserves_every_error_and_authenticates_derived_fields(self):
+        self.failure_summary()
+        before={p:decision.sha(p.read_bytes()) for p in self.a.root.rglob('*') if p.is_file()}
+        result=self.evaluate()
+        self.assertTrue(result['guarded_gameplay_evidence'],result['failures'])
+        self.assertFalse(result['input_passed']);self.assertFalse(result['runtime_verdict_changed'])
+        self.assertEqual(set(result['summary_adapter']),{'Surface','PngSha256','CandidateManifestSha256'})
+        self.assertEqual(result['input_diagnostics']['ExceptionId'],'synthetic retained coverage error')
+        self.assertEqual(result['input_diagnostics']['ExceptionStack'],'synthetic original exception stack')
+        self.assertTrue(result['pixel_audits']['stable_identical_triple'])
+        self.assertEqual(result['action_cells_verified'],6)
+        self.assertEqual(before,{p:decision.sha(p.read_bytes()) for p in self.a.root.rglob('*') if p.is_file()})
+
+    def test_failure_summary_rejects_wrong_ready_route_hashes_and_capture_set(self):
+        mutations=[
+            lambda s:s.update(Passed=True),lambda s:s.update(FailurePhase='runtime'),
+            lambda s:s.update(HiddenDesktop=False),lambda s:s.pop('RuntimeError'),
+            lambda s:s.update(Av=True),lambda s:s.update(FullPaintProgressDiagnostic=True),
+            lambda s:s.update(NoopProgressDiagnostic=True),lambda s:s['Ready'].update(Width=1024),
+            lambda s:s['Ready'].update(Surface='00000000'),lambda s:s['Ready'].update(RedrawSeq=3),
+            lambda s:s.update(Surface=dict(s['Ready'],Width=1024)),
+            lambda s:s.update(PngSha256='0'*64),lambda s:s.update(GeneratedProbeSha256='0'*64),
+            lambda s:s.update(CandidateManifestSha256='0'*64),lambda s:s.update(InputSha256='0'*64),
+            lambda s:s.update(Log=str(self.a.root/'other.log')),
+            lambda s:s['SurfaceCaptureSet'][1].update(Path=str(self.a.raw)),
+            lambda s:s['SurfaceCaptureSet'][2].update(Sha256='0'*64),
+        ]
+        for index,mutate in enumerate(mutations):
+            with self.subTest(index=index):
+                self.reset();data=self.failure_summary();mutate(data);write_json(self.a.summary,data)
+                self.rejected()
+
+    def observed_minimap_fixture(self):
+        """Replace proprietary PE and lower-level main construction with stand-ins.
+
+        Report/probe/source identity comparisons and native row/order/geometry
+        parsing remain real. Exact main command reconstruction and mutation
+        negatives have their own complete_hd_main_probe suite. No observation
+        is an actual runtime claim.
+        """
+        path=self.a.run/'minimap-observer.json';source=self.a.run/'source-main.cdb';output=self.a.run/'observed-main.cdb'
+        source.write_text('synthetic source-main; no executable commands',encoding='ascii')
+        output.write_text('synthetic PE-derived observer; no executable commands',encoding='ascii')
+        packet=dict(schema='synthetic_minimap_builder_fixture',stage=self.stage,resolution='800x600',
+            candidate_sha256=self.a.sha,probe=output.read_text(),observed_main_sha256=decision.sha(output.read_bytes()),
+            acceptance=False,runtime_executed=False)
+        expected=dict(packet,producer_source_sha256=decision.sha(Path(decision.minimap_probe.__file__).read_bytes()),
+                      source_main_path=str(source.resolve()),observed_main_path=str(output.resolve()))
+        write_json(path,{k:v for k,v in expected.items() if k!='probe'})
+        def observed(original,candidate,**kwargs):
+            self.assertEqual(original,self.a.original.read_bytes());self.assertEqual(candidate,self.a.candidate.read_bytes())
+            self.assertEqual(kwargs['rendered_probe'],source.read_text())
+            self.assertEqual(kwargs['candidate_manifest'],self.metadata)
+            return copy.deepcopy(packet)
+        mocked=patch.object(decision.minimap_probe,'build_observed_probe',side_effect=observed)
+        mocked.start();self.addCleanup(mocked.stop)
+        def main_recipe(main,context,raw):
+            self.assertEqual(main,source.read_text())
+            self.assertEqual(context['manifest'],self.metadata)
+            self.assertEqual(raw,self.a.raw.resolve())
+            return dict(recipe='synthetic_main_fixture',exact_recipe_verified=True,
+                source_hashes={'tools/complete_hd_main_probe.py':decision.sha(Path(decision.main_probe.__file__).read_bytes())})
+        main_mock=patch.object(decision.main_probe,'verify_normal_main',side_effect=main_recipe)
+        main_mock.start();self.addCleanup(main_mock.stop)
+        summary=decision.read_json(self.a.summary);summary['MinimapObserverReport']=str(path);write_json(self.a.summary,summary)
+        bound=f'FRAMED_MINIMAP_OBSERVER_BOUND stage={self.stage} resolution=800x600 candidate_sha256={self.a.sha}'
+        viewport='FRAMED_MINIMAP_VIEWPORT scale=2 world=(100,100) scroll=(10,17)'
+        log=bound+'\n'+self.a.log.read_text().replace('FRAMED_MINIMAP enabled=',viewport+'\nFRAMED_MINIMAP enabled=')
+        self.a.log.write_text(log);self.update_log_binding()
+        return path,source,output,log,bound,viewport
+
+    def test_complete_paused_viewport_requires_exact_source_contract_and_keeps_all_rows(self):
+        path,source,output,log,bound,viewport=self.observed_minimap_fixture()
+        result=self.evaluate();self.assertTrue(result['guarded_gameplay_evidence'],result['failures'])
+        self.assertEqual(result['snapshot']['minimap_viewport']['scale'],2)
+        for bad in (log.replace(viewport,viewport+'\n'+viewport),log.replace(viewport,'').replace(bound,viewport+'\n'+bound),
+            log.replace(viewport,viewport.replace('scale=2','scale=4')),
+            log.replace(viewport,viewport.replace('scroll=(10,17)','scroll=(11,17)')),
+            log.replace(viewport,viewport.replace('world=(100,100)','world=(99,100)')),
+            log.replace(viewport,viewport+'\nFRAMED_EXTRA_FAKE_RECORD'),log.replace(bound,bound+'\n'+bound),
+            log.replace(bound,'').replace('SURFDUMP_HOST_READY',bound+'\nSURFDUMP_HOST_READY')):
+            self.a.log.write_text(bad);self.update_log_binding();self.rejected()
+        self.a.log.write_text(log);self.update_log_binding()
+        original=path.read_bytes();data=decision.read_json(path);data['candidate_sha256']='0'*64;write_json(path,data)
+        self.rejected('observer report differs');path.write_bytes(original)
+        output.write_text('changed probe');self.rejected('observer probe differs')
+
+    def test_failure_summary_binds_full_runtime_separately_from_canonical_extra(self):
+        self.failure_summary()
+        _,_,observed,_,_,_=self.observed_minimap_fixture()
+        runtime=self.a.run/'complete-runtime.cdb'
+        runtime.write_bytes(observed.read_bytes().replace(b'\n',b'\r\n'))
+        summary=decision.read_json(self.a.summary);summary['GeneratedProbe']=str(runtime)
+        summary['GeneratedProbeSha256']=decision.sha(runtime.read_bytes());write_json(self.a.summary,summary)
+        report=self.evaluate()
+        self.assertTrue(report['guarded_gameplay_evidence'],report['failures'])
+        self.assertTrue(report['generated_runtime_probe_composition_verified'])
+        self.assertNotEqual(report['sources']['summary_generated_probe']['sha256'],report['canonical_probe_sha256'])
+        for data in (self.a.probe.read_bytes(),observed.read_bytes()+b'\n.call 00409d80\n'):
+            runtime.write_bytes(data);summary['GeneratedProbeSha256']=decision.sha(data);write_json(self.a.summary,summary)
+            self.rejected('runtime probe differs')
+
+    def test_historical_summary_does_not_gain_ready_compatibility(self):
+        data=self.failure_summary();data['Stage']=decision.STAGE;write_json(self.a.summary,data)
+        report=decision.build_report(self.a.summary,**self.a.kwargs(),run_plan_path=self.a.plan)
+        self.assertFalse(report['guarded_gameplay_evidence']);self.assertIn('Surface',';'.join(report['failures']))
 
 
 if __name__=="__main__":unittest.main()
