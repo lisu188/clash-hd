@@ -4,6 +4,7 @@ param(
     [string]$Cdb = 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe',
     [string]$Python = 'C:\Users\andrz\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe',
     [string]$Stage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch',
+    [string]$Resolution = '800x600',
     [string]$CandidateName = '',
     [string]$CandidateDir = '',
     [switch]$UseDdrawProxy,
@@ -454,7 +455,7 @@ if ($UseDdrawProxy) {
 }
 
 $inputSha = Get-FileSha256 -Path $inputFull
-& $pythonExe $patcher --input $inputFull --output $candidateFull --stage $Stage
+& $pythonExe $patcher --input $inputFull --output $candidateFull --stage $Stage --resolution $Resolution
 $patchExit = $LASTEXITCODE
 if ($patchExit -ne 0) {
     throw "patch_clash95_hd.py failed with exit code $patchExit"
@@ -462,6 +463,15 @@ if ($patchExit -ne 0) {
 $candidateSha = Get-FileSha256 -Path $candidateFull
 
 $probeText = Get-Content -LiteralPath $ProbeTemplate -Raw
+# The injected route points were measured at 800x600. Follow the same native
+# menu positions when the patcher centers that menu on a larger surface.
+$resolutionParts = $Resolution.ToLowerInvariant().Split('x')
+$menuDeltaX = ([int]$resolutionParts[0] - 800) / 2
+$menuDeltaY = ([int]$resolutionParts[1] - 600) / 2
+$mainMouseRawX = [int](300 + $menuDeltaX) -shl 6
+$mainMouseRawY = [int](218 + $menuDeltaY) -shl 6
+# The load-list helper compares native coordinates directly, unlike the
+# relocated main-menu descriptors; this remains a forced native route.
 $loadMouseX = 320
 $loadMouseY = 166 + (22 * $LoadSlot)
 $loadMouseRawX = $loadMouseX -shl 6
@@ -474,6 +484,8 @@ else {
 }
 $probeText = $probeText.Replace('__PRE_ENTRY_LOAD_COORD_ACTION__', $preEntryLoadCoordAction)
 $probeText = $probeText.Replace('__LOAD_SLOT__', [string]$LoadSlot)
+$probeText = $probeText.Replace('__MAIN_MOUSE_RAW_X__', ('{0:x8}' -f $mainMouseRawX))
+$probeText = $probeText.Replace('__MAIN_MOUSE_RAW_Y__', ('{0:x8}' -f $mainMouseRawY))
 $probeText = $probeText.Replace('__LOAD_MOUSE_RAW_X__', ('{0:x8}' -f $loadMouseRawX))
 $probeText = $probeText.Replace('__LOAD_MOUSE_RAW_Y__', ('{0:x8}' -f $loadMouseRawY))
 if ($PostOwnerForceVisibleSeven -and -not $ExtraProbeTemplate) {
@@ -740,6 +752,7 @@ if (-not $ready -or -not $dumpDone -or -not $rawExists) {
         ExtraProbeTemplate = if ($ExtraProbeTemplate) { Get-FullPath -Path $ExtraProbeTemplate } else { $null }
         GeneratedProbe = $generatedProbe
         Stage = $Stage
+        Resolution = $Resolution
         Ready = $ready
         RawExists = $rawExists
         RawBytes = $rawBytes
@@ -939,6 +952,7 @@ $summaryObject = [pscustomobject]@{
     DesktopName = $launch.DesktopName
     RunDir = $runDir
     Stage = $Stage
+    Resolution = $Resolution
     InputExe = $inputFull
     InputSha256 = $inputSha
     CandidatePath = $candidateFull

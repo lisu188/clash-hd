@@ -1,0 +1,525 @@
+{
+  "schema": 1,
+  "generated_at": "2026-09-08T08:49:31.504575+00:00",
+  "runtime_policy": "repo-only evidence parsing; launches no game, debugger, wrapper, or visible window",
+  "passed": false,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
+  "candidate": "C:\\ClashTests\\battle-hd-1280x720\\candidate\\clash95_hd_surfdump_20260908_104050.exe",
+  "candidate_sha256": "FACE6859084183EC1F221D966DF6FDB54756746324D136E967AF6CE9A2E44DAA",
+  "resolution": [
+    1280,
+    720
+  ],
+  "patch_verification": {
+    "report": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\patch-stage.json",
+    "candidate": "C:\\ClashTests\\battle-hd-1280x720\\clash95_battlehd_review.exe",
+    "candidate_sha256": "FACE6859084183EC1F221D966DF6FDB54756746324D136E967AF6CE9A2E44DAA",
+    "patch_count": 275,
+    "status_counts": {
+      "patched": 275
+    },
+    "binding": "identical executable SHA-256; runtime and verification paths are recorded independently"
+  },
+  "runtime_context": {
+    "wrapper": "memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=CB7F65867E9AFAA2DC5659D9B2647E26919B328205970858B56872793BEA9654",
+    "launch_mode": "hidden-desktop-cdb",
+    "input_method": "debugger_memory_register_writes_and_direct_calls",
+    "input_evidence_class": "forced_hidden_camera_fixture",
+    "route_method": "forced_unit_attack",
+    "harness_result": {
+      "passed": true,
+      "timed_out": false,
+      "cdb_exit_code": null,
+      "stopped_after_dump": true,
+      "dump_method": "host-readprocessmemory"
+    }
+  },
+  "source_artifacts": {
+    "harness_summary": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\summary.json",
+      "sha256": "391801D1F6FCB5F60B71D9D89F3DB9FA4709890D6C70474FA1477D3623DF448C"
+    },
+    "generated_probe": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\clash95_surface_dump_probe.generated.cdb",
+      "sha256": "D3563C4A7771E10525CE165CC6A1DDD857CCB43C86139277BD6029AF636BB2A5"
+    },
+    "patch_stage_report": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\patch-stage.json",
+      "sha256": "D88F618AF8632DEF68E7AD22742274245102190207D2BE530BB82A4B6B1F623D"
+    },
+    "software_surface_raw": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\surface.raw",
+      "sha256": "164AC9B3FA99F8EEF9E89AEA3778809C641FE709CA0D5B38BCCCA30E50DB5D57"
+    },
+    "software_surface_png": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\surface.png",
+      "sha256": "180A815179A34C8CFEB25A4D00BC625E41B20BF806F22A224B7EFF0F24D8DFFA"
+    }
+  },
+  "recorded_observations": [],
+  "limitations": [
+    "Width17/20 are explicit debugger fixtures, not naturally generated arena dimensions.",
+    "No rendering occurred while fixture arena state was installed. Natural scrolling, real input, and final composition remain unproven."
+  ],
+  "visual_mode": "unproven",
+  "promotion_status": "validation_stage_only",
+  "stable_stage_should_change": false,
+  "evidence_class": "forced_validation",
+  "manual_input_claim_accepted": false,
+  "manual_input_note": "No manual release approval is inferred from input mechanism or parser success.",
+  "run_manifest": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\battle-hd-run.json",
+  "log": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-104050\\cdb-surface-dump.log",
+  "log_sha256": "1816F5D8D952FF62F9ED052C899985D48E7E5636E16754B2433F08EF6AA5CD01",
+  "claims": {
+    "identity": {
+      "passed": true,
+      "failures": [],
+      "identity_valid": true
+    },
+    "runtime_health": {
+      "passed": true,
+      "failures": [],
+      "identity_valid": true,
+      "scope": "Completed observed interval without logged runtime/debugger errors; not liveness, soak, or final composition."
+    },
+    "route_catalog": {
+      "passed": false,
+      "failures": [
+        "owner BANNER was not observed",
+        "owner CAMERA was not observed",
+        "owner DIALOG was not observed",
+        "owner DIRTY_REDRAW was not observed",
+        "owner ENTRY was not observed",
+        "owner FRAME was not observed",
+        "owner FULL_REDRAW was not observed",
+        "owner GRID was not observed",
+        "owner HUD was not observed",
+        "owner PAN was not observed",
+        "owner PROJECTION was not observed"
+      ],
+      "identity_valid": true
+    },
+    "geometry": {
+      "passed": false,
+      "failures": [
+        "measured expanded battlefield/HUD geometry is missing"
+      ],
+      "identity_valid": true
+    },
+    "render": {
+      "passed": false,
+      "failures": [
+        "FULL_REDRAW has no measured clipping/bounds observation",
+        "DIRTY_REDRAW has no measured clipping/bounds observation",
+        "battle HD presentation bounds are unproven"
+      ],
+      "identity_valid": true
+    },
+    "input": {
+      "passed": false,
+      "failures": [
+        "grid top_left result is unproven",
+        "grid top_right result is unproven",
+        "grid bottom_left result is unproven",
+        "grid bottom_right result is unproven",
+        "grid hud result is unproven",
+        "grid outside result is unproven",
+        "grid top_padding result is unproven",
+        "grid bottom_padding result is unproven",
+        "enabled command outcome is unproven",
+        "disabled command outcome is unproven",
+        "left camera pan/clamp is unproven",
+        "right camera pan/clamp is unproven",
+        "up camera pan/clamp is unproven",
+        "down camera pan/clamp is unproven"
+      ],
+      "identity_valid": true
+    },
+    "modal": {
+      "passed": false,
+      "failures": [
+        "modal open/use/close and restored input are unproven"
+      ],
+      "identity_valid": true
+    },
+    "return": {
+      "passed": false,
+      "failures": [
+        "ordered battle entry/results/Unit_Attack return/map poll was not observed",
+        "post-return HD map rendering and input are unproven"
+      ],
+      "identity_valid": true
+    },
+    "visible": {
+      "passed": false,
+      "failures": [
+        "matching visible composition proof is missing"
+      ],
+      "identity_valid": true
+    },
+    "unforced_runtime": {
+      "passed": false,
+      "failures": [
+        "forced route/actions or debugger intervention remain present"
+      ],
+      "identity_valid": true
+    }
+  },
+  "owner_visits": {
+    "ENTRY": false,
+    "FULL_REDRAW": false,
+    "DIRTY_REDRAW": false,
+    "PROJECTION": false,
+    "CAMERA": false,
+    "PAN": false,
+    "GRID": false,
+    "HUD": false,
+    "FRAME": false,
+    "BANNER": false,
+    "DIALOG": false,
+    "RESULTS": false,
+    "RETURN": false,
+    "MAP_POLL": false
+  },
+  "forced_markers": [
+    "BATTLE_FORCE_ATTACK_CALL",
+    "BATTLE_FORCE_SCAN",
+    "BATTLE_FORCE_UNIT",
+    "BATTLE_HD_CAMERA_FIXTURE_FORCE",
+    "BATTLE_HD_CAMERA_FIXTURE_FORCE_RESTORE",
+    "BATTLE_HD_LIFECYCLE_FORCE_ENTRY_DIALOG_CHOICE"
+  ],
+  "forced_actions": [
+    "Hidden x86 CDB with memory-only DirectDraw proxy and host ReadProcessMemory capture.",
+    "Base harness forces DirectInput acquisition return values, menu/load-slot0 logical coordinates, button flags, selection/accept returns, and fast-forwards startup sleeps.",
+    "Unit_Attack route is forced after scanning units, moving attacker coordinates beside defender, setting dword_51d01c=1, and injecting CPU-register arguments plus a synthetic return.",
+    "Prebattle dialog raw mouse coordinates and predicate return are forced into its first choice; raw coordinates are restored after return.",
+    "Arena width fields temporarily forced to17/20 with seven rows; camera fields forced outside limits before direct clamp calls.",
+    "Unit0 coordinate word temporarily forced to(0,3), (19,3), and (10,3) before direct camera recenter calls.",
+    "Original arena16x7, camera(0,0), unit0 coordinate word and CPU state restored before capture; redraw and tile projection are guarded against fixture state."
+  ],
+  "helper_measurements": {
+    "evidence_class": "forced_hidden_helper_measurements",
+    "sequence_completed": false,
+    "identity_valid": true,
+    "runtime_errors": [],
+    "checks": {
+      "camera_endpoints": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Forced out-of-range camera values followed by direct clamp calls; keyboard, drag, repeat, and selection recentering are separate claims."
+      },
+      "mouse_cell_boundaries": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Forced raw mouse values and direct mouse-cell helper returns; no physical or injected input and no grid action callback are inferred."
+      },
+      "full_tile_projection": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Direct full-redraw call visited each existing visible tile and produced the expected tile origins; copy bounds and final composition remain separate."
+      },
+      "dirty_tile_projection": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Direct dirty redraw reached and returned from tile (8,0), including its expected pixel origin; natural animation and dirty copy bounds remain separate."
+      },
+      "hud_descriptor_coordinates": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Six descriptor positions and unchanged callback pointers were read from memory; command enabled/disabled behavior remains unproven."
+      },
+      "frame_copy_rectangles": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Eight native border/sidebar source rectangles reached the expected destination copy calls; completion and final pixels require separate evidence."
+      },
+      "present_surface": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "A direct present call saw the 1280x720 software surface; this is not final wrapper composition or a bounds check."
+      }
+    },
+    "mouse_cases_measured": [],
+    "observed_arenas": [],
+    "acceptance_claims_satisfied_by_helpers": false
+  },
+  "lifecycle_measurements": {
+    "evidence_class": "forced_hidden_lifecycle",
+    "sequence_completed": false,
+    "identity_valid": true,
+    "runtime_errors": [],
+    "checks": {
+      "banner_geometry": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "An inclusive banner rectangle was measured within one pixel of the battlefield center; final colors and pixels are separate."
+      },
+      "banner_render_hook_restore": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Measured render and hook pointers matched their saved values after forced banner dismissal."
+      },
+      "banner_cursor_return": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "The logical cursor must actually read (576,360) at the banner-return observation; intended patch coordinates alone do not pass."
+      },
+      "disabled_callback_state": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Unit type and descriptor state were forced before a direct callback; returned state is observed, without physical click or grid-action proof."
+      },
+      "enabled_callback_state": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Unit type and descriptor state were forced before a direct callback; returned state is observed, without physical click or grid-action proof."
+      },
+      "modal_yes_and_render_restore": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Centered modal geometry, directly forced Yes callback result, and render-pointer restoration were observed in order; No and real input remain unproven."
+      },
+      "modal_cursor_return": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "The logical cursor must actually read (576,360) after modal restoration."
+      },
+      "owner_hook_and_map_state_restore": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Battle owner hook/input bounds matched entry; after Unit_Attack continuation the map poll also matched entry render pointer. This does not prove correct restored pixels or map input."
+      },
+      "results_and_forced_map_redraw": {
+        "passed": false,
+        "measurement_matches": false,
+        "note": "Results and their return preceded the restored map poll and a direct map-redraw return; this is a forced lifecycle diagnostic."
+      }
+    },
+    "observed_banner_rects": [],
+    "observed_banner_return_mouse": [],
+    "observed_modal_rects": [],
+    "observed_modal_return_mouse": [],
+    "observed_owner_state": [],
+    "observed_map_poll_state": [],
+    "post_return_composition_proven": false,
+    "acceptance_claims_satisfied_by_forced_lifecycle": false
+  },
+  "camera_measurements": {
+    "evidence_class": "forced_hidden_camera_fixture",
+    "sequence_completed": true,
+    "identity_valid": true,
+    "runtime_errors": [],
+    "checks": {
+      "width17_lower": {
+        "passed": true,
+        "measurement_matches": true
+      },
+      "width17_upper": {
+        "passed": true,
+        "measurement_matches": true
+      },
+      "width20_lower": {
+        "passed": true,
+        "measurement_matches": true
+      },
+      "width20_upper": {
+        "passed": true,
+        "measurement_matches": true
+      },
+      "recenter_left": {
+        "passed": true,
+        "measurement_matches": true
+      },
+      "recenter_right": {
+        "passed": true,
+        "measurement_matches": true
+      },
+      "retain_visible": {
+        "passed": true,
+        "measurement_matches": true
+      }
+    },
+    "original_state_restored": true,
+    "observed_cases": [
+      {
+        "case": "width17_lower",
+        "arena": [
+          17,
+          7
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "unit0": [
+          1,
+          3
+        ]
+      },
+      {
+        "case": "width17_upper",
+        "arena": [
+          17,
+          7
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "unit0": [
+          1,
+          3
+        ]
+      },
+      {
+        "case": "width20_lower",
+        "arena": [
+          20,
+          7
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "unit0": [
+          1,
+          3
+        ]
+      },
+      {
+        "case": "width20_upper",
+        "arena": [
+          20,
+          7
+        ],
+        "camera": [
+          3,
+          0
+        ],
+        "unit0": [
+          1,
+          3
+        ]
+      },
+      {
+        "case": "recenter_left",
+        "arena": [
+          20,
+          7
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "unit0": [
+          0,
+          3
+        ]
+      },
+      {
+        "case": "recenter_right",
+        "arena": [
+          20,
+          7
+        ],
+        "camera": [
+          3,
+          0
+        ],
+        "unit0": [
+          19,
+          3
+        ]
+      },
+      {
+        "case": "retain_visible",
+        "arena": [
+          20,
+          7
+        ],
+        "camera": [
+          3,
+          0
+        ],
+        "unit0": [
+          10,
+          3
+        ]
+      }
+    ],
+    "saved_state": [
+      {
+        "arena": [
+          16,
+          7
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "unit0_xy_word": 196609
+      }
+    ],
+    "restored_state": [
+      {
+        "arena": [
+          16,
+          7
+        ],
+        "camera": [
+          0,
+          0
+        ],
+        "unit0_xy_word": 196609
+      }
+    ],
+    "note": "Arena widths17/20 and unit0 coordinates were forced only around direct clamp/recenter calls. No rendering was allowed with fixture state; natural 17/20-column arenas, camera input, and frame correctness remain separate.",
+    "acceptance_claims_satisfied_by_camera_fixture": false
+  },
+  "marker_counts": {
+    "BATTLE_HD_CAMERA_FIXTURE_COMPLETE": 1,
+    "BATTLE_HD_CAMERA_FIXTURE_FORCE": 7,
+    "BATTLE_HD_CAMERA_FIXTURE_MEASURE": 7,
+    "BATTLE_HD_CAMERA_FIXTURE_RESTORED": 1,
+    "BATTLE_HD_CAMERA_FIXTURE_SAVED": 1,
+    "BATTLE_HD_LIFECYCLE_ENTRY_DIALOG_RETURN": 1,
+    "BATTLE_HD_LIFECYCLE_FORCE_ENTRY_DIALOG_CHOICE": 1
+  },
+  "failures": [
+    "route_catalog: owner BANNER was not observed",
+    "route_catalog: owner CAMERA was not observed",
+    "route_catalog: owner DIALOG was not observed",
+    "route_catalog: owner DIRTY_REDRAW was not observed",
+    "route_catalog: owner ENTRY was not observed",
+    "route_catalog: owner FRAME was not observed",
+    "route_catalog: owner FULL_REDRAW was not observed",
+    "route_catalog: owner GRID was not observed",
+    "route_catalog: owner HUD was not observed",
+    "route_catalog: owner PAN was not observed",
+    "route_catalog: owner PROJECTION was not observed",
+    "geometry: measured expanded battlefield/HUD geometry is missing",
+    "render: FULL_REDRAW has no measured clipping/bounds observation",
+    "render: DIRTY_REDRAW has no measured clipping/bounds observation",
+    "render: battle HD presentation bounds are unproven",
+    "input: grid top_left result is unproven",
+    "input: grid top_right result is unproven",
+    "input: grid bottom_left result is unproven",
+    "input: grid bottom_right result is unproven",
+    "input: grid hud result is unproven",
+    "input: grid outside result is unproven",
+    "input: grid top_padding result is unproven",
+    "input: grid bottom_padding result is unproven",
+    "input: enabled command outcome is unproven",
+    "input: disabled command outcome is unproven",
+    "input: left camera pan/clamp is unproven",
+    "input: right camera pan/clamp is unproven",
+    "input: up camera pan/clamp is unproven",
+    "input: down camera pan/clamp is unproven",
+    "modal: modal open/use/close and restored input are unproven",
+    "return: ordered battle entry/results/Unit_Attack return/map poll was not observed",
+    "return: post-return HD map rendering and input are unproven",
+    "visible: matching visible composition proof is missing",
+    "unforced_runtime: forced route/actions or debugger intervention remain present"
+  ]
+}

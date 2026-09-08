@@ -83,6 +83,12 @@ Run individual fixtures with `python tools/test_<name>.py`.
 
 ## Current frontier
 
+- Expanded tactical battle has a separate `-castlecenter-all-battlehd`
+  implementation lane at 1280x720 (17x7 tile capacity, native right sidebar).
+  See `reports/battle_hd_1280_validation.md` and the separate current battle-HD
+  validation report. Centered-battle evidence does not prove expanded geometry
+  or input; this lane remains validation-only.
+
 - Terrain tooltip and selected-unit action-panel anchoring still need a
   validation-stage implementation and evidence.
 - Right-bottom composition: the rows-present vs rows-absent gate-design
