@@ -17,6 +17,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from load_slot_geometry_contract import check_harness
+
 
 DEFAULT_DECOMP_C = Path(r"C:\Clash\clash95.c")
 DEFAULT_SURFACE_PROBE_SCRIPT = Path("scripts/cdb/run_cdb_surface_dump.ps1")
@@ -52,15 +54,6 @@ DECOMP_MARKERS = {
     "row_draw_formula": "v4 = (unsigned __int16)(22 * a1 + 155);",
     "row_text_bounds": "UI_DrawTextFmt(v4, 244, 410, 22 * a1 + 155",
 }
-HARNESS_MARKERS = {
-    "validate_range_0_9": "[ValidateRange(0,9)]",
-    "load_mouse_x": "$loadMouseX = 320",
-    "load_mouse_y_formula": "$loadMouseY = 166 + (22 * $LoadSlot)",
-    "load_mouse_raw_x": "$loadMouseRawX = $loadMouseX -shl 6",
-    "load_mouse_raw_y": "$loadMouseRawY = $loadMouseY -shl 6",
-    "load_slot_replacement": "$probeText = $probeText.Replace('__LOAD_SLOT__'",
-}
-
 ROUTE_INJECT_RE = re.compile(r"route-injects load slot (?P<slot>\d+)")
 LOAD_COORD_RE = re.compile(
     r"SURFDUMP_LOAD_COORD\b.*?\bseq=(?P<seq>\d+)\b.*?\bmouse=\((?P<mouse_x>-?\d+),(?P<mouse_y>-?\d+)\)"
@@ -291,7 +284,7 @@ def build_report(
 ) -> dict[str, Any]:
     failures: list[str] = []
     static_decomp = check_markers(decomp_c, DECOMP_MARKERS)
-    harness = check_markers(surface_probe_script, HARNESS_MARKERS)
+    harness = check_harness(surface_probe_script, require_slot_range=True)
     failures.extend(f"decomp: {failure}" for failure in static_decomp["failures"])
     failures.extend(f"harness: {failure}" for failure in harness["failures"])
 
