@@ -101,12 +101,12 @@ They establish 6/7 helper diagnostics, 7/7 forced camera cases, and 12/14
 forced lifecycle diagnostics respectively. The helper's dedicated phase-14
 present marker is absent; banner/results post-poll cursor targets remain
 unresolved. Full redraw visited all 112 cells of the real 16x7 arena and
-dirty redraw reached column eight. The 17th slot remains cleared. Camera
+dirty redraw reached tile (8,0), using zero-based coordinates. The 17th slot remains cleared. Camera
 fixtures temporarily used widths 17 and 20 without rendering artificial cells.
 
 The final results snapshot `20260908-111818` copied the native primary surface
 after dialog drawing and stopped before dismissal. It shows the centered
-640x178 results message and all six battle command cells. Its explicit
+640x178 results message and all six native battle command controls. Its explicit
 debugger allocation/copy is diagnostic software-surface evidence, not visible
 runtime or an additional completed lifecycle. Raw logs retain CDB's command
 skipping notice after `SURFDUMP_HOST_READY`; no natural post-dump interval is
@@ -119,3 +119,7 @@ launcher dry run, screenshots and remaining acceptance items. The separate
 documents compatibility with merged `main` and the reviewed source-hash
 updates required by its existing builders. The original foundation import
 manifest retains its historical hashes.
+
+The subsequent [PR60 integration check](battle_hd_source_binding_pr60.md)
+confirms the latest modal-slot producers and harness changes remain compatible
+without additional source repins or changes to the battle candidate bytes.
