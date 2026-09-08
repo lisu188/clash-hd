@@ -56,8 +56,10 @@ class CompleteHdLauncherTests(unittest.TestCase):
         return result
 
     def test_paths_and_geometry_are_separate_from_classic_and_framed(self):
-        classic = core.plan_candidate()
-        framed_plan = framed.plan_candidate()
+        # Windows defaults are relative paths on POSIX. Use the same external
+        # fixture root for each profile so the isolation guard stays enabled.
+        classic = core.plan_candidate(clash_dir=self.game, candidates_root=self.root / "candidates")
+        framed_plan = framed.plan_candidate(clash_dir=self.game, candidates_root=self.root / "candidates")
         self.assertEqual(classic.resolution, "800x600")
         self.assertEqual(self.plan.candidate_dir.parts[-2:], ("completehd-validation", "1920x1080"))
         self.assertEqual(len({classic.candidate_dir, framed_plan.candidate_dir, self.plan.candidate_dir}), 3)
