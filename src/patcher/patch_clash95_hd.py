@@ -172,6 +172,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import re
+import sys
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Callable, Iterable
@@ -1882,6 +1883,17 @@ STAGE_GROUPS = {
 }
 
 
+# This stage deliberately lives outside the frozen legacy patch/recipe table.
+BATTLE_HD_STAGE = DEFAULT_STAGE + "-castlecenter-all-battlehd"
+BATTLE_HD_GROUPS = (
+    "battle-hd-section", "battle-hd-viewport", "battle-hd-camera", "battle-hd-input",
+    "battle-hd-frame", "battle-hd-hud", "battle-hd-dialogs",
+    "battle-hd-descriptors", "battle-hd-tooltip",
+)
+STAGE_GROUPS[BATTLE_HD_STAGE] = STAGE_GROUPS[DEFAULT_STAGE + "-castlecenter-all"] + BATTLE_HD_GROUPS
+SPECIAL_STAGE_RESOLUTIONS = {BATTLE_HD_STAGE: ("1280x720",)}
+
+
 # ---------------------------------------------------------------------------
 # Resolution parameterization.
 #
@@ -2808,6 +2820,14 @@ def build_patches(profile: ResolutionProfile) -> tuple[Patch, ...]:
 
 
 def select_patches_for(stage: str, profile: ResolutionProfile) -> list[Patch]:
+    if stage == BATTLE_HD_STAGE:
+        if profile.key not in SPECIAL_STAGE_RESOLUTIONS[stage]:
+            raise ResolutionNotSupportedError("The battlehd validation stage supports only 1280x720")
+        inherited = select_patches_for(DEFAULT_STAGE + "-castlecenter-all", profile)
+        selected = inherited + battle_hd_patches()
+        from battle_hd_section import validate_spans
+        validate_spans(selected)
+        return selected
     if (
         profile.width,
         profile.height,
@@ -2824,12 +2844,44 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def battle_hd_patches() -> list[Patch]:
+    """Build stage-only records without requiring assembler/game files at runtime."""
+    sibling_path = str(Path(__file__).resolve().parent)
+    if sibling_path not in sys.path:
+        sys.path.insert(0, sibling_path)
+    import battle_hd_core
+    import battle_hd_hud
+    from battle_hd_section import section_records
+    records = (
+        *battle_hd_core.build_patches(), *battle_hd_hud.build_patches(),
+        *section_records(battle_hd_core.CORE_CODE, battle_hd_hud.HUD_CODE),
+    )
+    patches = [Patch(*record) for record in records]
+    if {patch.group for patch in patches} != set(BATTLE_HD_GROUPS):
+        raise ResolutionError("battle HD generated groups do not match the declared validation stage")
+    return patches
+
+
 def select_patches(stage: str) -> list[Patch]:
+    if stage in SPECIAL_STAGE_RESOLUTIONS:
+        raise ResolutionNotSupportedError("The battlehd validation stage requires --resolution 1280x720")
     groups = set(STAGE_GROUPS[stage])
     return [patch for patch in PATCHES if patch.group in groups]
 
 
 def validate_input(data: bytes, patches: Iterable[Patch]) -> None:
+    patches = tuple(patches)
+    if any(patch.group.startswith("battle-hd-") for patch in patches):
+        # Establish the sibling import path even for direct API callers that
+        # supplied a hand-constructed/incomplete list instead of stage selection.
+        expected_installation = select_patches_for(BATTLE_HD_STAGE, parse_resolution("1280x720"))
+        from battle_hd_section import SOURCE_SIZE, validate_installation
+        if len(data) != SOURCE_SIZE or sha256(data) != EXPECTED_SHA256:
+            raise SystemExit("battlehd requires the exact original executable SHA and file size; no unknown-SHA override is permitted")
+        try:
+            validate_installation(patches, expected_installation)
+        except ValueError as exc:
+            raise SystemExit(str(exc)) from exc
     errors: list[str] = []
     for patch in patches:
         actual = data[patch.offset : patch.offset + len(patch.old)]
@@ -2844,6 +2896,9 @@ def validate_input(data: bytes, patches: Iterable[Patch]) -> None:
 
 
 def apply_patches(data: bytes, patches: Iterable[Patch]) -> bytes:
+    patches = tuple(patches)
+    if any(patch.group.startswith("battle-hd-") for patch in patches):
+        validate_input(data, patches)
     patched = bytearray(data)
     for patch in patches:
         patched[patch.offset : patch.offset + len(patch.new)] = patch.new
@@ -2911,6 +2966,7 @@ def parse_args() -> argparse.Namespace:
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all is the current broad castle-interior validation target and uses a present-callback wrapper so stock castle/barracks rendering runs before the 80,60 centering copy, plus a native-render-first full-overview 00422020 visual wrapper and 00422520 hit-test wrapper; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter adds the battle initial-present wrapper after hidden CDB evidence proved the Unit_Attack route and native 640x480 battle frame; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlecenter-inputprobe adds validation-only battle grid and descriptor hit-test mouse wrappers; "
+            "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd adds the isolated 1280x720 expanded 17x7 battle viewport and right sidebar validation lane; "
             "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-validation combines hdlayout-framerestore, rightbottomcompose, and castlecenter-all-battlecenter-inputprobe with resolution-aware frame-band tiling for composition validation without changing the stable stage; "
             "gameplay-menu640-centered-map12-hybridmouse-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch keeps that stack but tests hybrid DirectInput; "
             "gameplay-menu640-centered-map12-absinput assigns large DirectInput X/Y samples as coordinates; "

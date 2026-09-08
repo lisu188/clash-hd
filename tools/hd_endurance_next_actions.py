@@ -15,6 +15,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+import hd_soak_dry_run_plan as soak_plan
+
 
 DEFAULT_CHECKLIST_JSON = Path("captures/current/hd-endurance-release-checklist-current.json")
 DEFAULT_SHORT_STEP_STATUS_JSON = Path("captures/current/hd-soak-short-step-status-current.json")
@@ -405,6 +407,72 @@ def dry_run_plan_for_step(
     }, []
 
 
+def hidden_dry_run_plan_for_step(
+    dry_run_plan: dict[str, Any] | None,
+    step: dict[str, Any],
+) -> tuple[dict[str, Any] | None, list[str]]:
+    if dry_run_plan is None:
+        return None, []
+    failures: list[str] = []
+    expected = {
+        "passed": True,
+        "status": "ready_for_hidden_runtime",
+        "environment": soak_plan.HIDDEN_ENVIRONMENT,
+        "evidence_class": soak_plan.HIDDEN_EVIDENCE_CLASS,
+        "input_responsiveness": soak_plan.HIDDEN_INPUT_RESPONSIVENESS,
+        "approval_gated_execute_command": None,
+    }
+    for key, value in expected.items():
+        if key not in dry_run_plan or dry_run_plan[key] != value or (isinstance(value, bool) and dry_run_plan[key] is not value):
+            failures.append(f"hidden dry-run {key} is not {value!r}")
+    current = dry_run_plan.get("current_step") or {}
+    for key in ("id", "status", "tier", "route", "duration_sec", "paths", "preferred_environment"):
+        if current.get(key) != step.get(key):
+            failures.append(f"hidden dry-run current step {key} differs from the pending step")
+    if step.get("prerequisites_passed") is not True:
+        failures.append("hidden short-step prerequisites have not passed")
+    if step.get("status") != "missing_pending_hidden_runtime":
+        failures.append("hidden short-step is not pending hidden runtime")
+    freshness = dry_run_plan_freshness(dry_run_plan)
+    failures.extend(freshness["failures"])
+    plan = dry_run_plan.get("plan") or {}
+    failures.extend(soak_plan.validate_hidden_plan(plan, step))
+    source = soak_plan.hidden_runner_source_binding()
+    if not source["passed"] or dry_run_plan.get("runner_source") != source:
+        failures.append("hidden dry-run source binding is stale or invalid")
+    command = plan.get("hidden_runtime_command")
+    for key in ("hidden_runtime_command", "recommended_runtime_command"):
+        if dry_run_plan.get(key) != command:
+            failures.append(f"hidden dry-run {key} differs from the emitted runner command")
+    artifacts = dry_run_plan.get("source_artifacts") or {}
+    script = Path(str(artifacts.get("script") or ""))
+    if normalized_path(soak_plan.resolve_repo_path(str(script))) != normalized_path(soak_plan.REPO_ROOT / soak_plan.HIDDEN_SCRIPT):
+        failures.append("hidden dry-run source does not identify the repository runner")
+    invocation = dry_run_plan.get("invocation") or {}
+    expected_invocation = soak_plan.command_text(soak_plan.dry_run_command(script, step))
+    if (invocation.get("used_fixture_plan") is not False or invocation.get("exit_code") != 0
+            or invocation.get("command") != expected_invocation or artifacts.get("read_plan_json") is not None):
+        failures.append("hidden dry-run must record a successful non-executing runner invocation, not a fixture")
+    locks = {"stable_stage_should_change": False, "right_bottom_promotion_blocked": True,
+             "long_tiers_locked": True, "future_lanes_locked": True}
+    if dry_run_plan.get("locks") != locks:
+        failures.append("hidden dry-run must preserve all stage and promotion locks")
+    if failures:
+        return None, failures
+    return {
+        "passed": True, "status": "ready_for_hidden_runtime",
+        "current_step": step["id"], "environment": soak_plan.HIDDEN_ENVIRONMENT,
+        "evidence_class": soak_plan.HIDDEN_EVIDENCE_CLASS,
+        "input_responsiveness": soak_plan.HIDDEN_INPUT_RESPONSIVENESS,
+        "execute_command": command, "freshness": freshness, "runner_source": source,
+        "candidate_dir": plan["candidate_run_directory"],
+        "output_root": plan["output_directory"],
+        "input_sha256": plan["input_sha256"],
+        "report_json": step["paths"]["report_json"],
+        "report_markdown": step["paths"]["report_markdown"],
+    }, []
+
+
 def intro_skip_readiness_for_step(
     intro_skip_readiness: dict[str, Any] | None,
     step: dict[str, Any],
@@ -527,6 +595,84 @@ def next_action_for_short_step(
     current_failure = current_failure_summary(step)
     if current_failure:
         base["current_failure"] = current_failure
+
+    environment = step.get("preferred_environment", soak_plan.HOST_ENVIRONMENT)
+    header_environment = current.get("preferred_environment", soak_plan.HOST_ENVIRONMENT)
+    environment_failures = []
+    if environment not in (soak_plan.HOST_ENVIRONMENT, soak_plan.HIDDEN_ENVIRONMENT):
+        environment_failures.append("short-step preferred environment is unsupported or explicitly null")
+    if header_environment != environment:
+        environment_failures.append("current-step header environment differs from its step record")
+    if status == "missing_pending_hidden_runtime" and environment != soak_plan.HIDDEN_ENVIRONMENT:
+        environment_failures.append("pending hidden status requires the hidden environment")
+    if environment == soak_plan.HIDDEN_ENVIRONMENT and current.get("status") != step.get("status"):
+        environment_failures.append("hidden current-step status differs from its step record")
+    if environment_failures:
+        return {
+            **base, "id": f"refresh_{current.get('id')}_step_status", "status": "repo_only_validation_required",
+            "requires_visible_runtime": False, "requires_explicit_user_approval": False,
+            "why": "Refresh the inconsistent short-step environment and status before preparing any runtime command.",
+            "exact_runtime_command": None, "plan_verified_execute_command": None,
+            "safe_dry_run_command": None, "repo_command": post_run_validation_for_step(step)[1],
+            "post_run_validation": post_run_validation_for_step(step),
+            "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+            "post_run_evidence_refresh": [],
+        }, environment_failures
+
+    if environment == soak_plan.HIDDEN_ENVIRONMENT and status != "missing_pending_hidden_runtime":
+        failed = status.startswith("failed_") or status == "needs_guard"
+        summary = step.get("summary") or {}
+        return {
+            **base, "id": f"inspect_{current.get('id')}_triage",
+            "status": "triage_followup_required" if failed else "repo_only_validation_required",
+            "environment": soak_plan.HIDDEN_ENVIRONMENT, "evidence_class": soak_plan.HIDDEN_EVIDENCE_CLASS,
+            "input_responsiveness": soak_plan.HIDDEN_INPUT_RESPONSIVENESS,
+            "requires_visible_runtime": False, "requires_explicit_user_approval": False,
+            "why": summary.get("next_probe") or "Inspect the hidden short-soak report and guard before preparing another run.",
+            "exact_runtime_command": None, "plan_verified_execute_command": None, "safe_dry_run_command": None,
+            "repo_command": post_run_validation_for_step(step)[0],
+            "triage": {key: summary.get(key) for key in ("classification", "next_probe", "candidate_sha256")},
+            "post_run_validation": post_run_validation_for_step(step),
+            "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+            "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
+        }, [] if failed else ["hidden step is not pending hidden runtime"]
+
+    if status == "missing_pending_hidden_runtime":
+        plan_summary, failures = hidden_dry_run_plan_for_step(dry_run_plan, step)
+        if (step_status or {}).get("passed") is not True:
+            failures.append("short-step status is not passing")
+        if (step_status or {}).get("ladder_complete") is True or step.get("passed") is True:
+            failures.append("completed steps cannot request another hidden soak")
+        safe_command = f"{PYTHON_EXE} tools\\hd_soak_dry_run_plan.py --require-pass"
+        hidden_base = {
+            **base,
+            "environment": soak_plan.HIDDEN_ENVIRONMENT,
+            "evidence_class": soak_plan.HIDDEN_EVIDENCE_CLASS,
+            "input_responsiveness": soak_plan.HIDDEN_INPUT_RESPONSIVENESS,
+            "requires_visible_runtime": False,
+            "requires_explicit_user_approval": False,
+            "safe_dry_run_command": safe_command,
+            "post_run_handoff_refresh": post_run_handoff_refresh_for_step(step),
+        }
+        if plan_summary is None or failures:
+            return {
+                **hidden_base, "id": f"refresh_{current.get('id')}_dry_run_plan",
+                "status": "dry_run_plan_required",
+                "why": "Generate a current, matching hidden runner plan before executing this short step.",
+                "exact_runtime_command": None, "exact_runtime_command_source": None,
+                "plan_verified_execute_command": None, "dry_run_plan": plan_summary,
+                "post_run_validation": [], "post_run_evidence_refresh": [],
+            }, failures
+        command = plan_summary["execute_command"]
+        return {
+            **hidden_base, "id": f"run_{current.get('id')}_soak", "status": "runtime_required",
+            "why": "The next hidden map endurance step is ready. It provides no visible, manual-input, or promotion proof.",
+            "exact_runtime_command": command, "exact_runtime_command_source": "dry_run_plan",
+            "plan_verified_execute_command": command, "dry_run_plan": plan_summary,
+            "writes_outside_repo": [soak_plan.HIDDEN_CANDIDATE_ROOT, soak_plan.HIDDEN_OUTPUT_ROOT],
+            "post_run_validation": post_run_validation_for_step(step),
+            "post_run_evidence_refresh": post_run_evidence_refresh_commands(),
+        }, []
 
     if status in {"pending_approval_legacy_compat", "missing_pending_approval"}:
         legacy_command = str(current.get("next_command") or step.get("approval_gated_runtime_command") or "")
@@ -954,6 +1100,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         status = "release_complete_pending_audit"
     elif next_action["requires_explicit_user_approval"]:
         status = "waiting_for_explicit_visible_runtime_approval"
+    elif next_action.get("status") == "runtime_required":
+        status = "hidden_runtime_followup_available"
     else:
         status = "repo_only_followup_available"
 

@@ -25,6 +25,8 @@ RUNTIME_POLICY = (
 )
 AV_EXIT_CODES = {3221225477, -1073741819, 0xC0000005}
 MAX_PROBE_LOG_TAIL_BYTES = 256 * 1024
+HOST_VISIBLE_ENVIRONMENT = "host_visible"
+HOST_VISIBLE_EVIDENCE_CLASS = "host_visible_runtime_soak"
 
 
 def cdb_followup_path_for_report(report_path: Path | None) -> Path | None:
@@ -212,10 +214,66 @@ def route_int_value(route: dict[str, Any] | None, key: str) -> int:
         return 0
 
 
+def evidence_binding(report: dict[str, Any]) -> tuple[str, Any]:
+    environment = str(report.get("environment") or HOST_VISIBLE_ENVIRONMENT)
+    evidence_class = report.get("evidence_class")
+    if environment == HOST_VISIBLE_ENVIRONMENT and not evidence_class:
+        evidence_class = HOST_VISIBLE_EVIDENCE_CLASS
+    return environment, evidence_class
+
+
 def guard_evaluation_for(report: dict[str, Any]) -> dict[str, Any] | None:
     if report.get("executed") is not True or report.get("passed") is not True:
         return None
-    return hd_soak_report.evaluate_report(report)
+    return hd_soak_report.evaluate_report_for_environment(report, max_input_drift_px=1)
+
+
+def hidden_next_probe(classification: str) -> str:
+    """Return a hidden-only follow-up that never requests visible approval.
+
+    Hidden-CDB is an independent evidence class.  A failed hidden run must be
+    repaired and repeated in that class; it must not silently route the user
+    back through the separately approval-gated visible harness.
+    """
+    probes = {
+        "passing_run_no_failure": (
+            "preserve the hidden-CDB report and guard, then continue the next unlocked hidden map tier"
+        ),
+        "elapsed_coverage_failure": (
+            "inspect hidden-CDB frame/process timestamps and the sampling interval, then rerun the same hidden route"
+        ),
+        "artifact_budget_exceeded": (
+            "reduce hidden-CDB artifact retention outside the repository, then rerun the same hidden route"
+        ),
+        "capture_harness_failure": (
+            "inspect hidden-CDB ReadProcessMemory capture errors and proxy provenance before rerunning the same hidden route"
+        ),
+        "frame_progression_failure": (
+            "inspect hidden-CDB frame hashes and disclosed pan markers before rerunning the same hidden map-pan route"
+        ),
+        "process_growth_regression": (
+            "inspect hidden host-process samples before extending or rerunning the hidden route"
+        ),
+        "process_cleanup_failure": (
+            "verify hidden game and CDB termination plus cleanup errors before rerunning the same hidden route"
+        ),
+        "crash_av": (
+            "inspect the hidden CDB exception log, candidate SHA, and patch-stage manifest before rerunning"
+        ),
+        "unexpected_process_exit": (
+            "inspect the hidden CDB log, route-end marker, and host-process exit before rerunning the same hidden route"
+        ),
+        "hang_or_no_frame_progress": (
+            "inspect hidden CDB liveness, ready/end markers, and frame/process samples before rerunning"
+        ),
+        "guard_validation_failure": (
+            "inspect the environment-aware hidden-CDB guard failures before accepting or extending the soak"
+        ),
+    }
+    return probes.get(
+        classification,
+        "inspect the hidden-CDB report, guard failures, markers, proxy provenance, and process samples before rerunning",
+    )
 
 
 def probe_log_diagnostic(route: dict[str, Any]) -> dict[str, Any]:
@@ -820,7 +878,7 @@ def failure_timestamp_context(
 
 
 def visual_anomaly_summary(report: dict[str, Any]) -> dict[str, Any]:
-    evaluation = hd_soak_report.evaluate_report(report)
+    evaluation = hd_soak_report.evaluate_report_for_environment(report, max_input_drift_px=1)
     check = (evaluation.get("checks") or {}).get("visual_anomalies") or {}
     summary = dict(check.get("summary") or {})
     summary["passed"] = check.get("passed")
@@ -834,6 +892,8 @@ def build_triage(
     cdb_followup: dict[str, Any] | None = None,
     wer_followup: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    environment, evidence_class = evidence_binding(report)
+    is_hidden = environment == hd_soak_report.HIDDEN_ENVIRONMENT
     guard_evaluation = guard_evaluation_for(report)
     probe_diagnostics = probe_log_diagnostics(report)
     cursor_diagnostics = cursor_probe_diagnostics(report)
@@ -851,8 +911,8 @@ def build_triage(
             "input standing (never via Start-Job or any detached/non-interactive "
             "wrapper), and do not change patches or lower visual thresholds"
         )
-    cdb_followup_summary = summarize_cdb_followup(report, cdb_followup, source_report)
-    wer_followup_summary = summarize_wer_followup(report, wer_followup, source_report)
+    cdb_followup_summary = None if is_hidden else summarize_cdb_followup(report, cdb_followup, source_report)
+    wer_followup_summary = None if is_hidden else summarize_wer_followup(report, wer_followup, source_report)
     if (
         classification == "unexpected_process_exit"
         and wer_followup_summary
@@ -917,11 +977,15 @@ def build_triage(
                 "make the harness stop or reacquire after the transition, retain explicit "
                 "windowed-mode verification, then rerun only after fresh visible-window approval"
             )
+    if is_hidden:
+        next_probe = hidden_next_probe(classification)
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "passed": passed,
         "runtime_policy": RUNTIME_POLICY,
         "source_report": str(source_report) if source_report else report.get("report_json"),
+        "environment": environment,
+        "evidence_class": evidence_class,
         "classification": classification,
         "next_probe": next_probe,
         "tier": report.get("tier"),

@@ -115,6 +115,9 @@ def parse_pe_sections(data: bytes) -> tuple[int | None, list[dict[str, int | str
 
 
 def raw_to_rva(offset: int, sections: list[dict[str, int | str]]) -> int | None:
+    raw_starts = [int(section["raw_pointer"]) for section in sections if int(section["raw_pointer"]) > 0]
+    if raw_starts and 0 <= offset < min(raw_starts):
+        return offset  # PE headers are mapped at the image base too.
     for section in sections:
         raw_pointer = int(section["raw_pointer"])
         raw_size = int(section["raw_size"])
@@ -240,15 +243,15 @@ def build_report(exe: Path, stage: str, resolution: str = DEFAULT_RESOLUTION) ->
     legacy = resolution == DEFAULT_RESOLUTION
     data = exe.read_bytes()
     image_base, sections = parse_pe_sections(data)
-    if legacy:
-        patches = module.select_patches(stage)
-        gate_profile = None
-    else:
-        try:
+    try:
+        if legacy:
+            patches = module.select_patches(stage)
+            gate_profile = None
+        else:
             patches = module.select_patches_for(stage, profile)
-        except module.ResolutionError as exc:
-            raise SystemExit(str(exc)) from exc
-        gate_profile = profile
+            gate_profile = profile
+    except module.ResolutionError as exc:
+        raise SystemExit(str(exc)) from exc
     records = [patch_record(patch, data, image_base, sections) for patch in patches]
     group_summary = summarize_groups(records)
     status_counts = Counter(record["status"] for record in records)
@@ -269,6 +272,15 @@ def build_report(exe: Path, stage: str, resolution: str = DEFAULT_RESOLUTION) ->
     report["current_hd_map_gate"] = current_hd_map_gate(
         report, current_hd_map_gate_checks(gate_profile)
     )
+    if stage == getattr(module, "BATTLE_HD_STAGE", None):
+        report["battle"] = {
+            "validation_only": True,
+            "target_visual_mode": "expanded-native-17x7",
+            "battlefield_rect": [32, 136, 1120, 584],
+            "sidebar_rect": [1120, 120, 1280, 600],
+            "tile_capacity": [17, 7],
+            "evidence_class": "candidate_bytes_only_not_runtime_proof",
+        }
     return report
 
 

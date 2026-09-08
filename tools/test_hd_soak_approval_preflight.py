@@ -13,6 +13,10 @@ from pathlib import Path
 from typing import Any
 
 import hd_soak_approval_preflight as preflight
+import hd_endurance_next_actions as next_actions
+import hd_soak_dry_run_plan as soak_plan
+import test_hd_soak_dry_run_plan as plan_fixtures
+import test_hd_soak_intro_skip_rerun_readiness as intro_fixtures
 
 APPROVAL_TOKEN = "1234567890abcdef"
 APPROVAL_EXPIRES_UTC = "2999-01-01T00:00:00+00:00"
@@ -349,6 +353,99 @@ def args_for(tmp: Path, reports: dict[str, dict[str, Any]]) -> argparse.Namespac
 def build_fixture_report(reports: dict[str, dict[str, Any]]) -> dict[str, Any]:
     with tempfile.TemporaryDirectory() as directory:
         return preflight.build_report(args_for(Path(directory), reports))
+
+
+def hidden_reports(tmp: Path) -> dict[str, dict[str, Any]]:
+    reports = source_reports()
+    status = intro_fixtures.later_step_reports(tmp)["step_status"]
+    status["ladder_complete"] = False
+    current = status["steps"][2]
+    current["paths"] = plan_fixtures.hidden_step_status()["steps"][0]["paths"]
+    envelope = plan_fixtures.build_fixture_report(plan_fixtures.valid_hidden_plan(), status)
+    assert envelope["passed"], envelope["failures"]
+    # The synthetic packet models a real emitted dry-run, while all files remain temporary.
+    envelope["invocation"] = {
+        "exit_code": 0, "used_fixture_plan": False,
+        "command": soak_plan.command_text(soak_plan.dry_run_command(soak_plan.HIDDEN_SCRIPT, current)),
+    }
+    envelope["source_artifacts"]["read_plan_json"] = None
+    action, failures = next_actions.next_action_for_short_step(status, envelope)
+    assert not failures, failures
+    reports.update({"step_status": status, "dry_run_plan": envelope,
+                    "next_actions": {"passed": True, "next_action": action}})
+    return reports
+
+
+def test_hidden_preflight_uses_emitted_plan_without_visible_approval() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        tmp = Path(directory)
+        reports = hidden_reports(tmp)
+        args = args_for(tmp, reports)
+        # Expired or absent visible-only packets are irrelevant to this hidden step.
+        args.hd_soak_harness_guard_json.unlink()
+        args.visible_runtime_guard_json.unlink()
+        args.intro_skip_readiness_json.unlink()
+        report = preflight.build_report(args)
+    assert report["passed"], report["failures"]
+    assert report["status"] == "ready_for_hidden_runtime"
+    assert report["environment"] == "hidden_cdb_host"
+    assert report["input_responsiveness"] == "not_applicable_hidden"
+    assert report["requires_visible_runtime"] is False
+    assert report["requires_explicit_user_approval"] is False
+    assert report["approval_gated_runtime_command"] is None
+    assert report["hidden_runtime_command"] == reports["dry_run_plan"]["plan"]["hidden_runtime_command"]
+    assert len(report["completed_predecessor_evidence"]) == 2
+    assert "manual input" in report["approval_boundary"]
+    assert "Hidden Runtime Preflight" in preflight.to_markdown(report)
+
+
+def test_hidden_preflight_rejects_unbound_or_visible_packets() -> None:
+    for mutation in ("fixture", "invocation_execute", "source_sha", "stale", "missing_predecessor",
+                     "prerequisite", "null_environment", "foreign_environment", "visible_action",
+                     "manual_claim", "command_drift", "missing_require_pass", "missing_json",
+                     "processes", "tracked_exe", "promotion", "wrong_step", "changed_guard_path"):
+        with tempfile.TemporaryDirectory() as directory:
+            tmp = Path(directory)
+            reports = hidden_reports(tmp)
+            envelope = reports["dry_run_plan"]
+            action = reports["next_actions"]["next_action"]
+            if mutation == "fixture":
+                envelope["invocation"]["used_fixture_plan"] = True
+            elif mutation == "invocation_execute":
+                envelope["invocation"]["command"] += " -Execute"
+            elif mutation == "source_sha":
+                envelope["runner_source"]["sha256"] = "a" * 64
+            elif mutation == "stale":
+                envelope["generated_at"] = (datetime.now(timezone.utc) - timedelta(hours=13)).isoformat()
+            elif mutation == "missing_predecessor":
+                Path(reports["step_status"]["steps"][0]["paths"]["report_json"]).unlink()
+            elif mutation == "prerequisite":
+                reports["step_status"]["steps"][2]["prerequisites_passed"] = False
+            elif mutation in ("null_environment", "foreign_environment"):
+                reports["step_status"]["steps"][2]["preferred_environment"] = None if mutation == "null_environment" else "guest"
+            elif mutation == "visible_action":
+                action["requires_visible_runtime"] = True
+            elif mutation == "manual_claim":
+                action["input_responsiveness"] = "pass"
+            elif mutation == "command_drift":
+                action["exact_runtime_command"] = RUNTIME_COMMAND
+            elif mutation in ("missing_require_pass", "missing_json"):
+                flag = " -RequirePass" if mutation == "missing_require_pass" else " -Json"
+                envelope["plan"]["hidden_runtime_command"] = envelope["plan"]["hidden_runtime_command"].replace(flag, "")
+            elif mutation == "processes":
+                reports["process_hygiene"]["matching_process_count"] = 1
+            elif mutation == "tracked_exe":
+                reports["exe_artifact"]["tracked_exes"] = ["clash95.exe"]
+            elif mutation == "promotion":
+                envelope["locks"]["stable_stage_should_change"] = True
+            elif mutation == "wrong_step":
+                envelope["current_step"]["id"] = "short10_map_pan"
+            else:
+                reports["step_status"]["steps"][2]["paths"]["guard_json"] = str(tmp / "unrelated.json")
+            report = preflight.build_report(args_for(tmp, reports))
+        assert not report["passed"], (mutation, report)
+        assert report["status"] == "not_ready"
+        assert report["hidden_runtime_command"] is None
 
 
 def replace_approval_expiry(reports: dict[str, dict[str, Any]], expires_utc: str) -> None:
@@ -962,7 +1059,42 @@ def test_cli_writes_outputs() -> None:
         assert md_out.exists()
 
 
+def test_completed_ladder_produces_no_approval_or_runtime_request() -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        tmp = Path(temporary)
+        reports = source_reports()
+        reports["step_status"] = intro_fixtures.completed_ladder_status(tmp)
+        args = args_for(tmp, reports)
+        for name, path in vars(args).items():
+            if name != "step_status_json":
+                path.write_text("not JSON", encoding="utf-8")
+        report = preflight.build_report(args)
+    assert report["passed"], report["failures"]
+    assert report["status"] == "not_applicable_short_ladder_complete"
+    intro_fixtures.assert_terminal_no_authorization(report)
+    markdown = preflight.to_markdown(report)
+    assert "authorizes no runtime" in markdown
+    assert "Approval-Gated Runtime Command" not in markdown
+
+
+def test_invalid_completion_cannot_bypass_approval_preflight() -> None:
+    for mutation in intro_fixtures.COMPLETION_MUTATIONS:
+        with tempfile.TemporaryDirectory() as temporary:
+            tmp = Path(temporary)
+            reports = source_reports()
+            reports["step_status"] = intro_fixtures.completed_ladder_status(tmp)
+            intro_fixtures.mutate_completed_ladder(reports["step_status"], mutation)
+            report = preflight.build_report(args_for(tmp, reports))
+        assert not report["passed"], (mutation, report)
+        assert report["status"] == "invalid_short_ladder_completion"
+        intro_fixtures.assert_terminal_no_authorization(report)
+
+
 def run_tests() -> None:
+    test_completed_ladder_produces_no_approval_or_runtime_request()
+    test_invalid_completion_cannot_bypass_approval_preflight()
+    test_hidden_preflight_uses_emitted_plan_without_visible_approval()
+    test_hidden_preflight_rejects_unbound_or_visible_packets()
     test_current_preflight_passes_with_generated_reports()
     test_current_preflight_records_current_step_artifact_inventory()
     test_runtime_command_requires_visible_runtime_and_canonical_paths()

@@ -406,5 +406,84 @@ class FramedRendererTests(unittest.TestCase):
         self.assertEqual(data["base_probe_sha256"],hashlib.sha256(self.base_bytes).hexdigest())
 
 
+class BattleRendererTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.base_bytes = render.BASE_PROBE.read_bytes()
+        cls.base = cls.base_bytes.decode("utf-8-sig")
+
+    def recipe(self, resolution="1280x720", **options):
+        return render.render_probe(self.base, resolution, render.BATTLE_STAGE,
+                                   **({"extra_probe": True, "skip_map_validation": True} | options))
+
+    def test_battle_recipe_uses_owned_capture_without_map_claim(self):
+        report = self.recipe()
+        geometry, text = report["geometry"], report["template"]
+        self.assertEqual((geometry["width"], geometry["height"]), (1280, 720))
+        self.assertEqual((geometry["columns"], geometry["rows"]), (17, 7))
+        self.assertEqual(geometry["battlefield"], [32, 136, 1120, 584])
+        self.assertEqual(geometry["sidebar"], [1120, 120, 1280, 600])
+        self.assertEqual(geometry["main_menu_mouse"], [540, 278])
+        self.assertEqual(geometry["load_mouse"], [320, 166])
+        self.assertFalse(geometry["map_validation_applicable"])
+        self.assertEqual(geometry["visibility_dump_max_bytes"], 0)
+        self.assertEqual(geometry["expected_vedge_count"], 0)
+        self.assertIn('bp 00406FA0 "gc"', text)
+        self.assertNotIn("SURFDUMP_READY", text)
+        self.assertNotIn("SCROLL_VISDUMP", text)
+        self.assertEqual(text.count("@$t16*0n1280"), 3)
+        self.assertIn("ed 00544cfc 00008700; ed 00544d00 00004580;", text)
+        self.assertEqual(report["proof_class"], "forced_hidden_battle_fixture")
+        binding = report["source_bindings"]["battle_layout"]
+        self.assertEqual(binding["sha256"], hashlib.sha256(Path(binding["path"]).read_bytes()).hexdigest())
+        self.assertEqual(render.BASE_PROBE.read_bytes(), self.base_bytes)
+
+    def test_battle_options_do_not_open_generic_nonlegacy_guard(self):
+        for resolution in ("800x600", "1024x768", "1280x960", "1920x1080"):
+            with self.assertRaises(ValueError):
+                self.recipe(resolution)
+        for options in ({"extra_probe": False}, {"skip_map_validation": False},
+                        {"canonical_template": False}, {"force_visible_edges": True},
+                        {"post_owner_force_visible_seven": True}):
+            with self.assertRaises(ValueError):
+                self.recipe(**options)
+        with self.assertRaises(ValueError):
+            render.render_probe(self.base, "1280x720", STAGE, extra_probe=True, skip_map_validation=True)
+        with self.assertRaises(ValueError):
+            render.render_probe(self.base.replace("bp 00406FA0 ", "bp 00406FA1 "), "1280x720",
+                                render.BATTLE_STAGE, extra_probe=True, skip_map_validation=True)
+
+    def test_audited_placeholder_menu_spelling_is_supported_without_drift(self):
+        literal = "ed 00544cfc 00004b00; ed 00544d00 00003680;"
+        placeholder = "ed 00544cfc __MAIN_MOUSE_RAW_X__; ed 00544d00 __MAIN_MOUSE_RAW_Y__;"
+        alternate = self.base.replace(literal, placeholder)
+        report = render.render_probe(alternate, "1280x720", render.BATTLE_STAGE,
+                                     extra_probe=True, skip_map_validation=True)
+        self.assertEqual(report["template"], self.recipe()["template"])
+        self.assertEqual(render.render_probe(alternate, "1024x768", STAGE)["template"],
+                         render.render_probe(self.base, "1024x768", STAGE)["template"])
+        for bad in (alternate + literal, alternate.replace("__MAIN_MOUSE_RAW_X__", "__BAD_X__")):
+            with self.assertRaises(ValueError):
+                render.render_main_menu(bad, 540, 278)
+
+    def test_battle_cli_binds_explicit_extra_source_before_harness_build(self):
+        extra = render.ROOT / "probes/cdb/battle/clash95_battle_hd_validation_extra.cdb"
+        command = [sys.executable, "-B", str(Path(render.__file__)), "--resolution", "1280x720",
+                   "--stage", render.BATTLE_STAGE, "--extra-probe", "--skip-map-validation"]
+        missing = subprocess.run(command, capture_output=True, text=True)
+        self.assertEqual(missing.returncode, 2)
+        self.assertIn("--extra-probe-path", missing.stderr)
+        result = subprocess.run(command + ["--extra-probe-path", str(extra)], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(Path(report["extra_probe_path"]), extra.resolve())
+        self.assertEqual(report["extra_probe_sha256"], hashlib.sha256(extra.read_bytes()).hexdigest())
+        self.assertEqual(report["base_probe_sha256"], hashlib.sha256(self.base_bytes).hexdigest())
+        harness = HARNESS.read_text()
+        self.assertIn("'--extra-probe-path', $ExtraProbeTemplate", harness)
+        self.assertLess(harness.index("Extra probe changed after source preflight"),
+                        harness.index("$extraProbeText = (Get-Content"))
+
+
 if __name__ == "__main__":
     unittest.main()

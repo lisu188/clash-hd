@@ -1,0 +1,363 @@
+{
+  "schema": 1,
+  "upstream_merge_commit": "409fa4c08dd2ff4c4a85732b4d5a80102de84de5",
+  "upstream_patcher_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+  "current_patcher_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+  "records": [
+    {
+      "path": "src/patcher/framed_recipe.py",
+      "old_sha256": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+      "new_sha256": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+          "new_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d"
+    },
+    {
+      "path": "tools/build_partial_tile_candidate.py",
+      "old_sha256": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+      "new_sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+          "new_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d"
+    },
+    {
+      "path": "tools/build_framed_candidate.py",
+      "old_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+      "new_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+          "new_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+        },
+        {
+          "dependency": "src/patcher/framed_recipe.py",
+          "old_sha256": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+          "new_sha256": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a"
+        },
+        {
+          "dependency": "tools/build_partial_tile_candidate.py",
+          "old_sha256": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+          "new_sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a"
+    },
+    {
+      "path": "src/launcher/framed.py",
+      "old_sha256": "83f0a0b883fe5e4eb9c76590d8f81096566f51fff20e82f846721348fbfee0dc",
+      "new_sha256": "3be4d3e3ebf2260175e3dace52d2924c0fd205ff3f225d2695428fdde39dd1bc",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_candidate.py",
+          "old_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+          "new_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "41cf8c2c67730ad59da1a9b5cf6b53aa7bba9ac51859751578bdde3727c7ab3e",
+      "normalized_worktree_crlf_to_upstream_lf": true
+    },
+    {
+      "path": "src/patcher/framed_camera.py",
+      "old_sha256": "88457fab3d854d2bd0ac98b4b21a6fff927b35c403dd2077ddb28c0c268d57fc",
+      "new_sha256": "c86e20700cd4716ad0905bcc2cb868c0f4fcfad91b984b38bf513b3829b9d798",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_candidate.py",
+          "old_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+          "new_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "88457fab3d854d2bd0ac98b4b21a6fff927b35c403dd2077ddb28c0c268d57fc"
+    },
+    {
+      "path": "src/patcher/pe_modal_extension.py",
+      "old_sha256": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623",
+      "new_sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+          "new_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+        },
+        {
+          "dependency": "tools/build_partial_tile_candidate.py",
+          "old_sha256": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+          "new_sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501"
+        },
+        {
+          "dependency": "tools/build_framed_candidate.py",
+          "old_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+          "new_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623"
+    },
+    {
+      "path": "src/patcher/framed_bounded_paint.py",
+      "old_sha256": "c55f0ff1ad9c16d6bc64af03c5f95a398cb67b5c9b6dd2572bcf80c56c02a411",
+      "new_sha256": "4fcadd0130058d0f6d0f542ff4579a96c72e5030b5d5784e53563271dbf822ff",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_camera.py",
+          "old_sha256": "88457fab3d854d2bd0ac98b4b21a6fff927b35c403dd2077ddb28c0c268d57fc",
+          "new_sha256": "c86e20700cd4716ad0905bcc2cb868c0f4fcfad91b984b38bf513b3829b9d798"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "c55f0ff1ad9c16d6bc64af03c5f95a398cb67b5c9b6dd2572bcf80c56c02a411"
+    },
+    {
+      "path": "tools/build_framed_modal_candidate.py",
+      "old_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+      "new_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/pe_modal_extension.py",
+          "old_sha256": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623",
+          "new_sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb"
+    },
+    {
+      "path": "src/patcher/framed_army_draw.py",
+      "old_sha256": "e6763ae2ebdf038d0b0b574564573fb07e2a2b68c12f7aeafc0b63ca44347cf9",
+      "new_sha256": "2a7877f791c52829cd99bca24089d9be02be1f25c9c95c3b27e4d5360fb64a34",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+          "new_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "e6763ae2ebdf038d0b0b574564573fb07e2a2b68c12f7aeafc0b63ca44347cf9"
+    },
+    {
+      "path": "src/patcher/framed_army_input.py",
+      "old_sha256": "c27a0feb17df909dcf9986bfde231d90a79e8c1ad8abbcf2884b52e767a70ee2",
+      "new_sha256": "3fad316f6511e375a8799694fe487b9eaca5500d6262101100e8e9e9e1868ab4",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+          "new_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "c27a0feb17df909dcf9986bfde231d90a79e8c1ad8abbcf2884b52e767a70ee2"
+    },
+    {
+      "path": "src/patcher/framed_bounded_input.py",
+      "old_sha256": "7df2d316cbedae80c81d70a052066a60f8d48307c0dc22f1aca8aec4d715361b",
+      "new_sha256": "1af36a7e18204ee0e12edfc8d01a1d126d6b63e8b7891ba72d8edd59d544f7cf",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_bounded_paint.py",
+          "old_sha256": "c55f0ff1ad9c16d6bc64af03c5f95a398cb67b5c9b6dd2572bcf80c56c02a411",
+          "new_sha256": "4fcadd0130058d0f6d0f542ff4579a96c72e5030b5d5784e53563271dbf822ff"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "8c2d7fe604c58d90420ebdf2eef133cf2d5a22cee96d9627bacbb76963ae7e18",
+      "normalized_worktree_crlf_to_upstream_lf": true
+    },
+    {
+      "path": "src/patcher/pe_army_extension.py",
+      "old_sha256": "8b2bf19c59351cf1b625b28e143d0ccfd000380898a81af29e28e7cf7af75161",
+      "new_sha256": "26991a58ca0b9cbc548ad6061d79acde864b015c722b208776af2e5d2752a832",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/pe_modal_extension.py",
+          "old_sha256": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623",
+          "new_sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9"
+        },
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+          "new_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "8b2bf19c59351cf1b625b28e143d0ccfd000380898a81af29e28e7cf7af75161"
+    },
+    {
+      "path": "tools/build_framed_army_candidate.py",
+      "old_sha256": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+      "new_sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_army_draw.py",
+          "old_sha256": "e6763ae2ebdf038d0b0b574564573fb07e2a2b68c12f7aeafc0b63ca44347cf9",
+          "new_sha256": "2a7877f791c52829cd99bca24089d9be02be1f25c9c95c3b27e4d5360fb64a34"
+        },
+        {
+          "dependency": "src/patcher/framed_army_input.py",
+          "old_sha256": "c27a0feb17df909dcf9986bfde231d90a79e8c1ad8abbcf2884b52e767a70ee2",
+          "new_sha256": "3fad316f6511e375a8799694fe487b9eaca5500d6262101100e8e9e9e1868ab4"
+        },
+        {
+          "dependency": "src/patcher/pe_army_extension.py",
+          "old_sha256": "8b2bf19c59351cf1b625b28e143d0ccfd000380898a81af29e28e7cf7af75161",
+          "new_sha256": "26991a58ca0b9cbc548ad6061d79acde864b015c722b208776af2e5d2752a832"
+        }
+      ],
+      "change_scope": "SHA literals only; AST-equivalent apart from approved dependency identities",
+      "upstream_sha256": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8"
+    }
+  ],
+  "provenance_manifest_sha256": "1dee17d4db741614effe98d50dda40b113fc9061b2cea20c6b9989ff319df6dd",
+  "change": "Bind reviewed current patcher containing isolated1280x720 battle stage; refresh only transitive producer SHA literals",
+  "legacy_table_sha256": "6683ee66851d23a28d856a8576e6b58c9b1285e0766bb592b9cdb0847bc8c55c",
+  "existing_recipe_count": 186,
+  "existing_stage_count": 62,
+  "preserved_selection_count": 147,
+  "preserved_unsupported_combinations": 225,
+  "added_stages": [
+    "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd"
+  ],
+  "existing_recipes_equal": true,
+  "existing_formula_values_equal": true,
+  "existing_stage_groups_equal": true,
+  "upstream_import_manifest_unchanged": true,
+  "source_review_scope": "Only expected-source SHA string literals changed in13 existing producers; source guards and recipe code retained",
+  "runtime_executed_by_this_review": false,
+  "selection_digests_by_resolution": {
+    "1024x768": "93c94e7fb68aa15f04cd19cf8cabda30e95afab0a2813c11c530ade5f79d6019",
+    "1280x720": "4569a6f7a52479221c80223d8f5eace756fc24e5a8aa61177a315d9b5dc68ca2",
+    "1280x960": "a1ad203e4a7c89ef235f5fcce6fc88c63f4f8a9d8c8953137c91f0cc8398aa79",
+    "1920x1080": "ace54138fb44a10d9f3137e21b19e51498c601f2bfb21ca6f59e955ba9086ac2",
+    "800x600": "834c44d7319ee51a325e9a8b098cd9635e16a2a7cd4d4ff7f85b177662f61bb1",
+    "802x602": "a376e704771a3cbc6456373ef8baa683d5402a36b8c4dad4e4a791e630a44338"
+  },
+  "provenance_manifest": "reports/hd-foundation-import-manifest.json",
+  "source_change_review": [
+    "The canonical patcher adds only the isolated castlecenter-all-battlehd stage and complete-installation validation for that stage.",
+    "Every preexisting stage selection and recipe remains unchanged at the six checked resolutions.",
+    "Producer repins are restricted to SHA string literals and preserve all source identity checks and reconstruction paths.",
+    "The upstream foundation manifest continues identifying the imported snapshots; it is not rewritten to claim current source equality."
+  ],
+  "tests": [
+    {
+      "suite": "test_framed_recipe.py",
+      "tests": 11,
+      "passed": true,
+      "skipped": 0,
+      "source_scope": "reviewedidenticallogic before newline-preservation SHA refresh"
+    },
+    {
+      "suite": "test_run_framed_offline_tests.py",
+      "tests": 28,
+      "passed": true,
+      "skipped": 2,
+      "source_scope": "reviewedidenticallogic before newline-preservation SHA refresh"
+    },
+    {
+      "suite": "test_launcher_framed.py",
+      "tests": 27,
+      "passed": true,
+      "skipped": 1,
+      "source_scope": "reviewedidenticallogic before newline-preservation SHA refresh"
+    },
+    {
+      "suite": "test_framed_camera.py",
+      "tests": 18,
+      "passed": true,
+      "skipped": 0,
+      "source_scope": "reviewedidenticallogic before newline-preservation SHA refresh"
+    },
+    {
+      "suite": "test_framed_bounded_paint.py",
+      "tests": 17,
+      "passed": true,
+      "skipped": 0,
+      "source_scope": "reviewedidenticallogic before newline-preservation SHA refresh"
+    },
+    {
+      "suite": "test_framed_bounded_input.py",
+      "tests": 22,
+      "passed": true,
+      "skipped": 0,
+      "source_scope": "reviewedidenticallogic before newline-preservation SHA refresh"
+    },
+    {
+      "suite": "test_complete_hd_candidate.py",
+      "tests": 8,
+      "passed": true,
+      "skipped": 0,
+      "source_scope": "reviewedidenticallogic before newline-preservation SHA refresh"
+    },
+    {
+      "suite": "test_pe_modal_extension.py",
+      "tests": 18,
+      "passed": true,
+      "skipped": 0,
+      "source_scope": "reviewedidenticallogic before newline-preservation SHA refresh"
+    },
+    {
+      "suite": "test_pe_army_extension.py",
+      "tests": 12,
+      "passed": true,
+      "skipped": 0,
+      "source_scope": "reviewedidenticallogic before newline-preservation SHA refresh"
+    }
+  ],
+  "sha_only_diff_against_upstream_verified": true,
+  "provenance_manifest_git_blob_sha256": "275bc0e342a6e5480e4208621e98e0e841c63396528c7b18e0c5c1ce6b29cb05",
+  "provenance_manifest_sha256_scope": "unchanged Windows checkout bytes captured before and after this integration; Git blob digest is recorded separately",
+  "source_hash_scope": "new producer hashes identify current bytes; old_sha256 identifies pre-integration checkout bytes and upstream_sha256 identifies the imported Git blob",
+  "checkout_attributes": "All14 reviewedproducer sources including the two leaf files are marked -text to preserve exact source bytes acrossWindows/Linuxcheckouts",
+  "patcher_source_line_preservation": {
+    "upstream_lines": 2992,
+    "added_lines": 56,
+    "deleted_or_replaced_upstream_lines": 0,
+    "upstream_existing_lines_retained_verbatim": true,
+    "ast_identical_to_reviewed_lf_variant": true
+  },
+  "final_source_validation": {
+    "battle_candidate_sha256": "7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47",
+    "battle_candidate_rebuilt_in_memory_only": true,
+    "source_preflight": {
+      "passed": true,
+      "source_count": 14,
+      "builder_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+    },
+    "passed": true,
+    "focused_checks": [
+      "test_framed_recipe.py:11passed",
+      "test_battle_hd_patch.py:passed",
+      "test_patch_resolution.py:passed"
+    ]
+  },
+  "fresh_git_checkout": {
+    "path": "C:\\ClashTests\\battle-source-binding-git-ys542o0c\\final-checkout",
+    "index_repository": "C:\\ClashTests\\battle-source-binding-git-ys542o0c",
+    "core_autocrlf": true,
+    "method": "checkout-index from independent staged Git blobs into an emptydestination with core.autocrlf=true",
+    "producer_hashes_verified": 14,
+    "source_preflight": {
+      "passed": true,
+      "builder_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
+      "source_count": 14
+    },
+    "passed": true
+  }
+}

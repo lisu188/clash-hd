@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import json
-import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -50,7 +50,13 @@ def short_status(*, complete: bool) -> dict[str, Any]:
         "passed": True,
         "ladder_complete": complete,
         "current_step": None if complete else {"id": "short2_menu_idle"},
-        "steps": [{"id": "short2_menu_idle", "passed": True if complete else False}],
+        "steps": [
+            {"id": step_id, "passed": complete}
+            for step_id in (
+                "short2_menu_idle", "short2_map_idle", "short10_map_idle",
+                "short10_map_pan", "short30_map_pan",
+            )
+        ],
     }
 
 
@@ -73,12 +79,109 @@ def write_proof(tmp: Path, report_paths: list[Path]) -> Path:
     return write_json(tmp / "long-proof.json", {"report_guards": [str(path) for path in report_paths]})
 
 
-def test_current_missing_proof_is_locked() -> None:
-    report = guard.build_report()
+def hidden_long_report(
+    route: str, *, duration_sec: int = guard.MIN_DURATION_SEC, sha: str = SHA
+) -> dict[str, Any]:
+    """A hidden-host guard with its additional provenance and input disclosure."""
+    report = long_report(route, duration_sec=duration_sec)
+    report["environment"] = "hidden_cdb_host"
+    report["evidence_class"] = "approved_hidden_cdb_host_soak"
+    report["candidate_sha256"] = sha
+    report["checks"]["patch_evidence"]["summary"]["candidate_sha256"] = sha
+    report["input_responsiveness"] = "not_applicable_hidden"
+    report["entry_mechanism"] = "CDB breakpoint-forced saved-map entry"
+    report["pan_mechanism"] = "CDB forced scroll writes" if route == "map-pan" else None
+    for name in (
+        "schema", "environment", "wrapper_provenance", "marker_provenance",
+        "cleanup_provenance", "forced_entry_disclosure", "elapsed_coverage",
+    ):
+        report["checks"][name] = {"passed": True, "summary": {}, "failures": []}
+    return report
+
+
+def test_incomplete_or_forged_short_ladder_cannot_unlock_long_runs() -> None:
+    for steps in ([], short_status(complete=True)["steps"][:1],
+                  list(reversed(short_status(complete=True)["steps"])),
+                  [short_status(complete=True)["steps"][0]] * 5):
+        status = short_status(complete=True)
+        status["steps"] = steps
+        assert not guard.short_ladder_complete(status), status
+
+
+def test_hidden_long_provenance_cannot_be_dropped_or_failed() -> None:
+    for name in (
+        "schema", "environment", "wrapper_provenance", "marker_provenance",
+        "cleanup_provenance", "forced_entry_disclosure", "elapsed_coverage",
+    ):
+        for missing in (True, False):
+            report = hidden_long_report("map-pan")
+            if missing:
+                del report["checks"][name]
+            else:
+                report["checks"][name]["passed"] = False
+            valid, failures, _ = guard.validate_long_report(report)
+            assert not valid
+            assert any(name in failure for failure in failures), failures
+
+
+def test_hidden_long_disclosures_cannot_be_faked_or_omitted() -> None:
+    for field, value in (
+        ("input_responsiveness", True), ("input_responsiveness", None),
+        ("entry_mechanism", ""), ("pan_mechanism", None),
+        ("evidence_class", "host_visible_runtime_soak"),
+    ):
+        report = hidden_long_report("map-pan")
+        report[field] = value
+        valid, failures, _ = guard.validate_long_report(report)
+        assert not valid
+        assert any(field in failure for failure in failures), failures
+    valid, failures, summary = guard.validate_long_report(hidden_long_report("map-pan"))
+    assert valid, failures
+    assert summary["input_responsiveness"] == "not_applicable_hidden"
+    assert summary["entry_mechanism"] and summary["pan_mechanism"]
+
+
+def test_unsupported_or_mislabeled_long_environment_fails() -> None:
+    for environment, evidence_class in (
+        ("unknown", None), ("guest_win98_qemu", "approved_guest_win98_soak"),
+        (None, "approved_hidden_cdb_host_soak"),
+    ):
+        report = long_report("map-idle")
+        report.update(environment=environment, evidence_class=evidence_class)
+        valid, failures, _ = guard.validate_long_report(report)
+        assert not valid, failures
+
+
+def test_inconsistent_status_or_invalid_duration_fails_closed() -> None:
+    report = long_report("map-idle", overall=False)
+    report["passed"] = True
+    valid, failures, _ = guard.validate_long_report(report)
+    assert not valid
+    assert any("conflicting" in failure for failure in failures)
+    for duration in ("7200", True, None, float("nan"), float("inf")):
+        report = long_report("map-idle")
+        report["duration_sec"] = duration
+        valid, failures, _ = guard.validate_long_report(report)
+        assert not valid, failures
+
+
+def test_incomplete_ladder_missing_proof_is_locked(fixture: Path) -> None:
+    short = write_json(fixture / "short.json", short_status(complete=False))
+    report = guard.build_report(short_step_status_json=short, proof_json=fixture / "missing-proof.json")
     assert report["overall"] is False
     assert report["short_ladder"]["ladder_complete"] is False
     assert report["status"] == "locked_short_ladder_incomplete"
     assert any("short ladder is not complete" in failure for failure in report["failures"])
+
+
+def test_complete_ladder_missing_proof_stays_blocked(fixture: Path) -> None:
+    short = write_json(fixture / "short.json", short_status(complete=True))
+    report = guard.build_report(short_step_status_json=short, proof_json=fixture / "missing-proof.json")
+    assert report["overall"] is False
+    assert report["short_ladder"]["ladder_complete"] is True
+    assert report["status"] == "blocked_missing_long_proof"
+    assert report["counts"]["passing_routes"] == 0
+    assert all(route not in report["route_records"] for route in ("map-idle", "map-pan"))
 
 
 def test_valid_future_two_route_proof_passes(fixture: Path) -> None:
@@ -105,6 +208,68 @@ def test_nested_patch_evidence_candidate_sha_is_accepted(fixture: Path) -> None:
     report = guard.build_report(short_step_status_json=short, proof_json=proof)
     assert report["overall"] is True, report["failures"]
     assert report["route_records"]["map-idle"]["candidate_sha256"] == SHA
+
+
+def test_hidden_two_route_proof_passes_and_labels_environment(fixture: Path) -> None:
+    short = write_json(fixture / "short.json", short_status(complete=True))
+    map_idle = write_json(fixture / "map-idle.json", hidden_long_report("map-idle"))
+    map_pan = write_json(fixture / "map-pan.json", hidden_long_report("map-pan"))
+    proof = write_proof(fixture, [map_idle, map_pan])
+    report = guard.build_report(short_step_status_json=short, proof_json=proof)
+    assert report["overall"] is True, report["failures"]
+    assert report["duration_sec"] == guard.MIN_DURATION_SEC
+    assert report["counts"]["passing_routes"] == 2
+    assert report["route_records"]["map-idle"]["environment"] == "hidden_cdb_host"
+    assert report["route_records"]["map-pan"]["environment"] == "hidden_cdb_host"
+    markdown = guard.to_markdown(report)
+    assert "environment=`hidden_cdb_host`" in markdown
+    assert "not_applicable_hidden" in markdown
+    assert "CDB breakpoint-forced saved-map entry" in markdown
+    assert "CDB forced scroll writes" in markdown
+
+
+def test_host_route_records_label_host_environment(fixture: Path) -> None:
+    short = write_json(fixture / "short.json", short_status(complete=True))
+    map_idle = write_json(fixture / "map-idle.json", long_report("map-idle"))
+    map_pan = write_json(fixture / "map-pan.json", long_report("map-pan"))
+    proof = write_proof(fixture, [map_idle, map_pan])
+    report = guard.build_report(short_step_status_json=short, proof_json=proof)
+    assert report["overall"] is True, report["failures"]
+    assert report["route_records"]["map-idle"]["environment"] == "host_visible"
+    markdown = guard.to_markdown(report)
+    assert "environment=`host_visible`" in markdown
+
+
+def test_hidden_mixed_candidate_sha_fails(fixture: Path) -> None:
+    short = write_json(fixture / "short.json", short_status(complete=True))
+    map_idle = write_json(fixture / "map-idle.json", hidden_long_report("map-idle"))
+    map_pan = write_json(fixture / "map-pan.json", hidden_long_report("map-pan", sha="d" * 64))
+    proof = write_proof(fixture, [map_idle, map_pan])
+    report = guard.build_report(short_step_status_json=short, proof_json=proof)
+    assert report["overall"] is False
+    assert any("different candidate SHA-256s" in failure for failure in report["failures"])
+
+
+def test_hidden_sub_duration_fails(fixture: Path) -> None:
+    short = write_json(fixture / "short.json", short_status(complete=True))
+    map_idle = write_json(fixture / "map-idle.json", hidden_long_report("map-idle"))
+    map_pan = write_json(fixture / "map-pan.json", hidden_long_report("map-pan", duration_sec=3600))
+    proof = write_proof(fixture, [map_idle, map_pan])
+    report = guard.build_report(short_step_status_json=short, proof_json=proof)
+    assert report["overall"] is False
+    assert any("duration_sec 3600" in failure for failure in report["failures"])
+
+
+def test_hidden_failed_required_check_fails(fixture: Path) -> None:
+    short = write_json(fixture / "short.json", short_status(complete=True))
+    map_idle = write_json(fixture / "map-idle.json", hidden_long_report("map-idle"))
+    bad = hidden_long_report("map-pan")
+    bad["checks"]["input_responsiveness"]["passed"] = False
+    map_pan = write_json(fixture / "map-pan.json", bad)
+    proof = write_proof(fixture, [map_idle, map_pan])
+    report = guard.build_report(short_step_status_json=short, proof_json=proof)
+    assert report["overall"] is False
+    assert any("input_responsiveness" in failure for failure in report["failures"])
 
 
 def test_mixed_candidate_sha_fails(fixture: Path) -> None:
@@ -182,20 +347,27 @@ def test_cli_writes_outputs_and_require_pass_fails_closed(fixture: Path) -> None
 
 
 def run_tests() -> None:
-    fixture = ROOT / ".codex-loop" / "tmp-tests" / "hd-soak-long-report-guard-fixture"
-    shutil.rmtree(fixture, ignore_errors=True)
-    fixture.mkdir(parents=True)
-    try:
-        test_current_missing_proof_is_locked()
+    with tempfile.TemporaryDirectory(prefix="clash-long-soak-guard-") as directory:
+        fixture = Path(directory)
+        test_incomplete_or_forged_short_ladder_cannot_unlock_long_runs()
+        test_hidden_long_provenance_cannot_be_dropped_or_failed()
+        test_hidden_long_disclosures_cannot_be_faked_or_omitted()
+        test_unsupported_or_mislabeled_long_environment_fails()
+        test_inconsistent_status_or_invalid_duration_fails_closed()
+        test_incomplete_ladder_missing_proof_is_locked(fixture / "incomplete-missing")
+        test_complete_ladder_missing_proof_stays_blocked(fixture / "complete-missing")
         test_valid_future_two_route_proof_passes(fixture / "valid")
         test_nested_patch_evidence_candidate_sha_is_accepted(fixture / "nested-sha")
+        test_hidden_two_route_proof_passes_and_labels_environment(fixture / "hidden-valid")
+        test_host_route_records_label_host_environment(fixture / "host-labeled")
+        test_hidden_mixed_candidate_sha_fails(fixture / "hidden-mixed-sha")
+        test_hidden_sub_duration_fails(fixture / "hidden-short-duration")
+        test_hidden_failed_required_check_fails(fixture / "hidden-bad-check")
         test_mixed_candidate_sha_fails(fixture / "mixed-sha")
         test_missing_representative_route_fails(fixture / "missing-route")
         test_short_duration_and_failed_check_fail(fixture / "bad-check")
         test_unprotected_stage_fails(fixture / "bad-stage")
         test_cli_writes_outputs_and_require_pass_fails_closed(fixture / "cli")
-    finally:
-        shutil.rmtree(fixture, ignore_errors=True)
 
 
 def main() -> int:

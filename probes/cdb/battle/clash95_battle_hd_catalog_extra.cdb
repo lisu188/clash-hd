@@ -1,0 +1,21 @@
+.echo === Clash95 battle HD observational owner catalog ===
+.echo Each battle owner is sampled once to avoid hot breakpoint floods
+.echo No target memory or CPU register writes and no input or geometry forcing
+.echo t19 is set to the existing force-entry ownership flag at BattleRunner
+.echo Append after force-entry probes and retain their initial-present dump action
+.echo Map poll is intentionally unarmed to preserve the force-entry breakpoint at 0040B0C3
+.echo Return records Unit_Attack continuation only and never claims restored map health
+
+bp /1 0042E9E0 ".printf \"BATTLE_HD_ENTRY eip=0042e9e0 ret=%p surface=(%d,%d) battle=%p\\n\", poi(@esp), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00532048); r @$t19=1; gc"
+bp /1 00430C20 ".printf \"BATTLE_HD_FULL_REDRAW eip=00430c20 ret=%p surface=(%d,%d) camera=(%d,%d)\\n\", poi(@esp), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(poi(00532048)+0n808), poi(poi(00532048)+0n812); gc"
+bp /1 00430B20 ".printf \"BATTLE_HD_DIRTY_REDRAW eip=00430b20 ret=%p tile=(%d,%d) camera=(%d,%d)\\n\", poi(@esp), @eax, @edx, poi(poi(00532048)+0n808), poi(poi(00532048)+0n812); gc"
+bp /1 0042FFB0 ".printf \"BATTLE_HD_PROJECTION eip=0042ffb0 ret=%p tile=(%d,%d) camera=(%d,%d)\\n\", poi(@esp), @eax, @edx, poi(poi(00532048)+0n808), poi(poi(00532048)+0n812); gc"
+bp /1 00426E20 ".printf \"BATTLE_HD_CAMERA eip=00426e20 ret=%p argument=%p camera_before=(%d,%d)\\n\", poi(@esp), @eax, poi(poi(00532048)+0n808), poi(poi(00532048)+0n812); gc"
+bp /1 0042C840 ".printf \"BATTLE_HD_PAN eip=0042c840 ret=%p camera_before=(%d,%d) mouse=(%d,%d)\\n\", poi(@esp), poi(poi(00532048)+0n808), poi(poi(00532048)+0n812), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); gc"
+bp /1 0042CB50 ".printf \"BATTLE_HD_GRID eip=0042cb50 ret=%p camera=(%d,%d) mouse=(%d,%d)\\n\", poi(@esp), poi(poi(00532048)+0n808), poi(poi(00532048)+0n812), poi(00544cfc)>>by(0054512c), poi(00544d00)>>by(0054512c); gc"
+bp /1 00430F80 ".printf \"BATTLE_HD_HUD eip=00430f80 ret=%p surface=(%d,%d) eax=%p edx=%p ebx=%p edi=%p\\n\", poi(@esp), wo(poi(005202e0)), wo(poi(005202e0)+2), @eax, @edx, @ebx, @edi; gc"
+bp /1 0042E8B0 ".printf \"BATTLE_HD_FRAME eip=0042e8b0 ret=%p surface=(%d,%d)\\n\", poi(@esp), wo(poi(005202e0)), wo(poi(005202e0)+2); gc"
+bp /1 0042D730 ".printf \"BATTLE_HD_BANNER eip=0042d730 ret=%p surface=(%d,%d) eax=%p edx=%p ebx=%p\\n\", poi(@esp), wo(poi(005202e0)), wo(poi(005202e0)+2), @eax, @edx, @ebx; gc"
+bp /1 0042DAE0 ".printf \"BATTLE_HD_DIALOG eip=0042dae0 ret=%p surface=(%d,%d) eax=%p ebx=%p\\n\", poi(@esp), wo(poi(005202e0)), wo(poi(005202e0)+2), @eax, @ebx; gc"
+bp /1 0042E5A0 ".printf \"BATTLE_HD_RESULTS eip=0042e5a0 ret=%p surface=(%d,%d) battle=%p\\n\", poi(@esp), wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00532048); gc"
+bp /1 0041B14A ".printf \"BATTLE_HD_RETURN eip=0041b14a source=Unit_Attack_continuation surface=(%d,%d) battle=%p result=%p\\n\", wo(poi(005202e0)), wo(poi(005202e0)+2), poi(00532048), @eax; gc"

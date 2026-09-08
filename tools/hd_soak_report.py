@@ -27,6 +27,8 @@ RUNTIME_POLICY = (
     "repo-only soak report inspection; does not launch Clash95, CDB, wrappers, "
     "PowerShell harnesses, or visible windows"
 )
+HOST_ENVIRONMENT = "host_visible"
+HOST_EVIDENCE_CLASS = "host_visible_runtime_soak"
 
 # --- Guest (QEMU-Win98 DirectDraw) soak variant ------------------------------
 # A soak captured from inside the headless Win98 guest (scripts/vm/*) is a
@@ -61,6 +63,43 @@ GUEST_RUNTIME_POLICY = (
     "frames and query-status liveness; host-process memory/handle telemetry is "
     "not obtainable from inside a headless guest and is recorded "
     "not_applicable_guest, never faked; does not launch anything"
+)
+
+# --- Hidden (hidden-desktop CDB host) soak variant ---------------------------
+# USER RULING 2026-07-27: the hidden-CDB soak proof class is APPROVED as a
+# THIRD additive variant next to the host visible-runtime and QEMU-guest
+# classes. Its honesty contract:
+#   * The game runs as a REAL host process (unlike the guest), so ALL host
+#     process metrics (working set / private memory / handle growth, exit /
+#     clean-stop, HasExited samples) STAY REQUIRED with the host thresholds.
+#   * Input responsiveness cannot honestly be measured on a hidden desktop, so
+#     input_responsiveness must be recorded as the not_applicable_hidden
+#     sentinel -- NEVER faked with a number or true, and never dropped.
+#   * Frame/render metrics come from real periodic surface reads (host
+#     ReadProcessMemory of the DirectDraw surface base printed by
+#     SURFDUMP_READY), so the report must record the surface base and the
+#     host_readprocessmemory read method.
+#   * Forced-entry mechanics (breakpoint-forced map entry via the loader
+#     route, forced scroll writes for map-pan) must be DISCLOSED through
+#     entry_mechanism / pan_mechanism fields naming the forcing -- a missing
+#     disclosure fails.
+#   * Every report is stamped environment=hidden_cdb_host so it can never be
+#     mistaken for a visible-runtime or guest soak.
+HIDDEN_ENVIRONMENT = "hidden_cdb_host"
+HIDDEN_EVIDENCE_CLASS = "approved_hidden_cdb_host_soak"
+NOT_APPLICABLE_HIDDEN = "not_applicable_hidden"
+HIDDEN_FRAME_READ_METHOD = "host_readprocessmemory"
+HIDDEN_ENTRY_MECHANISM = "cdb_breakpoint_forced_loader_entry"
+HIDDEN_PAN_MECHANISM = "cdb_forced_scroll_write"
+HIDDEN_NO_PAN_MECHANISM = "none"
+ELAPSED_COVERAGE_FORMULA = "duration_sec - sample_interval_sec - 2"
+HIDDEN_RUNTIME_POLICY = (
+    "repo-only hidden-cdb soak report inspection; grades hidden-desktop CDB "
+    "host soak frames read via host ReadProcessMemory surface reads plus full "
+    "host process telemetry; input responsiveness is not measurable on a "
+    "hidden desktop and is recorded not_applicable_hidden, never faked; "
+    "forced-entry mechanics are disclosed, never hidden; does not launch "
+    "anything"
 )
 
 
@@ -272,6 +311,47 @@ def is_sha256(value: Any) -> bool:
     return bool(re.fullmatch(r"[0-9a-fA-F]{64}", str(value or "")))
 
 
+def parse_surface_base(value: Any) -> int | None:
+    """Parse the DirectDraw surface base a hidden report records.
+
+    Accepts a positive integer or a decimal / 0x-prefixed hex string (the form
+    SURFDUMP_READY prints). Anything else is None so the check fails closed.
+    """
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str) and value.strip():
+        text = value.strip()
+        try:
+            return int(text, 16) if text.lower().startswith("0x") else int(text)
+        except ValueError:
+            return None
+    return None
+
+
+def parse_cdb_pointer(value: Any) -> int | None:
+    """Parse a CDB `%p` field, including its usual unprefixed hex form."""
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value if value > 0 else None
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = value.strip()
+    if text.lower().startswith("0x"):
+        text = text[2:]
+    if not text or not re.fullmatch(r"[0-9a-fA-F]+", text):
+        return None
+    parsed = int(text, 16)
+    return parsed if parsed > 0 else None
+
+
+def presentation_is_disabled(value: Any) -> bool:
+    """Accept only the JSON boolean/number forms emitted by the proxy build."""
+    return value is False or (type(value) is int and value == 0)
+
+
 def resolve_path(path_text: str | None) -> Path | None:
     if not path_text:
         return None
@@ -347,6 +427,31 @@ def evaluate_report(
     checks["source_status"] = check_record(
         not failures,
         {"reported_passed": report.get("passed"), "source_failure_count": len(source_failures)},
+        failures,
+    )
+
+    failures = []
+    environment = report.get("environment")
+    evidence_class = report.get("evidence_class")
+    # Reports predating environment labels are the legacy visible-host format.
+    # An explicit foreign/unknown label must never inherit that compatibility.
+    if "environment" in report and environment != HOST_ENVIRONMENT:
+        failures.append(
+            f"environment is {environment!r}, expected {HOST_ENVIRONMENT!r} or an unlabeled legacy host report"
+        )
+    if "evidence_class" in report and evidence_class != HOST_EVIDENCE_CLASS:
+        failures.append(f"evidence_class is {evidence_class!r}, expected {HOST_EVIDENCE_CLASS!r}")
+    if report.get("schema") == "hidden_cdb_host_soak_report_v1":
+        failures.append("hidden report schema cannot be graded as host visible-runtime evidence")
+    checks["environment"] = check_record(
+        not failures,
+        {
+            "environment": environment,
+            "expected_environment": HOST_ENVIRONMENT,
+            "evidence_class": evidence_class,
+            "expected_evidence_class": HOST_EVIDENCE_CLASS,
+            "legacy_unlabeled": "environment" not in report,
+        },
         failures,
     )
 
@@ -684,9 +789,7 @@ def evaluate_report(
     failures = []
     frame_hash_unique_count = int(report.get("frame_hash_unique_count") or 0)
     route = str(report.get("route") or "")
-    frame_progress_expected = bool(report.get("frame_progress_expected"))
-    if "frame_progress_expected" not in report:
-        frame_progress_expected = route == "map-pan"
+    frame_progress_expected = route == "map-pan" or bool(report.get("frame_progress_expected"))
     stability_class = str(report.get("frame_stability_class") or "")
     if not stability_class:
         if frame_count <= 0:
@@ -1055,6 +1158,10 @@ def evaluate_report(
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "runtime_policy": RUNTIME_POLICY,
+        "environment": report.get("environment", HOST_ENVIRONMENT),
+        "expected_environment": HOST_ENVIRONMENT,
+        "evidence_class": report.get("evidence_class", HOST_EVIDENCE_CLASS),
+        "expected_evidence_class": HOST_EVIDENCE_CLASS,
         "overall": not all_failures,
         "source_report": report.get("report_json"),
         "stage": report.get("stage"),
@@ -1298,9 +1405,7 @@ def evaluate_guest_report(
     raw_frame_hashes = [str(frame.get("Hash")) for frame in frame_samples if frame.get("Hash")]
     computed_frame_hash_unique_count = len(set(raw_frame_hashes))
     reported_frame_hash_unique_count = integer_or_none(report.get("frame_hash_unique_count"))
-    frame_progress_expected = bool(report.get("frame_progress_expected"))
-    if "frame_progress_expected" not in report:
-        frame_progress_expected = route == "map-pan"
+    frame_progress_expected = route == "map-pan" or bool(report.get("frame_progress_expected"))
     if frame_count <= 0:
         stability_class = "no_frames"
     elif computed_frame_hash_unique_count <= 1:
@@ -1487,16 +1592,982 @@ def evaluate_guest_report(
     }
 
 
+def evaluate_hidden_report(
+    report: dict[str, Any],
+    *,
+    min_frames: int = 2,
+    min_nonblack_percent: float = 10.0,
+    min_unique_sample_colors: int = 8,
+    max_artifact_mb: int = 250,
+    max_working_set_growth_mb: int = 64,
+    max_private_memory_growth_mb: int = 64,
+    max_handle_growth: int = 128,
+    expected_width: int = 800,
+    expected_height: int = 600,
+) -> dict[str, Any]:
+    """Grade a hidden-desktop CDB host soak report (environment=hidden_cdb_host).
+
+    This is a clearly-labeled *variant* of ``evaluate_report`` for the approved
+    hidden-CDB proof class (user ruling 2026-07-27). It never touches the host
+    visible path or the guest path, and can never grade either as hidden
+    evidence: the ``environment`` check fails closed unless the report is
+    explicitly stamped ``hidden_cdb_host`` / ``approved_hidden_cdb_host_soak``.
+
+    Honesty contract enforced here:
+
+    * ``input_responsiveness`` must be EXACTLY the ``not_applicable_hidden``
+      sentinel. A numeric or true value is fabricated evidence and FAILS; a
+      dropped field FAILS too (fail-closed both ways).
+    * The game is a real host process, so all host process telemetry
+      (liveness, working set / private memory / handle growth) stays REQUIRED
+      as real measured numbers with the host thresholds.
+    * Frame inventory / render metrics / frame progression are computed from
+      the actual ``frame_samples`` (hashes and per-frame metrics), never from
+      reported summary fields alone.
+    * Capture integrity requires the surface-read provenance: the DirectDraw
+      ``surface_base`` (from SURFDUMP_READY) and
+      ``frame_read_method == "host_readprocessmemory"``.
+    * Forced-entry mechanics must be disclosed: ``entry_mechanism`` always,
+      ``pan_mechanism`` additionally for map-pan. Missing disclosure FAILS.
+    * Protected-stage and candidate-SHA/patch-evidence checks are identical to
+      the host variant.
+    """
+    frame_samples = list(report.get("frame_samples") or [])
+    process_samples = list(report.get("process_samples") or [])
+    capture_errors = list(report.get("capture_errors") or [])
+    artifact_bytes = int(report.get("artifact_bytes") or 0)
+    reported_max_artifact_mb = integer_or_none(report.get("max_artifact_mb"))
+    reported_artifact_limit_bytes = integer_or_none(report.get("artifact_limit_bytes"))
+    default_artifact_limit_bytes = int(max_artifact_mb) * 1024 * 1024
+    effective_max_artifact_mb = reported_max_artifact_mb if reported_max_artifact_mb is not None else max_artifact_mb
+    expected_artifact_limit_bytes = int(effective_max_artifact_mb) * 1024 * 1024
+    artifact_limit_bytes = (
+        reported_artifact_limit_bytes
+        if reported_artifact_limit_bytes is not None
+        else default_artifact_limit_bytes
+    )
+
+    checks: dict[str, Any] = {}
+
+    failures: list[str] = []
+    executed = report.get("executed") is True
+    if not executed:
+        failures.append("hidden soak report was not produced by an execution run")
+    checks["executed"] = check_record(executed, {"executed": report.get("executed")}, failures)
+
+    failures = []
+    source_failures = list(report.get("failures") or [])
+    source_passed = report.get("passed") is True
+    if executed and not source_passed:
+        failures.append("source hidden soak report did not mark itself passed")
+    if executed and source_failures:
+        failures.append(f"source hidden soak report contains {len(source_failures)} failure(s)")
+    checks["source_status"] = check_record(
+        not failures,
+        {"reported_passed": report.get("passed"), "source_failure_count": len(source_failures)},
+        failures,
+    )
+
+    # The label check is what keeps hidden evidence from ever being mistaken
+    # for a visible-runtime or guest soak. It fails closed for anything not
+    # explicitly stamped as the hidden class.
+    failures = []
+    schema = report.get("schema")
+    if schema != "hidden_cdb_host_soak_report_v1":
+        failures.append(f"schema is {schema!r}, expected 'hidden_cdb_host_soak_report_v1'")
+    checks["schema"] = check_record(
+        not failures,
+        {"schema": schema, "expected_schema": "hidden_cdb_host_soak_report_v1"},
+        failures,
+    )
+
+    failures = []
+    environment = report.get("environment")
+    evidence_class = report.get("evidence_class")
+    env_ok = environment == HIDDEN_ENVIRONMENT
+    class_ok = evidence_class == HIDDEN_EVIDENCE_CLASS
+    if not env_ok:
+        failures.append(
+            f"environment is {environment!r}, expected {HIDDEN_ENVIRONMENT!r}; this grader only "
+            "accepts hidden-cdb reports so a visible-runtime or guest report can never pass as "
+            "hidden evidence (and vice versa)"
+        )
+    if not class_ok:
+        failures.append(
+            f"evidence_class is {evidence_class!r}, expected {HIDDEN_EVIDENCE_CLASS!r} "
+            "(the distinct hidden-cdb proof class)"
+        )
+    checks["environment"] = check_record(
+        env_ok and class_ok,
+        {
+            "environment": environment,
+            "expected_environment": HIDDEN_ENVIRONMENT,
+            "evidence_class": evidence_class,
+            "expected_evidence_class": HIDDEN_EVIDENCE_CLASS,
+        },
+        failures,
+    )
+
+    failures = []
+    stage_ok = report.get("stage") == PROTECTED_STABLE_STAGE
+    stable_unchanged = report.get("stable_stage_should_change") is False
+    if not stage_ok:
+        failures.append(f"stage is {report.get('stage')}, expected protected stable stage")
+    if not stable_unchanged:
+        failures.append("report would change the stable stage")
+    checks["protected_stage"] = check_record(
+        stage_ok and stable_unchanged,
+        {
+            "stage": report.get("stage"),
+            "stable_stage_should_change": report.get("stable_stage_should_change"),
+        },
+        failures,
+    )
+
+    failures = []
+    tier = str(report.get("tier") or "")
+    route = str(report.get("route") or "")
+    duration = integer_or_none(report.get("duration_sec"))
+    sample_interval_sec = integer_or_none(report.get("sample_interval_sec"))
+    fixed_tier_durations = {"short2": 120, "short10": 600, "short30": 1800}
+    allowed_routes = {"menu-idle", "map-idle", "map-pan", "custom"}
+    if tier in fixed_tier_durations:
+        expected_duration = fixed_tier_durations[tier]
+        if duration != expected_duration:
+            failures.append(f"{tier} duration_sec is {duration}, expected {expected_duration}")
+    elif tier == "custom":
+        if duration is None or duration <= 0:
+            failures.append("custom tier requires positive duration_sec")
+    else:
+        failures.append(f"unknown tier: {tier!r}")
+    if route not in allowed_routes:
+        failures.append(f"unknown route: {route!r}")
+    checks["tier_route"] = check_record(
+        not failures,
+        {"tier": tier, "route": route, "duration_sec": duration, "sample_interval_sec": sample_interval_sec},
+        failures,
+    )
+
+    # Patch evidence / candidate SHA: identical to the host variant. The hidden
+    # run patches the same protected base into a C:\ClashTests candidate, so
+    # provenance requirements do not weaken.
+    failures = []
+    input_sha = normalize_sha(report.get("input_sha256"))
+    candidate_sha = normalize_sha(report.get("candidate_sha256"))
+    patch_report: dict[str, Any] | None = None
+    patch_error: str | None = None
+    if executed:
+        patch_report, patch_error = load_optional_json(report.get("patch_stage_report"))
+        if input_sha != EXPECTED_BASE_SHA256:
+            failures.append("input_sha256 does not match the expected original Clash95 base SHA-256")
+        if not is_sha256(candidate_sha):
+            failures.append("candidate_sha256 is missing or is not a SHA-256 hex digest")
+        if patch_error:
+            failures.append(patch_error)
+    if patch_report is not None:
+        status_counts = patch_report.get("status_counts") or {}
+        patch_count = int(patch_report.get("patch_count") or 0)
+        patched_count = int(status_counts.get("patched") or 0)
+        original_count = int(status_counts.get("original") or 0)
+        unexpected_count = int(status_counts.get("unexpected") or 0)
+        gate = patch_report.get("current_hd_map_gate") or {}
+        if patch_report.get("stage") != PROTECTED_STABLE_STAGE:
+            failures.append("patch_stage_report stage does not match the protected stable stage")
+        if normalize_sha(patch_report.get("expected_base_sha256")) != EXPECTED_BASE_SHA256:
+            failures.append("patch_stage_report expected_base_sha256 does not match the protected base")
+        if normalize_sha(patch_report.get("exe_sha256")) != candidate_sha:
+            failures.append("patch_stage_report exe_sha256 does not match candidate_sha256")
+        if patch_count <= 0 or patched_count != patch_count:
+            failures.append("patch_stage_report does not show every selected byte patched")
+        if original_count or unexpected_count:
+            failures.append("patch_stage_report has original or unexpected selected bytes")
+        if gate.get("passed") is not True:
+            failures.append("patch_stage_report current_hd_map_gate is not passing")
+    checks["patch_evidence"] = check_record(
+        not failures,
+        {
+            "input_sha256": report.get("input_sha256"),
+            "expected_base_sha256": EXPECTED_BASE_SHA256,
+            "candidate_sha256": report.get("candidate_sha256"),
+            "patch_stage_report": report.get("patch_stage_report"),
+            "patch_stage": (patch_report or {}).get("stage"),
+            "patch_count": (patch_report or {}).get("patch_count"),
+            "patch_status_counts": (patch_report or {}).get("status_counts"),
+            "current_hd_map_gate": (patch_report or {}).get("current_hd_map_gate"),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    policy = str(report.get("runtime_policy") or "")
+    input_class = str(report.get("input_proof_class") or "")
+    opt_in = "opt-in" in policy.lower()
+    not_manual_release = "not_manual" in input_class.lower() or "diagnostic" in input_class.lower()
+    rb_blocked = report.get("right_bottom_promotion_blocked") is True
+    if not opt_in:
+        failures.append("runtime policy does not record opt-in execution")
+    if not not_manual_release:
+        failures.append("input proof class does not mark the run as diagnostic")
+    if not rb_blocked:
+        failures.append("right-bottom promotion is not recorded as blocked")
+    checks["promotion_boundary"] = check_record(
+        opt_in and not_manual_release and rb_blocked,
+        {
+            "runtime_policy": policy,
+            "input_proof_class": input_class,
+            "right_bottom_promotion_blocked": report.get("right_bottom_promotion_blocked"),
+        },
+        failures,
+    )
+
+    failures = []
+    candidate_outside_repo = not is_under_repo(report.get("candidate"))
+    output_outside_repo = not is_under_repo(report.get("output_directory"))
+    input_matches = normalized_path_text(report.get("input_exe")) == normalized_path_text(EXPECTED_INPUT_EXE)
+    workdir_matches = normalized_path_text(report.get("workdir")) == normalized_path_text(EXPECTED_WORKDIR)
+    candidate_under_expected = is_same_or_under(report.get("candidate"), EXPECTED_CANDIDATE_ROOT)
+    output_under_expected = is_same_or_under(report.get("output_directory"), EXPECTED_OUTPUT_ROOT)
+    if not candidate_outside_repo:
+        failures.append("candidate path is inside the repository")
+    if not output_outside_repo:
+        failures.append("raw output directory is inside the repository")
+    if not input_matches:
+        failures.append(f"input_exe is not {EXPECTED_INPUT_EXE}")
+    if not workdir_matches:
+        failures.append(f"workdir is not {EXPECTED_WORKDIR}")
+    if not candidate_under_expected:
+        failures.append(f"candidate path is not under {EXPECTED_CANDIDATE_ROOT}")
+    if not output_under_expected:
+        failures.append(f"raw output directory is not under {EXPECTED_OUTPUT_ROOT}")
+    checks["artifact_locations"] = check_record(
+        (
+            candidate_outside_repo
+            and output_outside_repo
+            and input_matches
+            and workdir_matches
+            and candidate_under_expected
+            and output_under_expected
+        ),
+        {
+            "input_exe": report.get("input_exe"),
+            "expected_input_exe": EXPECTED_INPUT_EXE,
+            "workdir": report.get("workdir"),
+            "expected_workdir": EXPECTED_WORKDIR,
+            "candidate": report.get("candidate"),
+            "expected_candidate_root": EXPECTED_CANDIDATE_ROOT,
+            "output_directory": report.get("output_directory"),
+            "expected_output_root": EXPECTED_OUTPUT_ROOT,
+        },
+        failures,
+    )
+
+    # Capture integrity, adapted to surface-read frames: the frames are host
+    # ReadProcessMemory reads of the DirectDraw surface base that
+    # SURFDUMP_READY printed, so the report must record that provenance.
+    failures = []
+    surface_base = report.get("surface_base")
+    surface_base_value = parse_surface_base(surface_base)
+    frame_read_method = report.get("frame_read_method")
+    if executed:
+        if capture_errors:
+            failures.append(f"capture_errors contains {len(capture_errors)} row(s)")
+        if surface_base_value is None or surface_base_value <= 0:
+            failures.append(
+                "surface_base is missing or invalid; hidden frames must record the DirectDraw "
+                "surface base printed by SURFDUMP_READY that the host read"
+            )
+        if frame_read_method != HIDDEN_FRAME_READ_METHOD:
+            failures.append(
+                f"frame_read_method is {frame_read_method!r}, expected {HIDDEN_FRAME_READ_METHOD!r} "
+                "(hidden frames are host ReadProcessMemory surface reads, not window captures)"
+            )
+    checks["capture_integrity"] = check_record(
+        (not executed) or not failures,
+        {
+            "capture_error_count": len(capture_errors),
+            "surface_base": surface_base,
+            "surface_base_value": surface_base_value,
+            "frame_read_method": frame_read_method,
+            "expected_frame_read_method": HIDDEN_FRAME_READ_METHOD,
+            "checked": executed,
+        },
+        failures,
+    )
+
+    # The hidden lane depends on the repository's memory-only DirectDraw
+    # proxy. Its binary and build/log provenance must be SHA-tied, and final
+    # presentation must remain disabled so this cannot become visible-runtime
+    # evidence by accident.
+    failures = []
+    proxy = report.get("proxy")
+    proxy_valid = isinstance(proxy, dict)
+    if executed:
+        if not proxy_valid:
+            failures.append("proxy provenance is missing or malformed")
+        else:
+            if proxy.get("used") is not True:
+                failures.append("memory-only DirectDraw proxy was not used")
+            proxy_path = proxy.get("path")
+            if not isinstance(proxy_path, str) or not proxy_path.strip().lower().endswith("ddraw.dll"):
+                failures.append("proxy.path is missing or is not the per-candidate ddraw.dll")
+            if not is_sha256(proxy.get("sha256")):
+                failures.append("proxy.sha256 is missing or invalid")
+            for field in ("build_manifest", "log"):
+                value = proxy.get(field)
+                if not isinstance(value, str) or not value.strip():
+                    failures.append(f"proxy.{field} is missing")
+            if not presentation_is_disabled(proxy.get("present_enabled")):
+                failures.append("proxy presentation is not disabled (present_enabled must be false/0)")
+    checks["wrapper_provenance"] = check_record(
+        (not executed) or not failures,
+        {
+            "used": proxy.get("used") if proxy_valid else None,
+            "path": proxy.get("path") if proxy_valid else None,
+            "sha256": proxy.get("sha256") if proxy_valid else None,
+            "build_manifest": proxy.get("build_manifest") if proxy_valid else None,
+            "log": proxy.get("log") if proxy_valid else None,
+            "present_enabled": proxy.get("present_enabled") if proxy_valid else None,
+            "checked": executed,
+        },
+        failures,
+    )
+
+    # All observations below come from anchored parser rows. A legacy boolean
+    # such as ready_observed is intentionally not accepted as a substitute.
+    failures = []
+    ready_marker = report.get("ready_marker")
+    start_marker = report.get("route_start_marker")
+    end_marker = report.get("route_end_marker")
+    pan_events = report.get("pan_events")
+    expected_duration_ticks = duration * 64 if duration is not None else None
+    start_scroll_x: int | None = None
+    start_scroll_y: int | None = None
+    if executed:
+        if not isinstance(ready_marker, dict):
+            failures.append("ready_marker is missing or malformed")
+        else:
+            if ready_marker.get("source") not in {"SOAK_SURFDUMP_READY", "SURFDUMP_READY"}:
+                failures.append("ready_marker.source is not an anchored surface-ready marker")
+            marker_base = parse_cdb_pointer(ready_marker.get("base"))
+            if marker_base is None or marker_base != surface_base_value:
+                failures.append("ready_marker.base does not match the canonical surface_base")
+            if integer_or_none(ready_marker.get("redraw_seq")) is None:
+                failures.append("ready_marker.redraw_seq is missing or invalid")
+            if parse_cdb_pointer(ready_marker.get("surface")) is None:
+                failures.append("ready_marker.surface is missing or invalid")
+            ready_width = integer_or_none(ready_marker.get("width"))
+            ready_height = integer_or_none(ready_marker.get("height"))
+            ready_bytes = integer_or_none(ready_marker.get("bytes"))
+            if ready_width != expected_width or ready_height != expected_height:
+                failures.append(
+                    f"ready_marker size is {ready_width}x{ready_height}, expected {expected_width}x{expected_height}"
+                )
+            if ready_bytes != expected_width * expected_height:
+                failures.append("ready_marker.bytes does not match the expected surface size")
+
+        if not isinstance(start_marker, dict):
+            failures.append("route_start_marker is missing or malformed")
+        else:
+            if integer_or_none(start_marker.get("route_ticks")) != expected_duration_ticks:
+                failures.append("route_start_marker.route_ticks does not match the requested duration")
+            expected_pan = 1 if route == "map-pan" else 0
+            if integer_or_none(start_marker.get("pan")) != expected_pan:
+                failures.append("route_start_marker.pan does not match the route")
+            for field in ("player", "tick", "scroll_x", "scroll_y"):
+                if integer_or_none(start_marker.get(field)) is None:
+                    failures.append(f"route_start_marker.{field} is missing or invalid")
+            if parse_cdb_pointer(start_marker.get("game_data")) is None:
+                failures.append("route_start_marker.game_data is missing or invalid")
+            start_scroll_x = integer_or_none(start_marker.get("scroll_x"))
+            start_scroll_y = integer_or_none(start_marker.get("scroll_y"))
+
+        if not isinstance(end_marker, dict):
+            failures.append("route_end_marker is missing or malformed")
+        else:
+            end_hits = integer_or_none(end_marker.get("hits"))
+            end_tick_delta = integer_or_none(end_marker.get("tick_delta"))
+            if end_hits is None or end_hits <= 0:
+                failures.append("route_end_marker.hits is missing or not positive")
+            if (
+                end_tick_delta is None
+                or expected_duration_ticks is None
+                or end_tick_delta < expected_duration_ticks
+            ):
+                failures.append("route_end_marker.tick_delta does not cover the requested duration")
+            for field in ("player", "scroll_x", "scroll_y"):
+                if integer_or_none(end_marker.get(field)) is None:
+                    failures.append(f"route_end_marker.{field} is missing or invalid")
+
+        if not isinstance(pan_events, list):
+            failures.append("pan_events is missing or malformed")
+            pan_events = []
+        previous_tick: int | None = None
+        previous_hits: int | None = None
+        for index, event in enumerate(pan_events):
+            if not isinstance(event, dict):
+                failures.append(f"pan_events[{index}] is not an object")
+                continue
+            phase = integer_or_none(event.get("phase"))
+            x = integer_or_none(event.get("x"))
+            y = integer_or_none(event.get("y"))
+            hits = integer_or_none(event.get("hits"))
+            tick_delta = integer_or_none(event.get("tick_delta"))
+            if None in (phase, x, y, hits, tick_delta):
+                failures.append(f"pan_events[{index}] is missing a required numeric field")
+                continue
+            if phase != index % 4:
+                failures.append(f"pan_events[{index}].phase is not in the ordered four-phase cycle")
+            if previous_tick is not None and tick_delta <= previous_tick:
+                failures.append("pan_events tick_delta values are not strictly increasing")
+            if previous_hits is not None and hits < previous_hits:
+                failures.append("pan_events hits values are not ordered")
+            previous_tick = tick_delta
+            previous_hits = hits
+            if (
+                start_scroll_x is not None
+                and start_scroll_y is not None
+                and (abs(x - start_scroll_x) > 1 or abs(y - start_scroll_y) > 1)
+            ):
+                failures.append(f"pan_events[{index}] is outside the bounded inward +/-1 cycle")
+        if route == "map-pan" and not pan_events:
+            failures.append("map-pan route has no parsed SOAK_PAN_SET rows")
+        if route != "map-pan" and pan_events:
+            failures.append("non-pan route contains SOAK_PAN_SET rows")
+        if integer_or_none(report.get("pan_event_count")) != len(pan_events):
+            failures.append("pan_event_count does not match the parsed pan_events inventory")
+        if integer_or_none(report.get("heartbeat_count")) is None or integer_or_none(
+            report.get("heartbeat_count")
+        ) <= 0:
+            failures.append("heartbeat_count is missing or zero")
+    checks["marker_provenance"] = check_record(
+        (not executed) or not failures,
+        {
+            "ready_marker": ready_marker,
+            "route_start_marker": start_marker,
+            "route_end_marker": end_marker,
+            "pan_event_count": len(pan_events) if isinstance(pan_events, list) else None,
+            "heartbeat_count": report.get("heartbeat_count"),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    cleanup = report.get("cleanup")
+    cleanup_valid = isinstance(cleanup, dict)
+    cleanup_errors = cleanup.get("errors") if cleanup_valid else None
+    if executed:
+        if not cleanup_valid:
+            failures.append("cleanup provenance is missing or malformed")
+        else:
+            if cleanup.get("game_stopped") is not True:
+                failures.append("cleanup did not verify game process termination")
+            if cleanup.get("cdb_stopped") is not True:
+                failures.append("cleanup did not verify CDB process termination")
+            if not isinstance(cleanup_errors, list):
+                failures.append("cleanup.errors is missing or is not an array")
+            elif cleanup_errors:
+                failures.append(f"cleanup contains {len(cleanup_errors)} error(s)")
+            if report.get("clean_stop") is not True:
+                failures.append("clean_stop is not true after verified cleanup")
+    checks["cleanup_provenance"] = check_record(
+        (not executed) or not failures,
+        {
+            "game_stopped": cleanup.get("game_stopped") if cleanup_valid else None,
+            "cdb_stopped": cleanup.get("cdb_stopped") if cleanup_valid else None,
+            "errors": cleanup_errors,
+            "clean_stop": report.get("clean_stop"),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    frame_count = int(report.get("frame_sample_count") or len(frame_samples))
+    size_bad = [
+        frame
+        for frame in frame_samples
+        if int(frame.get("Width") or 0) != expected_width or int(frame.get("Height") or 0) != expected_height
+    ]
+    bad_hashes = [frame for frame in frame_samples if not is_sha256(frame.get("Hash"))]
+    if executed:
+        if frame_count < min_frames:
+            failures.append(f"frame sample count {frame_count} is below {min_frames}")
+        if size_bad:
+            failures.append(f"{len(size_bad)} frame samples were not {expected_width}x{expected_height}")
+        if bad_hashes:
+            failures.append(f"{len(bad_hashes)} frame samples have missing or invalid SHA-256 hashes")
+    checks["frame_inventory"] = check_record(
+        (not executed) or (frame_count >= min_frames and not size_bad and not bad_hashes),
+        {
+            "frame_sample_count": frame_count,
+            "expected_size": [expected_width, expected_height],
+            "invalid_hash_count": len(bad_hashes),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    evidence_frames, excluded_frames, capture_modes = partition_render_evidence(frame_samples)
+    nonblack_values = numbers([frame.get("NonblackPercent") for frame in evidence_frames])
+    luma_values = numbers([frame.get("MeanLuma") for frame in evidence_frames])
+    unique_values = numbers([frame.get("UniqueSampleColors") for frame in evidence_frames])
+    min_nonblack = min(nonblack_values) if nonblack_values else 0.0
+    min_unique = min(unique_values) if unique_values else 0.0
+    if executed:
+        if min_nonblack < min_nonblack_percent:
+            failures.append(f"minimum nonblack percent {min_nonblack} is below {min_nonblack_percent}")
+        if min_unique < min_unique_sample_colors:
+            failures.append(f"minimum unique sampled colors {min_unique} is below {min_unique_sample_colors}")
+    checks["render_metrics"] = check_record(
+        (not executed) or (min_nonblack >= min_nonblack_percent and min_unique >= min_unique_sample_colors),
+        {
+            "min_nonblack_percent": min_nonblack,
+            "min_unique_sample_colors": min_unique,
+            "render_evidence_frame_count": len(evidence_frames),
+            "excluded_frame_count": len(excluded_frames),
+            "capture_modes": capture_modes,
+            "checked": executed,
+        },
+        failures,
+    )
+
+    # Gate progression on the unique-hash count COMPUTED from the actual
+    # frame_samples, not a reported field, so a report cannot claim
+    # progression (e.g. under disclosed forced scroll) it did not capture.
+    failures = []
+    raw_frame_hashes = [str(frame.get("Hash")) for frame in frame_samples if frame.get("Hash")]
+    computed_frame_hash_unique_count = len(set(raw_frame_hashes))
+    reported_frame_hash_unique_count = integer_or_none(report.get("frame_hash_unique_count"))
+    frame_progress_expected = route == "map-pan" or bool(report.get("frame_progress_expected"))
+    if frame_count <= 0:
+        stability_class = "no_frames"
+    elif computed_frame_hash_unique_count <= 1:
+        stability_class = "stable_idle"
+    else:
+        stability_class = "progressing"
+    if executed and (
+        reported_frame_hash_unique_count is not None
+        and reported_frame_hash_unique_count != computed_frame_hash_unique_count
+    ):
+        failures.append(
+            f"frame_hash_unique_count summary {reported_frame_hash_unique_count} does not match the "
+            f"{computed_frame_hash_unique_count} unique hashes in frame_samples"
+        )
+    if frame_progress_expected and computed_frame_hash_unique_count < 2:
+        failures.append("frame progression required for this route but fewer than 2 unique frame hashes were recorded")
+    if not frame_progress_expected and frame_count >= min_frames and stability_class not in {"stable_idle", "progressing"}:
+        failures.append(f"frame_stability_class is {stability_class!r}, expected stable_idle or progressing")
+    checks["frame_progression"] = check_record(
+        not failures,
+        {
+            "route": route,
+            "frame_progress_expected": frame_progress_expected,
+            "frame_stability_class": stability_class,
+            "reported_frame_hash_unique_count": reported_frame_hash_unique_count,
+            "computed_frame_hash_unique_count": computed_frame_hash_unique_count,
+        },
+        failures,
+    )
+
+    # Forced-entry disclosure: the hidden class is only honest when the
+    # forcing is named in the report, not hidden. entry_mechanism is always
+    # required; pan_mechanism is additionally required for map-pan because its
+    # "movement" is a forced scroll write, not user input.
+    failures = []
+    entry_mechanism = report.get("entry_mechanism")
+    pan_mechanism = report.get("pan_mechanism")
+    entry_ok = entry_mechanism == HIDDEN_ENTRY_MECHANISM
+    if not entry_ok:
+        failures.append(
+            "entry_mechanism disclosure is missing or incorrect; a hidden run must name its "
+            f"forced-entry mechanic as {HIDDEN_ENTRY_MECHANISM!r}"
+        )
+    pan_required = route == "map-pan"
+    expected_pan_mechanism = HIDDEN_PAN_MECHANISM if pan_required else HIDDEN_NO_PAN_MECHANISM
+    pan_ok = pan_mechanism == expected_pan_mechanism
+    if not pan_ok:
+        failures.append(
+            "pan_mechanism disclosure is missing or incorrect; this hidden route must record "
+            f"{expected_pan_mechanism!r}"
+        )
+    checks["forced_entry_disclosure"] = check_record(
+        entry_ok and pan_ok,
+        {
+            "entry_mechanism": entry_mechanism,
+            "pan_mechanism": pan_mechanism,
+            "pan_mechanism_required": pan_required,
+            "route": route,
+        },
+        failures,
+    )
+
+    # The honesty anchor: input responsiveness cannot be measured on a hidden
+    # desktop, so the field must be present and EXACTLY the sentinel. A number
+    # or true value is fabricated evidence; a dropped field hides the gap.
+    # Fail-closed both ways.
+    failures = []
+    input_responsiveness_present = "input_responsiveness" in report
+    input_responsiveness_value = report.get("input_responsiveness")
+    if not input_responsiveness_present:
+        failures.append(
+            "input_responsiveness was dropped; a hidden run must record the "
+            f"{NOT_APPLICABLE_HIDDEN!r} sentinel, never omit the field"
+        )
+    elif input_responsiveness_value != NOT_APPLICABLE_HIDDEN:
+        failures.append(
+            f"input_responsiveness is {input_responsiveness_value!r}; input responsiveness cannot "
+            f"be measured on a hidden desktop and must be exactly {NOT_APPLICABLE_HIDDEN!r} -- a "
+            "numeric or true value would be fabricated evidence"
+        )
+    checks["input_responsiveness"] = check_record(
+        not failures,
+        {
+            "input_responsiveness": input_responsiveness_value,
+            "required_sentinel": NOT_APPLICABLE_HIDDEN,
+            "present": input_responsiveness_present,
+        },
+        failures,
+    )
+
+    # The game is a real host process on the hidden desktop, so host process
+    # telemetry stays fully required -- same rules and thresholds as the host
+    # visible-runtime variant.
+    computed_process_sample_count = len(process_samples)
+    process_working_set_values = [integer_or_none(row.get("WorkingSet64")) for row in process_samples]
+    process_working_set_values = [value for value in process_working_set_values if value is not None]
+    process_private_values = [integer_or_none(row.get("PrivateMemorySize64")) for row in process_samples]
+    process_private_values = [value for value in process_private_values if value is not None]
+    process_handle_values = [integer_or_none(row.get("HandleCount")) for row in process_samples]
+    process_handle_values = [value for value in process_handle_values if value is not None]
+    computed_working_set_growth = (
+        int(process_working_set_values[-1] - process_working_set_values[0])
+        if len(process_working_set_values) >= 2
+        else None
+    )
+    computed_private_memory_growth = (
+        int(process_private_values[-1] - process_private_values[0]) if len(process_private_values) >= 2 else None
+    )
+    computed_handle_growth = (
+        int(process_handle_values[-1] - process_handle_values[0]) if len(process_handle_values) >= 2 else None
+    )
+
+    failures = []
+    unexpected_exit = report.get("process_exited_unexpectedly") is True
+    clean_stop = report.get("clean_stop") is True
+    exited_samples = [row for row in process_samples if row.get("HasExited") is True]
+    if executed:
+        if unexpected_exit:
+            failures.append(f"process exited unexpectedly with code {report.get('exit_code')}")
+        if not clean_stop:
+            failures.append("process was not stopped cleanly by the harness")
+        if exited_samples:
+            failures.append(f"{len(exited_samples)} process samples reported HasExited=True")
+    checks["process_liveness"] = check_record(
+        (not executed) or not failures,
+        {
+            "process_exited_unexpectedly": unexpected_exit,
+            "exit_code": report.get("exit_code"),
+            "clean_stop": clean_stop,
+            "exited_sample_count": len(exited_samples),
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    process_sample_count = int(report.get("process_sample_count") or computed_process_sample_count)
+    working_set_growth = integer_or_none(report.get("working_set_growth_bytes"))
+    private_memory_growth = integer_or_none(report.get("private_memory_growth_bytes"))
+    handle_growth = integer_or_none(report.get("handle_growth"))
+    working_set_limit_bytes = int(max_working_set_growth_mb) * 1024 * 1024
+    private_memory_limit_bytes = int(max_private_memory_growth_mb) * 1024 * 1024
+    if executed:
+        if process_sample_count < 2:
+            failures.append(f"process sample count {process_sample_count} is below 2")
+        if working_set_growth is None:
+            failures.append("working_set_growth_bytes is missing")
+        elif working_set_growth > working_set_limit_bytes:
+            failures.append(f"working_set_growth_bytes {working_set_growth} exceeds limit {working_set_limit_bytes}")
+        if private_memory_growth is None:
+            failures.append("private_memory_growth_bytes is missing")
+        elif private_memory_growth > private_memory_limit_bytes:
+            failures.append(
+                f"private_memory_growth_bytes {private_memory_growth} exceeds limit {private_memory_limit_bytes}"
+            )
+        if handle_growth is None:
+            failures.append("handle_growth is missing")
+        elif handle_growth > max_handle_growth:
+            failures.append(f"handle_growth {handle_growth} exceeds limit {max_handle_growth}")
+    checks["process_growth"] = check_record(
+        (not executed) or not failures,
+        {
+            "process_sample_count": process_sample_count,
+            "working_set_growth_bytes": working_set_growth,
+            "working_set_growth_limit_bytes": working_set_limit_bytes,
+            "private_memory_growth_bytes": private_memory_growth,
+            "private_memory_growth_limit_bytes": private_memory_limit_bytes,
+            "handle_growth": handle_growth,
+            "handle_growth_limit": max_handle_growth,
+            "checked": executed,
+        },
+        failures,
+    )
+
+    failures = []
+    frame_elapsed_sec, invalid_frame_timestamps = timestamp_span_seconds(frame_samples)
+    process_elapsed_sec, invalid_process_timestamps = timestamp_span_seconds(process_samples)
+    if executed and sample_interval_sec is None:
+        failures.append("sample_interval_sec is missing")
+    elif executed and sample_interval_sec <= 0:
+        failures.append("sample_interval_sec must be positive")
+    required_elapsed_sec = None
+    if duration is not None and sample_interval_sec is not None and sample_interval_sec > 0:
+        required_elapsed_sec = max(0, duration - sample_interval_sec - 2)
+    if executed and invalid_frame_timestamps:
+        failures.append(f"{invalid_frame_timestamps} frame samples have missing or invalid timestamps")
+    if executed and invalid_process_timestamps:
+        failures.append(f"{invalid_process_timestamps} process samples have missing or invalid timestamps")
+    if executed and required_elapsed_sec is not None:
+        if frame_elapsed_sec is None:
+            failures.append("frame sample elapsed coverage could not be computed")
+        elif frame_elapsed_sec < required_elapsed_sec:
+            failures.append(
+                f"frame sample elapsed coverage {frame_elapsed_sec:.3f}s is below required {required_elapsed_sec:.3f}s"
+            )
+        if process_elapsed_sec is None:
+            failures.append("process sample elapsed coverage could not be computed")
+        elif process_elapsed_sec < required_elapsed_sec:
+            failures.append(
+                f"process sample elapsed coverage {process_elapsed_sec:.3f}s is below required {required_elapsed_sec:.3f}s"
+            )
+    checks["elapsed_coverage"] = check_record(
+        not failures,
+        {
+            "duration_sec": duration,
+            "sample_interval_sec": sample_interval_sec,
+            "required_elapsed_sec": required_elapsed_sec,
+            "frame_elapsed_sec": frame_elapsed_sec,
+            "process_elapsed_sec": process_elapsed_sec,
+            "invalid_frame_timestamps": invalid_frame_timestamps,
+            "invalid_process_timestamps": invalid_process_timestamps,
+        },
+        failures,
+    )
+
+    # Summary consistency: the host pairs minus input drift (which does not
+    # exist here -- the sentinel check above owns that field).
+    failures = []
+    if executed:
+        consistency_pairs: list[tuple[str, int | float | None, int | float | None, float]] = [
+            ("frame_sample_count", integer_or_none(report.get("frame_sample_count")), len(frame_samples), 0.0),
+            (
+                "frame_hash_unique_count",
+                reported_frame_hash_unique_count,
+                computed_frame_hash_unique_count,
+                0.0,
+            ),
+            (
+                "nonblack_percent_min",
+                float_or_none(report.get("nonblack_percent_min")),
+                min_nonblack if nonblack_values else None,
+                0.001,
+            ),
+            (
+                "nonblack_percent_max",
+                float_or_none(report.get("nonblack_percent_max")),
+                max(nonblack_values) if nonblack_values else None,
+                0.001,
+            ),
+            (
+                "unique_sample_colors_min",
+                integer_or_none(report.get("unique_sample_colors_min")),
+                int(min_unique) if unique_values else None,
+                0.0,
+            ),
+            (
+                "unique_sample_colors_max",
+                integer_or_none(report.get("unique_sample_colors_max")),
+                int(max(unique_values)) if unique_values else None,
+                0.0,
+            ),
+            (
+                "mean_luma_min",
+                float_or_none(report.get("mean_luma_min")),
+                min(luma_values) if luma_values else None,
+                0.001,
+            ),
+            (
+                "mean_luma_max",
+                float_or_none(report.get("mean_luma_max")),
+                max(luma_values) if luma_values else None,
+                0.001,
+            ),
+            (
+                "process_sample_count",
+                integer_or_none(report.get("process_sample_count")),
+                computed_process_sample_count,
+                0.0,
+            ),
+            ("working_set_growth_bytes", working_set_growth, computed_working_set_growth, 0.0),
+            ("private_memory_growth_bytes", private_memory_growth, computed_private_memory_growth, 0.0),
+            ("handle_growth", handle_growth, computed_handle_growth, 0.0),
+        ]
+        for field, reported, computed, tolerance in consistency_pairs:
+            if mismatched_number(reported, computed, tolerance=tolerance):
+                failures.append(f"{field} summary {reported!r} does not match detailed rows {computed!r}")
+    checks["summary_consistency"] = check_record(
+        not failures,
+        {
+            "checked": executed,
+            "frame_sample_count": len(frame_samples),
+            "frame_hash_unique_count": computed_frame_hash_unique_count,
+            "process_sample_count": computed_process_sample_count,
+            "working_set_growth_bytes": computed_working_set_growth,
+            "private_memory_growth_bytes": computed_private_memory_growth,
+            "handle_growth": computed_handle_growth,
+        },
+        failures,
+    )
+
+    failures = []
+    if executed:
+        if reported_max_artifact_mb is None:
+            failures.append("max_artifact_mb is missing")
+        elif reported_max_artifact_mb <= 0:
+            failures.append("max_artifact_mb must be positive")
+        if reported_artifact_limit_bytes is None:
+            failures.append("artifact_limit_bytes is missing")
+        elif reported_artifact_limit_bytes != expected_artifact_limit_bytes:
+            failures.append(
+                "artifact_limit_bytes "
+                f"{reported_artifact_limit_bytes} does not match max_artifact_mb-derived limit "
+                f"{expected_artifact_limit_bytes}"
+            )
+        if artifact_bytes > artifact_limit_bytes:
+            failures.append(f"artifact bytes {artifact_bytes} exceeds limit {artifact_limit_bytes}")
+    checks["artifact_budget"] = check_record(
+        (not executed) or not failures,
+        {
+            "artifact_bytes": artifact_bytes,
+            "max_artifact_mb": reported_max_artifact_mb,
+            "artifact_limit_bytes": reported_artifact_limit_bytes,
+            "effective_artifact_limit_bytes": artifact_limit_bytes,
+            "checked": executed,
+        },
+        failures,
+    )
+
+    all_failures = [failure for check in checks.values() for failure in check["failures"]]
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "runtime_policy": HIDDEN_RUNTIME_POLICY,
+        "environment": environment,
+        "expected_environment": HIDDEN_ENVIRONMENT,
+        "evidence_class": evidence_class,
+        "expected_evidence_class": HIDDEN_EVIDENCE_CLASS,
+        "entry_mechanism": entry_mechanism,
+        "pan_mechanism": pan_mechanism,
+        "input_responsiveness": input_responsiveness_value,
+        "overall": not all_failures,
+        "source_report": report.get("report_json"),
+        "stage": report.get("stage"),
+        "tier": report.get("tier"),
+        "route": report.get("route"),
+        "duration_sec": report.get("duration_sec"),
+        "sample_interval_sec": report.get("sample_interval_sec"),
+        "candidate_sha256": report.get("candidate_sha256"),
+        "checks": checks,
+        "failures": all_failures,
+    }
+
+
+def evaluate_report_for_environment(
+    report: dict[str, Any],
+    *,
+    min_frames: int = 2,
+    min_nonblack_percent: float = 10.0,
+    min_unique_sample_colors: int = 8,
+    max_artifact_mb: int = 250,
+    max_working_set_growth_mb: int = 64,
+    max_private_memory_growth_mb: int = 64,
+    max_handle_growth: int = 128,
+    max_input_drift_px: int = 1,
+    expected_width: int = 800,
+    expected_height: int = 600,
+    min_guest_status_samples: int = 2,
+) -> dict[str, Any]:
+    """Select a proof-class grader without relabeling the source report.
+
+    Only a missing environment label uses the legacy visible-host format.
+    Explicit unknown labels fail closed. Environment-specific thresholds are
+    passed only to the lane where the corresponding measurements exist.
+    """
+    environment = report.get("environment")
+    common = {
+        "min_frames": min_frames,
+        "min_nonblack_percent": min_nonblack_percent,
+        "min_unique_sample_colors": min_unique_sample_colors,
+        "max_artifact_mb": max_artifact_mb,
+        "expected_width": expected_width,
+        "expected_height": expected_height,
+    }
+    host_process = {
+        "max_working_set_growth_mb": max_working_set_growth_mb,
+        "max_private_memory_growth_mb": max_private_memory_growth_mb,
+        "max_handle_growth": max_handle_growth,
+    }
+    if environment == HIDDEN_ENVIRONMENT:
+        return evaluate_hidden_report(report, **common, **host_process)
+    if environment == GUEST_ENVIRONMENT:
+        return evaluate_guest_report(report, **common, min_guest_status_samples=min_guest_status_samples)
+    if "environment" not in report or environment == HOST_ENVIRONMENT:
+        return evaluate_report(report, **common, **host_process, max_input_drift_px=max_input_drift_px)
+
+    failures = [f"unsupported soak environment: {environment!r}"]
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "runtime_policy": RUNTIME_POLICY,
+        "environment": environment,
+        "evidence_class": report.get("evidence_class"),
+        "overall": False,
+        "source_report": report.get("report_json"),
+        "stage": report.get("stage"),
+        "tier": report.get("tier"),
+        "route": report.get("route"),
+        "duration_sec": report.get("duration_sec"),
+        "sample_interval_sec": report.get("sample_interval_sec"),
+        "checks": {
+            "environment": check_record(
+                False,
+                {"environment": environment, "supported": [HOST_ENVIRONMENT, GUEST_ENVIRONMENT, HIDDEN_ENVIRONMENT]},
+                failures,
+            )
+        },
+        "failures": failures,
+    }
+
+
 def to_markdown(evaluation: dict[str, Any]) -> str:
-    is_guest = evaluation.get("expected_environment") is not None
+    expected_environment = evaluation.get("expected_environment")
+    is_guest = expected_environment == GUEST_ENVIRONMENT
+    is_hidden = expected_environment == HIDDEN_ENVIRONMENT
+    if is_hidden:
+        title = "# HD Hidden-CDB Host Soak Report Guard"
+    elif is_guest:
+        title = "# HD Guest Soak Report Guard"
+    else:
+        title = "# HD Soak Report Guard"
     lines = [
-        "# HD Guest Soak Report Guard" if is_guest else "# HD Soak Report Guard",
+        title,
         "",
         f"- Overall: {status_text(bool(evaluation['overall']))}",
         f"- Generated: `{evaluation['generated_at']}`",
         f"- Runtime policy: `{evaluation['runtime_policy']}`",
     ]
-    if is_guest:
+    if is_guest or is_hidden:
         lines.append(
             f"- Environment: `{evaluation.get('environment')}` "
             f"(expected `{evaluation.get('expected_environment')}`)"
@@ -1504,6 +2575,20 @@ def to_markdown(evaluation: dict[str, Any]) -> str:
         lines.append(
             f"- Evidence class: `{evaluation.get('evidence_class')}` "
             f"(expected `{evaluation.get('expected_evidence_class')}`)"
+        )
+    if is_hidden:
+        lines.extend(
+            [
+                "",
+                "> **ENVIRONMENT: hidden_cdb_host** -- this is a hidden-desktop CDB host soak,",
+                "> NOT a visible-runtime soak and NOT a guest soak. Input responsiveness is",
+                f"> `{evaluation.get('input_responsiveness')}` (never measured, never faked on a hidden desktop).",
+                "> Forced-entry mechanics are disclosed below, not hidden.",
+                "",
+                f"- Entry mechanism (disclosed forcing): `{evaluation.get('entry_mechanism')}`",
+                f"- Pan mechanism (disclosed forcing): `{evaluation.get('pan_mechanism')}`",
+                f"- Input responsiveness: `{evaluation.get('input_responsiveness')}`",
+            ]
         )
     if evaluation.get("source_report") is not None:
         lines.append(f"- Source report: `{evaluation.get('source_report')}`")
@@ -1545,21 +2630,29 @@ def main() -> int:
     parser.add_argument("--write-json", type=Path)
     parser.add_argument("--write-markdown", "--write-md", dest="write_markdown", type=Path)
     parser.add_argument("--max-input-drift-px", type=int, default=1)
-    parser.add_argument(
+    environment_flags = parser.add_mutually_exclusive_group()
+    environment_flags.add_argument(
         "--guest",
         action="store_true",
         help="grade a QEMU-Win98 guest soak report (also auto-selected when the report is stamped "
         f"environment={GUEST_ENVIRONMENT!r})",
     )
+    environment_flags.add_argument(
+        "--hidden",
+        action="store_true",
+        help="grade a hidden-desktop CDB host soak report (also auto-selected when the report is "
+        f"stamped environment={HIDDEN_ENVIRONMENT!r})",
+    )
     parser.add_argument("--require-pass", action="store_true")
     args = parser.parse_args()
 
     report_data = load_json(args.report)
-    is_guest = args.guest or (isinstance(report_data, dict) and report_data.get("environment") == GUEST_ENVIRONMENT)
-    if is_guest:
+    if args.hidden:
+        evaluation = evaluate_hidden_report(report_data)
+    elif args.guest:
         evaluation = evaluate_guest_report(report_data)
     else:
-        evaluation = evaluate_report(report_data, max_input_drift_px=args.max_input_drift_px)
+        evaluation = evaluate_report_for_environment(report_data, max_input_drift_px=args.max_input_drift_px)
     evaluation.setdefault("source_report", str(args.report))
     if args.write_json:
         args.write_json.parent.mkdir(parents=True, exist_ok=True)
