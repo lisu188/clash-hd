@@ -14,8 +14,10 @@ repository verifier that recomputes its required checks from original artifacts.
 A report containing passing booleans, a pinned arbitrary log, and the hash of a
 file under `tools/` does not establish acceptance. Unsupported verifiers remain
 explicit failures. Currently the resolution lane rechecks the actual launcher
-profile, recipe, resolution, default and experimental status. The 15 runtime,
-composition, input, continuity and endurance adapters are still incomplete.
+profile, recipe, resolution, default and experimental status. The panel-command
+lane now reruns its native callback parser over the original recorded log,
+loaded-byte guards, approval, plan and owned-process receipt. The other 14
+runtime, composition, input, continuity and endurance adapters remain incomplete.
 Historical component reports are not rewritten into integrated proof.
 The launcher now exposes an experimental `completehd` profile. Resolution
 metadata is checked through the actual launcher validator; unknown or malformed
@@ -38,17 +40,40 @@ fresh output and refuses to replace prior evidence; the default output gets a
 unique evaluation path. It never checks release checklist boxes. The historical
 `--run-manifest` component mode retains its existing behavior.
 
-The imported observation protocol remains scoped to its existing 800x600
-component stages. It checks native descriptor, X/Y hit test, pressed-input gate,
-dispatch, callback and thread identity against an observation-only probe and
-owned-process receipt. It is not yet an integrated 1080p producer. Its planner
-does not execute; actual observation still requires fresh approval and human
-input. Neither its callback result nor synthetic offline fixtures count as the
-five-target manual release proof.
+The observation protocol retains its historical 800x600 component mode and
+adds `--candidate-manifest` for the complete candidate. The planner, producer,
+and parser derive target bounds and capture dimensions from the framed
+geometry. They bind the exact candidate stage, resolution, recipe, metadata and
+probe hashes through the approved plan, raw log and owned-process receipt.
+The release probe keeps the reconstructed loaded-byte guards and the existing
+native descriptor, X/Y hit test, pressed-input gate, dispatch and callback
+breakpoints. It omits the map diagnostic body and never forces a route or
+callback. Missing or reordered native observations cannot be replaced by a
+caller-authored passing result.
+
+For planning, use `tools/hd_layout_observation_manifest.py` (or the PowerShell
+adapter) with `--candidate-manifest`, the matching `--candidate` and `--stage`,
+and the existing local wrapper, configuration, debugger, isolated assets and
+output arguments. `--input-method manual_directinput` describes a human
+operator; `--input-method win32_sendinput_relative` describes a separately
+approved relative pulse driver. The observer itself injects nothing. The plan
+is read only until `--write-plan` is requested. Actual observation requires
+fresh approval bound to that saved plan and both execution switches.
+
+Evaluate its recorded manifest with
+`tools/hd_layout_command_input_summary.py <command-input-manifest.json>
+--candidate-manifest <candidate.candidate.json>`. A release lane references this
+original command manifest as both `command_manifest` and a `source_artifacts`
+item, and identifies `tools/hd_layout_command_input_summary.py` as its producer.
+It reuses the original approval reference; no second approval record is
+invented for evaluation. Callback proof accepts disclosed pulse input and
+remains separate from all five human-operated manual targets. Synthetic offline
+fixtures and a generated observation plan are never actual callback proof.
 
 Relevant offline checks are `test_complete_hd_evidence.py`,
 `test_complete_hd_promotion.py`, `test_hd_endurance_release_checklist.py`,
 `test_hd_layout_command_input_summary.py`, and
-`test_hd_layout_observation_manifest.py`. Positive policy fixtures inject test
+`test_hd_layout_observation_manifest.py`, plus
+`test_complete_hd_command_input.py`. Positive policy fixtures inject test
 verifiers explicitly; the production verifier registry rejects their invented
 green envelopes. Raw game material and runtime captures remain external.
