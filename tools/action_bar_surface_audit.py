@@ -18,6 +18,7 @@ import zlib
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.patcher.framed_viewport import FramedViewport
+from src.patcher.complete_hd_candidate import STAGE as COMPLETE_HD_STAGE
 
 from cdb_surface_dump_to_png import PNG_SIGNATURE, indices_to_rgb_rows, load_palette, png_chunk
 
@@ -35,9 +36,9 @@ def framed_stage(stage: str | None) -> bool:
     """Select only the exact producer stage; never guess a similar suffix."""
     if stage is not None and not isinstance(stage, str):
         raise ValueError("stage must be a string")
-    if stage == FRAMED_STAGE:
+    if stage in (FRAMED_STAGE, COMPLETE_HD_STAGE):
         return True
-    if stage is not None and "framed" in stage.lower():
+    if stage is not None and any(name in stage.lower() for name in ("framed", "completehd")):
         raise ValueError("unsupported framed stage identity")
     return False
 
