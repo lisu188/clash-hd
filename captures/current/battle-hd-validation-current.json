@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-09-08T09:43:00.770851+00:00",
+  "generated_at": "2026-09-08T09:49:28.028978+00:00",
   "status": "reviewable_validation_candidate_with_pending_acceptance",
   "passed": false,
   "stable_stage_should_change": false,
@@ -264,9 +264,13 @@
     "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\reports\\battle_hd_source_binding_integration.json",
     "sha256": "B849626B955A3A975FD70E1404800952D76233F10E16CFCEA1C340FA2C341B0C"
   },
-  "latest_main_integration": {
+  "pr60_main_integration": {
     "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\reports\\battle_hd_source_binding_pr60.json",
     "sha256": "718545F89B70375F55AFA08145AE9B60CDB85735C70B850B0756ECC8EF197CC4"
+  },
+  "latest_main_integration": {
+    "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\reports\\battle_hd_source_binding_checkpoint326.json",
+    "sha256": "87BF80701546A4E1572BCA3464FA6CC7BD4FAE866A3EE1F83F8DEC930025B380"
   },
   "launcher_dry_run": {
     "path": "C:\\ClashTests\\battle-hd-1280x720\\launcher-dry-run-final.json",

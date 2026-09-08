@@ -11,7 +11,7 @@ Reviewable 1280x720 candidate; acceptance remains pending. The stable stage is u
 
 ## Checks
 
-All 14 focused suites pass, including 835 x86 core cases and 17 HUD tests. Five additional merged-harness/launcher suites pass. Source-pin integration and fresh-checkout results are recorded in [the integration report](../../reports/battle_hd_source_binding_integration.md) and [the PR60 follow-up](../../reports/battle_hd_source_binding_pr60.md). The launcher dry run passes and starts no process.
+All 14 focused suites pass, including 835 x86 core cases and 17 HUD tests. Five additional merged-harness/launcher suites pass. Source-pin integration and fresh-checkout results are recorded in [the initial report](../../reports/battle_hd_source_binding_integration.md), [the PR60 follow-up](../../reports/battle_hd_source_binding_pr60.md), and [the latest main integration](../../reports/battle_hd_source_binding_checkpoint326.md). The launcher dry run passes and starts no process.
 
 | Final hidden run | Diagnostic result | Evidence boundary |
 |---|---|---|
