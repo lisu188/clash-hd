@@ -10,6 +10,8 @@ PowerShell, or any visible GUI process.
 from __future__ import annotations
 
 import argparse
+import ast
+import hashlib
 import json
 import re
 import sys
@@ -67,8 +69,15 @@ def expected_tiles(width: int, height: int) -> tuple[int, int]:
 
 
 def load_json(path: Path) -> dict[str, Any] | None:
+    def unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError(f"duplicate JSON key: {key}")
+            result[key] = value
+        return result
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload = json.loads(path.read_text(encoding="utf-8-sig"), object_pairs_hook=unique_object)
     except (OSError, json.JSONDecodeError, ValueError):
         return None
     return payload if isinstance(payload, dict) else None
@@ -204,7 +213,7 @@ def evidence_binding_failures(root: Path, key: str, evidence: dict[str, Any], st
     return failures
 
 
-def build_guard(args: argparse.Namespace) -> dict[str, Any]:
+def build_legacy_guard(args: argparse.Namespace) -> dict[str, Any]:
     root = Path(args.root)
     manifest_path = root / args.manifest
     checks: dict[str, Any] = {}
@@ -215,7 +224,8 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
     manifest_errors: list[str] = []
     if (manifest is None or type(manifest.get("schema")) is not int
             or manifest["schema"] not in (1, 2)
-            or not isinstance(manifest.get("resolutions"), dict)):
+            or not isinstance(manifest.get("resolutions"), dict)
+            or any(not isinstance(entry, dict) for entry in manifest.get("resolutions", {}).values())):
         manifest_errors.append(f"manifest missing, invalid, or wrong schema: {manifest_path}")
     elif manifest["schema"] == 2:
         try:
@@ -317,7 +327,7 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
         if not match or tiles is None:
             continue
         expected = expected_tiles(int(match.group(1)), int(match.group(2)))
-        if tuple(tiles) != expected:
+        if not isinstance(tiles, list) or tiles != list(expected):
             tile_mismatches[key] = {"manifest": tiles, "expected": list(expected)}
     check_specs["tiles_formula"] = (
         not tile_mismatches,
@@ -347,11 +357,13 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
     )
 
     bounds = manifest.get("custom_bounds") or {}
+    bounds = bounds if isinstance(bounds, dict) else {}
     minimum = bounds.get("min") or []
     maximum = bounds.get("max") or []
     bounds_ok = (
-        len(minimum) == 2
-        and len(maximum) == 2
+        isinstance(minimum, list) and isinstance(maximum, list)
+        and len(minimum) == 2 and len(maximum) == 2
+        and all(type(value) is int for value in minimum + maximum)
         and minimum[0] >= 800
         and minimum[1] >= 600
         and maximum[0] >= minimum[0]
@@ -384,6 +396,207 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
         },
         "checks": checks,
         "failures": failures,
+    }
+
+
+def source_pins(profiles: set[str]) -> dict[str, str]:
+    """Read reviewed declarations without importing or executing a builder.
+
+    The guard's checkout supplies the contracts; --root selects the inspected
+    source/evidence tree, so changing its pin declaration cannot bless itself.
+    """
+    names = ["src/patcher/patch_clash95_hd.py", "src/display_plan.py", "src/launcher/presets.py"]
+    builders = []
+    if profiles - {"classic"}:
+        builders = ["build_partial_tile_candidate", "build_framed_candidate"]
+    if "completehd" in profiles:
+        builders += ["build_framed_modal_candidate", "build_framed_army_candidate"]
+        names.append("src/patcher/complete_hd_candidate.py")
+    pins: dict[str, str] = {}
+    for builder in builders:
+        name = f"tools/{builder}.py"
+        names.append(name)
+        values = {}
+        for node in ast.parse((REPO_ROOT / name).read_bytes()).body:
+            if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+                key = node.targets[0].id
+                if key in {"PINNED_SOURCES", "MINIMAP_SOURCE", "MINIMAP_SOURCE_SHA256", "INITIAL_SOURCE_SHA256"}:
+                    if key in values:
+                        raise ValueError(f"duplicate source contract: {name}/{key}")
+                    values[key] = ast.literal_eval(node.value)
+        declared = dict(values["PINNED_SOURCES"])
+        if builder == "build_framed_candidate":
+            declared[values["MINIMAP_SOURCE"]] = values["MINIMAP_SOURCE_SHA256"]
+        if builder == "build_partial_tile_candidate":
+            declared["src/patcher/initial_map_paint.py"] = values["INITIAL_SOURCE_SHA256"]
+        for path, expected in declared.items():
+            if path in pins and pins[path] != expected:
+                raise ValueError(f"conflicting source contract: {path}")
+            pins[path] = expected
+    for name in names:
+        actual = hashlib.sha256((REPO_ROOT / name).read_bytes()).hexdigest()
+        if name in pins and pins[name] != actual:
+            raise ValueError(f"reviewed generator source changed: {name}")
+        pins[name] = actual
+    return pins
+
+
+def _artifact(root: Path, relative: str) -> Path:
+    path = Path(relative)
+    target = (root / path).resolve()
+    if path.is_absolute() or not target.is_relative_to(root.resolve()):
+        raise ValueError(f"evidence/source path escapes repository: {relative}")
+    return target
+
+
+def _profile_evidence(root: Path, key: str, entry: dict[str, Any], config: dict[str, Any]) -> list[str]:
+    """Bind the retained hidden component evidence; this is not release proof."""
+    failures = []
+    evidence = entry.get("evidence") or {}
+    width, height = map(int, key.split("x"))
+    digests = []
+    import patch_clash95_hd as patcher
+    for name in ("normal_run", "forced_run"):
+        try:
+            run = load_json(_artifact(root, evidence[name]) / "summary.json") or {}
+            surface = run.get("Surface") or {}
+            digest = run.get("CandidateSha256", "").lower()
+            if (run.get("Passed") is not True or run.get("LaunchMode") != "hidden-desktop"
+                    or run.get("HiddenDesktop") is not True or run.get("AllowVisibleDesktop") is True
+                    or run.get("TimedOut") is True or run.get("Av") is True):
+                failures.append(f"{key}/{name}: not passing hidden-desktop evidence")
+            if (run.get("Stage") != config["stage"] or surface.get("Width") != width
+                    or surface.get("Height") != height or surface.get("Bytes") != width * height
+                    or ("Resolution" in run and run["Resolution"] != key)):
+                failures.append(f"{key}/{name}: stage/resolution differs from profile")
+            if (not re.fullmatch(r"[0-9a-f]{64}", digest)
+                    or run.get("InputSha256", "").lower() != patcher.EXPECTED_SHA256.lower()):
+                failures.append(f"{key}/{name}: missing or unknown executable identity")
+            digests.append(digest)
+        except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
+            failures.append(f"{key}/{name}: {exc}")
+    try:
+        smoke = load_json(_artifact(root, evidence["smoke_json"])) or {}
+        patch = smoke.get("patch_stage") or {}
+        digests.append(patch.get("sha256", "").lower())
+        if (smoke.get("passed") is not True or smoke.get("resolution") != key
+                or patch.get("passed") is not True or patch.get("stage") != config["stage"]):
+            failures.append(f"{key}/smoke_json: passing stage/resolution context is absent")
+        for name, smoke_name in (("normal_run", "normal"), ("forced_run", "forced_visible")):
+            row = (smoke.get("post_owner_evidence") or {}).get(smoke_name) or {}
+            if (row.get("passed") is not True
+                    or _artifact(root, row.get("run", "")) != _artifact(root, evidence[name])
+                    or row.get("candidate_sha256", "").lower() != digests[-1]):
+                failures.append(f"{key}/smoke_json: {smoke_name} references another run/candidate")
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
+        failures.append(f"{key}/smoke_json: {exc}")
+    if len(digests) != 3 or len(set(digests)) != 1:
+        failures.append(f"{key}: normal, forced and smoke candidate SHA values disagree")
+    return failures
+
+
+def build_guard(args: argparse.Namespace) -> dict[str, Any]:
+    # Preserve Classic patch/smoke/run bindings and the existing check interface
+    # before adding schema-2 source and profile metadata requirements.
+    baseline = build_legacy_guard(args)
+    manifest = load_json(Path(args.root) / args.manifest)
+    if not manifest or manifest.get("schema") != 2 or not baseline["checks"]:
+        return baseline
+    root = Path(args.root)
+    checks: dict[str, Any] = baseline["checks"].copy()
+    failures: list[str] = list(baseline["failures"])
+
+    def check(name: str, errors: list[str], **details: Any) -> None:
+        previous = checks.get(name, {})
+        details = {**previous.get("summary", {}), **details}
+        errors = list(dict.fromkeys([*previous.get("failures", []), *errors]))
+        checks[name] = check_record(name, not errors, details)
+        checks[name]["failures"] = errors
+        failures.extend(f"{name}: {error}" for error in errors if f"{name}: {error}" not in failures)
+
+    from src.launcher import presets
+    try:
+        presets.validate_manifest(manifest)
+        check("profile_schema", [])
+    except (ValueError, TypeError, AttributeError) as exc:
+        check("profile_schema", [str(exc)])
+        return {
+            "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
+            "passed": False, "schema": 2, "runtime_policy": RUNTIME_POLICY, "guard_policy": GUARD_POLICY,
+            "manifest": str(args.manifest), "promotion_ready": False, "checks": checks, "failures": failures,
+        }
+    profiles = manifest.get("profiles")
+    profiles = profiles if isinstance(profiles, dict) else {}
+    expected_stage = args.expected_stable_stage or patcher_stable_stage()
+    errors = []
+    if manifest.get("stable_stage") != expected_stage or not expected_stage:
+        errors.append("stable_stage must equal the patcher DEFAULT_STAGE")
+    if manifest.get("default") != EXPECTED_DEFAULT or manifest.get("default_renderer") != "classic":
+        errors.append("the stable default must remain Classic 800x600")
+    stable = []
+    tile_errors, evidence_errors, status_errors, recipe_errors = [], [], [], []
+    suffixes = {"classic": "", "framed": "-combinedui-partialtiles-initialpaint-framed-validation", "completehd": "-completehd-validation"}
+    for renderer, config in profiles.items():
+        if not isinstance(config, dict) or renderer not in suffixes:
+            continue  # Already rejected by the shared schema validator.
+        if config.get("stage") != str(expected_stage) + suffixes[renderer]:
+            recipe_errors.append(f"{renderer}: exact stage does not match its recipe")
+        if config.get("default") != EXPECTED_DEFAULT:
+            errors.append(f"{renderer}: default must remain 800x600")
+        entries = config.get("resolutions")
+        if not isinstance(entries, dict):
+            continue
+        for key, entry in entries.items():
+            if not isinstance(entry, dict):
+                continue
+            status = entry.get("status")
+            if status == "stable":
+                stable.append(f"{renderer}/{key}")
+            if renderer != "classic" and status != "experimental":
+                status_errors.append(f"{renderer}/{key}: recipe has no promoted evidence verifier; must remain experimental")
+            if not RESOLUTION_KEY_RE.fullmatch(key):
+                continue
+            if entry.get("tiles") is not None:
+                width, height = map(int, key.split("x"))
+                if renderer == "classic":
+                    tiles = expected_tiles(width, height)
+                else:
+                    from src.patcher.framed_viewport import FramedViewport
+                    tiles = FramedViewport(width, height).full_tiles
+                if entry["tiles"] != list(tiles):
+                    tile_errors.append(f"{renderer}/{key}: tile counts differ from {list(tiles)}")
+            if renderer == "classic" and status in {"stable", "validated"}:
+                evidence_errors.extend(_profile_evidence(root, key, entry, config))
+    if stable != ["classic/800x600"]:
+        errors.append(f"exactly Classic 800x600 must be stable, found {stable}")
+    check("single_stable_default", errors, stable=stable)
+    check("profile_recipes", recipe_errors)
+    check("experimental_profiles", status_errors)
+    check("tiles_formula", tile_errors, framed_formula="FramedViewport.full_tiles; four reserved borders")
+    check("evidence_backed", evidence_errors, scope="retained hidden component evidence; no whole-release eligibility")
+    source_checks, source_errors = {}, []
+    try:
+        for name, expected in source_pins(set(profiles)).items():
+            try:
+                actual = hashlib.sha256(_artifact(root, name).read_bytes()).hexdigest()
+            except OSError:
+                actual = None
+            source_checks[name] = {"expected_sha256": expected, "actual_sha256": actual, "passed": actual == expected}
+            if actual != expected:
+                source_errors.append(f"source identity mismatch: {name}")
+    except (OSError, ValueError, KeyError, TypeError, SyntaxError) as exc:
+        source_errors.append(str(exc))
+    check("source_context", source_errors, sources=source_checks)
+    return {
+        "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
+        "passed": not failures, "runtime_policy": RUNTIME_POLICY,
+        "guard_policy": "schema-2 exact profile recipe, evidence scope and source context; Classic 800x600 stable default; other renderers experimental",
+        "manifest": str(args.manifest), "schema": 2, "profile_count": len(profiles),
+        "resolution_count": len(manifest.get("resolutions") or {}),
+        "status_counts": {status: sum(1 for config in profiles.values() if isinstance(config, dict)
+            for entry in (config.get("resolutions") or {}).values() if isinstance(entry, dict) and entry.get("status") == status)
+            for status in VALID_STATUSES},
+        "promotion_ready": False, "checks": checks, "failures": failures,
     }
 
 

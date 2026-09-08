@@ -137,6 +137,7 @@ def build_guard(
         },
         "checks": checks,
         "surface_geometry": surface_geometry,
+        "harness": surface_geometry,
         "summary": {
             "target_rows": target_rows,
             "row_geometry": geometry,
