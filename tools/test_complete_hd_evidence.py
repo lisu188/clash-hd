@@ -316,24 +316,31 @@ def test_actual_resolution_manifest_is_replayed(root):
         return evidence.evaluate_lane("resolution_coverage", fixture.manifest["lanes"]["resolution_coverage"], context,
                                       fixture.path.parent, repo_root=fixture.repo)
 
-    # The real launcher has no complete-HD profile yet; that remains an honest
-    # missing requirement even though the existing Classic/Framed schema is valid.
+    # The supported Complete-HD profile establishes metadata coverage only;
+    # the other fifteen production lane verifiers remain incomplete.
     result = evaluate(manifest)
+    assert result["passed"], result
+    missing = copy.deepcopy(manifest)
+    missing["profiles"].pop("completehd")
+    result = evaluate(missing)
     assert not result["passed"] and any("advertised_resolution_matches" in row for row in result["failures"]), result
     unsupported = copy.deepcopy(manifest)
-    unsupported["profiles"]["complete"] = {
-        "default": "800x600", "stage": evidence.STAGE, "recipe_revision": evidence.RECIPE_REVISION,
-        "features": {"minimap_viewport": True},
-        "resolutions": {"800x600": {"status": "experimental"}, "1920x1080": {"status": "experimental"}},
-    }
+    unsupported["profiles"]["unknown"] = copy.deepcopy(manifest["profiles"]["completehd"])
     result = evaluate(unsupported)
-    assert not result["passed"] and any("separate Classic and Framed profiles" in row for row in result["failures"]), result
-    for mutation in ("malformed-profile", "projection", "recipe", "features"):
+    assert not result["passed"] and any("Schema 2 requires" in row for row in result["failures"]), result
+    for mutation in ("malformed-profile", "projection", "recipe", "features", "complete-stage", "complete-recipe",
+                     "complete-features", "complete-default", "complete-resolutions", "complete-stable", "complete-validated"):
         invalid = copy.deepcopy(manifest)
         if mutation == "malformed-profile": invalid["profiles"]["framed"] = []
         elif mutation == "projection": invalid["resolutions"]["800x600"]["status"] = "experimental"
         elif mutation == "recipe": invalid["profiles"]["framed"]["recipe_revision"] = "unsupported-recipe"
-        else: invalid["profiles"]["framed"]["features"]["minimap_viewport"] = 1
+        elif mutation == "features": invalid["profiles"]["framed"]["features"]["minimap_viewport"] = 1
+        elif mutation == "complete-stage": invalid["profiles"]["completehd"]["stage"] = evidence.STABLE_STAGE
+        elif mutation == "complete-recipe": invalid["profiles"]["completehd"]["recipe_revision"] = "unsupported-recipe"
+        elif mutation == "complete-features": invalid["profiles"]["completehd"]["features"]["minimap_viewport"] = False
+        elif mutation == "complete-default": invalid["profiles"]["completehd"]["default"] = "1920x1080"
+        elif mutation == "complete-resolutions": invalid["profiles"]["completehd"]["resolutions"] = None
+        else: invalid["profiles"]["completehd"]["resolutions"]["1920x1080"]["status"] = mutation.removeprefix("complete-")
         result = evaluate(invalid)
         assert not result["passed"], (mutation, result)
 

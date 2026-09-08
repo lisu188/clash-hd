@@ -68,14 +68,43 @@ Assert-PureAst $initialOption[0]
 Assert-PureAst $dumpActions[0]
 Assert-PureAst $initialBounds[0]
 function Get-CdbFileToken { throw 'Unexpected CDB-write path in initial-paint fixture' }
-$buildBlocks = @($ast.FindAll({ param($n) $n -is [System.Management.Automation.Language.IfStatementAst] -and
-    $n.Clauses[0].Item1.Extent.Text -eq '$PartialTileValidation' -and $n.Extent.Text.Contains('$partialBuildReport =') }, $true))
+$buildBlocks = @($ast.EndBlock.Statements | Where-Object {
+    $_ -is [System.Management.Automation.Language.IfStatementAst] -and
+    $_.Clauses[0].Item1.Extent.Text -eq '$CompleteHdValidation' -and
+    $_.Extent.Text.Contains('$partialBuildReport =')
+})
+if ($buildBlocks.Count -ne 1 -or $buildBlocks[0].Clauses.Count -ne 2 -or
+    $buildBlocks[0].Clauses[1].Item1.Extent.Text -ne '$PartialTileValidation' -or
+    $null -eq $buildBlocks[0].ElseClause) { throw 'Ambiguous complete/partial/ordinary build dispatch' }
+# Execute only the actual legacy clause and ordinary fallback. The complete
+# branch reads a candidate bundle and belongs to the separate complete suite.
+$legacyClause = $buildBlocks[0].Clauses[1]
+Assert-PureAst $legacyClause.Item1
+Assert-PureAst $legacyClause.Item2 -MockPython
+Assert-PureAst $buildBlocks[0].ElseClause -MockPython
+$legacyBuildCode = 'if (' + $legacyClause.Item1.Extent.Text + ') ' + $legacyClause.Item2.Extent.Text +
+    ' else ' + $buildBlocks[0].ElseClause.Extent.Text
 $preflightBlocks = @($ast.FindAll({ param($n) $n -is [System.Management.Automation.Language.IfStatementAst] -and
     $n.Clauses[0].Item1.Extent.Text -eq '$PartialTileValidation' -and $n.Extent.Text.Contains('$partialPreflightJson =') }, $true))
 $candidateGates = @($ast.FindAll({ param($n) $n -is [System.Management.Automation.Language.IfStatementAst] -and
     $n.Extent.Text.Contains("throw 'Partial-tile candidate differs from the preflight recipe.'") }, $true))
-$exitGates = @($ast.FindAll({ param($n) $n -is [System.Management.Automation.Language.IfStatementAst] -and
+$allExitGates = @($ast.FindAll({ param($n) $n -is [System.Management.Automation.Language.IfStatementAst] -and
     $n.Clauses[0].Item1.Extent.Text -eq '$patchExit -ne 0' }, $true))
+$exitGates = @($ast.EndBlock.Statements | Where-Object {
+    $_ -is [System.Management.Automation.Language.IfStatementAst] -and
+    $_.Clauses[0].Item1.Extent.Text -eq '$patchExit -ne 0'
+})
+$completeExitGates = @($buildBlocks[0].Clauses[0].Item2.FindAll({ param($n)
+    $n -is [System.Management.Automation.Language.IfStatementAst] -and
+    $n.Clauses[0].Item1.Extent.Text -eq '$patchExit -ne 0'
+}, $true))
+if ($allExitGates.Count -ne 2 -or $exitGates.Count -ne 1 -or $completeExitGates.Count -ne 1 -or
+    -not $exitGates[0].Extent.Text.Contains('patch_clash95_hd.py failed with exit code') -or
+    -not $completeExitGates[0].Extent.Text.Contains('Complete candidate builder failed with exit code') -or
+    $exitGates[0].Extent.StartOffset -le $buildBlocks[0].Extent.EndOffset) {
+    throw 'Ambiguous or misplaced legacy/complete builder exit gates'
+}
+Assert-PureAst $completeExitGates[0]
 $runtimeAssignments = @($ast.FindAll({ param($n) $n -is [System.Management.Automation.Language.AssignmentStatementAst] -and
     $n.Left.Extent.Text -eq '$runtimeFailure' }, $true))
 $outerGates = @($ast.FindAll({ param($n) $n -is [System.Management.Automation.Language.IfStatementAst] -and
@@ -84,7 +113,6 @@ if ($optionBlocks.Count -ne 1 -or $buildBlocks.Count -ne 1 -or $exitGates.Count 
     $preflightBlocks.Count -ne 1 -or $candidateGates.Count -ne 1 -or
     $runtimeAssignments.Count -ne 1 -or $outerGates.Count -ne 1) { throw 'Ambiguous harness integration fragments' }
 Assert-PureAst $optionBlocks[0]
-Assert-PureAst $buildBlocks[0] -MockPython
 Assert-PureAst $preflightBlocks[0] -MockPython
 Assert-PureAst $candidateGates[0]
 Assert-PureAst $exitGates[0]
@@ -96,9 +124,10 @@ function Test-Path {
     if ($LiteralPath -ne $partialTileBuilder -or $PathType -ne 'Leaf') { throw 'Unexpected path access in option gate' }
     return -not $script:MissingBuilder
 }
-$result = [ordered]@{ options=@(); logs=@(); builds=@(); outer=@(); preflight=@(); candidates=@(); initial_dump=@() }
+$result = [ordered]@{ options=@(); logs=@(); builds=@(); outer=@(); preflight=@(); candidates=@(); initial_dump=@(); complete_builder_exits=@() }
 foreach ($case in $cases.options) {
     $PartialTileValidation=$true
+    $CompleteHdValidation=$false; $FramedValidation=$false; $MinimapViewportValidation=$false
     $InitialMapPaintValidation=$false
     $ContinueAfterDumpSec=0
     $Stage=$cases.stage
@@ -157,6 +186,7 @@ $inputFull='C:\SyntheticOriginal\clash95.exe'
 $candidateFull='C:\ClashTests\synthetic-partial\candidate\new.exe'
 $runDir='C:\ClashCaptures\synthetic-partial\run'
 $script:MockResponse=$null
+$CompleteHdValidation=$false
 foreach ($PartialTileValidation in @($false,$true)) {
     foreach ($Resolution in @('800x600','1024x768')) {
         foreach ($script:MockExit in @(0,9)) {
@@ -164,7 +194,7 @@ foreach ($PartialTileValidation in @($false,$true)) {
             $script:PythonCalls=@()
             $ExtraProbeTemplate=''
             $failure=$null
-            . ([scriptblock]::Create($buildBlocks[0].Extent.Text))
+            . ([scriptblock]::Create($legacyBuildCode))
             $patchExit=$LASTEXITCODE
             try { . ([scriptblock]::Create($exitGates[0].Extent.Text)) } catch { $failure=$_.Exception.Message }
             $result.builds += [pscustomobject]@{
@@ -173,6 +203,11 @@ foreach ($PartialTileValidation in @($false,$true)) {
             }
         }
     }
+}
+foreach ($patchExit in @(0,9)) {
+    $failure=$null
+    try { . ([scriptblock]::Create($completeExitGates[0].Extent.Text)) } catch { $failure=$_.Exception.Message }
+    $result.complete_builder_exits += [pscustomobject]@{ exit=$patchExit; error=$failure }
 }
 $PartialTileValidation=$true
 $Stage=$cases.stage
@@ -587,6 +622,12 @@ class PartialTileSurfaceHarnessTests(unittest.TestCase):
                         "--resolution", row["resolution"]])
                     self.assertEqual(row["extra_probe"], "")
                 self.assertEqual(bool(row["error"]), row["exit"] != 0)
+
+    def test_complete_builder_exit_gate_is_separate_and_fail_closed(self):
+        rows = self.result["complete_builder_exits"]
+        self.assertEqual([row["exit"] for row in rows], [0, 9])
+        self.assertIsNone(rows[0]["error"])
+        self.assertEqual(rows[1]["error"], "Complete candidate builder failed with exit code 9")
 
     def test_completed_dump_cannot_hide_partial_or_runtime_failure(self):
         expected = {v["name"]: v["failed"] for v in self.cases["outer"]}

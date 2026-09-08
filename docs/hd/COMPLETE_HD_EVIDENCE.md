@@ -17,10 +17,10 @@ explicit failures. Currently the resolution lane rechecks the actual launcher
 profile, recipe, resolution, default and experimental status. The 15 runtime,
 composition, input, continuity and endurance adapters are still incomplete.
 Historical component reports are not rewritten into integrated proof.
-The current launcher supports Classic and Framed profiles; it does not yet
-support a complete-HD profile matching this candidate. The resolution lane
-also remains unsatisfied, and a launcher-rejected profile cannot establish
-evidence. No complete-release eligibility is established by the current code.
+The launcher now exposes an experimental `completehd` profile. Resolution
+metadata is checked through the actual launcher validator; unknown or malformed
+profiles cannot establish evidence. This metadata coverage does not satisfy
+the 15 incomplete runtime adapters or establish complete-release eligibility.
 
 `candidate_manifest_context()` in `tools/complete_hd_evidence.py` loads the
 complete builder's `.candidate.json`, `.exe` and `.cdb` bundle. It delegates

@@ -28,9 +28,16 @@ INSERTION = r'.printf \"FRAMED_MINIMAP enabled='
 
 
 def build_observed_probe(original: bytes, candidate: bytes, *, resolution: str,
-                         rendered_probe: str) -> dict:
-    image, metadata, canonical_extra = builder.build_candidate(
-        original, resolution, minimap_viewport=True)
+                         rendered_probe: str, candidate_manifest: dict | None = None) -> dict:
+    stage = builder.STAGE
+    if candidate_manifest is None:
+        image, metadata, canonical_extra = builder.build_candidate(
+            original, resolution, minimap_viewport=True)
+    else:
+        from complete_hd_runtime_context import verify_context
+        context = verify_context(candidate_manifest, original, resolution=resolution, candidate=candidate)
+        image, metadata, canonical_extra = context["candidate"], context["framed"], context["probe"]
+        stage = context["manifest"]["stage"]
     if candidate != image:
         raise ValueError("candidate differs from exact minimap-enabled framed reconstruction")
     # The existing reader checks unique startup bc*, static declarations and
@@ -54,7 +61,7 @@ def build_observed_probe(original: bytes, candidate: bytes, *, resolution: str,
     if set(observers) != {"memory", "primary"} or len(set(observers.values())) != 2:
         raise ValueError("invalid emitted minimap observation contract")
     existing_sites = {int(row["va"], 16) for row in inventory[0]["declarations"]}
-    rows = [f".echo FRAMED_MINIMAP_OBSERVER_BOUND stage={builder.STAGE} resolution={resolution} "
+    rows = [f".echo FRAMED_MINIMAP_OBSERVER_BOUND stage={stage} resolution={resolution} "
             f"candidate_sha256={sha(candidate)}"]
     bindings = []
     for bp, name in zip((80, 81), ("memory", "primary")):
@@ -78,7 +85,7 @@ def build_observed_probe(original: bytes, candidate: bytes, *, resolution: str,
     observed = observed.replace(INSERTION, CAPTURE_ACTION + INSERTION)
     if any(len(line) >= 4096 for line in observed.splitlines()):
         raise ValueError("observed probe exceeds bounded CDB line length")
-    return dict(schema="clash95_framed_minimap_observer_v1", stage=builder.STAGE,
+    return dict(schema="clash95_framed_minimap_observer_v1", stage=stage,
                 resolution=resolution, candidate_sha256=sha(candidate),
                 original_sha256=sha(original), canonical_extra_sha256=sha(canonical_extra.encode("ascii")),
                 source_main_sha256=sha(rendered_probe.encode("ascii")),
@@ -95,6 +102,7 @@ def main():
     for name in ("original", "candidate", "rendered-probe", "output", "report"):
         parser.add_argument("--"+name, required=True, type=Path)
     parser.add_argument("--resolution", required=True)
+    parser.add_argument("--candidate-manifest", type=Path)
     args = parser.parse_args()
     outputs = [args.output.resolve(), args.report.resolve()]
     inputs = {p.resolve() for p in (args.original, args.candidate, args.rendered_probe)}
@@ -102,7 +110,8 @@ def main():
         parser.error("distinct new output files required; existing artifacts are preserved")
     packet = build_observed_probe(args.original.read_bytes(), args.candidate.read_bytes(),
                                   resolution=args.resolution,
-                                  rendered_probe=args.rendered_probe.read_bytes().decode("ascii"))
+                                  rendered_probe=args.rendered_probe.read_bytes().decode("ascii"),
+                                  candidate_manifest=json.loads(args.candidate_manifest.read_text(encoding="utf-8")) if args.candidate_manifest else None)
     packet["producer_source_sha256"] = sha(Path(__file__).read_bytes())
     packet["source_main_path"] = str(args.rendered_probe.resolve())
     packet["observed_main_path"] = str(args.output.resolve())

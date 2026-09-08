@@ -201,8 +201,8 @@ def _resolution_verifier(report: dict[str, Any], report_path: Path, context: dic
     from src.launcher import presets
 
     # An indexed profile is not advertised if the actual launcher rejects it.
-    # In particular, adding an unsupported `complete` profile cannot certify
-    # this still-incomplete release lane.
+    # A supported experimental profile can satisfy this metadata lane, while
+    # an unknown profile or a promoted status cannot replace its contract.
     presets.validate_manifest(manifest)
     resolution = context["identity"]["resolution"]
     entries = _object(manifest.get("resolutions"), "launcher resolutions")

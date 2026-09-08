@@ -183,7 +183,8 @@ class RendererTests(unittest.TestCase):
         self.assertLess(text.index("$probeRecipeJson = & $pythonExe"), text.index("& $DdrawProxyBuildScript"))
         self.assertIn("--stage $Stage --resolution $Resolution", text)
         self.assertEqual(text.count("SurfaceGeometryMatched = (Test-RequestedSurfaceReady"), 2)
-        self.assertEqual(text.count("Resolution = $Resolution"), 2)
+        # Runtime success/failure and the postprocessing failure summary.
+        self.assertEqual(text.count("Resolution = $Resolution"), 3)
         self.assertIn("'--columns', $surfaceGeometry.columns, '--rows', $surfaceGeometry.rows", text)
         self.assertIn("--expect-vedge-visret $surfaceGeometry.expected_vedge_count", text)
 

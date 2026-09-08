@@ -51,6 +51,15 @@ function Pick([string]$kind,[string]$name,[string]$needle='') {
  Pure $nodes[0]
  return $nodes[0].Extent.Text
 }
+$framedRecipeSetup=Pick 'assignment' '$framedRecipeStage'
+$completeSetup=@($ast.EndBlock.Statements | Where-Object {
+ $_ -is [System.Management.Automation.Language.AssignmentStatementAst] -and $_.Left.Extent.Text -eq '$completeStage'
+})
+if ($completeSetup.Count -ne 1) { throw 'Missing unique top-level complete stage setup' }
+Pure $completeSetup[0]
+. ([scriptblock]::Create($framedRecipeSetup))
+. ([scriptblock]::Create($completeSetup[0].Extent.Text))
+$completeGate=Pick 'if' '$CompleteHdValidation' 'legacy probe geometry is forbidden.'
 $framedGate=Pick 'if' '$FramedValidation -and (-not $PartialTileValidation -or -not $InitialMapPaintValidation)'
 $minimapGate=Pick 'if' '$MinimapViewportValidation -and -not $FramedValidation'
 $initialGate=Pick 'if' '$InitialMapPaintValidation -and -not $PartialTileValidation'
@@ -71,7 +80,7 @@ function Test-Path { param([string]$LiteralPath,[string]$PathType)
 $result=[ordered]@{options=@(); minimaps=@(); coverage=@(); actions=@(); logs=@()}
 foreach ($case in $cases.options) {
  $PartialTileValidation=$true; $InitialMapPaintValidation=$true; $FramedValidation=$true
- $MinimapViewportValidation=$false
+ $MinimapViewportValidation=$false; $CompleteHdValidation=$false
  $Stage=$cases.stage; $UseDdrawProxy=$true; $AllowVisibleDesktop=$false; $ExtraProbeTemplate=''
  $ForceVisibleEdges=$false; $PostOwnerForceVisibleSeven=$false; $SkipMapValidation=$false
  $UseCdbWriteMem=$false; $LoadSlot=0; $ContinueAfterDumpSec=0; $RequireGameplay=$false
@@ -87,7 +96,7 @@ foreach ($case in $cases.options) {
  }
  $failure=$null
  try {
-  . ([scriptblock]::Create($minimapGate)); . ([scriptblock]::Create($framedGate)); . ([scriptblock]::Create($initialGate)); . ([scriptblock]::Create($options))
+  . ([scriptblock]::Create($completeGate)); . ([scriptblock]::Create($minimapGate)); . ([scriptblock]::Create($framedGate)); . ([scriptblock]::Create($initialGate)); . ([scriptblock]::Create($options))
   . ([scriptblock]::Create($renderArgsCode))
  } catch { $failure=$_.Exception.Message }
  $result.options += [pscustomobject]@{name=$case.name; error=$failure; recipe=$recipeStage; builder=$partialTileBuilder;
@@ -105,7 +114,7 @@ foreach ($case in $cases.minimaps) {
  $result.minimaps += [pscustomobject]@{name=$case.name; error=$partialValidationFailure; observation=$framedMinimap}
 }
 foreach ($case in $cases.coverage) {
- $FramedValidation=$case.framed; $Stage=$cases.stage; $RequireGameplay=$case.gameplay
+ $FramedValidation=$case.framed; $Stage=$cases.stage; $RequireGameplay=$case.gameplay; $CompleteHdValidation=$false
  $ready=[pscustomobject]@{Width=$case.width; Height=$case.height}
  $surfaceGeometry=[pscustomobject]@{columns=$case.columns; rows=$case.rows}
  $framedMinimap=[pscustomobject]@{Enabled=$case.enabled; Width=$case.mw; Height=$case.mh}
@@ -233,6 +242,8 @@ def scenarios():
              dict(name='minimap_extra',values=dict(MinimapViewportValidation=True,ExtraProbeTemplate='synthetic.cdb'),passed=False)]
     for name,values in (
         ('no_partial',dict(PartialTileValidation=False)),('no_initial',dict(InitialMapPaintValidation=False)),
+        ('complete_without_switch',dict(Stage=render.patcher.DEFAULT_STAGE+'-completehd-validation')),
+        ('complete_wrong_stage',dict(CompleteHdValidation=True)),
         ('wrong_stage',dict(Stage=render.patcher.DEFAULT_STAGE)),('no_proxy',dict(UseDdrawProxy=False)),
         ('visible',dict(AllowVisibleDesktop=True)),('extra',dict(ExtraProbeTemplate='synthetic.cdb')),
         ('force',dict(ForceVisibleEdges=True)),('postforce',dict(PostOwnerForceVisibleSeven=True)),
@@ -345,6 +356,7 @@ class FramedHarnessTests(unittest.TestCase):
             self.assertEqual(args[args.index('--logical-width')+1],case['width'])
             self.assertEqual(args[args.index('--logical-height')+1],case['height'])
             self.assertIn('--require-gameplay',args)
+            self.assertFalse(set(args)&{'--candidate-manifest','--original'},args)
             if case['framed']:
                 self.assertEqual(args[args.index('--stage')+1],STAGE)
                 self.assertEqual(args[args.index('--minimap-enabled')+1],case['enabled'])

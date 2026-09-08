@@ -66,7 +66,11 @@ def _profile(manifest: dict[str, Any], renderer: str) -> dict[str, Any]:
     if type(renderer) is not str or renderer not in RECIPE_REVISION:
         raise ManifestError(f"Unknown renderer profile: {renderer!r}")
     if manifest["schema"] == 2:
+        if renderer not in manifest["profiles"]:
+            raise ManifestError(f"Renderer profile is unavailable in this manifest: {renderer}")
         return manifest["profiles"][renderer]
+    if renderer == "completehd":
+        raise ManifestError("Complete-HD requires an explicit schema-2 profile.")
     stage = str(manifest.get("stable_stage"))
     entries = manifest["resolutions"]
     if renderer == "framed":
@@ -106,20 +110,26 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
     bounds = _bounds(manifest)
     if manifest["schema"] == 2:
         profiles = manifest.get("profiles")
-        if not isinstance(profiles, dict) or set(profiles) != set(RECIPE_REVISION):
-            raise ManifestError("Schema 2 requires separate Classic and Framed profiles.")
+        if not isinstance(profiles, dict) or not {"classic", "framed"} <= set(profiles) <= set(RECIPE_REVISION):
+            raise ManifestError("Schema 2 requires Classic and Framed profiles and permits the completehd profile.")
         if not all(isinstance(config, dict) for config in profiles.values()):
             raise ManifestError("Renderer profiles must be objects.")
         classic = profiles["classic"]
         if (manifest.get("default_renderer") != "classic" or manifest.get("default") != classic.get("default")
                 or manifest["stable_stage"] != classic.get("stage") or manifest["resolutions"] != classic.get("resolutions")):
             raise ManifestError("Legacy fields must exactly project the Classic profile, not another renderer.")
-    for renderer in RECIPE_REVISION:
+    for renderer in (manifest["profiles"] if manifest["schema"] == 2 else ("classic", "framed")):
         config = _profile(manifest, renderer)
         if (config.get("recipe_revision") != RECIPE_REVISION[renderer] or type(config.get("stage")) is not str
-                or not config["stage"] or config.get("features") != {"minimap_viewport": renderer == "framed"}
+                or not config["stage"] or config.get("features") != {"minimap_viewport": renderer != "classic"}
                 or type(config.get("features", {}).get("minimap_viewport")) is not bool):
             raise ManifestError(f"Unrecognized {renderer} recipe or feature configuration.")
+        if renderer == "completehd":
+            # Validate the advertised frozen profile without importing source-
+            # only builders in packaged launchers. Selection checks the builder.
+            if (config["stage"] != manifest["stable_stage"] + "-completehd-validation" or config.get("default") != "800x600"
+                    or set(config.get("resolutions", {})) != {"800x600", "1024x768", "1280x720", "1280x960", "1920x1080", "802x602"}):
+                raise ManifestError("Complete-HD must use its exact experimental recipe, default and six fixture resolutions.")
         entries = config.get("resolutions")
         if not isinstance(entries, dict) or not entries or type(config.get("default")) is not str or config["default"] not in entries:
             raise ManifestError(f"{renderer} must have an available default resolution.")
@@ -131,6 +141,8 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
                 raise ManifestError(str(exc)) from exc
             if not isinstance(entry, dict) or entry.get("status") not in VALID_STATUSES:
                 raise ManifestError(f"Resolution {renderer}/{key} has invalid status metadata.")
+            if renderer == "completehd" and entry["status"] != "experimental":
+                raise ManifestError("Complete-HD requires separate evidence-backed promotion before changing experimental status.")
             tiles, evidence = entry.get("tiles"), entry.get("evidence")
             if tiles is not None and (not isinstance(tiles, list) or len(tiles) != 2 or any(type(n) is not int or n <= 0 for n in tiles)):
                 raise ManifestError(f"Resolution {renderer}/{key} has invalid tile metadata.")

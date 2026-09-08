@@ -34,8 +34,8 @@ GUARD_POLICY = (
     "entries backed by passing hidden-desktop evidence whose dimensions, stage, "
     "candidate SHA and run references agree with its passing patch metadata and "
     "smoke matrix, tile counts matching the engine formula; schema-2 profiles "
-    "must match launcher contracts and Framed remains experimental until its "
-    "own scoped runtime evidence can be verified"
+    "must match launcher contracts and Framed/Complete-HD remain experimental "
+    "until their own scoped runtime evidence can be verified"
 )
 
 RESOLUTION_KEY_RE = re.compile(r"^([1-9]\d{2,3})x([1-9]\d{2,3})$")
@@ -226,7 +226,7 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
             checked_manifest = presets.load_manifest(manifest_path)
             if checked_manifest != manifest:
                 manifest_errors.append("manifest changed during profile validation")
-        except (ImportError, OSError, ValueError) as exc:
+        except (ImportError, OSError, ValueError, TypeError) as exc:
             manifest_errors.append(f"launcher profile manifest rejected: {exc}")
     if manifest_errors:
         guard = {
@@ -277,31 +277,37 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
     if manifest["schema"] == 2:
         from src.patcher.framed_viewport import FramedViewport
 
-        framed = manifest["profiles"]["framed"]
-        framed_failures: list[str] = []
-        expected_framed_stage = (
-            f"{expected_stage}-combinedui-partialtiles-initialpaint-framed-validation"
-            if expected_stage else None
-        )
-        if framed["stage"] != expected_framed_stage:
-            framed_failures.append("Framed stage must match its launcher recipe and the protected stable parent")
-        for key, entry in framed["resolutions"].items():
-            if entry["status"] != "experimental":
-                framed_failures.append(
-                    f"framed/{key}: Classic evidence cannot certify this profile; "
-                    "a dedicated scoped Framed runtime evidence check is required"
-                )
-            if entry.get("tiles") is not None:
-                width, height = presets.parse_resolution_key(key)
-                expected = FramedViewport(width, height).full_tiles
-                if tuple(entry["tiles"]) != expected:
-                    framed_failures.append(f"framed/{key}: tile counts differ from its renderer geometry {expected}")
+        profiles = manifest["profiles"]
+        profile_failures: list[str] = []
+        for renderer, suffix in (
+            ("framed", "-combinedui-partialtiles-initialpaint-framed-validation"),
+            ("completehd", "-completehd-validation"),
+        ):
+            if renderer not in profiles:
+                continue
+            profile = profiles[renderer]
+            expected_profile_stage = f"{expected_stage}{suffix}" if expected_stage else None
+            if profile["stage"] != expected_profile_stage:
+                profile_failures.append(f"{renderer} stage must match its launcher recipe and the protected stable parent")
+            for key, entry in profile["resolutions"].items():
+                if entry["status"] != "experimental":
+                    profile_failures.append(
+                        f"{renderer}/{key}: Classic evidence cannot certify this profile; "
+                        "a dedicated scoped runtime evidence check is required"
+                    )
+                if entry.get("tiles") is not None:
+                    width, height = presets.parse_resolution_key(key)
+                    expected = FramedViewport(width, height).full_tiles
+                    if tuple(entry["tiles"]) != expected:
+                        profile_failures.append(f"{renderer}/{key}: tile counts differ from its renderer geometry {expected}")
         check_specs["profile_contracts"] = (
-            not framed_failures,
+            not profile_failures,
             {"schema": 2, "classic_projection_matches": True,
-             "framed_resolution_count": len(framed["resolutions"]),
-             "framed_runtime_evidence_verified": False, "failures": framed_failures},
-            "; ".join(framed_failures) or "schema-2 renderer profiles must preserve their distinct evidence scopes",
+             "framed_resolution_count": len(profiles["framed"]["resolutions"]),
+             "completehd_resolution_count": len(profiles.get("completehd", {}).get("resolutions", {})),
+             "framed_runtime_evidence_verified": False, "completehd_runtime_evidence_verified": False,
+             "failures": profile_failures},
+            "; ".join(profile_failures) or "schema-2 renderer profiles must preserve their distinct evidence scopes",
         )
 
     tile_mismatches: dict[str, Any] = {}
