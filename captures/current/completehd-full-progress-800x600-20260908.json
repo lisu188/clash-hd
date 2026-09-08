@@ -1,0 +1,101 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-09-08T09:09:41.861500+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+  "resolution": "800x600",
+  "recipe_revision": "complete_hd_v1",
+  "candidate_sha256": "e785d202140942959b973f462a9eded27531fd12c5668fac40af61248e875a84",
+  "candidate_manifest": {
+    "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-800x600-full-progress-c\\clash95_completehd_800x600_full_progress_c.candidate.json",
+    "sha256": "b109ae3dfd356b8aff299e6184e6953bca6a2b72903e17af7d03a12069f5c3a9"
+  },
+  "canonical_probe_sha256": "92b13ab50e0dc621c308dcc7dd546cc336a1c96c7717ecfcb2e099bbb1907f27",
+  "runtime_probe_sha256": "ff0ae6413a6f10e735a77dc181e5fdc2eb336140f55bb1c70254f3fd751fe6c5",
+  "run_plan": {
+    "path": "C:\\ClashTests\\completehd-validation-20260908\\hidden-full-progress-c-plan.json",
+    "sha256": "e6b6fcc0207f4b9984d7d41cb65a97cb11482a33ee3428d84ebe27a0517132e8"
+  },
+  "summary": {
+    "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\summary.json",
+    "sha256": "2958079ff2854cafaf04f35bad97a75f6cfbc6fdcc6b8ac558b89e926c838d93"
+  },
+  "progress_observer": {
+    "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\full-paint-progress-observer.json",
+    "sha256": "79983f66a4e0c36dde4f975e628fa32feb53e5d013081940d808f74875a6ad53"
+  },
+  "raw_log": {
+    "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\cdb-surface-dump.log",
+    "sha256": "ba92d4b9909e7c0a85521cfb4b98e9aa82257def54e64a893d81cc19f4503422"
+  },
+  "captures": [
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface.raw",
+      "sha256": "dc9ae0d3a0ba096de98dab638b2e2919e94c28d1132ae065ddd6da72fccb10ff"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface-2.raw",
+      "sha256": "dc9ae0d3a0ba096de98dab638b2e2919e94c28d1132ae065ddd6da72fccb10ff"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface-3.raw",
+      "sha256": "dc9ae0d3a0ba096de98dab638b2e2919e94c28d1132ae065ddd6da72fccb10ff"
+    }
+  ],
+  "identical_three_captures": true,
+  "diagnostic_image": {
+    "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface.png",
+    "sha256": "6d954ebb171a3ec406968c52458ee7abb76ab35e2a8f4af779b4c2b9978d345c"
+  },
+  "image_conversion": {
+    "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface.png.json",
+    "sha256": "e25a551a9fd78ee82d7947145a83d983f83a6ac0bde9711a68fe6f5b54e5140c"
+  },
+  "coverage": {
+    "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\map-tile-coverage.json",
+    "sha256": "1482a7cb26e56a5f69c5ea9c2191f7f1213dbbfe76f51d3ce2f057d9cadea436"
+  },
+  "capture_method": "three consecutive paused ReadProcessMemory software-surface captures",
+  "runtime_executed": true,
+  "runtime_passed": false,
+  "failures": [
+    "map_tile_coverage.py failed with exit code 2. See C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\map-tile-coverage.txt"
+  ],
+  "initial_trace_passed": true,
+  "initial_trace_failures": [],
+  "cleanup": {
+    "Passed": true,
+    "RemainingProcessIds": [],
+    "InspectionErrors": [],
+    "Scope": "launched CDB id/path/start and exact candidate path/start",
+    "WaitMilliseconds": 5000
+  },
+  "av": false,
+  "timed_out": false,
+  "original_unchanged": true,
+  "live_saves_unchanged": true,
+  "isolated_saves_unchanged": true,
+  "producer_sources_unchanged": true,
+  "earlier_failure": {
+    "path": "C:\\Users\\andrz\\.codex\\worktrees\\90f1\\clash-hd\\captures\\current\\completehd-initial-800x600-20260908.json",
+    "sha256": "257c949fca9b279faf12119e35d8ecb7647f61a7e6e951dcd682df91b4aa27fc"
+  },
+  "failed_preparation": {
+    "run_plan": {
+      "path": "C:\\ClashTests\\completehd-validation-20260908\\hidden-full-progress-b-plan.json",
+      "sha256": "60978b5677be4ebb10a31a5e678cb73f146169347d31fae20172ad951a9fbcec"
+    },
+    "output_log": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\hidden-full-progress-b.log",
+      "sha256": "b4d030f062a3b3bc57a175d799b43b21234bd4366343959945a611b904cc32e4"
+    },
+    "runtime_executed": false,
+    "result": "lowercase candidate SHA rejected before debugger launch; fixed harness argument"
+  },
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "limitations": [
+    "Earlier repeated convergence did not recur; its cause remains unresolved.",
+    "Image-coverage failure is unchanged; this diagnostic is outside normal gameplay acceptance.",
+    "Software pixels do not establish final wrapper composition or manual controls."
+  ]
+}
