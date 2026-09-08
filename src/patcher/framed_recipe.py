@@ -20,7 +20,7 @@ from .framed_viewport import FramedViewport
 
 SOURCE_STAGE = patcher.DEFAULT_STAGE + "-combinedui-validation"
 FRAME_BASE_STAGE = patcher.DEFAULT_STAGE + "-combinedui-framed-base-validation"
-PATCHER_SHA256 = "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1"
+PATCHER_SHA256 = "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
 TABLE_SHA256 = "6683ee66851d23a28d856a8576e6b58c9b1285e0766bb592b9cdb0847bc8c55c"
 
 # Each entry names an existing recipe, not a byte-pattern search over an image.

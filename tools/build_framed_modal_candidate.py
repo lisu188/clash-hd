@@ -35,7 +35,7 @@ ORIGINAL_PATH = Path("C:/Clash/clash95.exe")
 # fixtures and review. No source-pin override is accepted by API or CLI.
 PINNED_SOURCES = {
     "src/patcher/framed_modal_canvas.py": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
-    "src/patcher/pe_modal_extension.py": "a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623",
+    "src/patcher/pe_modal_extension.py": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9",
 }
 
 

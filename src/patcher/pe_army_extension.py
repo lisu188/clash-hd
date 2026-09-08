@@ -30,9 +30,9 @@ MAX_STATE_BYTES=0x100000
 RW_DATA=0xC0000040
 RETIRED_HEADER_SCRATCH=(0x300,0x348)
 PINNED_SOURCES={
-    'tools/build_framed_modal_candidate.py':'c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb',
+    'tools/build_framed_modal_candidate.py':'62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29',
     'src/patcher/framed_modal_canvas.py':'567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054',
-    'src/patcher/pe_modal_extension.py':'a5ad4e32fc027df365f925e76d21ff4b6679825f1f2bbc20c58a52b35d95d623',
+    'src/patcher/pe_modal_extension.py':'92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9',
     'src/patcher/pe_extension.py':'4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27',
 }
 

@@ -1,0 +1,65 @@
+name: Battle HD source-only validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: battle-hd-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fixtures:
+    name: Source-only fixtures (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check battle stage and geometry
+        run: python tools/test_battle_hd_patch.py
+      - name: Check battle core byte contracts
+        run: python tools/test_battle_hd_core.py
+      - name: Check battle HUD contracts and report optional skips
+        run: python tools/test_battle_hd_hud.py -v
+      - name: Check battle evidence parsing
+        run: python tools/test_battle_hd_summary.py
+      - name: Check resolution recipes
+        run: python tools/test_patch_resolution.py
+      - name: Check patch definitions and stage isolation
+        run: python tools/test_patch_definition_guard.py
+      - name: Check probe rendering and isolated harness functions
+        run: python tools/test_render_cdb_surface_probe.py -v
+      - name: Summarize coverage boundaries
+        if: always()
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as output:
+              output.write('## Battle HD source-only validation\n\n')
+              output.write('The steps run seven repository fixture suites. See each step for its result and explicit skip records.\n\n')
+              output.write('No proprietary executable or external x86 toolchain is supplied or downloaded. '
+                           'Keystone/Unicorn checks report skips when those optional tools are unavailable; '
+                           'original-byte and native-routine checks requiring --source-exe are skipped. '
+                           'The full 835 x86 scenarios remain separate local evidence.\n\n')
+              output.write('PowerShell AST and isolated-function fixtures run on Windows and report a platform skip on Ubuntu.\n\n')
+              output.write('No game, debugger, wrapper, visible runtime, input injection, or capture is launched. '
+                           'This job establishes neither manual input proof nor stable promotion.\n')
+          PY

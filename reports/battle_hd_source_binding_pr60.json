@@ -1,0 +1,238 @@
+{
+  "schema": 1,
+  "upstream_merge_commit": "15c4c96b3245be3d223e19eb3b2279e4117fe8e9",
+  "previous_integration_report": "reports/battle_hd_source_binding_integration.json",
+  "previous_report_sha256": "b849626b955a3a975fd70e1404800952d76233f10e16cfcea1c340fa2c341b0c",
+  "scope": "PR60 integration: union exact-byte checkout attributes; verify new modal-slot producers and retained source pins",
+  "new_pin_replacements": 0,
+  "fixed_pin_count": 32,
+  "fixed_pins": [
+    {
+      "producer": "src/patcher/pe_army_extension.py",
+      "source": "tools/build_framed_modal_candidate.py",
+      "sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
+    },
+    {
+      "producer": "src/patcher/pe_army_extension.py",
+      "source": "src/patcher/framed_modal_canvas.py",
+      "sha256": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054"
+    },
+    {
+      "producer": "src/patcher/pe_army_extension.py",
+      "source": "src/patcher/pe_modal_extension.py",
+      "sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9"
+    },
+    {
+      "producer": "src/patcher/pe_army_extension.py",
+      "source": "src/patcher/pe_extension.py",
+      "sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27"
+    },
+    {
+      "producer": "src/patcher/pe_modal_extension.py",
+      "source": "tools/build_framed_candidate.py",
+      "sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+    },
+    {
+      "producer": "src/patcher/pe_modal_extension.py",
+      "source": "tools/build_partial_tile_candidate.py",
+      "sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501"
+    },
+    {
+      "producer": "src/patcher/pe_modal_extension.py",
+      "source": "src/patcher/pe_extension.py",
+      "sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27"
+    },
+    {
+      "producer": "src/patcher/pe_modal_extension.py",
+      "source": "src/patcher/patch_clash95_hd.py",
+      "sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/pe_army_extension.py",
+      "sha256": "26991a58ca0b9cbc548ad6061d79acde864b015c722b208776af2e5d2752a832"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/framed_army_viewport.py",
+      "sha256": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/framed_army_draw.py",
+      "sha256": "2a7877f791c52829cd99bca24089d9be02be1f25c9c95c3b27e4d5360fb64a34"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/framed_army_input.py",
+      "sha256": "3fad316f6511e375a8799694fe487b9eaca5500d6262101100e8e9e9e1868ab4"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/framed_army_composition.py",
+      "sha256": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/patch_clash95_hd.py",
+      "sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/partial_tile_clip.py",
+      "sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/partial_tile_hooks.py",
+      "sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/initial_map_paint.py",
+      "sha256": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/pe_extension.py",
+      "sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_viewport.py",
+      "sha256": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_recipe.py",
+      "sha256": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/four_sided_frame.py",
+      "sha256": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_full_paint.py",
+      "sha256": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_presentation.py",
+      "sha256": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_input.py",
+      "sha256": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "tools/build_partial_tile_candidate.py",
+      "sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "tools/partial_tile_trace_probe.py",
+      "sha256": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729"
+    },
+    {
+      "producer": "tools/build_framed_modal_candidate.py",
+      "source": "src/patcher/framed_modal_canvas.py",
+      "sha256": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054"
+    },
+    {
+      "producer": "tools/build_framed_modal_candidate.py",
+      "source": "src/patcher/pe_modal_extension.py",
+      "sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9"
+    },
+    {
+      "producer": "tools/build_partial_tile_candidate.py",
+      "source": "src/patcher/patch_clash95_hd.py",
+      "sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+    },
+    {
+      "producer": "tools/build_partial_tile_candidate.py",
+      "source": "src/patcher/partial_tile_clip.py",
+      "sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad"
+    },
+    {
+      "producer": "tools/build_partial_tile_candidate.py",
+      "source": "src/patcher/partial_tile_hooks.py",
+      "sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419"
+    },
+    {
+      "producer": "tools/build_partial_tile_candidate.py",
+      "source": "src/patcher/pe_extension.py",
+      "sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27"
+    }
+  ],
+  "source_preflight": {
+    "passed": true,
+    "source_count": 14,
+    "builder_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+  },
+  "new_or_reconfirmed_producers": [
+    {
+      "path": "src/patcher/framed_modal_slots.py",
+      "sha256": "9f1f840f798efda8b24683b9b2dbae78370c746bf2402ba50be113074fb6d468",
+      "identical_to_upstream": true
+    },
+    {
+      "path": "src/patcher/pe_modal_slots_extension.py",
+      "sha256": "ead0d31f14126610bef5e8f720e07bfe30805ebef33c7ab2a8565bc7b70253a1",
+      "identical_to_upstream": true
+    },
+    {
+      "path": "tools/build_framed_modal_slots_candidate.py",
+      "sha256": "dd7c856cb8f5c7481c7d65f743d86dd141ded8d661f60478fa0b8de2e1c47c73",
+      "identical_to_upstream": true
+    },
+    {
+      "path": "src/patcher/complete_hd_candidate.py",
+      "sha256": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06",
+      "identical_to_upstream": true
+    }
+  ],
+  "patcher_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+  "battle_candidate_sha256": "7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47",
+  "candidate_reconstructed_in_memory": true,
+  "runtime_executed": false,
+  "tests": [
+    {
+      "suite": "test_pe_modal_slots_extension.py",
+      "tests": 5,
+      "passed": true
+    },
+    {
+      "suite": "test_build_framed_modal_slots_candidate.py::SlotsBuilderBoundaryTests",
+      "tests": 2,
+      "passed": true
+    }
+  ],
+  "slots_reconstruction": {
+    "resolution": "1280x720",
+    "candidate_sha256": "8bb5211584d081b1cac3ea6339969f929e08a182af50a3f69fa4c7cfa65c09eb",
+    "predecessor_sha256": "4f4f8c3107e893360904af2196444f2a661949bd779481ee56c375e1ff3c31c9",
+    "source_count": 28,
+    "source_hashes_verified": true,
+    "probe_sha256_verified": true,
+    "in_memory_only": true,
+    "passed": true
+  },
+  "fresh_git_checkout": {
+    "path": "C:\\ClashTests\\battle-pr60-source-git-6a9ami7k\\fresh-checkout",
+    "core_autocrlf": true,
+    "method": "checkout-index from source-only staged Git blobs into an empty destination",
+    "reviewed_producer_hashes_verified": 18,
+    "fixed_pins_verified": 32,
+    "source_preflight": {
+      "passed": true,
+      "source_count": 14,
+      "builder_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+    },
+    "passed": true
+  },
+  "previous_integration_report_unchanged": true
+}

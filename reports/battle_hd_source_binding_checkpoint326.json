@@ -1,0 +1,583 @@
+{
+  "schema": 1,
+  "upstream_merge_commit": "326e703a6f3b545a18430d973d4c0f5f1a601aae",
+  "purpose": "Integrate current reviewed producer identities into newly imported source-bound diagnostics and framed battle builders",
+  "records": [
+    {
+      "path": "src/patcher/framed_battle_coordinates.py",
+      "old_sha256": "67d1c9109893390f19fdf73dd2bcd4068e7a85d72eeac178335ffbc67358edfe",
+      "new_sha256": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+          "new_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_modal_canvas_probe.py",
+      "old_sha256": "52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6",
+      "new_sha256": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+          "new_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "src/patcher/framed_battle_field.py",
+      "old_sha256": "42642812d504250ca237bb765506aa73da2af66ea641daa4e3fadaaba4e6995c",
+      "new_sha256": "6f6ad945fea5ac630b58ca4448d604841fa211dfc5fe4cacfec37e5b1447828f",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_army_candidate.py",
+          "old_sha256": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+          "new_sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167"
+        },
+        {
+          "dependency": "src/patcher/framed_battle_coordinates.py",
+          "old_sha256": "67d1c9109893390f19fdf73dd2bcd4068e7a85d72eeac178335ffbc67358edfe",
+          "new_sha256": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "src/patcher/framed_battle_input.py",
+      "old_sha256": "594a153d8e25bca910e423d424eeb82171bfc511f0297497479abfcda77c9da9",
+      "new_sha256": "6f1fb0f3d312c099570936609890eb9c32e0259400a90a972eb4f6426e9c96b1",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_army_candidate.py",
+          "old_sha256": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+          "new_sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167"
+        },
+        {
+          "dependency": "src/patcher/framed_battle_coordinates.py",
+          "old_sha256": "67d1c9109893390f19fdf73dd2bcd4068e7a85d72eeac178335ffbc67358edfe",
+          "new_sha256": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_army_selection_probe.py",
+      "old_sha256": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1",
+      "new_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_army_candidate.py",
+          "old_sha256": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
+          "new_sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167"
+        },
+        {
+          "dependency": "tools/framed_modal_canvas_probe.py",
+          "old_sha256": "52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6",
+          "new_sha256": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d"
+        },
+        {
+          "dependency": "tools/render_cdb_surface_probe.py",
+          "old_sha256": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+          "new_sha256": "1cd3103c434a898e0104b519932f1ce30be259888885f251422a8b71d3a9d02f"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_battle_initial_probe.py",
+      "old_sha256": "41e228321e50de3fb759875cfb7dc9124b6282c668bcf1035203718108627d22",
+      "new_sha256": "8a04e4343128c805a91609b2d51bbaa84a521d3d0a5df2307c1def207216473a",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_modal_canvas_probe.py",
+          "old_sha256": "52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6",
+          "new_sha256": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_modal_primary_capture.py",
+      "old_sha256": "d522684af0852054935e108edbaedea58e8fa518cac7a240433316bb339b646f",
+      "new_sha256": "ca11df2774f3c1574fe7ea44af507a8e43a84f63b2cacc59e7a9a7bcacdb6655",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_modal_canvas_probe.py",
+          "old_sha256": "52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6",
+          "new_sha256": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "src/patcher/framed_battle_hud.py",
+      "old_sha256": "6462d1822059501ebdbc0b02bf52a6f6411e651e3f586c9bbf4b677d5d91d3f2",
+      "new_sha256": "231d3022b2583d965cbdee0e199ff8c16750ef40426464bc6813f2524f655f7a",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_battle_field.py",
+          "old_sha256": "42642812d504250ca237bb765506aa73da2af66ea641daa4e3fadaaba4e6995c",
+          "new_sha256": "6f6ad945fea5ac630b58ca4448d604841fa211dfc5fe4cacfec37e5b1447828f"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_army_keypan_probe.py",
+      "old_sha256": "6adccad5d324b7a167a1007453bc34d84b66801d93c75591f0fb8dee986a9713",
+      "new_sha256": "9e5db99a5358a7dea7b0adc762e32e94478d0392312d57debfc3af91cec26a2e",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1",
+          "new_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_army_movement_probe.py",
+      "old_sha256": "ba7f2db5998cad455909b13c60aba1b1b80a31740a092422dc2ff7c014c6a5da",
+      "new_sha256": "17b779b29ac1ab6730e2a9ef59db1c2aee51f005edd9ad566db5d6ceeaf4a53b",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1",
+          "new_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_army_portrait_probe.py",
+      "old_sha256": "6e857e6f7b9326475eba1b73c29b6b3cb58d8b9c430b6f52aaa632a64bb8dde2",
+      "new_sha256": "e2978cde61e979154d70949f6e2ba205ccc41241149b3fd847d73c4bb598d5f8",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1",
+          "new_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_army_selection_trace.py",
+      "old_sha256": "7f15324c32ccd0aca9641c67e42cbe7e5794b9ab53ee843385db068b13db5fdc",
+      "new_sha256": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1",
+          "new_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_army_transition_probe.py",
+      "old_sha256": "9e62bf0a0e49a7648e5b18441476206cf6033eb0bb7f040dc3b4a50df4e4f45d",
+      "new_sha256": "5e6807869583bd6850c98c14ae6e539ca93f6b43540773101a720266bcfceed5",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1",
+          "new_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_army_portrait_trace.py",
+      "old_sha256": "33bf8265c5fd6d4162e748ebf51f676aa6af3560f55ee3b80babc80d2018b61f",
+      "new_sha256": "8538a49b5fedea4e28f9dc287cdc122522535a2895a12f1ff8862e97f8387ba1",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_portrait_probe.py",
+          "old_sha256": "6e857e6f7b9326475eba1b73c29b6b3cb58d8b9c430b6f52aaa632a64bb8dde2",
+          "new_sha256": "e2978cde61e979154d70949f6e2ba205ccc41241149b3fd847d73c4bb598d5f8"
+        },
+        {
+          "dependency": "tools/framed_army_selection_trace.py",
+          "old_sha256": "7f15324c32ccd0aca9641c67e42cbe7e5794b9ab53ee843385db068b13db5fdc",
+          "new_sha256": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    },
+    {
+      "path": "tools/framed_army_transition_trace.py",
+      "old_sha256": "5606dfe86679b05d1932ca8455a21544a754314b41349fe115842e6abe8b81b8",
+      "new_sha256": "b8e35da8ecc84166ccb1504445639370bd1d3b9e98bcb65931b9bfd4dbf9b873",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_trace.py",
+          "old_sha256": "7f15324c32ccd0aca9641c67e42cbe7e5794b9ab53ee843385db068b13db5fdc",
+          "new_sha256": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc"
+        },
+        {
+          "dependency": "tools/framed_army_transition_probe.py",
+          "old_sha256": "9e62bf0a0e49a7648e5b18441476206cf6033eb0bb7f040dc3b4a50df4e4f45d",
+          "new_sha256": "5e6807869583bd6850c98c14ae6e539ca93f6b43540773101a720266bcfceed5"
+        }
+      ],
+      "change_scope": "Source SHA literals only; original algorithms, protocols and guards preserved"
+    }
+  ],
+  "updated_producers": 15,
+  "updated_pins": 21,
+  "prior_reports": {
+    "reports/battle_hd_source_binding_integration.json": "b849626b955a3a975fd70e1404800952d76233f10e16cfcea1c340fa2c341b0c",
+    "reports/battle_hd_source_binding_integration.md": "f91f143dc380709918177a689073cc04c553d305cf7f57de1d3a3449338e1f1d",
+    "reports/battle_hd_source_binding_pr60.json": "718545f89b70375f55afa08145ae9b60cdb85735c70b850b0756ecc8ef197cc4",
+    "reports/battle_hd_source_binding_pr60.md": "670bd933d48283b30764d840f241841eee5c1983aae1a1e64154589e135072f6"
+  },
+  "existing_producer_hashes": {
+    "src/launcher/framed.py": "3be4d3e3ebf2260175e3dace52d2924c0fd205ff3f225d2695428fdde39dd1bc",
+    "src/patcher/framed_army_draw.py": "2a7877f791c52829cd99bca24089d9be02be1f25c9c95c3b27e4d5360fb64a34",
+    "src/patcher/framed_army_input.py": "3fad316f6511e375a8799694fe487b9eaca5500d6262101100e8e9e9e1868ab4",
+    "src/patcher/framed_bounded_input.py": "1af36a7e18204ee0e12edfc8d01a1d126d6b63e8b7891ba72d8edd59d544f7cf",
+    "src/patcher/framed_bounded_paint.py": "4fcadd0130058d0f6d0f542ff4579a96c72e5030b5d5784e53563271dbf822ff",
+    "src/patcher/framed_camera.py": "c86e20700cd4716ad0905bcc2cb868c0f4fcfad91b984b38bf513b3829b9d798",
+    "src/patcher/framed_recipe.py": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a",
+    "src/patcher/patch_clash95_hd.py": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+    "src/patcher/pe_army_extension.py": "26991a58ca0b9cbc548ad6061d79acde864b015c722b208776af2e5d2752a832",
+    "src/patcher/pe_modal_extension.py": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9",
+    "tools/build_framed_army_candidate.py": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
+    "tools/build_framed_candidate.py": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
+    "tools/build_framed_modal_candidate.py": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
+    "tools/build_partial_tile_candidate.py": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501",
+    "src/patcher/framed_modal_slots.py": "9f1f840f798efda8b24683b9b2dbae78370c746bf2402ba50be113074fb6d468",
+    "src/patcher/pe_modal_slots_extension.py": "ead0d31f14126610bef5e8f720e07bfe30805ebef33c7ab2a8565bc7b70253a1",
+    "tools/build_framed_modal_slots_candidate.py": "dd7c856cb8f5c7481c7d65f743d86dd141ded8d661f60478fa0b8de2e1c47c73",
+    "src/patcher/complete_hd_candidate.py": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06"
+  },
+  "attributes": {
+    "all_producer_sources_text_unset": true,
+    "verified_paths": [
+      "src/launcher/framed.py",
+      "src/patcher/complete_hd_candidate.py",
+      "src/patcher/framed_army_draw.py",
+      "src/patcher/framed_army_input.py",
+      "src/patcher/framed_battle_coordinates.py",
+      "src/patcher/framed_battle_field.py",
+      "src/patcher/framed_battle_hud.py",
+      "src/patcher/framed_battle_input.py",
+      "src/patcher/framed_bounded_input.py",
+      "src/patcher/framed_bounded_paint.py",
+      "src/patcher/framed_camera.py",
+      "src/patcher/framed_modal_slots.py",
+      "src/patcher/framed_recipe.py",
+      "src/patcher/patch_clash95_hd.py",
+      "src/patcher/pe_army_extension.py",
+      "src/patcher/pe_modal_extension.py",
+      "src/patcher/pe_modal_slots_extension.py",
+      "tools/build_framed_army_candidate.py",
+      "tools/build_framed_candidate.py",
+      "tools/build_framed_modal_candidate.py",
+      "tools/build_framed_modal_slots_candidate.py",
+      "tools/build_partial_tile_candidate.py",
+      "tools/framed_army_keypan_probe.py",
+      "tools/framed_army_movement_probe.py",
+      "tools/framed_army_portrait_probe.py",
+      "tools/framed_army_portrait_trace.py",
+      "tools/framed_army_selection_probe.py",
+      "tools/framed_army_selection_trace.py",
+      "tools/framed_army_transition_probe.py",
+      "tools/framed_army_transition_trace.py",
+      "tools/framed_battle_initial_probe.py",
+      "tools/framed_modal_canvas_probe.py",
+      "tools/framed_modal_primary_capture.py",
+      "tools/render_cdb_surface_probe.py"
+    ]
+  },
+  "runtime_executed": false,
+  "tests": [
+    {
+      "suite": "tools/test_render_cdb_surface_probe.py",
+      "tests": 19,
+      "passed": true
+    },
+    {
+      "command": "python -m unittest test_framed_modal_canvas_probe.CommandTests test_framed_army_selection_probe.SelectionPathTests test_framed_army_selection_trace.SequenceTests test_framed_army_transition_trace.SequenceTests test_framed_army_portrait_trace.SequenceTests test_framed_army_portrait_trace.CliTests test_framed_battle_field.FieldContractTests test_framed_battle_hud.ContractTests",
+      "working_directory": "tools",
+      "tests": 35,
+      "passed": true
+    }
+  ],
+  "reviewed_renderer_binding": {
+    "dependency": "tools/render_cdb_surface_probe.py",
+    "old_sha256": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+    "new_sha256": "1cd3103c434a898e0104b519932f1ce30be259888885f251422a8b71d3a9d02f",
+    "rationale": "The existing reviewed renderer adds the isolated battle-HD capture branch and a guarded native-menu point substitution. The imported selection producer now binds this current renderer; no renderer code, command protocol or source-guard logic changes in this integration.",
+    "matches_upstream_raw_git_blob": true
+  },
+  "fixed_literal_dictionary_pins": [
+    {
+      "producer": "src/patcher/framed_battle_coordinates.py",
+      "source": "tools/build_framed_modal_candidate.py",
+      "sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
+    },
+    {
+      "producer": "src/patcher/framed_battle_coordinates.py",
+      "source": "src/patcher/framed_battle_viewport.py",
+      "sha256": "8673e36bd04ded2afc8cc3b9d7ff2fed4c48dae891fe289509b44a9070c23bc6"
+    },
+    {
+      "producer": "src/patcher/framed_battle_field.py",
+      "source": "tools/build_framed_army_candidate.py",
+      "sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167"
+    },
+    {
+      "producer": "src/patcher/framed_battle_field.py",
+      "source": "src/patcher/framed_battle_coordinates.py",
+      "sha256": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c"
+    },
+    {
+      "producer": "src/patcher/framed_battle_field.py",
+      "source": "src/patcher/framed_battle_viewport.py",
+      "sha256": "8673e36bd04ded2afc8cc3b9d7ff2fed4c48dae891fe289509b44a9070c23bc6"
+    },
+    {
+      "producer": "src/patcher/framed_battle_input.py",
+      "source": "tools/build_framed_army_candidate.py",
+      "sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167"
+    },
+    {
+      "producer": "src/patcher/framed_battle_input.py",
+      "source": "src/patcher/framed_battle_coordinates.py",
+      "sha256": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c"
+    },
+    {
+      "producer": "src/patcher/framed_battle_input.py",
+      "source": "src/patcher/framed_battle_viewport.py",
+      "sha256": "8673e36bd04ded2afc8cc3b9d7ff2fed4c48dae891fe289509b44a9070c23bc6"
+    },
+    {
+      "producer": "src/patcher/pe_army_extension.py",
+      "source": "tools/build_framed_modal_candidate.py",
+      "sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
+    },
+    {
+      "producer": "src/patcher/pe_army_extension.py",
+      "source": "src/patcher/framed_modal_canvas.py",
+      "sha256": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054"
+    },
+    {
+      "producer": "src/patcher/pe_army_extension.py",
+      "source": "src/patcher/pe_modal_extension.py",
+      "sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9"
+    },
+    {
+      "producer": "src/patcher/pe_army_extension.py",
+      "source": "src/patcher/pe_extension.py",
+      "sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27"
+    },
+    {
+      "producer": "src/patcher/pe_modal_extension.py",
+      "source": "tools/build_framed_candidate.py",
+      "sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+    },
+    {
+      "producer": "src/patcher/pe_modal_extension.py",
+      "source": "tools/build_partial_tile_candidate.py",
+      "sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501"
+    },
+    {
+      "producer": "src/patcher/pe_modal_extension.py",
+      "source": "src/patcher/pe_extension.py",
+      "sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27"
+    },
+    {
+      "producer": "src/patcher/pe_modal_extension.py",
+      "source": "src/patcher/patch_clash95_hd.py",
+      "sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/pe_army_extension.py",
+      "sha256": "26991a58ca0b9cbc548ad6061d79acde864b015c722b208776af2e5d2752a832"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/framed_army_viewport.py",
+      "sha256": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/framed_army_draw.py",
+      "sha256": "2a7877f791c52829cd99bca24089d9be02be1f25c9c95c3b27e4d5360fb64a34"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/framed_army_input.py",
+      "sha256": "3fad316f6511e375a8799694fe487b9eaca5500d6262101100e8e9e9e1868ab4"
+    },
+    {
+      "producer": "tools/build_framed_army_candidate.py",
+      "source": "src/patcher/framed_army_composition.py",
+      "sha256": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/patch_clash95_hd.py",
+      "sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/partial_tile_clip.py",
+      "sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/partial_tile_hooks.py",
+      "sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/initial_map_paint.py",
+      "sha256": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/pe_extension.py",
+      "sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_viewport.py",
+      "sha256": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_recipe.py",
+      "sha256": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/four_sided_frame.py",
+      "sha256": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_full_paint.py",
+      "sha256": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_presentation.py",
+      "sha256": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "src/patcher/framed_input.py",
+      "sha256": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "tools/build_partial_tile_candidate.py",
+      "sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501"
+    },
+    {
+      "producer": "tools/build_framed_candidate.py",
+      "source": "tools/partial_tile_trace_probe.py",
+      "sha256": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729"
+    },
+    {
+      "producer": "tools/build_framed_modal_candidate.py",
+      "source": "src/patcher/framed_modal_canvas.py",
+      "sha256": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054"
+    },
+    {
+      "producer": "tools/build_framed_modal_candidate.py",
+      "source": "src/patcher/pe_modal_extension.py",
+      "sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9"
+    },
+    {
+      "producer": "tools/build_partial_tile_candidate.py",
+      "source": "src/patcher/patch_clash95_hd.py",
+      "sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+    },
+    {
+      "producer": "tools/build_partial_tile_candidate.py",
+      "source": "src/patcher/partial_tile_clip.py",
+      "sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad"
+    },
+    {
+      "producer": "tools/build_partial_tile_candidate.py",
+      "source": "src/patcher/partial_tile_hooks.py",
+      "sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419"
+    },
+    {
+      "producer": "tools/build_partial_tile_candidate.py",
+      "source": "src/patcher/pe_extension.py",
+      "sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27"
+    },
+    {
+      "producer": "tools/framed_army_selection_probe.py",
+      "source": "tools/build_framed_army_candidate.py",
+      "sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167"
+    },
+    {
+      "producer": "tools/framed_army_selection_probe.py",
+      "source": "tools/framed_modal_canvas_trace.py",
+      "sha256": "2f0ef571acdbc6892c775cc97698d535b56355c8086080713d3dfec040a6d3ba"
+    },
+    {
+      "producer": "tools/framed_army_selection_probe.py",
+      "source": "tools/framed_modal_canvas_probe.py",
+      "sha256": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d"
+    },
+    {
+      "producer": "tools/framed_army_selection_probe.py",
+      "source": "tools/render_cdb_surface_probe.py",
+      "sha256": "1cd3103c434a898e0104b519932f1ce30be259888885f251422a8b71d3a9d02f"
+    },
+    {
+      "producer": "tools/framed_army_selection_probe.py",
+      "source": "probes/cdb/render/clash95_surface_dump_probe.cdb",
+      "sha256": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8"
+    }
+  ],
+  "source_preflight": {
+    "passed": true,
+    "source_count": 14,
+    "builder_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+  },
+  "fresh_git_checkout": {
+    "path": "C:\\ClashTests\\battle-checkpoint326-source-git-ucrba_az\\fresh-checkout",
+    "core_autocrlf": true,
+    "method": "checkout-index from source-only staged Git blobs into an empty destination",
+    "reviewed_producer_hashes_verified": 34,
+    "fixed_literal_dictionary_pins_verified": 45,
+    "source_preflight": {
+      "passed": true,
+      "source_count": 14,
+      "builder_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+    },
+    "passed": true
+  },
+  "patcher_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+  "battle_candidate_sha256": "7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47",
+  "candidate_reconstructed_in_memory_from_fresh_checkout": true,
+  "previous_integration_reports_unchanged": true,
+  "patcher_raw_byte_preservation": {
+    "upstream_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "current_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+    "upstream_lines_unchanged": 2992,
+    "added_lines": 56,
+    "changed_or_deleted_upstream_lines": 0,
+    "passed": true
+  },
+  "boundaries": [
+    "Source bindings for current producers only; historical runtime manifests, harness pins and independently stale trace bindings were not changed.",
+    "Exact upstream algorithms, command protocols and guard logic remain unchanged in the 15 repinned files.",
+    "Fresh checkout and candidate reconstruction are repo-only validation; no game, debugger, wrapper, runtime harness, input injection or capture was run for this source-binding follow-up.",
+    "Existing validation candidates are not promoted; historical evidence keeps its original producer identities."
+  ]
+}
