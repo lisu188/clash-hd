@@ -1,0 +1,444 @@
+{
+  "schema": "clash95_completehd_guarded_gameplay_checkpoint_v1",
+  "recorded_at": "2026-09-08T09:47:41.226994+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+  "recipe_revision": "complete_hd_v1",
+  "runtime_executed_by_checkpoint": false,
+  "release_eligible": false,
+  "promotion_ready": false,
+  "stable_stage_changed": false,
+  "default_resolution": "800x600",
+  "scope": "Bounded reconstruction of existing hidden software captures; preserve every original runtime and coverage failure.",
+  "guarded_gameplay_runs": [
+    {
+      "resolution": "1024x768",
+      "candidate_context": {
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+        "resolution": "1024x768",
+        "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+        "base_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+        "recipe_revision": "complete_hd_v1",
+        "probe_sha256": "fc88e74cb7d937f630242db5cab750b9587536fa8e4f4a162a5cfdd3d10e957d",
+        "manifest_path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-1024x768-d\\clash95_completehd_1024x768_d.candidate.json",
+        "manifest_sha256": "b68f6b5a7ca9669e7c51925610b550e09c669efd1a7a194256d00f77886b122c"
+      },
+      "analysis": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\guarded-gameplay-evaluation-compatible-v2.json",
+        "sha256": "45683ad12c9a274fd00f6914fbc6fb43646758c7692907b88b86e7e12ac938d4"
+      },
+      "original_input_passed": false,
+      "original_error": "map_tile_coverage.py failed with exit code 2. See C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\map-tile-coverage.txt",
+      "original_failure_phase": "postprocessing",
+      "original_coverage_exit_code": 2,
+      "original_verdict_changed": false,
+      "guarded_software_gameplay_evidence": true,
+      "scope": "One source-bound initial map capture, exact paused visibility, four frame borders/footer and all six action cells.",
+      "counts": {
+        "snapshot_cells": 180,
+        "blank_cells": 123,
+        "matching_native_zero_visibility_blank_cells": 123,
+        "unexplained_blank_cells": 0,
+        "checked_border_pixels": 75012,
+        "exact_footer_pixels": 4860,
+        "exact_action_cells": 6
+      },
+      "stable_identical_triple": true,
+      "exact_normal_main_recipe": "complete_hd_normal_main_v1",
+      "prior_failed_evaluations": [
+        {
+          "artifact": {
+            "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\guarded-gameplay-evaluation.json",
+            "sha256": "c7d11e259abb30d35229b0ec77fa0bc1dcd0785c8933916677f4127201f3f832"
+          },
+          "failures": [
+            "'Surface'"
+          ]
+        },
+        {
+          "artifact": {
+            "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\guarded-gameplay-evaluation-compatible-v1.json",
+            "sha256": "4bcfa0ec1e93f1e9c0c28c0671f5e85d585afe9b116957c53a3bda462d9a739b"
+          },
+          "failures": [
+            "probe differs from source-bound loaded contract"
+          ]
+        }
+      ],
+      "artifacts": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\summary.json",
+          "sha256": "27f63041275a0941aeab973217186faedac97135a2aa00555caee324e683894d"
+        },
+        "coverage": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\map-tile-coverage.json",
+          "sha256": "fd27e42bfbc60fe884369ebe7c2b936f12a188d4e5f249f979fcf9befe80c491"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\cdb-surface-dump.log",
+          "sha256": "d62dabc9fc6f8cde26860b8cb6da432298efd3369a2d3f3922b4b54f08de8445"
+        },
+        "probe": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\canonical-candidate.cdb",
+          "sha256": "fc88e74cb7d937f630242db5cab750b9587536fa8e4f4a162a5cfdd3d10e957d"
+        },
+        "candidate_manifest": {
+          "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-1024x768-d\\clash95_completehd_1024x768_d.candidate.json",
+          "sha256": "b68f6b5a7ca9669e7c51925610b550e09c669efd1a7a194256d00f77886b122c"
+        },
+        "summary_generated_probe": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\completehd-runtime-probe.cdb",
+          "sha256": "230d5d093f4394d3c79def54f4cf6e024e356da4aea218c092df1a61ccb549a2"
+        },
+        "minimap_observer_report": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\minimap-observer.json",
+          "sha256": "b15ce022875114e209e312f9701912c4ba732d4b76dc116a76f949b527f845e1"
+        },
+        "minimap_source_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "9135b518a74c28203cbf60fd76b7841b3a463166550acfab87b892baab8c8d66"
+        },
+        "minimap_observed_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface-minimap-probe.cdb",
+          "sha256": "41117d66852044641b60caaee07bbc4f3ec8f35e1614420bd917a32a2a43b09e"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface.raw",
+          "sha256": "8cb3aa37ba55e35a7d9c98b574d37c87083a71f9ddbfe60e5c42751529b5681b"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface.png",
+          "sha256": "88b1fd7114b66aa9cb40dacc2a05993c9fe8fb9d0b47130826e8298c7fedbdd3"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface.png.json",
+          "sha256": "76abfd89c9a7d1701a71350543aee513fb04f309e8bfc8e22a951fc5f3f52186"
+        },
+        "candidate": {
+          "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-1024x768-d\\clash95_completehd_1024x768_d.exe",
+          "sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5"
+        }
+      },
+      "raw_capture_set": [
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface.raw",
+          "sha256": "8cb3aa37ba55e35a7d9c98b574d37c87083a71f9ddbfe60e5c42751529b5681b"
+        },
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface-2.raw",
+          "sha256": "8cb3aa37ba55e35a7d9c98b574d37c87083a71f9ddbfe60e5c42751529b5681b"
+        },
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface-3.raw",
+          "sha256": "8cb3aa37ba55e35a7d9c98b574d37c87083a71f9ddbfe60e5c42751529b5681b"
+        }
+      ]
+    },
+    {
+      "resolution": "1920x1080",
+      "candidate_context": {
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+        "resolution": "1920x1080",
+        "candidate_sha256": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0",
+        "base_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+        "recipe_revision": "complete_hd_v1",
+        "probe_sha256": "746886872acdb5c87f7bb23062297174982ffe8db597eadc3dba9ab9b6bca3a3",
+        "manifest_path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-1920x1080-d\\clash95_completehd_1920x1080_d.candidate.json",
+        "manifest_sha256": "f512f81abb30e908520dbcaa53eb08f4efc8b49775520ac10eb2c6f1b769b93f"
+      },
+      "analysis": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\guarded-gameplay-evaluation-compatible-v2.json",
+        "sha256": "9afcdc6afe6bca41b0d88215dcbc12849aff4ad1f1dc0666413064d9999482fa"
+      },
+      "original_input_passed": false,
+      "original_error": "map_tile_coverage.py failed with exit code 2. See C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\map-tile-coverage.txt",
+      "original_failure_phase": "postprocessing",
+      "original_coverage_exit_code": 2,
+      "original_verdict_changed": false,
+      "guarded_software_gameplay_evidence": true,
+      "scope": "One source-bound initial map capture, exact paused visibility, four frame borders/footer and all six action cells.",
+      "counts": {
+        "snapshot_cells": 493,
+        "blank_cells": 377,
+        "matching_native_zero_visibility_blank_cells": 377,
+        "unexplained_blank_cells": 0,
+        "checked_border_pixels": 123652,
+        "exact_footer_pixels": 4860,
+        "exact_action_cells": 6
+      },
+      "stable_identical_triple": true,
+      "exact_normal_main_recipe": "complete_hd_normal_main_v1",
+      "prior_failed_evaluations": [
+        {
+          "artifact": {
+            "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\guarded-gameplay-evaluation-compatible-v1.json",
+            "sha256": "f9a6c5e8f5c730827aacd81628a139ff30d3d953eeb3b39b848809bebf6f3aea"
+          },
+          "failures": [
+            "probe differs from source-bound loaded contract"
+          ]
+        }
+      ],
+      "artifacts": {
+        "summary": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\summary.json",
+          "sha256": "80f14716dfbf4848538e50cde1db4b74502603979a18b8982955b62d5feb8c75"
+        },
+        "coverage": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\map-tile-coverage.json",
+          "sha256": "79e5e5ffa2dcee9d82cb230322668e1e0b134dcdc876c72356624bd8a7f3ae34"
+        },
+        "log": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\cdb-surface-dump.log",
+          "sha256": "81a692c9be8727ca352490639e5970f5eb22563c79bd1d8ac946633b42ee3f2c"
+        },
+        "probe": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\canonical-candidate-evidence.cdb",
+          "sha256": "746886872acdb5c87f7bb23062297174982ffe8db597eadc3dba9ab9b6bca3a3"
+        },
+        "candidate_manifest": {
+          "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-1920x1080-d\\clash95_completehd_1920x1080_d.candidate.json",
+          "sha256": "f512f81abb30e908520dbcaa53eb08f4efc8b49775520ac10eb2c6f1b769b93f"
+        },
+        "summary_generated_probe": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\completehd-runtime-probe.cdb",
+          "sha256": "22f67f9b38cd632600c889802e2dded51a7bebf5eb68d1051a0d4f5b4e0c4b93"
+        },
+        "minimap_observer_report": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\minimap-observer.json",
+          "sha256": "7ce4056a898b372f98cd5737f9de1541836a8e6381ab73f0998e499083ae9e87"
+        },
+        "minimap_source_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\clash95_surface_dump_probe.generated.cdb",
+          "sha256": "11462cab2dffb6b891149b8e3461b9956582078b168c679da2bc14da0fdfe496"
+        },
+        "minimap_observed_main": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface-minimap-probe.cdb",
+          "sha256": "e6a3cd436d1b92f429f224b5ef3c88a49d3b001d7b2b5e13331f67239ba1526b"
+        },
+        "raw_surface": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface.raw",
+          "sha256": "d1d262f2d653286303e62d0574ec91827d4c63bd41e4040bd712f213defe5cbd"
+        },
+        "png": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface.png",
+          "sha256": "9a6a5fd65c121d589ab32fb346ddc08e1d4c8d84e70c650bacbf932182a4e11b"
+        },
+        "png_metadata": {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface.png.json",
+          "sha256": "f728aff72d7c54b018c0f3afa5d812dd8525fc664b42c8672a2162dab9789d31"
+        },
+        "candidate": {
+          "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-1920x1080-d\\clash95_completehd_1920x1080_d.exe",
+          "sha256": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0"
+        }
+      },
+      "raw_capture_set": [
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface.raw",
+          "sha256": "d1d262f2d653286303e62d0574ec91827d4c63bd41e4040bd712f213defe5cbd"
+        },
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface-2.raw",
+          "sha256": "d1d262f2d653286303e62d0574ec91827d4c63bd41e4040bd712f213defe5cbd"
+        },
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface-3.raw",
+          "sha256": "d1d262f2d653286303e62d0574ec91827d4c63bd41e4040bd712f213defe5cbd"
+        }
+      ]
+    }
+  ],
+  "diagnostic_c": {
+    "resolution": "800x600",
+    "candidate_context": {
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+      "resolution": "800x600",
+      "candidate_sha256": "e785d202140942959b973f462a9eded27531fd12c5668fac40af61248e875a84",
+      "base_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "recipe_revision": "complete_hd_v1",
+      "probe_sha256": "92b13ab50e0dc621c308dcc7dd546cc336a1c96c7717ecfcb2e099bbb1907f27",
+      "manifest_path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-800x600-full-progress-c\\clash95_completehd_800x600_full_progress_c.candidate.json",
+      "manifest_sha256": "b109ae3dfd356b8aff299e6184e6953bca6a2b72903e17af7d03a12069f5c3a9"
+    },
+    "analysis": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\diagnostic-c-paused-audit-v3.json",
+      "sha256": "437269c2a6b5863d9d3bc731331f5f81ba9a02b6841f103734b8af8aa4119d58"
+    },
+    "original_input_passed": false,
+    "original_error": "map_tile_coverage.py failed with exit code 2. See C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\map-tile-coverage.txt",
+    "original_coverage_exit_code": 2,
+    "diagnostic_only": true,
+    "diagnostic_analysis_complete": true,
+    "acceptance": false,
+    "guarded_software_gameplay_evidence": false,
+    "scope": "Exclusive full-progress diagnostic audit; excluded from normal gameplay command acceptance.",
+    "counts": {
+      "total_cells": 108,
+      "native_visible": 12,
+      "native_zero_visibility": 96,
+      "blank_cells": 82,
+      "matching_native_zero_visibility_blank_cells": 82,
+      "unexplained_blank_cells": 0,
+      "checked_border_pixels": 57092,
+      "exact_footer_pixels": 4860,
+      "exact_action_cells": 6
+    },
+    "stable_identical_triple": true,
+    "prior_analyses": [
+      {
+        "artifact": {
+          "path": "C:\\ClashCaptures\\completehd-integration-20260908\\diagnostic-c-paused-audit.json",
+          "sha256": "228b15a457c10c7738b1eeef41325c8de4fa9d99aec026fa67cd3ca29d850b2c"
+        },
+        "diagnostic_analysis_complete": false,
+        "acceptance": false,
+        "failures": [
+          "ValueError: malformed visibility dump row"
+        ]
+      },
+      {
+        "artifact": {
+          "path": "C:\\ClashCaptures\\completehd-integration-20260908\\diagnostic-c-paused-audit-v2.json",
+          "sha256": "b22787885f2f4c47a0f595b555601286dde59faef0ac918729c88fb03b2edb80"
+        },
+        "diagnostic_analysis_complete": true,
+        "acceptance": false,
+        "failures": []
+      }
+    ],
+    "artifacts": {
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\summary.json",
+        "sha256": "2958079ff2854cafaf04f35bad97a75f6cfbc6fdcc6b8ac558b89e926c838d93"
+      },
+      "plan": {
+        "path": "C:\\ClashTests\\completehd-validation-20260908\\hidden-full-progress-c-plan.json",
+        "sha256": "e6b6fcc0207f4b9984d7d41cb65a97cb11482a33ee3428d84ebe27a0517132e8"
+      },
+      "candidate": {
+        "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-800x600-full-progress-c\\clash95_completehd_800x600_full_progress_c.exe",
+        "sha256": "e785d202140942959b973f462a9eded27531fd12c5668fac40af61248e875a84"
+      },
+      "candidate_manifest": {
+        "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-800x600-full-progress-c\\clash95_completehd_800x600_full_progress_c.candidate.json",
+        "sha256": "b109ae3dfd356b8aff299e6184e6953bca6a2b72903e17af7d03a12069f5c3a9"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\cdb-surface-dump.log",
+        "sha256": "ba92d4b9909e7c0a85521cfb4b98e9aa82257def54e64a893d81cc19f4503422"
+      },
+      "raw": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface.raw",
+        "sha256": "dc9ae0d3a0ba096de98dab638b2e2919e94c28d1132ae065ddd6da72fccb10ff"
+      },
+      "png": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface.png",
+        "sha256": "6d954ebb171a3ec406968c52458ee7abb76ab35e2a8f4af779b4c2b9978d345c"
+      },
+      "coverage": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\map-tile-coverage.json",
+        "sha256": "1482a7cb26e56a5f69c5ea9c2191f7f1213dbbfe76f51d3ce2f057d9cadea436"
+      },
+      "audit_source": {
+        "path": "C:\\ClashCaptures\\completehd-integration-20260908\\diagnostic-c-paused-audit-v3.py",
+        "sha256": "6ca76021359bac7cd678b3ae788a89bf6b399b1fd47181afad1850baf1fbe594"
+      },
+      "minimap_observer_report": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\minimap-observer.json",
+        "sha256": "a2b351f207b5cfb70be5ce06f08509c49e11cf4e30e7425a3f6392a7cede5b72"
+      },
+      "minimap_source_main": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\clash95_surface_dump_probe.generated.cdb",
+        "sha256": "7477015af78451d247ca384fd80ab694432a49cc366e775e79e33efa17f58261"
+      },
+      "minimap_observed_main": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface-minimap-probe.cdb",
+        "sha256": "b034e17615c3e734f3a60b6b40d0654871be7b5c31fca5b97a312018c344fd10"
+      },
+      "full_progress_report": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\full-paint-progress-observer.json",
+        "sha256": "79983f66a4e0c36dde4f975e628fa32feb53e5d013081940d808f74875a6ad53"
+      },
+      "png_metadata": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface.png.json",
+        "sha256": "e25a551a9fd78ee82d7947145a83d983f83a6ac0bde9711a68fe6f5b54e5140c"
+      },
+      "actual_runtime_probe": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\completehd-runtime-probe.cdb",
+        "sha256": "ff0ae6413a6f10e735a77dc181e5fdc2eb336140f55bb1c70254f3fd751fe6c5"
+      }
+    },
+    "raw_capture_set": [
+      {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface.raw",
+        "sha256": "dc9ae0d3a0ba096de98dab638b2e2919e94c28d1132ae065ddd6da72fccb10ff"
+      },
+      {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface-2.raw",
+        "sha256": "dc9ae0d3a0ba096de98dab638b2e2919e94c28d1132ae065ddd6da72fccb10ff"
+      },
+      {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-800x600-full-progress-c\\cdb-surface-dump-20260908-110422\\surface-3.raw",
+        "sha256": "dc9ae0d3a0ba096de98dab638b2e2919e94c28d1132ae065ddd6da72fccb10ff"
+      }
+    ]
+  },
+  "shared_artifacts": {
+    "frame_resource": {
+      "path": "C:\\Clash\\DATA\\GFX3.RES",
+      "sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525"
+    },
+    "command_resource": {
+      "path": "C:\\Clash\\DATA\\minimum.res",
+      "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116"
+    },
+    "original": {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+    },
+    "run_plan": {
+      "path": "C:\\ClashTests\\completehd-validation-20260908\\hidden-resolution-d-plan.json",
+      "sha256": "ed63b445a3fec1cbc7b253ce6f77ce0e1d891579f554bb8d34e7f75dbc3f327c"
+    }
+  },
+  "replay_sources": {
+    "producer_snapshot": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\source-snapshot-D\\snapshot-manifest.json",
+      "sha256": "bd150931925770dee14365f000847545d909d98b7b8c60ff50d05f27ec60afd2"
+    },
+    "analysis_snapshot": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\source-snapshot-guarded-gameplay-20260908\\snapshot-manifest.json",
+      "sha256": "6de8f6e363778703de3f27b3198f3af8ef0f579ee69a0e44ae8930fe8792601c"
+    },
+    "evaluator": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\source-snapshot-guarded-gameplay-20260908\\tools\\framed_gameplay_evidence.py",
+      "sha256": "bb57e6d57b90ac521a528229efe59e253f855fc7c18cbf4bc427df49f33cf964"
+    },
+    "main_recipe_helper": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\source-snapshot-guarded-gameplay-20260908\\tools\\complete_hd_main_probe.py",
+      "sha256": "b31dfe12ef350858760d3bc2da5c629fc1b650ba8921fe8379cf52f017073980"
+    },
+    "c_diagnostic_script": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\source-snapshot-guarded-gameplay-20260908\\external_analysis\\diagnostic-c-paused-audit-v3.py",
+      "sha256": "6ca76021359bac7cd678b3ae788a89bf6b399b1fd47181afad1850baf1fbe594"
+    },
+    "checkpoint_script": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\source-snapshot-guarded-gameplay-20260908\\external_analysis\\record_guarded_gameplay_checkpoint.py",
+      "sha256": "072be6f96f8ebcd565453fac1269e7e638e3e323c0ea9d3925469d8550ab3c14"
+    },
+    "instructions": [
+      "Reconstruct source in an isolated directory from source-snapshot-D and the analysis snapshot; verify each manifest hash before use. Do not overwrite an active checkout.",
+      "Rerun the preserved evaluator using the exact original artifacts listed here and a new exclusive output. Canonical candidate probe and full composed runtime probe are separate artifacts.",
+      "The C diagnostic script records an absolute source ROOT. For another source directory, make an explicitly identified derivative script with the new ROOT and an exclusive output; preserve the original script and report.",
+      "Source snapshots contain source only. Original executable, local resources, candidate binaries, logs and raw captures remain external and must match the recorded hashes."
+    ]
+  },
+  "limitations": [
+    "A guarded software gameplay decision does not turn the original failed runtime/coverage summary into a pass.",
+    "The complete-only Ready/Surface compatibility adapter independently binds measured native surface geometry, exact recipe and candidate, raw/PNG identity, log and regenerated coverage; original JSON is unchanged.",
+    "Fog explanations apply only to matching zero visibility in each complete paused in-world snapshot. Minimap/action-masked terrain remains unmeasured; far-world clearing is a separate requirement.",
+    "C used FullPaintProgressDiagnostic and remains diagnostic-only despite coherent observations and exact source-pixel matches.",
+    "Stable identical indexed software captures do not establish tear-free final wrapper composition or human input.",
+    "No manual input, command callback, modal/army/battle transitions, cleanup, continuity, endurance, resolution promotion or whole-release eligibility is established by this checkpoint."
+  ]
+}

@@ -24,6 +24,8 @@ import initial_map_paint_trace as trace
 import map_tile_coverage as coverage
 import visibility_coverage as visibility
 import complete_hd_runtime_context as complete_context
+import framed_minimap_probe as minimap_probe
+import complete_hd_main_probe as main_probe
 from src.patcher.framed_viewport import FramedViewport
 
 STAGE=bar.FRAMED_STAGE
@@ -89,7 +91,36 @@ def validate_command(run,layout,candidate_path,*,stage=STAGE):
     require(re.fullmatch(r"[1-9][0-9]*",options["-RunSeconds"]) and int(options["-RunSeconds"])<=240,"capture duration exceeds bounded observation lane")
 
 
-def paused_snapshot(log,summary,layout,trace_report):
+def complete_minimap_contract(summary,run_dir,context,original):
+    """Reconstruct the actual additive observer before consuming its extra row."""
+    require(context['manifest']['stage']==complete_context.complete.STAGE,'minimap context is not complete HD')
+    path=Path(summary['MinimapObserverReport']).resolve()
+    require(path.parent==run_dir.resolve(),'minimap observer report is outside the capture directory')
+    observed=read_json(path)
+    source=Path(observed['source_main_path']).resolve();output=Path(observed['observed_main_path']).resolve()
+    require(source.parent==output.parent==run_dir.resolve() and len({source,output,path})==3,
+            'minimap observer source/output paths differ from capture')
+    main=source.read_bytes().decode('ascii')
+    raw=Path(summary['RawPath']).resolve()
+    require(raw.parent==run_dir.resolve(),'raw surface is outside the capture directory')
+    recipe=main_probe.verify_normal_main(main,context,raw)
+    require(recipe['exact_recipe_verified'] is True,'complete source main recipe was not verified')
+    rebuilt=minimap_probe.build_observed_probe(original,context['candidate'],resolution=context['manifest']['resolution'],
+        rendered_probe=main,candidate_manifest=context['manifest'])
+    rebuilt['producer_source_sha256']=sha(Path(minimap_probe.__file__).read_bytes())
+    rebuilt['source_main_path']=str(source);rebuilt['observed_main_path']=str(output)
+    require(observed=={k:v for k,v in rebuilt.items() if k!='probe'},'minimap observer report differs from source reconstruction')
+    require(output.read_bytes()==rebuilt['probe'].encode('ascii'),'minimap observer probe differs from source reconstruction')
+    sources={name:reference(p) for name,p in (('minimap_observer_report',path),('minimap_source_main',source),('minimap_observed_main',output))}
+    for name,digest in recipe['source_hashes'].items():
+        ref=reference(ROOT/name)
+        require(ref['sha256']==digest,'complete main recipe source changed during evaluation')
+        sources['normal_main_recipe:'+name]=ref
+    return dict(stage=rebuilt['stage'],resolution=rebuilt['resolution'],candidate_sha256=rebuilt['candidate_sha256'],
+                observed_main_sha256=rebuilt['observed_main_sha256'],normal_main_recipe=recipe,sources=sources)
+
+
+def paused_snapshot(log,summary,layout,trace_report,*,minimap_contract=None):
     """Parse a single complete db span without deduplication or old observations."""
     lines=log.splitlines()
     require(not re.search(r"(?m)^(?:AV_SURFDUMP|SURFDUMP_INVALID|SURFDUMP_APP_REQUEST_QUIT|FRAMED_CAPTURE_REJECT|PTILE_REJECT|PTILE_CONTRACT_FAIL)\b",log),"runtime rejection marker present")
@@ -125,8 +156,21 @@ def paused_snapshot(log,summary,layout,trace_report):
     last_input=inputs[-1]
     require(int(last_input["gd"],16)+140081==vb and tuple(int(last_input[k]) for k in ("mw","mh","sx","sy"))==(mw,mh,sx,sy),"snapshot differs from last authenticated native map context")
     require(trace_report["passed"] and trace_report["initial_sequence"]["return"]["line"]<ri+1,"capture precedes authenticated initial paint")
-    memory={};expected_address=start
-    for line in lines[vi+1:mi]:
+    memory={};expected_address=start;dump_end=mi;viewport=None
+    if minimap_contract is not None:
+        require(minimap_contract['stage']==complete_context.complete.STAGE and minimap_contract['resolution']==layout.resolution,
+                'paused minimap observer context differs')
+        pi,viewport=_one(lines,'FRAMED_MINIMAP_VIEWPORT',re.compile(r'FRAMED_MINIMAP_VIEWPORT scale=(\d+) world=\((\d+),(\d+)\) scroll=\((\d+),(\d+)\)'))
+        require(vi<pi==mi-1,'paused minimap viewport must follow the full visibility dump immediately before minimap state')
+        scale,vmw,vmh,vsx,vsy=map(int,viewport.groups())
+        require((vmw,vmh,vsx,vsy)==(mw,mh,sx,sy) and scale==(4 if mw*mh<=2500 else 2),
+                'paused minimap viewport scale/world/scroll differs from native context')
+        bound=f"FRAMED_MINIMAP_OBSERVER_BOUND stage={minimap_contract['stage']} resolution={layout.resolution} candidate_sha256={minimap_contract['candidate_sha256']}"
+        bi,_=_one(lines,'FRAMED_MINIMAP_OBSERVER_BOUND',re.compile(re.escape(bound)))
+        require(bi<ri and bi<min(row['line'] for row in trace_report['event_integrity']['events'])-1,
+                'minimap observer bound identity is late')
+        dump_end=pi
+    for line in lines[vi+1:dump_end]:
         match=re.fullmatch(r"([0-9a-fA-F]{8})  (.{47})  .*",line)
         require(match is not None,"malformed visibility dump row")
         address=int(match[1],16);tokens=match[2].replace('-',' ').split()
@@ -138,21 +182,79 @@ def paused_snapshot(log,summary,layout,trace_report):
     if enabled:
         box=layout.minimap_box(mwidth,mheight)
         require((left,top)==(box.left,box.top),"minimap origin differs from measured framed backing")
+        if viewport is not None:
+            require((mwidth,mheight)==(mw*scale+14,mh*scale+14),'paused minimap backing dimensions differ from source scale')
     points={}
     for row in range(rows):
         for col in range(cols):
             wx,wy=sx+col,sy+row;address=vb+wx*13+(wy>>3)
             points[f"r{row}c{col}"]=dict(world=[wx,wy],visibility=memory[address] & (1<<(wy&7)),address=address)
-    return dict(ready_line=ri+1,visibility_line=vi+1,minimap_line=mi+1,closed_line=ci+1,
+    result=dict(ready_line=ri+1,visibility_line=vi+1,minimap_line=mi+1,closed_line=ci+1,
                 map_origin=[sx,sy],map_size=[mw,mh],columns=cols,rows=rows,
                 dump_start=start,dump_count=count,points=points,
                 minimap=dict(enabled=bool(enabled),width=mwidth if enabled else None,height=mheight if enabled else None))
+    if viewport is not None:
+        result['minimap_viewport']=dict(line=pi+1,scale=scale,world=[mw,mh],scroll=[sx,sy])
+    return result
 
 
 def candidate_identity(context):
     identity={key:context["manifest"][key] for key in
               ("stage","resolution","candidate_sha256","base_sha256","recipe_revision","probe_sha256")}
     return identity|dict(manifest_path=context["manifest_path"],manifest_sha256=context["manifest_sha256"])
+
+
+def complete_failure_summary(summary):
+    """Expose only measured failure-path fields; preserve the original verdict.
+
+    This is an interface adapter, not validation. The caller still reconstructs
+    the candidate/probe, paused native state and raw/palette/PNG bytes.
+    """
+    if 'Surface' in summary:
+        if 'Ready' in summary:
+            require(summary['Surface']==summary['Ready'],'Surface and Ready observations disagree')
+        return summary,{}
+    require(summary.get('Passed') is False and summary.get('FailurePhase')=='postprocessing'
+            and summary.get('CoverageExitCode')==2,'Ready compatibility requires the recorded coverage postprocessing failure')
+    require(summary.get('CompleteHdValidation') is True and summary.get('HiddenDesktop') is True
+            and summary.get('LaunchMode')=='hidden-desktop','Ready compatibility requires the complete hidden-desktop lane')
+    for key in ('Av','TimedOut','AppRequestQuit','FullPaintProgressDiagnostic','NoopProgressDiagnostic'):
+        require(summary.get(key) is False,f'Ready compatibility rejects missing or unsupported runtime state: {key}')
+    for key in ('RuntimeError','RuntimeExceptionId','HostDumpError'):
+        require(key in summary and summary[key] in (None,''),f'Ready compatibility rejects runtime failure: {key}')
+    ready=summary.get('Ready')
+    require(isinstance(ready,dict) and set(ready)=={'RedrawSeq','Surface','Width','Height','Base','Bytes'},
+            'Ready must be the exact measured surface object')
+    require(all(type(ready[k]) is int for k in ('RedrawSeq','Width','Height','Bytes')),'Ready dimensions/counts must be integers')
+    return dict(summary,Surface=dict(ready)),dict(Surface='original Ready observation; independently checked against native paused log')
+
+
+def complete_pixels(summary,summary_path,layout,native_frame,sprites,*,fallback=False):
+    """Verify exact capture bytes without rewriting a failure-path summary."""
+    raw_path=Path(summary['RawPath']).resolve();png_path=Path(summary['PngPath']).resolve()
+    require(raw_path.parent==png_path.parent==summary_path.parent,'surface artifacts are outside the capture directory')
+    raw=raw_path.read_bytes()
+    require(len(raw)==summary['RawBytes']==summary['Surface']['Bytes']==layout.width*layout.height,'raw size differs from measured surface')
+    view=summary
+    if 'PngSha256' not in summary:
+        require(fallback,'summary PNG hash is missing outside the supported failure path')
+        view=dict(summary,PngSha256=sha(png_path.read_bytes()))
+    binding=bar.bind_screenshot(view,raw,raw_path,png_path,layout.width,layout.height)
+    captures=[]
+    if fallback or 'SurfaceCaptureSet' in summary:
+        rows=summary.get('SurfaceCaptureSet')
+        require(isinstance(rows,list) and len(rows)==3,'complete capture set must contain three observed raw captures')
+        for row in rows:
+            path=Path(row['Path']).resolve();data=path.read_bytes()
+            require(path.parent==summary_path.parent and row['Bytes']==len(data)==len(raw)
+                    and row['Sha256'].lower()==sha(data),'raw capture set path/size/hash differs')
+            captures.append(reference(path))
+        require(len({row['path'] for row in captures})==3 and captures[0]['path']==str(raw_path),
+                'capture set must identify the original raw and two distinct later files')
+    cells=bar.compare_cells(raw,layout.width,layout.height,sprites,stage=summary['Stage'])
+    return dict(frame=frame.audit_surface(raw,layout,native_frame),cells=cells,binding=binding,
+                captures=captures,stable_identical_triple=bool(captures) and len({row['sha256'] for row in captures})==1,
+                sources={name:reference(path) for name,path in (('raw_surface',raw_path),('png',png_path),('png_metadata',Path(summary['PngMetadata'])) )})
 
 
 def reconstruct_coverage(png_path,layout,minimap,*,context=None):
@@ -186,6 +288,12 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
         if "Failures" in summary:report["input_failures"]=summary["Failures"]
         require(type(report["input_passed"])is bool,"input Passed must remain an explicit boolean")
         require(summary.get("Stage")==stage,"exact framed stage or complete stage with --candidate-manifest required")
+        fallback=False
+        if candidate_manifest_path is not None:
+            report['input_diagnostics']={key:summary[key] for key in ('Passed','Error','Failures','ExceptionId','ExceptionStack',
+                'FailurePhase','CoverageExitCode','RuntimeError','RuntimeExceptionId','RuntimeExceptionStack','CleanupResult') if key in summary}
+            summary,adapter=complete_failure_summary(summary)
+            report['summary_adapter']=adapter;fallback=bool(adapter)
         w,h=summary["Surface"]["Width"],summary["Surface"]["Height"];layout=FramedViewport(w,h)
         require(summary["Resolution"]==layout.resolution,"summary resolution mismatch")
         for key in ("Av","AppRequestQuit","TimedOut","AllowVisibleDesktop","ForceVisibleEdges","PostOwnerForceVisibleSeven","SkipMapValidation"):
@@ -197,6 +305,9 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
         for name,key in (("coverage","CoverageDiagnostic"),("log","SourceLog")):
             if key in summary:
                 require(_path(summary[key]["path"])==paths[name] and summary[key]["sha256"]==report["sources"][name]["sha256"],f"summary {key} binding differs")
+        if fallback:
+            require(_path(summary['Log'])==paths['log'] and _path(summary['CoverageJson'])==paths['coverage']
+                    and _path(summary['RunDir'])==paths['summary'].parent,'failure summary artifact paths differ')
         plan_ref=summary.get("RunPlan")
         plan_path=Path(run_plan_path).resolve() if run_plan_path is not None else _path(plan_ref["path"])
         report["sources"]["run_plan"]=reference(plan_path)
@@ -215,9 +326,13 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
         if candidate_manifest_path is not None:
             manifest_path=Path(candidate_manifest_path).resolve()
             report["sources"]["candidate_manifest"]=reference(manifest_path)
-            require(_path(summary["CandidateManifest"])==manifest_path and
-                    summary["CandidateManifestSha256"].lower()==report["sources"]["candidate_manifest"]["sha256"],
-                    "summary candidate manifest binding differs")
+            require(_path(summary["CandidateManifest"])==manifest_path,"summary candidate manifest binding differs")
+            if 'CandidateManifestSha256' in summary:
+                require(summary['CandidateManifestSha256'].lower()==report['sources']['candidate_manifest']['sha256'],
+                        'summary candidate manifest binding differs')
+            else:
+                require(fallback,'summary candidate manifest hash is missing outside the supported failure path')
+                report['summary_adapter']['CandidateManifestSha256']='actual metadata hash; exact source reconstruction required'
             require(manifest_path.name.endswith(".candidate.json") and
                     manifest_path.with_name(manifest_path.name[:-len(".candidate.json")]+".exe")==candidate_path,
                     "candidate manifest does not belong to the summary executable")
@@ -240,6 +355,15 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
         # it as CRLF; admit those two exact encodings, never mixed/revised text.
         require(probe_bytes in (canonical_bytes,canonical_probe.replace("\n","\r\n").encode("ascii")) and
                 sha(canonical_bytes)==run["expected_probe_sha256"],"probe differs from source-bound loaded contract")
+        if fallback:
+            generated=_path(summary['GeneratedProbe'])
+            require(generated.parent==paths['summary'].parent,'failure summary generated probe is outside capture directory')
+            report['sources']['summary_generated_probe']=reference(generated)
+            if 'GeneratedProbeSha256' in summary:
+                require(summary['GeneratedProbeSha256'].lower()==report['sources']['summary_generated_probe']['sha256'],
+                        'failure summary generated probe hash differs')
+            require(summary['InputSha256'].lower()==sha(original) and _path(summary['InputExe'])==paths['original'],
+                    'failure summary original identity differs')
         probe=canonical_probe
         report["canonical_probe_sha256"]=sha(canonical_bytes)
         log=paths["log"].read_text(encoding="utf-8-sig")
@@ -247,13 +371,42 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
         initial=trace.evaluate_trace(log,probe,resolution=layout.resolution,candidate_sha256=report["candidate_sha256"],stage=stage,
                                      **trace_options)
         require(initial["passed"],"initial trace failed: "+"; ".join(initial["failures"]))
-        snapshot=paused_snapshot(log,summary,layout,initial)
+        minimap_contract=None
+        if context is not None and (context['framed'].get('minimap_viewport') is True or 'MinimapObserverReport' in summary
+                                    or 'FRAMED_MINIMAP_VIEWPORT' in log):
+            minimap_contract=complete_minimap_contract(summary,paths['summary'].parent,context,original)
+            report['sources'].update(minimap_contract['sources'])
+            report['normal_main_recipe']=minimap_contract['normal_main_recipe']
+        if context is not None and 'GeneratedProbe' in summary:
+            generated=_path(summary['GeneratedProbe'])
+            require(generated.parent==paths['summary'].parent,'generated runtime probe is outside the capture directory')
+            if minimap_contract is not None:
+                source=minimap_contract['sources']['minimap_observed_main']
+                runtime=Path(source['path']).read_bytes()
+                require(sha(runtime)==source['sha256'],'reconstructed minimap runtime probe changed')
+            else:
+                runtime=canonical_bytes
+            require(b'\r' not in runtime and generated.read_bytes() in (runtime,runtime.replace(b'\n',b'\r\n')),
+                    'generated runtime probe differs from exact source-reconstructed composition')
+            report['sources']['summary_generated_probe']=reference(generated)
+            if 'GeneratedProbeSha256' in summary:
+                require(summary['GeneratedProbeSha256'].lower()==report['sources']['summary_generated_probe']['sha256'],
+                        'summary generated runtime probe hash differs')
+            report['generated_runtime_probe_composition_verified']=True
+        snapshot=paused_snapshot(log,summary,layout,initial,minimap_contract=minimap_contract)
         metadata_png=read_json(Path(summary["PngMetadata"]))
         require(Path(metadata_png["log_path"]).resolve()==paths["log"],"PNG metadata log binding differs")
         native_frame=frame.load_native_frame(paths["frame_resource"].read_bytes())
         sprites,_=bar.load_sprites(paths["command_resource"].read_bytes())
-        frame_result=frame.audit_summary(paths["summary"],native_frame)
-        bar_result=bar.audit_summary(paths["summary"],sprites)
+        if context is None:
+            frame_result=frame.audit_summary(paths["summary"],native_frame)
+            bar_result=bar.audit_summary(paths["summary"],sprites)
+        else:
+            pixel_result=complete_pixels(summary,paths['summary'],layout,native_frame,sprites,fallback=fallback)
+            frame_result=pixel_result['frame'];bar_result=dict(all_six_cells_match_source=all(c['exact_source_match'] for c in pixel_result['cells']))
+            report['pixel_audits']=pixel_result;report['sources'].update(pixel_result['sources'])
+            if fallback and 'PngSha256' not in summary:
+                report['summary_adapter']['PngSha256']='actual PNG digest; exact raw/palette/converter reconstruction required'
         require(frame_result["passed"] and frame_result["footer"]["exact"],"four frame bands/footer do not exactly match source pixels")
         require(bar_result["all_six_cells_match_source"],"action bar does not have all six complete source cells")
         observed=read_json(paths["coverage"])
@@ -278,8 +431,12 @@ def build_report(summary_path,*,coverage_path,log_path,probe_path,frame_resource
             blank_cells=len(blanks),explained_blank_cells=len(zero),unexplained_blank_cells=[],
             initial_trace=dict(passed=True,initial_sequence=initial["initial_sequence"],full_pairs=initial["full_pairs"]),
             original_coverage_verdict_preserved=True)
+        if context is not None:
+            for source in report['sources'].values():
+                require(sha(Path(source['path']).read_bytes())==source['sha256'],'evidence source changed during evaluation')
     except (OSError,ValueError,KeyError,TypeError,IndexError,AttributeError) as exc:
         report["failures"].append(str(exc))
+        report.update(guarded_gameplay_evidence=False,decision='framed_gameplay_evidence_rejected')
     report["evaluator_source"]=reference(__file__)
     return report
 
