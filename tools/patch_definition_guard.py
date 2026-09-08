@@ -38,6 +38,12 @@ CASTLECENTER_HITBOX_STAGE = EXPECTED_STABLE_STAGE + "-castlecenter-hitbox"
 CASTLECENTER_ALL_STAGE = EXPECTED_STABLE_STAGE + "-castlecenter-all"
 BATTLECENTER_STAGE = CASTLECENTER_ALL_STAGE + "-battlecenter"
 BATTLECENTER_INPUTPROBE_STAGE = BATTLECENTER_STAGE + "-inputprobe"
+BATTLE_HD_STAGE = CASTLECENTER_ALL_STAGE + "-battlehd"
+BATTLE_HD_GROUPS = {
+    "battle-hd-section", "battle-hd-viewport", "battle-hd-camera", "battle-hd-input",
+    "battle-hd-frame", "battle-hd-hud", "battle-hd-dialogs",
+    "battle-hd-descriptors", "battle-hd-tooltip",
+}
 VALIDATION_ONLY_GROUPS = {
     "right-bottom-compose-proof",
     "terrain-tooltip-bottom-center",
@@ -50,6 +56,7 @@ VALIDATION_ONLY_GROUPS = {
     "battle-ui-center-present-wrapper",
     "battle-grid-centered-input",
     "battle-ui-centered-input",
+    *BATTLE_HD_GROUPS,
 }
 VALIDATION_STAGE_EXTRAS = {
     RIGHT_BOTTOM_VALIDATION_STAGE: {"right-bottom-compose-proof"},
@@ -99,7 +106,8 @@ def patch_group_counts(patches: list[Any]) -> dict[str, int]:
 
 def patch_span(patch: Any) -> tuple[int, int]:
     old = bytes.fromhex(patch.old_hex)
-    return patch.offset, patch.offset + len(old)
+    new = bytes.fromhex(patch.new_hex)
+    return patch.offset, patch.offset + max(len(old), len(new))
 
 
 def patch_identity(patch: Any) -> tuple[str, int, str, str]:
@@ -107,6 +115,9 @@ def patch_identity(patch: Any) -> tuple[str, int, str, str]:
 
 
 def stage_selected_patches(module: Any, stage: str) -> list[Any]:
+    special = getattr(module, "SPECIAL_STAGE_RESOLUTIONS", {})
+    if stage in special:
+        return module.select_patches_for(stage, module.parse_resolution(special[stage][0]))
     groups = set(module.STAGE_GROUPS[stage])
     return [patch for patch in module.PATCHES if patch.group in groups]
 
@@ -132,6 +143,18 @@ def incompatible_overlaps(module: Any, stage: str) -> list[str]:
 def build_guard(args: argparse.Namespace, module: Any = patch_clash95_hd) -> dict[str, Any]:
     failures: list[str] = []
     patches = list(module.PATCHES)
+    special = getattr(module, "SPECIAL_STAGE_RESOLUTIONS", {})
+    for stage, resolutions in special.items():
+        if not resolutions:
+            failures.append(f"special stage has no supported resolutions: {stage}")
+            continue
+        try:
+            selected = stage_selected_patches(module, stage)
+        except (ValueError, KeyError) as exc:
+            failures.append(f"special stage selection failed: {stage}: {exc}")
+            continue
+        known = {patch_identity(patch) for patch in patches}
+        patches.extend(patch for patch in selected if patch_identity(patch) not in known)
     patch_groups = {patch.group for patch in patches}
     stage_groups = {stage: tuple(groups) for stage, groups in module.STAGE_GROUPS.items()}
     stable_stage = getattr(module, "DEFAULT_STAGE", None)
@@ -154,7 +177,10 @@ def build_guard(args: argparse.Namespace, module: Any = patch_clash95_hd) -> dic
         failures.append(f"validation-only groups leaked into stable stage: {validation_groups_in_stable}")
 
     validation_stage_summaries: dict[str, dict[str, Any]] = {}
-    for stage, extras in VALIDATION_STAGE_EXTRAS.items():
+    validation_extras = dict(VALIDATION_STAGE_EXTRAS)
+    if BATTLE_HD_STAGE in special:
+        validation_extras[BATTLE_HD_STAGE] = VALIDATION_STAGE_EXTRAS[CASTLECENTER_ALL_STAGE] | BATTLE_HD_GROUPS
+    for stage, extras in validation_extras.items():
         groups = set(stage_groups.get(stage, ()))
         expected = stable_groups | extras
         missing = sorted(expected - groups)
@@ -176,7 +202,10 @@ def build_guard(args: argparse.Namespace, module: Any = patch_clash95_hd) -> dic
     for stage in sorted(stage_groups):
         if stage in unknown_group_refs:
             continue
-        overlap_failures.extend(incompatible_overlaps(module, stage))
+        try:
+            overlap_failures.extend(incompatible_overlaps(module, stage))
+        except (ValueError, KeyError) as exc:
+            overlap_failures.append(f"{stage}: patch selection failed: {exc}")
     failures.extend(overlap_failures)
 
     return {
