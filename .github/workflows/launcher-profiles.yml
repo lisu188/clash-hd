@@ -1,0 +1,55 @@
+name: Launcher profiles
+on:
+  pull_request:
+    paths:
+      - 'src/launcher/**'
+      - 'tools/test_launcher*.py'
+      - 'tools/launcher_policy_guard.py'
+      - 'tools/build_framed_candidate.py'
+      - '.github/workflows/launcher-profiles.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/launcher/**'
+      - 'tools/test_launcher*.py'
+      - 'tools/launcher_policy_guard.py'
+      - 'tools/build_framed_candidate.py'
+      - '.github/workflows/launcher-profiles.yml'
+permissions:
+  contents: read
+concurrency:
+  group: launcher-profiles-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  fixtures:
+    name: Launcher fixtures (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Launcher regression fixtures without game runtime
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          import sys
+          suites = sorted(Path('tools').glob('test_launcher*.py'))
+          assert suites, 'No launcher regression fixtures found'
+          for suite in suites:
+              print(f'Running {suite}', flush=True)
+              subprocess.run([sys.executable, str(suite)], check=True, timeout=120)
+          PY
+      - name: Preserve the existing user-initiated launch policy
+        run: python tools/launcher_policy_guard.py --require-pass

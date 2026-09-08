@@ -1,0 +1,83 @@
+name: Bounded probe debugger-engine integration
+on:
+  pull_request:
+    paths:
+      - 'src/patcher/**'
+      - 'tools/framed_loaded_probe.py'
+      - 'tools/test_framed_loaded_probe*.py'
+      - '.github/workflows/framed-probe-engine.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/patcher/**'
+      - 'tools/framed_loaded_probe.py'
+      - 'tools/test_framed_loaded_probe*.py'
+      - '.github/workflows/framed-probe-engine.yml'
+permissions:
+  contents: read
+concurrency:
+  group: bounded-probe-engine-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  engine:
+    name: Actual x86 debugger command interpreter
+    runs-on: windows-2022
+    timeout-minutes: 10
+    env:
+      CLASH_DEBUGGER_INTEGRATION: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify the system Microsoft debugger engine
+        shell: pwsh
+        run: |
+          $engine = Join-Path $env:WINDIR 'SysWOW64\dbgeng.dll'
+          if (-not (Test-Path $engine)) { throw 'System x86 debugger engine is required.' }
+          $signature = Get-AuthenticodeSignature $engine
+          if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'Microsoft') {
+            throw 'System debugger engine signature did not verify as Microsoft.'
+          }
+          Get-Item $engine | Select-Object FullName, @{Name='Version';Expression={$_.VersionInfo.FileVersion}}
+          Get-FileHash $engine -Algorithm SHA256
+      - name: Execute the exported commands on marked synthetic PE32 fixtures
+        shell: pwsh
+        run: |
+          $env:CLASH_DEBUGGER_REPORT = Join-Path $env:RUNNER_TEMP 'debugger-engine-report.json'
+          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+          $installation = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $installation) { throw 'MSVC x86 tools are required.' }
+          $devcmd = Join-Path $installation 'Common7\Tools\VsDevCmd.bat'
+          $entry = Join-Path $env:RUNNER_TEMP 'run-engine-tests.py'
+          @'
+          import sys
+          import unittest
+          suite = unittest.defaultTestLoader.discover('tools', pattern='test_framed_loaded_probe_engine.py')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          sys.exit(0 if result.wasSuccessful() and result.testsRun >= 11 and not result.skipped else 1)
+          '@ | Set-Content -Encoding utf8 $entry
+          $batch = Join-Path $env:RUNNER_TEMP 'run-engine-tests.cmd'
+          @"
+          @echo off
+          call "$devcmd" -arch=x86 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          python "$entry"
+          exit /b %errorlevel%
+          "@ | Set-Content -Encoding ascii $batch
+          & cmd.exe /d /c $batch
+          if ($LASTEXITCODE -ne 0) { throw 'Debugger-engine integration tests failed.' }
+      - name: Existing source-only loaded-probe and display contracts
+        shell: bash
+        run: |
+          python tools/test_framed_loaded_probe.py -v
+          python tools/test_display_plan.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: debugger-engine-test-report
+          path: ${{ runner.temp }}/debugger-engine-report.json
+          retention-days: 7
+          if-no-files-found: warn

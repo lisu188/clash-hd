@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import shutil
 import subprocess
@@ -65,6 +66,28 @@ def good_manifest() -> dict:
         "custom_allowed": True,
         "custom_bounds": {"min": [800, 600], "max": [3840, 2160]},
     }
+
+
+def good_profile_manifest() -> dict:
+    manifest = good_manifest()
+    classic = {
+        "default": manifest["default"], "stage": manifest["stable_stage"],
+        "recipe_revision": "classic-frozen-800-v1", "features": {"minimap_viewport": False},
+        "resolutions": copy.deepcopy(manifest["resolutions"]),
+    }
+    classic["resolutions"]["800x600"]["evidence_scope"] = {
+        key: copy.deepcopy(classic[key]) for key in ("stage", "recipe_revision", "features")
+    }
+    framed = {
+        "default": manifest["default"],
+        "stage": manifest["stable_stage"] + "-combinedui-partialtiles-initialpaint-framed-validation",
+        "recipe_revision": "four-border-partial-initial-v1", "features": {"minimap_viewport": True},
+        "resolutions": {key: {"status": "experimental", "tiles": None, "evidence": None}
+                        for key in manifest["resolutions"]},
+    }
+    manifest.update(schema=2, default_renderer="classic", profiles={"classic": classic, "framed": framed},
+                    resolutions=copy.deepcopy(classic["resolutions"]))
+    return manifest
 
 
 def make_good_fixture(root: Path, manifest: dict | None = None) -> argparse.Namespace:
@@ -254,12 +277,91 @@ def test_binding_mismatches_fail(fixture: Path) -> None:
         ("run-fail", "captures/archive/run-normal/summary.json", lambda d: d.update(Passed=False)),
         ("null-resolution", "captures/current/patch-report.json", lambda d: d.update(resolution=None)),
     ]
-    for name, path, update in cases:
-        case_root = fixture / name
-        args = make_good_fixture(case_root)
-        rewrite_json(case_root / path, update)
+    for schema, factory in ((1, good_manifest), (2, good_profile_manifest)):
+        for name, path, update in cases:
+            case_root = fixture / str(schema) / name
+            args = make_good_fixture(case_root, factory())
+            rewrite_json(case_root / path, update)
+            guard = resolution_manifest_guard.build_guard(args)
+            assert not guard["checks"]["evidence_backed"]["passed"], (schema, name, guard)
+
+
+def test_profile_manifest_preserves_classic_checks(fixture: Path) -> None:
+    args = make_good_fixture(fixture, good_profile_manifest())
+    guard = resolution_manifest_guard.build_guard(args)
+    assert guard["passed"], guard["failures"]
+    assert guard["status_counts"] == {"stable": 1, "validated": 0, "experimental": 1}
+    for check in ("resolution_keys_valid", "single_stable_default", "stable_stage_matches",
+                  "tiles_formula", "evidence_backed", "custom_bounds_sane", "profile_contracts"):
+        assert guard["checks"][check]["passed"], check
+    assert guard["checks"]["evidence_backed"]["summary"]["checked"] == ["800x600"]
+    assert guard["checks"]["profile_contracts"]["summary"]["framed_runtime_evidence_verified"] is False
+
+
+def test_profile_manifest_rejects_malformed_or_stale_contracts(fixture: Path) -> None:
+    cases = [
+        ("missing-profiles", lambda m: m.pop("profiles")),
+        ("malformed-profile", lambda m: m["profiles"].update(framed=[])),
+        ("unknown-profile", lambda m: m["profiles"].update(other={})),
+        ("wrong-default-renderer", lambda m: m.update(default_renderer="framed")),
+        ("projection-drift", lambda m: m["resolutions"]["800x600"].update(status="experimental")),
+        ("recipe-drift", lambda m: m["profiles"]["framed"].update(recipe_revision="stale")),
+        ("feature-drift", lambda m: m["profiles"]["framed"].update(features={"minimap_viewport": False})),
+        ("feature-type", lambda m: m["profiles"]["framed"].update(features={"minimap_viewport": 1})),
+        ("stage-drift", lambda m: m["profiles"]["framed"].update(stage=m["stable_stage"])),
+        ("scope-drift", lambda m: m["profiles"]["classic"]["resolutions"]["800x600"]["evidence_scope"].update(recipe_revision="stale")),
+        ("missing-scope", lambda m: m["profiles"]["classic"]["resolutions"]["800x600"].pop("evidence_scope")),
+        ("bad-entry", lambda m: m["profiles"]["framed"]["resolutions"].update({"800x600": None})),
+    ]
+    for name, update in cases:
+        manifest = good_profile_manifest()
+        update(manifest)
+        if name in ("scope-drift", "missing-scope"):
+            manifest["resolutions"] = copy.deepcopy(manifest["profiles"]["classic"]["resolutions"])
+        args = make_good_fixture(fixture / name, manifest)
         guard = resolution_manifest_guard.build_guard(args)
-        assert not guard["checks"]["evidence_backed"]["passed"], (name, guard)
+        assert not guard["passed"], (name, guard)
+
+
+def test_profile_manifest_cannot_relabel_classic_evidence(fixture: Path) -> None:
+    for status in ("stable", "validated"):
+        manifest = good_profile_manifest()
+        framed = manifest["profiles"]["framed"]
+        entry = copy.deepcopy(manifest["resolutions"]["800x600"])
+        entry.update(status=status, tiles=None)
+        # Even a rewritten scope is metadata, not proof that these Classic
+        # candidate/run artifacts exercised the Framed feature configuration.
+        entry["evidence_scope"] = {key: copy.deepcopy(framed[key])
+                                   for key in ("stage", "recipe_revision", "features")}
+        framed["resolutions"]["800x600"] = entry
+        args = make_good_fixture(fixture / status, manifest)
+        guard = resolution_manifest_guard.build_guard(args)
+        assert not guard["checks"]["profile_contracts"]["passed"], guard
+        assert any("Classic evidence cannot certify" in failure for failure in guard["failures"])
+
+
+def test_profile_manifest_uses_framed_tile_geometry(fixture: Path) -> None:
+    for tiles, expected_pass in (([11, 8], True), ([12, 9], False)):
+        manifest = good_profile_manifest()
+        manifest["profiles"]["framed"]["resolutions"]["800x600"]["tiles"] = tiles
+        args = make_good_fixture(fixture / str(expected_pass), manifest)
+        guard = resolution_manifest_guard.build_guard(args)
+        assert guard["passed"] is expected_pass, guard
+
+
+def test_profile_manifest_rejects_duplicate_keys_and_schema_aliases(fixture: Path) -> None:
+    args = make_good_fixture(fixture, good_profile_manifest())
+    path = fixture / args.manifest
+    serialized = path.read_text(encoding="utf-8")
+    path.write_text(serialized.replace('"schema": 2,', '"schema": 2, "schema": 2,', 1), encoding="utf-8")
+    guard = resolution_manifest_guard.build_guard(args)
+    assert not guard["passed"] and any("Duplicate" in failure for failure in guard["failures"]), guard
+    for schema in (True, 2.0, "2", 3):
+        manifest = good_profile_manifest()
+        manifest["schema"] = schema
+        write_json(path, manifest)
+        guard = resolution_manifest_guard.build_guard(args)
+        assert not guard["passed"], (schema, guard)
 
 
 def test_legacy_missing_patch_resolution_is_800_only(fixture: Path) -> None:
@@ -338,6 +440,11 @@ def run_tests() -> None:
         test_validated_with_matching_larger_evidence_passes(fixture / "validated-matching")
         test_archived_800_evidence_cannot_validate_larger_preset(fixture / "reused-800")
         test_binding_mismatches_fail(fixture / "binding-mismatches")
+        test_profile_manifest_preserves_classic_checks(fixture / "profiles")
+        test_profile_manifest_rejects_malformed_or_stale_contracts(fixture / "profile-contracts")
+        test_profile_manifest_cannot_relabel_classic_evidence(fixture / "profile-evidence")
+        test_profile_manifest_uses_framed_tile_geometry(fixture / "profile-tiles")
+        test_profile_manifest_rejects_duplicate_keys_and_schema_aliases(fixture / "profile-schema")
         test_legacy_missing_patch_resolution_is_800_only(fixture / "legacy-resolution")
         test_bad_bounds_fail(fixture / "bounds")
         test_bad_key_fails(fixture / "key")
