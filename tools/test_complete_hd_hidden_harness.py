@@ -149,6 +149,35 @@ if (-not $result.Passed) { throw 'Unrelated reused process id treated as owned' 
 $script:fixtureCdb.Path = $null
 $result = Test-LaunchedProcessesStopped -CdbPid 42 -CandidatePath 'C:\ClashTests\fixture.exe' -CdbPath 'C:\fixture\cdb.exe' -RunStart $runStart -WaitMilliseconds 0
 if ($result.Passed -or -not $result.InspectionErrors.Count) { throw 'Unavailable identity treated as verified cleanup' }
+$captureBlocks = @($ast.FindAll({param($node) $node -is [System.Management.Automation.Language.IfStatementAst] -and $node.Clauses[0].Item1.Extent.Text -eq '$CompleteHdValidation' -and $node.Extent.Text.Contains('foreach ($captureIndex in @(2, 3))')}, $true))
+$progressCalls = @($ast.FindAll({param($node) $node -is [System.Management.Automation.Language.CommandAst] -and $node.Extent.Text.StartsWith('& $pythonExe -B $fullProgressTool ')}, $true))
+if ($progressCalls.Count -ne 1) { throw 'Missing full-progress producer invocation' }
+$elements = $progressCalls[0].CommandElements
+$hashArgument = @($elements | Where-Object { $_.Extent.Text -eq '--candidate-sha256' })
+if ($hashArgument.Count -ne 1) { throw 'Missing exact progress candidate SHA argument' }
+$hashIndex = [array]::IndexOf($elements, $hashArgument[0])
+$candidateSha = 'A' * 64
+$passedSha = & ([scriptblock]::Create($elements[$hashIndex + 1].Extent.Text))
+if ($passedSha -cne ('a' * 64)) { throw 'Progress producer did not receive canonical lowercase SHA' }
+if ($captureBlocks.Count -ne 1) { throw 'Missing consecutive complete capture reads' }
+function Save-ProcessMemory {
+    param($ProcessId, $BaseAddress, $ByteCount, $OutputPath)
+    $script:fixtureReads += [pscustomobject]@{ProcessId=$ProcessId; BaseAddress=$BaseAddress; ByteCount=$ByteCount; OutputPath=$OutputPath}
+}
+function Get-FileSha256 { param($Path) 'fixture-only-hash' }
+function Convert-CdbHexToUInt64 { param($Value) 1048576 }
+$script:fixtureReads = @()
+$CompleteHdValidation = $true
+$target = [pscustomobject]@{Id=43}
+$currentReady = [pscustomobject]@{Base='00100000'; Bytes=480000}
+$runDir = $args[1]
+$surfaceCaptureSet = @([pscustomobject]@{Path=(Join-Path $runDir 'surface.raw'); Sha256='fixture-only-hash'; Bytes=480000})
+. ([scriptblock]::Create($captureBlocks[0].Extent.Text))
+if ($surfaceCaptureSet.Count -ne 3 -or $script:fixtureReads.Count -ne 2) { throw 'Complete checkpoint did not preserve three reads' }
+if (@($surfaceCaptureSet.Path | Select-Object -Unique).Count -ne 3) { throw 'Consecutive reads reused an artifact path' }
+foreach ($read in $script:fixtureReads) {
+    if ($read.ProcessId -ne 43 -or $read.BaseAddress -ne 1048576 -or $read.ByteCount -ne 480000) { throw 'Consecutive read identity changed' }
+}
 '''
         with tempfile.TemporaryDirectory() as directory:
             script = Path(directory) / "fixture.ps1"
