@@ -133,7 +133,7 @@ def test_source_hashing_without_module_autoload() -> None:
         sample.write_bytes(contents)
         helper = fixture / "hash-only.ps1"
         helper.write_text(r'''
-param([string]$Runner, [string]$Sample)
+param([string]$Runner, [string]$Sample, [string]$HashHelper)
 $ErrorActionPreference = 'Stop'
 $PSModuleAutoLoadingPreference = 'None'
 function Get-FileHash { throw 'Get-FileHash must not be called' }
@@ -141,24 +141,27 @@ $tokens = $null
 $parseErrors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseFile($Runner, [ref]$tokens, [ref]$parseErrors)
 if ($parseErrors.Count) { throw 'Runner has syntax errors' }
-$definition = $ast.Find({ param($node) $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'Get-FileSha256' }, $true)
+$definition = $ast.Find({ param($node) $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $HashHelper }, $true)
 if (-not $definition) { throw 'Hash helper not found' }
 . ([scriptblock]::Create($definition.Extent.Text))
-Get-FileSha256 -Path $Sample
+& $HashHelper -Path $Sample
 # The helper must release its file handle before returning.
 $exclusive = [System.IO.File]::Open($Sample, [System.IO.FileMode]::Open, [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
 $exclusive.Dispose()
 [System.IO.File]::WriteAllBytes($Sample, [byte[]]@())
-Get-FileSha256 -Path $Sample
+& $HashHelper -Path $Sample
 $missingRejected = $false
-try { Get-FileSha256 -Path ($Sample + '.missing') } catch { $missingRejected = $true }
+try { & $HashHelper -Path ($Sample + '.missing') } catch { $missingRejected = $true }
 if (-not $missingRejected) { throw 'Missing input was accepted' }
 ''', encoding="ascii")
-        for runner in ("scripts/smoke/run_hd_soak.ps1", "scripts/cdb/run_hidden_soak.ps1"):
+        for runner, hash_helper in (
+            ("scripts/smoke/run_hd_soak.ps1", "Get-SoakFileSha256"),
+            ("scripts/cdb/run_hidden_soak.ps1", "Get-FileSha256"),
+        ):
             sample.write_bytes(contents)
             result = subprocess.run(
                 [str(powershell), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(helper),
-                 "-Runner", str(ROOT / runner), "-Sample", str(sample)],
+                 "-Runner", str(ROOT / runner), "-Sample", str(sample), "-HashHelper", hash_helper],
                 capture_output=True, text=True, check=False,
             )
             assert result.returncode == 0, result.stdout + result.stderr
