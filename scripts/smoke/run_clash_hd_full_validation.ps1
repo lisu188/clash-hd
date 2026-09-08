@@ -143,15 +143,32 @@ try {
         Copy-Item -LiteralPath (Join-Path `$fixtureSaveDir '0.dat') -Destination (Join-Path `$rbSaveDir '0.dat') -Force
     }
 
-    # Five manual targets: the load-slot0 route reaches gameplay (it ignores
-    # -Points), then followup drives the target-specific validation clicks.
-    `$targets = @(
-        @{ id='stable_menu_load';               stage='stable';      followup='';                             workdir=`$GameWork },
-        @{ id='stable_hd_map_input';            stage='stable';      followup='400,300;780,300;400,580;760,560'; workdir=`$GameWork },
-        @{ id='right_bottom_validation_input';  stage='rightbottom'; followup='588,440;450,73;760,560';        workdir=(if (`$fixtureReady) { `$rbWork } else { `$GameWork }) },
-        @{ id='castle_barracks_centered_input'; stage='castle';      followup='400,300;231,366;180,440';       workdir=`$GameWork },
-        @{ id='castle_overview_centered_input'; stage='castle';      followup='231,366;180,440;503,426';       workdir=`$GameWork }
-    )
+    # Five manual targets. The load route runs the pulse lane (legacy OS-cursor
+    # moves are invisible to the engine's DirectInput accumulator); per-target
+    # follow-up aim points come from tools/manual_directinput_run_plan.py at run
+    # time so this driver can never drift from the authoritative specs.
+    `$specsJson = & `$Python -c "import sys, json; sys.path.insert(0, r'C:\Repo\tools'); import manual_directinput_run_plan as m; print(json.dumps({k: {'followup': v['followup_points'], 'pulse_route_steps': v['pulse_route_steps']} for k, v in m.COMMAND_SPECS.items()}))"
+    if (`$LASTEXITCODE -ne 0) { throw "failed to read followup specs from manual_directinput_run_plan.py" }
+    `$specs = `$specsJson | ConvertFrom-Json
+    `$stageKeyById = @{
+        'stable_menu_load' = 'stable'
+        'stable_hd_map_input' = 'stable'
+        'right_bottom_validation_input' = 'rightbottom'
+        'castle_barracks_centered_input' = 'castle'
+        'castle_overview_centered_input' = 'castle'
+    }
+    `$targets = @()
+    foreach (`$id in @('stable_menu_load','stable_hd_map_input','right_bottom_validation_input','castle_barracks_centered_input','castle_overview_centered_input')) {
+        `$workdir = `$GameWork
+        if (`$id -eq 'right_bottom_validation_input' -and `$fixtureReady) { `$workdir = `$rbWork }
+        `$targets += @{
+            id = `$id
+            stage = `$stageKeyById[`$id]
+            followup = `$specs.`$id.followup
+            pulse_route_steps = `$specs.`$id.pulse_route_steps
+            workdir = `$workdir
+        }
+    }
 
     `$targetResults = @()
     foreach (`$t in `$targets) {
@@ -166,11 +183,9 @@ try {
             '-Python', `$Python,
             '-OutRoot', `$targetOut,
             '-Route', 'load-slot0',
+            '-InputMode', 'pulse',
+            '-PulseRouteSteps', `$t.pulse_route_steps,
             '-FollowupPoints', `$t.followup,
-            '-MoveMode', 'auto',
-            '-ClickMode', 'sendinput',
-            '-ClickHoldMs', '300',
-            '-ClickRepeat', '2',
             '-RunSeconds', '$RunSeconds',
             '-PostIntroWaitSec', '$PostIntroWaitSec',
             '-AllowVisibleRuntime'

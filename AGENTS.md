@@ -215,6 +215,25 @@ windows as part of a repo-only check.
 
 ## Documentation and state
 
+### Delivery and visual progress
+
+- Merge small, self-contained changes to main frequently after their relevant
+  checks pass. Use short `codex/` branches and reviewed GitHub pull requests;
+  merge source improvements while incomplete features remain experimental.
+- Preserve existing uncommitted and untracked work in other checkouts. Import
+  only reviewed changes and their dependencies; never reset, stash, clean, or
+  blanket-commit another task's work to make a merge convenient.
+- Show actual screenshots frequently during visual work, including each
+  meaningful rendering change, resolution change, and successful or failed
+  screen transition. Share them as work progresses, not only at completion.
+- Label screenshots with stage, resolution, capture method, and verification
+  result. Inspect all four frame edges and the applicable controls, including
+  all six action-bar cells on ordinary map screens. Keep modal-screen controls
+  separate from ordinary-map frame and action-bar claims.
+- Use tear-checked frames and prefer consecutive stable captures where possible.
+  Existing runtime, input, and capture approval boundaries still apply. A merge
+  or screenshot never implies stable promotion or manual-input proof.
+
 - Update relevant files under `docs/hd/`, `reports/`, `captures/current/`, and
   patch metadata when a durable engineering claim changes.
 - Prefer direct file paths and exact evidence identifiers over narrative claims

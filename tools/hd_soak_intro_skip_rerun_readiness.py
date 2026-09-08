@@ -41,16 +41,30 @@ RUNTIME_POLICY = (
 EXPECTED_CLASSIFICATION = "passing_run_no_failure"
 EXPECTED_STEP_ID = "short2_map_idle"
 EXPECTED_STEP_STATUS = "missing_pending_approval"
-EXPECTED_STEP_STATUSES = {
-    EXPECTED_STEP_STATUS,
-    "failed_classified_input_environment_permission_denied",
+# A classified environmental failure (locked session, WER hang close, hidden
+# window, intro-skip drift exit) does not invalidate rerun readiness -- the
+# packet stays ready for the next unlocked attempt. The enumeration mirrors
+# hd_soak_approval_preflight's rerun-readiness handling; any OTHER classified
+# failure (e.g. unexpected_process_exit) keeps the report valid but marks the
+# packet not applicable so no rerun is authorized on top of an unexplained
+# failure.
+ACCEPTED_STEP_STATUSES = {EXPECTED_STEP_STATUS, "pending_approval_legacy_compat"}
+CLASSIFIED_FAILURE_PREFIX = "failed_classified_"
+RERUN_READY_CLASSIFIED_STATUSES = {
     "failed_classified_intro_skip_input_drift_exit",
+    "failed_classified_input_environment_permission_denied",
+    "failed_classified_application_hang_wer_closed",
+    "failed_classified_window_missing_while_process_alive",
 }
+EXPECTED_STEP_STATUSES = ACCEPTED_STEP_STATUSES | RERUN_READY_CLASSIFIED_STATUSES
 EXPECTED_INTRO_SKIP = {
     "click_mode": "postmessage",
     "click_repeat": 8,
-    "stop_click_repeat_on_drift": True,
     "space_pulses": 4,
+    # The harness stops repeating intro-skip clicks the moment input drift is
+    # detected (the contract hd_soak_approval_preflight enforces on the real
+    # dry-run plan); the readiness packet documents the same contract.
+    "stop_click_repeat_on_drift": True,
     "proof_class": "intro_skip_harness_prep_not_manual_directinput_release_proof",
 }
 ORDERED_STEP_IDS = ("short2_menu_idle", "short2_map_idle", "short10_map_idle", "short10_map_pan", "short30_map_pan")
@@ -328,8 +342,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     current_step_status = str(current_step.get("status") or "")
     not_applicable_current_failure = (
         current_step.get("id") == EXPECTED_STEP_ID
-        and current_step_status.startswith("failed_classified_")
-        and current_step_status not in EXPECTED_STEP_STATUSES
+        and current_step_status.startswith(CLASSIFIED_FAILURE_PREFIX)
+        and current_step_status not in RERUN_READY_CLASSIFIED_STATUSES
     )
 
     if triage.get("classification") != EXPECTED_CLASSIFICATION:

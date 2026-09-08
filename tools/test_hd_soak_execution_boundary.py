@@ -168,7 +168,24 @@ if (-not $missingRejected) { throw 'Missing input was accepted' }
             ], result.stdout
 
 
+def test_missing_boundary_runner_never_counts_as_a_verified_refusal() -> None:
+    def unavailable_runner(*_: Any, **__: Any) -> subprocess.CompletedProcess[str]:
+        raise FileNotFoundError("missing PowerShell")
+
+    with tempfile.TemporaryDirectory(prefix="clash-soak-missing-runner-") as temporary:
+        report = boundary.build_report(args_for(Path(temporary)), runner=unavailable_runner)
+    assert report["passed"] is False
+    assert report["case_count"] == 4
+    for case in report["cases"]:
+        assert case["passed"] is False and case["exit_code"] is None
+        assert case["expected_phrase_seen"] is False
+        assert not any(case["side_effects"].values())
+        assert "runner unavailable" in case["stderr_tail"]
+        assert "missing PowerShell" in case["stderr_tail"]
+
+
 def run_tests() -> None:
+    test_missing_boundary_runner_never_counts_as_a_verified_refusal()
     test_fake_boundary_report_passes()
     test_boundary_report_rejects_side_effects()
     test_markdown_contains_case_rows()

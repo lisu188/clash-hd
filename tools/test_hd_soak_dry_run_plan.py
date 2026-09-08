@@ -519,7 +519,22 @@ def test_completed_ladder_cli_writes_only_terminal_packet() -> None:
         assert "Approval-Gated Execute Command" not in output_md.read_text(encoding="utf-8")
 
 
+def test_missing_harness_runner_fails_closed_without_a_plan() -> None:
+    for environment in (dry_run_plan.HOST_ENVIRONMENT, dry_run_plan.HIDDEN_ENVIRONMENT):
+        step = {"tier": TIER, "route": ROUTE, "duration_sec": DURATION,
+                "preferred_environment": environment}
+        with patch.object(dry_run_plan.subprocess, "run", side_effect=FileNotFoundError("missing PowerShell")) as run:
+            plan, invocation = dry_run_plan.run_harness_plan(Path("fixture.ps1"), step)
+        assert plan is None
+        assert invocation["exit_code"] is None
+        assert "runner unavailable" in invocation["stderr"]
+        assert "missing PowerShell" in invocation["stderr"]
+        assert "-Execute" not in run.call_args.args[0]
+        run.assert_called_once()
+
+
 def run_tests() -> None:
+    test_missing_harness_runner_fails_closed_without_a_plan()
     test_completed_ladder_never_invokes_a_harness_or_reads_a_plan()
     test_invalid_completion_never_falls_back_to_runtime_planning()
     test_completed_ladder_cli_writes_only_terminal_packet()
