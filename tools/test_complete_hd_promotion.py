@@ -67,8 +67,8 @@ def test_every_planned_step_has_an_isolated_artifact() -> None:
             if name != "assemble_proof":
                 assert argv.count("--write-markdown") == 1, (name, argv)
                 assert Path(argv[argv.index("--write-markdown") + 1]) == outputs[name].with_suffix(".md")
-        # Neither the deferred-only historical parser nor an aggregate refresh
-        # is an affirmative, candidate-bound whole-HD acceptance gate.
+        # The component plan remains isolated from release mode. Full release
+        # evidence goes through the separate candidate-bound evaluator.
         assert "hd_layout_promotion" not in names, names
         assert all(Path(argv[0]).name != "current_evidence_refresh.py" for _, argv in steps), steps
 
