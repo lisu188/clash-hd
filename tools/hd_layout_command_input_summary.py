@@ -92,7 +92,55 @@ def reference(base: Path, data: dict[str, Any], *, path_key: str = "path", hash_
     return path, content
 
 
-def render_probe(identity: dict[str, Any]) -> str:
+def load_release_context(candidate_manifest: Path) -> dict[str, Any]:
+    from complete_hd_evidence import candidate_manifest_context
+    context = candidate_manifest_context(candidate_manifest)
+    metadata = Path(context["metadata_path"]).read_bytes()
+    probe = Path(context["probe_path"]).read_bytes()
+    if (sha256(metadata) != context["identity"]["metadata_sha256"]
+            or sha256(probe) != context["identity"]["probe_sha256"]):
+        raise ValueError("complete candidate bundle changed while loading input context")
+    return {**context, "manifest": json.loads(metadata.decode("utf-8")), "probe": probe.decode("utf-8")}
+
+
+def panel_geometry(context: dict[str, Any] | None = None) -> tuple[int, int, int, int]:
+    if context is None:
+        return 608, 528, 800, 600
+    from src.patcher.framed_viewport import FramedViewport
+    width, height = map(int, context["identity"]["resolution"].split("x"))
+    cell = FramedViewport(width, height).action_cells[0]
+    return cell.left, cell.top, width, height
+
+
+def approval_bindings(identity: dict[str, Any]) -> tuple[str, ...]:
+    return APPROVAL_BINDINGS + (("candidate_identity",) if "candidate_identity" in identity else ())
+
+
+def release_input_plan(context: dict[str, Any], input_method: str) -> dict[str, Any]:
+    if input_method not in ("manual_directinput", "win32_sendinput_relative"):
+        raise ValueError("complete callback observation requires declared human input or relative pulse input")
+    left, top, _, _ = panel_geometry(context)
+    return {"method": input_method, "steps": [
+        "Load a map and select a unit; hold its ordinary selected-unit cursor over central traversable terrain until the map captures finish.",
+        f"Move the cursor to the first command icon at logical ({left + 32},{top + 16}) without changing selection until hover captures finish.",
+        "Click the first command icon once; the observer records the native input gate and callback."],
+        "target_point": [left + 32, top + 16], "native_hit_rect": [left, top, left + 63, top + 31],
+        "inject_input": False, "observer_only": True,
+        "input_operator": "human" if input_method == "manual_directinput" else "separately approved relative pulse driver",
+        "force_route_or_callback": False}
+
+
+def observation_header(identity: dict[str, Any], context: dict[str, Any] | None = None) -> dict[str, str]:
+    fields = {key: str(identity.get(key)) for key in ("run_id", "candidate_sha256", "stage", "environment", "input_method")}
+    _, _, width, height = panel_geometry(context)
+    fields.update(schema_version="1", width=str(width), height=str(height))
+    if context is not None:
+        fields.update({key: context["identity"][key] for key in
+                       ("base_sha256", "metadata_sha256", "probe_sha256", "recipe_revision")})
+    return fields
+
+
+def render_probe(identity: dict[str, Any], context: dict[str, Any] | None = None) -> str:
     """Render the observation-only template; writing/running it is a harness duty."""
     text = PROBE.read_text(encoding="utf-8")
     for name in ("run_id", "candidate_sha256", "stage", "environment", "input_method"):
@@ -100,10 +148,23 @@ def render_probe(identity: dict[str, Any]) -> str:
         if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9_.-]+", value):
             raise ValueError(f"unsafe or missing probe identity {name}")
         text = text.replace(f"__HDLAYOUT_{name.upper()}__", value)
+    if context is not None:
+        # Reuse only the authenticated loaded-byte guards. The map diagnostic
+        # body is omitted; this observer never forces routing, input or callbacks.
+        marker = context["manifest"]["probe_contract"]["inherited_marker"]
+        lines = context["probe"].splitlines()
+        positions = [index for index, line in enumerate(lines) if line == ".echo " + marker]
+        if len(positions) != 1:
+            raise ValueError("complete candidate lacks one exact loaded-byte contract")
+        prefix = lines[:positions[0] + 1]
+        if any(not line.startswith((".if ", ".echo ", "$$")) for line in prefix):
+            raise ValueError("complete loaded-byte prefix contains an unreviewed command")
+        header = ".echo HDLAYOUT_INPUT_IDENTITY " + " ".join(f"{key}={value}" for key, value in observation_header(identity, context).items())
+        text = "\n".join(prefix + [header] + text.splitlines()[1:]) + "\n"
     return text
 
 
-def validate_identity(identity: dict[str, Any]) -> list[str]:
+def validate_identity(identity: dict[str, Any], context: dict[str, Any] | None = None) -> list[str]:
     failures = []
     if not isinstance(identity.get("run_id"), str) or not re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", identity["run_id"]):
         failures.append("run_id is missing or malformed")
@@ -116,12 +177,21 @@ def validate_identity(identity: dict[str, Any]) -> list[str]:
         path = Path(candidate).resolve()
         if path == Path(r"C:\Clash\clash95.exe").resolve() or path.is_relative_to(REPO_ROOT):
             failures.append("candidate_path identifies the original executable or repository")
-    if identity.get("stage") not in SUPPORTED_STAGES or identity.get("resolution") != [800, 600]:
+    if context is None and (identity.get("stage") not in SUPPORTED_STAGES or identity.get("resolution") != [800, 600]):
         failures.append("candidate is not a supported 800x600 validation layout")
     if identity.get("environment") != "host_visible" or identity.get("input_method") not in INPUT_METHODS:
         failures.append("input observation needs a declared visible-host input method")
-    if identity.get("input_method") != "manual_directinput" or identity.get("input_plan") != INPUT_PLAN:
+    if context is None and (identity.get("input_method") != "manual_directinput" or identity.get("input_plan") != INPUT_PLAN):
         failures.append("input plan differs from the supported manual observation session")
+    if context is not None:
+        _, _, width, height = panel_geometry(context)
+        if (identity.get("candidate_identity") != context["identity"] or identity.get("resolution") != [width, height]
+                or identity.get("stage") != context["identity"]["stage"]
+                or identity.get("candidate_sha256") != context["identity"]["candidate_sha256"]
+                or identity.get("candidate_path") != context["candidate_path"]):
+            failures.append("command observation differs from the actual complete candidate context")
+        if identity.get("input_plan") != release_input_plan(context, identity.get("input_method")):
+            failures.append("command input plan differs from the complete candidate geometry and declared input method")
     if not isinstance(identity.get("wrapper"), dict) or not is_sha256(identity.get("execution_plan_sha256")):
         failures.append("wrapper and exact execution-plan binding are required")
     hwnd = identity.get("hwnd")
@@ -167,14 +237,15 @@ def parse_events(text: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]],
     return rows, identities, failures
 
 
-def sequence_failures(rows: list[dict[str, Any]]) -> list[str]:
+def sequence_failures(rows: list[dict[str, Any]], geometry: tuple[int, int, int, int] = (608, 528, 800, 600)) -> list[str]:
     values = [row["values"] for row in rows]
     descriptor, hit_x, hit_y, before, gate, dispatch, callback = values
     failures = []
     if any(row["desc"] != EXPECTED_DESCRIPTOR or row["tid"] != descriptor["tid"] or row["tid"] <= 0 for row in values):
         failures.append("sequence descriptor/thread differs")
-    if (descriptor["x"], descriptor["y"], descriptor["width"], descriptor["height"]) != (608, 528, 800, 600):
-        failures.append("descriptor is not at its relocated 800x600 anchor")
+    left, top, width, height = geometry
+    if (descriptor["x"], descriptor["y"], descriptor["width"], descriptor["height"]) != geometry:
+        failures.append(f"descriptor is not at its relocated {width}x{height} anchor")
     if (not native_selected_descriptor_state(descriptor["state"]) or descriptor["state3"] not in (1, 2) or descriptor["selected_unit"] < 0
             or callback["selected_unit"] != descriptor["selected_unit"]):
         failures.append("descriptor state or selected-unit identity differs from the native selected command state")
@@ -185,7 +256,7 @@ def sequence_failures(rows: list[dict[str, Any]]) -> list[str]:
         if (row["mouse_x"], row["mouse_y"]) != mouse:
             failures.append("cursor changed during the native click sequence")
             break
-    for hit, axis, lower, upper in ((hit_x, 0, 608, 671), (hit_y, 1, 528, 559)):
+    for hit, axis, lower, upper in ((hit_x, 0, left, left + 63), (hit_y, 1, top, top + 31)):
         if (hit["lower"], hit["upper_exclusive"]) != (lower, upper) or hit["cursor"] != mouse[axis] or not lower <= hit["cursor"] < upper:
             failures.append(f"native {'XY'[axis]} hitbox/cursor does not match relocated bounds")
     if before["click_flag"] & 1 == 0 or before["button0"] & 0x80 == 0 or gate["eax"] != 1:
@@ -197,7 +268,7 @@ def sequence_failures(rows: list[dict[str, Any]]) -> list[str]:
     return failures
 
 
-def match_sequence(rows: list[dict[str, Any]]) -> tuple[list[dict[str, Any]] | None, list[str]]:
+def match_sequence(rows: list[dict[str, Any]], geometry: tuple[int, int, int, int] = (608, 528, 800, 600)) -> tuple[list[dict[str, Any]] | None, list[str]]:
     pending: dict[int, list[dict[str, Any]]] = {}
     rejections = []
     for row in rows:
@@ -211,7 +282,7 @@ def match_sequence(rows: list[dict[str, Any]]) -> tuple[list[dict[str, Any]] | N
             continue
         attempt.append(row)
         if len(attempt) == len(SEQUENCE):
-            failures = sequence_failures(attempt)
+            failures = sequence_failures(attempt, geometry)
             if not failures:
                 return attempt, rejections
             rejections.extend(failures)
@@ -219,7 +290,7 @@ def match_sequence(rows: list[dict[str, Any]]) -> tuple[list[dict[str, Any]] | N
     return None, rejections
 
 
-def launch_environment_policy(wrapper_mode: str) -> dict:
+def launch_environment_policy(wrapper_mode: str, resolution: list[int] | tuple[int, int] = (800, 600)) -> dict:
     """Exact per-child policy; inherited host values are never published."""
     if wrapper_mode not in ("proxy-present", "gog"):
         raise ValueError("unsupported visible wrapper mode")
@@ -230,10 +301,10 @@ def launch_environment_policy(wrapper_mode: str) -> dict:
             "remove_names": ["__COMPAT_LAYER"], "remove_prefixes": ["CLASH_PROXY_"],
             "set": overrides, "scope": "owned CDB process and inherited candidate child only",
             "required_candidate_dpi_awareness": [1, 2], "required_window_dpi_awareness": [1, 2],
-            "required_physical_client_size": [800, 600]}
+            "required_physical_client_size": list(resolution)}
 
 
-def build_report(manifest_path: Path) -> dict[str, Any]:
+def build_report(manifest_path: Path, *, candidate_manifest: Path | None = None) -> dict[str, Any]:
     manifest_path = Path(manifest_path).resolve()
     report: dict[str, Any] = {
         "schema_version": 1, "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -249,6 +320,9 @@ def build_report(manifest_path: Path) -> dict[str, Any]:
     }
     failures = report["failures"]
     try:
+        context = load_release_context(candidate_manifest) if candidate_manifest is not None else None
+        geometry = panel_geometry(context)
+        dimensions = list(geometry[2:])
         content = manifest_path.read_bytes()
         report["source_manifest"]["sha256"] = sha256(content)
         manifest = read_object(manifest_path)
@@ -258,7 +332,12 @@ def build_report(manifest_path: Path) -> dict[str, Any]:
         if not isinstance(identity, dict):
             raise ValueError("manifest identity must be an object")
         report["identity"] = identity
-        failures.extend(validate_identity(identity))
+        failures.extend(validate_identity(identity, context))
+        if context is not None:
+            report["candidate_context"] = {key: value for key, value in context.items() if key not in ("manifest", "probe")}
+            candidate_ref, _ = reference(manifest_path, manifest.get("candidate_manifest"))
+            if candidate_ref != Path(context["metadata_path"]):
+                failures.append("observation manifest references another candidate manifest")
         raw_path, raw = reference(manifest_path, manifest.get("raw_log"))
         report["raw_log"] = {"path": str(raw_path), "sha256": sha256(raw)}
         probe = manifest.get("probe")
@@ -266,7 +345,8 @@ def build_report(manifest_path: Path) -> dict[str, Any]:
         rendered_path, rendered = reference(manifest_path, probe, path_key="rendered_path", hash_key="rendered_sha256")
         report["probe"] = {"template_path": str(template_path), "template_sha256": sha256(template),
                            "rendered_path": str(rendered_path), "rendered_sha256": sha256(rendered)}
-        if template_path != PROBE.resolve() or rendered.decode("utf-8-sig").replace("\r\n", "\n") != render_probe(identity).replace("\r\n", "\n"):
+        expected_probe = render_probe(identity, context)
+        if template_path != PROBE.resolve() or rendered.decode("utf-8-sig").replace("\r\n", "\n") != expected_probe.replace("\r\n", "\n"):
             failures.append("rendered probe differs from the exact observation-only template and run identity")
         approval_path, approval_bytes = reference(manifest_path, manifest.get("approval"))
         approval = read_object(approval_path)
@@ -275,10 +355,11 @@ def build_report(manifest_path: Path) -> dict[str, Any]:
             raise ValueError("approval identity must be an object")
         if approval.get("approved") is not True or approval.get("record_kind") != "user_approval" or not str(approval.get("approval_text") or "").strip():
             approval_failures.append("record is not explicit user approval")
-        for key in APPROVAL_BINDINGS:
+        bindings = approval_bindings(identity) if context is not None else APPROVAL_BINDINGS
+        for key in bindings:
             if (approval.get("identity") or {}).get(key) != identity.get(key):
                 approval_failures.append(f"approval does not bind run {key}")
-        if set(approval["identity"]) != set(APPROVAL_BINDINGS):
+        if set(approval["identity"]) != set(bindings):
             approval_failures.append("approval must bind the prelaunch identity without a predicted HWND")
         approved_at, expires_at = timestamp(approval.get("approved_at")), timestamp(approval.get("expires_at"))
         started_at, finished_at = timestamp(identity.get("started_at")), timestamp(identity.get("finished_at"))
@@ -294,15 +375,17 @@ def build_report(manifest_path: Path) -> dict[str, Any]:
         producer_path, _ = reference(receipt_path, receipt.get("producer_source"))
         plan_path, plan_bytes = reference(receipt_path, receipt.get("plan"))
         plan = read_object(plan_path)
+        if context is not None and plan.get("candidate_manifest") != manifest.get("candidate_manifest"):
+            failures.append("execution plan and run manifest identify different complete candidate manifests")
         if producer_path != SESSION_PRODUCER.resolve() or receipt.get("schema_version") != 1 or receipt.get("executed") is not True:
             failures.append("session receipt is not from the observation producer")
         if receipt.get("identity") != identity or receipt.get("approval") != manifest.get("approval"):
             failures.append("measured session identity/approval differs from manifest")
         if sha256(plan_bytes) != identity.get("execution_plan_sha256"):
             failures.append("measured session does not bind the approved execution plan")
-        if plan.get("identity") != {key: identity[key] for key in APPROVAL_BINDINGS if key != "execution_plan_sha256"}:
+        if plan.get("identity") != {key: identity[key] for key in bindings if key != "execution_plan_sha256"}:
             failures.append("execution plan differs from the approved candidate and input plan")
-        expected_environment = launch_environment_policy(identity["wrapper"]["mode"])
+        expected_environment = launch_environment_policy(identity["wrapper"]["mode"], dimensions)
         environment = receipt.get("launch_environment")
         if (plan.get("launch_environment") != expected_environment or not isinstance(environment, dict)
                 or set(environment) != {"policy", "effective_environment_sha256"}
@@ -312,8 +395,8 @@ def build_report(manifest_path: Path) -> dict[str, Any]:
             failures.append("measured child environment does not bind the approved native-DPI launch policy")
         if (type(receipt.get("candidate_dpi_awareness")) is not int or receipt.get("candidate_dpi_awareness") not in (1, 2)
                 or type(receipt.get("window_dpi_awareness")) is not int or receipt.get("window_dpi_awareness") not in (1, 2)
-                or receipt.get("physical_client_size") != [800, 600]):
-            failures.append("owned process/window did not establish DPI-aware native 800x600 capture")
+                or receipt.get("physical_client_size") != dimensions):
+            failures.append("owned process/window did not establish DPI-aware native candidate-size capture")
         candidate_pid, cdb_pid = receipt.get("candidate_pid"), receipt.get("cdb_pid")
         if (type(candidate_pid) is not int or candidate_pid <= 0 or type(cdb_pid) is not int or cdb_pid <= 0
                 or candidate_pid == cdb_pid or receipt.get("candidate_parent_pid") != cdb_pid
@@ -332,7 +415,7 @@ def build_report(manifest_path: Path) -> dict[str, Any]:
         if receipt.get("failures") != []:
             failures.append("session producer reported incomplete or failed observations")
         startup_path, startup = reference(receipt_path, receipt.get("startup_probe"))
-        if startup.decode("utf-8-sig").replace("\r\n", "\n") != render_probe(identity).replace("\r\n", "\n") + "\ng\n":
+        if startup.decode("utf-8-sig").replace("\r\n", "\n") != expected_probe.replace("\r\n", "\n") + "\ng\n":
             failures.append("startup probe is not the exact observation template followed by go")
         cdb_path, _ = reference(plan_path, plan.get("cdb"))
         expected_command = [str(cdb_path), "-hd", "-logo", str(raw_path), "-cf", str(startup_path), identity["candidate_path"]]
@@ -351,21 +434,35 @@ def build_report(manifest_path: Path) -> dict[str, Any]:
             failures.append("raw log contains forced or synthetic diagnostic observations")
         if re.search(r"(?:^|[;{}>])\s*(?:r\s+e(?:ax|bx|cx|dx|ip|sp|bp|si|di)\s*=|e[bwdq]\s+(?:0x)?(?:00544(?:cfc|d00|d04)|005451c0|00511d(?:40|60))\b|\.call\b)", text, re.IGNORECASE | re.MULTILINE):
             failures.append("raw debugger commands mutate target input, registers, or callbacks")
+        if context is not None and re.search(r"(?:^|[;{}>])\s*(?:r\s+[^\s=]+\s*=|e[bwdq]\s+(?:0x)?[0-9a-f]+\b|\.call\b)", text, re.IGNORECASE | re.MULTILINE):
+            failures.append("complete callback observation contains target mutation commands")
+        if context is not None and re.search(r"c000001d|c0000094|c00000fd|c0000409|second chance", text, re.IGNORECASE):
+            failures.append("complete callback observation contains a fatal runtime exception")
         if re.search(r"access violation|c0000005|Unable to (?:insert|remove) breakpoint|Syntax error|Memory access error", text, re.IGNORECASE):
             failures.append("raw log contains debugger/runtime errors")
         rows, identities, malformed = parse_events(text)
         failures.extend(malformed)
-        expected_header = {key: str(identity.get(key)) for key in ("run_id", "candidate_sha256", "stage", "environment", "input_method")}
-        expected_header.update(schema_version="1", width="800", height="600")
+        expected_header = observation_header(identity, context)
+        if context is not None:
+            from complete_hd_runtime_context import loaded_contract_failures
+            inherited = context["manifest"]["predecessor"]["stage"]
+            failures.extend(loaded_contract_failures(text, expected_probe, {"manifest": context["manifest"], "inherited_stage": inherited}))
         if len(identities) != 1 or identities[0]["values"] != expected_header:
             failures.append("raw log identity does not match exactly one manifest-bound run")
         elif rows and identities[0]["line"] >= rows[0]["line"]:
             failures.append("run identity must precede input observations")
+        if context is not None and len(identities) == 1:
+            # The final inherited guard closes the authenticated loaded-byte
+            # prefix. Later guards cannot authenticate earlier input records.
+            marker = context["manifest"]["probe_contract"]["inherited_marker"]
+            guard_lines = [number for number, line in enumerate(text.splitlines(), 1) if line == marker]
+            if len(guard_lines) != 1 or guard_lines[0] >= identities[0]["line"]:
+                failures.append("loaded-byte contracts must precede the input run identity and native observations")
         click_start_line = receipt.get("click_observation_start_line")
         if type(click_start_line) is not int or click_start_line < 1:
             failures.append("session lacks the measured post-capture click observation boundary")
             click_start_line = 0
-        matched, rejected = match_sequence([row for row in rows if row["line"] > click_start_line])
+        matched, rejected = match_sequence([row for row in rows if row["line"] > click_start_line], geometry)
         report.update(observation_count=len(rows), rejected_sequence_reasons=rejected, matched_sequence=matched)
         if failures:
             report["status"] = "invalid_evidence"
@@ -375,11 +472,18 @@ def build_report(manifest_path: Path) -> dict[str, Any]:
         else:
             report.update(passed=True, status="observed", command_click_alignment=True,
                           panel_click_callback_proof=True, native_click_gate_observed=True)
+        if context is not None:
+            from complete_hd_evidence import verify_reference_graph
+            verify_reference_graph(manifest, manifest_path.parent)
+            if sha256(manifest_path.read_bytes()) != report["source_manifest"]["sha256"]:
+                raise ValueError("command observation manifest changed during evaluation")
     except FileNotFoundError as exc:
         failures.append(f"missing evidence: {exc.filename}")
     except (OSError, ValueError, TypeError, KeyError, OverflowError) as exc:
         report["status"] = "invalid_evidence"
         failures.append(f"invalid evidence: {exc}")
+    if failures:
+        report.update(passed=False, command_click_alignment=False, panel_click_callback_proof=False, native_click_gate_observed=False)
     return report
 
 
@@ -396,18 +500,19 @@ def to_markdown(report: dict[str, Any]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path)
+    parser.add_argument("--candidate-manifest", type=Path, help="Shared complete-HD context; required for integrated release observations")
     parser.add_argument("--write-json", type=Path)
     parser.add_argument("--write-markdown", type=Path)
     parser.add_argument("--require-pass", action="store_true")
     args = parser.parse_args()
-    report = build_report(args.manifest)
+    report = build_report(args.manifest, candidate_manifest=args.candidate_manifest)
     for path, content in ((args.write_json, json.dumps(report, indent=2) + "\n"),
                           (args.write_markdown, to_markdown(report))):
         if path:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content, encoding="utf-8")
     print(f"hd-layout-command-input: {report['status']}")
-    return 2 if args.require_pass and not report["passed"] else 0
+    return 2 if (args.require_pass or args.candidate_manifest) and not report["passed"] else 0
 
 
 if __name__ == "__main__":
