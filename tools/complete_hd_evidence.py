@@ -236,12 +236,46 @@ def _resolution_verifier(report: dict[str, Any], report_path: Path, context: dic
                        for name, passed in specs.items()}}
 
 
+def _panel_verifier(report: dict[str, Any], report_path: Path, context: dict[str, Any],
+                    repo_root: Path) -> dict[str, Any]:
+    """Reparse original native observations; caller-provided pass flags are not proof."""
+    import hd_layout_command_input_summary as command
+    manifest_path, manifest = read_reference(report.get("command_manifest"), report_path.parent, json_object=True)
+    observed = command.build_report(manifest_path, candidate_manifest=Path(context["metadata_path"]))
+    failures = list(observed.get("failures", []))
+    identity = observed.get("identity", {})
+    _check(observed.get("candidate_context", {}).get("identity") == context["identity"], failures,
+           "replayed command observations belong to another complete candidate")
+    wrapper = identity.get("wrapper", {})
+    expected_profile = {"environment": identity.get("environment"), "input_method": identity.get("input_method"),
+                        "wrapper": {key: wrapper.get(key) for key in ("path", "sha256")},
+                        "wrapper_config": wrapper.get("config")}
+    for key, expected in (("run_id", identity.get("run_id")), ("started_at", identity.get("started_at")),
+                          ("finished_at", identity.get("finished_at")), ("runtime_profile", expected_profile),
+                          ("approval", manifest.get("approval"))):
+        _check(report.get(key) == expected, failures, f"command lane envelope differs from original observation {key}")
+    source_paths = {read_reference(ref, report_path.parent)[0] for ref in report.get("source_artifacts", [])}
+    _check(manifest_path in source_paths, failures, "command lane must retain its original observation manifest")
+    _check(observed.get("passed") is True and observed.get("manual_directinput_proof") is False,
+           failures, "native callback report must pass while preserving the separate manual-proof boundary")
+    values = {
+        "command_click_alignment": observed.get("command_click_alignment") is True,
+        "native_click_gate_observed": observed.get("native_click_gate_observed") is True,
+        "panel_click_callback_proof": observed.get("panel_click_callback_proof") is True,
+        "observation_only_probe": observed.get("passed") is True,
+        "matching_descriptor_and_callback": observed.get("passed") is True and observed.get("matched_sequence") is not None,
+    }
+    return {"passed": not failures and all(values.values()), "failures": failures,
+            "checks": {name: {"passed": passed, "failures": [] if passed else [name]} for name, passed in values.items()}}
+
+
 # Only repository code chooses a verifier. Never import a module/function or
 # execute a command supplied by an evidence report. Missing adapters are an
 # explicit incomplete requirement, not permission to trust claimed booleans.
 # Add a lane here only with source-artifact replay and negative fixtures.
 LANE_VERIFIERS: dict[str, tuple[str, Callable]] = {
     "resolution_coverage": ("tools/complete_hd_evidence.py", _resolution_verifier),
+    "panel_command": ("tools/hd_layout_command_input_summary.py", _panel_verifier),
 }
 
 
@@ -383,13 +417,21 @@ def evaluate_lane(lane: str, ref: Any, context: dict[str, Any], base: Path, *, r
                 read_reference(profile.get(key), report_path.parent)
             if lane in VISIBLE_LANES or report.get("evidence_class") in ("manual_directinput", "approved_visible_soak"):
                 _check(profile.get("environment") == "host_visible", failures, "host visible evidence is required")
-                failures.extend(_approval(report, report_path, identity))
-            if lane in MANUAL_IDS or lane == "panel_command":
+                if lane != "panel_command":
+                    failures.extend(_approval(report, report_path, identity))
+                # Panel replay validates its original source-bound approval
+                # receipt rather than requiring a second invented approval.
+            if lane in MANUAL_IDS:
                 _check(profile.get("input_method") == "manual_directinput", failures, "real manual input is required")
                 _check(report.get("input_injected") is False and report.get("input_or_callback_forced") is False,
                        failures, "injected or debugger-forced input cannot satisfy manual acceptance")
                 for name in ("observed_result", "pass_fail_notes"):
                     _check(_text(report.get(name)), failures, f"manual observation lacks real {name}")
+            if lane == "panel_command":
+                _check(profile.get("input_method") in ("manual_directinput", "win32_sendinput_relative"), failures,
+                       "panel callback requires disclosed human or relative pulse input")
+                _check(report.get("input_or_callback_forced") is False, failures,
+                       "debugger-forced input or callback cannot establish native panel acceptance")
             if lane in ("short_soak_ladder", "long_map_idle", "long_map_pan"):
                 failures.extend(_soak_rows(report, lane, identity))
             if lane in ("save_load_roundtrip", "turn_advancement", "campaign_routes"):

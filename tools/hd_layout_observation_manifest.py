@@ -58,8 +58,9 @@ def plan_bytes(plan: dict) -> bytes:
     return (json.dumps(plan, indent=2) + "\n").encode("utf-8")
 
 
-def prepare_launch_environment(wrapper_mode: str, inherited: dict | None = None) -> tuple[dict, dict]:
-    policy = summary.launch_environment_policy(wrapper_mode)
+def prepare_launch_environment(wrapper_mode: str, inherited: dict | None = None,
+                               resolution: list[int] | tuple[int, int] = (800, 600)) -> tuple[dict, dict]:
+    policy = summary.launch_environment_policy(wrapper_mode, resolution)
     source = os.environ if inherited is None else inherited
     environment = {key: value for key, value in source.items()
                    if key.upper() not in policy["remove_names"]
@@ -123,12 +124,16 @@ def asset_inventory(work: Path) -> dict:
 def build_plan(args: argparse.Namespace) -> dict:
     """Read-only plan construction; never creates output directories or processes."""
     candidate, output = args.candidate.resolve(), args.output_dir.resolve()
+    candidate_manifest = getattr(args, "candidate_manifest", None)
+    context = summary.load_release_context(candidate_manifest) if candidate_manifest is not None else None
+    dimensions = list(summary.panel_geometry(context)[2:])
     wrapper, config, cdb = args.wrapper.resolve(), args.wrapper_config.resolve(), args.cdb.resolve()
     if not candidate.is_relative_to(CANDIDATE_ROOT.resolve()) or candidate.suffix.lower() != ".exe":
         raise ValueError("candidate must be a distinct executable under C:\\ClashTests")
     if not output.is_relative_to(OUTPUT_ROOT.resolve()) or output == OUTPUT_ROOT.resolve() or output.exists():
         raise ValueError("output must be a new run directory under C:\\ClashCaptures")
-    if args.stage not in summary.SUPPORTED_STAGES or not re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", args.run_id):
+    stages = (context["identity"]["stage"],) if context is not None else summary.SUPPORTED_STAGES
+    if args.stage not in stages or not re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", args.run_id):
         raise ValueError("unsupported validation stage or malformed run ID")
     if type(args.timeout_seconds) is not int or not 30 <= args.timeout_seconds <= 900:
         raise ValueError("timeout must be 30 through 900 seconds")
@@ -140,34 +145,53 @@ def build_plan(args: argparse.Namespace) -> dict:
         raise ValueError("the debugger must be an explicitly selected x86 cdb.exe")
     require_x86_pe(cdb)
     require_x86_pe(wrapper)
-    validate_candidate(candidate, args.stage)
+    if context is None:
+        if getattr(args, "input_method", "manual_directinput") != "manual_directinput":
+            raise ValueError("historical observation supports only its manual input plan")
+        validate_candidate(candidate, args.stage)
+    elif str(candidate) != context["candidate_path"]:
+        raise ValueError("candidate path differs from the shared complete manifest bundle")
     assets = asset_inventory(candidate.parent)
     identity = {
         "run_id": args.run_id, "candidate_path": str(candidate), "candidate_sha256": file_ref(candidate)["sha256"],
-        "stage": args.stage, "resolution": [800, 600], "environment": "host_visible", "input_method": "manual_directinput",
+        "stage": args.stage, "resolution": dimensions, "environment": "host_visible", "input_method": "manual_directinput",
         "wrapper": {**file_ref(wrapper), "config": file_ref(config), "mode": args.wrapper_mode},
         "input_plan": copy.deepcopy(summary.INPUT_PLAN),
     }
+    keys = PLAN_KEYS
+    if context is not None:
+        identity["input_method"] = getattr(args, "input_method", "manual_directinput")
+        identity["input_plan"] = summary.release_input_plan(context, identity["input_method"])
+        identity["candidate_identity"] = copy.deepcopy(context["identity"])
+        keys += ("candidate_manifest", "input_method")
     parameters = {key: str(getattr(args, key).resolve()) if isinstance(getattr(args, key), Path) else getattr(args, key)
-                  for key in PLAN_KEYS}
-    return {"schema_version": 1, "executed": False, "identity": identity, "parameters": parameters,
+                  for key in keys}
+    plan = {"schema_version": 1, "executed": False, "identity": identity, "parameters": parameters,
             "cdb": file_ref(cdb), "python": file_ref(Path(sys.executable)), "output_dir": str(output), "timeout_seconds": args.timeout_seconds,
             "producer_source": file_ref(Path(__file__)), "wrapper_script": file_ref(SCRIPT),
             "observation_template": file_ref(summary.PROBE), "summary_source": file_ref(Path(summary.__file__)),
             "launch_mode": "x86_cdb_visible_manual_observation", "inject_input": False,
             "requires_fresh_user_approval": True, "creates_approval": False,
-            "capture": {"native_client_size": [800, 600], "states": ["map", "panel_hover"], "stable_pairs": True},
-            "launch_environment": summary.launch_environment_policy(args.wrapper_mode),
+            "capture": {"native_client_size": dimensions, "states": ["map", "panel_hover"], "stable_pairs": True},
+            "launch_environment": summary.launch_environment_policy(args.wrapper_mode, dimensions),
             "assets": assets,
             "cleanup": "only exact candidate child and the CDB process launched by this session"}
+    if context is not None:
+        plan["candidate_manifest"] = file_ref(candidate_manifest)
+        plan["launch_mode"] = "x86_cdb_visible_complete_callback_observation"
+        plan["input_policy"] = "Observer injects no input; the disclosed human or separately approved relative pulse driver operates the game."
+    return plan
 
 
 def verify_plan(plan: dict) -> argparse.Namespace:
-    if not isinstance(plan.get("parameters"), dict) or set(plan["parameters"]) != set(PLAN_KEYS):
+    keys = PLAN_KEYS + (("candidate_manifest", "input_method") if "candidate_manifest" in plan else ())
+    if not isinstance(plan.get("parameters"), dict) or set(plan["parameters"]) != set(keys):
         raise ValueError("plan parameters are missing or unexpected")
     args = argparse.Namespace(**plan["parameters"])
     for key in ("candidate", "wrapper", "wrapper_config", "cdb", "output_dir"):
         setattr(args, key, Path(getattr(args, key)))
+    if "candidate_manifest" in plan:
+        args.candidate_manifest = Path(args.candidate_manifest)
     if build_plan(args) != plan:
         raise ValueError("plan differs from current candidate, source files, wrapper, or safe parameters")
     return args
@@ -178,7 +202,7 @@ def validate_approval(approval_path: Path, identity: dict, timeout_seconds: int,
     if (record.get("approved") is not True or record.get("record_kind") != "user_approval"
             or not isinstance(record.get("approval_text"), str) or not record["approval_text"].strip()):
         raise ValueError("an existing explicit user approval record is required")
-    if record.get("identity") != {key: identity[key] for key in summary.APPROVAL_BINDINGS}:
+    if record.get("identity") != {key: identity[key] for key in summary.approval_bindings(identity)}:
         raise ValueError("approval does not bind the exact prelaunch plan identity")
     issued, expires, current = (summary.timestamp(record.get("approved_at")), summary.timestamp(record.get("expires_at")),
                                 summary.timestamp(now or utc_now()))
@@ -303,7 +327,7 @@ class WindowsSession:
             raise ValueError("owned candidate window is not DPI-aware")
         return awareness
 
-    def window(self, proc_id: int) -> int | None:
+    def window(self, proc_id: int, dimensions: tuple[int, int] = (800, 600)) -> int | None:
         matches = []
         @self.callback_type
         def callback(hwnd, _):
@@ -311,40 +335,45 @@ class WindowsSession:
             self.user.GetWindowThreadProcessId(hwnd, self.ctypes.byref(value))
             rect = self.w.RECT()
             if (value.value == proc_id and self.user.IsWindowVisible(hwnd) and self.user.GetClientRect(hwnd, self.ctypes.byref(rect))
-                    and (rect.right, rect.bottom) == (800, 600)):
+                    and (rect.right, rect.bottom) == dimensions):
                 matches.append(int(hwnd))
             return True
         if not self.user.EnumWindows(callback, 0):
             raise OSError("cannot enumerate owned candidate windows")
         if len(matches) > 1:
-            raise ValueError("multiple 800x600 windows for owned candidate")
+            raise ValueError("multiple candidate-size windows for owned candidate")
         return matches[0] if matches else None
 
     def capture(self, hwnd: int, proc_id: int, identity: dict, path: Path) -> dict:
         from PIL import ImageGrab
         c, w = self.ctypes, self.w
+        width, height = identity.get("resolution", [800, 600])
         value, rect, origin = w.DWORD(), w.RECT(), w.POINT(0, 0)
         self.user.GetWindowThreadProcessId(hwnd, c.byref(value))
         if (value.value != proc_id or not self.user.IsWindowVisible(hwnd)
-                or not self.user.GetClientRect(hwnd, c.byref(rect)) or (rect.right, rect.bottom) != (800, 600)
+                or not self.user.GetClientRect(hwnd, c.byref(rect)) or (rect.right, rect.bottom) != (width, height)
                 or not self.user.ClientToScreen(hwnd, c.byref(origin))):
             raise ValueError("owned candidate client changed before capture")
-        center = self.user.WindowFromPoint(w.POINT(origin.x + 400, origin.y + 300))
+        center = self.user.WindowFromPoint(w.POINT(origin.x + width // 2, origin.y + height // 2))
         root = self.user.GetAncestor(center, 2)
         if root != hwnd or center != hwnd:
             raise ValueError("candidate is occluded at center; user must expose its approved window")
+        if "candidate_identity" in identity:
+            for x, y in ((0, 0), (width - 1, 0), (0, height - 1), (width - 1, height - 1)):
+                if self.user.WindowFromPoint(w.POINT(origin.x + x, origin.y + y)) != hwnd:
+                    raise ValueError("candidate border is inaccessible or occluded; expose the complete approved client")
         window_dpi = self.window_dpi_awareness(hwnd)
         captured_at = utc_now()
-        frame = ImageGrab.grab(bbox=(origin.x, origin.y, origin.x + 800, origin.y + 600), all_screens=True)
-        if frame.size != (800, 600) or self.user.WindowFromPoint(w.POINT(origin.x + 400, origin.y + 300)) != hwnd:
+        frame = ImageGrab.grab(bbox=(origin.x, origin.y, origin.x + width, origin.y + height), all_screens=True)
+        if frame.size != (width, height) or self.user.WindowFromPoint(w.POINT(origin.x + width // 2, origin.y + height // 2)) != hwnd:
             raise ValueError("capture size/owned visible window changed")
         frame.save(path)
         sidecar = path.with_suffix(".json")
-        write_json(sidecar, {"Hash": file_ref(path)["sha256"], "Width": 800, "Height": 600, "CaptureMode": "screen",
+        write_json(sidecar, {"Hash": file_ref(path)["sha256"], "Width": width, "Height": height, "CaptureMode": "screen",
             "TargetHwnd": f"0x{hwnd:x}", "CenterWindowHwnd": f"0x{center:x}", "CenterRootHwnd": f"0x{root:x}",
             "CenterWindowMatchesTarget": True, "OriginX": origin.x, "OriginY": origin.y,
             "CaptureId": str(uuid.uuid4()), "RunId": identity["run_id"], "CandidateSha256": identity["candidate_sha256"],
-            "Stage": identity["stage"], "ClientSize": [800, 600], "WindowDpiAwareness": window_dpi, "CapturedAt": captured_at})
+            "Stage": identity["stage"], "ClientSize": [width, height], "WindowDpiAwareness": window_dpi, "CapturedAt": captured_at})
         return {**file_ref(path), "sidecar": file_ref(sidecar)}
 
     def stop_candidate(self, owned: dict) -> bool:
@@ -389,12 +418,13 @@ def descriptor_cursor(rows: list[dict]) -> tuple[int, int, int, int]:
     return tuple(descriptor[key] for key in ("cursor_meta", "cursor_sprite", "cursor_x", "cursor_y"))
 
 
-def state_ready(rows: list[dict], state: str) -> bool:
+def state_ready(rows: list[dict], state: str, geometry: tuple[int, int, int, int] = (608, 528, 800, 600)) -> bool:
     descriptors = [row["values"] for row in rows if row["marker"] == "DESCRIPTOR"]
     if not descriptors:
         return False
     row = descriptors[-1]
-    if ((row["desc"], row["x"], row["y"], row["width"], row["height"], row["callback"]) != (0x511D40, 608, 528, 800, 600, 0x409D80)
+    left, top, width, height = geometry
+    if ((row["desc"], row["x"], row["y"], row["width"], row["height"], row["callback"]) != (0x511D40, *geometry, 0x409D80)
             or row["selected_unit"] < 0 or row["state3"] not in (1, 2)):
         return False
     x, y = row["mouse_x"], row["mouse_y"]
@@ -403,31 +433,32 @@ def state_ready(rows: list[dict], state: str) -> bool:
     expected_cursor = (0x5196C8, 3, x, y) if state == "map" else (0x5196A0, 2, x, y)
     if descriptor_cursor(rows) != expected_cursor:
         return False  # Another natural cursor is outside this narrow proof recipe.
-    return ((row["state"] == 2 and 240 <= x <= 480 and 200 <= y <= 400) if state == "map"
-            else (row["state"] == 6 and 608 <= x < 671 and 528 <= y < 559))
+    central = (240, 200, 480, 400) if geometry == (608, 528, 800, 600) else (width // 3, height // 3, width * 2 // 3, height * 2 // 3)
+    return ((row["state"] == 2 and central[0] <= x <= central[2] and central[1] <= y <= central[3]) if state == "map"
+            else (row["state"] == 6 and left <= x < left + 63 and top <= y < top + 31))
 
 
 def stable_pair(session: Any, hwnd: int, owned: dict, identity: dict, output: Path, state: str, deadline: float, log: Path,
-                expected_selection: tuple[int, int]) -> list[dict]:
+                expected_selection: tuple[int, int], geometry: tuple[int, int, int, int] = (608, 528, 800, 600)) -> list[dict]:
     from PIL import Image
     previous = None
     for index in range(12):
         before = read_snapshot(log)
         rows_before = before["rows"]
-        if (time.monotonic() >= deadline or not state_ready(rows_before, state)
+        if (time.monotonic() >= deadline or not state_ready(rows_before, state, geometry)
                 or descriptor_selection(rows_before) != expected_selection):
             raise ValueError(f"{state} observation changed or capture deadline expired")
         item = session.capture(hwnd, owned["pid"], identity, output / f"{state}-{index:02d}.png")
         time.sleep(0.05)
         after = read_snapshot(log)
         rows_after = after["rows"]
-        if (len(rows_after) <= len(rows_before) or not state_ready(rows_after, state)
+        if (len(rows_after) <= len(rows_before) or not state_ready(rows_after, state, geometry)
                 or descriptor_selection(rows_after) != expected_selection
                 or descriptor_cursor(rows_after) != descriptor_cursor(rows_before)
                 or descriptor_reference(after)["line"] <= descriptor_reference(before)["line"]):
             raise ValueError(f"no fresh matching {state} input observation across capture")
         for row in rows_after[len(rows_before):]:
-            if row["marker"] == "DESCRIPTOR" and (not state_ready([row], state)
+            if row["marker"] == "DESCRIPTOR" and (not state_ready([row], state, geometry)
                     or descriptor_selection([row]) != expected_selection
                     or descriptor_cursor([row]) != descriptor_cursor(rows_before)):
                 raise ValueError(f"{state} descriptor or cursor changed during capture")
@@ -453,6 +484,12 @@ def execute(plan_path: Path, approval_path: Path, *, allow_visible_runtime: bool
     plan = json.loads(source_plan_bytes.decode("utf-8-sig"))
     args = verify_plan(plan)
     identity = {**copy.deepcopy(plan["identity"]), "execution_plan_sha256": summary.sha256(source_plan_bytes)}
+    candidate_manifest = getattr(args, "candidate_manifest", None)
+    context = summary.load_release_context(candidate_manifest) if candidate_manifest is not None else None
+    geometry = summary.panel_geometry(context)
+    if context is not None and identity.get("candidate_identity") != context["identity"]:
+        raise ValueError("complete candidate changed after approval-plan reconstruction")
+    prepared_probe = summary.render_probe(identity, context)
     validate_approval(approval_path, identity, args.timeout_seconds)
     approval_ref = file_ref(approval_path)
     # No Win32/process/capture APIs have been used above this boundary.
@@ -465,13 +502,13 @@ def execute(plan_path: Path, approval_path: Path, *, allow_visible_runtime: bool
     approval_copy.write_bytes(approval_path.read_bytes())
     # Preserve the original approval reference; copying never changes its semantics.
     rendered = output / "observation.cdb"
-    rendered.write_text(summary.render_probe(identity), encoding="utf-8")
+    rendered.write_text(prepared_probe, encoding="utf-8")
     startup = output / "startup.cdb"
     startup.write_text(rendered.read_text(encoding="utf-8") + "\ng\n", encoding="utf-8")
     log = output / "observation.log"
     identity["started_at"] = utc_now()
     earliest = int((summary.timestamp(identity["started_at"]).timestamp() + 11644473600) * 10000000)
-    environment, environment_receipt = prepare_launch_environment(args.wrapper_mode)
+    environment, environment_receipt = prepare_launch_environment(args.wrapper_mode, resolution=identity["resolution"])
     cdb = None; owned = None; hwnd = None; frames = {}; failures = []; measured_sha = None; click_start_line = None
     candidate_dpi = None; window_dpi = None
     launch_command = [str(args.cdb), "-hd", "-logo", str(log), "-cf", str(startup), str(args.candidate)]
@@ -482,6 +519,8 @@ def execute(plan_path: Path, approval_path: Path, *, allow_visible_runtime: bool
             raise ValueError("candidate changed immediately before launch")
         for ref in (plan["cdb"], identity["wrapper"], identity["wrapper"]["config"], approval_ref):
             summary.reference(copied_plan, ref)
+        if context is not None:
+            summary.reference(copied_plan, plan["candidate_manifest"])
         if asset_inventory(args.candidate.parent) != plan["assets"]:
             raise ValueError("approved local asset inventory changed immediately before launch")
         if environment_receipt["policy"] != plan["launch_environment"]:
@@ -496,7 +535,7 @@ def execute(plan_path: Path, approval_path: Path, *, allow_visible_runtime: bool
                 raise ValueError("owned debugger exited before candidate/window discovery")
             owned = owned or session.candidate_child(cdb.pid, args.candidate.resolve(), earliest)
             if owned:
-                hwnd = session.window(owned["pid"])
+                hwnd = session.window(owned["pid"], tuple(identity["resolution"])) if context is not None else session.window(owned["pid"])
                 if hwnd:
                     # Let the loader apply the inherited compatibility layer
                     # before measuring awareness; HWND creation finishes that.
@@ -505,26 +544,26 @@ def execute(plan_path: Path, approval_path: Path, *, allow_visible_runtime: bool
                     break
             time.sleep(0.2)
         if not owned or not hwnd:
-            raise ValueError("no unambiguous owned 800x600 candidate window before deadline")
+            raise ValueError("no unambiguous owned candidate-size window before deadline")
         identity["hwnd"] = f"0x{hwnd:x}"
         measured_sha = file_ref(Path(owned["path"]))["sha256"]
         if measured_sha != identity["candidate_sha256"]:
             raise ValueError("measured process image differs from approved candidate")
         expected_selection = None
-        for state, instruction in (("map", summary.INPUT_PLAN["steps"][0]), ("panel_hover", summary.INPUT_PLAN["steps"][1])):
+        for state, instruction in (("map", identity["input_plan"]["steps"][0]), ("panel_hover", identity["input_plan"]["steps"][1])):
             print(instruction, flush=True)
             cursor = len(read_rows(log))
             while time.monotonic() < deadline:
                 rows = read_rows(log)
                 # Require a new observation after this phase begins.
-                if len(rows) > cursor and state_ready(rows, state):
+                if len(rows) > cursor and state_ready(rows, state, geometry):
                     selection = descriptor_selection(rows)
                     if expected_selection is None:
                         expected_selection = selection
                     elif selection != expected_selection:
                         raise ValueError("selected unit or descriptor-3 state changed between capture phases")
                     time.sleep(0.5)
-                    frames[state] = stable_pair(session, hwnd, owned, identity, output, state, deadline, log, expected_selection)
+                    frames[state] = stable_pair(session, hwnd, owned, identity, output, state, deadline, log, expected_selection, geometry)
                     break
                 cursor = len(rows)
                 time.sleep(0.2)
@@ -534,9 +573,9 @@ def execute(plan_path: Path, approval_path: Path, *, allow_visible_runtime: bool
         before_click = read_rows(log)
         click_start = len(before_click)
         click_start_line = before_click[-1]["line"] if before_click else 0
-        print(summary.INPUT_PLAN["steps"][2], flush=True)
+        print(identity["input_plan"]["steps"][2], flush=True)
         while time.monotonic() < deadline:
-            matched = summary.match_sequence(read_rows(log)[click_start:])[0]
+            matched = summary.match_sequence(read_rows(log)[click_start:], geometry)[0]
             if matched:
                 if descriptor_selection(matched) != expected_selection:
                     raise ValueError("click selection or descriptor-3 state differs from the captured phases")
@@ -578,7 +617,7 @@ def execute(plan_path: Path, approval_path: Path, *, allow_visible_runtime: bool
         "process_image_path": owned["path"] if owned else None,
         "process_image_sha256": measured_sha, "launch_command": launch_command,
         "launch_environment": environment_receipt, "candidate_dpi_awareness": candidate_dpi,
-        "window_dpi_awareness": window_dpi, "physical_client_size": [800, 600] if hwnd else None,
+        "window_dpi_awareness": window_dpi, "physical_client_size": identity["resolution"] if hwnd else None,
         "click_observation_start_line": click_start_line,
         "startup_probe": file_ref(startup), "cleanup": cleanup, "failures": failures}
     receipt_path = output / "session-receipt.json"; write_json(receipt_path, receipt)
@@ -587,11 +626,13 @@ def execute(plan_path: Path, approval_path: Path, *, allow_visible_runtime: bool
         "probe": {"template_path": str(summary.PROBE), "template_sha256": file_ref(summary.PROBE)["sha256"],
                   "rendered_path": str(rendered), "rendered_sha256": file_ref(rendered)["sha256"]},
         "session_receipt": file_ref(receipt_path)}
+    if context is not None:
+        manifest["candidate_manifest"] = plan["candidate_manifest"]
     manifest_path = output / "command-input-manifest.json"; write_json(manifest_path, manifest)
     composition = {"schema_version": 1, "evidence_class": "approved_visible_automated_layout_composition",
                    "identity": identity, "command_manifest": file_ref(manifest_path), "approval": approval_ref, "frames": frames}
     write_json(output / "composition.json", composition)
-    report = summary.build_report(manifest_path)
+    report = summary.build_report(manifest_path, candidate_manifest=candidate_manifest)
     write_json(output / "command-input-summary.json", report)
     return {"passed": report["passed"], "status": report["status"], "output_dir": str(output), "failures": report["failures"]}
 
@@ -600,6 +641,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--candidate", type=Path)
     parser.add_argument("--stage")
+    parser.add_argument("--candidate-manifest", type=Path, help="Complete-HD bundle; binds geometry and the loaded candidate probe")
+    parser.add_argument("--input-method", choices=("manual_directinput", "win32_sendinput_relative"), default="manual_directinput",
+                        help="Disclose the input operator; this tool itself never injects input")
     parser.add_argument("--wrapper", type=Path)
     parser.add_argument("--wrapper-config", type=Path)
     parser.add_argument("--wrapper-mode", choices=("proxy-present", "gog"), default="proxy-present")
