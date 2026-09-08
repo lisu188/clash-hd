@@ -48,6 +48,69 @@ def test_current_harness_passes() -> None:
     assert guard["checks"]["promotion_boundary"]["passed"] is True
 
 
+def test_nonexecuting_syntax_hash_and_preflight_boundary(fixture: Path) -> None:
+    """Parse the full producer; execute only its two file-reading helpers."""
+    powershell = shutil.which("powershell.exe") or shutil.which("pwsh")
+    if not powershell:
+        print("PowerShell syntax/helper check unavailable on this platform")
+        return
+    fixture.mkdir(parents=True)
+    sample = fixture / "hash sample.bin"
+    sample.write_bytes(b"abc")
+    config = fixture / "dxcfg.ini"
+    config.write_text("[dxcfg]\ndisplay=application\npresentation=windowed\n", encoding="ascii")
+    def quoted(path: Path) -> str:
+        return "'" + str(path.resolve()).replace("'", "''") + "'"
+    command = r"""
+$ErrorActionPreference = 'Stop'
+$tokens = $null; $parseErrors = $null
+$ast = [System.Management.Automation.Language.Parser]::ParseFile(HARNESS_PATH, [ref]$tokens, [ref]$parseErrors)
+if (@($parseErrors).Count) { throw ($parseErrors | Out-String) }
+$names = @($ast.ParamBlock.Parameters | ForEach-Object { $_.Name.VariablePath.UserPath.ToLowerInvariant() })
+if (@($names | Select-Object -Unique).Count -ne $names.Count) { throw 'duplicate producer parameters' }
+$functions = @($ast.FindAll({ param($node)
+    $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and
+    $node.Name -in @('Get-SoakFileSha256', 'Get-DxcfgWindowedStatus', 'Get-VisibleRuntimeApprovalToken')
+}, $true))
+if ($functions.Count -ne 3) { throw 'missing file-only helpers' }
+foreach ($function in $functions) { . ([scriptblock]::Create($function.Extent.Text)) }
+function Get-FileHash { throw 'Get-FileHash must not be required' }
+$actual = Get-SoakFileSha256 -Path SAMPLE_PATH
+if ($actual -cne 'BA7816BF8F01CFEA414140DE5DAE2223B00361A396177A9CB410FF61F20015AD') { throw 'wrong SHA-256' }
+$config = Get-DxcfgWindowedStatus -Path CONFIG_PATH
+if (-not $config.Passed -or $config.Sha256 -cne (Get-SoakFileSha256 -Path CONFIG_PATH)) { throw 'config hash differs' }
+if ((Get-DxcfgWindowedStatus -Path MISSING_PATH).Passed) { throw 'missing config accepted' }
+$configFields = @($ast.FindAll({ param($node)
+    $node -is [System.Management.Automation.Language.SubExpressionAst] -and
+    $node.Extent.Text.Contains("'missing-windowed-config'")
+}, $true))
+if ($configFields.Count -ne 1) { throw 'missing explicit absent-config token field' }
+$windowedMode = [pscustomobject]@{ Sha256 = $null }
+$missingField = & ([scriptblock]::Create($configFields[0].Extent.Text))
+if ($missingField -cne 'missing-windowed-config') { throw 'missing config field became empty' }
+$token = Get-VisibleRuntimeApprovalToken -Fields @('fixture-source', $missingField, 'fixture-stage')
+if ($token -notmatch '^[0-9a-f]{16}$') { throw 'missing config blocks the approval boundary' }
+$windowedMode = [pscustomobject]@{ Sha256 = $actual }
+if ((& ([scriptblock]::Create($configFields[0].Extent.Text))) -cne $actual) { throw 'valid config token field changed' }
+$failed = $false
+try { Get-SoakFileSha256 -Path MISSING_PATH | Out-Null } catch { $failed = $true }
+if (-not $failed) { throw 'missing hash source accepted' }
+$standingCalls = @($ast.FindAll({ param($node)
+    $node -is [System.Management.Automation.Language.CommandAst] -and $node.GetCommandName() -eq 'Get-InputStandingStatus'
+}, $true))
+$guard = $ast.Extent.Text.IndexOf('if ($VisibleRuntimeApprovalToken -ne $expectedVisibleRuntimeApprovalToken)')
+if ($guard -lt 0 -or $standingCalls.Count -ne 1 -or $standingCalls[0].Extent.StartOffset -le $guard) {
+    throw 'input-standing inspection precedes exact approval'
+}
+'NONEXECUTING_SOAK_PREFLIGHT_PASS'
+"""
+    for name, path in (("HARNESS_PATH", HARNESS), ("SAMPLE_PATH", sample), ("CONFIG_PATH", config),
+                       ("MISSING_PATH", fixture / "missing.bin")):
+        command = command.replace(name, quoted(path))
+    result = subprocess.run([powershell, "-NoProfile", "-Command", command], capture_output=True, text=True, check=False)
+    assert result.returncode == 0 and "NONEXECUTING_SOAK_PREFLIGHT_PASS" in result.stdout, result.stdout + result.stderr
+
+
 def test_guard_rejects_stage_drift(fixture: Path) -> None:
     bad = harness_text().replace(hd_soak_harness_guard.PROTECTED_STABLE_STAGE, "bad-stage", 1)
     script = write_fixture(fixture / "bad-stage.ps1", bad)
@@ -309,6 +372,7 @@ def run_tests() -> None:
     fixture.mkdir(parents=True)
     try:
         test_current_harness_passes()
+        test_nonexecuting_syntax_hash_and_preflight_boundary(fixture / "nonexecuting-preflight")
         test_guard_rejects_stage_drift(fixture / "stage")
         test_guard_rejects_repo_candidate_default(fixture / "repo-candidate")
         test_guard_rejects_missing_explicit_approval(fixture / "approval")
