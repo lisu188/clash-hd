@@ -741,6 +741,17 @@ All six fixture resolutions retain exact loaded contracts and their own surface
 bounds. New-stage runtime, pixel, cleanup and ordinary/manual input evidence
 remain separate requirements; the historical movement failures are unchanged.
 
+The [2026-09-13 controlled 1024x768 selection checkpoint](../../captures/current/completehd-army-selection-1024x768-20260913.json)
+records a fresh complete-HD v1 run with passing initial/native selection traces,
+three identical stopped captures and verified owned-process cleanup. Its
+independent audit checks all five before/after/final surfaces: four frame bands,
+footer, six action cells, eight portrait bodies and exposed backing pass; the
+entire portrait backing survives redraw unchanged. This is controlled native-call
+and hidden software-surface evidence. Count glyphs, map-unit artwork, ordinary
+input, final-wrapper composition and promotion are not proved. The new complete
+movement validator passes its real-file reconstruction fixtures with synthetic
+observations; a fresh actual movement run is still required.
+
 | Work | Start with | Focused verification |
 | --- | --- | --- |
 | Patcher/resolutions | `src/patcher/patch_clash95_hd.py`; root `patch_clash95_hd.py` is the CLI wrapper | `tools/test_patch_resolution.py`, `tools/test_patch_definition_guard.py`, `tools/test_stable_stage_guard.py` |
