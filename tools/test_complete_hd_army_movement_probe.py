@@ -131,7 +131,7 @@ class MovementProbeTests(unittest.TestCase):
                 packet,manifest=case['packet'],case['manifest']
                 width,height=map(int,resolution.split('x'))
                 self.assertEqual(packet['schema'],'clash95_complete_hd_army_movement_probe_v1')
-                self.assertEqual(packet['revision'],'complete_hd_controlled_native_whole_army_outward_move_v2')
+                self.assertEqual(packet['revision'],'complete_hd_controlled_native_whole_army_outward_move_v3')
                 self.assertEqual((packet['resolution'],packet['width'],packet['height']),(resolution,width,height))
                 self.assertEqual(packet['stage'],probe.base.builder.STAGE)
                 self.assertEqual(packet['candidate_recipe'],probe.base.builder.REVISION)
@@ -158,7 +158,7 @@ class MovementProbeTests(unittest.TestCase):
                 self.assertEqual(len(numbers),len(set(numbers)))
                 self.assertTrue(any('independent full-protocol' in item for item in packet['limits']))
 
-    def test_frozen_v3_commands_differ_only_by_reviewed_backend_contract_and_diagnostics(self):
+    def test_frozen_route_preserved_outside_reviewed_backend_frame_and_retirement_contracts(self):
         # Legacy selection remains incompatible with the merged renderer.
         # This comparison tests reviewed v3 commands, not old-producer compatibility.
         with self.assertRaisesRegex(ValueError,
@@ -171,12 +171,27 @@ class MovementProbeTests(unittest.TestCase):
         self.assertEqual(probe.BACKEND_SPANS,spans)
         with patch.object(frozen.base,'verify_sources',side_effect=probe.base.verify_sources), \
              patch.object(frozen.base,'build_selection_probe',return_value=self.baseline), \
-             patch.object(frozen,'NATIVE_SPANS',frozen.NATIVE_SPANS+spans), \
-             patch.object(frozen,'NATIVE_CALLS',frozen.NATIVE_CALLS|{0x4614D8:0x460A50}):
+             patch.object(frozen,'NATIVE_SPANS',frozen.NATIVE_SPANS+spans+((0x40ADF0,0x89),(0x406FA0,0xB80))), \
+             patch.object(frozen,'NATIVE_CALLS',frozen.NATIVE_CALLS|{0x4614D8:0x460A50,0x410C96:0x40ADF0,0x410DF5:0x40ADF0,0x40AE11:0x406FA0}):
             expected=frozen.build_movement_probe(self.original,self.candidate,self.save,capture_dir=CAPTURE)
         # Remove only the separately checked rejection-only print fragments.
         # Every predicate, successful branch, native write and stop stays exact.
         actual = self.packet['compiled_probe']
+        # The v3 branches are independently evaluated below. Remove only
+        # their exact observer declarations and the one completed retirement.
+        for n in (139,140,141):
+            actual=re.sub(r'^bp'+str(n)+r' .*\n'+'bd '+str(n)+r'\n','',actual,flags=re.M)
+        actual=actual.replace('bp99 00406fa0 ','bp 00406FA0 ')
+        prior80=re.search(r'^bp80 .*$',expected['compiled_probe'],re.M)[0]
+        actual=re.sub(r'^bp80 .*$',lambda _:prior80,actual,flags=re.M)
+        for n in range(107,131):
+            row=re.search(r'^bp'+str(n)+r' .*$',actual,re.M)[0]
+            # add() receives the new idle-pending admission, while109 has its
+            # pre-existing nested pointer guard and no new predicate.
+            if n!=109:
+                changed=re.sub(r'(\(@\$t0 == 0n[0-9]+\)) & \(@\$t13 == 0\)',r'\1',row,count=1)
+                self.assertNotEqual(changed,row);actual=actual.replace(row,changed,1)
+        actual=actual.replace('r @$t13=4; .printf \\"WMOV_PUMP kind=delay-return','r @$t13=0; .printf \\"WMOV_PUMP kind=delay-return')
         for kind in ('pathfinder', 'animation', 'delay'):
             for suffix, backend_only in (('call-backend', True), ('call-context', False), ('return-context', False)):
                 extra = probe._pump_rejection(kind+'-'+suffix, backend_only=backend_only)
@@ -197,8 +212,12 @@ class MovementProbeTests(unittest.TestCase):
         self.assertEqual(actual.count(fmt),6);self.assertEqual(actual.count(args),6)
         actual=actual.replace(fmt,'').replace(args,'')
         self.assertEqual(actual,expected['compiled_probe'].replace(frozen.REVISION,probe.REVISION))
-        for key in ('supplemental_commands','supplemental_sha256','initial_extra','initial_extra_sha256',
-                    'movement_observer_vas','movement_native_call_returns','pump_observers',
+        for path,text in self.packet['supplemental_commands'].items():
+            for n in (139,140,141):text=text.replace('be '+str(n)+'; ','')
+            text=re.sub(r'bd 99; \.printf "WMOV_STARTUP_RETIRED[^;]+; ','',text)
+            self.assertEqual(text,expected['supplemental_commands'][path])
+        self.assertEqual({n:v for n,v in self.packet['movement_observer_vas'].items() if int(n)<139},expected['movement_observer_vas'])
+        for key in ('initial_extra','initial_extra_sha256','movement_native_call_returns','pump_observers',
                     'loaded_native_spans','stack_offsets_from_sentinel','expected_path_words','expected_final_ap'):
             self.assertEqual(self.packet[key],expected[key],key)
 
@@ -227,7 +246,7 @@ class MovementProbeTests(unittest.TestCase):
                     self.assertIn('candidate_sha256='+packet['candidate_sha256'],line)
                 # Both inherited selection and new movement loaded-byte checks
                 # occur before the first numbered breakpoint is installed.
-                first=re.search(r'^bp[0-9]+ ',packet['compiled_probe'],re.M).start()
+                first=next(m.start() for m in re.finditer(r'^bp([0-9]+) ',packet['compiled_probe'],re.M) if m[1]!='99')
                 for marker in ('WMOV_BASE_BYTES_PASS','WMOV_BYTES_PASS'):
                     self.assertLess(packet['compiled_probe'].index(marker),first)
 
@@ -359,7 +378,7 @@ class MovementProbeTests(unittest.TestCase):
             self.assertEqual(self.packet['movement_native_call_returns'][f'{va:08x}'],probe.base._call_return(self.candidate,va,target))
         prior={int(va,16) for va in re.findall(r'^bp[0-9]+ ([0-9a-f]{8}) ',self.baseline['compiled_probe'],re.M)}
         self.assertFalse(prior.intersection(self.packet['movement_observer_vas'].values()))
-        self.assertEqual(set(self.packet['movement_observer_vas']),{str(n) for n in range(100,139)})
+        self.assertEqual(set(self.packet['movement_observer_vas']),{str(n) for n in range(100,142)})
         self.assertEqual(probe.base._read(self.candidate,0x409AB3,2),b'\xf3\xa5')
         self.assertEqual(probe.base._read(self.candidate,0x410AF3,4),b'\x66\x89\x5f\x02')
 
@@ -424,6 +443,61 @@ class MovementProbeTests(unittest.TestCase):
                         self.assertFalse(expression(guards[0],r,m|{address:value}),(n,address))
                     for slot in range(10):
                         self.assertFalse(expression(guards[0],r,m|{0x526F78+4*slot:1}),(n,slot))
+
+    def test_single_completed_startup_observer_is_retired_inside_authenticated_checkpoint(self):
+        text=self.packet['compiled_probe']
+        before=re.search(r'^bp 00406FA0 "(.*)"$',self.baseline['compiled_probe'],re.M)[1]
+        self.assertEqual(command(self.packet,99)[1],before.replace('SHSEL_','WMOV_BASE_'))
+        self.assertNotRegex(text,re.compile(r'^bp 00406FA0 ',re.M))
+        # Resolve implicit IDs as CDB does, including the renamed observer.
+        allocated=set()
+        for number in re.findall(r'^bp([0-9]*) ',text,re.M):
+            n=int(number) if number else next(n for n in range(1000) if n not in allocated)
+            self.assertNotIn(n,allocated);allocated.add(n)
+        zero=self.packet['supplemental_commands'][f'{CAPTURE}/movement-checkpoint-0.cdb']
+        self.assertEqual(zero.count('bd 99;'),1)
+        self.assertLess(zero.index('.if ('),zero.index('bd 99;'))
+        self.assertLess(zero.index('bd 99;'),zero.index('WMOV_STARTUP_RETIRED'))
+        self.assertLess(zero.index('WMOV_STARTUP_RETIRED'),zero.index('WMOV_SURFACE'))
+        self.assertEqual(self.packet['startup_retirement'],dict(observer=99,address=0x406FA0,checkpoint=0))
+        for changed in (self.baseline['compiled_probe'].replace('bp 00406FA0 ','bp 00406FA2 '),
+                        self.baseline['compiled_probe'].replace('g\n','bp99 00400000 "gc"\ng\n')):
+            with patch.object(probe.base,'build_selection_probe',return_value=self.baseline|dict(compiled_probe=changed)):
+                with self.assertRaisesRegex(ValueError,'startup redraw observer'):self.build()
+
+    def test_native_frame_caller_depth_state_pending_and_true_return_guards(self):
+        stop=conditions(command(self.packet,80)[1])
+        native=next(g for g in stop if '(@esp == @$t3-0n348)' in g)
+        own=next(g for g in stop if g.startswith('(@$tid == @$t2)') and '(@esp' not in g)
+        for step in (1,2):
+            for kind,phase,pending,outer in (('delay',51,4,0x410C9B),('animation',54,5,0x410DFA)):
+                r,m=self.state(125,step=step);gd=r['t1'];u=gd+149349
+                x=16+step-(kind=='animation')
+                r.update(t0=phase,t13=pending,esp=r['t3']-348,t4=0x50F204)
+                m.update({u:x,r['esp']+4:0x40AE16,r['esp']+16:outer})
+                m.update({gd+556374+200*cell+38:3 if cell==x else 65535 for cell in (16,17,18)})
+                self.assertTrue(expression(own,r,m));self.assertTrue(expression(native,r,m))
+                for field,value in (('esp',r['esp']+4),('t13',0),('t0',59),('t10',1),('t11',0),('t12',1025)):
+                    self.assertFalse(expression(native,r|{field:value},m),(kind,step,field))
+                for address,value in ((r['esp']+4,0x40AE15),(r['esp']+16,outer+1),(u,x+1),(u+2,18),
+                    (u+316,3),(u+320,0),(u+14,26),(gd+556374+200*x+38,65535)):
+                    self.assertFalse(expression(native,r,m|{address:value}),(kind,step,address))
+                for n in ((139,) if kind=='delay' else (140,141)):
+                    r.update(esp=r['t3']-328,t13=0 if n==140 else pending+2)
+                    guard=conditions(command(self.packet,n)[1])[0]
+                    self.assertTrue(expression(guard,r,m),(n,step))
+                    for field,value in (('esp',r['esp']-4),('t0',59),('t13',pending),('tid',8)):
+                        self.assertFalse(expression(guard,r|{field:value},m),(n,field))
+                    if n==140:self.assertFalse(expression(guard,r|{'t4':0},m),'old pump cannot anchor a second frame')
+        # Live state cannot advance past an incomplete frame pair.
+        for n in (122,125,126,130):
+            r,m=self.state(n)
+            self.assertFalse(expression(conditions(command(self.packet,n)[1])[0],r|{'t13':6},m))
+        synthetic=next(g for g in stop if '(@$t0 == 0n38)' in g and '(@$t0 == 0n59)' in g and '(@$t13 == 0)' in g)
+        for click,phase in ((1,38),(2,59)):
+            r,m=self.state(130);r.update(t10=click,t0=phase,t13=0)
+            self.assertTrue(expression(synthetic,r,m))
+            self.assertFalse(expression(synthetic,r|{'t13':6},m))
 
     def test_path_confirmation_fails_closed_and_ap_xy_are_observed(self):
         for n in (110,111,118,120):
@@ -503,7 +577,7 @@ class MovementProbeTests(unittest.TestCase):
                     self.assertFalse(expression(rg,rr,m|{address:value}),(return_n,address))
                 self.assertIn('WMOV_PUMP kind='+kind+'-call count=%d phase=%d',call)
                 self.assertIn('WMOV_PUMP kind='+kind+'-return count=%d phase=%d',returned)
-                self.assertIn('r @$t13=0; .printf',returned)
+                self.assertIn('r @$t13='+('4' if kind=='delay' else '0')+'; .printf',returned)
                 self.assertNotRegex(call+'; '+returned,r'\b(?:eb|ed|ew|eq)\s|\br\s+(?:eax|ebx|ecx|edx|esi|edi|esp|eip)=')
         # This report does not claim all native input polling was observed.
         self.assertTrue(any('do not establish complete input-backend tracing' in x for x in self.packet['limits']))
@@ -622,7 +696,7 @@ class MovementProbeTests(unittest.TestCase):
             self.assertIn(f'{name}.raw poi(poi(005202e0)+4) L0n786432',text)
             self.assertIn(f'{name}.unit.raw @$t1+0n149349 L0n725',text)
         # Restrict the NEW route, after removing the exact inherited source.
-        new_commands='\n'.join(command(p,n)[1] for n in range(100,139))+'\n'+'\n'.join(p['supplemental_commands'].values())
+        new_commands='\n'.join(command(p,n)[1] for n in range(100,142))+'\n'+'\n'.join(p['supplemental_commands'].values())
         writes=re.findall(r'\b(?:eb|ed|ew|eq)\s+([^ ;]+)',new_commands)
         self.assertEqual(set(writes),{'00544cfc','00544d00','005451c0','00544d04','@esp'})
         regwrites=re.findall(r'\br\s+([^ =;]+)=',new_commands)

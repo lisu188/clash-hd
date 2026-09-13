@@ -781,6 +781,19 @@ the diagnostic does not prove path preview or arrival. Its strict final trace,
 cleanup and unchanged input identities are retained, and its before-movement
 pixels are byte-identical to attempt A.
 
+The [third movement attempt](../../captures/current/completehd-army-movement-1024x768-20260913-attempt-c.json)
+uses the authenticated native-wrapper backend and completes path preview. It
+records the first native move to `(17,19)`, matching occupancy changes and a
+five-point cost for all eight squads, then fails at `00406fa1` in phase 51.
+The second step, final return and after-movement capture are absent. Its
+preview passes the four frame edges, footer, six action cells and eight
+portrait-body checks; these partial pixels do not make movement pass.
+Cleanup and unchanged input/source identities are verified. A startup redraw
+observer remained active and overwrote movement counters. The observed stack
+depth also matches a nested native handler path, but the failed run did not
+record the caller stack words required to authenticate that explanation.
+Preserve this failure and verify a corrected observer lifecycle in a fresh run.
+
 | Work | Start with | Focused verification |
 | --- | --- | --- |
 | Patcher/resolutions | `src/patcher/patch_clash95_hd.py`; root `patch_clash95_hd.py` is the CLI wrapper | `tools/test_patch_resolution.py`, `tools/test_patch_definition_guard.py`, `tools/test_stable_stage_guard.py` |
