@@ -82,9 +82,11 @@ python -B tools/test_complete_hd_army_selection_trace.py
 python -B tools/test_complete_hd_army_movement_probe.py
 ```
 
-The native-byte preparation fixtures use the user-owned original and inspected
-save. Set `CLASH95_ORIGINAL` and `CLASH95_SELECTION_SAVE` if those files are in
-nondefault locations. Unavailable local inputs are reported as skipped coverage;
+The selection and movement producer fixtures use the user-owned original and
+inspected save. Set `CLASH95_ORIGINAL` and `CLASH95_SELECTION_SAVE` for their
+nondefault input paths. The trace's actual reconstruction fixture currently
+uses `C:/Clash/clash95.exe` and `C:/Clash/save/0.dat`.
+Unavailable local inputs are reported as skipped coverage;
 a skip is not runtime evidence. Synthetic trace fixtures exercise parser
 acceptance and rejection without manufacturing a runtime report.
 
