@@ -189,8 +189,16 @@ physical mirror after native slot draws. The separate
 [modal-slot adapter and validation builder](FRAMED_MODAL_SLOTS_DIAGNOSIS.md)
 now target `-completehd-modalslots-validation`. Source-bound synthetic fixtures
 cover the inclusive 33x65 dirty copy and ABI; complete-HD v1 remains unchanged.
-A new-stage runtime consumer and matching captures are still required. Native
-primary destination misplacement remains a static inference until
+The [new hidden barracks consumer](MODAL_SLOTS_BARRACKS_CAPTURE.md) authenticates
+the exact slots bundle, twelve dirty-copy events, three native/physical captures
+and retained-handle cleanup. Its first run is preserved in
+`captures/current/modal-slots-barracks-failure-20260908.json`: initial-map and
+twelve slot-copy traces passed, but a startup-record parser defect stopped
+capture. The legitimate `protocol=slots_barracks_owned_canvas_v1` field was
+mistaken for an additional SLOTS record. The narrow parser repair passes all
+13 offline fixtures; the original failed run still has no pixels. A fresh
+runtime must verify the repaired slot composition. Native primary destination
+misplacement remains a static inference until
 primary-surface evidence is captured. Court, recruitment, peasants,
 ownership/exit restoration and destruction still require complete routes.
 

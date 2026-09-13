@@ -1,0 +1,116 @@
+{
+  "schema": "clash95_modal_slots_runtime_checkpoint_v1",
+  "recorded_at": "2026-09-13T06:16:05.162623+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalslots-validation",
+  "resolution": "1024x768",
+  "candidate_sha256": "8148cfeacf893e4b006ae5b09c71612e5ac0841f491397ca2c844c9397888515",
+  "candidate_manifest_sha256": "209e9c2bbce819b338a862744ce22d69b984f2335cb5e0a823d7e0b0c5448d08",
+  "original_runtime_passed": false,
+  "original_failures": [
+    "Full source-bound owned-canvas trace did not authorize host capture."
+  ],
+  "trace_failures": [
+    "slots loaded contract/scope missing, repeated, malformed or mismatched"
+  ],
+  "initial_map_trace_passed": true,
+  "slot_trace_passed": true,
+  "observed_slot_copy_count": 12,
+  "captured_pixels": false,
+  "screenshot": null,
+  "cleanup": {
+    "candidates": [
+      {
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\completehd-validation-20260908\\slots-barracks-candidate-20260908-b\\framed-modal-canvas-barracks-1024x768-53c3999a41ea7e92.exe",
+          "creation_filetime": 134333356779651145,
+          "process_id": 21300,
+          "handle_retained": true,
+          "candidate_sha256": "8148cfeacf893e4b006ae5b09c71612e5ac0841f491397ca2c844c9397888515",
+          "creation_utc": "2026-09-08T10:07:57.9651145Z",
+          "parent_process_id": 31204
+        }
+      }
+    ],
+    "cdb": {
+      "termination_requested": true,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-08T10:07:57.6177255Z",
+        "handle_retained": true,
+        "creation_filetime": 134333356776177255,
+        "process_id": 31204
+      }
+    },
+    "desktop_closed": true
+  },
+  "postrun_identity": {
+    "candidate_sha256": "8148cfeacf893e4b006ae5b09c71612e5ac0841f491397ca2c844c9397888515",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "input_candidate_sha256": "8148cfeacf893e4b006ae5b09c71612e5ac0841f491397ca2c844c9397888515",
+    "proxy_sha256": "2ff588d8ec0dcd596e14bfd922a1de956985da5458fa36db32c4a32f70bdc015"
+  },
+  "original_verdict_changed": false,
+  "original_artifacts": {
+    "summary.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\slots-barracks-1024x768-20260908-b\\summary.json",
+      "sha256": "45f9551202bc071cf777d5bfb2b481ce68a359d5c935c19224703b2eaa2c0e01"
+    },
+    "trace.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\slots-barracks-1024x768-20260908-b\\trace.json",
+      "sha256": "4a88663e0b7a4ccd82bca5064fd977d87238ff3b8fda1a94dab6a800cd198d19"
+    },
+    "cdb.log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\slots-barracks-1024x768-20260908-b\\cdb.log",
+      "sha256": "2131285ab6a81da24b8f867c190edb0455c0894589d90af7067e5955b3da3acc"
+    },
+    "packet.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\slots-barracks-1024x768-20260908-b\\packet.json",
+      "sha256": "0e165c659905e6021ec2d053d2222bd494f04f59b0fd87419207d53ad72ebabf"
+    },
+    "plan.json": {
+      "path": "C:\\ClashCaptures\\hd-completion\\slots-barracks-1024x768-20260908-b\\plan.json",
+      "sha256": "bdd541dae56370ec56e0e2af3274dd2c7c548d79b11cc027dd7677f4043cd2f8"
+    },
+    "modal-slots-barracks.cdb": {
+      "path": "C:\\ClashCaptures\\hd-completion\\slots-barracks-1024x768-20260908-b\\modal-slots-barracks.cdb",
+      "sha256": "d46e0b5794fdd13dfbb4d1ba98e9094899ba500c4fd046d1d4996a55f1f0e057"
+    }
+  },
+  "earlier_preparation_failures": {
+    "slots-barracks-current-prepare-a.json": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\slots-barracks-current-prepare-a.json",
+      "sha256": "fe9d0f1c52a25ac4675ef8639aa15ac18fee0e01196f121bf466af5a46107c4f"
+    },
+    "slots-barracks-current-prepare-a-validator.json": {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260908\\slots-barracks-current-prepare-a-validator.json",
+      "sha256": "3dbf4a37163d2da382da28012bfd74584ee2b807ef6f0575247e732abf664e42"
+    }
+  },
+  "preflight": {
+    "path": "C:\\ClashCaptures\\completehd-integration-20260908\\slots-barracks-runtime-preflight-b.json",
+    "sha256": "1b84791c5fae968dd814b8764b31bab11a983e28b767b725957ae1486a23aba2"
+  },
+  "source_snapshot": "C:\\ClashCaptures\\completehd-integration-20260908\\source-snapshot-slots-barracks-b",
+  "resumption_comparison": {
+    "observed_at": "2026-09-13T06:16:05.338624+00:00",
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "live_saves_match_preflight": true,
+    "isolated_saves_match_preflight": true,
+    "note": "This later comparison is distinct from the original recorded cleanup and post-run executable hashes."
+  },
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "native_modal_return_proven": false,
+  "promotion_ready": false,
+  "limits": [
+    "The initial-map and twelve slot-copy observations do not establish pixel composition.",
+    "The original validator rejected a loaded-contract/scope record and stopped before capture.",
+    "The preserved cleanup receipt binds the exact owned handles, identities and hidden desktop.",
+    "All earlier preparation and runtime failures remain unchanged."
+  ]
+}
