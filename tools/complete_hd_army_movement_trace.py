@@ -21,7 +21,7 @@ import complete_hd_army_movement_probe as producer
 import complete_hd_army_selection_trace as selection
 import framed_army_movement_state as state
 
-PRODUCER_SHA256 = '92a4ae1dc64337f603201ea88f7830c8674eacdad5bdedb8a3b2db9fb29040cd'
+PRODUCER_SHA256 = '572816600873f754dcfe1207a19229e04c39986011ae98ac1d1630ecb2a22de5'
 HELPERS = {
     'tools/framed_army_movement_state.py': '32bd424b3933b3fb831659d715f0c576e9959818d0e123beb304684e21c8fbe7',
     'tools/complete_hd_army_selection_trace.py': 'bd00dd162ba0a085b18c1bfbe0a9b3c67117657a62fcec01fdd77ba2ad395528',
@@ -45,6 +45,10 @@ PATTERNS={
     'WMOV_'+name:re.compile('WMOV_'+name+(' '+pattern if pattern else ''))
     for name,pattern in {
         'BYTES_PASS':'','HOST_READY':'',
+        'STARTUP_RETIRED':rf'observer=(?P<observer>{D}) address=(?P<address>{H}) checkpoint=(?P<checkpoint>{D}) '+ID,
+        'FRAME':rf'kind=(?P<kind>[a-z-]+) count=(?P<count>{D}) phase=(?P<phase>{D}) '+ID+
+            rf' steps=(?P<steps>{D}) pending=(?P<pending>{D}) unit=(?P<unit>{H}) xy=\((?P<x>{D}),(?P<y>{D})\) path=(?P<path_count>{D}) ap=\('+','.join(rf'(?P<ap{i}>{D})' for i in range(8))+
+            rf'\) occupancy=\((?P<occ0>{H}),(?P<occ1>{H}),(?P<occ2>{H})\) inner=(?P<inner>{H}) outer=(?P<outer>{H})',
         'CONTRACT':r'revision=(?P<revision>[a-z0-9_]+) candidate_sha256=(?P<candidate_hash>[0-9a-f]{64}) save_sha256=(?P<save_hash>[0-9a-f]{64}) source=\(16,19\) target=\(18,19\) clicks=2',
         'MOUSE':rf'click=(?P<click>{D}) '+ID+rf' raw=\((?P<mouse_x>{H}),(?P<mouse_y>{H})\) shift=(?P<shift>{H})',
         'PUMP':rf'kind=(?P<kind>[a-z-]+) count=(?P<count>{D}) phase=(?P<phase>{D}) '+ID+rf' eax=(?P<eax>{H}) edx=(?P<edx>{H}) raw=\((?P<mouse_x>{H}),(?P<mouse_y>{H})\) shift=(?P<shift>{H}) buttons=(?P<buttons>{H}) accumulator=(?P<accumulator>{H}) secondary=(?P<secondary>{H}) table=(?P<table>{H}) callback=(?P<callback>{H}) recording=(?P<recording>{H}) playback=(?P<playback>{H})',
@@ -56,7 +60,7 @@ PATTERNS={
 }
 PATTERNS.update({'WMOV_BASE_'+name:re.compile('WMOV_BASE_'+name+(' '+pattern if pattern else ''))
                  for name,pattern in selection.P.items() if name!='HOST_READY'})
-HEX=selection.HEX|{'ebx','ecx','edx','esi','edi','ebp','unit','buttons','accumulator','secondary','path0','path1','occ0','occ1','occ2','mouse_x','mouse_y','shift','table','callback','recording','playback'}
+HEX=selection.HEX|{'ebx','ecx','edx','esi','edi','ebp','unit','buttons','accumulator','secondary','path0','path1','occ0','occ1','occ2','mouse_x','mouse_y','shift','table','callback','recording','playback','address','inner','outer'}
 TEXT=selection.TEXT|{'kind','revision','candidate_hash','save_hash'}
 ERROR=re.compile(selection.ERROR.pattern+r'|WMOV_(?:REJECT|BASE_REJECT|BASE_SELECTION_FAIL)|\b(?:SHSEL_|MCAP_|MODAL_|ATX_|PTGL_|MPRI_)|memory access error|CreateProcess failed|error 193',re.I)
 SITES=dict(zip(range(100,133),(
@@ -73,6 +77,10 @@ PUMPS=[dict(kind=kind,call=call,returned=returned,phase=phase,stack_depth=depth,
 PUMP_BACKENDS = [dict(table=0x50F1E4, callback=0x460A50, recording=0, playback=0),
                  dict(table=0x50F204, callback=0x4612E0, recording=0, playback=0)]
 SITES.update({133+2*n+delta:p[key] for n,p in enumerate(PUMPS) for delta,key in ((0,'call'),(1,'returned'))})
+SITES.update({139:0x410C9B,140:0x410DF5,141:0x410DFA})
+FRAMES = [dict(kind='delay',call=0x410C96,visit=0x406FA1,returned=0x410C9B,phase=51,call_pending=4,visit_pending=6,call_marker='WMOV_PUMP'),
+          dict(kind='animation',call=0x410DF5,visit=0x406FA1,returned=0x410DFA,phase=54,call_pending=5,visit_pending=7,call_marker='WMOV_FRAME')]
+RETIREMENT = dict(observer=99,address=0x406FA0,checkpoint=0)
 LIMITS=producer.LIMITS+[
     'Baseline READY continues into this protocol; no missing legacy stop marker is manufactured.',
     'Sequence-only diagnostics do not authenticate supplied artifacts or validate the initial-map event sequence; they cannot authorize host capture.',
@@ -113,6 +121,8 @@ def _packet(packet):
         raise ValueError('exact three native pump pairs and count bound required')
     if canonical(packet.get('pump_backends')) != canonical(PUMP_BACKENDS):
         raise ValueError('exact original direct and inactive device-wrapper backends required')
+    if canonical(packet.get('frame_observers'))!=canonical(FRAMES) or canonical(packet.get('startup_retirement'))!=canonical(RETIREMENT):
+        raise ValueError('exact native frame pairs and single startup observer retirement required')
     if packet.get('save_sha256')!=producer.base.SAVE_SHA256 or packet.get('original_sha256')!=producer.base.clip.ORIGINAL_SHA256:
         raise ValueError('known original/save identity differs')
     for key in ('candidate_sha256','original_sha256','save_sha256','candidate_manifest_canonical_sha256'):
@@ -221,12 +231,17 @@ def _sequence(log,packet):
             if surface is None:surface=v
         v,line=baseline('READY');physical(v,line)
         require((v['tid'],v['eip'],v['esp'],v['selected'],v['prior'],v['lower'],v['owner'])==(tid,0x406FA1,sp,3,3,1,0x40AD40),'baseline continuation identity differs',line)
+        retired,retired_line=take('WMOV_STARTUP_RETIRED')
+        require(retired==RETIREMENT|dict(tid=tid,eip=0x406FA1,esp=sp),'completed startup observer retirement differs',retired_line)
+        for n,text in enumerate(log.splitlines(),1):
+            if n>retired_line and re.search(r'\b(?:PTILE_|SURFDUMP_(?:REDRAW|READY|PLAYGAME))',text,re.I):
+                require(False,'stale startup observer or initial-map event after retirement',n)
         snapshot(0)
         checkpoint_states=[None,None,None]
-        all_draws=[];all_pumps=[];mouse_records=[];run_shift=None;run_backend=None
+        all_draws=[];all_pumps=[];all_frames=[];mouse_records=[];run_shift=None;run_backend=None
         for click in (1,2):
             records=[];counts=[0,0,0];steps=0;phase=20 if click==1 else 40
-            pump_count=0;pathfinder_pumps=0;held=True
+            pump_count=0;pathfinder_pumps=0;held=True;frame_pending=None;frame_anchors=set()
             expected_xy=(16,19);expected_ap=list(producer.INITIAL_AP)
             expected_queue=0 if click==1 else 2
             expected_occupancy=[3,0xffff,0xffff]
@@ -254,7 +269,7 @@ def _sequence(log,packet):
                     require((v['path0'],v['path1'])==tuple(producer.PATH_WORDS),kind+' actual stored path/cumulative costs differ',line)
                 records.append(dict(v,line=line))
             def consume_intervals():
-                nonlocal pump_count,pathfinder_pumps,run_backend
+                nonlocal pump_count,pathfinder_pumps,run_backend,frame_pending
                 # Native render callbacks may occur within a route phase. They
                 # remain ordered, nonnested, thread/stack/caller paired, and
                 # preserve every non-EAX GPR. State commits have their own
@@ -262,6 +277,7 @@ def _sequence(log,packet):
                 while pos<len(events):
                     current=events[pos]
                     if current['marker']=='WMOV_PUMP':
+                        require(frame_pending is None,'native pump started before frame true return',current['line'])
                         a,al=take('WMOV_PUMP');kind=a['kind'].removesuffix('-call')
                         p=next((p for p in PUMPS if p['kind']==kind),None)
                         if p is None or a['kind']!=kind+'-call':raise ValueError('pump return lacks an immediately pending native call')
@@ -285,6 +301,41 @@ def _sequence(log,packet):
                         # invented: native polling may alter every input field.
                         pathfinder_pumps+=int(kind=='pathfinder')
                         all_pumps.append(dict(click=click,kind=kind,call=dict(a,line=al),returned=dict(b,line=bl)))
+                        if kind=='delay':
+                            frame_anchors.add(pump_count)
+                            frame_pending=dict(kind=kind,call=dict(b,line=bl),visit=None)
+                        continue
+                    if current['marker']=='WMOV_FRAME':
+                        v,line=take('WMOV_FRAME');kind,suffix=v['kind'].rsplit('-',1)
+                        if kind=='ambient' and suffix=='visit':kind={6:'delay',7:'animation'}.get(v['pending'],'unsupported')
+                        elif suffix=='visit':raise ValueError('native visit must retain the exact emitted ambient marker')
+                        spec=next((x for x in FRAMES if x['kind']==kind),None)
+                        if spec is None or suffix not in ('call','visit','return'):
+                            raise ValueError('unsupported native frame event')
+                        require(click==2 and steps in (1,2) and phase==spec['phase'],'frame outside native phase/step',line)
+                        expected_x=16+steps-(kind=='animation')
+                        occupancy=[3 if x==expected_x else 65535 for x in (16,17,18)]
+                        require((v['count'],v['phase'],v['tid'],v['eip'],v['esp'],v['steps'],v['unit'],v['x'],v['y'],v['path_count'])==
+                            (pump_count,phase,tid,spec['returned' if suffix=='return' else suffix],sp-(348 if suffix=='visit' else 328),steps,gd+149349,expected_x,19,2-steps),
+                            'frame count/phase/thread/site/depth/army/state differs',line)
+                        require([v['ap'+str(i)] for i in range(8)]==[a-5*steps for a in producer.INITIAL_AP] and
+                            [v['occ'+str(i)] for i in range(3)]==occupancy,'frame AP or exact corridor occupancy differs',line)
+                        require(v['pending']==spec['call_pending' if suffix=='call' else 'visit_pending'],'frame pending identity differs',line)
+                        if suffix=='call':
+                            require(kind=='animation' and frame_pending is None and pump_count not in frame_anchors and bool(all_pumps) and
+                                (all_pumps[-1]['click'],all_pumps[-1]['kind'],all_pumps[-1]['returned']['phase'])==(click,kind,phase),
+                                'frame call lacks fresh matching completed native pump',line)
+                            frame_anchors.add(pump_count);frame_pending=dict(kind=kind,call=dict(v,line=line),visit=None)
+                        elif suffix=='visit':
+                            require(frame_pending is not None and frame_pending['kind']==kind and frame_pending['visit'] is None,
+                                'ambient-handler visit lacks unique frame call',line)
+                            require((v['inner'],v['outer'])==(0x40AE16,spec['returned']),'ambient-handler actual caller stack words differ',line)
+                            if frame_pending is not None:frame_pending['visit']=dict(v,line=line)
+                        else:
+                            require(frame_pending is not None and frame_pending['kind']==kind and frame_pending['visit'] is not None,
+                                'frame true return lacks paired ambient-handler visit',line)
+                            if frame_pending is not None:all_frames.append(dict(click=click,**frame_pending,returned=dict(v,line=line)))
+                            frame_pending=None
                         continue
                     if current['marker']!='WMOV_OBS' or current['values'].get('kind')!='draw-entry':break
                     a,al=take('WMOV_OBS','draw-entry');counts[0]+=1
@@ -301,6 +352,7 @@ def _sequence(log,packet):
                     require(all(a[k]==b[k] for k in ('x','y','path_count','path0','path1')+tuple('ap'+str(i) for i in range(8))+tuple('occ'+str(i) for i in range(3))),
                             'draw helper changed captured army movement state',bl)
                     all_draws.append(dict(click=click,phase=phase,entry=dict(a,line=al),returned=dict(b,line=bl)))
+                require(frame_pending is None,'movement advanced before native frame true return')
             def obs(kind,next_phase,eip,depth,*,caller=None,registers=None):
                 nonlocal phase
                 consume_intervals();phase=next_phase
@@ -406,6 +458,7 @@ def _sequence(log,packet):
     return dict(passed=not failures,failures=failures,raw_records=rows,baseline_draw_calls=baseline_draws,
                 baseline_native_fallbacks=baseline_fallbacks,mouse=mouse_records if 'mouse_records' in locals() else [],clicks=clicks,draw_calls=all_draws if 'all_draws' in locals() else [],pump_calls=all_pumps if 'all_pumps' in locals() else [],snapshots=snapshots,
                 checkpoint_states=checkpoint_states if 'checkpoint_states' in locals() else [],
+                frame_calls=all_frames if 'all_frames' in locals() else [],startup_retirement=dict(retired,line=retired_line) if 'retired' in locals() else None,
                 surface=snapshots[-1] if len(snapshots)==3 and ready else None,ready=ready)
 
 
