@@ -220,9 +220,25 @@ manual-input or native-exit proof. The writer now constructs the basename
 explicitly. All 14 offline fixtures pass, including a real snapshot/triplet
 function test that reproduces the old extra-dot failure and checks all 24
 required paths. A new run is required; the C audit remains failed.
-Native primary destination
-misplacement remains a static inference until
-primary-surface evidence is captured. Court, recruitment, peasants,
+
+The [fresh 1920x1080 E checkpoint](../../captures/current/modal-slots-barracks-1920x1080-20260913.json)
+passes both the host capture and independent native/physical mirror audit with
+candidate `32dea2c12a9a2afd2e2856c327cf3d610e2d02061d2d00960255228a6d6fa688`.
+All three capture pairs are identical, all twelve slot interiors match, and all
+four outer margins are clear. The native canvas is centered at (640,300).
+Exact process/desktop cleanup passed; original executable, 15 live-save files,
+four isolated-save files and all 38 producer sources remain unchanged.
+This is controlled slots-stage mirror evidence, not primary composition,
+input, native exit or complete-HD release acceptance.
+
+The separate 1024x768 primary D capture retained three matching native,
+physical and cached-primary sample sets and verified cleanup. Its host summary
+still fails the 120-second offline-audit deadline. The original independent
+audit also rejects the captured proxy ImageBase field. The actual primary
+pixels show an uncentered late sprite overwriting two lower portrait interiors
+and map/HUD pixels remaining outside the native canvas; the physical mirror
+does not have those defects. Keep these primary failures separate from E's
+passing physical-mirror audit. Court, recruitment, peasants,
 ownership/exit restoration and destruction still require complete routes.
 
 Ordinary army selection/movement, all portraits, map redraw/scroll/reselection,
