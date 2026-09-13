@@ -1,0 +1,2 @@
+# Synthetic in-memory capture fixtures; no game or native capture is run.
+Pillow==12.3.0
