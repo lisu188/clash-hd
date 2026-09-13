@@ -142,11 +142,13 @@
     "rejection_lines": [
       {
         "line_number": 647,
-        "text": "WMOV_REJECT_CONTEXT phase=51 tid=5d98 eip=00406fa1 esp=000edb48 shift=6 raw=(1d00,2c00)"
+        "text": "WMOV_REJECT_CONTEXT phase=51 tid=5d98 eip=00406fa1 esp=000edb48 shift=6 raw=(1d00,2c00)",
+        "raw_lf_line_number": 645
       },
       {
         "line_number": 648,
-        "text": "WMOV_REJECT native_contract"
+        "text": "WMOV_REJECT native_contract",
+        "raw_lf_line_number": 646
       }
     ],
     "review_basis": "Retained final validator result exactly matches summary.final_trace. Actual final-log, original/candidate/save, main/three supplemental command bytes and planned source identities were independently checked; no failed sequence was projected into a pass."
@@ -245,7 +247,8 @@
         11,
         11
       ],
-      "spent_per_squad": 5
+      "spent_per_squad": 5,
+      "raw_lf_line_number": 635
     },
     "first_xy_occupancy_commit": {
       "line_number": 639,
@@ -260,7 +263,8 @@
         "0x0003",
         "0xffff"
       ],
-      "native_steps": 1
+      "native_steps": 1,
+      "raw_lf_line_number": 637
     },
     "pump_backend": {
       "table": "0x0050f204",
@@ -268,12 +272,15 @@
       "recording": 0,
       "playback": 0,
       "delay_call_line": 644,
-      "delay_return_line": 645
+      "delay_return_line": 645,
+      "delay_call_raw_lf_line": 642,
+      "delay_return_raw_lf_line": 643
     },
     "final_arrival_observed": false,
     "full_after_movement_capture_present": false,
     "final_host_triplet_present": false,
-    "scope": "The partial preview record is before AP spending. The first step is a later raw trace observation; no post-step unit dump or screenshot, final arrival, completed native return, or full three-checkpoint gate is claimed."
+    "scope": "The partial preview record is before AP spending. The first step is a later raw trace observation; no post-step unit dump or screenshot, final arrival, completed native return, or full three-checkpoint gate is claimed.",
+    "preview_checkpoint_raw_lf_line": 613
   },
   "caller_explanation": {
     "classification": "source_backed_inference",
@@ -314,7 +321,8 @@
       "eip": "0x00406fa1",
       "esp": "0x000edb48",
       "initial_controlled_call_esp": "0x000edca4",
-      "stack_depth_bytes": 348
+      "stack_depth_bytes": 348,
+      "raw_lf_line_number": 645
     },
     "interpretation": "Original and candidate call bytes connect queued movement 0x410C96 to dispatcher 0x40ADF0, which calls 0x406FA0 at 0x40AE11. The calls and three pushes account for the observed 348-byte depth from the controlled world-call stack (328+4+8+4+4). This is consistent with a nested ambient dispatch during movement, rather than the final controlled world-handler return. The actual return-stack words were not recorded, so this caller chain remains an inference.",
     "predicted_not_observed_stack_words": {
@@ -753,5 +761,11 @@
     "Portrait body and backing checks do not verify count glyphs, badges, map-unit artwork or ordinary mouse dispatch.",
     "Cleanup and source/input preservation are retained host observations whose receipt consistency was checked offline; this report performs no live process inspection.",
     "The caller explanation is source-backed inference because the nested return-stack words were not recorded. Frozen attempt-C artifacts are not rewritten for later protocol revisions."
-  ]
+  ],
+  "log_line_numbering": {
+    "log_sha256": "865c678bb8fb33ab17eebb1eee78caa88ec328db0f03c01944f525e783336802",
+    "existing_line_fields": "Existing line_number and other line fields retain one-based Python str.splitlines() parser coordinates, as used by the immutable trace validator.",
+    "raw_lf_fields": "Added raw_lf fields provide one-based navigation coordinates separated only by LF byte 0x0A, matching rg -n on the unchanged log.",
+    "clarification": "Two CR-CR-LF sequences in startup diagnostics add two parser records. For the cited movement events, parser lines are two higher than raw LF lines. No runtime, source or artifact receipt is changed."
+  }
 }
