@@ -21,7 +21,7 @@ import complete_hd_army_movement_probe as producer
 import complete_hd_army_selection_trace as selection
 import framed_army_movement_state as state
 
-PRODUCER_SHA256 = '5224cfa8363d25e62e0f069ff62aecabec9fa9bff41767dee9b8b992587210e5'
+PRODUCER_SHA256 = '92a4ae1dc64337f603201ea88f7830c8674eacdad5bdedb8a3b2db9fb29040cd'
 HELPERS = {
     'tools/framed_army_movement_state.py': '32bd424b3933b3fb831659d715f0c576e9959818d0e123beb304684e21c8fbe7',
     'tools/complete_hd_army_selection_trace.py': 'bd00dd162ba0a085b18c1bfbe0a9b3c67117657a62fcec01fdd77ba2ad395528',
@@ -47,7 +47,7 @@ PATTERNS={
         'BYTES_PASS':'','HOST_READY':'',
         'CONTRACT':r'revision=(?P<revision>[a-z0-9_]+) candidate_sha256=(?P<candidate_hash>[0-9a-f]{64}) save_sha256=(?P<save_hash>[0-9a-f]{64}) source=\(16,19\) target=\(18,19\) clicks=2',
         'MOUSE':rf'click=(?P<click>{D}) '+ID+rf' raw=\((?P<mouse_x>{H}),(?P<mouse_y>{H})\) shift=(?P<shift>{H})',
-        'PUMP':rf'kind=(?P<kind>[a-z-]+) count=(?P<count>{D}) phase=(?P<phase>{D}) '+ID+rf' eax=(?P<eax>{H}) edx=(?P<edx>{H}) raw=\((?P<mouse_x>{H}),(?P<mouse_y>{H})\) shift=(?P<shift>{H}) buttons=(?P<buttons>{H}) accumulator=(?P<accumulator>{H}) secondary=(?P<secondary>{H})',
+        'PUMP':rf'kind=(?P<kind>[a-z-]+) count=(?P<count>{D}) phase=(?P<phase>{D}) '+ID+rf' eax=(?P<eax>{H}) edx=(?P<edx>{H}) raw=\((?P<mouse_x>{H}),(?P<mouse_y>{H})\) shift=(?P<shift>{H}) buttons=(?P<buttons>{H}) accumulator=(?P<accumulator>{H}) secondary=(?P<secondary>{H}) table=(?P<table>{H}) callback=(?P<callback>{H}) recording=(?P<recording>{H}) playback=(?P<playback>{H})',
         'SURFACE':rf'checkpoint=(?P<checkpoint>{D}) '+ID+rf' surface=(?P<surface>{H}) base=(?P<base>{H}) width=(?P<width>{D}) height=(?P<height>{D}) vtable=(?P<vtable>{H})',
         'OBS':rf'kind=(?P<kind>[a-z-]+) click=(?P<click>{D}) phase=(?P<phase>{D}) '+ID+
             rf' caller=(?P<caller>{H}) eax=(?P<eax>{H}) ebx=(?P<ebx>{H}) ecx=(?P<ecx>{H}) edx=(?P<edx>{H}) esi=(?P<esi>{H}) edi=(?P<edi>{H}) ebp=(?P<ebp>{H}) selected=(?P<selected>{D}) prior=(?P<prior>{D}) lower=(?P<lower>{D}) unit=(?P<unit>{H}) xy=\((?P<x>{D}),(?P<y>{D})\) path=\((?P<path_count>{D}),(?P<path0>{H}),(?P<path1>{H})\) ap=\('+','.join(rf'(?P<ap{i}>{D})' for i in range(8))+rf'\) occupancy=\((?P<occ0>{H}),(?P<occ1>{H}),(?P<occ2>{H})\) buttons=(?P<buttons>{H}) accumulator=(?P<accumulator>{H}) steps=(?P<steps>{D}) draws=\((?P<entries>{D}),(?P<returns>{D}),(?P<compositions>{D})\)',
@@ -56,7 +56,7 @@ PATTERNS={
 }
 PATTERNS.update({'WMOV_BASE_'+name:re.compile('WMOV_BASE_'+name+(' '+pattern if pattern else ''))
                  for name,pattern in selection.P.items() if name!='HOST_READY'})
-HEX=selection.HEX|{'ebx','ecx','edx','esi','edi','ebp','unit','buttons','accumulator','secondary','path0','path1','occ0','occ1','occ2','mouse_x','mouse_y','shift'}
+HEX=selection.HEX|{'ebx','ecx','edx','esi','edi','ebp','unit','buttons','accumulator','secondary','path0','path1','occ0','occ1','occ2','mouse_x','mouse_y','shift','table','callback','recording','playback'}
 TEXT=selection.TEXT|{'kind','revision','candidate_hash','save_hash'}
 ERROR=re.compile(selection.ERROR.pattern+r'|WMOV_(?:REJECT|BASE_REJECT|BASE_SELECTION_FAIL)|\b(?:SHSEL_|MCAP_|MODAL_|ATX_|PTGL_|MPRI_)|memory access error|CreateProcess failed|error 193',re.I)
 SITES=dict(zip(range(100,133),(
@@ -70,6 +70,8 @@ PUMPS=[dict(kind=kind,call=call,returned=returned,phase=phase,stack_depth=depth,
            ('pathfinder',0x414B3F,0x414B44,29,388,1),
            ('animation',0x410DAE,0x410DB3,54,328,2),
            ('delay',0x410C91,0x410C96,51,328,3))]
+PUMP_BACKENDS = [dict(table=0x50F1E4, callback=0x460A50, recording=0, playback=0),
+                 dict(table=0x50F204, callback=0x4612E0, recording=0, playback=0)]
 SITES.update({133+2*n+delta:p[key] for n,p in enumerate(PUMPS) for delta,key in ((0,'call'),(1,'returned'))})
 LIMITS=producer.LIMITS+[
     'Baseline READY continues into this protocol; no missing legacy stop marker is manufactured.',
@@ -109,6 +111,8 @@ def _packet(packet):
     if packet.get('mouse_shift_max')!=21:raise ValueError('signed-safe mouse shift contract differs')
     if packet.get('max_pump_calls_per_click')!=1024 or canonical(packet.get('pump_observers'))!=canonical(PUMPS):
         raise ValueError('exact three native pump pairs and count bound required')
+    if canonical(packet.get('pump_backends')) != canonical(PUMP_BACKENDS):
+        raise ValueError('exact original direct and inactive device-wrapper backends required')
     if packet.get('save_sha256')!=producer.base.SAVE_SHA256 or packet.get('original_sha256')!=producer.base.clip.ORIGINAL_SHA256:
         raise ValueError('known original/save identity differs')
     for key in ('candidate_sha256','original_sha256','save_sha256','candidate_manifest_canonical_sha256'):
@@ -219,7 +223,7 @@ def _sequence(log,packet):
         require((v['tid'],v['eip'],v['esp'],v['selected'],v['prior'],v['lower'],v['owner'])==(tid,0x406FA1,sp,3,3,1,0x40AD40),'baseline continuation identity differs',line)
         snapshot(0)
         checkpoint_states=[None,None,None]
-        all_draws=[];all_pumps=[];mouse_records=[];run_shift=None
+        all_draws=[];all_pumps=[];mouse_records=[];run_shift=None;run_backend=None
         for click in (1,2):
             records=[];counts=[0,0,0];steps=0;phase=20 if click==1 else 40
             pump_count=0;pathfinder_pumps=0;held=True
@@ -250,7 +254,7 @@ def _sequence(log,packet):
                     require((v['path0'],v['path1'])==tuple(producer.PATH_WORDS),kind+' actual stored path/cumulative costs differ',line)
                 records.append(dict(v,line=line))
             def consume_intervals():
-                nonlocal pump_count,pathfinder_pumps
+                nonlocal pump_count,pathfinder_pumps,run_backend
                 # Native render callbacks may occur within a route phase. They
                 # remain ordered, nonnested, thread/stack/caller paired, and
                 # preserve every non-EAX GPR. State commits have their own
@@ -272,6 +276,10 @@ def _sequence(log,packet):
                             require(all(0<=v[k]<=255 for k in ('shift','accumulator','secondary')) and 0<=v['buttons']<=3,
                                     'native pump input fields outside measured source bounds',line)
                             require(all(0<=v[k]<=0xffffffff for k in ('mouse_x','mouse_y','eax','edx')),'native pump DWORD fields exceed x86 width',line)
+                            backend={key:v[key] for key in ('table','callback','recording','playback')}
+                            require(backend in PUMP_BACKENDS,'native pump backend table/callback or inactive modes differ',line)
+                            if run_backend is None:run_backend=backend
+                            require(backend==run_backend,'native pump backend identity changed during the route',line)
                         require((a['eax'],a['edx'])==(0x544CD8,0),'native pump call input ABI differs',al)
                         # No returned EAX predicate or raw-input equality is
                         # invented: native polling may alter every input field.
