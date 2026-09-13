@@ -832,3 +832,9 @@
 /tools/test_complete_hd_army_movement_capture.py -text whitespace=cr-at-eol
 /tools/complete_hd_army_movement_surface_audit.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_army_movement_surface_audit.py -text whitespace=cr-at-eol
+/src/patcher/framed_modal_primary.py -text whitespace=cr-at-eol
+/src/patcher/pe_modal_primary_extension.py -text whitespace=cr-at-eol
+/tools/build_framed_modal_primary_candidate.py -text whitespace=cr-at-eol
+/tools/test_framed_modal_primary.py -text whitespace=cr-at-eol
+/tools/test_pe_modal_primary_extension.py -text whitespace=cr-at-eol
+/tools/test_build_framed_modal_primary_candidate.py -text whitespace=cr-at-eol
