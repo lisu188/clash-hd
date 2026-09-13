@@ -49,7 +49,8 @@ foreach ($case in $accepted) {
  # The contract returns .NET's canonical spelling, which need not preserve
  # the caller's short-name, separator or dot-component spelling.
  $expected=[IO.Path]::GetFullPath($case.path).TrimEnd('\')
- $actual=Resolve-CanvasPath $case.path -Root $FixtureRoot -Kind new
+ try {$actual=Resolve-CanvasPath $case.path -Root $FixtureRoot -Kind new}
+ catch {throw ("Path validation failed for {0}: input=[{1}], expected=[{2}], root=[{3}], canonical_root=[{4}]: {5}" -f $case.name,$case.path,$expected,$FixtureRoot,[IO.Path]::GetFullPath($FixtureRoot),$_.Exception.Message)}
  if ($actual -cne $expected) {throw ("Canonical path mismatch for {0}: input=[{1}], expected=[{2}], actual=[{3}], root=[{4}]" -f $case.name,$case.path,$expected,$actual,$FixtureRoot)}
 }
 $bad=@(@{name='existing root';path=$FixtureRoot},@{name='parent traversal';path=(Join-Path $FixtureRoot '..\escape')},
@@ -278,11 +279,13 @@ class HostBoundaryTests(unittest.TestCase):
             (root/'report.json').write_text(json.dumps(report),encoding='utf-8')
             script=root/'fixture.ps1';script.write_text(PRELUDE+body,encoding='utf-8-sig')
             fixture_root=directory
-            if mode == 'short-root':
-                # Use the filesystem's actual short spelling where supported.
-                # Volumes without 8.3 names may return the original spelling;
-                # the dot-component case still exercises canonicalization.
-                short_path=ctypes.WinDLL('kernel32',use_last_error=True).GetShortPathNameW
+            if mode == 'canonicalized-short-root':
+                # Production roots are fixed long paths. Resolve an existing
+                # temporary short alias back to its long spelling before using
+                # it as the containment root: mixed alias acceptance is not a
+                # production promise, and must not be added by this fixture.
+                kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+                short_path=kernel.GetShortPathNameW
                 short_path.argtypes=[ctypes.c_wchar_p,ctypes.c_wchar_p,ctypes.c_uint32]
                 short_path.restype=ctypes.c_uint32
                 size=short_path(directory,None,0)
@@ -292,7 +295,9 @@ class HostBoundaryTests(unittest.TestCase):
                 written=short_path(directory,buffer,size)
                 if not written or written >= size:
                     raise OSError('Could not obtain a complete short fixture-root path')
-                fixture_root=buffer.value
+                fixture_root=str(Path(buffer.value).resolve(strict=True))
+                self.assertTrue(os.path.samefile(fixture_root,directory),
+                                'Canonical fixture root must identify the original existing directory')
             result=subprocess.run([str(PS),'-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',str(script),
                 '-HostPath',str(HOST),'-FixtureRoot',fixture_root,'-Mode',mode],capture_output=True,
                 text=True,creationflags=subprocess.CREATE_NO_WINDOW,timeout=30)
@@ -303,7 +308,7 @@ class HostBoundaryTests(unittest.TestCase):
         self.assertTrue(self.run_ps(DRY_RUN)['passed'])
 
     def test_paths_reject_existing_sibling_traversal_stream_and_delimiter(self):
-        for mode in ('normal','short-root'):
+        for mode in ('normal','canonicalized-short-root'):
             with self.subTest(mode=mode):
                 result=self.run_ps(PATHS,mode)
                 self.assertTrue(result['passed'])

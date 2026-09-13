@@ -4645,15 +4645,22 @@
       "tests": 10,
       "passed": true,
       "skipped": 0,
-      "seconds": 18.465,
-      "fixture_sha256": "f417439dd57bcd4d0a7fe48162a9ab50adf851c841e439d655d737334e89621b",
-      "scope": "Offline boundaries including canonical ordinary and short temporary paths. All six path rejection cases remain enforced; production host unchanged.",
+      "seconds": 16.73,
+      "fixture_sha256": "cb07852a4b13eb35661fe21db8d8d903e3f3984dd43cc0904fe340ee0da1eb5c",
+      "scope": "Offline boundaries with canonical configured roots, including a root resolved from its real 8.3 temporary alias and checked with samefile. All six rejection cases remain enforced in both modes; production host unchanged and raw-alias support is not claimed.",
       "earlier_ci_failure": {
         "run": 34744576330,
         "platform": "windows-2022",
         "test": "test_paths_reject_existing_sibling_traversal_stream_and_delimiter",
         "status": "failed",
         "note": "Earlier literal path-spelling assertion failed on CI; it passed locally even with a short path. Corrected canonical assertion and all negative cases pass locally; new CI must verify its hosted environment."
+      },
+      "additional_ci_failure": {
+        "run": 34744942012,
+        "platform": "windows-2022",
+        "test": "test_paths_reject_existing_sibling_traversal_stream_and_delimiter (short-root)",
+        "status": "failed",
+        "note": "The original normal case passed; the newly added raw short-root acceptance promise failed under hosted mixed path normalization. The fixture now models canonical configured roots used by the host, while retaining all negative containment cases. The local raw-alias behavior differed; no production boundary defect was established."
       }
     },
     "integrated_runner": {
