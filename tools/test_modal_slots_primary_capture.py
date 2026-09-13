@@ -106,7 +106,7 @@ class PrimaryProtocolTests(unittest.TestCase):
 class FinalLogTests(unittest.TestCase):
     def test_host_failure_changed_prefix_tail_and_rehashed_failure_cannot_pass(self):
         with tempfile.TemporaryDirectory(prefix='slots-primary-final-') as directory:
-            root=Path(directory)
+            root=Path(directory).resolve()
             def artifact(name,data):
                 path=root/name;path.write_bytes(data)
                 return dict(path=str(path),bytes=len(data),sha256=tool.sha(data))
@@ -135,7 +135,7 @@ class FinalLogTests(unittest.TestCase):
 class ProxyManifestTests(unittest.TestCase):
     def test_manifest_requires_actual_output_and_recorded_current_source(self):
         with tempfile.TemporaryDirectory(prefix='slots-proxy-context-') as directory:
-            root=Path(directory);dll=root/'ddraw.dll';dll.write_bytes(b'synthetic never loaded')
+            root=Path(directory).resolve();dll=root/'ddraw.dll';dll.write_bytes(b'synthetic never loaded')
             source=tool.ROOT/'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp'
             source_hash=tool.sha(source.read_bytes());digest=tool.sha(dll.read_bytes())
             path=root/'proxy.json';manifest=dict(generated_by='clash-hd-surface-dump-proxy',output=str(dll),
@@ -159,7 +159,8 @@ class TripletTests(unittest.TestCase):
     """
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(prefix='slots-primary-triplet-')
-        self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
+        # Match canonical packet paths when Windows TEMP has a short-name alias.
+        self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name).resolve()
         self.addCleanup(patch.stopall)
         patch.object(reader_fixtures,'primary',primary).start()
         image=bytearray(reader_fixtures.synthetic_proxy());image[0x300:0x300+len(tool.GET_PALETTE_BYTES)]=tool.GET_PALETTE_BYTES
