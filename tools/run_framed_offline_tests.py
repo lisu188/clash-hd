@@ -55,6 +55,9 @@ SUITES = (
     "test_framed_modal_slots",
     "test_pe_modal_slots_extension",
     "test_build_framed_modal_slots_candidate",
+    "test_complete_hd_main_probe",
+    "test_framed_gameplay_evidence",
+    "test_modal_slots_barracks_capture",
 )
 
 
