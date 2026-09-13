@@ -30,7 +30,24 @@ or a docstring; the offline runner also contains real Python fixture-worker
 subprocess calls. Existing scanner policy leaves these unclassified. Neither
 the scanner nor these findings is changed or relabeled as passing here.
 
-Missing castle raw evidence and long/manual release proof remain separate
-from expanded-battle acceptance. The final aggregate rerun uses
-`C:\ClashTests\battle-hd-1280x720\aggregate-final-geometry-compatible.log`;
-its completed result belongs in the current battle validation report.
+The final aggregate completed on **2026-09-08T12:17:37+02:00** at source
+`694988309f66966220677e88093c5492288ea116`: **9/167 checks fail**, and all
+**326 framed fixtures in 32 suites pass with no skips or expected failures**.
+The ten direct/downstream geometry failures from the first run now pass.
+Missing castle raw evidence, long/manual release proof, the five inherited
+scanner findings and their downstream guards remain separate from
+expanded-battle acceptance.
+
+The completed JSON/Markdown reports and their archive manifest are under
+`C:\ClashTests\battle-hd-1280x720\aggregate-final-geometry-compatible-complete\`.
+The stdout log is
+`C:\ClashTests\battle-hd-1280x720\aggregate-final-geometry-compatible.log`.
+The [battle validation report](../captures/current/battle-hd-validation-current.md)
+binds these artifacts by SHA. This September 8 run predates later upstream
+fixture additions; it does not claim a rerun of September 13 main or replace
+the incoming repository-wide current reports.
+
+The fix was merged through [PR #63](https://github.com/lisu188/clash-hd/pull/63)
+on September 13 at `6ea7ab0626af49774784924b7b259246cc82a94a`, after all four
+applicable GitHub checks passed. This source merge changes neither candidate
+bytes nor the protected stable stage.
