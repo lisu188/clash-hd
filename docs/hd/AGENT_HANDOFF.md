@@ -772,8 +772,8 @@ preview completion or arrival. Its source/candidate binding and initial-map
 trace pass; owned cleanup and unchanged inputs are verified. The partial
 before-movement frame passes frame/footer, six action-cell, eight portrait-body
 and exposed-backing checks. Preserve the failed trace and frozen host source;
-those pixel checks do not make movement pass. A matching successful movement
-run remains required. The [separate diagnostic attempt](../../captures/current/completehd-army-movement-1024x768-20260913-attempt-b.json)
+those pixel checks do not make movement pass. That checkpoint lacked a matching
+successful movement run. The [separate diagnostic attempt](../../captures/current/completehd-army-movement-1024x768-20260913-attempt-b.json)
 keeps that rejection and identifies native backend table `0050f204`, callback
 `004612e0`, with recording and playback disabled. The v1 probe requires the
 direct `00460a50` callback. This is an unsupported native backend contract;
@@ -792,7 +792,22 @@ Cleanup and unchanged input/source identities are verified. A startup redraw
 observer remained active and overwrote movement counters. The observed stack
 depth also matches a nested native handler path, but the failed run did not
 record the caller stack words required to authenticate that explanation.
-Preserve this failure and verify a corrected observer lifecycle in a fresh run.
+Preserve this failure; the fresh runs below verify the corrected observer lifecycle.
+
+The fresh controlled movement checkpoints at
+[1024x768](../../captures/current/completehd-army-movement-1024x768-20260913.json) and
+[1920x1080](../../captures/current/completehd-army-movement-1920x1080-20260913.json)
+pass the v3 host, strict trace and independent surface audit. Each records both
+native commits `(16,19)` -> `(17,19)` -> `(18,19)`, a five-point cost per step
+for all eight squads, the empty final queue and the true handler return. Both
+native delay-frame pairs measure the caller stack words inferred from attempt C.
+All six before/preview/after/final surfaces in each run pass the four frame edges, footer,
+six action cells, eight portrait bodies and exposed backing; the full portrait
+backing remains identical. The final three captures match, cleanup passes and
+source/input identities remain unchanged. This proves the bounded controlled
+native movement and hidden software-surface route. Ordinary input, the optional
+animation-frame branch, final-wrapper composition and stable promotion remain
+separate requirements. Attempts A, B and C remain failed historical evidence.
 
 | Work | Start with | Focused verification |
 | --- | --- | --- |

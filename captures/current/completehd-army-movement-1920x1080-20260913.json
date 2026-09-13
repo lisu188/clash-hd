@@ -1,0 +1,1223 @@
+{
+  "schema": "clash95_complete_hd_army_movement_observation_v1",
+  "generated_at": "2026-09-13T09:07:44.137329+00:00",
+  "passed": true,
+  "status": "bounded_controlled_native_movement_and_software_surface_passed",
+  "attempt": "E",
+  "source_revision": "577e2e8218d00b2101ee81523808393caf89b283",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+  "resolution": "1920x1080",
+  "candidate_sha256": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "save_sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+  "log_line_numbering": {
+    "trace_parser": "One-based Python str.splitlines() positions, as retained by the unchanged trace validator.",
+    "raw_lf": "One-based raw LF-separated lines for file navigation; each cited marker was matched exactly, without a fixed offset.",
+    "trace_parser_line_count": 702,
+    "raw_lf_line_count": 701,
+    "carriage_return_carriage_return_lf_count": 2
+  },
+  "runtime": {
+    "started_at": "2026-09-13T09:00:50.7920953Z",
+    "finished_at": "2026-09-13T09:02:33.7040794Z",
+    "executed": true,
+    "failures": [],
+    "source_and_input_identities_unchanged": true,
+    "cleanup_verified": true,
+    "clean_stable_pair": true,
+    "cdb": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+      "creation_utc": "2026-09-13T09:01:08.2462187Z",
+      "handle_retained": true,
+      "creation_filetime": 134337636682462187,
+      "process_id": 12296
+    },
+    "candidates": [
+      {
+        "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\candidate-1920x1080-e\\framed-modal-canvas-complete-hd-army-movement-1920x1080-381ef75cfed3671b.exe",
+        "creation_filetime": 134337636684405047,
+        "process_id": 36408,
+        "handle_retained": true,
+        "candidate_sha256": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0",
+        "creation_utc": "2026-09-13T09:01:08.4405047Z",
+        "parent_process_id": 12296
+      }
+    ],
+    "cleanup": {
+      "candidates": [
+        {
+          "termination_requested": false,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\candidate-1920x1080-e\\framed-modal-canvas-complete-hd-army-movement-1920x1080-381ef75cfed3671b.exe",
+            "creation_filetime": 134337636684405047,
+            "process_id": 36408,
+            "handle_retained": true,
+            "candidate_sha256": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0",
+            "creation_utc": "2026-09-13T09:01:08.4405047Z",
+            "parent_process_id": 12296
+          }
+        }
+      ],
+      "cdb": {
+        "termination_requested": true,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+          "creation_utc": "2026-09-13T09:01:08.2462187Z",
+          "handle_retained": true,
+          "creation_filetime": 134337636682462187,
+          "process_id": 12296
+        }
+      },
+      "desktop_closed": true
+    },
+    "host_passed": true,
+    "capture_method": "hidden_cdb_e0_software_diagnostic",
+    "input_method": "controlled native selection then two world-handler calls, with disclosed scroll, mouse, button and release writes",
+    "environment": "hidden_cdb_host"
+  },
+  "trace_review": {
+    "initial_trace_passed": true,
+    "final_trace_passed": true,
+    "initial_map_passed": true,
+    "source_authenticated": true,
+    "whole_candidate_bound": true,
+    "candidate_manifest_bound": true,
+    "all_supplemental_commands_bound": true,
+    "snapshot_headers_verified": true,
+    "snapshot_units_verified": true,
+    "movement_state_passed": true,
+    "final_trace_attempted": true,
+    "capture_prefix": {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-prefix.log",
+      "sha256": "99d0566a09257ba11de3b396d3ab6e59102150f420fec7af594b42963b80aeb4",
+      "bytes": 86993
+    },
+    "final_log": {
+      "sha256": "99d0566a09257ba11de3b396d3ab6e59102150f420fec7af594b42963b80aeb4",
+      "bytes": 86993,
+      "validator_log_identity_matched": true,
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\cdb.log",
+      "capture_prefix_preserved": true,
+      "unchanged_during_final_validation": true
+    },
+    "source": {
+      "source_sha256": {
+        "tools/framed_army_selection_probe.py": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+        "tools/render_cdb_surface_probe.py": "12685fdfde4972e0f5f9c3d5678fd159fff965bd9ddd7642cb3718c8530296cf",
+        "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
+        "tools/complete_hd_army_selection_probe.py": "4d603dd001f420ee6f032041ccc4d563eff8a56e86e6ad2d1c89c97bda2fe7f6",
+        "tools/army_probe_startup.py": "1998a2925279457e0e5447e79818d7960ec096cae6e256dcd58639505f41eb0f",
+        "tools/complete_hd_runtime_context.py": "af7c82aebdab3fe282f7f8c80ce4af9a7bc4cdfc47c8fa807fe1cd6cd94184b9",
+        "src/patcher/complete_hd_candidate.py": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06",
+        "tools/complete_hd_army_selection_trace.py": "bd00dd162ba0a085b18c1bfbe0a9b3c67117657a62fcec01fdd77ba2ad395528",
+        "tools/initial_map_paint_trace.py": "34a022251bfd572b5f6ecfbedd9a1ccd23a9ded1ba749039201c133108528b0a",
+        "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+        "tools/framed_army_selection_trace.py": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc",
+        "tools/framed_army_movement_probe.py": "17b779b29ac1ab6730e2a9ef59db1c2aee51f005edd9ad566db5d6ceeaf4a53b",
+        "tools/complete_hd_army_movement_probe.py": "572816600873f754dcfe1207a19229e04c39986011ae98ac1d1630ecb2a22de5",
+        "tools/framed_army_movement_state.py": "32bd424b3933b3fb831659d715f0c576e9959818d0e123beb304684e21c8fbe7",
+        "tools/complete_hd_army_movement_trace.py": "e713338d3e4fb46c3c35578865c826b7be64147ee603b909bd58977c4c014d33"
+      },
+      "log_text_sha256": "99d0566a09257ba11de3b396d3ab6e59102150f420fec7af594b42963b80aeb4",
+      "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "candidate_sha256": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0",
+      "save_sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+      "candidate_manifest_canonical_sha256": "f7b17b581f78431e57468b99b3a92695414c5e7a4e2bcf1238acd60feb3dbfc8",
+      "probe_raw_sha256": "9d492c2ed4642aef5eb4a1ac5128ab63765088cdd2634dbfb811adeddeff0112",
+      "probe_canonical_lf_sha256": "9d492c2ed4642aef5eb4a1ac5128ab63765088cdd2634dbfb811adeddeff0112",
+      "packet_canonical_sha256": "cc6630c1709ae204ebcfc2c12492098181e050c60d0b131243a884a2fdd52517",
+      "supplemental_commands": {
+        "C:/ClashCaptures/complete-army-movement-20260913-e-1920x1080/movement-checkpoint-0.cdb": {
+          "raw_sha256": "c85816ef89a3377d37ea488de4b1f3774e15ab6f86fce6c4a8c75112fa371df5",
+          "bytes": 3750,
+          "canonical_lf_sha256": "c85816ef89a3377d37ea488de4b1f3774e15ab6f86fce6c4a8c75112fa371df5"
+        },
+        "C:/ClashCaptures/complete-army-movement-20260913-e-1920x1080/movement-checkpoint-1.cdb": {
+          "raw_sha256": "80ffa25573887af3d54bc70684c16707cc3a127abe29ad0574bd6b8ea34f89f7",
+          "bytes": 3332,
+          "canonical_lf_sha256": "80ffa25573887af3d54bc70684c16707cc3a127abe29ad0574bd6b8ea34f89f7"
+        },
+        "C:/ClashCaptures/complete-army-movement-20260913-e-1920x1080/movement-checkpoint-2.cdb": {
+          "raw_sha256": "4c2ac76fe81255af68c52734f8cf696b24184eebbd243cd2c7d75d7324659399",
+          "bytes": 3040,
+          "canonical_lf_sha256": "4c2ac76fe81255af68c52734f8cf696b24184eebbd243cd2c7d75d7324659399"
+        }
+      },
+      "snapshot_headers": [
+        {
+          "path": "C:/ClashCaptures/complete-army-movement-20260913-e-1920x1080/movement-before.header.raw",
+          "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+          "bytes": 188,
+          "checkpoint": 0,
+          "surface": 172554352,
+          "base": 175308848,
+          "width": 1920,
+          "height": 1080,
+          "vtable": 5303844
+        },
+        {
+          "path": "C:/ClashCaptures/complete-army-movement-20260913-e-1920x1080/movement-preview.header.raw",
+          "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+          "bytes": 188,
+          "checkpoint": 1,
+          "surface": 172554352,
+          "base": 175308848,
+          "width": 1920,
+          "height": 1080,
+          "vtable": 5303844
+        },
+        {
+          "path": "C:/ClashCaptures/complete-army-movement-20260913-e-1920x1080/movement-after.header.raw",
+          "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+          "bytes": 188,
+          "checkpoint": 2,
+          "surface": 172554352,
+          "base": 175308848,
+          "width": 1920,
+          "height": 1080,
+          "vtable": 5303844
+        }
+      ],
+      "snapshot_units": [
+        {
+          "path": "C:/ClashCaptures/complete-army-movement-20260913-e-1920x1080/movement-before.unit.raw",
+          "sha256": "43c8a433d1be4c24265a76446f94e56e9f46f139eb35d8736e84a7383418f733",
+          "bytes": 725,
+          "checkpoint": 0,
+          "unit": 67258261
+        },
+        {
+          "path": "C:/ClashCaptures/complete-army-movement-20260913-e-1920x1080/movement-preview.unit.raw",
+          "sha256": "b0c3d131262177b721aa112b4f115d62247530f36cc2853707ab86d6b9225c28",
+          "bytes": 725,
+          "checkpoint": 1,
+          "unit": 67258261
+        },
+        {
+          "path": "C:/ClashCaptures/complete-army-movement-20260913-e-1920x1080/movement-after.unit.raw",
+          "sha256": "857ce1662ff6758ff048d84e0dffa8a63f366f9ed864a1decdc6b27835deb0d0",
+          "bytes": 725,
+          "checkpoint": 2,
+          "unit": 67258261
+        }
+      ],
+      "checkpoint_context_origin": "selected/prior are raw OBS fields; player0 and ten zero flags are prerequisites of the source-bound emitted checkpoint predicates",
+      "log_raw_sha256": "99d0566a09257ba11de3b396d3ab6e59102150f420fec7af594b42963b80aeb4"
+    },
+    "failures": [],
+    "scope": "Unchanged offline auditor reconstructed the complete current candidate/packet/main and all three supplemental commands against the entire retained final trace; no legacy trace projection or omitted event filtering."
+  },
+  "native_movement": {
+    "selected_unit": 3,
+    "source_xy": [
+      16,
+      19
+    ],
+    "destination_xy": [
+      18,
+      19
+    ],
+    "controlled_world_calls": 2,
+    "xy_occupancy_commits": [
+      {
+        "trace_parser_line_number": 644,
+        "raw_lf_line_number": 642,
+        "xy": [
+          17,
+          19
+        ],
+        "ap": [
+          21,
+          17,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        "occupancy": [
+          "0xffff",
+          "0x3",
+          "0xffff"
+        ],
+        "remaining_path_count": 1
+      },
+      {
+        "trace_parser_line_number": 664,
+        "raw_lf_line_number": 662,
+        "xy": [
+          18,
+          19
+        ],
+        "ap": [
+          16,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "occupancy": [
+          "0xffff",
+          "0xffff",
+          "0x3"
+        ],
+        "remaining_path_count": 0
+      }
+    ],
+    "checkpoint_states": [
+      {
+        "name": "movement-before",
+        "xy": [
+          16,
+          19
+        ],
+        "path_count": 0,
+        "path": [],
+        "ap": [
+          26,
+          22,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "surface_observation_trace_parser_line": 588,
+        "surface_observation_raw_lf_line": 586
+      },
+      {
+        "name": "movement-preview",
+        "xy": [
+          16,
+          19
+        ],
+        "path_count": 2,
+        "path": [
+          {
+            "xy": [
+              18,
+              19
+            ],
+            "cumulative_cost": 10
+          },
+          {
+            "xy": [
+              17,
+              19
+            ],
+            "cumulative_cost": 5
+          }
+        ],
+        "ap": [
+          26,
+          22,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "surface_observation_trace_parser_line": 620,
+        "surface_observation_raw_lf_line": 618
+      },
+      {
+        "name": "movement-after",
+        "xy": [
+          18,
+          19
+        ],
+        "path_count": 0,
+        "path": [],
+        "ap": [
+          16,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "surface_observation_trace_parser_line": 692,
+        "surface_observation_raw_lf_line": 690
+      }
+    ],
+    "final_state": {
+      "ready_trace_parser_line": 696,
+      "ready_raw_lf_line": 694,
+      "host_ready_trace_parser_line": 697,
+      "host_ready_raw_lf_line": 695,
+      "xy": [
+        18,
+        19
+      ],
+      "path_count": 0,
+      "steps": 2,
+      "ap": [
+        16,
+        12,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "occupancy": [
+        65535,
+        65535,
+        3
+      ],
+      "selected": 3,
+      "prior": 3,
+      "lower": 1
+    },
+    "completed_native_returns": {
+      "execute_ret_trace_parser_line": 688,
+      "execute_ret_raw_lf_line": 686,
+      "world_ret_trace_parser_line": 691,
+      "world_ret_raw_lf_line": 689
+    },
+    "input_scope": "Controlled direct native world-handler calls and explicit button releases; observed button/input changes are retained. This does not establish ordinary OS mouse dispatch or manual usability."
+  },
+  "nested_frame_observations": {
+    "startup_retirement": {
+      "observer": 99,
+      "address": 4222880,
+      "checkpoint": 0,
+      "tid": 33580,
+      "eip": 4222881,
+      "esp": 973988,
+      "trace_parser_line_number": 587,
+      "raw_lf_line_number": 585
+    },
+    "pump_call_count": 4,
+    "frame_call_count": 2,
+    "calls": [
+      {
+        "kind": "delay",
+        "click": 2,
+        "visit_trace_parser_line": 651,
+        "visit_raw_lf_line": 649,
+        "return_trace_parser_line": 660,
+        "return_raw_lf_line": 658,
+        "observed_inner_return": "0x0040ae16",
+        "observed_outer_return": "0x00410c9b",
+        "xy": [
+          17,
+          19
+        ],
+        "steps": 1
+      },
+      {
+        "kind": "delay",
+        "click": 2,
+        "visit_trace_parser_line": 671,
+        "visit_raw_lf_line": 669,
+        "return_trace_parser_line": 680,
+        "return_raw_lf_line": 678,
+        "observed_inner_return": "0x0040ae16",
+        "observed_outer_return": "0x00410c9b",
+        "xy": [
+          18,
+          19
+        ],
+        "steps": 2
+      }
+    ],
+    "scope": "Actual source-bound nested caller stack words and paired true returns were recorded in E. Only the two listed delay frame paths were observed; the optional animation frame branch was not observed. No exhaustive callback/input audit is claimed."
+  },
+  "binding_receipts": {
+    "host_summary": {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\summary.json",
+      "sha256": "309c49d46d838f59d7990604d6b0e79564625fb8ec9cab242c310cb1ac851071",
+      "bytes": 3461793
+    },
+    "host_plan": {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\plan.json",
+      "sha256": "ed13eaec5bb069c5a9a2e300028b4db1cec9dc9914d97b7acb8cc4c26d8b6904",
+      "bytes": 25055
+    },
+    "host_source": {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\host.ps1",
+      "sha256": "a1c6f6e1ac63f42f8c616a085bfbd900782bbdebd620a6e12e1b6dfdeabcb143",
+      "bytes": 54641
+    },
+    "final_trace": {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\trace-final.json",
+      "sha256": "e6a528b8eb474b97ff16d7550cf0e7271a2ee01f4346b26488f2a808f4e699f1",
+      "bytes": 1427210
+    },
+    "capture_trace": {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\trace.json",
+      "sha256": "e6a528b8eb474b97ff16d7550cf0e7271a2ee01f4346b26488f2a808f4e699f1",
+      "bytes": 1427210
+    },
+    "surface_audit": {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-surface-audit.json",
+      "sha256": "2243a4ba7ac33fa984b19ef6c2f9b63d96ae8cc9755aff9632e8d1a0686a2828",
+      "bytes": 160316
+    },
+    "audit_program": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\complete_hd_army_movement_surface_audit.py",
+      "sha256": "1534991723ec0a5c0d0db189710872bcfcf6d870dd69e8a7aa31789c25c107fb",
+      "bytes": 26809
+    },
+    "selection_pixel_helper": {
+      "path": "C:\\Users\\andrz\\git\\clash-hd\\tools\\complete_hd_army_selection_surface_audit.py",
+      "sha256": "7effc95203b231c9e007b7aca6a8b47fe2a5d2de8b9b2273a2a4c66260fedd5f",
+      "bytes": 27534
+    },
+    "full_audit_artifact_count": 157
+  },
+  "surface_audit": {
+    "passed": true,
+    "source_authenticated": true,
+    "unit_records_verified": true,
+    "pixels_verified": true,
+    "cleanup_receipts_verified": true,
+    "ready_for_bounded_movement_review": true,
+    "failures": [],
+    "captures": {
+      "movement-before": {
+        "passed": true,
+        "raw_path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-before.raw",
+        "raw_sha256": "385cbcf95aad03a25d4b37d13749ed67cd5284b70ac115f44681dfdc82a60cc6",
+        "bytes": 2073600,
+        "frame": {
+          "passed": true,
+          "bands": [
+            {
+              "name": "top",
+              "checked_pixels": 30720,
+              "mismatches": 0
+            },
+            {
+              "name": "bottom",
+              "checked_pixels": 25860,
+              "mismatches": 0
+            },
+            {
+              "name": "left",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            },
+            {
+              "name": "right",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            }
+          ],
+          "footer_exact": true,
+          "footer_checked_pixels": 4860
+        },
+        "action_bar": {
+          "passed": true,
+          "exact_cells": 6,
+          "cells": 6
+        },
+        "portrait_bodies": {
+          "passed": true,
+          "slots": 8,
+          "rows_inclusive": [
+            20,
+            48
+          ],
+          "checked_pixels_per_slot": 928
+        },
+        "exposed_backing": {
+          "passed": true,
+          "checked_pixels": 9158,
+          "mismatches": 0
+        }
+      },
+      "movement-preview": {
+        "passed": true,
+        "raw_path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-preview.raw",
+        "raw_sha256": "6df666eb60c0e153a4202c914211c83141896250bdf09db027fc7a1c5d4d3bc5",
+        "bytes": 2073600,
+        "frame": {
+          "passed": true,
+          "bands": [
+            {
+              "name": "top",
+              "checked_pixels": 30720,
+              "mismatches": 0
+            },
+            {
+              "name": "bottom",
+              "checked_pixels": 25860,
+              "mismatches": 0
+            },
+            {
+              "name": "left",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            },
+            {
+              "name": "right",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            }
+          ],
+          "footer_exact": true,
+          "footer_checked_pixels": 4860
+        },
+        "action_bar": {
+          "passed": true,
+          "exact_cells": 6,
+          "cells": 6
+        },
+        "portrait_bodies": {
+          "passed": true,
+          "slots": 8,
+          "rows_inclusive": [
+            20,
+            48
+          ],
+          "checked_pixels_per_slot": 928
+        },
+        "exposed_backing": {
+          "passed": true,
+          "checked_pixels": 9158,
+          "mismatches": 0
+        }
+      },
+      "movement-after": {
+        "passed": true,
+        "raw_path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-after.raw",
+        "raw_sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+        "bytes": 2073600,
+        "frame": {
+          "passed": true,
+          "bands": [
+            {
+              "name": "top",
+              "checked_pixels": 30720,
+              "mismatches": 0
+            },
+            {
+              "name": "bottom",
+              "checked_pixels": 25860,
+              "mismatches": 0
+            },
+            {
+              "name": "left",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            },
+            {
+              "name": "right",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            }
+          ],
+          "footer_exact": true,
+          "footer_checked_pixels": 4860
+        },
+        "action_bar": {
+          "passed": true,
+          "exact_cells": 6,
+          "cells": 6
+        },
+        "portrait_bodies": {
+          "passed": true,
+          "slots": 8,
+          "rows_inclusive": [
+            20,
+            48
+          ],
+          "checked_pixels_per_slot": 928
+        },
+        "exposed_backing": {
+          "passed": true,
+          "checked_pixels": 9158,
+          "mismatches": 0
+        }
+      },
+      "capture-1": {
+        "passed": true,
+        "raw_path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-1\\surface.raw",
+        "raw_sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+        "bytes": 2073600,
+        "frame": {
+          "passed": true,
+          "bands": [
+            {
+              "name": "top",
+              "checked_pixels": 30720,
+              "mismatches": 0
+            },
+            {
+              "name": "bottom",
+              "checked_pixels": 25860,
+              "mismatches": 0
+            },
+            {
+              "name": "left",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            },
+            {
+              "name": "right",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            }
+          ],
+          "footer_exact": true,
+          "footer_checked_pixels": 4860
+        },
+        "action_bar": {
+          "passed": true,
+          "exact_cells": 6,
+          "cells": 6
+        },
+        "portrait_bodies": {
+          "passed": true,
+          "slots": 8,
+          "rows_inclusive": [
+            20,
+            48
+          ],
+          "checked_pixels_per_slot": 928
+        },
+        "exposed_backing": {
+          "passed": true,
+          "checked_pixels": 9158,
+          "mismatches": 0
+        }
+      },
+      "capture-2": {
+        "passed": true,
+        "raw_path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-2\\surface.raw",
+        "raw_sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+        "bytes": 2073600,
+        "frame": {
+          "passed": true,
+          "bands": [
+            {
+              "name": "top",
+              "checked_pixels": 30720,
+              "mismatches": 0
+            },
+            {
+              "name": "bottom",
+              "checked_pixels": 25860,
+              "mismatches": 0
+            },
+            {
+              "name": "left",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            },
+            {
+              "name": "right",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            }
+          ],
+          "footer_exact": true,
+          "footer_checked_pixels": 4860
+        },
+        "action_bar": {
+          "passed": true,
+          "exact_cells": 6,
+          "cells": 6
+        },
+        "portrait_bodies": {
+          "passed": true,
+          "slots": 8,
+          "rows_inclusive": [
+            20,
+            48
+          ],
+          "checked_pixels_per_slot": 928
+        },
+        "exposed_backing": {
+          "passed": true,
+          "checked_pixels": 9158,
+          "mismatches": 0
+        }
+      },
+      "capture-3": {
+        "passed": true,
+        "raw_path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-3\\surface.raw",
+        "raw_sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+        "bytes": 2073600,
+        "frame": {
+          "passed": true,
+          "bands": [
+            {
+              "name": "top",
+              "checked_pixels": 30720,
+              "mismatches": 0
+            },
+            {
+              "name": "bottom",
+              "checked_pixels": 25860,
+              "mismatches": 0
+            },
+            {
+              "name": "left",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            },
+            {
+              "name": "right",
+              "checked_pixels": 33536,
+              "mismatches": 0
+            }
+          ],
+          "footer_exact": true,
+          "footer_checked_pixels": 4860
+        },
+        "action_bar": {
+          "passed": true,
+          "exact_cells": 6,
+          "cells": 6
+        },
+        "portrait_bodies": {
+          "passed": true,
+          "slots": 8,
+          "rows_inclusive": [
+            20,
+            48
+          ],
+          "checked_pixels_per_slot": 928
+        },
+        "exposed_backing": {
+          "passed": true,
+          "checked_pixels": 9158,
+          "mismatches": 0
+        }
+      }
+    },
+    "complete_backing": {
+      "passed": true,
+      "panel_inputs_unchanged": true,
+      "complete_backing_unchanged": true,
+      "checked_pixels_per_capture": 25542,
+      "rectangle_inclusive": [
+        32,
+        998,
+        418,
+        1063
+      ],
+      "mismatches_from_before": {
+        "movement-before": 0,
+        "movement-preview": 0,
+        "movement-after": 0,
+        "capture-1": 0,
+        "capture-2": 0,
+        "capture-3": 0
+      },
+      "count_text_verified": false,
+      "scope": "Full backing equality with unchanged type/health/status and source-guarded zero portrait-selection flags; no glyph oracle."
+    }
+  },
+  "screenshots": {
+    "movement-before": {
+      "passed": true,
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-before.png",
+      "sha256": "f7cf8d5b365630dbb877c1b94375b1225c296ddf8412414e0ccd4f8ce2554cff",
+      "raw_sha256": "385cbcf95aad03a25d4b37d13749ed67cd5284b70ac115f44681dfdc82a60cc6",
+      "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+      "palette_scope": "Retained final proxy palette; intermediate palette changes are not independently observed."
+    },
+    "movement-preview": {
+      "passed": true,
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-preview.png",
+      "sha256": "153e9e3b7211f039536a07b2e2df17b38e93a80b19564fd677340cf576f5b90e",
+      "raw_sha256": "6df666eb60c0e153a4202c914211c83141896250bdf09db027fc7a1c5d4d3bc5",
+      "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+      "palette_scope": "Retained final proxy palette; intermediate palette changes are not independently observed."
+    },
+    "movement-after": {
+      "passed": true,
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-after.png",
+      "sha256": "c3616fe18875bbb8c68098cde63049fcd570b5d2a0e99da90fb7360a68747a41",
+      "raw_sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+      "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+      "palette_scope": "Retained final proxy palette; intermediate palette changes are not independently observed."
+    },
+    "final": {
+      "passed": true,
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\surface.png",
+      "sha256": "c3616fe18875bbb8c68098cde63049fcd570b5d2a0e99da90fb7360a68747a41",
+      "raw_sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+      "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2"
+    }
+  },
+  "visual_inspection": {
+    "method": "Offline inspection of all four retained PNGs with view_image; no image changes or live capture.",
+    "resolution": "1920x1080",
+    "before": "Selected army remains at the source location; all four frame edges, footer, six bottom-right action cells and eight portrait bodies are present.",
+    "preview": "Queued path markers are visible to the right of the selected army; all four frame edges, footer, six action cells and eight portrait bodies remain intact.",
+    "after": "Selected army is visibly farther right and preview path markers are gone; adjacent terrain is revealed. All four frame edges, footer, six action cells and eight portrait bodies remain intact.",
+    "final": "Final PNG is byte-identical to movement-after.png and matches the three stable stopped raw captures; all four frame edges and applicable controls pass their source pixel checks.",
+    "scope": "Visual inspection supplements source-bound indexed pixel checks; map-unit artwork, terrain correctness, minimap correctness, glyph correctness and visible-wrapper composition are not independently proved."
+  },
+  "palette_scope": "all three checkpoint PNGs use the retained final proxy palette; intermediate palette changes are not independently traced",
+  "asset_members": {
+    "info_sha256": "ba0747966bd3ff5722a41e6374fd2edc4d817215f79d83bb87cf1c1df3e65dcd",
+    "marks_sha256": "026e2d549427163b5b9642a1c92f89c98b65885eec54b36a0e28fee812bc7667",
+    "action_sha256": "511dd0aa848a8a7582139f7df9bd39ee87580c503dd9f731f3c4206f5206e620"
+  },
+  "artifacts": [
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\after-redraw.raw",
+      "sha256": "385cbcf95aad03a25d4b37d13749ed67cd5284b70ac115f44681dfdc82a60cc6",
+      "bytes": 2073600
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\before-redraw.raw",
+      "sha256": "126f389518a5b3e2ae2e4703379d5fe256e124ea58dd0c626ccbeadd8f9d4a09",
+      "bytes": 2073600
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-1\\surface-after-e0.raw",
+      "sha256": "ade0219a86f18aeef2604e95d7cb9ff5387cd5837552e6d191cc3183a31a6c8c",
+      "bytes": 4
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-1\\surface-after-header.raw",
+      "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-1\\surface-after-unit.raw",
+      "sha256": "857ce1662ff6758ff048d84e0dffa8a63f366f9ed864a1decdc6b27835deb0d0",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-1\\surface-before-e0.raw",
+      "sha256": "ade0219a86f18aeef2604e95d7cb9ff5387cd5837552e6d191cc3183a31a6c8c",
+      "bytes": 4
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-1\\surface-before-header.raw",
+      "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-1\\surface-before-unit.raw",
+      "sha256": "857ce1662ff6758ff048d84e0dffa8a63f366f9ed864a1decdc6b27835deb0d0",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-1\\surface.raw",
+      "sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+      "bytes": 2073600
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-2\\surface-after-e0.raw",
+      "sha256": "ade0219a86f18aeef2604e95d7cb9ff5387cd5837552e6d191cc3183a31a6c8c",
+      "bytes": 4
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-2\\surface-after-header.raw",
+      "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-2\\surface-after-unit.raw",
+      "sha256": "857ce1662ff6758ff048d84e0dffa8a63f366f9ed864a1decdc6b27835deb0d0",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-2\\surface-before-e0.raw",
+      "sha256": "ade0219a86f18aeef2604e95d7cb9ff5387cd5837552e6d191cc3183a31a6c8c",
+      "bytes": 4
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-2\\surface-before-header.raw",
+      "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-2\\surface-before-unit.raw",
+      "sha256": "857ce1662ff6758ff048d84e0dffa8a63f366f9ed864a1decdc6b27835deb0d0",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-2\\surface.raw",
+      "sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+      "bytes": 2073600
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-3\\surface-after-e0.raw",
+      "sha256": "ade0219a86f18aeef2604e95d7cb9ff5387cd5837552e6d191cc3183a31a6c8c",
+      "bytes": 4
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-3\\surface-after-header.raw",
+      "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-3\\surface-after-unit.raw",
+      "sha256": "857ce1662ff6758ff048d84e0dffa8a63f366f9ed864a1decdc6b27835deb0d0",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-3\\surface-before-e0.raw",
+      "sha256": "ade0219a86f18aeef2604e95d7cb9ff5387cd5837552e6d191cc3183a31a6c8c",
+      "bytes": 4
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-3\\surface-before-header.raw",
+      "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-3\\surface-before-unit.raw",
+      "sha256": "857ce1662ff6758ff048d84e0dffa8a63f366f9ed864a1decdc6b27835deb0d0",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-3\\surface.raw",
+      "sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+      "bytes": 2073600
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\capture-prefix.log",
+      "sha256": "99d0566a09257ba11de3b396d3ab6e59102150f420fec7af594b42963b80aeb4",
+      "bytes": 86993
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\cdb.log",
+      "sha256": "99d0566a09257ba11de3b396d3ab6e59102150f420fec7af594b42963b80aeb4",
+      "bytes": 86993
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\complete-hd-army-movement.cdb",
+      "sha256": "9d492c2ed4642aef5eb4a1ac5128ab63765088cdd2634dbfb811adeddeff0112",
+      "bytes": 3610655
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\host.ps1",
+      "sha256": "a1c6f6e1ac63f42f8c616a085bfbd900782bbdebd620a6e12e1b6dfdeabcb143",
+      "bytes": 54641
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\initial-extra.cdb",
+      "sha256": "746886872acdb5c87f7bb23062297174982ffe8db597eadc3dba9ab9b6bca3a3",
+      "bytes": 2898861
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-after.header.raw",
+      "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-after.png",
+      "sha256": "c3616fe18875bbb8c68098cde63049fcd570b5d2a0e99da90fb7360a68747a41",
+      "bytes": 317645
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-after.png.json",
+      "sha256": "bf58fdf2ac9ac6070186311eaf4e355fff1276d67d027381f781478dfbe7726e",
+      "bytes": 832
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-after.raw",
+      "sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+      "bytes": 2073600
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-after.unit.raw",
+      "sha256": "857ce1662ff6758ff048d84e0dffa8a63f366f9ed864a1decdc6b27835deb0d0",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-before.header.raw",
+      "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-before.png",
+      "sha256": "f7cf8d5b365630dbb877c1b94375b1225c296ddf8412414e0ccd4f8ce2554cff",
+      "bytes": 297134
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-before.png.json",
+      "sha256": "01b3ef687868de437cd2a7d2e02612e25425d2648567306212b61a15807845c9",
+      "bytes": 834
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-before.raw",
+      "sha256": "385cbcf95aad03a25d4b37d13749ed67cd5284b70ac115f44681dfdc82a60cc6",
+      "bytes": 2073600
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-before.unit.raw",
+      "sha256": "43c8a433d1be4c24265a76446f94e56e9f46f139eb35d8736e84a7383418f733",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-checkpoint-0.cdb",
+      "sha256": "c85816ef89a3377d37ea488de4b1f3774e15ab6f86fce6c4a8c75112fa371df5",
+      "bytes": 3750
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-checkpoint-1.cdb",
+      "sha256": "80ffa25573887af3d54bc70684c16707cc3a127abe29ad0574bd6b8ea34f89f7",
+      "bytes": 3332
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-checkpoint-2.cdb",
+      "sha256": "4c2ac76fe81255af68c52734f8cf696b24184eebbd243cd2c7d75d7324659399",
+      "bytes": 3040
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-preview.header.raw",
+      "sha256": "9129e566d94083135d212c78beb2efda7c40b027d8a5463a7115a09c3fcb7fd3",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-preview.png",
+      "sha256": "153e9e3b7211f039536a07b2e2df17b38e93a80b19564fd677340cf576f5b90e",
+      "bytes": 297077
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-preview.png.json",
+      "sha256": "c828ef700e0958b2bf772ab92343b546ac058578ea2b9dd55816682eab421596",
+      "bytes": 836
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-preview.raw",
+      "sha256": "6df666eb60c0e153a4202c914211c83141896250bdf09db027fc7a1c5d4d3bc5",
+      "bytes": 2073600
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-preview.unit.raw",
+      "sha256": "b0c3d131262177b721aa112b4f115d62247530f36cc2853707ab86d6b9225c28",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\movement-surface-audit.json",
+      "sha256": "2243a4ba7ac33fa984b19ef6c2f9b63d96ae8cc9755aff9632e8d1a0686a2828",
+      "bytes": 160316
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\packet.json",
+      "sha256": "62484ec9ad6d66dc7765cc8c65286fbc3ee09196f1f67fbd3aff9cc2d5795985",
+      "bytes": 6564700
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\plan.json",
+      "sha256": "ed13eaec5bb069c5a9a2e300028b4db1cec9dc9914d97b7acb8cc4c26d8b6904",
+      "bytes": 25055
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\summary.json",
+      "sha256": "309c49d46d838f59d7990604d6b0e79564625fb8ec9cab242c310cb1ac851071",
+      "bytes": 3461793
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\surface.png",
+      "sha256": "c3616fe18875bbb8c68098cde63049fcd570b5d2a0e99da90fb7360a68747a41",
+      "bytes": 317645
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\surface.png.json",
+      "sha256": "c35980daa82b77c9d7a1d9cca7c7a553e856cdaa6ea5fe3d796a6120bece3058",
+      "bytes": 818
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\surface.raw",
+      "sha256": "92686b3405dc99c7bc2a2766f1cd6567d7443ca1615c1df643eca1799f895958",
+      "bytes": 2073600
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\trace-final.json",
+      "sha256": "e6a528b8eb474b97ff16d7550cf0e7271a2ee01f4346b26488f2a808f4e699f1",
+      "bytes": 1427210
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-e-1920x1080\\trace.json",
+      "sha256": "e6a528b8eb474b97ff16d7550cf0e7271a2ee01f4346b26488f2a808f4e699f1",
+      "bytes": 1427210
+    },
+    {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "bytes": 1232384
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\candidate-1920x1080-e\\framed-modal-canvas-complete-hd-army-movement-1920x1080-381ef75cfed3671b.exe",
+      "sha256": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0",
+      "bytes": 1458688
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-selection-20260913-a\\workdir\\save\\0.dat",
+      "sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+      "bytes": 586414
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\prepared\\clash95_complete_movement_1920x1080.candidate.json",
+      "sha256": "2191da124e96ca12863bfb760b72e287aa7353643f05f89ad3eb15022111ce25",
+      "bytes": 3031354
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\candidate-1920x1080-e\\ddraw.dll",
+      "sha256": "c0d6ba6756994864473ba5d18ab78d4b967044eba7da6ac95315eadddbbaa3c2",
+      "bytes": 136704
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-selection-20260913-a\\proxy\\ddraw_surfdump_proxy.build.json",
+      "sha256": "9b9a1d49655ef9622a442ef7ceb0ea0c53813ebdf43c88500faaf44f10c2bb59",
+      "bytes": 689
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\candidate-1920x1080-e\\ddraw_surfdump_palette.bin",
+      "sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+      "bytes": 1024
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-selection-20260913-a\\workdir\\DATA\\minimum.res",
+      "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116",
+      "bytes": 21601784
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-selection-20260913-a\\workdir\\DATA\\GFX3.RES",
+      "sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525",
+      "bytes": 5514969
+    }
+  ],
+  "artifact_inventory_scope": "All retained E capture files plus key immutable inputs and native asset files; the bound movement-surface-audit.json retains the complete 157-file audit inventory, including source and work-directory inventory receipts.",
+  "ordinary_input_proof": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "runtime_accepted": false,
+  "stable_promotion": false,
+  "promotion_ready": false,
+  "count_text_verified": false,
+  "map_unit_artwork_verified": false,
+  "cleanup_observed_by_this_report": false,
+  "limits": [
+    "Reads retained files only; no game, debugger, input, capture or image writing occurs.",
+    "Complete bound movement proves one controlled native preview/confirmation route, never ordinary dispatch or manual input.",
+    "Every raw observation must pass all four frame bands, footer, six action cells, eight portrait bodies and exposed backing source pixels.",
+    "Portrait numbers load signed health/count byte army+31*slot+15, not action points at +14. Glyph shapes are not independently verified.",
+    "Whole-backing stability applies only to unchanged portrait types, health/count inputs and status badges with the source-guarded ten selection flags zero.",
+    "Map-unit artwork and terrain changes, command availability, complete world preservation and final wrapper composition remain unproved.",
+    "Checkpoint PNGs use the retained final proxy palette as a diagnostic; intermediate palette changes were not independently captured. Indexed-pixel source checks do not depend on that colorization.",
+    "Owned cleanup receipts are checked for identity and consistency; live process absence is not observed by this offline tool.",
+    "No source, state, pixel or cleanup result supplies stable-stage promotion.",
+    "This completed E route is at 1920x1080. The separate D route is 1024x768; failed A/B/C attempts remain preserved historical diagnostics and their outcomes are unchanged.",
+    "The native record and source trace establish the exact outward two-step route and costs. No return trip, AP refill, exhaustive world-state preservation, animation-path coverage or general movement-cost acceptance is claimed.",
+    "Only the two observed delay frame calls have actual runtime caller/return evidence here; the optional animation frame branch did not occur in E.",
+    "The final software PNG and stable stopped triplet do not establish live wrapper composition, visible manual play, other resolutions, battle/castle transitions or stable promotion."
+  ]
+}
