@@ -149,11 +149,16 @@ def ready_script():
     return additions()[1].replace(r'\\n',r'\n').replace(r'\"','"')+'\n'
 
 
-def prepare(original,candidate,*,ready_file,proxy_manifest,**kwargs):
-    check_pins()
+def verify_native_lock(original,candidate):
+    """Keep native Lock admission independent of expensive recipe rebuilding."""
     _,observed=modal.producer._read(original,LOCK_START,len(LOCK_BYTES))
     _,installed=modal.producer._read(candidate,LOCK_START,len(LOCK_BYTES))
     if observed!=LOCK_BYTES or installed!=LOCK_BYTES: raise ValueError('native Lock call/return bytes changed')
+
+
+def prepare(original,candidate,*,ready_file,proxy_manifest,**kwargs):
+    check_pins()
+    verify_native_lock(original,candidate)
     packet=modal.producer.build_screen_probe(original,candidate,**kwargs)
     packet['primary_capture']=dict(revision=REVISION,dependencies=PINS,lock_start=LOCK_START,lock_bytes=LOCK_BYTES.hex(),
         source_hashes={name:sha((ROOT/name).read_bytes()) for name in PRIMARY_SOURCES},snapshot_origin=SNAPSHOT_ORIGIN,
@@ -213,12 +218,15 @@ def evaluate_primary_sequence(log,packet,modal_report):
 
 def evaluate_trace(log,*,original,candidate,packet,generated_probe,ready_script_bytes):
     check_pins()
-    rebuilt=prepare(original,candidate,candidate_sha256=packet['candidate_sha256'],stage=packet['stage'],
-        resolution=packet['resolution'],route=packet['route']['name'],availability=packet['availability'],
-        castle_index=packet['castle_index'],minimap_viewport=packet['minimap_viewport'],ready_file=packet['primary_capture']['ready_file'],
-        candidate_manifest=Path(packet['candidate_manifest']['path']),proxy_manifest=packet['primary_capture']['proxy_manifest']['path'])
-    if (rebuilt['packet']!=packet or generated_probe.decode('ascii').replace('\r\n','\n')!=rebuilt['probe']
-            or ready_script_bytes!=rebuilt['ready_script'].encode('ascii')):
+    verify_native_lock(original,candidate)
+    # compile_probe authenticates every primary-specific contract/source field
+    # and the entire augmented command text. The inherited evaluator below
+    # independently reconstructs and compares the complete base packet and
+    # candidate once. Calling prepare here would rebuild that same chain twice.
+    # No caller-supplied prepared object or cross-evaluation cache is accepted.
+    compiled=compile_probe(packet)
+    if (generated_probe.decode('ascii').replace('\r\n','\n')!=compiled
+            or ready_script_bytes!=ready_script().encode('ascii')):
         raise ValueError('whole primary packet/probe differs from source reconstruction')
     base=copy.deepcopy(packet);base.pop('primary_capture')
     result=modal.evaluate_trace(log,original=original,candidate=candidate,packet=base,
@@ -229,7 +237,7 @@ def evaluate_trace(log,*,original,candidate,packet,generated_probe,ready_script_
     result['failures'] += sequence['failures']
     result['passed']=result['ready_for_host_capture']=not result['failures']
     result['source'].update(generated_probe_sha256=sha(generated_probe),validator_sha256=sha(Path(__file__).read_bytes()),
-        generated_probe_canonical_lf_sha256=sha(rebuilt['probe'].encode('ascii')),primary_ready_script_sha256=sha(ready_script_bytes),primary_dependencies=PINS)
+        generated_probe_canonical_lf_sha256=sha(compiled.encode('ascii')),primary_ready_script_sha256=sha(ready_script_bytes),primary_dependencies=PINS)
     result['primary_protocol_revision']=REVISION;result['limits']=result['limits']+LIMITS
     return result
 
@@ -260,6 +268,25 @@ def audit_final_log(receipt,*,packet,probe,ready_bytes):
     return dict(complete_final_trace_passed=True,final_log_sha256=sha(raw),paused_prefix_sha256=sha(paused))
 
 
+def validate_loaded_proxy_header(captured,proxy_image,proxy_base):
+    """Permit only ImageBase equal to the measured pinned-module load base.
+
+    The original DLL remains the relocation authority. Construct expected
+    loaded header bytes without editing or replacing any captured artifact.
+    """
+    proxy=primary._Proxy(proxy_image,primary.SUPPORTED_PROXY_SHA256,proxy_base)
+    offset=primary._u32(proxy_image,0x3c)+24+28
+    if not isinstance(captured,bytes) or len(captured)!=512 or offset+4>512:
+        raise ValueError('loaded proxy header has an unsupported extent')
+    expected=bytearray(proxy_image[:512])
+    struct.pack_into('<I',expected,offset,proxy_base)
+    if captured!=bytes(expected):
+        raise ValueError('loaded proxy header differs beyond exact measured ImageBase')
+    return dict(image_size=proxy.size,image_base_offset=offset,preferred_base=proxy.preferred,
+                measured_load_base=proxy_base,captured_header_sha256=sha(captured),
+                rule='exact_pinned_header_with_only_ImageBase_equal_measured_load_base')
+
+
 def audit_snapshot(manifest,*,proxy_image,trace):
     """Validate producer-written host reads against an already revalidated trace.
 
@@ -277,12 +304,13 @@ def audit_snapshot(manifest,*,proxy_image,trace):
     if before['surface_full'].address!=v['surface'] or len(before['surface_full'].data)!=32 or primary._u32(before['surface_full'].data,28)!=v['palette']:
         raise ValueError('live attached palette pointer differs')
     if before['surface_full'].data[:4]!=before['surface'].data:raise ValueError('repeated COM vtable reads differ')
-    if before['proxy_header'].data!=proxy_image[:512] or before['proxy_getpalette'].data!=GET_PALETTE_BYTES:
-        raise ValueError('loaded proxy header/GetPalette implementation differs')
     base=manifest['proxy_module']['base']
+    header=validate_loaded_proxy_header(before['proxy_header'].data,proxy_image,base)
+    if before['proxy_getpalette'].data!=GET_PALETTE_BYTES:
+        raise ValueError('loaded proxy GetPalette implementation differs')
     if before['proxy_header'].address!=base or before['proxy_getpalette'].address!=base+GET_PALETTE_RVA:raise ValueError('proxy read addresses differ')
     if manifest['proxy_module']['sha256']!=primary.SUPPORTED_PROXY_SHA256:raise ValueError('unsupported live proxy identity')
-    if manifest['proxy_module']['size']!=primary._Proxy(proxy_image,primary.SUPPORTED_PROXY_SHA256,base).size:
+    if manifest['proxy_module']['size']!=header['image_size']:
         raise ValueError('loaded proxy module extent differs from pinned image')
     if owner['candidate_sha256']!=trace['candidate_sha256'] or manifest['trace_sha256']!=trace['source']['log_raw_sha256']:
         raise ValueError('host/trace/candidate binding differs')
@@ -308,7 +336,8 @@ def audit_snapshot(manifest,*,proxy_image,trace):
         proxy_image=proxy_image,expected_proxy_sha256=primary.SUPPORTED_PROXY_SHA256,proxy_base=base,
         regions=regions,identity=identity,lock_observation=lock,palette_observation=pal)
     if _artifact(manifest['palette_entries'])!=before['palette'].data[12:]:raise ValueError('PNG palette does not match current attached entries')
-    result.update(source_authenticated=True,host_receipt_consistent=True,read_plan=primary.primary_read_plan(v['width'],v['height']))
+    result.update(source_authenticated=True,host_receipt_consistent=True,loaded_proxy_header=header,
+                  read_plan=primary.primary_read_plan(v['width'],v['height']))
     return result
 
 

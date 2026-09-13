@@ -39,6 +39,11 @@ candidate/probe sidecars. The primary packet additionally binds its reader,
 producer, host, exact native Lock bytes and historical proxy manifest.
 Compilation and evaluation reconstruct the entire inherited probe plus the
 additive observers; a rehashed arbitrary script is not accepted.
+Each trace evaluation now performs its inherited candidate reconstruction once:
+the modal evaluator authenticates the full base packet/candidate, while the
+primary adapter independently verifies the native Lock spans, primary-specific
+contract and entire augmented probe. Prefix and final logs are still evaluated
+separately. There is no shared prepared-result cache or caller-provided shortcut.
 
 ## Capture and acceptance boundaries
 
@@ -68,6 +73,13 @@ the receipt records that palette path/hash, sample number and primary-pixel
 hash. This does not claim that the software mirror owns a separate palette
 or that the visible wrapper's palette was observed. The independently written
 global proxy palette file is not used to color these PNGs.
+
+The loaded proxy header has one explicit load-base rule: its PE32 `ImageBase`
+field must equal the measured module base. Every surrounding header byte,
+including the checksum, must equal the pinned on-disk DLL. The adapter builds
+those expected bytes in memory; it never rewrites captured headers or the DLL.
+The original preferred base remains the authority for vtable relocations in
+the byte-preserved reader. Wrong bases and changes to other header fields fail.
 
 The triplet audit binds all paths, source hashes, candidate/probe identities,
 process identities and cleanup receipts. It compares all three samples and
@@ -122,6 +134,16 @@ The retained `C:/ClashCaptures/hd-completion/primary6-barracks-20260906-104000/`
 attempt failed initial-map trace validation at the recorded 498/501 events
 and produced no primary pixels. It remains failed. This source implementation
 does not reclassify that run or establish actual repaired primary composition.
+
+The September 13 `slots-primary-1024x768-20260913-d` run retains its original
+failed host summary: its post-cleanup triplet evaluator exceeded its 120-second
+deadline. The separately profiled original evaluator also remains failed on
+its strict raw-header comparison. Its three identical captured headers differ
+from the pinned file only at `ImageBase`, which equals the measured load base.
+The load-base compatibility rule and reduced repeated reconstruction are new
+source changes. A separate evaluation of retained material must identify that
+compatibility explicitly and preserve the original packet, source snapshot,
+captures and failures; it cannot relabel the original host run as passing.
 
 Even a successful new triplet establishes only its bounded hidden native,
 physical and cached-primary observations. Primary pixels still need a separate
