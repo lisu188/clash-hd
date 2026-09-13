@@ -65,10 +65,37 @@ def verify_sources():
         'tools/complete_hd_army_movement_probe.py': sha(Path(__file__).read_bytes())}
 
 
-def _guard(condition, body):
+def _guard(condition, body, reject_extra=''):
     context = base._printf('WMOV_REJECT_CONTEXT phase=%d tid=%x eip=%p esp=%p shift=%x raw=(%x,%x)',
         '@$t0','@$tid','@eip','@esp','by(0054512c)','poi(00544cfc)','poi(00544d00)')
-    return '.if (' + condition + ') { ' + body + ' } .else { '+context+'; .echo WMOV_REJECT native_contract; q }'
+    return '.if (' + condition + ') { ' + body + ' } .else { '+context+'; '+reject_extra+'.echo WMOV_REJECT native_contract; q }'
+
+
+def _pump_rejection(site, *, backend_only=False):
+    """Read-only failure details; all existing native predicates stay intact."""
+    p = base._printf
+    backend = p('WMOV_REJECT_BACKEND site='+site+' table=%p recording=%x playback=%x',
+        'poi(00545138)','poi(0054513c)','poi(00545140)')+'; '
+    # MASM evaluates both sides eagerly. Never dereference an unbounded table
+    # just to diagnose a failed pointer guard; disclose that unavailable case.
+    backend += ('.if ((poi(00545138) >= 00400000) & (poi(00545138) <= 7fffffe8)) { '+
+        p('WMOV_REJECT_CALLBACK site='+site+' actual=%p expected=00460a50', 'poi(poi(00545138)+14)')+
+        '; } .else { .echo WMOV_REJECT_CALLBACK_UNAVAILABLE; }; ')
+    if backend_only:
+        return backend
+    registers = p('WMOV_REJECT_REGISTERS site='+site+' eax=%x ebx=%x ecx=%x edx=%x esi=%x edi=%x ebp=%x'
+        ' saved=(%p,%x,%p) click=%d steps=%d pumps=%d pending=%d saved_backend=%p',
+        '@eax','@ebx','@ecx','@edx','@esi','@edi','@ebp','@$t1','@$t2','@$t3',
+        '@$t10','@$t11','@$t12','@$t13','@$t4')+'; '
+    owner = p('WMOV_REJECT_OWNER gd=%p owner=%p post=%x player=%x selected=%x prior=%x lower=%x unit=%p unit_owner=%x flags=('+','.join(['%x']*10)+')',
+        'poi(005202e4)','poi(005199d8)','poi(00526990)','poi(005202ec)','poi(00511b58)',
+        'poi(00514194)','poi(00526994)','poi(00526fa0)','by(@$t1+0n149353)',
+        *(f'poi({0x526F78+4*i:08x})' for i in range(10)))+'; '
+    unit = '(@$t1+0n149349)'
+    state = p('WMOV_REJECT_UNIT xy=(%d,%d) path=(%d,%x,%x) ap=('+','.join(['%d']*8)+') buttons=%x accumulator=%x',
+        'wo('+unit+')','wo('+unit+'+2)','poi('+unit+'+0n316)','poi('+unit+'+0n320)','poi('+unit+'+0n324)',
+        *(f'by(@$t1+0n{UNIT_OFFSET+14+31*i})' for i in range(8)), 'poi(00544d04)','by(005451c0)')+'; '
+    return registers+owner+state+backend
 
 
 def build_movement_probe(original, candidate, save, *, capture_dir, candidate_manifest, resolution):
@@ -208,9 +235,10 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
         call_context=context+' & (@eax == 00544cd8) & (@edx == 0) & (@$t13 == 0) & (@$t12 < 0n1024) & (poi(00545138) >= 00400000) & (poi(00545138) <= 7fffffe8)'
         records[call_n]=(call_va,_guard(call_context,
             _guard('(poi(poi(00545138)+14) == 00460a50)',
-                f'r @$t4=poi(00545138); r @$t12=@$t12+1; r @$t13={identity}; '+pump(kind+'-call')+'; gc')))
+                f'r @$t4=poi(00545138); r @$t12=@$t12+1; r @$t13={identity}; '+pump(kind+'-call')+'; gc',
+                _pump_rejection(kind+'-call-backend', backend_only=True)), _pump_rejection(kind+'-call-context')))
         records[return_n]=(return_va,_guard(context+f' & (@$t13 == {identity}) & (@$t12 >= 1) & (@$t12 <= 0n1024) & (poi(00545138) == @$t4) & (poi(00544d04) <= 3)',
-            'r @$t13=0; '+pump(kind+'-return')+'; gc'))
+            'r @$t13=0; '+pump(kind+'-return')+'; gc', _pump_rejection(kind+'-return-context')))
     compiled=prior['compiled_probe'].replace('SHSEL_','WMOV_BASE_')
     old={}
     for n in (80,90,91,92):

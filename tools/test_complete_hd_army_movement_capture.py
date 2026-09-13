@@ -221,7 +221,7 @@ foreach ($bad in @('true',1,$false,$null)) {
 '''
 
 PERSISTENCE = r'''
-foreach ($name in @('Invoke-MovementCapture','Test-MovementCleanup')) {Import-Function $name}
+foreach ($name in @('Invoke-MovementCapture','Test-MovementCleanup','Save-MovementFinalTrace')) {Import-Function $name}
 function Assert-MovementFiles {}
 function Assert-MovementCommands {}
 function Resolve-CanvasPath {param($Path,$Root,$Kind);return $Path}
@@ -332,6 +332,94 @@ elseif ($Mode -eq 'order') {$report.snapshots[1].checkpoint=0}
 $failed=$false;try {$null=Get-MovementCheckpoints $plan $report} catch {$failed=$true}
 if ($failed -ne ($Mode -ne 'normal')) {throw ('Checkpoint boundary expectation differs for '+$Mode)}
 @{passed=$true} | ConvertTo-Json
+'''
+
+FINAL_TRACE = r'''
+foreach ($name in @('Save-MovementFinalTrace','Read-CanvasLogBytes','Get-CanvasBytesHash','Write-CanvasJson')) {Import-Function $name}
+$log=Join-Path $FixtureRoot 'cdb.log';$script:TraceCalls=0
+if ($Mode -ne 'missing-log') {[IO.File]::WriteAllText($log,"synthetic WMOV_REJECT native_contract`n")}
+function Invoke-MovementTrace {
+ param($Plan,$Log,$Packet,$Probe)
+ $script:TraceCalls++
+ if ($Mode -eq 'timeout') {throw 'injected bounded validator timeout'}
+ $hash=Get-CanvasBytesHash ([IO.File]::ReadAllBytes($Log))
+ if ($Mode -eq 'drift') {[IO.File]::AppendAllText($Log,'changed after parser read')}
+ return @{passed=$false;ready_for_host_capture=$false;source=@{log_raw_sha256=$hash};failures=@('synthetic native rejection')}
+}
+if ($Mode -eq 'write-failure') {function Write-CanvasJson {throw 'injected trace persistence failure'}}
+$result=Save-MovementFinalTrace @{out_dir=$FixtureRoot} $log 'unused-packet' 'unused-probe'
+if ($Mode -eq 'missing-log') {
+ Assert-Case (-not $result.attempted -and $script:TraceCalls -eq 0 -and $null -eq $result.trace -and $null -eq $result.log)
+} else {
+ Assert-Case ($result.attempted -and $script:TraceCalls -eq 1 -and $null -ne $result.log -and -not $result.log.capture_prefix_preserved)
+ Assert-Case ($result.log.sha256 -ceq (Get-CanvasBytesHash ([IO.File]::ReadAllBytes($log))))
+ if ($Mode -eq 'timeout') {Assert-Case ($null -eq $result.trace -and $result.log.unchanged_during_final_validation -and -not $result.log.validator_log_identity_matched)}
+ else {
+  Assert-Case ($result.trace.passed -is [bool] -and -not $result.trace.passed -and -not $result.trace.ready_for_host_capture)
+  Assert-Case ($result.trace.failures[0] -ceq 'synthetic native rejection')
+  Assert-Case ($result.log.unchanged_during_final_validation -eq ($Mode -ne 'drift'))
+  Assert-Case ($result.log.validator_log_identity_matched -eq ($Mode -ne 'drift'))
+ }
+}
+Assert-Case (($result.failures.Count -eq 0) -eq ($Mode -eq 'normal'))
+if ($Mode -eq 'normal') {Assert-Case (Test-Path -LiteralPath (Join-Path $FixtureRoot 'trace-final.json'))}
+@{passed=$true} | ConvertTo-Json
+'''
+
+EARLY_FAILURE_TRACE = r'''
+foreach ($name in @('Invoke-MovementCapture','Test-MovementCleanup','Save-MovementFinalTrace','Read-CanvasLogBytes','Get-CanvasBytesHash','Test-MovementReady')) {Import-Function $name}
+$script:Calls=New-Object 'Collections.Generic.List[string]';$script:TraceCalls=0;$script:PixelCalls=0;$script:SurfaceCalls=0
+function Assert-MovementFiles {}
+function Assert-MovementCommands {}
+function Resolve-CanvasPath {param($Path,$Root,$Kind);return $Path}
+function Get-CanvasHash {return 'fixture-hash'}
+function Get-MovementAssets {return @{}}
+function Write-CanvasJson {
+ param($Path,$Value)
+ if ($Mode -eq 'write-failure' -and [IO.Path]::GetFileName($Path) -eq 'trace-final.json') {throw 'injected trace persistence failure'}
+ [IO.File]::WriteAllText($Path,($Value | ConvertTo-Json -Depth 30))
+}
+function Invoke-CanvasPythonJson {return $script:Packet}
+function Start-CanvasHidden {
+ param($Plan,$Probe,$Log,$Launch)
+ $Launch.session=@{handle=123;identity=@{process_id=77;fixture='synthetic'};desktop_name='synthetic';command_line='synthetic'}
+ [IO.File]::WriteAllText($Log,"synthetic WMOV_REJECT native_contract`n")
+ return $Launch.session
+}
+function Find-CanvasOwnedChildren {param($Plan,$Session,$Started,$Owned);$Owned['88']=@{handle=456;identity=@{process_id=88;fixture='synthetic'}}}
+function Read-CanvasLog {param($Path);return [IO.File]::ReadAllText($Path)}
+function Test-CanvasProcessExited {return $true}
+function Stop-CanvasOwned {
+ param($Owned);$script:Calls.Add(('stop-'+$Owned.identity.process_id))
+ return @{identity=$Owned.identity;absent=$true;handle_closed=$true;termination_requested=$true}
+}
+function Close-CanvasDesktop {$script:Calls.Add('desktop-closed');return $true}
+function Assert-MovementSurface {$script:SurfaceCalls++;throw 'no snapshot must not authorize acceptance'}
+function Save-MovementTriplet {$script:PixelCalls++;throw 'native rejection must not read pixels'}
+function Invoke-MovementTrace {
+ param($Plan,$Log,$Packet,$Probe)
+ Assert-Case ($script:Calls[-1] -ceq 'desktop-closed')
+ $script:TraceCalls++;$script:Calls.Add('final-trace')
+ if ($Mode -eq 'timeout') {throw 'injected bounded validator timeout'}
+ return @{passed=($Mode -eq 'optimistic-trace');ready_for_host_capture=($Mode -eq 'optimistic-trace')
+  source=@{log_raw_sha256=(Get-CanvasBytesHash ([IO.File]::ReadAllBytes($Log)))};failures=@('synthetic native rejection')}
+}
+$input=Join-Path $FixtureRoot 'input.fixture';[IO.File]::WriteAllText($input,'fixture bytes')
+$directory=Join-Path $FixtureRoot 'candidate';$out=Join-Path $FixtureRoot 'out'
+$script:Packet=@{compiled_probe='synthetic probe';initial_extra='synthetic initial'}
+$plan=@{out_dir=$out;candidate_dir=$directory;input_candidate=$input;candidate_path=(Join-Path $directory 'candidate.fixture');candidate_sha256='fixture-hash'
+ proxy_input=$input;proxy_path=(Join-Path $directory 'proxy.fixture');proxy_sha256='fixture-hash';host_path=$input;probe_sha256='fixture-hash'
+ producer='synthetic';original=$input;save=$input;candidate_manifest=$input;resolution='800x600';work_dir=$FixtureRoot;python='unused';deadline_seconds=300}
+$result=Invoke-MovementCapture @{plan=$plan;packet=$script:Packet} -DoExecute
+Assert-Case ($result.executed -and -not $result.passed -and $result.status -ceq 'failed' -and $result.cleanup_verified)
+Assert-Case ($result.final_trace_attempted -and $script:TraceCalls -eq 1 -and $script:PixelCalls -eq 0 -and $script:SurfaceCalls -eq 0)
+Assert-Case ($null -eq $result.snapshot -and $null -eq $result.png -and -not $result.final_log.capture_prefix_preserved)
+Assert-Case (($script:Calls -join ',') -ceq 'stop-77,stop-88,desktop-closed,final-trace')
+Assert-Case (@($result.failures | Where-Object {$_ -ceq 'Debugger exited before validated movement readiness.'}).Count -eq 1)
+if ($Mode -eq 'normal') {Assert-Case ($null -ne $result.final_trace -and -not $result.final_trace.passed -and (Test-Path -LiteralPath (Join-Path $out 'trace-final.json')))}
+if ($Mode -eq 'timeout') {Assert-Case ($null -eq $result.final_trace -and $result.final_log.unchanged_during_final_validation)}
+if ($Mode -eq 'write-failure') {Assert-Case ($null -ne $result.final_trace -and -not (Test-Path -LiteralPath (Join-Path $out 'trace-final.json')))}
+@{passed=$true;synthetic_fixture_only=$true} | ConvertTo-Json
 '''
 
 
@@ -452,6 +540,14 @@ class HostBoundaryTests(unittest.TestCase):
         for mode in ('normal','raw-missing','header-missing','unit-missing','raw-truncated',
                      'header-truncated','unit-truncated','unit-hash','header-hash','header-path','order'):
             with self.subTest(mode=mode):self.assertTrue(self.run_ps(CHECKPOINTS,mode)['passed'])
+
+    def test_final_strict_failure_trace_retains_log_identity_on_timeout_write_failure_and_drift(self):
+        for mode in ('normal','missing-log','timeout','write-failure','drift'):
+            with self.subTest(mode=mode):self.assertTrue(self.run_ps(FINAL_TRACE,mode)['passed'])
+
+    def test_early_native_failure_parses_once_after_cleanup_and_cannot_authorize_capture(self):
+        for mode in ('normal','timeout','write-failure','optimistic-trace'):
+            with self.subTest(mode=mode):self.assertTrue(self.run_ps(EARLY_FAILURE_TRACE,mode)['passed'])
 
 
 if __name__ == '__main__':
