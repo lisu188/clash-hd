@@ -819,3 +819,6 @@
 /tools/modal_slots_primary_surface.py -text whitespace=cr-at-eol
 /tools/test_modal_slots_primary_capture.py -text whitespace=cr-at-eol
 /tools/test_modal_slots_primary_host.py -text whitespace=cr-at-eol
+/tools/complete_hd_manual_attach.py -text whitespace=cr-at-eol
+/tools/complete_hd_manual_attach_win32.py -text whitespace=cr-at-eol
+/tools/test_complete_hd_manual_attach.py -text whitespace=cr-at-eol
