@@ -711,6 +711,13 @@ checks; replay historical runs from their recorded source revision. New runs
 through those older validators need a separately reviewed compatibility update.
 The unfinished local movement/keypan validators remain preserved as well.
 
+The separate [complete-HD army input protocol](COMPLETE_HD_ARMY_INPUT.md)
+reconstructs the current complete candidate before preparing controlled native
+selection. Its startup recipe is independent of the mutable runtime harness.
+All six fixture resolutions retain exact loaded contracts and their own surface
+bounds. New-stage runtime, pixel, cleanup and ordinary/manual input evidence
+remain separate requirements; the historical movement failures are unchanged.
+
 | Work | Start with | Focused verification |
 | --- | --- | --- |
 | Patcher/resolutions | `src/patcher/patch_clash95_hd.py`; root `patch_clash95_hd.py` is the CLI wrapper | `tools/test_patch_resolution.py`, `tools/test_patch_definition_guard.py`, `tools/test_stable_stage_guard.py` |
