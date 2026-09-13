@@ -804,6 +804,8 @@
 /tools/test_modal_slots_barracks_capture.py -text whitespace=cr-at-eol
 /tools/complete_hd_main_probe.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_main_probe.py -text whitespace=cr-at-eol
+/tools/framed_world_clear_audit.py -text whitespace=cr-at-eol
+/tools/test_framed_world_clear_audit.py -text whitespace=cr-at-eol
 /tools/run_framed_offline_tests.py -text whitespace=cr-at-eol
 /tools/test_army_probe_startup.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_army_selection_probe.py -text whitespace=cr-at-eol
