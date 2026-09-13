@@ -2,6 +2,10 @@
 
 Reviewable 1280x720 candidate; acceptance remains pending. The stable stage is unchanged.
 
+The source is merged through [PR #61](https://github.com/lisu188/clash-hd/pull/61) at `b747b2e72c36e593149f9d852899e5d6365c813d`. All 19 GitHub checks passed on `10f852d199319b91e82c612d453e68bb40ba0b1e`. A merge does not promote this validation stage.
+
+The harness geometry compatibility fix is merged through [PR #63](https://github.com/lisu188/clash-hd/pull/63) at `6ea7ab0626af49774784924b7b259246cc82a94a`. All four applicable GitHub checks passed on `694988309f66966220677e88093c5492288ea116`. Candidate bytes are unchanged.
+
 - Stage: `gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd`.
 - Candidate: `C:\ClashTests\battle-hd-1280x720\clash95_battlehd_review_v3.exe`.
 - SHA-256: `7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47`.
@@ -37,31 +41,21 @@ The results snapshot copies the native primary surface to a debugger-allocated b
 
 ## Aggregate refresh
 
-The prior completed refresh had **23/165 failing checks**. Its immutable JSON is under `C:\ClashTests\battle-hd-1280x720\aggregate-after-main-artifacts\`. A fresh aggregate after the latest main integration is pending; the stopped intermediate run has no completed result. The incoming main snapshot is not a new validation of this branch.
+The required repo-only refresh completed on **2026-09-08T12:17:37+02:00** at source `694988309f66966220677e88093c5492288ea116` with **9/167 failing checks**. All **326 framed fixtures in 32 suites passed, with zero skips or expected failures**. This dated run includes the geometry fix later merged in PR #63; it predates later upstream fixture additions and is not a fresh aggregate of September 13 main.
 
-- `load_slot_route_limit_guard`: harness: missing marker load_mouse_x: $loadMouseX = 320; harness: missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)
-- `right_bottom_slot_fixture_plan`: load-slot route-limit guard is not passing
-- `right_bottom_slot_fixture_runtime_plan`: right-bottom slot fixture plan is not passing
-- `load_slot_transition_geometry_guard`: transition geometry guard failed: surface_formula_present; surface-dump script missing geometry token: $loadMouseX = 320; surface-dump script missing geometry token: $loadMouseY = 166 + (22 * $LoadSlot)
-- `load_slot_transition_probe_preview`: transition probe preview failed: geometry_guard_passed
-- `right_bottom_blocker_triage`: triage check failed: hidden_fixture_plan_ready
-- `right_bottom_visual_artifact_guard`: visual artifact guard failed: blocker_triage_non_promoting
-- `load_slot_transition_readiness`: transition readiness check failed: geometry_guard_passed; transition readiness check failed: probe_preview_passed
+The immutable [aggregate summary](C:/ClashTests/battle-hd-1280x720/aggregate-final-geometry-compatible-complete/current-evidence-refresh-current.md) and [JSON](C:/ClashTests/battle-hd-1280x720/aggregate-final-geometry-compatible-complete/current-evidence-refresh-current.json) retain every failure. The [stdout log](C:/ClashTests/battle-hd-1280x720/aggregate-final-geometry-compatible.log) and archive manifest are SHA-bound in this report's JSON companion. Repository-wide current reports retain their incoming main versions.
+
+The ten geometry-related failures from the prior 19/167 run now pass. The nine remaining failures concern missing castle raw evidence, long/manual release proof, five inherited Python scanner findings and downstream guards. The [geometry compatibility report](../../reports/battle_hd_geometry_guard_compatibility.md) records the unchanged scanner findings; none is converted to a pass.
+
 - `castle_overview_evidence`: owner_records: missing owner records raw dump: captures\current\castle-owner-records-current.raw; forced_hitmap: missing forced hitmap raw dump: captures\archive\castle-overview-hitmap-flags1f.raw
 - `castle_overview_promotion_decision`: castle overview evidence matrix is not passing
 - `castle_overview_baseline_recheck`: latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\current\castle-owner-records-current.raw; latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\archive\castle-overview-hitmap-flags1f.raw
 - `stable_stage_guard`: castle_overview_promotion_decision: castle overview promotion decision is not passing; castle_overview_evidence_matrix: castle overview evidence matrix is not passing
-- `python_runtime_safety_guard`: src/launcher/gui.py uses risky Python runtime/input APIs but is not gated or exempt; tools/hd_layout_observation_manifest.py uses risky Python runtime/input APIs but is not gated or exempt; tools/run_framed_offline_tests.py uses risky Python runtime/input APIs but is not gated or exempt
-- `resolution_manifest_guard`: manifest missing, invalid, or wrong schema: src\launcher\resolutions.json
-- `handoff_freshness_guard`: missing handoff file: .codex-loop\NEXT.md; missing handoff file: .codex-loop\STATE.md; missing handoff file: .codex-loop\TASKS.md; missing current handoff phrase for no_visible_runtime_warning: Do not run visible/manual; missing current handoff phrase for no_visible_runtime_warning: explicit user approval; missing current handoff phrase for no_popup_operator_preference: Do not launch Clash95, CDB, wrappers, PowerShell harnesses; missing current h
-- `hd_soak_execution_boundary`: missing_token did not fail closed before side effects; missing_expiry did not fail closed before side effects; expired_packet did not fail closed before side effects; token_mismatch did not fail closed before side effects
-- `hd_soak_dry_run_plan`: dry-run harness did not produce a readable JSON plan
-- `hd_soak_intro_skip_rerun_readiness`: dry-run plan is not passing; dry-run plan status is 'dry_run_plan_invalid'; dry-run plan would change the stable stage; dry-run plan does not keep right-bottom promotion blocked; dry-run intro_skip click_mode is None, expected 'postmessage'; dry-run intro_skip click_repeat is None, expected 8; dry-run intro_skip space_pulses is None, expected 4; dry-run intro_skip stop_click_repeat_on_drift is None, expected True; dry-run intro_skip proof_class i
-- `hd_soak_long_report_guard`: short ladder is not complete; long tiers remain locked; long soak proof manifest is missing: captures\current\hd-soak-long-proof-current.json; missing passing 2h+ representative route: map-idle; missing passing 2h+ representative route: map-pan
-- `hd_endurance_release_checklist`: protected_stable_stage: stable-stage guard does not prove the protected boundary; long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing; stable_menu_real_input: menu-load proof remains pending manual DirectInput validation; stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation; right_bottom_action_men
-- `hd_soak_approval_preflight`: dry-run plan report is not passing; dry-run plan status is 'dry_run_plan_invalid'; dry-run plan payload is not marked as a dry run; dry-run plan would change the stable stage; dry-run plan does not keep right-bottom promotion blocked; dry-run plan tier/route do not match the current step; dry-run plan does not pin max input drift to 1 px; dry-run plan sample_interval_sec is not 15; dry-run plan does not pin min nonblack percent; dry-run plan does
-- `no_popup_boundary_guard`: stable_stage_guard: refresh check is not passing: stable_stage_guard; python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard; hd_soak_execution_boundary: refresh check is not passing: hd_soak_execution_boundary; resolution_manifest_guard: refresh check is not passing: resolution_manifest_guard; handoff_freshness_guard: refresh check is not passing: handoff_freshness_guard; right_bottom_blocker_triage: refresh check
-- `docs_consistency_guard`: generated_state: no-popup boundary is failing; documents_handoff: missing document: .codex-loop\NEXT.md; documents_handoff: missing document: .codex-loop\STATE.md; documents_handoff: missing document: .codex-loop\TASKS.md
+- `python_runtime_safety_guard`: src/launcher/gui.py uses risky Python runtime/input APIs but is not gated or exempt; tools/framed_army_portrait_trace.py uses risky Python runtime/input APIs but is not gated or exempt; tools/framed_army_transition_trace.py uses risky Python runtime/input APIs but is not gated or exempt; tools/framed_primary_surface.py uses risky Python runtime/input APIs but is not gated or exempt; tools/run_framed_offline_tests.py uses risky Python runtime/input APIs but is not gated or exempt
+- `hd_soak_long_report_guard`: long soak proof manifest is missing: captures\current\hd-soak-long-proof-current.json; missing passing 2h+ representative route: map-idle; missing passing 2h+ representative route: map-pan
+- `hd_endurance_release_checklist`: protected_stable_stage: stable-stage guard does not prove the protected boundary; long_soak_representative_routes: 2h+ representative-route soak blocked (blocked_missing_long_proof): 2h+ representative-route soak evidence is locked or missing; stable_menu_real_input: menu-load proof remains pending manual DirectInput validation; stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation; right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked; castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked; tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion; no_speculative_promotion: one or more promotion boundaries are not fail-closed
+- `no_popup_boundary_guard`: stable_stage_guard: refresh check is not passing: stable_stage_guard; python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard; castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck; docs_consistency_guard: refresh check is not passing: docs_consistency_guard
+- `docs_consistency_guard`: generated_state: no-popup boundary is failing
 
 ## Pending acceptance
 
