@@ -105,7 +105,8 @@ class AttachmentTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory(prefix='complete-attach-offline-')
         self.addCleanup(self.directory.cleanup)
-        self.root = Path(self.directory.name)
+        # Match production context paths even when TEMP uses a Windows alias.
+        self.root = Path(self.directory.name).resolve()
         self.capture = self.root / 'capture'; self.capture.mkdir()
         self.scope = patch.object(attach, 'CAPTURE_ROOT', self.capture)
         self.scope.start(); self.addCleanup(self.scope.stop)
