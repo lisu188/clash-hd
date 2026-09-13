@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-09-08T09:49:28.028978+00:00",
+  "generated_at": "2026-09-13T06:23:39.629498+00:00",
   "status": "reviewable_validation_candidate_with_pending_acceptance",
   "passed": false,
   "stable_stage_should_change": false,
@@ -9,6 +9,52 @@
     1280,
     720
   ],
+  "git_delivery": {
+    "pull_request": "https://github.com/lisu188/clash-hd/pull/61",
+    "merged_at": "2026-09-08T09:51:29Z",
+    "merge_commit": "b747b2e72c36e593149f9d852899e5d6365c813d",
+    "ci_head": "10f852d199319b91e82c612d453e68bb40ba0b1e",
+    "ci_checks_passed": 19,
+    "ci_results": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\ci-pr61-10f852d1.json",
+      "sha256": "F2D9125A1EBD2D7FDD84DB7BC780808EC3CAA2DE59F0F908776D2119F5D608EB"
+    },
+    "promotion": false
+  },
+  "geometry_fix_delivery": {
+    "pull_request": "https://github.com/lisu188/clash-hd/pull/63",
+    "merged_at": "2026-09-13T06:13:53Z",
+    "merge_commit": "6ea7ab0626af49774784924b7b259246cc82a94a",
+    "ci_head": "694988309f66966220677e88093c5492288ea116",
+    "ci_checks_passed": 4,
+    "ci_results": [
+      {
+        "bucket": "pass",
+        "link": "https://github.com/lisu188/clash-hd/actions/runs/34213448180/job/102019576943",
+        "name": "Source-only fixtures (windows-2022)",
+        "state": "SUCCESS"
+      },
+      {
+        "bucket": "pass",
+        "link": "https://github.com/lisu188/clash-hd/actions/runs/34213448206/job/102019577656",
+        "name": "Offline fixtures (windows-2022)",
+        "state": "SUCCESS"
+      },
+      {
+        "bucket": "pass",
+        "link": "https://github.com/lisu188/clash-hd/actions/runs/34213448180/job/102019577054",
+        "name": "Source-only fixtures (ubuntu-24.04)",
+        "state": "SUCCESS"
+      },
+      {
+        "bucket": "pass",
+        "link": "https://github.com/lisu188/clash-hd/actions/runs/34213448206/job/102019577455",
+        "name": "Offline fixtures (ubuntu-24.04)",
+        "state": "SUCCESS"
+      }
+    ],
+    "promotion": false
+  },
   "evidence_class": "expanded_battle_validation",
   "candidate": {
     "path": "C:\\ClashTests\\battle-hd-1280x720\\clash95_battlehd_review_v3.exe",
@@ -475,199 +521,67 @@
     ]
   },
   "aggregate_refresh": {
-    "status": "pending_after_latest_main_merge",
+    "status": "completed",
     "passed": false,
     "report": {
-      "path": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-after-main-artifacts\\current-evidence-refresh-current.json",
-      "sha256": "D5C788225F8B1F81BB87302267ED1E509E52F49703AD73EE2CBB4DC372DC6874"
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\current-evidence-refresh-current.json",
+      "sha256": "E28123BCBC561DB1296B7D0E9193A0F4AD7E2DE34D8647EAE9EFA23B869A3994"
     },
-    "report_scope": "prior completed refresh before latest main integration",
-    "checks_total": 165,
-    "checks_failed": 23,
+    "source_revision": "694988309f66966220677e88093c5492288ea116",
+    "completed_report_at": "2026-09-08T12:17:37+02:00",
+    "report_scope": "Completed September 8 refresh at 6949883, including the geometry fix later merged in PR63. This predates later upstream fixture additions and is not a rerun of September 13 main.",
+    "checks_total": 167,
+    "checks_failed": 9,
     "failing_checks": {
-      "load_slot_route_limit_guard": {
-        "failures": [
-          "harness: missing marker load_mouse_x: $loadMouseX = 320",
-          "harness: missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)"
-        ],
-        "report": "captures\\current\\load-slot-route-limit-current.json"
-      },
-      "right_bottom_slot_fixture_plan": {
-        "failures": [
-          "load-slot route-limit guard is not passing"
-        ],
-        "report": "captures\\current\\right-bottom-slot-fixture-plan-current.json"
-      },
-      "right_bottom_slot_fixture_runtime_plan": {
-        "failures": [
-          "right-bottom slot fixture plan is not passing"
-        ],
-        "report": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.json"
-      },
-      "load_slot_transition_geometry_guard": {
-        "failures": [
-          "transition geometry guard failed: surface_formula_present",
-          "surface-dump script missing geometry token: $loadMouseX = 320",
-          "surface-dump script missing geometry token: $loadMouseY = 166 + (22 * $LoadSlot)"
-        ],
-        "report": "captures\\current\\load-slot-transition-geometry-guard-current.json"
-      },
-      "load_slot_transition_probe_preview": {
-        "failures": [
-          "transition probe preview failed: geometry_guard_passed"
-        ],
-        "report": "captures\\current\\load-slot-transition-probe-preview-current.json"
-      },
-      "right_bottom_blocker_triage": {
-        "failures": [
-          "triage check failed: hidden_fixture_plan_ready"
-        ],
-        "report": "captures\\current\\right-bottom-blocker-triage-current.json"
-      },
-      "right_bottom_visual_artifact_guard": {
-        "failures": [
-          "visual artifact guard failed: blocker_triage_non_promoting"
-        ],
-        "report": "captures\\current\\right-bottom-visual-artifact-guard-current.json"
-      },
-      "load_slot_transition_readiness": {
-        "failures": [
-          "transition readiness check failed: geometry_guard_passed",
-          "transition readiness check failed: probe_preview_passed"
-        ],
-        "report": "captures\\current\\load-slot-transition-readiness-current.json"
-      },
       "castle_overview_evidence": {
         "failures": [
           "owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
           "forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
         ],
-        "report": "captures\\current\\castle-overview-evidence-current.json"
+        "report": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\castle-overview-evidence-current.json"
       },
       "castle_overview_promotion_decision": {
         "failures": [
           "castle overview evidence matrix is not passing"
         ],
-        "report": "captures\\current\\castle-overview-promotion-decision-current.json"
+        "report": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\castle-overview-promotion-decision-current.json"
       },
       "castle_overview_baseline_recheck": {
         "failures": [
           "latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
           "latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
         ],
-        "report": "captures\\current\\castle-overview-baseline-recheck-current.json"
+        "report": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\castle-overview-baseline-recheck-current.json"
       },
       "stable_stage_guard": {
         "failures": [
           "castle_overview_promotion_decision: castle overview promotion decision is not passing",
           "castle_overview_evidence_matrix: castle overview evidence matrix is not passing"
         ],
-        "report": "captures\\current\\stable-stage-guard-current.json"
+        "report": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\stable-stage-guard-current.json"
       },
       "python_runtime_safety_guard": {
         "failures": [
           "src/launcher/gui.py uses risky Python runtime/input APIs but is not gated or exempt",
-          "tools/hd_layout_observation_manifest.py uses risky Python runtime/input APIs but is not gated or exempt",
+          "tools/framed_army_portrait_trace.py uses risky Python runtime/input APIs but is not gated or exempt",
+          "tools/framed_army_transition_trace.py uses risky Python runtime/input APIs but is not gated or exempt",
+          "tools/framed_primary_surface.py uses risky Python runtime/input APIs but is not gated or exempt",
           "tools/run_framed_offline_tests.py uses risky Python runtime/input APIs but is not gated or exempt"
         ],
-        "report": "captures\\current\\python-runtime-safety-current.json"
-      },
-      "resolution_manifest_guard": {
-        "failures": [
-          "manifest missing, invalid, or wrong schema: src\\launcher\\resolutions.json"
-        ],
-        "report": "captures\\current\\resolution-manifest-guard-current.json"
-      },
-      "handoff_freshness_guard": {
-        "failures": [
-          "missing handoff file: .codex-loop\\NEXT.md",
-          "missing handoff file: .codex-loop\\STATE.md",
-          "missing handoff file: .codex-loop\\TASKS.md",
-          "missing current handoff phrase for no_visible_runtime_warning: Do not run visible/manual",
-          "missing current handoff phrase for no_visible_runtime_warning: explicit user approval",
-          "missing current handoff phrase for no_popup_operator_preference: Do not launch Clash95, CDB, wrappers, PowerShell harnesses",
-          "missing current handoff phrase for no_popup_operator_preference: visible windows unless the user explicitly approves",
-          "missing current handoff phrase for right_bottom_safety_done: stable-stage promotion",
-          "missing current handoff phrase for manual_checklist_artifact: pending_manual_validation",
-          "missing current handoff phrase for manual_proof_template_artifact: template_valid_as_proof=False",
-          "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-current.md",
-          "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-tests-current.md",
-          "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: ready_for_hidden_transition_probe"
-        ],
-        "report": "captures\\current\\handoff-freshness-guard-current.json"
-      },
-      "hd_soak_execution_boundary": {
-        "failures": [
-          "missing_token did not fail closed before side effects",
-          "missing_expiry did not fail closed before side effects",
-          "expired_packet did not fail closed before side effects",
-          "token_mismatch did not fail closed before side effects"
-        ],
-        "report": "captures\\current\\hd-soak-execution-boundary-current.json"
-      },
-      "hd_soak_dry_run_plan": {
-        "failures": [
-          "dry-run harness did not produce a readable JSON plan"
-        ],
-        "report": "captures\\current\\hd-soak-dry-run-plan-current.json"
-      },
-      "hd_soak_intro_skip_rerun_readiness": {
-        "failures": [
-          "dry-run plan is not passing",
-          "dry-run plan status is 'dry_run_plan_invalid'",
-          "dry-run plan would change the stable stage",
-          "dry-run plan does not keep right-bottom promotion blocked",
-          "dry-run intro_skip click_mode is None, expected 'postmessage'",
-          "dry-run intro_skip click_repeat is None, expected 8",
-          "dry-run intro_skip space_pulses is None, expected 4",
-          "dry-run intro_skip stop_click_repeat_on_drift is None, expected True",
-          "dry-run intro_skip proof_class is None, expected 'intro_skip_harness_prep_not_manual_directinput_release_proof'",
-          "approval command missing fragment: -IntroSkipClickMode",
-          "approval command missing fragment: postmessage",
-          "approval command missing fragment: -IntroSkipClicks",
-          "approval command missing fragment: 8",
-          "approval command missing fragment: -SkipPulses",
-          "approval command missing fragment: 4",
-          "approval command missing fragment: -SampleIntervalSec",
-          "approval command missing fragment: 15",
-          "approval command missing fragment: -MaxInputDriftPx",
-          "approval command missing fragment: 1",
-          "approval command missing fragment: -MinNonblackPercent",
-          "approval command missing fragment: 10",
-          "approval command missing fragment: -MinUniqueSampleColors",
-          "approval command missing fragment: 8",
-          "approval command missing fragment: -MaxArtifactMB",
-          "approval command missing fragment: 250",
-          "approval command missing fragment: -MaxWorkingSetGrowthMB",
-          "approval command missing fragment: 64",
-          "approval command missing fragment: -MaxPrivateMemoryGrowthMB",
-          "approval command missing fragment: 64",
-          "approval command missing fragment: -MaxHandleGrowth",
-          "approval command missing fragment: 128",
-          "approval command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
-          "approval command missing fragment: -VisibleRuntimeApprovalToken",
-          "approval command missing fragment: -Execute",
-          "approval command missing fragment: -AllowVisibleRuntime",
-          "approval command missing fragment: -RequirePass",
-          "approval command missing fragment: -Json",
-          "dry-run visible runtime approval token is missing or malformed",
-          "dry-run visible runtime approval expires_utc is missing"
-        ],
-        "report": "captures\\current\\hd-soak-intro-skip-rerun-readiness-current.json"
+        "report": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\python-runtime-safety-current.json"
       },
       "hd_soak_long_report_guard": {
         "failures": [
-          "short ladder is not complete; long tiers remain locked",
           "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
           "missing passing 2h+ representative route: map-idle",
           "missing passing 2h+ representative route: map-pan"
         ],
-        "report": "captures\\current\\hd-soak-long-report-guard-current.json"
+        "report": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\hd-soak-long-report-guard-current.json"
       },
       "hd_endurance_release_checklist": {
         "failures": [
           "protected_stable_stage: stable-stage guard does not prove the protected boundary",
-          "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+          "long_soak_representative_routes: 2h+ representative-route soak blocked (blocked_missing_long_proof): 2h+ representative-route soak evidence is locked or missing",
           "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
           "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
           "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
@@ -675,110 +589,42 @@
           "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
           "no_speculative_promotion: one or more promotion boundaries are not fail-closed"
         ],
-        "report": "captures\\current\\hd-endurance-release-checklist-current.json"
-      },
-      "hd_soak_approval_preflight": {
-        "failures": [
-          "dry-run plan report is not passing",
-          "dry-run plan status is 'dry_run_plan_invalid'",
-          "dry-run plan payload is not marked as a dry run",
-          "dry-run plan would change the stable stage",
-          "dry-run plan does not keep right-bottom promotion blocked",
-          "dry-run plan tier/route do not match the current step",
-          "dry-run plan does not pin max input drift to 1 px",
-          "dry-run plan sample_interval_sec is not 15",
-          "dry-run plan does not pin min nonblack percent",
-          "dry-run plan does not pin min unique sample colors",
-          "dry-run plan growth limit max_artifact_mb is not 250",
-          "dry-run plan growth limit max_working_set_growth_mb is not 64",
-          "dry-run plan growth limit max_private_memory_growth_mb is not 64",
-          "dry-run plan growth limit max_handle_growth is not 128",
-          "dry-run plan intro_skip click_mode is not postmessage",
-          "dry-run plan intro_skip click_repeat is not 8",
-          "dry-run plan intro_skip does not stop repeated clicks on transition drift",
-          "dry-run plan intro_skip space_pulses is not 4",
-          "dry-run plan intro_skip proof_class is missing the non-manual proof boundary",
-          "dry-run plan windowed-mode check is not required and passing",
-          "dry-run plan window display is not application",
-          "dry-run plan window presentation is not windowed",
-          "dry-run plan windowed config SHA-256 is missing or malformed",
-          "dry-run plan visible runtime approval token is missing or malformed",
-          "dry-run plan visible runtime approval token_kind is not sha256-16",
-          "dry-run plan visible runtime approval expires_utc is missing",
-          "dry-run plan visible runtime approval min_ttl_minutes is not 30",
-          "dry-run plan visible runtime approval expires_utc is missing or invalid",
-          "dry-run plan visible runtime approval purpose is missing",
-          "dry-run plan candidate_dir is not C:\\ClashTests\\hd-soak",
-          "dry-run plan output_root is not C:\\ClashCaptures\\hd-soak",
-          "dry-run plan input_exe does not exist or was not confirmed readable",
-          "dry-run plan base_sha_status is None, expected 'ok'",
-          "dry-run plan execute command missing fragment: -InputExe",
-          "dry-run plan execute command missing fragment: C:\\Clash\\clash95.exe",
-          "dry-run plan execute command missing fragment: -WorkDir",
-          "dry-run plan execute command missing fragment: C:\\Clash",
-          "dry-run plan execute command missing fragment: -Stage",
-          "dry-run plan execute command missing fragment: -OutputRoot",
-          "dry-run plan execute command missing fragment: C:\\ClashCaptures\\hd-soak",
-          "dry-run plan execute command missing fragment: -IntroSkipClickMode",
-          "dry-run plan execute command missing fragment: postmessage",
-          "dry-run plan execute command missing fragment: -IntroSkipClicks",
-          "dry-run plan execute command missing fragment: 8",
-          "dry-run plan execute command missing fragment: -SkipPulses",
-          "dry-run plan execute command missing fragment: 4",
-          "dry-run plan execute command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
-          "dry-run plan execute command missing fragment: -VisibleRuntimeApprovalToken",
-          "dry-run plan execute command missing fragment: -Execute",
-          "dry-run plan execute command missing fragment: -AllowVisibleRuntime",
-          "dry-run plan execute command missing fragment: -RequirePass",
-          "dry-run plan execute command missing fragment: -Json",
-          "dry-run plan execute command missing fragment: -MaxInputDriftPx",
-          "dry-run plan execute command missing fragment: -SampleIntervalSec",
-          "dry-run plan execute command missing fragment: -MinNonblackPercent",
-          "dry-run plan execute command missing fragment: -MinUniqueSampleColors",
-          "dry-run plan execute command missing fragment: -MaxArtifactMB",
-          "dry-run plan execute command missing fragment: -MaxWorkingSetGrowthMB",
-          "dry-run plan execute command missing fragment: -MaxPrivateMemoryGrowthMB",
-          "dry-run plan execute command missing fragment: -MaxHandleGrowth",
-          "dry-run plan execute command does not include the canonical report JSON path",
-          "dry-run plan execute command does not include the canonical report Markdown path",
-          "current short-step status is 'failed_classified_window_missing_while_process_alive'",
-          "dry_run_plan is not passing",
-          "window-missing rerun readiness is missing window-health mitigation and passing harness-guard evidence"
-        ],
-        "report": "captures\\current\\hd-soak-approval-preflight-current.json"
+        "report": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\hd-endurance-release-checklist-current.json"
       },
       "no_popup_boundary_guard": {
         "failures": [
           "stable_stage_guard: refresh check is not passing: stable_stage_guard",
           "python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
-          "hd_soak_execution_boundary: refresh check is not passing: hd_soak_execution_boundary",
-          "resolution_manifest_guard: refresh check is not passing: resolution_manifest_guard",
-          "handoff_freshness_guard: refresh check is not passing: handoff_freshness_guard",
-          "right_bottom_blocker_triage: refresh check is not passing: right_bottom_blocker_triage",
-          "right_bottom_slot_fixture_plan: refresh check is not passing: right_bottom_slot_fixture_plan",
-          "right_bottom_slot_fixture_runtime_plan: refresh check is not passing: right_bottom_slot_fixture_runtime_plan",
-          "load_slot_route_limit_guard: refresh check is not passing: load_slot_route_limit_guard",
-          "load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard",
-          "load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview",
-          "load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness",
           "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
           "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
         ],
-        "report": "captures\\current\\no-popup-boundary-guard-current.json"
+        "report": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\no-popup-boundary-guard-current.json"
       },
       "docs_consistency_guard": {
         "failures": [
-          "generated_state: no-popup boundary is failing",
-          "documents_handoff: missing document: .codex-loop\\NEXT.md",
-          "documents_handoff: missing document: .codex-loop\\STATE.md",
-          "documents_handoff: missing document: .codex-loop\\TASKS.md"
+          "generated_state: no-popup boundary is failing"
         ],
-        "report": "captures\\current\\docs-consistency-current.json"
+        "report": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\docs-consistency-current.json"
       }
     },
-    "stdout_log": null,
-    "artifact_archive": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-after-main-artifacts",
-    "superseded_run_note": "The intermediate PR60 aggregate was stopped before further source changes and produced no completed result. The earlier redirected stdout filename was reused; the immutable archived completed JSON is the prior result source."
+    "framed_fixtures": {
+      "passed": true,
+      "tests_run": 326,
+      "suites": 32,
+      "skips": 0,
+      "expected_failures": 0
+    },
+    "stdout_log": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible.log",
+      "sha256": "CE26937B5E1777BFF25083302715BA029D2A3975AA56D10EEA27E6F239486518"
+    },
+    "artifact_archive": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete",
+    "archive_manifest": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-final-geometry-compatible-complete\\archive-manifest.json",
+      "sha256": "D0145E26FC6C3B653B51755380780341705C9671A2768D940A5794259BB9D29B"
+    },
+    "remaining_failure_scope": "Missing castle raw evidence, long/manual release proof, five inherited Python scanner findings and their downstream guards. The ten geometry-related failures from the prior 19/167 result now pass.",
+    "superseded_run_note": "The intermediate PR60 aggregate was stopped before further source changes and produced no completed result. Its redirected stdout filename was reused. Earlier completed JSON snapshots remain archived separately; the final geometry-compatible log has its own immutable path."
   },
   "pending_acceptance": [
     "Dedicated phase-14 present observation is absent; expanded present/copy bounds retain separate runtime acceptance.",
