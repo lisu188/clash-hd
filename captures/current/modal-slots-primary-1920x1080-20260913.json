@@ -1,0 +1,451 @@
+{
+  "artifacts": {
+    "capture_prefix": {
+      "bytes": 70809,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-prefix.log",
+      "sha256": "951359a02d0e676f05ebf8444c74ce3597b1a517e4c17a4e9fd56dbcd222ddb1"
+    },
+    "final_log": {
+      "bytes": 70809,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/cdb.log",
+      "sha256": "951359a02d0e676f05ebf8444c74ce3597b1a517e4c17a4e9fd56dbcd222ddb1"
+    },
+    "final_trace": {
+      "bytes": 792056,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/trace-final.json",
+      "sha256": "7fa4743e1452e88144a7d896546c05485318b73140887e7e954cf903e0320fbd"
+    },
+    "initial_trace": {
+      "bytes": 792056,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/trace.json",
+      "sha256": "7fa4743e1452e88144a7d896546c05485318b73140887e7e954cf903e0320fbd"
+    },
+    "packet": {
+      "bytes": 7747433,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/packet.json",
+      "sha256": "4b1b452dc841b5e57c99b8a1ba487eeadf46cb821a79399697f2e45843625bcc"
+    },
+    "physical_png": {
+      "bytes": 230194,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/surface.png",
+      "sha256": "09e6742c734dfcc3cd7cc3d847d21b873c3dbfba62a0b344662eab2b93394bc0"
+    },
+    "plan": {
+      "bytes": 6044,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/plan.json",
+      "sha256": "898d38f7641376cda0486403700a928bbb1f4612dc2d9dd7846b363c9c5a696d"
+    },
+    "preflight": {
+      "bytes": 12331,
+      "path": "C:/ClashCaptures/completehd-integration-20260913/slots-primary-runtime-preflight-1080-f.json",
+      "sha256": "7f1d260349dd8de5465833c4c854f9a4f9271a7c7bb225feb6c9cb35710df0f5"
+    },
+    "primary_audit": {
+      "bytes": 792130,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/primary-audit.json",
+      "sha256": "20f523ac585d250c5a6c290af1b4f718c83b0334c56d2dcf34390b89136cbc31"
+    },
+    "primary_triplet": {
+      "bytes": 103654,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/primary-triplet.json",
+      "sha256": "966b0f346e2747df178879dbddb4afa59d9c188ede1c6f870d57703b63bdcfea"
+    },
+    "probe": {
+      "bytes": 3866708,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/modal-slots-barracks.cdb",
+      "sha256": "51b822b93c1557210cb5da6b6203c5335d57110693e3893bec1d64c65a859d93"
+    },
+    "ready_script": {
+      "bytes": 546,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/primary-ready.cdb",
+      "sha256": "79ecf39a21702d267b046522f68195fdf5e6948b4236defe8f345901b5619664"
+    },
+    "summary": {
+      "bytes": 2968934,
+      "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/summary.json",
+      "sha256": "abd0d3b26d5af467b8370ea5d4f02d1d0e548e4031e7a3be0ba0a0dc9dc14254"
+    }
+  },
+  "candidate": {
+    "bytes": 1527296,
+    "path": "C:/ClashTests/completehd-validation-20260913/slots-primary-candidate-1080-f/framed-modal-canvas-barracks-1920x1080-52503d45ee3f7d65.exe",
+    "sha256": "32dea2c12a9a2afd2e2856c327cf3d610e2d02061d2d00960255228a6d6fa688"
+  },
+  "candidate_manifest": {
+    "bytes": 3295570,
+    "path": "C:/ClashTests/hd-completion/modal-slots-1920x1080-v1-20260913/clash95_slots_1920x1080.candidate.json",
+    "sha256": "7b363d1978a53dcc39422035eb464a46b50b7ea0c560800235865c6cd19365ba"
+  },
+  "candidate_sha256": "32dea2c12a9a2afd2e2856c327cf3d610e2d02061d2d00960255228a6d6fa688",
+  "capture_method": "paused ReadProcessMemory of owned native canvas, physical mirror and cached primary; indexed raw files retained externally",
+  "cleanup": {
+    "independent_postrun_process_query_performed": false,
+    "owned_cleanup_receipts_verified": true,
+    "receipt": {
+      "candidates": [
+        {
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "candidate_sha256": "32dea2c12a9a2afd2e2856c327cf3d610e2d02061d2d00960255228a6d6fa688",
+            "creation_filetime": 134337578012713986,
+            "creation_utc": "2026-09-13T07:23:21.2713986Z",
+            "handle_retained": true,
+            "parent_process_id": 16056,
+            "path": "C:\\ClashTests\\completehd-validation-20260913\\slots-primary-candidate-1080-f\\framed-modal-canvas-barracks-1920x1080-52503d45ee3f7d65.exe",
+            "process_id": 18084
+          },
+          "termination_requested": false
+        }
+      ],
+      "cdb": {
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "creation_filetime": 134337578010683282,
+          "creation_utc": "2026-09-13T07:23:21.0683282Z",
+          "handle_retained": true,
+          "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+          "process_id": 16056
+        },
+        "termination_requested": true
+      },
+      "desktop_closed": true
+    }
+  },
+  "continuity_proven": false,
+  "endurance_proven": false,
+  "environment": "hidden_cdb_host",
+  "healthy_map_return_proven": false,
+  "input_method": "debugger-controlled native dispatch and construct_all availability; no OS input",
+  "limits": [
+    "Original F host and primary-audit failures remain failed; PNG generation is not audit acceptance.",
+    "The hidden proxy does not establish visible-wrapper colors/composition, frame/control health, or ordinary/manual input.",
+    "Primary pixel correctness remains unproven; the retained overlapping region claims are not rewritten or discarded.",
+    "No modal exit/destruction, restored-map coverage, continuity, endurance or release eligibility is established.",
+    "Earlier D timeout and strict-header failure remain separate preserved failures; this checkpoint does not supersede them."
+  ],
+  "manual_input_proof": false,
+  "native_modal_exit_proven": false,
+  "original_host": {
+    "failures": [
+      "Three matched primary/native/physical snapshots failed source-bound validation."
+    ],
+    "passed": false
+  },
+  "original_primary_audit": {
+    "failures": [
+      "primary triplet: overlapping memory-region claims"
+    ],
+    "passed": false,
+    "runtime_accepted": false
+  },
+  "passed": false,
+  "preservation": {
+    "isolated_saves": {
+      "all_sha256_unchanged": true,
+      "exact_file_set_unchanged": true,
+      "file_count": 4,
+      "path": "C:/ClashTests/completehd-validation-20260913/slots-primary-work-1080-f/save",
+      "sha256": {
+        "0.dat": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+        "0.fac": "052f6584bb5ab9a719d57ee9e3c7a9b135d71a9e08ede37b1b0e70ea4ab738a1",
+        "2.dat": "11a1375e746550bf4949cfcefc9904e9b547a3c8b088e1c698182973db7c03b6",
+        "2.fac": "d7eadcb70317b475bbf031f54268c3d770e2543689f43096e3d32bb9cbeb25f0"
+      }
+    },
+    "live_saves": {
+      "all_sha256_unchanged": true,
+      "exact_file_set_unchanged": true,
+      "file_count": 15,
+      "path": "C:/Clash/save",
+      "sha256": {
+        "0.dat": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+        "0.fac": "052f6584bb5ab9a719d57ee9e3c7a9b135d71a9e08ede37b1b0e70ea4ab738a1",
+        "1.dat": "08b45b358947e564ff49d490f893bf60018073a220ba12232e34e92796193941",
+        "1.dat.bak": "3e31e6f9af2dd895015f429d301dc0af292cb6bb0a875d90524e3570fe08b8a0",
+        "1.fac": "a57864698b3c4bed84090358fefb8dbfa07a404f05348488b98e75e03a90c3fe",
+        "10.dat": "6bfddb353b61e14f86c74f777bc11c77d382753c0cc3cf8ed70eecb6e0f6e63a",
+        "10.fac": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "2.dat": "11a1375e746550bf4949cfcefc9904e9b547a3c8b088e1c698182973db7c03b6",
+        "2.fac": "d7eadcb70317b475bbf031f54268c3d770e2543689f43096e3d32bb9cbeb25f0",
+        "3.dat": "8105165e879fb4b3368073d049fee96f37dd92b93edc114e3de1a43c42e11bc2",
+        "3.fac": "ef04ec07a6bea571a09842e9196b744286b3d439c5e2de9bb3e3d2fbe08d9a8a",
+        "4.dat": "12f4c9d8e1b2dad8b1fbd38e9d10fe4ae07aa0e99ef02a5be0022ff3494cc473",
+        "4.fac": "d0dbb778a3fbd949c9d85a8b6321ef55a3c2e4dc6f374d4d03cde3d8ab1f5ff6",
+        "5.dat": "01808162c11e9b1f8722c7ecc164a367e5767a2d4a2f8c99fd71ec96198c0621",
+        "5.fac": "46f880c92d9e0f31b1d6367986328a4c72c053367579a04fd387b46a786f42d6"
+      }
+    },
+    "original": {
+      "bytes": 1232384,
+      "path": "C:/Clash/clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
+    },
+    "original_matches_preflight": true
+  },
+  "primary_composition_proven": false,
+  "promotion_ready": false,
+  "recipe_revision": "owned_barracks_dirty_slots_v1",
+  "recorded_at": "2026-09-13T07:34:16.443739+00:00",
+  "region_receipt_failure": {
+    "enclosing_range": "[0x0420d000, 0x0429f000)",
+    "exact_duplicate": false,
+    "interpretation": "Each recorded primary region list contains a distinct overlapping final-page claim. The strict reader rejects it; origin requires a separate host-receipt investigation.",
+    "nested_range": "[0x0429e000, 0x0429f000)",
+    "original_regions_modified": false,
+    "overlap_bytes": 4096,
+    "reason": "overlapping memory-region claims",
+    "sample_count": 3
+  },
+  "resolution": "1920x1080",
+  "route": {
+    "availability": "construct_all",
+    "castle_index": 0,
+    "controlled_fixture": true,
+    "name": "barracks",
+    "stop_va": "00433e77"
+  },
+  "run_finished_at": "2026-09-13T07:25:54.6022411Z",
+  "run_started_at": "2026-09-13T07:22:48.3647790Z",
+  "runtime_accepted": false,
+  "samples": [
+    {
+      "attached_palette": {
+        "bytes": 1024,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-1/primary-palette.bin",
+        "sha256": "ed9f592f011f779d78f51674771e81270cd1b0d01c5226dc881d00550dc406c1"
+      },
+      "native": {
+        "bytes": 307200,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-1/native-surface.raw",
+        "sha256": "5813d728304ab2ad49378d8b5e67e3555ee7826b8c7ab6a111bd47b1e34e1ace"
+      },
+      "overlaps": [
+        {
+          "exact_duplicate": false,
+          "left": {
+            "address": 69259264,
+            "protect": 4,
+            "size": 598016,
+            "state": 4096
+          },
+          "overlap_bytes": 4096,
+          "right": {
+            "address": 69853184,
+            "protect": 4,
+            "size": 4096,
+            "state": 4096
+          }
+        }
+      ],
+      "physical": {
+        "bytes": 2073600,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-1/surface.raw",
+        "sha256": "137a72eb731eff1220447be645745e95fae93d49ac2df796a1979834caa633fa"
+      },
+      "png": {
+        "bytes": 505955,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-1/primary.png",
+        "sha256": "69fbe12829bc4e1ec49cea44f3fa3ab4a3644d9ab93f8ffe375887c69d5743c7"
+      },
+      "primary": {
+        "bytes": 2073600,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-1/primary.raw",
+        "sha256": "b0e1886325cb23891db2b7e5fdf4ae90cfba8e7c400a1d1879d3f161b67043a8"
+      },
+      "primary_region_count": 8,
+      "sample_index": 1
+    },
+    {
+      "attached_palette": {
+        "bytes": 1024,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-2/primary-palette.bin",
+        "sha256": "ed9f592f011f779d78f51674771e81270cd1b0d01c5226dc881d00550dc406c1"
+      },
+      "native": {
+        "bytes": 307200,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-2/native-surface.raw",
+        "sha256": "5813d728304ab2ad49378d8b5e67e3555ee7826b8c7ab6a111bd47b1e34e1ace"
+      },
+      "overlaps": [
+        {
+          "exact_duplicate": false,
+          "left": {
+            "address": 69259264,
+            "protect": 4,
+            "size": 598016,
+            "state": 4096
+          },
+          "overlap_bytes": 4096,
+          "right": {
+            "address": 69853184,
+            "protect": 4,
+            "size": 4096,
+            "state": 4096
+          }
+        }
+      ],
+      "physical": {
+        "bytes": 2073600,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-2/surface.raw",
+        "sha256": "137a72eb731eff1220447be645745e95fae93d49ac2df796a1979834caa633fa"
+      },
+      "png": {
+        "bytes": 505955,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-2/primary.png",
+        "sha256": "69fbe12829bc4e1ec49cea44f3fa3ab4a3644d9ab93f8ffe375887c69d5743c7"
+      },
+      "primary": {
+        "bytes": 2073600,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-2/primary.raw",
+        "sha256": "b0e1886325cb23891db2b7e5fdf4ae90cfba8e7c400a1d1879d3f161b67043a8"
+      },
+      "primary_region_count": 8,
+      "sample_index": 2
+    },
+    {
+      "attached_palette": {
+        "bytes": 1024,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-3/primary-palette.bin",
+        "sha256": "ed9f592f011f779d78f51674771e81270cd1b0d01c5226dc881d00550dc406c1"
+      },
+      "native": {
+        "bytes": 307200,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-3/native-surface.raw",
+        "sha256": "5813d728304ab2ad49378d8b5e67e3555ee7826b8c7ab6a111bd47b1e34e1ace"
+      },
+      "overlaps": [
+        {
+          "exact_duplicate": false,
+          "left": {
+            "address": 69259264,
+            "protect": 4,
+            "size": 598016,
+            "state": 4096
+          },
+          "overlap_bytes": 4096,
+          "right": {
+            "address": 69853184,
+            "protect": 4,
+            "size": 4096,
+            "state": 4096
+          }
+        }
+      ],
+      "physical": {
+        "bytes": 2073600,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-3/surface.raw",
+        "sha256": "137a72eb731eff1220447be645745e95fae93d49ac2df796a1979834caa633fa"
+      },
+      "png": {
+        "bytes": 505955,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-3/primary.png",
+        "sha256": "69fbe12829bc4e1ec49cea44f3fa3ab4a3644d9ab93f8ffe375887c69d5743c7"
+      },
+      "primary": {
+        "bytes": 2073600,
+        "path": "C:/ClashCaptures/hd-completion/slots-primary-1920x1080-20260913-f/capture-3/primary.raw",
+        "sha256": "b0e1886325cb23891db2b7e5fdf4ae90cfba8e7c400a1d1879d3f161b67043a8"
+      },
+      "primary_region_count": 8,
+      "sample_index": 3
+    }
+  ],
+  "schema": "clash95_modal_slots_primary_diagnostic_checkpoint_v1",
+  "source_snapshot": {
+    "all_current_files_matched_preflight_at_review": true,
+    "all_snapshot_files_match_preflight": true,
+    "checkout_commit": "cc03fa3737f6b724c19cfe537cb2cdc4eac85b16",
+    "file_count": 41,
+    "path": "C:/ClashCaptures/completehd-integration-20260913/source-snapshot-slots-primary-1080-f",
+    "source_hashes": {
+      "scripts/cdb/run_cdb_surface_dump.ps1": "01fbee7aeacceb6237fcf42fae84aa7d0c1912aba85fadc2fbab030c2b1475a8",
+      "scripts/cdb/run_modal_slots_barracks_capture.ps1": "fb8e045e491b668cd780c1947f2f66c841cb7c270cf65e9cb06fb079f4495900",
+      "scripts/cdb/run_modal_slots_primary_capture.ps1": "7dee03bdd64710cb14f37ce0564a9a930961392e4d97e1fb99aa6de0957899f5",
+      "src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp": "407d41d0d548e6217c6041181efb6466efa90f447110c5b8857bf92714ecb8eb",
+      "src/patcher/complete_hd_candidate.py": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06",
+      "src/patcher/four_sided_frame.py": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+      "src/patcher/framed_army_composition.py": "7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c",
+      "src/patcher/framed_army_draw.py": "2a7877f791c52829cd99bca24089d9be02be1f25c9c95c3b27e4d5360fb64a34",
+      "src/patcher/framed_army_input.py": "3fad316f6511e375a8799694fe487b9eaca5500d6262101100e8e9e9e1868ab4",
+      "src/patcher/framed_army_viewport.py": "6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224",
+      "src/patcher/framed_full_paint.py": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+      "src/patcher/framed_input.py": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+      "src/patcher/framed_minimap.py": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+      "src/patcher/framed_modal_canvas.py": "567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054",
+      "src/patcher/framed_modal_slots.py": "9f1f840f798efda8b24683b9b2dbae78370c746bf2402ba50be113074fb6d468",
+      "src/patcher/framed_presentation.py": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+      "src/patcher/framed_recipe.py": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a",
+      "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+      "src/patcher/initial_map_paint.py": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+      "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+      "src/patcher/partial_tile_hooks.py": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+      "src/patcher/patch_clash95_hd.py": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+      "src/patcher/pe_army_extension.py": "26991a58ca0b9cbc548ad6061d79acde864b015c722b208776af2e5d2752a832",
+      "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+      "src/patcher/pe_modal_extension.py": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9",
+      "src/patcher/pe_modal_slots_extension.py": "ead0d31f14126610bef5e8f720e07bfe30805ebef33c7ab2a8565bc7b70253a1",
+      "tools/build_framed_army_candidate.py": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
+      "tools/build_framed_candidate.py": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
+      "tools/build_framed_modal_candidate.py": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
+      "tools/build_framed_modal_slots_candidate.py": "dd7c856cb8f5c7481c7d65f743d86dd141ded8d661f60478fa0b8de2e1c47c73",
+      "tools/build_partial_tile_candidate.py": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501",
+      "tools/cdb_surface_dump_to_png.py": "15d88e91ae65d8d3abc8f060915606437fbdb21b6d17285f99393e50fc271316",
+      "tools/initial_map_paint_trace.py": "34a022251bfd572b5f6ecfbedd9a1ccd23a9ded1ba749039201c133108528b0a",
+      "tools/modal_slots_barracks_probe.py": "2d82a009fa38e33bcc74483d2b9b479934f8a5ce20e37a6e99c7c5e84efb32f3",
+      "tools/modal_slots_barracks_trace.py": "80708c714906ce22100246aab85315f9837e7f6454409b3abb0b578ccebc4229",
+      "tools/modal_slots_candidate_context.py": "98abfdc30ff1956c967ce808ec3990b9c6e16b19557987b052a081800c43f114",
+      "tools/modal_slots_primary_capture.py": "040858b97fc7fd35a5fd07c8e588f0ab1d1c7e8cb79c9f7113acbecb868097bc",
+      "tools/modal_slots_primary_surface.py": "d905d43e2781849ed54d862e78725af98f188b7d47ec3f5dae3796c01ee10442",
+      "tools/modal_slots_surface_audit.py": "c947284aebe15288121f5fc1384c5d5969b5ffb734d24516004726a3db34edd6",
+      "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+      "tools/render_cdb_surface_probe.py": "12685fdfde4972e0f5f9c3d5678fd159fff965bd9ddd7642cb3718c8530296cf"
+    }
+  },
+  "stability": {
+    "all_three_identical_by_layer": {
+      "attached_palette": true,
+      "native": true,
+      "physical": true,
+      "png": true,
+      "primary": true
+    },
+    "scope": "Byte stability only; no pixel placement/composition or visible-wrapper correctness is established."
+  },
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalslots-validation",
+  "status": "retained_failed_primary_region_receipt",
+  "structural_observations": {
+    "capture_count": 3,
+    "captured_artifact_hashes_verified": true,
+    "complete_final_trace_passed": true,
+    "final_log_preserves_prefix": true,
+    "initial_map_trace_passed": true,
+    "initial_trace_passed": true,
+    "primary_lock_sequence_passed": true,
+    "primary_triplet_accepted": false,
+    "scope": "Existing source-bound trace results and retained artifacts were cross-checked; no game/debugger or full trace reconstruction was rerun by this checkpoint review.",
+    "slot_trace_passed": true
+  },
+  "verification": {
+    "all_bound_files_unchanged_during_review": true,
+    "bound_file_count": 214,
+    "bound_manifest_sha256": "f1589ca5b9478988f8f6233dc24ee745b15cfd64c5f6cb88f9b05951caf0e32a"
+  },
+  "visible_composition_proof": false,
+  "wrapper": {
+    "binary": {
+      "bytes": 136704,
+      "path": "C:/ClashTests/completehd-validation-20260913/slots-primary-candidate-1080-f/ddraw.dll",
+      "sha256": "b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70"
+    },
+    "build_manifest": {
+      "bytes": 787,
+      "path": "C:/ClashTests/hd-completion/framed-minimap-v1-1024x768-20260906-031649/candidate/ddraw_surfdump_proxy.build.json",
+      "sha256": "fce2af106ba1a8011f70fbf2a1fb15652c7682855069c93ab97b1821f10beb8a"
+    },
+    "kind": "nonpresenting memory-only DirectDraw proxy",
+    "present": 0,
+    "source_sha256": "407d41d0d548e6217c6041181efb6466efa90f447110c5b8857bf92714ecb8eb"
+  }
+}
