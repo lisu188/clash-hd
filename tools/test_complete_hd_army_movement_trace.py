@@ -33,7 +33,7 @@ def packet_fixture(resolution='1024x768'):
         baseline_observer_vas=base['observer_vas'],baseline_native_call_returns=base['native_call_returns'],
         movement_observer_vas={str(n):va for n,va in trace.SITES.items()},
         parent_source_sha256=trace.producer.PARENT_SOURCE_SHA256,
-        max_pump_calls_per_click=1024,pump_observers=copy.deepcopy(trace.PUMPS),
+        max_pump_calls_per_click=1024,pump_observers=copy.deepcopy(trace.PUMPS),pump_backends=copy.deepcopy(trace.PUMP_BACKENDS),
         controlled_input=True,controlled_release=True,selected_value_forced=False,flag_value_forced=False,movement_state_forced=False)
 
 
@@ -88,7 +88,7 @@ def log_fixture(packet=None,*,warmup=0,extra_draw=False,source_record=None,shift
             spec=next(p for p in trace.PUMPS if p['kind']==kind);pump_count+=1
             for suffix,site in (('call',spec['call']),('return',spec['returned'])):
                 if suffix=='return':buttons=3;accumulator=0x90
-                lines.append(f"WMOV_PUMP kind={kind}-{suffix} count={pump_count} phase={phase} tid={TID:x} eip={site:08x} esp={SP-spec['stack_depth']:08x} eax={0x544cd8 if suffix=='call' else 0:x} edx=0 raw=({576<<shift:x},{176<<shift:x}) shift={shift:x} buttons={buttons:x} accumulator={accumulator:x} secondary=0")
+                lines.append(f"WMOV_PUMP kind={kind}-{suffix} count={pump_count} phase={phase} tid={TID:x} eip={site:08x} esp={SP-spec['stack_depth']:08x} eax={0x544cd8 if suffix=='call' else 0:x} edx=0 raw=({576<<shift:x},{176<<shift:x}) shift={shift:x} buttons={buttons:x} accumulator={accumulator:x} secondary=0 table=0050f204 callback=004612e0 recording=0 playback=0")
         phase=20 if click==1 else 40
         lines.append(f'WMOV_MOUSE click={click} tid={TID:x} eip=00406fa1 esp={SP:08x} raw=({576<<shift:x},{176<<shift:x}) shift={shift:x}')
         obs('begin',phase,0x406FA1,0)
@@ -244,6 +244,35 @@ class SequenceTests(unittest.TestCase):
         self.bad(mutate(baseline,'draw-composition-return','eax','0'))
         self.bad(mutate(baseline,'draw-composition-return','draws','(1,0,1)'))
         self.bad(mutate(baseline,'draw-entry','caller','00400000'))
+
+    def test_v2_pump_backend_identity_modes_and_pairing_are_required(self):
+        packet=packet_fixture();baseline=log_fixture(packet)
+        direct=baseline.replace('table=0050f204 callback=004612e0','table=0050f1e4 callback=00460a50')
+        for log in (baseline,direct):
+            result=trace.evaluate_trace(log,packet)
+            self.assertTrue(result['passed'],result['failures'])
+            self.assertFalse(result['ready_for_host_capture'])
+            for row in result['movement_sequence']['pump_calls']:
+                for key in ('table','callback','recording','playback'):
+                    self.assertEqual(row['call'][key],row['returned'][key])
+        for kind in ('pathfinder','animation','delay'):
+            for suffix in ('call','return'):
+                for key,value in (('table','00500000'),('callback','00460a50'),('recording','1'),('playback','1'),
+                                  ('recording','ffffffff'),('playback','100000000')):
+                    with self.subTest(kind=kind,suffix=suffix,key=key):self.bad(mutate(baseline,kind+'-'+suffix,key,value))
+                changed=mutate(baseline,kind+'-'+suffix,'table','0050f1e4')
+                changed=mutate(changed,kind+'-'+suffix,'callback','00460a50')
+                self.bad(changed)
+        # Even an independently valid complete pair cannot switch backend later
+        # in the same source-bound route; all observations retain raw identities.
+        rows=baseline.splitlines()
+        later='\n'.join(row.replace('table=0050f204 callback=004612e0','table=0050f1e4 callback=00460a50')
+                        if row.startswith('WMOV_PUMP kind=animation-') else row for row in rows)
+        self.bad(later)
+        self.bad(re.sub(r' table=[^ ]+ callback=[^ ]+ recording=[^ ]+ playback=[^\n]+','',baseline))
+        self.bad(baseline.replace(trace.producer.REVISION,'complete_hd_controlled_native_whole_army_outward_move_v1'))
+        for backends in ([],[trace.PUMP_BACKENDS[0]],trace.PUMP_BACKENDS+[dict(table=0x500000,callback=0x460A50,recording=0,playback=0)]):
+            self.bad(baseline,packet|{'pump_backends':backends})
 
     def test_dynamic_surface_extent_and_signed_safe_target_mouse(self):
         for resolution in trace.producer.base.builder.RESOLUTIONS:

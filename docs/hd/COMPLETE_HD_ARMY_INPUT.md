@@ -48,11 +48,21 @@ cannot authorize host capture. Even a bound passing trace does not establish
 ordinary input, visible composition, endurance or promotion.
 
 `tools/complete_hd_army_movement_probe.py` builds on that selection protocol and
-preserves the native movement-v3 observers. It prepares one outward move from
+preserves the native movement-v3 observation sites. It prepares one outward move from
 `(16,19)` to `(18,19)`, with preview, confirmation, bounded native input-pump
 observations and three stopped capture points. Surface sizes and pointer bounds
 follow the selected resolution. Preparation cannot establish movement success;
 the full movement trace, pixel audit and owned runtime host are still required.
+
+The `complete_hd_controlled_native_whole_army_outward_move_v2` revision
+authenticates two original input backends: table `0050f1e4` calls `00460a50` directly, while table
+`0050f204` calls the native `004612e0` wrapper. The original wrapper's inactive
+playback branch calls `00460a50` at `004614d8`. The producer checks the relevant
+table, constructor, wrapper and call bytes; every paired pump observation must
+retain the same admitted table/callback with recording and playback disabled.
+Unknown tables, changed callbacks and active modes fail. This corrects the
+specific v1 contract rejected by the retained diagnostic run; it does not force
+an input result or establish completed movement.
 
 `tools/complete_hd_army_movement_trace.py` validates that native sequence using
 the complete candidate, manifest, save, main probe and all three supplemental
@@ -76,8 +86,10 @@ for exact identities and validation results.
 The legacy selection producer still pins renderer `1cd310…`, while the merged
 renderer is `12685…`. Its source check correctly rejects this checkout. The new
 protocol authenticates its own renderer. The movement comparison fixture keeps
-the legacy rejection explicit, then verifies the unchanged native v3 commands
-using the authenticated current selection boundary. This does not make old
+the legacy rejection explicit, then compares native v3 commands using the
+authenticated current selection boundary. The v2 comparison isolates its
+reviewed backend checks and observations while retaining the other predicates,
+pass paths and native writes. This does not make old
 manifests or runtime reports current evidence.
 
 ## Safe checks

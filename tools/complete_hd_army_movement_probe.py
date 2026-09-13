@@ -22,15 +22,25 @@ import complete_hd_army_selection_probe as base
 
 ROOT = base.ROOT
 PARENT_SOURCE_SHA256 = '17b779b29ac1ab6730e2a9ef59db1c2aee51f005edd9ad566db5d6ceeaf4a53b'
-REVISION = 'complete_hd_controlled_native_whole_army_outward_move_v1'
+REVISION = 'complete_hd_controlled_native_whole_army_outward_move_v2'
 UNIT_OFFSET = 149349
 INITIAL_AP = (26, 22, 16, 16, 16, 16, 16, 16)
 PATH_WORDS = (0x000A1312, 0x00051311)
+PUMP_BACKENDS = (
+    dict(table=0x50F1E4, callback=0x460A50, recording=0, playback=0),
+    dict(table=0x50F204, callback=0x4612E0, recording=0, playback=0),
+)
+# Canonical candidate construction, original recording callback/input wrapper.
+# Default construction includes the already-reviewed HD width/height operands.
+# Both static tables and every byte on the non-playback wrapper are checked in
+# loaded memory; no arbitrary callback with a similar signature is admitted.
+BACKEND_SPANS = ((0x460410, 0x80), (0x461140, 0x24), (0x4611A0, 0xF0),
+                 (0x4612E0, 0x204), (0x50F1E4, 0x18), (0x50F204, 0x18))
 NATIVE_SPANS = ((0x4084A0, 0x1820), (0x410330, 0xE30), (0x411F60, 0xA0),
                 (0x413910, 0x750), (0x4147A0, 0xD60), (0x4608F0, 29),
                 (0x4609D0, 52), (0x418700, 25), (0x4605D0,0x250),
                 (0x460A50,0x92), (0x47BFD0,0x180),
-                (0x512568 + 88 + 29, 9), (0x512568 + 16*88 + 29, 9))
+                (0x512568 + 88 + 29, 9), (0x512568 + 16*88 + 29, 9)) + BACKEND_SPANS
 NATIVE_CALLS = {0x408568:0x4608F0, 0x40858F:0x40F0C0,
                 0x40872E:0x460900, 0x4087DC:0x4608F0,
                 0x4099DE:0x4082C0, 0x409A6C:0x4147A0,
@@ -41,13 +51,14 @@ NATIVE_CALLS = {0x408568:0x4608F0, 0x40858F:0x40F0C0,
                 0x410605:0x40A490, 0x410AF7:0x42B770,
                 0x4609DB:0x4608F0, 0x4609F7:0x460900,
                 0x414B3F:0x4605D0,0x410DAE:0x4605D0,0x410C91:0x4605D0,
-                0x460A5C:0x47BFD0}
+                0x460A5C:0x47BFD0, 0x4614D8:0x460A50}
 LIMITS = [
     'Controlled direct world-handler calls follow native selection; ordinary dispatch and manual input are not proved.',
     'Only mouse/button and injected native call-stack controls are written. No unit, path, AP, visibility, selection, flags or predicate result is forced.',
     'Exactly one outward move16,19 to18,19 is requested. Native desert cost5 gives expected total10; no return trip or AP refill is attempted.',
     'A queue becoming empty or AP being charged is insufficient: both native occupancy/XY commits and the final native redraw, ExecuteQueuedPath return and world-handler return are required.',
     'Native pathfinding, cursor changes and animation can refresh raw mouse/button state. Three bounded DD_Pump call/return observations are retained; they do not establish complete input-backend tracing or unchanged input between native calls. Only the two explicitly recorded release controls write button state. No input-query or HRESULT result is overridden.',
+    'Pump v2 admits only the original direct input table or the native Device_UpdateRect wrapper with recording and playback both zero. Actual table, callback and modes are paired observations; source bytes establish the wrapper fallback, not an exhaustive backend-entry trace.',
     'The pathfinder initially searches the source/target bounding rectangle, here the unique row19 corridor; unexpected queue count, cells or cumulative costs fail before confirmation.',
     'The three stopped E0 and unit dumps require independent full-protocol, state, pixel and host-ownership validation. No runtime, visual, manual or promotion result is asserted by preparation.',
 ]
@@ -79,13 +90,13 @@ def _pump_rejection(site, *, backend_only=False):
     # MASM evaluates both sides eagerly. Never dereference an unbounded table
     # just to diagnose a failed pointer guard; disclose that unavailable case.
     backend += ('.if ((poi(00545138) >= 00400000) & (poi(00545138) <= 7fffffe8)) { '+
-        p('WMOV_REJECT_CALLBACK site='+site+' actual=%p expected=00460a50', 'poi(poi(00545138)+14)')+
+        p('WMOV_REJECT_CALLBACK site='+site+' actual=%p expected=(0050f1e4:00460a50,0050f204:004612e0)', 'poi(poi(00545138)+14)')+
         '; } .else { .echo WMOV_REJECT_CALLBACK_UNAVAILABLE; }; ')
     if backend_only:
         return backend
-    registers = p('WMOV_REJECT_REGISTERS site='+site+' eax=%x ebx=%x ecx=%x edx=%x esi=%x edi=%x ebp=%x'
+    registers = p('WMOV_REJECT_REGISTERS site='+site+' eax=%x edx=%x'
         ' saved=(%p,%x,%p) click=%d steps=%d pumps=%d pending=%d saved_backend=%p',
-        '@eax','@ebx','@ecx','@edx','@esi','@edi','@ebp','@$t1','@$t2','@$t3',
+        '@eax','@edx','@$t1','@$t2','@$t3',
         '@$t10','@$t11','@$t12','@$t13','@$t4')+'; '
     owner = p('WMOV_REJECT_OWNER gd=%p owner=%p post=%x player=%x selected=%x prior=%x lower=%x unit=%p unit_owner=%x flags=('+','.join(['%x']*10)+')',
         'poi(005202e4)','poi(005199d8)','poi(00526990)','poi(005202ec)','poi(00511b58)',
@@ -108,6 +119,9 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
     surface_maximum = 0x100000000 - surface_size
     directory = prior['capture_dir']
     read = lambda va, n: base._read(candidate, va, n)
+    for backend in PUMP_BACKENDS:
+        if int.from_bytes(read(backend['table']+0x14, 4), 'little') != backend['callback']:
+            raise ValueError('native input backend table differs')
     returns = {f'{va:08x}': base._call_return(candidate, va, target)
                for va, target in NATIVE_CALLS.items()}
     # Native metadata has road at+29; terrain profile2 (desert) is+30+2.
@@ -117,7 +131,9 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
     for va, expected in ((0x4084A0,'53515256575583ec58'),(0x409CBE,'c3'),
         (0x409C21,'c3'),(0x410615,'c3'),(0x410330,'53515655'),
         (0x410747,'8d04bd00000000'),(0x410AF3,'66895f02'),
-        (0x409AB3,'f3a5'),(0x4147A0,'565581ecfc000000')):
+        (0x409AB3,'f3a5'),(0x4147A0,'565581ecfc000000'),
+        (0x461159,'c7806004000004f25000'),
+        (0x4612E0,'53515256575589c683b868040000000f84e3010000')):
         if read(va,len(bytes.fromhex(expected))) != bytes.fromhex(expected):
             raise ValueError(f'native movement boundary differs at{va:08x}')
     data = save[16:]
@@ -221,9 +237,13 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
     for n,va in ((131,0x423050),(132,0x409C81)):
         records[n]=(va,obs('forbidden-route')+'; .echo WMOV_REJECT unexpected_route; q')
     def pump(kind):
-        return p('WMOV_PUMP kind='+kind+' count=%d phase=%d tid=%x eip=%p esp=%p eax=%x edx=%x raw=(%x,%x) shift=%x buttons=%x accumulator=%x secondary=%x',
+        return p('WMOV_PUMP kind='+kind+' count=%d phase=%d tid=%x eip=%p esp=%p eax=%x edx=%x raw=(%x,%x) shift=%x buttons=%x accumulator=%x secondary=%x table=%p callback=%p recording=%x playback=%x',
             '@$t12','@$t0','@$tid','@eip','@esp','@eax','@edx','poi(00544cfc)','poi(00544d00)',
-            'by(0054512c)','poi(00544d04)','by(005451c0)','by(005451c8)')
+            'by(0054512c)','poi(00544d04)','by(005451c0)','by(005451c8)',
+            'poi(00545138)','poi(poi(00545138)+14)','poi(0054513c)','poi(00545140)')
+    modes='(poi(0054513c) == 0) & (poi(00545140) == 0)'
+    backend=('(((poi(00545138) == 0050f1e4) & (poi(0050f1f8) == 00460a50))'
+             ' | ((poi(00545138) == 0050f204) & (poi(0050f218) == 004612e0)))')
     pump_sites=((133,0x414B3F,134,0x414B44,'pathfinder',29,388,1),
                 (135,0x410DAE,136,0x410DB3,'animation',54,328,2),
                 (137,0x410C91,138,0x410C96,'delay',51,328,3))
@@ -231,13 +251,13 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
         state=(idle+f' & (poi({unit}+0n316) == 0)' if kind=='pathfinder' else
                xy('(0n16+@$t11'+('-1)' if kind=='animation' else ')'))+' & '+ap('(5*@$t11)')+
                f' & (poi({unit}+0n316) == 2-@$t11) & (@$t11 >= 1) & (@$t11 <= 2)')
-        context=own+f' & (@$t0 == 0n{phase}) & (@esp == @$t3-0n{depth}) & '+state
+        context=own+f' & (@$t0 == 0n{phase}) & (@esp == @$t3-0n{depth}) & '+state+' & '+modes
         call_context=context+' & (@eax == 00544cd8) & (@edx == 0) & (@$t13 == 0) & (@$t12 < 0n1024) & (poi(00545138) >= 00400000) & (poi(00545138) <= 7fffffe8)'
         records[call_n]=(call_va,_guard(call_context,
-            _guard('(poi(poi(00545138)+14) == 00460a50)',
+            _guard(backend,
                 f'r @$t4=poi(00545138); r @$t12=@$t12+1; r @$t13={identity}; '+pump(kind+'-call')+'; gc',
                 _pump_rejection(kind+'-call-backend', backend_only=True)), _pump_rejection(kind+'-call-context')))
-        records[return_n]=(return_va,_guard(context+f' & (@$t13 == {identity}) & (@$t12 >= 1) & (@$t12 <= 0n1024) & (poi(00545138) == @$t4) & (poi(00544d04) <= 3)',
+        records[return_n]=(return_va,_guard(context+f' & (@$t13 == {identity}) & (@$t12 >= 1) & (@$t12 <= 0n1024) & (poi(00545138) == @$t4) & (poi(00544d04) <= 3) & '+backend,
             'r @$t13=0; '+pump(kind+'-return')+'; gc', _pump_rejection(kind+'-return-context')))
     compiled=prior['compiled_probe'].replace('SHSEL_','WMOV_BASE_')
     old={}
@@ -322,6 +342,7 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
         movement_observer_vas={str(n):va for n,(va,_) in records.items()},movement_native_call_returns=returns,
         pump_observers=[dict(kind=kind,call=call_va,returned=return_va,phase=phase,stack_depth=depth,pending_identity=identity)
             for _,call_va,_,return_va,kind,phase,depth,identity in pump_sites],max_pump_calls_per_click=1024,
+        pump_backends=[dict(item) for item in PUMP_BACKENDS],
         loaded_native_spans=[dict(va=va,bytes=size,sha256=sha(read(va,size))) for va,size in NATIVE_SPANS],
         stack_offsets_from_sentinel=dict(world_entry=-4,world_body=-116,path_entry=-124,execute_entry=-120,execute_body=-328,
             preview_release_entry=-120,preview_release_query_return=-132,world_ret=-4),
