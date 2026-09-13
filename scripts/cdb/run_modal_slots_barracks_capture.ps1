@@ -408,7 +408,7 @@ function Read-CanvasMemory {
 function Save-CanvasSnapshot {
     param($OwnedGame, $Evidence, [string]$RawPath, $Plan)
     $s=$Evidence.surface;$v=$Evidence.canvas;$began=[datetime]::UtcNow.ToString('o')
-    $captures=@{};$prefix=[IO.Path]::ChangeExtension($RawPath,$null)
+    $captures=@{};$prefix=[IO.Path]::Combine([IO.Path]::GetDirectoryName($RawPath),[IO.Path]::GetFileNameWithoutExtension($RawPath))
     $nativePath=Join-Path ([IO.Path]::GetDirectoryName($RawPath)) 'native-surface.raw'
     foreach ($phase in @('before','after')) {
         $phaseRows=@{}

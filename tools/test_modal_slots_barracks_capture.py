@@ -287,6 +287,67 @@ Assert-Case ($result.clean_stable_pair -eq ($Mode -eq 'normal'))
 foreach ($i in 1..3) {Assert-Case (Test-Path -LiteralPath (Join-Path $FixtureRoot ('capture-'+$i+'\surface.raw')))}
 @{passed=$true;actual_captures=$result.snapshots.Count} | ConvertTo-Json
 '''
+SNAPSHOT_PATHS=r'''
+Import-Function Get-CanvasHash
+Import-Function Save-CanvasSnapshot
+Import-Function Save-CanvasTriplet
+$offsets=@{phase=0;physical=4;native=8;root_esp=16;owner_tid=20;enter_status=24;mirror_status=28;
+ leave_status=32;fault=36;allocations=40;frees=44;mirrors=48;pending_header=52;pending_pixels=56;native_pixels=60;physical_pixels=64}
+$values=@{phase=1;physical=0x20000000;native=0x23000000;root_esp=0xfffffc;owner_tid=0x2345;enter_status=1;
+ mirror_status=1;leave_status=0;fault=0;allocations=1;frees=0;mirrors=3;pending_header=0;pending_pixels=0;
+ native_pixels=0x24000000;physical_pixels=0x21000000}
+$script:StateBytes=New-Object byte[] 128
+foreach ($name in $values.Keys) {[BitConverter]::GetBytes([uint32]$values[$name]).CopyTo($script:StateBytes,$offsets[$name])}
+function New-FixtureHeader {
+ param([uint16]$Width,[uint16]$Height,[uint32]$Pixels)
+ $bytes=New-Object byte[] 188
+ [BitConverter]::GetBytes($Width).CopyTo($bytes,0);[BitConverter]::GetBytes($Height).CopyTo($bytes,2)
+ [BitConverter]::GetBytes($Pixels).CopyTo($bytes,4);[BitConverter]::GetBytes([uint32]0x50ee24).CopyTo($bytes,184)
+ return ,$bytes
+}
+$script:PhysicalHeader=New-FixtureHeader 1024 768 0x21000000
+$script:NativeHeader=New-FixtureHeader 640 480 0x24000000
+$script:MemoryReads=0
+function Read-CanvasMemory {
+ param($Handle,[long]$Address,[int]$Count)
+ Assert-Case ($Handle -eq 123)
+ $script:MemoryReads++
+ $data=switch ($Address) {
+  0x596000 {,$script:StateBytes;break}
+  0x5202e0 {,([BitConverter]::GetBytes([uint32]0x23000000));break}
+  0x20000000 {,$script:PhysicalHeader;break}
+  0x23000000 {,$script:NativeHeader;break}
+  0x21000000 {,(New-Object byte[] 786432);break}
+  0x24000000 {,(New-Object byte[] 307200);break}
+  default {throw 'unreviewed synthetic memory address'}
+ }
+ Assert-Case ($data.Length -eq $Count)
+ return ,([byte[]]$data)
+}
+$evidence=@{surface=@{surface=0x20000000;base=0x21000000;width=1024;height=768;bytes=786432;tid=0x2345};
+ canvas=@{native=0x23000000;native_pixels=0x24000000;root_esp=0xfffffc;mirrors=3}}
+$plan=@{out_dir=$FixtureRoot;canvas_state_va=0x596000;canvas_state_offsets=$offsets}
+$result=Save-CanvasTriplet @{handle=123;identity=@{process_id=99}} $evidence $plan
+Assert-Case ($result.clean_stable_pair -and $result.snapshots.Count -eq 3 -and $script:MemoryReads -eq 30)
+$paths=@()
+foreach ($index in 1..3) {
+ $snapshot=$result.snapshots[$index-1];$directory=Join-Path $FixtureRoot ('capture-'+$index)
+ Assert-Case ($snapshot.path -ceq (Join-Path $directory 'surface.raw'))
+ Assert-Case ($snapshot.native.path -ceq (Join-Path $directory 'native-surface.raw'))
+ Assert-Case ([IO.File]::ReadAllBytes($snapshot.path).Length -eq 786432)
+ Assert-Case ([IO.File]::ReadAllBytes($snapshot.native.path).Length -eq 307200)
+ foreach ($phase in @('before','after')) {
+  foreach ($name in @('state','e0','physical_header','native_header')) {
+   $row=$snapshot.reads[$phase][$name]
+   $expected=Join-Path $directory ('surface-'+$phase+'-'+$name+'.raw')
+   Assert-Case ($row.path -ceq $expected)
+   Assert-Case ((Get-CanvasHash $expected) -ceq $row.sha256)
+   $paths+=('capture-'+$index+'/'+[IO.Path]::GetFileName($row.path))
+  }
+ }
+}
+@{passed=$true;paths=$paths;memory_reads=$script:MemoryReads;captures=$result.snapshots.Count} | ConvertTo-Json
+'''
 CLEANUP=r'''
 Import-Function Stop-CanvasOwned
 Add-Type @'
@@ -340,6 +401,14 @@ class HostBoundaryTests(unittest.TestCase):
     def test_nonexecuting_syntax_and_three_distinct_paused_capture_records(self):
         for mode in ('normal','pixels','state'):
             self.assertTrue(self.run_ps(TRIPLET,mode)['passed'])
+
+    def test_real_snapshot_triplet_writes_all_24_exact_audit_header_paths(self):
+        result=self.run_ps(SNAPSHOT_PATHS)
+        expected=[f'capture-{index}/surface-{phase}-{name}.raw' for index in (1,2,3)
+                  for phase in ('before','after') for name in ('state','e0','physical_header','native_header')]
+        self.assertEqual(result['paths'],expected)
+        self.assertEqual(result['memory_reads'],30)
+        self.assertEqual(result['captures'],3)
 
     def test_retained_handle_cleanup_and_failed_absence_never_pass(self):
         for mode in ('normal','exited','failure'):
