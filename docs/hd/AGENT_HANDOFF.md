@@ -184,7 +184,7 @@ Diagnose repeated native observations with additional progress/call-identity
 probes. Preserve all original failures. Validate scrolling, minimap erasure,
 partial/full painting, clamps and out-of-world clearing separately.
 
-Barracks evidence demonstrates twelve late 32x64 rectangles missing from the
+Historical barracks evidence demonstrates twelve late 32x64 rectangles missing from the
 physical mirror after native slot draws. The separate
 [modal-slot adapter and validation builder](FRAMED_MODAL_SLOTS_DIAGNOSIS.md)
 now target `-completehd-modalslots-validation`. Source-bound synthetic fixtures
@@ -196,8 +196,27 @@ and retained-handle cleanup. Its first run is preserved in
 twelve slot-copy traces passed, but a startup-record parser defect stopped
 capture. The legitimate `protocol=slots_barracks_owned_canvas_v1` field was
 mistaken for an additional SLOTS record. The narrow parser repair passes all
-13 offline fixtures; the original failed run still has no pixels. A fresh
-runtime must verify the repaired slot composition. Native primary destination
+13 offline fixtures; the original failed run still has no pixels.
+
+The [2026-09-13 1024x768 checkpoint](../../captures/current/modal-slots-barracks-1024x768-20260913.json)
+records a fresh run of candidate
+`8148cfeacf893e4b006ae5b09c71612e5ac0841f491397ca2c844c9397888515`.
+Its disclosed `construct_all` native barracks route passed the initial/modal
+traces and retained-handle cleanup, with three identical paused native/physical
+capture pairs. Each centered 640x480 comparison has zero mismatches; all four
+outer margins are zero, and all twelve slot interiors have 2,048 matching
+nonzero native pixels each. Original executable, all 15 live-save files, four
+isolated-save files and the 38 snapshotted producer sources remain unchanged.
+
+The independent audit nevertheless **fails** on all 24 state/header paths:
+the host emitted `surface.-before-state.raw` and related names, while the
+validator requires `surface-before-state.raw` and corresponding names. Preserve
+that audit and the successful host summary separately; these pixel observations
+do not grant complete independent acceptance. Do not rename captures or broaden
+the verifier to erase the mismatch. The checkpoint binds both verdicts and all
+raw/PNG/probe/plan/source artifacts. Complete-HD v1 is unchanged; this is bounded
+hidden mirror evidence from the separate slots stage, without primary, visible,
+manual-input or native-exit proof. Native primary destination
 misplacement remains a static inference until
 primary-surface evidence is captured. Court, recruitment, peasants,
 ownership/exit restoration and destruction still require complete routes.
