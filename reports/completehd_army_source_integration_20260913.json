@@ -144,7 +144,8 @@
     "tools/test_complete_hd_army_selection_probe.py": "db80c156d2c70a720d0b82eb2dcffad7565983fcc7bee7a0f63456a9ea09bce9",
     "tools/test_complete_hd_army_selection_trace.py": "d9306f0b296fcb8314a3aca02e0a5cd22e2f5be681342fd89c8e1b9935273eb7",
     "tools/test_complete_hd_army_movement_probe.py": "19d33746a9dfe1494c609a6d1037410012fe124d484febf4b577ffd76a2778ae",
-    "tools/run_framed_offline_tests.py": "92e298af37d9ae3b0c87f92698ac269e82b95a61761fd7b3bdfe7552d9c1900f"
+    "tools/run_framed_offline_tests.py": "92e298af37d9ae3b0c87f92698ac269e82b95a61761fd7b3bdfe7552d9c1900f",
+    "patch_clash95_hd.py": "b2d8af4caf3fef1de0e3902b638be3c6bfba731bca7cd8d10c85c93e12424093"
   },
   "preserved": {
     "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
@@ -159,5 +160,18 @@
     "Synthetic parser logs are fixtures, not gameplay observations.",
     "A fresh owned runtime host, full movement trace, pixel audits and cleanup evidence remain necessary.",
     "Ordinary input, visible/manual proofs, continuity, endurance and stable promotion remain separate outstanding requirements."
-  ]
+  ],
+  "ci_initial_failure": {
+    "job_url": "https://github.com/lisu188/clash-hd/actions/runs/34742957665/job/103685668089",
+    "head": "d96f29792052c61dc2b5c842b0228ba43feed479",
+    "cause": "Linux checkout normalized the root patcher shim to LF, differing from the reviewed Windows source bytes pinned by startup. Startup and synthetic selection-trace suites rejected it."
+  },
+  "line_ending_fix": {
+    "path": "patch_clash95_hd.py",
+    "old_git_sha256": "c86ec84721320ace8170a13f58a9e57392513f8074ae550cb99349f148990ffe",
+    "reviewed_sha256": "b2d8af4caf3fef1de0e3902b638be3c6bfba731bca7cd8d10c85c93e12424093",
+    "normalized_content_identical": true,
+    "scope": "Add exact-byte Git attribute and record the already-tested CRLF source bytes. No Python logic or pin weakened; all startup dependency pins audited against staged Git blobs."
+  },
+  "updated_at": "2026-09-13T06:34:10.749802+00:00"
 }

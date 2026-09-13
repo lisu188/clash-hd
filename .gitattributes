@@ -803,3 +803,4 @@
 /tools/test_complete_hd_army_selection_probe.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_army_selection_trace.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_army_movement_probe.py -text whitespace=cr-at-eol
+/patch_clash95_hd.py -text whitespace=cr-at-eol
