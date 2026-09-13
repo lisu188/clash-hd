@@ -135,6 +135,14 @@ The complete 387x66 backing must also remain identical through redraw. Portrait
 count glyphs, map-unit artwork and action availability remain outside this
 bounded audit.
 
+`scripts/cdb/run_complete_hd_army_movement_capture.ps1` prepares the two-click
+movement lane with the same explicit input and output arguments. Its default
+dry run starts no native process. The separately authorized `-Execute` path
+uses a new candidate and capture directory, the hidden non-presenting proxy,
+and a bounded owned-process lifetime. It retains the exact main command and all
+three supplemental checkpoint commands alongside the candidate, source, save,
+tool and working-asset identities.
+
 The movement validator must observe the real path preview and release, a second
 native confirmation, both occupancy/XY commits, expected action-point costs,
 redraw and true handler return. Empty queues or charged action points do not
