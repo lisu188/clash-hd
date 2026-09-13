@@ -1,0 +1,757 @@
+{
+  "schema": "clash95_complete_hd_army_movement_observation_v1",
+  "generated_at": "2026-09-13T08:41:47.110444+00:00",
+  "passed": false,
+  "status": "first_native_step_observed_then_handler_contract_rejected",
+  "source_revision": "3778fd95",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+  "resolution": "1024x768",
+  "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "save_sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+  "runtime": {
+    "started_at": "2026-09-13T08:28:43.8328068Z",
+    "finished_at": "2026-09-13T08:29:49.3796945Z",
+    "executed": true,
+    "failures": [
+      "Debugger exited before validated movement readiness."
+    ],
+    "source_and_input_identities_unchanged": true,
+    "cleanup_verified": true,
+    "cdb": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+      "creation_utc": "2026-09-13T08:29:00.8380605Z",
+      "handle_retained": true,
+      "creation_filetime": 134337617408380605,
+      "process_id": 28864
+    },
+    "candidates": [
+      {
+        "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\candidate-1024x768-c\\framed-modal-canvas-complete-hd-army-movement-1024x768-0562baa95d69ecf4.exe",
+        "creation_filetime": 134337617410401624,
+        "process_id": 37544,
+        "handle_retained": true,
+        "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+        "creation_utc": "2026-09-13T08:29:01.0401624Z",
+        "parent_process_id": 28864
+      }
+    ],
+    "cleanup": {
+      "candidates": [
+        {
+          "termination_requested": false,
+          "absent": true,
+          "handle_closed": true,
+          "identity": {
+            "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\candidate-1024x768-c\\framed-modal-canvas-complete-hd-army-movement-1024x768-0562baa95d69ecf4.exe",
+            "creation_filetime": 134337617410401624,
+            "process_id": 37544,
+            "handle_retained": true,
+            "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+            "creation_utc": "2026-09-13T08:29:01.0401624Z",
+            "parent_process_id": 28864
+          }
+        }
+      ],
+      "cdb": {
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+          "creation_utc": "2026-09-13T08:29:00.8380605Z",
+          "handle_retained": true,
+          "creation_filetime": 134337617408380605,
+          "process_id": 28864
+        }
+      },
+      "desktop_closed": true
+    },
+    "host_passed": false,
+    "clean_stable_pair": false
+  },
+  "trace_review": {
+    "source_authenticated": true,
+    "whole_candidate_bound": true,
+    "initial_map_passed": true,
+    "movement_passed": false,
+    "snapshot_headers_verified": false,
+    "snapshot_units_verified": false,
+    "failures": [
+      "line 647: runtime/debugger failure retained",
+      "line 647: malformed, prefixed or unknown movement record",
+      "line 648: runtime/debugger failure retained",
+      "line 648: malformed, prefixed or unknown movement record",
+      "incomplete movement sequence: expected spend-call",
+      "three snapshots and final true native RET required"
+    ],
+    "source": {
+      "source_sha256": {
+        "tools/framed_army_selection_probe.py": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+        "tools/render_cdb_surface_probe.py": "12685fdfde4972e0f5f9c3d5678fd159fff965bd9ddd7642cb3718c8530296cf",
+        "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
+        "tools/complete_hd_army_selection_probe.py": "4d603dd001f420ee6f032041ccc4d563eff8a56e86e6ad2d1c89c97bda2fe7f6",
+        "tools/army_probe_startup.py": "1998a2925279457e0e5447e79818d7960ec096cae6e256dcd58639505f41eb0f",
+        "tools/complete_hd_runtime_context.py": "af7c82aebdab3fe282f7f8c80ce4af9a7bc4cdfc47c8fa807fe1cd6cd94184b9",
+        "src/patcher/complete_hd_candidate.py": "e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06",
+        "tools/complete_hd_army_selection_trace.py": "bd00dd162ba0a085b18c1bfbe0a9b3c67117657a62fcec01fdd77ba2ad395528",
+        "tools/initial_map_paint_trace.py": "34a022251bfd572b5f6ecfbedd9a1ccd23a9ded1ba749039201c133108528b0a",
+        "tools/partial_tile_trace_probe.py": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+        "tools/framed_army_selection_trace.py": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc",
+        "tools/framed_army_movement_probe.py": "17b779b29ac1ab6730e2a9ef59db1c2aee51f005edd9ad566db5d6ceeaf4a53b",
+        "tools/complete_hd_army_movement_probe.py": "92a4ae1dc64337f603201ea88f7830c8674eacdad5bdedb8a3b2db9fb29040cd",
+        "tools/framed_army_movement_state.py": "32bd424b3933b3fb831659d715f0c576e9959818d0e123beb304684e21c8fbe7",
+        "tools/complete_hd_army_movement_trace.py": "ff73c21510a51821c67b6faab74cf3618375c06e49a319ff351dcd2b4414da40"
+      },
+      "log_text_sha256": "865c678bb8fb33ab17eebb1eee78caa88ec328db0f03c01944f525e783336802",
+      "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+      "save_sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+      "candidate_manifest_canonical_sha256": "6def4c187f8515165b96e1e467bf49fefac5c04842d00a09e1cf59ef5f62b43c",
+      "probe_raw_sha256": "2d0185cbabd4d98f1925c9fc984e7b69ad49b862bda214ed7433782130d05460",
+      "probe_canonical_lf_sha256": "2d0185cbabd4d98f1925c9fc984e7b69ad49b862bda214ed7433782130d05460",
+      "packet_canonical_sha256": "31aee7f203238c54ff2d1b95f58cbd7ad9f0e463424d3332cf12f5a78648b4d7",
+      "supplemental_commands": {
+        "C:/ClashCaptures/complete-army-movement-20260913-c-1024x768/movement-checkpoint-0.cdb": {
+          "raw_sha256": "3de383e303dd4230b005db52f28f8afcd78a2721858757c011a0fb9a72941f66",
+          "bytes": 3598,
+          "canonical_lf_sha256": "3de383e303dd4230b005db52f28f8afcd78a2721858757c011a0fb9a72941f66"
+        },
+        "C:/ClashCaptures/complete-army-movement-20260913-c-1024x768/movement-checkpoint-1.cdb": {
+          "raw_sha256": "1b3aa4f1d4bc1f6c09ee2fc71b581d8e8e1472aa936158d7175d14b41a04e4f0",
+          "bytes": 3327,
+          "canonical_lf_sha256": "1b3aa4f1d4bc1f6c09ee2fc71b581d8e8e1472aa936158d7175d14b41a04e4f0"
+        },
+        "C:/ClashCaptures/complete-army-movement-20260913-c-1024x768/movement-checkpoint-2.cdb": {
+          "raw_sha256": "f59e87cbc9e08ba2e0aeb2c33e9c64369a0d0ffe4c4b0579dbe46624d3f0dc72",
+          "bytes": 3035,
+          "canonical_lf_sha256": "f59e87cbc9e08ba2e0aeb2c33e9c64369a0d0ffe4c4b0579dbe46624d3f0dc72"
+        }
+      },
+      "log_raw_sha256": "865c678bb8fb33ab17eebb1eee78caa88ec328db0f03c01944f525e783336802"
+    },
+    "final_trace_attempted": true,
+    "final_log": {
+      "sha256": "865c678bb8fb33ab17eebb1eee78caa88ec328db0f03c01944f525e783336802",
+      "bytes": 71048,
+      "validator_log_identity_matched": true,
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\cdb.log",
+      "capture_prefix_preserved": false,
+      "unchanged_during_final_validation": true
+    },
+    "rejection_lines": [
+      {
+        "line_number": 647,
+        "text": "WMOV_REJECT_CONTEXT phase=51 tid=5d98 eip=00406fa1 esp=000edb48 shift=6 raw=(1d00,2c00)"
+      },
+      {
+        "line_number": 648,
+        "text": "WMOV_REJECT native_contract"
+      }
+    ],
+    "review_basis": "Retained final validator result exactly matches summary.final_trace. Actual final-log, original/candidate/save, main/three supplemental command bytes and planned source identities were independently checked; no failed sequence was projected into a pass."
+  },
+  "native_progress": {
+    "source_xy": [
+      16,
+      19
+    ],
+    "requested_destination": [
+      18,
+      19
+    ],
+    "preview_checkpoint_line": 615,
+    "partial_records": [
+      {
+        "name": "movement-before",
+        "xy": [
+          16,
+          19
+        ],
+        "path_count": 0,
+        "path": [],
+        "ap": [
+          26,
+          22,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "header_sha256": "5217d5e4b95a024b273ded5445bd30072d3080da7962f64e00ccd16ffd04c71f",
+        "unit_sha256": "d2da15da6815a6eaae94b7f6460263f691e9c499ed28b6419572fc7f55aeeeef",
+        "scope": "Independently decoded retained partial record; full three-checkpoint state gate remains false."
+      },
+      {
+        "name": "movement-preview",
+        "xy": [
+          16,
+          19
+        ],
+        "path_count": 2,
+        "path": [
+          {
+            "xy": [
+              18,
+              19
+            ],
+            "cumulative_cost": 10
+          },
+          {
+            "xy": [
+              17,
+              19
+            ],
+            "cumulative_cost": 5
+          }
+        ],
+        "ap": [
+          26,
+          22,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "header_sha256": "5217d5e4b95a024b273ded5445bd30072d3080da7962f64e00ccd16ffd04c71f",
+        "unit_sha256": "c63194667aa8fb254f967b50c550829475228cf752acdff3ed42a234b378e631",
+        "scope": "Independently decoded retained partial record; full three-checkpoint state gate remains false."
+      }
+    ],
+    "ap_spend": {
+      "line_number": 637,
+      "kind": "spend-return",
+      "ap_before": [
+        26,
+        22,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "ap_after": [
+        21,
+        17,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "spent_per_squad": 5
+    },
+    "first_xy_occupancy_commit": {
+      "line_number": 639,
+      "eip": "0x00410af7",
+      "xy": [
+        17,
+        19
+      ],
+      "remaining_path_count": 1,
+      "occupancy": [
+        "0xffff",
+        "0x0003",
+        "0xffff"
+      ],
+      "native_steps": 1
+    },
+    "pump_backend": {
+      "table": "0x0050f204",
+      "callback": "0x004612e0",
+      "recording": 0,
+      "playback": 0,
+      "delay_call_line": 644,
+      "delay_return_line": 645
+    },
+    "final_arrival_observed": false,
+    "full_after_movement_capture_present": false,
+    "final_host_triplet_present": false,
+    "scope": "The partial preview record is before AP spending. The first step is a later raw trace observation; no post-step unit dump or screenshot, final arrival, completed native return, or full three-checkpoint gate is claimed."
+  },
+  "caller_explanation": {
+    "classification": "source_backed_inference",
+    "runtime_return_stack_words_recorded": false,
+    "original_and_candidate_instruction_spans": [
+      {
+        "va": "0x00410c96",
+        "original_file_offset": 65686,
+        "candidate_file_offset": 65686,
+        "bytes_hex": "e855a1ffff",
+        "meaning": "Native queued-movement call to dispatcher 0x40ADF0; return 0x410C9B."
+      },
+      {
+        "va": "0x0040adf0",
+        "original_file_offset": 41456,
+        "candidate_file_offset": 41456,
+        "bytes_hex": "5152",
+        "meaning": "Dispatcher saves ECX and EDX on the stack."
+      },
+      {
+        "va": "0x0040ae11",
+        "original_file_offset": 41489,
+        "candidate_file_offset": 41489,
+        "bytes_hex": "e88ac1ffff",
+        "meaning": "Dispatcher call to 0x406FA0; return 0x40AE16."
+      },
+      {
+        "va": "0x00406fa0",
+        "original_file_offset": 25504,
+        "candidate_file_offset": 25504,
+        "bytes_hex": "51",
+        "meaning": "Ambient entry pushes ECX before observed EIP 0x406FA1."
+      }
+    ],
+    "observed": {
+      "line_number": 647,
+      "phase": 51,
+      "eip": "0x00406fa1",
+      "esp": "0x000edb48",
+      "initial_controlled_call_esp": "0x000edca4",
+      "stack_depth_bytes": 348
+    },
+    "interpretation": "Original and candidate call bytes connect queued movement 0x410C96 to dispatcher 0x40ADF0, which calls 0x406FA0 at 0x40AE11. The calls and three pushes account for the observed 348-byte depth from the controlled world-call stack (328+4+8+4+4). This is consistent with a nested ambient dispatch during movement, rather than the final controlled world-handler return. The actual return-stack words were not recorded, so this caller chain remains an inference.",
+    "predicted_not_observed_stack_words": {
+      "+0x04": "0x0040ae16",
+      "+0x10": "0x00410c9b"
+    },
+    "required_followup": "A separate source-bound revision must observe and validate the actual nested caller stack while retaining final route/state requirements; this failed attempt remains unchanged."
+  },
+  "preview_pixel_diagnostic": {
+    "passed": true,
+    "evidence_class": "path_preview_before_failed_two_step_move",
+    "runtime_passed": false,
+    "raw_path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-preview.raw",
+    "raw_sha256": "4a998b19535bb72e7c8280a68f0e0d47b015d355c178612c0eada8581cdc5b92",
+    "frame": {
+      "passed": true,
+      "checked_border_pixels": 75012,
+      "bands": [
+        {
+          "name": "top",
+          "rectangle_inclusive": [
+            0,
+            0,
+            1023,
+            15
+          ],
+          "checked_pixels": 16384,
+          "mismatches": 0
+        },
+        {
+          "name": "bottom",
+          "rectangle_inclusive": [
+            0,
+            752,
+            1023,
+            767
+          ],
+          "checked_pixels": 11524,
+          "mismatches": 0
+        },
+        {
+          "name": "left",
+          "rectangle_inclusive": [
+            0,
+            16,
+            31,
+            751
+          ],
+          "checked_pixels": 23552,
+          "mismatches": 0
+        },
+        {
+          "name": "right",
+          "rectangle_inclusive": [
+            992,
+            16,
+            1023,
+            751
+          ],
+          "checked_pixels": 23552,
+          "mismatches": 0
+        }
+      ],
+      "footer": {
+        "sprite": 5,
+        "origin": [
+          347,
+          753
+        ],
+        "size": [
+          324,
+          15
+        ],
+        "checked_pixels": 4860,
+        "exact_matches": 4860,
+        "exact": true,
+        "status": "exact_background"
+      }
+    },
+    "action_bar": {
+      "passed": true,
+      "cells": [
+        {
+          "cell": 0,
+          "anchor": [
+            800,
+            688
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_sprite": 0,
+          "mismatched_pixels": 0
+        },
+        {
+          "cell": 1,
+          "anchor": [
+            864,
+            688
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_sprite": 2,
+          "mismatched_pixels": 0
+        },
+        {
+          "cell": 2,
+          "anchor": [
+            928,
+            688
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_sprite": 4,
+          "mismatched_pixels": 0
+        },
+        {
+          "cell": 3,
+          "anchor": [
+            800,
+            720
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_sprite": 6,
+          "mismatched_pixels": 0
+        },
+        {
+          "cell": 4,
+          "anchor": [
+            864,
+            720
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_sprite": 8,
+          "mismatched_pixels": 0
+        },
+        {
+          "cell": 5,
+          "anchor": [
+            928,
+            720
+          ],
+          "size": [
+            64,
+            32
+          ],
+          "exact_source_match": true,
+          "closest_sprite": 10,
+          "mismatched_pixels": 0
+        }
+      ]
+    },
+    "portrait_bodies": {
+      "passed": true,
+      "rows_inclusive": [
+        20,
+        48
+      ],
+      "slots": [
+        {
+          "slot": 0,
+          "type": 16,
+          "checked_pixels": 928,
+          "mismatches": 0,
+          "passed": true
+        },
+        {
+          "slot": 1,
+          "type": 16,
+          "checked_pixels": 928,
+          "mismatches": 0,
+          "passed": true
+        },
+        {
+          "slot": 2,
+          "type": 1,
+          "checked_pixels": 928,
+          "mismatches": 0,
+          "passed": true
+        },
+        {
+          "slot": 3,
+          "type": 1,
+          "checked_pixels": 928,
+          "mismatches": 0,
+          "passed": true
+        },
+        {
+          "slot": 4,
+          "type": 1,
+          "checked_pixels": 928,
+          "mismatches": 0,
+          "passed": true
+        },
+        {
+          "slot": 5,
+          "type": 1,
+          "checked_pixels": 928,
+          "mismatches": 0,
+          "passed": true
+        },
+        {
+          "slot": 6,
+          "type": 1,
+          "checked_pixels": 928,
+          "mismatches": 0,
+          "passed": true
+        },
+        {
+          "slot": 7,
+          "type": 1,
+          "checked_pixels": 928,
+          "mismatches": 0,
+          "passed": true
+        }
+      ]
+    },
+    "exposed_backing": {
+      "passed": true,
+      "checked_pixels": 9158,
+      "mismatches": 0,
+      "sprite": 35,
+      "rectangle_inclusive": [
+        32,
+        686,
+        418,
+        751
+      ]
+    },
+    "png": {
+      "passed": true,
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-preview.diagnostic.png",
+      "sha256": "7299bcdf5334d8423f8e072470db48a729032b181eae5f02a7507a5d4ed7faa2",
+      "raw_sha256": "4a998b19535bb72e7c8280a68f0e0d47b015d355c178612c0eada8581cdc5b92",
+      "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2"
+    },
+    "palette_scope": "retained_after_run_not_checkpoint_time",
+    "count_text_verified": false,
+    "map_unit_artwork_verified": false,
+    "visual_inspection": "Retained 1024x768 preview viewed offline: four frame edges and footer are continuous, six bottom-right cells and eight lower-left portraits are present, and a queued path is visible. This image precedes the logged first movement commit."
+  },
+  "verification": {
+    "retained_trace_matches_host": true,
+    "final_log_hash_verified": true,
+    "source_identities_match_plan": true,
+    "main_and_three_commands_match_packet": true,
+    "partial_pixels_recomputed": true,
+    "png_reconstructed_from_actual_raw_and_after_run_palette": true,
+    "cleanup_receipts_consistent": true,
+    "live_process_absence_reobserved": false,
+    "audit_sources": {
+      "C:\\Users\\andrz\\git\\clash-hd\\tools\\complete_hd_army_selection_surface_audit.py": "7effc95203b231c9e007b7aca6a8b47fe2a5d2de8b9b2273a2a4c66260fedd5f",
+      "C:\\Users\\andrz\\git\\clash-hd\\tools\\complete_hd_army_movement_surface_audit.py": "1534991723ec0a5c0d0db189710872bcfcf6d870dd69e8a7aa31789c25c107fb",
+      "C:\\Users\\andrz\\git\\clash-hd\\tools\\frame_surface_audit.py": "1a9d0684cef0bb19a7b0ecd5ecb02c41ef0280033f2307f99d524a521611bfd3",
+      "C:\\Users\\andrz\\git\\clash-hd\\tools\\action_bar_surface_audit.py": "cb7acf9f3b678a119dfaa84a9e55d5e592e31fa9367fc66e7c4878bf1bf3f397",
+      "C:\\Users\\andrz\\git\\clash-hd\\tools\\cdb_surface_dump_to_png.py": "15d88e91ae65d8d3abc8f060915606437fbdb21b6d17285f99393e50fc271316"
+    },
+    "asset_members": {
+      "info_sha256": "ba0747966bd3ff5722a41e6374fd2edc4d817215f79d83bb87cf1c1df3e65dcd",
+      "marks_sha256": "026e2d549427163b5b9642a1c92f89c98b65885eec54b36a0e28fee812bc7667",
+      "action_sha256": "511dd0aa848a8a7582139f7df9bd39ee87580c503dd9f731f3c4206f5206e620"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\after-redraw.raw",
+      "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+      "bytes": 786432
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\before-redraw.raw",
+      "sha256": "4603ff7dc65fb7483a2ea1c69fbad7e18cdca586c039787ba380c3b1e591fdae",
+      "bytes": 786432
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\cdb.log",
+      "sha256": "865c678bb8fb33ab17eebb1eee78caa88ec328db0f03c01944f525e783336802",
+      "bytes": 71048
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\complete-hd-army-movement.cdb",
+      "sha256": "2d0185cbabd4d98f1925c9fc984e7b69ad49b862bda214ed7433782130d05460",
+      "bytes": 3504435
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\host.ps1",
+      "sha256": "a1c6f6e1ac63f42f8c616a085bfbd900782bbdebd620a6e12e1b6dfdeabcb143",
+      "bytes": 54641
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\initial-extra.cdb",
+      "sha256": "fc88e74cb7d937f630242db5cab750b9587536fa8e4f4a162a5cfdd3d10e957d",
+      "bytes": 2881340
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-before.header.raw",
+      "sha256": "5217d5e4b95a024b273ded5445bd30072d3080da7962f64e00ccd16ffd04c71f",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-before.raw",
+      "sha256": "ecd115b52757bba8d9f9b77b8ca3d8e882fd8a023852a6ac15adf2460d4be0ee",
+      "bytes": 786432
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-before.unit.raw",
+      "sha256": "d2da15da6815a6eaae94b7f6460263f691e9c499ed28b6419572fc7f55aeeeef",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-checkpoint-0.cdb",
+      "sha256": "3de383e303dd4230b005db52f28f8afcd78a2721858757c011a0fb9a72941f66",
+      "bytes": 3598
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-checkpoint-1.cdb",
+      "sha256": "1b3aa4f1d4bc1f6c09ee2fc71b581d8e8e1472aa936158d7175d14b41a04e4f0",
+      "bytes": 3327
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-checkpoint-2.cdb",
+      "sha256": "f59e87cbc9e08ba2e0aeb2c33e9c64369a0d0ffe4c4b0579dbe46624d3f0dc72",
+      "bytes": 3035
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-preview.diagnostic.png",
+      "sha256": "7299bcdf5334d8423f8e072470db48a729032b181eae5f02a7507a5d4ed7faa2",
+      "bytes": 246560
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-preview.diagnostic.png.json",
+      "sha256": "38aac15ea95cbd239184fd84036fcb1f9fd987037b67cb09cc41c96b731e1c84",
+      "bytes": 829
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-preview.header.raw",
+      "sha256": "5217d5e4b95a024b273ded5445bd30072d3080da7962f64e00ccd16ffd04c71f",
+      "bytes": 188
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-preview.raw",
+      "sha256": "4a998b19535bb72e7c8280a68f0e0d47b015d355c178612c0eada8581cdc5b92",
+      "bytes": 786432
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\movement-preview.unit.raw",
+      "sha256": "c63194667aa8fb254f967b50c550829475228cf752acdff3ed42a234b378e631",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\packet.json",
+      "sha256": "a2d6c13c4275751898c0342b9f9dadc231d1b52f378056279e4b45649377ac70",
+      "bytes": 6437089
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\plan.json",
+      "sha256": "420eff3a2f556a08395c8f94237cbd682e21355cc62435b63987b32ab7928654",
+      "bytes": 25037
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\preview-pixel-diagnostic.json",
+      "sha256": "f7c4dc882f55c3c5c7d8e9e783bf083eee60c870b1d732a80051d0aefaf907af",
+      "bytes": 15722
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\summary.json",
+      "sha256": "9005fbbbf78a218f269383ff13757a7cdeae8533d3f6ab51c481c304034e29c9",
+      "bytes": 1041081
+    },
+    {
+      "path": "C:\\ClashCaptures\\complete-army-movement-20260913-c-1024x768\\trace-final.json",
+      "sha256": "57c2e87ff475c6db91b078a7245b0f71c8d424a66d629b4155b72b5fa9f0f120",
+      "bytes": 825918
+    },
+    {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "bytes": 1232384
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\candidate-1024x768-c\\framed-modal-canvas-complete-hd-army-movement-1024x768-0562baa95d69ecf4.exe",
+      "sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+      "bytes": 1457152
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-selection-20260913-a\\workdir\\save\\0.dat",
+      "sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+      "bytes": 586414
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\prepared\\clash95_complete_movement_1024x768.candidate.json",
+      "sha256": "0ed38c5f881983e88bad920ce44562544b7b692fd99b3eb36768b424563db4ee",
+      "bytes": 3013226
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-movement-20260913-a\\candidate-1024x768-c\\ddraw_surfdump_palette.bin",
+      "sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+      "bytes": 1024
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-selection-20260913-a\\workdir\\DATA\\minimum.res",
+      "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116",
+      "bytes": 21601784
+    },
+    {
+      "path": "C:\\ClashTests\\complete-army-selection-20260913-a\\workdir\\DATA\\GFX3.RES",
+      "sha256": "31489538e8b98d180b434151db8260d00edf5ce9dd98e9f80e1d4e0607e3f525",
+      "bytes": 5514969
+    }
+  ],
+  "ordinary_input_proof": false,
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "stable_promotion": false,
+  "full_movement_surface_audit_passed": false,
+  "limits": [
+    "Attempt C remains a failed v2 controlled hidden-debugger run. One native step and a correct preview panel do not establish final arrival or completed movement.",
+    "The preview-only source pixel result covers four frame bands, footer, six action cells, eight portrait bodies and exposed backing. No post-movement surface or stopped final triplet was captured.",
+    "The diagnostic PNG uses the palette retained after the failed run, not an independently sampled preview-time palette or visible wrapper composition.",
+    "Portrait body and backing checks do not verify count glyphs, badges, map-unit artwork or ordinary mouse dispatch.",
+    "Cleanup and source/input preservation are retained host observations whose receipt consistency was checked offline; this report performs no live process inspection.",
+    "The caller explanation is source-backed inference because the nested return-stack words were not recorded. Frozen attempt-C artifacts are not rewritten for later protocol revisions."
+  ]
+}
