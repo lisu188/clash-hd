@@ -135,6 +135,29 @@ The complete 387x66 backing must also remain identical through redraw. Portrait
 count glyphs, map-unit artwork and action availability remain outside this
 bounded audit.
 
+`scripts/cdb/run_complete_hd_army_movement_capture.ps1` prepares the two-click
+movement lane with the same explicit input and output arguments. Its default
+dry run starts no native process. The separately authorized `-Execute` path
+uses a new candidate and capture directory, the hidden non-presenting proxy,
+and a bounded owned-process lifetime. It retains the exact main command and all
+three supplemental checkpoint commands alongside the candidate, source, save,
+tool and working-asset identities.
+
+After cleanup, the host retains one bounded strict final-trace review even if
+the native route failed before its last checkpoint. Missing records, rejected
+native prerequisites, parser errors and cleanup failures remain failures.
+
+`tools/complete_hd_army_movement_surface_audit.py --summary <summary.json>
+--resource-root <exact-work-directory>` independently replays the complete
+movement trace and binds all three checkpoint headers, army records, raw
+surfaces, final captures and PNGs. It audits the four frame bands, footer, six
+action cells, eight portrait bodies and exposed backing in every observation.
+The complete backing comparison also requires unchanged native portrait inputs.
+Glyph correctness and ordinary/manual input are separate requirements. Earlier
+checkpoint PNGs use the retained final proxy palette; they do not establish a
+checkpoint-time palette or final-wrapper appearance. A partial failed run is
+not a complete movement audit pass.
+
 The movement validator must observe the real path preview and release, a second
 native confirmation, both occupancy/XY commits, expected action-point costs,
 redraw and true handler return. Empty queues or charged action points do not

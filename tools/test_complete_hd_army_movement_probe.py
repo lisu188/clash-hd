@@ -158,7 +158,7 @@ class MovementProbeTests(unittest.TestCase):
                 self.assertEqual(len(numbers),len(set(numbers)))
                 self.assertTrue(any('independent full-protocol' in item for item in packet['limits']))
 
-    def test_frozen_v3_commands_are_identical_for_the_authenticated_1024_baseline(self):
+    def test_frozen_v3_commands_are_identical_except_read_only_rejection_details(self):
         # Legacy selection remains incompatible with the merged renderer.
         # This comparison tests reviewed v3 commands, not old-producer compatibility.
         with self.assertRaisesRegex(ValueError,
@@ -170,7 +170,15 @@ class MovementProbeTests(unittest.TestCase):
         with patch.object(frozen.base,'verify_sources',side_effect=probe.base.verify_sources), \
              patch.object(frozen.base,'build_selection_probe',return_value=self.baseline):
             expected=frozen.build_movement_probe(self.original,self.candidate,self.save,capture_dir=CAPTURE)
-        self.assertEqual(self.packet['compiled_probe'],expected['compiled_probe'].replace(frozen.REVISION,probe.REVISION))
+        # Remove only the separately checked rejection-only print fragments.
+        # Every predicate, successful branch, native write and stop stays exact.
+        actual = self.packet['compiled_probe']
+        for kind in ('pathfinder', 'animation', 'delay'):
+            for suffix, backend_only in (('call-backend', True), ('call-context', False), ('return-context', False)):
+                extra = probe._pump_rejection(kind+'-'+suffix, backend_only=backend_only)
+                self.assertEqual(actual.count(extra), 1)
+                actual = actual.replace(extra, '')
+        self.assertEqual(actual,expected['compiled_probe'].replace(frozen.REVISION,probe.REVISION))
         for key in ('supplemental_commands','supplemental_sha256','initial_extra','initial_extra_sha256',
                     'movement_observer_vas','movement_native_call_returns','pump_observers',
                     'loaded_native_spans','stack_offsets_from_sentinel','expected_path_words','expected_final_ap'):
@@ -495,6 +503,36 @@ class MovementProbeTests(unittest.TestCase):
         r,m=self.state(120);guard=conditions(command(self.packet,120)[1])[0]
         for address,value in ((0x544D04,3),(0x5451C0,0x90)):
             self.assertFalse(expression(guard,r,m|{address:value}))
+
+    def test_pump_rejections_expose_actual_context_without_admitting_another_backend(self):
+        for kind, number in (('pathfinder', 133), ('animation', 135), ('delay', 137)):
+            for n, suffix, backend_only in ((number, 'call-context', False),
+                                            (number, 'call-backend', True),
+                                            (number+1, 'return-context', False)):
+                detail = probe._pump_rejection(kind+'-'+suffix, backend_only=backend_only)
+                text = command(self.packet, n)[1]
+                self.assertIn(detail+'.echo WMOV_REJECT native_contract; q', text)
+                self.assertNotRegex(detail, r'\b(?:eb|ed|ew|eq|r|g|gc|gu|gh|gn|q)\s|\.writemem|WMOV_HOST_READY')
+                self.assertIn('WMOV_REJECT_BACKEND site='+kind+'-'+suffix+' table=%p', detail)
+                self.assertIn('actual=%p expected=00460a50', detail)
+                self.assertLess(detail.index('.if ((poi(00545138) >= 00400000)'),
+                                detail.index('poi(poi(00545138)+14)'))
+                if not backend_only:
+                    for token in ('WMOV_REJECT_REGISTERS', 'WMOV_REJECT_OWNER', 'WMOV_REJECT_UNIT',
+                                  '@$t1', '@$t2', '@$t3', '@$t10', '@$t11', '@$t12', '@$t13',
+                                  'poi(005202e4)', 'poi(005199d8)', 'poi(00526fa0)', 'by(@$t1+0n149353)'):
+                        self.assertIn(token, detail)
+                    for i in range(10): self.assertIn(f'poi({0x526F78+4*i:08x})', detail)
+                    for i in range(8): self.assertIn(f'by(@$t1+0n{149349+14+31*i})', detail)
+        # Original derived table routes through Device_UpdateRect. It remains
+        # rejected by this v1 contract; diagnostics cannot turn it into a pass.
+        r,m=self.state(108); r.update(t0=29,esp=r['t3']-388,eax=0x544CD8,edx=0,t11=0,t12=0,t13=0,t4=0)
+        m.update({r['t1']+149349+316:0,0x545138:0x50F204,0x50F218:0x4612E0})
+        guards=conditions(command(self.packet,133)[1])
+        self.assertTrue(expression(guards[0],r,m)); self.assertFalse(expression(guards[1],r,m))
+        bounds=conditions(probe._pump_rejection('fixture', backend_only=True))[0]
+        for pointer in (0,0x3FFFFF,0x7FFFFFFF):
+            self.assertFalse(expression(bounds,r,m|{0x545138:pointer}))
 
     def test_native_fixed_point_shift6_and_signed_dword_bound_before_writes(self):
         for shift in (0,2,3,6,16,21):

@@ -65,6 +65,8 @@ SUITES = (
     "test_complete_hd_army_movement_trace",
     "test_complete_hd_army_selection_capture",
     "test_complete_hd_army_selection_surface_audit",
+    "test_complete_hd_army_movement_capture",
+    "test_complete_hd_army_movement_surface_audit",
     "test_complete_hd_manual_plan",
     "test_complete_hd_manual_attach",
     "test_framed_world_clear_audit",
