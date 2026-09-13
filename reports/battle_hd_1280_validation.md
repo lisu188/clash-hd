@@ -128,3 +128,21 @@ The [subsequent checkpoint integration](battle_hd_source_binding_checkpoint326.m
 records compatibility with main `326e703a`, including the source SHA updates
 for its newly imported framed battle and army diagnostic producers. Historical
 runtime identities and independently stale diagnostic pins remain preserved.
+
+Implementation [PR #61](https://github.com/lisu188/clash-hd/pull/61) and
+the [geometry guard compatibility fix](battle_hd_geometry_guard_compatibility.md),
+[PR #63](https://github.com/lisu188/clash-hd/pull/63), are merged into main.
+Their applicable GitHub checks passed: 19 for PR #61 and four for PR #63.
+The candidate remains validation-only with the same executable SHA.
+
+The completed aggregate at source `694988309f66966220677e88093c5492288ea116`
+on **2026-09-08T12:17:37+02:00** has **9/167 failing checks**, with all
+**326 framed fixtures in 32 suites passing and no skips or expected failures**.
+The remaining checks concern missing castle raw evidence, long/manual release
+proof, five inherited Python scanner findings and downstream guards. The
+[battle-specific evidence report](../captures/current/battle-hd-validation-current.md)
+binds the complete immutable archive and stdout log. This dated run includes
+the geometry fix; it predates later upstream fixture additions and does not
+claim a new aggregate of September 13 main. Global current reports remain
+those imported from main. Visible composition, natural input and the listed
+hidden-diagnostic gaps remain pending.
