@@ -804,6 +804,10 @@
 /tools/test_modal_slots_barracks_capture.py -text whitespace=cr-at-eol
 /tools/complete_hd_main_probe.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_main_probe.py -text whitespace=cr-at-eol
+/tools/complete_hd_manual_plan.py -text whitespace=cr-at-eol
+/tools/test_complete_hd_manual_plan.py -text whitespace=cr-at-eol
+/tools/framed_world_clear_audit.py -text whitespace=cr-at-eol
+/tools/test_framed_world_clear_audit.py -text whitespace=cr-at-eol
 /tools/run_framed_offline_tests.py -text whitespace=cr-at-eol
 /tools/test_army_probe_startup.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_army_selection_probe.py -text whitespace=cr-at-eol
@@ -814,3 +818,11 @@
 /tools/test_complete_hd_army_movement_trace.py -text whitespace=cr-at-eol
 /scripts/cdb/run_complete_hd_army_selection_capture.ps1 -text whitespace=cr-at-eol
 /tools/test_complete_hd_army_selection_capture.py -text whitespace=cr-at-eol
+/scripts/cdb/run_modal_slots_primary_capture.ps1 -text whitespace=cr-at-eol
+/tools/modal_slots_primary_capture.py -text whitespace=cr-at-eol
+/tools/modal_slots_primary_surface.py -text whitespace=cr-at-eol
+/tools/test_modal_slots_primary_capture.py -text whitespace=cr-at-eol
+/tools/test_modal_slots_primary_host.py -text whitespace=cr-at-eol
+/tools/complete_hd_manual_attach.py -text whitespace=cr-at-eol
+/tools/complete_hd_manual_attach_win32.py -text whitespace=cr-at-eol
+/tools/test_complete_hd_manual_attach.py -text whitespace=cr-at-eol
