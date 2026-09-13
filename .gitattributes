@@ -826,3 +826,5 @@
 /tools/complete_hd_manual_attach.py -text whitespace=cr-at-eol
 /tools/complete_hd_manual_attach_win32.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_manual_attach.py -text whitespace=cr-at-eol
+/tools/complete_hd_army_selection_surface_audit.py -text whitespace=cr-at-eol
+/tools/test_complete_hd_army_selection_surface_audit.py -text whitespace=cr-at-eol

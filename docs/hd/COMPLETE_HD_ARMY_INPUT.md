@@ -91,6 +91,7 @@ python -B tools/test_complete_hd_army_selection_trace.py
 python -B tools/test_complete_hd_army_movement_probe.py
 python -B tools/test_complete_hd_army_movement_trace.py
 python -B tools/test_complete_hd_army_selection_capture.py
+python -B tools/test_complete_hd_army_selection_surface_audit.py
 ```
 
 The selection and movement producer fixtures use the user-owned original and
@@ -124,6 +125,15 @@ independent pixel audits. Audit all four frame edges, the footer, all six action
 cells and the complete portrait backing in each relevant screenshot. Neither
 the controlled native call nor the hidden surface establishes ordinary input,
 visible composition or promotion.
+
+The offline `tools/complete_hd_army_selection_surface_audit.py` accepts
+`--summary` and `--resource-root` (the exact isolated work directory). It rebinds
+the host artifacts and full trace, reconstructs the PNG, and audits all five
+before/after/final surfaces against native assets. All four frame bands, the
+footer, six action cells, eight portrait bodies and exposed backing must match.
+The complete 387x66 backing must also remain identical through redraw. Portrait
+count glyphs, map-unit artwork and action availability remain outside this
+bounded audit.
 
 The movement validator must observe the real path preview and release, a second
 native confirmation, both occupancy/XY commits, expected action-point costs,

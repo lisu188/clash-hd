@@ -4,6 +4,7 @@ These fixtures never launch a game/debugger/desktop or claim runtime evidence.
 An optional real read-only producer dry run is run separately with owned inputs.
 """
 import hashlib
+import ctypes
 import json
 import os
 from pathlib import Path
@@ -43,14 +44,23 @@ Assert-Case ($result.status -ceq 'dry_run' -and $result.executed -is [bool] -and
 PATHS = r'''
 Import-Function Resolve-CanvasPath
 $new=Join-Path $FixtureRoot 'absent\nested'
-Assert-Case ((Resolve-CanvasPath $new -Root $FixtureRoot -Kind new) -ceq $new)
-$bad=@($FixtureRoot,(Join-Path $FixtureRoot '..\escape'),($FixtureRoot+'-sibling\new'),($new+';q'),($new+':stream'),('relative\new'))
-foreach ($path in $bad) {
- $failed=$false;try {$null=Resolve-CanvasPath $path -Root $FixtureRoot -Kind new} catch {$failed=$true}
- Assert-Case $failed
+$accepted=@(@{name='ordinary child';path=$new},@{name='dot component';path=($FixtureRoot+'\absent\.\nested')})
+foreach ($case in $accepted) {
+ # The contract returns .NET's canonical spelling, which need not preserve
+ # the caller's short-name, separator or dot-component spelling.
+ $expected=[IO.Path]::GetFullPath($case.path).TrimEnd('\')
+ $actual=Resolve-CanvasPath $case.path -Root $FixtureRoot -Kind new
+ if ($actual -cne $expected) {throw ("Canonical path mismatch for {0}: input=[{1}], expected=[{2}], actual=[{3}], root=[{4}]" -f $case.name,$case.path,$expected,$actual,$FixtureRoot)}
 }
-Assert-Case (-not (Test-Path -LiteralPath $new))
-@{passed=$true;rejected=$bad.Count} | ConvertTo-Json
+$bad=@(@{name='existing root';path=$FixtureRoot},@{name='parent traversal';path=(Join-Path $FixtureRoot '..\escape')},
+ @{name='prefix sibling';path=($FixtureRoot+'-sibling\new')},@{name='command delimiter';path=($new+';q')},
+ @{name='alternate stream';path=($new+':stream')},@{name='relative path';path='relative\new'})
+foreach ($case in $bad) {
+ $failed=$false;try {$null=Resolve-CanvasPath $case.path -Root $FixtureRoot -Kind new} catch {$failed=$true}
+ if (-not $failed) {throw ("Unsafe path unexpectedly accepted for {0}: input=[{1}], root=[{2}]" -f $case.name,$case.path,$FixtureRoot)}
+}
+if (Test-Path -LiteralPath $new) {throw ('Read-only path validation created an artifact: '+$new)}
+@{passed=$true;accepted=$accepted.Count;rejected=$bad.Count;mode=$Mode} | ConvertTo-Json
 '''
 
 DRIFT = r'''
@@ -267,8 +277,24 @@ class HostBoundaryTests(unittest.TestCase):
             (root/'plan.json').write_text(json.dumps(plan),encoding='utf-8')
             (root/'report.json').write_text(json.dumps(report),encoding='utf-8')
             script=root/'fixture.ps1';script.write_text(PRELUDE+body,encoding='utf-8-sig')
+            fixture_root=directory
+            if mode == 'short-root':
+                # Use the filesystem's actual short spelling where supported.
+                # Volumes without 8.3 names may return the original spelling;
+                # the dot-component case still exercises canonicalization.
+                short_path=ctypes.WinDLL('kernel32',use_last_error=True).GetShortPathNameW
+                short_path.argtypes=[ctypes.c_wchar_p,ctypes.c_wchar_p,ctypes.c_uint32]
+                short_path.restype=ctypes.c_uint32
+                size=short_path(directory,None,0)
+                if not size:
+                    raise ctypes.WinError(ctypes.get_last_error())
+                buffer=ctypes.create_unicode_buffer(size)
+                written=short_path(directory,buffer,size)
+                if not written or written >= size:
+                    raise OSError('Could not obtain a complete short fixture-root path')
+                fixture_root=buffer.value
             result=subprocess.run([str(PS),'-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',str(script),
-                '-HostPath',str(HOST),'-FixtureRoot',directory,'-Mode',mode],capture_output=True,
+                '-HostPath',str(HOST),'-FixtureRoot',fixture_root,'-Mode',mode],capture_output=True,
                 text=True,creationflags=subprocess.CREATE_NO_WINDOW,timeout=30)
             self.assertEqual(result.returncode,0,result.stdout+result.stderr)
             return json.loads(result.stdout)
@@ -277,7 +303,12 @@ class HostBoundaryTests(unittest.TestCase):
         self.assertTrue(self.run_ps(DRY_RUN)['passed'])
 
     def test_paths_reject_existing_sibling_traversal_stream_and_delimiter(self):
-        self.assertTrue(self.run_ps(PATHS)['passed'])
+        for mode in ('normal','short-root'):
+            with self.subTest(mode=mode):
+                result=self.run_ps(PATHS,mode)
+                self.assertTrue(result['passed'])
+                self.assertEqual(result['accepted'],2)
+                self.assertEqual(result['rejected'],6)
 
     def test_source_asset_missing_and_added_inventory_changes_fail(self):
         for mode in ('source','asset','added','missing'):
