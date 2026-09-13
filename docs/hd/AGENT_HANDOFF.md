@@ -766,7 +766,14 @@ entire portrait backing survives redraw unchanged. This is controlled native-cal
 and hidden software-surface evidence. Count glyphs, map-unit artwork, ordinary
 input, final-wrapper composition and promotion are not proved. The new complete
 movement validator passes its real-file reconstruction fixtures with synthetic
-observations; a fresh actual movement run is still required.
+observations. The [first actual movement attempt on 2026-09-13](../../captures/current/completehd-army-movement-1024x768-20260913-attempt-a.json)
+fails at the pathfinder input-pump contract, phase 29 at `00414b3f`, before path
+preview completion or arrival. Its source/candidate binding and initial-map
+trace pass; owned cleanup and unchanged inputs are verified. The partial
+before-movement frame passes frame/footer, six action-cell, eight portrait-body
+and exposed-backing checks. Preserve the failed trace and frozen host source;
+those pixel checks do not make movement pass. A matching successful movement
+run remains required, with the rejected native prerequisite still to diagnose.
 
 | Work | Start with | Focused verification |
 | --- | --- | --- |

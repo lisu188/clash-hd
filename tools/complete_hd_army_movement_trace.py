@@ -21,7 +21,7 @@ import complete_hd_army_movement_probe as producer
 import complete_hd_army_selection_trace as selection
 import framed_army_movement_state as state
 
-PRODUCER_SHA256 = 'd048d355feffc6594c99c1a5f333bb55cc1ad654b6e463b00ae1bed8e9383e63'
+PRODUCER_SHA256 = '5224cfa8363d25e62e0f069ff62aecabec9fa9bff41767dee9b8b992587210e5'
 HELPERS = {
     'tools/framed_army_movement_state.py': '32bd424b3933b3fb831659d715f0c576e9959818d0e123beb304684e21c8fbe7',
     'tools/complete_hd_army_selection_trace.py': 'bd00dd162ba0a085b18c1bfbe0a9b3c67117657a62fcec01fdd77ba2ad395528',

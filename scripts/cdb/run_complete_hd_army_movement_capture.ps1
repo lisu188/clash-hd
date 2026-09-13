@@ -583,13 +583,47 @@ function Invoke-MovementTrace {
         '--candidate',$Plan.candidate_path,'--save',$Plan.save,'--probe',$Probe,'--candidate-manifest',$Plan.candidate_manifest,'--captured-snapshots') -PermitFailure -TimeoutMilliseconds $Timeout
 }
 
+function Save-MovementFinalTrace {
+    param($Plan,[string]$Log,[string]$Packet,[string]$Probe)
+    $result=@{attempted=$false;trace=$null;log=$null;failures=@()}
+    if (-not (Test-Path -LiteralPath $Log -PathType Leaf)) {
+        $result.failures+='Final debugger log is unavailable after cleanup.'
+        return $result
+    }
+    $beforeHash=$null
+    try {
+        $before=Read-CanvasLogBytes $Log;$beforeHash=Get-CanvasBytesHash $before
+        $result.log=@{path=$Log;sha256=$beforeHash;bytes=$before.Length;capture_prefix_preserved=$false
+            unchanged_during_final_validation=$false;validator_log_identity_matched=$false}
+    } catch {$result.failures+=('Final log identity before validation failed: '+$_.Exception.Message)}
+    try {
+        # A failing native sequence is useful evidence. Keep --captured-snapshots
+        # and all source checks intact, but never require readiness merely to
+        # retain the diagnostic. This is one bounded offline call after cleanup.
+        $result.attempted=$true
+        $result.trace=Invoke-MovementTrace $Plan $Log $Packet $Probe
+        Write-CanvasJson (Join-Path $Plan.out_dir 'trace-final.json') $result.trace
+    } catch {$result.failures+=('Final strict trace diagnostic failed: '+$_.Exception.Message)}
+    try {
+        # Preserve the final raw-log identity even when parsing or writing the
+        # trace failed. No capture prefix is invented for an early rejection.
+        $after=Read-CanvasLogBytes $Log;$afterHash=Get-CanvasBytesHash $after
+        $result.log=@{path=$Log;sha256=$afterHash;bytes=$after.Length;capture_prefix_preserved=$false
+            unchanged_during_final_validation=($null -ne $beforeHash -and $afterHash -ceq $beforeHash)
+            validator_log_identity_matched=($null -ne $result.trace -and $result.trace.source.log_raw_sha256 -ceq $afterHash)}
+        if (-not $result.log.unchanged_during_final_validation) {$result.failures+='Final debugger log changed during strict validation.'}
+        if ($null -ne $result.trace -and -not $result.log.validator_log_identity_matched) {$result.failures+='Final strict trace does not bind the retained raw log identity.'}
+    } catch {$result.failures+=('Final log identity after validation failed: '+$_.Exception.Message)}
+    return $result
+}
+
 function Invoke-MovementCapture {
     param($Bundle,[switch]$DoExecute)
     $plan=$Bundle.plan;$packet=$Bundle.packet
     if (-not $DoExecute) {return @{status='dry_run';executed=$false;plan=$plan;packet=$packet}}
     $summary=[ordered]@{schema='clash95_complete_hd_army_movement_capture_v1';passed=$false;status='failed';executed=$false
         plan=$plan;failures=@();started_at=[datetime]::UtcNow.ToString('o');trace=$null;final_trace=$null;snapshot=$null;png=$null;snapshots=@()
-        supplemental_commands=@();checkpoints=@()
+        supplemental_commands=@();checkpoints=@();final_trace_attempted=$false
         cleanup=@{cdb=$null;candidates=@();desktop_closed=$false};cleanup_verified=$false;clean_stable_pair=$false
         frame_verified=$false;action_bar_verified=$false;ordinary_input_proof=$false;manual_input_proof=$false;visible_composition_proof=$false;promotion_ready=$false}
     $session=$null;$launch=@{session=$null};$owned=@{};$created=$false
@@ -661,17 +695,28 @@ function Invoke-MovementCapture {
             $summary.cleanup_verified=Test-MovementCleanup $summary.cleanup
             if (-not $summary.cleanup_verified) {$summary.failures+='Exact owned-process absence, handle closure and desktop closure were not fully verified.'}
         }
+        if ($summary.executed) {
+            # A rejection before checkpoint2 must retain the same strict final
+            # parser diagnostics as a completed capture. Acceptance stays in
+            # the snapshot branch below and requires all original gates.
+            try {
+                $diagnostic=Save-MovementFinalTrace $plan $log $packetPath $probe
+                $summary.final_trace_attempted=$diagnostic.attempted
+                $summary.final_trace=$diagnostic.trace;$summary.final_log=$diagnostic.log
+                $summary.failures+=@($diagnostic.failures)
+            } catch {$summary.failures+=('Final trace diagnostic handling failed: '+$_.Exception.Message)}
+        }
         if ($summary.snapshot) {
             try {
                 Assert-MovementCommands $plan
-                $summary.final_trace=Invoke-MovementTrace $plan $log $packetPath $probe
-                Write-CanvasJson (Join-Path $plan.out_dir 'trace-final.json') $summary.final_trace
                 [void](Assert-MovementSurface $summary.final_trace $plan)
                 $final=Read-CanvasLogBytes $log;$prefix=[IO.File]::ReadAllBytes($summary.capture_prefix.path)
                 if ((Get-CanvasBytesHash $prefix) -cne $summary.capture_prefix.sha256 -or $final.Length -lt $prefix.Length) {throw 'Capture prefix changed or final log was truncated.'}
                 $head=New-Object byte[] $prefix.Length;[Array]::Copy($final,$head,$head.Length)
                 if ((Get-CanvasBytesHash $head) -cne $summary.capture_prefix.sha256 -or (Get-CanvasBytesHash $final) -cne $summary.final_trace.source.log_raw_sha256) {throw 'Final log does not retain the validated capture prefix.'}
-                $summary.final_log=@{path=$log;sha256=(Get-CanvasBytesHash $final);bytes=$final.Length;capture_prefix_preserved=$true}
+                if ($null -eq $summary.final_log -or $summary.final_log.sha256 -cne (Get-CanvasBytesHash $final) -or
+                    -not $summary.final_log.unchanged_during_final_validation -or -not $summary.final_log.validator_log_identity_matched) {throw 'Final log diagnostic identity was not preserved through capture validation.'}
+                $summary.final_log.capture_prefix_preserved=$true
                 if ((Get-CanvasHash $packetPath) -cne $summary.packet.sha256 -or (Get-CanvasHash $probe) -cne $summary.probe.sha256) {throw 'Packet or probe changed after capture.'}
                 $finalCheckpoints=@(Get-MovementCheckpoints $plan $summary.final_trace)
                 if (($finalCheckpoints | ConvertTo-Json -Compress -Depth 40) -cne ($summary.checkpoints | ConvertTo-Json -Compress -Depth 40)) {throw 'Native checkpoints changed after stopped host capture.'}
