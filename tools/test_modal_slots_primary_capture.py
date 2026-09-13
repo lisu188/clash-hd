@@ -88,9 +88,9 @@ class PrimaryProtocolTests(unittest.TestCase):
         packet.update(candidate_sha256='a'*64,stage='slots-validation',availability='existing_flags',
             castle_index=0,minimap_viewport=True,candidate_manifest={'path':'fixture.json'},
             primary_capture={'ready_file':'fixture.cdb','proxy_manifest':{'path':'proxy.json'}})
-        prepared={'packet':copy.deepcopy(packet),'probe':'canonical\n','ready_script':'ready\n'}
         bad={'source':{},'failures':['initial trace: unmatched event 498/501'],'passed':False,'limits':[]}
-        with patch.object(tool,'prepare',return_value=prepared),patch.object(tool.modal,'compile_probe',return_value='base\n'), \
+        with patch.object(tool,'compile_probe',return_value='canonical\n'),patch.object(tool,'ready_script',return_value='ready\n'), \
+             patch.object(tool,'verify_native_lock'),patch.object(tool.modal,'compile_probe',return_value='base\n'), \
              patch.object(tool.modal,'evaluate_trace',side_effect=lambda *a,**kw:copy.deepcopy(bad)), \
              patch.object(tool,'evaluate_primary_sequence',return_value={'passed':True,'failures':[]}):
             result=tool.evaluate_trace(log,original=b'original',candidate=b'candidate',packet=packet,
@@ -101,6 +101,90 @@ class PrimaryProtocolTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'whole primary packet/probe'):
                     tool.evaluate_trace(log,original=b'original',candidate=b'candidate',packet=packet,
                         generated_probe=probe,ready_script_bytes=ready)
+
+    def test_one_inherited_reconstruction_per_log_retains_candidate_and_packet_checks(self):
+        # Replace only the expensive recipe/trace fixtures, keeping the real
+        # inherited evaluator's candidate-packet comparison and error path.
+        base=dict(candidate_sha256='a'*64,stage='synthetic-slots',resolution='800x600',
+            route={'name':'barracks'},availability='existing_flags',castle_index=0,minimap_viewport=True,
+            candidate_manifest={'path':'synthetic.candidate.json'},candidate_extra='synthetic-extra')
+        packet=dict(copy.deepcopy(base),primary_capture={'fixture':'synthetic'})
+        def build(original,candidate,**kwargs):
+            if original!=b'original' or candidate!=b'candidate':
+                raise ValueError('synthetic original/candidate bytes differ')
+            return copy.deepcopy(base)
+        sequence={'failures':[],'surface':{},'raw_records':[{'marker':'MCAP_CONTRACT','line':1}]}
+        initial={'failures':[],'event_integrity':{'events':[{'line':2}]}}
+        with patch.object(tool,'prepare',side_effect=AssertionError('duplicate reconstruction')), \
+             patch.object(tool,'compile_probe',return_value='canonical\n'), \
+             patch.object(tool,'ready_script',return_value='ready\n'),patch.object(tool,'verify_native_lock'), \
+             patch.object(tool.modal.producer,'build_screen_probe',side_effect=build) as rebuild, \
+             patch.object(tool.modal,'compile_probe',return_value='base\n'), \
+             patch.object(tool.modal,'evaluate_sequence',return_value=sequence), \
+             patch.object(tool.modal,'evaluate_slots',return_value={'failures':[]}), \
+             patch.object(tool.modal,'_project_initial',return_value=('projected','extra',{})), \
+             patch.object(tool.modal.initial_map_paint_trace,'evaluate_trace',return_value=initial), \
+             patch.object(tool,'evaluate_primary_sequence',return_value={'passed':True,'failures':[]}):
+            def run(value=packet,original=b'original',candidate=b'candidate'):
+                before=rebuild.call_count
+                result=tool.evaluate_trace('log',original=original,candidate=candidate,packet=value,
+                    generated_probe=b'canonical\n',ready_script_bytes=b'ready\n')
+                self.assertEqual(rebuild.call_count-before,1)
+                return result
+            self.assertTrue(run()['passed'])
+            for key,value in (('candidate_sha256','b'*64),('stage','other'),('resolution','1024x768'),
+                              ('castle_index',1),('availability','construct_all'),('minimap_viewport',False)):
+                with self.subTest(field=key):
+                    result=run(dict(copy.deepcopy(packet),**{key:value}))
+                    self.assertFalse(result['passed']);self.assertTrue(result['failures'])
+            self.assertFalse(run(original=b'changed')['passed'])
+            self.assertFalse(run(candidate=b'changed')['passed'])
+
+    def test_primary_contract_fields_and_native_lock_bytes_are_still_exact(self):
+        proxy={'path':'synthetic-proxy.json','sha256':'a'*64}
+        contract=dict(revision=tool.REVISION,dependencies=tool.PINS,lock_start=tool.LOCK_START,
+            lock_bytes=tool.LOCK_BYTES.hex(),source_hashes={name:tool.sha((tool.ROOT/name).read_bytes()) for name in tool.PRIMARY_SOURCES},
+            snapshot_origin=tool.SNAPSHOT_ORIGIN,proxy_manifest=proxy,palette_pointer_offset=tool.PALETTE_POINTER_OFFSET,
+            proxy_sha256=primary.SUPPORTED_PROXY_SHA256,ready_file='C:/ClashCaptures/synthetic/primary-ready.cdb')
+        packet=dict(primary_capture=contract,handoff_action='synthetic',startup_commands_before_final_g='',
+                    byte_checks_before_first_breakpoint='')
+        with patch.object(tool,'proxy_context',return_value=proxy), \
+             patch.object(tool.modal,'compile_probe',return_value='.echo MCAP_SURFDUMP_HOST_READY\n'):
+            self.assertIn('primary-ready.cdb',tool.compile_probe(packet))
+            for key,value in (('revision','changed'),('dependencies',{}),('lock_bytes','00'),
+                              ('source_hashes',{}),('proxy_sha256','b'*64),('palette_pointer_offset',0)):
+                with self.subTest(field=key),self.assertRaisesRegex(ValueError,'primary protocol contract differs'):
+                    tool.compile_probe(dict(packet,primary_capture=dict(contract,**{key:value})))
+        def read(image,address,size):
+            self.assertEqual((address,size),(tool.LOCK_START,len(tool.LOCK_BYTES)))
+            return 0,tool.LOCK_BYTES if image in (b'original',b'candidate') else bytes(size)
+        with patch.object(tool.modal.producer,'_read',side_effect=read):
+            tool.verify_native_lock(b'original',b'candidate')
+            for original,candidate in ((b'changed',b'candidate'),(b'original',b'changed')):
+                with self.assertRaisesRegex(ValueError,'native Lock'):
+                    tool.verify_native_lock(original,candidate)
+
+
+class LoadedHeaderTests(unittest.TestCase):
+    def test_only_imagebase_equal_to_measured_module_base_may_change(self):
+        image=reader_fixtures.synthetic_proxy();offset=primary._u32(image,0x3c)+24+28
+        with patch.object(primary,'SUPPORTED_PROXY_SHA256',tool.sha(image)):
+            for base in (0x10000000,0x6ed10000):
+                captured=bytearray(image[:512]);struct.pack_into('<I',captured,offset,base)
+                result=tool.validate_loaded_proxy_header(bytes(captured),image,base)
+                self.assertEqual(result['measured_load_base'],base)
+                self.assertEqual(result['preferred_base'],0x10000000)
+                self.assertEqual(result['captured_header_sha256'],tool.sha(captured))
+                for changed_at in (0,offset,offset+36):  # DOS magic, ImageBase, PE checksum.
+                    changed=bytearray(captured);changed[changed_at]^=1
+                    with self.subTest(base=base,offset=changed_at),self.assertRaises(ValueError):
+                        tool.validate_loaded_proxy_header(bytes(changed),image,base)
+                with self.assertRaises(ValueError):
+                    tool.validate_loaded_proxy_header(bytes(captured),image,base+0x10000)
+            with self.assertRaises(ValueError):
+                tool.validate_loaded_proxy_header(image[:511],image,0x10000000)
+            with self.assertRaises(ValueError):
+                tool.validate_loaded_proxy_header(image[:512],image+b'changed',0x10000000)
 
 
 class FinalLogTests(unittest.TestCase):
