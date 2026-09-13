@@ -131,7 +131,7 @@ class MovementProbeTests(unittest.TestCase):
                 packet,manifest=case['packet'],case['manifest']
                 width,height=map(int,resolution.split('x'))
                 self.assertEqual(packet['schema'],'clash95_complete_hd_army_movement_probe_v1')
-                self.assertEqual(packet['revision'],'complete_hd_controlled_native_whole_army_outward_move_v1')
+                self.assertEqual(packet['revision'],'complete_hd_controlled_native_whole_army_outward_move_v2')
                 self.assertEqual((packet['resolution'],packet['width'],packet['height']),(resolution,width,height))
                 self.assertEqual(packet['stage'],probe.base.builder.STAGE)
                 self.assertEqual(packet['candidate_recipe'],probe.base.builder.REVISION)
@@ -158,7 +158,7 @@ class MovementProbeTests(unittest.TestCase):
                 self.assertEqual(len(numbers),len(set(numbers)))
                 self.assertTrue(any('independent full-protocol' in item for item in packet['limits']))
 
-    def test_frozen_v3_commands_are_identical_except_read_only_rejection_details(self):
+    def test_frozen_v3_commands_differ_only_by_reviewed_backend_contract_and_diagnostics(self):
         # Legacy selection remains incompatible with the merged renderer.
         # This comparison tests reviewed v3 commands, not old-producer compatibility.
         with self.assertRaisesRegex(ValueError,
@@ -167,8 +167,12 @@ class MovementProbeTests(unittest.TestCase):
         # Adapt only the historical dependency boundary to the real Complete-HD
         # source verifier and the already authenticated selection packet. The
         # frozen movement parent check, native body, byte guards and calls remain real.
+        spans=((0x460410,0x80),(0x461140,0x24),(0x4611A0,0xF0),(0x4612E0,0x204),(0x50F1E4,0x18),(0x50F204,0x18))
+        self.assertEqual(probe.BACKEND_SPANS,spans)
         with patch.object(frozen.base,'verify_sources',side_effect=probe.base.verify_sources), \
-             patch.object(frozen.base,'build_selection_probe',return_value=self.baseline):
+             patch.object(frozen.base,'build_selection_probe',return_value=self.baseline), \
+             patch.object(frozen,'NATIVE_SPANS',frozen.NATIVE_SPANS+spans), \
+             patch.object(frozen,'NATIVE_CALLS',frozen.NATIVE_CALLS|{0x4614D8:0x460A50}):
             expected=frozen.build_movement_probe(self.original,self.candidate,self.save,capture_dir=CAPTURE)
         # Remove only the separately checked rejection-only print fragments.
         # Every predicate, successful branch, native write and stop stays exact.
@@ -178,6 +182,20 @@ class MovementProbeTests(unittest.TestCase):
                 extra = probe._pump_rejection(kind+'-'+suffix, backend_only=backend_only)
                 self.assertEqual(actual.count(extra), 1)
                 actual = actual.replace(extra, '')
+        # Independently enumerate the only accepted semantic changes. Restoring
+        # them must recover the complete frozen observer, including all native
+        # ownership, state, count, ABI, release, redraw and return predicates.
+        backend=('(((poi(00545138) == 0050f1e4) & (poi(0050f1f8) == 00460a50))'
+                 ' | ((poi(00545138) == 0050f204) & (poi(0050f218) == 004612e0)))')
+        modes=' & (poi(0054513c) == 0) & (poi(00545140) == 0)'
+        self.assertEqual(actual.count(modes),6);actual=actual.replace(modes,'')
+        self.assertEqual(actual.count(' & '+backend),3);actual=actual.replace(' & '+backend,'')
+        self.assertEqual(actual.count('.if ('+backend+')'),3)
+        actual=actual.replace('.if ('+backend+')','.if ((poi(poi(00545138)+14) == 00460a50))')
+        fmt=' table=%p callback=%p recording=%x playback=%x'
+        args=', poi(00545138), poi(poi(00545138)+14), poi(0054513c), poi(00545140)'
+        self.assertEqual(actual.count(fmt),6);self.assertEqual(actual.count(args),6)
+        actual=actual.replace(fmt,'').replace(args,'')
         self.assertEqual(actual,expected['compiled_probe'].replace(frozen.REVISION,probe.REVISION))
         for key in ('supplemental_commands','supplemental_sha256','initial_extra','initial_extra_sha256',
                     'movement_observer_vas','movement_native_call_returns','pump_observers',
@@ -504,7 +522,7 @@ class MovementProbeTests(unittest.TestCase):
         for address,value in ((0x544D04,3),(0x5451C0,0x90)):
             self.assertFalse(expression(guard,r,m|{address:value}))
 
-    def test_pump_rejections_expose_actual_context_without_admitting_another_backend(self):
+    def test_pump_rejections_expose_actual_context_without_writes(self):
         for kind, number in (('pathfinder', 133), ('animation', 135), ('delay', 137)):
             for n, suffix, backend_only in ((number, 'call-context', False),
                                             (number, 'call-backend', True),
@@ -514,7 +532,7 @@ class MovementProbeTests(unittest.TestCase):
                 self.assertIn(detail+'.echo WMOV_REJECT native_contract; q', text)
                 self.assertNotRegex(detail, r'\b(?:eb|ed|ew|eq|r|g|gc|gu|gh|gn|q)\s|\.writemem|WMOV_HOST_READY')
                 self.assertIn('WMOV_REJECT_BACKEND site='+kind+'-'+suffix+' table=%p', detail)
-                self.assertIn('actual=%p expected=00460a50', detail)
+                self.assertIn('actual=%p expected=(0050f1e4:00460a50,0050f204:004612e0)', detail)
                 self.assertLess(detail.index('.if ((poi(00545138) >= 00400000)'),
                                 detail.index('poi(poi(00545138)+14)'))
                 if not backend_only:
@@ -524,15 +542,46 @@ class MovementProbeTests(unittest.TestCase):
                         self.assertIn(token, detail)
                     for i in range(10): self.assertIn(f'poi({0x526F78+4*i:08x})', detail)
                     for i in range(8): self.assertIn(f'by(@$t1+0n{149349+14+31*i})', detail)
-        # Original derived table routes through Device_UpdateRect. It remains
-        # rejected by this v1 contract; diagnostics cannot turn it into a pass.
+        # Original derived table routes through Device_UpdateRect. Its exact
+        # inactive chain is admitted by v2, independently of diagnostic text.
         r,m=self.state(108); r.update(t0=29,esp=r['t3']-388,eax=0x544CD8,edx=0,t11=0,t12=0,t13=0,t4=0)
         m.update({r['t1']+149349+316:0,0x545138:0x50F204,0x50F218:0x4612E0})
         guards=conditions(command(self.packet,133)[1])
-        self.assertTrue(expression(guards[0],r,m)); self.assertFalse(expression(guards[1],r,m))
+        self.assertTrue(expression(guards[0],r,m)); self.assertTrue(expression(guards[1],r,m))
         bounds=conditions(probe._pump_rejection('fixture', backend_only=True))[0]
         for pointer in (0,0x3FFFFF,0x7FFFFFFF):
             self.assertFalse(expression(bounds,r,m|{0x545138:pointer}))
+
+    def test_exact_native_backend_chain_and_modes_are_bound_at_every_pump_boundary(self):
+        expected=[dict(table=0x50F1E4,callback=0x460A50,recording=0,playback=0),
+                  dict(table=0x50F204,callback=0x4612E0,recording=0,playback=0)]
+        self.assertEqual(self.packet['pump_backends'],expected)
+        self.assertEqual(probe.base._call_return(self.original,0x4614D8,0x460A50),0x4614DD)
+        for table,values in ((0x50F1E4,(0x4614F0,0x461500,0x461510,0x461520,0x461530,0x460A50)),
+                             (0x50F204,(0x461170,0x4611A0,0x4612A0,0x461520,0x461540,0x4612E0))):
+            self.assertEqual(probe.base._read(self.original,table,24),struct.pack('<6I',*values))
+        for call_n,phase,depth,identity in ((133,29,388,1),(135,54,328,2),(137,51,328,3)):
+            for item in expected:
+                step=0 if identity==1 else 1
+                r,m=self.state(108 if identity==1 else 124)
+                r.update(t0=phase,esp=r['t3']-depth,eax=0x544CD8,edx=0,t11=step,t12=0,t13=0)
+                u=r['t1']+149349
+                m.update({0x545138:item['table'],item['table']+0x14:item['callback'],0x54513C:0,0x545140:0})
+                if identity==1:m[u+316]=0
+                else:m[u]=16+step-(identity==2)
+                call=conditions(command(self.packet,call_n)[1]);returned=conditions(command(self.packet,call_n+1)[1])[0]
+                rr=r|dict(t12=1,t13=identity,t4=item['table'],eax=0xDEADBEEF)
+                self.assertTrue(expression(call[0],r,m));self.assertTrue(expression(call[1],r,m))
+                self.assertTrue(expression(returned,rr,m))
+                for address in (0x54513C,0x545140):
+                    for value in (1,0xFFFFFFFF):
+                        self.assertFalse(expression(call[0],r,m|{address:value}))
+                        self.assertFalse(expression(returned,rr,m|{address:value}))
+                for callback in (0,0x460A51,0x4605D0):
+                    altered=m|{item['table']+0x14:callback}
+                    self.assertFalse(expression(call[1],r,altered));self.assertFalse(expression(returned,rr,altered))
+                altered=m|{0x545138:0x500000,0x500014:item['callback']}
+                self.assertFalse(expression(call[1],r,altered));self.assertFalse(expression(returned,rr,altered))
 
     def test_native_fixed_point_shift6_and_signed_dword_bound_before_writes(self):
         for shift in (0,2,3,6,16,21):

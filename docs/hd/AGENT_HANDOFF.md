@@ -773,7 +773,13 @@ trace pass; owned cleanup and unchanged inputs are verified. The partial
 before-movement frame passes frame/footer, six action-cell, eight portrait-body
 and exposed-backing checks. Preserve the failed trace and frozen host source;
 those pixel checks do not make movement pass. A matching successful movement
-run remains required, with the rejected native prerequisite still to diagnose.
+run remains required. The [separate diagnostic attempt](../../captures/current/completehd-army-movement-1024x768-20260913-attempt-b.json)
+keeps that rejection and identifies native backend table `0050f204`, callback
+`004612e0`, with recording and playback disabled. The v1 probe requires the
+direct `00460a50` callback. This is an unsupported native backend contract;
+the diagnostic does not prove path preview or arrival. Its strict final trace,
+cleanup and unchanged input identities are retained, and its before-movement
+pixels are byte-identical to attempt A.
 
 | Work | Start with | Focused verification |
 | --- | --- | --- |
