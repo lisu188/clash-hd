@@ -556,7 +556,8 @@ if ($UseDdrawProxy -and -not (Test-Path -LiteralPath $DdrawProxyBuildScript)) {
 $renderArgs = @('-B', $probeRenderer, '--template', $ProbeTemplate, '--resolution', $Resolution, '--stage', $recipeStage, '--load-slot', $LoadSlot)
 if ($ForceVisibleEdges) { $renderArgs += '--force-visible-edges' }
 if ($PostOwnerForceVisibleSeven) { $renderArgs += '--post-owner-force-visible-seven' }
-if ($ExtraProbeTemplate) { $renderArgs += @('--extra-probe', '--extra-probe-path', $ExtraProbeTemplate) }
+if ($ExtraProbeTemplate) { $renderArgs += '--extra-probe' }
+if ($ExtraProbeTemplate) { $renderArgs += @('--extra-probe-path', $ExtraProbeTemplate) }
 if ($SkipMapValidation) { $renderArgs += '--skip-map-validation' }
 $probeRecipeJson = & $pythonExe @renderArgs
 if ($LASTEXITCODE -ne 0) {
