@@ -28,7 +28,7 @@ BATTLE = 0x532048
 BATTLE_OWNER = 0x42E8B0
 ROOT_PROLOGUE = bytes.fromhex('56575581ec9c000000')
 PINNED_SOURCES = dict(field_source.PINNED_SOURCES, **{
-    'src/patcher/framed_battle_field.py': '42642812d504250ca237bb765506aa73da2af66ea641daa4e3fadaaba4e6995c',
+    'src/patcher/framed_battle_field.py': '6f6ad945fea5ac630b58ca4448d604841fa211dfc5fe4cacfec37e5b1447828f',
     'src/patcher/framed_modal_canvas.py': '567b025520184a99f1f4f44b23a879ef9c729dcf2917dfa03a277c018cb20054',
 })
 # These exact boundaries come from continuous objdump decoding from42E9E0.

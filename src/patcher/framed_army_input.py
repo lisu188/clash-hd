@@ -18,7 +18,7 @@ from . import pe_extension as pe
 from .framed_army_viewport import FramedArmyViewport
 
 ROOT = Path(__file__).resolve().parents[2]
-BUILDER_SHA256 = "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb"
+BUILDER_SHA256 = "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
 INPUT_SHA256 = "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810"
 SELECTED, PRIOR, UNIT = 0x511B58, 0x514194, 0x526FA0
 COUNT = 0x422B80

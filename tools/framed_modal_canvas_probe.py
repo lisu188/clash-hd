@@ -33,7 +33,7 @@ from render_cdb_surface_probe import BASE_PROBE, render_probe
 
 STAGE = builder.STAGE
 PROTOCOL_REVISION = "owned_canvas_all_native_artwork_loads_v2"
-BUILDER_SHA256 = "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb"
+BUILDER_SHA256 = "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
 DUMP_TOKEN = "__SURFACE_DUMP_ACTION__"
 OVERVIEW = 0x422180
 PRESENT = 0x460EA0

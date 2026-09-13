@@ -24,10 +24,10 @@ HISTORICAL_SOURCE = {
     "extraction": "six FastForwardStartAnims literals and ordinary pre-entry load literal; LF, doubled apostrophes decoded",
 }
 PINNED_SOURCES = {
-    "tools/render_cdb_surface_probe.py": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+    "tools/render_cdb_surface_probe.py": "12685fdfde4972e0f5f9c3d5678fd159fff965bd9ddd7642cb3718c8530296cf",
     "patch_clash95_hd.py": "b2d8af4caf3fef1de0e3902b638be3c6bfba731bca7cd8d10c85c93e12424093",
-    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
-    "src/patcher/framed_recipe.py": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+    "src/patcher/patch_clash95_hd.py": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+    "src/patcher/framed_recipe.py": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a",
     "src/patcher/framed_viewport.py": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
     "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
 }

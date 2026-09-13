@@ -20,7 +20,7 @@ BATTLE_OWNER = 0x42E8B0
 REJECT = 0xFFFFFFFF
 STATE_BYTES_READ = 816
 PINNED_SOURCES = {
-    "tools/build_framed_modal_candidate.py": "c2da86edc7fb6bc0e7c3ca5ecca6bf4688a33ffa8d574153dab463c4653da4fb",
+    "tools/build_framed_modal_candidate.py": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
     "src/patcher/framed_battle_viewport.py": "8673e36bd04ded2afc8cc3b9d7ff2fed4c48dae891fe289509b44a9070c23bc6",
 }
 NATIVE_SPANS = {

@@ -1,0 +1,379 @@
+{
+  "schema": 1,
+  "generated_at": "2026-09-08T11:52:02+02:00",
+  "runtime_executed": false,
+  "overall_passed": false,
+  "check_count": 166,
+  "failures": {
+    "castle_overview_evidence": [
+      "owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+      "forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+    ],
+    "castle_overview_promotion_decision": [
+      "castle overview evidence matrix is not passing"
+    ],
+    "castle_overview_baseline_recheck": [
+      "latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+      "latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+    ],
+    "stable_stage_guard": [
+      "castle_overview_promotion_decision: castle overview promotion decision is not passing",
+      "castle_overview_evidence_matrix: castle overview evidence matrix is not passing"
+    ],
+    "python_runtime_safety_guard": [
+      "src/launcher/gui.py uses risky Python runtime/input APIs but is not gated or exempt",
+      "tools/complete_hd_manual_attach.py uses risky Python runtime/input APIs but is not gated or exempt",
+      "tools/complete_hd_manual_attach_win32.py uses risky Python runtime/input APIs but is not gated or exempt",
+      "tools/hd_layout_observation_manifest.py uses risky Python runtime/input APIs but is not gated or exempt",
+      "tools/run_framed_offline_tests.py uses risky Python runtime/input APIs but is not gated or exempt"
+    ],
+    "handoff_freshness_guard": [
+      "missing handoff file: .codex-loop\\NEXT.md",
+      "missing handoff file: .codex-loop\\STATE.md",
+      "missing handoff file: .codex-loop\\TASKS.md",
+      "missing current handoff phrase for no_visible_runtime_warning: Do not run visible/manual",
+      "missing current handoff phrase for no_visible_runtime_warning: explicit user approval",
+      "missing current handoff phrase for no_popup_operator_preference: Do not launch Clash95, CDB, wrappers, PowerShell harnesses",
+      "missing current handoff phrase for no_popup_operator_preference: visible windows unless the user explicitly approves",
+      "missing current handoff phrase for right_bottom_safety_done: stable-stage promotion",
+      "missing current handoff phrase for manual_checklist_artifact: pending_manual_validation",
+      "missing current handoff phrase for manual_proof_template_artifact: template_valid_as_proof=False",
+      "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-current.md",
+      "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-tests-current.md",
+      "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: ready_for_hidden_transition_probe"
+    ],
+    "hd_soak_long_report_guard": [
+      "short ladder is not complete; long tiers remain locked",
+      "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
+      "missing passing 2h+ representative route: map-idle",
+      "missing passing 2h+ representative route: map-pan"
+    ],
+    "hd_endurance_release_checklist": [
+      "protected_stable_stage: stable-stage guard does not prove the protected boundary",
+      "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+      "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
+      "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
+      "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
+      "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
+      "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
+      "no_speculative_promotion: one or more promotion boundaries are not fail-closed"
+    ],
+    "hd_soak_approval_preflight": [
+      "current short-step status is 'failed_classified_window_missing_while_process_alive'",
+      "window-missing rerun readiness is missing window-health mitigation and passing harness-guard evidence"
+    ],
+    "no_popup_boundary_guard": [
+      "stable_stage_guard: refresh check is not passing: stable_stage_guard",
+      "python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
+      "handoff_freshness_guard: refresh check is not passing: handoff_freshness_guard",
+      "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
+      "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
+    ],
+    "docs_consistency_guard": [
+      "generated_state: no-popup boundary is failing",
+      "documents_handoff: missing document: .codex-loop\\NEXT.md",
+      "documents_handoff: missing document: .codex-loop\\STATE.md",
+      "documents_handoff: missing document: .codex-loop\\TASKS.md"
+    ]
+  },
+  "framed_offline": {
+    "passed": true,
+    "successful_tests": 340,
+    "selected_coverage_complete": true,
+    "skipped_records": 0,
+    "source_preflight": {
+      "passed": true,
+      "builder_sha256": "4178745fabb1e2270efcbdc72bf4999f97b0bca23bdad78db743a5db1b724d7a",
+      "checks": {
+        "src/patcher/four_sided_frame.py": {
+          "expected_sha256": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+          "actual_sha256": "433fd27fb8afda4a12f5539604f722f18bf8d37885125e30ee9cfb948926c2a9",
+          "passed": true
+        },
+        "src/patcher/framed_full_paint.py": {
+          "expected_sha256": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+          "actual_sha256": "d496fe9eca8ebe02c34f5680aee4fe2683b4b3849d65fe5f4e5f17b4e118c91a",
+          "passed": true
+        },
+        "src/patcher/framed_input.py": {
+          "expected_sha256": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+          "actual_sha256": "a2557f1ca7caf23a957a21bf747ac23d875b27e7706de26d463b98ae221ce810",
+          "passed": true
+        },
+        "src/patcher/framed_minimap.py": {
+          "expected_sha256": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+          "actual_sha256": "90a345f1080f0b69107f99d1ec1687d1a28faab2e72e5daae6bee467fa31a6d7",
+          "passed": true
+        },
+        "src/patcher/framed_presentation.py": {
+          "expected_sha256": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+          "actual_sha256": "70619f5c25faac66a668c19f989e55a8d4e4662c24c78286e16c233cc564ab6d",
+          "passed": true
+        },
+        "src/patcher/framed_recipe.py": {
+          "expected_sha256": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+          "actual_sha256": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+          "passed": true
+        },
+        "src/patcher/framed_viewport.py": {
+          "expected_sha256": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+          "actual_sha256": "1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42",
+          "passed": true
+        },
+        "src/patcher/initial_map_paint.py": {
+          "expected_sha256": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+          "actual_sha256": "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91",
+          "passed": true
+        },
+        "src/patcher/partial_tile_clip.py": {
+          "expected_sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+          "actual_sha256": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
+          "passed": true
+        },
+        "src/patcher/partial_tile_hooks.py": {
+          "expected_sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+          "actual_sha256": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
+          "passed": true
+        },
+        "src/patcher/patch_clash95_hd.py": {
+          "expected_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+          "actual_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+          "passed": true
+        },
+        "src/patcher/pe_extension.py": {
+          "expected_sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+          "actual_sha256": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
+          "passed": true
+        },
+        "tools/build_partial_tile_candidate.py": {
+          "expected_sha256": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+          "actual_sha256": "44cf9eddf53a1597cd49cc3210f56a6f6994fbaf14c77281db7082a7d326e62d",
+          "passed": true
+        },
+        "tools/partial_tile_trace_probe.py": {
+          "expected_sha256": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+          "actual_sha256": "a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729",
+          "passed": true
+        }
+      }
+    }
+  },
+  "framed_suites": [
+    {
+      "suite": "test_action_bar_surface_audit",
+      "status": "passed",
+      "discovered": 11,
+      "seconds": 1.703
+    },
+    {
+      "suite": "test_build_framed_candidate",
+      "status": "passed",
+      "discovered": 14,
+      "seconds": 12.125
+    },
+    {
+      "suite": "test_build_partial_tile_candidate",
+      "status": "passed",
+      "discovered": 16,
+      "seconds": 3.328
+    },
+    {
+      "suite": "test_four_sided_frame",
+      "status": "passed",
+      "discovered": 7,
+      "seconds": 2.063
+    },
+    {
+      "suite": "test_four_sided_frame_x86",
+      "status": "passed",
+      "discovered": 4,
+      "seconds": 7.406
+    },
+    {
+      "suite": "test_frame_surface_audit",
+      "status": "passed",
+      "discovered": 10,
+      "seconds": 4.156
+    },
+    {
+      "suite": "test_framed_full_paint",
+      "status": "passed",
+      "discovered": 11,
+      "seconds": 19.016
+    },
+    {
+      "suite": "test_framed_input",
+      "status": "passed",
+      "discovered": 7,
+      "seconds": 4.375
+    },
+    {
+      "suite": "test_framed_minimap",
+      "status": "passed",
+      "discovered": 6,
+      "seconds": 3.047
+    },
+    {
+      "suite": "test_framed_minimap_integration",
+      "status": "passed",
+      "discovered": 6,
+      "seconds": 27.453
+    },
+    {
+      "suite": "test_framed_partial_tile",
+      "status": "passed",
+      "discovered": 10,
+      "seconds": 22.89
+    },
+    {
+      "suite": "test_framed_presentation",
+      "status": "passed",
+      "discovered": 6,
+      "seconds": 7.282
+    },
+    {
+      "suite": "test_framed_recipe",
+      "status": "passed",
+      "discovered": 11,
+      "seconds": 1.875
+    },
+    {
+      "suite": "test_framed_viewport",
+      "status": "passed",
+      "discovered": 10,
+      "seconds": 0.281
+    },
+    {
+      "suite": "test_initial_map_candidate",
+      "status": "passed",
+      "discovered": 4,
+      "seconds": 2.359
+    },
+    {
+      "suite": "test_initial_map_paint",
+      "status": "passed",
+      "discovered": 11,
+      "seconds": 11.141
+    },
+    {
+      "suite": "test_initial_map_paint_trace",
+      "status": "passed",
+      "discovered": 17,
+      "seconds": 0.437
+    },
+    {
+      "suite": "test_map_tile_coverage",
+      "status": "passed",
+      "discovered": 8,
+      "seconds": 4.235
+    },
+    {
+      "suite": "test_partial_tile_clip",
+      "status": "passed",
+      "discovered": 22,
+      "seconds": 5.343
+    },
+    {
+      "suite": "test_partial_tile_hooks",
+      "status": "passed",
+      "discovered": 8,
+      "seconds": 5.907
+    },
+    {
+      "suite": "test_partial_tile_trace_probe",
+      "status": "passed",
+      "discovered": 16,
+      "seconds": 0.156
+    },
+    {
+      "suite": "test_pe_extension",
+      "status": "passed",
+      "discovered": 14,
+      "seconds": 0.937
+    },
+    {
+      "suite": "test_render_cdb_surface_probe",
+      "status": "passed",
+      "discovered": 15,
+      "seconds": 1.547
+    },
+    {
+      "suite": "test_framed_modal_canvas",
+      "status": "passed",
+      "discovered": 11,
+      "seconds": 15.782
+    },
+    {
+      "suite": "test_pe_modal_extension",
+      "status": "passed",
+      "discovered": 18,
+      "seconds": 83.921
+    },
+    {
+      "suite": "test_build_framed_modal_candidate",
+      "status": "passed",
+      "discovered": 7,
+      "seconds": 19.422
+    },
+    {
+      "suite": "test_framed_army_composition",
+      "status": "passed",
+      "discovered": 7,
+      "seconds": 41.141
+    },
+    {
+      "suite": "test_framed_army_draw",
+      "status": "passed",
+      "discovered": 6,
+      "seconds": 68.484
+    },
+    {
+      "suite": "test_framed_army_input",
+      "status": "passed",
+      "discovered": 7,
+      "seconds": 75.219
+    },
+    {
+      "suite": "test_framed_army_viewport",
+      "status": "passed",
+      "discovered": 4,
+      "seconds": 0.188
+    },
+    {
+      "suite": "test_pe_army_extension",
+      "status": "passed",
+      "discovered": 12,
+      "seconds": 98.468
+    },
+    {
+      "suite": "test_build_framed_army_candidate",
+      "status": "passed",
+      "discovered": 6,
+      "seconds": 234.75
+    },
+    {
+      "suite": "test_framed_modal_slots",
+      "status": "passed",
+      "discovered": 7,
+      "seconds": 512.5
+    },
+    {
+      "suite": "test_pe_modal_slots_extension",
+      "status": "passed",
+      "discovered": 5,
+      "seconds": 0.25
+    },
+    {
+      "suite": "test_build_framed_modal_slots_candidate",
+      "status": "passed",
+      "discovered": 6,
+      "seconds": 297.703
+    }
+  ],
+  "snapshot_root": "C:\\ClashCaptures\\completehd-integration-20260908\\aggregate-snapshot-b",
+  "preserved_artifact_count": 320,
+  "summary_sha256": "e2ec8472ef90cae988465460235dd7ca34486a6d707c2aec7c8e0a6fd334c18c",
+  "limitations": [
+    "Aggregate includes unavailable historical artifacts and stale guard assumptions; source fixtures do not establish runtime acceptance."
+  ]
+}

@@ -54,6 +54,23 @@ observations and three stopped capture points. Surface sizes and pointer bounds
 follow the selected resolution. Preparation cannot establish movement success;
 the full movement trace, pixel audit and owned runtime host are still required.
 
+### Merged source compatibility — 2026-09-13
+
+The merge review compared the September 8 foundation at `326e703a` with the
+upstream battle/gameplay integration at `8962504f`. The framed renderer's full
+results and the stable/combined-UI patch records match at all six resolutions.
+The separate battle stage does not enter these routes. Seven reviewed SHA
+bindings changed in the four new army modules; their command logic is unchanged.
+See [the source integration record](../../reports/completehd_army_source_integration_20260913.json)
+for exact identities and validation results.
+
+The legacy selection producer still pins renderer `1cd310…`, while the merged
+renderer is `12685…`. Its source check correctly rejects this checkout. The new
+protocol authenticates its own renderer. The movement comparison fixture keeps
+the legacy rejection explicit, then verifies the unchanged native v3 commands
+using the authenticated current selection boundary. This does not make old
+manifests or runtime reports current evidence.
+
 ## Safe checks
 
 From the repository root, with an installed Python interpreter:
@@ -70,6 +87,10 @@ save. Set `CLASH95_ORIGINAL` and `CLASH95_SELECTION_SAVE` if those files are in
 nondefault locations. Unavailable local inputs are reported as skipped coverage;
 a skip is not runtime evidence. Synthetic trace fixtures exercise parser
 acceptance and rejection without manufacturing a runtime report.
+
+The four suites are also registered in `tools/run_framed_offline_tests.py` and
+run through the existing CI workflow. CI reports unavailable local game/save
+coverage as skips; a successful portable job is not native runtime validation.
 
 ## Remaining runtime requirements
 

@@ -21,7 +21,7 @@ import framed_primary_surface as primary
 ROOT = Path(__file__).resolve().parents[1]
 PINS = {
     'scripts/cdb/run_framed_modal_canvas_capture.ps1': '8873f885d7a5405a8a570e70e3b09e31081dcbd339b33b9e92b465274b58d9ba',
-    'tools/framed_modal_canvas_probe.py': '52edf115a5240111a62882069fff548460116ad2d7ee7a06d775f25494c36fe6',
+    'tools/framed_modal_canvas_probe.py': '57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d',
     'tools/framed_modal_canvas_trace.py': '2f0ef571acdbc6892c775cc97698d535b56355c8086080713d3dfec040a6d3ba',
     'tools/framed_primary_surface.py': 'd905d43e2781849ed54d862e78725af98f188b7d47ec3f5dae3796c01ee10442',
 }

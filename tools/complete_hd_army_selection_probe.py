@@ -29,10 +29,10 @@ from src.patcher import partial_tile_clip as clip
 
 SAVE_SHA256 = "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89"
 REVISION = "complete_hd_controlled_own_army_selection_v1"
-PARENT_SOURCE_SHA256 = "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1"
+PARENT_SOURCE_SHA256 = "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8"
 PINNED_SOURCES = {
     "tools/framed_army_selection_probe.py": PARENT_SOURCE_SHA256,
-    "tools/render_cdb_surface_probe.py": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+    "tools/render_cdb_surface_probe.py": "12685fdfde4972e0f5f9c3d5678fd159fff965bd9ddd7642cb3718c8530296cf",
     "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
 }
 SOURCE_PATHS = (

@@ -27,7 +27,7 @@ INITIAL_STAGE = STAGE.removesuffix("-validation") + "-initialpaint-validation"
 FRAMED_STAGE = INITIAL_STAGE.removesuffix("-validation") + "-framed-validation"
 INITIAL_SOURCE_SHA256 = "79e6d6d180a115b2b59e98600038fa3a31707a373c0095489bb706182078ba91"
 PINNED_SOURCES = {
-    "src/patcher/patch_clash95_hd.py": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+    "src/patcher/patch_clash95_hd.py": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
     "src/patcher/partial_tile_clip.py": "92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad",
     "src/patcher/partial_tile_hooks.py": "71ce9390a3018c80811a1e57b36dc47b59928cb3d9deec364e9b195f94465419",
     "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",

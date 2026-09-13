@@ -96,6 +96,12 @@ The active September integration is documented in
 runtime evidence are separate from the historical component results below.
 The stable stage and 800x600 default remain unchanged.
 
+- Expanded tactical battle has a separate `-castlecenter-all-battlehd`
+  implementation lane at 1280x720 (17x7 tile capacity, native right sidebar).
+  See the [validation report](../../reports/battle_hd_1280_validation.md)
+  and [current evidence](../../captures/current/battle-hd-validation-current.md).
+  Centered-battle evidence does not prove expanded geometry or input; this lane
+  remains validation-only.
 - Terrain tooltip and selected-unit action-panel anchoring have validation-stage
   implementations and hidden/visible layout evidence. They remain outside the
   protected stable stage pending the separate manual-input promotion boundary.

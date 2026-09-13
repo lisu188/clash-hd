@@ -21,7 +21,7 @@ import re
 import complete_hd_army_selection_probe as base
 
 ROOT = base.ROOT
-PARENT_SOURCE_SHA256 = 'ba7f2db5998cad455909b13c60aba1b1b80a31740a092422dc2ff7c014c6a5da'
+PARENT_SOURCE_SHA256 = '17b779b29ac1ab6730e2a9ef59db1c2aee51f005edd9ad566db5d6ceeaf4a53b'
 REVISION = 'complete_hd_controlled_native_whole_army_outward_move_v1'
 UNIT_OFFSET = 149349
 INITIAL_AP = (26, 22, 16, 16, 16, 16, 16, 16)
