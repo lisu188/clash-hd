@@ -1,0 +1,117 @@
+{
+  "schema": "clash95_modal_primary_source_validation_v1",
+  "generated_at": "2026-09-13T09:56:35.378093+00:00",
+  "base_commit": "441958c7cd2f63e17ab61dfca6f3546b9226d881",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalprimary-validation",
+  "recipe_revision": "owned_modal_primary_v1",
+  "proof_class": "offline_source_x86_abi_and_pe_validation",
+  "passed": true,
+  "source_hashes": {
+    "src/patcher/framed_modal_primary.py": "89020d158d7764a1a10d7ce082cd807b522637b84c0dbb01767e424b4b7f9f59",
+    "src/patcher/pe_modal_primary_extension.py": "7583b3ad908259213e084b1aa1ac387b600c399cd7c0c4d0f683b24da7e25e46",
+    "tools/build_framed_modal_primary_candidate.py": "38649d57feba9fb12694a80015284cdc6be9164b8f67f3f26fc4b99ae55eb272",
+    "tools/test_framed_modal_primary.py": "03aec8031ccd632213cbdc6755dee094fd3bb669a19b47c790b632b2fe380d70",
+    "tools/test_pe_modal_primary_extension.py": "f40494a7b0512b749a337eb44a9e94aa93a7a7cc8c9fad28b195fc9425af4330",
+    "tools/test_build_framed_modal_primary_candidate.py": "d7318d9a88e260e6e76a159ed0970b5b50b0f69b37c98247ea6a6b214a09a2f1",
+    "tools/run_framed_offline_tests.py": "5efc72fedbcc85783ae8003696dbd5ba978fd4ded8c4bac1a884264591d62c1f"
+  },
+  "tests": [
+    {
+      "command": "python -B tools/test_framed_modal_primary.py",
+      "tests": 16,
+      "passed": 16,
+      "skipped": 0,
+      "duration_seconds": 367.987,
+      "scope": "emitted x86 with inherited ownership lifecycle and synthetic native ABI/cursor/pixel recorders"
+    },
+    {
+      "command": "python -B tools/test_pe_modal_primary_extension.py",
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "duration_seconds": 0.098,
+      "scope": "synthetic independent PE replay and rebase"
+    },
+    {
+      "command": "python -B tools/test_build_framed_modal_primary_candidate.py",
+      "tests": 6,
+      "passed": 6,
+      "skipped": 0,
+      "duration_seconds": 355.151,
+      "scope": "all six real candidate reconstructions, every loaded-byte predicate, exact source/patch replay, independent relocation and Windows image-section admission"
+    }
+  ],
+  "focused_tests_passed": 31,
+  "candidate_artifacts": [
+    {
+      "resolution": "800x600",
+      "path": "C:\\ClashTests\\clash-modal-primary-loader-nbs7mn86\\800x600.bin",
+      "bytes": 1597440,
+      "sha256": "b1862a40503edfe3fece6309cf05e4ec3a6e91ea502221490cb369d237c32971",
+      "windows_image_section_accepted": true,
+      "view_mapped": false,
+      "candidate_process_started": false
+    },
+    {
+      "resolution": "1024x768",
+      "path": "C:\\ClashTests\\clash-modal-primary-loader-nbs7mn86\\1024x768.bin",
+      "bytes": 1597440,
+      "sha256": "bee7db23414bc7831d32af05ad03d04f800aa795c7af66db1bc1e7b4c9ad11b8",
+      "windows_image_section_accepted": true,
+      "view_mapped": false,
+      "candidate_process_started": false
+    },
+    {
+      "resolution": "1280x720",
+      "path": "C:\\ClashTests\\clash-modal-primary-loader-nbs7mn86\\1280x720.bin",
+      "bytes": 1597952,
+      "sha256": "9012439b0d9aa93278af9d27c66997db19bf85011dd5c5d18cacbf076856c180",
+      "windows_image_section_accepted": true,
+      "view_mapped": false,
+      "candidate_process_started": false
+    },
+    {
+      "resolution": "1280x960",
+      "path": "C:\\ClashTests\\clash-modal-primary-loader-nbs7mn86\\1280x960.bin",
+      "bytes": 1598464,
+      "sha256": "47a39066c980a0a23755d57931c600bc2b516e4b5daeddc8a15eda98ec442e43",
+      "windows_image_section_accepted": true,
+      "view_mapped": false,
+      "candidate_process_started": false
+    },
+    {
+      "resolution": "1920x1080",
+      "path": "C:\\ClashTests\\clash-modal-primary-loader-nbs7mn86\\1920x1080.bin",
+      "bytes": 1598976,
+      "sha256": "042e1681aa24d8a42f8391e2c8c7faf68fa32f47ab94551dfb52e164ab240b13",
+      "windows_image_section_accepted": true,
+      "view_mapped": false,
+      "candidate_process_started": false
+    },
+    {
+      "resolution": "802x602",
+      "path": "C:\\ClashTests\\clash-modal-primary-loader-nbs7mn86\\802x602.bin",
+      "bytes": 1597440,
+      "sha256": "f48013faa8b0d519855d9a191978e5280a14521baff4dbc877eacc35548d265a",
+      "windows_image_section_accepted": true,
+      "view_mapped": false,
+      "candidate_process_started": false
+    }
+  ],
+  "game_executed": false,
+  "debugger_executed": false,
+  "primary_composition_proven": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "source_change_check": {
+    "prior_attempt_passed": false,
+    "reason": "A cursor-guard edit during earlier offline reconstruction was rejected by source binding; final frozen-source suite reran and passed."
+  },
+  "limitations": [
+    "Native cursor allocation lifetime and encoded sprite payload ownership remain native preconditions; the source contract states these assumptions.",
+    "The emitted code was exercised in synthetic memory. No game candidate was launched and no new runtime screenshot was produced.",
+    "D/F primary captures remain failed evidence for older candidates. This report does not relabel them.",
+    "A matching primary-stage runtime consumer, overlay-aware primary capture/audit, and selected-panel/cursor interaction evidence remain required.",
+    "Ordinary input, all castle routes, native exit, wider tactical battle, continuity, endurance, visible/manual proof and explicit promotion remain separate full-mod requirements."
+  ]
+}
