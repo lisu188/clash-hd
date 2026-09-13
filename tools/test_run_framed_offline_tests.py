@@ -19,6 +19,8 @@ import run_framed_offline_tests as runner
 NAME = "test_framed_viewport"
 PASS = "import unittest\nclass Fixture(unittest.TestCase):\n def test_ok(self): self.assertEqual(2 + 2, 4)\n"
 SKIP = "import unittest\n@unittest.skip('needs an unavailable fixture')\nclass Fixture(unittest.TestCase):\n def test_a(self): pass\n def test_b(self): pass\n"
+EVIDENCE_SUITES = ("test_complete_hd_main_probe", "test_framed_gameplay_evidence",
+                   "test_modal_slots_barracks_capture")
 
 
 class OfflineRunnerTests(unittest.TestCase):
@@ -126,6 +128,20 @@ class OfflineRunnerTests(unittest.TestCase):
         self.assertEqual(result["tests_run"], 1)
         self.assertEqual(len(result["successful"]), 1)
         self.assertEqual(result["skipped"], [])
+
+    def test_integrated_evidence_suites_are_selectable_and_run_real_workers(self):
+        for name in EVIDENCE_SUITES:
+            self.assertEqual(runner.SUITES.count(name), 1, name)
+            (self.root / "tools" / f"{name}.py").write_text(PASS, encoding="utf-8")
+        args = [argument for name in EVIDENCE_SUITES for argument in ("--suite", name)]
+        process = self.invoke(*args, "--require-complete")
+        self.assertEqual(process.returncode, 0, process.stderr)
+        report = json.loads(process.stdout)
+        self.assertEqual(report["selected_suites"], list(EVIDENCE_SUITES))
+        self.assertEqual([row["suite"] for row in report["suites"]], list(EVIDENCE_SUITES))
+        self.assertEqual(report["successful_tests"], 3)
+        self.assertTrue(report["selected_coverage_complete"])
+        self.assertFalse(report["full_suite_selected"])
 
     def test_worker_separates_class_skips_from_success(self):
         self.write_suite(SKIP)

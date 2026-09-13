@@ -1,4 +1,4 @@
-<# Hidden, controlled owned-modal-canvas capture. Default is an offline plan only.
+<# Hidden, controlled slots-stage native/physical/cached-primary capture. Default is an offline plan only.
    This does not prove natural selection, manual input, visible composition or promotion.
    No existing harness is dot-sourced. All native code is initialized only after -Execute.
 #>
@@ -128,8 +128,8 @@ function New-CanvasCapturePlan {
     $cdb = 'C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\cdb.exe'
     $python = Resolve-CanvasPath $python -Kind file
     $cdb = Resolve-CanvasPath $cdb -Kind file
-    $trace = Resolve-CanvasPath (Join-Path $script:RepoRoot 'tools\modal_slots_barracks_trace.py') -Kind file
-    $producer = Resolve-CanvasPath (Join-Path $script:RepoRoot 'tools\modal_slots_barracks_probe.py') -Kind file
+    $trace = Resolve-CanvasPath (Join-Path $script:RepoRoot 'tools\modal_slots_primary_capture.py') -Kind file
+    $producer = Resolve-CanvasPath (Join-Path $script:RepoRoot 'tools\modal_slots_primary_capture.py') -Kind file
     $converter = Resolve-CanvasPath (Join-Path $script:RepoRoot 'tools\cdb_surface_dump_to_png.py') -Kind file
     $proxySource = Resolve-CanvasPath (Join-Path $script:RepoRoot 'src\ddraw_surfdump_proxy\ddraw_surfdump_proxy.cpp') -Kind file
     $manifest = [IO.File]::ReadAllText($manifestPath) | ConvertFrom-Json
@@ -137,14 +137,16 @@ function New-CanvasCapturePlan {
     $sourceHash = Get-CanvasHash $proxySource
     $proxyHash = Get-CanvasHash $proxyOutput
     if ($manifest.generated_by -cne 'clash-hd-surface-dump-proxy' -or
-        [IO.Path]::GetFullPath([string]$manifest.source) -ine $proxySource -or
+        (Get-CanvasHash (Resolve-CanvasPath ([string]$manifest.source) -Kind file)) -cne $sourceHash -or
+        $proxyHash -cne 'b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70' -or
         $manifest.source_sha256 -inotmatch '^[a-f0-9]{64}$' -or $manifest.source_sha256 -ine $sourceHash -or
         $manifest.output_sha256 -inotmatch '^[a-f0-9]{64}$' -or $manifest.output_sha256 -ine $proxyHash -or
         [IO.Path]::GetFileName($proxyOutput) -ine 'ddraw.dll') { throw 'Proxy manifest does not authenticate the current source and binary.' }
     $candidateHash = Get-CanvasHash $inputPath
     $prepareArgs = @($trace,'--prepare','--original',$originalPath,'--candidate',$inputPath,
         '--candidate-manifest',$candidateManifestPath,'--candidate-sha256',$candidateHash,'--stage',$script:Stage,'--resolution',$Options.Resolution,
-        '--route',$Options.Route,'--availability',$Options.Availability,'--castle-index',[string]$Options.CastleIndex)
+        '--route',$Options.Route,'--availability',$Options.Availability,'--castle-index',[string]$Options.CastleIndex,
+        '--ready-file',(Join-Path $outputDirectory 'primary-ready.cdb'),'--proxy-manifest',$manifestPath)
     if ($Options.MinimapViewport) { $prepareArgs += '--minimap-viewport' }
     $prepared = Invoke-CanvasPythonJson $python $prepareArgs
     if ($prepared.packet.prepared -isnot [bool] -or -not $prepared.packet.prepared -or
@@ -156,7 +158,7 @@ function New-CanvasCapturePlan {
     $candidateName = Get-CanvasCandidateName $candidateDirectory $Options.Route $Options.Resolution
     if ($candidateName -ieq [IO.Path]::GetFileName($inputPath)) { throw 'The copied executable must have a new basename.' }
     $plan = [ordered]@{
-        schema='clash95_modal_slots_capture_plan_v1'; environment='hidden_cdb_host'; execute=[bool]$Options.Execute
+        schema='clash95_modal_slots_primary_capture_plan_v1'; environment='hidden_cdb_host'; execute=[bool]$Options.Execute
         stage=$script:Stage; resolution=$Options.Resolution; width=$width; height=$height
         route=$Options.Route; castle_index=$Options.CastleIndex; availability=$Options.Availability
         minimap_viewport=[bool]$Options.MinimapViewport; deadline_seconds=300
@@ -173,6 +175,8 @@ function New-CanvasCapturePlan {
         trace_sha256=(Get-CanvasHash $trace); converter_sha256=(Get-CanvasHash $converter)
         python_sha256=(Get-CanvasHash $python); cdb_sha256=(Get-CanvasHash $cdb)
         probe_sha256=$prepared.probe_sha256
+        primary_ready_path=(Join-Path $outputDirectory 'primary-ready.cdb');primary_ready_sha256=$prepared.ready_script_sha256
+        primary_source=(Join-Path $script:RepoRoot 'tools\modal_slots_primary_surface.py');primary_source_sha256=(Get-CanvasHash (Join-Path $script:RepoRoot 'tools\modal_slots_primary_surface.py'))
         canvas_state_va=$prepared.packet.canvas_state_va
         canvas_state_offsets=$prepared.packet.canvas_state_offsets
         stop_va=$prepared.packet.stop_va
@@ -189,7 +193,21 @@ function New-CanvasCapturePlan {
 function Test-CanvasModalReady {
     param([string]$Log)
     # Complete, exact line only. Earlier map readiness never authorizes a read.
-    return [regex]::IsMatch($Log, '(?m)^MCAP_SURFDUMP_HOST_READY\r?\n')
+    return [regex]::IsMatch($Log, '(?m)^MPRI_HOST_READY\r?\n')
+}
+
+function Get-CanvasDebuggerCommandFailure {
+    param([string]$Log)
+    # These are debugger command diagnostics, not native exception evidence.
+    # Anchor actual output lines so echoed command source cannot match.
+    $lineNumber=0
+    foreach ($line in ($Log -split "`n")) {
+        $lineNumber++
+        if ($line -match '(?i)^\s*(?:[0-9]+:[0-9]+>\s*)?(?:Unable to insert breakpoint\b|bp[0-9]+\s+at\s+[^\r\n]*\bfailed\b|(?:\^\s*)?Syntax error\b|Command file execution failed\b)') {
+            return @{classification='debugger_command_failure';line=$lineNumber;text=$line.TrimEnd("`r")}
+        }
+    }
+    return $null
 }
 
 function Read-CanvasLog {
@@ -232,6 +250,7 @@ function Assert-CanvasSurface {
         $Report.initial_map_trace.passed -isnot [bool] -or -not $Report.initial_map_trace.passed -or
         $Report.slot_trace.passed -isnot [bool] -or -not $Report.slot_trace.passed -or
         $Report.slot_trace.raw_records.Count -ne 12 -or
+        $Report.primary_sequence.passed -isnot [bool] -or -not $Report.primary_sequence.passed -or
         $Report.modal_sequence.sequence_passed -isnot [bool] -or -not $Report.modal_sequence.sequence_passed) {
         throw 'Full source-bound owned-canvas trace did not authorize host capture.'
     }
@@ -379,7 +398,9 @@ function Find-CanvasOwnedChildren {
     foreach ($row in $matches) {
         $key = [string]$row.ProcessId
         if ($Owned.ContainsKey($key)) { continue }
-        $handle = [CanvasScreenNative]::OpenProcess(0x101011,$false,[uint32]$row.ProcessId)
+        # VirtualQueryEx needs PROCESS_QUERY_INFORMATION (0x400), in addition
+        # to the inherited read, synchronization and exact-owned cleanup rights.
+        $handle = [CanvasScreenNative]::OpenProcess(0x101411,$false,[uint32]$row.ProcessId)
         if ($handle -eq [IntPtr]::Zero) { throw 'Could not retain the owned candidate process handle.' }
         try {
             $identity = Get-CanvasHandleIdentity $handle ([int]$row.ProcessId) $Plan.candidate_path
@@ -408,7 +429,9 @@ function Read-CanvasMemory {
 function Save-CanvasSnapshot {
     param($OwnedGame, $Evidence, [string]$RawPath, $Plan)
     $s=$Evidence.surface;$v=$Evidence.canvas;$began=[datetime]::UtcNow.ToString('o')
-    $captures=@{};$prefix=[IO.Path]::Combine([IO.Path]::GetDirectoryName($RawPath),[IO.Path]::GetFileNameWithoutExtension($RawPath))
+    # PowerShell binds $null to String.Empty for ChangeExtension, leaving
+    # "surface." and producing names rejected by the exact artifact auditor.
+    $captures=@{};$prefix=Join-Path ([IO.Path]::GetDirectoryName($RawPath)) ([IO.Path]::GetFileNameWithoutExtension($RawPath))
     $nativePath=Join-Path ([IO.Path]::GetDirectoryName($RawPath)) 'native-surface.raw'
     foreach ($phase in @('before','after')) {
         $phaseRows=@{}
@@ -454,6 +477,145 @@ function Save-CanvasSnapshot {
         reads=$captures;started_at=$began;captured_at=[datetime]::UtcNow.ToString('o');game_identity=$OwnedGame.identity}
 }
 
+function Initialize-PrimaryQuery {
+    if ('ModalPrimaryQuery' -as [type]) {return}
+    Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class ModalPrimaryQuery {
+ [StructLayout(LayoutKind.Sequential)] public struct MBI {
+  public IntPtr address, allocation; public uint allocationProtect;
+  public UIntPtr size; public uint state, protect, type;
+ }
+ [DllImport("kernel32.dll",SetLastError=true)] public static extern UIntPtr VirtualQueryEx(IntPtr process, IntPtr address, out MBI info, UIntPtr count);
+}
+'@
+}
+
+function Read-PrimaryArtifact {
+    param($OwnedGame,[long]$Address,[int]$Count,[string]$Path,$Regions)
+    if ($Address -le 0 -or $Count -le 0 -or $Count -gt 67108864 -or $Address+$Count -gt 4294967296) {throw 'Primary read range is invalid.'}
+    Initialize-PrimaryQuery
+    [long]$cursor=$Address
+    while ($cursor -lt $Address+$Count) {
+        $info=New-Object ModalPrimaryQuery+MBI
+        $size=[Runtime.InteropServices.Marshal]::SizeOf($info)
+        $returned=[ModalPrimaryQuery]::VirtualQueryEx($OwnedGame.handle,[IntPtr]$cursor,[ref]$info,[UIntPtr]::new([uint64]$size))
+        $start=$info.address.ToInt64();$length=$info.size.ToUInt64()
+        if ($returned.ToUInt64() -ne $size -or $info.state -ne 0x1000 -or $info.protect -notin @(2,4,8,0x20,0x40,0x80) -or
+            $start -gt $cursor -or $length -le 0 -or $start+$length -le $cursor -or $start+$length -gt 4294967296) {throw 'Primary read is not fully committed readable memory.'}
+        $record=@{address=$start;size=$length;state=[int]$info.state;protect=[int]$info.protect}
+        $key=[string]$start
+        if ($Regions.ContainsKey($key) -and ($Regions[$key] | ConvertTo-Json -Compress) -cne ($record | ConvertTo-Json -Compress)) {throw 'Primary memory-region state changed.'}
+        $Regions[$key]=$record;$cursor=[Math]::Min($Address+$Count,$start+$length)
+    }
+    $data=Read-CanvasMemory $OwnedGame.handle $Address $Count
+    [IO.File]::WriteAllBytes($Path,$data)
+    return @{path=$Path;address=$Address;bytes=$Count;sha256=(Get-CanvasHash $Path);data=$data}
+}
+
+function Initialize-PrimaryModules {
+    if ('ModalPrimaryModules' -as [type]) {return}
+    Add-Type -TypeDefinition @'
+using System;
+using System.Text;
+using System.Runtime.InteropServices;
+public static class ModalPrimaryModules {
+ [StructLayout(LayoutKind.Sequential)] public struct MODULEINFO {
+  public IntPtr baseAddress; public uint imageSize; public IntPtr entryPoint;
+ }
+ [DllImport("psapi.dll",SetLastError=true)] public static extern bool EnumProcessModulesEx(IntPtr process,[Out] IntPtr[] modules,uint bytes,out uint needed,uint filter);
+ [DllImport("psapi.dll",CharSet=CharSet.Unicode,SetLastError=true)] public static extern uint GetModuleFileNameExW(IntPtr process,IntPtr module,StringBuilder path,uint capacity);
+ [DllImport("psapi.dll",SetLastError=true)] public static extern bool GetModuleInformation(IntPtr process,IntPtr module,out MODULEINFO info,uint bytes);
+}
+'@
+}
+
+function Get-PrimaryLoadedModules {
+    param([IntPtr]$Handle)
+    if ($Handle -eq [IntPtr]::Zero -or $Handle -eq [IntPtr](-1)) {throw 'A retained owned process handle is required for module enumeration.'}
+    Initialize-PrimaryModules
+    # .NET Framework Process.Modules from a64-bit host omits WoW64 DLLs.
+    # LIST_MODULES_32BIT explicitly selects our x86 target, using its retained
+    # handle rather than reopening a potentially reused PID. Returned module
+    # addresses are snapshot values, not kernel handles to close.
+    $capacity=128; $complete=$false
+    for ($attempt=0; $attempt -lt 4; $attempt++) {
+        $moduleAddresses=New-Object IntPtr[] $capacity
+        $needed=[uint32]0; $bufferBytes=[uint32]($capacity*[IntPtr]::Size)
+        if (-not [ModalPrimaryModules]::EnumProcessModulesEx($Handle,$moduleAddresses,$bufferBytes,[ref]$needed,1)) {throw 'Read-only x86 module enumeration failed.'}
+        if ($needed -eq 0 -or $needed%[IntPtr]::Size -ne 0 -or $needed -gt 4096*[IntPtr]::Size) {throw 'The x86 module list has an invalid or excessive byte count.'}
+        if ($needed -le $bufferBytes) {$complete=$true;break}
+        $capacity=[int]($needed/[IntPtr]::Size)
+    }
+    if (-not $complete) {throw 'The x86 module list changed beyond the bounded enumeration attempts.'}
+    $records=@();$seen=@{}
+    for ($index=0; $index -lt $needed/[IntPtr]::Size; $index++) {
+        $address=$moduleAddresses[$index];$number=$address.ToInt64()
+        if ($number -le 0 -or $number -ge 4294967296 -or $seen.ContainsKey([string]$number)) {throw 'The x86 module list contains an invalid or duplicate module address.'}
+        $seen[[string]$number]=$true
+        $path=New-Object Text.StringBuilder 32768
+        $length=[ModalPrimaryModules]::GetModuleFileNameExW($Handle,$address,$path,32768)
+        if ($length -eq 0 -or $length -ge 32768) {throw 'A loaded x86 module path is missing or truncated.'}
+        $info=New-Object ModalPrimaryModules+MODULEINFO
+        if (-not [ModalPrimaryModules]::GetModuleInformation($Handle,$address,[ref]$info,[Runtime.InteropServices.Marshal]::SizeOf($info))) {throw 'A loaded x86 module header could not be queried.'}
+        if ($info.baseAddress -ne $address -or $info.imageSize -eq 0 -or $number+[long]$info.imageSize -gt 4294967296) {throw 'A loaded x86 module image range is invalid.'}
+        $records += [pscustomobject]@{FileName=$path.ToString();BaseAddress=$address;ModuleMemorySize=$info.imageSize}
+    }
+    return $records
+}
+
+function Get-PrimaryModule {
+    param($OwnedGame,$Plan)
+    # The held process identity is checked again after paired live reads.
+    $expectedPath=[IO.Path]::GetFullPath($Plan.proxy_path)
+    $modules=@(Get-PrimaryLoadedModules $OwnedGame.handle | Where-Object {[IO.Path]::GetFullPath($_.FileName) -ieq $expectedPath})
+    if ($modules.Count -ne 1 -or (Get-CanvasHash $modules[0].FileName) -cne $Plan.proxy_sha256 -or
+        $Plan.proxy_sha256 -cne 'b173a9dd4ce772eb5b56f341acdf4b329ed4ffdd638c1fce5cc37dd332804b70') {throw 'Owned process does not contain the pinned local proxy module.'}
+    $base=$modules[0].BaseAddress.ToInt64();$size=$modules[0].ModuleMemorySize
+    if ($base -le 0 -or $size -le 0 -or $base+$size -gt 4294967296) {throw 'Proxy module address is invalid.'}
+    return @{base=$base;size=$size;path=$Plan.proxy_path;sha256=$Plan.proxy_sha256}
+}
+
+function Save-PrimarySnapshot {
+    param($OwnedGame,$Trace,$Plan,$Prefix)
+    $began=[datetime]::UtcNow.ToString('o');$v=$Trace.primary_sequence.ready.values
+    if (-not $Trace.passed -or -not $Trace.primary_sequence.passed -or $Trace.source.log_raw_sha256 -cne $Prefix.sha256) {throw 'Primary read requires the exact validated paused prefix.'}
+    $module=Get-PrimaryModule $OwnedGame $Plan;$base=$module.base
+    $regions=@{};$reads=@{}
+    foreach ($phase in @('before','after')) {
+        $rows=@{}
+        foreach ($row in @(@('primary',0x51d4c0,220),@('backend',$v.backend,176),@('surface_full',$v.surface,32),
+            @('palette',$v.palette,1036),@('proxy_header',$base,512),@('proxy_getpalette',($base+0x2070),83))) {
+            $rows[$row[0]]=Read-PrimaryArtifact $OwnedGame $row[1] $row[2] (Join-Path $Plan.out_dir ('primary-'+$phase+'-'+$row[0]+'.raw')) $regions
+        }
+        $surfaceTable=[BitConverter]::ToUInt32($rows.surface_full.data,0);$paletteTable=[BitConverter]::ToUInt32($rows.palette.data,0)
+        if ($surfaceTable -ne $base+0x1939c -or $paletteTable -ne $base+0x19340 -or
+            [BitConverter]::ToUInt32($rows.surface_full.data,28) -ne $v.palette) {throw 'Current primary surface/palette interface differs from the pinned proxy.'}
+        $rows.surface=Read-PrimaryArtifact $OwnedGame $v.surface 4 (Join-Path $Plan.out_dir ('primary-'+$phase+'-surface.raw')) $regions
+        $rows.surface_vtable=Read-PrimaryArtifact $OwnedGame $surfaceTable 144 (Join-Path $Plan.out_dir ('primary-'+$phase+'-surface_vtable.raw')) $regions
+        $rows.palette_vtable=Read-PrimaryArtifact $OwnedGame $paletteTable 28 (Join-Path $Plan.out_dir ('primary-'+$phase+'-palette_vtable.raw')) $regions
+        $reads[$phase]=$rows
+        if ($phase -eq 'before') {
+            $pixels=Read-PrimaryArtifact $OwnedGame $v.pixels ($Plan.width*$Plan.height) (Join-Path $Plan.out_dir 'primary.raw') $regions
+            $pixels.Remove('data')
+            $paletteEntries=New-Object byte[] 1024;[Array]::Copy($rows.palette.data,12,$paletteEntries,0,1024)
+            $palettePath=Join-Path $Plan.out_dir 'primary-palette.bin';[IO.File]::WriteAllBytes($palettePath,$paletteEntries)
+        }
+    }
+    foreach ($key in $reads.before.Keys) {
+        if ($reads.before[$key].sha256 -cne $reads.after[$key].sha256) {throw ('Paused primary read changed: '+$key)}
+        $reads.before[$key].Remove('data');$reads.after[$key].Remove('data')
+    }
+    $identity=Get-CanvasHandleIdentity $OwnedGame.handle $OwnedGame.identity.process_id $Plan.candidate_path
+    if ($identity.creation_filetime -ne $OwnedGame.identity.creation_filetime -or (Get-CanvasHash $Plan.proxy_path) -cne $Plan.proxy_sha256) {throw 'Owned identity changed across primary capture.'}
+    return @{schema='clash95_modal_primary_snapshot_receipt_v1';run_id=$Plan.run_id;
+        game_identity=$OwnedGame.identity;trace_sha256=$Prefix.sha256;reads=$reads;regions=@($regions.Values);pixels=$pixels;
+        palette_entries=@{path=$palettePath;bytes=1024;sha256=(Get-CanvasHash $palettePath)};
+        proxy_module=$module;
+        started_at=$began;captured_at=[datetime]::UtcNow.ToString('o');paused=$true;manual_input_proof=$false;promotion_ready=$false}
+}
+
 function Stop-CanvasOwned {
     param($OwnedProcess)
     $before = [CanvasScreenNative]::WaitForSingleObject($OwnedProcess.handle,0)
@@ -465,22 +627,29 @@ function Stop-CanvasOwned {
 }
 
 function Save-CanvasTriplet {
-    param($OwnedGame, $Evidence, $Plan)
+    param($OwnedGame, $Evidence, $Plan, $Trace, $Prefix)
     $snapshots=@()
     foreach ($captureIndex in 1..3) {
         $directory=Join-Path $Plan.out_dir ('capture-'+$captureIndex)
         [void](New-Item -ItemType Directory -Path $directory)
-        $snapshots+=Save-CanvasSnapshot $OwnedGame $Evidence (Join-Path $directory 'surface.raw') $Plan
+        $capturePlan=@{};foreach ($key in $Plan.Keys) {$capturePlan[$key]=$Plan[$key]}
+        $capturePlan.out_dir=$directory;$capturePlan.run_id=[IO.Path]::GetFileName($Plan.out_dir)
+        $snapshot=Save-CanvasSnapshot $OwnedGame $Evidence (Join-Path $directory 'surface.raw') $Plan
+        $snapshot.primary=Save-PrimarySnapshot $OwnedGame $Trace $capturePlan $Prefix
+        $snapshots+=$snapshot
     }
     $same=$true
     foreach ($snapshot in $snapshots) {
-        if ($snapshot.sha256 -cne $snapshots[0].sha256 -or $snapshot.native.sha256 -cne $snapshots[0].native.sha256) {$same=$false}
+        if ($snapshot.sha256 -cne $snapshots[0].sha256 -or $snapshot.native.sha256 -cne $snapshots[0].native.sha256 -or
+            $snapshot.primary.pixels.sha256 -cne $snapshots[0].primary.pixels.sha256 -or
+            $snapshot.primary.palette_entries.sha256 -cne $snapshots[0].primary.palette_entries.sha256) {$same=$false}
         foreach ($name in @('state','e0','physical_header','native_header')) {
             if ($snapshot.reads.before[$name].sha256 -cne $snapshots[0].reads.before[$name].sha256) {$same=$false}
         }
+        foreach ($name in $snapshot.primary.reads.before.Keys) {
+            if ($snapshot.primary.reads.before[$name].sha256 -cne $snapshots[0].primary.reads.before[$name].sha256) {$same=$false}
+        }
     }
-    # Return all completed reads even on mismatch; the caller retains them in
-    # the final summary before failing the stability gate.
     return @{snapshots=$snapshots;clean_stable_pair=$same}
 }
 
@@ -503,7 +672,7 @@ function Invoke-CanvasCapture {
     param($Bundle, [switch]$DoExecute)
     $plan=$Bundle.plan; $prepared=$Bundle.prepared
     if (-not $DoExecute) { return @{ status='dry_run'; executed=$false; plan=$plan; prepared=$prepared } }
-    $summary = [ordered]@{ schema='clash95_modal_slots_capture_v1'; passed=$false; status='failed'; executed=$false; plan=$plan
+    $summary = [ordered]@{ schema='clash95_modal_slots_primary_capture_v1'; passed=$false; status='failed'; executed=$false; plan=$plan
         started_at=[datetime]::UtcNow.ToString('o'); finished_at=$null; failures=@(); trace=$null; snapshot=$null; png=$null
         cdb=$null; candidates=@(); cleanup=@{ cdb=$null; candidates=@(); desktop_closed=$false }
         manual_input_proof=$false; visible_composition_proof=$false; promotion_ready=$false }
@@ -520,7 +689,7 @@ function Invoke-CanvasCapture {
         foreach ($pair in @(@($plan.original,$plan.original_sha256),@($plan.input_candidate,$plan.candidate_sha256),@($plan.candidate_manifest,$plan.candidate_manifest_sha256),
             @($plan.proxy_manifest,$plan.proxy_manifest_sha256),@($plan.proxy_source,$plan.proxy_source_sha256),@($plan.proxy_input,$plan.proxy_sha256),
             @($plan.host_path,$plan.host_sha256),@($plan.producer,$plan.producer_sha256),@($plan.trace,$plan.trace_sha256),@($plan.converter,$plan.converter_sha256),
-            @($plan.python,$plan.python_sha256),@($plan.cdb,$plan.cdb_sha256))) {
+            @($plan.python,$plan.python_sha256),@($plan.cdb,$plan.cdb_sha256),@($plan.primary_source,$plan.primary_source_sha256))) {
             if ((Get-CanvasHash $pair[0]) -cne $pair[1]) { throw 'A planned source, runtime or input file changed before execution.' }
         }
         [IO.File]::Copy($plan.input_candidate,$plan.candidate_path,$false)
@@ -529,13 +698,16 @@ function Invoke-CanvasCapture {
         Write-CanvasJson $packetPath $prepared.packet
         [IO.File]::WriteAllText($probePath,$prepared.probe,[Text.UTF8Encoding]::new($false))
         if ((Get-CanvasHash $probePath) -cne $plan.probe_sha256) { throw 'Compiled probe file differs from the prepared packet.' }
+        [IO.File]::WriteAllText($plan.primary_ready_path,$prepared.ready_script,[Text.UTF8Encoding]::new($false))
+        if ((Get-CanvasHash $plan.primary_ready_path) -cne $plan.primary_ready_sha256) {throw 'Primary readiness script differs from exact prepared recipe.'}
         Write-CanvasJson (Join-Path $plan.out_dir 'plan.json') $plan
         $summary.packet=@{path=$packetPath;sha256=(Get-CanvasHash $packetPath)}
         $summary.probe=@{path=$probePath;sha256=(Get-CanvasHash $probePath)}
         # Reconstruct against the COPIED file before launch, not merely its input path.
         $verifyArgs=@($plan.trace,'--prepare','--original',$plan.original,'--candidate',$plan.candidate_path,
             '--candidate-manifest',$plan.candidate_manifest,'--candidate-sha256',$plan.candidate_sha256,'--stage',$plan.stage,'--resolution',$plan.resolution,
-            '--route',$plan.route,'--availability',$plan.availability,'--castle-index',[string]$plan.castle_index)
+            '--route',$plan.route,'--availability',$plan.availability,'--castle-index',[string]$plan.castle_index,
+            '--ready-file',$plan.primary_ready_path,'--proxy-manifest',$plan.proxy_manifest)
         if ($plan.minimap_viewport) { $verifyArgs+='--minimap-viewport' }
         $verified=Invoke-CanvasPythonJson $plan.python $verifyArgs
         if ($verified.probe_sha256 -cne $plan.probe_sha256 -or $verified.probe -cne $prepared.probe -or
@@ -549,6 +721,15 @@ function Invoke-CanvasCapture {
         while ($watch.Elapsed.TotalSeconds -lt 300) {
             Find-CanvasOwnedChildren $plan $session $launchStart $owned
             $text=Read-CanvasLog $logPath
+            $commandFailure=Get-CanvasDebuggerCommandFailure $text
+            if ($null -ne $commandFailure) {
+                $prefix=Read-CanvasLogBytes $logPath
+                $failurePath=Join-Path $plan.out_dir 'debugger-command-failure-prefix.log'
+                [IO.File]::WriteAllBytes($failurePath,$prefix)
+                $commandFailure.log_prefix=@{path=$failurePath;bytes=$prefix.Length;sha256=(Get-CanvasHash $failurePath)}
+                $summary.debugger_command_failure=$commandFailure
+                throw ('Debugger command failed before capture: '+$commandFailure.text)
+            }
             if (Test-CanvasModalReady $text) {
                 $summary.trace=Invoke-CanvasPythonJson $plan.python @($plan.trace,'--log',$logPath,'--packet',$packetPath,
                     '--original',$plan.original,'--candidate',$plan.candidate_path,'--probe',$probePath) -PermitFailure -TimeoutMilliseconds ([Math]::Max(1,[Math]::Min(120000,300000-[int]$watch.ElapsedMilliseconds)))
@@ -560,7 +741,7 @@ function Invoke-CanvasCapture {
                 if ((Get-CanvasBytesHash $prefix) -cne $summary.trace.source.log_raw_sha256) {throw 'Validated raw log changed before capture.'}
                 $prefixPath=Join-Path $plan.out_dir 'capture-prefix.log';[IO.File]::WriteAllBytes($prefixPath,$prefix)
                 $summary.capture_prefix=@{path=$prefixPath;bytes=$prefix.Length;sha256=(Get-CanvasHash $prefixPath)}
-                $triplet=Save-CanvasTriplet @($owned.Values)[0] $surface $plan
+                $triplet=Save-CanvasTriplet @($owned.Values)[0] $surface $plan $summary.trace $summary.capture_prefix
                 $summary.snapshots=$triplet.snapshots
                 $summary.snapshot=$summary.snapshots[0]
                 $rawPath=$summary.snapshot.path
@@ -612,21 +793,76 @@ function Invoke-CanvasCapture {
                 $summary.final_log.capture_prefix_preserved=$true
                 [void](Assert-CanvasSurface $summary.final_trace $plan)
                 if ((Get-CanvasHash $packetPath) -cne $summary.packet.sha256 -or
-                    (Get-CanvasHash $probePath) -cne $summary.probe.sha256) {throw 'Packet/probe changed after capture.'}
+                    (Get-CanvasHash $probePath) -cne $summary.probe.sha256 -or
+                    (Get-CanvasHash $plan.primary_ready_path) -cne $plan.primary_ready_sha256) {throw 'Packet/probe changed after capture.'}
             } catch {$summary.failures+=$_.Exception.Message}
         }
         # Preserve and convert captured physical raw even when final trace or cleanup failed.
         if ($summary.snapshot) {
             try {
-                if (-not (Test-Path -LiteralPath $plan.palette_path -PathType Leaf) -or (Get-Item -LiteralPath $plan.palette_path).Length -ne 1024) { throw 'Fresh proxy palette is missing or has the wrong size.' }
-                $summary.palette=@{ path=$plan.palette_path; sha256=(Get-CanvasHash $plan.palette_path); bytes=1024 }
+                # The physical mirror contains indices destined for this same
+                # paused primary. Visualize them with its captured attached
+                # palette, not the proxy's independently written global file.
+                $matchedPalette=$summary.snapshots[0].primary.palette_entries
+                if ($matchedPalette.bytes -ne 1024 -or
+                    -not (Test-Path -LiteralPath $matchedPalette.path -PathType Leaf) -or
+                    (Get-Item -LiteralPath $matchedPalette.path).Length -ne 1024 -or
+                    (Get-CanvasHash $matchedPalette.path) -cne $matchedPalette.sha256) {
+                    throw 'Matching captured primary palette is missing, changed or has the wrong size.'
+                }
+                $summary.palette=@{path=$matchedPalette.path;sha256=$matchedPalette.sha256;bytes=1024;
+                    binding='matching_paused_primary_attached_palette';sample_index=1;
+                    primary_pixels_sha256=$summary.snapshots[0].primary.pixels.sha256}
                 $pngPath=Join-Path $plan.out_dir 'surface.png'; $metaPath=Join-Path $plan.out_dir 'surface.png.json'
-                $convertOutput = & $plan.python -B $plan.converter $rawPath --width $plan.width --height $plan.height --pitch $plan.width --output $pngPath --metadata $metaPath --log $summary.capture_prefix.path --palette $plan.palette_path
+                $convertOutput = & $plan.python -B $plan.converter $rawPath --width $plan.width --height $plan.height --pitch $plan.width --output $pngPath --metadata $metaPath --log $summary.capture_prefix.path --palette $matchedPalette.path
                 if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $metaPath)) { throw 'Raw-to-PNG conversion failed; raw capture is preserved.' }
                 $summary.png=[IO.File]::ReadAllText($metaPath) | ConvertFrom-Json
-                if ($summary.png.palette_mode -ne 'directdraw-palette' -or $summary.png.raw_sha256 -cne $summary.snapshot.sha256 -or
+                if ($summary.png.palette_mode -ne 'directdraw-palette' -or $summary.png.palette_path -cne $matchedPalette.path -or
+                    $summary.png.raw_sha256 -cne $summary.snapshot.sha256 -or
                     $summary.png.png_sha256 -cne (Get-CanvasHash $pngPath)) { throw 'PNG conversion metadata does not bind the fresh palette and raw capture.' }
             } catch { $summary.failures += $_.Exception.Message }
+        }
+        if ($summary.snapshot) {
+            try {
+                $primaryReceipt=[ordered]@{schema='clash95_slots_primary_triplet_v1';plan=$plan;snapshots=$summary.snapshots;
+                    clean_stable_pair=$summary.clean_stable_pair;cdb=$summary.cdb;candidates=$summary.candidates;cleanup=$summary.cleanup;
+                    packet=$summary.packet;probe=$summary.probe;capture_prefix=$summary.capture_prefix;final_log=$summary.final_log;
+                    failures=$summary.failures;manual_input_proof=$false;promotion_ready=$false}
+                $primaryReceiptPath=Join-Path $plan.out_dir 'primary-triplet.json';Write-CanvasJson $primaryReceiptPath $primaryReceipt
+                $summary.primary_triplet=@{path=$primaryReceiptPath;sha256=(Get-CanvasHash $primaryReceiptPath)}
+                if ($summary.cleanup.cdb.absent -and $summary.cleanup.cdb.handle_closed -and
+                    $summary.cleanup.candidates.Count -eq 1 -and $summary.cleanup.candidates[0].absent -and
+                    $summary.cleanup.candidates[0].handle_closed -and $summary.cleanup.desktop_closed) {
+                    $summary.primary_audit=Invoke-CanvasPythonJson $plan.python @($plan.trace,'--log',$summary.capture_prefix.path,'--packet',$packetPath,
+                        '--probe',$probePath,'--original',$plan.original,'--candidate',$plan.candidate_path,
+                        '--snapshot-manifest',$primaryReceiptPath,'--proxy',$plan.proxy_path) -PermitFailure
+                    Write-CanvasJson (Join-Path $plan.out_dir 'primary-audit.json') $summary.primary_audit
+                    if ($summary.primary_audit.passed -isnot [bool] -or -not $summary.primary_audit.passed -or
+                        $summary.primary_audit.primary_snapshot.three_matched_captures -isnot [bool] -or
+                        -not $summary.primary_audit.primary_snapshot.three_matched_captures -or
+                        -not $summary.primary_audit.primary_snapshot.cached_primary_snapshot_valid) {
+                        $summary.failures+='Three matched primary/native/physical snapshots failed source-bound validation.'
+                    }
+                }
+                $summary.primary_pngs=@()
+                foreach ($sample in $summary.snapshots) {
+                    $primary=$sample.primary
+                    if ((Get-CanvasHash $primary.pixels.path) -cne $primary.pixels.sha256 -or
+                        (Get-CanvasHash $primary.palette_entries.path) -cne $primary.palette_entries.sha256) {
+                        throw 'Captured primary pixels/current palette changed before conversion.'
+                    }
+                    $folder=Split-Path -Parent $primary.pixels.path
+                    $primaryPng=Join-Path $folder 'primary.png';$primaryMeta=Join-Path $folder 'primary-png.json'
+                    $convertOutput=& $plan.python -B $plan.converter $primary.pixels.path --width $plan.width --height $plan.height --pitch $plan.width `
+                        --output $primaryPng --metadata $primaryMeta --log $summary.capture_prefix.path --palette $primary.palette_entries.path
+                    if ($LASTEXITCODE -ne 0) {throw 'Primary PNG conversion failed; original captures are retained.'}
+                    $metadata=[IO.File]::ReadAllText($primaryMeta) | ConvertFrom-Json
+                    if ($metadata.palette_mode -cne 'directdraw-palette' -or $metadata.raw_sha256 -cne $primary.pixels.sha256 -or
+                        $metadata.png_sha256 -cne (Get-CanvasHash $primaryPng)) {throw 'Primary PNG identity differs.'}
+                    $summary.primary_pngs+=@{path=$primaryPng;sha256=(Get-CanvasHash $primaryPng);metadata_path=$primaryMeta;
+                        metadata_sha256=(Get-CanvasHash $primaryMeta);raw_sha256=$primary.pixels.sha256;palette_sha256=$primary.palette_entries.sha256}
+                }
+            } catch {$summary.failures+=$_.Exception.Message}
         }
         if ($summary.executed) {
             try {
@@ -639,8 +875,10 @@ function Invoke-CanvasCapture {
             } catch { $summary.failures += $_.Exception.Message }
         }
         $summary.finished_at=[datetime]::UtcNow.ToString('o')
-        $summary.passed=($summary.executed -and $summary.failures.Count -eq 0 -and $null -ne $summary.snapshot -and $null -ne $summary.png -and $summary.clean_stable_pair)
-        if ($summary.passed) { $summary.status='bounded_hidden_modal_canvas_capture' }
+        $summary.passed=($summary.executed -and $summary.failures.Count -eq 0 -and $null -ne $summary.snapshot -and $null -ne $summary.png -and
+            $summary.clean_stable_pair -and $summary.primary_audit.passed -and $summary.primary_audit.primary_snapshot.cached_primary_snapshot_valid -and
+            $summary.primary_audit.primary_snapshot.three_matched_captures -and $summary.primary_pngs.Count -eq 3)
+        if ($summary.passed) { $summary.status='bounded_hidden_slots_primary_capture' }
         if ($outputCreated) { Write-CanvasJson (Join-Path $plan.out_dir 'summary.json') $summary }
     }
     return $summary
@@ -655,7 +893,7 @@ try {
     $result | ConvertTo-Json -Depth 80
     if ($Execute -and -not $result.passed) { exit 1 }
 } catch {
-    $failure=@{ schema='clash95_modal_slots_capture_v1'; passed=$false; status='preparation_failed'; executed=$false
+    $failure=@{ schema='clash95_modal_slots_primary_capture_v1'; passed=$false; status='preparation_failed'; executed=$false
         failures=@($_.Exception.Message); manual_input_proof=$false; promotion_ready=$false }
     if ($null -ne $_.Exception.Data['CanvasPythonFailure']) {
         $failure.child_failure=$_.Exception.Data['CanvasPythonFailure']
