@@ -54,6 +54,15 @@ observations and three stopped capture points. Surface sizes and pointer bounds
 follow the selected resolution. Preparation cannot establish movement success;
 the full movement trace, pixel audit and owned runtime host are still required.
 
+`tools/complete_hd_army_movement_trace.py` validates that native sequence using
+the complete candidate, manifest, save, main probe and all three supplemental
+command files. It reads the original complete log without rewriting stage or
+observation values. Both XY/occupancy commits, the expected action-point costs,
+paired native input-pump calls, releases, redraw and true handler return must
+pass. Sequence-only diagnostics cannot authorize capture. Bound readiness is
+separate from the optional three measured surface headers and complete army
+records; neither result establishes correct pixels or host cleanup.
+
 ### Merged source compatibility — 2026-09-13
 
 The merge review compared the September 8 foundation at `326e703a` with the
@@ -80,6 +89,8 @@ python -B tools/test_army_probe_startup.py
 python -B tools/test_complete_hd_army_selection_probe.py
 python -B tools/test_complete_hd_army_selection_trace.py
 python -B tools/test_complete_hd_army_movement_probe.py
+python -B tools/test_complete_hd_army_movement_trace.py
+python -B tools/test_complete_hd_army_selection_capture.py
 ```
 
 The selection and movement producer fixtures use the user-owned original and
@@ -90,18 +101,29 @@ Unavailable local inputs are reported as skipped coverage;
 a skip is not runtime evidence. Synthetic trace fixtures exercise parser
 acceptance and rejection without manufacturing a runtime report.
 
-The four suites are also registered in `tools/run_framed_offline_tests.py` and
+The suites are also registered in `tools/run_framed_offline_tests.py` and
 run through the existing CI workflow. CI reports unavailable local game/save
 coverage as skips; a successful portable job is not native runtime validation.
 
 ## Remaining runtime requirements
 
-A fresh immutable run plan and an owned hidden host are still needed for this
-new protocol. Authenticate the exact candidate and commands before starting,
-retain every original failure, and capture only at the validated stopped
-boundary. Record process identity, deadline, input method, raw artifacts and
-verified cleanup. Audit all four frame edges, the footer, all six action cells
-and the complete portrait backing in each relevant screenshot.
+`scripts/cdb/run_complete_hd_army_selection_capture.ps1` prepares this selection
+lane without launching anything by default. Supply `-InputCandidate`,
+`-CandidateManifest`, `-ProxyBuildManifest`, `-WorkDir`, `-CandidateDir`, `-OutDir`
+and `-Resolution`. The save is the isolated work directory's `save/0.dat`.
+Candidate and capture destinations must be new directories under `C:/ClashTests`
+and `C:/ClashCaptures` respectively. The plan authenticates the complete candidate
+and commands, current sources and tools, proxy, save and working assets.
+
+Only the explicitly authorized `-Execute` path starts an owned hidden desktop
+with the non-presenting proxy. It uses a 300-second runtime deadline, requires
+the full bound selection trace before host memory reads, retains three stopped
+pixel/header captures, and verifies cleanup through owned process handles.
+Failures and the final log remain available; a passing host result still needs
+independent pixel audits. Audit all four frame edges, the footer, all six action
+cells and the complete portrait backing in each relevant screenshot. Neither
+the controlled native call nor the hidden surface establishes ordinary input,
+visible composition or promotion.
 
 The movement validator must observe the real path preview and release, a second
 native confirmation, both occupancy/XY commits, expected action-point costs,
