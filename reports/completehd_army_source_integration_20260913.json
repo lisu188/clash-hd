@@ -1,0 +1,177 @@
+{
+  "schema": "complete_hd_army_source_integration_v1",
+  "generated_at": "2026-09-13T06:28:50.156478+00:00",
+  "foundation_revision": "326e703a6f3b545a18430d973d4c0f5f1a601aae",
+  "army_preparation_commit": "1a18a7782badfa7a8656ace7ffb8153a561ce3c9",
+  "reviewed_upstream_revision": "8962504f00df8c72511821df353cb451759f7f6d",
+  "additional_upstream_revision": "6ea7ab0626af49774784924b7b259246cc82a94a",
+  "additional_upstream_scope": "Documentation and equivalent split ExtraProbeTemplate argument construction in the mutable runtime harness; standalone army compiler does not import that harness.",
+  "runtime_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "new_module_pin_changes": [
+    {
+      "module": "tools/army_probe_startup.py",
+      "dependency": "tools/render_cdb_surface_probe.py",
+      "old_sha256": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+      "reviewed_sha256": "12685fdfde4972e0f5f9c3d5678fd159fff965bd9ddd7642cb3718c8530296cf"
+    },
+    {
+      "module": "tools/army_probe_startup.py",
+      "dependency": "src/patcher/patch_clash95_hd.py",
+      "old_sha256": "09f383ce7479d4be4c94017e347d6857acbcd364542fd2b72bafe3e1f0924db1",
+      "reviewed_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31"
+    },
+    {
+      "module": "tools/army_probe_startup.py",
+      "dependency": "src/patcher/framed_recipe.py",
+      "old_sha256": "0c694cdec4071efe94276a334615f7c16cfe9523e86e454ec8db44dc986fc54d",
+      "reviewed_sha256": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a"
+    },
+    {
+      "module": "tools/complete_hd_army_selection_probe.py",
+      "dependency": "tools/render_cdb_surface_probe.py",
+      "old_sha256": "7bff05c7d46812936a1ec8c37d71deca0836cd6725a2b3f96054c5bcbbcceba7",
+      "reviewed_sha256": "12685fdfde4972e0f5f9c3d5678fd159fff965bd9ddd7642cb3718c8530296cf"
+    },
+    {
+      "module": "tools/complete_hd_army_selection_probe.py",
+      "dependency": "tools/framed_army_selection_probe.py",
+      "old_sha256": "52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1",
+      "reviewed_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8"
+    },
+    {
+      "module": "tools/complete_hd_army_selection_trace.py",
+      "dependency": "tools/framed_army_selection_trace.py",
+      "old_sha256": "7f15324c32ccd0aca9641c67e42cbe7e5794b9ab53ee843385db068b13db5fdc",
+      "reviewed_sha256": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc"
+    },
+    {
+      "module": "tools/complete_hd_army_movement_probe.py",
+      "dependency": "tools/framed_army_movement_probe.py",
+      "old_sha256": "ba7f2db5998cad455909b13c60aba1b1b80a31740a092422dc2ff7c014c6a5da",
+      "reviewed_sha256": "17b779b29ac1ab6730e2a9ef59db1c2aee51f005edd9ad566db5d6ceeaf4a53b"
+    }
+  ],
+  "source_review": {
+    "method": "Read-only full framed renderer result comparisons, complete Patch-record comparisons, and AST comparisons after masking source SHA literals; old sources loaded from Git326e703a.",
+    "resolutions": [
+      "800x600",
+      "1024x768",
+      "1280x720",
+      "1280x960",
+      "1920x1080",
+      "802x602"
+    ],
+    "framed_renderer_results_identical": true,
+    "stable_patch_records_identical": true,
+    "stable_record_count": 118,
+    "combined_ui_patch_records_identical": true,
+    "combined_ui_record_count": 166,
+    "battle_hd_groups_in_compared_routes": false,
+    "framed_recipe_and_legacy_army_ast_equal_except_sha_literals": true,
+    "reviewed_dependency_disk_bytes_match_upstream_git_blobs": true
+  },
+  "candidate_rebuild_sha256": {
+    "800x600": "e785d202140942959b973f462a9eded27531fd12c5668fac40af61248e875a84",
+    "1024x768": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+    "1280x720": "4f4f8c3107e893360904af2196444f2a661949bd779481ee56c375e1ff3c31c9",
+    "1280x960": "5a1328350a0613720161e4f6d2e60c58949aa6f672aeb42e76c7701cde0e86ad",
+    "1920x1080": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0",
+    "802x602": "aad4753d073fbe717861952dd0e98a8a9e61b8b0b62259f7f1f6944990f31467"
+  },
+  "validation": {
+    "startup": {
+      "passed": 8,
+      "skipped": 0,
+      "failed": 0,
+      "historical_output_hashes_unchanged_at_all_six_resolutions": true
+    },
+    "selection_producer": {
+      "passed": 16,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 445.749,
+      "actual_candidate_resolutions": 6
+    },
+    "selection_trace": {
+      "passed": 14,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 200.278,
+      "real_candidate_resolution": "1024x768",
+      "log_is_synthetic_fixture": true
+    },
+    "movement_initial_full_run": {
+      "passed": 16,
+      "errors": 1,
+      "skipped": 0,
+      "duration_seconds": 210.866,
+      "actual_candidate_resolutions": 6,
+      "error": "Historical command oracle rejects legacy selection renderer source pin; no native production failure observed."
+    },
+    "movement_corrected_oracle": {
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 21.672,
+      "actual_candidate_resolution": "1024x768",
+      "scope": "Only historical source-verifier dependency boundary adapted to real current selection verifier; unadapted legacy rejection explicitly asserted; original movement generator and parent check remain real. Full17 suite was not repeated."
+    },
+    "offline_runner": {
+      "passed": 26,
+      "skipped": 2,
+      "failed": 0,
+      "skip_reason": "Windows sandbox did not allow symlink creation."
+    },
+    "handoff_freshness_fixtures": "passed",
+    "docs_consistency_fixtures": "passed"
+  },
+  "legacy_incompatibility": {
+    "path": "tools/framed_army_selection_probe.py",
+    "renderer_pin": "1cd3103c434a898e0104b519932f1ce30be259888885f251422a8b71d3a9d02f",
+    "current_renderer_sha256": "12685fdfde4972e0f5f9c3d5678fd159fff965bd9ddd7642cb3718c8530296cf",
+    "legacy_source_check_still_rejects": true,
+    "old_source_pins_and_manifests_rewritten": false
+  },
+  "source_sha256": {
+    "tools/army_probe_startup.py": "1998a2925279457e0e5447e79818d7960ec096cae6e256dcd58639505f41eb0f",
+    "tools/complete_hd_army_movement_probe.py": "d048d355feffc6594c99c1a5f333bb55cc1ad654b6e463b00ae1bed8e9383e63",
+    "tools/complete_hd_army_selection_probe.py": "4d603dd001f420ee6f032041ccc4d563eff8a56e86e6ad2d1c89c97bda2fe7f6",
+    "tools/complete_hd_army_selection_trace.py": "bd00dd162ba0a085b18c1bfbe0a9b3c67117657a62fcec01fdd77ba2ad395528",
+    "tools/test_army_probe_startup.py": "5680e4885cdc677c266aad49fd112eed793d63d46420cb88311de865616e57a2",
+    "tools/test_complete_hd_army_selection_probe.py": "db80c156d2c70a720d0b82eb2dcffad7565983fcc7bee7a0f63456a9ea09bce9",
+    "tools/test_complete_hd_army_selection_trace.py": "d9306f0b296fcb8314a3aca02e0a5cd22e2f5be681342fd89c8e1b9935273eb7",
+    "tools/test_complete_hd_army_movement_probe.py": "19d33746a9dfe1494c609a6d1037410012fe124d484febf4b577ffd76a2778ae",
+    "tools/run_framed_offline_tests.py": "92e298af37d9ae3b0c87f92698ac269e82b95a61761fd7b3bdfe7552d9c1900f",
+    "patch_clash95_hd.py": "b2d8af4caf3fef1de0e3902b638be3c6bfba731bca7cd8d10c85c93e12424093"
+  },
+  "preserved": {
+    "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+    "unfinished_files": {
+      "tools/framed_army_movement_trace.py": "933793262a087db0601e0ce8e717ad46eaaec0e21d31e1c5d38b57f31eda80e4",
+      "tools/test_framed_army_movement_trace.py": "61aa53f412aa53e182c54359f44621a78b8105756b9a624795653dd4eaf0f1a5",
+      "tools/framed_army_keypan_trace.py": "897427a1c4e96d3ff718f3a4e9381490a973770a0a3a6522b43a837cb8140fa1"
+    }
+  },
+  "limits": [
+    "No game or debugger run was performed for this integration.",
+    "Synthetic parser logs are fixtures, not gameplay observations.",
+    "A fresh owned runtime host, full movement trace, pixel audits and cleanup evidence remain necessary.",
+    "Ordinary input, visible/manual proofs, continuity, endurance and stable promotion remain separate outstanding requirements."
+  ],
+  "ci_initial_failure": {
+    "job_url": "https://github.com/lisu188/clash-hd/actions/runs/34742957665/job/103685668089",
+    "head": "d96f29792052c61dc2b5c842b0228ba43feed479",
+    "cause": "Linux checkout normalized the root patcher shim to LF, differing from the reviewed Windows source bytes pinned by startup. Startup and synthetic selection-trace suites rejected it."
+  },
+  "line_ending_fix": {
+    "path": "patch_clash95_hd.py",
+    "old_git_sha256": "c86ec84721320ace8170a13f58a9e57392513f8074ae550cb99349f148990ffe",
+    "reviewed_sha256": "b2d8af4caf3fef1de0e3902b638be3c6bfba731bca7cd8d10c85c93e12424093",
+    "normalized_content_identical": true,
+    "scope": "Add exact-byte Git attribute and record the already-tested CRLF source bytes. No Python logic or pin weakened; all startup dependency pins audited against staged Git blobs."
+  },
+  "updated_at": "2026-09-13T06:34:10.749802+00:00"
+}

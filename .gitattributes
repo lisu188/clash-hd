@@ -792,6 +792,10 @@
 /src/patcher/framed_modal_slots.py -text whitespace=cr-at-eol
 /src/patcher/pe_modal_slots_extension.py -text whitespace=cr-at-eol
 /tools/build_framed_modal_slots_candidate.py -text whitespace=cr-at-eol
+/tools/army_probe_startup.py -text whitespace=cr-at-eol
+/tools/complete_hd_army_selection_probe.py -text whitespace=cr-at-eol
+/tools/complete_hd_army_selection_trace.py -text whitespace=cr-at-eol
+/tools/complete_hd_army_movement_probe.py -text whitespace=cr-at-eol
 /scripts/cdb/run_modal_slots_barracks_capture.ps1 -text whitespace=cr-at-eol
 /tools/modal_slots_candidate_context.py -text whitespace=cr-at-eol
 /tools/modal_slots_barracks_probe.py -text whitespace=cr-at-eol
@@ -800,3 +804,9 @@
 /tools/test_modal_slots_barracks_capture.py -text whitespace=cr-at-eol
 /tools/complete_hd_main_probe.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_main_probe.py -text whitespace=cr-at-eol
+/tools/run_framed_offline_tests.py -text whitespace=cr-at-eol
+/tools/test_army_probe_startup.py -text whitespace=cr-at-eol
+/tools/test_complete_hd_army_selection_probe.py -text whitespace=cr-at-eol
+/tools/test_complete_hd_army_selection_trace.py -text whitespace=cr-at-eol
+/tools/test_complete_hd_army_movement_probe.py -text whitespace=cr-at-eol
+/patch_clash95_hd.py -text whitespace=cr-at-eol

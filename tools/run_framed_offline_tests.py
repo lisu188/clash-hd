@@ -58,6 +58,10 @@ SUITES = (
     "test_complete_hd_main_probe",
     "test_framed_gameplay_evidence",
     "test_modal_slots_barracks_capture",
+    "test_army_probe_startup",
+    "test_complete_hd_army_selection_probe",
+    "test_complete_hd_army_selection_trace",
+    "test_complete_hd_army_movement_probe",
 )
 
 
