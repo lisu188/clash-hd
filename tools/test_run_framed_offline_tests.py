@@ -20,7 +20,9 @@ NAME = "test_framed_viewport"
 PASS = "import unittest\nclass Fixture(unittest.TestCase):\n def test_ok(self): self.assertEqual(2 + 2, 4)\n"
 SKIP = "import unittest\n@unittest.skip('needs an unavailable fixture')\nclass Fixture(unittest.TestCase):\n def test_a(self): pass\n def test_b(self): pass\n"
 EVIDENCE_SUITES = ("test_complete_hd_main_probe", "test_framed_gameplay_evidence",
-                   "test_modal_slots_barracks_capture")
+                   "test_modal_slots_barracks_capture", "test_complete_hd_manual_plan",
+                   "test_complete_hd_manual_attach", "test_framed_world_clear_audit",
+                   "test_modal_slots_primary_capture", "test_modal_slots_primary_host")
 
 
 class OfflineRunnerTests(unittest.TestCase):
@@ -139,7 +141,7 @@ class OfflineRunnerTests(unittest.TestCase):
         report = json.loads(process.stdout)
         self.assertEqual(report["selected_suites"], list(EVIDENCE_SUITES))
         self.assertEqual([row["suite"] for row in report["suites"]], list(EVIDENCE_SUITES))
-        self.assertEqual(report["successful_tests"], 3)
+        self.assertEqual(report["successful_tests"], len(EVIDENCE_SUITES))
         self.assertTrue(report["selected_coverage_complete"])
         self.assertFalse(report["full_suite_selected"])
 

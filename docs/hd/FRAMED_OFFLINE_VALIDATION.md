@@ -2,14 +2,16 @@
 
 The source integration in PR #24 is not evidence of game-runtime correctness.
 `tools/run_framed_offline_tests.py` provides a repeatable, source-bound baseline
-for its 23 fixture modules. It never builds or launches the game itself, changes
+for the 47 integrated fixture modules. It never launches the game, changes
 patch bytes, repins implementation sources, or updates a promotion decision.
+Some fixtures reconstruct candidates in memory when the original is available.
 
 ## Run
 
 From the repository root:
 
 ```powershell
+python -m pip install --only-binary=:all: -r tools/requirements-framed-offline.txt
 python tools/test_run_framed_offline_tests.py -v
 python tools/run_framed_offline_tests.py --report-json C:\ClashTests\reports\framed-offline.json
 ```
@@ -20,7 +22,7 @@ A focused geometry run can demand that every selected test actually succeeds:
 python tools/run_framed_offline_tests.py --suite test_framed_viewport --require-complete
 ```
 
-The per-suite worker timeout defaults to 180 seconds and can be changed with
+The per-suite worker timeout defaults to 600 seconds and can be changed with
 `--timeout`. Each suite runs in a separate Python process so its import state
 cannot contaminate the next suite. The runner continues after a failed suite
 and records available tracebacks, nonzero exits, missing worker reports, and
@@ -52,7 +54,7 @@ A wholly skipped run is not accepted as an offline pass.
 selected suites to succeed, without skips or expected failures. The optional
 `--require-complete` switch makes incomplete coverage a nonzero exit even when
 the available offline cases pass. `full_suite_selected` says whether the whole
-23-module set was requested, rather than a focused subset.
+47-module set was requested, rather than a focused subset.
 
 `successful_tests` counts recorded successful test cases, not test methods that
 were merely discovered. `skipped_records` is deliberately not called a skipped
@@ -66,6 +68,11 @@ visible-runtime evidence.
 
 ## Environment-dependent coverage
 
+The synthetic manual-capture fixtures use pinned Pillow 12.3.0 to create and
+inspect in-memory images. The requirement file and CI install the same version;
+missing Pillow is an environment failure, not a reason to skip those tests.
+No screen capture API runs in the offline fixtures.
+
 The existing tests retain their own requirements. Cases that need the
 user-owned original executable, native resource data, or the Windows x86
 fixture environment may skip when those requirements are absent. Some Windows
@@ -74,7 +81,7 @@ these are not the game or a visible runtime session. No retail material is
 installed, downloaded, synthesized as game evidence, or uploaded by this lane.
 
 The GitHub workflow runs on Ubuntu 24.04 and Windows Server 2022 with Python
-3.12. It tests the runner first, then checks source pins and runs the framed
+3.12. It installs the image fixture dependency, tests the runner, then checks source pins and runs the framed
 fixture set. The job summary exposes per-suite outcomes and the completeness
 flag. Only the JSON report is uploaded, with seven-day retention. Actions are
 commit-pinned; permissions are read-only and checkout credentials are not
@@ -85,8 +92,9 @@ that tool's historical runtime reports or reclassify known failures.
 
 ## Next evidence step
 
-After the offline baseline, build an exact 1280x720 validation candidate on the
-Windows game host, record whether the minimap viewport hook is enabled, and
-collect the rendering, input, and transition evidence described in the project
-guides. Keep 800x600 as the protected regression reference. Visible capture and
-manual input still require fresh approval.
+After the offline baseline, follow the exact complete-HD candidate and current
+validation frontier in `AGENT_HANDOFF.md`. The release target is 1920x1080,
+1024x768 is the intermediate regression target, and 800x600 remains the launcher
+default. Keep the slots and primary-composition diagnostics separate until their
+fixes and evidence are integrated into a reviewed release recipe. Visible capture
+and manual input still require fresh approval.
