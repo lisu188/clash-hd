@@ -1,0 +1,800 @@
+{
+  "schema": 1,
+  "generated_at": "2026-09-08T09:49:28.028978+00:00",
+  "status": "reviewable_validation_candidate_with_pending_acceptance",
+  "passed": false,
+  "stable_stage_should_change": false,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
+  "resolution": [
+    1280,
+    720
+  ],
+  "evidence_class": "expanded_battle_validation",
+  "candidate": {
+    "path": "C:\\ClashTests\\battle-hd-1280x720\\clash95_battlehd_review_v3.exe",
+    "sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47"
+  },
+  "source_executable": {
+    "path": "C:\\Clash\\clash95.exe",
+    "sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE"
+  },
+  "patch_integrity": {
+    "report": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\patch-stage-review-v3.json",
+      "sha256": "99FD9418C7A6908188AB0C426FBD35AF81117C4E901F97AE0D8983F48AF8BCCC"
+    },
+    "patch_count": 283,
+    "status_counts": {
+      "patched": 283
+    },
+    "source_sha_required": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+    "inventory": "Every record includes file offset, VA/RVA, exact old/new bytes, group and rationale. Original-byte, span, section and candidate-identity checks remain fail closed.",
+    "reproducibility": "Review executable and four final hidden-run executables have identical SHA-256; focused fixtures verify generated assembly and guarded byte application."
+  },
+  "geometry": {
+    "battlefield_half_open": [
+      32,
+      136,
+      1120,
+      584
+    ],
+    "tile_capacity": [
+      17,
+      7
+    ],
+    "tile_pixels": 64,
+    "sidebar_half_open": [
+      1120,
+      120,
+      1280,
+      600
+    ],
+    "camera_x": "0..max(0,arena_columns-17)",
+    "camera_y": 0
+  },
+  "focused_checks": {
+    "generated_at": "2026-09-08T09:40:15.409312+00:00",
+    "runtime_policy": "Python fixtures and x86 emulation only; no game or debugger launches",
+    "passed": true,
+    "checks": {
+      "battle_hd_patch": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_hd_patch.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_hd_patch.log",
+        "log_sha256": "9128CE45F4BA96473A6C9C7EEED66CA42A9743430D6547C453D7E110F3F5A8B7",
+        "test_source_sha256": "187B326AB5199723638207283FF002B45079620272DDEBC375500E5A7A2767FD"
+      },
+      "battle_hd_core": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_hd_core.py",
+          "--toolchain-path",
+          "C:\\ClashTests\\battle-hd-tools\\python",
+          "--source-exe",
+          "C:\\Clash\\clash95.exe",
+          "--require-machine-tools"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_hd_core.log",
+        "log_sha256": "F26C15857E3BCE0D2CE80AE6D3D51822ED65ED22D01ED56138037B4618631DD9",
+        "test_source_sha256": "46E8B8E077A215D7B16970720A4FFEF5C04574D2FD41F6BEA70BA2814DA25A88"
+      },
+      "battle_hd_hud": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_hd_hud.py",
+          "--toolchain-path",
+          "C:\\ClashTests\\battle-hd-tools\\python",
+          "--source-exe",
+          "C:\\Clash\\clash95.exe",
+          "--require-machine-tools"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_hd_hud.log",
+        "log_sha256": "5717A6BA31A63AFEAAE70EBF0C96405AB00D253EC1DF209EAEFA43E7A7384A37",
+        "test_source_sha256": "3AD8DD8FC6FE1FBE096BE1ABE7CEE070E0E91F1F978CF4961D57388ACDAFD629"
+      },
+      "battle_hd_summary": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_hd_summary.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_hd_summary.log",
+        "log_sha256": "157D7DE03A6C279643C2279AD2D6904C432E6C3B5FFDB4B97A98AE2F55390A85",
+        "test_source_sha256": "58C008F64B9589018211A6C723DBFCC3889C48FD4A3B82A387DE2F06A0B04788"
+      },
+      "patch_resolution": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_patch_resolution.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\patch_resolution.log",
+        "log_sha256": "2AE49F85E1871FB095B47C2C86547C54E8DC026D00F754D9338552A414E37D81",
+        "test_source_sha256": "687DC6FC4AEF7CF19139A7ABAA3893BA5767AF34EF5D2E385E14B3179C610346"
+      },
+      "patch_definition_guard": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_patch_definition_guard.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\patch_definition_guard.log",
+        "log_sha256": "1890DA50F50E8B62DEA92988A1DA3BFBCA91C2C7D719D5676311B28680987CBD",
+        "test_source_sha256": "FFD52D951878CE49ED8D0364A9D84676A6D4C8D88AF2D7075A6846868D75FBB9"
+      },
+      "launcher_core": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_launcher_core.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\launcher_core.log",
+        "log_sha256": "DF3740D6ADB8AF5F76748FAF7E8E426C613B4CDA24CA5BF53B0DB4084A07B9CA",
+        "test_source_sha256": "C17F210477180386693DA116A60FE520634D50F5D34B37DFD8C0AC606B1AC5F3"
+      },
+      "launcher_policy_guard": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_launcher_policy_guard.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\launcher_policy_guard.log",
+        "log_sha256": "E7418610C6531723751BC98C1DA7B1AC7171690B02923BED9D7B4AC46602F2F8",
+        "test_source_sha256": "8C035196E75AC1661BBFB76132DF9AF455395E40B1021031F4F1AFA92BAF1D7E"
+      },
+      "battle_ui_summary": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_ui_summary.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_ui_summary.log",
+        "log_sha256": "0B087F09CF309670163F794C331D316DBDC6B094DE5AAD6A10AA9199E03B19D3",
+        "test_source_sha256": "FB58DC4F7D8CB868E393FCE52ADDAF242A48B052ED40B5AE97D1BCCA964973EF"
+      },
+      "battle_ui_gate": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_ui_gate.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_ui_gate.log",
+        "log_sha256": "93B6FB24C1F57C113973C7ADE91371502EAED6D551BDD004A7785E22B4125D6B",
+        "test_source_sha256": "7DE1E05C1A89271F61F7ECBCAA15A888E4237EE7DBDFFBC3E09D57E060CABADF"
+      },
+      "battle_ui_evidence_matrix": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_ui_evidence_matrix.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_ui_evidence_matrix.log",
+        "log_sha256": "ECCCC5BB2D72A9876AAEBFCBC60B34590214F7576EBCEDC785A216B48A0BA47B",
+        "test_source_sha256": "CC6B9A7A3318ED88FB3177C3F5DD3E7889DE42533BE6E02DFB39B606C54ED15B"
+      },
+      "battle_visible_input_summary": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_visible_input_summary.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_visible_input_summary.log",
+        "log_sha256": "427A453588F60D6096854DF802BB30E730D9A3CE0809B768838541776EDFAFE4",
+        "test_source_sha256": "60B86F7CF13017AF31B21D8251DA3CA41E87996A875E8BBE5952B59FC538CF20"
+      },
+      "battle_ui_probes": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_ui_probes.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_ui_probes.log",
+        "log_sha256": "ECC8085B3875107ACE39CA78254C1D7E44D9E4DB0B519AC890BE03A997A8B9EF",
+        "test_source_sha256": "FC8212E958EE2AE6616C2945EBCC498A675F834340C6A29A264CC45321E35123"
+      },
+      "battle_visible_harness_guard": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\test_battle_visible_harness_guard.py"
+        ],
+        "log": "C:\\ClashTests\\battle-hd-1280x720\\focused-checks\\battle_visible_harness_guard.log",
+        "log_sha256": "775D5BD3EC1F1247386E1701DD412F323C32B07CFD838412EBE174470CEF9920",
+        "test_source_sha256": "4F98726BF50B17B405AA4D9C02593694FDACB18F7106BA963FFF58941785904E"
+      }
+    }
+  },
+  "main_integration_checks": {
+    "render_cdb_surface_probe": {
+      "passed": true,
+      "exit_code": 0,
+      "log": "C:\\ClashTests\\battle-hd-1280x720\\integration-checks\\render_cdb_surface_probe.log",
+      "log_sha256": "a48cead859ce44a3aa20902677e61d76c6a026dfabd2f4c14852719cd693c10e",
+      "test_source_sha256": "40ce7f7949029e5b6f74818d719ce3173bf28c8fc0f3efd1b74a39b685aaa9a1"
+    },
+    "complete_hd_hidden_harness": {
+      "passed": true,
+      "exit_code": 0,
+      "log": "C:\\ClashTests\\battle-hd-1280x720\\integration-checks\\complete_hd_hidden_harness.log",
+      "log_sha256": "0058e837f9c3cd60f094714615fa214958e834281d778d92775c1438b58efc63",
+      "test_source_sha256": "da6cb3607e5fd589bbedf7f47fe1880ef7b5c57d741a97d7d104f3a30876d541"
+    },
+    "launcher_multiresolution": {
+      "passed": true,
+      "exit_code": 0,
+      "log": "C:\\ClashTests\\battle-hd-1280x720\\integration-checks\\launcher_multiresolution.log",
+      "log_sha256": "a82b16d62d2d49727ce2db255b6a3b9232de0af476875cfc86c5f4b7d61f33e0",
+      "test_source_sha256": "e581c681cf351da2fa8a7a339bafc8037a31496d4e4f611f027eb557674f3546"
+    },
+    "launcher_completehd": {
+      "passed": true,
+      "exit_code": 0,
+      "log": "C:\\ClashTests\\battle-hd-1280x720\\integration-checks\\launcher_completehd.log",
+      "log_sha256": "b375b631b63150ab2bd269b67d072e1ef5b191e91276a3870a38082f4a3a5b07",
+      "test_source_sha256": "be0ca1dd2eaa31f9b37099180b9e9ead1ce3f1b7a776a5e3817c7f33df4c73b7"
+    },
+    "hd_validation_drivers": {
+      "passed": true,
+      "exit_code": 0,
+      "log": "C:\\ClashTests\\battle-hd-1280x720\\integration-checks\\hd_validation_drivers.log",
+      "log_sha256": "5f5e07fc5a56f3d250bc309a5112b4b3e3808a73f1e4eff2b94cc7b29b881e29",
+      "test_source_sha256": "a27a8e11be3a23851add6c2d5144d1bf2125935b54f7aa11fd6161fd7683b252"
+    }
+  },
+  "source_binding_integration": {
+    "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\reports\\battle_hd_source_binding_integration.json",
+    "sha256": "B849626B955A3A975FD70E1404800952D76233F10E16CFCEA1C340FA2C341B0C"
+  },
+  "pr60_main_integration": {
+    "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\reports\\battle_hd_source_binding_pr60.json",
+    "sha256": "718545F89B70375F55AFA08145AE9B60CDB85735C70B850B0756ECC8EF197CC4"
+  },
+  "latest_main_integration": {
+    "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\reports\\battle_hd_source_binding_checkpoint326.json",
+    "sha256": "87BF80701546A4E1572BCA3464FA6CC7BD4FAE866A3EE1F83F8DEC930025B380"
+  },
+  "launcher_dry_run": {
+    "path": "C:\\ClashTests\\battle-hd-1280x720\\launcher-dry-run-final.json",
+    "sha256": "AC0EE0541A043797185619AFF69C70FD25C303D78AF49CDC7AA9187C2E9C9CAB"
+  },
+  "hidden_runs": {
+    "helpers": {
+      "report": {
+        "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\current\\battle-hd-helpers-current.json",
+        "sha256": "0CA9DAF7467C791362C2BA72D000DDE011DB3B117826B94B4D18D2159B9B6F6A"
+      },
+      "candidate_sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
+      "run_manifest": {
+        "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111019\\battle-hd-run.json",
+        "sha256": "03D7091F1CEDA0C433E2AF392E6281A748B5F334628FA2902BB9C360CF5162E8"
+      },
+      "evidence_class": "forced_hidden_helper_measurements",
+      "sequence_completed": true,
+      "diagnostics_passed": 6,
+      "diagnostics_total": 7,
+      "unproven_diagnostics": [
+        "present_surface"
+      ],
+      "acceptance_passed": false,
+      "runtime_context": {
+        "wrapper": "memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=08812F07A5F1A98588E861E1FBB81ED0340FD843A58758A631986093AD6614CD",
+        "launch_mode": "hidden-desktop-cdb",
+        "input_method": "debugger_memory_register_writes_and_direct_calls",
+        "input_evidence_class": "forced_hidden_helper_measurements",
+        "route_method": "forced_unit_attack",
+        "harness_result": {
+          "passed": true,
+          "timed_out": false,
+          "cdb_exit_code": null,
+          "stopped_after_dump": true,
+          "dump_method": "host-readprocessmemory",
+          "cleanup_passed": true,
+          "remaining_process_ids": [],
+          "runtime_error": null
+        }
+      },
+      "limitations": [
+        "No OS input, manual observation, visible-wrapper capture, or approval is inferred.",
+        "Actual arena is 16 by 7; this run does not prove a 17-column or horizontally scrollable live arena.",
+        "The dedicated phase14 present-entry marker was absent; accepted tile and helper observations do not imply copy bounds or final composition.",
+        "CDB emitted its command-skipping notice after the completed measurement and SURFDUMP_HOST_READY markers; claims are restricted to recorded measurements and the host dump, with no post-dump execution inference."
+      ],
+      "software_surface_png": {
+        "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111019\\surface.png",
+        "sha256": "EA045D44100C64A2B41193A711FA2CA8B7078E7EB319B39BEE4D0E441672E882"
+      }
+    },
+    "camera": {
+      "report": {
+        "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\current\\battle-hd-camera-current.json",
+        "sha256": "8CD48B518DF35BC17F2A1090DCC59438EFD684DCE69CD0DDCDB92F61146DF5F2"
+      },
+      "candidate_sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
+      "run_manifest": {
+        "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\battle-hd-run.json",
+        "sha256": "8CA8C033401E27767F9B88ADEF4BF917FB066107D9BFBE1595E142C37E527681"
+      },
+      "evidence_class": "forced_hidden_camera_fixture",
+      "sequence_completed": true,
+      "diagnostics_passed": 7,
+      "diagnostics_total": 7,
+      "unproven_diagnostics": [],
+      "acceptance_passed": false,
+      "runtime_context": {
+        "wrapper": "memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=59E9FC28F1F06EE3D673DF3BD2C79CCEB2330C5AF821E482AA26B64092A2D3D8",
+        "launch_mode": "hidden-desktop-cdb",
+        "input_method": "debugger_memory_register_writes_and_direct_calls",
+        "input_evidence_class": "forced_hidden_camera_fixture",
+        "route_method": "forced_unit_attack",
+        "harness_result": {
+          "passed": true,
+          "timed_out": false,
+          "cdb_exit_code": null,
+          "stopped_after_dump": true,
+          "dump_method": "host-readprocessmemory",
+          "cleanup_passed": true,
+          "remaining_process_ids": [],
+          "runtime_error": null
+        }
+      },
+      "limitations": [
+        "Width17/20 are explicit debugger fixtures, not naturally generated arena dimensions.",
+        "No rendering occurred while fixture arena state was installed. Natural scrolling, real input, and final composition remain unproven.",
+        "CDB emitted its command-skipping notice after the completed measurement and SURFDUMP_HOST_READY markers; claims are restricted to recorded measurements and the host dump, with no post-dump execution inference."
+      ],
+      "software_surface_png": {
+        "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111125\\surface.png",
+        "sha256": "EA045D44100C64A2B41193A711FA2CA8B7078E7EB319B39BEE4D0E441672E882"
+      }
+    },
+    "lifecycle": {
+      "report": {
+        "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\captures\\current\\battle-hd-lifecycle-current.json",
+        "sha256": "2504E39A973DA2BEA3BA346109EB9DEA86AF4BC8AF9470CBD1746AE256A005B6"
+      },
+      "candidate_sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
+      "run_manifest": {
+        "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111326\\battle-hd-run.json",
+        "sha256": "6DB311E9E9D6C6884217185CF3FCA6882C5B29E8CAF4517426EA7737DBAA30CD"
+      },
+      "evidence_class": "forced_hidden_lifecycle",
+      "sequence_completed": true,
+      "diagnostics_passed": 12,
+      "diagnostics_total": 14,
+      "unproven_diagnostics": [
+        "banner_cursor_return",
+        "results_cursor_return"
+      ],
+      "acceptance_passed": false,
+      "runtime_context": {
+        "wrapper": "memory-only ddraw_surfdump_proxy installed as ddraw.dll; SHA256=0F9644A40E1969C6B162354CD367FCE1A5EB192225FF50AE95F4551628580053",
+        "launch_mode": "hidden-desktop-cdb",
+        "input_method": "debugger_memory_register_writes_and_direct_calls",
+        "input_evidence_class": "forced_hidden_lifecycle",
+        "route_method": "forced_unit_attack",
+        "harness_result": {
+          "passed": true,
+          "timed_out": false,
+          "cdb_exit_code": null,
+          "stopped_after_dump": true,
+          "dump_method": "host-readprocessmemory",
+          "cleanup_passed": true,
+          "remaining_process_ids": [],
+          "runtime_error": null
+        }
+      },
+      "limitations": [
+        "No natural or manual command input is inferred from direct callback calls.",
+        "The hidden software surface does not prove final visible-wrapper colors, composed HUD/minimap layers, or natural map input.",
+        "Banner and results queued logical cursor(576,360), but their immediate input polls replaced X with4. Modal cursor retained(576,360); visible input behavior remains unproven.",
+        "CDB emitted its command-skipping notice after SURFDUMP_HOST_READY, followed by another map-redraw-return/HOST_READY record. Claims use the recorded completed route and host dump only; this does not establish a natural post-return run interval."
+      ],
+      "software_surface_png": {
+        "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111326\\surface.png",
+        "sha256": "DA55D9F9808B3CDC9D3467AA41C569CEB3ECAD34173FC5E6E3E822038889E707"
+      }
+    }
+  },
+  "pixel_checks": {
+    "short_arena_empty_slot": {
+      "png": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111019\\surface.png",
+      "rect_half_open": [
+        1056,
+        136,
+        1120,
+        584
+      ],
+      "nonblack_pixels": 0,
+      "pixels": 28672,
+      "passed": true
+    },
+    "exit_right_gutter": {
+      "png": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111326\\surface.png",
+      "rect_half_open": [
+        1248,
+        232,
+        1280,
+        600
+      ],
+      "nonblack_pixels": 0,
+      "pixels": 11776,
+      "passed": true
+    }
+  },
+  "results_snapshot": {
+    "candidate_sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
+    "run_summary": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111818\\summary.json",
+      "sha256": "C8BB8F54355D7BCD51B2B91CC5BD7AEE105BF53ED751453EF353FB7AB351F030"
+    },
+    "generated_probe": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111818\\clash95_surface_dump_probe.generated.cdb",
+      "sha256": "5681D3ACB11A1DFC23B9962F55B39F9E2480557EE3268BF68FFEDB0A8AB31A69"
+    },
+    "log": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111818\\cdb-surface-dump.log",
+      "sha256": "52C71E9B4BB298572E774287D03E3FBA00B463F044B88FF4898E01EF051588F2"
+    },
+    "software_surface_png": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111818\\surface.png",
+      "sha256": "28225109561DD38DFFC64427F6E213AC9CC717F5019A40E170AE82FC78203869"
+    },
+    "software_surface_raw": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\captures\\cdb-surface-dump-20260908-111818\\surface.raw",
+      "sha256": "B11FDF543DFB00DB27E155F0689852B9E9B26A28326BB43B660C05CCE48BF042"
+    },
+    "wrapper_sha256": "3EADED354CA6221A88892508DAD2D64C9B53FDFB54E7CEC800816D4C01290225",
+    "launch_mode": "hidden-desktop-cdb",
+    "input_method": "debugger_memory_register_writes_and_direct_calls",
+    "evidence_class": "forced_hidden_primary_surface_snapshot",
+    "harness_passed": true,
+    "observation": "Native 640x178 results message centered at origin (256,271); all six native battle command controls appear at the right. Four frame edges and black outer padding inspected.",
+    "limitations": [
+      "Temporary software buffer receives a native copy from DD primary after dialog drawing. Snapshot stops before dismissal and proves no additional lifecycle.",
+      "CDB command-skipping notice follows HOST_READY; no natural post-dump interval is claimed.",
+      "Single hidden software capture; final palette/composition and visible tear-free stable pair are unproven."
+    ]
+  },
+  "aggregate_refresh": {
+    "status": "pending_after_latest_main_merge",
+    "passed": false,
+    "report": {
+      "path": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-after-main-artifacts\\current-evidence-refresh-current.json",
+      "sha256": "D5C788225F8B1F81BB87302267ED1E509E52F49703AD73EE2CBB4DC372DC6874"
+    },
+    "report_scope": "prior completed refresh before latest main integration",
+    "checks_total": 165,
+    "checks_failed": 23,
+    "failing_checks": {
+      "load_slot_route_limit_guard": {
+        "failures": [
+          "harness: missing marker load_mouse_x: $loadMouseX = 320",
+          "harness: missing marker load_mouse_y_formula: $loadMouseY = 166 + (22 * $LoadSlot)"
+        ],
+        "report": "captures\\current\\load-slot-route-limit-current.json"
+      },
+      "right_bottom_slot_fixture_plan": {
+        "failures": [
+          "load-slot route-limit guard is not passing"
+        ],
+        "report": "captures\\current\\right-bottom-slot-fixture-plan-current.json"
+      },
+      "right_bottom_slot_fixture_runtime_plan": {
+        "failures": [
+          "right-bottom slot fixture plan is not passing"
+        ],
+        "report": "captures\\current\\right-bottom-slot-fixture-runtime-plan-current.json"
+      },
+      "load_slot_transition_geometry_guard": {
+        "failures": [
+          "transition geometry guard failed: surface_formula_present",
+          "surface-dump script missing geometry token: $loadMouseX = 320",
+          "surface-dump script missing geometry token: $loadMouseY = 166 + (22 * $LoadSlot)"
+        ],
+        "report": "captures\\current\\load-slot-transition-geometry-guard-current.json"
+      },
+      "load_slot_transition_probe_preview": {
+        "failures": [
+          "transition probe preview failed: geometry_guard_passed"
+        ],
+        "report": "captures\\current\\load-slot-transition-probe-preview-current.json"
+      },
+      "right_bottom_blocker_triage": {
+        "failures": [
+          "triage check failed: hidden_fixture_plan_ready"
+        ],
+        "report": "captures\\current\\right-bottom-blocker-triage-current.json"
+      },
+      "right_bottom_visual_artifact_guard": {
+        "failures": [
+          "visual artifact guard failed: blocker_triage_non_promoting"
+        ],
+        "report": "captures\\current\\right-bottom-visual-artifact-guard-current.json"
+      },
+      "load_slot_transition_readiness": {
+        "failures": [
+          "transition readiness check failed: geometry_guard_passed",
+          "transition readiness check failed: probe_preview_passed"
+        ],
+        "report": "captures\\current\\load-slot-transition-readiness-current.json"
+      },
+      "castle_overview_evidence": {
+        "failures": [
+          "owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+          "forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+        ],
+        "report": "captures\\current\\castle-overview-evidence-current.json"
+      },
+      "castle_overview_promotion_decision": {
+        "failures": [
+          "castle overview evidence matrix is not passing"
+        ],
+        "report": "captures\\current\\castle-overview-promotion-decision-current.json"
+      },
+      "castle_overview_baseline_recheck": {
+        "failures": [
+          "latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+          "latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+        ],
+        "report": "captures\\current\\castle-overview-baseline-recheck-current.json"
+      },
+      "stable_stage_guard": {
+        "failures": [
+          "castle_overview_promotion_decision: castle overview promotion decision is not passing",
+          "castle_overview_evidence_matrix: castle overview evidence matrix is not passing"
+        ],
+        "report": "captures\\current\\stable-stage-guard-current.json"
+      },
+      "python_runtime_safety_guard": {
+        "failures": [
+          "src/launcher/gui.py uses risky Python runtime/input APIs but is not gated or exempt",
+          "tools/hd_layout_observation_manifest.py uses risky Python runtime/input APIs but is not gated or exempt",
+          "tools/run_framed_offline_tests.py uses risky Python runtime/input APIs but is not gated or exempt"
+        ],
+        "report": "captures\\current\\python-runtime-safety-current.json"
+      },
+      "resolution_manifest_guard": {
+        "failures": [
+          "manifest missing, invalid, or wrong schema: src\\launcher\\resolutions.json"
+        ],
+        "report": "captures\\current\\resolution-manifest-guard-current.json"
+      },
+      "handoff_freshness_guard": {
+        "failures": [
+          "missing handoff file: .codex-loop\\NEXT.md",
+          "missing handoff file: .codex-loop\\STATE.md",
+          "missing handoff file: .codex-loop\\TASKS.md",
+          "missing current handoff phrase for no_visible_runtime_warning: Do not run visible/manual",
+          "missing current handoff phrase for no_visible_runtime_warning: explicit user approval",
+          "missing current handoff phrase for no_popup_operator_preference: Do not launch Clash95, CDB, wrappers, PowerShell harnesses",
+          "missing current handoff phrase for no_popup_operator_preference: visible windows unless the user explicitly approves",
+          "missing current handoff phrase for right_bottom_safety_done: stable-stage promotion",
+          "missing current handoff phrase for manual_checklist_artifact: pending_manual_validation",
+          "missing current handoff phrase for manual_proof_template_artifact: template_valid_as_proof=False",
+          "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-current.md",
+          "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: load-slot-transition-readiness-tests-current.md",
+          "missing current handoff phrase for loop_load_slot_transition_readiness_artifacts: ready_for_hidden_transition_probe"
+        ],
+        "report": "captures\\current\\handoff-freshness-guard-current.json"
+      },
+      "hd_soak_execution_boundary": {
+        "failures": [
+          "missing_token did not fail closed before side effects",
+          "missing_expiry did not fail closed before side effects",
+          "expired_packet did not fail closed before side effects",
+          "token_mismatch did not fail closed before side effects"
+        ],
+        "report": "captures\\current\\hd-soak-execution-boundary-current.json"
+      },
+      "hd_soak_dry_run_plan": {
+        "failures": [
+          "dry-run harness did not produce a readable JSON plan"
+        ],
+        "report": "captures\\current\\hd-soak-dry-run-plan-current.json"
+      },
+      "hd_soak_intro_skip_rerun_readiness": {
+        "failures": [
+          "dry-run plan is not passing",
+          "dry-run plan status is 'dry_run_plan_invalid'",
+          "dry-run plan would change the stable stage",
+          "dry-run plan does not keep right-bottom promotion blocked",
+          "dry-run intro_skip click_mode is None, expected 'postmessage'",
+          "dry-run intro_skip click_repeat is None, expected 8",
+          "dry-run intro_skip space_pulses is None, expected 4",
+          "dry-run intro_skip stop_click_repeat_on_drift is None, expected True",
+          "dry-run intro_skip proof_class is None, expected 'intro_skip_harness_prep_not_manual_directinput_release_proof'",
+          "approval command missing fragment: -IntroSkipClickMode",
+          "approval command missing fragment: postmessage",
+          "approval command missing fragment: -IntroSkipClicks",
+          "approval command missing fragment: 8",
+          "approval command missing fragment: -SkipPulses",
+          "approval command missing fragment: 4",
+          "approval command missing fragment: -SampleIntervalSec",
+          "approval command missing fragment: 15",
+          "approval command missing fragment: -MaxInputDriftPx",
+          "approval command missing fragment: 1",
+          "approval command missing fragment: -MinNonblackPercent",
+          "approval command missing fragment: 10",
+          "approval command missing fragment: -MinUniqueSampleColors",
+          "approval command missing fragment: 8",
+          "approval command missing fragment: -MaxArtifactMB",
+          "approval command missing fragment: 250",
+          "approval command missing fragment: -MaxWorkingSetGrowthMB",
+          "approval command missing fragment: 64",
+          "approval command missing fragment: -MaxPrivateMemoryGrowthMB",
+          "approval command missing fragment: 64",
+          "approval command missing fragment: -MaxHandleGrowth",
+          "approval command missing fragment: 128",
+          "approval command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
+          "approval command missing fragment: -VisibleRuntimeApprovalToken",
+          "approval command missing fragment: -Execute",
+          "approval command missing fragment: -AllowVisibleRuntime",
+          "approval command missing fragment: -RequirePass",
+          "approval command missing fragment: -Json",
+          "dry-run visible runtime approval token is missing or malformed",
+          "dry-run visible runtime approval expires_utc is missing"
+        ],
+        "report": "captures\\current\\hd-soak-intro-skip-rerun-readiness-current.json"
+      },
+      "hd_soak_long_report_guard": {
+        "failures": [
+          "short ladder is not complete; long tiers remain locked",
+          "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
+          "missing passing 2h+ representative route: map-idle",
+          "missing passing 2h+ representative route: map-pan"
+        ],
+        "report": "captures\\current\\hd-soak-long-report-guard-current.json"
+      },
+      "hd_endurance_release_checklist": {
+        "failures": [
+          "protected_stable_stage: stable-stage guard does not prove the protected boundary",
+          "long_soak_representative_routes: 2h+ representative-route soak blocked (locked_short_ladder_incomplete): 2h+ representative-route soak evidence is locked or missing",
+          "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
+          "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
+          "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
+          "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
+          "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
+          "no_speculative_promotion: one or more promotion boundaries are not fail-closed"
+        ],
+        "report": "captures\\current\\hd-endurance-release-checklist-current.json"
+      },
+      "hd_soak_approval_preflight": {
+        "failures": [
+          "dry-run plan report is not passing",
+          "dry-run plan status is 'dry_run_plan_invalid'",
+          "dry-run plan payload is not marked as a dry run",
+          "dry-run plan would change the stable stage",
+          "dry-run plan does not keep right-bottom promotion blocked",
+          "dry-run plan tier/route do not match the current step",
+          "dry-run plan does not pin max input drift to 1 px",
+          "dry-run plan sample_interval_sec is not 15",
+          "dry-run plan does not pin min nonblack percent",
+          "dry-run plan does not pin min unique sample colors",
+          "dry-run plan growth limit max_artifact_mb is not 250",
+          "dry-run plan growth limit max_working_set_growth_mb is not 64",
+          "dry-run plan growth limit max_private_memory_growth_mb is not 64",
+          "dry-run plan growth limit max_handle_growth is not 128",
+          "dry-run plan intro_skip click_mode is not postmessage",
+          "dry-run plan intro_skip click_repeat is not 8",
+          "dry-run plan intro_skip does not stop repeated clicks on transition drift",
+          "dry-run plan intro_skip space_pulses is not 4",
+          "dry-run plan intro_skip proof_class is missing the non-manual proof boundary",
+          "dry-run plan windowed-mode check is not required and passing",
+          "dry-run plan window display is not application",
+          "dry-run plan window presentation is not windowed",
+          "dry-run plan windowed config SHA-256 is missing or malformed",
+          "dry-run plan visible runtime approval token is missing or malformed",
+          "dry-run plan visible runtime approval token_kind is not sha256-16",
+          "dry-run plan visible runtime approval expires_utc is missing",
+          "dry-run plan visible runtime approval min_ttl_minutes is not 30",
+          "dry-run plan visible runtime approval expires_utc is missing or invalid",
+          "dry-run plan visible runtime approval purpose is missing",
+          "dry-run plan candidate_dir is not C:\\ClashTests\\hd-soak",
+          "dry-run plan output_root is not C:\\ClashCaptures\\hd-soak",
+          "dry-run plan input_exe does not exist or was not confirmed readable",
+          "dry-run plan base_sha_status is None, expected 'ok'",
+          "dry-run plan execute command missing fragment: -InputExe",
+          "dry-run plan execute command missing fragment: C:\\Clash\\clash95.exe",
+          "dry-run plan execute command missing fragment: -WorkDir",
+          "dry-run plan execute command missing fragment: C:\\Clash",
+          "dry-run plan execute command missing fragment: -Stage",
+          "dry-run plan execute command missing fragment: -OutputRoot",
+          "dry-run plan execute command missing fragment: C:\\ClashCaptures\\hd-soak",
+          "dry-run plan execute command missing fragment: -IntroSkipClickMode",
+          "dry-run plan execute command missing fragment: postmessage",
+          "dry-run plan execute command missing fragment: -IntroSkipClicks",
+          "dry-run plan execute command missing fragment: 8",
+          "dry-run plan execute command missing fragment: -SkipPulses",
+          "dry-run plan execute command missing fragment: 4",
+          "dry-run plan execute command missing fragment: -VisibleRuntimeApprovalExpiresUtc",
+          "dry-run plan execute command missing fragment: -VisibleRuntimeApprovalToken",
+          "dry-run plan execute command missing fragment: -Execute",
+          "dry-run plan execute command missing fragment: -AllowVisibleRuntime",
+          "dry-run plan execute command missing fragment: -RequirePass",
+          "dry-run plan execute command missing fragment: -Json",
+          "dry-run plan execute command missing fragment: -MaxInputDriftPx",
+          "dry-run plan execute command missing fragment: -SampleIntervalSec",
+          "dry-run plan execute command missing fragment: -MinNonblackPercent",
+          "dry-run plan execute command missing fragment: -MinUniqueSampleColors",
+          "dry-run plan execute command missing fragment: -MaxArtifactMB",
+          "dry-run plan execute command missing fragment: -MaxWorkingSetGrowthMB",
+          "dry-run plan execute command missing fragment: -MaxPrivateMemoryGrowthMB",
+          "dry-run plan execute command missing fragment: -MaxHandleGrowth",
+          "dry-run plan execute command does not include the canonical report JSON path",
+          "dry-run plan execute command does not include the canonical report Markdown path",
+          "current short-step status is 'failed_classified_window_missing_while_process_alive'",
+          "dry_run_plan is not passing",
+          "window-missing rerun readiness is missing window-health mitigation and passing harness-guard evidence"
+        ],
+        "report": "captures\\current\\hd-soak-approval-preflight-current.json"
+      },
+      "no_popup_boundary_guard": {
+        "failures": [
+          "stable_stage_guard: refresh check is not passing: stable_stage_guard",
+          "python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
+          "hd_soak_execution_boundary: refresh check is not passing: hd_soak_execution_boundary",
+          "resolution_manifest_guard: refresh check is not passing: resolution_manifest_guard",
+          "handoff_freshness_guard: refresh check is not passing: handoff_freshness_guard",
+          "right_bottom_blocker_triage: refresh check is not passing: right_bottom_blocker_triage",
+          "right_bottom_slot_fixture_plan: refresh check is not passing: right_bottom_slot_fixture_plan",
+          "right_bottom_slot_fixture_runtime_plan: refresh check is not passing: right_bottom_slot_fixture_runtime_plan",
+          "load_slot_route_limit_guard: refresh check is not passing: load_slot_route_limit_guard",
+          "load_slot_transition_geometry_guard: refresh check is not passing: load_slot_transition_geometry_guard",
+          "load_slot_transition_probe_preview: refresh check is not passing: load_slot_transition_probe_preview",
+          "load_slot_transition_readiness: refresh check is not passing: load_slot_transition_readiness",
+          "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
+          "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
+        ],
+        "report": "captures\\current\\no-popup-boundary-guard-current.json"
+      },
+      "docs_consistency_guard": {
+        "failures": [
+          "generated_state: no-popup boundary is failing",
+          "documents_handoff: missing document: .codex-loop\\NEXT.md",
+          "documents_handoff: missing document: .codex-loop\\STATE.md",
+          "documents_handoff: missing document: .codex-loop\\TASKS.md"
+        ],
+        "report": "captures\\current\\docs-consistency-current.json"
+      }
+    },
+    "stdout_log": null,
+    "artifact_archive": "C:\\ClashTests\\battle-hd-1280x720\\aggregate-after-main-artifacts",
+    "superseded_run_note": "The intermediate PR60 aggregate was stopped before further source changes and produced no completed result. The earlier redirected stdout filename was reused; the immutable archived completed JSON is the prior result source."
+  },
+  "pending_acceptance": [
+    "Dedicated phase-14 present observation is absent; expanded present/copy bounds retain separate runtime acceptance.",
+    "Banner and results queue cursor (576,360), but their immediate hidden input polls replace X with 4. Natural cursor behavior is unresolved.",
+    "Natural movement, attack targeting, commands, scrolling, hover/tooltips, and dialog input on displayed coordinates need approved visible runtime.",
+    "Hidden full/dirty owner calls and emulator bounds checks do not establish every natural animation or absence of out-of-bounds accesses on all battle routes.",
+    "Camera widths 17 and 20 were forced around clamp/recenter calls without rendering fabricated arena cells; real wider-arena rendering remains unproven.",
+    "The forced lifecycle completes results, owner/input-bound restoration and map redraw, but complete restored map composition and actual map input remain unproven.",
+    "Final wrapper colors/composition, tear-checked captures and manual observations require fresh explicit approval. No such approval is recorded.",
+    "Other resolutions and stable promotion remain follow-up work."
+  ],
+  "approval": {
+    "visible_runtime": false,
+    "os_input_injection": false,
+    "live_capture": false,
+    "approval_record": null
+  },
+  "delivery_boundary": "Candidate and proprietary runtime artifacts remain outside the repository. The original executable, launcher Classic 800x600 default, resolution statuses and stable stage are unchanged by this lane."
+}

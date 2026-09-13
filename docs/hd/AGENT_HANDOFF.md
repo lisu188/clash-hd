@@ -96,6 +96,16 @@ and Classic launcher default at 800x600 remain unchanged. Complete HD is
 experimental at every resolution. Native 640x480 menus, castles and battles
 remain centered; the widened-battle experiment is excluded.
 
+The separate 1280x720 `-castlecenter-all-battlehd` validation stage now has
+an expanded 17x7-capacity battlefield and native right sidebar. Its candidate,
+forced hidden diagnostics, unresolved cursor polling, and pending visible/input
+acceptance are recorded in
+[`battle_hd_1280_validation.md`](../../reports/battle_hd_1280_validation.md)
+and [`battle-hd-validation-current.md`](../../captures/current/battle-hd-validation-current.md).
+This lane is independent of the Complete HD recipe and does not promote either
+candidate. Its source-binding integration report preserves the original
+foundation manifest while documenting the reviewed updated producer hashes.
+
 ### Implemented and checked
 
 The reviewed combined/framed/minimap/native-modal/army dependency chain is in
@@ -146,6 +156,27 @@ duplicate did not recur and remains unexplained. Image coverage still failed
 on 82 blank cells; no overall rendering acceptance is claimed. Its preceding
 uppercase-SHA preparation failure happened before debugger launch and is also
 preserved. See `FULL_PAINT_PROGRESS_DIAGNOSTIC.md`.
+
+### Guarded gameplay checkpoint — 2026-09-08
+
+`captures/current/completehd-guarded-gameplay-20260908.json` records separate
+source-verified evaluations of the retained complete-v1 1024x768 and 1920x1080
+captures. Both pass this bounded software-rendering evaluation: respectively
+123 and 377 measured blank cells match the same paused native visibility-zero
+observations, with no unexplained blanks. All four frame bands, the footer and
+six action cells match source artwork; each run has three identical captures.
+The evaluator reconstructs the entire normal debugger script and the additive
+minimap observer, keeping the canonical candidate probe distinct from the
+composed runtime script. Rehashing a modified script cannot authorize it.
+
+The original summaries still fail coverage postprocessing with exit 2; they
+and every earlier failed evaluation remain unchanged. The separate 800x600
+progress analysis explains its 82 blank cells from paused native visibility
+but remains diagnostic-only. Neither result resolves the first run's duplicate
+trace event or establishes scrolling, far-world clearing, visible composition,
+manual input, continuity, endurance or release eligibility. The checkpoint
+pins exact producer/evaluator source snapshots for replay after upstream source
+changes; do not substitute current-source manifests for those original runs.
 
 ### Remaining work
 

@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -25,6 +26,17 @@ import patch_clash95_hd as patcher  # noqa: E402
 
 BASE_PROBE = ROOT / "probes/cdb/render/clash95_surface_dump_probe.cdb"
 FRAMED_STAGE = patcher.DEFAULT_STAGE + "-combinedui-partialtiles-initialpaint-framed-validation"
+BATTLE_STAGE = patcher.DEFAULT_STAGE + "-castlecenter-all-battlehd"
+
+
+def render_main_menu(template: str, x: int, y: int) -> str:
+    """Accept the two audited spellings of the canonical menu route point."""
+    literal = "ed 00544cfc 00004b00; ed 00544d00 00003680;"
+    placeholder = "ed 00544cfc __MAIN_MOUSE_RAW_X__; ed 00544d00 __MAIN_MOUSE_RAW_Y__;"
+    if template.count(literal) + template.count(placeholder) != 1:
+        raise ValueError("unrecognized surface probe recipe: missing or duplicate main-menu point")
+    old = placeholder if placeholder in template else literal
+    return replace_exact(template, old, f"ed 00544cfc {x << 6:08x}; ed 00544d00 {y << 6:08x};")
 
 
 def replace_exact(text: str, old: str, new: str, count: int = 1) -> str:
@@ -82,6 +94,7 @@ def render_probe(
     profile = patcher.parse_resolution(resolution)
     # Source-only selection checks the real stage/recipe/imm8 constraints.
     framed = stage == FRAMED_STAGE
+    battle = stage == BATTLE_STAGE
     layout = None
     if framed:
         from src.patcher import framed_recipe
@@ -95,7 +108,11 @@ def render_probe(
     legacy = profile == patcher.PROFILE_800 and not framed
     full_columns, full_rows = layout.full_tiles if layout is not None else (profile.tiles_x, profile.tiles_y)
     columns, rows = layout.ceil_tiles if layout is not None else (full_columns, full_rows)
-    if not legacy:
+    if battle:
+        if (profile.key != "1280x720" or not canonical_template or not extra_probe
+                or not skip_map_validation or force_visible_edges or post_owner_force_visible_seven):
+            raise ValueError("battle HD surface validation requires exact 1280x720, canonical base, an explicit extra probe and SkipMapValidation; map visibility forcing is forbidden")
+    elif not legacy:
         if not canonical_template or extra_probe or post_owner_force_visible_seven:
             raise ValueError("non-800x600 surface validation supports only the canonical map probe; custom/extra probes and PostOwnerForceVisibleSeven need separate resolution recipes")
         if force_visible_edges and load_slot != 0:
@@ -123,6 +140,30 @@ def render_probe(
         "load_input_space": "native_slot_list",
     }
     result = {"geometry": geometry, "template": template, "force_playgame_action": None}
+    if battle:
+        from src.patcher.battle_hd_layout import BATTLE_LAYOUT
+        text = render_main_menu(template, *geometry["main_menu_mouse"])
+        text = replace_exact(text, "@$t16*0n800", f"@$t16*0n{profile.width}", 3)
+        # The supplied battle probe owns capture readiness. Keeping the native
+        # map auto-dump would allow an unrelated early map frame to end the run.
+        map_dump_lines = re.findall(r'^bp 00406FA0 .*$', text, flags=re.MULTILINE)
+        if len(map_dump_lines) != 1 or "SURFDUMP_READY" not in map_dump_lines[0]:
+            raise ValueError("unrecognized battle HD base map auto-dump breakpoint")
+        text = text.replace(map_dump_lines[0], 'bp 00406FA0 "gc"')
+        geometry.update(columns=BATTLE_LAYOUT.columns, rows=BATTLE_LAYOUT.rows,
+                        origin=[BATTLE_LAYOUT.left, BATTLE_LAYOUT.top],
+                        partial_col_px=0, partial_row_px=0, edge_columns=[], edge_rows=[],
+                        expected_vedge_count=0, visibility_dump_max_bytes=0,
+                        visibility_recipe="not_applicable_battle_extra_probe",
+                        visibility_scope="no_map_visibility_claim",
+                        layout_profile="battle_hd_native_17x7",
+                        battlefield=list(BATTLE_LAYOUT.battlefield), sidebar=list(BATTLE_LAYOUT.sidebar),
+                        capture_owner="explicit_battle_extra_probe", map_validation_applicable=False)
+        result.update(template=text, stage=stage, proof_class="forced_hidden_battle_fixture",
+                      source_bindings={"battle_layout": {
+                          "path": str(ROOT / "src/patcher/battle_hd_layout.py"),
+                          "sha256": hashlib.sha256((ROOT / "src/patcher/battle_hd_layout.py").read_bytes()).hexdigest()}})
+        return result
     if framed:
         geometry.update(layout_profile="native_four_border_tiles_v1",
                         terrain=list(layout.terrain.as_tuple()), frame_insets=[32,16,32,16],
@@ -139,8 +180,7 @@ def render_probe(
         return result
     text = template
     main_x, main_y = geometry["main_menu_mouse"]
-    text = replace_exact(text, "ed 00544cfc 00004b00; ed 00544d00 00003680;",
-                         f"ed 00544cfc {main_x << 6:08x}; ed 00544d00 {main_y << 6:08x};")
+    text = render_main_menu(text, main_x, main_y)
     text = replace_exact(text, "@$t16*0n800", f"@$t16*0n{profile.width}", 3)
     text = replace_exact(text, "(@eax == 0n32) | (@eax == 0n672) | (@eax == 0n736)",
                          " | ".join(f"(@eax == 0n{32 + col * 64})" for col in geometry["edge_columns"]))
@@ -176,11 +216,14 @@ def main() -> int:
     parser.add_argument("--force-visible-edges", action="store_true")
     parser.add_argument("--post-owner-force-visible-seven", action="store_true")
     parser.add_argument("--extra-probe", action="store_true")
+    parser.add_argument("--extra-probe-path", type=Path)
     parser.add_argument("--load-slot", type=int, default=0)
     parser.add_argument("--skip-map-validation", action="store_true")
     args = parser.parse_args()
     try:
         data = args.template.read_bytes()
+        if args.stage == BATTLE_STAGE and args.extra_probe_path is None:
+            raise ValueError("battle HD preflight requires --extra-probe-path for source binding")
         # Preserve CRLF/LF exactly, as Get-Content -Raw does in the harness.
         report = render_probe(data.decode("utf-8-sig"), args.resolution, args.stage,
                               canonical_template=args.template.resolve() == BASE_PROBE.resolve(),
@@ -189,6 +232,11 @@ def main() -> int:
                               extra_probe=args.extra_probe, load_slot=args.load_slot,
                               skip_map_validation=args.skip_map_validation)
         report["base_probe_sha256"] = hashlib.sha256(data).hexdigest()
+        if args.extra_probe_path is not None:
+            if not args.extra_probe:
+                raise ValueError("--extra-probe-path requires --extra-probe")
+            report["extra_probe_path"] = str(args.extra_probe_path.resolve())
+            report["extra_probe_sha256"] = hashlib.sha256(args.extra_probe_path.read_bytes()).hexdigest()
         print(json.dumps(report))
     except (OSError, ValueError) as exc:
         parser.exit(2, f"surface probe rendering refused: {exc}\n")

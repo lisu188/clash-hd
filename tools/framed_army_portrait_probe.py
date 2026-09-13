@@ -17,7 +17,7 @@ import struct
 import framed_army_selection_probe as base
 
 ROOT=base.ROOT
-BASE_SHA256='52b517b641ca2e81d1892e71ab4c3c60ab722a05d97c2419dd2cc666349773a1'
+BASE_SHA256='e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8'
 REVISION='controlled_native_first_portrait_two_toggles_v1'
 NATIVE_SPANS=((0x423860,593),(0x4608F0,13),(0x460900,13),(0x4609D0,52),(0x418700,25))
 NATIVE_CALLS={0x4238D4:0x460D80,0x4238DE:0x460900,0x423932:0x4608F0,

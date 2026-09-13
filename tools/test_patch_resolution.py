@@ -406,6 +406,16 @@ def test_stage_gating() -> None:
         assert stage in impl.STAGE_GROUPS, stage
 
     for stage in impl.STAGE_GROUPS:
+        if stage in impl.SPECIAL_STAGE_RESOLUTIONS:
+            for selection in (lambda: impl.select_patches(stage),
+                              lambda: impl.select_patches_for(stage, impl.PROFILE_800)):
+                try:
+                    selection()
+                except impl.ResolutionNotSupportedError:
+                    pass
+                else:
+                    raise AssertionError("resolution-specific stage accepted implicit/explicit 800x600")
+            continue
         legacy_selection = impl.select_patches(stage)
         parameterized_selection = impl.select_patches_for(stage, impl.PROFILE_800)
         assert legacy_selection == parameterized_selection, stage

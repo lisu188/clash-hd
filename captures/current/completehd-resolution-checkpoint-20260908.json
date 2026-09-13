@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-09-08T09:17:12.001064+00:00",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-validation",
+  "recipe_revision": "complete_hd_v1",
+  "run_plan": {
+    "path": "C:\\ClashTests\\completehd-validation-20260908\\hidden-resolution-d-plan.json",
+    "sha256": "ed63b445a3fec1cbc7b253ce6f77ce0e1d891579f554bb8d34e7f75dbc3f327c"
+  },
+  "runs": [
+    {
+      "resolution": "1024x768",
+      "candidate_sha256": "9bc99ba5a33248066b90b95119dd4301692d5af429d93167c4b35d2e508c53b5",
+      "candidate_manifest": {
+        "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-1024x768-d\\clash95_completehd_1024x768_d.candidate.json",
+        "sha256": "b68f6b5a7ca9669e7c51925610b550e09c669efd1a7a194256d00f77886b122c"
+      },
+      "canonical_probe_sha256": "fc88e74cb7d937f630242db5cab750b9587536fa8e4f4a162a5cfdd3d10e957d",
+      "runtime_probe_sha256": "230d5d093f4394d3c79def54f4cf6e024e356da4aea218c092df1a61ccb549a2",
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\summary.json",
+        "sha256": "27f63041275a0941aeab973217186faedac97135a2aa00555caee324e683894d"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\cdb-surface-dump.log",
+        "sha256": "d62dabc9fc6f8cde26860b8cb6da432298efd3369a2d3f3922b4b54f08de8445"
+      },
+      "image": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface.png",
+        "sha256": "88b1fd7114b66aa9cb40dacc2a05993c9fe8fb9d0b47130826e8298c7fedbdd3"
+      },
+      "coverage": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\map-tile-coverage.json",
+        "sha256": "fd27e42bfbc60fe884369ebe7c2b936f12a188d4e5f249f979fcf9befe80c491"
+      },
+      "captures": [
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface.raw",
+          "sha256": "8cb3aa37ba55e35a7d9c98b574d37c87083a71f9ddbfe60e5c42751529b5681b"
+        },
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface-2.raw",
+          "sha256": "8cb3aa37ba55e35a7d9c98b574d37c87083a71f9ddbfe60e5c42751529b5681b"
+        },
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\surface-3.raw",
+          "sha256": "8cb3aa37ba55e35a7d9c98b574d37c87083a71f9ddbfe60e5c42751529b5681b"
+        }
+      ],
+      "three_identical_captures": true,
+      "capture_method": "hidden paused ReadProcessMemory software surfaces; three captures",
+      "runtime_executed": true,
+      "runtime_passed": false,
+      "failures": [
+        "map_tile_coverage.py failed with exit code 2. See C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1024x768-d\\cdb-surface-dump-20260908-110820\\map-tile-coverage.txt"
+      ],
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "cleanup": {
+        "Passed": true,
+        "RemainingProcessIds": [],
+        "InspectionErrors": [],
+        "Scope": "launched CDB id/path/start and exact candidate path/start",
+        "WaitMilliseconds": 5000
+      },
+      "av": false,
+      "timed_out": false,
+      "isolated_saves_unchanged": true
+    },
+    {
+      "resolution": "1920x1080",
+      "candidate_sha256": "95ba0c965d019d0b1c5fb45726e938bf0b1b22ce6fc8353375409477e94a90d0",
+      "candidate_manifest": {
+        "path": "C:\\ClashTests\\completehd-validation-20260908\\candidate-1920x1080-d\\clash95_completehd_1920x1080_d.candidate.json",
+        "sha256": "f512f81abb30e908520dbcaa53eb08f4efc8b49775520ac10eb2c6f1b769b93f"
+      },
+      "canonical_probe_sha256": "746886872acdb5c87f7bb23062297174982ffe8db597eadc3dba9ab9b6bca3a3",
+      "runtime_probe_sha256": "22f67f9b38cd632600c889802e2dded51a7bebf5eb68d1051a0d4f5b4e0c4b93",
+      "summary": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\summary.json",
+        "sha256": "80f14716dfbf4848538e50cde1db4b74502603979a18b8982955b62d5feb8c75"
+      },
+      "log": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\cdb-surface-dump.log",
+        "sha256": "81a692c9be8727ca352490639e5970f5eb22563c79bd1d8ac946633b42ee3f2c"
+      },
+      "image": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface.png",
+        "sha256": "9a6a5fd65c121d589ab32fb346ddc08e1d4c8d84e70c650bacbf932182a4e11b"
+      },
+      "coverage": {
+        "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\map-tile-coverage.json",
+        "sha256": "79e5e5ffa2dcee9d82cb230322668e1e0b134dcdc876c72356624bd8a7f3ae34"
+      },
+      "captures": [
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface.raw",
+          "sha256": "d1d262f2d653286303e62d0574ec91827d4c63bd41e4040bd712f213defe5cbd"
+        },
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface-2.raw",
+          "sha256": "d1d262f2d653286303e62d0574ec91827d4c63bd41e4040bd712f213defe5cbd"
+        },
+        {
+          "path": "C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\surface-3.raw",
+          "sha256": "d1d262f2d653286303e62d0574ec91827d4c63bd41e4040bd712f213defe5cbd"
+        }
+      ],
+      "three_identical_captures": true,
+      "capture_method": "hidden paused ReadProcessMemory software surfaces; three captures",
+      "runtime_executed": true,
+      "runtime_passed": false,
+      "failures": [
+        "map_tile_coverage.py failed with exit code 2. See C:\\ClashCaptures\\hd-completion\\completehd-validation-20260908-1920x1080-d\\cdb-surface-dump-20260908-111133\\map-tile-coverage.txt"
+      ],
+      "initial_trace_passed": true,
+      "initial_trace_failures": [],
+      "cleanup": {
+        "Passed": true,
+        "RemainingProcessIds": [],
+        "InspectionErrors": [],
+        "Scope": "launched CDB id/path/start and exact candidate path/start",
+        "WaitMilliseconds": 5000
+      },
+      "av": false,
+      "timed_out": false,
+      "isolated_saves_unchanged": true
+    }
+  ],
+  "original_unchanged": true,
+  "live_saves_unchanged": true,
+  "producer_sources_unchanged": true,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "limitations": [
+    "Image-coverage failures are preserved; blank cells require matching native visibility before acceptance.",
+    "Passing traces are bounded initial-map observations, not scrolling/modal/army/battle/continuity/endurance proof.",
+    "Software captures do not establish final wrapper composition or real input."
+  ]
+}

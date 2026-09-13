@@ -1,5 +1,12 @@
 # Battle UI Completion Plan
 
+> **Expanded HD lane, 2026-09-08:** implementation of the separate
+> `-castlecenter-all-battlehd` stage targets 1280x720, up to 17x7 native tiles,
+> and the original right sidebar. See
+> [battle_hd_1280_validation.md](battle_hd_1280_validation.md). The centered
+> evidence below remains its own baseline and does not validate the expanded
+> layout or promote either stage.
+
 Generated: 2026-05-15
 
 > **UPDATE 2026-07-17 (`c5fe1d70`): the central open item of this plan is

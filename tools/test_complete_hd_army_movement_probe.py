@@ -159,9 +159,16 @@ class MovementProbeTests(unittest.TestCase):
                 self.assertTrue(any('independent full-protocol' in item for item in packet['limits']))
 
     def test_frozen_v3_commands_are_identical_for_the_authenticated_1024_baseline(self):
-        # Isolate the historical startup boundary only. Native movement source,
-        # source pins, save corridor, calls, byte checks and guards remain real.
-        with patch.object(frozen.base,'build_selection_probe',return_value=self.baseline):
+        # Legacy selection remains incompatible with the merged renderer.
+        # This comparison tests reviewed v3 commands, not old-producer compatibility.
+        with self.assertRaisesRegex(ValueError,
+                r'reviewed army selection source differs: tools/render_cdb_surface_probe\.py'):
+            frozen.base.verify_sources()
+        # Adapt only the historical dependency boundary to the real Complete-HD
+        # source verifier and the already authenticated selection packet. The
+        # frozen movement parent check, native body, byte guards and calls remain real.
+        with patch.object(frozen.base,'verify_sources',side_effect=probe.base.verify_sources), \
+             patch.object(frozen.base,'build_selection_probe',return_value=self.baseline):
             expected=frozen.build_movement_probe(self.original,self.candidate,self.save,capture_dir=CAPTURE)
         self.assertEqual(self.packet['compiled_probe'],expected['compiled_probe'].replace(frozen.REVISION,probe.REVISION))
         for key in ('supplemental_commands','supplemental_sha256','initial_extra','initial_extra_sha256',

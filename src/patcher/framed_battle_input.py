@@ -19,8 +19,8 @@ from .framed_battle_viewport import TacticalViewport
 
 ROOT = Path(__file__).resolve().parents[2]
 PINNED_SOURCES = {
-    "tools/build_framed_army_candidate.py": "e24f1c2cee5d105121d200424e8729ac82202a68b472006f0dcfa93616551ba8",
-    "src/patcher/framed_battle_coordinates.py": "67d1c9109893390f19fdf73dd2bcd4068e7a85d72eeac178335ffbc67358edfe",
+    "tools/build_framed_army_candidate.py": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
+    "src/patcher/framed_battle_coordinates.py": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c",
     "src/patcher/framed_battle_viewport.py": "8673e36bd04ded2afc8cc3b9d7ff2fed4c48dae891fe289509b44a9070c23bc6",
 }
 NATIVE_SPANS = {
