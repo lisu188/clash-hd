@@ -22,7 +22,7 @@ import complete_hd_army_selection_probe as base
 
 ROOT = base.ROOT
 PARENT_SOURCE_SHA256 = '17b779b29ac1ab6730e2a9ef59db1c2aee51f005edd9ad566db5d6ceeaf4a53b'
-REVISION = 'complete_hd_controlled_native_whole_army_outward_move_v2'
+REVISION = 'complete_hd_controlled_native_whole_army_outward_move_v3'
 UNIT_OFFSET = 149349
 INITIAL_AP = (26, 22, 16, 16, 16, 16, 16, 16)
 PATH_WORDS = (0x000A1312, 0x00051311)
@@ -36,11 +36,19 @@ PUMP_BACKENDS = (
 # loaded memory; no arbitrary callback with a similar signature is admitted.
 BACKEND_SPANS = ((0x460410, 0x80), (0x461140, 0x24), (0x4611A0, 0xF0),
                  (0x4612E0, 0x204), (0x50F1E4, 0x18), (0x50F204, 0x18))
+FRAME_SPANS = ((0x40ADF0, 0x89), (0x406FA0, 0xB80))
+FRAME_OBSERVERS = [
+    dict(kind='delay', call=0x410C96, visit=0x406FA1, returned=0x410C9B,
+         phase=51, call_pending=4, visit_pending=6, call_marker='WMOV_PUMP'),
+    dict(kind='animation', call=0x410DF5, visit=0x406FA1, returned=0x410DFA,
+         phase=54, call_pending=5, visit_pending=7, call_marker='WMOV_FRAME'),
+]
+STARTUP_RETIREMENT = dict(observer=99, address=0x406FA0, checkpoint=0)
 NATIVE_SPANS = ((0x4084A0, 0x1820), (0x410330, 0xE30), (0x411F60, 0xA0),
                 (0x413910, 0x750), (0x4147A0, 0xD60), (0x4608F0, 29),
                 (0x4609D0, 52), (0x418700, 25), (0x4605D0,0x250),
                 (0x460A50,0x92), (0x47BFD0,0x180),
-                (0x512568 + 88 + 29, 9), (0x512568 + 16*88 + 29, 9)) + BACKEND_SPANS
+                (0x512568 + 88 + 29, 9), (0x512568 + 16*88 + 29, 9)) + BACKEND_SPANS + FRAME_SPANS
 NATIVE_CALLS = {0x408568:0x4608F0, 0x40858F:0x40F0C0,
                 0x40872E:0x460900, 0x4087DC:0x4608F0,
                 0x4099DE:0x4082C0, 0x409A6C:0x4147A0,
@@ -51,7 +59,8 @@ NATIVE_CALLS = {0x408568:0x4608F0, 0x40858F:0x40F0C0,
                 0x410605:0x40A490, 0x410AF7:0x42B770,
                 0x4609DB:0x4608F0, 0x4609F7:0x460900,
                 0x414B3F:0x4605D0,0x410DAE:0x4605D0,0x410C91:0x4605D0,
-                0x460A5C:0x47BFD0, 0x4614D8:0x460A50}
+                0x460A5C:0x47BFD0, 0x4614D8:0x460A50,
+                0x410C96:0x40ADF0, 0x410DF5:0x40ADF0, 0x40AE11:0x406FA0}
 LIMITS = [
     'Controlled direct world-handler calls follow native selection; ordinary dispatch and manual input are not proved.',
     'Only mouse/button and injected native call-stack controls are written. No unit, path, AP, visibility, selection, flags or predicate result is forced.',
@@ -59,6 +68,7 @@ LIMITS = [
     'A queue becoming empty or AP being charged is insufficient: both native occupancy/XY commits and the final native redraw, ExecuteQueuedPath return and world-handler return are required.',
     'Native pathfinding, cursor changes and animation can refresh raw mouse/button state. Three bounded DD_Pump call/return observations are retained; they do not establish complete input-backend tracing or unchanged input between native calls. Only the two explicitly recorded release controls write button state. No input-query or HRESULT result is overridden.',
     'Pump v2 admits only the original direct input table or the native Device_UpdateRect wrapper with recording and playback both zero. Actual table, callback and modes are paired observations; source bytes establish the wrapper fallback, not an exhaustive backend-entry trace.',
+    'The completed startup redraw observer alone is retired at authenticated checkpoint0. Native delay/animation redraw calls retain bounded call, nested ambient-handler and true-return observations with exact native caller stack words. The delay pump return is also its immediately following redraw CALL site. This does not bypass the strict synthetic world-handler return.',
     'The pathfinder initially searches the source/target bounding rectangle, here the unique row19 corridor; unexpected queue count, cells or cumulative costs fail before confirmation.',
     'The three stopped E0 and unit dumps require independent full-protocol, state, pixel and host-ownership validation. No runtime, visual, manual or promotion result is asserted by preparation.',
 ]
@@ -130,6 +140,7 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
             raise ValueError('native desert movement cost differs')
     for va, expected in ((0x4084A0,'53515256575583ec58'),(0x409CBE,'c3'),
         (0x409C21,'c3'),(0x410615,'c3'),(0x410330,'53515655'),
+        (0x406FA0,'51525583ec70'),
         (0x410747,'8d04bd00000000'),(0x410AF3,'66895f02'),
         (0x409AB3,'f3a5'),(0x4147A0,'565581ecfc000000'),
         (0x461159,'c7806004000004f25000'),
@@ -181,9 +192,26 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
         args += ['wo(@$t1+0n559612)','wo(@$t1+0n559812)','wo(@$t1+0n560012)',
                  'poi(00544d04)','by(005451c0)','@$t11','@$t5','@$t6','@$t7']
         return p(message,*args)
+    def frame(kind):
+        # These stack words are raw observations, never a projected caller.
+        return p('WMOV_FRAME kind='+kind+' count=%d phase=%d tid=%x eip=%p esp=%p'
+            ' steps=%d pending=%d unit=%p xy=(%d,%d) path=%d ap=('+','.join(['%d']*8)+')'
+            ' occupancy=(%x,%x,%x) inner=%p outer=%p',
+            '@$t12','@$t0','@$tid','@eip','@esp','@$t11','@$t13',unit,
+            'wo('+unit+')','wo('+unit+'+2)','poi('+unit+'+0n316)',
+            *(f'by(@$t1+0n{UNIT_OFFSET+14+31*i})' for i in range(8)),
+            'wo(@$t1+0n559612)','wo(@$t1+0n559812)','wo(@$t1+0n560012)',
+            'poi(@esp+4)','poi(@esp+10)')
+    def frame_state(kind):
+        x='(0n16+@$t11'+('-1)' if kind=='animation' else '-(@$t13 == 5))' if kind=='nested' else ')')
+        # Exact three-cell occupancy and path count accompany every visit.
+        occupancy=' & '.join(f'(wo(@$t1+0n{556374+200*cell+38}) == '+
+            f'(0xffff-(0xfffc*({x} == 0n{cell}))))' for cell in (16,17,18))
+        return ('(@$t10 == 2) & (@$t11 >= 1) & (@$t11 <= 2) & '+xy(x)+' & '+ap('(5*@$t11)')+
+            f' & (poi({unit}+0n316) == 2-@$t11) & (poi({unit}+0n320) == 000a1312) & (poi({unit}+0n324) == 00051311) & '+occupancy)
     records = {}
     def add(number,va,previous,next_phase,kind,condition,extra='gc'):
-        records[number]=(va,_guard(own+f' & (@$t0 == 0n{previous}) & '+condition,
+        records[number]=(va,_guard(own+f' & (@$t0 == 0n{previous}) & (@$t13 == 0) & '+condition,
             f'r @$t0=0n{next_phase}; '+obs(kind)+('; '+extra if extra else '')))
     # Shared native input gates occur once on each of the two direct calls.
     for number,va,delta,kind,condition in (
@@ -258,7 +286,16 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
                 f'r @$t4=poi(00545138); r @$t12=@$t12+1; r @$t13={identity}; '+pump(kind+'-call')+'; gc',
                 _pump_rejection(kind+'-call-backend', backend_only=True)), _pump_rejection(kind+'-call-context')))
         records[return_n]=(return_va,_guard(context+f' & (@$t13 == {identity}) & (@$t12 >= 1) & (@$t12 <= 0n1024) & (poi(00545138) == @$t4) & (poi(00544d04) <= 3) & '+backend,
-            'r @$t13=0; '+pump(kind+'-return')+'; gc', _pump_rejection(kind+'-return-context')))
+            'r @$t13='+('4' if kind=='delay' else '0')+'; '+pump(kind+'-return')+'; gc', _pump_rejection(kind+'-return-context')))
+    for number,spec in ((139,FRAME_OBSERVERS[0]),(141,FRAME_OBSERVERS[1])):
+        kind=spec['kind']
+        context=own+f' & (@$t0 == 0n{spec["phase"]}) & (@esp == @$t3-0n328) & '+frame_state(kind)
+        context+=' & (@$t12 >= 1) & (@$t12 <= 0n1024)'
+        records[number]=(spec['returned'],_guard(context+f' & (@$t13 == {spec["visit_pending"]})',
+            frame(kind+'-return')+'; r @$t13=0; r @$t4=0; gc'))
+        if kind=='animation':
+            records[140]=(spec['call'],_guard(context+' & (@$t13 == 0) & ((@$t4 == 0050f1e4) | (@$t4 == 0050f204))',
+                'r @$t13=5; '+frame('animation-call')+'; gc'))
     compiled=prior['compiled_probe'].replace('SHSEL_','WMOV_BASE_')
     old={}
     for n in (80,90,91,92):
@@ -292,13 +329,23 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
         else:action+=obs('ready')+'; .echo WMOV_HOST_READY'
         prefix=''
         if index==0:prefix='; '.join('bd '+str(i) for i in range(81,90))+'; '+'; '.join('be '+str(i) for i in records)+'; '
+        if index==0:
+            action='bd 99; '+p('WMOV_STARTUP_RETIRED observer=99 address=00406fa0 checkpoint=0 tid=%x eip=%p esp=%p','@$tid','@eip','@esp')+'; '+action
         extras[path]=(prefix+_guard(condition,action)+'\n').replace(r'\"','"').replace(r'\\n',r'\n')
     baseline_stop=old[80][1]
     if baseline_stop.count('.echo WMOV_BASE_HOST_READY')!=1:raise ValueError('baseline stop differs')
     baseline_stop=baseline_stop.replace('.echo WMOV_BASE_HOST_READY',quiet(f'{directory}/movement-checkpoint-0.cdb'))
     stopped='.if (@$t10 == 1) { '+quiet(f'{directory}/movement-checkpoint-1.cdb')+' } .else { '+quiet(f'{directory}/movement-checkpoint-2.cdb')+' }'
-    modifications={80:'.if (@$t0 < 0n20) { '+baseline_stop+' } .else { '+_guard(own+' & (@esp == @$t3) & '+paired+
-        ' & (((@$t10 == 1) & (@$t0 == 0n38)) | ((@$t10 == 2) & (@$t0 == 0n59)))',stopped)+' }'}
+    nested_route=' | '.join(f'((@$t0 == 0n{s["phase"]}) & (@$t13 == {s["call_pending"]}) & (poi(@esp+10) == {s["returned"]:08x}))' for s in FRAME_OBSERVERS)
+    nested_body=_guard('(@esp == @$t3-0n348) & (@$t12 >= 1) & (@$t12 <= 0n1024) & (poi(@esp+4) == 0040ae16) & ('+
+        nested_route+') & '+frame_state('nested'),
+        'r @$t13=@$t13+2; '+frame('ambient-visit')+'; gc')
+    # A real ambient-handler visit shares the sentinel instruction address.
+    # Its exact native stack is disjoint from the synthetic true-RET stack.
+    modifications={80:'.if (@$t0 < 0n20) { '+baseline_stop+' } .else { '+_guard(own,
+        '.if (@esp == @$t3) { '+_guard(paired+' & (@$t13 == 0)'+
+        ' & (((@$t10 == 1) & (@$t0 == 0n38)) | ((@$t10 == 2) & (@$t0 == 0n59)))',stopped)+
+        ' } .else { '+nested_body+' }')+' }'}
     native_return=prior['native_call_returns']['native_draw'];composition_return=prior['native_call_returns']['composition_draw']
     active='((@$t10 == 1) | (@$t10 == 2)) & (@$t0 >= 0n20) & (@$t0 <= 0n59)'
     draw_guard=(own+' & '+active+' & (@$t5 == @$t6) & (@$t5 < 0n512) & (@esp >= @$t3-0n4096) & (@esp < @$t3)'
@@ -319,7 +366,18 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
     first=re.search(r'(?m)^bp[0-9]+ ',compiled)
     if first is None or not compiled.endswith('g\n'):raise ValueError('baseline transport differs')
     compiled=compiled[:first.start()]+checks+compiled[first.start():]
+    # Renumber exactly one inherited startup observer, preserving its body.
+    # It is disabled only after checkpoint0 has authenticated the baseline.
+    startup=re.findall(r'^bp 00406FA0 "(.*)"$',compiled,re.M)
+    if len(startup)!=1 or re.search(r'^bp99 ',compiled,re.M):
+        raise ValueError('unique completed startup redraw observer required')
+    compiled=compiled.replace('bp 00406FA0 "'+startup[0]+'"','bp99 00406fa0 "'+startup[0]+'"',1)
     compiled=compiled[:-2]+'\n'.join(f'bp{n} {va:08x} "{command}"\nbd {n}' for n,(va,command) in records.items())+'\ng\n'
+    allocated=set()
+    for number in re.findall(r'^bp([0-9]*) ',compiled,re.M):
+        identity=int(number) if number else next(n for n in range(1000) if n not in allocated)
+        if identity in allocated:raise ValueError('native observer ID collision')
+        allocated.add(identity)
     all_text=compiled+'\n'+'\n'.join(extras.values())
     if max(map(len,all_text.splitlines()))>=4096:raise ValueError('debugger line exceeds4096 transport limit')
     if all_text.count('WMOV_HOST_READY')!=1 or 'WMOV_BASE_HOST_READY' in all_text:raise ValueError('only final movement host readiness allowed')
@@ -343,6 +401,7 @@ def build_movement_probe(original, candidate, save, *, capture_dir, candidate_ma
         pump_observers=[dict(kind=kind,call=call_va,returned=return_va,phase=phase,stack_depth=depth,pending_identity=identity)
             for _,call_va,_,return_va,kind,phase,depth,identity in pump_sites],max_pump_calls_per_click=1024,
         pump_backends=[dict(item) for item in PUMP_BACKENDS],
+        frame_observers=[dict(item) for item in FRAME_OBSERVERS],startup_retirement=dict(STARTUP_RETIREMENT),
         loaded_native_spans=[dict(va=va,bytes=size,sha256=sha(read(va,size))) for va,size in NATIVE_SPANS],
         stack_offsets_from_sentinel=dict(world_entry=-4,world_body=-116,path_entry=-124,execute_entry=-120,execute_body=-328,
             preview_release_entry=-120,preview_release_query_return=-132,world_ret=-4),

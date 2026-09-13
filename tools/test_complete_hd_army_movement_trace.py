@@ -34,6 +34,7 @@ def packet_fixture(resolution='1024x768'):
         movement_observer_vas={str(n):va for n,va in trace.SITES.items()},
         parent_source_sha256=trace.producer.PARENT_SOURCE_SHA256,
         max_pump_calls_per_click=1024,pump_observers=copy.deepcopy(trace.PUMPS),pump_backends=copy.deepcopy(trace.PUMP_BACKENDS),
+        frame_observers=copy.deepcopy(trace.FRAMES),startup_retirement=dict(trace.RETIREMENT),
         controlled_input=True,controlled_release=True,selected_value_forced=False,flag_value_forced=False,movement_state_forced=False)
 
 
@@ -69,6 +70,7 @@ def log_fixture(packet=None,*,warmup=0,extra_draw=False,source_record=None,shift
     lines=text.splitlines()
     raw=source_record or synthetic_record();initial_path=struct.unpack_from('<II',raw,320)
     def surface(n):lines.append(f'WMOV_SURFACE checkpoint={n} tid={TID:x} eip=00406fa1 esp={SP:08x} surface={SURFACE:08x} base={BASE:08x} width={packet['width']} height={packet['height']} vtable=0050ee24')
+    lines.append(f'WMOV_STARTUP_RETIRED observer=99 address=00406fa0 checkpoint=0 tid={TID:x} eip=00406fa1 esp={SP:08x}')
     surface(0)
     for click in (1,2):
         counts=[0,0,0];pump_count=0;steps=0;buttons=1;accumulator=0x80;x=16;queue=0 if click==1 else 2;cost=0;occupancy=[3,65535,65535]
@@ -89,6 +91,17 @@ def log_fixture(packet=None,*,warmup=0,extra_draw=False,source_record=None,shift
             for suffix,site in (('call',spec['call']),('return',spec['returned'])):
                 if suffix=='return':buttons=3;accumulator=0x90
                 lines.append(f"WMOV_PUMP kind={kind}-{suffix} count={pump_count} phase={phase} tid={TID:x} eip={site:08x} esp={SP-spec['stack_depth']:08x} eax={0x544cd8 if suffix=='call' else 0:x} edx=0 raw=({576<<shift:x},{176<<shift:x}) shift={shift:x} buttons={buttons:x} accumulator={accumulator:x} secondary=0 table=0050f204 callback=004612e0 recording=0 playback=0")
+        def frame(kind,phase):
+            spec=next(v for v in trace.FRAMES if v['kind']==kind)
+            for suffix in (('call','visit','return') if kind=='animation' else ('visit','return')):
+                depth=348 if suffix=='visit' else 328
+                site=spec['returned' if suffix=='return' else suffix]
+                aps=','.join(str(a-cost) for a in AP);occs=','.join(f'{n:x}' for n in occupancy)
+                pending=spec['call_pending' if suffix=='call' else 'visit_pending']
+                inner,outer=(0x40AE16,spec['returned']) if suffix=='visit' else (0,0)
+                observed_kind='ambient' if suffix=='visit' else kind
+                lines.append(f'WMOV_FRAME kind={observed_kind}-{suffix} count={pump_count} phase={phase} tid={TID:x} eip={site:08x} esp={SP-depth:08x} steps={steps} pending={pending} unit={GD+149349:08x} xy=({x},19) path={queue} ap=({aps}) occupancy=({occs}) inner={inner:08x} outer={outer:08x}')
+                if extra_draw and suffix=='visit':draw('native',phase,700)
         phase=20 if click==1 else 40
         lines.append(f'WMOV_MOUSE click={click} tid={TID:x} eip=00406fa1 esp={SP:08x} raw=({576<<shift:x},{176<<shift:x}) shift={shift:x}')
         obs('begin',phase,0x406FA1,0)
@@ -128,9 +141,11 @@ def log_fixture(packet=None,*,warmup=0,extra_draw=False,source_record=None,shift
                 steps=step;cost=step*5;obs('spend-return',53,0x4108E4,328)
                 queue=2-step;obs('path-decrement',54,0x410747,328)
                 pump('animation',54)
+                frame('animation',54)
                 x=16+step;occupancy=[65535,3,65535] if step==1 else [65535,65535,3]
                 obs('xy-occupancy-commit',51,0x410AF7,328,edi=GD+149349)
                 pump('delay',51)
+                frame('delay',51)
                 if extra_draw:draw('native',51,600)
             draw('composition',51,632)
             obs('execute-redraw-return',55,0x4105F7,328)
@@ -172,6 +187,7 @@ class SequenceTests(unittest.TestCase):
                         sequence=report['movement_sequence']
                         self.assertEqual([c['steps'] for c in sequence['clicks']],[0,2])
                         self.assertEqual([p['kind'] for p in sequence['pump_calls']],['pathfinder','animation','delay','animation','delay'])
+                        self.assertEqual([p['kind'] for p in sequence['frame_calls']],['animation','delay','animation','delay'])
                         self.assertEqual(sequence['baseline_native_fallbacks'],1-warmup)
                         self.assertEqual(sequence['ready']['x'],18)
                         self.assertEqual(len(report['snapshots']),3)
@@ -233,6 +249,37 @@ class SequenceTests(unittest.TestCase):
         repeated=rows.copy();pair=rows[first:first+2]
         repeated[first:first+2]=[re.sub(r'count=1\b','count='+str(i),row) for i in range(1,1026) for row in pair]
         self.bad('\n'.join(repeated))
+
+    def test_retirement_and_exact_native_nested_frame_caller_contract(self):
+        baseline=log_fixture(extra_draw=True)
+        self.bad(baseline.replace('WMOV_FRAME kind=ambient-visit','WMOV_FRAME kind=animation-visit',1))
+        self.bad(baseline.replace('WMOV_FRAME kind=ambient-visit','WMOV_FRAME kind=delay-visit',1))
+        for occurrence in (0,1):
+            name='ambient-visit'
+            for key,value in (('inner','0040ae15'),('outer','00410c9a'),('esp',f'{SP-344:08x}'),
+                ('phase','59'),('steps','0'),('pending','0'),('unit','00600000'),('count','0'),
+                ('xy','(18,19)'),('path','9'),('ap','(26,22,16,16,16,16,16,16)'),('occupancy','(3,3,ffff)')):
+                with self.subTest(name=name,key=key):self.bad(mutate(baseline,name,key,value,occurrence=occurrence))
+        for kind in ('animation','delay'):
+            lines=baseline.splitlines();visit=next(i for i,v in enumerate(lines) if 'WMOV_FRAME kind=ambient-visit ' in v and ('pending=6 ' if kind=='delay' else 'pending=7 ') in v)
+            returned=next(i for i,v in enumerate(lines) if 'WMOV_FRAME kind='+kind+'-return ' in v)
+            changed=lines.copy();changed[visit],changed[returned]=changed[returned],changed[visit]
+            self.bad('\n'.join(changed))
+            self.bad('\n'.join(lines[:returned]+lines[returned+1:]))
+        retirement=next(v for v in baseline.splitlines() if v.startswith('WMOV_STARTUP_RETIRED'))
+        for field,value in (('observer','26'),('address','004169e6'),('checkpoint','1'),('eip','00406fa0')):
+            self.bad(baseline.replace(retirement,re.sub(r'\b'+field+'=[^ ]+',field+'='+value,retirement)))
+        for stale in ('SURFDUMP_REDRAW seq=0','SURFDUMP_READY stale','PTILE_EVENT stale'):
+            self.bad(baseline.replace(retirement,retirement+'\n'+stale))
+        # Native animation may skip a redraw after polling. Only complete
+        # optional triples can disappear; delay always calls the dispatcher.
+        rows=log_fixture().splitlines()
+        optional='\n'.join(v for v in rows if not (v.startswith('WMOV_FRAME kind=animation-') or v.startswith('WMOV_FRAME kind=ambient-visit ') and 'pending=7 ' in v))
+        self.assertTrue(trace.evaluate_trace(optional,packet_fixture())['passed'])
+        self.bad('\n'.join(v for v in rows if not (v.startswith('WMOV_FRAME kind=delay-') or v.startswith('WMOV_FRAME kind=ambient-visit ') and 'pending=6 ' in v)))
+        # Repeating a complete animation triple against the same pump fails.
+        triple=[v for v in rows if v.startswith('WMOV_FRAME kind=animation-') or v.startswith('WMOV_FRAME kind=ambient-visit ') and 'pending=7 ' in v][:3]
+        self.bad('\n'.join(rows).replace('\n'.join(triple),'\n'.join(triple+triple),1))
 
     def test_release_draw_pairs_and_all_preserved_native_registers(self):
         baseline=log_fixture(extra_draw=True)
