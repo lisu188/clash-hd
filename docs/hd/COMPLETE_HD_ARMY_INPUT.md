@@ -64,6 +64,17 @@ Unknown tables, changed callbacks and active modes fail. This corrects the
 specific v1 contract rejected by the retained diagnostic run; it does not force
 an input result or establish completed movement.
 
+The v3 revision retires the completed startup redraw observer at the first
+authenticated movement checkpoint. That observer must not overwrite the
+movement counters during later native frame updates. The probe distinguishes
+a nested ambient-handler visit from the synthetic return at `00406fa1` using
+the exact native caller stack, phase, army state and paired frame-call/return
+observations. The delay pump return at `00410c96` is also the following native
+frame-call instruction; animation has a separate observed call. Unknown
+callers, missing returns, stale startup records and changed movement state
+fail. Both tile commits and the original final handler return remain required.
+The retained v2 failure is not reevaluated as passing evidence for this change.
+
 `tools/complete_hd_army_movement_trace.py` validates that native sequence using
 the complete candidate, manifest, save, main probe and all three supplemental
 command files. It reads the original complete log without rewriting stage or
@@ -87,9 +98,10 @@ The legacy selection producer still pins renderer `1cd310…`, while the merged
 renderer is `12685…`. Its source check correctly rejects this checkout. The new
 protocol authenticates its own renderer. The movement comparison fixture keeps
 the legacy rejection explicit, then compares native v3 commands using the
-authenticated current selection boundary. The v2 comparison isolates its
-reviewed backend checks and observations while retaining the other predicates,
-pass paths and native writes. This does not make old
+authenticated current selection boundary. The compatibility comparison isolates
+the reviewed backend, observer-lifecycle and native-frame additions while
+retaining the inherited movement predicates and native writes. The added
+guards have separate admission and rejection fixtures. This does not make old
 manifests or runtime reports current evidence.
 
 ## Safe checks
