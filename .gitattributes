@@ -812,3 +812,8 @@
 /tools/test_complete_hd_army_selection_trace.py -text whitespace=cr-at-eol
 /tools/test_complete_hd_army_movement_probe.py -text whitespace=cr-at-eol
 /patch_clash95_hd.py -text whitespace=cr-at-eol
+/scripts/cdb/run_modal_slots_primary_capture.ps1 -text whitespace=cr-at-eol
+/tools/modal_slots_primary_capture.py -text whitespace=cr-at-eol
+/tools/modal_slots_primary_surface.py -text whitespace=cr-at-eol
+/tools/test_modal_slots_primary_capture.py -text whitespace=cr-at-eol
+/tools/test_modal_slots_primary_host.py -text whitespace=cr-at-eol
