@@ -216,7 +216,11 @@ do not grant complete independent acceptance. Do not rename captures or broaden
 the verifier to erase the mismatch. The checkpoint binds both verdicts and all
 raw/PNG/probe/plan/source artifacts. Complete-HD v1 is unchanged; this is bounded
 hidden mirror evidence from the separate slots stage, without primary, visible,
-manual-input or native-exit proof. Native primary destination
+manual-input or native-exit proof. The writer now constructs the basename
+explicitly. All 14 offline fixtures pass, including a real snapshot/triplet
+function test that reproduces the old extra-dot failure and checks all 24
+required paths. A new run is required; the C audit remains failed.
+Native primary destination
 misplacement remains a static inference until
 primary-surface evidence is captured. Court, recruitment, peasants,
 ownership/exit restoration and destruction still require complete routes.
