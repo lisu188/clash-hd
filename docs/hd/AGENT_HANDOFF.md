@@ -241,6 +241,18 @@ does not have those defects. Keep these primary failures separate from E's
 passing physical-mirror audit. Court, recruitment, peasants,
 ownership/exit restoration and destruction still require complete routes.
 
+The separate [modal primary composition correction](MODAL_PRIMARY_COMPOSITION.md)
+adds recipe `owned_modal_primary_v1`, stage `-completehd-modalprimary-validation`,
+above the slots candidate. It publishes the cleared physical mirror at the
+original full-blit boundary, translates the barracks placeholder and cursor
+bounds, and copies the selected panel to the centered destination. An active
+cursor uses the native remove/copy/redraw sequence with checked context.
+The [builder](../../tools/build_framed_modal_primary_candidate.py) reconstructs
+the exact predecessor and emits its own loaded-byte probe. This new stage has
+no accepted runtime captures yet; it needs a matching consumer and fresh
+native/physical/primary evidence. Keep the failed D/F receipts and their
+diagnostics separate from source/PE/x86-fixture verification.
+
 Ordinary army selection/movement, all portraits, map redraw/scroll/reselection,
 centered battle entry/command/outcome/return and healthy map transitions remain
 incomplete on the final candidate. Earlier controlled 1024x768 and historical
