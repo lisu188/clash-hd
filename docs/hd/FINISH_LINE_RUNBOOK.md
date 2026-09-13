@@ -1,5 +1,45 @@
 # HD release validation runbook
 
+## Current complete-HD candidate
+
+Follow [AGENT_HANDOFF.md](AGENT_HANDOFF.md) and the current implementation plan
+for `-completehd-validation`, recipe `complete_hd_v1`. Keep the protected stable
+stage and launcher default at 800x600. Complete HD remains experimental at every
+resolution; the release target is 1920x1080 with 1024x768 as an intermediate
+regression target. The wider-battle experiment is excluded.
+
+Build and validate the same candidate through [COMPLETE_HD_CANDIDATE.md](COMPLETE_HD_CANDIDATE.md)
+and [COMPLETE_HD_EVIDENCE.md](COMPLETE_HD_EVIDENCE.md). Exact stage, candidate,
+recipe, resolution, probe and original artifacts must match each acceptance
+lane. A prior component pass or an exit-zero deferred decision does not make
+this integrated candidate eligible.
+
+Use [COMPLETE_HD_HUMAN_OBSERVATION_PLAN.md](COMPLETE_HD_HUMAN_OBSERVATION_PLAN.md)
+for the five human targets. It is preparation only: unknown hitboxes, missing
+native observers and approval/runtime bindings remain explicit gaps. Obtain
+fresh approval against concrete saved candidates and plans before visible
+runtime, human observation or live capture. Injected pulse input is diagnostic
+evidence and cannot satisfy the human-operated manual proof requirement.
+
+The final candidate still needs centered battle entry, command, outcome and
+healthy return; complete save/load and player/day continuity; the matching
+short endurance ladder; and separate two-hour map-idle and map-pan runs with
+verified cleanup. Historical battle callbacks and stable-stage soaks remain
+regression evidence. Promotion requires the affirmative candidate-bound release
+evaluation followed by an explicit decision on that concrete result.
+
+## Historical component runbook
+
+The older instructions below describe distinct component stages and evidence.
+They are retained for interpreting those records, not as commands for the
+current complete-HD candidate. In particular, the old pulse-based "manual"
+plan is not human proof, and the old barracks target naming is inaccurate:
+command 0x86/callback 0044FE70 belongs to court. Derive fresh target geometry
+and callbacks from the exact candidate and loaded castle instead of reusing
+those coordinates. Historical promotion-dependent battle status does not
+waive the integrated battle entry/outcome/return requirement above.
+
+
 The finish line now has two distinct execution boundaries. Map render/process
 endurance can use the approved `hidden_cdb_host` class without an unlocked
 interactive desktop. Manual DirectInput, visible composition, and promotion
