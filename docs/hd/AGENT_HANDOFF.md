@@ -269,8 +269,13 @@ the exact predecessor and emits its own loaded-byte probe. The
 the bounded hidden 1024x768 and 1920x1080 captures, complete traces, three identical buffers,
 v2 primary query ledgers and owned cleanup. Its actual primary composition
 still fails: the quantity label `250` is drawn in the top margin. The wall
-placeholder and twelve portrait slots are centered; the remaining native text
-call at `00432C66` needs a separate additive correction. The snapshotted
+placeholder and twelve portrait slots are centered. The separate
+[native text correction](MODAL_PRIMARY_TEXT.md), recipe
+`owned_modal_primary_text_v1` at `-completehd-modalprimarytext-validation`,
+adds a checked argument adapter at `00432C66` while preserving primary-v1.
+It retains the native formatter, glyphs, quantity and calling convention;
+an explicit text-stage consumer and fresh glyph-composition evidence remain
+required. The snapshotted
 initial-checkpoint prototype is distinct from the richer four-checkpoint
 consumer under development in the original checkout. Keep both protocols and
 the failed D/F receipts separate; neither capture stability nor source/PE/x86

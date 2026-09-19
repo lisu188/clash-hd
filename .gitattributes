@@ -841,3 +841,11 @@
 /tools/modal_slots_lifecycle_probe.py -text whitespace=cr-at-eol
 /tools/test_modal_slots_lifecycle_probe.py -text whitespace=cr-at-eol
 /tools/test_framed_modal_primary_extra_profiles.py -text whitespace=cr-at-eol
+
+# The additive primary-text source contract is authored and checked out as LF.
+/src/patcher/framed_modal_primary_text.py text eol=lf
+/src/patcher/pe_modal_primary_text_extension.py text eol=lf
+/tools/build_framed_modal_primary_text_candidate.py text eol=lf
+/tools/test_framed_modal_primary_text.py text eol=lf
+/tools/test_pe_modal_primary_text_extension.py text eol=lf
+/tools/test_build_framed_modal_primary_text_candidate.py text eol=lf
