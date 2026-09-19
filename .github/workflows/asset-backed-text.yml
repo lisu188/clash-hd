@@ -1,0 +1,148 @@
+name: Asset-backed text validation
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/asset-backed-text.yml'
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: 'clash-hd commit or branch to validate (empty uses this workflow ref)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: asset-text-${{ github.event_name }}-${{ inputs.source_ref || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    if: github.repository == 'lisu188/clash-hd' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: code
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ inputs.source_ref || github.event.pull_request.head.sha || github.sha }}
+          path: code
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Retain source-only replay snapshot
+        run: |
+          python - <<'PY'
+          import hashlib, io, json, os, subprocess, zipfile
+          from pathlib import Path, PurePosixPath
+          out = Path(os.environ['RUNNER_TEMP']) / 'asset-text-source'
+          out.mkdir()
+          def git(*args):
+              return subprocess.check_output(['git', *args])
+          head = git('rev-parse', 'HEAD').decode().strip()
+          main = git('rev-parse', 'refs/remotes/origin/main').decode().strip()
+          base = git('merge-base', head, main).decode().strip()
+          suffixes = {'.py', '.md', '.ps1', '.json', '.yml', '.yaml', '.txt', '.toml', '.cs', '.cpp', '.c', '.h', '.hpp', '.cdb', '.asm', '.ini', '.bat', '.sh', '.cfg', '.xml'}
+          roots = ('tools/', 'src/', 'scripts/', 'docs/', 'reports/', 'captures/current/', '.github/')
+          files = {'AGENTS.md', 'README.md', '.gitattributes', '.gitignore'}
+          manifest = {'schema': 1, 'proof_class': 'source_snapshot_only', 'revisions': {}, 'game_runtime_executed': False}
+          for label, revision in (('head', head), ('main', main), ('base', base)):
+              archive = git('archive', '--format=zip', revision)
+              members = {}
+              target = out / (label + '.zip')
+              with zipfile.ZipFile(io.BytesIO(archive)) as source, zipfile.ZipFile(target, 'w', zipfile.ZIP_DEFLATED) as dest:
+                  for entry in source.infolist():
+                      name = entry.filename
+                      if entry.is_dir() or (entry.external_attr >> 16) & 0o170000 == 0o120000:
+                          continue
+                      if name not in files and not (name.startswith(roots) and PurePosixPath(name).suffix.lower() in suffixes):
+                          continue
+                      data = source.read(entry)
+                      dest.writestr(name, data)
+                      members[name] = hashlib.sha256(data).hexdigest()
+              manifest['revisions'][label] = {'commit': revision, 'archive_sha256': hashlib.sha256(target.read_bytes()).hexdigest(), 'files': members}
+          (out / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: asset-text-source
+          path: ${{ runner.temp }}/asset-text-source/
+          retention-days: 7
+          if-no-files-found: error
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: lisu188/clash-assets
+          ref: 84a1e4bcf131e6bb75b39fc5e10941dd0b801767
+          path: assets
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /runtime/gog-32003/clash95.exe
+          lfs: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
+      - name: Fetch only the pinned original executable from Git LFS
+        working-directory: assets
+        run: git lfs pull --include='runtime/gog-32003/clash95.exe' --exclude=''
+      - name: Stage verified read-only fixture input on the disposable runner
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          expected = '500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae'
+          source = Path('../assets/runtime/gog-32003/clash95.exe')
+          data = source.read_bytes()
+          if len(data) != 1232384 or hashlib.sha256(data).hexdigest() != expected:
+              raise SystemExit('Original EXE size/SHA-256 mismatch or unmaterialized LFS pointer')
+          target = Path('C:/Clash/clash95.exe')
+          target.parent.mkdir(parents=True, exist_ok=True)
+          with target.open('xb') as output:
+              output.write(data)
+          target.chmod(0o444)
+          if hashlib.sha256(target.read_bytes()).hexdigest() != expected:
+              raise SystemExit('Staged original differs')
+          receipt = {'schema': 1, 'source_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                     'asset_repository': 'lisu188/clash-assets', 'asset_commit': '84a1e4bcf131e6bb75b39fc5e10941dd0b801767',
+                     'path': 'runtime/gog-32003/clash95.exe', 'size': len(data), 'sha256': expected,
+                     'game_runtime_executed': False, 'manual_input_proof': False, 'promotion_ready': False}
+          Path(os.environ['RUNNER_TEMP'], 'asset-text-input.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          PY
+      - name: Install fixture dependencies
+        run: |
+          python -m pip install --only-binary=:all: -r tools/requirements-framed-offline.txt
+      - name: Require complete real-EXE build and synthetic x86 text coverage
+        run: |
+          python tools/run_framed_offline_tests.py --require-complete --timeout 600 \
+            --suite test_modal_primary_text_observer.TextObserverTests \
+            --suite test_build_framed_modal_primary_text_candidate.PrimaryText1024BuildTests \
+            --suite test_build_framed_modal_primary_text_candidate.PrimaryText1080BuildTests \
+            --suite test_framed_modal_primary_text.PrimaryTextTests \
+            --suite test_framed_modal_primary_text.PrimaryText1080Tests \
+            --report-json "$RUNNER_TEMP/asset-text-fixtures.json"
+      - name: Verify original remains unchanged
+        if: always()
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          path = Path('C:/Clash/clash95.exe')
+          if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != '500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae':
+              raise SystemExit('Original fixture missing or changed')
+          print('Original fixture unchanged; no game launch or visible/input acceptance is claimed.')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: asset-text-results
+          path: |
+            ${{ runner.temp }}/asset-text-input.json
+            ${{ runner.temp }}/asset-text-fixtures.json
+          retention-days: 7
+          if-no-files-found: warn
