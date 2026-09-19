@@ -851,3 +851,7 @@
 /tools/test_build_framed_modal_primary_text_candidate.py text eol=lf
 /tools/modal_primary_text_context.py text eol=lf
 /tools/test_modal_primary_text_context.py text eol=lf
+
+/tools/modal_primary_text_observer.py text eol=lf
+/tools/test_modal_primary_text_observer.py text eol=lf
+/tools/test_modal_primary_text_observer_engine.py text eol=lf
