@@ -74,6 +74,7 @@ SUITES = (
     "test_build_framed_modal_primary_text_candidate.PrimaryText960BuildTests",
     "test_build_framed_modal_primary_text_candidate.PrimaryText1080BuildTests",
     "test_build_framed_modal_primary_text_candidate.PrimaryText802BuildTests",
+    "test_modal_primary_text_context.TextContextTests",
     "test_complete_hd_main_probe",
     "test_framed_gameplay_evidence",
     "test_modal_slots_barracks_capture",

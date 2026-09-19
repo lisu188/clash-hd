@@ -81,9 +81,11 @@ record replay, source bindings, independent relocation, and Windows
 
 ## Required fresh runtime evidence
 
+The [exact text context reader](MODAL_PRIMARY_TEXT_CONTEXT.md) now rebuilds the
+new candidate and preserves the actual identity of each inherited context.
 The existing first-present prototype and four-checkpoint primary consumer
-authenticate primary-v1. They must reject this new text candidate until an
-explicit stage-context adapter is implemented. Replacing markers in an old
+still authenticate primary-v1. They must reject this new text candidate until
+their explicit stage integration is implemented. Replacing markers in an old
 log or supplying the predecessor manifest would invalidate the evidence.
 
 The new consumer must rebuild the exact text bundle and bind its manifest,
