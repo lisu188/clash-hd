@@ -29,7 +29,7 @@ def pixel_fixture(width=1024,height=768,active=1,position='clear'):
     cursor=assets.Sprite(3,3,(None,245,None,246,247,248,None,249,None))
     placeholder=assets.Sprite(203,120,tuple((i*5+32)%251+1 for i in range(203*120)))
     coords={'clear':(25,20),'slot':(ox+130,oy+80),'placeholder':(ox+250,oy+300)}
-    x,y=coords[position];dw=dh=4
+    x,y=position if isinstance(position,tuple) else coords[position];dw=dh=4
     state=bytearray(68);put(state,0,x);put(state,4,y);put(state,8,0x28030000)
     put(state,48,x);put(state,52,y);put(state,60,0x5196a0);put(state,64,0x28010000)
     descriptor=bytearray(40)
@@ -51,7 +51,7 @@ def pixel_fixture(width=1024,height=768,active=1,position='clear'):
         backing[:dh,:dw]=p[y:y+dh,x:x+dw];paint(p,cursor,x,y)
     for sy in (75,206):
         for sx in (126,197,268,339,410,481):p[oy+sy:oy+sy+65,ox+sx:ox+sx+33]=n1[sy:sy+65,sx:sx+33]
-    intersects=(x+dw>=ox+220 and ox+423>=x and y+dh>=oy+289 and oy+409>=y)
+    intersects=(max(x,ox+220)<min(x+dw,ox+423) and max(y,oy+289)<min(y+dh,oy+409))
     visible=int(active and not intersects)
     if active and intersects:p[y:y+dh,x:x+dw]=backing[:dh,:dw]
     before=row(n1,p,visible,backing)

@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "imported_pr89_commit": "b75e1c025ef3134b2022a2f9ad30cd82f3ecd4e1",
+  "asset_commit": "84a1e4bcf131e6bb75b39fc5e10941dd0b801767",
+  "inputs": {
+    "clash95.exe": {
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "bytes": 1232384
+    },
+    "Data/minimum.res": {
+      "sha256": "86b43f5e01350d9d9dfbf02a91fd3f83809050474875c2f3c4e640519f437116",
+      "bytes": 21601784
+    },
+    "Data/maximum.res": {
+      "sha256": "44f545780f11081cd0d45421eb8b7ed985221ef776319573bbfd89ff6431ccf2",
+      "bytes": 43971758
+    }
+  },
+  "original_inputs_unchanged": true,
+  "red_failure_records": 49,
+  "focused_successful_tests": 18,
+  "focused_skipped_records": 0,
+  "focused_complete": true,
+  "related_successful_tests": 51,
+  "related_skipped_records": 0,
+  "game_runtime_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "sources": {
+    ".gitattributes": "454e2316197abbe4804958c8518b451eb58ba3b34b41a79c37d4ac2b0db4c2c9",
+    "docs/hd/AGENT_HANDOFF.md": "f1c8a39f2875a8a3d9884aaf4e78fdf523f1d307b74442ba709ca30a5a612c64",
+    "tools/modal_primary_surface_audit.py": "9bbd175af9de1107ffdbca7a3a2515cc097870d15fb451e1fa2ee714e89826eb",
+    "tools/test_modal_primary_surface_audit.py": "448f032d20b9e57919e66924a6158792fc85e432d2bf35f834c9e53c8554656f",
+    "tools/test_modal_primary_cursor_regressions.py": "9d9982a260309babe512e21b19012a6ef877bdbf930548adbc453db2d3a0b962",
+    "tools/run_framed_offline_tests.py": "1a5803e43119b352004b3572544c8acfe469e135bab526fce10469d343f2f0a2"
+  }
+}

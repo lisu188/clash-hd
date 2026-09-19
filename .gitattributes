@@ -872,3 +872,5 @@
 /captures/current/modal-primary-runtime-source-validation-20260919.json -text whitespace=cr-at-eol
 /captures/current/modal-primary-runtime-source-validation-20260919-b.json -text whitespace=cr-at-eol
 /captures/current/modal-primary-runtime-source-validation-20260919-c.json -text whitespace=cr-at-eol
+
+/tools/test_modal_primary_cursor_regressions.py text eol=lf
