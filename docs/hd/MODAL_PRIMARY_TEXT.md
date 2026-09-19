@@ -6,6 +6,16 @@ The separate `-completehd-modalprimarytext-validation` stage, recipe
 all earlier candidate bytes. The protected stable stage, Complete HD v1 and
 800x600 launcher default remain unchanged.
 
+The [2026-09-19 source-validation checkpoint](../../captures/current/modal-primary-text-source-validation-20260919.json)
+binds 46 passing focused tests, all six exact builder resolutions and the three
+prepared 800x600, 1024x768 and 1920x1080 bundles. It also retains the initial
+BSS-predicate failure and distinguishes recovered tool-output receipts from
+contemporaneously saved test reports. All 34 recipe sources plus the five
+fixture/preservation helpers are archived outside the repository. The new
+1080p candidate SHA-256 is
+`21add69c3c8d61b3c57114dd33ff71255660598e103f7a3561bc5cf0798ccf0a`.
+No game process was launched for these checks or bundle builds.
+
 The retained 2026-09-19 primary captures at 1024x768 and 1920x1080 show the
 quantity `250` in the top margin even though the wall and twelve portrait
 slots are centered. This new stage addresses that one native text call.
