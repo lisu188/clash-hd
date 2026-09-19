@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -328,7 +329,82 @@ def test_manual_proof_rejects_live_or_repo_candidate_paths(fixture: Path) -> Non
     assert live_checklist["manual_proof_valid"] is False, live_checklist
     assert repo_checklist["manual_proof_valid"] is False, repo_checklist
     assert any("must not be the live original" in failure for failure in live_checklist["failures"]), live_checklist
-    assert any("must be under C:\\ClashTests" in failure for failure in repo_checklist["failures"]), repo_checklist
+    assert any("outside the active source checkout" in failure for failure in repo_checklist["failures"]), repo_checklist
+
+
+def test_checkout_inside_candidate_root_still_rejects_repo_candidates(fixture: Path) -> None:
+    proof = fixture / "checkout-location-proof.json"
+    write_valid_manual_proof(proof)
+    payload = json.loads(proof.read_text(encoding="utf-8"))
+    checkout = Path("C:/ClashTests/source-checkout")
+    with patch.object(manual_directinput_checklist, "REPO_ROOT", checkout):
+        for candidate in (
+            "C:/ClashTests/source-checkout/candidate.exe",
+            "c:\\CLASHTESTS\\SOURCE-CHECKOUT\\nested\\candidate.exe",
+            "C:/ClashTests/source-checkout/nested/../candidate.exe",
+            "C:/ClashTests/external/../source-checkout/candidate.exe",
+            "C:/ClashTests/source-checkout",
+        ):
+            payload["candidate_path"] = candidate
+            failures = manual_directinput_checklist.validate_manual_proof_data(
+                payload, repo_root=fixture
+            )
+            assert any("outside the active source checkout" in failure for failure in failures), (candidate, failures)
+        for candidate in (
+            "C:/ClashTests/external/candidate.exe",
+            "C:/ClashTests/source-checkout-sibling/candidate.exe",
+            "C:/ClashTests/source-checkout/../external/candidate.exe",
+            "c:\\CLASHTESTS\\EXTERNAL\\candidate.exe",
+        ):
+            payload["candidate_path"] = candidate
+            failures = manual_directinput_checklist.validate_manual_proof_data(payload)
+            assert failures == [], (candidate, failures)
+
+        guest = fixture / "checkout-location-guest-proof.json"
+        write_valid_guest_proof(guest, fixture)
+        guest_payload = json.loads(guest.read_text(encoding="utf-8"))
+        guest_payload["candidate_path"] = "C:/ClashTests/source-checkout/guest.exe"
+        failures = manual_directinput_checklist.validate_manual_proof_data(
+            guest_payload, repo_root=fixture
+        )
+        assert any("outside the active source checkout" in failure for failure in failures), failures
+
+
+def test_candidate_dot_segments_cannot_escape_allowed_root(fixture: Path) -> None:
+    proof = fixture / "candidate-root-traversal-proof.json"
+    write_valid_manual_proof(proof)
+    payload = json.loads(proof.read_text(encoding="utf-8"))
+    for candidate in ("C:/ClashTests/../Clash/clash95.exe", "C:/ClashTests/../elsewhere/candidate.exe"):
+        payload["candidate_path"] = candidate
+        failures = manual_directinput_checklist.validate_manual_proof_data(payload)
+        assert any("live original" in failure or "must be under" in failure for failure in failures), failures
+
+
+def test_native_checkout_aliases_and_resolution_errors_fail_closed(fixture: Path) -> None:
+    checkout = fixture / "source-checkout"
+    external = fixture / "external-candidates"
+    checkout.mkdir()
+    external.mkdir()
+    with patch.object(manual_directinput_checklist, "REPO_ROOT", checkout):
+        assert manual_directinput_checklist._candidate_is_in_active_checkout(str(checkout / "candidate.exe"))
+        assert not manual_directinput_checklist._candidate_is_in_active_checkout(str(external / "candidate.exe"))
+        alias = external / "checkout-alias"
+        try:
+            alias.symlink_to(checkout, target_is_directory=True)
+        except OSError:
+            print("native symlink fixture unavailable; lexical and resolution-error cases remain checked")
+        else:
+            try:
+                assert manual_directinput_checklist._candidate_is_in_active_checkout(str(alias / "candidate.exe"))
+            finally:
+                alias.unlink()
+
+    proof = fixture / "candidate-resolution-error-proof.json"
+    write_valid_manual_proof(proof)
+    payload = json.loads(proof.read_text(encoding="utf-8"))
+    with patch.object(manual_directinput_checklist, "_candidate_is_in_active_checkout", side_effect=OSError("unreadable path")):
+        failures = manual_directinput_checklist.validate_manual_proof_data(payload)
+    assert any("could not be resolved safely" in failure for failure in failures), failures
 
 
 def test_explicit_cdb_only_override_marks_promotion_ready() -> None:
@@ -393,6 +469,9 @@ def run_tests() -> None:
         test_placeholder_manual_proof_fails_closed(fixture)
         test_manual_proof_requires_observations_crash_and_process_hygiene(fixture)
         test_manual_proof_rejects_live_or_repo_candidate_paths(fixture)
+        test_checkout_inside_candidate_root_still_rejects_repo_candidates(fixture)
+        test_candidate_dot_segments_cannot_escape_allowed_root(fixture)
+        test_native_checkout_aliases_and_resolution_errors_fail_closed(fixture)
         test_guest_proof_marks_promotion_ready(fixture)
         test_guest_proof_missing_machine_id_fails_closed(fixture)
         test_guest_proof_placeholder_qmp_log_fails_closed(fixture)
