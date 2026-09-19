@@ -106,6 +106,12 @@ failure JSON is retained without copying large prepared probes into the error.
 
 ## Reproducible preparation
 
+Fresh runs require the [v2 primary query ledger](MODAL_PRIMARY_QUERY_LEDGER.md).
+Every raw memory query is retained before validation, and the consumer
+independently reconstructs compatible region coverage across all nineteen
+reads. The packet, plan, snapshot and triplet versions must agree. Historical
+v1 replay uses its frozen producer sources; the D and F failures remain intact.
+
 Choose a new candidate directory and capture directory, plus an existing
 isolated game work directory. Pass these to the script with the exact slots
 candidate, its `.candidate.json`, and the historical proxy build manifest:

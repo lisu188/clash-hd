@@ -24,7 +24,13 @@ PINS = {
 }
 PRIMARY_SOURCES = ('tools/modal_slots_primary_capture.py','tools/modal_slots_primary_surface.py',
                    'scripts/cdb/run_modal_slots_primary_capture.ps1')
-REVISION = 'slots_cached_primary_v1'
+LEGACY_REVISION = 'slots_cached_primary_v1'
+REVISION = 'slots_cached_primary_v2'
+REGION_SCHEME = 'primary_virtual_query_ledger_v1'
+PRIMARY_READ_NAMES = ('primary','backend','surface_full','palette','proxy_header',
+                      'proxy_getpalette','surface','surface_vtable','palette_vtable')
+REGION_FIELDS = ('address','size','state','protect','allocation_base','allocation_protect','type')
+REGION_ATTRIBUTES = REGION_FIELDS[2:]
 SNAPSHOT_ORIGIN = {'source':'tools/framed_primary_surface.py',
                   'sha256':PINS['tools/modal_slots_primary_surface.py']}
 LOCK_START = 0x47385D
@@ -117,10 +123,16 @@ def compile_probe(packet):
     if (not isinstance(path,str) or not re.fullmatch(r'[A-Za-z]:[\\/][\x20-\x7e]+',path)
             or re.search(r'[$";\r\n]|\.\.',path) or len(path)>512):
         raise ValueError('canonical primary command path must be bounded and delimiter-free')
-    if contract != dict(revision=REVISION,dependencies=PINS,lock_start=LOCK_START,lock_bytes=LOCK_BYTES.hex(),
+    revision=contract.get('revision')
+    expected=dict(revision=revision,dependencies=PINS,lock_start=LOCK_START,lock_bytes=LOCK_BYTES.hex(),
                         source_hashes={name:sha((ROOT/name).read_bytes()) for name in PRIMARY_SOURCES},snapshot_origin=SNAPSHOT_ORIGIN,
                         proxy_manifest=proxy_context(contract['proxy_manifest']['path']),
-                        palette_pointer_offset=PALETTE_POINTER_OFFSET,proxy_sha256=primary.SUPPORTED_PROXY_SHA256,ready_file=path):
+                        palette_pointer_offset=PALETTE_POINTER_OFFSET,proxy_sha256=primary.SUPPORTED_PROXY_SHA256,ready_file=path)
+    if revision==REVISION:expected['region_scheme']=REGION_SCHEME
+    # Current sources can only prepare/reconstruct v2 runs. Historical v1
+    # packets require their frozen producer source; changing every receipt
+    # version together must not downgrade a fresh run past the ledger checks.
+    if revision!=REVISION or contract != expected:
         raise ValueError('primary protocol contract differs')
     commands,ready,checks=additions()
     original=modal.compile_probe(base)
@@ -163,7 +175,7 @@ def prepare(original,candidate,*,ready_file,proxy_manifest,**kwargs):
     packet['primary_capture']=dict(revision=REVISION,dependencies=PINS,lock_start=LOCK_START,lock_bytes=LOCK_BYTES.hex(),
         source_hashes={name:sha((ROOT/name).read_bytes()) for name in PRIMARY_SOURCES},snapshot_origin=SNAPSHOT_ORIGIN,
         proxy_manifest=proxy_context(proxy_manifest),palette_pointer_offset=PALETTE_POINTER_OFFSET,
-        proxy_sha256=primary.SUPPORTED_PROXY_SHA256,ready_file=ready_file)
+        proxy_sha256=primary.SUPPORTED_PROXY_SHA256,ready_file=ready_file,region_scheme=REGION_SCHEME)
     probe=compile_probe(packet)
     return dict(prepared=True,runtime_ready=False,packet=packet,probe=probe,probe_sha256=sha(probe.encode('ascii')),
                 ready_script=ready_script(),ready_script_sha256=sha(ready_script().encode('ascii')))
@@ -287,6 +299,116 @@ def validate_loaded_proxy_header(captured,proxy_image,proxy_base):
                 rule='exact_pinned_header_with_only_ImageBase_equal_measured_load_base')
 
 
+def region_certificate(observations, page_size):
+    """Independently reconstruct disjoint coverage, retaining every attribute.
+
+    This is not duplicate-event removal: all query rows are validated first,
+    including redundant and contained ranges. Only the derived certificate is
+    coalesced; any contradictory overlap fails before a certificate is emitted.
+    """
+    if type(page_size) is not int or page_size!=4096:
+        raise ValueError('unsupported primary query page size')
+    rows=[]
+    for source in observations:
+        if not isinstance(source,dict) or set(source)!=set(REGION_FIELDS):
+            raise ValueError('incomplete primary region attributes')
+        row=dict(source)
+        if any(type(row[k]) is not int for k in REGION_FIELDS):
+            raise ValueError('noninteger primary region attributes')
+        start,length=row['address'],row['size']
+        if (not 0<start<primary.U32 or not 0<length<=primary.U32-start or
+                start%page_size or length%page_size or
+                not 0<row['allocation_base']<=start or row['allocation_base']%page_size or
+                not 0<=row['allocation_protect']<primary.U32 or
+                row['type'] not in (0x20000,0x40000,0x1000000) or
+                row['state']!=0x1000 or row['protect'] not in (2,4,8,0x20,0x40,0x80)):
+            raise ValueError('primary region is not valid committed readable pages')
+        rows.append(row)
+    result=[]
+    for row in sorted(rows,key=lambda r:(r['address'],r['size'])):
+        current=result[-1] if result else None
+        same=current is not None and all(current[k]==row[k] for k in REGION_ATTRIBUTES)
+        if current and row['address']<current['address']+current['size'] and not same:
+            raise ValueError('conflicting primary region attributes')
+        if same and row['address']<=current['address']+current['size']:
+            current['size']=max(current['address']+current['size'],row['address']+row['size'])-current['address']
+        else:result.append(dict(row))
+    return result
+
+
+def expected_primary_reads(manifest):
+    if set(manifest['reads'])!={'before','after'} or any(
+            set(manifest['reads'][phase])!=set(PRIMARY_READ_NAMES) for phase in ('before','after')):
+        raise ValueError('primary ledger requires exactly the nineteen actual reads')
+    return ([manifest['reads']['before'][name] for name in PRIMARY_READ_NAMES]+[manifest['pixels']]+
+            [manifest['reads']['after'][name] for name in PRIMARY_READ_NAMES])
+
+
+def audit_query_ledger(manifest):
+    """Authenticate every raw query and completed read before using coverage."""
+    def need(value,message):
+        if not value:raise ValueError(message)
+    def unique(pairs):
+        result={}
+        for key,value in pairs:
+            need(key not in result,'duplicate primary ledger JSON key');result[key]=value
+        return result
+    artifact=manifest['query_ledger'];root=Path(manifest['pixels']['path']).resolve().parent
+    need(artifact.get('scheme')==REGION_SCHEME and manifest.get('region_scheme')==REGION_SCHEME,
+         'primary query ledger scheme differs')
+    need(Path(artifact['path']).resolve()==root/'primary-query-ledger.jsonl','primary ledger path differs')
+    raw=_artifact(artifact)
+    need(0<len(raw)<=32*1024*1024 and raw.endswith(b'\n'),'primary ledger is empty, oversized or truncated')
+    lines=raw.decode('utf-8').splitlines()
+    need(0<len(lines)<=65536 and all(lines),'primary ledger has blank or excessive rows')
+    rows=[json.loads(line,object_pairs_hook=unique) for line in lines]
+    need(type(artifact.get('records')) is int and artifact['records']==len(rows),'primary ledger row count differs')
+    header=rows[0]
+    need(isinstance(header,dict),'primary ledger header is not an object')
+    need(header==dict(kind='header',scheme=REGION_SCHEME,page_size=4096,mbi_bytes=header.get('mbi_bytes'),
+        run_id=manifest['run_id'],game_identity=manifest['game_identity'],trace_sha256=manifest['trace_sha256']),
+        'primary ledger identity/header differs')
+    need(type(header['mbi_bytes']) is int and header['mbi_bytes'] in (28,48),'primary MBI layout differs')
+    expected=expected_primary_reads(manifest);observations=[];position=1
+    for index,record in enumerate(expected,1):
+        data=_artifact(record)
+        request={k:record[k] for k in ('path','address','bytes')}
+        address,count=request['address'],request['bytes']
+        need(type(address) is int and type(count) is int and 0<address<primary.U32 and
+             0<count<=67108864 and count<=primary.U32-address,'primary ledger read range invalid')
+        cursor=address;query_index=0
+        while cursor<address+count:
+            need(position<len(rows),'primary query ledger read coverage is incomplete')
+            row=rows[position];position+=1;query_index+=1
+            need(isinstance(row,dict) and set(row)=={'kind','read_index','query_index','request','cursor',
+                'requested_mbi_bytes','returned_mbi_bytes','region'},'primary query row fields differ')
+            need(row['kind']=='query' and type(row['read_index']) is int and row['read_index']==index and
+                 type(row['query_index']) is int and row['query_index']==query_index and row['request']==request,
+                 'primary query read sequence/path differs')
+            need(type(row['cursor']) is int and row['cursor']==cursor and
+                 type(row['requested_mbi_bytes']) is int and row['requested_mbi_bytes']==header['mbi_bytes'] and
+                 type(row['returned_mbi_bytes']) is int and row['returned_mbi_bytes']==header['mbi_bytes'],
+                 'primary query cursor or returned MBI byte count differs')
+            region=row['region'];region_certificate([region],header['page_size'])
+            need(region['address']<=cursor<region['address']+region['size'],'primary query leaves a read gap')
+            observations.append(region)
+            cursor=min(address+count,region['address']+region['size'])
+        need(position<len(rows),'primary ledger lacks completed read')
+        completed=rows[position];position+=1
+        need(isinstance(completed,dict) and type(completed.get('read_index')) is int and
+             completed==dict(kind='read',read_index=index,artifact={k:record[k] for k in ('path','address','bytes','sha256')}),
+             'primary ledger completed read differs from actual artifact')
+        need(len(data)==count,'primary ledger exact read count differs')
+    need(position==len(rows),'primary ledger contains omitted, contradictory or extra observations')
+    certificate=region_certificate(observations,header['page_size'])
+    # Validate receipt types too: Python bool/int equality must not authorize a
+    # malformed receipt even when the reconstructed integer values compare equal.
+    need(region_certificate(manifest['regions'],header['page_size'])==manifest['regions'] and
+         manifest['regions']==certificate,'primary region certificate differs from full query ledger')
+    return dict(scheme=REGION_SCHEME,records=len(rows),queries=len(observations),reads=len(expected),
+                sha256=sha(raw),certificate=certificate)
+
+
 def audit_snapshot(manifest,*,proxy_image,trace):
     """Validate producer-written host reads against an already revalidated trace.
 
@@ -328,7 +450,15 @@ def audit_snapshot(manifest,*,proxy_image,trace):
     pal=dict(fields,schema='clash95_current_primary_palette_v1',line=ready['line'],surface=v['surface'],palette=v['palette'],
         entries_address=v['palette']+12,entries_sha256=sha(before['palette'].data[12:]),entry_count=256)
     pixels=manifest['pixels'];raw=_artifact(pixels)
-    regions=[primary.Region(**r) for r in manifest['regions']]
+    ledger=None
+    if manifest.get('schema')=='clash95_modal_primary_snapshot_receipt_v2':
+        ledger=audit_query_ledger(manifest)
+        regions=[primary.Region(**{k:r[k] for k in ('address','size','state','protect')}) for r in ledger['certificate']]
+    else:
+        if manifest.get('schema')!='clash95_modal_primary_snapshot_receipt_v1':raise ValueError('unknown primary snapshot receipt')
+        if 'query_ledger' in manifest or 'region_scheme' in manifest:raise ValueError('v2 primary ledger cannot use a v1 receipt')
+        # Historical v1 claims still go directly to the strict frozen reader.
+        regions=[primary.Region(**r) for r in manifest['regions']]
     for name in ('surface_full','proxy_header','proxy_getpalette'):
         read=before[name];primary._read(read,read.address,len(read.data),name,regions)
     snapshots=[primary.Snapshot(**{k:x[k] for k in primary.Snapshot.__dataclass_fields__}) for x in (before,after)]
@@ -338,6 +468,7 @@ def audit_snapshot(manifest,*,proxy_image,trace):
     if _artifact(manifest['palette_entries'])!=before['palette'].data[12:]:raise ValueError('PNG palette does not match current attached entries')
     result.update(source_authenticated=True,host_receipt_consistent=True,loaded_proxy_header=header,
                   read_plan=primary.primary_read_plan(v['width'],v['height']))
+    if ledger is not None:result['query_ledger']=ledger
     return result
 
 
@@ -346,11 +477,16 @@ def audit_triplet(receipt,*,proxy_image,trace,packet):
     from modal_slots_surface_audit import mirror_pixels
     def need(value,message):
         if not value:raise ValueError(message)
-    need(receipt.get('schema')=='clash95_slots_primary_triplet_v1','wrong primary triplet receipt')
+    version=2 if packet['primary_capture'].get('revision')==REVISION else 1
+    need(packet['primary_capture'].get('revision') in (LEGACY_REVISION,REVISION),'wrong primary packet revision')
+    need(receipt.get('schema')==f'clash95_slots_primary_triplet_v{version}','wrong primary triplet receipt')
     need(trace.get('passed') is True and trace.get('primary_sequence',{}).get('passed') is True,
          'whole initial/modal/slots/primary trace required before snapshot acceptance')
     plan=receipt['plan'];root=Path(plan['out_dir']).resolve()
-    need(plan['schema']=='clash95_modal_slots_primary_capture_plan_v1','wrong primary plan')
+    need(plan['schema']==f'clash95_modal_slots_primary_capture_plan_v{version}','wrong primary plan')
+    if version==2:
+        need(plan.get('region_scheme')==packet['primary_capture'].get('region_scheme')==REGION_SCHEME,
+             'primary plan/packet query scheme differs')
     for key in ('stage','resolution','castle_index','availability','minimap_viewport','candidate_sha256',
                 'original_sha256','canvas_state_va','canvas_state_offsets','stop_va'):
         need(plan[key]==packet[key],'plan/packet '+key+' differs')
@@ -411,6 +547,8 @@ def audit_triplet(receipt,*,proxy_image,trace,packet):
     comparisons=[];results=[]
     for index,row in enumerate(receipt['snapshots'],1):
         folder=root/f'capture-{index}';sample=row['primary']
+        need(sample.get('schema')==f'clash95_modal_primary_snapshot_receipt_v{version}',
+             'mixed primary snapshot receipt version')
         need(row['game_identity']==sample['game_identity']==owner and sample['run_id']==root.name,
              'matched sample belongs to another process/run')
         need(row.get('paused') is True and sample.get('paused') is True and row.get('capture')=='owned_physical_mirror',
