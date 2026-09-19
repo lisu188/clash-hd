@@ -6,6 +6,11 @@
 > [battle_hd_1280_validation.md](battle_hd_1280_validation.md). The centered
 > evidence below remains its own baseline and does not validate the expanded
 > layout or promote either stage.
+>
+> **September 19 follow-up:** forced present observation now passes 7/7;
+> failed hidden cursor reads are classified, while lifecycle remains 12/14.
+> See the [new evidence](../captures/current/battle-hd-followup-20260919.md)
+> and [visible-session plan](battle_hd_visible_validation_plan.md).
 
 Generated: 2026-05-15
 
