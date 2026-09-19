@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import shutil
 import subprocess
 import sys
@@ -143,6 +144,73 @@ def test_offline_report_review_is_path_specific(fixture: Path) -> None:
     assert record["failures"], record
 
 
+def test_reviewed_offline_sources_pass(fixture: Path) -> None:
+    reviewed = python_runtime_safety_guard.REVIEWED_OFFLINE_HELPERS
+    assert len(reviewed) == 5, reviewed
+    for rel, contract in reviewed.items():
+        raw = (ROOT / rel).read_bytes()
+        path = fixture / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(raw)
+        record = python_runtime_safety_guard.classify_python(path, fixture)
+        assert record["classification"] == "reviewed_offline", record
+        assert not record["failures"], record
+        assert record["risk_categories"], record  # The original prose false positives remain visible.
+        assert record["source_sha256"] == contract["sha256"] == hashlib.sha256(raw).hexdigest(), record
+        assert record["reviewed_source_sha256"] == contract["sha256"], record
+    args = type("Args", (), {"root": fixture, "tools_dir": Path("tools")})()
+    guard = python_runtime_safety_guard.build_guard(args)
+    assert guard["passed"] is True, guard
+    assert guard["classification_counts"] == {"reviewed_offline": 5}, guard
+    assert guard["reviewed_offline_helpers"] == reviewed, guard
+    markdown = fixture / "report.md"
+    python_runtime_safety_guard.write_markdown(markdown, guard)
+    text = markdown.read_text(encoding="utf-8")
+    assert all(contract["sha256"] in text for contract in reviewed.values()), text
+
+
+def test_reviewed_offline_changes_fail_without_repinning(fixture: Path) -> None:
+    # Merely changing prose also invalidates the review. In particular, an API
+    # alias or source without any textual risk match must not fall through safe.
+    replacements = [
+        b"print('offline-looking replacement')\n",
+        b"from os import system as emit_report\nemit_report('clash95.exe')\n",
+        b"from subprocess import Popen as parse_report\nparse_report(['clash95.exe'])\n",
+        b"from ctypes import WinDLL as read_report\napi = read_report('user32')\napi.SendInput(1, None, 0)\n",
+        b"loader = __import__\nmodule = loader('sub' + 'process')\nlaunch = getattr(module, 'Po' + 'pen')\nlaunch(['clash95.exe'])\n",
+        b"def invalid(:\n",
+    ]
+    for index, (rel, contract) in enumerate(python_runtime_safety_guard.REVIEWED_OFFLINE_HELPERS.items()):
+        original = (ROOT / rel).read_bytes()
+        cases = [original + b"\n# Changed review prose.\n", *replacements]
+        for case, raw in enumerate(cases):
+            case_root = fixture / str(index) / str(case)
+            path = case_root / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(raw)
+            args = type("Args", (), {"root": case_root, "tools_dir": Path("tools")})()
+            guard = python_runtime_safety_guard.build_guard(args)
+            assert guard["passed"] is False, (rel, case, guard)
+            record = guard["records"][0]
+            assert record["classification"] == "unclassified_risky", (rel, case, record)
+            assert record["source_sha256"] == hashlib.sha256(raw).hexdigest(), record
+            assert record["source_sha256"] != contract["sha256"] == record["reviewed_source_sha256"], record
+            assert any("fresh review and repinning required" in failure for failure in record["failures"]), record
+            if case in (1, 2, 5, 6):
+                assert not record["risk_categories"], (rel, case, record)
+
+
+def test_reviewed_offline_review_is_path_specific(fixture: Path) -> None:
+    for rel in python_runtime_safety_guard.REVIEWED_OFFLINE_HELPERS:
+        path = fixture / "src" / "launcher" / Path(rel).name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes((ROOT / rel).read_bytes())
+        record = python_runtime_safety_guard.classify_python(path, fixture)
+        assert record["classification"] == "unclassified_risky", record
+        assert record["failures"], record
+        assert "reviewed_source_sha256" not in record, record
+
+
 def run_tests() -> None:
     fixture = ROOT / ".codex-loop" / "tmp-tests" / "python-runtime-safety-fixture"
     shutil.rmtree(fixture, ignore_errors=True)
@@ -154,6 +222,9 @@ def run_tests() -> None:
         test_offline_report_source_passes(fixture / "offline")
         test_offline_report_name_does_not_hide_runtime_apis(fixture / "offline-unsafe")
         test_offline_report_review_is_path_specific(fixture / "offline-path")
+        test_reviewed_offline_sources_pass(fixture / "reviewed")
+        test_reviewed_offline_changes_fail_without_repinning(fixture / "changed")
+        test_reviewed_offline_review_is_path_specific(fixture / "path")
     finally:
         shutil.rmtree(fixture, ignore_errors=True)
 
