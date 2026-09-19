@@ -269,8 +269,37 @@ def helper_measurements(rows: list[dict[str, Any]], identity_valid: bool,
                 for source, destination in frame_rectangles)
     check("frame_copy_rectangles", frame,
           "Eight native border/sidebar source rectangles reached the expected destination copy calls; completion and final pixels require separate evidence.")
-    check("present_surface", bool(values("PRESENT_MEASURE", eip=0x460EA0, phase=14, surface=RESOLUTION)),
-          "A direct present call saw the 1280x720 software surface; this is not final wrapper composition or a bounds check.")
+    # Resuming at an entry software breakpoint can skip its command string.
+    # Observe the next instruction (after push esi), then the synthetic return.
+    # Keep the older entry records as observations, never substitutes for this
+    # bound phase-14 call. A dispatch record alone only describes an intention.
+    present_sequence = {
+        name: [row for row in rows if row["marker"] == "BATTLE_HD_" + name]
+        for name in ("FORCE_PRESENT", "PRESENT_BODY", "PRESENT_RETURN", "MEASUREMENTS_DONE")
+    }
+    present = False
+    if all(len(records) == 1 for records in present_sequence.values()):
+        dispatch, body, returned, done = (present_sequence[name][0] for name in present_sequence)
+        request, observed, result = (row["values"] for row in (dispatch, body, returned))
+        stack, thread, surface = (request.get(key) for key in ("return_esp", "thread", "surface_ptr"))
+        present = (
+            dispatch["order"] < body["order"] < returned["order"] < done["order"]
+            and request.get("helper") == observed.get("helper") == result.get("helper") == 0x460EA0
+            and request.get("phase") == observed.get("phase") == result.get("phase") == 14
+            and request.get("object") == observed.get("object") == result.get("expected_object") == 0x544CD8
+            and request.get("return_eip") == observed.get("ret") == result.get("eip") == 0x42F2FA
+            and observed.get("eip") == 0x460EA1
+            and type(stack) is int and 8 < stack <= 0xFFFFFFFF
+            and observed.get("esp") == stack - 8 and result.get("esp") == stack
+            and type(thread) is int and thread > 0
+            and observed.get("thread") == result.get("thread") == thread
+            and type(surface) is int and 0 < surface <= 0xFFFFFFFF
+            and observed.get("surface_ptr") == result.get("surface_ptr") == surface
+            and all(value.get("surface") == RESOLUTION for value in (request, observed, result))
+            and done["values"].get("evidence") == "forced_hidden_helper_measurements"
+        )
+    check("present_surface", present,
+          "Ordered forced dispatch, present-body observation after push esi, and matching return bind the same object, thread, stack and 1280x720 software surface. This proves the observed call interval, not a non-noop draw, final wrapper composition or copy bounds.")
     return {"evidence_class": "forced_hidden_helper_measurements", "sequence_completed": completed,
             "identity_valid": identity_valid, "runtime_errors": runtime_errors,
             "checks": checks, "mouse_cases_measured": matched_cases,

@@ -4,6 +4,9 @@
 from __future__ import annotations
 
 import json
+import argparse
+import hashlib
+import struct
 import subprocess
 import sys
 import tempfile
@@ -144,6 +147,30 @@ def test_cdb_helper_phase_protocol(directory: Path) -> None:
     assert "} .if" not in probe, "Independent .if commands need semicolon separators"
     assert not re.search(r"r @\$t9=\d+;|@\$t15 == \d+\)", probe), "Phase IDs must be explicitly decimal"
     assert "ed poi(00532048)+0n808 0xfffffc19;" in probe, "Negative camera fixture must not enter interactive ed mode"
+    # Original-SHA byte-bound fixture: 00460EA0 begins push esi; push ebp;
+    # sub esp,4; mov esi,eax. The body site is the second instruction, after
+    # one four-byte push. CI verifies the contract without needing the game.
+    # Compare words, not a pointer-sized high-bit dword: MASM expansion must
+    # not turn equal seven-byte prefixes into unequal 64-bit expressions.
+    prefix = struct.pack("<HHHB", 0x5556, 0xEC83, 0x8904, 0xC6)
+    assert prefix == bytes.fromhex("56 55 83 ec 04 89 c6")
+    for guard in ("wo(00460EA0) != 0x5556", "wo(00460EA2) != 0xec83", "wo(00460EA4) != 0x8904", "by(00460EA6) != 0xc6"):
+        assert guard in probe, "The interior breakpoint must fail closed on a changed prologue"
+    assert "poi(00460EA0)" not in probe and "db 00460EA0 L7; q" in probe
+    assert probe.index("present_prologue_mismatch") < probe.index("bp 00460EA1")
+    body = next(line for line in probe.splitlines() if line.startswith("bp 00460EA1 "))
+    assert "@$t9 == 0n14" in body and "@eax, poi(@esp+4), @esp, @$tid" in body
+    assert "BATTLE_HD_PRESENT_MEASURE eip=00460ea0" in probe, "Keep the existing entry observations"
+    phase14 = probe.split(".if (@$t15 == 0n14) {", 1)[1]
+    assert phase14.index("BATTLE_HD_PRESENT_RETURN") < phase14.index("r eax=@$t0")
+
+
+def present_observation_rows() -> list[str]:
+    return [
+        "BATTLE_HD_FORCE_PRESENT helper=00460ea0 phase=14 object=00544cd8 return_eip=0042f2fa return_esp=000ff000 thread=00001234 surface_ptr=0a21f030 surface=(1280,720)",
+        "BATTLE_HD_PRESENT_BODY eip=00460ea1 helper=00460ea0 phase=14 object=00544cd8 ret=0042f2fa esp=000feff8 thread=00001234 surface_ptr=0a21f030 surface=(1280,720)",
+        "BATTLE_HD_PRESENT_RETURN eip=0042f2fa helper=00460ea0 phase=14 expected_object=00544cd8 esp=000ff000 thread=00001234 surface_ptr=0a21f030 surface=(1280,720) result=00000001",
+    ]
 
 
 def helper_observation_rows(arena_columns: int = 20) -> str:
@@ -173,6 +200,7 @@ def helper_observation_rows(arena_columns: int = 20) -> str:
                  "BATTLE_HD_PIXEL_MEASURE eip=0042ffe6 phase=12 x=544 y=136",
                  "BATTLE_HD_DIRTY_MEASURE returned=1 tile=(8,0)",
                  "BATTLE_HD_PRESENT_MEASURE eip=00460ea0 phase=14 ret=0042f2fa surface=(1280,720)"])
+    rows.extend(present_observation_rows())
     positions = ((1138, 490), (1201, 490), (1138, 521), (1138, 552), (1201, 521), (1145, 120))
     callbacks = (0x42D4E0, 0x42D3A0, 0x42D5B0, 0x42D670, 0x42D560, 0x42D6F0)
     rows.extend(f"BATTLE_HD_HUD_DESCRIPTOR index={i} desc={0x514b78 + i*53:08x} xy=({x},{y}) callback={callbacks[i]:08x}"
@@ -218,6 +246,48 @@ def test_helper_uses_actual_arena_and_keeps_seven_rows(directory: Path) -> None:
     assert not bad_rows["helper_measurements"]["checks"]["camera_endpoints"]["passed"]
     assert not bad_rows["helper_measurements"]["checks"]["mouse_cell_boundaries"]["passed"]
     assert not bad_rows["helper_measurements"]["checks"]["full_tile_projection"]["passed"]
+
+
+def test_present_requires_one_bound_ordered_call_interval(directory: Path) -> None:
+    baseline = helper_observation_rows(16)
+    positive = check(directory / "positive", baseline)
+    assert positive["helper_measurements"]["checks"]["present_surface"]["passed"]
+    assert not positive["claims"]["render"]["passed"] and not positive["claims"]["visible"]["passed"]
+    dispatch, body, returned = present_observation_rows()
+    mutations = [
+        ("wrong_body_owner", body, body.replace("eip=00460ea1", "eip=00460ea0")),
+        ("wrong_helper", body, body.replace("helper=00460ea0", "helper=00460f90")),
+        ("wrong_return", body, body.replace("ret=0042f2fa", "ret=005629eb")),
+        ("wrong_object", body, body.replace("object=00544cd8", "object=0051d4c0")),
+        ("wrong_surface", body, body.replace("surface_ptr=0a21f030", "surface_ptr=0a21f034")),
+        ("wrong_resolution", body, body.replace("surface=(1280,720)", "surface=(800,600)")),
+        ("wrong_phase", body, body.replace("phase=14", "phase=13")),
+        ("wrong_body_stack", body, body.replace("esp=000feff8", "esp=000feffc")),
+        ("wrong_return_stack", returned, returned.replace("esp=000ff000", "esp=000ff004")),
+        ("wrong_thread", returned, returned.replace("thread=00001234", "thread=00005678")),
+        ("missing_dispatch", dispatch, ""),
+        ("missing_body", body, ""),
+        ("missing_return", returned, ""),
+        ("duplicate_body", body, body + " " + body),
+        ("wrong_order", body + " " + returned, returned + " " + body),
+    ]
+    for name, old, new in mutations:
+        assert old in baseline
+        bad = check(directory / name, baseline.replace(old, new))
+        assert not bad["helper_measurements"]["checks"]["present_surface"]["passed"], name
+        assert bad["helper_measurements"]["checks"]["full_tile_projection"]["passed"], name
+    null_surface = check(directory / "null_surface", baseline.replace("surface_ptr=0a21f030", "surface_ptr=00000000"))
+    assert not null_surface["helper_measurements"]["checks"]["present_surface"]["passed"]
+    # Historical completion plus earlier/later entry observations must remain
+    # unproven, even though all other direct-helper observations are present.
+    historical = baseline
+    for record in present_observation_rows():
+        historical = historical.replace(record, "")
+    historical = historical.replace("phase=14 ret=0042f2fa", "phase=13 ret=005629eb")
+    historical += " BATTLE_HD_PRESENT_MEASURE eip=00460ea0 phase=15 ret=00419316 surface=(1280,720)\n"
+    old = check(directory / "historical", historical)
+    assert old["helper_measurements"]["sequence_completed"]
+    assert not old["helper_measurements"]["checks"]["present_surface"]["passed"]
 
 
 def test_initial_loader_break_is_not_a_runtime_failure(directory: Path) -> None:
@@ -387,12 +457,50 @@ def test_cli_missing_evidence_fails_closed(directory: Path) -> None:
     assert not hd.load_json(output)["passed"]
 
 
+def verify_present_executable(path: Path) -> None:
+    """Optional read-only contract check against a user-owned PE32 file.
+
+    CI never requires or creates a game executable. Map the observed VA from
+    the actual PE sections rather than assuming a universal RVA/file delta.
+    The production patch gate separately binds the complete original SHA.
+    """
+    data = path.read_bytes()
+    assert data[:2] == b"MZ", path
+    pe = struct.unpack_from("<I", data, 0x3C)[0]
+    assert data[pe:pe + 4] == b"PE\0\0", path
+    section_count = struct.unpack_from("<H", data, pe + 6)[0]
+    optional_size = struct.unpack_from("<H", data, pe + 20)[0]
+    optional = pe + 24
+    assert struct.unpack_from("<H", data, optional)[0] == 0x10B, "Expected PE32"
+    image_base = struct.unpack_from("<I", data, optional + 28)[0]
+    assert image_base == 0x400000, "Fixed debugger VAs require the verified image base"
+    rva = 0x460EA0 - image_base
+    expected = bytes.fromhex("56 55 83 ec 04 89 c6")
+    matches = []
+    for index in range(section_count):
+        section = optional + optional_size + index * 40
+        _, virtual_address, raw_size, raw_pointer = struct.unpack_from("<IIII", data, section + 8)
+        if virtual_address <= rva and rva + len(expected) <= virtual_address + raw_size:
+            offset = raw_pointer + rva - virtual_address
+            matches.append((offset, data[offset:offset + len(expected)]))
+    assert len(matches) == 1, "Present prologue must map to exactly one raw PE section"
+    offset, observed = matches[0]
+    assert observed == expected, f"{path}: VA 00460EA0 at file 0x{offset:x}: {observed.hex(' ')}"
+    print(f"present prologue verified: {path}; SHA256={hashlib.sha256(data).hexdigest().upper()}; offset=0x{offset:x}; bytes={observed.hex(' ')}")
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--present-exe", action="append", type=Path, default=[],
+                        help="optional read-only PE-mapped present-prologue check; repeat for original and candidate")
+    args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="clash-battle-hd-fixtures-") as name:
         base = Path(name)
         tests = [value for key, value in globals().copy().items() if key.startswith("test_") and callable(value)]
         for index, test in enumerate(tests):
             test(base / str(index))
+    for path in args.present_exe:
+        verify_present_executable(path)
     print("battle HD summary tests passed")
     return 0
 
