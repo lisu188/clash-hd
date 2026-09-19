@@ -27,11 +27,14 @@ CONTRACTS = (
     (0x47c01c, "8d542450528b40086a108b0850ff51243d1e00078075098b4308508b10ff521c", "original"),
     (0x47c03c, "8b4424508943108b442454894314", "original"),
     (0x4e9810, "89d76a006a0054ff35dc525400ff15e0a34e00a1a8515400", "candidate"),
-    (0x50f1f8, "500a4600", "original"),
+    (0x4612e0, "53515256575589c683b868040000000f84e3010000", "original"),
+    (0x4614d8, "e873f5ffff5d5f5e5a595bc3", "original"),
+    (0x50f218, "e0124600", "original"),
 )
 CALLERS = (0x42DA46, 0x42DE6E, 0x566533)
 SOURCE_EXE = None
 CANDIDATE_EXE = None
+RAWSTACK_LOG = None
 
 
 def guard_line(va, hex_bytes):
@@ -131,13 +134,16 @@ class CursorProtocolTests(unittest.TestCase):
     def test_stack_filters_match_guarded_native_abi(self):
         # Construct the chain independently from the documented x86 pushes:
         # cursor ECX; DD_Pump return, five registers, eight local bytes;
-        # updater return and five registers; poller return, three registers,
+        # native Device_UpdateRect return and six registers; updater return
+        # and five registers; poller return, three registers,
         # 96 local bytes; then the three stdcall GetDeviceState arguments.
         cursor_sp = 0x200000
         cursor_body = cursor_sp - 4
         pump_return = cursor_body - 4
         pump_body = pump_return - 5 * 4 - 8
-        updater_return = pump_body - 4
+        wrapper_return = pump_body - 4
+        wrapper_body = wrapper_return - 6 * 4
+        updater_return = wrapper_body - 4
         updater_body = updater_return - 5 * 4
         poller_return = updater_body - 4
         poller_body = poller_return - 3 * 4 - 96
@@ -146,9 +152,9 @@ class CursorProtocolTests(unittest.TestCase):
         origin_sp = updater_body - 2 * 4
         self.assertEqual(buffer, call_sp + 0x5c)
         observations = (
-            (0x47C029, call_sp, ((poller_return, 0x460A61), (updater_return, 0x460611), (pump_return, 0x460B19))),
-            (0x47C02C, poller_body, ((poller_return, 0x460A61), (updater_return, 0x460611), (pump_return, 0x460B19))),
-            (0x4E9823, origin_sp, ((updater_return, 0x460611), (pump_return, 0x460B19))),
+            (0x47C029, call_sp, ((poller_return, 0x460A61), (updater_return, 0x4614DD), (wrapper_return, 0x460611), (pump_return, 0x460B19))),
+            (0x47C02C, poller_body, ((poller_return, 0x460A61), (updater_return, 0x4614DD), (wrapper_return, 0x460611), (pump_return, 0x460B19))),
+            (0x4E9823, origin_sp, ((updater_return, 0x4614DD), (wrapper_return, 0x460611), (pump_return, 0x460B19))),
         )
         for address, esp, frames in observations:
             body = self.breakpoints[address]
@@ -162,6 +168,42 @@ class CursorProtocolTests(unittest.TestCase):
     def test_no_success_or_manual_acceptance_is_inferred(self):
         self.assertIn("No register or data writes and no new input or forced outcomes", self.text)
         self.assertNotRegex(self.text, r"(?i)DIAG_PASS|approved[=:]|manual_input_proof[=:]1")
+
+    def test_observed_raw_stack_chain_when_requested(self):
+        if RAWSTACK_LOG is None:
+            self.skipTest("optional retained raw-stack diagnostic not supplied")
+        lines = RAWSTACK_LOG.read_text(encoding="utf-8", errors="replace").splitlines()
+        entry = None
+        observations = []
+        for index, line in enumerate(lines):
+            match = re.match(r"BATTLE_HD_CURSOR_DIAG_ENTRY caller=([0-9a-f]+) tid=([0-9a-f]+) cursor_sp=([0-9a-f]+)", line)
+            if match:
+                entry = tuple(int(value, 16) for value in match.groups())
+                continue
+            match = re.match(r"BATTLE_HD_CURSOR_DIAG_RAWSTACK site=(\w+) tid=([0-9a-f]+) eip=([0-9a-f]+) esp=([0-9a-f]+)", line)
+            if not match:
+                continue
+            self.assertIsNotNone(entry)
+            site = match[1]
+            tid, eip, esp = (int(match[n], 16) for n in (2, 3, 4))
+            caller, entry_tid, cursor_sp = entry
+            self.assertEqual(tid, entry_tid)
+            memory = {}
+            for row in lines[index + 1:index + 17]:
+                fields = re.fullmatch(r"([0-9a-f]{8})\s+([0-9a-f]{8}) ([0-9a-f]{8}) ([0-9a-f]{8}) ([0-9a-f]{8})", row)
+                self.assertIsNotNone(fields)
+                address = int(fields[1], 16)
+                memory.update({address + n * 4: int(fields[n + 2], 16) for n in range(4)})
+            self.assertEqual(memory[cursor_sp], caller)
+            body = self.breakpoints[eip]
+            comparisons = re.findall(r"\(poi\(@esp\+0x([0-9a-f]+)\) == ([0-9A-F]{8})\)", body)
+            frames = [(int(offset, 16), int(value, 16)) for offset, value in comparisons if int(value, 16) not in CALLERS]
+            self.assertGreaterEqual(len(frames), 3)
+            for offset, value in frames:
+                self.assertEqual(memory[esp + offset], value, (site, hex(eip), hex(esp + offset)))
+            self.assertIn(f"(poi(@esp+0x{cursor_sp - esp:x}) == {caller:08X})", body)
+            observations.append((caller, site))
+        self.assertCountEqual(observations, [(caller, site) for caller in CALLERS for site in ("device_call", "device_return", "origin_return")])
 
     def test_original_source_bytes_when_requested(self):
         if SOURCE_EXE is None:
@@ -185,6 +227,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-exe", type=Path)
     parser.add_argument("--candidate-exe", type=Path)
+    parser.add_argument("--rawstack-log", type=Path)
     args, remaining = parser.parse_known_args()
     SOURCE_EXE, CANDIDATE_EXE = args.source_exe, args.candidate_exe
+    RAWSTACK_LOG = args.rawstack_log
     unittest.main(argv=[__file__, *remaining])
