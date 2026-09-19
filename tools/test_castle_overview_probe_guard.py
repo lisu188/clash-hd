@@ -5,9 +5,9 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -68,7 +68,7 @@ def write_fixture(
     patcher_text: str | None = None,
     log_text: str = GOOD_LOG,
 ) -> argparse.Namespace:
-    run = fixture / "captures" / "cdb-surface-dump-20260512-160404"
+    run = fixture / "run"
     run.mkdir(parents=True)
     (run / "cdb-surface-dump.log").write_text(log_text, encoding="utf-8")
     probe = fixture / "probe.cdb"
@@ -108,7 +108,7 @@ def test_missing_breakpoint_fails(fixture: Path) -> None:
 def test_missing_probe_marker_fails(fixture: Path) -> None:
     for index, marker in enumerate(castle_overview_probe_guard.REQUIRED_PROBE_MARKERS):
         args = write_fixture(
-            fixture / f"missing-probe-marker-{marker.lower()}",
+            fixture / f"marker-{index}",
             probe_text=good_probe_text().replace(marker, f"REMOVED_PROBE_MARKER_{index}"),
         )
         guard = castle_overview_probe_guard.build_guard(args)
@@ -120,7 +120,7 @@ def test_missing_parser_marker_fails(fixture: Path) -> None:
     parser_text = "\n".join(castle_overview_probe_guard.REQUIRED_PROBE_MARKERS)
     for index, marker in enumerate(castle_overview_probe_guard.REQUIRED_PROBE_MARKERS):
         args = write_fixture(
-            fixture / f"missing-parser-marker-{marker.lower()}",
+            fixture / f"marker-{index}",
             parser_text=parser_text.replace(marker, f"REMOVED_PARSER_MARKER_{index}"),
         )
         guard = castle_overview_probe_guard.build_guard(args)
@@ -129,7 +129,7 @@ def test_missing_parser_marker_fails(fixture: Path) -> None:
 
 
 def test_forbidden_marker_fails(fixture: Path) -> None:
-    for marker in castle_overview_probe_guard.FORBIDDEN_MARKERS:
+    for index, marker in enumerate(castle_overview_probe_guard.FORBIDDEN_MARKERS):
         for target in ("probe", "parser", "patcher"):
             kwargs = {
                 "probe_text": good_probe_text(),
@@ -137,7 +137,7 @@ def test_forbidden_marker_fails(fixture: Path) -> None:
                 "patcher_text": "# no forbidden markers here\n",
             }
             kwargs[f"{target}_text"] += f"\n{marker}\n"
-            args = write_fixture(fixture / f"forbidden-{target}-{marker.lower()}", **kwargs)
+            args = write_fixture(fixture / f"{target}-{index}", **kwargs)
             guard = castle_overview_probe_guard.build_guard(args)
             assert guard["passed"] is False, guard
             assert any(marker in failure for failure in guard["failures"]), guard
@@ -267,10 +267,10 @@ def test_cli_writes_outputs_and_fails_closed(fixture: Path) -> None:
 
 
 def run_tests() -> None:
-    fixture = ROOT / ".codex-loop" / "tmp-tests" / "castle-overview-probe-guard-fixture"
-    shutil.rmtree(fixture, ignore_errors=True)
-    fixture.mkdir(parents=True)
-    try:
+    # Keep generated paths independent of checkout depth and long marker names.
+    # Full markers remain in fixture contents and every original assertion.
+    with tempfile.TemporaryDirectory(prefix="covpg-") as directory:
+        fixture = Path(directory)
         test_good_fixture(fixture / "good")
         test_missing_breakpoint_fails(fixture / "missing-breakpoint")
         test_missing_probe_marker_fails(fixture / "missing-probe-marker")
@@ -279,8 +279,6 @@ def run_tests() -> None:
         test_av_log_fails(fixture / "av-log")
         test_focused_log_missing_proof_fails(fixture / "focused-log-missing-proof")
         test_cli_writes_outputs_and_fails_closed(fixture / "cli")
-    finally:
-        shutil.rmtree(fixture, ignore_errors=True)
 
 
 def main() -> int:
