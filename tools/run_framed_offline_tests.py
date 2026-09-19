@@ -75,6 +75,7 @@ SUITES = (
     "test_framed_world_clear_audit",
     "test_modal_slots_primary_capture",
     "test_modal_slots_primary_host",
+    "test_modal_slots_lifecycle_probe",
 )
 
 

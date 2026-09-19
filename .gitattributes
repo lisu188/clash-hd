@@ -838,3 +838,5 @@
 /tools/test_framed_modal_primary.py -text whitespace=cr-at-eol
 /tools/test_pe_modal_primary_extension.py -text whitespace=cr-at-eol
 /tools/test_build_framed_modal_primary_candidate.py -text whitespace=cr-at-eol
+/tools/modal_slots_lifecycle_probe.py -text whitespace=cr-at-eol
+/tools/test_modal_slots_lifecycle_probe.py -text whitespace=cr-at-eol
