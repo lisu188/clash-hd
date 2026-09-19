@@ -1,0 +1,220 @@
+{
+  "schema": "clash95_aggregate_checkpoint_v1",
+  "source_commit": "b39f9bd3d4ecf566eaa80aa7798cb36ef4fe6282",
+  "generated_at": "2026-09-19T12:50:18+02:00",
+  "exit_code": 2,
+  "checks": 167,
+  "passed_checks": 154,
+  "failed_checks": [
+    "framed_offline_fixtures",
+    "castle_overview_evidence",
+    "castle_overview_promotion_decision",
+    "castle_overview_baseline_recheck",
+    "castle_overview_probe_guard_tests",
+    "stable_stage_guard",
+    "python_runtime_safety_guard",
+    "no_visible_runtime_guard",
+    "manual_directinput_checklist_tests",
+    "hd_soak_long_report_guard",
+    "hd_endurance_release_checklist",
+    "no_popup_boundary_guard",
+    "docs_consistency_guard"
+  ],
+  "failure_details": {
+    "castle_overview_evidence": {
+      "passed": false,
+      "failures": [
+        "owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+        "forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+      ]
+    },
+    "castle_overview_promotion_decision": {
+      "passed": false,
+      "failures": [
+        "castle overview evidence matrix is not passing"
+      ]
+    },
+    "castle_overview_baseline_recheck": {
+      "passed": false,
+      "failures": [
+        "latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+        "latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+      ]
+    },
+    "castle_overview_probe_guard_tests": {
+      "passed": false,
+      "failures": [
+        "FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\ClashTests\\\\hd-completion\\\\source-checkout-pr74-20260913\\\\.codex-loop\\\\tmp-tests\\\\castle-overview-probe-guard-fixture\\\\missing-probe-marker\\\\missing-probe-marker-castleov_hitbox_displayed_hittest_begin\\\\captures\\\\cdb-surface-dump-20260512-160404\\\\cdb-surface-dump.log'"
+      ]
+    },
+    "stable_stage_guard": {
+      "passed": false,
+      "failures": [
+        "castle_overview_promotion_decision: castle overview promotion decision is not passing",
+        "castle_overview_evidence_matrix: castle overview evidence matrix is not passing"
+      ]
+    },
+    "python_runtime_safety_guard": {
+      "passed": false,
+      "failures": [
+        "src/launcher/gui.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/complete_hd_army_movement_trace.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/complete_hd_manual_attach.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/complete_hd_manual_attach_win32.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/framed_army_portrait_trace.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/framed_army_transition_trace.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/framed_primary_surface.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/modal_slots_primary_surface.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/run_framed_offline_tests.py uses risky Python runtime/input APIs but is not gated or exempt"
+      ]
+    },
+    "no_visible_runtime_guard": {
+      "passed": false,
+      "failures": [
+        "missing run summary: captures\\cdb-surface-dump-20260512-160404\\summary.json"
+      ]
+    },
+    "manual_directinput_checklist_tests": {
+      "passed": false,
+      "failures": [
+        "AssertionError: {'generated_at': '2026-09-19T12:49:42+02:00', 'passed': True, 'runtime_policy': 'repo-only; does not launch Clash95, CDB, wrappers, PowerShell, or visible windows', 'checklist_policy': 'manual DirectInput evidence is tracked separately from CDB/proxy proof; visible/manual validation requires explicit user approval; Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.', 'no_popup_operator_preference': 'Do not launch Clash95, CDB, wrappers, PowerShell harnesses, or visible windows unless the user explicitly approves.', 'status': 'pending_manual_validation', 'visible_runtime_requires_approval': True, 'stable_stage_should_change': False, 'manual_proof': 'C:\\\\ClashTests\\\\hd-completion\\\\source-checkout-pr74-20260913\\\\.codex-loop\\\\tmp-tests\\\\manual-directinput-fixture\\\\repo-candidate-proof.json', 'manual_proof_supplied': True, 'manual_proof_valid': True, 'manual_proof_summary': {'evidence_class': 'manual_directinput', 'executable_sha256': 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'checked_item_count': 5}, 'allow_cdb_only_promotion': False, 'promotion_ready': True, 'items': [{'id': 'stable_menu_load', 'title': 'Stable HD map stage menu load and held-click route', 'stage': 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'input_route': 'real mouse movement plus held left-clicks on the active desktop', 'expected_observation': 'startup reaches the menu, centered 640x480 menu hitboxes respond, and held clicks are not missed by DirectInput polling', 'current_cdb_evidence': 'dynamic-origin/menu CDB and route evidence only', 'status': 'pending_manual', 'promotion_relevance': 'blocks treating synthetic input proof as manual menu proof'}, {'id': 'stable_hd_map_input', 'title': 'Stable HD map edge scroll, minimap, and selection input', 'stage': 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch', 'input_route': 'real mouse movement near map edges plus held clicks on map/minimap targets', 'expected_observation': 'map cursor movement, edge scrolling, minimap/action-panel clicks, and right/bottom tile selection align with the 800x600 presentation', 'current_cdb_evidence': 'hidden CDB/proxy map and grid-hit evidence only', 'status': 'pending_manual', 'promotion_relevance': 'blocks broader stable HD input promotion'}, {'id': 'right_bottom_validation_input', 'title': 'Right-bottom composition validation-stage manual input', 'stage': 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-rightbottomcompose', 'input_route': 'real mouse movement and held clicks around the recovered lower/right UI', 'expected_observation': 'status/action UI remains recovered while owner/action hit-tests and grid selection still respond at the expected displayed positions', 'current_cdb_evidence': 'right-bottom composition matrix, route timing guard, and controlled native (450,73) grid-hit proof', 'status': 'pending_manual', 'promotion_relevance': 'blocks promoting rightbottomcompose into the stable stage'}, {'id': 'castle_barracks_centered_input', 'title': 'Castle barracks centered manual input', 'stage': 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'input_route': 'real mouse movement and held clicks on centered barracks descriptors/actions', 'expected_observation': 'barracks descriptor and action callbacks remain reachable through the centered 80,60 presentation', 'current_cdb_evidence': 'barracks controlled-stop descriptor/action CDB proof', 'status': 'pending_manual', 'promotion_relevance': 'blocks treating barracks CDB proof as real input proof'}, {'id': 'castle_overview_centered_input', 'title': 'Full castle overview centered manual input', 'stage': 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all', 'input_route': 'real mouse movement and held clicks on visible overview descriptors', 'expected_observation': 'visible overview commands such as 0x86, 0x63, and 0x87 respond at displayed centered coordinates without using debugger-forced state', 'current_cdb_evidence': 'focused overview hitbox, visible multi-hit, dormant multi-hit, and castle overview probe guard evidence', 'status': 'pending_manual', 'promotion_relevance': 'blocks promoting castlecenter-all into the stable stage'}], 'summary': {'item_count': 5, 'pending_count': 5, 'pending_ids': ['stable_menu_load', 'stable_hd_map_input', 'right_bottom_validation_input', 'castle_barracks_centered_input', 'castle_overview_centered_input'], 'promotion_ready': True, 'stable_stage_should_change': False}, 'failures': []}"
+      ]
+    },
+    "hd_soak_long_report_guard": {
+      "passed": false,
+      "failures": [
+        "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
+        "missing passing 2h+ representative route: map-idle",
+        "missing passing 2h+ representative route: map-pan"
+      ]
+    },
+    "hd_endurance_release_checklist": {
+      "passed": false,
+      "failures": [
+        "protected_stable_stage: stable-stage guard does not prove the protected boundary",
+        "long_soak_representative_routes: 2h+ representative-route soak blocked (blocked_missing_long_proof): 2h+ representative-route soak evidence is locked or missing",
+        "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
+        "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
+        "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
+        "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
+        "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
+        "no_speculative_promotion: one or more promotion boundaries are not fail-closed"
+      ]
+    },
+    "no_popup_boundary_guard": {
+      "passed": false,
+      "failures": [
+        "stable_stage_guard: refresh check is not passing: stable_stage_guard",
+        "no_visible_runtime_guard: refresh check is not passing: no_visible_runtime_guard",
+        "python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
+        "manual_directinput_checklist_tests: refresh check is not passing: manual_directinput_checklist_tests",
+        "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
+        "castle_overview_probe_guard_tests: refresh check is not passing: castle_overview_probe_guard_tests",
+        "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
+      ]
+    },
+    "docs_consistency_guard": {
+      "passed": false,
+      "failures": [
+        "generated_state: no-popup boundary is failing"
+      ]
+    }
+  },
+  "framed": {
+    "successful_tests": 620,
+    "skipped_records": 1,
+    "suite_count": 55,
+    "source_preflight_passed": true,
+    "offline_passed": false,
+    "selected_coverage_complete": false,
+    "failed_suites": [
+      {
+        "suite": "test_build_framed_modal_slots_candidate",
+        "status": "failed",
+        "discovered": 6,
+        "tests_run": 6,
+        "skipped": [],
+        "expected_failures": [],
+        "unexpected_successes": [],
+        "failures": [],
+        "errors": [
+          {
+            "test": "test_build_framed_modal_slots_candidate.SlotsBuilderBoundaryTests.test_cli_rejects_unsafe_paths_before_build",
+            "traceback": "Traceback (most recent call last):\n  File \"C:\\ClashTests\\hd-completion\\source-checkout-pr74-20260913\\tools\\test_build_framed_modal_slots_candidate.py\", line 119, in test_cli_rejects_unsafe_paths_before_build\n    builder.main(common+extra)\n  File \"C:\\ClashTests\\hd-completion\\source-checkout-pr74-20260913\\tools\\build_framed_modal_slots_candidate.py\", line 113, in main\n    metadata=write_candidate(args.original,path,args.resolution)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\ClashTests\\hd-completion\\source-checkout-pr74-20260913\\tools\\build_framed_modal_slots_candidate.py\", line 90, in write_candidate\n    image,metadata,probe=build_candidate(Path(original).read_bytes(),resolution)\n    ^^^^^^^^^^^^^^^^^^^^\nValueError: not enough values to unpack (expected 3, got 0)\n"
+          }
+        ],
+        "returncode": 1,
+        "seconds": 231.172
+      },
+      {
+        "suite": "test_framed_modal_primary",
+        "status": "failed",
+        "error": "Command '['C:\\\\Users\\\\andrz\\\\.cache\\\\codex-runtimes\\\\codex-primary-runtime\\\\dependencies\\\\python\\\\python.exe', '-B', 'C:\\\\ClashTests\\\\hd-completion\\\\source-checkout-pr74-20260913\\\\tools\\\\run_framed_offline_tests.py', '--worker', 'test_framed_modal_primary', '--worker-result', 'C:\\\\Users\\\\andrz\\\\AppData\\\\Local\\\\Temp\\\\clash-hd-offline-b1rng0k8\\\\result.json']' timed out after 600.0 seconds",
+        "timed_out": true,
+        "seconds": 600.078
+      },
+      {
+        "suite": "test_build_framed_modal_primary_candidate",
+        "status": "failed",
+        "discovered": 6,
+        "tests_run": 6,
+        "skipped": [],
+        "expected_failures": [],
+        "unexpected_successes": [],
+        "failures": [],
+        "errors": [
+          {
+            "test": "test_build_framed_modal_primary_candidate.PrimaryBuilderBoundaryTests.test_cli_rejects_unsafe_paths_before_build",
+            "traceback": "Traceback (most recent call last):\n  File \"C:\\ClashTests\\hd-completion\\source-checkout-pr74-20260913\\tools\\test_build_framed_modal_primary_candidate.py\", line 138, in test_cli_rejects_unsafe_paths_before_build\n    builder.main(common + extra)\n  File \"C:\\ClashTests\\hd-completion\\source-checkout-pr74-20260913\\tools\\build_framed_modal_primary_candidate.py\", line 153, in main\n    metadata = write_candidate(args.original, path, args.resolution)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\ClashTests\\hd-completion\\source-checkout-pr74-20260913\\tools\\build_framed_modal_primary_candidate.py\", line 131, in write_candidate\n    image, metadata, probe = build_candidate(Path(original).read_bytes(), resolution)\n    ^^^^^^^^^^^^^^^^^^^^^^\nValueError: not enough values to unpack (expected 3, got 0)\n"
+          }
+        ],
+        "returncode": 1,
+        "seconds": 491.688
+      }
+    ]
+  },
+  "artifact_records": [
+    {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260919\\aggregate-d\\before.json",
+      "sha256": "317574a65512af7ebb76fc7175ba6d06a0ee44590c170b5dc69cada8f99b6074",
+      "bytes": 775362
+    },
+    {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260919\\aggregate-d\\completion.json",
+      "sha256": "79772208a791297d7669cc634cdc97f4a347741d079bed762a2beb346ea544ce",
+      "bytes": 725
+    },
+    {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260919\\aggregate-d\\current-evidence-refresh-current.json",
+      "sha256": "43587031430fe369cad8f0dda8341842253b0b8892e6ed23b439b06f85523fc5",
+      "bytes": 303445
+    },
+    {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260919\\aggregate-d\\exit-code.txt",
+      "sha256": "df4e26a04a444901b95afef44e4a96cfae34690fff2ad2c66389c70079cdff2b",
+      "bytes": 3
+    },
+    {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260919\\aggregate-d\\refresh.log",
+      "sha256": "99ccd5a1135e463002934234f81c1b863b1ce01de0b3a740a07a08ce6ba06c06",
+      "bytes": 109293
+    },
+    {
+      "path": "C:\\ClashCaptures\\completehd-integration-20260919\\aggregate-d\\postflight.json",
+      "sha256": "2fee4ea5d929040283d3bdaa5fcd6b8ebd279fa802aa58dbd1bdf9770ad815ba",
+      "bytes": 178687
+    }
+  ],
+  "changed_reports": 331,
+  "source_changes": [],
+  "missing_tracked_files": [],
+  "source_commit_unchanged": true,
+  "runtime_launched": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "notes": [
+    "Frozen source checkout at b39f9bd3; later merges and focused passes do not change this historical result.",
+    "331 changed tracked reports preserved externally under aggregate-d/changed-tracked-files.",
+    "Uncompleted September13 aggregate-c remains separate and incomplete."
+  ]
+}

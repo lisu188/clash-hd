@@ -264,10 +264,25 @@ original full-blit boundary, translates the barracks placeholder and cursor
 bounds, and copies the selected panel to the centered destination. An active
 cursor uses the native remove/copy/redraw sequence with checked context.
 The [builder](../../tools/build_framed_modal_primary_candidate.py) reconstructs
-the exact predecessor and emits its own loaded-byte probe. This new stage has
-no accepted runtime captures yet; it needs a matching consumer and fresh
-native/physical/primary evidence. Keep the failed D/F receipts and their
-diagnostics separate from source/PE/x86-fixture verification.
+the exact predecessor and emits its own loaded-byte probe. The
+[2026-09-19 initial checkpoint](MODAL_PRIMARY_INITIAL_CHECKPOINT.md) now passes
+the bounded hidden 1024x768 and 1920x1080 captures, complete traces, three identical buffers,
+v2 primary query ledgers and owned cleanup. Its actual primary composition
+still fails: the quantity label `250` is drawn in the top margin. The wall
+placeholder and twelve portrait slots are centered; the remaining native text
+call at `00432C66` needs a separate additive correction. The snapshotted
+initial-checkpoint prototype is distinct from the richer four-checkpoint
+consumer under development in the original checkout. Keep both protocols and
+the failed D/F receipts separate; neither capture stability nor source/PE/x86
+fixtures establish composition, manual input or release acceptance.
+
+The [2026-09-19 aggregate checkpoint](../../captures/current/aggregate-refresh-20260919.json)
+completed against source commit `b39f9bd3d4ecf566eaa80aa7798cb36ef4fe6282`:
+154 of 167 checks pass, with thirteen failures and exit 2 preserved. This is
+not a passing aggregate for the newer source tree. The checkpoint and primary
+diagnostic document retain missing-artifact, pending-evidence, source-guard,
+fixture-path, output-boundary and timeout failures separately from later
+focused repairs.
 
 The [slots lifecycle protocol](MODAL_SLOTS_LIFECYCLE.md) prepares a separate
 controlled continuation through native barracks/overview cleanup, owned

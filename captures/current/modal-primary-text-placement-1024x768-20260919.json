@@ -1,0 +1,564 @@
+{
+  "schema": "clash95_primary_margin_pixel_diagnostic_compact_v1",
+  "created_at": "2026-09-19T10:51:08.667728+00:00",
+  "run_id": "modal-primary-initial-1024x768-20260919-a",
+  "candidate_sha256": "bee7db23414bc7831d32af05ad03d04f800aa795c7af66db1bc1e7b4c9ad11b8",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalprimary-validation",
+  "recipe_revision": "owned_modal_primary_v1",
+  "resolution": "1024x768",
+  "capture_method": "Existing paused hidden-CDB native/physical/primary raw surfaces",
+  "native_rectangle_ltrb_exclusive": [
+    192,
+    144,
+    832,
+    624
+  ],
+  "component_connectivity": 8,
+  "stability": [
+    {
+      "captures": [
+        1,
+        2
+      ],
+      "native": {
+        "different_bytes": 0,
+        "identical": true
+      },
+      "physical": {
+        "different_bytes": 0,
+        "identical": true
+      },
+      "primary": {
+        "different_bytes": 0,
+        "identical": true
+      },
+      "palette": {
+        "different_bytes": 0,
+        "identical": true
+      }
+    },
+    {
+      "captures": [
+        2,
+        3
+      ],
+      "native": {
+        "different_bytes": 0,
+        "identical": true
+      },
+      "physical": {
+        "different_bytes": 0,
+        "identical": true
+      },
+      "primary": {
+        "different_bytes": 0,
+        "identical": true
+      },
+      "palette": {
+        "different_bytes": 0,
+        "identical": true
+      }
+    },
+    {
+      "captures": [
+        1,
+        3
+      ],
+      "native": {
+        "different_bytes": 0,
+        "identical": true
+      },
+      "physical": {
+        "different_bytes": 0,
+        "identical": true
+      },
+      "primary": {
+        "different_bytes": 0,
+        "identical": true
+      },
+      "palette": {
+        "different_bytes": 0,
+        "identical": true
+      }
+    }
+  ],
+  "text_analysis": {
+    "visual_label": "250",
+    "label_basis": "Viewed supplied primary.png; exact analysis uses observed pixels, not OCR",
+    "bbox_ltrb_exclusive": [
+      564,
+      53,
+      593,
+      64
+    ],
+    "observed_pixels": 231,
+    "crop_sha256": "e8e12ac42252f3fe0a58cc87726ada5a109d4564f27b388fc3319d8eafa6aca3",
+    "primary_only_absolute_margin": true,
+    "native_at_same_numerical_coordinates": {
+      "bounds_valid": true,
+      "bbox_ltrb_exclusive": [
+        564,
+        53,
+        593,
+        64
+      ],
+      "full_crop_index_mismatch": 317,
+      "observed_nonzero_pixels": 231,
+      "observed_nonzero_index_matches": 2,
+      "observed_nonzero_rgb_matches": 2,
+      "roi_sha256": "cd67944e2ab0c149a989eb3e151f12944bf68d8d5d1a5cc7f724cd66187208cc"
+    },
+    "native_after_inverse_center_transform": {
+      "bounds_valid": false
+    },
+    "physical_at_same_absolute_coordinates": {
+      "bounds_valid": true,
+      "bbox_ltrb_exclusive": [
+        564,
+        53,
+        593,
+        64
+      ],
+      "full_crop_index_mismatch": 231,
+      "observed_nonzero_pixels": 231,
+      "observed_nonzero_index_matches": 0,
+      "observed_nonzero_rgb_matches": 4,
+      "roi_sha256": "5ae57b4b565d5727d851bc4deabc291fb9b7e4d06967324d9a7897da6a8c40b8"
+    },
+    "primary_at_centered_native_counter_coordinates": {
+      "bounds_valid": true,
+      "bbox_ltrb_exclusive": [
+        756,
+        197,
+        785,
+        208
+      ],
+      "full_crop_index_mismatch": 317,
+      "observed_nonzero_pixels": 231,
+      "observed_nonzero_index_matches": 2,
+      "observed_nonzero_rgb_matches": 2,
+      "roi_sha256": "cd67944e2ab0c149a989eb3e151f12944bf68d8d5d1a5cc7f724cd66187208cc"
+    },
+    "native_full_canvas_search": {
+      "method": "exact palette-index equality at every observed nonzero text pixel; background unconstrained",
+      "placements_tested": 287640,
+      "matching_positions": []
+    }
+  },
+  "artifact_receipts": [
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\plan.json",
+      "bytes": 6211,
+      "sha256": "b71dce7ad511cfcd338c1b9bf84a9e6357670964b47c266b58185766c989a518"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\primary-triplet.json",
+      "bytes": 113439,
+      "sha256": "ac13201a6a54ad5b3b1c7806e30182828ad230add9b85d6ad9a396211cec4dc2"
+    },
+    {
+      "path": "C:\\ClashTests\\completehd-validation-20260919\\modal-primary-initial-candidate-1024-a\\framed-modal-primary-barracks-1024x768-19532ead7c225912.exe",
+      "bytes": 1597440,
+      "sha256": "bee7db23414bc7831d32af05ad03d04f800aa795c7af66db1bc1e7b4c9ad11b8"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-1\\native-surface.raw",
+      "bytes": 307200,
+      "sha256": "304452a122553bcc63edfb0face00b1308c0f6559d300906f1c1f39b35695db9"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-1\\surface.raw",
+      "bytes": 786432,
+      "sha256": "e68d92bcbc53ff3de9f5872259431f6093f949399d4bd24dc0228d77b8d3a479"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-1\\primary.raw",
+      "bytes": 786432,
+      "sha256": "5f83b377179d204b10b03c909d03d0851857b1cdb19bea9c5f13744ae56d3195"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-1\\primary-palette.bin",
+      "bytes": 1024,
+      "sha256": "ed9f592f011f779d78f51674771e81270cd1b0d01c5226dc881d00550dc406c1"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-2\\native-surface.raw",
+      "bytes": 307200,
+      "sha256": "304452a122553bcc63edfb0face00b1308c0f6559d300906f1c1f39b35695db9"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-2\\surface.raw",
+      "bytes": 786432,
+      "sha256": "e68d92bcbc53ff3de9f5872259431f6093f949399d4bd24dc0228d77b8d3a479"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-2\\primary.raw",
+      "bytes": 786432,
+      "sha256": "5f83b377179d204b10b03c909d03d0851857b1cdb19bea9c5f13744ae56d3195"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-2\\primary-palette.bin",
+      "bytes": 1024,
+      "sha256": "ed9f592f011f779d78f51674771e81270cd1b0d01c5226dc881d00550dc406c1"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-3\\native-surface.raw",
+      "bytes": 307200,
+      "sha256": "304452a122553bcc63edfb0face00b1308c0f6559d300906f1c1f39b35695db9"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-3\\surface.raw",
+      "bytes": 786432,
+      "sha256": "e68d92bcbc53ff3de9f5872259431f6093f949399d4bd24dc0228d77b8d3a479"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-3\\primary.raw",
+      "bytes": 786432,
+      "sha256": "5f83b377179d204b10b03c909d03d0851857b1cdb19bea9c5f13744ae56d3195"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-3\\primary-palette.bin",
+      "bytes": 1024,
+      "sha256": "ed9f592f011f779d78f51674771e81270cd1b0d01c5226dc881d00550dc406c1"
+    },
+    {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-initial-1024x768-20260919-a\\capture-prefix.log",
+      "bytes": 71619,
+      "sha256": "06662657014a2bf0fce66f9c2637ef37ee3d22062cb137754e8bfc2c5f0588e6"
+    }
+  ],
+  "interpretation": {
+    "whole_composition_pass": false,
+    "manual_input_proof": false,
+    "visible_runtime_proof": false,
+    "promotion_ready": false,
+    "cursor_allowance_applied": false,
+    "notes": [
+      "Exact raw palette indices and the captured DirectDraw RGB palette were compared.",
+      "No cursor or other overlay pixels were exempted from mismatches.",
+      "Physical/native equality and final capture stability do not establish whole primary composition.",
+      "The observed top-margin glyph has no exact nonzero-pixel counterpart anywhere in this native canvas.",
+      "The visually centered twelve portraits, five modal buttons, and placeholder are observations only; this diagnostic does not validate their source artwork or callback behavior."
+    ]
+  },
+  "script_sha256": "ae4b19cfa8b8f50dd0a64a06ec5effd7185ba7799e69b78a3ae0e6a95e5d254b",
+  "detailed_diagnostic": {
+    "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-primary-margin-1024-0smiql31\\diagnostic.json",
+    "sha256": "31c3c20996d74471129da83b780e1fb20167bef40287e62f6c528f0a35c18536",
+    "bytes": 80984
+  },
+  "palette_format": "256 DirectDraw PALETTEENTRY records: red, green, blue, flags; fourth byte is not alpha",
+  "captures": [
+    {
+      "capture": 1,
+      "raw_sha256": {
+        "native": "304452a122553bcc63edfb0face00b1308c0f6559d300906f1c1f39b35695db9",
+        "physical": "e68d92bcbc53ff3de9f5872259431f6093f949399d4bd24dc0228d77b8d3a479",
+        "primary": "5f83b377179d204b10b03c909d03d0851857b1cdb19bea9c5f13744ae56d3195",
+        "palette": "ed9f592f011f779d78f51674771e81270cd1b0d01c5226dc881d00550dc406c1"
+      },
+      "physical_vs_centered_native": {
+        "pixels": 0,
+        "bbox_ltrb_exclusive": null
+      },
+      "primary_vs_physical": {
+        "pixels": 24704,
+        "bbox_ltrb_exclusive": [
+          320,
+          53,
+          615,
+          553
+        ]
+      },
+      "primary_vs_physical_inside": {
+        "pixels": 24473,
+        "bbox_ltrb_exclusive": [
+          320,
+          166,
+          615,
+          553
+        ]
+      },
+      "primary_vs_physical_outside": {
+        "pixels": 231,
+        "bbox_ltrb_exclusive": [
+          564,
+          53,
+          593,
+          64
+        ]
+      },
+      "native_vs_centered_physical": {
+        "pixels": 0,
+        "bbox_ltrb_exclusive": null
+      },
+      "native_vs_centered_primary": {
+        "pixels": 24473,
+        "bbox_ltrb_exclusive": [
+          128,
+          22,
+          423,
+          409
+        ]
+      },
+      "palette_index0_rgb": [
+        0,
+        0,
+        0
+      ],
+      "outside_centered_native": {
+        "physical": {
+          "nonzero_index_outside": {
+            "pixels": 0,
+            "bbox_ltrb_exclusive": null
+          },
+          "rgb_different_from_index0_outside": {
+            "pixels": 0,
+            "bbox_ltrb_exclusive": null
+          }
+        },
+        "primary": {
+          "nonzero_index_outside": {
+            "pixels": 231,
+            "bbox_ltrb_exclusive": [
+              564,
+              53,
+              593,
+              64
+            ]
+          },
+          "rgb_different_from_index0_outside": {
+            "pixels": 227,
+            "bbox_ltrb_exclusive": [
+              564,
+              53,
+              593,
+              64
+            ]
+          }
+        }
+      }
+    },
+    {
+      "capture": 2,
+      "raw_sha256": {
+        "native": "304452a122553bcc63edfb0face00b1308c0f6559d300906f1c1f39b35695db9",
+        "physical": "e68d92bcbc53ff3de9f5872259431f6093f949399d4bd24dc0228d77b8d3a479",
+        "primary": "5f83b377179d204b10b03c909d03d0851857b1cdb19bea9c5f13744ae56d3195",
+        "palette": "ed9f592f011f779d78f51674771e81270cd1b0d01c5226dc881d00550dc406c1"
+      },
+      "physical_vs_centered_native": {
+        "pixels": 0,
+        "bbox_ltrb_exclusive": null
+      },
+      "primary_vs_physical": {
+        "pixels": 24704,
+        "bbox_ltrb_exclusive": [
+          320,
+          53,
+          615,
+          553
+        ]
+      },
+      "primary_vs_physical_inside": {
+        "pixels": 24473,
+        "bbox_ltrb_exclusive": [
+          320,
+          166,
+          615,
+          553
+        ]
+      },
+      "primary_vs_physical_outside": {
+        "pixels": 231,
+        "bbox_ltrb_exclusive": [
+          564,
+          53,
+          593,
+          64
+        ]
+      },
+      "native_vs_centered_physical": {
+        "pixels": 0,
+        "bbox_ltrb_exclusive": null
+      },
+      "native_vs_centered_primary": {
+        "pixels": 24473,
+        "bbox_ltrb_exclusive": [
+          128,
+          22,
+          423,
+          409
+        ]
+      },
+      "palette_index0_rgb": [
+        0,
+        0,
+        0
+      ],
+      "outside_centered_native": {
+        "physical": {
+          "nonzero_index_outside": {
+            "pixels": 0,
+            "bbox_ltrb_exclusive": null
+          },
+          "rgb_different_from_index0_outside": {
+            "pixels": 0,
+            "bbox_ltrb_exclusive": null
+          }
+        },
+        "primary": {
+          "nonzero_index_outside": {
+            "pixels": 231,
+            "bbox_ltrb_exclusive": [
+              564,
+              53,
+              593,
+              64
+            ]
+          },
+          "rgb_different_from_index0_outside": {
+            "pixels": 227,
+            "bbox_ltrb_exclusive": [
+              564,
+              53,
+              593,
+              64
+            ]
+          }
+        }
+      }
+    },
+    {
+      "capture": 3,
+      "raw_sha256": {
+        "native": "304452a122553bcc63edfb0face00b1308c0f6559d300906f1c1f39b35695db9",
+        "physical": "e68d92bcbc53ff3de9f5872259431f6093f949399d4bd24dc0228d77b8d3a479",
+        "primary": "5f83b377179d204b10b03c909d03d0851857b1cdb19bea9c5f13744ae56d3195",
+        "palette": "ed9f592f011f779d78f51674771e81270cd1b0d01c5226dc881d00550dc406c1"
+      },
+      "physical_vs_centered_native": {
+        "pixels": 0,
+        "bbox_ltrb_exclusive": null
+      },
+      "primary_vs_physical": {
+        "pixels": 24704,
+        "bbox_ltrb_exclusive": [
+          320,
+          53,
+          615,
+          553
+        ]
+      },
+      "primary_vs_physical_inside": {
+        "pixels": 24473,
+        "bbox_ltrb_exclusive": [
+          320,
+          166,
+          615,
+          553
+        ]
+      },
+      "primary_vs_physical_outside": {
+        "pixels": 231,
+        "bbox_ltrb_exclusive": [
+          564,
+          53,
+          593,
+          64
+        ]
+      },
+      "native_vs_centered_physical": {
+        "pixels": 0,
+        "bbox_ltrb_exclusive": null
+      },
+      "native_vs_centered_primary": {
+        "pixels": 24473,
+        "bbox_ltrb_exclusive": [
+          128,
+          22,
+          423,
+          409
+        ]
+      },
+      "palette_index0_rgb": [
+        0,
+        0,
+        0
+      ],
+      "outside_centered_native": {
+        "physical": {
+          "nonzero_index_outside": {
+            "pixels": 0,
+            "bbox_ltrb_exclusive": null
+          },
+          "rgb_different_from_index0_outside": {
+            "pixels": 0,
+            "bbox_ltrb_exclusive": null
+          }
+        },
+        "primary": {
+          "nonzero_index_outside": {
+            "pixels": 231,
+            "bbox_ltrb_exclusive": [
+              564,
+              53,
+              593,
+              64
+            ]
+          },
+          "rgb_different_from_index0_outside": {
+            "pixels": 227,
+            "bbox_ltrb_exclusive": [
+              564,
+              53,
+              593,
+              64
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "primary_outside_components_8_connected": [
+    {
+      "pixels": 62,
+      "bbox_ltrb_exclusive": [
+        564,
+        53,
+        572,
+        64
+      ]
+    },
+    {
+      "pixels": 76,
+      "bbox_ltrb_exclusive": [
+        573,
+        54,
+        582,
+        64
+      ]
+    },
+    {
+      "pixels": 93,
+      "bbox_ltrb_exclusive": [
+        583,
+        53,
+        593,
+        64
+      ]
+    }
+  ],
+  "primary_margin_nonzero_index_counts": {
+    "top": 231,
+    "bottom": 0,
+    "left_between_top_bottom": 0,
+    "right_between_top_bottom": 0
+  },
+  "literal_outer_frame_edges_nonzero_index_counts": {
+    "top": 0,
+    "bottom": 0,
+    "left": 0,
+    "right": 0
+  }
+}
