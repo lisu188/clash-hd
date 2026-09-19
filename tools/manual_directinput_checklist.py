@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import ntpath
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -67,8 +68,9 @@ REQUIRED_MANUAL_PROOF_ITEM_FIELDS = [
 EXPECTED_CANDIDATE_ROOT = "C:\\ClashTests"
 FORBIDDEN_LIVE_ORIGINAL = "C:\\Clash\\clash95.exe"
 
-# Repo root, used to resolve guest frame-evidence references that must be
-# existing repo-relative paths.
+# Active checkout boundary for candidate exclusion and default root for guest
+# frame-evidence references. A guest repo_root override cannot admit a candidate
+# stored in this source checkout.
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # Additive guest proof class. The headless QEMU-Win98 DirectDraw lane is a
@@ -214,6 +216,24 @@ def _is_same_or_under(path_text: Any, root_text: str) -> bool:
     return bool(path and (path == root or path.startswith(root + "\\")))
 
 
+def _candidate_is_in_active_checkout(candidate_path: str) -> bool:
+    # Proofs describe Windows paths even when evaluated on another platform.
+    # Normalize dot segments with Windows semantics before comparing components.
+    candidate_paths = [ntpath.normpath(candidate_path)]
+    checkout_paths = [ntpath.normpath(str(REPO_ROOT))]
+    native_candidate, native_checkout = Path(candidate_path), Path(REPO_ROOT)
+    if native_candidate.is_absolute() and native_checkout.is_absolute():
+        # On the native filesystem, also reject symlink/junction aliases into
+        # this checkout. Nonexistent final filenames remain valid to inspect.
+        candidate_paths.append(str(native_candidate.resolve()))
+        checkout_paths.append(str(native_checkout.resolve()))
+    return any(
+        _is_same_or_under(candidate, checkout)
+        for candidate in candidate_paths
+        for checkout in checkout_paths
+    )
+
+
 def _validate_guest_proof_fields(
     proof: dict[str, Any],
     *,
@@ -286,10 +306,17 @@ def validate_manual_proof_data(proof: Any, *, repo_root: Path | None = None) -> 
     candidate_path = proof.get("candidate_path")
     if not _real_text(candidate_path):
         failures.append("manual DirectInput proof must include a non-placeholder candidate_path")
-    elif _normalized_path_text(candidate_path) == _normalized_path_text(FORBIDDEN_LIVE_ORIGINAL):
-        failures.append(f"manual DirectInput proof candidate_path must not be the live original {FORBIDDEN_LIVE_ORIGINAL}")
-    elif not _is_same_or_under(candidate_path, EXPECTED_CANDIDATE_ROOT):
-        failures.append(f"manual DirectInput proof candidate_path must be under {EXPECTED_CANDIDATE_ROOT}")
+    else:
+        normalized_candidate = ntpath.normpath(candidate_path)
+        if _normalized_path_text(normalized_candidate) == _normalized_path_text(FORBIDDEN_LIVE_ORIGINAL):
+            failures.append(f"manual DirectInput proof candidate_path must not be the live original {FORBIDDEN_LIVE_ORIGINAL}")
+        elif not _is_same_or_under(normalized_candidate, EXPECTED_CANDIDATE_ROOT):
+            failures.append(f"manual DirectInput proof candidate_path must be under {EXPECTED_CANDIDATE_ROOT}")
+        try:
+            if _candidate_is_in_active_checkout(candidate_path):
+                failures.append("manual DirectInput proof candidate_path must be outside the active source checkout")
+        except (OSError, RuntimeError, ValueError) as exc:
+            failures.append(f"manual DirectInput proof candidate_path could not be resolved safely: {type(exc).__name__}")
     sha = proof.get("executable_sha256")
     if not isinstance(sha, str) or not SHA256_RE.match(sha):
         failures.append("manual DirectInput proof must include a 64-hex executable_sha256")
