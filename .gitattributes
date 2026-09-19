@@ -855,3 +855,22 @@
 /tools/modal_primary_text_observer.py text eol=lf
 /tools/test_modal_primary_text_observer.py text eol=lf
 /tools/test_modal_primary_text_observer_engine.py text eol=lf
+/scripts/cdb/run_modal_primary_capture.ps1 -text whitespace=cr-at-eol
+/tools/modal_primary_barracks_probe.py -text whitespace=cr-at-eol
+/tools/modal_primary_barracks_trace.py -text whitespace=cr-at-eol
+/tools/modal_primary_candidate_context.py -text whitespace=cr-at-eol
+/tools/modal_primary_initial_trace.py -text whitespace=cr-at-eol
+/tools/modal_primary_capture.py -text whitespace=cr-at-eol
+/tools/modal_primary_surface_audit.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_barracks_probe.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_trace.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_capture.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_surface_audit.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_host.py -text whitespace=cr-at-eol
+/captures/current/modal-primary-1024x768-20260919-attempt-a.json -text whitespace=cr-at-eol
+/captures/current/modal-primary-1024x768-20260919-attempt-b.json -text whitespace=cr-at-eol
+/captures/current/modal-primary-runtime-source-validation-20260919.json -text whitespace=cr-at-eol
+/captures/current/modal-primary-runtime-source-validation-20260919-b.json -text whitespace=cr-at-eol
+/captures/current/modal-primary-runtime-source-validation-20260919-c.json -text whitespace=cr-at-eol
+
+/tools/test_modal_primary_cursor_regressions.py text eol=lf

@@ -94,6 +94,12 @@ SUITES = (
     "test_modal_slots_primary_capture",
     "test_modal_slots_primary_host",
     "test_modal_slots_lifecycle_probe",
+    "test_modal_primary_barracks_probe",
+    "test_modal_primary_trace",
+    "test_modal_primary_capture",
+    "test_modal_primary_surface_audit",
+    "test_modal_primary_cursor_regressions",
+    "test_modal_primary_host",
 )
 
 

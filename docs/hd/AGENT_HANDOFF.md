@@ -289,6 +289,21 @@ diagnostic document retain missing-artifact, pending-evidence, source-guard,
 fixture-path, output-boundary and timeout failures separately from later
 focused repairs.
 
+### Four-checkpoint primary consumer integration
+
+The separate [four-checkpoint hidden consumer](MODAL_PRIMARY_CAPTURE.md)
+retains the actual failed 1024x768
+[attempt A](../../captures/current/modal-primary-1024x768-20260919-attempt-a.json)
+and [attempt B](../../captures/current/modal-primary-1024x768-20260919-attempt-b.json).
+Both reach full publication but stop at the cursor-rectangle guard after
+twelve slot copies. The later low-DWORD sentinel repair remains distinct
+from those immutable failed runs. The source-artwork diagnosis also retains
+the disabled-control x=1000 sentinel defect in the native modal canvas;
+matching native and primary pixels is not sufficient to accept that frame.
+These four-checkpoint records are not the separate initial-checkpoint
+prototype above. Source integration and cursor audit fixes do not grant
+new game-runtime, final composition, manual-input or stable acceptance.
+
 The [slots lifecycle protocol](MODAL_SLOTS_LIFECYCLE.md) prepares a separate
 controlled continuation through native barracks/overview cleanup, owned
 pixel/header destruction, and the restored-map return boundary. It retains
