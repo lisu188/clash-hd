@@ -2,7 +2,7 @@
 
 The source integration in PR #24 is not evidence of game-runtime correctness.
 `tools/run_framed_offline_tests.py` provides a repeatable, source-bound baseline
-for the 47 integrated fixture modules. It never launches the game, changes
+for the registered integrated fixture modules. It never launches the game, changes
 patch bytes, repins implementation sources, or updates a promotion decision.
 Some fixtures reconstruct candidates in memory when the original is available.
 
@@ -54,7 +54,7 @@ A wholly skipped run is not accepted as an offline pass.
 selected suites to succeed, without skips or expected failures. The optional
 `--require-complete` switch makes incomplete coverage a nonzero exit even when
 the available offline cases pass. `full_suite_selected` says whether the whole
-47-module set was requested, rather than a focused subset.
+registered set was requested, rather than a focused subset.
 
 `successful_tests` counts recorded successful test cases, not test methods that
 were merely discovered. `skipped_records` is deliberately not called a skipped
