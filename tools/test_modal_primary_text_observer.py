@@ -158,6 +158,52 @@ class TextObserverTests(unittest.TestCase):
             with self.subTest(index=index, key=key):
                 self.assertFalse(observer.evaluate_sequence(trace(prepared, changed), prepared)['sequence_passed'])
 
+    def test_native_return_allows_cdecl_volatile_register_changes(self):
+        for resolution in observer.context_reader.RESOLUTIONS:
+            prepared = packet(resolution)
+            for quantity in (0, 250, -1, -2147483648, 2147483647):
+                for registers in (('eax',), ('ecx',), ('edx',), ('eax', 'ecx', 'edx')):
+                    changed = rows(prepared, quantity)
+                    for key in registers:
+                        changed[2][1][key] = changed[1][1][key] ^ 0xFFFFFFFF
+                    with self.subTest(resolution=resolution, quantity=quantity, registers=registers):
+                        result = observer.evaluate_sequence(trace(prepared, changed), prepared)
+                        self.assertTrue(result['sequence_passed'], result['failures'])
+                        self.assertEqual(result['signed_quantity'], quantity)
+                        self.assertEqual(result['raw_records'][-1]['values'], changed[2][1])
+                        for key in ('source_authenticated', 'text_call_observed', 'runtime_accepted',
+                                    'manual_input_proof', 'promotion_ready'):
+                            self.assertFalse(result[key])
+
+    def test_native_return_rejects_each_cdecl_saved_register_change(self):
+        for resolution in observer.context_reader.RESOLUTIONS:
+            prepared = packet(resolution)
+            for key in ('ebx', 'esi', 'edi', 'ebp'):
+                changed = rows(prepared)
+                changed[2][1][key] ^= 1
+                with self.subTest(resolution=resolution, register=key):
+                    result = observer.evaluate_sequence(trace(prepared, changed), prepared)
+                    self.assertFalse(result['sequence_passed'])
+                    self.assertTrue(any('native formatter did not preserve its saved registers' in failure
+                                        for failure in result['failures']), result['failures'])
+                    self.assertEqual(result['observed_event_count'], 3)
+                    self.assertEqual(result['raw_records'][-1]['values'], changed[2][1])
+                    self.assertFalse(result['text_call_observed'])
+                    self.assertFalse(result['runtime_accepted'])
+
+    def test_adapter_still_preserves_every_incoming_general_register(self):
+        for resolution in observer.context_reader.RESOLUTIONS:
+            prepared = packet(resolution)
+            for key in ('eax', 'ebx', 'ecx', 'edx', 'esi', 'edi', 'ebp'):
+                changed = rows(prepared)
+                changed[1][1][key] ^= 1
+                with self.subTest(resolution=resolution, register=key):
+                    result = observer.evaluate_sequence(trace(prepared, changed), prepared)
+                    self.assertFalse(result['sequence_passed'])
+                    self.assertTrue(any('adapter changed incoming native registers' in failure
+                                        for failure in result['failures']), result['failures'])
+                    self.assertEqual(result['raw_records'][-2]['values'], changed[1][1])
+
     def test_owner_geometry_fault_com_pointer_alias_and_backend_failures(self):
         prepared = packet()
         mutations = [('phase', 0), ('fault', 4), ('state', 0x620000), ('owner_tid', 0x115),
