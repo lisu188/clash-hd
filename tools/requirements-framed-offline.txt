@@ -1,2 +1,4 @@
 # Synthetic in-memory capture fixtures; no game or native capture is run.
 Pillow==12.3.0
+# Deterministic indexed-surface and cursor-backing fixture arrays.
+numpy==2.3.5
