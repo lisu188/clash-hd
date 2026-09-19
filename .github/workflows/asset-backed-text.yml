@@ -101,6 +101,7 @@ jobs:
           data = source.read_bytes()
           if len(data) != 1232384 or hashlib.sha256(data).hexdigest() != expected:
               raise SystemExit('Original EXE size/SHA-256 mismatch or unmaterialized LFS pointer')
+          Path('C:/ClashTests').mkdir(parents=True, exist_ok=True)
           target = Path('C:/Clash/clash95.exe')
           target.parent.mkdir(parents=True, exist_ok=True)
           with target.open('xb') as output:
