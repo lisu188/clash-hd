@@ -20,6 +20,42 @@ from test_framed_screen_capture import PRELUDE,PS
 ROOT=Path(__file__).resolve().parents[1]
 HOST=ROOT/'scripts/cdb/run_modal_slots_primary_capture.ps1'
 
+QUERY_MOCK=r'''
+Add-Type -TypeDefinition @'
+using System;using System.Runtime.InteropServices;
+public static class ModalPrimaryQuery {
+ [StructLayout(LayoutKind.Sequential)] public struct MBI {public IntPtr address,allocation;public uint allocationProtect;public UIntPtr size;public uint state,protect,type;}
+ public static int mode=0,calls=0;
+ public static UIntPtr VirtualQueryEx(IntPtr handle,IntPtr cursor,out MBI info,UIntPtr count) {
+  if(handle.ToInt64()!=123)throw new Exception("Retained query handle changed");
+  calls++;long start=cursor.ToInt64() & ~4095L;ulong size=4096;
+  if(start==0x20000000)size=12288;if(start==0x22000000)size=1048576;
+  info=new MBI();info.address=new IntPtr(start);info.size=new UIntPtr(size);
+  info.allocation=new IntPtr(start & ~65535L);info.allocationProtect=4;
+  info.state=4096;info.protect=4;info.type=0x20000;
+  if(mode==1)info.protect=0x104;if(mode==2)info.state=0x2000;
+  if(mode==3)info.size=UIntPtr.Zero;if(mode==4)return UIntPtr.Zero;
+  if(mode==5)info.allocationProtect=2;if(mode==6)info.type=0x40000;
+  if(mode==7)info.allocation=new IntPtr((start & ~65535L)-65536);
+  if(mode==8)info.address=new IntPtr(start+4096);
+  if(mode==9)info.size=new UIntPtr(0x100000000UL);
+  if(mode==10)info.address=new IntPtr(start+1);
+  return count;
+ }
+}
+'@
+function Initialize-PrimaryQuery {}
+'''
+
+
+def actual_snapshot_fixture():
+    """Reuse identity bytes but execute the actual query, ledger and RPM writer."""
+    text=legacy.CAPTURE.replace('function Read-PrimaryArtifact {','function Read-CanvasMemory {')
+    text=text.replace('param($Owned,$Address,$Count,$Path,$Regions)','param($Handle,$Address,$Count)')
+    text=text.replace('[IO.File]::WriteAllBytes($Path,$data)\n return @{path=$Path;address=$Address;bytes=$Count;sha256=(Get-CanvasHash $Path);data=$data}',
+                      'return ,$data')
+    return QUERY_MOCK+"Import-Function Read-PrimaryArtifact\n"+text
+
 
 def lifecycle(command_error=None):
     """Reuse controlled orchestration data, replacing every target boundary."""
@@ -45,17 +81,23 @@ class PrimaryHostTests(unittest.TestCase):
         patch.object(legacy,'HOST',HOST).start()
 
     def run_ps(self,body,mode='normal'):
-        # Legacy extracted read/snapshot fixtures need the new pure dependency.
+        # Keep old query fixtures exercising historical v1 exactly. New tests
+        # below execute v2 with durable ledgers and actual extracted functions.
+        if '$regions=@{}' in body:body=body.replace('Read-PrimaryArtifact','Read-PrimaryArtifactV1')
         return legacy.PrimaryHostTests.run_ps(self,
-            "Import-Function Get-PrimaryReadableRegions\n"+body,mode)
+            "foreach ($name in 'Get-PrimaryReadableRegions','New-PrimaryQueryLedger','Add-PrimaryQueryLedgerRow',"
+            "'Get-PrimaryQueryCertificate','Get-PrimaryQueryLedgerArtifact') {Import-Function $name}\n"+body,mode)
     test_unique_complete_ready=legacy.PrimaryHostTests.test_only_unique_primary_readiness_accepts
     test_debugger_errors_classified=legacy.PrimaryHostTests.test_debugger_command_failures_are_not_native_crashes
     test_paths=legacy.PrimaryHostTests.test_original_path_restrictions_remain
-    test_bound_current_palette_and_headers=legacy.PrimaryHostTests.test_current_palette_and_headers_surround_read
     test_readable_ranges=legacy.PrimaryHostTests.test_virtual_query_covers_every_byte_before_read
     test_mock_x86_module_enumeration=legacy.PrimaryHostTests.test_x86_module_enumeration_uses_retained_handle_and_bounded_queries
     test_module_path_hash_extent=legacy.PrimaryHostTests.test_proxy_module_path_hash_uniqueness_and_range_remain_required
     test_read_only_retained_handle_rights=legacy.PrimaryHostTests.test_owned_handle_includes_query_information_without_writes
+
+    def test_bound_current_palette_and_headers(self):
+        for mode in ('normal','changed_header','changed_palette','palette_pointer','identity'):
+            with self.subTest(mode=mode):self.assertTrue(self.run_ps(actual_snapshot_fixture(),mode)['passed'])
 
     def test_region_union_preserves_flags_gaps_and_original_queries(self):
         self.assertTrue(self.run_ps(r'''
@@ -141,19 +183,96 @@ Assert-Case ($script:PixelReads -eq 3) 'Conflicting query reached RPM'
 ''')['passed'])
 
     def test_snapshot_emits_disjoint_coverage_and_retains_query_provenance(self):
-        # Insert compatible suffix observations through the managed read stand-in.
-        marker='$script:Reads.Add('
-        self.assertEqual(legacy.CAPTURE.count(marker),1)
-        body=legacy.CAPTURE.replace(marker,
-            "$Regions['69259264']=@{address=69259264;size=598016;state=4096;protect=4}\n"
-            "$Regions['69853184']=@{address=69853184;size=4096;state=4096;protect=4}\n"
-            +marker,1)
+        body=actual_snapshot_fixture()
         body=body.replace('@{passed=$true} | ConvertTo-Json',r'''
-Assert-Case ($r.regions.Count -eq 1 -and $r.regions[0].address -eq 69259264 -and $r.regions[0].size -eq 598016) 'Snapshot receipt retained overlapping coverage'
-Assert-Case ($r.region_observations.Count -eq 2 -and $r.region_observations[1].address -eq 69853184 -and $r.region_observations[1].size -eq 4096) 'Snapshot discarded queried suffix provenance'
+$rows=@([IO.File]::ReadAllLines($r.query_ledger.path) | ForEach-Object {$_ | ConvertFrom-Json})
+$queries=@($rows | Where-Object {$_.kind -ceq 'query'})
+Assert-Case ($r.schema -ceq 'clash95_modal_primary_snapshot_receipt_v2' -and $r.region_scheme -ceq 'primary_virtual_query_ledger_v1') 'New source mislabeled v1'
+Assert-Case ($r.query_ledger.records -eq 39 -and $rows.Count -eq 39 -and $queries.Count -eq 19) 'Raw query duplicates or completed reads discarded'
+Assert-Case ($r.query_ledger.sha256 -ceq (Get-CanvasHash $r.query_ledger.path)) 'Ledger not hash-bound'
+$outer=@($queries | Where-Object {$_.region.address -eq 0x20000000})
+$inner=@($queries | Where-Object {$_.region.address -eq 0x20001000})
+Assert-Case ($outer.Count -eq 2 -and $outer[0].region.size -eq 12288 -and $inner.Count -eq 4) 'Nested and repeated returned queries lost'
+$ordered=@($r.regions | Sort-Object {[long]$_.address})
+for ($i=1;$i -lt $ordered.Count;$i++) {Assert-Case ($ordered[$i-1].address+$ordered[$i-1].size -le $ordered[$i].address) 'Certificate still overlaps'}
+Assert-Case (@($r.regions | Where-Object {$_.address -eq 0x20000000 -and $_.size -eq 12288}).Count -eq 1) 'Certificate lost nested coverage'
 @{passed=$true} | ConvertTo-Json
 ''')
         self.assertTrue(self.run_ps(body)['passed'])
+
+    def test_every_rejected_raw_query_is_appended_before_validation_or_rpm(self):
+        body=QUERY_MOCK+r'''
+foreach ($name in 'Read-PrimaryArtifact','Get-CanvasHash') {Import-Function $name}
+$script:PixelReads=0
+function Read-CanvasMemory {param($Handle,$Address,$Count);$script:PixelReads++;return ,(New-Object byte[] $Count)}
+$owned=@{handle=[IntPtr]123;identity=@{process_id=100;creation_filetime=123;candidate_sha256=('a'*64)}}
+foreach ($modeNumber in 1..10) {
+ $folder=Join-Path $FixtureRoot ('bad-'+$modeNumber);[void](New-Item -ItemType Directory $folder)
+ $ledger=New-PrimaryQueryLedger $owned @{out_dir=$folder;run_id='synthetic'} @{sha256=('b'*64)}
+ [ModalPrimaryQuery]::mode=0
+ $first=Read-PrimaryArtifact $owned 0x20000020 32 (Join-Path $folder 'first.raw') $ledger
+ $prefix=[IO.File]::ReadAllText($ledger.path);$readCount=$script:PixelReads
+ [ModalPrimaryQuery]::mode=$modeNumber
+ $badPath=Join-Path $folder 'failed.raw'
+ Expect-Failure {Read-PrimaryArtifact $owned 0x20001020 32 $badPath $ledger} 'invalid/contradictory query'
+ Assert-Case ($script:PixelReads -eq $readCount -and -not (Test-Path -LiteralPath $badPath)) 'Rejected query reached RPM'
+ $raw=[IO.File]::ReadAllText($ledger.path)
+ Assert-Case ($raw.StartsWith($prefix) -and $raw.Length -gt $prefix.Length) 'Failure rewrote or discarded the previous ledger'
+ $rows=@([IO.File]::ReadAllLines($ledger.path) | ForEach-Object {$_ | ConvertFrom-Json})
+ Assert-Case ($rows.Count -eq 4 -and $rows[3].kind -ceq 'query' -and $rows[3].read_index -eq 2) 'Rejected raw query missing'
+ Assert-Case ($rows[3].request.path -ceq $badPath -and $rows[3].cursor -eq 0x20001020) 'Failure lost requested read/cursor'
+ Assert-Case (@($rows[3].region.PSObject.Properties).Count -eq 7) 'Failure lost full MBI region attributes'
+ if ($modeNumber -eq 4) {Assert-Case ($rows[3].returned_mbi_bytes -eq 0) 'Zero query result was hidden'}
+ $artifact=Get-PrimaryQueryLedgerArtifact $ledger
+ Assert-Case ($artifact.records -eq 4 -and $artifact.sha256 -ceq (Get-CanvasHash $ledger.path)) 'Partial ledger cannot be hashed'
+}
+@{passed=$true} | ConvertTo-Json
+'''
+        self.assertTrue(self.run_ps(body)['passed'])
+
+    def test_multiple_queries_cover_each_requested_byte_and_keep_read_completion(self):
+        body=QUERY_MOCK+r'''
+foreach ($name in 'Read-PrimaryArtifact','Get-CanvasHash') {Import-Function $name}
+function Read-CanvasMemory {param($Handle,$Address,$Count);return ,(New-Object byte[] $Count)}
+$owned=@{handle=[IntPtr]123;identity=@{process_id=100;creation_filetime=123}}
+$ledger=New-PrimaryQueryLedger $owned @{out_dir=$FixtureRoot;run_id='synthetic'} @{sha256=('b'*64)}
+$result=Read-PrimaryArtifact $owned 0x23000800 6000 (Join-Path $FixtureRoot 'pages.raw') $ledger
+$rows=@([IO.File]::ReadAllLines($ledger.path) | ForEach-Object {$_ | ConvertFrom-Json})
+Assert-Case ($rows.Count -eq 4 -and $rows[1].cursor -eq 0x23000800 -and $rows[2].cursor -eq 0x23001000) 'Read gap, missing raw query or wrong query order'
+Assert-Case ($rows[1].query_index -eq 1 -and $rows[2].query_index -eq 2 -and $rows[3].kind -ceq 'read') 'Read completion before full coverage'
+Assert-Case ($rows[3].artifact.sha256 -ceq $result.sha256 -and $rows[3].artifact.bytes -eq 6000) 'Ledger RPM artifact differs'
+Expect-Failure {New-PrimaryQueryLedger $owned @{out_dir=$FixtureRoot} @{}} 'Existing ledger cannot be overwritten'
+@{passed=$true} | ConvertTo-Json
+'''
+        self.assertTrue(self.run_ps(body)['passed'])
+
+    def test_actual_host_certificate_matches_independent_python_reconstruction(self):
+        import modal_slots_primary_capture as consumer
+        body=actual_snapshot_fixture().replace('@{passed=$true} | ConvertTo-Json',r'''
+$rows=@([IO.File]::ReadAllLines($r.query_ledger.path) | ForEach-Object {$_ | ConvertFrom-Json})
+@{regions=$r.regions;rows=$rows} | ConvertTo-Json -Depth 20
+''')
+        report=self.run_ps(body)
+        self.assertEqual(consumer.region_certificate([r['region'] for r in report['rows'] if r['kind']=='query'],4096),
+                         report['regions'])
+
+    def test_partial_ledger_is_hash_bound_when_snapshot_throws(self):
+        body=lifecycle().replace("$script:Calls.Add('read_primary')",r'''
+$script:Calls.Add('read_primary')
+$ledger=Join-Path $Plan.out_dir 'primary-query-ledger.jsonl'
+[IO.File]::WriteAllText($ledger,"{~BT~"kind~BT~":~BT~"query~BT~",~BT~"returned_mbi_bytes~BT~":0}~BT~n")
+if ($Mode -eq 'primary_failure') {throw 'Synthetic failed query before snapshot return'}
+''')
+        body=body.replace("Assert-Case ($null -ne $result.png -and (Test-Path (Join-Path $outDir 'surface.png'))) 'Raw diagnostic was not converted'",
+            "Assert-Case ($null -eq $result.png -and (Test-Path (Join-Path $outDir 'capture-1/surface.raw'))) 'Partial raw was lost or prematurely accepted'")
+        body+=r'''
+Assert-Case (-not $result.passed -and $null -eq $result.snapshot) 'Failed query returned a completed snapshot'
+Assert-Case ($result.query_ledgers.Count -eq 1) 'Failed-before-return query ledger not retained'
+$retained=$result.query_ledgers[0]
+Assert-Case ($retained.sha256 -ceq (Get-CanvasHash $retained.path) -and $retained.bytes -eq (Get-Item $retained.path).Length) 'Partial query ledger hash/count differs'
+Assert-Case ($result.failures -contains 'Synthetic failed query before snapshot return') 'Original query failure lost'
+'''
+        self.assertTrue(self.run_ps(body,'primary_failure')['passed'])
 
     def test_full_canvas_initial_slots_and_primary_guards_before_reads(self):
         text=canvas.PURE.replace('MCAP_SURFDUMP_HOST_READY','MPRI_HOST_READY')

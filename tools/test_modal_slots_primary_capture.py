@@ -145,16 +145,20 @@ class PrimaryProtocolTests(unittest.TestCase):
         contract=dict(revision=tool.REVISION,dependencies=tool.PINS,lock_start=tool.LOCK_START,
             lock_bytes=tool.LOCK_BYTES.hex(),source_hashes={name:tool.sha((tool.ROOT/name).read_bytes()) for name in tool.PRIMARY_SOURCES},
             snapshot_origin=tool.SNAPSHOT_ORIGIN,proxy_manifest=proxy,palette_pointer_offset=tool.PALETTE_POINTER_OFFSET,
-            proxy_sha256=primary.SUPPORTED_PROXY_SHA256,ready_file='C:/ClashCaptures/synthetic/primary-ready.cdb')
+            proxy_sha256=primary.SUPPORTED_PROXY_SHA256,ready_file='C:/ClashCaptures/synthetic/primary-ready.cdb',
+            region_scheme=tool.REGION_SCHEME)
         packet=dict(primary_capture=contract,handoff_action='synthetic',startup_commands_before_final_g='',
                     byte_checks_before_first_breakpoint='')
         with patch.object(tool,'proxy_context',return_value=proxy), \
              patch.object(tool.modal,'compile_probe',return_value='.echo MCAP_SURFDUMP_HOST_READY\n'):
             self.assertIn('primary-ready.cdb',tool.compile_probe(packet))
             for key,value in (('revision','changed'),('dependencies',{}),('lock_bytes','00'),
-                              ('source_hashes',{}),('proxy_sha256','b'*64),('palette_pointer_offset',0)):
+                              ('source_hashes',{}),('proxy_sha256','b'*64),('palette_pointer_offset',0),('region_scheme','other')):
                 with self.subTest(field=key),self.assertRaisesRegex(ValueError,'primary protocol contract differs'):
                     tool.compile_probe(dict(packet,primary_capture=dict(contract,**{key:value})))
+            legacy=dict(contract,revision=tool.LEGACY_REVISION);legacy.pop('region_scheme')
+            with self.assertRaisesRegex(ValueError,'primary protocol contract differs'):
+                tool.compile_probe(dict(packet,primary_capture=legacy))
         def read(image,address,size):
             self.assertEqual((address,size),(tool.LOCK_START,len(tool.LOCK_BYTES)))
             return 0,tool.LOCK_BYTES if image in (b'original',b'candidate') else bytes(size)
@@ -163,6 +167,28 @@ class PrimaryProtocolTests(unittest.TestCase):
             for original,candidate in ((b'changed',b'candidate'),(b'original',b'changed')):
                 with self.assertRaisesRegex(ValueError,'native Lock'):
                     tool.verify_native_lock(original,candidate)
+
+    def test_fresh_prepare_and_compile_reject_coordinated_legacy_downgrade(self):
+        # The native builder and its bytes have separate fixtures. Exercise the
+        # actual fresh preparation/compiler boundary, including current hashes.
+        base=dict(handoff_action='synthetic',startup_commands_before_final_g='',byte_checks_before_first_breakpoint='')
+        proxy={'path':'synthetic-proxy.json','sha256':'a'*64}
+        with patch.object(tool,'verify_native_lock'),patch.object(tool,'proxy_context',return_value=proxy), \
+             patch.object(tool.modal.producer,'build_screen_probe',return_value=base), \
+             patch.object(tool.modal,'compile_probe',return_value='.echo MCAP_SURFDUMP_HOST_READY\n'):
+            fresh=tool.prepare(b'original',b'candidate',ready_file='C:/ClashCaptures/synthetic/primary-ready.cdb',
+                               proxy_manifest='synthetic-proxy.json')
+            self.assertEqual(fresh['packet']['primary_capture']['revision'],tool.REVISION)
+            # Even replacing all outer schemas, dropping the entire ledger and
+            # leaving current source pins/probe bytes intact cannot admit v1.
+            rewritten=dict(schema='clash95_slots_primary_triplet_v1',
+                plan={'schema':'clash95_modal_slots_primary_capture_plan_v1'},
+                snapshots=[{'primary':{'schema':'clash95_modal_primary_snapshot_receipt_v1'}}],
+                packet=copy.deepcopy(fresh['packet']),probe=fresh['probe'])
+            rewritten['packet']['primary_capture']['revision']=tool.LEGACY_REVISION
+            rewritten['packet']['primary_capture'].pop('region_scheme')
+            with self.assertRaisesRegex(ValueError,'primary protocol contract differs'):
+                tool.compile_probe(rewritten['packet'])
 
 
 class LoadedHeaderTests(unittest.TestCase):
@@ -265,7 +291,7 @@ class TripletTests(unittest.TestCase):
             minimap_viewport=True,candidate_sha256=candidate['sha256'],original_sha256=original['sha256'],
             canvas_state_va=0x596000,canvas_state_offsets=tool.modal.producer.canvas.STATE,stop_va=0x433e77,
             route={'name':'barracks'},candidate_manifest={'path':sidecar['path'],'sha256':sidecar['sha256']},
-            primary_capture={'ready_file':ready_file['path'],'source_hashes':{},
+            primary_capture={'revision':tool.LEGACY_REVISION,'ready_file':ready_file['path'],'source_hashes':{},
                 'proxy_manifest':{'path':proxy_manifest['path'],'sha256':proxy_manifest['sha256']}})
         plan={k:v for k,v in self.packet.items() if k not in ('route','candidate_manifest','primary_capture')}
         plan.update(schema='clash95_modal_slots_primary_capture_plan_v1',route='barracks',width=800,height=600,out_dir=str(self.root),
@@ -312,7 +338,7 @@ class TripletTests(unittest.TestCase):
             def records(prefix,values):
                 return {phase:{name:save(f'{folder}/{prefix}-{phase}-{name}.raw',read.data,address=read.address)
                     for name,read in values.items()} for phase in ('before','after')}
-            sample=dict(run_id=self.root.name,game_identity=owner,trace_sha256=prefix['sha256'],paused=True,
+            sample=dict(schema='clash95_modal_primary_snapshot_receipt_v1',run_id=self.root.name,game_identity=owner,trace_sha256=prefix['sha256'],paused=True,
                 proxy_module=dict(base=base,size=0x4000,path=plan['proxy_path'],sha256=digest),reads=records('primary',reads),
                 pixels=save(f'{folder}/primary.raw',bytes(800*600),address=0x22000000),
                 palette_entries=save(f'{folder}/primary-palette.bin',state.palette.data[12:]),
@@ -363,6 +389,123 @@ class TripletTests(unittest.TestCase):
             path.write_bytes(changed);record['sha256']=tool.sha(changed)
             with self.subTest(name=name),self.assertRaises(ValueError):self.evaluate()
             path.write_bytes(old);record['sha256']=tool.sha(old)
+
+
+class QueryLedgerTests(TripletTests):
+    """v2 uses real bound JSONL files and all nineteen read artifacts."""
+    def setUp(self):
+        super().setUp()
+        self.packet['primary_capture'].update(revision=tool.REVISION,region_scheme=tool.REGION_SCHEME)
+        self.receipt['schema']='clash95_slots_primary_triplet_v2'
+        self.receipt['plan'].update(schema='clash95_modal_slots_primary_capture_plan_v2',region_scheme=tool.REGION_SCHEME)
+        self.receipt['packet']=self.save('packet.json',json.dumps(self.packet).encode())
+        for row in self.receipt['snapshots']:
+            sample=row['primary'];sample.update(schema='clash95_modal_primary_snapshot_receipt_v2',region_scheme=tool.REGION_SCHEME)
+            rows=[dict(kind='header',scheme=tool.REGION_SCHEME,page_size=4096,mbi_bytes=48,run_id=sample['run_id'],
+                       game_identity=sample['game_identity'],trace_sha256=sample['trace_sha256'])]
+            for index,record in enumerate(tool.expected_primary_reads(sample),1):
+                address=record['address'];start=address//4096*4096
+                end=(address+record['bytes']+4095)//4096*4096
+                # Two later object queries are nested suffixes of the earlier
+                # backend allocation. They must remain separate raw records.
+                if index==2:end=max(end,start+0x3000)
+                region=dict(address=start,size=end-start,state=4096,protect=4,
+                    allocation_base=start//65536*65536,allocation_protect=4,type=0x20000)
+                rows.extend([dict(kind='query',read_index=index,query_index=1,
+                    request={k:record[k] for k in ('path','address','bytes')},cursor=address,
+                    requested_mbi_bytes=48,returned_mbi_bytes=48,region=region),
+                    dict(kind='read',read_index=index,artifact={k:record[k] for k in ('path','address','bytes','sha256')})])
+            self.write_ledger(sample,rows)
+            sample['regions']=tool.region_certificate([r['region'] for r in rows if r['kind']=='query'],4096)
+
+    def write_ledger(self,sample,rows):
+        name=Path(sample['pixels']['path']).parent.name+'/primary-query-ledger.jsonl'
+        sample['query_ledger']=self.save(name,(''.join(json.dumps(r,separators=(',',':'))+'\n' for r in rows)).encode(),
+                                       scheme=tool.REGION_SCHEME,records=len(rows))
+
+    def ledger_rows(self,sample):
+        return [json.loads(line) for line in Path(sample['query_ledger']['path']).read_text().splitlines()]
+
+    def test_all_queries_and_exact_completed_reads_are_independently_bound(self):
+        result=self.evaluate()
+        for sample in result['samples']:
+            ledger=sample['primary']['query_ledger']
+            self.assertEqual((ledger['queries'],ledger['reads'],ledger['records']),(19,19,39))
+            self.assertLess(len(ledger['certificate']),ledger['queries'])
+
+    def test_hash_bound_ledger_cannot_omit_duplicate_failed_or_extra_queries(self):
+        sample=self.receipt['snapshots'][0]['primary'];original=self.ledger_rows(sample)
+        def extra(rows):rows.append(copy.deepcopy(rows[1]))
+        def gap(rows):rows[1]['region']['address']+=4096
+        def request(rows):rows[1]['request']['path']='unrelated.raw'
+        def conflict(rows):rows[5]['region']['allocation_protect']=2
+        cases=[('missing',lambda rows:rows.pop(3)),('extra',extra),('gap',gap),('path',request),
+               ('conflict',conflict),('truncated_mbi',lambda rows:rows[1].update(returned_mbi_bytes=0)),
+               ('cursor',lambda rows:rows[1].update(cursor=rows[1]['cursor']+4)),
+               ('sequence',lambda rows:rows[1].update(read_index=2)),
+               ('read_hash',lambda rows:rows[2]['artifact'].update(sha256='0'*64)),
+               ('identity',lambda rows:rows[0].update(run_id='another run'))]
+        for name,mutate in cases:
+            with self.subTest(case=name):
+                rows=copy.deepcopy(original);mutate(rows);self.write_ledger(sample,rows)
+                with self.assertRaises(ValueError):self.evaluate()
+        self.write_ledger(sample,original)
+
+    def test_certificate_must_exactly_equal_full_attribute_reconstruction(self):
+        sample=self.receipt['snapshots'][0]['primary'];old=copy.deepcopy(sample['regions'])
+        for key,value in [('size',old[0]['size']+4096),('allocation_base',0),('type',0x1000000),('state',True)]:
+            with self.subTest(field=key):
+                sample['regions']=copy.deepcopy(old);sample['regions'][0][key]=value
+                with self.assertRaises(ValueError):self.evaluate()
+        sample['regions']=old+[copy.deepcopy(old[0])]
+        with self.assertRaises(ValueError):self.evaluate()
+        sample['regions']=old
+
+    def test_ledger_truncation_hash_alias_duplicate_keys_and_extra_reads_fail(self):
+        sample=self.receipt['snapshots'][0]['primary'];artifact=sample['query_ledger'];path=Path(artifact['path']);raw=path.read_bytes()
+        for content in (raw[:-1],raw.replace(b'"kind":"header"',b'"kind":"header","kind":"header"'),raw+b'\n'):
+            path.write_bytes(content);sample['query_ledger']=dict(artifact,bytes=len(content),sha256=tool.sha(content))
+            with self.assertRaises(ValueError):self.evaluate()
+        path.write_bytes(raw);sample['query_ledger']=dict(artifact,sha256='0'*64)
+        with self.assertRaises(ValueError):self.evaluate()
+        sample['query_ledger']=dict(artifact,path=str(path.parent/'alias.jsonl'))
+        Path(sample['query_ledger']['path']).write_bytes(raw)
+        with self.assertRaises(ValueError):self.evaluate()
+        sample['query_ledger']=artifact;sample['reads']['before']['extra']=sample['reads']['before']['primary']
+        with self.assertRaises(ValueError):self.evaluate()
+
+    def test_v1_v2_contexts_cannot_be_mixed_or_silently_normalized(self):
+        sample=self.receipt['snapshots'][0]['primary']
+        sample['schema']='clash95_modal_primary_snapshot_receipt_v1'
+        with self.assertRaisesRegex(ValueError,'mixed'):self.evaluate()
+        with self.assertRaisesRegex(ValueError,'v1 receipt'):
+            tool.audit_snapshot(sample,proxy_image=self.image,trace=self.trace)
+        sample.pop('query_ledger');sample.pop('region_scheme')
+        sample['regions']=[{k:r[k] for k in ('address','size','state','protect')} for r in sample['regions']]
+        sample['regions'].append(copy.deepcopy(sample['regions'][0]))
+        sample['region_observations']=copy.deepcopy(sample['regions'])
+        with self.assertRaisesRegex(ValueError,'overlapping memory-region claims'):
+            tool.audit_snapshot(sample,proxy_image=self.image,trace=self.trace)
+
+
+class RegionCertificateTests(unittest.TestCase):
+    def test_nested_duplicate_and_adjacent_ranges_preserve_all_attributes(self):
+        def region(address,size,**kw):return dict(address=address,size=size,state=4096,protect=4,
+            allocation_base=0x4200000,allocation_protect=4,type=0x20000,**kw)
+        rows=[region(0x429e000,4096),region(0x420d000,598016),region(0x429e000,4096)]
+        original=copy.deepcopy(rows)
+        self.assertEqual(tool.region_certificate(rows,4096),[rows[1]])
+        self.assertEqual(rows,original)
+        for field,value in [('state',0x2000),('protect',2),('allocation_base',0x4201000),('allocation_protect',0),('type',0x40000)]:
+            changed=copy.deepcopy(rows);changed[0][field]=value
+            with self.subTest(field=field),self.assertRaises(ValueError):tool.region_certificate(changed,4096)
+        for field,value in [('address',0),('size',primary.U32),('address',0x429e001),('size',4097),
+                            ('allocation_base',0x429f000),('allocation_protect',primary.U32),('protect',0x104),('type',0),('size',True)]:
+            changed=copy.deepcopy(rows);changed[0][field]=value
+            with self.subTest(field=field,value=value),self.assertRaises(ValueError):tool.region_certificate(changed,4096)
+        terminal=dict(address=primary.U32-4096,size=4096,state=4096,protect=2,
+            allocation_base=primary.U32-65536,allocation_protect=0,type=0x40000)
+        self.assertEqual(tool.region_certificate([terminal],4096),[terminal])
 
 
 if __name__=='__main__':unittest.main(verbosity=2)
