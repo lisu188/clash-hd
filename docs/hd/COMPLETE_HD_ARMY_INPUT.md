@@ -48,11 +48,41 @@ cannot authorize host capture. Even a bound passing trace does not establish
 ordinary input, visible composition, endurance or promotion.
 
 `tools/complete_hd_army_movement_probe.py` builds on that selection protocol and
-preserves the native movement-v3 observers. It prepares one outward move from
+preserves the native movement-v3 observation sites. It prepares one outward move from
 `(16,19)` to `(18,19)`, with preview, confirmation, bounded native input-pump
 observations and three stopped capture points. Surface sizes and pointer bounds
 follow the selected resolution. Preparation cannot establish movement success;
 the full movement trace, pixel audit and owned runtime host are still required.
+
+The `complete_hd_controlled_native_whole_army_outward_move_v2` revision
+authenticates two original input backends: table `0050f1e4` calls `00460a50` directly, while table
+`0050f204` calls the native `004612e0` wrapper. The original wrapper's inactive
+playback branch calls `00460a50` at `004614d8`. The producer checks the relevant
+table, constructor, wrapper and call bytes; every paired pump observation must
+retain the same admitted table/callback with recording and playback disabled.
+Unknown tables, changed callbacks and active modes fail. This corrects the
+specific v1 contract rejected by the retained diagnostic run; it does not force
+an input result or establish completed movement.
+
+The v3 revision retires the completed startup redraw observer at the first
+authenticated movement checkpoint. That observer must not overwrite the
+movement counters during later native frame updates. The probe distinguishes
+a nested ambient-handler visit from the synthetic return at `00406fa1` using
+the exact native caller stack, phase, army state and paired frame-call/return
+observations. The delay pump return at `00410c96` is also the following native
+frame-call instruction; animation has a separate observed call. Unknown
+callers, missing returns, stale startup records and changed movement state
+fail. Both tile commits and the original final handler return remain required.
+The retained v2 failure is not reevaluated as passing evidence for this change.
+
+`tools/complete_hd_army_movement_trace.py` validates that native sequence using
+the complete candidate, manifest, save, main probe and all three supplemental
+command files. It reads the original complete log without rewriting stage or
+observation values. Both XY/occupancy commits, the expected action-point costs,
+paired native input-pump calls, releases, redraw and true handler return must
+pass. Sequence-only diagnostics cannot authorize capture. Bound readiness is
+separate from the optional three measured surface headers and complete army
+records; neither result establishes correct pixels or host cleanup.
 
 ### Merged source compatibility — 2026-09-13
 
@@ -67,8 +97,11 @@ for exact identities and validation results.
 The legacy selection producer still pins renderer `1cd310…`, while the merged
 renderer is `12685…`. Its source check correctly rejects this checkout. The new
 protocol authenticates its own renderer. The movement comparison fixture keeps
-the legacy rejection explicit, then verifies the unchanged native v3 commands
-using the authenticated current selection boundary. This does not make old
+the legacy rejection explicit, then compares native v3 commands using the
+authenticated current selection boundary. The compatibility comparison isolates
+the reviewed backend, observer-lifecycle and native-frame additions while
+retaining the inherited movement predicates and native writes. The added
+guards have separate admission and rejection fixtures. This does not make old
 manifests or runtime reports current evidence.
 
 ## Safe checks
@@ -80,6 +113,9 @@ python -B tools/test_army_probe_startup.py
 python -B tools/test_complete_hd_army_selection_probe.py
 python -B tools/test_complete_hd_army_selection_trace.py
 python -B tools/test_complete_hd_army_movement_probe.py
+python -B tools/test_complete_hd_army_movement_trace.py
+python -B tools/test_complete_hd_army_selection_capture.py
+python -B tools/test_complete_hd_army_selection_surface_audit.py
 ```
 
 The selection and movement producer fixtures use the user-owned original and
@@ -90,18 +126,61 @@ Unavailable local inputs are reported as skipped coverage;
 a skip is not runtime evidence. Synthetic trace fixtures exercise parser
 acceptance and rejection without manufacturing a runtime report.
 
-The four suites are also registered in `tools/run_framed_offline_tests.py` and
+The suites are also registered in `tools/run_framed_offline_tests.py` and
 run through the existing CI workflow. CI reports unavailable local game/save
 coverage as skips; a successful portable job is not native runtime validation.
 
 ## Remaining runtime requirements
 
-A fresh immutable run plan and an owned hidden host are still needed for this
-new protocol. Authenticate the exact candidate and commands before starting,
-retain every original failure, and capture only at the validated stopped
-boundary. Record process identity, deadline, input method, raw artifacts and
-verified cleanup. Audit all four frame edges, the footer, all six action cells
-and the complete portrait backing in each relevant screenshot.
+`scripts/cdb/run_complete_hd_army_selection_capture.ps1` prepares this selection
+lane without launching anything by default. Supply `-InputCandidate`,
+`-CandidateManifest`, `-ProxyBuildManifest`, `-WorkDir`, `-CandidateDir`, `-OutDir`
+and `-Resolution`. The save is the isolated work directory's `save/0.dat`.
+Candidate and capture destinations must be new directories under `C:/ClashTests`
+and `C:/ClashCaptures` respectively. The plan authenticates the complete candidate
+and commands, current sources and tools, proxy, save and working assets.
+
+Only the explicitly authorized `-Execute` path starts an owned hidden desktop
+with the non-presenting proxy. It uses a 300-second runtime deadline, requires
+the full bound selection trace before host memory reads, retains three stopped
+pixel/header captures, and verifies cleanup through owned process handles.
+Failures and the final log remain available; a passing host result still needs
+independent pixel audits. Audit all four frame edges, the footer, all six action
+cells and the complete portrait backing in each relevant screenshot. Neither
+the controlled native call nor the hidden surface establishes ordinary input,
+visible composition or promotion.
+
+The offline `tools/complete_hd_army_selection_surface_audit.py` accepts
+`--summary` and `--resource-root` (the exact isolated work directory). It rebinds
+the host artifacts and full trace, reconstructs the PNG, and audits all five
+before/after/final surfaces against native assets. All four frame bands, the
+footer, six action cells, eight portrait bodies and exposed backing must match.
+The complete 387x66 backing must also remain identical through redraw. Portrait
+count glyphs, map-unit artwork and action availability remain outside this
+bounded audit.
+
+`scripts/cdb/run_complete_hd_army_movement_capture.ps1` prepares the two-click
+movement lane with the same explicit input and output arguments. Its default
+dry run starts no native process. The separately authorized `-Execute` path
+uses a new candidate and capture directory, the hidden non-presenting proxy,
+and a bounded owned-process lifetime. It retains the exact main command and all
+three supplemental checkpoint commands alongside the candidate, source, save,
+tool and working-asset identities.
+
+After cleanup, the host retains one bounded strict final-trace review even if
+the native route failed before its last checkpoint. Missing records, rejected
+native prerequisites, parser errors and cleanup failures remain failures.
+
+`tools/complete_hd_army_movement_surface_audit.py --summary <summary.json>
+--resource-root <exact-work-directory>` independently replays the complete
+movement trace and binds all three checkpoint headers, army records, raw
+surfaces, final captures and PNGs. It audits the four frame bands, footer, six
+action cells, eight portrait bodies and exposed backing in every observation.
+The complete backing comparison also requires unchanged native portrait inputs.
+Glyph correctness and ordinary/manual input are separate requirements. Earlier
+checkpoint PNGs use the retained final proxy palette; they do not establish a
+checkpoint-time palette or final-wrapper appearance. A partial failed run is
+not a complete movement audit pass.
 
 The movement validator must observe the real path preview and release, a second
 native confirmation, both occupancy/XY commits, expected action-point costs,

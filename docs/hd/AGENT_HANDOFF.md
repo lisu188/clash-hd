@@ -253,6 +253,18 @@ and handles, and the hidden desktop, were cleaned up; the original executable,
 15 live saves, four isolated saves and all 41 frozen producer sources matched.
 Keep D and F unchanged while repairing the producer and rendering boundaries.
 
+The separate [modal primary composition correction](MODAL_PRIMARY_COMPOSITION.md)
+adds recipe `owned_modal_primary_v1`, stage `-completehd-modalprimary-validation`,
+above the slots candidate. It publishes the cleared physical mirror at the
+original full-blit boundary, translates the barracks placeholder and cursor
+bounds, and copies the selected panel to the centered destination. An active
+cursor uses the native remove/copy/redraw sequence with checked context.
+The [builder](../../tools/build_framed_modal_primary_candidate.py) reconstructs
+the exact predecessor and emits its own loaded-byte probe. This new stage has
+no accepted runtime captures yet; it needs a matching consumer and fresh
+native/physical/primary evidence. Keep the failed D/F receipts and their
+diagnostics separate from source/PE/x86-fixture verification.
+
 Ordinary army selection/movement, all portraits, map redraw/scroll/reselection,
 centered battle entry/command/outcome/return and healthy map transitions remain
 incomplete on the final candidate. Earlier controlled 1024x768 and historical
@@ -768,6 +780,58 @@ selection. Its startup recipe is independent of the mutable runtime harness.
 All six fixture resolutions retain exact loaded contracts and their own surface
 bounds. New-stage runtime, pixel, cleanup and ordinary/manual input evidence
 remain separate requirements; the historical movement failures are unchanged.
+
+The [2026-09-13 controlled 1024x768 selection checkpoint](../../captures/current/completehd-army-selection-1024x768-20260913.json)
+records a fresh complete-HD v1 run with passing initial/native selection traces,
+three identical stopped captures and verified owned-process cleanup. Its
+independent audit checks all five before/after/final surfaces: four frame bands,
+footer, six action cells, eight portrait bodies and exposed backing pass; the
+entire portrait backing survives redraw unchanged. This is controlled native-call
+and hidden software-surface evidence. Count glyphs, map-unit artwork, ordinary
+input, final-wrapper composition and promotion are not proved. The new complete
+movement validator passes its real-file reconstruction fixtures with synthetic
+observations. The [first actual movement attempt on 2026-09-13](../../captures/current/completehd-army-movement-1024x768-20260913-attempt-a.json)
+fails at the pathfinder input-pump contract, phase 29 at `00414b3f`, before path
+preview completion or arrival. Its source/candidate binding and initial-map
+trace pass; owned cleanup and unchanged inputs are verified. The partial
+before-movement frame passes frame/footer, six action-cell, eight portrait-body
+and exposed-backing checks. Preserve the failed trace and frozen host source;
+those pixel checks do not make movement pass. That checkpoint lacked a matching
+successful movement run. The [separate diagnostic attempt](../../captures/current/completehd-army-movement-1024x768-20260913-attempt-b.json)
+keeps that rejection and identifies native backend table `0050f204`, callback
+`004612e0`, with recording and playback disabled. The v1 probe requires the
+direct `00460a50` callback. This is an unsupported native backend contract;
+the diagnostic does not prove path preview or arrival. Its strict final trace,
+cleanup and unchanged input identities are retained, and its before-movement
+pixels are byte-identical to attempt A.
+
+The [third movement attempt](../../captures/current/completehd-army-movement-1024x768-20260913-attempt-c.json)
+uses the authenticated native-wrapper backend and completes path preview. It
+records the first native move to `(17,19)`, matching occupancy changes and a
+five-point cost for all eight squads, then fails at `00406fa1` in phase 51.
+The second step, final return and after-movement capture are absent. Its
+preview passes the four frame edges, footer, six action cells and eight
+portrait-body checks; these partial pixels do not make movement pass.
+Cleanup and unchanged input/source identities are verified. A startup redraw
+observer remained active and overwrote movement counters. The observed stack
+depth also matches a nested native handler path, but the failed run did not
+record the caller stack words required to authenticate that explanation.
+Preserve this failure; the fresh runs below verify the corrected observer lifecycle.
+
+The fresh controlled movement checkpoints at
+[1024x768](../../captures/current/completehd-army-movement-1024x768-20260913.json) and
+[1920x1080](../../captures/current/completehd-army-movement-1920x1080-20260913.json)
+pass the v3 host, strict trace and independent surface audit. Each records both
+native commits `(16,19)` -> `(17,19)` -> `(18,19)`, a five-point cost per step
+for all eight squads, the empty final queue and the true handler return. Both
+native delay-frame pairs measure the caller stack words inferred from attempt C.
+All six before/preview/after/final surfaces in each run pass the four frame edges, footer,
+six action cells, eight portrait bodies and exposed backing; the full portrait
+backing remains identical. The final three captures match, cleanup passes and
+source/input identities remain unchanged. This proves the bounded controlled
+native movement and hidden software-surface route. Ordinary input, the optional
+animation-frame branch, final-wrapper composition and stable promotion remain
+separate requirements. Attempts A, B and C remain failed historical evidence.
 
 | Work | Start with | Focused verification |
 | --- | --- | --- |
