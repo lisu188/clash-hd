@@ -312,7 +312,7 @@ def evaluate_sequence(log, packet):
                 fail('translated coordinates or unchanged alignment/format/signed quantity differ', record['line'])
         if any(native[key] != original[key] for key in ('eax', 'ebx', 'ecx', 'edx', 'esi', 'edi', 'ebp')) or (native['flags'] ^ original['flags']) & FLAGS_MASK:
             fail('adapter changed incoming native registers or arithmetic/direction flags', events[1]['line'])
-        if any(returned[key] != native[key] for key in ('ebx', 'ecx', 'edx', 'ebp')):
+        if any(returned[key] != native[key] for key in ('ebx', 'esi', 'edi', 'ebp')):
             fail('native formatter did not preserve its saved registers', events[2]['line'])
     quantity = events[0]['values']['arg5'] if events else None
     signed = quantity - 0x100000000 if quantity is not None and quantity & 0x80000000 else quantity
