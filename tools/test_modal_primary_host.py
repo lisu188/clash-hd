@@ -22,7 +22,10 @@ class PrimaryHostTests(unittest.TestCase):
         patch.object(inherited.legacy, 'HOST', HOST).start()
 
     def run_ps(self, body, mode='normal'):
-        return inherited.PrimaryHostTests.run_ps(self, body, mode)
+        # This host retains the v1 reader; avoid the slots host's v2 imports
+        # and reader renaming while exercising the same extracted functions.
+        return inherited.legacy.PrimaryHostTests.run_ps(
+            self, 'Import-Function Get-PrimaryReadableRegions\n' + body, mode)
 
     test_paths = inherited.PrimaryHostTests.test_paths
     test_debugger_errors = inherited.PrimaryHostTests.test_debugger_errors_classified

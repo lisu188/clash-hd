@@ -853,3 +853,8 @@
 /tools/test_modal_primary_capture.py -text whitespace=cr-at-eol
 /tools/test_modal_primary_surface_audit.py -text whitespace=cr-at-eol
 /tools/test_modal_primary_host.py -text whitespace=cr-at-eol
+/captures/current/modal-primary-1024x768-20260919-attempt-a.json -text whitespace=cr-at-eol
+/captures/current/modal-primary-1024x768-20260919-attempt-b.json -text whitespace=cr-at-eol
+/captures/current/modal-primary-runtime-source-validation-20260919.json -text whitespace=cr-at-eol
+/captures/current/modal-primary-runtime-source-validation-20260919-b.json -text whitespace=cr-at-eol
+/captures/current/modal-primary-runtime-source-validation-20260919-c.json -text whitespace=cr-at-eol

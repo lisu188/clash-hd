@@ -11,12 +11,12 @@
     "tools/modal_primary_initial_trace.py": "648917a20d4cc9a6fe6dbcd052829ed9802fa502c41b312e2593e77d5f69b8ba",
     "tools/modal_primary_capture.py": "cc81240e799371e11e8e075ee7269a4eb398eba77a68bfc0a394fbe6a7408e3e",
     "tools/modal_primary_surface_audit.py": "67f045205fffb427c98016f30f07dc99c514c608a30732d8a0f6bbd343155908",
-    "tools/test_modal_primary_host.py": "4afe8a67c3e36c65dc2de2c59b2d17b89f77361d616596f02e1b6da11331cc15",
+    "tools/test_modal_primary_host.py": "55cca430c63b166c5c1726ee4351356312eb0534445cf2034284524228d2928f",
     "tools/test_modal_primary_barracks_probe.py": "9f7ec53420aaab2a3f05dc86bb1ffd66a6cd67e04b4e2d04eef0148e3e43ccd8",
     "tools/test_modal_primary_trace.py": "8043e42809d15cf0e58e35cf16f30333bcc30356a804bfdeef3a4c7500e7ca0e",
     "tools/test_modal_primary_capture.py": "b2e491c193a1fe154db553aebe4581ef3eb7d89ee55fddebbec7d18f9a05a3c2",
     "tools/test_modal_primary_surface_audit.py": "93a339d3545da0568fbc1d62dac10f936d1517e40732104d8310b50ce2c1a331",
-    "tools/run_framed_offline_tests.py": "81a72e953cd86baf92e92c6fc662f0d98dcd75ad0f074afb842ca1f3a9fccda2"
+    "tools/run_framed_offline_tests.py": "b421ec2b1074eedf423980fcc300726159a90d6cb8d2724cc6778cafaba68b84"
   },
   "tests": [
     {
@@ -50,5 +50,34 @@
     "line_start": 568,
     "line_end": 570,
     "scope": "Prior native x86 CDB observation of sign-extended selected -1 and false unmasked comparison; corroborates interpretation without inventing a 64-bit observation in B."
+  },
+  "pre_rebase_source_hashes": {
+    "tools/test_modal_primary_host.py": "4afe8a67c3e36c65dc2de2c59b2d17b89f77361d616596f02e1b6da11331cc15",
+    "tools/run_framed_offline_tests.py": "81a72e953cd86baf92e92c6fc662f0d98dcd75ad0f074afb842ca1f3a9fccda2"
+  },
+  "post_rebase_checks": {
+    "base_main": "a6aef412",
+    "host_fixture": {
+      "tests": 14,
+      "passed": 14,
+      "skipped": 0,
+      "seconds": 12.55,
+      "initial_failure": "All14 failed before fixture bodies because the upstream wrapper imported v2 New-PrimaryQueryLedger into this v1 host.",
+      "initial_failure_seconds": 7.798,
+      "correction": "Only the test adapter now calls the inherited legacy wrapper with the original Get-PrimaryReadableRegions prelude. Production host is unchanged.",
+      "inherited_fixture_sha256": "50089d32077cfc23ef43d5172c6571009adcd88f500e87b36e1ee84cc96a440e"
+    },
+    "runner": {
+      "tests": 29,
+      "passed": 27,
+      "skipped": 2,
+      "skip_reason": "symlink creation unavailable",
+      "seconds": 5.012
+    },
+    "handoff_fixtures_passed": true,
+    "documentation_fixtures_passed": true,
+    "source_preflight_passed": true,
+    "conflict_resolution": "Retain upstream lifecycle/extra-profile registrations and pins alongside the five new consumer suites. Automatically merged handoff paragraphs reviewed.",
+    "evidence_byte_preservation": "Five new evidence manifests explicitly pinned -text; cross-report SHA references verified."
   }
 }
