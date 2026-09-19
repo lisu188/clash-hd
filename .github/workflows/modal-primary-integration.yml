@@ -1,0 +1,199 @@
+name: Modal primary integration checkpoint
+on:
+  push:
+    branches: [codex/modal-primary-integration]
+    paths: ['.github/workflows/modal-primary-integration.yml']
+permissions:
+  contents: read
+jobs:
+  integrate:
+    if: github.repository == 'lisu188/clash-hd' && github.actor != 'github-actions[bot]'
+    permissions:
+      contents: write
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: code
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          path: code
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: lisu188/clash-assets
+          ref: 84a1e4bcf131e6bb75b39fc5e10941dd0b801767
+          path: assets
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /runtime/gog-32003/clash95.exe
+            /runtime/gog-32003/Data/minimum.res
+            /runtime/gog-32003/Data/maximum.res
+          lfs: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
+      - name: Fetch the three pinned binary fixture inputs
+        working-directory: assets
+        run: git lfs pull --include='runtime/gog-32003/clash95.exe,runtime/gog-32003/Data/minimum.res,runtime/gog-32003/Data/maximum.res' --exclude=''
+      - name: Install fixture dependencies
+        run: |
+          python -m pip install --only-binary=:all: -r tools/requirements-framed-offline.txt
+      - name: Integrate reviewed source and prove the two cursor regressions
+        env:
+          START_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, subprocess, sys, tempfile
+          from pathlib import Path
+          out = Path(os.environ['RUNNER_TEMP']) / 'modal-integration'
+          out.mkdir()
+          def git(*args, check=True):
+              return subprocess.run(['git', *args], check=check, capture_output=True)
+          def text(*args):
+              return git(*args).stdout.decode('utf-8').strip()
+          def replace(path, old, new):
+              p = Path(path); data = p.read_bytes().decode('utf-8')
+              if data.count(old) != 1:
+                  raise RuntimeError('Exact replacement contract failed: ' + path)
+              p.write_bytes(data.replace(old, new).encode('utf-8'))
+          if text('rev-parse', 'HEAD') != os.environ['START_SHA'] or text('status', '--porcelain'):
+              raise RuntimeError('Unexpected task branch state')
+          git('config', 'user.name', 'Clash HD source validation')
+          git('config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com')
+          imported = 'b75e1c025ef3134b2022a2f9ad30cd82f3ecd4e1'
+          merged = git('merge', '--no-commit', '--no-ff', imported, check=False)
+          (out / 'merge.log').write_bytes(merged.stdout + merged.stderr)
+          conflicts = text('diff', '--name-only', '--diff-filter=U').splitlines()
+          allowed = {'.gitattributes', 'tools/run_framed_offline_tests.py', 'docs/hd/AGENT_HANDOFF.md'}
+          if set(conflicts) - allowed or (merged.returncode and not conflicts):
+              raise RuntimeError('Unreviewed merge conflict')
+          for name in conflicts:
+              ours = git('show', ':2:' + name).stdout
+              if name == 'docs/hd/AGENT_HANDOFF.md':
+                  Path(name).write_bytes(ours)
+              else:
+                  with tempfile.TemporaryDirectory() as temp:
+                      paths = [Path(temp) / str(i) for i in range(3)]
+                      for p, stage in zip(paths, (2, 1, 3)):
+                          p.write_bytes(git('show', f':{stage}:' + name).stdout)
+                      result = git('merge-file', '-p', '--union', *(str(p) for p in paths))
+                      Path(name).write_bytes(result.stdout)
+              git('add', '--', name)
+          paragraph = '''### Four-checkpoint primary consumer integration
+
+          The separate [four-checkpoint hidden consumer](MODAL_PRIMARY_CAPTURE.md)
+          retains the actual failed 1024x768
+          [attempt A](../../captures/current/modal-primary-1024x768-20260919-attempt-a.json)
+          and [attempt B](../../captures/current/modal-primary-1024x768-20260919-attempt-b.json).
+          Both reach full publication but stop at the cursor-rectangle guard after
+          twelve slot copies. The later low-DWORD sentinel repair remains distinct
+          from those immutable failed runs. The source-artwork diagnosis also retains
+          the disabled-control x=1000 sentinel defect in the native modal canvas;
+          matching native and primary pixels is not sufficient to accept that frame.
+          These four-checkpoint records are not the separate initial-checkpoint
+          prototype above. Source integration and cursor audit fixes do not grant
+          new game-runtime, final composition, manual-input or stable acceptance.
+
+          '''
+          paragraph = '\n'.join(line.removeprefix('          ') for line in paragraph.split('\n'))
+          replace('docs/hd/AGENT_HANDOFF.md', 'The [slots lifecycle protocol]', paragraph + 'The [slots lifecycle protocol]')
+          git('add', '--', 'docs/hd/AGENT_HANDOFF.md')
+          git('commit', '-m', 'Integrate PR89 source with current text observer; preserve both runtime protocols')
+          for name, expected in [('tools/modal_primary_surface_audit.py', '58b601b080ddd51500b9c5ff4dbf652a8d3693d4'),
+                                 ('tools/test_modal_primary_surface_audit.py', '5cb08c643d46ab1c2ac97c95a550e3a2150f93d7')]:
+              if text('hash-object', name) != expected:
+                  raise RuntimeError('Imported source blob differs: ' + name)
+          replace('tools/test_modal_primary_surface_audit.py', 'x,y=coords[position];dw=dh=4',
+                  'x,y=position if isinstance(position,tuple) else coords[position];dw=dh=4')
+          replace('tools/test_modal_primary_surface_audit.py',
+                  'intersects=(x+dw>=ox+220 and ox+423>=x and y+dh>=oy+289 and oy+409>=y)',
+                  'intersects=(max(x,ox+220)<min(x+dw,ox+423) and max(y,oy+289)<min(y+dh,oy+409))')
+          replace('tools/run_framed_offline_tests.py', '    "test_modal_primary_surface_audit",',
+                  '    "test_modal_primary_surface_audit",\n    "test_modal_primary_cursor_regressions",')
+          p = Path('tools/test_modal_primary_cursor_regressions.py')
+          p.write_bytes(p.read_text(encoding='utf-8').encode('utf-8'))
+          with Path('.gitattributes').open('ab') as stream:
+              stream.write(b'\n/tools/test_modal_primary_cursor_regressions.py text eol=lf\n')
+          sys.path[:0] = [str(Path.cwd()), str(Path.cwd() / 'tools')]
+          import hd_layout_asset_composition as artwork
+          import modal_primary_surface_audit as audit
+          sources = [('clash95.exe', '500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae'),
+                     ('Data/minimum.res', artwork.RESOURCE_SHA256), ('Data/maximum.res', audit.MAXIMUM_SHA256)]
+          inputs = {}
+          for name, expected in sources:
+              raw = Path('../assets/runtime/gog-32003', name).read_bytes()
+              if hashlib.sha256(raw).hexdigest() != expected:
+                  raise RuntimeError('Asset hash mismatch: ' + name)
+              target = Path('C:/Clash', name); target.parent.mkdir(parents=True, exist_ok=True)
+              with target.open('xb') as stream: stream.write(raw)
+              target.chmod(0o444)
+              inputs[name] = {'sha256': expected, 'bytes': len(raw)}
+          def run(label, suites, complete=False):
+              cmd = [sys.executable, 'tools/run_framed_offline_tests.py', '--timeout', '600', '--report-json', str(out / (label + '.json'))]
+              for suite in suites: cmd.extend(['--suite', suite])
+              if complete: cmd.append('--require-complete')
+              result = subprocess.run(cmd, capture_output=True, timeout=1500)
+              (out / (label + '.log')).write_bytes(result.stdout + result.stderr)
+              report = json.loads((out / (label + '.json')).read_text())
+              return result.returncode, report
+          status, red = run('before-fix', ['test_modal_primary_cursor_regressions'])
+          if status == 0 or not red['source_preflight']['passed']:
+              raise RuntimeError('The regression must reproduce on the unchanged audit')
+          failures = [entry for suite in red['suites'] for kind in ('failures', 'errors') for entry in suite[kind]]
+          expected_tests = ('test_half_open_edges_corners_gaps_and_one_pixel_overlaps', 'test_decoded_sprite_index_survives_all_nine_paired_artifact_ranges')
+          if not failures or not all(any(name in entry['test'] for name in expected_tests) for entry in failures):
+              raise RuntimeError('Unexpected baseline failure')
+          for old, new in [('for index,(name,start,end) in enumerate(ranges):', 'for range_index,(name,start,end) in enumerate(ranges):'),
+                           ('ranges[index+1:]', 'ranges[range_index+1:]'),
+                           ("c0['x']+c0['width']>=rect['x'] and rect['right']>=c0['x']", "c0['x']+c0['width']>rect['x'] and rect['right']>c0['x']"),
+                           ("c0['y']+c0['height']>=rect['y'] and rect['bottom']>=c0['y']", "c0['y']+c0['height']>rect['y'] and rect['bottom']>c0['y']")]:
+              replace('tools/modal_primary_surface_audit.py', old, new)
+          status, green = run('after-fix', ['test_modal_primary_surface_audit', 'test_modal_primary_cursor_regressions'], True)
+          if status: raise RuntimeError('Corrected audit must pass complete selected coverage')
+          status, related = run('related', ['test_modal_primary_barracks_probe', 'test_modal_primary_trace', 'test_modal_primary_capture', 'test_modal_primary_host'])
+          if status: raise RuntimeError('Related source fixtures failed')
+          for fixture in ('test_handoff_freshness_guard.py', 'test_docs_consistency_guard.py'):
+              result = subprocess.run([sys.executable, 'tools/' + fixture], capture_output=True, timeout=90)
+              (out / (fixture + '.log')).write_bytes(result.stdout + result.stderr)
+              if result.returncode: raise RuntimeError('Documentation fixture failed: ' + fixture)
+          for name, receipt in inputs.items():
+              if hashlib.sha256(Path('C:/Clash', name).read_bytes()).hexdigest() != receipt['sha256']:
+                  raise RuntimeError('Original input changed: ' + name)
+          changed = ['.gitattributes', 'docs/hd/AGENT_HANDOFF.md', 'tools/modal_primary_surface_audit.py',
+                     'tools/test_modal_primary_surface_audit.py', 'tools/test_modal_primary_cursor_regressions.py', 'tools/run_framed_offline_tests.py']
+          receipt = {'schema': 1, 'imported_pr89_commit': imported, 'asset_commit': '84a1e4bcf131e6bb75b39fc5e10941dd0b801767',
+                     'inputs': inputs, 'original_inputs_unchanged': True, 'red_failure_records': len(failures),
+                     'focused_successful_tests': green['successful_tests'], 'focused_skipped_records': green['skipped_records'],
+                     'focused_complete': green['selected_coverage_complete'], 'related_successful_tests': related['successful_tests'],
+                     'related_skipped_records': related['skipped_records'], 'game_runtime_executed': False,
+                     'manual_input_proof': False, 'promotion_ready': False,
+                     'sources': {name: hashlib.sha256(Path(name).read_bytes()).hexdigest() for name in changed}}
+          report_path = Path('reports/modal_primary_cursor_followup_20260919.json')
+          report_path.write_bytes((json.dumps(receipt, indent=2) + '\n').encode('utf-8'))
+          git('add', '--', *changed, str(report_path))
+          git('diff', '--cached', '--check')
+          git('commit', '-m', 'Fix half-open cursor overlap and retain the decoded sprite index')
+          (out / 'review.patch').write_bytes(git('diff', 'origin/main', 'HEAD').stdout)
+          (out / 'receipt.json').write_bytes(report_path.read_bytes())
+          (out / 'source.zip').write_bytes(git('archive', '--format=zip', 'HEAD', '--', 'tools', 'src', 'scripts', 'docs', 'reports', '.gitattributes', 'AGENTS.md').stdout)
+          branch = 'refs/heads/codex/modal-primary-integration'
+          if text('ls-remote', 'origin', branch).split()[0] != os.environ['START_SHA']:
+              raise RuntimeError('Task branch moved; refusing to overwrite concurrent work')
+          git('push', 'origin', 'HEAD:' + branch)
+          print(json.dumps(receipt, indent=2))
+          print('Published task branch only:', text('rev-parse', 'HEAD'))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: modal-primary-integration-review
+          path: ${{ runner.temp }}/modal-integration/
+          retention-days: 7
+          if-no-files-found: warn
