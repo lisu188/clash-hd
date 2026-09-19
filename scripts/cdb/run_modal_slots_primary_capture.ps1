@@ -492,6 +492,29 @@ public static class ModalPrimaryQuery {
 '@
 }
 
+function Get-PrimaryReadableRegions {
+    param([object[]]$Observations)
+    # VirtualQueryEx can describe a suffix when queried from a later page.
+    # Preserve the queried records separately; the reader needs their disjoint
+    # union. Merge only identical committed/readable flags, never across a gap.
+    $result=New-Object 'Collections.Generic.List[object]'
+    $current=$null
+    foreach ($record in @($Observations | Sort-Object {[long]$_.address},{[long]$_.size})) {
+        [long]$start=$record.address;[long]$length=$record.size
+        if ($start -le 0 -or $length -le 0 -or $start -ge 4294967296 -or $length -gt 4294967296-$start -or
+            $record.state -ne 0x1000 -or $record.protect -notin @(2,4,8,0x20,0x40,0x80)) {throw 'Primary memory-region observation is not committed readable memory.'}
+        $same=$null -ne $current -and $current.state -eq $record.state -and $current.protect -eq $record.protect
+        if ($null -ne $current -and $start -lt $current.address+$current.size -and -not $same) {throw 'Primary overlapping memory-region state changed.'}
+        if ($same -and $start -le $current.address+$current.size) {
+            $current.size=[Math]::Max($current.address+$current.size,$start+$length)-$current.address
+        } else {
+            $current=@{address=$start;size=$length;state=[int]$record.state;protect=[int]$record.protect}
+            $result.Add($current)
+        }
+    }
+    return $result.ToArray()
+}
+
 function Read-PrimaryArtifact {
     param($OwnedGame,[long]$Address,[int]$Count,[string]$Path,$Regions)
     if ($Address -le 0 -or $Count -le 0 -or $Count -gt 67108864 -or $Address+$Count -gt 4294967296) {throw 'Primary read range is invalid.'}
@@ -507,6 +530,9 @@ function Read-PrimaryArtifact {
         $record=@{address=$start;size=$length;state=[int]$info.state;protect=[int]$info.protect}
         $key=[string]$start
         if ($Regions.ContainsKey($key) -and ($Regions[$key] | ConvertTo-Json -Compress) -cne ($record | ConvertTo-Json -Compress)) {throw 'Primary memory-region state changed.'}
+        # Detect conflicting cross-base observations before performing RPM.
+        # Keep same-base size/state drift rejection above, including repeats.
+        [void](Get-PrimaryReadableRegions (@($Regions.Values)+@($record)))
         $Regions[$key]=$record;$cursor=[Math]::Min($Address+$Count,$start+$length)
     }
     $data=Read-CanvasMemory $OwnedGame.handle $Address $Count
@@ -610,7 +636,8 @@ function Save-PrimarySnapshot {
     $identity=Get-CanvasHandleIdentity $OwnedGame.handle $OwnedGame.identity.process_id $Plan.candidate_path
     if ($identity.creation_filetime -ne $OwnedGame.identity.creation_filetime -or (Get-CanvasHash $Plan.proxy_path) -cne $Plan.proxy_sha256) {throw 'Owned identity changed across primary capture.'}
     return @{schema='clash95_modal_primary_snapshot_receipt_v1';run_id=$Plan.run_id;
-        game_identity=$OwnedGame.identity;trace_sha256=$Prefix.sha256;reads=$reads;regions=@($regions.Values);pixels=$pixels;
+        game_identity=$OwnedGame.identity;trace_sha256=$Prefix.sha256;reads=$reads;regions=@(Get-PrimaryReadableRegions @($regions.Values));pixels=$pixels;
+        region_observations=@($regions.Values | Sort-Object {[long]$_.address},{[long]$_.size});
         palette_entries=@{path=$palettePath;bytes=1024;sha256=(Get-CanvasHash $palettePath)};
         proxy_module=$module;
         started_at=$began;captured_at=[datetime]::UtcNow.ToString('o');paused=$true;manual_input_proof=$false;promotion_ready=$false}

@@ -74,6 +74,15 @@ hash. This does not claim that the software mirror owns a separate palette
 or that the visible wrapper's palette was observed. The independently written
 global proxy palette file is not used to color these PNGs.
 
+The host preserves queried memory geometry in `region_observations` and emits
+its disjoint readable union in `regions`. Windows can return a compatible
+suffix of a previously queried region. Overlapping or adjacent spans merge
+only when their committed state and readable protection match; gaps and
+different adjacent protections stay separate. Conflicting overlaps or changed
+observations at the same base fail before the pixel read. The retained primary
+F run of 2026-09-13 remains failed for its overlapping region receipt; this
+collector correction requires a fresh source-bound run.
+
 The loaded proxy header has one explicit load-base rule: its PE32 `ImageBase`
 field must equal the measured module base. Every surrounding header byte,
 including the checksum, must equal the pinned on-disk DLL. The adapter builds

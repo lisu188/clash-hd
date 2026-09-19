@@ -44,7 +44,10 @@ class PrimaryHostTests(unittest.TestCase):
         self.addCleanup(patch.stopall)
         patch.object(legacy,'HOST',HOST).start()
 
-    run_ps=legacy.PrimaryHostTests.run_ps
+    def run_ps(self,body,mode='normal'):
+        # Legacy extracted read/snapshot fixtures need the new pure dependency.
+        return legacy.PrimaryHostTests.run_ps(self,
+            "Import-Function Get-PrimaryReadableRegions\n"+body,mode)
     test_unique_complete_ready=legacy.PrimaryHostTests.test_only_unique_primary_readiness_accepts
     test_debugger_errors_classified=legacy.PrimaryHostTests.test_debugger_command_failures_are_not_native_crashes
     test_paths=legacy.PrimaryHostTests.test_original_path_restrictions_remain
@@ -53,6 +56,104 @@ class PrimaryHostTests(unittest.TestCase):
     test_mock_x86_module_enumeration=legacy.PrimaryHostTests.test_x86_module_enumeration_uses_retained_handle_and_bounded_queries
     test_module_path_hash_extent=legacy.PrimaryHostTests.test_proxy_module_path_hash_uniqueness_and_range_remain_required
     test_read_only_retained_handle_rights=legacy.PrimaryHostTests.test_owned_handle_includes_query_information_without_writes
+
+    def test_region_union_preserves_flags_gaps_and_original_queries(self):
+        self.assertTrue(self.run_ps(r'''
+function Region {param([long]$Address,[long]$Size,[int]$Protect=4);return @{address=$Address;size=$Size;state=4096;protect=$Protect}}
+# Exact query geometry retained in the failed F receipt; this synthetic fixture
+# exercises the host function and does not reclassify that runtime evidence.
+$actualGeometry=@((Region 0x0429e000 4096),(Region 0x0420d000 598016))
+$cases=@(
+ @{claims=$actualGeometry;expected=@(,@(0x0420d000,598016,4))},
+ @{claims=@((Region 0x3000 0x2000),(Region 0x1000 0x3000));expected=@(,@(0x1000,0x4000,4))},
+ @{claims=@((Region 0x2000 0x1000),(Region 0x1000 0x1000));expected=@(,@(0x1000,0x2000,4))},
+ @{claims=@((Region 0x1000 0x3000),(Region 0x2000 0x1000),(Region 0x1000 0x3000));expected=@(,@(0x1000,0x3000,4))},
+ @{claims=@((Region 0x5000 0x1000),(Region 0x2000 0x1000 2),(Region 0x1000 0x1000));expected=@(@(0x1000,0x1000,4),@(0x2000,0x1000,2),@(0x5000,0x1000,4))},
+ @{claims=@((Region 4294963200 4096 0x20));expected=@(,@(4294963200,4096,0x20))}
+)
+foreach ($case in $cases) {
+ $original=$case.claims | ConvertTo-Json -Depth 5 -Compress
+ $rows=@(Get-PrimaryReadableRegions $case.claims)
+ Assert-Case ($rows.Count -eq $case.expected.Count) 'Incorrect normalized region count'
+ for ($i=0;$i -lt $rows.Count;$i++) {
+  $r=$rows[$i];$e=$case.expected[$i]
+  Assert-Case ($r.address -eq $e[0] -and $r.size -eq $e[1] -and $r.protect -eq $e[2] -and $r.state -eq 4096) 'Union changed coverage or protection'
+ }
+ Assert-Case (($case.claims | ConvertTo-Json -Depth 5 -Compress) -ceq $original) 'Normalization mutated query observations'
+}
+foreach ($claims in @(
+ @((Region 0x1000 0x3000),(Region 0x2000 0x1000 2)),
+ @((Region 0x2000 0x3000 0x20),(Region 0x1000 0x2000)),
+ @((Region 0x1000 0x1000),(Region 0x1000 0x1000 8)))) {
+ Expect-Failure {Get-PrimaryReadableRegions $claims} 'overlapping incompatible readable protection'
+}
+foreach ($bad in @(
+ @{address=0x2000;size=0x1000;state=0x2000;protect=4},
+ @{address=0x2000;size=0x1000;state=0x1000;protect=0x104},
+ @{address=0;size=0x1000;state=0x1000;protect=4},
+ @{address=0x1000;size=0;state=0x1000;protect=4},
+ @{address=4294963200;size=8192;state=0x1000;protect=4})) {
+ Expect-Failure {Get-PrimaryReadableRegions @((Region 0x1000 0x3000),$bad)} 'invalid observed region'
+}
+@{passed=$true} | ConvertTo-Json
+''')['passed'])
+
+    def test_query_overlap_is_checked_before_rpm_and_same_base_drift_still_fails(self):
+        self.assertTrue(self.run_ps(r'''
+foreach ($name in 'Read-PrimaryArtifact','Get-CanvasHash') {Import-Function $name}
+Add-Type -TypeDefinition @'
+using System;using System.Runtime.InteropServices;
+public static class ModalPrimaryQuery {
+ [StructLayout(LayoutKind.Sequential)] public struct MBI {
+  public IntPtr address, allocation;public uint allocationProtect;
+  public UIntPtr size;public uint state,protect,type;
+ }
+ public static long start=0x0420d000,length=598016;public static uint protect=4;
+ public static int calls=0;
+ public static UIntPtr VirtualQueryEx(IntPtr handle,IntPtr cursor,out MBI info,UIntPtr count) {
+  if(handle.ToInt64()!=123)throw new Exception("Retained handle changed");
+  calls++;info=new MBI();info.address=new IntPtr(start);info.size=new UIntPtr((ulong)length);
+  info.state=0x1000;info.protect=protect;return count;
+ }
+}
+'@
+function Initialize-PrimaryQuery {}
+$script:PixelReads=0
+function Read-CanvasMemory {param($h,$a,$n);$script:PixelReads++;return ,(New-Object byte[] $n)}
+$regions=@{};$owned=@{handle=[IntPtr]123};$path=Join-Path $FixtureRoot 'query.raw'
+$first=Read-PrimaryArtifact $owned 0x0420d040 32 $path $regions
+[ModalPrimaryQuery]::start=0x0429e000;[ModalPrimaryQuery]::length=4096
+$second=Read-PrimaryArtifact $owned 0x0429e040 32 $path $regions
+$third=Read-PrimaryArtifact $owned 0x0429e040 32 $path $regions
+$normalized=@(Get-PrimaryReadableRegions @($regions.Values))
+Assert-Case ($regions.Count -eq 2 -and $normalized.Count -eq 1 -and $normalized[0].address -eq 0x0420d000 -and $normalized[0].size -eq 598016) 'Contained suffix query lost or coverage differs'
+Assert-Case ($script:PixelReads -eq 3 -and [ModalPrimaryQuery]::calls -eq 3) 'Repeated observations skipped required reads'
+$original=$regions | ConvertTo-Json -Depth 5 -Compress
+foreach ($spec in @(@(0x0429d000,4096,2),@(0x0420d000,593920,4),@(0x0420d000,598016,8))) {
+ [ModalPrimaryQuery]::start=$spec[0];[ModalPrimaryQuery]::length=$spec[1];[ModalPrimaryQuery]::protect=$spec[2]
+ $failedPath=Join-Path $FixtureRoot ('failed-'+$spec[0]+'-'+$spec[2]+'.raw')
+ Expect-Failure {Read-PrimaryArtifact $owned ($spec[0]+32) 32 $failedPath $regions} 'conflict or same-base drift'
+ Assert-Case (-not (Test-Path $failedPath)) 'Rejected query wrote an artifact'
+ Assert-Case (($regions | ConvertTo-Json -Depth 5 -Compress) -ceq $original) 'Rejected query changed retained observations'
+}
+Assert-Case ($script:PixelReads -eq 3) 'Conflicting query reached RPM'
+@{passed=$true} | ConvertTo-Json
+''')['passed'])
+
+    def test_snapshot_emits_disjoint_coverage_and_retains_query_provenance(self):
+        # Insert compatible suffix observations through the managed read stand-in.
+        marker='$script:Reads.Add('
+        self.assertEqual(legacy.CAPTURE.count(marker),1)
+        body=legacy.CAPTURE.replace(marker,
+            "$Regions['69259264']=@{address=69259264;size=598016;state=4096;protect=4}\n"
+            "$Regions['69853184']=@{address=69853184;size=4096;state=4096;protect=4}\n"
+            +marker,1)
+        body=body.replace('@{passed=$true} | ConvertTo-Json',r'''
+Assert-Case ($r.regions.Count -eq 1 -and $r.regions[0].address -eq 69259264 -and $r.regions[0].size -eq 598016) 'Snapshot receipt retained overlapping coverage'
+Assert-Case ($r.region_observations.Count -eq 2 -and $r.region_observations[1].address -eq 69853184 -and $r.region_observations[1].size -eq 4096) 'Snapshot discarded queried suffix provenance'
+@{passed=$true} | ConvertTo-Json
+''')
+        self.assertTrue(self.run_ps(body)['passed'])
 
     def test_full_canvas_initial_slots_and_primary_guards_before_reads(self):
         text=canvas.PURE.replace('MCAP_SURFDUMP_HOST_READY','MPRI_HOST_READY')
