@@ -152,13 +152,16 @@ function New-CanvasCapturePlan {
     if ($prepared.packet.prepared -isnot [bool] -or -not $prepared.packet.prepared -or
         $prepared.packet.candidate_sha256 -cne $candidateHash -or $prepared.packet.stage -cne $script:Stage -or
         $prepared.packet.resolution -cne $Options.Resolution -or -not $prepared.probe -or
+        $prepared.packet.primary_capture.revision -cne 'slots_cached_primary_v2' -or
+        $prepared.packet.primary_capture.region_scheme -cne 'primary_virtual_query_ledger_v1' -or
         $prepared.probe_sha256 -cnotmatch '^[a-f0-9]{64}$') { throw 'Candidate preparation did not produce its bound packet and compiled probe.' }
     # Repeated dry-run/Execute calls with the same new directory describe the same
     # executable path. Its directory must remain nonexistent until execution.
     $candidateName = Get-CanvasCandidateName $candidateDirectory $Options.Route $Options.Resolution
     if ($candidateName -ieq [IO.Path]::GetFileName($inputPath)) { throw 'The copied executable must have a new basename.' }
     $plan = [ordered]@{
-        schema='clash95_modal_slots_primary_capture_plan_v1'; environment='hidden_cdb_host'; execute=[bool]$Options.Execute
+        schema='clash95_modal_slots_primary_capture_plan_v2'; environment='hidden_cdb_host'; execute=[bool]$Options.Execute
+        region_scheme='primary_virtual_query_ledger_v1'
         stage=$script:Stage; resolution=$Options.Resolution; width=$width; height=$height
         route=$Options.Route; castle_index=$Options.CastleIndex; availability=$Options.Availability
         minimap_viewport=[bool]$Options.MinimapViewport; deadline_seconds=300
@@ -515,7 +518,7 @@ function Get-PrimaryReadableRegions {
     return $result.ToArray()
 }
 
-function Read-PrimaryArtifact {
+function Read-PrimaryArtifactV1 {
     param($OwnedGame,[long]$Address,[int]$Count,[string]$Path,$Regions)
     if ($Address -le 0 -or $Count -le 0 -or $Count -gt 67108864 -or $Address+$Count -gt 4294967296) {throw 'Primary read range is invalid.'}
     Initialize-PrimaryQuery
@@ -538,6 +541,97 @@ function Read-PrimaryArtifact {
     $data=Read-CanvasMemory $OwnedGame.handle $Address $Count
     [IO.File]::WriteAllBytes($Path,$data)
     return @{path=$Path;address=$Address;bytes=$Count;sha256=(Get-CanvasHash $Path);data=$data}
+}
+
+function Add-PrimaryQueryLedgerRow {
+    param($Ledger,$Row)
+    # Append and close before validating the query or attempting RPM. Even a
+    # rejected query stays in the failure artifact; repeats are never replaced.
+    $json=($Row | ConvertTo-Json -Depth 20 -Compress)+"`n"
+    [IO.File]::AppendAllText($Ledger.path,$json,(New-Object Text.UTF8Encoding $false))
+    $Ledger.rows.Add($Row)
+}
+
+function New-PrimaryQueryLedger {
+    param($OwnedGame,$Plan,$Prefix)
+    Initialize-PrimaryQuery
+    $info=New-Object ModalPrimaryQuery+MBI
+    $path=Join-Path $Plan.out_dir 'primary-query-ledger.jsonl'
+    $file=[IO.File]::Open($path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::Read)
+    $file.Dispose()
+    $ledger=@{path=$path;rows=(New-Object 'Collections.Generic.List[object]');read_index=0;
+        page_size=[Environment]::SystemPageSize;mbi_bytes=[Runtime.InteropServices.Marshal]::SizeOf($info)}
+    Add-PrimaryQueryLedgerRow $ledger ([ordered]@{kind='header';scheme='primary_virtual_query_ledger_v1';
+        page_size=$ledger.page_size;mbi_bytes=$ledger.mbi_bytes;run_id=$Plan.run_id;
+        game_identity=$OwnedGame.identity;trace_sha256=$Prefix.sha256})
+    if ($ledger.page_size -ne 4096 -or $ledger.mbi_bytes -notin @(28,48)) {throw 'Primary query host page/MBI layout is unsupported.'}
+    return $ledger
+}
+
+function Get-PrimaryQueryCertificate {
+    param([object[]]$Observations,[int]$PageSize=4096)
+    if ($PageSize -ne 4096) {throw 'Primary query page size differs.'}
+    $result=New-Object 'Collections.Generic.List[object]';$current=$null
+    $fields=@('address','size','state','protect','allocation_base','allocation_protect','type')
+    foreach ($record in @($Observations | Sort-Object {[long]$_.address},{[long]$_.size})) {
+        if ($record.Count -ne $fields.Count -or @($fields | Where-Object {-not $record.Contains($_)}).Count) {throw 'Primary query region fields differ.'}
+        [long]$start=$record.address;[long]$length=$record.size
+        if ($start -le 0 -or $start -ge 4294967296 -or $length -le 0 -or $length -gt 4294967296-$start -or
+            $start%$PageSize -ne 0 -or $length%$PageSize -ne 0 -or
+            $record.allocation_base -le 0 -or $record.allocation_base -gt $start -or $record.allocation_base%$PageSize -ne 0 -or
+            $record.allocation_protect -lt 0 -or $record.allocation_protect -ge 4294967296 -or
+            $record.type -notin @(0x20000,0x40000,0x1000000) -or
+            $record.state -ne 0x1000 -or $record.protect -notin @(2,4,8,0x20,0x40,0x80)) {throw 'Primary query is not committed readable pages.'}
+        $same=$null -ne $current
+        foreach ($key in @('state','protect','allocation_base','allocation_protect','type')) {
+            if ($null -ne $current -and $current[$key] -ne $record[$key]) {$same=$false}
+        }
+        if ($null -ne $current -and $start -lt $current.address+$current.size -and -not $same) {throw 'Primary overlapping query attributes changed.'}
+        if ($same -and $start -le $current.address+$current.size) {
+            $current.size=[Math]::Max($current.address+$current.size,$start+$length)-$current.address
+        } else {
+            $current=[ordered]@{};foreach ($key in $fields) {$current[$key]=$record[$key]}
+            $result.Add($current)
+        }
+    }
+    return $result.ToArray()
+}
+
+function Get-PrimaryQueryLedgerArtifact {
+    param($Ledger)
+    return @{scheme='primary_virtual_query_ledger_v1';path=$Ledger.path;sha256=(Get-CanvasHash $Ledger.path);
+        bytes=(Get-Item -LiteralPath $Ledger.path).Length;records=$Ledger.rows.Count}
+}
+
+function Read-PrimaryArtifact {
+    param($OwnedGame,[long]$Address,[int]$Count,[string]$Path,$Ledger)
+    if ($Address -le 0 -or $Count -le 0 -or $Count -gt 67108864 -or $Address+$Count -gt 4294967296) {throw 'Primary read range is invalid.'}
+    Initialize-PrimaryQuery
+    $Ledger.read_index++;$queryIndex=0
+    $request=[ordered]@{path=$Path;address=$Address;bytes=$Count}
+    [long]$cursor=$Address
+    while ($cursor -lt $Address+$Count) {
+        $info=New-Object ModalPrimaryQuery+MBI
+        $size=[Runtime.InteropServices.Marshal]::SizeOf($info)
+        $returned=[ModalPrimaryQuery]::VirtualQueryEx($OwnedGame.handle,[IntPtr]$cursor,[ref]$info,[UIntPtr]::new([uint64]$size))
+        $queryIndex++
+        $region=[ordered]@{address=$info.address.ToInt64();size=$info.size.ToUInt64();state=[long]$info.state;
+            protect=[long]$info.protect;allocation_base=$info.allocation.ToInt64();
+            allocation_protect=[long]$info.allocationProtect;type=[long]$info.type}
+        Add-PrimaryQueryLedgerRow $Ledger ([ordered]@{kind='query';read_index=$Ledger.read_index;
+            query_index=$queryIndex;request=$request;cursor=$cursor;requested_mbi_bytes=$size;
+            returned_mbi_bytes=$returned.ToUInt64();region=$region})
+        if ($returned.ToUInt64() -ne $Ledger.mbi_bytes -or $size -ne $Ledger.mbi_bytes) {throw 'Primary query returned an incomplete MBI record.'}
+        [void](Get-PrimaryQueryCertificate @($Ledger.rows | Where-Object {$_.kind -eq 'query'} | ForEach-Object {$_.region}) $Ledger.page_size)
+        if ($region.address -gt $cursor -or $region.address+$region.size -le $cursor) {throw 'Primary query leaves a read coverage gap.'}
+        $cursor=[Math]::Min($Address+$Count,$region.address+$region.size)
+    }
+    $data=Read-CanvasMemory $OwnedGame.handle $Address $Count
+    if ($data.Length -ne $Count) {throw 'Primary RPM result byte count differs.'}
+    [IO.File]::WriteAllBytes($Path,$data)
+    $record=[ordered]@{path=$Path;address=$Address;bytes=$Count;sha256=(Get-CanvasHash $Path)}
+    Add-PrimaryQueryLedgerRow $Ledger ([ordered]@{kind='read';read_index=$Ledger.read_index;artifact=$record})
+    return @{path=$Path;address=$Address;bytes=$Count;sha256=$record.sha256;data=$data}
 }
 
 function Initialize-PrimaryModules {
@@ -608,7 +702,7 @@ function Save-PrimarySnapshot {
     $began=[datetime]::UtcNow.ToString('o');$v=$Trace.primary_sequence.ready.values
     if (-not $Trace.passed -or -not $Trace.primary_sequence.passed -or $Trace.source.log_raw_sha256 -cne $Prefix.sha256) {throw 'Primary read requires the exact validated paused prefix.'}
     $module=Get-PrimaryModule $OwnedGame $Plan;$base=$module.base
-    $regions=@{};$reads=@{}
+    $regions=New-PrimaryQueryLedger $OwnedGame $Plan $Prefix;$reads=@{}
     foreach ($phase in @('before','after')) {
         $rows=@{}
         foreach ($row in @(@('primary',0x51d4c0,220),@('backend',$v.backend,176),@('surface_full',$v.surface,32),
@@ -635,9 +729,10 @@ function Save-PrimarySnapshot {
     }
     $identity=Get-CanvasHandleIdentity $OwnedGame.handle $OwnedGame.identity.process_id $Plan.candidate_path
     if ($identity.creation_filetime -ne $OwnedGame.identity.creation_filetime -or (Get-CanvasHash $Plan.proxy_path) -cne $Plan.proxy_sha256) {throw 'Owned identity changed across primary capture.'}
-    return @{schema='clash95_modal_primary_snapshot_receipt_v1';run_id=$Plan.run_id;
-        game_identity=$OwnedGame.identity;trace_sha256=$Prefix.sha256;reads=$reads;regions=@(Get-PrimaryReadableRegions @($regions.Values));pixels=$pixels;
-        region_observations=@($regions.Values | Sort-Object {[long]$_.address},{[long]$_.size});
+    return @{schema='clash95_modal_primary_snapshot_receipt_v2';run_id=$Plan.run_id;
+        game_identity=$OwnedGame.identity;trace_sha256=$Prefix.sha256;reads=$reads;
+        regions=@(Get-PrimaryQueryCertificate @($regions.rows | Where-Object {$_.kind -eq 'query'} | ForEach-Object {$_.region}) $regions.page_size);
+        region_scheme='primary_virtual_query_ledger_v1';query_ledger=(Get-PrimaryQueryLedgerArtifact $regions);pixels=$pixels;
         palette_entries=@{path=$palettePath;bytes=1024;sha256=(Get-CanvasHash $palettePath)};
         proxy_module=$module;
         started_at=$began;captured_at=[datetime]::UtcNow.ToString('o');paused=$true;manual_input_proof=$false;promotion_ready=$false}
@@ -699,7 +794,7 @@ function Invoke-CanvasCapture {
     param($Bundle, [switch]$DoExecute)
     $plan=$Bundle.plan; $prepared=$Bundle.prepared
     if (-not $DoExecute) { return @{ status='dry_run'; executed=$false; plan=$plan; prepared=$prepared } }
-    $summary = [ordered]@{ schema='clash95_modal_slots_primary_capture_v1'; passed=$false; status='failed'; executed=$false; plan=$plan
+    $summary = [ordered]@{ schema='clash95_modal_slots_primary_capture_v2'; passed=$false; status='failed'; executed=$false; plan=$plan
         started_at=[datetime]::UtcNow.ToString('o'); finished_at=$null; failures=@(); trace=$null; snapshot=$null; png=$null
         cdb=$null; candidates=@(); cleanup=@{ cdb=$null; candidates=@(); desktop_closed=$false }
         manual_input_proof=$false; visible_composition_proof=$false; promotion_ready=$false }
@@ -851,7 +946,7 @@ function Invoke-CanvasCapture {
         }
         if ($summary.snapshot) {
             try {
-                $primaryReceipt=[ordered]@{schema='clash95_slots_primary_triplet_v1';plan=$plan;snapshots=$summary.snapshots;
+                $primaryReceipt=[ordered]@{schema='clash95_slots_primary_triplet_v2';plan=$plan;snapshots=$summary.snapshots;
                     clean_stable_pair=$summary.clean_stable_pair;cdb=$summary.cdb;candidates=$summary.candidates;cleanup=$summary.cleanup;
                     packet=$summary.packet;probe=$summary.probe;capture_prefix=$summary.capture_prefix;final_log=$summary.final_log;
                     failures=$summary.failures;manual_input_proof=$false;promotion_ready=$false}
@@ -901,6 +996,20 @@ function Invoke-CanvasCapture {
                     $summary.postrun_identity.proxy_sha256 -cne $plan.proxy_sha256) { throw 'Post-run executable or proxy identity changed.' }
             } catch { $summary.failures += $_.Exception.Message }
         }
+        # A failure before Save-PrimarySnapshot returns still retains every raw
+        # query. Bind partial ledgers after cleanup without calling them passes.
+        $summary.query_ledgers=@()
+        if ($outputCreated) {
+            try {
+                foreach ($captureIndex in 1..3) {
+                    $ledgerPath=Join-Path (Join-Path $plan.out_dir ('capture-'+$captureIndex)) 'primary-query-ledger.jsonl'
+                    if (Test-Path -LiteralPath $ledgerPath -PathType Leaf) {
+                        $summary.query_ledgers+=@{scheme='primary_virtual_query_ledger_v1';path=$ledgerPath;
+                            sha256=(Get-CanvasHash $ledgerPath);bytes=(Get-Item -LiteralPath $ledgerPath).Length}
+                    }
+                }
+            } catch {$summary.failures+=$_.Exception.Message}
+        }
         $summary.finished_at=[datetime]::UtcNow.ToString('o')
         $summary.passed=($summary.executed -and $summary.failures.Count -eq 0 -and $null -ne $summary.snapshot -and $null -ne $summary.png -and
             $summary.clean_stable_pair -and $summary.primary_audit.passed -and $summary.primary_audit.primary_snapshot.cached_primary_snapshot_valid -and
@@ -920,7 +1029,7 @@ try {
     $result | ConvertTo-Json -Depth 80
     if ($Execute -and -not $result.passed) { exit 1 }
 } catch {
-    $failure=@{ schema='clash95_modal_slots_primary_capture_v1'; passed=$false; status='preparation_failed'; executed=$false
+    $failure=@{ schema='clash95_modal_slots_primary_capture_v2'; passed=$false; status='preparation_failed'; executed=$false
         failures=@($_.Exception.Message); manual_input_proof=$false; promotion_ready=$false }
     if ($null -ne $_.Exception.Data['CanvasPythonFailure']) {
         $failure.child_failure=$_.Exception.Data['CanvasPythonFailure']
