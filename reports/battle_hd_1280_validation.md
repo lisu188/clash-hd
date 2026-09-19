@@ -81,11 +81,11 @@ runtime. Results/exit and restored HD-map rendering/input require explicit
 lifecycle evidence. Neither existing centered-mode evidence nor a nonblack
 frame satisfies those new-lane requirements.
 
-The native cursor setter queues `(576,360)` for battle dialogs. In the forced
-hidden route, its immediate device poll sometimes replaces X with a cached
-sample of `4`; both pre-poll and post-poll values are reported. This is an open
-input observation for visible validation, not evidence that the displayed
-cursor is correct and not justification to alter generic map input.
+The native cursor setter queues `(576,360)` for battle dialogs. The September 19
+diagnostic observes failed hidden device reads that leave the 16-byte stack
+buffer unchanged; the native updater then consumes those values. Banner/results
+return X=`4`. Valid device input and visible cursor behavior remain unproven,
+and this forced hidden route does not justify changing generic map input.
 
 ## Current review candidate
 
@@ -146,3 +146,26 @@ the geometry fix; it predates later upstream fixture additions and does not
 claim a new aggregate of September 13 main. Global current reports remain
 those imported from main. Visible composition, natural input and the listed
 hidden-diagnostic gaps remain pending.
+
+## September 19 present and cursor follow-up
+
+The [new evidence report](../captures/current/battle-hd-followup-20260919.md)
+reproduces the exact 283-patch candidate under `C:\ClashTests\battle-hd-20260919`.
+Strict present dispatch/body/return/completion observations now pass all seven
+helper diagnostics. Full redraw still covers the real 16x7 arena and dirty
+redraw reaches tile (8,0); copy bounds, natural animation and final wrapper
+composition retain separate acceptance requirements.
+
+A read-only diagnostic bound to the native Device_UpdateRect wrapper observes
+all three dialog cursor polls. Each device call returns `8007000C` with an
+unchanged buffer; origin lookup succeeds at (0,0), and the updater consumes the
+retained values. This explains the forced hidden symptom without establishing
+valid input. Lifecycle diagnostics remain 12/14. Failed/incomplete probe
+attempts and the raw-stack discovery run are retained alongside the final
+strict run; earlier reports remain dated evidence.
+
+All 16 focused suites pass. The follow-up records the new aggregate source
+revision, every failing check, immutable report archive and exact cleanup
+results. The software captures do not show complete command/map composition.
+No visible runtime, OS input, live capture or manual approval is claimed, and
+neither candidate bytes nor the stable stage/launcher defaults change.
