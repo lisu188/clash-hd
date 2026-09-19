@@ -1,0 +1,219 @@
+{
+  "schema": "clash95_modal_primary_runtime_failure_v1",
+  "generated_at": "2026-09-19T10:25:41.088966+00:00",
+  "run_id": "modal-primary-1024x768-20260919-b",
+  "status": "failed",
+  "passed": false,
+  "executed": true,
+  "started_at": "2026-09-19T10:15:07.6029983Z",
+  "finished_at": "2026-09-19T10:20:41.8210395Z",
+  "resolution": "1024x768",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalprimary-validation",
+  "candidate_sha256": "bee7db23414bc7831d32af05ad03d04f800aa795c7af66db1bc1e7b4c9ad11b8",
+  "host_sha256": "86bf334846cbc51e8a27c84d51e40522a44dd004570ffc2ccd1eefb870f66e0e",
+  "capture_source_sha256": "cc81240e799371e11e8e075ee7269a4eb398eba77a68bfc0a394fbe6a7408e3e",
+  "observed_rejection": "MPCAP_REJECT reason=cursor_rect",
+  "host_failures": [
+    "Debugger exited before accepted modal readiness."
+  ],
+  "cursor_rejection_diagnostic": "MPCAP_CURSOR_RECT_CONTEXT tid=ea8 eip=00460bb0 esp=000edbfc ebp=000edc30 eax=00544cd8 x=412 right=615 y=433 bottom=553 caller=00432f61 expected_tid=ea8 root_esp=000edca4 route_state=8 canvas_phase=15 publish_phase=0 checkpoint_index=1 selected=ffffffff cursor=0 resource=0a193b00 render=0051d4c0 state_phase=1 state_fault=0",
+  "diagnostic_interpretation": "Recorded 32-bit operands match the expected cursor rectangle, stack, thread and phases. The unmasked selected DWORD -1 comparison has a corroborated x86 CDB sign-extension defect. B did not record the upper 32 bits; its rejection and failed status remain unchanged.",
+  "full_published_prefix_passed": true,
+  "final_trace_passed": false,
+  "complete_route_proven": false,
+  "primary_composition_proven": false,
+  "controlled_input_method": "native route dispatch and private debugger stdin continuation",
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "cleanup": {
+    "candidates": [
+      {
+        "input_closed": null,
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\hd-completion\\modal-primary-run-1024x768-20260919-b\\modal-primary-barracks-1024x768-380f9d12828fba4a.exe",
+          "creation_filetime": 134342866084948108,
+          "process_id": 504,
+          "handle_retained": true,
+          "candidate_sha256": "bee7db23414bc7831d32af05ad03d04f800aa795c7af66db1bc1e7b4c9ad11b8",
+          "creation_utc": "2026-09-19T10:16:48.4948108Z",
+          "parent_process_id": 15200
+        }
+      }
+    ],
+    "cdb": {
+      "input_closed": true,
+      "termination_requested": false,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-19T10:16:48.2898443Z",
+        "handle_retained": true,
+        "creation_filetime": 134342866082898443,
+        "process_id": 15200
+      }
+    },
+    "desktop_closed": true
+  },
+  "independent_process_check": {
+    "debugger_pid": 15200,
+    "game_pid": 504,
+    "all_absent": true,
+    "method": "Win32_Process query after host completion"
+  },
+  "input_preservation": {
+    "original": {
+      "files": 1,
+      "unchanged": true
+    },
+    "live_saves": {
+      "files": 15,
+      "unchanged": true
+    },
+    "isolated_saves": {
+      "files": 4,
+      "unchanged": true
+    }
+  },
+  "source_preservation": {
+    "files": 44,
+    "all_unchanged_at_terminal_check": true,
+    "immutable_snapshot": {
+      "path": "C:\\ClashTests\\hd-completion\\modal-primary-context-20260919-b\\before.json",
+      "bytes": 15995,
+      "sha256": "f69698e2011544163e5bdacffe718b05335ec984ee408a2095bf34cafebd68de"
+    }
+  },
+  "partial_pixels": {
+    "checkpoint": "full-published",
+    "samples": 1,
+    "stable_pair": false,
+    "before_twelve_slot_draws": true,
+    "identical_to_attempt_a": true,
+    "physical_sha256": "848e03149460f5c4fcd24fc18a48b38acba8cbf1275d8ccf55bf379779c8471b",
+    "primary_raw_sha256": "848e03149460f5c4fcd24fc18a48b38acba8cbf1275d8ccf55bf379779c8471b",
+    "native_sha256": "2bc6ae72beb470ca88cf227edaf65a7a67752685b775acc17ca3b2610f85fb2b",
+    "host_png_conversion_accepted": true,
+    "primary_png": {
+      "checkpoint": "full-published",
+      "capture_method": "hidden_cached_primary_and_owned_surfaces",
+      "width": 1024,
+      "palette_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "palette_mode": "grayscale-index-empty-palette",
+      "palette_colors_available": false,
+      "height": 768,
+      "metadata_path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\checkpoints\\full-published\\capture-1\\primary-png.json",
+      "metadata_sha256": "96d16e550f57189b8c70e4759ea6a2d96ef2e619b5e0d913d64461a8540a7b53",
+      "raw_sha256": "848e03149460f5c4fcd24fc18a48b38acba8cbf1275d8ccf55bf379779c8471b",
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\checkpoints\\full-published\\capture-1\\primary.png",
+      "color_scope": "grayscale_index_preview_empty_attached_palette",
+      "sha256": "baa632eafc36d4df2c80bfad57b82e5517bccdde7d51ce65fbca96e6c6155298"
+    },
+    "physical_png": {
+      "checkpoint": "full-published",
+      "capture_method": "hidden_cached_primary_and_owned_surfaces",
+      "width": 1024,
+      "palette_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "palette_mode": "grayscale-index-empty-palette",
+      "palette_colors_available": false,
+      "height": 768,
+      "metadata_path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\checkpoints\\full-published\\capture-1\\physical-png.json",
+      "metadata_sha256": "7de22fd42dcb346006311c86918cdacf36bdc39dd82af334855e816e25b42749",
+      "raw_sha256": "848e03149460f5c4fcd24fc18a48b38acba8cbf1275d8ccf55bf379779c8471b",
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\checkpoints\\full-published\\capture-1\\physical.png",
+      "color_scope": "grayscale_index_preview_empty_attached_palette",
+      "sha256": "baa632eafc36d4df2c80bfad57b82e5517bccdde7d51ce65fbca96e6c6155298"
+    },
+    "native_png": {
+      "checkpoint": "full-published",
+      "capture_method": "hidden_cached_primary_and_owned_surfaces",
+      "width": 640,
+      "palette_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "palette_mode": "grayscale-index-empty-palette",
+      "palette_colors_available": false,
+      "height": 480,
+      "metadata_path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\checkpoints\\full-published\\capture-1\\native-png.json",
+      "metadata_sha256": "796f32f24713eac13fb0c91f7cf4c7840a939bf1668ee29cd2a209f48abbe2a3",
+      "raw_sha256": "2bc6ae72beb470ca88cf227edaf65a7a67752685b775acc17ca3b2610f85fb2b",
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\checkpoints\\full-published\\capture-1\\native.png",
+      "color_scope": "grayscale_index_preview_empty_attached_palette",
+      "sha256": "9c6f35630fb25c985c7f8e5502f614d826b1a8b84a7f6d3757b4d16d64efb3d8"
+    },
+    "native_artwork_passed": false,
+    "native_artwork_reference": {
+      "path": "captures/current/modal-primary-1024x768-20260919-attempt-a.json",
+      "bytes": 9299,
+      "sha256": "fee8b4176c6d20e41ba0ff25cc073c0246982799eff3a6704f795e623be4b2fd"
+    },
+    "frame_band_mismatches": {
+      "top": 0,
+      "bottom": 1231,
+      "left": 0,
+      "right": 0
+    },
+    "five_control_region_mismatches": [
+      0,
+      0,
+      376,
+      3424,
+      0
+    ]
+  },
+  "artifacts": {
+    "summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\summary.json",
+      "bytes": 98556,
+      "sha256": "c80d59c7a1b46896d063449add9ae28bc27cb9867c2625c566d48e8588aaef2f"
+    },
+    "log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\cdb.log",
+      "bytes": 64071,
+      "sha256": "2c3a0bebfd59d9a49b648bdd8d7c29153fb3813fcbdaa8315bddf8b7a5cfee46"
+    },
+    "final_trace": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\trace-final.json",
+      "bytes": 1913,
+      "sha256": "7a671befc144eca0076263ab94c0bd1e89df496587af5a43a52e00bab38b22f7"
+    },
+    "packet": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\packet.json",
+      "bytes": 9673633,
+      "sha256": "bc8511e8c9d62bc645b4c02f5d6f68f54fb7a54192f826c9e7536b4d28d29ced"
+    },
+    "probe": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\modal-primary-barracks.cdb",
+      "bytes": 4822798,
+      "sha256": "b848684774bf6cc8cd80253533c8852257e17161b980c6c6fe5e207dde45b605"
+    },
+    "first_checkpoint": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\checkpoints\\full-published\\checkpoint.json",
+      "bytes": 59841,
+      "sha256": "654fdc518f3574dc3b64e67aced2624cff2499c00726936c3a9ba4751c6bee6c"
+    },
+    "first_trace": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-b\\checkpoints\\full-published\\trace.json",
+      "bytes": 557360,
+      "sha256": "50c4f8d793baf3d9d4969d06fd318ff54371273053421436d2658ee0872f0c1b"
+    },
+    "source_snapshot": {
+      "path": "C:\\ClashTests\\hd-completion\\modal-primary-context-20260919-b\\before.json",
+      "bytes": 15995,
+      "sha256": "f69698e2011544163e5bdacffe718b05335ec984ee408a2095bf34cafebd68de"
+    }
+  },
+  "limits": [
+    "Only the first checkpoint was captured; twelve subsequent slot-copy events precede cursor rejection.",
+    "Palette reporting now succeeds but does not prove the later route or native artwork correctness.",
+    "The retained pixels repeat attempt A exactly, including the independently diagnosed disabled-control corruption in the bottom frame.",
+    "No placeholder-before, placeholder-after or final-ready capture; no native exit, ordinary/manual input, final wrapper or promotion proof."
+  ],
+  "postrun_source_correction": {
+    "report": "captures/current/modal-primary-runtime-source-validation-20260919-c.json",
+    "post_fix_runtime_executed": false,
+    "original_run_unchanged": true
+  }
+}
