@@ -2,7 +2,9 @@
 
 Reviewable 1280x720 candidate; acceptance remains pending. The stable stage is unchanged.
 
-The source is merged through [PR #61](https://github.com/lisu188/clash-hd/pull/61) at `b747b2e72c36e593149f9d852899e5d6365c813d`. All 19 GitHub checks passed on `10f852d199319b91e82c612d453e68bb40ba0b1e`. A merge does not promote this validation stage.
+The [September 19 follow-up](battle-hd-followup-20260919.md) reproduces the same candidate bytes, observes the forced present body and return (**7/7 helper diagnostics**), and traces the cursor discrepancy to failed hidden device reads. Lifecycle diagnostics remain **12/14**. Its new aggregate and focused checks are recorded separately; the tables and aggregate below retain the September 8 baseline.
+
+The initial expanded-battle implementation merged through [PR #61](https://github.com/lisu188/clash-hd/pull/61) at `b747b2e72c36e593149f9d852899e5d6365c813d`. All 19 GitHub checks passed on `10f852d199319b91e82c612d453e68bb40ba0b1e`. A merge does not promote this validation stage.
 
 The harness geometry compatibility fix is merged through [PR #63](https://github.com/lisu188/clash-hd/pull/63) at `6ea7ab0626af49774784924b7b259246cc82a94a`. All four applicable GitHub checks passed on `694988309f66966220677e88093c5492288ea116`. Candidate bytes are unchanged.
 
@@ -17,7 +19,7 @@ The harness geometry compatibility fix is merged through [PR #63](https://github
 
 All 14 focused suites pass, including 835 x86 core cases and 17 HUD tests. Five additional merged-harness/launcher suites pass. Source-pin integration and fresh-checkout results are recorded in [the initial report](../../reports/battle_hd_source_binding_integration.md), [the PR60 follow-up](../../reports/battle_hd_source_binding_pr60.md), and [the latest main integration](../../reports/battle_hd_source_binding_checkpoint326.md). The launcher dry run passes and starts no process.
 
-| Final hidden run | Diagnostic result | Evidence boundary |
+| September 8 hidden run | Diagnostic result | Evidence boundary |
 |---|---|---|
 | [Helpers](battle-hd-helpers-current.md), 111019 | 6/7 | Full redraw visits all 112 real tiles; dirty redraw reaches tile (8,0), using zero-based coordinates; dedicated present marker absent. |
 | [Camera](battle-hd-camera-current.md), 111125 | 7/7 | Forced clamp/recenter cases at widths 17/20, original 16x7 arena restored. |
@@ -59,8 +61,8 @@ The ten geometry-related failures from the prior 19/167 run now pass. The nine r
 
 ## Pending acceptance
 
-- Dedicated phase-14 present observation is absent; expanded present/copy bounds retain separate runtime acceptance.
-- Banner and results queue cursor (576,360), but their immediate hidden input polls replace X with 4. Natural cursor behavior is unresolved.
+- Forced phase-14 present body and return are now observed; exact copy bounds, natural timing and final wrapper composition remain unproven.
+- Failed hidden device reads leave buffers unchanged before native consumption, explaining banner/results X=4 in the forced route. Valid device input and visible cursor behavior remain unproven.
 - Natural movement, attack targeting, commands, scrolling, hover/tooltips, and dialog input on displayed coordinates need approved visible runtime.
 - Hidden full/dirty owner calls and emulator bounds checks do not establish every natural animation or absence of out-of-bounds accesses on all battle routes.
 - Camera widths 17 and 20 were forced around clamp/recenter calls without rendering fabricated arena cells; real wider-arena rendering remains unproven.

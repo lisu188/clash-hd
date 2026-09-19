@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-09-13T06:23:39.629498+00:00",
+  "generated_at": "2026-09-19T10:57:45.601994+00:00",
   "status": "reviewable_validation_candidate_with_pending_acceptance",
   "passed": false,
   "stable_stage_should_change": false,
@@ -627,8 +627,8 @@
     "superseded_run_note": "The intermediate PR60 aggregate was stopped before further source changes and produced no completed result. Its redirected stdout filename was reused. Earlier completed JSON snapshots remain archived separately; the final geometry-compatible log has its own immutable path."
   },
   "pending_acceptance": [
-    "Dedicated phase-14 present observation is absent; expanded present/copy bounds retain separate runtime acceptance.",
-    "Banner and results queue cursor (576,360), but their immediate hidden input polls replace X with 4. Natural cursor behavior is unresolved.",
+    "Forced phase-14 present body and return are observed in the September 19 follow-up; exact copy bounds, natural timing and final wrapper composition remain unproven.",
+    "Banner/results X=4 is explained by failed hidden device reads leaving buffers unchanged before native consumption. Valid device input and visible cursor behavior remain unproven.",
     "Natural movement, attack targeting, commands, scrolling, hover/tooltips, and dialog input on displayed coordinates need approved visible runtime.",
     "Hidden full/dirty owner calls and emulator bounds checks do not establish every natural animation or absence of out-of-bounds accesses on all battle routes.",
     "Camera widths 17 and 20 were forced around clamp/recenter calls without rendering fabricated arena cells; real wider-arena rendering remains unproven.",
@@ -642,5 +642,15 @@
     "live_capture": false,
     "approval_record": null
   },
-  "delivery_boundary": "Candidate and proprietary runtime artifacts remain outside the repository. The original executable, launcher Classic 800x600 default, resolution statuses and stable stage are unchanged by this lane."
+  "delivery_boundary": "Candidate and proprietary runtime artifacts remain outside the repository. The original executable, launcher Classic 800x600 default, resolution statuses and stable stage are unchanged by this lane.",
+  "followup_20260919": {
+    "report": "captures/current/battle-hd-followup-20260919.json",
+    "markdown": "captures/current/battle-hd-followup-20260919.md",
+    "pull_request": "https://github.com/lisu188/clash-hd/pull/87",
+    "helper_diagnostics": "7/7; strict forced present body and return observed",
+    "lifecycle_diagnostics": "12/14; failed hidden device reads classified, valid cursor/input acceptance pending",
+    "candidate_sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
+    "prior_evidence": "The existing hidden_runs and aggregate_refresh fields retain the dated September 8 baseline. The follow-up records its own source revision and immutable artifacts.",
+    "acceptance_passed": false
+  }
 }

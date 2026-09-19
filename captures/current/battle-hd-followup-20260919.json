@@ -1,0 +1,695 @@
+{
+  "schema": 1,
+  "generated_at": "2026-09-19T11:06:26.895050+00:00",
+  "evidence_class": "expanded_battle_validation",
+  "status": "hidden_diagnostic_progress_visible_acceptance_pending",
+  "passed": false,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
+  "resolution": [
+    1280,
+    720
+  ],
+  "candidate": {
+    "path": "C:\\ClashTests\\battle-hd-20260919\\clash95_battlehd.exe",
+    "sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47"
+  },
+  "patch_report": {
+    "path": "C:\\ClashTests\\battle-hd-20260919\\patch-stage.json",
+    "sha256": "0CC3BA22B7D60E315947293D17621CB860D3FB44CA2EB630DBD7D2BFD1A02EA5"
+  },
+  "source_executable": {
+    "path": "C:\\Clash\\clash95.exe",
+    "sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE"
+  },
+  "present_run": {
+    "report": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\helper-captures\\cdb-surface-dump-20260919-115223\\battle-hd-report.json",
+      "sha256": "58069C72FFF1332CFF09333F2EE19BD47C29A85A48F7DD7F63CD21F8E852E28E"
+    },
+    "manifest": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\helper-captures\\cdb-surface-dump-20260919-115223\\battle-hd-run.json",
+      "sha256": "F991DFA9BA42364B29D5862C35CD047A358E93649CE4261399FB62F9F0D01AA7"
+    },
+    "harness_summary": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\helper-captures\\cdb-surface-dump-20260919-115223\\summary.json",
+      "sha256": "273AC639EBBFDCF5067B8A3E0CF223BA255CC38BC4CC8E48876442E8A9030706"
+    },
+    "log": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\helper-captures\\cdb-surface-dump-20260919-115223\\cdb-surface-dump.log",
+      "sha256": "A29E5EA0326251ABD627E901B43142BDD45F561CB57570D9284C4722AD1C9390"
+    },
+    "software_surface_png": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\helper-captures\\cdb-surface-dump-20260919-115223\\surface.png",
+      "sha256": "180A815179A34C8CFEB25A4D00BC625E41B20BF806F22A224B7EFF0F24D8DFFA"
+    },
+    "candidate_sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
+    "wrapper_sha256": "8ED0D1B1ABA9FA58B1E79FFFFD5C12F9EA98D69A8186890C76BFA98423AC885E",
+    "generated_probe_sha256": "E7818F4F6EDC6584DBECA39053E5B66A9A4B1C4E6BD8E6D468359F3F74B39AB1",
+    "launch_mode": "hidden-desktop-cdb",
+    "input_method": "debugger_memory_register_writes_and_direct_calls",
+    "cleanup_passed": true,
+    "timed_out": false,
+    "acceptance_passed": false
+  },
+  "helper_diagnostics": {
+    "passed": 7,
+    "total": 7,
+    "broad_render_or_input_acceptance": false
+  },
+  "cursor_run": {
+    "report": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-120433\\battle-hd-report.json",
+      "sha256": "5BADC6644BC2DA239553080E7AFBBA305A6A90A014ABCFEBAB999E712F1CE43B"
+    },
+    "manifest": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-120433\\battle-hd-run.json",
+      "sha256": "5B2A1B1A91A78003B6797445450E24A194B4E192F5A7C183BDDC3385FD6F1288"
+    },
+    "harness_summary": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-120433\\summary.json",
+      "sha256": "E0F6FFCA32A0D2025932F404ACB62251865AB9562E06D03191C7DF12DDAC8D2F"
+    },
+    "log": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-120433\\cdb-surface-dump.log",
+      "sha256": "A3355A267BC9F7F073B13EE24C42730C2B9B6481D9642784F05B78A88F195994"
+    },
+    "software_surface_png": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-120433\\surface.png",
+      "sha256": "8C22F9D9E873CE903B24895E7D636C3BD53C5D4E042CC86F8A0CAE4DBBB2AD8D"
+    },
+    "candidate_sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
+    "wrapper_sha256": "B4CF172509083066EEE011FDB866F9A07C6CC4FA1F0CE53EC1F90E28CB5A28B1",
+    "generated_probe_sha256": "18E8C5906BA670F65F209222B8BB63B92EFF26B0EA373E2247C4087E8C222886",
+    "launch_mode": "hidden-desktop-cdb",
+    "input_method": "debugger_memory_register_writes_and_direct_calls",
+    "cleanup_passed": true,
+    "timed_out": false,
+    "acceptance_passed": false
+  },
+  "cursor_observations": [
+    {
+      "dialog": "banner",
+      "caller": "0042DA46",
+      "events": [
+        {
+          "line": 245,
+          "order": 10,
+          "marker": "BATTLE_HD_CURSOR_DIAG_ENTRY",
+          "values": {
+            "caller": 4381254,
+            "tid": "ea8",
+            "cursor_sp": 972812,
+            "eip": 4590320,
+            "esp": 972812,
+            "requested": [
+              576,
+              360
+            ],
+            "prior": [
+              120,
+              166
+            ]
+          }
+        },
+        {
+          "line": 247,
+          "order": 12,
+          "marker": "BATTLE_HD_CURSOR_DIAG_DEVICE_CALL",
+          "values": {
+            "caller": 4381254,
+            "tid": "ea8",
+            "cursor_sp": 972812,
+            "eip": 4702249,
+            "esp": 972600,
+            "device": 7018132,
+            "length": 16,
+            "buffer": 972692,
+            "before": [
+              1,
+              4294967295,
+              4066958852,
+              3963496976
+            ]
+          }
+        },
+        {
+          "line": 248,
+          "order": 13,
+          "marker": "BATTLE_HD_CURSOR_DIAG_DEVICE_RETURN",
+          "values": {
+            "caller": 4381254,
+            "tid": "ea8",
+            "cursor_sp": 972812,
+            "eip": 4702252,
+            "esp": 972612,
+            "hresult": 2147942412,
+            "buffer": 972692,
+            "after": [
+              1,
+              4294967295,
+              4066958852,
+              3963496976
+            ]
+          }
+        },
+        {
+          "line": 249,
+          "order": 14,
+          "marker": "BATTLE_HD_CURSOR_DIAG_ORIGIN_RETURN",
+          "values": {
+            "caller": 4381254,
+            "tid": "ea8",
+            "cursor_sp": 972812,
+            "eip": 5150755,
+            "esp": 972716,
+            "success": 1,
+            "origin": [
+              0,
+              0
+            ],
+            "raw": [
+              1,
+              4294967295
+            ],
+            "shifted": [
+              36864,
+              23040
+            ],
+            "bounds": [
+              64,
+              64,
+              80000,
+              44288
+            ]
+          }
+        },
+        {
+          "line": 251,
+          "order": 16,
+          "marker": "BATTLE_HD_CURSOR_DIAG_RETURN",
+          "values": {
+            "caller": 4381254,
+            "tid": "ea8",
+            "cursor_sp": 972812,
+            "eip": 4590362,
+            "esp": 972812,
+            "logical": [
+              4,
+              360
+            ],
+            "raw": [
+              1,
+              4294967295
+            ]
+          }
+        }
+      ],
+      "failed_read_unchanged_buffer": true,
+      "hresult": "8007000C",
+      "cursor_return": [
+        4,
+        360
+      ]
+    },
+    {
+      "dialog": "modal",
+      "caller": "0042DE6E",
+      "events": [
+        {
+          "line": 269,
+          "order": 34,
+          "marker": "BATTLE_HD_CURSOR_DIAG_ENTRY",
+          "values": {
+            "caller": 4382318,
+            "tid": "ea8",
+            "cursor_sp": 972632,
+            "eip": 4590320,
+            "esp": 972632,
+            "requested": [
+              576,
+              360
+            ],
+            "prior": [
+              4,
+              360
+            ]
+          }
+        },
+        {
+          "line": 271,
+          "order": 36,
+          "marker": "BATTLE_HD_CURSOR_DIAG_DEVICE_CALL",
+          "values": {
+            "caller": 4382318,
+            "tid": "ea8",
+            "cursor_sp": 972632,
+            "eip": 4702249,
+            "esp": 972420,
+            "device": 7018132,
+            "length": 16,
+            "buffer": 972512,
+            "before": [
+              4294967295,
+              4066958852,
+              979174370,
+              8728
+            ]
+          }
+        },
+        {
+          "line": 272,
+          "order": 37,
+          "marker": "BATTLE_HD_CURSOR_DIAG_DEVICE_RETURN",
+          "values": {
+            "caller": 4382318,
+            "tid": "ea8",
+            "cursor_sp": 972632,
+            "eip": 4702252,
+            "esp": 972432,
+            "hresult": 2147942412,
+            "buffer": 972512,
+            "after": [
+              4294967295,
+              4066958852,
+              979174370,
+              8728
+            ]
+          }
+        },
+        {
+          "line": 273,
+          "order": 38,
+          "marker": "BATTLE_HD_CURSOR_DIAG_ORIGIN_RETURN",
+          "values": {
+            "caller": 4382318,
+            "tid": "ea8",
+            "cursor_sp": 972632,
+            "eip": 5150755,
+            "esp": 972536,
+            "success": 1,
+            "origin": [
+              0,
+              0
+            ],
+            "raw": [
+              4294967295,
+              4066958852
+            ],
+            "shifted": [
+              36864,
+              23040
+            ],
+            "bounds": [
+              64,
+              64,
+              80000,
+              44288
+            ]
+          }
+        },
+        {
+          "line": 275,
+          "order": 40,
+          "marker": "BATTLE_HD_CURSOR_DIAG_RETURN",
+          "values": {
+            "caller": 4382318,
+            "tid": "ea8",
+            "cursor_sp": 972632,
+            "eip": 4590362,
+            "esp": 972632,
+            "logical": [
+              576,
+              360
+            ],
+            "raw": [
+              4294967295,
+              4066958852
+            ]
+          }
+        }
+      ],
+      "failed_read_unchanged_buffer": true,
+      "hresult": "8007000C",
+      "cursor_return": [
+        576,
+        360
+      ]
+    },
+    {
+      "dialog": "results",
+      "caller": "00566533",
+      "events": [
+        {
+          "line": 288,
+          "order": 53,
+          "marker": "BATTLE_HD_CURSOR_DIAG_ENTRY",
+          "values": {
+            "caller": 5662003,
+            "tid": "ea8",
+            "cursor_sp": 972892,
+            "eip": 4590320,
+            "esp": 972892,
+            "requested": [
+              576,
+              360
+            ],
+            "prior": [
+              576,
+              360
+            ]
+          }
+        },
+        {
+          "line": 290,
+          "order": 55,
+          "marker": "BATTLE_HD_CURSOR_DIAG_DEVICE_CALL",
+          "values": {
+            "caller": 5662003,
+            "tid": "ea8",
+            "cursor_sp": 972892,
+            "eip": 4702249,
+            "esp": 972680,
+            "device": 7018132,
+            "length": 16,
+            "buffer": 972772,
+            "before": [
+              1,
+              4294967295,
+              4066958852,
+              1310326039
+            ]
+          }
+        },
+        {
+          "line": 291,
+          "order": 56,
+          "marker": "BATTLE_HD_CURSOR_DIAG_DEVICE_RETURN",
+          "values": {
+            "caller": 5662003,
+            "tid": "ea8",
+            "cursor_sp": 972892,
+            "eip": 4702252,
+            "esp": 972692,
+            "hresult": 2147942412,
+            "buffer": 972772,
+            "after": [
+              1,
+              4294967295,
+              4066958852,
+              1310326039
+            ]
+          }
+        },
+        {
+          "line": 292,
+          "order": 57,
+          "marker": "BATTLE_HD_CURSOR_DIAG_ORIGIN_RETURN",
+          "values": {
+            "caller": 5662003,
+            "tid": "ea8",
+            "cursor_sp": 972892,
+            "eip": 5150755,
+            "esp": 972796,
+            "success": 1,
+            "origin": [
+              0,
+              0
+            ],
+            "raw": [
+              1,
+              4294967295
+            ],
+            "shifted": [
+              36864,
+              23040
+            ],
+            "bounds": [
+              64,
+              64,
+              80000,
+              44288
+            ]
+          }
+        },
+        {
+          "line": 294,
+          "order": 59,
+          "marker": "BATTLE_HD_CURSOR_DIAG_RETURN",
+          "values": {
+            "caller": 5662003,
+            "tid": "ea8",
+            "cursor_sp": 972892,
+            "eip": 4590362,
+            "esp": 972892,
+            "logical": [
+              4,
+              360
+            ],
+            "raw": [
+              1,
+              4294967295
+            ]
+          }
+        }
+      ],
+      "failed_read_unchanged_buffer": true,
+      "hresult": "8007000C",
+      "cursor_return": [
+        4,
+        360
+      ]
+    }
+  ],
+  "cursor_interpretation": "In this forced hidden path, all three failed device reads leave the stack buffer unchanged and the native updater consumes those values. Banner/results X=4 follows rawX=1; the modal retains the queued target because its sampled values are outside the input bounds. This explains the hidden symptom but does not establish valid input or visible cursor behavior.",
+  "lifecycle_diagnostics": {
+    "passed": 12,
+    "total": 14,
+    "unproven": [
+      "banner_cursor_return",
+      "results_cursor_return"
+    ],
+    "acceptance_passed": false
+  },
+  "pixel_checks": {
+    "unused_slot_rect_half_open": [
+      1056,
+      136,
+      1120,
+      584
+    ],
+    "pixels": 28672,
+    "nonblack_pixels": 0
+  },
+  "screenshot_inspection": {
+    "present": "All four battlefield frame edges visible; command artwork absent from bottom-right area, so no command-composition pass.",
+    "return": "Map terrain and minimap visible; bottom-right action cells and complete map frame absent from software surface, so restored-map composition remains unproven."
+  },
+  "preserved_attempts": [
+    {
+      "classification": "Failed exact-byte debugger comparison before battle; harness timed out at90s and cleaned up; no screenshot. The same bytes were verified offline and narrower comparisons succeeded. The precise CDB integer-width cause remains inferred.",
+      "summary": {
+        "path": "C:\\ClashTests\\battle-hd-20260919\\helper-captures\\cdb-surface-dump-20260919-114730\\summary.json",
+        "sha256": "01FD14ACFA1A0334787D1D185FCE1019067032EF342F1A9CD4F3A15618DAFD6B"
+      },
+      "log": {
+        "path": "C:\\ClashTests\\battle-hd-20260919\\helper-captures\\cdb-surface-dump-20260919-114730\\cdb-surface-dump.log",
+        "sha256": "9DDD1BDF757998C828A11DDAA2A0BB47C1D746904268FA0EC3C7DFC033F8E055"
+      },
+      "generated_probe": {
+        "path": "C:\\ClashTests\\battle-hd-20260919\\helper-captures\\cdb-surface-dump-20260919-114730\\clash95_surface_dump_probe.generated.cdb",
+        "sha256": "0815AD07D20D3C23CD4FBD93564A98A174E3A4D90402AF1C087D1B2F971EDF3F"
+      }
+    },
+    {
+      "classification": "Forced lifecycle completed but interior cursor filters did not match; only entry/return observations. Preserved as incomplete cursor diagnosis.",
+      "summary": {
+        "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-115400\\summary.json",
+        "sha256": "171CCD211595486839E3C68858E22E2F479E9B7AA9A326C89C3B27090732B8F6"
+      },
+      "log": {
+        "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-115400\\cdb-surface-dump.log",
+        "sha256": "0B643623F9BACF975420B6136ECE6ED829B9E8F3BB19DE0E191F1C0C8BBAEFE3"
+      },
+      "generated_probe": {
+        "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-115400\\clash95_surface_dump_probe.generated.cdb",
+        "sha256": "770005EB2943099F5BDA0F288FC9287E53C7F33B1354692C1D79165581A713AF"
+      }
+    },
+    {
+      "classification": "Bounded raw-stack diagnosis identified the native Device_UpdateRect frame. Debugger breakpoint enable/disable scoped the raw observers; raw stacks are retained externally and are not final strict evidence.",
+      "summary": {
+        "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-115941\\summary.json",
+        "sha256": "30DBFF595B6A6F5F13EB61F4AEBFDC2AAFDC75F427325A8437B1D1877FC78AD9"
+      },
+      "log": {
+        "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-115941\\cdb-surface-dump.log",
+        "sha256": "212D3277068EF17466C6CDD478A51A21F8D91FACFACDEB3E8334D2E6BA653E0E"
+      },
+      "generated_probe": {
+        "path": "C:\\ClashTests\\battle-hd-20260919\\cursor-captures\\cdb-surface-dump-20260919-115941\\clash95_surface_dump_probe.generated.cdb",
+        "sha256": "9844D98DF7E903A663D19705DD63B3138B25ED5AD005105BDC80B5FBA3625138"
+      }
+    }
+  ],
+  "focused_checks": {
+    "path": "C:\\ClashTests\\battle-hd-20260919\\focused-checks\\summary.json",
+    "sha256": "A5F41210DFE74107178AFBC9DDC55C1A413DC8FA6391D0EC5C54E14CC581D700"
+  },
+  "aggregate_refresh": {
+    "status": "completed",
+    "manifest": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\aggregate\\archive-manifest.json",
+      "sha256": "C788133867EA6D4E968D08F3C1AE90ECCF4C08D2D8F4CE789D8D2D7FCCC4C401"
+    },
+    "source_revision": "f590f851899d9704ceb786f85075e5c97388813c",
+    "checks_total": 167,
+    "checks_failed": 10,
+    "failing_checks": [
+      "framed_offline_fixtures",
+      "castle_overview_evidence",
+      "castle_overview_promotion_decision",
+      "castle_overview_baseline_recheck",
+      "stable_stage_guard",
+      "python_runtime_safety_guard",
+      "hd_soak_long_report_guard",
+      "hd_endurance_release_checklist",
+      "no_popup_boundary_guard",
+      "docs_consistency_guard"
+    ],
+    "failure_details": {
+      "framed_offline_fixtures": [
+        "Five army suites reject CRLF renderer checkout bytes against the required LF source hash; one unrelated symlink-privilege skip also leaves coverage incomplete."
+      ],
+      "castle_overview_evidence": [
+        "owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+        "forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+      ],
+      "castle_overview_promotion_decision": [
+        "castle overview evidence matrix is not passing"
+      ],
+      "castle_overview_baseline_recheck": [
+        "latest_castle_overview_matrix: owner_records: missing owner records raw dump: captures\\current\\castle-owner-records-current.raw",
+        "latest_castle_overview_matrix: forced_hitmap: missing forced hitmap raw dump: captures\\archive\\castle-overview-hitmap-flags1f.raw"
+      ],
+      "stable_stage_guard": [
+        "castle_overview_promotion_decision: castle overview promotion decision is not passing",
+        "castle_overview_evidence_matrix: castle overview evidence matrix is not passing"
+      ],
+      "python_runtime_safety_guard": [
+        "src/launcher/gui.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/complete_hd_army_movement_trace.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/complete_hd_manual_attach.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/complete_hd_manual_attach_win32.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/framed_army_portrait_trace.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/framed_army_transition_trace.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/framed_primary_surface.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/modal_slots_primary_surface.py uses risky Python runtime/input APIs but is not gated or exempt",
+        "tools/run_framed_offline_tests.py uses risky Python runtime/input APIs but is not gated or exempt"
+      ],
+      "hd_soak_long_report_guard": [
+        "long soak proof manifest is missing: captures\\current\\hd-soak-long-proof-current.json",
+        "missing passing 2h+ representative route: map-idle",
+        "missing passing 2h+ representative route: map-pan"
+      ],
+      "hd_endurance_release_checklist": [
+        "protected_stable_stage: stable-stage guard does not prove the protected boundary",
+        "long_soak_representative_routes: 2h+ representative-route soak blocked (blocked_missing_long_proof): 2h+ representative-route soak evidence is locked or missing",
+        "stable_menu_real_input: menu-load proof remains pending manual DirectInput validation",
+        "stable_hd_map_real_input: HD map input proof remains pending manual DirectInput validation",
+        "right_bottom_action_menu: right-bottom action/menu remains validation-only or manual-proof blocked",
+        "castle_and_barracks_centered_input: castle/barracks centered input remains validation-only or manual-proof blocked",
+        "tactical_battle_entry_return: battle promotion evidence is absent or remains validation-only; callback proof alone is not promotion",
+        "no_speculative_promotion: one or more promotion boundaries are not fail-closed"
+      ],
+      "no_popup_boundary_guard": [
+        "stable_stage_guard: refresh check is not passing: stable_stage_guard",
+        "python_runtime_safety_guard: refresh check is not passing: python_runtime_safety_guard",
+        "castle_overview_baseline_recheck: refresh check is not passing: castle_overview_baseline_recheck",
+        "docs_consistency_guard: refresh check is not passing: docs_consistency_guard"
+      ],
+      "docs_consistency_guard": [
+        "generated_state: no-popup boundary is failing"
+      ]
+    },
+    "report": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\aggregate\\captures\\current\\current-evidence-refresh-current.json",
+      "sha256": "B20EF79C3351F9F3E3FF93856AEAF935990F960CAD661F346AAA74F232799805"
+    },
+    "stdout_log": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\aggregate\\stdout.log",
+      "sha256": "33E04DC0F228A41000C0D99F0706BDD1EFCCD41ADA0A4D37DBF7CFF384C934CD"
+    }
+  },
+  "limitations": [
+    "Present-body/return observations do not establish exact copy bounds, final wrapper composition or natural presentation timing.",
+    "Real arena 16x7; natural wider-arena rendering, movement/attack targeting, scrolling and hover remain unproven.",
+    "Cursor diagnostics observe failed hidden device reads; they cannot satisfy visible/manual input acceptance.",
+    "Lifecycle remains forced and 12/14; complete restored-map composition and actual map input remain unproven.",
+    "CDB command-skipping notices after HOST_READY remain in logs; no natural post-dump interval is claimed."
+  ],
+  "approval": {
+    "visible_runtime": false,
+    "os_input_injection": false,
+    "live_capture": false,
+    "approval_record": null
+  },
+  "stable_stage_should_change": false,
+  "next_visible_session_plan": "reports/battle_hd_visible_validation_plan.md",
+  "checkout_repair": {
+    "path": "C:\\ClashTests\\battle-hd-20260919\\checkout-repair\\report.json",
+    "sha256": "B7D948A348703119F0E84128BE276FAA19D7E8930429587959A31EAC4D1F023A"
+  },
+  "integration_checks": {
+    "report": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\integration-checks\\summary.json",
+      "sha256": "CFC5C8A94D2A7C3993EDECBC35AC484E54260F6D72DB49713F67EF3B6156939E"
+    },
+    "source_revision": "a6aef412d29fa759b3f638d0912444c10dff5ae1",
+    "passed": true,
+    "suites": 11,
+    "unittest_skip_records": 2
+  },
+  "local_framed_coverage": {
+    "suites": 55,
+    "successful_tests": 567,
+    "skipped_records": 1,
+    "failure_records": 26,
+    "error_records": 40,
+    "failed_suites": [
+      "test_army_probe_startup",
+      "test_complete_hd_army_selection_probe",
+      "test_complete_hd_army_selection_trace",
+      "test_complete_hd_army_movement_probe",
+      "test_complete_hd_army_movement_trace"
+    ],
+    "offline_passed": false,
+    "selected_coverage_complete": false
+  },
+  "source_delivery": {
+    "pull_request": "https://github.com/lisu188/clash-hd/pull/87",
+    "merge_commit": "c485a61b94ba098618f39e9d4fc82400c712c475",
+    "merged_at": "2026-09-19T10:23:19Z",
+    "ci_head": "f590f851899d9704ceb786f85075e5c97388813c",
+    "delivery_record": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\pr87-delivery.json",
+      "sha256": "200A74E998207318633BC99F5B5D10BFC8BAFC64CD869219BEECD1192EFB8E32"
+    },
+    "ci_results": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\pr87-checks.json",
+      "sha256": "8F664DF7863026444E1277CA61FDE17A4BA6437219CF3F74BC6467D40C58257E"
+    },
+    "ci_checks_passed": 4
+  },
+  "ci_framed_coverage": {
+    "report": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\ci-framed-windows\\framed-offline.json",
+      "sha256": "F1D2EE1A47C5E325BB76DEB6A35EF7B416CAB83B957480BD8307275ABB93BFA7"
+    },
+    "suites": 56,
+    "successful_tests": 405,
+    "skipped_records": 218,
+    "offline_passed": true,
+    "selected_coverage_complete": false,
+    "contains_incoming_modal_lifecycle_suite": true
+  }
+}

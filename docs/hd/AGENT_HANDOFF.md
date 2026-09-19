@@ -98,10 +98,14 @@ remain centered; the widened-battle experiment is excluded.
 
 The separate 1280x720 `-castlecenter-all-battlehd` validation stage now has
 an expanded 17x7-capacity battlefield and native right sidebar. Its candidate,
-forced hidden diagnostics, unresolved cursor polling, and pending visible/input
+forced hidden diagnostics, failed hidden cursor polling, and pending visible/input
 acceptance are recorded in
 [`battle_hd_1280_validation.md`](../../reports/battle_hd_1280_validation.md)
 and [`battle-hd-validation-current.md`](../../captures/current/battle-hd-validation-current.md).
+The [September 19 follow-up](../../captures/current/battle-hd-followup-20260919.md)
+observes the forced present body/return (7/7 helper checks) and classifies failed
+hidden device reads. Lifecycle remains 12/14; visible cursor/input acceptance is
+still pending. Candidate bytes are unchanged; dated prior reports are preserved.
 This lane is independent of the Complete HD recipe and does not promote either
 candidate. Its source-binding integration report preserves the original
 foundation manifest while documenting the reviewed updated producer hashes.
