@@ -1,7 +1,7 @@
 """Synthetic, offline adapter fixtures. No game, debugger, or process calls."""
 import copy
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 import struct
 import tempfile
@@ -150,8 +150,11 @@ class ArtifactTests(unittest.TestCase):
             for relative in tool.SOURCES:
                 path=root/relative;path.parent.mkdir(parents=True,exist_ok=True)
                 path.write_bytes((tool.ROOT/relative).read_bytes())
-            with patch.object(tool,'ROOT',root),patch.object(tool,'proxy_context',return_value={'path':'C:/fixture/proxy.json'}):
+            with patch.object(tool,'ROOT',root),patch.object(tool,'proxy_context',return_value={'path':'C:/fixture/proxy.json'}), \
+                 patch.object(tool,'path_value',side_effect=PureWindowsPath):
                 original=tool.contract('C:/fixture/proxy.json',paths)
+                regenerated=tool.contract(original['proxy_manifest']['path'],original['ready_files'])
+                self.assertEqual(tool.canonical(original),tool.canonical(regenerated))
                 helper='tools/hd_layout_asset_composition.py'
                 self.assertEqual(original['source_hashes'][helper],tool.sha((root/helper).read_bytes()))
                 invalid=copy.deepcopy(original);invalid['lock_start']=float(invalid['lock_start'])
@@ -161,6 +164,20 @@ class ArtifactTests(unittest.TestCase):
                     (root/helper).write_bytes((root/helper).read_bytes()+b'\n# changed decoder\n')
                     with self.assertRaisesRegex(ValueError,'primary capture contract differs'):
                         tool.compile_probe({'primary_capture':original})
+
+    def test_unsafe_windows_checkpoint_paths_fail_before_filesystem_resolution(self):
+        paths={name:'C:/fixture/primary-'+name+'.cdb' for name in tool.CHECKPOINTS}
+        invalid=('/tmp/primary.cdb','relative.cdb','C:relative.cdb',r'\\server\share\primary.cdb',
+                 'C:/fixture/../primary.cdb','C:/fixture/a;g.cdb','C:/fixture/a"b.cdb',
+                 'C:/fixture/a\nb.cdb','C:/fixture/$arg.cdb','C:/','C:/'+('a'*512))
+        for value in invalid:
+            changed=dict(paths);changed[tool.CHECKPOINTS[0]]=value
+            with self.subTest(path=value), \
+                 patch.object(tool,'path_value',side_effect=AssertionError('unsafe path reached filesystem')) as resolve, \
+                 patch.object(tool,'proxy_context',side_effect=AssertionError('unsafe path reached proxy')) as proxy:
+                with self.assertRaisesRegex(ValueError,'unsafe checkpoint command path'):
+                    tool.contract('C:/fixture/proxy.json',changed)
+                resolve.assert_not_called();proxy.assert_not_called()
 
     def test_exact_file_hash_size_missing_reparse_and_drift(self):
         with tempfile.TemporaryDirectory() as folder:
