@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import hashlib
 import json
 import re
 from datetime import datetime, timezone
@@ -71,6 +72,34 @@ OFFLINE_REPORT_IMPORTS = {
     },
 }
 DYNAMIC_CODE_NAMES = {"__import__", "eval", "exec", "compile", "getattr", "setattr"}
+
+# These exact sources were reviewed as offline parsers/byte readers. Their
+# runtime API names occur only in error patterns or documentation. This is a
+# source-review receipt, not a basename exemption or permission to execute
+# dependencies. Any byte change requires a fresh review and explicit repinning,
+# including changes whose executable aliases evade the textual risk patterns.
+REVIEWED_OFFLINE_HELPERS = {
+    "tools/complete_hd_army_movement_trace.py": {
+        "sha256": "e713338d3e4fb46c3c35578865c826b7be64147ee603b909bd58977c4c014d33",
+        "reason": "offline movement-trace parser; reads recorded artifacts and reconstructs probe bytes for comparison; CreateProcess appears only in a recorded-error pattern",
+    },
+    "tools/framed_army_portrait_trace.py": {
+        "sha256": "8538a49b5fedea4e28f9dc287cdc122522535a2895a12f1ff8862e97f8387ba1",
+        "reason": "offline portrait-trace parser; reads recorded artifacts and reconstructs probe bytes for comparison; CreateProcess appears only in a recorded-error pattern",
+    },
+    "tools/framed_army_transition_trace.py": {
+        "sha256": "b8e35da8ecc84166ccb1504445639370bd1d3b9e98bcb65931b9bfd4dbf9b873",
+        "reason": "offline transition-trace parser; reads recorded artifacts and reconstructs probe bytes for comparison; CreateProcess appears only in a recorded-error pattern",
+    },
+    "tools/framed_primary_surface.py": {
+        "sha256": "d905d43e2781849ed54d862e78725af98f188b7d47ec3f5dae3796c01ee10442",
+        "reason": "pure supplied-byte surface validator; parses immutable observations and PE bytes without file/process/COM access; Win32 appears only in documentation",
+    },
+    "tools/modal_slots_primary_surface.py": {
+        "sha256": "d905d43e2781849ed54d862e78725af98f188b7d47ec3f5dae3796c01ee10442",
+        "reason": "pure supplied-byte surface validator; parses immutable observations and PE bytes without file/process/COM access; Win32 appears only in documentation",
+    },
+}
 
 EXEMPT_HELPERS = {
     "battle_ui_evidence_matrix.py": "repo-only evidence matrix; process-launch text is a type annotation or fixture reference",
@@ -164,12 +193,28 @@ def offline_report_failures(text: str, rel: str) -> list[str]:
 
 def classify_python(path: Path, root: Path) -> dict[str, Any]:
     rel = relative_path(path, root)
-    text = path.read_text(encoding="utf-8-sig", errors="replace")
+    raw = path.read_bytes()
+    text = raw.decode("utf-8-sig", errors="replace")
     findings = risky_lines(text)
     name = path.name
     failures: list[str] = []
+    receipt: dict[str, str] = {}
 
-    if rel in OFFLINE_REPORT_HELPERS:
+    if rel in REVIEWED_OFFLINE_HELPERS:
+        reviewed = REVIEWED_OFFLINE_HELPERS[rel]
+        actual_sha = hashlib.sha256(raw).hexdigest()
+        receipt = {"source_sha256": actual_sha, "reviewed_source_sha256": reviewed["sha256"]}
+        if actual_sha != reviewed["sha256"]:
+            failures.append(
+                f"{rel} reviewed offline source SHA-256 differs: "
+                f"expected {reviewed['sha256']}, got {actual_sha}; fresh review and repinning required"
+            )
+        classification = "unclassified_risky" if failures else "reviewed_offline"
+        reason = (
+            "reviewed offline source identity was violated"
+            if failures else reviewed["reason"]
+        )
+    elif rel in OFFLINE_REPORT_HELPERS:
         failures.extend(offline_report_failures(text, rel))
         classification = "unclassified_risky" if failures else "offline_report"
         reason = (
@@ -203,6 +248,7 @@ def classify_python(path: Path, root: Path) -> dict[str, Any]:
         "risk_categories": sorted(findings),
         "risk_lines": findings,
         "failures": failures,
+        **receipt,
     }
 
 
@@ -224,13 +270,14 @@ def build_guard(args: argparse.Namespace) -> dict[str, Any]:
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "passed": not failures,
         "runtime_policy": RUNTIME_POLICY,
-        "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, explicitly exempt, or satisfy a reviewed offline-report source contract",
+        "guard_policy": "Python helpers with process launch, ctypes, Win32 window/input, SendInput, or PostMessage usage must be test fixtures, explicitly gated, explicitly exempt, satisfy a reviewed offline-report source contract, or match an exact reviewed offline path and source SHA-256; changed pinned sources fail even without a textual risk match",
         "root": str(root),
         "file_count": len(records),
         "risky_file_count": len(risky),
         "classification_counts": by_class,
         "gated_helpers": GATED_HELPERS,
         "offline_report_helpers": OFFLINE_REPORT_HELPERS,
+        "reviewed_offline_helpers": REVIEWED_OFFLINE_HELPERS,
         "exempt_helpers": EXEMPT_HELPERS,
         "records": records,
         "failures": failures,
@@ -278,6 +325,9 @@ def write_markdown(path: Path, guard: dict[str, Any]) -> None:
         )
         if record["reason"]:
             lines.append(f"  - {record['reason']}")
+        if "reviewed_source_sha256" in record:
+            lines.append(f"  - Reviewed SHA-256: `{record['reviewed_source_sha256']}`")
+            lines.append(f"  - Actual SHA-256: `{record['source_sha256']}`")
         for failure in record["failures"]:
             lines.append(f"  - {failure}")
     if guard["failures"]:
