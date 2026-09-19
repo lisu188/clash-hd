@@ -231,7 +231,8 @@ four isolated-save files and all 38 producer sources remain unchanged.
 This is controlled slots-stage mirror evidence, not primary composition,
 input, native exit or complete-HD release acceptance.
 
-The separate 1024x768 primary D capture retained three matching native,
+The [1024x768 primary D diagnosis](MODAL_SLOTS_PRIMARY_DIAGNOSIS.md)
+retained three matching native,
 physical and cached-primary sample sets and verified cleanup. Its host summary
 still fails the 120-second offline-audit deadline. The original independent
 audit also rejects the captured proxy ImageBase field. The actual primary
@@ -240,6 +241,17 @@ and map/HUD pixels remaining outside the native canvas; the physical mirror
 does not have those defects. Keep these primary failures separate from E's
 passing physical-mirror audit. Court, recruitment, peasants,
 ownership/exit restoration and destruction still require complete routes.
+
+The [1920x1080 primary F checkpoint](MODAL_SLOTS_PRIMARY_1080_CHECKPOINT.md)
+preserves another failed primary run. Its initial and final traces passed,
+including all twelve slots and the primary Lock sequence, but the triplet
+audit rejected overlapping memory-region claims. Three identical primary
+captures retain map/HUD pixels outside the centered barracks and the late
+sprite at its native origin. Verified capture stability does not resolve
+either the audit failure or these composition defects. Both owned processes
+and handles, and the hidden desktop, were cleaned up; the original executable,
+15 live saves, four isolated saves and all 41 frozen producer sources matched.
+Keep D and F unchanged while repairing the producer and rendering boundaries.
 
 The separate [modal primary composition correction](MODAL_PRIMARY_COMPOSITION.md)
 adds recipe `owned_modal_primary_v1`, stage `-completehd-modalprimary-validation`,
