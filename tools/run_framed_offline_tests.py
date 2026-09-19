@@ -98,6 +98,7 @@ SUITES = (
     "test_modal_primary_trace",
     "test_modal_primary_capture",
     "test_modal_primary_surface_audit",
+    "test_modal_primary_cursor_regressions",
     "test_modal_primary_host",
 )
 
