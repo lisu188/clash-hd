@@ -1,0 +1,91 @@
+{
+  "schema": "clash95_modal_primary_runtime_source_validation_v1",
+  "generated_at": "2026-09-19T10:14:18.002826+00:00",
+  "passed": true,
+  "scope": "updated offline consumer and exact dry-run preparation; runtime is separate",
+  "source_hashes": {
+    "scripts/cdb/run_modal_primary_capture.ps1": "86bf334846cbc51e8a27c84d51e40522a44dd004570ffc2ccd1eefb870f66e0e",
+    "tools/modal_primary_barracks_probe.py": "6dc9705e41f2740a82b77b412f292f3690481a733a66c6a4c742f1722c7ceb37",
+    "tools/modal_primary_barracks_trace.py": "9654e57c404eae12b81a586688b8e8623e9b2e24c688e08ec01cf27c711f5aac",
+    "tools/modal_primary_candidate_context.py": "48b175439e06b53f25b2bab1d21b047596d2b12dea93bc2e0b17629028fc622f",
+    "tools/modal_primary_initial_trace.py": "1cbdf6d6b468e581458ff402404b2274f55f42eee4737b9670ec9fd39deef7f1",
+    "tools/modal_primary_capture.py": "cc81240e799371e11e8e075ee7269a4eb398eba77a68bfc0a394fbe6a7408e3e",
+    "tools/modal_primary_surface_audit.py": "67f045205fffb427c98016f30f07dc99c514c608a30732d8a0f6bbd343155908",
+    "tools/test_modal_primary_host.py": "4afe8a67c3e36c65dc2de2c59b2d17b89f77361d616596f02e1b6da11331cc15",
+    "tools/test_modal_primary_barracks_probe.py": "99ce01bbf5ce723c079206cdc1529d7a75913be4f6b84eb92b2c6a751f5554b3",
+    "tools/test_modal_primary_trace.py": "8043e42809d15cf0e58e35cf16f30333bcc30356a804bfdeef3a4c7500e7ca0e",
+    "tools/test_modal_primary_capture.py": "b2e491c193a1fe154db553aebe4581ef3eb7d89ee55fddebbec7d18f9a05a3c2",
+    "tools/test_modal_primary_surface_audit.py": "93a339d3545da0568fbc1d62dac10f936d1517e40732104d8310b50ce2c1a331",
+    "tools/run_framed_offline_tests.py": "81a72e953cd86baf92e92c6fc662f0d98dcd75ad0f074afb842ca1f3a9fccda2"
+  },
+  "tests": [
+    {
+      "command": "python -B tools/test_modal_primary_host.py",
+      "tests": 14,
+      "passed": 14,
+      "skipped": 0,
+      "seconds": 10.586,
+      "followup": "PNG color_scope assertion added and affected test passed in1.650s."
+    },
+    {
+      "command": "python -B -m unittest test_modal_primary_barracks_probe.CommandTests test_modal_primary_trace.ContextTests test_modal_primary_trace.InitialTests test_modal_primary_trace.NativeSequenceTests test_modal_primary_trace.BindingBoundaryTests -v",
+      "working_directory": "tools",
+      "tests": 20,
+      "passed": 20,
+      "skipped": 0,
+      "seconds": 2.842
+    },
+    {
+      "command": "python -B tools/test_modal_primary_capture.py",
+      "tests": 13,
+      "passed": 13,
+      "skipped": 0,
+      "seconds": 1.485
+    },
+    {
+      "command": "python -B tools/test_modal_primary_surface_audit.py",
+      "tests": 16,
+      "passed": 16,
+      "skipped": 0,
+      "seconds": 4.451,
+      "includes_actual_original_assets": true
+    }
+  ],
+  "focused_tests": 63,
+  "focused_skips": 0,
+  "initial_full_reconstruction_fixture_report": {
+    "path": "captures/current/modal-primary-runtime-source-validation-20260919.json",
+    "sha256": "ac095a6534eed6628235573d4e4a2b9a1ee9ef4cfc65a8fa363496bad60913ea",
+    "scope": "60 tests before attempt A and the narrow reporting/rejection-diagnostic changes; exact earlier source hashes retained."
+  },
+  "fresh_preparation": {
+    "path": "C:\\ClashTests\\hd-completion\\modal-primary-plan-1024x768-20260919-b.json",
+    "sha256": "a0657b7900f98228ae77b2c577c293a32db2fc64bfd09a545cb6388c733977a0",
+    "bytes": 14550481,
+    "passed": true,
+    "executed": false,
+    "candidate_sha256": "bee7db23414bc7831d32af05ad03d04f800aa795c7af66db1bc1e7b4c9ad11b8",
+    "host_sha256": "86bf334846cbc51e8a27c84d51e40522a44dd004570ffc2ccd1eefb870f66e0e",
+    "source_snapshot": "C:/ClashTests/hd-completion/modal-primary-context-20260919-b/before.json"
+  },
+  "independent_review": "Producer guard unchanged except rejection-only readout; host cleanup/palette reporting and15failure-artifact references reviewed without blocking findings.",
+  "document_fixtures": "handoff freshness and documentation consistency fixtures pass",
+  "runtime_accepted": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "postrun_source_hygiene": {
+    "file": "tools/modal_primary_initial_trace.py",
+    "change": "Removed one extra LF at EOF after attempt B completed; historical source hashes and snapshots above remain unchanged.",
+    "before_sha256": "1cbdf6d6b468e581458ff402404b2274f55f42eee4737b9670ec9fd39deef7f1",
+    "after_sha256": "648917a20d4cc9a6fe6dbcd052829ed9802fa502c41b312e2593e77d5f69b8ba",
+    "validation": {
+      "command": "python -B -m unittest test_modal_primary_trace.InitialTests -v",
+      "working_directory": "tools",
+      "tests": 3,
+      "passed": 3,
+      "skipped": 0,
+      "seconds": 0.009
+    },
+    "invocation_note": "An initial invocation from repository root could not import the test module; the documented tools working directory passes."
+  }
+}

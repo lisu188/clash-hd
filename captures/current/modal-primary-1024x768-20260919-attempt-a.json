@@ -1,0 +1,234 @@
+{
+  "schema": "clash95_modal_primary_runtime_failure_v1",
+  "generated_at": "2026-09-19T09:57:03.412166+00:00",
+  "run_id": "modal-primary-1024x768-20260919-a",
+  "status": "failed",
+  "passed": false,
+  "executed": true,
+  "resolution": "1024x768",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalprimary-validation",
+  "candidate_sha256": "bee7db23414bc7831d32af05ad03d04f800aa795c7af66db1bc1e7b4c9ad11b8",
+  "host_sha256": "2e4e2ce7a13d5da26463fe23a8ba997b09331084f34f82bff0382fa6f1b61ee6",
+  "capture_source_sha256": "cc81240e799371e11e8e075ee7269a4eb398eba77a68bfc0a394fbe6a7408e3e",
+  "observed_rejection": "MPCAP_REJECT reason=cursor_rect",
+  "host_failures": [
+    "Debugger exited before accepted modal readiness.",
+    "Checkpoint PNG does not bind its captured indices and attached palette."
+  ],
+  "full_published_prefix_passed": true,
+  "final_trace_passed": false,
+  "complete_route_proven": false,
+  "primary_composition_proven": false,
+  "controlled_input_method": "native route dispatch and private debugger stdin continuation",
+  "manual_input_proof": false,
+  "visible_composition_proof": false,
+  "promotion_ready": false,
+  "cleanup": {
+    "candidates": [
+      {
+        "input_closed": null,
+        "termination_requested": false,
+        "absent": true,
+        "handle_closed": true,
+        "identity": {
+          "path": "C:\\ClashTests\\hd-completion\\modal-primary-run-1024x768-20260919-a\\modal-primary-barracks-1024x768-740d2098b4b3023e.exe",
+          "creation_filetime": 134342849467876396,
+          "process_id": 28252,
+          "handle_retained": true,
+          "candidate_sha256": "bee7db23414bc7831d32af05ad03d04f800aa795c7af66db1bc1e7b4c9ad11b8",
+          "creation_utc": "2026-09-19T09:49:06.7876396Z",
+          "parent_process_id": 29612
+        }
+      }
+    ],
+    "cdb": {
+      "input_closed": true,
+      "termination_requested": false,
+      "absent": true,
+      "handle_closed": true,
+      "identity": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\cdb.exe",
+        "creation_utc": "2026-09-19T09:49:06.5777867Z",
+        "handle_retained": true,
+        "creation_filetime": 134342849465777867,
+        "process_id": 29612
+      }
+    },
+    "desktop_closed": true
+  },
+  "independent_process_check": {
+    "debugger_pid": 29612,
+    "game_pid": 28252,
+    "host_pid": 5732,
+    "all_absent": true
+  },
+  "input_preservation": {
+    "original": {
+      "files": 1,
+      "unchanged": true
+    },
+    "live_saves": {
+      "files": 15,
+      "unchanged": true
+    },
+    "isolated_saves": {
+      "files": 4,
+      "unchanged": true
+    }
+  },
+  "partial_pixels": {
+    "checkpoint": "full-published",
+    "samples": 1,
+    "stable_pair": false,
+    "before_twelve_slot_draws": true,
+    "primary_vs_physical_mismatches": 0,
+    "physical_vs_centered_native_mismatches": 0,
+    "outer_margins_nonzero": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "attached_palette_rgb_nonzero": 0,
+    "preview_mode": "grayscale-index-empty-palette",
+    "preview": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a-preview\\full-published.png",
+      "bytes": 191382,
+      "sha256": "baa632eafc36d4df2c80bfad57b82e5517bccdde7d51ce65fbca96e6c6155298"
+    }
+  },
+  "artifacts": {
+    "summary": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a\\summary.json",
+      "bytes": 92137,
+      "sha256": "cab9bc8bcd5f028092e15b338268068cfa7cdb3253f8c7846e1b6c355e39dd01"
+    },
+    "log": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a\\cdb.log",
+      "bytes": 64756,
+      "sha256": "fec97b526d1f29ff66eb4d6b5158e1082447a784f9992d1fbd0d2c1b94fa41e6"
+    },
+    "final_trace": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a\\trace-final.json",
+      "bytes": 1842,
+      "sha256": "6802be21df9f936c52389e9110bba7a1375ab5d150f018f87acea2014f6d2cea"
+    },
+    "packet": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a\\packet.json",
+      "bytes": 9672647,
+      "sha256": "05340e2ac78640c4787b0ad73cc7322914c49cb3bf3a67e0a4facbec3d1bb687"
+    },
+    "probe": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a\\modal-primary-barracks.cdb",
+      "bytes": 4822311,
+      "sha256": "332a2f89c85af77f0b1a05d10dcdb9e77b7babab9128f103214fc868a1eed49f"
+    },
+    "first_checkpoint": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a\\checkpoints\\full-published\\checkpoint.json",
+      "bytes": 59409,
+      "sha256": "ee790cf808738b4e9bd994e28af5b737759152762e41dc6665bb10343b832c8e"
+    },
+    "first_trace": {
+      "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a\\checkpoints\\full-published\\trace.json",
+      "bytes": 558070,
+      "sha256": "b79df6f1355cab4e2c38e625e259c3095171f7a0184880e264073129afc53550"
+    },
+    "source_snapshot": {
+      "path": "C:\\ClashTests\\hd-completion\\modal-primary-context-20260919-a\\before.json",
+      "bytes": 15995,
+      "sha256": "3871430a6c430cf26cba8329391eb0b684f1b92783978f60f5302501c1e98d78"
+    }
+  },
+  "limits": [
+    "Only the first checkpoint was captured; it precedes all twelve slot draws and the placeholder call.",
+    "Twelve slot-copy events occurred after private continuation; cursor_rect rejection ended the route before placeholder-before.",
+    "Actual zero RGB palette produced a grayscale-index preview; it is not final color or wrapper proof.",
+    "The old run and source snapshot remain immutable; corrected consumers require fresh evidence."
+  ],
+  "native_artwork": {
+    "passed": false,
+    "checkpoint": "full-published",
+    "corrected_native_mode": 0,
+    "mismatches_each_native_physical_primary": 4677,
+    "native_mismatch_bounds": [
+      360,
+      427,
+      456,
+      478
+    ],
+    "primary_mismatch_bounds": [
+      552,
+      571,
+      648,
+      622
+    ],
+    "frame_band_mismatches": {
+      "top": 0,
+      "bottom": 1231,
+      "left": 0,
+      "right": 0
+    },
+    "five_control_region_mismatches": [
+      0,
+      0,
+      376,
+      3424,
+      0
+    ],
+    "control_order": [
+      "Back",
+      "Production",
+      "Cure",
+      "Training",
+      "Leave barracks"
+    ],
+    "feature_enabled": [
+      true,
+      false,
+      false,
+      false,
+      true
+    ],
+    "malformed_widget_render_reproduced_pixels": 307200,
+    "malformed_widget_render_reproduction_mismatches": 0,
+    "cause": "Both native widget CMP cutoffs are widened to physical1024. Barracks hides unavailable controls at x1000, admitted by widened initialization into the640-byte-stride canvas; exact original mode0 rendering reproduces every observed native pixel.",
+    "reports": {
+      "binding.json": {
+        "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a-artwork\\binding.json",
+        "bytes": 3799,
+        "sha256": "6a40ac4a4a2a36023e9e4be72fa9739c223bd573f0b06c8332aabc9503c4f4d8"
+      },
+      "artwork.json": {
+        "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a-artwork\\artwork.json",
+        "bytes": 30905,
+        "sha256": "218f4eef9449ca9e1afdd71507b378acda8cdc2d272cfb1681210139b534840e"
+      },
+      "wrap-hypothesis.json": {
+        "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a-artwork\\wrap-hypothesis.json",
+        "bytes": 5625,
+        "sha256": "1ee7fdb1b2c31d940729c8c35d7cab3a8f165da71c8bc3c2a88ff1aed3751837"
+      },
+      "native-mode0-reproduction.json": {
+        "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a-artwork\\native-mode0-reproduction.json",
+        "bytes": 8561,
+        "sha256": "074a226f5655f87c406b25909667cabd6e569b0189c37d675566dd79757fc416"
+      },
+      "native-mode0-reproduction.py": {
+        "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a-artwork\\native-mode0-reproduction.py",
+        "bytes": 8858,
+        "sha256": "0ecdd5902760ebb5d0049faa311019c4dd25bd834e67e9512302f612922fd84f"
+      },
+      "mode0-artwork.json": {
+        "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a-artwork\\mode0-artwork.json",
+        "bytes": 20139,
+        "sha256": "601d97e952f178a33884c2b438293b6eb558ee0d9665ca3a23d8dc5ffac0b9c8"
+      },
+      "mode0-binding.json": {
+        "path": "C:\\ClashCaptures\\hd-completion\\modal-primary-1024x768-20260919-a-artwork\\mode0-binding.json",
+        "bytes": 1387,
+        "sha256": "cacde3410d816e5daa04a26cbdbeabf4caae259df3d466a1aa0cc984a294ac6d"
+      }
+    },
+    "diagnostic_history": "The first preserve-transparent artwork oracle reported4679 mismatches; original native mode0 writes zero in transparent runs. Correcting that oracle removes two false Back differences. All previous diagnostic files remain unchanged."
+  }
+}

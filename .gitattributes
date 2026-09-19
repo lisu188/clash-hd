@@ -841,3 +841,15 @@
 /tools/modal_slots_lifecycle_probe.py -text whitespace=cr-at-eol
 /tools/test_modal_slots_lifecycle_probe.py -text whitespace=cr-at-eol
 /tools/test_framed_modal_primary_extra_profiles.py -text whitespace=cr-at-eol
+/scripts/cdb/run_modal_primary_capture.ps1 -text whitespace=cr-at-eol
+/tools/modal_primary_barracks_probe.py -text whitespace=cr-at-eol
+/tools/modal_primary_barracks_trace.py -text whitespace=cr-at-eol
+/tools/modal_primary_candidate_context.py -text whitespace=cr-at-eol
+/tools/modal_primary_initial_trace.py -text whitespace=cr-at-eol
+/tools/modal_primary_capture.py -text whitespace=cr-at-eol
+/tools/modal_primary_surface_audit.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_barracks_probe.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_trace.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_capture.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_surface_audit.py -text whitespace=cr-at-eol
+/tools/test_modal_primary_host.py -text whitespace=cr-at-eol

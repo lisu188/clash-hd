@@ -260,10 +260,44 @@ original full-blit boundary, translates the barracks placeholder and cursor
 bounds, and copies the selected panel to the centered destination. An active
 cursor uses the native remove/copy/redraw sequence with checked context.
 The [builder](../../tools/build_framed_modal_primary_candidate.py) reconstructs
-the exact predecessor and emits its own loaded-byte probe. This new stage has
-no accepted runtime captures yet; it needs a matching consumer and fresh
-native/physical/primary evidence. Keep the failed D/F receipts and their
-diagnostics separate from source/PE/x86-fixture verification.
+the exact predecessor and emits its own loaded-byte probe. The matching
+[four-checkpoint hidden consumer](MODAL_PRIMARY_CAPTURE.md) now authenticates
+the full publication, twelve slot copies, original placeholder call and first
+presentation. It captures native, physical and cached-primary pixels with the
+actual palette and cursor state, and checks draw order against original assets.
+Its first 60 focused tests passed on 2026-09-19, including exact reconstruction
+from the original executable; synthetic fixture logs remain separate from
+runtime proof. The [first actual primary-stage attempt](../../captures/current/modal-primary-1024x768-20260919-attempt-a.json)
+passed the initial `full-published` checkpoint at 1024x768 and retained one
+native/physical/primary sample. All three agree after centering and all outer
+margins are clear. After continuation, twelve slot-copy events occur, followed
+by `MPCAP_REJECT reason=cursor_rect`; later checkpoints are absent. The host and
+final trace fail, while owned cleanup and original/live-save preservation pass.
+The early attached palette is empty before native fade-in, so its PNG is an
+explicit grayscale index preview rather than captured final colors.
+
+The [second diagnostic attempt](../../captures/current/modal-primary-1024x768-20260919-attempt-b.json)
+retains that rejection with the cursor operands recorded. Its first-checkpoint
+pixels are identical to attempt A, and the corrected host now accepts all three
+grayscale PNG receipts. Recorded 32-bit coordinates, stack, thread and phase
+values match the expected guard inputs. A corroborated debugger sign-extension
+diagnosis explains the unmasked comparison of the selected DWORD with `-1`;
+the probe now compares the exact low DWORD, including the four native `-1`
+placeholder arguments. Focused regression checks pass, but no post-fix runtime
+has run. Cleanup and original/live-save preservation pass for B. Its later
+checkpoints and complete primary composition remain unproved.
+
+Independent original-artwork comparison using native mode 0 exposes 4,677 changed pixels around
+the lower controls, including 1,231 in the bottom frame band. Matching the
+primary to the native canvas does not prove native artwork correctness. The
+candidate's widened widget cutoff admits the original x=1000 disabled-control
+sentinel into a 640-wide modal canvas. Replaying those admitted widgets with
+the original sprites and native mode reproduces all 307,200 observed canvas
+pixels exactly. Correct the context-dependent bounds before accepting the
+bottom frame. Keep unavailable facilities unavailable rather than
+using `construct_all` to avoid this case. This new stage still has no accepted
+complete runtime capture. Keep the failed D/F receipts and their diagnostics
+separate from source/PE/x86-fixture verification.
 
 The [slots lifecycle protocol](MODAL_SLOTS_LIFECYCLE.md) prepares a separate
 controlled continuation through native barracks/overview cleanup, owned
