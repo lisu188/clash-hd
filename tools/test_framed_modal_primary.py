@@ -3,6 +3,8 @@
 
 Only synthetic memory is executed. Native callees are independent ABI and
 pixel-copy recorders; no game, debugger, wrapper, or runtime capture is started.
+The full-publication integration cases additionally execute the exact inherited
+4E9920 instructions; only their final native partial-copy leaf is modeled.
 The full-blit fallback retains the inherited mirror behavior, including on a
 sticky fault; rejection forbids the added physical-source primary publication.
 """
@@ -22,7 +24,6 @@ from src.patcher import framed_modal_canvas as modal
 from src.patcher import framed_modal_primary as primary
 from src.patcher import pe_extension as pe
 from src.patcher import partial_tile_clip as clip
-import build_framed_candidate as framed
 import build_framed_modal_slots_candidate as builder
 import test_framed_modal_canvas as canvas
 
@@ -140,6 +141,7 @@ INVOKE = r'''
    {"esp",Read(R+0xB0)==Read(R+0x90)-8},{"stack_canaries",Read(R+0xC4)==0x13572468&&Read(R+0xC8)==0x24681357},
    {"flags",Read(R+0xC0)&0xCD5},{"incoming_flags",Read(O+28)&0xCD5},{"hd_flags",Read(O+0x120)&0xCD5},
    {"published",published},{"hd_source",Read(O+0x100)},{"translated",translated},{"order",order},
+   {"hd_copy",new int[]{Read(O+0x1C0),Read(O+0x1C4),Read(O+0x1C8),Read(O+0x1CC),Read(O+0x1D0),Read(O+0x1D4),Read(O+0x1D8),Read(O+0x1DC)}},
    {"physical_oracle",physicalOracle},{"primary_oracle",primaryOracle},{"physical_changes",physicalChanges},{"primary_changes",primaryChanges},
    {"source_intact",sourceIntact},{"state_unchanged_except_mirror_fault",stateIntact},{"cursor_backing",backing},{"cursor_visible",Read(C+0x38)},
    {"cursor_context_intact",SameBytes(C,cursorState)&&SameBytes(descriptor,descriptorBytes)&&SameBytes(J,resourceBytes)&&SameBytes(Z,spriteBytes)&&SameBytes(A,backingHeader)},
@@ -272,9 +274,110 @@ def payload(original, owner, bundle, cases):
     return data
 
 
-@unittest.skipUnless(os.name == 'nt' and canvas.CSC.is_file() and Path('C:/Clash/clash95.exe').is_file(),
-                     'user-owned original and Windows x86 fixture compiler required')
-class PrimaryTests(unittest.TestCase):
+def with_inherited_hd_blitter(data, candidate, width, height):
+    """Map authenticated predecessor instructions, then record/copy their ABI.
+
+    The 800x600 historical cave uses PUSH imm8 for both center offsets. Every
+    other profile uses two PUSH imm32 instructions. Keep those real branch
+    lengths, source-size comparisons and native-source equality checks intact.
+    Only absolute fixture addresses and the native leaf CALL are relocated.
+    """
+    u32 = canvas.u32
+    def center_push(value):
+        return b'\x6a' + bytes([value]) if (width, height) == (800, 600) else b'\x68' + u32(value)
+    centered = center_push((height - 480) // 2) + center_push((width - 640) // 2)
+    expected = (bytes.fromhex('6089c6bddf010000bf7f02000066813e') + struct.pack('<H', width)
+        + bytes.fromhex('751266817e02') + struct.pack('<H', height)
+        + bytes.fromhex('750abd') + u32(height - 1) + b'\xbf' + u32(width - 1)
+        + bytes.fromhex('31c931db3b35e002520075') + bytes([len(centered) + 9])
+        + bytes.fromhex('66813e800275') + bytes([len(centered) + 2])
+        + centered + bytes.fromhex('eb02515155bac0d451005789f0'))
+    expected += b'\xe8' + struct.pack('<i', 0x4024E0 - primary.HD_BLIT - len(expected) - 5) + bytes.fromhex('61c3')
+    actual = modal._read(candidate, primary.HD_BLIT, len(expected))
+    if actual != expected:
+        raise AssertionError('inherited HD blit differs from its independent instruction contract')
+
+    # Observation prefix is transparent to the entire original instruction
+    # stream, including its incoming flags and all general-purpose registers.
+    prefix = clip._Assembler(HD)
+    prefix.emit('a3'); prefix.u32(OBS + 0x100)
+    prefix.emit('9c8f05'); prefix.u32(OBS + 0x120)
+    prefix.emit('9c608b0d'); prefix.u32(EVENTS)
+    prefix.emit('c7048d'); prefix.u32(EVENTS + 4); prefix.u32(2)
+    prefix.emit('ff05'); prefix.u32(EVENTS)
+    prefix.emit('619d')
+    prefix_bytes = prefix.finish()
+    wrapper = bytearray(actual)
+    map_operand = wrapper.index(b'\x3b\x35' + u32(modal.MAP)) + 2
+    primary_operand = wrapper.index(b'\xba' + u32(modal.PRIMARY)) + 1
+    struct.pack_into('<I', wrapper, map_operand, canvas.GLOBAL)
+    struct.pack_into('<I', wrapper, primary_operand, canvas.PRIMARY)
+    call = len(wrapper) - 7
+    if wrapper[call] != 0xE8 or wrapper[-2:] != b'\x61\xc3':
+        raise AssertionError('inherited HD tail CALL/POPAD/RET differs')
+    struct.pack_into('<i', wrapper, call + 1, PARTIAL - HD - len(prefix_bytes) - call - 5)
+    data['stubs'][str(HD)] = (prefix_bytes + wrapper).hex()
+
+    # Independent inclusive native partial-copy model. It receives the source
+    # header in EAX, primary in EDX, source left/top in EBX/ECX, and four stack
+    # operands: right, bottom, destination x, destination y. Read its source
+    # stride from the header; do not manufacture a full-copy success marker.
+    a = clip._Assembler(PARTIAL)
+    for reg, offset in ((0, 0), (2, 4), (3, 8), (1, 12)):
+        a.emit('89' + bytes([5 + reg * 8]).hex()); a.u32(OBS + 0x1C0 + offset)
+    a.emit('9c60')
+    for source, offset in ((40, 16), (44, 20), (48, 24), (52, 28)):
+        a.emit('8b4424' + bytes([source]).hex() + 'a3'); a.u32(OBS + 0x1C0 + offset)
+    a.emit('8b44241c0fb7288b7004')  # source header, stride, pixels
+    a.emit('8b54242c2b54241842')  # inclusive rows
+    a.emit('8b5c24282b5c241043')  # inclusive columns
+    a.emit('8b4424180fafc50344241001c6')
+    a.emit('8b44243469c0'); a.u32(width)
+    a.emit('034424308db8'); a.u32(PRIMARY_PIXELS)
+    a.emit('fc'); a.label('row'); a.emit('89d9f3a489e829d801c6')
+    a.emit('81c7'); a.u32(width); a.emit('29df4a'); a.branch('0f85', 'row')
+    a.emit('619d')
+    for reg, value in ((0, 0x1357AABB), (1, 0x2357AABB), (2, 0x3357AABB), (3, 0x4357AABB)):
+        a.emit(bytes([0xB8 + reg]).hex()); a.u32(value)
+    a.emit('68020200009dc21000')  # observable native clobbers and RET 16
+    data['stubs'][str(PARTIAL)] = a.finish().hex()
+    return data
+
+
+def owner_from_verified_slots(candidate, context, width, height):
+    """Extract actual inherited x86 after this fixture's exact slots rebuild.
+
+    The production primary emitter independently reconstructs this same slots
+    image before this helper is used. Nothing caches or mocks either rebuild.
+    Mapping its already authenticated owner section avoids three additional
+    framed reconstructions per profile solely to re-emit the same helper.
+    This fixture helper is not an admission API for caller-supplied manifests.
+    """
+    meta = context['base_candidate']['predecessor']['base_candidate']
+    code = modal._read(candidate, meta['code_va'], meta['code_bytes'])
+    if hashlib.sha256(code).hexdigest() != meta['code_sha256']:
+        raise AssertionError('inherited modal code hash differs')
+    if meta['resolution'] != f'{width}x{height}' or meta['modal_state_offsets'] != modal.STATE:
+        raise AssertionError('inherited modal geometry or state layout differs')
+    if not meta['modal_entry_vas'] or any(type(va) is not int or not meta['code_va'] <= va < meta['code_va'] + len(code)
+                                        for va in meta['modal_entry_vas'].values()):
+        raise AssertionError('inherited modal entry lies outside authenticated code')
+    owner = modal.ModalCanvasBundle(
+        meta['code_va'], code, dict(meta['modal_entry_vas']),
+        tuple(clip.Relocation(**row) for row in meta['relocations']), width, height,
+        state_va=meta['state_va'], state_size=meta['modal_state_size'],
+        state_offsets=dict(meta['modal_state_offsets']), observer_vas=dict(meta['modal_observer_vas']),
+        candidate_sha256=meta['base_candidate_sha256'], source_contract=dict(meta['modal_canvas_contract']))
+    clip.absolute_relocation_offsets(owner)
+    return owner
+
+
+NATIVE_FIXTURE_AVAILABLE = os.name == 'nt' and canvas.CSC.is_file() and Path('C:/Clash/clash95.exe').is_file()
+NATIVE_FIXTURE_REASON = 'user-owned original and Windows x86 fixture compiler required'
+
+
+class PrimaryFixture:
+    """Shared fixture machinery only; it declares no discoverable test cases."""
     @classmethod
     def setUpClass(cls):
         cls.original=Path('C:/Clash/clash95.exe').read_bytes();cls.cache={}
@@ -293,15 +396,15 @@ class PrimaryTests(unittest.TestCase):
         if (w,h) not in cls.cache:
             candidate,context,probe=builder.build_candidate(cls.original,f'{w}x{h}')
             bundle=primary.emit_modal_primary(cls.original,candidate,base_va=0x400000+pe.inspect_pe(candidate).image_size,width=w,height=h)
-            meta=context['base_candidate']['predecessor']['base_candidate']
-            predecessor=framed.build_candidate(cls.original,f'{w}x{h}',minimap_viewport=True)[0]
-            owner=modal.emit_modal_canvas(cls.original,predecessor,base_va=meta['code_va'],state_va=meta['state_va'],width=w,height=h)
+            owner=owner_from_verified_slots(candidate,context,w,h)
             cls.cache[w,h]=(candidate,context,probe,owner,bundle)
         return cls.cache[w,h]
 
-    def run_cases(self,cases,w=1024,h=768):
-        _,_,_,owner,bundle=self.bundles(w,h)
-        r=subprocess.run([str(self.exe)],input=json.dumps(payload(self.original,owner,bundle,cases)),
+    def run_cases(self,cases,w=1024,h=768,*,actual_hd=False):
+        candidate,_,_,owner,bundle=self.bundles(w,h)
+        data=payload(self.original,owner,bundle,cases)
+        if actual_hd:data=with_inherited_hd_blitter(data,candidate,w,h)
+        r=subprocess.run([str(self.exe)],input=json.dumps(data),
                          capture_output=True,text=True,creationflags=subprocess.CREATE_NO_WINDOW,timeout=45)
         self.assertEqual(r.returncode,0,r.stdout+r.stderr)
         rows=json.loads(r.stdout)
@@ -321,6 +424,27 @@ class PrimaryTests(unittest.TestCase):
                     self.assertEqual(s['returned'][:4],[0x1234AABB,0x2234AABB,0x3234AABB,0x4234AABB],s)
                     self.assertEqual(s['returned'][4:],[s['input'][i] for i in (5,6,7)],s)
         return rows
+
+    def check_inherited_hd_profile(self,w,h):
+        rows=self.run_cases([dict(cursor=cursor,steps=['try_enter','paint','primary_full'])
+                             for cursor in (0,1)],w,h,actual_hd=True)
+        for row in rows:
+            s=row[-1]
+            self.assertTrue(s['published'])
+            self.assertEqual(s['hd_copy'],[canvas.PHYSICAL,canvas.PRIMARY,0,0,w-1,h-1,0,0])
+            self.assertEqual(s['order'],[1,2,3] if s['cursor_visible'] else [2])
+            self.assertGreater(s['primary_changes'],w*h//2)
+            self.assertEqual((s['mirrors'],s['alloc_calls'],s['free_calls']),(1,2,0))
+
+
+@unittest.skipUnless(NATIVE_FIXTURE_AVAILABLE,NATIVE_FIXTURE_REASON)
+class PrimaryTests(PrimaryFixture,unittest.TestCase):
+    def test_actual_inherited_hd_blitter_copies_every_pixel_at_regression_resolutions(self):
+        # The remaining three profiles have their own bounded fixture module;
+        # do not repeat their expensive exact reconstruction in this suite.
+        for w,h in ((1024,768),(1920,1080),(802,602)):
+            with self.subTest(resolution=f'{w}x{h}'):
+                self.check_inherited_hd_profile(w,h)
 
     def test_full_publication_clears_all_margins_preserves_original_arguments_and_return_flags(self):
         for w,h in ((1024,768),(1920,1080),(802,602)):
@@ -473,6 +597,21 @@ class PrimaryTests(unittest.TestCase):
         self.assertEqual(b.source_contract['new_state_bytes'],0)
         self.assertEqual({h.va for h in b.hook_sites},{primary.FULL_BLIT,primary.PLACEHOLDER,primary.PANEL_COPY,*primary.CURSOR_RECTS})
         clip.absolute_relocation_offsets(b)
+
+    def test_fixture_owner_extraction_rejects_changed_code_entries_geometry_and_relocations(self):
+        candidate,context,_,_,_=self.bundles()
+        meta=context['base_candidate']['predecessor']['base_candidate']
+        changed=bytearray(candidate)
+        changed[pe.inspect_pe(candidate).file_offset(meta['code_va']-0x400000,1)]^=1
+        with self.assertRaisesRegex(AssertionError,'code hash'):
+            owner_from_verified_slots(bytes(changed),context,1024,768)
+        for field,value in (('modal_entry_vas',{'is_active':meta['code_va']-1}),
+                            ('resolution','800x600'),
+                            ('relocations',[dict(meta['relocations'][0],offset=meta['code_bytes'])])):
+            changed_context=json.loads(json.dumps(context))
+            changed_context['base_candidate']['predecessor']['base_candidate'][field]=value
+            with self.assertRaises((AssertionError,ValueError)):
+                owner_from_verified_slots(candidate,changed_context,1024,768)
 
     def test_reject_unknown_candidate_original_allocation_native_span_and_displaced_bytes(self):
         candidate,context,probe,_,b=self.bundles();kw=dict(base_va=b.base_va,width=1024,height=768)
