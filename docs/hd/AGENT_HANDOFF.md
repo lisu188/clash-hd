@@ -265,6 +265,14 @@ no accepted runtime captures yet; it needs a matching consumer and fresh
 native/physical/primary evidence. Keep the failed D/F receipts and their
 diagnostics separate from source/PE/x86-fixture verification.
 
+The [slots lifecycle protocol](MODAL_SLOTS_LIFECYCLE.md) prepares a separate
+controlled continuation through native barracks/overview cleanup, owned
+pixel/header destruction, and the restored-map return boundary. It retains
+the original first-present probe and rejects incomplete or unmatched events.
+Its complete evaluator and runtime host remain unfinished; preparation or a
+matching boundary sequence supplies no healthy-map, input, continuity, or
+release acceptance. The final stop precedes the synthetic root return.
+
 Ordinary army selection/movement, all portraits, map redraw/scroll/reselection,
 centered battle entry/command/outcome/return and healthy map transitions remain
 incomplete on the final candidate. Earlier controlled 1024x768 and historical
