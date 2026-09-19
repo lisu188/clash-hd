@@ -56,6 +56,7 @@ SUITES = (
     "test_pe_modal_slots_extension",
     "test_build_framed_modal_slots_candidate",
     "test_framed_modal_primary",
+    "test_framed_modal_primary_extra_profiles",
     "test_pe_modal_primary_extension",
     "test_build_framed_modal_primary_candidate",
     "test_complete_hd_main_probe",
