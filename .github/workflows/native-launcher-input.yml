@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       execute:
-        description: 'Exercise a campaign-menu click on isolated real game processes'
+        description: 'Exercise campaign selection with native input on isolated game processes'
         type: boolean
         required: true
         default: false
@@ -33,6 +33,7 @@ jobs:
           python -m pip install --only-binary=:all: -r tools/requirements-framed-offline.txt
           python -m unittest discover -s tools -p test_native_launcher_input.py -v
           python -m unittest discover -s tools -p test_runner_menu_input.py -v
+          python -m unittest discover -s tools -p test_native_route_observer.py -v
   runtime:
     if: github.repository == 'lisu188/clash-hd' && (github.event_name == 'push' || inputs.execute)
     needs: source
@@ -73,10 +74,10 @@ jobs:
           python -m pip install --only-binary=:all: -r code/tools/requirements-framed-offline.txt
           if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed' }
           & ./code/scripts/build/build_ddraw_surfdump_proxy.ps1 -OutputDll "$env:PROXY_ROOT/ddraw.dll" -LogDir "$env:PROXY_ROOT"
-      - name: Observe native input with an explicit temporary runner foreground attachment
+      - name: Select the first campaign with native input and observe actual callbacks
         shell: pwsh
         run: |
-          python code/tools/native_launcher_input.py --execute --allow-native-input --runner-focus --approval-text "$env:APPROVAL_TEXT" --profile '${{ matrix.profile }}' --resolution 1024x768 --steps campaign:224,185 --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --proxy "$env:PROXY_ROOT/ddraw.dll" --out "$env:RUN_ROOT"
+          python code/tools/native_launcher_input.py --execute --allow-native-input --runner-focus --approval-text "$env:APPROVAL_TEXT" --profile '${{ matrix.profile }}' --resolution 1024x768 --steps 'campaign:224,185;first-campaign:225,305' --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --proxy "$env:PROXY_ROOT/ddraw.dll" --out "$env:RUN_ROOT"
           exit $LASTEXITCODE
       - name: Retain exact input source identity
         if: always()
@@ -87,6 +88,7 @@ jobs:
           Copy-Item code/tools/launcher_resolution_matrix.py "$env:RUN_ROOT/source/"
           Copy-Item code/tools/menu_pulse_click.py "$env:RUN_ROOT/source/"
           Copy-Item code/tools/runner_menu_input.py "$env:RUN_ROOT/source/"
+          Copy-Item code/tools/native_route_observer.py "$env:RUN_ROOT/source/"
           Copy-Item "$env:PROXY_ROOT/ddraw_surfdump_proxy.build.json" "$env:RUN_ROOT/source/" -ErrorAction SilentlyContinue
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

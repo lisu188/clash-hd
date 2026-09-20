@@ -14,6 +14,8 @@ import time
 
 import launcher_resolution_matrix as matrix
 import run_original_game_smoke as owned
+import native_route_observer as observer
+from unittest.mock import patch
 
 
 def route(text: str, resolution: str) -> str:
@@ -49,7 +51,11 @@ def observe(args) -> dict:
             raise ValueError('Proxy source/build identity differs')
         exe,record=matrix.stage_candidate(args.profile,args.resolution,reference,out)
         report.update(built=record,proxy_build=build)
-        engine=matrix.runtime.compile_harness(out)
+        native=observer.instrument(matrix.runtime.HARNESS)
+        report['native_observer_source_sha256']=matrix.digest(Path(observer.__file__))
+        report['native_disassembly_commit']=observer.DISASSEMBLY_COMMIT
+        with patch.object(matrix.runtime,'HARNESS',native):
+            engine=matrix.runtime.compile_harness(out)
         work=out/'work';shutil.copytree(reference,work)
         for name in manifest['runtime']['empty_directories']:
             path=(work/name).resolve()
@@ -64,7 +70,7 @@ def observe(args) -> dict:
             with display as configuration, log_path.open('w',encoding='utf-8') as log:
                 report['display']=configuration
                 if not configuration['adequate']:raise ValueError('Full visible client required before native input')
-                command=[str(engine),str(target),str(capture),'90','proxy']
+                command=[str(engine),str(target),str(capture),'140','proxy']
                 env=dict(os.environ,CLASH_PROXY_PRESENT='1',_NT_SYMBOL_PATH='.',_NT_ALT_SYMBOL_PATH='')
                 started=time.monotonic()
                 engine_process=subprocess.Popen(command,cwd=work,env=env,stdout=log,stderr=subprocess.STDOUT)
@@ -97,7 +103,7 @@ def observe(args) -> dict:
                     if (out/'input.json').exists():report['input']=json.loads((out/'input.json').read_text())
                 except subprocess.TimeoutExpired as error:
                     report['errors'].append('Native input helper timeout: '+str(error))
-                engine_process.wait(timeout=max(1,started+180-time.monotonic()))
+                engine_process.wait(timeout=max(1,started+230-time.monotonic()))
         finally:
             report['display']=display.report
             if handle and kernel:kernel.CloseHandle(handle);handle=None
@@ -106,6 +112,8 @@ def observe(args) -> dict:
         log=log_path.read_text(encoding='utf-8',errors='replace')
         report['outcome']=matrix.runtime.outcome(log,engine_process.returncode)
         report['snapshots']=matrix.runtime.render(capture)
+        report['native_events']=observer.parse(log)
+        report['map_entry_observed']=[r['event'] for r in report['native_events']]==list(observer.SITES)
         report['candidate_unchanged']=matrix.digest(target)==record['candidate_sha256']==matrix.digest(exe)
         report['original_unchanged']=matrix.digest(work/'clash95.exe')==matrix.runtime.ORIGINAL_SHA256
         sources=record['launcher_build'].get('source_sha256')
@@ -149,7 +157,8 @@ def main() -> int:
     report=observe(args);print(json.dumps(report,indent=2))
     return int(bool(report['errors']) or not report.get('input_transition_observed') or not report.get('reference_assets_unchanged') or
                not report.get('outcome',{}).get('observation_complete') or
-               not report.get('candidate_unchanged') or not report.get('original_unchanged'))
+               not report.get('candidate_unchanged') or not report.get('original_unchanged') or
+               (len(args.steps.split(';'))>1 and not report.get('map_entry_observed')))
 
 
 if __name__=='__main__':raise SystemExit(main())
