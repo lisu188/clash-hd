@@ -82,10 +82,13 @@ def observe(args) -> dict:
                 if Path(identity['path']).resolve()!=target.resolve() or kernel.WaitForSingleObject(handle,0)!=258:
                     raise ValueError('Input owner no longer matches authenticated candidate')
                 report['input_owner']=dict(identity,pid=pid,exe_sha256=matrix.digest(target))
-                tool=root/'tools/menu_pulse_click.py';report['input_tool_sha256']=matrix.digest(tool)
+                tool=root/('tools/runner_menu_input.py' if args.runner_focus else 'tools/menu_pulse_click.py');report['input_tool_sha256']=matrix.digest(tool)
                 input_command=[sys.executable,str(tool),'--pid',str(pid),'--resolution',args.resolution,
                                '--steps',steps,'--map-nonblack','0','--click-repeats','1','--click-hold-ms','500',
                                '--deadline-sec','25','--final-settle-ms','2500','--json',str(out/'input.json')]
+                if args.runner_focus:
+                    input_command.extend(['--allow-foreground-attach','--approval-text',args.approval_text,
+                                          '--owner-creation',str(identity['creation_filetime'])])
                 report['input_attempted']=True
                 try:
                     sent=subprocess.run(input_command,capture_output=True,text=True,errors='replace',timeout=45)
@@ -134,6 +137,7 @@ def main() -> int:
     parser.add_argument('--proxy',type=Path);parser.add_argument('--out',type=Path)
     parser.add_argument('--execute',action='store_true');parser.add_argument('--allow-native-input',action='store_true')
     parser.add_argument('--approval-text')
+    parser.add_argument('--runner-focus',action='store_true')
     args=parser.parse_args()
     try:case=matrix.select_case(args.profile,args.resolution);points=route(args.steps,args.resolution)
     except ValueError as error:parser.error(str(error))
