@@ -27,7 +27,7 @@ def cpu_program(cases, width, height, records):
         for offset,value in ((0,x),(4,y),(12,holder),(32,callback)):
             a.emit('c705');a.u32(fixture.DESCRIPTOR+offset);a.u32(value)
         registers=[0x12345678,0x23456789,0x3456789A,0x456789AB,0,0x56789ABC,0x6789ABCD,0x789ABCDE]
-        registers[0 if name=='single' else 3]=fixture.DESCRIPTOR
+        registers[0 if name=='single' else 1]=fixture.DESCRIPTOR
         seeds.append(registers)
         for register,value in enumerate(registers):
             if register!=4:a.emit(f'{0xb8+register:02x}');a.u32(value)
