@@ -236,6 +236,19 @@ class RealExeSmokeTests(unittest.TestCase):
                 self.assertFalse(report['runs'][0]['gameplay_verified'])
                 self.assertFalse((output/'work-gog').exists())
 
+    def test_debugger_reselects_only_retained_live_owned_identity_while_stopped(self):
+        body=tool.HARNESS.split('static void select_owned_primary(Session &s) {',1)[1].split('static void pause_owned',1)[0]
+        ordered=('WaitForSingleObject(s.process,0)', 'WaitForSingleObject(s.primary_thread,0)',
+                 'GetExecutionStatus', 'status!=DEBUG_STATUS_BREAK', 'GetProcessIdBySystemId(s.owned_pid',
+                 'SetCurrentProcessId(process)', 'GetThreadIdBySystemId(s.primary_tid',
+                 'SetCurrentThreadId(thread)', 'GetCurrentProcessSystemId(&pid)', 'GetCurrentThreadSystemId(&tid)',
+                 'pid!=s.owned_pid || tid!=s.primary_tid', 'GetInstructionOffset(&ip)', 'REAL_CONTEXT')
+        self.assertEqual([body.index(part) for part in ordered],sorted(body.index(part) for part in ordered))
+        self.assertIn('else if (!crashed) select_owned_primary(s);',tool.HARNESS)
+        self.assertIn('CloseHandle(primary_thread)',tool.HARNESS)
+        for forbidden in ('WriteVirtual','SetThreadContext','SetExecutionStatus','TerminateProcess'):
+            self.assertNotIn(forbidden,body)
+
     def test_harness_uses_owned_handles_and_no_input_injection(self):
         for text in ('JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE', 'DEBUG_END_ACTIVE_TERMINATE',
                      'AssignProcessToJobObject', 'REAL_EXE_ENTRY observed=1'):
