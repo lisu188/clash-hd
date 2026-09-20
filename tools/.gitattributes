@@ -1,3 +1,5 @@
 /test_modal_widget_bounds.py text eol=lf
 /build_framed_modal_widgets_candidate.py text eol=lf
 /test_build_framed_modal_widgets_candidate.py text eol=lf
+/run_original_game_smoke.py text eol=lf
+/test_original_game_smoke.py text eol=lf
