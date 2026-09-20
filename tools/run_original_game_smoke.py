@@ -166,7 +166,11 @@ def capture_window(hwnd, pid, creation, destination, method):
         kernel.CloseHandle(handle)
 
 
-def run_game(game: Path, output: Path, seconds: int) -> dict:
+def run_game(game: Path, output: Path, seconds: int, approval_text: str) -> dict:
+    if not approval_text or not approval_text.strip() or type(seconds) is not int or not 25 <= seconds <= 240:
+        raise ValueError('Explicit approval and a bounded observation duration are required')
+    if sha(game) != ORIGINAL_SHA:
+        raise ValueError('Only the exact original executable can be launched')
     import _winapi
     kernel, user, _ = win32()
     class Basic(C.Structure):
@@ -195,14 +199,16 @@ def run_game(game: Path, output: Path, seconds: int) -> dict:
         report['primary_thread_resumed'] = True
         kernel.CloseHandle(thread); thread = None
         start = time.monotonic()
-        for checkpoint in (2, 8, 20, seconds):
+        for checkpoint in sorted({2, 8, 20, *range(40, seconds, 40), seconds}):
             delay = max(0, checkpoint - (time.monotonic() - start))
             ended = kernel.WaitForSingleObject(process, int(delay * 1000))
             exit_code = W.DWORD(); require(kernel.GetExitCodeProcess(process, C.byref(exit_code)), 'GetExitCodeProcess')
             row = dict(elapsed_seconds=round(time.monotonic() - start, 3), alive=ended == 258,
                        exit_code=exit_code.value, exit_hex=f'{exit_code.value:08x}', windows=[], captures=[])
             report['observations'].append(row)
-            if ended != 258:
+            if ended not in (0, 258):
+                raise C.WinError(C.get_last_error(), 'WaitForSingleObject failed')
+            if ended == 0:
                 report['natural_exit_code'] = exit_code.value
                 break
             row['identity'] = process_identity(kernel, process)
@@ -211,7 +217,7 @@ def run_game(game: Path, output: Path, seconds: int) -> dict:
                 for method in ('bitblt', 'printwindow'):
                     name = output / f'game-{checkpoint:02}-{window["hwnd"]:x}-{method}.png'
                     command = [sys.executable, str(Path(__file__).resolve()), '--capture', str(window['hwnd']), str(pid),
-                               str(report['identity']['creation_filetime']), str(name), method]
+                               str(report['identity']['creation_filetime']), str(name), method, '--approval-text', approval_text]
                     try:
                         result = subprocess.run(command, capture_output=True, text=True, timeout=5)
                         item = json.loads(result.stdout) if result.returncode == 0 else dict(error=result.stderr[-5000:], exit_code=result.returncode)
@@ -229,9 +235,8 @@ def run_game(game: Path, output: Path, seconds: int) -> dict:
             if kernel.WaitForSingleObject(process, 5000) != 0:
                 report['fallback_terminate'] = bool(kernel.TerminateProcess(process, 0xD1A6))
             report['owned_process_exited'] = kernel.WaitForSingleObject(process, 5000) == 0
-        for handle in (thread, process, job):
-            if handle: kernel.CloseHandle(handle)
-        report['handles_closed'] = True
+        closed = [bool(kernel.CloseHandle(handle)) for handle in (thread, process, job) if handle]
+        report['handles_closed'] = all(closed)
     return report
 
 
@@ -246,13 +251,15 @@ def main() -> int:
     parser.add_argument('--capture', nargs=5, help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.capture:
+        if not args.approval_text or not args.approval_text.strip():
+            parser.error('Capture requires the actual explicit approval text')
         hwnd, pid, creation, name, method = args.capture
         if method not in ('bitblt', 'printwindow'): parser.error('Unknown capture method')
         print(json.dumps(capture_window(int(hwnd), int(pid), int(creation), Path(name), method)))
         return 0
     if not all((args.assets, args.manifest, args.output)):
         parser.error('assets, manifest and output are required')
-    if not 25 <= args.seconds <= 60: parser.error('seconds must be between 25 and 60')
+    if not 25 <= args.seconds <= 240: parser.error('seconds must be between 25 and 240')
     source, out = args.assets.resolve(), args.output.resolve()
     repo = Path(__file__).resolve().parents[1]
     if out.exists() or any(out.is_relative_to(p) or p.is_relative_to(out) for p in (source, repo)):
@@ -280,7 +287,7 @@ def main() -> int:
             if relative.is_absolute() or '..' in relative.parts: raise ValueError('Invalid empty directory')
             work.joinpath(*relative.parts).mkdir(parents=True, exist_ok=True)
         verify_assets(work, manifest)
-        report['runtime'] = run_game(work / 'clash95.exe', evidence, args.seconds)
+        report['runtime'] = run_game(work / 'clash95.exe', evidence, args.seconds, args.approval_text)
         report['original_exe_unchanged'] = sha(work / 'clash95.exe') == ORIGINAL_SHA
         report['work_changes'] = [name for name, value in before.items() if not (work / name).is_file() or sha(work / name) != value['sha256']]
         report['new_work_files'] = [p.relative_to(work).as_posix() for p in work.rglob('*') if p.is_file() and p.relative_to(work).as_posix() not in before]
