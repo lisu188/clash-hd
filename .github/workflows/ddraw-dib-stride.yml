@@ -1,0 +1,65 @@
+name: DirectDraw DIB stride
+on:
+  pull_request:
+    paths:
+      - src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp
+      - tools/test_ddraw_dib_stride.py
+      - .github/workflows/ddraw-dib-stride.yml
+  push:
+    branches: [main]
+    paths:
+      - src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp
+      - tools/test_ddraw_dib_stride.py
+      - .github/workflows/ddraw-dib-stride.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Test the production row adapter and reproduce old nonaligned failures
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,sys,unittest
+          from pathlib import Path
+          sys.path[:0]=[str(Path.cwd()),str(Path.cwd()/'tools')]
+          import test_ddraw_dib_stride as fixture
+          from run_framed_offline_tests import source_preflight
+          preflight=source_preflight(Path.cwd())
+          result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(fixture))
+          receipt=getattr(fixture.DibStrideTests,'receipt',{})
+          report=dict(passed=preflight['passed'] and result.wasSuccessful() and not result.skipped and result.testsRun==3,
+                      source_preflight=preflight,tests_run=result.testsRun,native=receipt,
+                      source_sha256=hashlib.sha256(fixture.SOURCE.read_bytes()).hexdigest(),
+                      errors=[(str(t),v) for t,v in result.errors],failures=[(str(t),v) for t,v in result.failures],
+                      game_runtime_executed=False,live_capture_executed=False)
+          Path(os.environ['RUNNER_TEMP'],'dib-stride.json').write_text(json.dumps(report,indent=2))
+          raise SystemExit(0 if report['passed'] else 1)
+          PY
+      - name: Build the real proxy on Windows without running a game
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          & ./scripts/build/build_ddraw_surfdump_proxy.ps1 -OutputDll "$env:RUNNER_TEMP/dib-stride-build/ddraw.dll" -LogDir "$env:RUNNER_TEMP/dib-stride-build"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: dib-stride-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/dib-stride.json
+            ${{ runner.temp }}/dib-stride-build/*.json
+          if-no-files-found: error
+          retention-days: 7
