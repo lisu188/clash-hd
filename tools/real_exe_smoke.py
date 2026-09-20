@@ -5,7 +5,7 @@ import argparse
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import shutil
 import subprocess
@@ -307,6 +307,54 @@ def outcome(log: str, returncode: int) -> dict:
                 harness_errors=failures)
 
 
+
+HD_RESOLUTIONS = ('800x600', '1024x768', '1280x720', '1280x960', '1920x1080', '802x602')
+HD_RECIPES = {
+    'completehd': ('src.patcher.complete_hd_candidate', '-completehd-validation', 'complete_hd_v1'),
+    'modalwidgets': ('tools.build_framed_modal_widgets_candidate', '-completehd-modalwidgets-validation',
+                     'owned_modal_widget_bounds_v1'),
+}
+
+
+def prepare_hd_bundle(original: Path, out: Path, recipe: str, resolution: str) -> tuple[Path, dict]:
+    import importlib
+    if recipe not in HD_RECIPES or resolution not in HD_RESOLUTIONS:
+        raise ValueError('explicit supported HD recipe and resolution required')
+    root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root))
+    from src.patcher.patch_clash95_hd import DEFAULT_STAGE
+    module_name, suffix, revision = HD_RECIPES[recipe]
+    builder = importlib.import_module(module_name)
+    if builder.STAGE != DEFAULT_STAGE + suffix or builder.REVISION != revision:
+        raise ValueError('HD builder stage/revision differs from the selected recipe')
+    name = 'clash95_hd_1024.exe' if (recipe, resolution) == ('completehd', '1024x768') else f'clash95_hd_{recipe}_{resolution}.exe'
+    candidate = out / 'bundle' / name
+    metadata = builder.write_candidate(original, candidate, resolution)
+    if (metadata['stage'] != builder.STAGE or metadata['recipe_revision'] != revision
+            or metadata['resolution'] != resolution or metadata['candidate_sha256'] != sha(candidate)
+            or sha(candidate.with_suffix('.cdb')) != metadata['probe_sha256']
+            or candidate.with_suffix('.candidate.json').read_bytes() !=
+                (json.dumps(metadata, indent=2) + '\n').encode('utf-8')):
+        raise ValueError('HD bundle bytes or identity differ from the selected recipe')
+    verify_hd_sources(metadata, root)
+    return candidate, metadata
+
+
+def verify_hd_sources(metadata: dict, root: Path) -> None:
+    sources = metadata.get('source_hashes')
+    if not isinstance(sources, dict) or not sources:
+        raise ValueError('complete HD source identities required')
+    for name, digest in sources.items():
+        if (not isinstance(name, str) or '\\' in name or ':' in name
+                or PurePosixPath(name).is_absolute() or '..' in PurePosixPath(name).parts
+                or PurePosixPath(name).as_posix() != name
+                or not isinstance(digest, str) or re.fullmatch(r'[0-9a-f]{64}', digest) is None):
+            raise ValueError('noncanonical HD source path or SHA256')
+        path = root / name
+        if not path.resolve().is_relative_to(root.resolve()) or sha(path) != digest:
+            raise ValueError('HD source changed: ' + name)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--runtime', type=Path, required=True)
@@ -314,11 +362,19 @@ def main() -> int:
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--proxy', type=Path)
     parser.add_argument('--complete-hd', action='store_true')
+    parser.add_argument('--hd-recipe', choices=tuple(HD_RECIPES), default='completehd')
+    parser.add_argument('--hd-resolution', choices=HD_RESOLUTIONS, default='1024x768')
+    parser.add_argument('--hd-only', action='store_true')
     parser.add_argument('--seconds', type=int, choices=range(10,91), default=40)
     parser.add_argument('--execute', action='store_true')
     args = parser.parse_args()
+    if not args.complete_hd and (args.hd_only or args.hd_recipe != 'completehd' or args.hd_resolution != '1024x768'):
+        parser.error('HD recipe, resolution and HD-only selection require --complete-hd')
     if not args.execute:
         print(json.dumps({'executed': False, 'original_sha256': ORIGINAL_SHA256,
+                          'hd_recipe': args.hd_recipe if args.complete_hd else None,
+                          'hd_resolution': args.hd_resolution if args.complete_hd else None,
+                          'hd_only': args.hd_only,
                           'operation': 'launch verified original copies with shipped wrapper and optional diagnostic proxy'}))
         return 0
     if args.complete_hd and args.proxy is None:
@@ -338,7 +394,8 @@ def main() -> int:
         report['source_sha256'] = sha(Path(__file__))
         engine = compile_harness(out)
         report['engine_sha256'] = sha(engine)
-        cases = [('gog', None)]
+        cases = [] if args.hd_only else [('gog', None)]
+        hd_metadata = None
         if args.proxy:
             proxy = args.proxy.resolve()
             proxy_manifest = json.loads(proxy.with_name('ddraw_surfdump_proxy.build.json').read_text(encoding='utf-8-sig'))
@@ -347,13 +404,15 @@ def main() -> int:
                     or sha(root/'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp') != proxy_manifest['source_sha256'].lower()):
                 raise ValueError('diagnostic proxy build/source identity differs')
             report['proxy_build'] = proxy_manifest
-            cases.append(('proxy', None))
+            if not args.hd_only:
+                cases.append(('proxy', None))
         if args.complete_hd:
-            sys.path.insert(0, str(root))
-            from src.patcher import complete_hd_candidate as complete
-            candidate = out/'bundle/clash95_hd_1024.exe'
-            report['complete_hd_manifest'] = complete.write_candidate(runtime/'clash95.exe', candidate, '1024x768')
-            cases.append(('completehd-proxy', candidate))
+            candidate, hd_metadata = prepare_hd_bundle(runtime/'clash95.exe', out, args.hd_recipe, args.hd_resolution)
+            report['hd_recipe'] = args.hd_recipe
+            report['hd_candidate_manifest'] = hd_metadata
+            if args.hd_recipe == 'completehd':
+                report['complete_hd_manifest'] = hd_metadata
+            cases.append((args.hd_recipe + '-proxy', candidate))
         for mode, candidate in cases:
             work = out / ('work-' + mode)
             shutil.copytree(runtime, work)
@@ -365,9 +424,10 @@ def main() -> int:
             executable = work/'clash95.exe'
             expected = ORIGINAL_SHA256
             if candidate is not None:
-                executable = work/'clash95_hd_1024.exe'
+                executable = work/candidate.name
                 shutil.copy2(candidate, executable)
-                expected = report['complete_hd_manifest']['candidate_sha256']
+                expected = hd_metadata['candidate_sha256']
+                verify_hd_sources(hd_metadata, root)
             if sha(executable) != expected:
                 raise ValueError('staged executable differs from authenticated input')
             capture = out / mode
@@ -381,14 +441,23 @@ def main() -> int:
             (capture / 'debugger.log').write_text(log, encoding='utf-8')
             for name in ('ddraw_surfdump_proxy.log','ddraw_surfdump_palette.bin'):
                 if (work / name).is_file(): shutil.copy2(work / name, capture / name)
+            if candidate is not None:
+                verify_hd_sources(hd_metadata, root)
+            snapshots = render(capture)
+            dimensions_match = bool(snapshots) and all(
+                f"{item['width']}x{item['height']}" == args.hd_resolution for item in snapshots) if candidate is not None else None
             row = {'mode': mode, 'exe_sha256': before, 'wrapper_sha256': sha(work / 'ddraw.dll'),
                    'returncode': result.returncode, 'elapsed_seconds': round(time.monotonic()-started,3),
                    **outcome(log, result.returncode),
                    'exe_unchanged': before == sha(executable),
                    'original_copy_unchanged': sha(work/'clash95.exe') == ORIGINAL_SHA256,
-                   'stage': report['complete_hd_manifest']['stage'] if candidate is not None else 'original-unpatched',
+                   'stage': hd_metadata['stage'] if candidate is not None else 'original-unpatched',
+                   'recipe_revision': hd_metadata['recipe_revision'] if candidate is not None else None,
+                   'resolution': args.hd_resolution if candidate is not None else '640x480',
+                   'candidate_sources_unchanged': True if candidate is not None else None,
+                   'requested_surface_observed': dimensions_match,
                    'gameplay_verified': False,
-                   'snapshots': render(capture), 'log_sha256': sha(capture / 'debugger.log')}
+                   'snapshots': snapshots, 'log_sha256': sha(capture / 'debugger.log')}
             report['runs'].append(row)
             print(json.dumps(row, indent=2), flush=True)
         report['original_inputs_unchanged'] = verify(runtime, manifest) == report['inputs']
@@ -401,7 +470,7 @@ def main() -> int:
     return int(bool(report['errors']) or not report.get('game_entry_executed') or
                not report.get('original_inputs_unchanged') or
                any(not r['observation_complete'] or not r['owned_process_absent'] or not r['exe_unchanged']
-                   or not r['original_copy_unchanged'] for r in report['runs']))
+                   or not r['original_copy_unchanged'] or r['requested_surface_observed'] is False for r in report['runs']))
 
 
 if __name__ == '__main__':
