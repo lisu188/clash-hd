@@ -105,6 +105,13 @@ static BOOL CALLBACK window(HWND hwnd,LPARAM arg) {
     }
     if (bitmap) DeleteObject(bitmap); if (dst) DeleteDC(dst); ReleaseDC(hwnd,src); return TRUE;
 }
+static void pause_owned(Session &s) {
+    if (!DebugBreakProcess(s.process)) throw std::runtime_error("owned DebugBreakProcess failed");
+    check(s.control->WaitForEvent(0,10000),"owned native break event");
+    ULONG status=0; check(s.control->GetExecutionStatus(&status),"paused status");
+    if (status!=DEBUG_STATUS_BREAK) throw std::runtime_error("owned native break did not pause the target");
+    printf("REAL_PAUSE method=DebugBreakProcess paused=1\n"); fflush(stdout);
+}
 static void snapshot(Session &s,const std::string &out,int sample,bool proxy) {
     char prefix[80]; sprintf_s(prefix,"/primary-%02d",sample); std::string path=out+prefix;
     try {
@@ -156,7 +163,7 @@ int main(int argc,char **argv) {
         check(s.client->CreateProcess(0,command.data(),DEBUG_ONLY_THIS_PROCESS),"CreateProcess real EXE");
         check(s.control->WaitForEvent(0,15000),"initial loader event");
         ULONG pid=0; check(s.system->GetCurrentProcessSystemId(&pid),"Get process id");
-        s.process=OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION|PROCESS_TERMINATE|PROCESS_SET_QUOTA|SYNCHRONIZE,FALSE,pid);
+        s.process=OpenProcess(PROCESS_ALL_ACCESS,FALSE,pid);
         if (!s.process) throw std::runtime_error("retain process handle failed");
         s.job=CreateJobObjectA(nullptr,nullptr); JOBOBJECT_EXTENDED_LIMIT_INFORMATION limit={};
         limit.BasicLimitInformation.LimitFlags=JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
@@ -196,21 +203,20 @@ int main(int argc,char **argv) {
             } else if (FAILED(hr)) { printf("REAL_WAIT_ERROR hr=%08lx\n",hr); break; }
             if (GetTickCount64()>=next) {
                 Windows windows{pid,argv[2],sample}; EnumWindows(window,reinterpret_cast<LPARAM>(&windows));
-                check(s.control->SetInterrupt(DEBUG_INTERRUPT_ACTIVE),"pause for bounded read");
-                check(s.control->WaitForEvent(0,10000),"pause event");
+                pause_owned(s);
                 snapshot(s,argv[2],sample++,strcmp(argv[4],"proxy")==0);
-                s.command(".lastevent"); s.command("kb 12");
+                s.command(".lastevent"); s.command("~*kb 12");
                 check(s.control->SetExecutionStatus(DEBUG_STATUS_GO),"resume after read"); next=GetTickCount64()+10000;
             }
         }
         ULONG status=0; s.control->GetExecutionStatus(&status);
         if (!exited && status!=DEBUG_STATUS_NO_DEBUGGEE) {
-            if (status!=DEBUG_STATUS_BREAK) { s.control->SetInterrupt(DEBUG_INTERRUPT_ACTIVE); s.control->WaitForEvent(0,10000); }
+            if (status!=DEBUG_STATUS_BREAK) pause_owned(s);
             snapshot(s,argv[2],sample,strcmp(argv[4],"proxy")==0);
-            s.command(".lastevent"); s.command("r"); s.command("kb 20"); s.command("lm");
+            s.command(".lastevent"); s.command("r"); s.command("~*kb 20"); s.command("lm");
         }
         printf("REAL_END entered=%d exited=%d exception_stop=%d elapsed_ms=%llu\n",entered,exited,crashed,GetTickCount64()-start); fflush(stdout);
-        return entered?0:3;
+        return crashed?4:(entered?0:3);
     } catch(const std::exception &e) { fprintf(stderr,"REAL_HARNESS_ERROR %s winerror=%lu\n",e.what(),GetLastError()); return 2; }
 }
 '''
@@ -233,6 +239,9 @@ def verify(runtime: Path, manifest: dict) -> dict:
         receipts[row['path']] = {'bytes': row['size'], 'sha256': row['sha256']}
     if len(rows) != 60 or sum(row['size'] for row in rows) != 517940933:
         raise ValueError('unexpected runtime inventory')
+    actual = {path.relative_to(runtime).as_posix() for path in runtime.rglob('*') if path.is_file()}
+    if actual != set(receipts) or len(receipts) != len(rows):
+        raise ValueError('reference runtime contains missing, extra, or duplicate paths')
     if sha(runtime / 'clash95.exe') != ORIGINAL_SHA256:
         raise ValueError('unsupported original executable')
     return receipts
@@ -282,12 +291,29 @@ def render(out: Path) -> list[dict]:
     return results
 
 
+def outcome(log: str, returncode: int) -> dict:
+    lines = log.splitlines()
+    endings = [re.fullmatch(r'REAL_END entered=([01]) exited=([01]) exception_stop=([01]) elapsed_ms=([0-9]+)', line)
+               for line in lines if line.startswith('REAL_END ')]
+    complete = returncode == 0 and len(endings) == 1 and endings[0] is not None
+    if complete:
+        complete = endings[0][1] == '1' and endings[0][3] == '0'
+    failures = [line for line in lines if line.startswith(('REAL_HARNESS_ERROR ', 'REAL_WAIT_ERROR '))]
+    entry = lines.count('REAL_EXE_ENTRY observed=1') == 1
+    loaded = sum(bool(re.fullmatch(r'REAL_LOADED pid=[0-9]+ base=[0-9a-f]+ entry=[0-9a-f]+ executable_sections_match=1', line)) for line in lines) == 1
+    cleanup = sum(bool(re.fullmatch(r'REAL_CLEANUP absent=1 exit=[0-9a-f]{8}', line)) for line in lines) == 1
+    return dict(entry_observed=entry, loaded_code_matches=loaded, owned_process_absent=cleanup,
+                observation_complete=bool(complete and entry and loaded and cleanup and not failures),
+                harness_errors=failures)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--runtime', type=Path, required=True)
     parser.add_argument('--manifest', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--proxy', type=Path)
+    parser.add_argument('--complete-hd', action='store_true')
     parser.add_argument('--seconds', type=int, choices=range(10,91), default=40)
     parser.add_argument('--execute', action='store_true')
     args = parser.parse_args()
@@ -295,6 +321,8 @@ def main() -> int:
         print(json.dumps({'executed': False, 'original_sha256': ORIGINAL_SHA256,
                           'operation': 'launch verified original copies with shipped wrapper and optional diagnostic proxy'}))
         return 0
+    if args.complete_hd and args.proxy is None:
+        parser.error('complete-HD comparison requires the diagnostic proxy')
     if os.name != 'nt':
         parser.error('actual Windows runner required')
     runtime, out = args.runtime.resolve(), args.out.resolve()
@@ -310,19 +338,44 @@ def main() -> int:
         report['source_sha256'] = sha(Path(__file__))
         engine = compile_harness(out)
         report['engine_sha256'] = sha(engine)
-        for mode in ['gog'] + (['proxy'] if args.proxy else []):
+        cases = [('gog', None)]
+        if args.proxy:
+            proxy = args.proxy.resolve()
+            proxy_manifest = json.loads(proxy.with_name('ddraw_surfdump_proxy.build.json').read_text(encoding='utf-8-sig'))
+            if (proxy_manifest['generated_by'] != 'clash-hd-surface-dump-proxy'
+                    or sha(proxy) != proxy_manifest['output_sha256'].lower()
+                    or sha(root/'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp') != proxy_manifest['source_sha256'].lower()):
+                raise ValueError('diagnostic proxy build/source identity differs')
+            report['proxy_build'] = proxy_manifest
+            cases.append(('proxy', None))
+        if args.complete_hd:
+            sys.path.insert(0, str(root))
+            from src.patcher import complete_hd_candidate as complete
+            candidate = out/'bundle/clash95_hd_1024.exe'
+            report['complete_hd_manifest'] = complete.write_candidate(runtime/'clash95.exe', candidate, '1024x768')
+            cases.append(('completehd-proxy', candidate))
+        for mode, candidate in cases:
             work = out / ('work-' + mode)
             shutil.copytree(runtime, work)
             for directory in manifest['runtime']['empty_directories']:
                 (work / directory).mkdir(parents=True, exist_ok=True)
-            if mode == 'proxy':
+            using_proxy = mode != 'gog'
+            if using_proxy:
                 shutil.copy2(args.proxy, work / 'ddraw.dll')
+            executable = work/'clash95.exe'
+            expected = ORIGINAL_SHA256
+            if candidate is not None:
+                executable = work/'clash95_hd_1024.exe'
+                shutil.copy2(candidate, executable)
+                expected = report['complete_hd_manifest']['candidate_sha256']
+            if sha(executable) != expected:
+                raise ValueError('staged executable differs from authenticated input')
             capture = out / mode
             capture.mkdir()
-            before = sha(work / 'clash95.exe')
-            env = {**os.environ, '_NT_SYMBOL_PATH': '.', '_NT_ALT_SYMBOL_PATH': '', 'CLASH_PROXY_PRESENT': '1' if mode == 'proxy' else '0'}
+            before = sha(executable)
+            env = {**os.environ, '_NT_SYMBOL_PATH': '.', '_NT_ALT_SYMBOL_PATH': '', 'CLASH_PROXY_PRESENT': '1' if using_proxy else '0'}
             started = time.monotonic()
-            result = subprocess.run([str(engine), str(work / 'clash95.exe'), str(capture), str(args.seconds), mode],
+            result = subprocess.run([str(engine), str(executable), str(capture), str(args.seconds), 'proxy' if using_proxy else 'gog'],
                                     cwd=work, env=env, capture_output=True, text=True, errors='replace', timeout=args.seconds+100)
             log = result.stdout + '\n' + result.stderr
             (capture / 'debugger.log').write_text(log, encoding='utf-8')
@@ -330,10 +383,11 @@ def main() -> int:
                 if (work / name).is_file(): shutil.copy2(work / name, capture / name)
             row = {'mode': mode, 'exe_sha256': before, 'wrapper_sha256': sha(work / 'ddraw.dll'),
                    'returncode': result.returncode, 'elapsed_seconds': round(time.monotonic()-started,3),
-                   'entry_observed': 'REAL_EXE_ENTRY observed=1' in log,
-                   'loaded_code_matches': 'executable_sections_match=1' in log,
-                   'owned_process_absent': 'REAL_CLEANUP absent=1' in log,
-                   'exe_unchanged': before == sha(work / 'clash95.exe'),
+                   **outcome(log, result.returncode),
+                   'exe_unchanged': before == sha(executable),
+                   'original_copy_unchanged': sha(work/'clash95.exe') == ORIGINAL_SHA256,
+                   'stage': report['complete_hd_manifest']['stage'] if candidate is not None else 'original-unpatched',
+                   'gameplay_verified': False,
                    'snapshots': render(capture), 'log_sha256': sha(capture / 'debugger.log')}
             report['runs'].append(row)
             print(json.dumps(row, indent=2), flush=True)
@@ -346,7 +400,8 @@ def main() -> int:
         (out / 'summary.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
     return int(bool(report['errors']) or not report.get('game_entry_executed') or
                not report.get('original_inputs_unchanged') or
-               any(not r['owned_process_absent'] or not r['exe_unchanged'] for r in report['runs']))
+               any(not r['observation_complete'] or not r['owned_process_absent'] or not r['exe_unchanged']
+                   or not r['original_copy_unchanged'] for r in report['runs']))
 
 
 if __name__ == '__main__':

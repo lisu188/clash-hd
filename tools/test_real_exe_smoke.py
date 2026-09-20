@@ -57,6 +57,32 @@ class RealExeSmokeTests(unittest.TestCase):
             self.assertEqual(result[0]['nonzero_indices'], 255*1200)
             self.assertTrue((root/'primary-00.png').is_file())
 
+    def test_observation_completion_requires_end_entry_identity_and_cleanup(self):
+        log = ('REAL_LOADED pid=123 base=00400000 entry=004731b6 executable_sections_match=1\n'
+               'REAL_EXE_ENTRY observed=1\n'
+               'REAL_END entered=1 exited=0 exception_stop=0 elapsed_ms=40000\n'
+               'REAL_CLEANUP absent=1 exit=80004005\n')
+        self.assertTrue(tool.outcome(log, 0)['observation_complete'])
+        cases = [(log, 2), (log.replace('exception_stop=0', 'exception_stop=1'), 4)]
+        for line in log.splitlines():
+            cases.extend(((log.replace(line+'\n', ''), 0), (log+line+'\n', 0)))
+        cases.extend(((log+'REAL_HARNESS_ERROR pause event hr=00000001 winerror=0\n', 0),
+                      (log+'REAL_WAIT_ERROR hr=80004005\n', 0)))
+        for changed, code in cases:
+            with self.subTest(log=changed, code=code):
+                self.assertFalse(tool.outcome(changed, code)['observation_complete'])
+
+    def test_first_attempt_pause_failure_is_not_a_completed_observation(self):
+        log = ('REAL_LOADED pid=5804 base=00400000 entry=004731b6 executable_sections_match=1\n'
+               'REAL_EXE_ENTRY observed=1\nREAL_CLEANUP absent=1 exit=80004005\n'
+               'REAL_HARNESS_ERROR pause event hr=00000001 winerror=0\n')
+        for code in (0,2):
+            result = tool.outcome(log, code)
+            self.assertTrue(result['entry_observed'])
+            self.assertTrue(result['owned_process_absent'])
+            self.assertFalse(result['observation_complete'])
+            self.assertEqual(len(result['harness_errors']),1)
+
     def test_harness_uses_owned_handles_and_no_input_injection(self):
         for text in ('JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE', 'DEBUG_END_ACTIVE_TERMINATE',
                      'AssignProcessToJobObject', 'REAL_EXE_ENTRY observed=1'):
