@@ -22,8 +22,10 @@ DISASSEMBLY_COMMIT = '1a4b06280b88962e27d600b2670ee44acb316daf'
 
 
 def native_observer(source):
-    anchor = '        s.command("sxe av"); s.command("sxe eh");'
-    setup = '''        const ULONG observed_sites[] = {0x447700,0x448b90,0x40b660};
+    anchor = '                pause_owned(s);'
+    declaration = '        bool entered=false,exited=false,crashed=false;'
+    setup = '''                if (!routes_armed) {
+        const ULONG observed_sites[] = {0x447700,0x448b90,0x40b660};
         for (ULONG address : observed_sites) {
             IDebugBreakpoint *watch=nullptr;
             check(s.control->AddBreakpoint(DEBUG_BREAKPOINT_CODE,DEBUG_ANY_ID,&watch),"route breakpoint");
@@ -31,6 +33,9 @@ def native_observer(source):
             check(watch->AddFlags(DEBUG_BREAKPOINT_ENABLED|DEBUG_BREAKPOINT_ONE_SHOT),"route breakpoint flags");
             watch->Release();
         }
+                    routes_armed=true;
+                    printf("ROUTE_ARMED after_initialization=1\\n"); fflush(stdout);
+                }
 '''
     branch = '                else if (type==DEBUG_EVENT_EXCEPTION) {'
     observe = '''                else if (type==DEBUG_EVENT_BREAKPOINT && (ip==0x447700 || ip==0x448b90 || ip==0x40b660)) {
@@ -41,9 +46,9 @@ def native_observer(source):
                     fflush(stdout);
                 }
 '''
-    if source.count(anchor) != 1 or source.count(branch) != 1 or source.count('seconds>90') != 1:
+    if source.count(anchor) != 1 or source.count(declaration) != 1 or source.count(branch) != 1 or source.count('seconds>90') != 1:
         raise ValueError('Native observer insertion contract changed')
-    return source.replace(anchor, setup+anchor).replace(branch, observe+branch).replace('seconds>90', 'seconds>240')
+    return source.replace(declaration, '        bool routes_armed=false;\n'+declaration).replace(anchor, anchor+'\n'+setup).replace(branch, observe+branch).replace('seconds>90', 'seconds>240')
 
 
 def events(log):
@@ -73,7 +78,7 @@ def wait_for(process, path, predicate, seconds):
         if process.poll() is not None:
             break
         time.sleep(.2)
-    raise RuntimeError('Required observed native boundary was not reached')
+    raise RuntimeError(f'Required observed native boundary was not reached; observer_returncode={process.poll()}')
 
 
 def run(args):
@@ -147,6 +152,7 @@ def run(args):
             except subprocess.TimeoutExpired:
                 process.kill();process.wait(timeout=10);report['errors'].append('Observer exceeded timeout; owned job closes with observer')
         text=read_log(logpath)
+        report['observer_returncode']=process.returncode if process is not None else None
         report['runtime']=smoke.outcome(text,process.returncode if process is not None else -1)
         try:report['native_events']=events(text);report['samples']=smoke.render(capture)
         except Exception:report['errors'].append(traceback.format_exc())
@@ -166,7 +172,8 @@ def main():
     if args.execute and not all((args.runtime,args.manifest,args.proxy,args.out,args.approval_text)):
         p.error('Execution requires assets, proxy, isolated output and actual approval')
     result=run(args);print(json.dumps(result,indent=2))
-    return 0 if not args.execute else int(bool(result['errors']) or not result.get('map_entry_observed'))
+    return 0 if not args.execute else int(bool(result['errors']) or not result.get('map_entry_observed')
+        or not result.get('reference_unchanged') or not result.get('runtime',{}).get('observation_complete'))
 
 
 if __name__=='__main__':raise SystemExit(main())
