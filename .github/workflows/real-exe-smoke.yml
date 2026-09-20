@@ -50,11 +50,16 @@ jobs:
         run: |
           python -m pip install --only-binary=:all: -r code/tools/requirements-framed-offline.txt
           if ($LASTEXITCODE -ne 0) { throw 'Fixture dependencies failed' }
-          & ./code/scripts/build/build_ddraw_surfdump_proxy.ps1 -OutputDll "$env:RUNNER_TEMP/clash-proxy/ddraw.dll" -LogDir "$env:RUNNER_TEMP/clash-proxy"
+          & ./code/scripts/build/build_ddraw_surfdump_proxy.ps1 -OutputDll "C:/ClashTests/clash-proxy/ddraw.dll" -LogDir "C:/ClashTests/clash-proxy"
+      - name: Check opt-in and failure reporting
+        shell: pwsh
+        run: |
+          python code/tools/test_real_exe_smoke.py
+          exit $LASTEXITCODE
       - name: Launch actual original EXE and retain observed state
         shell: pwsh
         run: |
-          python code/tools/real_exe_smoke.py --execute --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --out "$env:RUNNER_TEMP/real-exe" --proxy "$env:RUNNER_TEMP/clash-proxy/ddraw.dll" --seconds 40
+          python code/tools/real_exe_smoke.py --execute --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --out "C:/ClashTests/real-exe" --proxy "C:/ClashTests/clash-proxy/ddraw.dll" --seconds 60 --complete-hd
           exit $LASTEXITCODE
       - name: Retain logs and actual process captures, never game binaries
         if: always()
@@ -62,12 +67,14 @@ jobs:
         with:
           name: real-exe-smoke
           path: |
-            ${{ runner.temp }}/real-exe/summary.json
-            ${{ runner.temp }}/real-exe/compile.log
-            ${{ runner.temp }}/real-exe/real-exe-engine.cpp
-            ${{ runner.temp }}/real-exe/gog/
-            ${{ runner.temp }}/real-exe/proxy/
-            ${{ runner.temp }}/clash-proxy/ddraw_surfdump_proxy.build.json
-            ${{ runner.temp }}/clash-proxy/ddraw-proxy-build/build.log
+            C:/ClashTests/real-exe/summary.json
+            C:/ClashTests/real-exe/compile.log
+            C:/ClashTests/real-exe/real-exe-engine.cpp
+            C:/ClashTests/real-exe/gog/
+            C:/ClashTests/real-exe/proxy/
+            C:/ClashTests/real-exe/completehd-proxy/
+            C:/ClashTests/real-exe/bundle/*.candidate.json
+            C:/ClashTests/clash-proxy/ddraw_surfdump_proxy.build.json
+            C:/ClashTests/clash-proxy/ddraw-proxy-build/build.log
           retention-days: 7
           if-no-files-found: warn
