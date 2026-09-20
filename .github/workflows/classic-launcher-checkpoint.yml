@@ -22,7 +22,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends xvfb xauth python3-tk
           python -m pip install --only-binary=:all: -r tools/requirements-framed-offline.txt
-      - name: Preserve the repository LF policy for the existing test file
+      - name: Apply the exact newline-only executor correction with reversible byte verification
         run: |
           python - <<'PY'
           import hashlib
@@ -31,12 +31,14 @@ jobs:
           blob=lambda b:hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
           if blob(raw)!='7182b312aa3c461622d3b8f4a8b19e8941ed5d93':raise SystemExit('Unexpected executor')
           old=b"p.write_bytes(s.replace('\\n','\\r\\n').encode())"
-          if raw.count(old)!=1:raise SystemExit('Unexpected newline insertion site')
-          changed=raw.replace(old,b'p.write_bytes(s.encode())')
-          if blob(changed)!='aa76ffddfa7ccb1d6b3454a7f79ee3c4ff923328':raise SystemExit('Unexpected corrected executor')
+          new=b'p.write_bytes(s.encode())'
+          if raw.count(old)!=1 or new in raw:raise SystemExit('Unexpected newline insertion site')
+          changed=raw.replace(old,new)
+          if changed.replace(new,old)!=raw:raise SystemExit('Nonreversible executor correction')
+          print('Checked single replacement executor',blob(changed))
           p.write_bytes(changed)
           PY
-      - name: Apply exact reviewed changes and test before task-branch commit
+      - name: Apply exact reviewed source changes and test before task-branch commit
         env:
           CLASH_LAUNCHER_UI_TESTS: '1'
         run: xvfb-run -a -s '-screen 0 2400x1800x24 -nolisten tcp' python tools/integrate_classic_launcher.py
