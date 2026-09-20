@@ -1,0 +1,29 @@
+name: DirectDraw DIB stride
+on:
+  push:
+    branches: [codex/dib-stride]
+permissions:
+  contents: write
+jobs:
+  integrate:
+    runs-on: windows-2022
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check exact change using native GDI before task-branch commit
+        run: python tools/apply_dib_stride_checkpoint.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: dib-stride-review
+          path: |
+            ${{ runner.temp }}/dib-stride-review/*.json
+            ${{ runner.temp }}/dib-stride-review/*.log
+            ${{ runner.temp }}/dib-stride-review/*.txt
+            ${{ runner.temp }}/dib-stride-review/*.cpp
+            ${{ runner.temp }}/dib-stride-review/build/*.json
+          if-no-files-found: error
+          retention-days: 7
