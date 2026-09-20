@@ -27,9 +27,11 @@ class CampaignProbeTests(unittest.TestCase):
         self.assertIn('0x447700,0x448b90,0x40b660',source)
         self.assertIn('DEBUG_BREAKPOINT_ONE_SHOT',source)
         self.assertEqual(source.count('ROUTE_NATIVE'),1)
+        self.assertIn('ROUTE_ARMED after_initialization=1',source)
+        self.assertLess(source.index('pause_owned(s);'),source.index('const ULONG observed_sites[]'))
         for forbidden in ('WriteVirtual','SetThreadContext','SetValues','s.command("ed','s.command("r eip'):
             self.assertNotIn(forbidden,source)
-        for old in ('seconds>90','        s.command("sxe av"); s.command("sxe eh");'):
+        for old in ('seconds>90','                pause_owned(s);'):
             with self.assertRaises(ValueError):
                 tool.native_observer(tool.smoke.HARNESS.replace(old,''))
 
