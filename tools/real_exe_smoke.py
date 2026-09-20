@@ -52,7 +52,8 @@ struct Session {
     IDebugSystemObjects *system=nullptr;
     IDebugRegisters *registers=nullptr;
     IDebugSymbols *symbols=nullptr;
-    HANDLE process=nullptr, job=nullptr;
+    HANDLE process=nullptr, job=nullptr, primary_thread=nullptr;
+    ULONG owned_pid=0, primary_tid=0;
     ~Session() {
         if (client) client->EndSession(DEBUG_END_ACTIVE_TERMINATE);
         if (job) CloseHandle(job);
@@ -63,6 +64,7 @@ struct Session {
             printf("REAL_CLEANUP absent=%d exit=%08lx\n",waited==WAIT_OBJECT_0,code); fflush(stdout);
             CloseHandle(process);
         }
+        if (primary_thread) CloseHandle(primary_thread);
         if (symbols) symbols->Release(); if (registers) registers->Release();
         if (system) system->Release(); if (memory) memory->Release();
         if (control) control->Release(); if (client) client->Release();
@@ -105,11 +107,30 @@ static BOOL CALLBACK window(HWND hwnd,LPARAM arg) {
     }
     if (bitmap) DeleteObject(bitmap); if (dst) DeleteDC(dst); ReleaseDC(hwnd,src); return TRUE;
 }
+static void select_owned_primary(Session &s) {
+    if (!s.process || !s.primary_thread || WaitForSingleObject(s.process,0)!=WAIT_TIMEOUT ||
+        WaitForSingleObject(s.primary_thread,0)!=WAIT_TIMEOUT)
+        throw std::runtime_error("owned process or primary thread is no longer alive");
+    ULONG status=0,process=0,thread=0,pid=0,tid=0;
+    check(s.control->GetExecutionStatus(&status),"owned selection status");
+    if (status!=DEBUG_STATUS_BREAK) throw std::runtime_error("owned selection requires a stopped debuggee");
+    check(s.system->GetProcessIdBySystemId(s.owned_pid,&process),"resolve owned debugger process");
+    check(s.system->SetCurrentProcessId(process),"select owned debugger process");
+    check(s.system->GetThreadIdBySystemId(s.primary_tid,&thread),"resolve retained primary thread");
+    check(s.system->SetCurrentThreadId(thread),"select retained primary thread");
+    check(s.system->GetCurrentProcessSystemId(&pid),"verify selected process");
+    check(s.system->GetCurrentThreadSystemId(&tid),"verify selected thread");
+    if (pid!=s.owned_pid || tid!=s.primary_tid) throw std::runtime_error("selected debugger identity differs");
+    ULONG64 ip=0; check(s.registers->GetInstructionOffset(&ip),"selected primary instruction offset");
+    printf("REAL_CONTEXT pid=%lu tid=%lu engine_process=%lu engine_thread=%lu ip=%08llx retained_handles_alive=1\n",pid,tid,process,thread,ip);
+    fflush(stdout);
+}
 static void pause_owned(Session &s) {
     if (!DebugBreakProcess(s.process)) throw std::runtime_error("owned DebugBreakProcess failed");
     check(s.control->WaitForEvent(0,10000),"owned native break event");
     ULONG status=0; check(s.control->GetExecutionStatus(&status),"paused status");
     if (status!=DEBUG_STATUS_BREAK) throw std::runtime_error("owned native break did not pause the target");
+    select_owned_primary(s);
     printf("REAL_PAUSE method=DebugBreakProcess paused=1\n"); fflush(stdout);
 }
 static void snapshot(Session &s,const std::string &out,int sample,bool proxy) {
@@ -163,6 +184,10 @@ int main(int argc,char **argv) {
         check(s.client->CreateProcess(0,command.data(),DEBUG_ONLY_THIS_PROCESS),"CreateProcess real EXE");
         check(s.control->WaitForEvent(0,15000),"initial loader event");
         ULONG pid=0; check(s.system->GetCurrentProcessSystemId(&pid),"Get process id");
+        s.owned_pid=pid;
+        check(s.system->GetCurrentThreadSystemId(&s.primary_tid),"retain primary system thread id");
+        s.primary_thread=OpenThread(SYNCHRONIZE|THREAD_QUERY_LIMITED_INFORMATION,FALSE,s.primary_tid);
+        if (!s.primary_thread) throw std::runtime_error("retain primary thread handle failed");
         s.process=OpenProcess(PROCESS_ALL_ACCESS,FALSE,pid);
         if (!s.process) throw std::runtime_error("retain process handle failed");
         s.job=CreateJobObjectA(nullptr,nullptr); JOBOBJECT_EXTENDED_LIMIT_INFORMATION limit={};
@@ -212,6 +237,7 @@ int main(int argc,char **argv) {
         ULONG status=0; s.control->GetExecutionStatus(&status);
         if (!exited && status!=DEBUG_STATUS_NO_DEBUGGEE) {
             if (status!=DEBUG_STATUS_BREAK) pause_owned(s);
+            else if (!crashed) select_owned_primary(s);
             snapshot(s,argv[2],sample,strcmp(argv[4],"proxy")==0);
             s.command(".lastevent"); s.command("r"); s.command("~*kb 20"); s.command("lm");
         }
