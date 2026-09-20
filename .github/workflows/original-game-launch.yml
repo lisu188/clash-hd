@@ -52,7 +52,8 @@ jobs:
         working-directory: assets
         run: git lfs pull --include='runtime/gog-32003/**' --exclude=''
       - name: Install screenshot encoder
-        run: python -m pip install --only-binary=:all: Pillow==12.3.0
+        run: |
+          python -m pip install --only-binary=:all: Pillow==12.3.0
       - name: Launch the real original entry point and retain game-window captures
         run: |
           python tools/run_original_game_smoke.py --assets ../assets/runtime/gog-32003 --manifest ../assets/sources/gog-32003/manifest.json --output "$env:RUN_ROOT" --execute --approval-text "$env:APPROVAL_TEXT"
