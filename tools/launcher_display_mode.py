@@ -8,11 +8,11 @@ import struct
 
 
 def mode_values(data):
-    if type(data) is not bytes or len(data) != 220:
+    if type(data) is not bytes or not 220 <= len(data) <= 220 + 65535:
         raise ValueError('Exact DEVMODEW byte extent required')
     size, extra = struct.unpack_from('<HH', data, 68)
-    if size != 220 or extra != 0:
-        raise ValueError('Unsupported DEVMODEW size or private driver data')
+    if size != 220 or len(data) != size + extra:
+        raise ValueError(f'Incomplete DEVMODEW: dmSize={size}, dmDriverExtra={extra}, bytes={len(data)}')
     depth, width, height, flags, frequency = struct.unpack_from('<5I', data, 168)
     orientation = struct.unpack_from('<I', data, 84)[0]
     return dict(width=width, height=height, depth=depth, frequency=frequency, flags=flags, orientation=orientation)
@@ -44,11 +44,12 @@ class NativeModes:
         self.user.ChangeDisplaySettingsExW.restype = ctypes.c_long
 
     def read(self, index):
-        buffer = ctypes.create_string_buffer(220)
-        struct.pack_into('<H', buffer, 68, 220)
+        buffer = ctypes.create_string_buffer(220 + 65535)
+        struct.pack_into('<HH', buffer, 68, 220, 65535)
         if not self.user.EnumDisplaySettingsW(None, index & 0xFFFFFFFF, buffer):
             return None
-        data = buffer.raw
+        size, extra = struct.unpack_from('<HH', buffer, 68)
+        data = buffer.raw[:size + extra]
         mode_values(data)
         return data
 
