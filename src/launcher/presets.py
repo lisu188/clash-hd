@@ -69,7 +69,7 @@ def _profile(manifest: dict[str, Any], renderer: str) -> dict[str, Any]:
         if renderer not in manifest["profiles"]:
             raise ManifestError(f"Renderer profile is unavailable in this manifest: {renderer}")
         return manifest["profiles"][renderer]
-    if renderer == "completehd":
+    if renderer in ("completehd", "modalwidgets"):
         raise ManifestError("Complete-HD requires an explicit schema-2 profile.")
     stage = str(manifest.get("stable_stage"))
     entries = manifest["resolutions"]
@@ -111,7 +111,7 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
     if manifest["schema"] == 2:
         profiles = manifest.get("profiles")
         if not isinstance(profiles, dict) or not {"classic", "framed"} <= set(profiles) <= set(RECIPE_REVISION):
-            raise ManifestError("Schema 2 requires Classic and Framed profiles and permits the completehd profile.")
+            raise ManifestError("Schema 2 requires Classic and Framed profiles and permits the source-only HD profiles.")
         if not all(isinstance(config, dict) for config in profiles.values()):
             raise ManifestError("Renderer profiles must be objects.")
         classic = profiles["classic"]
@@ -124,10 +124,10 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
                 or not config["stage"] or config.get("features") != {"minimap_viewport": renderer != "classic"}
                 or type(config.get("features", {}).get("minimap_viewport")) is not bool):
             raise ManifestError(f"Unrecognized {renderer} recipe or feature configuration.")
-        if renderer == "completehd":
+        if renderer in ("completehd", "modalwidgets"):
             # Validate the advertised frozen profile without importing source-
             # only builders in packaged launchers. Selection checks the builder.
-            if (config["stage"] != manifest["stable_stage"] + "-completehd-validation" or config.get("default") != "800x600"
+            if (config["stage"] != manifest["stable_stage"] + ("-completehd-validation" if renderer == "completehd" else "-completehd-modalwidgets-validation") or config.get("default") != "800x600"
                     or set(config.get("resolutions", {})) != {"800x600", "1024x768", "1280x720", "1280x960", "1920x1080", "802x602"}):
                 raise ManifestError("Complete-HD must use its exact experimental recipe, default and six fixture resolutions.")
         entries = config.get("resolutions")
@@ -141,7 +141,7 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
                 raise ManifestError(str(exc)) from exc
             if not isinstance(entry, dict) or entry.get("status") not in VALID_STATUSES:
                 raise ManifestError(f"Resolution {renderer}/{key} has invalid status metadata.")
-            if renderer == "completehd" and entry["status"] != "experimental":
+            if renderer in ("completehd", "modalwidgets") and entry["status"] != "experimental":
                 raise ManifestError("Complete-HD requires separate evidence-backed promotion before changing experimental status.")
             tiles, evidence = entry.get("tiles"), entry.get("evidence")
             if tiles is not None and (not isinstance(tiles, list) or len(tiles) != 2 or any(type(n) is not int or n <= 0 for n in tiles)):

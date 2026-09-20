@@ -5,6 +5,7 @@ from dataclasses import replace
 import importlib
 import json
 from pathlib import Path
+from types import SimpleNamespace
 import sys
 from typing import Any, Callable
 
@@ -21,16 +22,42 @@ WARNING = (
 )
 
 
-def _builder():
+WIDGET_PROFILE = "modalwidgets"
+WIDGET_DIRECTORY = "modalwidgets-validation"
+WIDGET_STAGE = core.patch_clash95_hd.DEFAULT_STAGE + "-completehd-modalwidgets-validation"
+WIDGET_WARNING = (
+    "Modal widgets HD is experimental at every resolution. It adds native modal composition, "
+    "centered barracks quantity text and context-dependent widget bounds above Complete HD. "
+    "Startup does not prove map controls, barracks artwork, screen transitions or save/load."
+)
+
+
+def _profile(profile: str) -> tuple[str, str, str]:
+    if profile == PROFILE:
+        return DIRECTORY, STAGE, WARNING
+    if profile == WIDGET_PROFILE:
+        return WIDGET_DIRECTORY, WIDGET_STAGE, WIDGET_WARNING
+    raise core.LauncherError("Unknown source-only HD profile.")
+
+
+def _builder(profile: str = PROFILE):
     if getattr(sys, "frozen", False):
         raise core.LauncherError("Complete HD requires the source-tree launcher.")
+    _profile(profile)
+    if profile == WIDGET_PROFILE:
+        module = importlib.import_module("tools.build_framed_modal_widgets_candidate")
+        if module.STAGE != WIDGET_STAGE or module.REVISION != "owned_modal_widget_bounds_v1":
+            raise core.LauncherError("Modal-widget builder identity differs.")
+        return SimpleNamespace(__file__=module.__file__, STAGE=module.STAGE, REVISION=module.REVISION,
+            BASE_SHA256=module.pe.ORIGINAL_SHA256, RESOLUTIONS=module.complete.RESOLUTIONS,
+            build_candidate=module.build_candidate, _write_bundle=module.complete._write_bundle)
     return importlib.import_module("src.patcher.complete_hd_candidate")
 
 
-def source_status() -> dict[str, Any]:
+def source_status(profile: str = PROFILE) -> dict[str, Any]:
     """Check the same inherited source pins without reading or running a game."""
     try:
-        adapter = _builder()
+        adapter = _builder(profile)
         pins = {}
         for name in ("build_partial_tile_candidate", "build_framed_candidate",
                      "build_framed_modal_candidate", "build_framed_army_candidate"):
@@ -44,6 +71,12 @@ def source_status() -> dict[str, Any]:
                 if path in pins and pins[path] != expected:
                     raise ValueError(f"Conflicting inherited source pin: {path}")
                 pins[path] = expected
+        if profile == WIDGET_PROFILE:
+            text_pins = importlib.import_module("tools.modal_primary_text_context").FROZEN_TEXT_SOURCES
+            for path, expected in text_pins.items():
+                if path in pins and pins[path] != expected:
+                    raise ValueError(f"Conflicting inherited text source pin: {path}")
+                pins[path] = expected
         checks = {path: {"expected_sha256": expected, "actual_sha256": core.sha256_bytes((core.REPO_ROOT / path).read_bytes())}
                   for path, expected in pins.items()}
         for row in checks.values():
@@ -55,12 +88,13 @@ def source_status() -> dict[str, Any]:
         return {"passed": False, "error": str(exc), "runtime_executed": False}
 
 
-def plan_candidate(*, stage: str | None = None, **kwargs: Any) -> core.CandidatePlan:
-    _builder()
-    if stage not in (None, STAGE):
-        raise core.LauncherError("The completehd profile cannot use another --stage.")
-    plan = core.plan_candidate(stage=STAGE, renderer=PROFILE, **kwargs)
-    directory = plan.candidates_root / DIRECTORY / plan.resolution
+def plan_candidate(*, stage: str | None = None, profile: str = PROFILE, **kwargs: Any) -> core.CandidatePlan:
+    directory_name, selected_stage, _ = _profile(profile)
+    _builder(profile)
+    if stage not in (None, selected_stage):
+        raise core.LauncherError(f"The {profile} profile cannot use another --stage.")
+    plan = core.plan_candidate(stage=selected_stage, renderer=profile, **kwargs)
+    directory = plan.candidates_root / directory_name / plan.resolution
     plan = replace(plan, candidate_dir=directory, candidate_exe=directory / f"clash95_hd_{plan.resolution}.exe",
                    wrapper_target=directory / core.WRAPPER_DLL_NAME, dxcfg_target=directory / core.DXCFG_NAME,
                    manifest_path=directory / core.MANIFEST_NAME)
@@ -75,12 +109,13 @@ def _paths(plan: core.CandidatePlan) -> tuple[Path, ...]:
 
 def _assert_plan(plan: core.CandidatePlan) -> None:
     core.assert_plan_paths(plan)
-    adapter = _builder()
-    directory = plan.candidates_root / DIRECTORY / plan.resolution
+    directory_name, selected_stage, _ = _profile(plan.renderer)
+    adapter = _builder(plan.renderer)
+    directory = plan.candidates_root / directory_name / plan.resolution
     expected = (directory / f"clash95_hd_{plan.resolution}.exe",
                 directory / f"clash95_hd_{plan.resolution}.candidate.json", directory / f"clash95_hd_{plan.resolution}.cdb",
                 directory / core.WRAPPER_DLL_NAME, directory / core.DXCFG_NAME, directory / core.MANIFEST_NAME)
-    if (plan.renderer != PROFILE or plan.stage != adapter.STAGE or plan.resolution not in adapter.RESOLUTIONS
+    if (plan.stage != selected_stage or plan.stage != adapter.STAGE or plan.resolution not in adapter.RESOLUTIONS
             or plan.candidate_dir != directory or _paths(plan) != expected):
         raise core.LauncherError("Complete-HD plan does not identify its exact isolated profile.")
     for target in (plan.candidate_dir, *_paths(plan)):
@@ -96,7 +131,8 @@ def _assert_plan(plan: core.CandidatePlan) -> None:
 
 def _original(plan: core.CandidatePlan) -> bytes:
     original = plan.base_exe.read_bytes()
-    if plan.expected_base_sha != _builder().BASE_SHA256 or core.sha256_bytes(original) != _builder().BASE_SHA256:
+    adapter = _builder(plan.renderer)
+    if plan.expected_base_sha != adapter.BASE_SHA256 or core.sha256_bytes(original) != adapter.BASE_SHA256:
         raise core.LauncherError("Unknown base executable; complete-HD has no SHA override.")
     return original
 
@@ -109,13 +145,19 @@ def _json_bytes(value: dict[str, Any]) -> bytes:
 def _expected(plan: core.CandidatePlan) -> tuple[dict[Path, bytes], dict[str, Any]]:
     _assert_plan(plan)
     original = _original(plan)
-    image, metadata, probe = _builder().build_candidate(original, plan.resolution)
+    image, metadata, probe = _builder(plan.renderer).build_candidate(original, plan.resolution)
     display = core.display_for_plan(plan)
+    if (not isinstance(metadata, dict) or metadata.get("stage") != plan.stage
+            or metadata.get("recipe_revision") != display.recipe_revision
+            or metadata.get("resolution") != plan.resolution
+            or metadata.get("candidate_sha256") != core.sha256_bytes(image)
+            or metadata.get("probe_sha256") != core.sha256_bytes(probe.encode("utf-8"))):
+        raise core.LauncherError("HD builder returned a different recipe or bundle identity.")
     paths = _paths(plan)
     artifacts = dict(zip(paths[:3], (image, _json_bytes(metadata), probe.encode("utf-8"))))
     record = {"base_sha256": core.sha256_bytes(original), "output_sha256": core.sha256_bytes(image),
               "display_plan": display.to_dict(), "build_id": display.build_identity(core.sha256_bytes(original), metadata["source_hashes"]),
-              "patch_count": len(metadata["patch_records"]), "profile": PROFILE, "minimap_viewport": True,
+              "patch_count": len(metadata["patch_records"] if "patch_records" in metadata else metadata["edits"]), "profile": plan.renderer, "minimap_viewport": True,
               "source_sha256": metadata["source_hashes"],
               "candidate_manifest": {"path": str(paths[1].resolve()), "sha256": core.sha256_bytes(artifacts[paths[1]])},
               "artifact_sha256": {path.name: core.sha256_bytes(data) for path, data in artifacts.items()},
@@ -134,11 +176,11 @@ def ensure_candidate(plan: core.CandidatePlan, progress: Callable[[str], None] |
             else:
                 missing[path] = content
         plan.candidate_dir.mkdir(parents=True, exist_ok=True)
-        _builder()._write_bundle(tuple(missing), tuple(missing.values()))
+        _builder(plan.renderer)._write_bundle(tuple(missing), tuple(missing.values()))
         if any(path.read_bytes() != content for path, content in artifacts.items()):
             raise core.LauncherError("Complete-HD artifact changed during preparation.")
         if progress:
-            progress(WARNING)
+            progress(_profile(plan.renderer)[2])
             progress(f"{'Prepared' if missing else 'Reused'} complete-HD candidate: {plan.candidate_exe}")
         return {"reused": not missing, **record}
     except (OSError, ValueError, ImportError) as exc:
@@ -174,7 +216,7 @@ def deploy_runtime_files(plan: core.CandidatePlan, candidate_result: dict[str, A
         manifest.update({key: value for key, value in candidate_result.items() if key != "reused"})
         manifest["artifact_sha256"] = {**candidate_result["artifact_sha256"],
                                        **{path.name: core.sha256_bytes(path.read_bytes()) for path in _paths(plan)[3:5]}}
-        manifest["warning"] = WARNING
+        manifest["warning"] = _profile(plan.renderer)[2]
         plan.manifest_path.write_bytes(_json_bytes(manifest))
         return result
     except (OSError, ValueError) as exc:
@@ -186,7 +228,7 @@ def verify_launch(plan: core.CandidatePlan) -> None:
         _assert_plan(plan)
         manifest = core.read_candidate_manifest(plan)
         if (not isinstance(manifest, dict) or manifest.get("schema") != core.MANIFEST_SCHEMA
-                or manifest.get("stage") != STAGE or manifest.get("resolution") != plan.resolution
+                or manifest.get("stage") != plan.stage or manifest.get("resolution") != plan.resolution
                 or manifest.get("scaling_mode") != plan.scaling_mode):
             raise core.LauncherError("Complete-HD launch requires a matching deployed manifest.")
         _verify_artifacts(plan, manifest, deployed=True)

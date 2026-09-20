@@ -10,7 +10,7 @@ from typing import Any, Mapping
 
 PLAN_SCHEMA = 1
 RECIPE_REVISION = {"classic": "classic-frozen-800-v1", "framed": "four-border-partial-initial-v1",
-                   "completehd": "complete_hd_v1"}
+                   "completehd": "complete_hd_v1", "modalwidgets": "owned_modal_widget_bounds_v1"}
 DEFAULT_BOUNDS = ((800, 600), (3840, 2160))
 SHA256_RE = re.compile(r"[0-9a-f]{64}")
 RESOLUTION_RE = re.compile(r"[1-9][0-9]{2,4}x[1-9][0-9]{2,4}")
@@ -121,24 +121,25 @@ class DisplayPlan:
 def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x600", stage: str | None = None,
                          scaling_mode: str = "integer", minimap_viewport: bool | None = None,
                          bounds: tuple[tuple[int, int], tuple[int, int]] = DEFAULT_BOUNDS) -> DisplayPlan:
-    _require(type(renderer) is str and renderer in RECIPE_REVISION, "unknown_profile", "Renderer must be classic, framed or completehd.")
+    _require(type(renderer) is str and renderer in RECIPE_REVISION, "unknown_profile", "Renderer must be classic, framed, completehd or modalwidgets.")
     width, height = parse_dimensions(resolution, bounds)
     _require(scaling_mode == "integer", "unsupported_presentation", "Only the verified integer wrapper scaling mode is supported.")
     _require(minimap_viewport is None or type(minimap_viewport) is bool,
              "invalid_feature", "minimap_viewport must be an explicit boolean.")
     minimap = renderer != "classic" if minimap_viewport is None else minimap_viewport
     _require(renderer != "classic" or not minimap, "invalid_feature", "Minimap viewport correction requires a framed renderer.")
-    _require(renderer != "completehd" or minimap, "invalid_feature", "The complete-HD recipe requires minimap correction.")
+    _require(renderer not in ("completehd", "modalwidgets") or minimap, "invalid_feature", "The complete-HD recipe requires minimap correction.")
     try:
         patcher = importlib.import_module("patch_clash95_hd")
         selected_stage = patcher.DEFAULT_STAGE if stage is None else stage
         profile = patcher.parse_resolution(resolution)
-        if renderer in ("framed", "completehd"):
+        if renderer in ("framed", "completehd", "modalwidgets"):
             required_stage = patcher.DEFAULT_STAGE + "-combinedui-partialtiles-initialpaint-framed-validation"
-            if renderer == "completehd":
-                complete = importlib.import_module("src.patcher.complete_hd_candidate")
+            if renderer in ("completehd", "modalwidgets"):
+                complete = importlib.import_module("src.patcher.complete_hd_candidate" if renderer == "completehd"
+                                                  else "tools.build_framed_modal_widgets_candidate")
                 required_stage = complete.STAGE
-                _require(resolution in complete.RESOLUTIONS, "unsupported_resolution", "Complete-HD currently supports only its six fixture resolutions.")
+                _require(resolution in (complete.RESOLUTIONS if renderer == "completehd" else complete.complete.RESOLUTIONS), "unsupported_resolution", "Complete-HD currently supports only its six fixture resolutions.")
                 _require(complete.REVISION == RECIPE_REVISION[renderer], "unsupported_recipe", "Complete-HD recipe revision differs from display planning.")
             _require(stage in (None, required_stage), "unsupported_stage", "A framed renderer cannot use another recipe's stage.")
             selected_stage = required_stage
