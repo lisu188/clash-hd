@@ -49,7 +49,7 @@ jobs:
               for name in files:
                   p=Path(name)
                   if p.is_file() and (p.suffix in ('.py','.cdb','.ps1','.md','.json','.cpp','.h','.yml','.ini') or p.name in ('.gitattributes','.gitignore')):
-                      raw=p.read_bytes();raw.decode('utf-8-sig');z.writestr(name,raw);hashes[name]=hashlib.sha256(raw).hexdigest()
+                      raw=p.read_bytes();z.writestr(name,raw);hashes[name]=hashlib.sha256(raw).hexdigest()
           (root/'source-hashes.json').write_text(json.dumps(dict(commit=subprocess.check_output(['git','rev-parse','HEAD']).decode().strip(),files=hashes),indent=2))
           PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
