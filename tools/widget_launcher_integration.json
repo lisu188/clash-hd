@@ -1,0 +1,10 @@
+{
+  "src/display_plan.py": {"before_blob_sha":"3e3477c4ca7497b8766b8e881536a6142ca4c101","after_sha256":"3e5f0e1d273662a9723fb5b72a22de11453a30b9db3d22c17c2ffaaf89997ecb"},
+  "src/launcher/completehd.py": {"before_blob_sha":"3839cd18d797e895468d97f524b5aadfe7f2186f","after_sha256":"bd84e7d87d0cdecd9a9499d4ba9dc887dcef17ba50f0047b087344e3a23b6e55"},
+  "src/launcher/gui.py": {"before_blob_sha":"3ff7d46d160a47a9bdf602113cf099c0a5ab1eb4","after_sha256":"43debd8c4f4916cdb2c01996f60711979f2fc5b2677a76b6a127c9b81f89211e"},
+  "src/launcher/presets.py": {"before_blob_sha":"54373206bc55fccc4bba1008baf01e5dfee6665f","after_sha256":"cf1aaf810d8a0620b743e62d0d4591091479bf4a77ce47a5049ff9884dda383a"},
+  "src/launcher/resolutions.json": {"before_blob_sha":"d0db72f7b89227b121ac8d3add52ec44b69f1fd5","after_sha256":"e6df18cb47b3c8d858a8c8f1b60c1a7ed35595d65d3288ab466d88ccf56fb673"},
+  "src/launcher/run.py": {"before_blob_sha":"308d60b97fbaf156da3e2fc62d1a062bbc508a9c","after_sha256":"50ff3735c1a14055ef96ce49287ce76e534fdc05084bbe6219efc68a59fdcc12"},
+  "src/launcher/modalwidgets.py": {"before_blob_sha":null,"after_sha256":"e4d05ee12a0a718272ea760495723f21a549fbbd6abe2d2e0f4a37a25f6ed0c6"},
+  "tools/test_launcher_modalwidgets.py": {"before_blob_sha":null,"after_sha256":"9071fbbba260c585601ad44443dd5ae4a48acff5fdb6e82d7ccf89940c770647"}
+}
