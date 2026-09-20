@@ -55,6 +55,17 @@ class DisplayTests(unittest.TestCase):
                 self.assertFalse(report['adequate']);self.assertFalse(report['changed'])
             self.assertTrue(report['restored'])
 
+    def test_driver_private_bytes_are_retained_and_incomplete_buffers_rejected(self):
+        raw=bytearray(data(1920,1080));struct.pack_into('<H',raw,70,4);raw.extend(b'abcd')
+        self.assertEqual(tool.mode_values(bytes(raw))['width'],1920)
+        for bad in (raw[:-1],raw+b'x'):
+            with self.assertRaises(ValueError):tool.mode_values(bytes(bad))
+        api=FakeModes([bytes(raw)])
+        with tool.temporary_display(1920,1080,api=api) as report:
+            self.assertEqual(api.current,bytes(raw))
+        self.assertTrue(report['restored'])
+        self.assertEqual(api.calls[0][0][-4:],b'abcd')
+
     def test_original_restored_even_when_game_observation_raises(self):
         api=FakeModes([data(1920,1080)])
         with self.assertRaisesRegex(RuntimeError,'game'):
