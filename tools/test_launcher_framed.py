@@ -17,6 +17,7 @@ import bootstrap
 bootstrap.ensure_repo_paths()
 import core
 import framed
+import classic
 import run
 
 REAL_BUILD = framed._build
@@ -286,7 +287,7 @@ class EntryPointTests(unittest.TestCase):
         button.configure.assert_called_with(text="800x600  [Experimental]")
         app.profile_var = SimpleNamespace(get=lambda: "classic")
         app.on_profile_change()
-        self.assertIs(app._backend(), core)
+        self.assertIs(app._backend(), classic)
         button.configure.assert_called_with(text="800x600  [Stable]")
 
     def test_framed_gui_does_not_overwrite_classic_settings(self):

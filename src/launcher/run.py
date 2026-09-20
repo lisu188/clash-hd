@@ -23,6 +23,7 @@ bootstrap.ensure_repo_paths()
 
 import core  # noqa: E402
 import framed
+import classic
 import completehd
 import modalwidgets
 import ini as ini_mod  # noqa: E402
@@ -69,7 +70,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def build_plan(args: argparse.Namespace) -> core.CandidatePlan:
     saved = settings_mod.load_settings()
-    backend = {"classic": core, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[args.profile]
+    backend = {"classic": classic, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[args.profile]
     return backend.plan_candidate(
         stage=args.stage,
         resolution=args.resolution or ("800x600" if args.profile in ("completehd", "modalwidgets") else saved["last_resolution"]),
@@ -124,7 +125,7 @@ def inspect_display(args: argparse.Namespace) -> int:
 
 
 def _main(args: argparse.Namespace) -> int:
-    backend = {"classic": core, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[args.profile]
+    backend = {"classic": classic, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[args.profile]
 
     if args.describe_plan or args.list_resolutions:
         return inspect_display(args)
