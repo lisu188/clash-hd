@@ -5,3 +5,4 @@
 /test_original_game_smoke.py text eol=lf
 /real_exe_smoke.py text eol=lf
 /test_real_exe_smoke.py text eol=lf
+/test_classic_menu_candidate.py text eol=lf
