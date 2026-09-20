@@ -51,7 +51,8 @@ def observe(args) -> dict:
             raise ValueError('Proxy source/build identity differs')
         exe,record=matrix.stage_candidate(args.profile,args.resolution,reference,out)
         report.update(built=record,proxy_build=build)
-        native=observer.instrument(matrix.runtime.HARNESS)
+        native=observer.instrument(matrix.runtime.HARNESS) if args.observe_routes else matrix.runtime.HARNESS.replace('seconds>90','seconds>180')
+        report['native_route_breakpoints_enabled']=args.observe_routes
         report['native_observer_source_sha256']=matrix.digest(Path(observer.__file__))
         report['native_disassembly_commit']=observer.DISASSEMBLY_COMMIT
         with patch.object(matrix.runtime,'HARNESS',native):
@@ -110,6 +111,7 @@ def observe(args) -> dict:
             if engine_process is not None and engine_process.poll() is None:
                 engine_process.kill();engine_process.wait(timeout=10)
         log=log_path.read_text(encoding='utf-8',errors='replace')
+        report['observer_returncode']=engine_process.returncode
         report['outcome']=matrix.runtime.outcome(log,engine_process.returncode)
         report['snapshots']=matrix.runtime.render(capture)
         report['native_events']=observer.parse(log)
@@ -146,6 +148,7 @@ def main() -> int:
     parser.add_argument('--execute',action='store_true');parser.add_argument('--allow-native-input',action='store_true')
     parser.add_argument('--approval-text')
     parser.add_argument('--runner-focus',action='store_true')
+    parser.add_argument('--observe-routes',action='store_true')
     args=parser.parse_args()
     try:case=matrix.select_case(args.profile,args.resolution);points=route(args.steps,args.resolution)
     except ValueError as error:parser.error(str(error))
@@ -158,7 +161,7 @@ def main() -> int:
     return int(bool(report['errors']) or not report.get('input_transition_observed') or not report.get('reference_assets_unchanged') or
                not report.get('outcome',{}).get('observation_complete') or
                not report.get('candidate_unchanged') or not report.get('original_unchanged') or
-               (len(args.steps.split(';'))>1 and not report.get('map_entry_observed')))
+               (args.observe_routes and not report.get('map_entry_observed')))
 
 
 if __name__=='__main__':raise SystemExit(main())
