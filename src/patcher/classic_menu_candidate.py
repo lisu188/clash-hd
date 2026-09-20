@@ -19,7 +19,7 @@ MIN_WIDTH = 1144
 MENU_SPRITES = 0x543D74
 TABLES = ((0x5181C0, 6), (0x518338, 2), (0x5184F0, 4), (0x518690, 6), (0x518808, 2))
 SITES = (('single', 0x419D60, 18, 3), ('list', 0x419D80, 64, 12))
-PREFIXES = (b'\x81\x38', b'\x81\x3b')
+PREFIXES = (b'\x81\x38', b'\x81\x39')
 PINNED = {
     'src/patcher/patch_clash95_hd.py': '05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31',
     'src/patcher/pe_extension.py': '4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27',
@@ -61,7 +61,7 @@ def emit_guards(*, base_va, width, height, records, holder=MENU_SPRITES):
         pe._require(profile.off_x <= x < profile.off_x + 640 and profile.off_y <= y < profile.off_y + 480
                     and 0x10000 <= callback < 0x7FFE0000, 'menu record lies outside native centered area')
     a = clip._Assembler(base_va)
-    for name, register in (('single', 0), ('list', 3)):
+    for name, register in (('single', 0), ('list', 1)):
         a.label(name)
         a.emit('6089' + bytes([0xC2 + (register << 3)]).hex())
         a.emit('817a0c'); a.absolute(holder, 'native menu sprite-set holder')
@@ -73,8 +73,8 @@ def emit_guards(*, base_va, width, height, records, holder=MENU_SPRITES):
             a.emit('817a20'); a.absolute(callback, 'source-pinned menu action callback')
             a.branch('0f84', name + '.menu')
             a.label(next_row)
-        a.label(name + '.legacy'); a.emit('61' + PREFIXES[(0, 3).index(register)].hex()); a.u32(640); a.emit('c3')
-        a.label(name + '.menu'); a.emit('61' + PREFIXES[(0, 3).index(register)].hex()); a.u32(width); a.emit('c3')
+        a.label(name + '.legacy'); a.emit('61' + PREFIXES[(0, 1).index(register)].hex()); a.u32(640); a.emit('c3')
+        a.label(name + '.menu'); a.emit('61' + PREFIXES[(0, 1).index(register)].hex()); a.u32(width); a.emit('c3')
     code = a.finish()
     pe._require(len(code) < 4096, 'menu guards exceed one code page')
     result = clip.AdapterBundle(base_va, code, {name: base_va + a.labels[name] for name in ('single', 'list')},
