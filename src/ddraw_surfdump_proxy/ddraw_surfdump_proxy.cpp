@@ -12,6 +12,28 @@
 
 namespace {
 
+const BYTE* indexed_dib_rows(const std::vector<BYTE>& pixels, DWORD width, DWORD height,
+                             DWORD pitch, std::vector<BYTE>& storage) {
+    if (!width || !height || pitch < width || width > size_t(-1) - 3u ||
+        static_cast<size_t>(height) > pixels.size() / pitch) {
+        return nullptr;
+    }
+    const size_t dib_pitch = (static_cast<size_t>(width) + 3u) & ~size_t(3u);
+    if (static_cast<size_t>(height) > size_t(-1) / dib_pitch) {
+        return nullptr;
+    }
+    if (pitch == dib_pitch) {
+        return pixels.data();
+    }
+    storage.assign(dib_pitch * height, 0);
+    for (DWORD row = 0; row < height; ++row) {
+        memcpy(storage.data() + static_cast<size_t>(row) * dib_pitch,
+               pixels.data() + static_cast<size_t>(row) * pitch, width);
+    }
+    return storage.data();
+}
+
+
 // Optional true-color presentation for the battle visible-capture path.
 // Enabled only when the environment variable CLASH_PROXY_PRESENT=1 is set at
 // DLL load; when disabled, present_to_window() early-returns and every hidden
@@ -619,8 +641,7 @@ private:
         }
 
         // 8bpp top-down DIB (negative height) with a 256-entry color table.
-        // Assumes pitch_ == width_ and width_ is a multiple of 4 (640/800 both
-        // are), so the surface rows already satisfy the DIB 4-byte row stride.
+        // GDI rows use DWORD alignment even when the native surface is tight.
         struct {
             BITMAPINFOHEADER header;
             RGBQUAD colors[256];
@@ -652,6 +673,11 @@ private:
             bmi.colors[i].rgbReserved = 0;
         }
 
+        std::vector<BYTE> aligned_pixels;
+        const BYTE* dib_pixels = indexed_dib_rows(pixels_, width_, height_, pitch_, aligned_pixels);
+        if (!dib_pixels) {
+            return;
+        }
         HDC dc = ::GetDC(g_present_hwnd);
         if (!dc) {
             return;
@@ -681,7 +707,7 @@ private:
         ::SetStretchBltMode(dc, COLORONCOLOR);
         ::StretchDIBits(dc, 0, 0, dst_w, dst_h, 0, 0,
                         static_cast<int>(width_), static_cast<int>(height_),
-                        pixels_.data(), reinterpret_cast<BITMAPINFO*>(&bmi),
+                        dib_pixels, reinterpret_cast<BITMAPINFO*>(&bmi),
                         DIB_RGB_COLORS, SRCCOPY);
         ::ReleaseDC(g_present_hwnd, dc);
     }
