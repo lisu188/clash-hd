@@ -192,7 +192,7 @@ class RealExeSmokeTests(unittest.TestCase):
         repo = Path(tool.__file__).resolve().parents[1]
         for dimensions in ([(1920,1080)], [], [(1024,768)], [(1920,1080),(800,600)]):
             with self.subTest(dimensions=dimensions), tempfile.TemporaryDirectory() as folder:
-                root=Path(folder); runtime=root/'assets'; runtime.mkdir(); output=root/'run'
+                root=Path(folder).resolve(); runtime=root/'assets'; runtime.mkdir(); output=root/'run'
                 original=runtime/'clash95.exe'; original.write_bytes(b'synthetic original')
                 (runtime/'ddraw.dll').write_bytes(b'synthetic original wrapper')
                 manifest=root/'manifest.json'; manifest.write_text(json.dumps({'runtime': {'empty_directories': []}}))
@@ -222,7 +222,8 @@ class RealExeSmokeTests(unittest.TestCase):
                      patch.object(tool,'render',return_value=[{'width':w,'height':h} for w,h in dimensions]), \
                      patch.object(tool.subprocess,'run',return_value=result) as run, patch('builtins.print'):
                     code=tool.main()
-                self.assertEqual(code, 0 if dimensions==[(1920,1080)] else 1)
+                self.assertEqual(code, 0 if dimensions==[(1920,1080)] else 1,
+                                 json.loads((output/'summary.json').read_text()).get('errors'))
                 run.assert_called_once()
                 command=run.call_args.args[0]
                 self.assertEqual(Path(command[1]),output/'work-modalwidgets-proxy/widget.exe')
