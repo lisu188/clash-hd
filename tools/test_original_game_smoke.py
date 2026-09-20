@@ -71,5 +71,23 @@ class SmokeTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertFalse(output.exists())
 
+    def test_capture_worker_requires_explicit_approval_before_windows_calls(self):
+        output = Path(self.temp.name) / 'capture.png'
+        result = subprocess.run([sys.executable, tool.__file__, '--capture', '1', '1', '1', str(output), 'bitblt'],
+                                capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn('Capture requires', result.stderr)
+        self.assertFalse(output.exists())
+
+    def test_direct_runner_checks_approval_duration_and_original_before_windows(self):
+        game = self.root / 'clash95.exe'
+        for seconds, approval in ((25, ''), (25, '   '), (True, 'authorized'), (25.0, 'authorized'),
+                                  (24, 'authorized'), (241, 'authorized')):
+            with self.subTest(seconds=seconds, approval=approval), self.assertRaises(ValueError):
+                tool.run_game(game, self.root, seconds, approval)
+        game.write_bytes(b'MZ changed original')
+        with self.assertRaisesRegex(ValueError, 'exact original'):
+            tool.run_game(game, self.root, 180, 'authorized test fixture')
+
 
 if __name__ == '__main__': unittest.main(verbosity=2)
