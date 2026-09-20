@@ -1,12 +1,6 @@
 name: Modal-widget HD runtime
 
 on:
-  push:
-    branches: [codex/widget-runtime]
-    paths:
-      - tools/real_exe_smoke.py
-      - tools/test_real_exe_smoke.py
-      - .github/workflows/widget-runtime.yml
   pull_request:
     paths:
       - tools/real_exe_smoke.py
@@ -48,7 +42,7 @@ jobs:
         run: python tools/test_real_exe_smoke.py
 
   runtime:
-    if: github.repository == 'lisu188/clash-hd' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.execute))
+    if: github.repository == 'lisu188/clash-hd' && github.event_name == 'workflow_dispatch' && inputs.execute
     needs: source
     strategy:
       fail-fast: false
