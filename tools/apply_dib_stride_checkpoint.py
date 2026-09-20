@@ -55,7 +55,7 @@ report=dict(source_preflight=preflight,source_sha256=expected,native_rows=rows,t
 (out/'receipt.json').write_text(json.dumps(report,indent=2)+'\n')
 if result.returncode or len(rows)!=1 or not rows[0]['native_gdi_executed'] or not preflight['passed']:
     raise SystemExit('Native GDI fixture or source preflight failed')
-subprocess.run(['powershell','-NoProfile','-ExecutionPolicy','Bypass','-File','scripts/build/build_ddraw_surfdump_proxy.ps1',
+subprocess.run(['pwsh','-NoProfile','-ExecutionPolicy','Bypass','-File','scripts/build/build_ddraw_surfdump_proxy.ps1',
                 '-OutputDll',str(out/'build/ddraw.dll'),'-LogDir',str(out/'build')],check=True)
 (out/'proxy-source.cpp').write_bytes(new)
 subprocess.run(['git','diff','--check'],check=True)
