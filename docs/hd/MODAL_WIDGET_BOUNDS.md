@@ -33,8 +33,9 @@ six resolutions, coordinate boundaries, all supported ModRM base registers,
 all GPRs, ESP, arithmetic/direction flags, owner calls, fault behavior and the
 old x=1000 regression. A dedicated workflow fails on skipped selected tests.
 
-This checkpoint does not install the guards or establish corrected game pixels.
-A separate PE extension, exact loaded-byte probe, new candidate and corresponding
-runtime consumer remain necessary. The protected stable stage, Classic/800x600,
-previous failed captures, text placement and all manual-input requirements are
-unchanged.
+The emitter does not install the guards or establish corrected game pixels.
+The separate [widget candidate builder](MODAL_WIDGET_CANDIDATE.md) installs them
+above the frozen text predecessor with its own PE section and loaded-byte probe.
+A matching runtime consumer and fresh visual evidence remain necessary. The
+protected stable stage, Classic/800x600, previous failed captures and all
+manual-input requirements are unchanged.
