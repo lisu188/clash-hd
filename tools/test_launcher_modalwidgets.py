@@ -194,7 +194,7 @@ class WidgetProfileSourceTests(unittest.TestCase):
         app=SimpleNamespace(profile_var=SimpleNamespace(get=lambda:"modalwidgets"))
         self.assertIs(gui.LauncherApp._backend(app),modalwidgets)
         self.assertIn("experimental",gui.PROFILE_NAMES["modalwidgets"])
-        with patch.object(run.settings_mod,"load_settings",return_value={"last_resolution":"1366x768","scaling_mode":"integer", 
+        with patch.object(run.settings_mod,"load_settings",return_value={"last_resolution":"1366x768","scaling_mode":"integer",
                 "clash_dir":"C:/Clash","candidates_root":"C:/ClashTests/launcher"}), \
              patch.object(modalwidgets,"plan_candidate",return_value=object()) as plan:
             run.build_plan(run.parse_args(["--profile","modalwidgets"]))
