@@ -5,6 +5,7 @@ on:
     branches: [codex/widget-runtime]
     paths:
       - tools/real_exe_smoke.py
+      - tools/test_real_exe_smoke.py
       - .github/workflows/widget-runtime.yml
   pull_request:
     paths:
