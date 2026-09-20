@@ -1,0 +1,155 @@
+name: Asset-backed modal widget candidate
+
+on:
+  pull_request:
+    paths:
+      - 'src/patcher/framed_modal_widget_bounds.py'
+      - 'tools/build_framed_modal_widgets_candidate.py'
+      - 'tools/test_build_framed_modal_widgets_candidate.py'
+      - 'tools/test_modal_widget_bounds.py'
+      - 'tools/.gitattributes'
+      - '.github/workflows/modal-widget-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: modal-widget-candidate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Run independent format and negative-boundary tests
+        shell: bash
+        run: |
+          python -m unittest discover -s tools -p test_build_framed_modal_widgets_candidate.py -k WidgetFormatTests -v
+          python -m unittest discover -s tools -p test_modal_widget_bounds.py -k GuardSourceTests -v
+
+  original:
+    if: github.repository == 'lisu188/clash-hd' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    strategy:
+      fail-fast: false
+      matrix:
+        resolution: ['1024x768', '1920x1080']
+    runs-on: windows-2022
+    timeout-minutes: 20
+    env:
+      CLASH_WIDGET_RESOLUTION: ${{ matrix.resolution }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: code
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: code
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: lisu188/clash-assets
+          ref: 84a1e4bcf131e6bb75b39fc5e10941dd0b801767
+          path: assets
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /runtime/gog-32003/clash95.exe
+          lfs: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
+      - name: Fetch pinned original fixture input
+        working-directory: assets
+        run: git lfs pull --include='runtime/gog-32003/clash95.exe' --exclude=''
+      - name: Verify and stage original without overwriting
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          expected = '500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae'
+          source = Path('../assets/runtime/gog-32003/clash95.exe')
+          data = source.read_bytes()
+          if len(data) != 1232384 or hashlib.sha256(data).hexdigest() != expected:
+              raise SystemExit('Original mismatch or unresolved LFS pointer')
+          Path('C:/ClashTests').mkdir(parents=True, exist_ok=True)
+          target = Path('C:/Clash/clash95.exe'); target.parent.mkdir(parents=True, exist_ok=True)
+          with target.open('xb') as output:
+              output.write(data)
+          target.chmod(0o444)
+          if target.read_bytes() != data:
+              raise SystemExit('Staged original differs')
+          receipt = dict(schema=1, source_commit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                         asset_repository='lisu188/clash-assets', asset_commit='84a1e4bcf131e6bb75b39fc5e10941dd0b801767',
+                         path='runtime/gog-32003/clash95.exe', bytes=len(data), sha256=expected,
+                         game_runtime_executed=False, promotion_ready=False)
+          Path(os.environ['RUNNER_TEMP'], 'widget-input.json').write_text(json.dumps(receipt, indent=2))
+          PY
+      - name: Require complete original-backed build and native CPU fixtures
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, platform, subprocess, sys, unittest
+          from pathlib import Path
+          sys.path[:0] = [str(Path.cwd()), str(Path.cwd() / 'tools')]
+          import test_build_framed_modal_widgets_candidate as fixtures
+          from run_framed_offline_tests import source_preflight
+          preflight = source_preflight(Path.cwd())
+          if not preflight['passed']:
+              raise SystemExit('Frozen source preflight failed')
+          suite = unittest.defaultTestLoader.loadTestsFromNames(['test_build_framed_modal_widgets_candidate', 'test_modal_widget_bounds'])
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          metadata = getattr(fixtures.WidgetOriginalBuildTests, 'metadata', {})
+          fields = ('stage', 'resolution', 'candidate_sha256', 'base_candidate_sha256', 'code_va', 'code_bytes',
+                    'code_raw_bytes', 'code_sha256', 'new_highlow_count', 'old_highlow_count', 'hooks', 'probe_sha256',
+                    'source_hashes', 'widget_entry_vas', 'modal_state_va', 'modal_entry_vas', 'probe_contract')
+          sources = ('tools/test_build_framed_modal_widgets_candidate.py', 'tools/test_modal_widget_bounds.py',
+                     'tools/build_framed_modal_widgets_candidate.py', 'src/patcher/framed_modal_widget_bounds.py')
+          report = dict(schema=1, platform=platform.platform(), source_preflight=preflight,
+                        source_commit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                        resolution=os.environ['CLASH_WIDGET_RESOLUTION'], tests_run=result.testsRun,
+                        errors=[(str(t), text) for t, text in result.errors],
+                        failures=[(str(t), text) for t, text in result.failures], skipped=result.skipped,
+                        passed=result.wasSuccessful() and not result.skipped and result.testsRun == 15,
+                        candidate={key: metadata[key] for key in fields if key in metadata},
+                        test_source_hashes={p: hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in sources},
+                        proof_class='original_backed_build_nonexecuting_PE_admission_and_synthetic_guard_CPU',
+                        game_runtime_executed=False, primary_composition_proven=False, manual_input_proof=False, promotion_ready=False)
+          Path(os.environ['RUNNER_TEMP'], 'widget-candidate.json').write_text(json.dumps(report, indent=2))
+          raise SystemExit(0 if report['passed'] else 1)
+          PY
+      - name: Verify original source and staged input are unchanged
+        if: always()
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          expected = '500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae'
+          rows = []
+          for path in (Path('C:/Clash/clash95.exe'), Path('../assets/runtime/gog-32003/clash95.exe')):
+              actual = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+              rows.append(dict(path=str(path), sha256=actual, unchanged=actual == expected))
+          passed = all(row['unchanged'] for row in rows)
+          Path(os.environ['RUNNER_TEMP'], 'widget-input-after.json').write_text(json.dumps(dict(passed=passed, inputs=rows), indent=2))
+          raise SystemExit(0 if passed else 1)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: widget-candidate-${{ matrix.resolution }}
+          path: |
+            ${{ runner.temp }}/widget-input.json
+            ${{ runner.temp }}/widget-input-after.json
+            ${{ runner.temp }}/widget-candidate.json
+          retention-days: 7
+          if-no-files-found: error
