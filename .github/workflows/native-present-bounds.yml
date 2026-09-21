@@ -1,0 +1,76 @@
+name: Native map presentation bounds
+on:
+  push:
+    branches: [codex/native-map-present]
+  pull_request:
+    paths: ['src/patcher/native_present_bounds.py', 'tools/test_native_present_bounds.py', '.github/workflows/native-present-bounds.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tools -p test_native_present_bounds.py -k SourceTests -v
+  native:
+    if: github.repository == 'lisu188/clash-hd' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: code
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: lisu188/clash-assets
+          ref: 84a1e4bcf131e6bb75b39fc5e10941dd0b801767
+          path: assets
+          persist-credentials: false
+          lfs: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: /runtime/gog-32003/clash95.exe
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
+      - shell: bash
+        working-directory: assets
+        run: git lfs pull --include='runtime/gog-32003/clash95.exe' --exclude=''
+      - name: Execute production guard on x86 and rebuild all parent kinds without launching a game
+        shell: bash
+        working-directory: code
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,sys,unittest
+          from pathlib import Path
+          root=Path.cwd();original=(root/'../assets/runtime/gog-32003/clash95.exe').resolve()
+          os.environ['NATIVE_PRESENT_ORIGINAL']=str(original)
+          os.environ['NATIVE_PRESENT_REPORT']=str(Path(os.environ['RUNNER_TEMP'])/'native-present-build.json')
+          sys.path[:0]=[str(root),str(root/'tools')]
+          from src.patcher import pe_extension
+          before=hashlib.sha256(original.read_bytes()).hexdigest()
+          if before!=pe_extension.ORIGINAL_SHA256:raise SystemExit('Original identity differs')
+          suite=unittest.defaultTestLoader.loadTestsFromName('test_native_present_bounds')
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          report=dict(tests_run=result.testsRun,skipped=result.skipped,errors=[(str(t),v) for t,v in result.errors],failures=[(str(t),v) for t,v in result.failures],original_unchanged=hashlib.sha256(original.read_bytes()).hexdigest()==before,game_runtime_executed=False)
+          Path(os.environ['RUNNER_TEMP'],'native-present-tests.json').write_text(json.dumps(report,indent=2))
+          raise SystemExit(int(not result.wasSuccessful() or result.testsRun!=4 or bool(result.skipped) or not report['original_unchanged']))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-present-source-cpu-build
+          path: |
+            ${{ runner.temp }}/native-present-tests.json
+            ${{ runner.temp }}/native-present-build.json
+          if-no-files-found: error
+          retention-days: 7
