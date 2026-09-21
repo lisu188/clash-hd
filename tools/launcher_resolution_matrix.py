@@ -25,7 +25,7 @@ import real_exe_smoke as runtime
 from src.display_plan import resolve_display_plan
 
 MANIFEST = ROOT/'src/launcher/resolutions.json'
-BACKENDS = {'classic':'core','framed':'framed','completehd':'completehd','modalwidgets':'modalwidgets'}
+BACKENDS = {'classic':'classic','framed':'framed','completehd':'completehd','modalwidgets':'modalwidgets'}
 
 
 def digest(path: Path) -> str:
