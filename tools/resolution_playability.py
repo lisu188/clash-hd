@@ -7,6 +7,7 @@ from ctypes import wintypes as W
 import hashlib
 import json
 import os
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -28,7 +29,11 @@ static void map_state(Session &s, const std::string &out, int sample) {
         std::ofstream f(out+name);
         f<<"{\"game_data\":"<<data<<",\"world_width\":"<<w<<",\"world_height\":"<<h
          <<",\"scroll_x\":"<<static_cast<LONG>(x)<<",\"scroll_y\":"<<static_cast<LONG>(y)
-         <<",\"map_active_word\":"<<s.word(0x527c24)<<",\"native_modal_word\":"<<s.word(0x52698c)<<"}\n";
+         <<",\"map_active_word\":"<<s.word(0x527c24)<<",\"native_modal_word\":"<<s.word(0x52698c)
+         <<",\"render_hook\":"<<s.word(0x5199d8)<<",\"post_callback\":"<<s.word(0x526990)
+         <<",\"lower_owner\":"<<s.word(0x526994)<<",\"current_player\":"<<s.word(0x5202ec)
+         <<",\"selected_stack\":"<<s.word(0x511b58)<<",\"previous_stack\":"<<s.word(0x514194)
+         <<",\"map_surface\":"<<s.word(0x5202e0)<<"}\n";
         if (!f) throw std::runtime_error("map state write failed");
     } catch(const std::exception &e) { printf("REAL_MAP_STATE_UNAVAILABLE sample=%d reason=%s\n",sample,e.what()); }
 }
