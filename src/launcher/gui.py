@@ -16,6 +16,7 @@ from tkinter import filedialog, font as tkfont, messagebox, ttk
 
 import core
 import framed
+import classic
 import completehd
 import modalwidgets
 import ini as ini_mod
@@ -411,7 +412,7 @@ class LauncherApp:
         return f"{width}x{height}"
 
     def _backend(self):
-        return {"classic": core, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[self.profile_var.get()]
+        return {"classic": classic, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[self.profile_var.get()]
 
     def on_profile_change(self) -> None:
         experimental = self.profile_var.get() != "classic"

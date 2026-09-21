@@ -5,5 +5,9 @@
 /test_original_game_smoke.py text eol=lf
 /real_exe_smoke.py text eol=lf
 /test_real_exe_smoke.py text eol=lf
+/test_classic_menu_candidate.py text eol=lf
 /launcher_resolution_matrix.py text eol=lf
 /test_launcher_resolution_matrix.py text eol=lf
+/native_launcher_input.py text eol=lf
+/runner_menu_input.py text eol=lf
+/native_route_observer.py text eol=lf
