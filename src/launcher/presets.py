@@ -130,6 +130,12 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             if (config["stage"] != manifest["stable_stage"] + ("-completehd-validation" if renderer == "completehd" else "-completehd-modalwidgets-validation") or config.get("default") != "800x600"
                     or set(config.get("resolutions", {})) != {"800x600", "1024x768", "1280x720", "1280x960", "1920x1080", "802x602"}):
                 raise ManifestError("Complete-HD must use its exact experimental recipe, default and six fixture resolutions.")
+        wide = config.get("wide_menu_recipe")
+        if wide is not None:
+            if renderer != "classic" or wide != {"minimum_width": 1144,
+                    "stage": manifest["stable_stage"] + "-menuwidgets-validation",
+                    "recipe_revision": "classic_menu_widgets_v1"} or type(wide.get("minimum_width")) is not int:
+                raise ManifestError("Unrecognized Classic wide-menu recipe.")
         entries = config.get("resolutions")
         if not isinstance(entries, dict) or not entries or type(config.get("default")) is not str or config["default"] not in entries:
             raise ManifestError(f"{renderer} must have an available default resolution.")
@@ -211,7 +217,11 @@ def resolve_plan(*, renderer: str = "classic", resolution: str = "800x600", stag
     parse_dimensions(resolution, _bounds(manifest))
     if resolution not in config["resolutions"] and not manifest["custom_allowed"]:
         raise DisplayPlanError("custom_disabled", "Custom resolutions are disabled for this renderer.")
-    return resolve_display_plan(renderer=renderer, resolution=resolution, stage=stage if stage is not None else config["stage"],
+    selected_stage = stage if stage is not None else config["stage"]
+    if stage is None and renderer == "classic" and config.get("wide_menu_recipe"):
+        if parse_dimensions(resolution, _bounds(manifest))[0] >= config["wide_menu_recipe"]["minimum_width"]:
+            selected_stage = config["wide_menu_recipe"]["stage"]
+    return resolve_display_plan(renderer=renderer, resolution=resolution, stage=selected_stage,
                                 scaling_mode=scaling_mode, minimap_viewport=config["features"]["minimap_viewport"],
                                 bounds=_bounds(manifest))
 

@@ -32,7 +32,14 @@ WIDGET_WARNING = (
 )
 
 
+CLASSIC_MENU_DIRECTORY = "classic-menu-validation"
+CLASSIC_MENU_STAGE = core.patch_clash95_hd.DEFAULT_STAGE + "-menuwidgets-validation"
+CLASSIC_MENU_WARNING = "Wide Classic uses experimental menu-only descriptor bounds. Map input and gameplay still require independent validation."
+
+
 def _profile(profile: str) -> tuple[str, str, str]:
+    if profile == "classic":
+        return CLASSIC_MENU_DIRECTORY, CLASSIC_MENU_STAGE, CLASSIC_MENU_WARNING
     if profile == PROFILE:
         return DIRECTORY, STAGE, WARNING
     if profile == WIDGET_PROFILE:
@@ -44,6 +51,17 @@ def _builder(profile: str = PROFILE):
     if getattr(sys, "frozen", False):
         raise core.LauncherError("Complete HD requires the source-tree launcher.")
     _profile(profile)
+    if profile == "classic":
+        module = importlib.import_module("src.patcher.classic_menu_candidate")
+        if module.STAGE != CLASSIC_MENU_STAGE or module.REVISION != "classic_menu_widgets_v1":
+            raise core.LauncherError("Classic menu builder identity differs.")
+        class Supported:
+            def __contains__(self, value):
+                return module.supports(value)
+        complete = importlib.import_module("src.patcher.complete_hd_candidate")
+        return SimpleNamespace(__file__=module.__file__, STAGE=module.STAGE, REVISION=module.REVISION,
+            BASE_SHA256=module.BASE_SHA256, RESOLUTIONS=Supported(), PINNED=module.PINNED,
+            build_candidate=module.build_candidate, _write_bundle=complete._write_bundle)
     if profile == WIDGET_PROFILE:
         module = importlib.import_module("tools.build_framed_modal_widgets_candidate")
         if module.STAGE != WIDGET_STAGE or module.REVISION != "owned_modal_widget_bounds_v1":
@@ -58,9 +76,9 @@ def source_status(profile: str = PROFILE) -> dict[str, Any]:
     """Check the same inherited source pins without reading or running a game."""
     try:
         adapter = _builder(profile)
-        pins = {}
-        for name in ("build_partial_tile_candidate", "build_framed_candidate",
-                     "build_framed_modal_candidate", "build_framed_army_candidate"):
+        pins = dict(adapter.PINNED) if profile == "classic" else {}
+        for name in (() if profile == "classic" else ("build_partial_tile_candidate", "build_framed_candidate",
+                     "build_framed_modal_candidate", "build_framed_army_candidate")):
             module = importlib.import_module(name)
             sources = dict(module.PINNED_SOURCES)
             if name == "build_framed_candidate":
@@ -157,7 +175,7 @@ def _expected(plan: core.CandidatePlan) -> tuple[dict[Path, bytes], dict[str, An
     artifacts = dict(zip(paths[:3], (image, _json_bytes(metadata), probe.encode("utf-8"))))
     record = {"base_sha256": core.sha256_bytes(original), "output_sha256": core.sha256_bytes(image),
               "display_plan": display.to_dict(), "build_id": display.build_identity(core.sha256_bytes(original), metadata["source_hashes"]),
-              "patch_count": len(metadata["patch_records"] if "patch_records" in metadata else metadata["edits"]), "profile": plan.renderer, "minimap_viewport": True,
+              "patch_count": len(metadata["patch_records"] if "patch_records" in metadata else metadata["edits"]), "profile": plan.renderer, "minimap_viewport": display.minimap_viewport,
               "source_sha256": metadata["source_hashes"],
               "candidate_manifest": {"path": str(paths[1].resolve()), "sha256": core.sha256_bytes(artifacts[paths[1]])},
               "artifact_sha256": {path.name: core.sha256_bytes(data) for path, data in artifacts.items()},
