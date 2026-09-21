@@ -143,6 +143,11 @@
           "tiles": null,
           "evidence": null
         }
+      },
+      "wide_menu_recipe": {
+        "minimum_width": 1144,
+        "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-menuwidgets-validation",
+        "recipe_revision": "classic_menu_widgets_v1"
       }
     },
     "framed": {

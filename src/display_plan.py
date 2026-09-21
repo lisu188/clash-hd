@@ -132,6 +132,8 @@ def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x60
     try:
         patcher = importlib.import_module("patch_clash95_hd")
         selected_stage = patcher.DEFAULT_STAGE if stage is None else stage
+        selected_revision = RECIPE_REVISION[renderer]
+        scalar_stage = selected_stage
         profile = patcher.parse_resolution(resolution)
         if renderer in ("framed", "completehd", "modalwidgets"):
             required_stage = patcher.DEFAULT_STAGE + "-combinedui-partialtiles-initialpaint-framed-validation"
@@ -150,20 +152,27 @@ def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x60
             bands, cells = tuple(map(_rect_tuple, viewport.frame_bands)), tuple(map(_rect_tuple, viewport.action_cells))
             minimap_anchor = viewport.minimap_right_anchor
         else:
-            _require(type(selected_stage) is str and selected_stage in patcher.STAGE_GROUPS,
+            menu_stage = patcher.DEFAULT_STAGE + "-menuwidgets-validation"
+            if selected_stage == menu_stage:
+                menu = importlib.import_module("src.patcher.classic_menu_candidate")
+                _require(menu.STAGE == menu_stage and menu.REVISION == "classic_menu_widgets_v1"
+                         and menu.supports(resolution), "unsupported_recipe", "Classic menu correction requires an affected supported resolution.")
+                scalar_stage = patcher.DEFAULT_STAGE
+                selected_revision = menu.REVISION
+            _require(type(scalar_stage) is str and scalar_stage in patcher.STAGE_GROUPS,
                      "unsupported_stage", f"Unknown Classic patch stage: {selected_stage!r}")
-            patches = patcher.select_patches_for(selected_stage, profile)
+            patches = patcher.select_patches_for(scalar_stage, profile)
             terrain = patcher.TILE_ORIGIN_X, patcher.TILE_ORIGIN_Y, profile.edge_x, profile.edge_y
             full = coverage = profile.tiles_x, profile.tiles_y
             partial = profile.partial_col_px, profile.partial_row_px
             bands, cells = (), ()
-            minimap_anchor = width if "minimap-hd-right-anchor" in patcher.STAGE_GROUPS[selected_stage] else None
+            minimap_anchor = width if "minimap-hd-right-anchor" in patcher.STAGE_GROUPS[scalar_stage] else None
         encoded = [{"group": p.group, "offset": p.offset, "old": p.old.hex(), "new": p.new.hex()} for p in patches]
         _require(bool(encoded), "unsupported_stage", "The selected recipe contains no patches.")
-        return DisplayPlan(renderer, resolution, selected_stage, RECIPE_REVISION[renderer], width, height,
+        return DisplayPlan(renderer, resolution, selected_stage, selected_revision, width, height,
                            scaling_mode, minimap, (profile.off_x, profile.off_y), terrain, full, coverage, partial,
                            bands, cells, minimap_anchor, len(encoded), _digest(encoded),
-                           renderer != "classic" or set(patcher.STAGE_GROUPS[patcher.DEFAULT_STAGE]) <= set(patcher.STAGE_GROUPS[selected_stage]))
+                           renderer != "classic" or set(patcher.STAGE_GROUPS[patcher.DEFAULT_STAGE]) <= set(patcher.STAGE_GROUPS[scalar_stage]))
     except DisplayPlanError:
         raise
     except ImportError as exc:
