@@ -7,6 +7,7 @@ from ctypes import wintypes as W
 import hashlib
 import json
 import os
+import re
 import shutil
 from pathlib import Path
 import subprocess
@@ -33,7 +34,13 @@ static void map_state(Session &s, const std::string &out, int sample) {
          <<",\"render_hook\":"<<s.word(0x5199d8)<<",\"post_callback\":"<<s.word(0x526990)
          <<",\"lower_owner\":"<<s.word(0x526994)<<",\"current_player\":"<<s.word(0x5202ec)
          <<",\"selected_stack\":"<<s.word(0x511b58)<<",\"previous_stack\":"<<s.word(0x514194)
-         <<",\"map_surface\":"<<s.word(0x5202e0)<<"}\n";
+         <<",\"map_surface\":"<<s.word(0x5202e0)
+         <<",\"map_extent\":"<<(s.word(0x5202e0)?s.word(s.word(0x5202e0)):0)
+         <<",\"map_pixels\":"<<(s.word(0x5202e0)?s.word(s.word(0x5202e0)+4):0)
+         <<",\"map_vtable\":"<<(s.word(0x5202e0)?s.word(s.word(0x5202e0)+0xb8):0)
+         <<",\"primary_extent\":"<<s.word(0x51d4c0)
+         <<",\"cursor_raw_x\":"<<s.word(0x544cfc)<<",\"cursor_raw_y\":"<<s.word(0x544d00)
+         <<",\"cursor_shift\":"<<static_cast<unsigned>(s.read(0x54512c,1)[0])<<"}\n";
         if (!f) throw std::runtime_error("map state write failed");
     } catch(const std::exception &e) { printf("REAL_MAP_STATE_UNAVAILABLE sample=%d reason=%s\n",sample,e.what()); }
 }
@@ -80,6 +87,47 @@ def menu_identity(image) -> dict:
     return dict(matches_original=digest==MENU_RGB_SHA256,rgb_sha256=digest,
                 expected_rgb_sha256=MENU_RGB_SHA256,native_bounds=[x,y,x+640,y+480],
                 excluded_native_rectangle=[0,0,32,32],exclusion='Original initial cursor only; no control overlaps this corner')
+
+
+
+def stage_present_override(original: Path, profile: str, resolution: str, out: Path,
+                           baseline_exe: Path, baseline: dict):
+    from src.patcher import native_present_bounds as correction
+    image, metadata, probe = correction.build_candidate(original.read_bytes(), profile, resolution)
+    if metadata['base_candidate_sha256'] != baseline['candidate_sha256'] or matrix.digest(baseline_exe) != baseline['candidate_sha256']:
+        raise ValueError('Presentation correction predecessor differs from the actual launcher build')
+    if (metadata['profile'] != profile or metadata['resolution'] != resolution
+            or metadata['recipe_revision'] != correction.REVISION
+            or metadata['candidate_sha256'] != hashlib.sha256(image).hexdigest()
+            or metadata['probe_sha256'] != hashlib.sha256(probe.encode()).hexdigest()):
+        raise ValueError('Presentation correction returned mismatched candidate identity')
+    matrix.runtime.verify_hd_sources({'source_hashes': metadata['source_hashes']}, matrix.ROOT)
+    directory=out/'native-present';directory.mkdir(exist_ok=False)
+    target=directory/f'clash95_{profile}_{resolution}_nativepresent.exe'
+    for path,data in ((target,image),(target.with_suffix('.candidate.json'),(json.dumps(metadata,indent=2)+'\n').encode()),
+                      (target.with_suffix('.cdb'),probe.encode())):
+        with path.open('xb') as stream:stream.write(data)
+    if matrix.digest(target) != metadata['candidate_sha256']:
+        raise ValueError('Presentation candidate write differs')
+    return target,dict(baseline,stage=metadata['stage'],recipe_revision=metadata['recipe_revision'],
+        candidate_sha256=metadata['candidate_sha256'],predecessor_launcher_build=baseline['launcher_build'],
+        launcher_build=dict(output_sha256=metadata['candidate_sha256'],source_sha256=metadata['source_hashes']),
+        experimental_override=metadata)
+
+
+def selected_unit(states: list[dict]) -> bool:
+    return any(type(s.get('selected_stack')) is int and 0 <= s['selected_stack'] < 500
+               and s.get('render_hook') == 0x40ad40 and s.get('map_active_word', 0) != 0
+               and 1 <= s.get('world_width', 0) <= 100 and 1 <= s.get('world_height', 0) <= 100
+               for s in states)
+
+
+def full_observation(log: str, returncode: int) -> dict:
+    record = matrix.runtime.outcome(log, returncode)
+    endings = re.findall(r'^REAL_END entered=1 exited=0 exception_stop=0 elapsed_ms=([0-9]+)$', log, re.M)
+    record['requested_interval_completed'] = len(endings) == 1 and int(endings[0]) >= 110000
+    record['observation_complete'] = record['observation_complete'] and record['requested_interval_completed']
+    return record
 
 
 def input_success(record: dict) -> bool:
@@ -159,7 +207,9 @@ def run(args) -> dict:
         if build.get('generated_by')!='clash-hd-surface-dump-proxy' or matrix.digest(proxy)!=build['output_sha256'].lower() or matrix.digest(root/'src/ddraw_surfdump_proxy/ddraw_surfdump_proxy.cpp')!=build['source_sha256'].lower():
             raise ValueError('Proxy build identity differs')
         exe,built=matrix.stage_candidate(args.profile,args.resolution,reference,out)
-        report.update(built=built,proxy_build=build)
+        if args.native_present_bounds:
+            exe,built=stage_present_override(reference/'clash95.exe',args.profile,args.resolution,out,exe,built)
+        report.update(built=built,proxy_build=build,executed_stage=built['stage'],executed_revision=built['recipe_revision'])
         with patch.object(matrix.runtime,'HARNESS',observation_source(matrix.runtime.HARNESS)):
             engine=matrix.runtime.compile_harness(out)
         report['engine_sha256']=matrix.digest(engine)
@@ -200,11 +250,11 @@ def run(args) -> dict:
                 if kernel.WaitForSingleObject(handle,0)!=258 or owned.process_identity(kernel,handle)['creation_filetime']!=identity['creation_filetime']:
                     raise ValueError('Input owner exited or changed')
                 destination=out/(name+'.json')
-                command=[sys.executable,str(root/'tools/runner_menu_input.py'),'--allow-foreground-attach',
+                command=[sys.executable,str(root/'tools/runner_menu_input.py'),'--allow-foreground-attach','--engine-coordinate-feedback',
                     '--approval-text',args.approval_text,'--owner-creation',str(identity['creation_filetime']),
                     '--pid',str(pid),'--resolution',args.resolution,phase,points,'--click-repeats','1',
                     '--click-hold-ms','400','--point-settle-ms','1800','--deadline-sec','20','--map-nonblack','0',
-                    '--final-settle-ms','1200','--json',str(destination)]
+                    '--final-settle-ms','1200','--aim-tolerance','4','--json',str(destination)]
                 result=subprocess.run(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,errors='replace',timeout=30)
                 (out/(name+'.log')).write_text(result.stdout,encoding='utf-8')
                 data=json.loads(destination.read_text()) if destination.is_file() else {}
@@ -234,7 +284,7 @@ def run(args) -> dict:
             report['retained_process_exited']=kernel.WaitForSingleObject(handle,5000)==0
             kernel.CloseHandle(handle)
         if logpath.exists():
-            report['outcome']=matrix.runtime.outcome(logpath.read_text(encoding='utf-8',errors='replace'),proc.returncode if proc else -1)
+            report['outcome']=full_observation(logpath.read_text(encoding='utf-8',errors='replace'),proc.returncode if proc else -1)
         try:
             report['snapshots']=matrix.runtime.render(capture)
             report['states']=[dict(sample=p.name,**json.loads(p.read_text())) for p in sorted(capture.glob('map-state-*.json'))]
@@ -249,6 +299,7 @@ def run(args) -> dict:
         except Exception as error:report['errors'].append('Identity audit: '+str(error))
         report['menu_and_campaign_input_passed']=not report['errors'] and report.get('menu',{}).get('matches_original') is True and all(
             a['passed'] for a in report['actions'] if a['name']=='campaign') and any(a['name']=='campaign' for a in report['actions'])
+        report['unit_selected_observed']=selected_unit(report.get('states',[]))
         report['native_input_passed']=len(report['actions'])==4 and all(a['passed'] for a in report['actions'])
         report['map_controls_pixels_passed']=len(report.get('map_pixels',[]))==3 and all(
             r['action_cells_exact'] and (not r['frame_required'] or r['frame']['structural_border_exact']) for r in report['map_pixels'])
@@ -264,6 +315,7 @@ def main() -> int:
     parser.add_argument('--resolution',default='1024x768')
     for name in ('runtime','manifest','proxy','out'):parser.add_argument('--'+name,type=Path)
     parser.add_argument('--execute',action='store_true');parser.add_argument('--approval-text')
+    parser.add_argument('--native-present-bounds',action='store_true')
     args=parser.parse_args();case=matrix.select_case(args.profile,args.resolution)
     if not args.execute:
         print(json.dumps(dict(executed=False,case=case,actions=['campaign','dismiss','select-unit','preview-move'])));return 0
@@ -271,7 +323,7 @@ def main() -> int:
         parser.error('Execution requires explicit approval, assets, source-bound proxy and isolated output')
     report=run(args);print(json.dumps(report,indent=2))
     return int(bool(report['errors']) or not report.get('menu_and_campaign_input_passed') or not report.get('map_controls_pixels_passed')
-               or not report.get('outcome',{}).get('observation_complete') or not report.get('reference_unchanged') or not report.get('retained_process_exited') or not report.get('native_input_passed'))
+               or not report.get('outcome',{}).get('observation_complete') or not report.get('reference_unchanged') or not report.get('retained_process_exited') or not report.get('native_input_passed') or not report.get('unit_selected_observed'))
 
 
 if __name__=='__main__':raise SystemExit(main())
