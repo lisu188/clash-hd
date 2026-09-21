@@ -23,7 +23,7 @@ def attach_pairs(current: int, foreground: int, target: int) -> list[tuple[int,i
 
 
 def decode_cursor(raw: bytes, shift: bytes, logical_size: tuple[int, int]) -> tuple[int, int]:
-    if len(raw) != 8 or len(shift) != 1 or shift[0] > 4:
+    if len(raw) != 8 or len(shift) != 1 or shift[0] > 21:
         raise ValueError('Incomplete or unsupported engine cursor fields')
     x, y = struct.unpack('<ii', raw)
     point = (x >> shift[0], y >> shift[0])
