@@ -92,11 +92,52 @@ class PlayabilityTests(unittest.TestCase):
         self.assertEqual(case['recipe_revision'],'classic_menu_widgets_v1')
         self.assertTrue(case['stage'].endswith('-menuwidgets-validation'))
 
+    def test_selected_unit_requires_live_map_context_and_bounded_index(self):
+        state=dict(selected_stack=6,render_hook=0x40ad40,map_active_word=1,world_width=50,world_height=50)
+        self.assertTrue(tool.selected_unit([state]))
+        for key,value in (('selected_stack',True),('selected_stack',0xffffffff),('selected_stack',500),
+                          ('render_hook',0x4617a0),('map_active_word',0),('world_width',0),('world_height',101)):
+            self.assertFalse(tool.selected_unit([dict(state,**{key:value})]))
+        self.assertFalse(tool.selected_unit([]))
+
+    def test_early_exit_or_short_observation_is_not_full_runtime_success(self):
+        prefix=('REAL_LOADED pid=123 base=00400000 entry=004731b6 executable_sections_match=1\n'
+                'REAL_EXE_ENTRY observed=1\n')
+        suffix='\nREAL_CLEANUP absent=1 exit=80004005\n'
+        end='REAL_END entered=1 exited=0 exception_stop=0 elapsed_ms=110000'
+        self.assertTrue(tool.full_observation(prefix+end+suffix,0)['observation_complete'])
+        for value in (end.replace('110000','109999'),end.replace('exited=0','exited=1'),end.replace('exception_stop=0','exception_stop=1')):
+            self.assertFalse(tool.full_observation(prefix+value+suffix,0)['observation_complete'])
+
+    def test_override_checks_actual_predecessor_recipe_and_probe_before_output(self):
+        from src.patcher import native_present_bounds as correction
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);base=root/'baseline.exe';base.write_bytes(b'synthetic predecessor')
+            original=root/'original.exe';original.write_bytes(b'synthetic original')
+            image=b'synthetic new candidate';probe='synthetic probe'
+            original_metadata=dict(profile='classic',resolution='3840x2160',recipe_revision=correction.REVISION,
+                base_candidate_sha256=tool.matrix.digest(base),candidate_sha256=hashlib.sha256(image).hexdigest(),
+                probe_sha256=hashlib.sha256(probe.encode()).hexdigest(),stage='synthetic-nativepresent-validation',
+                source_hashes={'tools/resolution_playability.py':tool.matrix.digest(Path(tool.__file__))})
+            baseline=dict(candidate_sha256=tool.matrix.digest(base),launcher_build={'fixture':True})
+            for key,value in (('base_candidate_sha256','a'*64),('candidate_sha256','b'*64),('probe_sha256','c'*64),
+                              ('profile','framed'),('resolution','800x600'),('recipe_revision','legacy')):
+                metadata=dict(original_metadata,**{key:value})
+                with patch.object(correction,'build_candidate',return_value=(image,metadata,probe)),self.assertRaises(ValueError):
+                    tool.stage_present_override(original,'classic','3840x2160',root,base,baseline)
+                self.assertFalse((root/'native-present').exists())
+            with patch.object(correction,'build_candidate',return_value=(image,original_metadata,probe)):
+                target,built=tool.stage_present_override(original,'classic','3840x2160',root,base,baseline)
+            self.assertEqual(target.read_bytes(),image)
+            self.assertEqual(built['recipe_revision'],correction.REVISION)
+            self.assertEqual(built['predecessor_launcher_build'],baseline['launcher_build'])
+            self.assertEqual(base.read_bytes(),b'synthetic predecessor')
+
     def test_success_requires_input_pixels_cleanup_and_original_identity(self):
         flags=['--execute','--approval-text','test','--runtime','a','--manifest','b','--proxy','c','--out','d']
         success=dict(errors=[],menu_and_campaign_input_passed=True,map_controls_pixels_passed=True,
-                     outcome={'observation_complete':True},reference_unchanged=True,retained_process_exited=True,native_input_passed=True)
-        for field in (None,'menu_and_campaign_input_passed','map_controls_pixels_passed','outcome','reference_unchanged','retained_process_exited','native_input_passed'):
+                     outcome={'observation_complete':True},reference_unchanged=True,retained_process_exited=True,native_input_passed=True,unit_selected_observed=True)
+        for field in (None,'menu_and_campaign_input_passed','map_controls_pixels_passed','outcome','reference_unchanged','retained_process_exited','native_input_passed','unit_selected_observed'):
             row=dict(success)
             if field:row[field]={'observation_complete':False} if field=='outcome' else False
             with patch.object(sys,'argv',['test',*flags]),patch.object(tool,'run',return_value=row),redirect_stdout(io.StringIO()):

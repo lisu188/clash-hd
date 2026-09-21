@@ -3,7 +3,7 @@ on:
   push:
     branches: [codex/launcher-resolution-matrix]
   pull_request:
-    paths: ['tools/launcher_resolution_matrix.py', 'tools/resolution_playability.py', 'tools/test_resolution_playability.py', 'tools/test_launcher_resolution_matrix.py', '.github/workflows/launcher-resolution-runtime.yml']
+    paths: ['tools/launcher_resolution_matrix.py', 'tools/resolution_playability.py', 'tools/test_resolution_playability.py', 'tools/runner_menu_input.py', 'tools/test_runner_cursor_feedback.py', 'tools/test_launcher_resolution_matrix.py', '.github/workflows/launcher-resolution-runtime.yml']
   workflow_dispatch:
     inputs:
       execute:
@@ -35,6 +35,7 @@ jobs:
           python -m pip install --only-binary=:all: -r tools/requirements-framed-offline.txt
           python -m unittest discover -s tools -p test_launcher_resolution_matrix.py -v
           python -m unittest discover -s tools -p test_resolution_playability.py -v
+          python -m unittest discover -s tools -p test_runner_cursor_feedback.py -v
           python tools/test_real_exe_smoke.py
   runtime:
     if: github.repository == 'lisu188/clash-hd' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.execute))
@@ -82,15 +83,16 @@ jobs:
           python -m pip install --only-binary=:all: -r code/tools/requirements-framed-offline.txt
           if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed' }
           & ./code/scripts/build/build_ddraw_surfdump_proxy.ps1 -OutputDll "$env:PROXY_ROOT/ddraw.dll" -LogDir "$env:PROXY_ROOT"
-      - name: Verify source boundaries on Windows
-        shell: pwsh
+      - name: Verify source boundaries and native x86 presentation adapter before game execution
+        shell: bash
         run: |
           python -m unittest discover -s code/tools -p test_resolution_playability.py -v
-          exit $LASTEXITCODE
-      - name: Verify menu pixels, enter campaign, dismiss briefing and exercise map input
+          python -m unittest discover -s code/tools -p test_runner_cursor_feedback.py -v
+          python -m unittest discover -s code/tools -p test_native_present_bounds.py -k NativeTests -v
+      - name: Exercise guarded campaign transition and read-only engine-coordinate input feedback
         shell: pwsh
         run: |
-          python code/tools/resolution_playability.py --execute --approval-text "$env:APPROVAL_TEXT" --profile '${{ matrix.profile }}' --resolution '${{ matrix.resolution }}' --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --proxy "$env:PROXY_ROOT/ddraw.dll" --out "$env:RUN_ROOT"
+          python code/tools/resolution_playability.py --execute --native-present-bounds --approval-text "$env:APPROVAL_TEXT" --profile '${{ matrix.profile }}' --resolution '${{ matrix.resolution }}' --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --proxy "$env:PROXY_ROOT/ddraw.dll" --out "$env:RUN_ROOT"
           exit $LASTEXITCODE
       - name: Retain producer sources and proxy identity without binaries
         if: always()
@@ -98,7 +100,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path "$env:RUN_ROOT/source" | Out-Null
           Copy-Item code/tools/resolution_playability.py,code/tools/launcher_resolution_matrix.py,code/tools/real_exe_smoke.py,code/tools/runner_menu_input.py,code/tools/menu_pulse_click.py "$env:RUN_ROOT/source/"
-          Copy-Item code/src/launcher/resolutions.json "$env:RUN_ROOT/source/"
+          Copy-Item code/src/patcher/native_present_bounds.py,code/src/launcher/resolutions.json "$env:RUN_ROOT/source/"
           Copy-Item "$env:PROXY_ROOT/ddraw_surfdump_proxy.build.json" "$env:RUN_ROOT/source/" -ErrorAction SilentlyContinue
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
@@ -107,6 +109,7 @@ jobs:
           path: |
             ${{ env.RUN_ROOT }}/*.json
             ${{ env.RUN_ROOT }}/*.log
+            ${{ env.RUN_ROOT }}/native-present/*.candidate.json
             ${{ env.RUN_ROOT }}/real-exe-engine.cpp
             ${{ env.RUN_ROOT }}/capture/
             ${{ env.RUN_ROOT }}/source/
