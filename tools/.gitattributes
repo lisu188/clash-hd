@@ -11,3 +11,5 @@
 /native_launcher_input.py text eol=lf
 /runner_menu_input.py text eol=lf
 /native_route_observer.py text eol=lf
+/resolution_playability.py text eol=lf
+/test_resolution_playability.py text eol=lf
