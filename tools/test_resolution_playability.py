@@ -50,6 +50,19 @@ class PlayabilityTests(unittest.TestCase):
             pal.write_bytes(b'incomplete')
             with self.assertRaises(ValueError):tool.indexed_image(path)
 
+    def test_source_has_no_undefined_module_dependencies(self):
+        import builtins
+        import symtable
+        source=Path(tool.__file__).read_text()
+        root=symtable.symtable(source,tool.__file__,'exec')
+        known=set(vars(builtins)) | {s.get_name() for s in root.get_symbols() if s.is_assigned() or s.is_imported()} | {'__name__','__file__'}
+        pending=[root]
+        missing=set()
+        while pending:
+            table=pending.pop();pending.extend(table.get_children())
+            missing.update(s.get_name() for s in table.get_symbols() if s.is_global() and s.is_referenced() and s.get_name() not in known)
+        self.assertEqual(missing,set())
+
     def test_state_observer_does_not_add_breakpoints_or_mutate_game_state(self):
         original=tool.matrix.runtime.HARNESS
         generated=tool.observation_source(original)
