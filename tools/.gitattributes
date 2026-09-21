@@ -6,3 +6,4 @@
 /real_exe_smoke.py text eol=lf
 /test_real_exe_smoke.py text eol=lf
 /test_classic_menu_candidate.py text eol=lf
+/test_native_present_bounds.py text eol=lf
