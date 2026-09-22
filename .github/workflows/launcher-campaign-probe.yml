@@ -1,0 +1,85 @@
+name: Launcher natural campaign probe
+
+on:
+  push:
+    branches: [codex/launcher-campaign-input]
+    paths: ['tools/launcher_campaign_probe.py', '.github/workflows/launcher-campaign-probe.yml']
+  pull_request:
+    paths: ['tools/launcher_campaign_probe.py', 'tools/test_launcher_campaign_probe.py', '.github/workflows/launcher-campaign-probe.yml']
+  workflow_dispatch:
+    inputs:
+      approval_text:
+        type: string
+        required: true
+        description: 'Explicit approval for isolated game-window capture and bounded automated menu input'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: launcher-campaign-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tools -p test_launcher_campaign_probe.py -v
+
+  runtime:
+    needs: source
+    if: github.repository == 'lisu188/clash-hd' && github.event_name != 'pull_request'
+    runs-on: windows-2022
+    timeout-minutes: 20
+    env:
+      OUT: C:/ClashTests/campaign-probe-${{ github.run_id }}-${{ github.run_attempt }}
+      APPROVAL_TEXT: ${{ inputs.approval_text || 'Kontynuuj aż wszystkie rozdzielczości wspierane przez launcher będą działać (current user request, 2026-09-20)' }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: code
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: lisu188/clash-assets
+          ref: 84a1e4bcf131e6bb75b39fc5e10941dd0b801767
+          path: assets
+          lfs: false
+          persist-credentials: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
+      - name: Materialize reference assets without modifying them
+        shell: bash
+        working-directory: assets
+        run: git lfs pull --include='runtime/gog-32003/**' --exclude=''
+      - name: Build source-bound diagnostic proxy
+        shell: pwsh
+        run: |
+          python -m pip install --only-binary=:all: -r code/tools/requirements-framed-offline.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed' }
+          & ./code/scripts/build/build_ddraw_surfdump_proxy.ps1 -OutputDll C:/ClashTests/campaign-proxy/ddraw.dll -LogDir C:/ClashTests/campaign-proxy
+      - name: Observe campaign callbacks after real OS input
+        shell: pwsh
+        run: |
+          python code/tools/launcher_campaign_probe.py --execute --profile modalwidgets --resolution 1024x768 --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --proxy C:/ClashTests/campaign-proxy/ddraw.dll --out "$env:OUT" --approval-text "$env:APPROVAL_TEXT"
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: launcher-campaign-probe
+          path: |
+            ${{ env.OUT }}/evidence/
+            ${{ env.OUT }}/compile.log
+            ${{ env.OUT }}/real-exe-engine.cpp
+          if-no-files-found: error
+          retention-days: 7
