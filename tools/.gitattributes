@@ -7,3 +7,9 @@
 /test_real_exe_smoke.py text eol=lf
 /test_classic_menu_candidate.py text eol=lf
 /test_native_present_bounds.py text eol=lf
+/launcher_resolution_matrix.py text eol=lf
+/test_launcher_resolution_matrix.py text eol=lf
+/runner_menu_input.py text eol=lf
+/test_runner_cursor_feedback.py text eol=lf
+/resolution_playability.py text eol=lf
+/test_resolution_playability.py text eol=lf
