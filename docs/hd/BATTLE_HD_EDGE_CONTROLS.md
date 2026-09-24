@@ -58,7 +58,16 @@ Shared result dialogs and battle teardown keep their earlier behavior.
 predecessor sources, reconstructs all 283 inherited patches, and requires the
 unchanged expanded-battle SHA
 `7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47`.
-The old stage and patch sources are not edited.
+The old stage and patch sources are not edited. The four battle dependency
+files (`battle_hd_hud.py`, `battle_hd_core.py`, `battle_hd_layout.py` and
+`battle_hd_section.py`) have two explicitly enumerated source identities:
+the existing Windows CRLF checkout and the Git LF blob. Their complete bytes
+were compared independently; removing only CRLF carriage returns reproduces
+the Git blob exactly. No other source variation is accepted. The other three
+dependencies keep a single exact identity. Verification hashes the actual
+bytes without normalization, and the manifest records the actual observed
+hash for each file. A mixed or changed source that matches neither identity
+fails. Predecessor reconstruction and the exact candidate SHA remain required.
 
 The successor appends one RX helper section using the checked PE extension
 builder, preserving the eight inherited section headers and old relocation
@@ -92,13 +101,16 @@ Outputs require a new absolute `.exe` path under `C:/ClashTests`, outside the
 checkout; existing bundle members are never overwritten. The builder starts
 no game or debugger. The old patcher/launcher stage choices remain unchanged.
 
-On 2026-09-24, all 13 focused fixtures passed without skips in 1.022 seconds.
+On 2026-09-24, the final 15 focused fixtures passed without skips in 1.410 seconds.
 Original-backed x86 fixtures executed the actual native descriptor draw/hit,
 stat-hover, morale-animation and stats-present instruction paths. They verify
 all six unchanged callback targets, descriptor drawing without scaling, three
 cursor scales (0, 2 and 6), gap/boundary rejection, exact native copy rectangles,
 register/stack/flags preservation, complete byte replay and relocation
-preservation. Resource queries, input-query results, rendering sinks and game
+preservation. The source compatibility fixtures exercise both enumerated EOL
+forms, verify actual manifest hashes and unchanged candidate/probe bytes, and
+reject non-EOL changes and unlisted mixed endings. Resource queries, input-query
+results, rendering sinks and game
 callbacks are explicitly stubbed in these CPU fixtures. They are not game,
 artwork or natural/manual-input evidence.
 

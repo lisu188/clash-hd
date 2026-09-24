@@ -19,15 +19,36 @@ STAGE = scalar.BATTLE_HD_STAGE + '-edgecontrols-validation'
 REVISION = 'expanded_battle_edge_controls_v1'
 RESOLUTION = '1280x720'
 BASE_SHA256 = '7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47'
+# The four battle files have independently checked CRLF checkout and LF Git
+# identities. Enumerate those exact byte sequences; never normalize runtime reads.
 PINNED = {
-    'src/patcher/battle_hd_hud.py': 'ad867f7627fc4720169ac653becceca4164c03d544a8d3a414a000b3bd47c9c9',
-    'src/patcher/battle_hd_core.py': '5f37cceadb99a54e7880600a658b7b896e1e8f62a26f74702e97d78eb0c6bcc9',
-    'src/patcher/battle_hd_layout.py': '015e4832ae653dba789873b5b14e0768c9cb2b6c42d2d47425f53ae7de795f04',
-    'src/patcher/battle_hd_section.py': '6705fdc01780bd8b4a4153dd2ed3788a827db427eb633fd3a14af650449c73a0',
-    'src/patcher/patch_clash95_hd.py': '05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31',
-    'src/patcher/pe_extension.py': '4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27',
-    'src/patcher/partial_tile_clip.py': '92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad',
+    'src/patcher/battle_hd_hud.py': (
+        'ad867f7627fc4720169ac653becceca4164c03d544a8d3a414a000b3bd47c9c9',
+        'e77dd58d5348824abe626c450aae1f9277d8649eadf98115b84b6b83be12aa98',
+    ),
+    'src/patcher/battle_hd_core.py': (
+        '5f37cceadb99a54e7880600a658b7b896e1e8f62a26f74702e97d78eb0c6bcc9',
+        'e6d94266a5c3370ca295c680bf8add4af2ca50517dd72795d2d518a5041f7791',
+    ),
+    'src/patcher/battle_hd_layout.py': (
+        '015e4832ae653dba789873b5b14e0768c9cb2b6c42d2d47425f53ae7de795f04',
+        'bbeb0d55a9b8a45da76914faf857b7ec1f6294b5a247c9129d8e04a562029c99',
+    ),
+    'src/patcher/battle_hd_section.py': (
+        '6705fdc01780bd8b4a4153dd2ed3788a827db427eb633fd3a14af650449c73a0',
+        '798b8d738af7062717ff62ba04216124eb4685c1b454f86518dbc7c7c11a46ee',
+    ),
+    'src/patcher/patch_clash95_hd.py': (
+        '05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31',
+    ),
+    'src/patcher/pe_extension.py': (
+        '4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27',
+    ),
+    'src/patcher/partial_tile_clip.py': (
+        '92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad',
+    ),
 }
+
 # Source x,y,width,height,destination x,y. Pixels remain native size.
 SIDEBAR_BLITS = ((480, 0, 160, 368, 1120, 0), (480, 368, 160, 112, 1120, 608))
 GAP_FRAME_BLITS = ((480, 16, 16, 240, 1120, 368), (624, 16, 16, 240, 1264, 368))
@@ -99,8 +120,13 @@ def emit_helpers(base_va):
 
 
 def _sources():
-    for name, expected in PINNED.items(): pe._identity((ROOT / name).read_bytes(), expected, name)
-    return dict(PINNED, **{'src/patcher/battle_hd_edge_controls.py': sha(Path(__file__).read_bytes())})
+    observed = {}
+    for name, accepted in PINNED.items():
+        actual = sha((ROOT / name).read_bytes())
+        pe._require(actual in accepted, name + ' SHA-256 is not an enumerated source identity')
+        observed[name] = actual
+    observed['src/patcher/battle_hd_edge_controls.py'] = sha(Path(__file__).read_bytes())
+    return observed
 
 
 def predecessor(original):
