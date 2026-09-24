@@ -133,6 +133,102 @@ class PlayabilityTests(unittest.TestCase):
             self.assertEqual(built['predecessor_launcher_build'],baseline['launcher_build'])
             self.assertEqual(base.read_bytes(),b'synthetic predecessor')
 
+    @staticmethod
+    def map_state(**overrides):
+        return dict(dict(render_hook=0x40ad40,game_data=0x3800000,map_active_word=0x4100000,
+                         map_surface=0x4200000,map_pixels=0x4300000,native_modal_word=0,
+                         world_width=50,world_height=50,scroll_x=26,scroll_y=39),**overrides)
+
+    def test_screen_owner_takes_precedence_over_retained_map_buffers(self):
+        self.assertTrue(tool.screen_context(self.map_state())['ordinary_map'])
+        result=tool.screen_context(self.map_state(render_hook=0x422020))
+        self.assertEqual(result['screen'],'castle_overview');self.assertFalse(result['ordinary_map'])
+        self.assertFalse(tool.screen_context(self.map_state(render_hook=0x4617a0))['ordinary_map'])
+
+    def test_map_context_rejects_partial_modal_and_malformed_observations(self):
+        for key,value in (('render_hook',True),('game_data',0),('map_active_word',False),('map_surface',None),
+                          ('map_pixels',0xffffffff+1),('native_modal_word',1),('native_modal_word',False),
+                          ('world_width',101),('world_height','50'),('scroll_x',-1),('scroll_y',50),('scroll_y',True)):
+            with self.subTest(key=key,value=value):
+                self.assertFalse(tool.screen_context(self.map_state(**{key:value}))['ordinary_map'])
+        for key in self.map_state():
+            state=self.map_state();del state[key]
+            self.assertFalse(tool.screen_context(state)['ordinary_map'])
+
+    def test_snapshot_requires_same_index_state_and_paused_primary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);path=root/'primary-10.json';state=root/'map-state-10.json'
+            path.write_text(json.dumps({'paused':True}))
+            (root/'map-state-09.json').write_text(json.dumps(self.map_state()))
+            self.assertFalse(tool.primary_context(path)['ordinary_map'])
+            state.write_text(json.dumps(self.map_state()))
+            result=tool.primary_context(path)
+            self.assertTrue(result['ordinary_map']);self.assertEqual(result['state_sample'],state.name)
+            self.assertEqual(result['state_sha256'],hashlib.sha256(state.read_bytes()).hexdigest())
+            self.assertEqual(result['primary_metadata_sha256'],hashlib.sha256(path.read_bytes()).hexdigest())
+            for value in ({},{'paused':1},{'paused':False},[]):
+                path.write_text(json.dumps(value));self.assertFalse(tool.primary_context(path)['ordinary_map'])
+            path.write_text(json.dumps({'paused':True}))
+            for value in ('incomplete','[]','null'):
+                state.write_text(value);self.assertFalse(tool.primary_context(path)['ordinary_map'])
+
+    def test_final_castle_samples_are_retained_but_never_audited_as_map(self):
+        import frame_surface_audit as frame
+        import action_bar_surface_audit as bar
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            for index in range(4):
+                (root/f'primary-{index:02}.json').write_text(json.dumps({'paused':True}))
+                state=self.map_state(render_hook=0x40ad40 if index==0 else 0x422020)
+                (root/f'map-state-{index:02}.json').write_text(json.dumps(state))
+            with patch.object(frame,'audit_surface',side_effect=AssertionError('not a map')), \
+                 patch.object(bar,'compare_cells',side_effect=AssertionError('not a map')), \
+                 patch.object(tool,'indexed_image',side_effect=AssertionError('not a map')):
+                rows=tool.validate_map_pixels(root,root/'absent-artwork','modalwidgets','1024x768')
+            self.assertEqual([r['sample'] for r in rows],['primary-01.json','primary-02.json','primary-03.json'])
+            self.assertTrue(all(r['screen_context']['screen']=='castle_overview' for r in rows))
+            self.assertTrue(all(not r['map_audit_applicable'] and r['frame'] is None and r['action_cells']==[] for r in rows))
+            self.assertFalse(tool.map_controls_passed(rows))
+
+    def test_actual_map_still_runs_both_artwork_audits_and_keeps_pixel_failures(self):
+        import frame_surface_audit as frame
+        import action_bar_surface_audit as bar
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            (root/'gfx3.res').write_bytes(b'fixture');(root/'minimum.res').write_bytes(b'fixture')
+            for index in range(3):
+                (root/f'primary-{index:02}.json').write_text(json.dumps({'paused':True}))
+                (root/f'map-state-{index:02}.json').write_text(json.dumps(self.map_state()))
+            cells=[dict(cell=i,exact_source_match=True) for i in range(6)]
+            with patch.object(frame,'load_native_frame',return_value=object()), \
+                 patch.object(bar,'load_sprites',return_value=({},'fixture')), \
+                 patch.object(tool,'indexed_image',return_value=(Image.new('RGB',(1024,768)),b'fixture')), \
+                 patch.object(frame,'audit_surface',return_value={'structural_border_exact':True}) as edges, \
+                 patch.object(bar,'compare_cells',return_value=cells) as actions:
+                rows=tool.validate_map_pixels(root,root,'framed','1024x768')
+                self.assertEqual(edges.call_count,3);self.assertEqual(actions.call_count,3)
+                self.assertTrue(tool.map_controls_passed(rows))
+                edges.return_value={'structural_border_exact':False}
+                self.assertFalse(tool.map_controls_passed(tool.validate_map_pixels(root,root,'framed','1024x768')))
+                edges.return_value={'structural_border_exact':True};cells[-1]['exact_source_match']=False
+                self.assertFalse(tool.map_controls_passed(tool.validate_map_pixels(root,root,'framed','1024x768')))
+                cells[-1]['exact_source_match']=True
+                edges.reset_mock()
+                classic=tool.validate_map_pixels(root,root,'classic','1024x768')
+                self.assertTrue(tool.map_controls_passed(classic));edges.assert_not_called()
+                self.assertTrue(all(r['frame'] is None and r['frame_source_sha256'] is None for r in classic))
+
+    def test_map_pass_requires_three_applicable_samples_and_all_six_cells(self):
+        row=dict(map_audit_applicable=True,screen_context={'ordinary_map':True},frame_required=True,
+                 frame={'structural_border_exact':True},action_cells=[{}]*6,action_cells_exact=True)
+        self.assertTrue(tool.map_controls_passed([row]*3))
+        for changed in (dict(row,map_audit_applicable=False),dict(row,screen_context={'ordinary_map':False}),
+                        dict(row,action_cells=[{}]*5),dict(row,action_cells_exact=False),
+                        dict(row,frame={'structural_border_exact':False}),dict(row,frame_required=None)):
+            self.assertFalse(tool.map_controls_passed([row,row,changed]))
+        self.assertFalse(tool.map_controls_passed([row]*2))
+        self.assertFalse(tool.map_controls_passed([row]*4))
+
     def test_success_requires_input_pixels_cleanup_and_original_identity(self):
         flags=['--execute','--approval-text','test','--runtime','a','--manifest','b','--proxy','c','--out','d']
         success=dict(errors=[],menu_and_campaign_input_passed=True,map_controls_pixels_passed=True,
