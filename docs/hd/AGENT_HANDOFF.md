@@ -88,6 +88,16 @@ guard CLIs also write current reports by default; use both `--write-json` and
 
 ## Evidence snapshot and active work
 
+The [2026-09-24 review of the latest resolution runtime](../../reports/resolution-playability-screen-audit-20260924.md)
+preserves three failed September 21 ordinary-input runs. The 1024x768 widget
+candidate entered a corrupted castle overview before the selection click; its
+final screenshots cannot be audited as ordinary maps. Both 4K profiles remain
+on the map but fail controls/input checks. The audit now requires matching paused
+screen-owner records. Fixed click targets, the framed input guard for worlds
+smaller than the viewport, and ordinary castle entry still need separate repairs.
+This review is not a fresh runtime or a replacement for the controlled component
+evidence below; stable and manual-input boundaries remain unchanged.
+
 ### Complete candidate integration — 2026-09-08
 
 The active candidate is the protected stable stage plus
@@ -126,6 +136,12 @@ candidate's cursor-mapping defect; tactical commands, movement, map return,
 manual input and full acceptance remain unproven. Owned cleanup passed for
 both reruns. Their exact 7D04 candidate and frozen sources are kept separate
 from any corrective source or candidate work.
+The [separate edge-controls successor](BATTLE_HD_EDGE_CONTROLS.md), prepared on
+2026-09-24, anchors native top statistics and bottom commands to the screen edges
+while keeping the expanded field and combat unchanged. Fifteen source and original-backed
+CPU/byte fixtures pass with explicit resource/input stubs. It has its own validation
+stage; artwork, actual input, transitions and complete-HD composition remain
+unproved. Existing battle candidates and failed runtime reports are preserved.
 This lane is independent of the Complete HD recipe and does not promote either
 candidate. Its source-binding integration report preserves the original
 foundation manifest while documenting the reviewed updated producer hashes.
@@ -297,7 +313,7 @@ It retains the native formatter, glyphs, quantity and calling convention;
 an explicit text-stage consumer and fresh glyph-composition evidence remain
 required. The snapshotted
 initial-checkpoint prototype is distinct from the richer four-checkpoint
-consumer under development in the original checkout. Keep both protocols and
+consumer now imported from its reviewed dependency chain. Keep both protocols and
 the failed D/F receipts separate; neither capture stability nor source/PE/x86
 fixtures establish composition, manual input or release acceptance.
 
@@ -311,18 +327,53 @@ focused repairs.
 
 ### Four-checkpoint primary consumer integration
 
-The separate [four-checkpoint hidden consumer](MODAL_PRIMARY_CAPTURE.md)
-retains the actual failed 1024x768
-[attempt A](../../captures/current/modal-primary-1024x768-20260919-attempt-a.json)
-and [attempt B](../../captures/current/modal-primary-1024x768-20260919-attempt-b.json).
-Both reach full publication but stop at the cursor-rectangle guard after
-twelve slot copies. The later low-DWORD sentinel repair remains distinct
-from those immutable failed runs. The source-artwork diagnosis also retains
-the disabled-control x=1000 sentinel defect in the native modal canvas;
-matching native and primary pixels is not sufficient to accept that frame.
-These four-checkpoint records are not the separate initial-checkpoint
-prototype above. Source integration and cursor audit fixes do not grant
-new game-runtime, final composition, manual-input or stable acceptance.
+The separate
+[four-checkpoint hidden consumer](MODAL_PRIMARY_CAPTURE.md) now authenticates
+the full publication, twelve slot copies, original placeholder call and first
+presentation. It captures native, physical and cached-primary pixels with the
+actual palette and cursor state, and checks draw order against original assets.
+Its first 60 focused tests passed on 2026-09-19, including exact reconstruction
+from the original executable; synthetic fixture logs remain separate from
+runtime proof. The [first actual primary-stage attempt](../../captures/current/modal-primary-1024x768-20260919-attempt-a.json)
+passed the initial `full-published` checkpoint at 1024x768 and retained one
+native/physical/primary sample. All three agree after centering and all outer
+margins are clear. After continuation, twelve slot-copy events occur, followed
+by `MPCAP_REJECT reason=cursor_rect`; later checkpoints are absent. The host and
+final trace fail, while owned cleanup and original/live-save preservation pass.
+The early attached palette is empty before native fade-in, so its PNG is an
+explicit grayscale index preview rather than captured final colors.
+
+The [second diagnostic attempt](../../captures/current/modal-primary-1024x768-20260919-attempt-b.json)
+retains that rejection with the cursor operands recorded. Its first-checkpoint
+pixels are identical to attempt A, and the corrected host now accepts all three
+grayscale PNG receipts. Recorded 32-bit coordinates, stack, thread and phase
+values match the expected guard inputs. A corroborated debugger sign-extension
+diagnosis explains the unmasked comparison of the selected DWORD with `-1`;
+the probe now compares the exact low DWORD, including the four native `-1`
+placeholder arguments. Focused regression checks pass, but no post-fix runtime
+has run. Cleanup and original/live-save preservation pass for B. Its later
+checkpoints and complete primary composition remain unproved.
+
+Independent original-artwork comparison using native mode 0 exposes 4,677 changed pixels around
+the lower controls, including 1,231 in the bottom frame band. Matching the
+primary to the native canvas does not prove native artwork correctness. The
+candidate's widened widget cutoff admits the original x=1000 disabled-control
+sentinel into a 640-wide modal canvas. Replaying those admitted widgets with
+the original sprites and native mode reproduces all 307,200 observed canvas
+pixels exactly. The separate [widget-bounds candidate](MODAL_WIDGET_CANDIDATE.md)
+now corrects those bounds in source. Its [1024/1080 startup observations](MODAL_WIDGET_RUNTIME.md)
+reach the menu only; corrected barracks artwork still needs a fresh capture.
+Keep unavailable facilities unavailable rather than using `construct_all` to
+avoid this case. This new stage still has no accepted complete runtime capture.
+Keep the failed D/F receipts and their diagnostics
+separate from source/PE/x86-fixture verification.
+
+The new [checkpoint query-ledger reader](MODAL_PRIMARY_CHECKPOINT_LEDGER.md)
+checks exact candidate/process/trace bindings and the complete primary and
+cursor read inventories. It preserves malformed and rejected rows after bounded
+admission. This is an offline text-stage contract; no runtime host produces it
+yet. Three matching captures per checkpoint, source authentication, corrected
+artwork and cleanup remain separate outer requirements.
 
 The [slots lifecycle protocol](MODAL_SLOTS_LIFECYCLE.md) prepares a separate
 controlled continuation through native barracks/overview cleanup, owned

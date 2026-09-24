@@ -42,6 +42,8 @@ jobs:
           python tools/test_battle_hd_relative_input.py
       - name: Check battle HUD contracts and report optional skips
         run: python tools/test_battle_hd_hud.py -v
+      - name: Check additive edge-control source contracts
+        run: python tools/test_battle_hd_edge_controls.py SourceTests -v
       - name: Check battle evidence parsing
         run: python tools/test_battle_hd_summary.py
       - name: Check read-only cursor diagnostic contracts
