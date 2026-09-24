@@ -81,6 +81,11 @@ record replay, source bindings, independent relocation, and Windows
 
 ## Required fresh runtime evidence
 
+The [read-only text observer](MODAL_PRIMARY_TEXT_OBSERVER.md) now binds the
+three native call observations and preserves exact CRLF debugger transport.
+Its native debugger fixture is grammar evidence, with real game observations
+and rendered composition still pending.
+
 The [exact text context reader](MODAL_PRIMARY_TEXT_CONTEXT.md) now rebuilds the
 new candidate and preserves the actual identity of each inherited context.
 The existing first-present prototype and four-checkpoint primary consumer

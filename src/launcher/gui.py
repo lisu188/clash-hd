@@ -16,7 +16,9 @@ from tkinter import filedialog, font as tkfont, messagebox, ttk
 
 import core
 import framed
+import classic
 import completehd
+import modalwidgets
 import ini as ini_mod
 import presets
 import settings as settings_mod
@@ -41,7 +43,8 @@ WRAPPER_HELP = (
 )
 
 
-PROFILE_NAMES = {"classic": "Classic", "framed": "Framed + minimap", "completehd": "Complete HD (experimental)"}
+PROFILE_NAMES = {"classic": "Classic", "framed": "Framed + minimap", "completehd": "Complete HD (experimental)",
+                 "modalwidgets": "Modal widgets HD (experimental)"}
 TAB_NAMES = ("Main settings", "Launcher settings", "Information", "Diagnostics")
 
 
@@ -409,7 +412,7 @@ class LauncherApp:
         return f"{width}x{height}"
 
     def _backend(self):
-        return {"classic": core, "framed": framed, "completehd": completehd}[self.profile_var.get()]
+        return {"classic": classic, "framed": framed, "completehd": completehd, "modalwidgets": modalwidgets}[self.profile_var.get()]
 
     def on_profile_change(self) -> None:
         experimental = self.profile_var.get() != "classic"
@@ -421,13 +424,16 @@ class LauncherApp:
         if hasattr(self, "renderer_choice"):
             self.renderer_choice.set(PROFILE_NAMES[self.profile_var.get()])
             options = tuple(option.key for option in presets.load_options(self.manifest, self.profile_var.get()))
-            self.resolution_combo.configure(values=options + (() if self.profile_var.get() == "completehd" else ("custom",)))
-            if self.profile_var.get() == "completehd" and self.resolution_var.get() not in options:
+            self.resolution_combo.configure(values=options + (() if self.profile_var.get() in ("completehd", "modalwidgets") else ("custom",)))
+            if self.profile_var.get() in ("completehd", "modalwidgets") and self.resolution_var.get() not in options:
                 self.resolution_var.set("800x600")
             components = (("Four-sided adventure frame", "Clipped edge tiles", "Minimap viewport correction", "Native fallback on other screens")
                           if experimental else ("Classic adventure-map layout", "Centered main menu", "Right-anchored minimap", "Existing stable patch recipe"))
-            if self.profile_var.get() == "completehd":
+            if self.profile_var.get() in ("completehd", "modalwidgets"):
                 components = ("Four-sided adventure frame", "Clipped edge tiles and minimap correction", "Native modal canvas and army panel", "Centered native menu, castle and battle")
+            if self.profile_var.get() == "modalwidgets":
+                components = ("Complete HD adventure frame and minimap", "Native modal composition and army panel",
+                              "Centered barracks quantity text", "Context-dependent native modal widget bounds")
             self.component_list.delete(0, "end")
             for component in components:
                 self.component_list.insert("end", component)

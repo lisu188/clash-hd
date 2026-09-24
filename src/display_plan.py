@@ -10,7 +10,7 @@ from typing import Any, Mapping
 
 PLAN_SCHEMA = 1
 RECIPE_REVISION = {"classic": "classic-frozen-800-v1", "framed": "four-border-partial-initial-v1",
-                   "completehd": "complete_hd_v1"}
+                   "completehd": "complete_hd_v1", "modalwidgets": "owned_modal_widget_bounds_v1"}
 DEFAULT_BOUNDS = ((800, 600), (3840, 2160))
 SHA256_RE = re.compile(r"[0-9a-f]{64}")
 RESOLUTION_RE = re.compile(r"[1-9][0-9]{2,4}x[1-9][0-9]{2,4}")
@@ -121,24 +121,27 @@ class DisplayPlan:
 def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x600", stage: str | None = None,
                          scaling_mode: str = "integer", minimap_viewport: bool | None = None,
                          bounds: tuple[tuple[int, int], tuple[int, int]] = DEFAULT_BOUNDS) -> DisplayPlan:
-    _require(type(renderer) is str and renderer in RECIPE_REVISION, "unknown_profile", "Renderer must be classic, framed or completehd.")
+    _require(type(renderer) is str and renderer in RECIPE_REVISION, "unknown_profile", "Renderer must be classic, framed, completehd or modalwidgets.")
     width, height = parse_dimensions(resolution, bounds)
     _require(scaling_mode == "integer", "unsupported_presentation", "Only the verified integer wrapper scaling mode is supported.")
     _require(minimap_viewport is None or type(minimap_viewport) is bool,
              "invalid_feature", "minimap_viewport must be an explicit boolean.")
     minimap = renderer != "classic" if minimap_viewport is None else minimap_viewport
     _require(renderer != "classic" or not minimap, "invalid_feature", "Minimap viewport correction requires a framed renderer.")
-    _require(renderer != "completehd" or minimap, "invalid_feature", "The complete-HD recipe requires minimap correction.")
+    _require(renderer not in ("completehd", "modalwidgets") or minimap, "invalid_feature", "The complete-HD recipe requires minimap correction.")
     try:
         patcher = importlib.import_module("patch_clash95_hd")
         selected_stage = patcher.DEFAULT_STAGE if stage is None else stage
+        selected_revision = RECIPE_REVISION[renderer]
+        scalar_stage = selected_stage
         profile = patcher.parse_resolution(resolution)
-        if renderer in ("framed", "completehd"):
+        if renderer in ("framed", "completehd", "modalwidgets"):
             required_stage = patcher.DEFAULT_STAGE + "-combinedui-partialtiles-initialpaint-framed-validation"
-            if renderer == "completehd":
-                complete = importlib.import_module("src.patcher.complete_hd_candidate")
+            if renderer in ("completehd", "modalwidgets"):
+                complete = importlib.import_module("src.patcher.complete_hd_candidate" if renderer == "completehd"
+                                                  else "tools.build_framed_modal_widgets_candidate")
                 required_stage = complete.STAGE
-                _require(resolution in complete.RESOLUTIONS, "unsupported_resolution", "Complete-HD currently supports only its six fixture resolutions.")
+                _require(resolution in (complete.RESOLUTIONS if renderer == "completehd" else complete.complete.RESOLUTIONS), "unsupported_resolution", "Complete-HD currently supports only its six fixture resolutions.")
                 _require(complete.REVISION == RECIPE_REVISION[renderer], "unsupported_recipe", "Complete-HD recipe revision differs from display planning.")
             _require(stage in (None, required_stage), "unsupported_stage", "A framed renderer cannot use another recipe's stage.")
             selected_stage = required_stage
@@ -149,20 +152,27 @@ def resolve_display_plan(*, renderer: str = "classic", resolution: str = "800x60
             bands, cells = tuple(map(_rect_tuple, viewport.frame_bands)), tuple(map(_rect_tuple, viewport.action_cells))
             minimap_anchor = viewport.minimap_right_anchor
         else:
-            _require(type(selected_stage) is str and selected_stage in patcher.STAGE_GROUPS,
+            menu_stage = patcher.DEFAULT_STAGE + "-menuwidgets-validation"
+            if selected_stage == menu_stage:
+                menu = importlib.import_module("src.patcher.classic_menu_candidate")
+                _require(menu.STAGE == menu_stage and menu.REVISION == "classic_menu_widgets_v1"
+                         and menu.supports(resolution), "unsupported_recipe", "Classic menu correction requires an affected supported resolution.")
+                scalar_stage = patcher.DEFAULT_STAGE
+                selected_revision = menu.REVISION
+            _require(type(scalar_stage) is str and scalar_stage in patcher.STAGE_GROUPS,
                      "unsupported_stage", f"Unknown Classic patch stage: {selected_stage!r}")
-            patches = patcher.select_patches_for(selected_stage, profile)
+            patches = patcher.select_patches_for(scalar_stage, profile)
             terrain = patcher.TILE_ORIGIN_X, patcher.TILE_ORIGIN_Y, profile.edge_x, profile.edge_y
             full = coverage = profile.tiles_x, profile.tiles_y
             partial = profile.partial_col_px, profile.partial_row_px
             bands, cells = (), ()
-            minimap_anchor = width if "minimap-hd-right-anchor" in patcher.STAGE_GROUPS[selected_stage] else None
+            minimap_anchor = width if "minimap-hd-right-anchor" in patcher.STAGE_GROUPS[scalar_stage] else None
         encoded = [{"group": p.group, "offset": p.offset, "old": p.old.hex(), "new": p.new.hex()} for p in patches]
         _require(bool(encoded), "unsupported_stage", "The selected recipe contains no patches.")
-        return DisplayPlan(renderer, resolution, selected_stage, RECIPE_REVISION[renderer], width, height,
+        return DisplayPlan(renderer, resolution, selected_stage, selected_revision, width, height,
                            scaling_mode, minimap, (profile.off_x, profile.off_y), terrain, full, coverage, partial,
                            bands, cells, minimap_anchor, len(encoded), _digest(encoded),
-                           renderer != "classic" or set(patcher.STAGE_GROUPS[patcher.DEFAULT_STAGE]) <= set(patcher.STAGE_GROUPS[selected_stage]))
+                           renderer != "classic" or set(patcher.STAGE_GROUPS[patcher.DEFAULT_STAGE]) <= set(patcher.STAGE_GROUPS[scalar_stage]))
     except DisplayPlanError:
         raise
     except ImportError as exc:

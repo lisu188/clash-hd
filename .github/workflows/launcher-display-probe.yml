@@ -1,0 +1,69 @@
+name: Launcher display mode probe
+
+on:
+  push:
+    branches: [codex/launcher-resolution-sweep]
+    paths: ['tools/launcher_display_mode.py', 'tools/test_launcher_display_mode.py', '.github/workflows/launcher-display-probe.yml']
+  pull_request:
+    paths: ['tools/launcher_display_mode.py', 'tools/test_launcher_display_mode.py', '.github/workflows/launcher-display-probe.yml']
+  workflow_dispatch:
+    inputs:
+      execute:
+        type: boolean
+        default: false
+        required: true
+        description: 'Temporarily select enumerated modes on the isolated test runner, restoring the original mode'
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tools -p test_launcher_display_mode.py -v
+  display:
+    if: github.repository == 'lisu188/clash-hd' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.execute))
+    needs: source
+    runs-on: windows-2022
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Enumerate and test actual display modes without changing the registry
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,sys,traceback
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          from launcher_display_mode import temporary_display
+          report=dict(schema=1,source_sha256=hashlib.sha256(Path('tools/launcher_display_mode.py').read_bytes()).hexdigest(),rows=[],errors=[])
+          try:
+              for width,height in ((1920,1080),(3440,1440),(3840,2160)):
+                  with temporary_display(width,height) as row:
+                      report['rows'].append(row)
+          except Exception:
+              report['errors'].append(traceback.format_exc())
+          finally:
+              Path(os.environ['RUNNER_TEMP'],'display-probe.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          raise SystemExit(int(bool(report['errors'])))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: launcher-display-capacity
+          path: ${{ runner.temp }}/display-probe.json
+          retention-days: 7
+          if-no-files-found: error
