@@ -4,12 +4,35 @@ import json
 import build_framed_modal_primary_candidate as builder
 
 
+def strict_json_object(raw: bytes) -> dict:
+    """Decode one unambiguous object without discarding duplicate key values."""
+    if type(raw) is not bytes:
+        raise ValueError('immutable JSON bytes required')
+    def pairs(rows):
+        result = {}
+        for name, value in rows:
+            if name in result:
+                raise ValueError('duplicate JSON key: ' + name)
+            result[name] = value
+        return result
+    def constant(value):
+        raise ValueError('non-finite JSON number: ' + value)
+    try:
+        value = json.loads(raw.decode('utf-8-sig'), object_pairs_hook=pairs, parse_constant=constant)
+        if type(value) is not dict:
+            raise ValueError('JSON root must be an object')
+        json.dumps(value, allow_nan=False)  # Reject overflowing literals such as 1e999, too.
+    except RecursionError as error:
+        raise ValueError('JSON nesting exceeds supported depth') from error
+    return value
+
+
 def load_context(original: bytes, candidate: bytes, manifest_path: Path):
     path = Path(manifest_path).resolve()
     if not path.name.endswith('.candidate.json'):
         raise ValueError('primary candidate manifest must have .candidate.json suffix')
     raw = path.read_bytes()
-    declared = json.loads(raw)
+    declared = strict_json_object(raw)
     if (not isinstance(declared, dict) or declared.get('schema') != 'clash95_framed_modal_primary_candidate_v1'
             or declared.get('stage') != builder.STAGE or declared.get('recipe_revision') != builder.REVISION):
         raise ValueError('exact primary manifest schema/stage/revision required')
