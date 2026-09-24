@@ -11,6 +11,11 @@
 > failed hidden cursor reads are classified, while lifecycle remains 12/14.
 > See the [new evidence](../captures/current/battle-hd-followup-20260919.md)
 > and [visible-session plan](battle_hd_visible_validation_plan.md).
+>
+> **September 24 review:** the approved September 19 visible attempt stopped
+> at a startup worker breakpoint before battle readiness. Its new isolated
+> controller, source repair and [failed evidence](../captures/current/battle-hd-visible-attempt-20260919.md)
+> are separate from the centered baseline. No new visual or input pass is claimed.
 
 Generated: 2026-05-15
 
