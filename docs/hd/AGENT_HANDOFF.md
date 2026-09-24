@@ -328,8 +328,16 @@ pixels exactly. The separate [widget-bounds candidate](MODAL_WIDGET_CANDIDATE.md
 now corrects those bounds in source. Its [1024/1080 startup observations](MODAL_WIDGET_RUNTIME.md)
 reach the menu only; corrected barracks artwork still needs a fresh capture.
 Keep unavailable facilities unavailable rather than using `construct_all` to
-avoid this case. This new stage still has no accepted complete runtime capture. Keep the failed D/F receipts and their diagnostics
+avoid this case. This new stage still has no accepted complete runtime capture.
+Keep the failed D/F receipts and their diagnostics
 separate from source/PE/x86-fixture verification.
+
+The new [checkpoint query-ledger reader](MODAL_PRIMARY_CHECKPOINT_LEDGER.md)
+checks exact candidate/process/trace bindings and the complete primary and
+cursor read inventories. It preserves malformed and rejected rows after bounded
+admission. This is an offline text-stage contract; no runtime host produces it
+yet. Three matching captures per checkpoint, source authentication, corrected
+artwork and cleanup remain separate outer requirements.
 
 The [slots lifecycle protocol](MODAL_SLOTS_LIFECYCLE.md) prepares a separate
 controlled continuation through native barracks/overview cleanup, owned

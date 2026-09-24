@@ -874,3 +874,7 @@
 /captures/current/modal-primary-runtime-source-validation-20260919-c.json -text whitespace=cr-at-eol
 
 /tools/test_modal_primary_cursor_regressions.py text eol=lf
+
+# New checkpoint ledger sources retain exact LF bytes for fresh context binding.
+/tools/modal_primary_checkpoint_ledger.py text eol=lf
+/tools/test_modal_primary_checkpoint_ledger.py text eol=lf
