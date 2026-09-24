@@ -27,10 +27,10 @@ CODE_RESERVATION = 0x20000
 STATE_BYTES = 4096
 RW_DATA = 0xC0000040
 PINNED_SOURCES = {
-    "tools/build_framed_candidate.py": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
-    "tools/build_partial_tile_candidate.py": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501",
+    "tools/build_framed_candidate.py": "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc",
+    "tools/build_partial_tile_candidate.py": "363eaabfca63e435448355c406e6390e05b4151ffb928114221032c30b2cd255",
     "src/patcher/pe_extension.py": "4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27",
-    "src/patcher/patch_clash95_hd.py": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+    "src/patcher/patch_clash95_hd.py": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
 }
 
 

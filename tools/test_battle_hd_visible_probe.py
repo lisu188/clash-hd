@@ -51,7 +51,8 @@ class VisibleProbeTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 probe.build_probe(b"wrong original", b"wrong candidate", b"wrong save", **kwargs)
         # All identities are immutable reviewed constants, not CLI assertions.
-        self.assertEqual(probe.CANDIDATE_SHA256, "7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47")
+        self.assertEqual(probe.CANDIDATE_SHA256, "99d92ec7c8f81debf60321dcc5c1b5872c96e3c485fa2bdd7d9332287b3c7e87")
+        self.assertEqual(probe.PROTOCOL, "expanded_battle_visible_observers_v3")
         self.assertEqual(probe.SAVE_BYTES, 586414)
 
     def test_unique_ids_sites_lengths_and_native_acquisition(self):
@@ -109,6 +110,8 @@ class VisibleProbeTests(unittest.TestCase):
             self.assertEqual(readiness.count(f"index={i} desc={desc:08x}"), 1)
             self.assertIn(f"== {probe.CALLBACKS[i]:08x}", readiness)
         self.assertIn("input_bounds=(%d,%d,%d,%d)", readiness)
+        self.assertIn("cursor_meta=%p input_bounds=(%d,%d,%d,%d)", rows[20][1])
+        self.assertIn("poi(00544d14)", rows[20][1])
         self.assertIn("arena=(%d,%d) camera=(%d,%d)", readiness)
         self.assertIn("poi(poi(00532048)+0n800) == 7", readiness)
         self.assertIn("poi(poi(00532048)+0n812) == 0", readiness)

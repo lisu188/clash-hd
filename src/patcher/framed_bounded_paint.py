@@ -13,7 +13,7 @@ from . import pe_extension as pe
 from .framed_viewport import FramedViewport
 
 ROOT = Path(__file__).resolve().parents[2]
-CAMERA_SOURCE_SHA256 = "c86e20700cd4716ad0905bcc2cb868c0f4fcfad91b984b38bf513b3829b9d798"
+CAMERA_SOURCE_SHA256 = "f8caea185f3714a6924a4e4cb40aa049866fc7864afa41a66da1b56a93059ef8"
 STAGE = camera.PARENT_STAGE.removesuffix("-validation") + "-bounded-paint-validation"
 HELPERS = ("composition_guard", "cell", "draw_frame", "compose_panel", "present_map_rect")
 

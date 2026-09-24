@@ -20,8 +20,8 @@ from .framed_battle_viewport import TacticalViewport
 
 ROOT = Path(__file__).resolve().parents[2]
 PINNED_SOURCES = {
-    "tools/build_framed_army_candidate.py": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
-    "src/patcher/framed_battle_coordinates.py": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c",
+    "tools/build_framed_army_candidate.py": "ec5989d86d8252c43b7a73c8b2bfd612e5050434adcbeecf58dbe47bf96d1114",
+    "src/patcher/framed_battle_coordinates.py": "b67900d7399e0ce807d88a261c97942598beebfc28e2d78774cd109098f95142",
     "src/patcher/framed_battle_viewport.py": "8673e36bd04ded2afc8cc3b9d7ff2fed4c48dae891fe289509b44a9070c23bc6",
 }
 # Continuous GNU objdump2.42 decoding of the authenticated original, 2026-09-06.

@@ -16,6 +16,13 @@
 > at a startup worker breakpoint before battle readiness. Its new isolated
 > controller, source repair and [failed evidence](../captures/current/battle-hd-visible-attempt-20260919.md)
 > are separate from the centered baseline. No new visual or input pass is claimed.
+>
+> **September 24 reruns:** the [new expanded-stage report](../captures/current/battle-hd-visible-rerun-20260924.md)
+> records a visible 16x7 battle, six live descriptors, successful native reads,
+> banner dismissal and three identical final logical-resolution captures with
+> advisory clean tear checks. Relative pointer motion exposes an input-mapping
+> defect. Expanded tactical command/movement/attack, map return, manual input
+> and overall acceptance remain unproven; this does not alter the centered proof.
 
 Generated: 2026-05-15
 

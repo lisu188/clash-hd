@@ -21,7 +21,7 @@ TABLES = ((0x5181C0, 6), (0x518338, 2), (0x5184F0, 4), (0x518690, 6), (0x518808,
 SITES = (('single', 0x419D60, 18, 3), ('list', 0x419D80, 64, 12))
 PREFIXES = (b'\x81\x38', b'\x81\x39')
 PINNED = {
-    'src/patcher/patch_clash95_hd.py': '05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31',
+    'src/patcher/patch_clash95_hd.py': '38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106',
     'src/patcher/pe_extension.py': '4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27',
     'src/patcher/partial_tile_clip.py': '92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad',
     'src/patcher/framed_viewport.py': '1d5bc64777cf01c68f587bc3fee2dc7d5024696bd6b1712dab4e6e78f78c4c42',

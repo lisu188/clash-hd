@@ -16,8 +16,8 @@ import re
 import framed_army_transition_probe as producer
 import framed_army_selection_trace as selection
 
-PRODUCER_SHA256 = '5e6807869583bd6850c98c14ae6e539ca93f6b43540773101a720266bcfceed5'
-SELECTION_TRACE_SHA256 = '87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc'
+PRODUCER_SHA256 = '35a3763c2f01f296af06f7dd2057dfd7170df449b6341a322fd5e7feec91d5b0'
+SELECTION_TRACE_SHA256 = 'd1493a00ab6d31987a81d7d03d37e91debb0776394a4580eacd62c36405cb5b5'
 INITIAL_HELPERS = {
     'tools/initial_map_paint_trace.py':'845edda7ac563afe602dc3f6a388fe7e1874d6c6f128d1a938f8ce9ac2aa1021',
     'tools/partial_tile_trace_probe.py':'a20512fa49cc86db67a486f9202d4efa3f9f3745005d11220bf6097661a44729',

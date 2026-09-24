@@ -2824,6 +2824,13 @@ def select_patches_for(stage: str, profile: ResolutionProfile) -> list[Patch]:
         if profile.key not in SPECIAL_STAGE_RESOLUTIONS[stage]:
             raise ResolutionNotSupportedError("The battlehd validation stage supports only 1280x720")
         inherited = select_patches_for(DEFAULT_STAGE + "-castlecenter-all", profile)
+        # Only this stage replaces the mouse-update and cursor-switch entries.
+        # Both helpers retain the inherited caves for nonbattle behavior.
+        inherited = [patch for patch in inherited if
+                     (patch.group, patch.offset) not in {
+                         ("mouse-dynamic-origin", 0x05FE61),
+                         ("viewport-switch-dynamic-surface", 0x060211),
+                     }]
         selected = inherited + battle_hd_patches()
         from battle_hd_section import validate_spans
         validate_spans(selected)
