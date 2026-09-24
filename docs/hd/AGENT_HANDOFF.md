@@ -88,6 +88,16 @@ guard CLIs also write current reports by default; use both `--write-json` and
 
 ## Evidence snapshot and active work
 
+The [2026-09-24 review of the latest resolution runtime](../../reports/resolution-playability-screen-audit-20260924.md)
+preserves three failed September 21 ordinary-input runs. The 1024x768 widget
+candidate entered a corrupted castle overview before the selection click; its
+final screenshots cannot be audited as ordinary maps. Both 4K profiles remain
+on the map but fail controls/input checks. The audit now requires matching paused
+screen-owner records. Fixed click targets, the framed input guard for worlds
+smaller than the viewport, and ordinary castle entry still need separate repairs.
+This review is not a fresh runtime or a replacement for the controlled component
+evidence below; stable and manual-input boundaries remain unchanged.
+
 ### Complete candidate integration — 2026-09-08
 
 The active candidate is the protected stable stage plus
