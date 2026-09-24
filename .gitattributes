@@ -851,6 +851,9 @@
 /tools/test_build_framed_modal_primary_text_candidate.py text eol=lf
 /tools/modal_primary_text_context.py text eol=lf
 /tools/test_modal_primary_text_context.py text eol=lf
+# New checkpoint ledger sources retain exact LF bytes for fresh context binding.
+/tools/modal_primary_checkpoint_ledger.py text eol=lf
+/tools/test_modal_primary_checkpoint_ledger.py text eol=lf
 
 /tools/modal_primary_text_observer.py text eol=lf
 /tools/test_modal_primary_text_observer.py text eol=lf
