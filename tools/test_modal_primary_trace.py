@@ -494,6 +494,7 @@ class AdmissionRegressionTests(unittest.TestCase):
 
     def surface_fixture(self,root,bad,boundary):
         """Mock only prior file/identity gates to reach each actual JSON callsite."""
+        root=root.resolve()
         import modal_primary_surface_audit as audit
         import modal_primary_capture as capture
         roles={'original':'original_sha256','input_candidate':'candidate_sha256','candidate_path':'candidate_sha256',
