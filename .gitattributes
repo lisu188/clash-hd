@@ -880,3 +880,7 @@
 /tools/test_battle_hd_visible_probe.py text eol=lf
 /scripts/cdb/run_battle_hd_visible_session.ps1 text eol=lf
 /tools/test_battle_hd_visible_session.py text eol=lf
+
+/tools/modal_widgets_context.py text eol=lf
+/tools/test_modal_widgets_context.py text eol=lf
+/captures/current/modal-widgets-context-source-validation-20260924.json -text whitespace=cr-at-eol

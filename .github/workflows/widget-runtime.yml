@@ -5,6 +5,8 @@ on:
     paths:
       - tools/real_exe_smoke.py
       - tools/test_real_exe_smoke.py
+      - tools/modal_widgets_context.py
+      - tools/test_modal_widgets_context.py
       - .github/workflows/widget-runtime.yml
   workflow_dispatch:
     inputs:
@@ -40,6 +42,8 @@ jobs:
           python -m pip install --only-binary=:all: -r tools/requirements-framed-offline.txt
       - name: Test selection and source binding without launching a game
         run: python tools/test_real_exe_smoke.py
+      - name: Authenticate widget contexts with synthetic bundles
+        run: python tools/test_modal_widgets_context.py
 
   runtime:
     if: github.repository == 'lisu188/clash-hd' && github.event_name == 'workflow_dispatch' && inputs.execute
