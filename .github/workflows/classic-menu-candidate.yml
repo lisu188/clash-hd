@@ -1,0 +1,78 @@
+name: Classic menu correction
+
+on:
+  pull_request:
+    paths: ['src/patcher/classic_menu_candidate.py', 'tools/test_classic_menu_candidate.py', '.github/workflows/classic-menu-candidate.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tools -p test_classic_menu_candidate.py -k MenuSourceTests -v
+  original:
+    if: github.repository == 'lisu188/clash-hd' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: code
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: lisu188/clash-assets
+          ref: 84a1e4bcf131e6bb75b39fc5e10941dd0b801767
+          path: assets
+          lfs: false
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: /runtime/gog-32003/clash95.exe
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
+      - shell: bash
+        working-directory: assets
+        run: git lfs pull --include='runtime/gog-32003/clash95.exe' --exclude=''
+      - shell: bash
+        working-directory: code
+        env:
+          CLASSIC_MENU_RESULT: ${{ runner.temp }}/classic-menu-build.json
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,sys,unittest
+          from pathlib import Path
+          sys.path[:0]=[str(Path.cwd()),str(Path.cwd()/'tools')]
+          raw=Path('../assets/runtime/gog-32003/clash95.exe').read_bytes()
+          expected='500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae'
+          if len(raw)!=1232384 or hashlib.sha256(raw).hexdigest()!=expected:raise SystemExit('Original mismatch')
+          p=Path('C:/Clash/clash95.exe');p.parent.mkdir(exist_ok=True)
+          with p.open('xb') as output:output.write(raw)
+          suite=unittest.defaultTestLoader.loadTestsFromName('test_classic_menu_candidate')
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          unchanged=hashlib.sha256(p.read_bytes()).hexdigest()==expected
+          record=dict(tests_run=result.testsRun,failures=[(str(t),x) for t,x in result.failures],errors=[(str(t),x) for t,x in result.errors],skipped=result.skipped,original_unchanged=unchanged,game_runtime_executed=False)
+          Path(os.environ['RUNNER_TEMP'],'classic-menu-tests.json').write_text(json.dumps(record,indent=2))
+          raise SystemExit(int(not result.wasSuccessful() or result.testsRun!=5 or bool(result.skipped) or not unchanged))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: classic-menu-candidate-tests
+          path: |
+            ${{ runner.temp }}/classic-menu-build.json
+            ${{ runner.temp }}/classic-menu-tests.json
+          if-no-files-found: error
+          retention-days: 7

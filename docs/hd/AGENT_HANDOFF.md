@@ -289,6 +289,8 @@ diagnostic document retain missing-artifact, pending-evidence, source-guard,
 fixture-path, output-boundary and timeout failures separately from later
 focused repairs.
 
+### Four-checkpoint primary consumer integration
+
 The separate
 [four-checkpoint hidden consumer](MODAL_PRIMARY_CAPTURE.md) now authenticates
 the full publication, twelve slot copies, original placeholder call and first
@@ -322,10 +324,11 @@ primary to the native canvas does not prove native artwork correctness. The
 candidate's widened widget cutoff admits the original x=1000 disabled-control
 sentinel into a 640-wide modal canvas. Replaying those admitted widgets with
 the original sprites and native mode reproduces all 307,200 observed canvas
-pixels exactly. Correct the context-dependent bounds before accepting the
-bottom frame. Keep unavailable facilities unavailable rather than
-using `construct_all` to avoid this case. This new stage still has no accepted
-complete runtime capture. Keep the failed D/F receipts and their diagnostics
+pixels exactly. The separate [widget-bounds candidate](MODAL_WIDGET_CANDIDATE.md)
+now corrects those bounds in source. Its [1024/1080 startup observations](MODAL_WIDGET_RUNTIME.md)
+reach the menu only; corrected barracks artwork still needs a fresh capture.
+Keep unavailable facilities unavailable rather than using `construct_all` to
+avoid this case. This new stage still has no accepted complete runtime capture. Keep the failed D/F receipts and their diagnostics
 separate from source/PE/x86-fixture verification.
 
 The [slots lifecycle protocol](MODAL_SLOTS_LIFECYCLE.md) prepares a separate

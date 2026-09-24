@@ -179,8 +179,8 @@ def bind_cursor(receipt,folder,reader,oracle,original,cp):
          and reads['placeholder_sprite_header']['address']==u32(barracks,100),'live barracks resource pointer/index differs')
     need(reads['placeholder_sprite_header']['data']==sprite_header(oracle['barracks'],25)[0], 'live placeholder header differs from source sprite25')
     ranges=[(name,r['address'],r['address']+len(r['data'])) for name,r in reads.items()]
-    for index,(name,start,end) in enumerate(ranges):
-        for other,begin,finish in ranges[index+1:]:need(end<=begin or finish<=start,'cursor metadata/backing aliases: '+name+'/'+other)
+    for range_index,(name,start,end) in enumerate(ranges):
+        for other,begin,finish in ranges[range_index+1:]:need(end<=begin or finish<=start,'cursor metadata/backing aliases: '+name+'/'+other)
         canvas=cp['canvas'];w,h=cp['values']['width'],cp['values']['height']
         for pointer,size in ((canvas['native'],188),(canvas['physical'],188),(canvas['native_pixels'],640*480),
                              (canvas['physical_pixels'],w*h),(cp['values']['pixels'],w*h)):
@@ -278,8 +278,8 @@ def audit_pixels(samples,width,height,route):
     if any(row['nonzero_pixels']==0 for row in slots):result['failures'].append('one or more native slot interiors are blank')
     rect=route['cursor_rectangle']['values']
     need(rect['cursor']==active,'cursor changed before native placeholder rectangle call')
-    intersects=(c0['x']+c0['width']>=rect['x'] and rect['right']>=c0['x']
-                and c0['y']+c0['height']>=rect['y'] and rect['bottom']>=c0['y'])
+    intersects=(c0['x']+c0['width']>rect['x'] and rect['right']>c0['x']
+                and c0['y']+c0['height']>rect['y'] and rect['bottom']>c0['y'])
     removed=bool(active and intersects)
     need(c1['visible']==int(active and not removed),'native cursor rectangle removal flag differs')
     if active:need((c1['old_x'],c1['old_y'])==(c0['x'],c0['y']),'native redraw did not retain desired cursor position')

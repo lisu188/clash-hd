@@ -75,6 +75,7 @@ SUITES = (
     "test_build_framed_modal_primary_text_candidate.PrimaryText1080BuildTests",
     "test_build_framed_modal_primary_text_candidate.PrimaryText802BuildTests",
     "test_modal_primary_text_context.TextContextTests",
+    "test_modal_primary_text_observer.TextObserverTests",
     "test_complete_hd_main_probe",
     "test_framed_gameplay_evidence",
     "test_modal_slots_barracks_capture",
@@ -97,6 +98,7 @@ SUITES = (
     "test_modal_primary_trace",
     "test_modal_primary_capture",
     "test_modal_primary_surface_audit",
+    "test_modal_primary_cursor_regressions",
     "test_modal_primary_host",
 )
 

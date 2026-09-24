@@ -1,0 +1,114 @@
+name: Full launcher resolution sweep
+
+on:
+  push:
+    branches: [codex/launcher-resolution-sweep]
+    paths: ['tools/launcher_resolution_sweep.py', '.github/workflows/launcher-resolution-sweep.yml']
+  pull_request:
+    paths: ['tools/launcher_resolution_sweep.py', 'tools/test_launcher_resolution_sweep.py', '.github/workflows/launcher-resolution-sweep.yml']
+  workflow_dispatch:
+    inputs:
+      execute:
+        description: 'Run all advertised launcher variants on disposable Windows runners'
+        type: boolean
+        default: false
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: launcher-sweep-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tools -p test_launcher_resolution_sweep.py -v
+      - name: Retain complete source snapshot and exact advertised matrix
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,subprocess,sys,zipfile
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          from launcher_resolution_sweep import inventory
+          root=Path(os.environ['RUNNER_TEMP'])/'sweep-source';root.mkdir()
+          (root/'matrix.json').write_text(json.dumps(inventory(),indent=2))
+          files=subprocess.check_output(['git','ls-files','-z']).decode().split('\0')
+          hashes={}
+          with zipfile.ZipFile(root/'source.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for name in files:
+                  p=Path(name)
+                  if p.is_file() and (p.suffix in ('.py','.cdb','.ps1','.md','.json','.cpp','.h','.yml','.ini') or p.name in ('.gitattributes','.gitignore')):
+                      raw=p.read_bytes();z.writestr(name,raw);hashes[name]=hashlib.sha256(raw).hexdigest()
+          (root/'source-hashes.json').write_text(json.dumps(dict(commit=subprocess.check_output(['git','rev-parse','HEAD']).decode().strip(),files=hashes),indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: launcher-sweep-source
+          path: ${{ runner.temp }}/sweep-source/
+          retention-days: 7
+
+  runtime:
+    if: github.repository == 'lisu188/clash-hd' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.execute))
+    needs: source
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        profile: [classic, framed, completehd, modalwidgets]
+    runs-on: windows-2022
+    timeout-minutes: 45
+    env:
+      OUT: C:/ClashTests/launcher-sweep-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.profile }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          path: code
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: lisu188/clash-assets
+          ref: 84a1e4bcf131e6bb75b39fc5e10941dd0b801767
+          path: assets
+          lfs: false
+          persist-credentials: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
+      - name: Download and retain immutable reference runtime
+        working-directory: assets
+        shell: bash
+        run: git lfs pull --include='runtime/gog-32003/**' --exclude=''
+      - name: Build verified diagnostic proxy
+        shell: pwsh
+        run: |
+          python -m pip install --only-binary=:all: -r code/tools/requirements-framed-offline.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Dependencies failed' }
+          & ./code/scripts/build/build_ddraw_surfdump_proxy.ps1 -OutputDll 'C:/ClashTests/sweep-proxy/ddraw.dll' -LogDir 'C:/ClashTests/sweep-proxy'
+      - name: Exercise every advertised resolution of the selected launcher profile
+        shell: pwsh
+        run: |
+          python code/tools/launcher_resolution_sweep.py --execute --profile '${{ matrix.profile }}' --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --proxy C:/ClashTests/sweep-proxy/ddraw.dll --out "$env:OUT" --seconds 30
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: launcher-sweep-${{ matrix.profile }}
+          path: |
+            ${{ env.OUT }}/evidence/
+            ${{ env.OUT }}/compile.log
+            ${{ env.OUT }}/real-exe-engine.cpp
+          if-no-files-found: error
+          retention-days: 7
