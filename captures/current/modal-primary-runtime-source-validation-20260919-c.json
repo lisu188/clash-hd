@@ -1,0 +1,83 @@
+{
+  "schema": "clash95_modal_primary_runtime_source_validation_v1",
+  "generated_at": "2026-09-19T10:29:49.787540+00:00",
+  "passed": true,
+  "scope": "post-diagnostic low-DWORD sentinel normalization and EOF hygiene; source checks only",
+  "source_hashes": {
+    "scripts/cdb/run_modal_primary_capture.ps1": "86bf334846cbc51e8a27c84d51e40522a44dd004570ffc2ccd1eefb870f66e0e",
+    "tools/modal_primary_barracks_probe.py": "70bfb222077599af69f405346ccf285afd41ba5fcc50631ec75631f2b189002a",
+    "tools/modal_primary_barracks_trace.py": "9654e57c404eae12b81a586688b8e8623e9b2e24c688e08ec01cf27c711f5aac",
+    "tools/modal_primary_candidate_context.py": "48b175439e06b53f25b2bab1d21b047596d2b12dea93bc2e0b17629028fc622f",
+    "tools/modal_primary_initial_trace.py": "648917a20d4cc9a6fe6dbcd052829ed9802fa502c41b312e2593e77d5f69b8ba",
+    "tools/modal_primary_capture.py": "cc81240e799371e11e8e075ee7269a4eb398eba77a68bfc0a394fbe6a7408e3e",
+    "tools/modal_primary_surface_audit.py": "67f045205fffb427c98016f30f07dc99c514c608a30732d8a0f6bbd343155908",
+    "tools/test_modal_primary_host.py": "55cca430c63b166c5c1726ee4351356312eb0534445cf2034284524228d2928f",
+    "tools/test_modal_primary_barracks_probe.py": "9f7ec53420aaab2a3f05dc86bb1ffd66a6cd67e04b4e2d04eef0148e3e43ccd8",
+    "tools/test_modal_primary_trace.py": "8043e42809d15cf0e58e35cf16f30333bcc30356a804bfdeef3a4c7500e7ca0e",
+    "tools/test_modal_primary_capture.py": "b2e491c193a1fe154db553aebe4581ef3eb7d89ee55fddebbec7d18f9a05a3c2",
+    "tools/test_modal_primary_surface_audit.py": "93a339d3545da0568fbc1d62dac10f936d1517e40732104d8310b50ce2c1a331",
+    "tools/run_framed_offline_tests.py": "b421ec2b1074eedf423980fcc300726159a90d6cb8d2724cc6778cafaba68b84"
+  },
+  "tests": [
+    {
+      "command": "python -B -m unittest test_modal_primary_barracks_probe.CommandTests test_modal_primary_trace.ContextTests test_modal_primary_trace.InitialTests test_modal_primary_trace.NativeSequenceTests test_modal_primary_trace.BindingBoundaryTests -v",
+      "working_directory": "tools",
+      "tests": 21,
+      "passed": 21,
+      "skipped": 0,
+      "seconds": 2.776
+    }
+  ],
+  "focused_tests": 21,
+  "focused_skips": 0,
+  "earlier_checks": {
+    "path": "captures/current/modal-primary-runtime-source-validation-20260919-b.json",
+    "sha256": "e00bcb4685c904369afd641f055409ee6db70174653a170cf5d743e2a2126269",
+    "scope": "Earlier host/capture/audit tests and exact dry-run preparation retain their recorded source identities; no current runtime pass is inferred."
+  },
+  "correction": "Compare only the native low DWORD for the selected -1 and four -1 placeholder arguments. All remaining predicates and target-memory write boundaries are unchanged.",
+  "regression": "An independent MASM expression oracle evaluates the actual emitted guards with zero-extended and sign-extended -1 reads; both pass and other DWORDs fail at every sentinel address. The original unmasked comparison still fails in the fixture.",
+  "diagnosis_limit": "B printed only 32-bit selected data. Sign extension is corroborated by prior retained x86 CDB observations, not a direct 64-bit observation in B.",
+  "independent_review": "Producer diff and emitted-guard regression reviewed; B manifest values match retained artifacts.",
+  "runtime_accepted": false,
+  "post_fix_runtime_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "prior_debugger_diagnosis": {
+    "path": "C:\\ClashCaptures\\hd-completion\\framed-army-selection-20260906-090523\\cdb.log",
+    "bytes": 51096,
+    "sha256": "4a221ff84b7379eeebdd4ad1f202402a38efa919b308c91caa2b3524a55d5d4a",
+    "line_start": 568,
+    "line_end": 570,
+    "scope": "Prior native x86 CDB observation of sign-extended selected -1 and false unmasked comparison; corroborates interpretation without inventing a 64-bit observation in B."
+  },
+  "pre_rebase_source_hashes": {
+    "tools/test_modal_primary_host.py": "4afe8a67c3e36c65dc2de2c59b2d17b89f77361d616596f02e1b6da11331cc15",
+    "tools/run_framed_offline_tests.py": "81a72e953cd86baf92e92c6fc662f0d98dcd75ad0f074afb842ca1f3a9fccda2"
+  },
+  "post_rebase_checks": {
+    "base_main": "a6aef412",
+    "host_fixture": {
+      "tests": 14,
+      "passed": 14,
+      "skipped": 0,
+      "seconds": 12.55,
+      "initial_failure": "All14 failed before fixture bodies because the upstream wrapper imported v2 New-PrimaryQueryLedger into this v1 host.",
+      "initial_failure_seconds": 7.798,
+      "correction": "Only the test adapter now calls the inherited legacy wrapper with the original Get-PrimaryReadableRegions prelude. Production host is unchanged.",
+      "inherited_fixture_sha256": "50089d32077cfc23ef43d5172c6571009adcd88f500e87b36e1ee84cc96a440e"
+    },
+    "runner": {
+      "tests": 29,
+      "passed": 27,
+      "skipped": 2,
+      "skip_reason": "symlink creation unavailable",
+      "seconds": 5.012
+    },
+    "handoff_fixtures_passed": true,
+    "documentation_fixtures_passed": true,
+    "source_preflight_passed": true,
+    "conflict_resolution": "Retain upstream lifecycle/extra-profile registrations and pins alongside the five new consumer suites. Automatically merged handoff paragraphs reviewed.",
+    "evidence_byte_preservation": "Five new evidence manifests explicitly pinned -text; cross-report SHA references verified."
+  }
+}
