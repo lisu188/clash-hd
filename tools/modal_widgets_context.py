@@ -99,10 +99,13 @@ def parse_manifest(raw: bytes) -> dict:
     def constant(value):
         raise ValueError('non-finite manifest number: ' + value)
 
-    declared = json.loads(raw.decode('utf-8-sig'), object_pairs_hook=pairs, parse_constant=constant)
-    if type(declared) is not dict:
-        raise ValueError('manifest must be a JSON object')
-    canonical_json(declared)  # Also rejects overflowed numeric literals (1e999).
+    try:
+        declared = json.loads(raw.decode('utf-8-sig'), object_pairs_hook=pairs, parse_constant=constant)
+        if type(declared) is not dict:
+            raise ValueError('manifest must be a JSON object')
+        canonical_json(declared)  # Also rejects overflowed numeric literals (1e999).
+    except RecursionError as error:
+        raise ValueError('manifest JSON nesting exceeds parser capacity') from error
     return declared
 
 
