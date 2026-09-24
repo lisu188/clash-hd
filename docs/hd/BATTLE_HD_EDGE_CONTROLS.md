@@ -58,10 +58,24 @@ Shared result dialogs and battle teardown keep their earlier behavior.
 predecessor sources, reconstructs all 283 inherited patches, and requires the
 unchanged expanded-battle SHA
 `7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47`.
-The old stage and patch sources are not edited. The four battle dependency
-files (`battle_hd_hud.py`, `battle_hd_core.py`, `battle_hd_layout.py` and
+The September 24 input repair changed the current expanded-battle output to
+`99d92ec7c8f81debf60321dcc5c1b5872c96e3c485fa2bdd7d9332287b3c7e87`.
+This edge recipe preserves its published predecessor and final output. A
+private compatibility adapter first requires that exact current image, restores
+the two complete 38-byte inherited input hooks, and clears only the new 32-byte
+cursor-bounds and 60-byte relative-input helpers. Each edit checks its file
+offset, RVA, VA and old bytes; the restored image must match the full `7d04fe90…`
+SHA above. Unknown current images or incomplete restorations fail closed.
+The manifest records these four current-to-frozen edits separately, then
+replays all 283 original-to-frozen patch records to verify their contents.
+The general patcher's current-stage installation guard remains unchanged.
+Consequently this frozen edge candidate retains its historical input behavior;
+it does not inherit the separate September 24 input repairs or their evidence.
+
+The four battle dependency files (`battle_hd_hud.py`, `battle_hd_core.py`,
+`battle_hd_layout.py` and
 `battle_hd_section.py`) have two explicitly enumerated source identities:
-the existing Windows CRLF checkout and the Git LF blob. Their complete bytes
+the reviewed Windows CRLF source and corresponding LF source. Their complete bytes
 were compared independently; removing only CRLF carriage returns reproduces
 the Git blob exactly. No other source variation is accepted. The other three
 dependencies keep a single exact identity. Verification hashes the actual
@@ -101,7 +115,13 @@ Outputs require a new absolute `.exe` path under `C:/ClashTests`, outside the
 checkout; existing bundle members are never overwritten. The builder starts
 no game or debugger. The old patcher/launcher stage choices remain unchanged.
 
-On 2026-09-24, the final 15 focused fixtures passed without skips in 1.410 seconds.
+The initial 2026-09-24 revision passed 15 focused fixtures without skips in
+1.410 seconds. After integrating the separate input repairs, all 19 focused
+fixtures passed without skips in 2.137 seconds. The four added fixtures verify
+exact predecessor restoration and inherited metadata replay, and reject unknown
+input, incorrect expected bytes, missing or altered restorations, and incomplete
+hook inventories. The portable source-only invocation passed five tests and
+skipped the original-backed class because its optional local inputs were absent.
 Original-backed x86 fixtures executed the actual native descriptor draw/hit,
 stat-hover, morale-animation and stats-present instruction paths. They verify
 all six unchanged callback targets, descriptor drawing without scaling, three
