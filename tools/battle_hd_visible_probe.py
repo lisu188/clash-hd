@@ -18,11 +18,11 @@ import struct
 
 
 ORIGINAL_SHA256 = "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
-CANDIDATE_SHA256 = "7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47"
+CANDIDATE_SHA256 = "99d92ec7c8f81debf60321dcc5c1b5872c96e3c485fa2bdd7d9332287b3c7e87"
 SAVE_SHA256 = "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89"
 STAGE = "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd"
 RESOLUTION = "1280x720"
-PROTOCOL = "expanded_battle_visible_observers_v2"
+PROTOCOL = "expanded_battle_visible_observers_v3"
 IMAGE_BASE = 0x400000
 DEBUGGER_SETUP_COMMANDS = ("bc *", ".expr /s masm", "n 16")
 MAIN_STARTUP_SLEEP_VA = 0x44789A
@@ -200,7 +200,7 @@ def commands() -> dict[int, tuple[int, str, str]]:
     # before its own downstream native input gates, without changing flags.
     changed = f"(({MOUSE[0]}) != @$t10) | (({MOUSE[1]}) != @$t11) | (by(005451c0) != 0) | (poi(00544d04) != 0)"
     add(20, 0x42CB50, f"r @$t7=0; .if (@$t12 >= 0n256) {{ bd 20; bd 21; bd 22; " + printf("LIMIT", "category=grid budget=256 observers_disabled=1") + f"; }} .elsif ({ACTIVE}) {{ .if ({changed}) {{ r @$t7=1; r @$t10={MOUSE[0]}; r @$t11={MOUSE[1]}; r @$t12=@$t12+1; "
-        + printf("GRID_ENTER", "seq=%d caller=%p mouse=(%d,%d) button=%x latch=%x camera=(%d,%d)", "@$t12", "poi(@esp)", *MOUSE, "by(005451c0)", "poi(00544d04)", "poi(poi(00532048)+0n808)", "poi(poi(00532048)+0n812)") + "; }; }; gc")
+        + printf("GRID_ENTER", "seq=%d caller=%p mouse=(%d,%d) button=%x latch=%x camera=(%d,%d) cursor_meta=%p input_bounds=(%d,%d,%d,%d)", "@$t12", "poi(@esp)", *MOUSE, "by(005451c0)", "poi(00544d04)", "poi(poi(00532048)+0n808)", "poi(poi(00532048)+0n812)", "poi(00544d14)", *BOUNDS) + "; }; }; gc")
     add(21, 0x42CBC1, ".if (@$t7 == 1) { " + printf("GRID_VALID", "seq=%d local=(%d,%d) world=(%d,%d) state=%p", "@$t12", "@ebp", "@eax", "@esi", "@edi", "@edx") + "; r @$t7=0; }; gc")
     add(22, 0x42CBB8, ".if (@$t7 == 1) { " + printf("GRID_REJECTED", "seq=%d eax=%p mouse=(%d,%d)", "@$t12", "@eax", *MOUSE) + "; r @$t7=0; }; gc")
     # Device HRESULT and returned buffer are always reported together. Failed
@@ -288,7 +288,8 @@ def build_probe(original: bytes, candidate: bytes, save: bytes, *, stage=STAGE, 
     # every observer. Wider native routines authenticate descriptor dimensions,
     # native acquisition and every input-read ABI used in our expressions.
     requested = {(va, 16) for va, _, _ in rows.values()}
-    requested.update(((0x405EC0, 64), (0x419B80, 448), (0x47BD20, 192), (0x47BFD0, 176), (0x460AF0, 43)))
+    requested.update(((0x405EC0, 64), (0x419B80, 448), (0x47BD20, 192), (0x47BFD0, 176), (0x460AF0, 43),
+                      (0x460A61, 38), (0x460E11, 38)))
     requested.update((desc, 53) for desc in DESCRIPTORS)
     checks = []
     for va, size in sorted(requested):

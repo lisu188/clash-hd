@@ -60,10 +60,15 @@ function Reject([scriptblock]$Action) {{
     def test_launch_only_boundary(self):
         text = RUNNER.read_text()
         self.assertNotRegex(text, r"(?i)SendInput|PostMessage|SetCursorPos|SetForegroundWindow|CopyFromScreen|GetWindowRect|raw_sendinput|Stop-Process|Get-Process\s+-Name")
-        self.assertEqual(len(re.findall(r"(?m)^\s*\$debugger = Start-Process ", text)), 1)
+        self.assertEqual(text.count("$debugger = [Diagnostics.Process]::Start($startInfo)"), 1)
         self.assertLess(text.index("if (-not $ExecuteApproved)"), text.index("New-Item -ItemType Directory"))
-        self.assertLess(text.index("if (-not $ExecuteApproved)"), text.index("$debugger = Start-Process"))
-        self.assertIn("-WindowStyle Hidden -PassThru", text)
+        self.assertLess(text.index("if (-not $ExecuteApproved)"), text.index("$debugger = [Diagnostics.Process]::Start($startInfo)"))
+        for setting in ("FileName = $Cdb", "Arguments = $arguments", "WorkingDirectory = Split-Path $Exe",
+                        "UseShellExecute = $false", "CreateNoWindow = $true",
+                        "WindowStyle = [Diagnostics.ProcessWindowStyle]::Normal"):
+            self.assertIn("$startInfo." + setting, text)
+        self.assertNotIn("Start-Process", text)
+        self.assertNotRegex(text, r"(?i)WindowStyle\s*(?:=\s*)?(?:\[[^]]+\]::)?Hidden")
         self.assertIn("acceptance_passed=$false; manual_input_proven=$false", text)
         for reason in ("deadline", "stop_request", "debugger_exit", "error"):
             self.assertIn("'" + reason + "'", text)
@@ -74,6 +79,12 @@ function Reject([scriptblock]$Action) {{
 $now=[DateTimeOffset]::Parse('2026-09-19T12:00:00Z')
 $good=@{user_response='Yes';candidate_sha256='candidate';wrapper_sha256='wrapper';wrapper_mode='proxy-present';stage='stage';resolution='1280x720';scope='visible launch, foreground/cursor control, automated input and screenshots';approval_question='Synthetic fixture only';thread_id='fixture';recorded_at_utc='2026-09-19T11:00:00Z'}
 Assert-Approval $good 'candidate' 'wrapper' 'stage' $now
+$explicit=$good.Clone();$explicit.user_response='Approve visible rerun'
+Assert-Approval $explicit 'candidate' 'wrapper' 'stage' $now
+foreach ($answer in @('yes','approve visible rerun','Approve','Continue','Maybe','Yes, perhaps')) {
+    $ambiguous=$good.Clone();$ambiguous.user_response=$answer
+    Reject { Assert-Approval $ambiguous 'candidate' 'wrapper' 'stage' $now }
+}
 foreach ($key in @('user_response','candidate_sha256','wrapper_sha256','wrapper_mode','stage','resolution','scope','approval_question','thread_id')) {
     $bad=$good.Clone();$bad[$key]=''
     Reject { Assert-Approval $bad 'candidate' 'wrapper' 'stage' $now }

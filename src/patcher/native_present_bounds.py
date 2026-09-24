@@ -20,11 +20,11 @@ FULL_START, FULL_END = 0x418700, 0x418A90
 BLIT_SIZE = 867
 BLIT_SHA256 = '29c70320d733412798da7d41c77f2ab310987ad58dfef89a88f3459cfcd350a8'
 PINNED = {
-    'src/patcher/patch_clash95_hd.py': '05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31',
+    'src/patcher/patch_clash95_hd.py': '38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106',
     'src/patcher/pe_extension.py': '4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27',
     'src/patcher/partial_tile_clip.py': '92421c123a75bef119bfa93b438f813ec18dcb073699327cf15b7a1b884bcfad',
-    'src/patcher/classic_menu_candidate.py': '331988d756d83adcaf4436cd2cd0feaa1fc97249913c30caddd0142854c157fd',
-    'tools/build_framed_candidate.py': '0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40',
+    'src/patcher/classic_menu_candidate.py': '0f32f76ab321cf4793020064a7491fb0e7b8a9c4a1ed0f9c73a81e34f6538473',
+    'tools/build_framed_candidate.py': 'fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc',
     'src/patcher/complete_hd_candidate.py': 'e406149480e9cdf1ba0314f5e9ae735d7b587f61772afac4b0b9e7ce9fd3bd06',
     'tools/build_framed_modal_widgets_candidate.py': '2ff2b1923f4220de862e9dac46f5238db3954122c5e451e8e2a15408fd041ba6',
 }

@@ -102,6 +102,12 @@ forced hidden diagnostics, failed hidden cursor polling, and pending visible/inp
 acceptance are recorded in
 [`battle_hd_1280_validation.md`](../../reports/battle_hd_1280_validation.md)
 and [`battle-hd-validation-current.md`](../../captures/current/battle-hd-validation-current.md).
+The [September 24 input repair](../../captures/current/battle-hd-input-fix-20260924.md)
+builds candidate `99D92EC7…B3C7E87`, with 7/7 hidden helper checks and 11/14
+forced lifecycle checks. Native relative-input and sprite-aware bounds fixtures
+pass; three hidden cursor-return checks remain failed. The user chose to keep
+fresh visible validation pending and requested headless operation by default.
+Use hidden captures for progress; see the current rule in `AGENTS.md`.
 The [September 19 follow-up](../../captures/current/battle-hd-followup-20260919.md)
 observes the forced present body/return (7/7 helper checks) and classifies failed
 hidden device reads. Lifecycle remains 12/14; visible cursor/input acceptance is
@@ -111,6 +117,15 @@ ended at its deadline before battle readiness, after a worker-thread debugger
 breakpoint and failed native mouse acquisition. Owned cleanup passed. The new
 isolated controller and probe repair do not establish a visible/input pass;
 no live screenshot or click was retained from the interrupted session.
+The [September 24 visible reruns](../../captures/current/battle-hd-visible-rerun-20260924.md)
+retain that failure and add a displayed 16x7 battle, six live descriptors,
+successful native mouse/keyboard acquisition, a dismissed banner and eight
+logical-resolution JPEG captures. The final three have identical pixels and
+advisory clean tear checks. Subsequent relative motion exposes the tested
+candidate's cursor-mapping defect; tactical commands, movement, map return,
+manual input and full acceptance remain unproven. Owned cleanup passed for
+both reruns. Their exact 7D04 candidate and frozen sources are kept separate
+from any corrective source or candidate work.
 This lane is independent of the Complete HD recipe and does not promote either
 candidate. Its source-binding integration report preserves the original
 foundation manifest while documenting the reviewed updated producer hashes.

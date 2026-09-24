@@ -4,11 +4,26 @@ The new `-castlecenter-all-battlehd` suffix selects an expanded tactical battle
 lane. It accepts only `1280x720`; the existing centered battle stages and the
 800x600 stable default remain unchanged. This lane is not promoted.
 
+The [September 24 input repair](../captures/current/battle-hd-input-fix-20260924.md)
+supersedes the earlier review executable with candidate `99D92EC7…B3C7E87`.
+Its native relative-input and cursor-bounds fixtures pass. Hidden helpers pass
+7/7; the forced lifecycle remains incomplete at 11/14. The user kept visible
+validation pending and selected headless operation as the default.
+
 The [September 19 approved visible attempt](../captures/current/battle-hd-visible-attempt-20260919.md)
 was reviewed on September 24. It stopped at a startup worker debugger breakpoint
 before battle readiness; cleanup passed, while visible/input acceptance remains
 pending. The new standalone probe preserves native acquisition and the isolated
 controller binds approval, artifacts and exact process ownership.
+
+The [September 24 reruns](../captures/current/battle-hd-visible-rerun-20260924.md)
+subsequently display the real 16x7 battle, observe six native descriptors and
+successful mouse/keyboard acquisition, and retain an automated banner dismissal.
+Their 853x480 logical JPEG captures show the frame/sidebar; the final three
+are identical and pass advisory tear checks. Relative cursor motion then exposes
+an inherited mapping defect. Command/movement/attack, map return, manual input
+and full acceptance remain unproven. Both reruns have verified owned cleanup.
+The report binds the exact tested 7D04 bytes independently of corrective work.
 
 ## Layout and implementation
 
@@ -90,8 +105,10 @@ frame satisfies those new-lane requirements.
 The native cursor setter queues `(576,360)` for battle dialogs. The September 19
 diagnostic observes failed hidden device reads that leave the 16-byte stack
 buffer unchanged; the native updater then consumes those values. Banner/results
-return X=`4`. Valid device input and visible cursor behavior remain unproven,
-and this forced hidden route does not justify changing generic map input.
+return X=`4`. That hidden run does not establish valid device input or visible
+cursor behavior. The separately approved September 24 visible rerun above
+records successful native reads and a distinct relative-motion defect; the
+earlier forced hidden route alone does not justify changing generic map input.
 
 ## Current review candidate
 

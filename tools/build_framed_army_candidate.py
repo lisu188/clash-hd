@@ -35,10 +35,10 @@ REVISION = 'framed_own_army_native_size_v1'
 # A successful build is byte integrity evidence; runtime needs the independent
 # emitter/loader fixtures and its own source-bound observation protocol.
 PINNED_SOURCES = {
-    'src/patcher/pe_army_extension.py': '26991a58ca0b9cbc548ad6061d79acde864b015c722b208776af2e5d2752a832',
+    'src/patcher/pe_army_extension.py': 'd82ce5c3fb2b0927c6ab541705eb20c4cc7d7d92c889f253f059321c8ec056fb',
     'src/patcher/framed_army_viewport.py': '6f091c2655ee47392541b6d15db24346e3c26dc43158942426bc939a1e158224',
-    'src/patcher/framed_army_draw.py': '2a7877f791c52829cd99bca24089d9be02be1f25c9c95c3b27e4d5360fb64a34',
-    'src/patcher/framed_army_input.py': '3fad316f6511e375a8799694fe487b9eaca5500d6262101100e8e9e9e1868ab4',
+    'src/patcher/framed_army_draw.py': '6b936157da3aa652a74887b9470318a0df745c7694bda4d7ee79004a23a191e9',
+    'src/patcher/framed_army_input.py': '01a3dcc5bb584d53efd809c8fbe2303807b2bdf0e22d095bc3c3155e6c651efb',
     'src/patcher/framed_army_composition.py': '7639e0b96bfc96d0f9c39b6c17126b376cc40e7ab37407b2a86d72bc626c511c',
 }
 

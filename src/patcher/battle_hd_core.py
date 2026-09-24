@@ -761,10 +761,48 @@ popad
 popfd
 jmp 0x422960
 """, '9c60a1e002520085c0740c3dc0d451007405e849ebe9ffb8c0d45100e83febe9ff619de938f6ebff'),
+    # The inherited cursor switch grants HD bounds only to metadata 5196A0.
+    # Tactical movement/attack cursors use other metadata and otherwise shrink
+    # the input range to 640x480. Battle ownership covers those transitions;
+    # modal/default ownership retains the inherited metadata-based behavior.
+    # Rejoin the inherited common tail so native sprite margins and input
+    # scaling still belong to 460B20. Same-metadata early return stays native.
+    ('battle_cursor_viewport', 0x563400, """
+cmp dword ptr [0x5199d8], 0x42e8b0
+jne legacy
+push 720
+mov ecx, 1280
+jmp 0x4e99de
+legacy:
+jmp 0x4e99c0
+""", '813dd8995100b0e84200750f68d0020000b900050000e9c365f8ffe9a065f8ff'),
+    # Native DirectInput mouse data is relative in the observed battle route.
+    # Copy 460A61..460A86 exactly: retain signed multiply/add, native sensitivity
+    # at input-object+20, fixed-point accumulation, and the original buttons/
+    # clamp continuation. Other owners retain the existing dynamic-origin path.
+    ('battle_relative_mouse', 0x563500, """
+cmp dword ptr [0x5199d8], 0x42e8b0
+jne legacy
+mov eax, dword ptr [0x5451a8]
+imul eax, dword ptr [edx+0x20]
+add dword ptr [edx+0x24], eax
+mov esi, dword ptr [edx+0x20]
+mov eax, dword ptr [0x5451ac]
+imul eax, esi
+mov edi, dword ptr [edx+0x28]
+mov dword ptr [edx+0x2c], 0
+add edi, eax
+mov dword ptr [edx+0x28], edi
+jmp 0x460a87
+legacy:
+jmp 0x4e9810
+""", '813dd8995100b0e84200752ba1a85154000faf42200142248b7220a1ac5154000fafc68b7a28c7422c0000000001c7897a28e950d5efffe9d462f8ff'),
 )
 
 # (group, file offset, old hex, new hex, rationale with VA/RVA).
 PATCH_SPECS = (
+    ('battle-hd-input', 0x05FE61, 'a1a85154000faf42200142248b7220a1ac5154000fafc68b7a28c7422c0000000001c7897a28', 'e99a2a1000' + '90' * 33, 'VA 00460A61, RVA 060A61: integrate native relative DirectInput deltas with original sensitivity and fixed-point accumulation under battle owner 0042E8B0; retain inherited dynamic-origin mouse behavior for other owners; rejoin native buttons/clamp at 00460A87'),
+    ('battle-hd-input', 0x060211, '68e0010000c7402000000000b9800200008b463c31db31d2c7401c0000000089f0e8e9fcffff', 'e9ea251000' + '90' * 33, 'VA 00460E11, RVA 060E11: keep 1280x720 sprite-aware cursor bounds for every tactical cursor under battle owner 0042E8B0; otherwise retain inherited metadata-based viewport switch'),
     ('battle-hd-viewport', 0x02E93D, 'e81e34ffff', 'e8be3d1300', 'VA 0042F53D, RVA 02F53D: clear shared HD primary/back surfaces after battle free and before native map graphics reload, removing stale battle pixels from map padding'),
     ('battle-hd-viewport', 0x02F430, '89f38b4df4ff5734', 'e8cb311300909090', 'VA 00430030, RVA 030030: clip terrain sprite to existing visible cells and physical battlefield, preserving native image bounds and overlap within the field'),
     ('battle-hd-viewport', 0x02F4EE, '8b4df489f3ff5734', 'e80d311300909090', 'VA 004300EE, RVA 0300EE: clip movement-area overlay to existing visible cells and physical battlefield'),

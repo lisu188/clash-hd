@@ -36,6 +36,10 @@ jobs:
         run: python tools/test_battle_hd_patch.py
       - name: Check battle core byte contracts
         run: python tools/test_battle_hd_core.py
+      - name: Check battle cursor bounds and native relative input contracts
+        run: |
+          python tools/test_battle_hd_cursor_bounds.py
+          python tools/test_battle_hd_relative_input.py
       - name: Check battle HUD contracts and report optional skips
         run: python tools/test_battle_hd_hud.py -v
       - name: Check battle evidence parsing
