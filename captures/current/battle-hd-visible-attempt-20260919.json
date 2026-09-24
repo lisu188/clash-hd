@@ -1,0 +1,295 @@
+{
+  "schema": "clash95_battle_hd_visible_attempt_v1",
+  "reviewed_at": "2026-09-24",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
+  "resolution": "1280x720",
+  "candidate": {
+    "sha256": "7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47",
+    "path": "C:\\ClashTests\\battle-hd-visible-20260919\\game\\clash95_battlehd.exe"
+  },
+  "wrapper": {
+    "sha256": "B4CF172509083066EEE011FDB866F9A07C6CC4FA1F0CE53EC1F90E28CB5A28B1",
+    "path": "C:\\ClashTests\\battle-hd-visible-20260919\\game\\ddraw.dll"
+  },
+  "wrapper_mode": "proxy-present",
+  "outcome": "incomplete_before_battle_readiness",
+  "acceptance_passed": false,
+  "stable_promotion": false,
+  "execution": {
+    "manual_input_proven": false,
+    "failure": null,
+    "started_at": "2026-09-19T11:39:30.3553587Z",
+    "acceptance_passed": false,
+    "stop_reason": "deadline",
+    "executed": true,
+    "launch_plan": {
+      "sha256": "E91501369875A562463C8205210F793A2C1E8BA04A3AEA0C78B0386B77ACBA3D",
+      "path": "C:\\ClashTests\\battle-hd-visible-20260919\\run-01\\launch-plan.json"
+    },
+    "cleanup": {
+      "debugger_stopped": true,
+      "errors": [],
+      "candidate_stopped": true
+    },
+    "candidate": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260919\\game\\clash95_battlehd.exe",
+      "pid": 31856,
+      "parent_pid": 31180,
+      "started_at": "2026-09-19T11:39:30.7269616Z"
+    },
+    "ended_at": "2026-09-19T11:54:30.5438863Z"
+  },
+  "artifacts": {
+    "cdb.log": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260919\\run-01\\cdb.log",
+      "sha256": "c360dea260673f38607b82f34cad8b29171d7ff3fcd217d6d195ce7b21b54858",
+      "size_bytes": 107464
+    },
+    "execution.json": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260919\\run-01\\execution.json",
+      "sha256": "bb2681e13d3b2cee39c1304813f4d7d97b37ba8d08fef94c4f500253745a2c0a",
+      "size_bytes": 1023
+    },
+    "launch-plan.json": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260919\\run-01\\launch-plan.json",
+      "sha256": "e91501369875a562463c8205210f793a2c1e8ba04a3aea0c78b0386b77acba3d",
+      "size_bytes": 4305
+    },
+    "owned-processes.json": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260919\\run-01\\owned-processes.json",
+      "sha256": "4213d9295ede96b140b779df92df4df7d84864e135ec0eaca500e4f117787a19",
+      "size_bytes": 556
+    },
+    "probe-packet.json": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260919\\run-01\\probe-packet.json",
+      "sha256": "42220eb44c618c544a4d410d8098b87cd41f2abcb3c6fdaf6bf9e0bfadd9ccaf",
+      "size_bytes": 27133
+    },
+    "probe.cdb": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260919\\run-01\\probe.cdb",
+      "sha256": "41a511604c9a7fa16d1a7a8eff76c847119f4b64a7b029b6840d6289bdd2525d",
+      "size_bytes": 96381
+    },
+    "user-approval.json": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260919\\run-01\\user-approval.json",
+      "sha256": "2fc9a1eee5665c2f58bf88bfe0bb6761f3a41d9f73bc341a46724614b610f79b",
+      "size_bytes": 1163
+    }
+  },
+  "asset_inventory": {
+    "path": "C:\\ClashTests\\battle-hd-visible-20260919\\assets.json",
+    "sha256": "07f98cd09b1f51b9db86dc7c378962bc0676c5d9a9f598c59a84583584b92f81",
+    "size_bytes": 22231
+  },
+  "proxy_log": {
+    "path": "C:\\ClashTests\\battle-hd-visible-20260919\\game\\ddraw_surfdump_proxy.log",
+    "sha256": "f01aa2fa250fb2426615c9402882f3b02d52096c381f33cfc1fd9bb30786948c",
+    "size_bytes": 9570
+  },
+  "actual_marker_counts": {
+    "STANDALONE": 1,
+    "BYTE_CONTRACT": 1,
+    "SETUP_DISCLOSURE": 1,
+    "ACQUIRE_RETURN": 1,
+    "FORCED_STARTUP_SLEEP": 8,
+    "FORCED_LOAD_ROUTE": 1,
+    "FORCED_LOAD_COMPLETE": 1
+  },
+  "actual_marker_rows": [
+    {
+      "line": 92,
+      "text": "BHDV_STANDALONE reviewed_visible_session_required=1 no_input_injection_by_producer=1"
+    },
+    {
+      "line": 189,
+      "text": "BHDV_BYTE_CONTRACT candidate_sha256=7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47 stage=gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd resolution=1280x720 save_sha256=4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89"
+    },
+    {
+      "line": 191,
+      "text": "BHDV_SETUP_DISCLOSURE forced_menu_load=1 forced_adjacent_attack=1 forced_entry_dialog_if_seen=1 native_acquisition=1 battle_gate_forcing=0 manual_proof=0"
+    },
+    {
+      "line": 324,
+      "text": "BHDV_ACQUIRE_RETURN tid=8a00 eip=0047bd6f esp=000efdb4 device_kind=mouse hresult=80070005 device=0076012c hwnd=05320946"
+    },
+    {
+      "line": 331,
+      "text": "BHDV_FORCED_STARTUP_SLEEP tid=6700 eip=0046e4d0 esp=03d9fe0c next=0046e4d7"
+    },
+    {
+      "line": 332,
+      "text": "BHDV_FORCED_STARTUP_SLEEP tid=6700 eip=0046e4d0 esp=03d9fe0c next=0046e4d7"
+    },
+    {
+      "line": 333,
+      "text": "BHDV_FORCED_STARTUP_SLEEP tid=6700 eip=0046e4d0 esp=03d9fe0c next=0046e4d7"
+    },
+    {
+      "line": 334,
+      "text": "BHDV_FORCED_STARTUP_SLEEP tid=7ac4 eip=0046e6df esp=03edfe0c next=0046e6e6"
+    },
+    {
+      "line": 335,
+      "text": "BHDV_FORCED_STARTUP_SLEEP tid=6700 eip=0046e4d0 esp=03d9fe0c next=0046e4d7"
+    },
+    {
+      "line": 336,
+      "text": "BHDV_FORCED_STARTUP_SLEEP tid=7ac4 eip=0046e6df esp=03edfe0c next=0046e6e6"
+    },
+    {
+      "line": 337,
+      "text": "BHDV_FORCED_STARTUP_SLEEP tid=6700 eip=0046e4d0 esp=03d9fe0c next=0046e4d7"
+    },
+    {
+      "line": 338,
+      "text": "BHDV_FORCED_STARTUP_SLEEP tid=6700 eip=0046e4d0 esp=03d9fe0c next=0046e4d7"
+    },
+    {
+      "line": 339,
+      "text": "BHDV_FORCED_LOAD_ROUTE tid=8a00 eip=00447780 esp=000edcb0 choice=5 input_proof=0"
+    },
+    {
+      "line": 340,
+      "text": "BHDV_FORCED_LOAD_COMPLETE tid=8a00 eip=0040b660 esp=000edce4 gd=03460030 slot=0 mouse_latch_released=1 input_proof=0"
+    }
+  ],
+  "observations": {
+    "byte_contract_seen": true,
+    "forced_load_complete_seen": true,
+    "battle_entry_seen": false,
+    "battle_ready_seen": false,
+    "successful_native_input_seen": false,
+    "native_mouse_acquire_hresult": "80070005",
+    "late_break_exception": {
+      "code": "80000003",
+      "thread": "7ac4",
+      "eip": "0046e6df",
+      "log_line": 341,
+      "instruction_hex": "2eff15c0a54e00",
+      "interpretation": "consistent with queued worker breakpoint after disabling startup observers; cause not reproduced"
+    },
+    "startup_command_errors": [
+      {
+        "line": 95,
+        "command": "expr /s masm"
+      },
+      {
+        "line": 97,
+        "command": ".radix 16"
+      }
+    ],
+    "window_enumeration": "Sky returned unique isolated candidate window Clash, id 87165254, before activation/capture request",
+    "activation_capture_request": "attempted; result not returned before conversation interruption; no saved live screenshot",
+    "os_input_clicks_recorded": 0,
+    "manual_input_proven": false,
+    "frame_edges_verified": false,
+    "sidebar_controls_verified": false,
+    "tearing_checked": false,
+    "lifecycle_completed": false,
+    "runtime_fix_verified": false
+  },
+  "limitations": [
+    "Native startup/input behavior remains unverified after proposed source repair.",
+    "The presenting proxy is a separate lane from final GOG-wrapper composition.",
+    "Deadline cleanup and failure:null are not a passing runtime result.",
+    "The earlier hidden screenshots retain their separate classification; no new visible screenshot is claimed.",
+    "No access-violation marker was observed before the debugger stop; this does not prove crash-free or out-of-bounds-free battle execution."
+  ],
+  "original_session_sources": [
+    {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\original-session-sources\\battle_hd_visible_probe.py",
+      "sha256": "ac316f0e71d0bb99a6462e643f6ab9b484021f79e23fecad48dfc5dc4d5f3750",
+      "size_bytes": 28365
+    },
+    {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\original-session-sources\\run_battle_hd_visible_session.ps1",
+      "sha256": "7b55d25fbfea95f557e0beeef1654ec4f6438fe211267e64e9eb78448c0c7fd6",
+      "size_bytes": 14667
+    },
+    {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\original-session-sources\\test_battle_hd_visible_probe.py",
+      "sha256": "32a5ac6d611a8e4a0d9c4d0aa6d8115636fcfdf08ab1c939e538e3185fc0f9a5",
+      "size_bytes": 7999
+    },
+    {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\original-session-sources\\test_battle_hd_visible_session.py",
+      "sha256": "a6df273706acf1b5a2373b35fae9ef4274a0f66e5908f650c235e59cab381d74",
+      "size_bytes": 9909
+    }
+  ],
+  "source_followup": {
+    "protocol": "expanded_battle_visible_observers_v2",
+    "runtime_verified": false,
+    "prepared_packet": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\probe-v2\\battle-hd-visible-probe.json",
+      "sha256": "902120ea236e8c993aed3847819b28f2483148732775f71aefa9e1fadc8f6f16",
+      "size_bytes": 26446
+    },
+    "sources": [
+      {
+        "path": "C:\\ClashTests\\battle-hd-visible-20260924\\source-v2\\battle_hd_visible_probe.py",
+        "sha256": "f0c69f7885f45ee97bf3804c676568bb13fa6bc8f2b6bb4ee8e8f344e044132a",
+        "size_bytes": 29367,
+        "repository_path": "tools\\battle_hd_visible_probe.py"
+      },
+      {
+        "path": "C:\\ClashTests\\battle-hd-visible-20260924\\source-v2\\run_battle_hd_visible_session.ps1",
+        "sha256": "7b55d25fbfea95f557e0beeef1654ec4f6438fe211267e64e9eb78448c0c7fd6",
+        "size_bytes": 14667,
+        "repository_path": "scripts\\cdb\\run_battle_hd_visible_session.ps1"
+      },
+      {
+        "path": "C:\\ClashTests\\battle-hd-visible-20260924\\source-v2\\test_battle_hd_visible_probe.py",
+        "sha256": "8bd03ed284ad398e2a7974d4362e00f15452e5c5688f12774f53496a6c79cc92",
+        "size_bytes": 10282,
+        "repository_path": "tools\\test_battle_hd_visible_probe.py"
+      },
+      {
+        "path": "C:\\ClashTests\\battle-hd-visible-20260924\\source-v2\\test_battle_hd_visible_session.py",
+        "sha256": "a6df273706acf1b5a2373b35fae9ef4274a0f66e5908f650c235e59cab381d74",
+        "size_bytes": 9909,
+        "repository_path": "tools\\test_battle_hd_visible_session.py"
+      }
+    ],
+    "guarded_spans": 64,
+    "new_fixture_tests_passed": 17,
+    "source_suites": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\checks\\summary.json",
+      "sha256": "e2f1006c9a6a521a87a6eb588d1dcf666d1c29daf08e1cd722e57c7d987e8504",
+      "size_bytes": 6407
+    },
+    "machine_checks": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\machine-checks\\summary.json",
+      "sha256": "8d488a023ee4503813f8088b2368fe6a79324fd57e704251dd8a2ee8eb78e2f4",
+      "size_bytes": 1985
+    },
+    "cursor_corrected_log_path": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\machine-checks\\cursor-corrected-log-path.json",
+      "sha256": "1bfd5cf4312caa17050d908ca1bb84c72735d2176b78507950f60621d1519b44",
+      "size_bytes": 783
+    },
+    "source_suite_exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "native_scenarios": 835,
+    "hud_tests": 17,
+    "cursor_tests": 10,
+    "prior_cursor_invocation_failure": "FileNotFoundError for cdb.log; corrected to existing cdb-surface-dump.log without altering the fixture or historical log",
+    "aggregate_status": "Previous September19 aggregate remains historical; not rerun for this probe/controller-only follow-up."
+  }
+}
