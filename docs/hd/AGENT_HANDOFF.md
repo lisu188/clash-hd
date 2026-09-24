@@ -356,6 +356,17 @@ avoid this case. This new stage still has no accepted complete runtime capture.
 Keep the failed D/F receipts and their diagnostics
 separate from source/PE/x86-fixture verification.
 
+The [installed-guard ownership fixture](MODAL_WIDGET_BOUNDS.md) now executes the
+actual inherited ownership instructions against both 1024x768 and 1920x1080
+candidates in synthetic CPU memory. Five checks pass per profile; labeled
+external allocator/thread/game-body recorders remain. This does not establish
+real game ownership transitions or corrected barracks pixels. The separate
+[widget barracks producer](MODAL_WIDGET_BARRACKS_PROBE.md) authenticates the
+actual candidate and prepares the controlled route with exact native observer
+sites. Its trace consumer, primary/text/owner observations, host queries and
+original-artwork audit remain explicitly incomplete, so its generated packet
+is not ready for runtime capture.
+
 The new [checkpoint query-ledger reader](MODAL_PRIMARY_CHECKPOINT_LEDGER.md)
 checks exact candidate/process/trace bindings and the complete primary and
 cursor read inventories. It preserves malformed and rejected rows after bounded

@@ -16,6 +16,7 @@ import re
 
 import modal_primary_barracks_probe as producer
 import modal_primary_initial_trace as initial_map_paint_trace
+from modal_primary_candidate_context import strict_json_object
 from render_cdb_surface_probe import render_probe, BASE_PROBE
 
 HARNESS = Path(__file__).resolve().parents[1] / "scripts/cdb/run_cdb_surface_dump.ps1"
@@ -70,6 +71,12 @@ LIMITS = [
 
 def sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+# Match the actual anchored debugger diagnostics recognized by the primary
+# host. Quoted/echoed command source is not a debugger failure observation.
+DEBUGGER_COMMAND_FAILURE = re.compile(
+    r'(?i)^\s*(?:[0-9]+:[0-9]+>\s*)?(?:Unable to insert breakpoint\b|bp[0-9]+\s+at\s+[^\r\n]*\bfailed\b|(?:\^\s*)?Syntax error\b|Command file execution failed\b)')
 
 
 def _startup_fragments():
@@ -198,6 +205,7 @@ def _validate_canvas(rows, packet, hand, ready, artwork, require, *, checkpoint=
 def evaluate_sequence(log: str, packet: dict, *, checkpoint=None) -> dict:
     """Ordered-log diagnosis only, without authenticating any external bytes."""
     failures, rows = [], []
+    debugger_records = []
     if checkpoint not in (None, 'full-published', 'placeholder-before', 'placeholder-after', 'final-ready'):
         return dict(sequence_passed=False, failures=['unsupported primary checkpoint'], raw_records=[], surface=None,
                     source_authenticated=False, ready_for_host_capture=False)
@@ -217,9 +225,12 @@ def evaluate_sequence(log: str, packet: dict, *, checkpoint=None) -> dict:
                     source_authenticated=False,ready_for_host_capture=False)
     width,height=map(int,dimensions.groups())
     for number, text in enumerate(log.splitlines(), 1):
+        if DEBUGGER_COMMAND_FAILURE.search(text):
+            debugger_records.append(dict(line=number, text=text, classification='debugger_command_failure'))
+            fail('debugger command failure', number)
         if re.search(r"AV_SURFDUMP|SURFDUMP_INVALID|PTILE_REJECT|MCAP_REJECT|MCANVAS_CONTRACT_FAIL|SLOTS_CONTRACT_FAIL|MPRIMARY_CONTRACT_FAIL|ARMY_CONTRACT_FAIL|\bMODAL_|syntax error|couldn't resolve", text, re.I):
             fail("runtime/probe rejection or debugger error", number)
-        if re.search(r"\bMCAP_", text, re.I):
+        if re.search(r"MCAP_", text, re.I):
             marker = text.split(" ",1)[0]
             match = REGEX.get(marker)
             match = match.fullmatch(text) if match else None
@@ -232,19 +243,20 @@ def evaluate_sequence(log: str, packet: dict, *, checkpoint=None) -> dict:
             rows.append(row)
         elif re.search(r"\bSURFDUMP_HOST_READY\b", text):
             fail("ordinary-map host-ready marker is forbidden in the modal lane",number)
-    if re.search(r'(?im)(?<!\S)(?:SLOTS|ARMY|COMPLETEHD|MCANVAS)_CONTRACT_PASS\b', log):
-        fail('inherited stage success marker is forbidden in primary lane')
+    inherited_success=[dict(line=n,text=t) for n,t in enumerate(log.splitlines(),1)
+                       if re.search(r'(?:SLOTS|ARMY|COMPLETEHD|MCANVAS)_CONTRACT_PASS',t,re.I)]
+    for record in inherited_success:
+        fail('inherited stage success marker is forbidden in primary lane',record['line'])
     state_va=packet.get('canvas_state_va')
     if type(state_va) is not int:
         fail('missing canvas state address');state_va=0
     loaded_contract=(f"MPRIMARY_CONTRACT_PASS stage={producer.STAGE} resolution={packet['resolution']} "
                      f"candidate_sha256={packet.get('candidate_sha256')} revision={producer.builder.REVISION}")
     loaded_scope="MPRIMARY_SCOPE owned_modal_primary primary_composition_proven=false manual_input_proof=false promotion_ready=false"
-    # Recognize record tokens, including malformed case/whitespace prefixes.
-    # A field value is not a record: MCAP_CONTRACT legitimately contains
-    # protocol=slots_barracks_owned_canvas_v1 and is checked separately above
-    # and below. Retain every startup record; exact content and order follow.
-    canvas_startup=[(n,t) for n,t in enumerate(log.splitlines(),1) if re.search(r'(?<!\S)MPRIMARY_',t,re.I)]
+    # Admit every occurrence of the reserved startup namespace, including
+    # prefixed/malformed records. Exact markers avoid treating the legitimate
+    # protocol=primary_barracks_owned_canvas_v1 field as a startup record.
+    canvas_startup=[(n,t) for n,t in enumerate(log.splitlines(),1) if re.search(r'MPRIMARY_',t,re.I)]
     if [t for _,t in canvas_startup] != [loaded_contract,loaded_scope]:
         fail('primary loaded contract/scope missing, repeated, malformed or mismatched')
     elif not rows or canvas_startup[-1][0]>=next((r['line'] for r in rows if r['marker']=='MCAP_CONTRACT'),0):
@@ -398,10 +410,17 @@ def evaluate_sequence(log: str, packet: dict, *, checkpoint=None) -> dict:
                      prior_base=int(prior_match.group(4),16) if prior_match else None)
     surface={key:ready.get(key) for key in ('surface','width','height','base','bytes','route','tid','eip','esp','owner_ptr')}
     surface['owner']=surface.pop('owner_ptr')
-    return dict(sequence_passed=not failures,source_authenticated=False,ready_for_host_capture=False,
+    result = dict(sequence_passed=not failures,source_authenticated=False,ready_for_host_capture=False,
                 failures=failures,raw_records=rows,surface=surface if ready else None,
                 forced_gate_original=values('MCAP_FLIP_GATE_FORCED').get('original'),
                 manual_input_proof=False,promotion_ready=False,limits=LIMITS)
+    if debugger_records:
+        result['debugger_failure_records'] = debugger_records
+    if inherited_success:
+        result['forbidden_stage_records'] = inherited_success
+    if [t for _,t in canvas_startup] != [loaded_contract,loaded_scope]:
+        result['primary_startup_records'] = [dict(line=n,text=t) for n,t in canvas_startup]
+    return result
 
 
 def evaluate_slots(log,packet,sequence, *, checkpoint=None):
@@ -460,7 +479,7 @@ def evaluate_primary_route(log,packet,sequence,*,checkpoint=None):
     def need(value,message):
         if not value:failures.append(message)
     for number,text in enumerate(log.splitlines(),1):
-        if not re.search(r'\bMPCAP_',text,re.I):continue
+        if not re.search(r'MPCAP_',text,re.I):continue
         marker=text.split(' ',1)[0];rx=PRIMARY_REGEX.get(marker);match=rx.fullmatch(text) if rx else None
         row=dict(line=number,marker=marker,text=text,values=None);rows.append(row)
         if not match:failures.append(f'line {number}: malformed or unknown primary-route observation');continue
@@ -681,7 +700,7 @@ def main():
             if not all((args.log,args.packet,args.probe)): raise ValueError('validation requires --log --packet --probe')
             raw=args.log.read_bytes()
             report=evaluate_trace(raw.decode('utf-8-sig'),original=original,candidate=candidate,
-                packet=json.loads(args.packet.read_text(encoding='utf-8-sig')),generated_probe=args.probe.read_bytes(),checkpoint=args.checkpoint)
+                packet=strict_json_object(args.packet.read_bytes()),generated_probe=args.probe.read_bytes(),checkpoint=args.checkpoint)
             report['source']['log_raw_sha256']=sha(raw)
     except (OSError,UnicodeError,ValueError,TypeError,KeyError) as error:
         report=dict(passed=False,prepared=False,ready_for_host_capture=False,failures=[str(error)],
