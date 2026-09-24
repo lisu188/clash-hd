@@ -83,3 +83,11 @@ fixture authenticates an existing external widget bundle once. It requires the
 user-owned original executable, reconstructs the candidate and prepares a
 packet without launching the game. Both suites are included in the aggregate
 framed registry; an absent opt-in bundle is a reported skip, never runtime proof.
+
+The [September 24 preparation summary](../../captures/current/modal-widgets-observation-preparation-20260924.json)
+binds the final original-backed 1024x768 check: all 20 tests passed without
+skips, with 23 native spans, 76 expanded breakpoint addresses and four checkpoint
+definitions. The candidate remains `ebea660f885da43896ad5e4303e6e7d7fe112def6c897b4c26312df8505376e5`.
+The full packet, unchanged-byte checks and initial wrapper-binding failure
+remain outside the repository at the summary's hash-bound receipt paths. This
+is preparation evidence; no game or debugger was executed.

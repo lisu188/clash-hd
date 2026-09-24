@@ -65,3 +65,12 @@ Run its synthetic fixtures with:
 ```powershell
 python -B tools/test_modal_widgets_text_observer.py
 ```
+
+The [September 24 source-validation summary](../../captures/current/modal-widgets-observation-preparation-20260924.json)
+binds 30 new fixtures, 19 unchanged historical regressions and one authentic
+1024x768 preparation using the barracks packet's 76 occupied breakpoints. All
+checks passed; reconstruction took 252 seconds. The actual sites are
+`005f7000`, `0040c150` and `00432c6b`; their three disabled commands form a
+5,448-byte ASCII/CRLF fragment. The complete packet, fragment, source snapshots
+and earlier startup/scope review failures remain at the external receipt paths.
+These results do not establish an observed runtime text call or correct glyphs.
