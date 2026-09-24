@@ -54,9 +54,40 @@ class SourceTests(unittest.TestCase):
     def test_original_stage_is_preserved_and_sources_pin_exact_bytes(self):
         self.assertEqual(edge.STAGE, edge.scalar.BATTLE_HD_STAGE + '-edgecontrols-validation')
         self.assertEqual(edge.hud.BATTLE_LAYOUT.sidebar, (1120,120,1280,600))
-        self.assertEqual(edge._sources()['src/patcher/battle_hd_hud.py'], edge.PINNED['src/patcher/battle_hd_hud.py'])
-        with patch.dict(edge.PINNED, {'src/patcher/battle_hd_hud.py': '0'*64}):
+        self.assertIn(edge._sources()['src/patcher/battle_hd_hud.py'], edge.PINNED['src/patcher/battle_hd_hud.py'])
+        with patch.dict(edge.PINNED, {'src/patcher/battle_hd_hud.py': ('0'*64,)}):
             with self.assertRaises(ValueError): edge._sources()
+
+    def test_only_enumerated_lf_crlf_sources_are_accepted_and_report_actual_hashes(self):
+        read = Path.read_bytes
+        paired = [name for name, accepted in edge.PINNED.items() if len(accepted) == 2]
+        self.assertEqual(len(paired), 4)
+        for name in paired:
+            source = edge.ROOT / name
+            lf = read(source).replace(b'\r\n', b'\n')
+            crlf = lf.replace(b'\n', b'\r\n')
+            self.assertEqual({edge.sha(lf), edge.sha(crlf)}, set(edge.PINNED[name]))
+            for data in (lf, crlf):
+                with self.subTest(source=name, digest=edge.sha(data)):
+                    def read_variant(path):
+                        return data if path == source else read(path)
+                    with patch.object(Path, 'read_bytes', read_variant):
+                        observed = edge._sources()
+                    self.assertEqual(observed[name], edge.sha(data))
+            for invalid in (lf + b'# non-EOL modification\n', lf.replace(b'\n', b'\r\n', 1)):
+                with self.subTest(source=name, invalid=edge.sha(invalid)):
+                    def read_invalid(path):
+                        return invalid if path == source else read(path)
+                    with patch.object(Path, 'read_bytes', read_invalid), self.assertRaises(ValueError):
+                        edge._sources()
+        for name, accepted in edge.PINNED.items():
+            if len(accepted) == 1:
+                source = edge.ROOT / name
+                invalid = read(source) + b'# changed source\n'
+                def read_invalid_single(path):
+                    return invalid if path == source else read(path)
+                with self.subTest(source=name), patch.object(Path, 'read_bytes', read_invalid_single), self.assertRaises(ValueError):
+                    edge._sources()
 
     def test_wrong_original_and_resolution_are_rejected(self):
         with self.assertRaises(ValueError): edge.build_candidate(bytes(32))
@@ -101,6 +132,23 @@ class NativeTests(unittest.TestCase):
         self.assertEqual(len(newfields)-len(oldfields),sum(r.kind=='abs32' for r in self.bundle.relocations))
         self.assertFalse(self.manifest['runtime_executed'])
         self.assertFalse(self.manifest['promotion_ready'])
+
+    def test_both_exact_checkout_forms_build_same_candidate_with_actual_source_hashes(self):
+        read = Path.read_bytes
+        paired = [name for name, accepted in edge.PINNED.items() if len(accepted) == 2]
+        for ending in (b'\n', b'\r\n'):
+            replacements = {edge.ROOT / name: read(edge.ROOT / name).replace(b'\r\n', b'\n').replace(b'\n', ending)
+                            for name in paired}
+            def read_variant(path):
+                return replacements[path] if path in replacements else read(path)
+            with self.subTest(ending=ending), patch.object(Path, 'read_bytes', read_variant):
+                image, metadata, probe = edge.build_candidate(self.original)
+            self.assertEqual(image, self.image)
+            self.assertEqual(probe, self.probe)
+            self.assertEqual(edge.sha(image), '26fa4f69095f8d47480b325e22c70bffb3f6c098760de04164ebd09fb93038e3')
+            self.assertEqual(metadata['base_candidate_sha256'], edge.BASE_SHA256)
+            for name in paired:
+                self.assertEqual(metadata['source_hashes'][name], edge.sha(replacements[edge.ROOT / name]))
 
     def test_descriptor_callbacks_flags_and_native_hit_path_remain_identical(self):
         original_view=pe.inspect_pe(self.original)
