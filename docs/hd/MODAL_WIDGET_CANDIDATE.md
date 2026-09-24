@@ -101,3 +101,8 @@ This reader covers widgets-v1 only. It does not authenticate the separate
 matching capture host, native ownership/artwork/text checks and new runtime
 observations are still required. Source authentication is not a rendering,
 input, lifecycle, manual-proof or promotion pass.
+
+The separate [barracks probe preparation](MODAL_WIDGET_BARRACKS_PROBE.md) now
+binds the actual widget bundle and genuine ancestor observer sites. It keeps
+the compiled diagnostic command explicitly not ready for runtime while trace,
+Lock/text/owner observations, host queries and pixel validation are integrated.

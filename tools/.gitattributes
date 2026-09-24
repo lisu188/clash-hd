@@ -13,3 +13,7 @@
 /test_runner_cursor_feedback.py text eol=lf
 /resolution_playability.py text eol=lf
 /test_resolution_playability.py text eol=lf
+
+/test_modal_widget_owner_integration.py text eol=lf
+/modal_widgets_barracks_probe.py text eol=lf
+/test_modal_widgets_barracks_probe.py text eol=lf
