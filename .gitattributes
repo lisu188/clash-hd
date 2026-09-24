@@ -878,3 +878,7 @@
 # New checkpoint ledger sources retain exact LF bytes for fresh context binding.
 /tools/modal_primary_checkpoint_ledger.py text eol=lf
 /tools/test_modal_primary_checkpoint_ledger.py text eol=lf
+/tools/battle_hd_visible_probe.py text eol=lf
+/tools/test_battle_hd_visible_probe.py text eol=lf
+/scripts/cdb/run_battle_hd_visible_session.ps1 text eol=lf
+/tools/test_battle_hd_visible_session.py text eol=lf
