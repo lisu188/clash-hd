@@ -874,3 +874,5 @@
 /captures/current/modal-primary-runtime-source-validation-20260919-c.json -text whitespace=cr-at-eol
 
 /tools/test_modal_primary_cursor_regressions.py text eol=lf
+
+/reports/resolution-playability-screen-audit-20260924.json -text whitespace=cr-at-eol
