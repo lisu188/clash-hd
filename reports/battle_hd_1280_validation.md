@@ -4,6 +4,12 @@ The new `-castlecenter-all-battlehd` suffix selects an expanded tactical battle
 lane. It accepts only `1280x720`; the existing centered battle stages and the
 800x600 stable default remain unchanged. This lane is not promoted.
 
+The [September 19 approved visible attempt](../captures/current/battle-hd-visible-attempt-20260919.md)
+was reviewed on September 24. It stopped at a startup worker debugger breakpoint
+before battle readiness; cleanup passed, while visible/input acceptance remains
+pending. The new standalone probe preserves native acquisition and the isolated
+controller binds approval, artifacts and exact process ownership.
+
 ## Layout and implementation
 
 - Battlefield capacity: 17 columns by 7 rows of native 64-pixel tiles, in the

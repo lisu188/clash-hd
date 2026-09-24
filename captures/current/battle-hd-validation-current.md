@@ -2,6 +2,11 @@
 
 Reviewable 1280x720 candidate; acceptance remains pending. The stable stage is unchanged.
 
+The [approved visible attempt](battle-hd-visible-attempt-20260919.md), reviewed
+September 24, stopped before battle readiness. Its exact process cleanup passed,
+but no live screenshot, click or input pass was obtained. The isolated controller
+and repaired startup probe remain validation tools.
+
 The [September 19 follow-up](battle-hd-followup-20260919.md) reproduces the same candidate bytes, observes the forced present body and return (**7/7 helper diagnostics**), and traces the cursor discrepancy to failed hidden device reads. Lifecycle diagnostics remain **12/14**. Its new aggregate and focused checks are recorded separately; the tables and aggregate below retain the September 8 baseline.
 
 The initial expanded-battle implementation merged through [PR #61](https://github.com/lisu188/clash-hd/pull/61) at `b747b2e72c36e593149f9d852899e5d6365c813d`. All 19 GitHub checks passed on `10f852d199319b91e82c612d453e68bb40ba0b1e`. A merge does not promote this validation stage.
