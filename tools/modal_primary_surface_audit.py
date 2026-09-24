@@ -369,9 +369,14 @@ def bound_capture_report(log,packet,full,checkpoint):
     sequence=capture.route.evaluate_sequence(text,base,checkpoint=checkpoint)
     slots=capture.route.evaluate_slots(text,base,sequence,checkpoint=checkpoint)
     primary=capture.route.evaluate_primary_route(text,base,sequence,checkpoint=checkpoint)
+    failures=[]
     for label,part in (('native route',sequence),('slots',slots),('primary route',primary)):
         verdict='sequence_passed' if label=='native route' else 'passed'
-        need(part.get(verdict) is True and part.get('failures')==[],checkpoint+' '+label+' failed: '+str(part.get('failures')))
+        if part.get(verdict) is not True or part.get('failures')!=[]:
+            failures.append(checkpoint+' '+label+' failed: '+str(part.get('failures')))
+    if failures:
+        diagnostic=dict(primary_route_sequence=primary,modal_sequence=sequence,slot_trace=slots)
+        raise capture.PrimaryObservationError('; '.join(failures),capture.primary_observation_records(text),route_report=diagnostic)
     core=dict(primary_route_sequence=primary,modal_sequence=sequence)
     observed=capture.evaluate_primary_sequence(text,packet,core,checkpoint)
     cp=observed['checkpoints'][-1];cp['core_values']=primary['checkpoints'][-1]['values']
@@ -396,7 +401,7 @@ def bind_triplet(receipt,*,reader=None):
         'proxy_manifest':'proxy_manifest_sha256','python':'python_sha256','cdb':'cdb_sha256',
         **{role:('host_sha256' if role=='host_path' else role+'_sha256') for role in SOURCE_PATHS}}
     files={role:reader.read(plan[role],expected=plan[digest]) for role,digest in roles.items()}
-    packet=json.loads(reader.artifact(receipt['packet'],path=root/'packet.json'))
+    packet=capture.route.strict_json_object(reader.artifact(receipt['packet'],path=root/'packet.json'))
     for sources in (packet['capture_source_hashes'],packet['primary_capture']['source_hashes']):
         for relative,digest in sources.items():reader.read(ROOT/relative,expected=digest)
     sidecar=path_value(plan['candidate_manifest'])
@@ -418,7 +423,7 @@ def bind_triplet(receipt,*,reader=None):
     same_json(packet['candidate_manifest'],dict(path=str(path_value(plan['candidate_manifest'])),sha256=plan['candidate_manifest_sha256']),'candidate sidecar binding')
     need(path_value(plan['proxy_manifest'])==path_value(packet['primary_capture']['proxy_manifest']['path'])
          and sha(files['proxy_manifest'])==packet['primary_capture']['proxy_manifest']['sha256'],'proxy manifest binding differs')
-    proxy_manifest=json.loads(files['proxy_manifest'])
+    proxy_manifest=capture.route.strict_json_object(files['proxy_manifest'])
     need(path_value(proxy_manifest['output'])==path_value(plan['proxy_input']),'proxy manifest output role differs')
     reader.read(proxy_manifest['source'],expected=plan['proxy_source_sha256'])
     for name,path in packet['primary_capture']['ready_files'].items():
@@ -434,7 +439,7 @@ def bind_triplet(receipt,*,reader=None):
         prefix=reader.artifact(checkpoint['prefix'],path=folder/'capture-prefix.log')
         need(log.startswith(prefix) and prefix.startswith(previous) and len(prefix)>len(previous),'checkpoint log prefix not strictly nested in final log')
         previous=prefix
-        retained=json.loads(reader.artifact(checkpoint['trace'],path=folder/'trace.json'))
+        retained=capture.route.strict_json_object(reader.artifact(checkpoint['trace'],path=folder/'trace.json'))
         current=bound_capture_report(prefix,packet,full,name);cp=current['capture_checkpoint']
         need(retained.get('passed') is True and retained['source']['log_raw_sha256']==sha(prefix)
              and retained['source']['generated_probe_sha256']==sha(probe),'retained checkpoint trace binding differs')
@@ -526,7 +531,7 @@ def evaluate(summary_path):
         need(path==root/'summary.json' and summary.get('schema')=='clash95_modal_primary_capture_v1','canonical summary/schema required')
         need(summary.get('passed') is True and summary.get('executed') is True and summary.get('failures')==[],'host summary is not successful')
         for key in ('manual_input_proof','visible_composition_proof','promotion_ready'):need(summary.get(key) is False,'excessive host claim: '+key)
-        triplet=json.loads(reader.artifact(summary['primary_triplet'],path=root/'primary-triplet.json'))
+        triplet=capture.route.strict_json_object(reader.artifact(summary['primary_triplet'],path=root/'primary-triplet.json'))
         for key in ('plan','checkpoints','snapshots','clean_stable_pair','cdb','candidates','cleanup','packet','probe','capture_prefix','final_log'):
             same_json(triplet[key],summary[key],'summary/triplet '+key)
         audit=bind_triplet(triplet,reader=reader);result['capture_audit']=audit
@@ -564,6 +569,7 @@ def evaluate(summary_path):
             owned_cleanup_verified=True,screenshots=screenshots,stage=audit['stage'],resolution=audit['resolution'],candidate_sha256=audit['candidate_sha256'])
     except (OSError,UnicodeError,ValueError,TypeError,KeyError,IndexError,AttributeError,struct.error) as error:
         result['failures'].append(str(error))
+        if isinstance(error,capture.PrimaryObservationError):result.update(capture.primary_failure_diagnostics(error))
         result.update(passed=False,source_authenticated=False,primary_composition_proven=False,owned_cleanup_verified=False)
     result['artifacts']=reader.receipts();return result
 
