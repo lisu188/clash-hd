@@ -1,8 +1,10 @@
 # Expanded battle visible validation plan
 
-Status: preparation only. No approval, visible run, injected input, capture or
-manual observation is recorded by this document. The candidate is still
-validation-only.
+Status: the prepared controller was exercised in an approved September 19
+session, which stopped before battle readiness. See the
+[retained failed attempt](../captures/current/battle-hd-visible-attempt-20260919.md).
+No passing visible, injected-input or manual evidence resulted. The candidate
+is still validation-only; the checklist below remains outstanding.
 
 ## Concrete session target
 
@@ -21,7 +23,12 @@ after it is given, together with the exact session scope.
 
 ## Session implementation requirements
 
-Prepare a separate expanded-stage runner before launching. The existing
+Use the separate expanded-stage
+[`run_battle_hd_visible_session.ps1`](../scripts/cdb/run_battle_hd_visible_session.ps1)
+and its byte-verified [`battle_hd_visible_probe.py`](../tools/battle_hd_visible_probe.py)
+producer. The runner defaults to a plan-only path and requires an exact approval
+record plus `-ExecuteApproved` to launch. It does not control windows or inject
+input. The existing
 [`run_cdb_battle_visible_input_probe.ps1`](../scripts/cdb/run_cdb_battle_visible_input_probe.ps1)
 must not be reused unchanged: its default `(588,440)` target now lies inside
 the battlefield, process selection/cleanup is broad, and its raw-input path
