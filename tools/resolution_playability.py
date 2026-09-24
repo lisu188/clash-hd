@@ -136,6 +136,60 @@ def input_success(record: dict) -> bool:
         r.get('clicked') is True and r.get('aim',{}).get('converged') is True for r in rows)
 
 
+def screen_context(state: dict) -> dict:
+    """Classify the measured native owner; map buffers can survive castle entry."""
+    owner=state.get('render_hook')
+    result=dict(render_hook=owner,ordinary_map=False)
+    if type(owner) is not int:
+        return dict(result,screen='unknown',reason='Missing or invalid native render owner')
+    if owner==0x422020:
+        return dict(result,screen='castle_overview',reason='Castle owns the native renderer')
+    if owner!=0x40ad40:
+        return dict(result,screen='other_native_screen',reason='Ordinary map does not own the native renderer')
+    for name in ('game_data','map_active_word','map_surface','map_pixels'):
+        value=state.get(name)
+        if type(value) is not int or not 0<value<=0xffffffff:
+            return dict(result,screen='invalid_map_context',reason='Missing or invalid '+name)
+    if type(state.get('native_modal_word')) is not int or state['native_modal_word']!=0:
+        return dict(result,screen='invalid_map_context',reason='Native modal state is active or unavailable')
+    for axis,extent in (('x','width'),('y','height')):
+        size=state.get('world_'+extent);scroll=state.get('scroll_'+axis)
+        if (type(size) is not int or not 1<=size<=100 or type(scroll) is not int
+                or not 0<=scroll<size):
+            return dict(result,screen='invalid_map_context',reason='Invalid world or scroll '+axis)
+    return dict(result,screen='ordinary_map',ordinary_map=True,reason='Native map owner and context observed')
+
+
+def primary_context(path: Path) -> dict:
+    """Use only state recorded at this primary's paused snapshot, never a neighbor."""
+    match=re.fullmatch(r'primary-([0-9]+)\.json',path.name)
+    if not match:raise ValueError('Unexpected primary sample name')
+    state_path=path.with_name('map-state-'+match[1]+'.json')
+    result=dict(state_sample=state_path.name,ordinary_map=False,screen='unavailable')
+    try:
+        metadata_raw=path.read_bytes();state_raw=state_path.read_bytes()
+        metadata=json.loads(metadata_raw);state=json.loads(state_raw)
+        if not isinstance(metadata,dict) or not isinstance(state,dict):
+            raise ValueError('Snapshot metadata and state must be objects')
+        if metadata.get('paused') is not True:
+            raise ValueError('Primary is not a paused snapshot')
+        result.update(screen_context(state),primary_metadata_sha256=hashlib.sha256(metadata_raw).hexdigest(),
+                      state_sha256=hashlib.sha256(state_raw).hexdigest())
+    except (OSError,ValueError,TypeError) as error:
+        result['reason']='Matching paused screen context unavailable: '+str(error)
+    return result
+
+
+def map_controls_passed(rows: list[dict]) -> bool:
+    return len(rows)==3 and all(
+        r.get('map_audit_applicable') is True
+        and r.get('screen_context',{}).get('ordinary_map') is True
+        and len(r.get('action_cells',[]))==6 and r.get('action_cells_exact') is True
+        and (r.get('frame_required') is False or
+             r.get('frame_required') is True and r.get('frame',{}).get('structural_border_exact') is True)
+        for r in rows)
+
+
 def validate_map_pixels(capture: Path, reference: Path, profile: str, resolution: str) -> list[dict]:
     import frame_surface_audit as frame
     import action_bar_surface_audit as bar
@@ -144,21 +198,29 @@ def validate_map_pixels(capture: Path, reference: Path, profile: str, resolution
         found=[p for p in reference.rglob('*') if p.is_file() and p.name.lower()==name]
         if len(found)!=1:raise ValueError('Ambiguous resource: '+name)
         return found[0].read_bytes()
-    artwork=frame.load_native_frame(resource('gfx3.res'))
-    sprites,member=bar.load_sprites(resource('minimum.res'))
     layout=FramedViewport(*map(int,resolution.split('x')))
-    rows=[]
+    rows=[];artwork=sprites=member=None
     paths=sorted(capture.glob('primary-*.json'))
     for path in paths[-3:]:
+        context=primary_context(path)
+        row=dict(sample=path.name,screen_context=context,map_audit_applicable=context['ordinary_map'],
+                 frame_required=profile!='classic',frame=None,action_cells=[],action_cells_exact=False)
+        if not context['ordinary_map']:
+            row['audit_skipped_reason']=context['reason']
+            rows.append(row)
+            continue
+        if sprites is None:
+            artwork=frame.load_native_frame(resource('gfx3.res')) if profile!='classic' else None
+            sprites,member=bar.load_sprites(resource('minimum.res'))
         image,raw=indexed_image(path)
         if image.size!=(layout.width,layout.height):raise ValueError('Final primary size differs')
         edges=frame.audit_surface(raw,layout,artwork) if profile!='classic' else None
         geometry_stage=bar.FRAMED_STAGE if profile!='classic' else None
         cells=bar.compare_cells(raw,layout.width,layout.height,sprites,stage=geometry_stage)
-        rows.append(dict(sample=path.name,frame=edges,action_cells=cells,
-            action_cells_exact=all(c['exact_source_match'] for c in cells),
-            frame_required=profile!='classic',frame_source_sha256=frame.RESOURCE_SHA256,
-            action_source_sha256=bar.RESOURCE_SHA256,action_member_sha256=member))
+        row.update(frame=edges,action_cells=cells,action_cells_exact=len(cells)==6 and all(c['exact_source_match'] for c in cells),
+                   frame_source_sha256=frame.RESOURCE_SHA256 if profile!='classic' else None,
+                   action_source_sha256=bar.RESOURCE_SHA256,action_member_sha256=member)
+        rows.append(row)
     return rows
 
 
@@ -301,8 +363,7 @@ def run(args) -> dict:
             a['passed'] for a in report['actions'] if a['name']=='campaign') and any(a['name']=='campaign' for a in report['actions'])
         report['unit_selected_observed']=selected_unit(report.get('states',[]))
         report['native_input_passed']=len(report['actions'])==4 and all(a['passed'] for a in report['actions'])
-        report['map_controls_pixels_passed']=len(report.get('map_pixels',[]))==3 and all(
-            r['action_cells_exact'] and (not r['frame_required'] or r['frame']['structural_border_exact']) for r in report['map_pixels'])
+        report['map_controls_pixels_passed']=map_controls_passed(report.get('map_pixels',[]))
         report['source_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
         report['source_hashes']={name:matrix.digest(root/name) for name in ('tools/resolution_playability.py','tools/launcher_resolution_matrix.py','tools/real_exe_smoke.py','tools/runner_menu_input.py','tools/menu_pulse_click.py','src/launcher/resolutions.json')}
         (out/'playability.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
