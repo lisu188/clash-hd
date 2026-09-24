@@ -121,6 +121,12 @@ ended at its deadline before battle readiness, after a worker-thread debugger
 breakpoint and failed native mouse acquisition. Owned cleanup passed. The new
 isolated controller and probe repair do not establish a visible/input pass;
 no live screenshot or click was retained from the interrupted session.
+The [separate edge-controls successor](BATTLE_HD_EDGE_CONTROLS.md), prepared on
+2026-09-24, anchors native top statistics and bottom commands to the screen edges
+while keeping the expanded field and combat unchanged. Thirteen original-backed
+CPU fixtures pass with explicit resource/input stubs. It has its own validation
+stage; artwork, actual input, transitions and complete-HD composition remain
+unproved. Existing battle candidates and failed runtime reports are preserved.
 This lane is independent of the Complete HD recipe and does not promote either
 candidate. Its source-binding integration report preserves the original
 foundation manifest while documenting the reviewed updated producer hashes.
