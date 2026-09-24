@@ -116,6 +116,11 @@ The [September 19 follow-up](../../captures/current/battle-hd-followup-20260919.
 observes the forced present body/return (7/7 helper checks) and classifies failed
 hidden device reads. Lifecycle remains 12/14; visible cursor/input acceptance is
 still pending. Candidate bytes are unchanged; dated prior reports are preserved.
+The [approved visible attempt](../../captures/current/battle-hd-visible-attempt-20260919.md)
+ended at its deadline before battle readiness, after a worker-thread debugger
+breakpoint and failed native mouse acquisition. Owned cleanup passed. The new
+isolated controller and probe repair do not establish a visible/input pass;
+no live screenshot or click was retained from the interrupted session.
 This lane is independent of the Complete HD recipe and does not promote either
 candidate. Its source-binding integration report preserves the original
 foundation manifest while documenting the reviewed updated producer hashes.

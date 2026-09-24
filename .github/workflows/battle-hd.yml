@@ -42,6 +42,10 @@ jobs:
         run: python tools/test_battle_hd_summary.py
       - name: Check read-only cursor diagnostic contracts
         run: python tools/test_battle_hd_cursor_diagnostic.py -v
+      - name: Check native-input visible probe preparation
+        run: python tools/test_battle_hd_visible_probe.py
+      - name: Check isolated visible-session launch contracts
+        run: python tools/test_battle_hd_visible_session.py -v
       - name: Check resolution recipes
         run: python tools/test_patch_resolution.py
       - name: Check patch definitions and stage isolation
@@ -56,7 +60,7 @@ jobs:
           from pathlib import Path
           with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as output:
               output.write('## Battle HD source-only validation\n\n')
-              output.write('The steps run seven repository fixture suites. See each step for its result and explicit skip records.\n\n')
+              output.write('The steps run repository fixture suites. See each step for its result and explicit skip records.\n\n')
               output.write('No proprietary executable or external x86 toolchain is supplied or downloaded. '
                            'Keystone/Unicorn checks report skips when those optional tools are unavailable; '
                            'original-byte and native-routine checks requiring --source-exe are skipped. '
