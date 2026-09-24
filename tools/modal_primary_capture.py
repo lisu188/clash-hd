@@ -83,7 +83,7 @@ class Artifacts:
         if size is not None:need(count is not None,'exact byte-count receipt required')
         if size is not None:need(count==size,'read extent differs')
         return self.read(record['path'],expected=record['sha256'],size=count)
-    def json(self,path):return json.loads(self.read(path).decode('utf-8-sig'))
+    def json(self,path):return route.strict_json_object(self.read(path))
     def unchanged(self):
         for path,data in self.files.items():need(path_value(path).read_bytes()==data,'bound artifact drift: '+str(path))
     def receipts(self):return [dict(path=str(p),bytes=len(b),sha256=sha(b)) for p,b in self.files.items()]
@@ -94,7 +94,7 @@ def check_reader():
 
 
 def proxy_context(manifest_path):
-    path=path_value(manifest_path);raw=path.read_bytes();manifest=json.loads(raw)
+    path=path_value(manifest_path);raw=path.read_bytes();manifest=route.strict_json_object(raw)
     output=path_value(manifest['output']);source=path_value(manifest['source'])
     image=output.read_bytes();source_data=source.read_bytes()
     need(manifest.get('generated_by')=='clash-hd-surface-dump-proxy' and output.name.lower()=='ddraw.dll', 'unsupported proxy manifest')
@@ -184,7 +184,33 @@ def prepare(original,candidate,*,proxy_manifest,ready_files,**kwargs):
                     sha256=sha(ready_script(name,packet).encode('ascii'))) for name in CHECKPOINTS})
 
 
+class PrimaryObservationError(ValueError):
+    """A failed primary sequence with every original reserved-namespace row."""
+    def __init__(self,message,records,*,route_report=None):
+        super().__init__(message)
+        self.raw_records=records
+        self.route_report=copy.deepcopy(route_report)
+
+
+def primary_observation_records(log):
+    return [dict(line=n,marker=line.split(' ',1)[0],text=line)
+            for n,line in enumerate(log.splitlines(),1) if re.search(r'MPRI_',line,re.I)]
+
+
+def primary_failure_diagnostics(error):
+    result=dict(primary_observation_records=error.raw_records)
+    if error.route_report is not None:result['primary_route_diagnostics']=error.route_report
+    return result
+
+
 def evaluate_primary_sequence(log,packet,core,checkpoint):
+    try:
+        return _evaluate_primary_sequence(log,packet,core,checkpoint)
+    except ValueError as error:
+        raise PrimaryObservationError(str(error),primary_observation_records(log),route_report=core) from error
+
+
+def _evaluate_primary_sequence(log,packet,core,checkpoint):
     expected=CHECKPOINTS[:CHECKPOINTS.index(checkpoint or 'final-ready')+1]
     rows=[];pairs=[];pending=None;points=[];contract_lines=[]
     core_points=core['primary_route_sequence']['checkpoints']
@@ -193,7 +219,7 @@ def evaluate_primary_sequence(log,packet,core,checkpoint):
     screen_line=screens[0]['line']
     for number,line in enumerate(log.splitlines(),1):
         if line=='MPRI_NATIVE_CONTRACT_PASS':contract_lines.append(number);continue
-        if not re.search(r'\bMPRI_',line,re.I):continue
+        if not re.search(r'MPRI_',line,re.I):continue
         key=line.split(' ',1)[0];match=REGEX.get(key)
         match=match.fullmatch(line) if match else None
         need(match is not None,f'line {number}: malformed/rejected primary observation')
@@ -240,7 +266,9 @@ def evaluate_trace(log,*,original,candidate,packet,generated_probe,ready_scripts
     base=copy.deepcopy(packet);base.pop('primary_capture')
     core=route.evaluate_trace(text,original=original,candidate=candidate,packet=base,
                              generated_probe=route.compile_probe(base).encode('ascii'),checkpoint=checkpoint)
-    need(core.get('passed') is True and core.get('failures')==[],'core primary route failed: '+str(core.get('failures')))
+    if core.get('passed') is not True or core.get('failures')!=[]:
+        raise PrimaryObservationError('core primary route failed: '+str(core.get('failures')),
+                                      primary_observation_records(text),route_report=core)
     sequence=evaluate_primary_sequence(text,packet,core,checkpoint)
     core['base_route_source']=copy.deepcopy(core['source'])
     core['source'].update(log_raw_sha256=sha(raw),generated_probe_sha256=sha(generated_probe),
@@ -321,7 +349,7 @@ def main(argv=None):
                 candidate_sha256=args.candidate_sha256,stage=args.stage,resolution=args.resolution,route=args.route,
                 availability=args.availability,castle_index=args.castle_index,candidate_manifest=args.candidate_manifest,minimap_viewport=True)
         else:
-            packet=json.loads(args.packet.read_text(encoding='utf-8-sig'))
+            packet=route.strict_json_object(args.packet.read_bytes())
             scripts={n:path_value(p).read_bytes() for n,p in packet['primary_capture']['ready_files'].items()}
             if args.snapshot_manifest:
                 import modal_primary_surface_audit as audit
@@ -346,6 +374,7 @@ def main(argv=None):
         code=0 if result.get('prepared') or result.get('passed') else 2
     except (ValueError,KeyError,TypeError,OSError,AttributeError,UnicodeError) as error:
         result=dict(passed=False,prepared=False,ready_for_host_capture=False,failures=[str(error)],manual_input_proof=False,promotion_ready=False);code=2
+        if isinstance(error,PrimaryObservationError):result.update(primary_failure_diagnostics(error))
     print(json.dumps(result,indent=2));return code
 
 

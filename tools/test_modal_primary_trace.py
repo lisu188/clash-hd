@@ -5,9 +5,12 @@ fixture reconstructs a real candidate; none of these logs is runtime evidence.
 """
 from pathlib import Path
 import copy
+from contextlib import redirect_stdout
 import hashlib
+import io
 import json
 import re
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -305,18 +308,341 @@ class BindingBoundaryTests(unittest.TestCase):
             self.assertNotIn('initial_map_projection',result)
 
 
+def admission_trace_mutations(log):
+    """Synthetic rejected rows; retain the unchanged baseline and appended row."""
+    for namespace in ('MCAP_', 'MPCAP_'):
+        duplicate=next(line for line in log.splitlines() if line.startswith(namespace))
+        for prefix in ('x_', '7', 'prefix', '0:000> '):
+            yield namespace+prefix, namespace, prefix+duplicate
+        yield namespace+'lowercase', namespace, 'x_'+duplicate.lower()
+        yield namespace+'unknown', namespace, 'x_'+namespace+'UNKNOWN reason=fault'
+        yield namespace+'reject', namespace, 'x_'+namespace+'REJECT reason=fault'
+
+
+DEBUGGER_FAILURE_ROWS=(
+    'Unable to insert breakpoint 89 at 00432f9e, Win32 error 0n5',
+    '0:000> Unable to insert breakpoint 89 at 00432f9e, Win32 error 0n5',
+    'bp89 at 00432f9e failed',
+    '0:000> bp110 at 00600000 failed',
+    'Syntax error in breakpoint command',
+    '0:000> ^ Syntax error',
+    'Command file execution failed',
+    '0:000> Command file execution failed',
+)
+
+CORE_REJECTION_ROWS=(
+    'Unable to insert breakpoint 7 at 00432c66','x_MPRIMARY_REJECT example',
+    'x_SLOTS_CONTRACT_PASS example','x_MCAP_REJECT example','x_MPCAP_REJECT example',
+    'x_MPRI_REJECT invalid_primary','x_MPRI_REJECT invalid_primary',
+)
+
+
+def startup_admission_mutations(log):
+    for row in (line for line in log.splitlines() if line.startswith('MPRIMARY_')):
+        for prefix in ('x_','7','0:000> '):
+            yield 'primary_startup_records',prefix+row
+    yield 'primary_startup_records','x_mprimary_unknown value=1'
+    for namespace in ('SLOTS','ARMY','COMPLETEHD','MCANVAS'):
+        for prefix in ('x_','7','0:000> '):
+            yield 'forbidden_stage_records',prefix+namespace+'_CONTRACT_PASS stage=old'
+
+
+def primary_admission_mutations(log):
+    duplicate=next(line for line in log.splitlines() if line.startswith('MPRI_CHECKPOINT '))
+    for prefix in ('x_', '7', 'prefix', '0:000> '):
+        yield prefix, prefix+duplicate
+    yield 'lowercase', 'x_'+duplicate.lower()
+    yield 'unknown', 'x_MPRI_UNKNOWN reason=fault'
+    yield 'reject', 'x_MPRI_REJECT invalid_primary'
+    yield 'contract', 'x_MPRI_NATIVE_CONTRACT_PASS'
+    yield 'multiple', 'x_MPRI_REJECT invalid_primary\nx_MPRI_REJECT invalid_primary'
+
+
+class AdmissionRegressionTests(unittest.TestCase):
+    BAD_JSON=(b'{"stage":"wrong","stage":"right"}',
+              b'{"nested":{"span":false,"span":1}}',
+              b'{"stage":1,"st\\u0061ge":2}',
+              b'{"x":NaN}',b'{"x":Infinity}',b'{"x":-Infinity}',
+              b'{"x":1e999}',b'{"nested":[-1e999]}',b'[]',b'null',b'true',b'1',
+              b'{"nested":'*10000+b'0'+b'}'*10000)
+
+    def test_strict_json_preserves_types_and_rejects_ambiguous_objects(self):
+        raw=b'\xef\xbb\xbf{"integer":1,"boolean":true,"fraction":1.0,"text":"\\u00e9","nested":[{"a":1}]}'
+        result=context.strict_json_object(raw)
+        self.assertIs(type(result['integer']),int);self.assertIs(type(result['boolean']),bool)
+        self.assertIs(type(result['fraction']),float);self.assertEqual(result['text'],'\u00e9')
+        self.assertEqual(result['nested'],[{'a':1}])
+        for bad in self.BAD_JSON:
+            with self.subTest(raw=bad),self.assertRaises(ValueError):context.strict_json_object(bad)
+
+    def test_conflicting_duplicate_manifest_fails_before_reconstruction(self):
+        manifest=dict(schema='clash95_framed_modal_primary_candidate_v1',stage=context.builder.STAGE,
+                      recipe_revision=context.builder.REVISION,resolution='800x600',nested={'span':1})
+        normal=json.dumps(manifest)
+        variants=['{"stage":"wrong",'+normal[1:],
+                  normal.replace('"span": 1','"span": false, "span": 1')]
+        with tempfile.TemporaryDirectory(prefix='primary-json-') as folder:
+            path=Path(folder)/'candidate.candidate.json'
+            path.with_name('candidate.exe').write_bytes(b'image');path.with_name('candidate.cdb').write_bytes(b'probe')
+            for bad in variants:
+                path.write_text(bad,encoding='utf-8')
+                with patch.object(context.builder,'build_candidate',side_effect=AssertionError('ambiguous JSON reached rebuild')) as rebuild:
+                    with self.assertRaisesRegex(ValueError,'duplicate'):context.load_context(b'original',b'image',path)
+                    rebuild.assert_not_called()
+                self.assertEqual(path.read_text(encoding='utf-8'),bad)
+
+    def test_packet_clis_reject_malformed_json_before_evaluation(self):
+        import modal_primary_barracks_trace as trace
+        import modal_primary_capture as capture
+        with tempfile.TemporaryDirectory(prefix='primary-packet-') as folder:
+            paths={name:Path(folder)/(name+'.txt') for name in ('original','candidate','log','packet','probe')}
+            for name,path in paths.items():path.write_bytes(name.encode('ascii'))
+            args=[arg for name,path in paths.items() for arg in ('--'+name,str(path))]
+            for bad in self.BAD_JSON:
+                paths['packet'].write_bytes(bad)
+                for module in (trace,capture):
+                    with self.subTest(raw=bad,module=module.__name__),redirect_stdout(io.StringIO()) as output, \
+                         patch.object(module,'evaluate_trace',side_effect=AssertionError('ambiguous packet reached evaluation')) as evaluate, \
+                         patch.object(sys,'argv',['tool',*args]):
+                        code=module.main() if module is trace else module.main(args)
+                    self.assertEqual(code,2);report=json.loads(output.getvalue())
+                    self.assertFalse(report['passed']);self.assertFalse(report['ready_for_host_capture'])
+                    self.assertTrue(report['failures']);evaluate.assert_not_called()
+                self.assertEqual(paths['packet'].read_bytes(),bad)
+
+    def test_artifact_and_proxy_json_use_the_same_admission(self):
+        import modal_primary_capture as capture
+        with tempfile.TemporaryDirectory(prefix='primary-artifact-') as folder:
+            path=Path(folder)/'artifact.json'
+            for bad in self.BAD_JSON:
+                path.write_bytes(bad)
+                for load in (capture.Artifacts().json,capture.proxy_context):
+                    with self.subTest(raw=bad,load=load.__name__),self.assertRaises(ValueError):load(path)
+                self.assertEqual(path.read_bytes(),bad)
+
+    def test_every_prefixed_namespace_row_is_retained_and_rejected(self):
+        log,packet,_=native_fixture()
+        for name,namespace,row in admission_trace_mutations(log):
+            changed=log+row+'\n';before=changed
+            seq,_,primary=NativeSequenceTests().evaluate(changed,packet)
+            report=seq if namespace=='MCAP_' else primary
+            with self.subTest(name=name):
+                self.assertFalse(report['sequence_passed'] if namespace=='MCAP_' else report['passed'])
+                self.assertTrue(report['failures'])
+                self.assertEqual(report['raw_records'][-1]['text'],row)
+                self.assertEqual(report['raw_records'][-1]['line'],len(changed.splitlines()))
+                self.assertEqual(changed,before)
+
+    def test_debugger_failure_vocabulary_matches_host_and_retains_every_failure(self):
+        import modal_primary_barracks_trace as trace
+        host=(trace.producer.builder.ROOT/'scripts/cdb/run_modal_primary_capture.ps1').read_text(encoding='utf-8')
+        function=host.split('function Get-CanvasDebuggerCommandFailure',1)[1].split('\nfunction ',1)[0]
+        self.assertIn(trace.DEBUGGER_COMMAND_FAILURE.pattern,function)
+        log,packet,_=native_fixture()
+        changed=log+'\n'.join(DEBUGGER_FAILURE_ROWS)+'\n'
+        report=trace.evaluate_sequence(changed,packet)
+        self.assertFalse(report['sequence_passed'])
+        self.assertEqual([r['text'] for r in report['debugger_failure_records']],list(DEBUGGER_FAILURE_ROWS))
+        self.assertEqual([r['line'] for r in report['debugger_failure_records']],
+                         list(range(len(log.splitlines())+1,len(changed.splitlines())+1)))
+        for row in DEBUGGER_FAILURE_ROWS:
+            self.assertRegex(row,trace.DEBUGGER_COMMAND_FAILURE)
+        self.assertIsNone(trace.DEBUGGER_COMMAND_FAILURE.search('echo "Unable to insert breakpoint"'))
+        self.assertIsNone(trace.DEBUGGER_COMMAND_FAILURE.search('echo "Command file execution failed"'))
+
+    def test_startup_and_inherited_markers_cannot_hide_in_prefixed_rows(self):
+        import modal_primary_barracks_trace as trace
+        log,packet,_=native_fixture()
+        baseline=trace.evaluate_sequence(log,packet)
+        self.assertTrue(baseline['sequence_passed'],baseline['failures'])
+        self.assertIn('protocol=primary_barracks_owned_canvas_v1',log)
+        for field,row in startup_admission_mutations(log):
+            changed=log+row+'\n'
+            with self.subTest(row=row):
+                report=trace.evaluate_sequence(changed,packet)
+                self.assertFalse(report['sequence_passed']);self.assertTrue(report['failures'])
+                self.assertEqual(report[field][-1],dict(line=len(changed.splitlines()),text=row))
+
+    def test_rejected_rows_cannot_keep_an_authenticated_trace_passing(self):
+        trace,log,packet=BindingBoundaryTests().fixture()
+        rows=([row for _,_,row in admission_trace_mutations(log)]+list(DEBUGGER_FAILURE_ROWS)
+              +[row for _,row in startup_admission_mutations(log)])
+        for row in rows:
+            with self.subTest(row=row),patch.object(trace.producer,'build_screen_probe',return_value=packet), \
+                 patch.object(trace,'compile_probe',return_value='canonical'):
+                report=trace.evaluate_trace(log+row+'\n',original=b'original',candidate=b'candidate',
+                    packet=packet,generated_probe=b'canonical')
+            self.assertTrue(report['source_authenticated']) # Synthetic identity seam only.
+            self.assertFalse(report['passed']);self.assertFalse(report['ready_for_host_capture'])
+            self.assertFalse(report['runtime_accepted']);self.assertTrue(report['failures'])
+
+    def test_actual_primary_parser_rejects_prefixed_duplicate_and_failure_rows(self):
+        import test_modal_primary_capture as capture_fixture
+        for checkpoint in capture_fixture.tool.CHECKPOINTS:
+            log,packet=capture_fixture.sequence_fixture(checkpoint)
+            baseline=capture_fixture.SequenceTests().evaluate(log,packet,checkpoint)
+            self.assertTrue(baseline['passed'])
+            for name,row in primary_admission_mutations(log):
+                changed=log+row+'\n';before=changed
+                with self.subTest(checkpoint=checkpoint,name=name),self.assertRaisesRegex(ValueError,'primary observation') as caught:
+                    capture_fixture.SequenceTests().evaluate(changed,packet,checkpoint)
+                self.assertEqual(changed,before)
+                self.assertIsInstance(caught.exception,capture_fixture.tool.PrimaryObservationError)
+                expected=[dict(line=n,marker=line.split(' ',1)[0],text=line)
+                          for n,line in enumerate(changed.splitlines(),1) if re.search(r'MPRI_',line,re.I)]
+                self.assertEqual(caught.exception.raw_records,expected)
+
+    def surface_fixture(self,root,bad,boundary):
+        """Mock only prior file/identity gates to reach each actual JSON callsite."""
+        import modal_primary_surface_audit as audit
+        import modal_primary_capture as capture
+        roles={'original':'original_sha256','input_candidate':'candidate_sha256','candidate_path':'candidate_sha256',
+            'candidate_manifest':'candidate_manifest_sha256','proxy_input':'proxy_sha256','proxy_path':'proxy_sha256',
+            'proxy_manifest':'proxy_manifest_sha256','python':'python_sha256','cdb':'cdb_sha256',
+            **{role:('host_sha256' if role=='host_path' else role+'_sha256') for role in audit.SOURCE_PATHS}}
+        plan=dict(schema='clash95_modal_primary_capture_plan_v1',out_dir=str(root),run_id=root.name,
+            child_environment=dict(CLASH_PROXY_PRESENT='0',parent_environment_modified=False),
+            manual_input_proof=False,visible_composition_proof=False,promotion_ready=False)
+        for role,digest in roles.items():plan[role]=str(root/role);plan[digest]='a'*64
+        for role,relative in audit.SOURCE_PATHS.items():plan[role]=str(audit.ROOT/relative)
+        plan['candidate_manifest']=str(root/'candidate.candidate.json')
+        proxy=json.dumps(dict(output=plan['proxy_input'],source=str(root/'proxy.cpp'))).encode()
+        if boundary=='proxy':proxy=bad
+        ready={name:str(root/('primary-'+name+'.cdb')) for name in capture.CHECKPOINTS}
+        packet=dict(capture_source_hashes={},primary_capture=dict(source_hashes={},ready_files=ready,
+            proxy_manifest=dict(path=plan['proxy_manifest'],sha256=capture.sha(proxy))),
+            candidate_manifest=dict(path=plan['candidate_manifest'],sha256=plan['candidate_manifest_sha256']),
+            stage='synthetic',resolution='800x600',castle_index=0,availability='construct_all',minimap_viewport=True,
+            candidate_sha256='a'*64,original_sha256='a'*64,canvas_state_va=1,canvas_state_offsets={},stop_va=2,
+            checkpoints=[],route={'name':'barracks'})
+        for key in ('stage','resolution','castle_index','availability','minimap_viewport','candidate_sha256','original_sha256',
+                    'canvas_state_va','canvas_state_offsets','stop_va','checkpoints'):plan[key]=packet[key]
+        plan.update(route='barracks',probe_sha256=capture.sha(b'probe'),width=800,height=600,
+                    primary_ready_scripts={n:{} for n in ready},work_dir=str(root))
+        payload={'packet':bad if boundary=='packet' else json.dumps(packet).encode(),
+                 'probe':b'probe','final':b'prefix','prefix':b'prefix','trace':bad}
+        receipt=dict(schema='clash95_modal_primary_triplet_v1',failures=[],manual_input_proof=False,promotion_ready=False,
+            plan=plan,packet={'role':'packet'},probe={'role':'probe'},final_log={'role':'final','capture_prefix_preserved':True},
+            checkpoints=[dict(name=n,index=i,prefix={'role':'prefix'},trace={'role':'trace'})
+                         for i,n in enumerate(capture.CHECKPOINTS)])
+        class Reader:
+            def read(self,path,**kwargs):return proxy if str(path)==plan['proxy_manifest'] else b'file'
+            def artifact(self,record,**kwargs):return payload[record['role']] if 'role' in record else b'file'
+        return audit,receipt,Reader()
+
+    def test_surface_packet_proxy_and_retained_trace_consume_strict_raw_json(self):
+        import modal_primary_capture as capture
+        strict=capture.route.strict_json_object
+        with tempfile.TemporaryDirectory(prefix='primary-surface-json-') as folder:
+            for boundary in ('packet','proxy','trace'):
+                for bad in self.BAD_JSON:
+                    audit,receipt,reader=self.surface_fixture(Path(folder),bad,boundary)
+                    with self.subTest(boundary=boundary,bad=bad), \
+                         patch.object(capture.route,'strict_json_object',wraps=strict) as observed, \
+                         patch.object(capture,'evaluate_trace',return_value={}), \
+                         patch.object(audit,'owned_cleanup',return_value={}),patch.object(audit,'source_assets',return_value={}):
+                        with self.assertRaises(ValueError):audit.bind_triplet(receipt,reader=reader)
+                    self.assertEqual(observed.call_args.args,(bad,))
+                    self.assertTrue(all(type(call.args[0]) is bytes for call in observed.call_args_list))
+
+    def test_surface_summary_triplet_uses_strict_hashed_artifact_bytes(self):
+        import modal_primary_surface_audit as audit
+        import modal_primary_capture as capture
+        strict=capture.route.strict_json_object
+        with tempfile.TemporaryDirectory(prefix='primary-summary-json-') as folder:
+            root=Path(folder);triplet=root/'primary-triplet.json';summary=root/'summary.json'
+            for bad in self.BAD_JSON:
+                triplet.write_bytes(bad)
+                row=dict(schema='clash95_modal_primary_capture_v1',passed=True,executed=True,failures=[],
+                    manual_input_proof=False,visible_composition_proof=False,promotion_ready=False,plan={'out_dir':str(root)},
+                    primary_triplet=dict(path=str(triplet),sha256=capture.sha(bad),bytes=len(bad)))
+                summary.write_text(json.dumps(row),encoding='utf-8')
+                with self.subTest(bad=bad),patch.object(capture.route,'strict_json_object',wraps=strict) as observed, \
+                     patch.object(audit,'bind_triplet',side_effect=AssertionError('ambiguous triplet reached binding')) as bind:
+                    report=audit.evaluate(summary)
+                self.assertFalse(report['passed']);self.assertFalse(report['source_authenticated'])
+                self.assertTrue(report['failures']);bind.assert_not_called()
+                self.assertEqual(observed.call_args.args,(bad,));self.assertEqual(triplet.read_bytes(),bad)
+
+    def test_primary_failure_diagnostics_survive_cli_and_surface_report_boundaries(self):
+        import test_modal_primary_capture as capture_fixture
+        import modal_primary_surface_audit as audit
+        capture=capture_fixture.tool
+        log,packet=capture_fixture.sequence_fixture()
+        changed=log+'x_MPRI_REJECT invalid_primary\nx_MPRI_REJECT invalid_primary\n'
+        with self.assertRaises(capture.PrimaryObservationError) as caught:
+            capture_fixture.SequenceTests().evaluate(changed,packet)
+        failure=caught.exception
+        with tempfile.TemporaryDirectory(prefix='primary-error-records-') as folder:
+            root=Path(folder);paths={name:root/(name+'.txt') for name in ('original','candidate','log','packet','probe')}
+            for name,path in paths.items():path.write_bytes(name.encode())
+            paths['packet'].write_text(json.dumps({'primary_capture':{'ready_files':{}}}))
+            args=[arg for name,path in paths.items() for arg in ('--'+name,str(path))]
+            with patch.object(capture,'evaluate_trace',side_effect=failure),redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(capture.main(args),2)
+            report=json.loads(output.getvalue());self.assertFalse(report['passed'])
+            self.assertEqual(report['primary_observation_records'],failure.raw_records)
+            self.assertEqual(report['primary_route_diagnostics'],failure.route_report)
+            triplet=root/'primary-triplet.json';summary=root/'summary.json'
+            same={key:None for key in ('checkpoints','snapshots','clean_stable_pair','cdb','candidates','cleanup',
+                                      'packet','probe','capture_prefix','final_log')}
+            same['plan']={'out_dir':str(root)};raw=json.dumps(same).encode();triplet.write_bytes(raw)
+            row=dict(same,schema='clash95_modal_primary_capture_v1',passed=True,executed=True,failures=[],
+                manual_input_proof=False,visible_composition_proof=False,promotion_ready=False,
+                primary_triplet=dict(path=str(triplet),sha256=capture.sha(raw),bytes=len(raw)))
+            summary.write_text(json.dumps(row))
+            with patch.object(audit,'bind_triplet',side_effect=failure):report=audit.evaluate(summary)
+            self.assertFalse(report['passed']);self.assertEqual(report['primary_observation_records'],failure.raw_records)
+            self.assertEqual(report['primary_route_diagnostics'],failure.route_report)
+
+    def test_core_rejections_retain_every_route_and_primary_record_at_both_consumers(self):
+        import test_modal_primary_capture as capture_fixture
+        import modal_primary_surface_audit as audit
+        capture=capture_fixture.tool
+        for checkpoint in capture.CHECKPOINTS:
+            log,packet=capture_fixture.sequence_fixture(checkpoint)
+            changed=log+'\n'.join(CORE_REJECTION_ROWS)+'\n'
+            sequence=capture.route.evaluate_sequence(changed,packet,checkpoint=checkpoint)
+            slots=capture.route.evaluate_slots(changed,packet,sequence,checkpoint=checkpoint)
+            primary=capture.route.evaluate_primary_route(changed,packet,sequence,checkpoint=checkpoint)
+            reports=dict(modal_sequence=sequence,slot_trace=slots,primary_route_sequence=primary)
+            failure=dict(reports,passed=False,failures=sequence['failures']+slots['failures']+primary['failures'])
+            self.assertFalse(sequence['sequence_passed']);self.assertTrue(failure['failures'])
+            for key in ('raw_records','debugger_failure_records','forbidden_stage_records','primary_startup_records'):
+                self.assertTrue(sequence[key])
+            expected=[dict(line=n,marker=line.split(' ',1)[0],text=line)
+                      for n,line in enumerate(changed.splitlines(),1) if re.search(r'MPRI_',line,re.I)]
+            with self.subTest(checkpoint=checkpoint,consumer='bound prefix'),self.assertRaises(capture.PrimaryObservationError) as caught:
+                audit.bound_capture_report(changed.encode(),packet,{'candidate_sha256':packet['candidate_sha256']},checkpoint)
+            self.assertEqual(caught.exception.raw_records,expected);self.assertEqual(caught.exception.route_report,reports)
+            with tempfile.TemporaryDirectory(prefix='primary-core-reject-') as folder:
+                root=Path(folder);paths={name:root/(name+'.txt') for name in ('original','candidate','log','packet','probe')}
+                for name,path in paths.items():path.write_bytes(name.encode())
+                scripts={name:root/('primary-'+name+'.cdb') for name in capture.CHECKPOINTS}
+                packet['primary_capture']['ready_files']={name:str(path) for name,path in scripts.items()}
+                for name,path in scripts.items():path.write_bytes(capture.ready_script(name,packet).encode('ascii'))
+                paths['packet'].write_text(json.dumps(packet));paths['log'].write_bytes(changed.encode());paths['probe'].write_bytes(b'canonical\n')
+                args=[arg for name,path in paths.items() for arg in ('--'+name,str(path))]+['--checkpoint',checkpoint]
+                before=copy.deepcopy(failure)
+                with patch.object(capture,'compile_probe',return_value='canonical\n'), \
+                     patch.object(capture.route,'compile_probe',return_value='native\n'), \
+                     patch.object(capture.route,'evaluate_trace',return_value=failure),redirect_stdout(io.StringIO()) as output:
+                    self.assertEqual(capture.main(args),2)
+                report=json.loads(output.getvalue())
+                self.assertFalse(report['passed']);self.assertFalse(report['ready_for_host_capture'])
+                self.assertEqual(report['primary_observation_records'],expected)
+                self.assertEqual(report['primary_route_diagnostics'],before)
+                self.assertEqual(failure,before);self.assertEqual(paths['log'].read_bytes(),changed.encode())
+
+
 @unittest.skipUnless(Path('C:/Clash/clash95.exe').is_file(), 'local original required for exact candidate reconstruction')
 class ActualContextTests(unittest.TestCase):
     def test_real_1024_primary_candidate_reconstructs_without_recipe_projection(self):
         original=Path('C:/Clash/clash95.exe').read_bytes()
-        retained=Path('C:/ClashTests/hd-completion/modal-primary-1024x768-20260913-a/candidate.exe')
-        if retained.is_file() and retained.with_suffix('.candidate.json').is_file() and retained.with_suffix('.cdb').is_file():
-            # Reuse only input bytes. Both actual producer and validator below
-            # independently rebuild/authenticate every byte and sidecar value.
-            image=retained.read_bytes();manifest=json.loads(retained.with_suffix('.candidate.json').read_bytes())
-            probe=retained.with_suffix('.cdb').read_text(encoding='utf-8')
-        else:
-            image,manifest,probe=context.builder.build_candidate(original,'1024x768')
+        # A historical sidecar binds the producer sources from its own run.
+        # Build fresh inputs so current source authentication is exercised
+        # without treating preserved historical bundles as fixture caches.
+        image,manifest,probe=context.builder.build_candidate(original,'1024x768')
         with tempfile.TemporaryDirectory(prefix='primary-real-context-') as folder:
             path=Path(folder)/'candidate.candidate.json';path.write_text(json.dumps(manifest))
             path.with_name('candidate.exe').write_bytes(image);path.with_name('candidate.cdb').write_bytes(probe.encode())
