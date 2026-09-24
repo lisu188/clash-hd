@@ -60,6 +60,12 @@ The historical primary 1/1/1/3 capture contract is not the required new 3/3/3/3
 contract. Neither the primary pixel audit nor the text-only checkpoint ledger
 implicitly accepts this widget stage.
 
+The [widget quantity-text observer](MODAL_WIDGET_TEXT_OBSERVER.md) provides a
+separate source-bound three-breakpoint fragment and triplet evaluator. Its
+integration into this route's complete command, arming point and checkpoint
+prefixes remains pending. Preparing either packet independently is insufficient
+to authenticate a composed runtime command.
+
 ## Repository checks
 
 ```powershell
