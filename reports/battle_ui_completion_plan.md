@@ -23,6 +23,12 @@
 > advisory clean tear checks. Relative pointer motion exposes an input-mapping
 > defect. Expanded tactical command/movement/attack, map return, manual input
 > and overall acceptance remain unproven; this does not alter the centered proof.
+>
+> **September 24 input repair:** [candidate 99D92E](../captures/current/battle-hd-input-fix-20260924.md)
+> restores native relative motion and tactical cursor bounds. Byte and x86
+> fixtures pass; hidden helpers pass 7/7 and lifecycle checks remain 11/14.
+> The user kept visible validation pending and requested headless operation
+> by default. These controlled checks do not establish manual input or promotion.
 
 Generated: 2026-05-15
 
