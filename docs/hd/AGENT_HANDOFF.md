@@ -95,6 +95,9 @@ final screenshots cannot be audited as ordinary maps. Both 4K profiles remain
 on the map but fail controls/input checks. The audit now requires matching paused
 screen-owner records. Fixed click targets, the framed input guard for worlds
 smaller than the viewport, and ordinary castle entry still need separate repairs.
+The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
+bounded component and its new complete-wrapper CPU checks; composition into the
+Complete HD/modalwidgets candidate remains required.
 This review is not a fresh runtime or a replacement for the controlled component
 evidence below; stable and manual-input boundaries remain unchanged.
 
