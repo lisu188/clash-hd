@@ -129,3 +129,55 @@ captures. Label the stage, resolution, checkpoint and method. Inspect the
 centered canvas perimeter, all outer margins and the five applicable bottom
 modal controls; do not apply the ordinary-map six-cell action-bar claim to a
 modal screen.
+
+## Strict admission and retained failures (2026-09-24)
+
+The primary context, route, capture and surface consumers now decode external
+JSON with one strict object reader. Duplicate decoded keys at any depth,
+non-object roots, non-finite or overflowing numbers and excessive nesting fail
+before they can be interpreted as a candidate, packet or artifact report.
+Typed manifest comparison still distinguishes booleans, integers and floats.
+
+Trace admission discovers every reserved MCAP, MPCAP, MPRI and MPRIMARY
+occurrence, including malformed attached prefixes. It retains repeated rows
+and rejects them through the existing sequence/cardinality checks. The native
+trace also rejects the same anchored debugger-command failures recognized by
+the host; this is not a claim to recognize every possible debugger diagnostic.
+
+Failed capture and checkpoint-prefix evaluations retain the unchanged underlying
+route reports and every raw MPRI row, even when the earlier native route already
+failed. Capture and surface-report exception boundaries expose those failure-only
+diagnostics. Accepted report shapes remain unchanged. Raw rejected records are
+diagnostic data and do not acquire source or runtime authenticity by being kept.
+
+The focused staged validation passed 54 tests with no skips and preserved all
+28 before/after accepted synthetic report comparisons. Its source snapshots,
+86 synthetic logs, independent-review reproduction and follow-up, and the failed
+nesting-fixture attempt are retained outside the repository in
+`C:/ClashCaptures/completehd-integration-20260924/admission-ledger-source-checks-v1/`.
+The preservation manifest SHA-256 is
+`90268b64d89c96a70afa60a89aad5f73443b2ab3a4815d6bf7429721ed87c062`.
+The failed fixture assumed the decoder rejected 1,200 nested objects; the final
+negative case uses an actually excessive depth. That original failure is retained.
+
+These source changes require fresh source-bound packets. Existing A/B captures,
+source snapshots, frozen candidate recipes, bytes and legacy reports stay
+unchanged. Parser checks do not establish corrected primary pixels, natural
+controls, manual input, continuity, endurance or release acceptance.
+
+After integration, all six canonical suites have passing results: 83 tests in
+total, without skips, including actual 1024x768 reconstruction and native asset
+checks. The first combined report retains one failed trace fixture. Its reused
+historical sidecar had three absolute source-binding paths from a different
+checkout; source hashes and candidate content did not drift. The fixture now
+builds fresh local inputs, and the full 26-test trace module passes with both
+producer and validator still rebuilding independently. The historical bundle
+and original executable remain unchanged.
+
+The combined failure, successful trace rerun, exact path-difference diagnosis,
+source snapshots and original/historical-file rechecks are retained in
+`C:/ClashCaptures/completehd-integration-20260924/admission-integration-checks-v1/`.
+Its preservation manifest SHA-256 is
+`3bbf11434e8dc6f68f7d70a93623a99e6af589347d507b7045aa3be37498438a`.
+This is a set of focused source checks, not a passing whole-repository or game
+release evaluation.
