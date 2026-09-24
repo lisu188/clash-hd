@@ -64,3 +64,40 @@ Successful construction, loading or synthetic CPU checks do not establish
 corrected lower-frame pixels, whole game execution, native modal exit, ordinary
 input, endurance or stable promotion. Classic/800x600 and all historical failed
 capture receipts remain unchanged.
+
+## Exact bundle context for new consumers
+
+`tools/modal_widgets_context.py` provides
+`load_context(original_bytes, candidate_bytes, manifest_path)`. It authenticates
+the actual widgets-v1 stage by rebuilding the complete candidate, typed manifest
+and sibling probe. Its exact 36-file recipe inventory, frozen text/widget pins,
+separate text-context dependency and bundle identities are checked before and
+after reconstruction. Missing files, duplicates/nonfinite JSON, aliases, stale
+source bytes, changed artifacts and predecessor-stage manifests fail closed.
+
+The result retains the widget stage and SHA. Its `text_context`, `primary_context`,
+`slots_context` and `owner_context` are separately named, detached ancestor
+metadata for building a new explicit consumer. They do not admit widget logs to
+old primary/text readers. The unchanged text reader rejects a real widget bundle.
+
+The [2026-09-24 source-validation receipt](../../captures/current/modal-widgets-context-source-validation-20260924.json)
+records a fresh original-backed 1024x768 build and exact authentication: 15 PE
+sections, 36 recipe sources, candidate
+`ebea660f885da43896ad5e4303e6e7d7fe112def6c897b4c26312df8505376e5`.
+All 21 synthetic boundary fixtures pass, and independent review rechecked the
+receipt and its identities. The original executable remains unchanged.
+The source-only build took 196.328 seconds and authentication 281.125 seconds;
+a future host needs a measured, bounded preparation timeout rather than the
+older 120-second limit. Neither operation launched the game or debugger.
+
+Run the synthetic fixtures without game assets:
+
+```powershell
+python -B tools/test_modal_widgets_context.py
+```
+
+This reader covers widgets-v1 only. It does not authenticate the separate
+`nativepresent` successor from the failed September 21 playability run. A
+matching capture host, native ownership/artwork/text checks and new runtime
+observations are still required. Source authentication is not a rendering,
+input, lifecycle, manual-proof or promotion pass.
