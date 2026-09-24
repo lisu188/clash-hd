@@ -1,0 +1,490 @@
+{
+  "schema": "resolution_playability_screen_review_v1",
+  "review_date": "2026-09-24",
+  "runtime_date": "2026-09-21",
+  "github_run_url": "https://github.com/lisu188/clash-hd/actions/runs/35565038115",
+  "review_source_sha256": "944dc8c30add50ab7728fb9746de26cb6337e8610083051a6b1dc272b55343c9",
+  "evidence_root": "C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-hd-frontier-20260924-tms8htm4",
+  "new_runtime_executed": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "limitations": [
+    "This is a read-only classification of retained evidence, not a fresh run.",
+    "The old pixel counts remain historical diagnostics. Castle samples do not establish ordinary-map frame or action-bar correctness.",
+    "Paused software-primary captures are not GDI grabs, but may stop during native rendering; no stable pair or final-wrapper acceptance is claimed.",
+    "The input sequence and fixed click targets still need owner-aware routing and measured army/occupancy/visibility observations."
+  ],
+  "cases": [
+    {
+      "profile": "modalwidgets",
+      "resolution": "1024x768",
+      "source_commit": "4019fbcee20cd40cdf404fe9ebafeb53b4d7d8a3",
+      "candidate_sha256": "23c766f439f3f871b6a2b992f22f2efa45b51373b9629cede5235596c519d743",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-nativepresent-validation",
+      "archive": {
+        "github_run": 35565038115,
+        "artifact_id": 10624252522,
+        "archive_sha256": "2e2d782282991002ae28fb5f8436a1ca690732c35ee093a3390896ab79c39f1f"
+      },
+      "original_report_sha256": "1b3c50e497730fa87677d2bbf96253478932dbd2515cdfb169733f703e9338a3",
+      "original_result": {
+        "unit_selected_observed": false,
+        "native_input_passed": true,
+        "map_controls_pixels_passed": false,
+        "retained_process_exited": true,
+        "reference_unchanged": true,
+        "candidate_unchanged": true,
+        "working_original_unchanged": true
+      },
+      "snapshots": [
+        {
+          "primary": "primary-08.json",
+          "context": {
+            "state_sample": "map-state-08.json",
+            "ordinary_map": false,
+            "screen": "castle_overview",
+            "render_hook": 4333600,
+            "reason": "Castle owns the native renderer",
+            "primary_metadata_sha256": "cd99a4de79de8b6206720593fafd2be36ba5061686036cb5351908b8a991ef54",
+            "state_sha256": "3c1752221143dea4af7e553ab4e60698c75f19b9a457c4457b5d89de75ea431e"
+          },
+          "state": {
+            "game_data": 57737264,
+            "world_width": 50,
+            "world_height": 50,
+            "scroll_x": 26,
+            "scroll_y": 39,
+            "map_active_word": 68146648,
+            "native_modal_word": 0,
+            "render_hook": 4333600,
+            "post_callback": 0,
+            "lower_owner": 0,
+            "current_player": 0,
+            "selected_stack": 4294967295,
+            "previous_stack": 4294967295,
+            "map_surface": 68026152,
+            "map_extent": 50332672,
+            "map_pixels": 71237680,
+            "map_vtable": 5303844,
+            "primary_extent": 50332672,
+            "cursor_raw_x": 24576,
+            "cursor_raw_y": 27392,
+            "cursor_shift": 6
+          },
+          "raw_sha256": "6edefa7e11f200e64656f084b18e94c4099d0930a8d4450814e18478327f6a08",
+          "palette_sha256": "b1d6c83d3016b25010cfadc1e5e93ea1b2a1deb7a0ec96053a54375d5eb17ac9",
+          "png_sha256": "ce584f8dd210dfcaa72d7fab0f85b3ca953f5ce94f40d1ecd9c7b90b71bdc345",
+          "original_pixel_diagnostic": {
+            "action_cell_matches": 6,
+            "frame_required": true,
+            "structural_border_exact": false
+          },
+          "ordinary_map_claim_applicable": false
+        },
+        {
+          "primary": "primary-09.json",
+          "context": {
+            "state_sample": "map-state-09.json",
+            "ordinary_map": false,
+            "screen": "castle_overview",
+            "render_hook": 4333600,
+            "reason": "Castle owns the native renderer",
+            "primary_metadata_sha256": "984a65888c7cd84bfa834a77a30114981b928715c21d4e11fdcbef0b29b1d217",
+            "state_sha256": "3c1752221143dea4af7e553ab4e60698c75f19b9a457c4457b5d89de75ea431e"
+          },
+          "state": {
+            "game_data": 57737264,
+            "world_width": 50,
+            "world_height": 50,
+            "scroll_x": 26,
+            "scroll_y": 39,
+            "map_active_word": 68146648,
+            "native_modal_word": 0,
+            "render_hook": 4333600,
+            "post_callback": 0,
+            "lower_owner": 0,
+            "current_player": 0,
+            "selected_stack": 4294967295,
+            "previous_stack": 4294967295,
+            "map_surface": 68026152,
+            "map_extent": 50332672,
+            "map_pixels": 71237680,
+            "map_vtable": 5303844,
+            "primary_extent": 50332672,
+            "cursor_raw_x": 24576,
+            "cursor_raw_y": 27392,
+            "cursor_shift": 6
+          },
+          "raw_sha256": "af96b87856517e38c40fde86a590bcb5ed4a98f996433df551768c0a65388a8e",
+          "palette_sha256": "b1d6c83d3016b25010cfadc1e5e93ea1b2a1deb7a0ec96053a54375d5eb17ac9",
+          "png_sha256": "c5fa082045a2db47854475efe2f19af7067d36c9f71f63c70ed31fb6ac7c6476",
+          "original_pixel_diagnostic": {
+            "action_cell_matches": 6,
+            "frame_required": true,
+            "structural_border_exact": false
+          },
+          "ordinary_map_claim_applicable": false
+        },
+        {
+          "primary": "primary-10.json",
+          "context": {
+            "state_sample": "map-state-10.json",
+            "ordinary_map": false,
+            "screen": "castle_overview",
+            "render_hook": 4333600,
+            "reason": "Castle owns the native renderer",
+            "primary_metadata_sha256": "ac5d4ec2f9f8ddc3272e03bef69b921a7db1049ae03dfce988f438dc8c947155",
+            "state_sha256": "3c1752221143dea4af7e553ab4e60698c75f19b9a457c4457b5d89de75ea431e"
+          },
+          "state": {
+            "game_data": 57737264,
+            "world_width": 50,
+            "world_height": 50,
+            "scroll_x": 26,
+            "scroll_y": 39,
+            "map_active_word": 68146648,
+            "native_modal_word": 0,
+            "render_hook": 4333600,
+            "post_callback": 0,
+            "lower_owner": 0,
+            "current_player": 0,
+            "selected_stack": 4294967295,
+            "previous_stack": 4294967295,
+            "map_surface": 68026152,
+            "map_extent": 50332672,
+            "map_pixels": 71237680,
+            "map_vtable": 5303844,
+            "primary_extent": 50332672,
+            "cursor_raw_x": 24576,
+            "cursor_raw_y": 27392,
+            "cursor_shift": 6
+          },
+          "raw_sha256": "e168e9643fb6d62b0d7003660d30c383ac3c7dde3943db51bf329d8f6011c92a",
+          "palette_sha256": "b1d6c83d3016b25010cfadc1e5e93ea1b2a1deb7a0ec96053a54375d5eb17ac9",
+          "png_sha256": "8e5fa332ce0c5d9ed08c1226960a3bfa7226795b0a508006f097c82003da1395",
+          "original_pixel_diagnostic": {
+            "action_cell_matches": 6,
+            "frame_required": true,
+            "structural_border_exact": false
+          },
+          "ordinary_map_claim_applicable": false
+        }
+      ],
+      "original_reports_unchanged": true
+    },
+    {
+      "profile": "framed",
+      "resolution": "3840x2160",
+      "source_commit": "4019fbcee20cd40cdf404fe9ebafeb53b4d7d8a3",
+      "candidate_sha256": "096b51c39d78d9c63491ade514b84f57282d81f439a291f679d1eb867aedde45",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-combinedui-partialtiles-initialpaint-framed-nativepresent-validation",
+      "archive": {
+        "github_run": 35565038115,
+        "artifact_id": 10624291739,
+        "archive_sha256": "6fd1b05ea34a4fd91bd915cbd7c7c4083afee4fc858322ffa6faba510bf6e199"
+      },
+      "original_report_sha256": "97f0ec3d6ce0f1e98cf121ed6238755bb1aaa2b3149741addeccf3c5918d31a1",
+      "original_result": {
+        "unit_selected_observed": false,
+        "native_input_passed": false,
+        "map_controls_pixels_passed": false,
+        "retained_process_exited": true,
+        "reference_unchanged": true,
+        "candidate_unchanged": true,
+        "working_original_unchanged": true
+      },
+      "snapshots": [
+        {
+          "primary": "primary-07.json",
+          "context": {
+            "state_sample": "map-state-07.json",
+            "ordinary_map": true,
+            "screen": "ordinary_map",
+            "render_hook": 4238656,
+            "reason": "Native map owner and context observed",
+            "primary_metadata_sha256": "a6a96c9dffcc0a79b6c6d61b72d79a099ed14f885aa6cc90cd077dce000469be",
+            "state_sha256": "0ceadf234ca45b27ef8ddeafa89c535afa264db61581092311846ffda54f3f28"
+          },
+          "state": {
+            "game_data": 39583792,
+            "world_width": 50,
+            "world_height": 50,
+            "scroll_x": 0,
+            "scroll_y": 17,
+            "map_active_word": 50922408,
+            "native_modal_word": 0,
+            "render_hook": 4238656,
+            "post_callback": 0,
+            "lower_owner": 0,
+            "current_player": 0,
+            "selected_stack": 4294967295,
+            "previous_stack": 4294967295,
+            "map_surface": 50801928,
+            "map_extent": 141561600,
+            "map_pixels": 78250032,
+            "map_vtable": 5645360,
+            "primary_extent": 141561600,
+            "cursor_raw_x": 24832,
+            "cursor_raw_y": 27648,
+            "cursor_shift": 6
+          },
+          "raw_sha256": "677d11a4e6b84d350ea6d343d04c8face50b2124749cf434c6f44c7c2d9b33c9",
+          "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+          "png_sha256": "4203db218a4f94181961608788d48ae18597890cff4462c95ed2954d972230d4",
+          "original_pixel_diagnostic": {
+            "action_cell_matches": 3,
+            "frame_required": true,
+            "structural_border_exact": false
+          },
+          "ordinary_map_claim_applicable": true
+        },
+        {
+          "primary": "primary-09.json",
+          "context": {
+            "state_sample": "map-state-09.json",
+            "ordinary_map": true,
+            "screen": "ordinary_map",
+            "render_hook": 4238656,
+            "reason": "Native map owner and context observed",
+            "primary_metadata_sha256": "0c599566e8235c16a38d14e4dede973f41903578a2ffe0c3c0772d522e7698db",
+            "state_sha256": "0ceadf234ca45b27ef8ddeafa89c535afa264db61581092311846ffda54f3f28"
+          },
+          "state": {
+            "game_data": 39583792,
+            "world_width": 50,
+            "world_height": 50,
+            "scroll_x": 0,
+            "scroll_y": 17,
+            "map_active_word": 50922408,
+            "native_modal_word": 0,
+            "render_hook": 4238656,
+            "post_callback": 0,
+            "lower_owner": 0,
+            "current_player": 0,
+            "selected_stack": 4294967295,
+            "previous_stack": 4294967295,
+            "map_surface": 50801928,
+            "map_extent": 141561600,
+            "map_pixels": 78250032,
+            "map_vtable": 5645360,
+            "primary_extent": 141561600,
+            "cursor_raw_x": 24832,
+            "cursor_raw_y": 27648,
+            "cursor_shift": 6
+          },
+          "raw_sha256": "3672e30957316feacf3d8d76cd36a171d667efd978fbf11fc4ebade6aaa01f69",
+          "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+          "png_sha256": "f30660bd7309363068773096ed04cba3590f417984175b9c3aff29e650127f87",
+          "original_pixel_diagnostic": {
+            "action_cell_matches": 3,
+            "frame_required": true,
+            "structural_border_exact": false
+          },
+          "ordinary_map_claim_applicable": true
+        },
+        {
+          "primary": "primary-10.json",
+          "context": {
+            "state_sample": "map-state-10.json",
+            "ordinary_map": true,
+            "screen": "ordinary_map",
+            "render_hook": 4238656,
+            "reason": "Native map owner and context observed",
+            "primary_metadata_sha256": "e2013ccd17b3eff0860a45d3b638a14b6363a24c406861e05996dd23ee78a91b",
+            "state_sha256": "9013439946134209e5a3d76df58a8958f1054b1a138990d663fe672d4a133d54"
+          },
+          "state": {
+            "game_data": 39583792,
+            "world_width": 50,
+            "world_height": 50,
+            "scroll_x": 0,
+            "scroll_y": 17,
+            "map_active_word": 50922408,
+            "native_modal_word": 0,
+            "render_hook": 4238656,
+            "post_callback": 0,
+            "lower_owner": 0,
+            "current_player": 0,
+            "selected_stack": 4294967295,
+            "previous_stack": 4294967295,
+            "map_surface": 50801928,
+            "map_extent": 141561600,
+            "map_pixels": 78250032,
+            "map_vtable": 5303844,
+            "primary_extent": 141561600,
+            "cursor_raw_x": 24832,
+            "cursor_raw_y": 27648,
+            "cursor_shift": 6
+          },
+          "raw_sha256": "6a3e85cb9f8da05751140d786fcb58e565013398cc5f25ef82230742878bfe98",
+          "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+          "png_sha256": "50b08d617296e6cff2643534aca6ab9f2ad3b0ee4edaa4139e6864d71d5988ac",
+          "original_pixel_diagnostic": {
+            "action_cell_matches": 3,
+            "frame_required": true,
+            "structural_border_exact": false
+          },
+          "ordinary_map_claim_applicable": true
+        }
+      ],
+      "original_reports_unchanged": true
+    },
+    {
+      "profile": "classic",
+      "resolution": "3840x2160",
+      "source_commit": "4019fbcee20cd40cdf404fe9ebafeb53b4d7d8a3",
+      "candidate_sha256": "87dc4a0b3bd19d7adc0df028b7706a58697129dc81a68cd38f9da05968bcf20b",
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-menuwidgets-nativepresent-validation",
+      "archive": {
+        "github_run": 35565038115,
+        "artifact_id": 10624127220,
+        "archive_sha256": "2cb988a17ddff4bdc2691c22a4ca9230da6fe187ab7f5448744caeb819632c37"
+      },
+      "original_report_sha256": "d8f0648d4c71a6d92f1334ca0b462e4191d8f9d6bbee9d94d20470837069424b",
+      "original_result": {
+        "unit_selected_observed": false,
+        "native_input_passed": false,
+        "map_controls_pixels_passed": false,
+        "retained_process_exited": true,
+        "reference_unchanged": true,
+        "candidate_unchanged": true,
+        "working_original_unchanged": true
+      },
+      "snapshots": [
+        {
+          "primary": "primary-08.json",
+          "context": {
+            "state_sample": "map-state-08.json",
+            "ordinary_map": true,
+            "screen": "ordinary_map",
+            "render_hook": 4238656,
+            "reason": "Native map owner and context observed",
+            "primary_metadata_sha256": "aab3b52ab5a74a33e1794fed41c9cf0b374cfbbfe9d6233e525c05b64b370c73",
+            "state_sha256": "0450d59637e8cb25020fd69bc05a417b42ceaf01e92bd4e3d214788bc39b9e75"
+          },
+          "state": {
+            "game_data": 61931568,
+            "world_width": 50,
+            "world_height": 50,
+            "scroll_x": 0,
+            "scroll_y": 17,
+            "map_active_word": 89908392,
+            "native_modal_word": 0,
+            "render_hook": 4238656,
+            "post_callback": 0,
+            "lower_owner": 0,
+            "current_player": 0,
+            "selected_stack": 4294967295,
+            "previous_stack": 4294967295,
+            "map_surface": 78523872,
+            "map_extent": 141561600,
+            "map_pixels": 81526832,
+            "map_vtable": 5303844,
+            "primary_extent": 141561600,
+            "cursor_raw_x": 24576,
+            "cursor_raw_y": 27648,
+            "cursor_shift": 6
+          },
+          "raw_sha256": "988ebd71d04b2a708115fd77d27efe57aa5ab48235731cb295cb615687480448",
+          "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+          "png_sha256": "41f7edd443bcea3fdeeae153613871364c0b932bc3dfc5e2ecca6dca9001cfe0",
+          "original_pixel_diagnostic": {
+            "action_cell_matches": 0,
+            "frame_required": false,
+            "structural_border_exact": null
+          },
+          "ordinary_map_claim_applicable": true
+        },
+        {
+          "primary": "primary-09.json",
+          "context": {
+            "state_sample": "map-state-09.json",
+            "ordinary_map": true,
+            "screen": "ordinary_map",
+            "render_hook": 4238656,
+            "reason": "Native map owner and context observed",
+            "primary_metadata_sha256": "48e4521960e83b3546120ab11b5118573feffbe0719e029be056e49c7560e3e7",
+            "state_sha256": "0450d59637e8cb25020fd69bc05a417b42ceaf01e92bd4e3d214788bc39b9e75"
+          },
+          "state": {
+            "game_data": 61931568,
+            "world_width": 50,
+            "world_height": 50,
+            "scroll_x": 0,
+            "scroll_y": 17,
+            "map_active_word": 89908392,
+            "native_modal_word": 0,
+            "render_hook": 4238656,
+            "post_callback": 0,
+            "lower_owner": 0,
+            "current_player": 0,
+            "selected_stack": 4294967295,
+            "previous_stack": 4294967295,
+            "map_surface": 78523872,
+            "map_extent": 141561600,
+            "map_pixels": 81526832,
+            "map_vtable": 5303844,
+            "primary_extent": 141561600,
+            "cursor_raw_x": 24576,
+            "cursor_raw_y": 27648,
+            "cursor_shift": 6
+          },
+          "raw_sha256": "8dacb67624278e02b40e94f90471ac5c260080187d457c1b64cdc46b761cb6ec",
+          "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+          "png_sha256": "1d9501fc7cb2c5ed79a37b9b69679bbf454321f747d21ce18c358a525e0279d8",
+          "original_pixel_diagnostic": {
+            "action_cell_matches": 0,
+            "frame_required": false,
+            "structural_border_exact": null
+          },
+          "ordinary_map_claim_applicable": true
+        },
+        {
+          "primary": "primary-10.json",
+          "context": {
+            "state_sample": "map-state-10.json",
+            "ordinary_map": true,
+            "screen": "ordinary_map",
+            "render_hook": 4238656,
+            "reason": "Native map owner and context observed",
+            "primary_metadata_sha256": "df5cadf3ba6058d44bbf37a448ae84e944f97ff8e31abcaeb11cc9708e2fe0de",
+            "state_sha256": "0450d59637e8cb25020fd69bc05a417b42ceaf01e92bd4e3d214788bc39b9e75"
+          },
+          "state": {
+            "game_data": 61931568,
+            "world_width": 50,
+            "world_height": 50,
+            "scroll_x": 0,
+            "scroll_y": 17,
+            "map_active_word": 89908392,
+            "native_modal_word": 0,
+            "render_hook": 4238656,
+            "post_callback": 0,
+            "lower_owner": 0,
+            "current_player": 0,
+            "selected_stack": 4294967295,
+            "previous_stack": 4294967295,
+            "map_surface": 78523872,
+            "map_extent": 141561600,
+            "map_pixels": 81526832,
+            "map_vtable": 5303844,
+            "primary_extent": 141561600,
+            "cursor_raw_x": 24576,
+            "cursor_raw_y": 27648,
+            "cursor_shift": 6
+          },
+          "raw_sha256": "1bbb139348d1b3cdfb5a6397b1fc227416aeaa8df2d0819603a1422c1f816688",
+          "palette_sha256": "7dccc08143e0e93e70430429014198db29b578a83b9b21150f81215d4d4092c2",
+          "png_sha256": "c0858353e468d4cb887e960b530bd1056d2e6b7e67fa389539affd2cfc008679",
+          "original_pixel_diagnostic": {
+            "action_cell_matches": 0,
+            "frame_required": false,
+            "structural_border_exact": null
+          },
+          "ordinary_map_claim_applicable": true
+        }
+      ],
+      "original_reports_unchanged": true
+    }
+  ]
+}
