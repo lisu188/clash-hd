@@ -77,6 +77,7 @@ SUITES = (
     "test_modal_primary_text_context.TextContextTests",
     "test_modal_widgets_context.WidgetContextTests",
     "test_modal_widgets_barracks_probe",
+    "test_modal_widgets_text_observer",
     "test_modal_primary_checkpoint_ledger",
     "test_modal_widget_owner_integration",
     "test_modal_primary_text_observer.TextObserverTests",
