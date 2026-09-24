@@ -5,6 +5,7 @@ on:
       - 'src/patcher/**'
       - 'tools/build_framed*'
       - 'tools/test_framed_bounded_input.py'
+      - 'tools/test_framed_smallworld_input.py'
       - 'tools/test_framed_bounded_paint.py'
       - '.github/workflows/framed-bounded-input.yml'
   push:
@@ -13,6 +14,7 @@ on:
       - 'src/patcher/**'
       - 'tools/build_framed*'
       - 'tools/test_framed_bounded_input.py'
+      - 'tools/test_framed_smallworld_input.py'
       - 'tools/test_framed_bounded_paint.py'
       - '.github/workflows/framed-bounded-input.yml'
 permissions:
@@ -54,3 +56,5 @@ jobs:
           python tools/test_framed_camera.py
           python tools/test_framed_input.py
           python tools/test_display_plan.py
+      - name: Full-wrapper small-world regressions (original-dependent cases report skips)
+        run: python tools/test_framed_smallworld_input.py -v
