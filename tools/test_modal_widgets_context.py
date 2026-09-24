@@ -15,7 +15,7 @@ class WidgetContextTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix='mwgctx-')
         self.addCleanup(self.temp.cleanup)
-        self.folder = Path(self.temp.name)
+        self.folder = Path(self.temp.name).resolve()
         self.repo = self.folder / 'repo'
         self.bundle = self.folder / 'bundle'
         self.bundle.mkdir()
@@ -115,6 +115,30 @@ class WidgetContextTests(unittest.TestCase):
                 self.path.write_bytes(raw)
                 with self.assertRaises((ValueError, UnicodeError)):
                     self.load()
+        self.build.assert_not_called()
+
+    def test_excessive_json_nesting_reports_value_error_before_builder(self):
+        cases = {
+            'arrays': b'{"nested":' + b'[' * 10000 + b'0' + b']' * 10000 + b'}',
+            'objects': b'{"nested":' * 10000 + b'0' + b'}' * 10000,
+        }
+        for name, raw in cases.items():
+            with self.subTest(nesting=name):
+                self.path.write_bytes(raw)
+                with self.assertRaisesRegex(ValueError, 'JSON nesting exceeds parser capacity'):
+                    self.load()
+        self.build.assert_not_called()
+
+    def test_parser_preserves_normal_json_types_and_values(self):
+        raw = b'\xef\xbb\xbf{"count":1,"enabled":true,"ratio":1.0,"label":"\\u00e9","nested":[{"x":null}]}'
+        result = context.parse_manifest(raw)
+        self.assertIs(type(result['count']), int)
+        self.assertIs(type(result['enabled']), bool)
+        self.assertIs(type(result['ratio']), float)
+        self.assertEqual(result['label'], '\u00e9')
+        self.assertEqual(result['nested'], [{'x': None}])
+        self.assertEqual(context.canonical_json(result),
+                         '{"count":1,"enabled":true,"label":"\\u00e9","nested":[{"x":null}],"ratio":1.0}')
         self.build.assert_not_called()
 
     def test_typed_metadata_or_allocation_edits_rejected(self):
