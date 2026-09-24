@@ -76,6 +76,7 @@ SUITES = (
     "test_build_framed_modal_primary_text_candidate.PrimaryText802BuildTests",
     "test_modal_primary_text_context.TextContextTests",
     "test_modal_primary_checkpoint_ledger",
+    "test_modal_widget_owner_integration",
     "test_modal_primary_text_observer.TextObserverTests",
     "test_complete_hd_main_probe",
     "test_framed_gameplay_evidence",
