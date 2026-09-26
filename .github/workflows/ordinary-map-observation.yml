@@ -40,7 +40,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned array and image fixture dependencies
-        run: python -m pip install --disable-pip-version-check --only-binary=:all: -r tools/requirements-framed-offline.txt
+        run: >-
+          python -m pip install --disable-pip-version-check --only-binary=:all: -r tools/requirements-framed-offline.txt
       - name: Check paused observations, planning and mocked delivery
         shell: bash
         run: |
@@ -70,7 +71,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned shared fixture dependencies
-        run: python -m pip install --disable-pip-version-check --only-binary=:all: -r tools/requirements-framed-offline.txt
+        run: >-
+          python -m pip install --disable-pip-version-check --only-binary=:all: -r tools/requirements-framed-offline.txt
       - name: Verify the system Microsoft x86 debugger engine
         shell: pwsh
         run: |
