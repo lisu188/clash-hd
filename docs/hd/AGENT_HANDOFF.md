@@ -93,13 +93,37 @@ preserves three failed September 21 ordinary-input runs. The 1024x768 widget
 candidate entered a corrupted castle overview before the selection click; its
 final screenshots cannot be audited as ordinary maps. Both 4K profiles remain
 on the map but fail controls/input checks. The audit now requires matching paused
-screen-owner records. Fixed click targets, the framed input guard for worlds
-smaller than the viewport, and ordinary castle entry still need separate repairs.
+screen-owner records. Fixed click targets and the framed input guard for worlds
+smaller than the viewport still need integration repairs. The separate
+[ordinary castle-entry successor](ORDINARY_CASTLE_ENTRY.md) authenticates the
+real native caller before admitting its owned canvas at 1024x768; it remains
+outside the launcher and protected stable stage.
 The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
 bounded component and its new complete-wrapper CPU checks; composition into the
 Complete HD/modalwidgets candidate remains required.
 This review is not a fresh runtime or a replacement for the controlled component
 evidence below; stable and manual-input boundaries remain unchanged.
+
+### Castle admission and local evidence availability — 2026-09-26
+
+The [native-caller diagnostic and source correction](../../reports/ordinary-castle-entry-20260924.md)
+identify why ordinary castle entry bypassed the owned 640x480 canvas: the native
+caller changes the renderer before invoking the castle root. The additive
+successor checks the real caller frame and preserves the remaining admission,
+allocation and rollback checks. It supports only the exact 1024x768 parent;
+other resolutions, launcher composition, ordinary input, exit/free restoration,
+all interiors and battle still need matching implementation and evidence.
+
+The user confirmed that `C:/ClashCaptures` and `C:/ClashTests` were removed for
+cleanup. Their raw captures, source snapshots, candidate bundles and local
+machine-test tools are unavailable at the recorded paths. Retained repository
+manifests describe historical observations; they cannot substitute for the
+missing files in a current hash, screenshot or runtime verification. The
+successor run has no independently reverified screenshot or lifecycle result
+in this checkpoint. Recreate bounded candidates and evidence when the disk
+reserve permits; never infer a pass from the deleted output or fabricate a
+replacement observation. Keep regenerable scratch bounded and clean verified
+inactive intermediates under the root guide's disk policy.
 
 ### Complete candidate integration — 2026-09-08
 

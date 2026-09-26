@@ -891,3 +891,8 @@
 /src/patcher/battle_hd_edge_controls.py -text whitespace=cr-at-eol
 /tools/build_battle_hd_edge_candidate.py -text whitespace=cr-at-eol
 /tools/test_battle_hd_edge_controls.py -text whitespace=cr-at-eol
+
+/src/patcher/ordinary_castle_entry.py -text whitespace=cr-at-eol
+/tools/build_ordinary_castle_entry_candidate.py -text whitespace=cr-at-eol
+/tools/test_ordinary_castle_entry.py -text whitespace=cr-at-eol
+/reports/ordinary-castle-entry-baseline-20260924.json -text whitespace=cr-at-eol
