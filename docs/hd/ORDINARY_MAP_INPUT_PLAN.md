@@ -5,6 +5,11 @@ friendly army and attempting one cardinal step. It reads no process memory,
 injects no input and launches nothing. **It is not integrated with the runtime
 harness.** A plan is not evidence that a click, native route or move executed.
 
+The [paused observation components](ORDINARY_MAP_OBSERVATION.md) now provide a
+strict decoder, opt-in host/client lease and session adapter. Their source and
+synthetic counter-loop evidence remain separate from pending game-driver and
+actual click-boundary integration.
+
 On 2026-09-26, all **25** fixtures in
 `tools/test_ordinary_map_input_plan.py` passed on Windows using Python 3.12.
 Independent source review checked the origin exclusions, both endpoint
@@ -72,8 +77,10 @@ These are native image addresses at preferred base `0x400000`; image globals
 and code pointers require relocation by the authenticated loaded-image delta.
 `GD` denotes the measured pointer at `0x5202E4`; offsets below are decimal.
 Do not rebase `GD` or other already-measured runtime pointers a second time.
-The pending strict runtime observation adapter must supply these measurements;
-the planner's `NATIVE` dictionary performs no reads.
+The strict decoder in `tools/ordinary_map_observation.py` supplies these fields
+from caller-authenticated paused reads. Its host/session and synthetic evidence
+are described in [ORDINARY_MAP_OBSERVATION.md](ORDINARY_MAP_OBSERVATION.md);
+the planner's `NATIVE` dictionary itself performs no reads.
 
 | Measurements | Native source |
 | --- | --- |
@@ -161,9 +168,11 @@ return, rendered result, process cleanup or lifecycle.
 ## Pending harness integration
 
 `real_exe_smoke.py` already has bounded `Session.read()`, owned process/thread
-selection and `pause_owned()`. Its periodic `snapshot()` immediately resumes;
-a bounded action request/acknowledgment protocol must hold a coherent paused
-observation for validation and bind resumption to the same action.
+selection and `pause_owned()`. Its ordinary periodic `snapshot()` immediately
+resumes. The additive [pause host/client and observation session](ORDINARY_MAP_OBSERVATION.md)
+provide explicit bounded read leases, but the game driver does not yet consume
+them. A completed read/resume transaction does not bind a subsequent input
+event; that action boundary still needs its own validation.
 
 In `resolution_playability.py`, replace the sparse `STATE_HELPER` with a strict
 observation reader and separate panel `0x514194` from previous `0x511B5C`.

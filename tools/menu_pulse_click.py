@@ -95,6 +95,7 @@ WNDENUMPROC = _FUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
 user32.EnumWindows.argtypes = [WNDENUMPROC, wintypes.LPARAM]
 user32.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
 user32.SendInput.argtypes = [wintypes.UINT, ctypes.POINTER(INPUT), ctypes.c_int]
+user32.SendInput.restype = wintypes.UINT
 user32.IsWindow.argtypes = [wintypes.HWND]
 user32.IsWindow.restype = wintypes.BOOL
 user32.GetClientRect.argtypes = [wintypes.HWND, ctypes.POINTER(RECT)]
@@ -282,20 +283,35 @@ def focus(hwnd: int) -> bool:
     return user32.GetForegroundWindow() == hwnd
 
 
+class InputDeliveryError(OSError):
+    """A returned SendInput count, distinct from interrupted/unknown delivery."""
+
+    def __init__(self, inserted: int, error: int):
+        super().__init__(error, f"SendInput inserted {inserted}/1 events; native consumption is unverified")
+        self.inserted = inserted
+
+
+def _send_one(event: INPUT) -> None:
+    inserted = user32.SendInput(1, ctypes.byref(event), ctypes.sizeof(INPUT))
+    if inserted != 1:
+        error = ctypes.get_last_error() if sys.platform == "win32" else 0
+        raise InputDeliveryError(inserted, error)
+
+
 def send_rel(dx: int, dy: int) -> None:
     ev = INPUT()
     ev.type = 0
     ev.union.mi.dx = int(dx)
     ev.union.mi.dy = int(dy)
     ev.union.mi.dwFlags = MOUSEEVENTF_MOVE
-    user32.SendInput(1, ctypes.byref(ev), ctypes.sizeof(INPUT))
+    _send_one(ev)
 
 
 def send_button(flag: int) -> None:
     ev = INPUT()
     ev.type = 0
     ev.union.mi.dwFlags = flag
-    user32.SendInput(1, ctypes.byref(ev), ctypes.sizeof(INPUT))
+    _send_one(ev)
 
 
 def grab_image(hwnd: int) -> Image.Image | None:
@@ -440,22 +456,60 @@ def pulse_stream(delta: tuple[int, int], duration: float, interval: float) -> No
         time.sleep(interval)
 
 
-def click_while_pulsing(delta: tuple[int, int], hold_ms: int, repeats: int, interval: float) -> int:
+def click_while_pulsing(delta: tuple[int, int], hold_ms: int, repeats: int, interval: float,
+                        *, deadline: float | None = None) -> int:
+    """Count completed OS down/up deliveries, never native consumption.
+
+    The optional deadline uses the callers' wall-clock convention, converted
+    once to a monotonic limit. A delivered down always has a matching release
+    attempt, including interruption; a cleanup failure cannot hide its cause.
+    """
+    limit = None if deadline is None else time.monotonic() + max(0.0, deadline - time.time())
+
+    def check_deadline() -> None:
+        if limit is not None and time.monotonic() >= limit:
+            raise TimeoutError("Pulse click delivery deadline expired")
+
+    def pulse() -> None:
+        check_deadline()
+        send_rel(*delta)
+        time.sleep(interval)
+
     clicks = 0
     for _ in range(repeats):
         for _ in range(4):
-            send_rel(*delta)
-            time.sleep(interval)
-        send_button(MOUSEEVENTF_LEFTDOWN)
-        t_end = time.time() + hold_ms / 1000.0
-        while time.time() < t_end:
-            send_rel(*delta)
-            time.sleep(interval)
-        send_button(MOUSEEVENTF_LEFTUP)
+            pulse()
+        check_deadline()
+        failure = None
+        release_required = True
+        try:
+            try:
+                send_button(MOUSEEVENTF_LEFTDOWN)
+            except InputDeliveryError as error:
+                # A returned zero proves this down was not inserted. An
+                # interrupted call has unknown delivery and still needs up.
+                if error.inserted == 0:
+                    release_required = False
+                raise
+            t_end = time.monotonic() + hold_ms / 1000.0
+            while time.monotonic() < t_end:
+                pulse()
+            check_deadline()
+        except BaseException as error:
+            failure = error
+            raise
+        finally:
+            if release_required:
+                try:
+                    send_button(MOUSEEVENTF_LEFTUP)
+                except BaseException as release_error:
+                    if failure is None:
+                        raise
+                    failure.add_note(f"Button-up cleanup also failed: {release_error}")
         clicks += 1
         for _ in range(3):
-            send_rel(*delta)
-            time.sleep(interval)
+            pulse()
+        check_deadline()
         time.sleep(0.12)
     return clicks
 
@@ -702,8 +756,18 @@ def run_aim_points(
 
         pre_click = frame
         delta = tuple(aimed["pulse_delta"])
-        row["clicked"] = True
-        row["click_count"] = click_while_pulsing(delta, args.click_hold_ms, args.click_repeats, interval)
+        row["clicked"] = False
+        row["delivery_scope"] = "OS input delivery only; native consumption remains unverified"
+        try:
+            row["click_count"] = click_while_pulsing(
+                delta, args.click_hold_ms, args.click_repeats, interval, deadline=deadline)
+        except Exception as error:
+            row["delivery_error"] = f"{type(error).__name__}: {error}"
+            row["delivery_notes"] = list(getattr(error, "__notes__", ()))
+            row["transition_verified"] = False
+            result["steps"].append(row)
+            break
+        row["clicked"] = row["click_count"] > 0 and row["click_count"] == args.click_repeats
         time.sleep(args.point_settle_ms / 1000.0)
         hwnd, after = grab_retry(args.pid, hwnd, logical_size=args.logical_size)
         if after is None:
@@ -963,8 +1027,19 @@ def main() -> int:
             ok = False
             break
         delta = tuple(aimed["pulse_delta"])
-        row["clicked"] = True
-        row["click_count"] = click_while_pulsing(delta, args.click_hold_ms, args.click_repeats, interval)
+        row["clicked"] = False
+        row["delivery_scope"] = "OS input delivery only; native consumption remains unverified"
+        try:
+            row["click_count"] = click_while_pulsing(
+                delta, args.click_hold_ms, args.click_repeats, interval, deadline=deadline)
+        except Exception as error:
+            row["delivery_error"] = f"{type(error).__name__}: {error}"
+            row["delivery_notes"] = list(getattr(error, "__notes__", ()))
+            row["transition_verified"] = False
+            result["steps"].append(row)
+            ok = False
+            break
+        row["clicked"] = row["click_count"] > 0 and row["click_count"] == args.click_repeats
         settle = args.final_settle_ms if index == len(steps) - 1 else args.settle_ms
         time.sleep(settle / 1000.0)
         hwnd, after = grab_retry(args.pid, hwnd, logical_size=args.logical_size)

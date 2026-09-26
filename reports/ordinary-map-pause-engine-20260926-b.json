@@ -1,0 +1,137 @@
+{
+  "schema": "clash95_pause_engine_fixture_v1",
+  "game_runtime_executed": false,
+  "fixture_runtime_executed": true,
+  "manual_input_proof": false,
+  "host_source_sha256": "d04153b0e8eabc3df4108990f56820c0aca4fc612bb2bd20462ce0518f07f964",
+  "client_source_sha256": "7939f471eb7a56364b13557f0052a577f95e742092b50a30d71260633ccbf05f",
+  "fixture_source_sha256": "dc9d6caaa1948950dfa9f154d3cc400c7ca7addef365fc55ea2ad3fcf806ec55",
+  "inherited_host_sha256": "3b1ec5a8642cf7e371ddccd299d7e35d10c77a1041019a42bb5809e2d8144f62",
+  "compiled_source_sha256": "606739f522c2ca5e98717e815ad14a992497cf00f4eee9ef3848467f862516da",
+  "expected_cases": 2,
+  "completed": true,
+  "passed": true,
+  "cases": [
+    {
+      "case": "pause-resume-counter",
+      "passed": true,
+      "fixture_sha256": "e761360a69e05f4fbed257b9987ac272e5abce8267b887ef782092b45e55e2e8",
+      "counter_address": 4202496,
+      "counter_stable_while_paused": true,
+      "counter_changed_after_resume": true,
+      "acknowledgments": [
+        {
+          "schema": "clash95_debug_pause_ack_v1",
+          "session_id": "454669b3fd7f4d15b75f1b7c6965404d",
+          "request_seq": 0,
+          "status": "ready",
+          "lease_id": "",
+          "pid": 39216,
+          "primary_tid": 42160,
+          "creation_filetime": 134349252629503312,
+          "image_base": 4194304,
+          "deadline_tick_ms": 0,
+          "paused": false
+        },
+        {
+          "schema": "clash95_debug_pause_ack_v1",
+          "session_id": "454669b3fd7f4d15b75f1b7c6965404d",
+          "request_seq": 1,
+          "status": "paused",
+          "lease_id": "312f59e4ac7240e382ad3c2784903d43",
+          "pid": 39216,
+          "primary_tid": 42160,
+          "creation_filetime": 134349252629503312,
+          "image_base": 4194304,
+          "deadline_tick_ms": 483391125,
+          "paused": true
+        },
+        {
+          "schema": "clash95_debug_pause_ack_v1",
+          "session_id": "454669b3fd7f4d15b75f1b7c6965404d",
+          "request_seq": 2,
+          "status": "resumed",
+          "lease_id": "312f59e4ac7240e382ad3c2784903d43",
+          "pid": 39216,
+          "primary_tid": 42160,
+          "creation_filetime": 134349252629503312,
+          "image_base": 4194304,
+          "deadline_tick_ms": 0,
+          "paused": false
+        },
+        {
+          "schema": "clash95_debug_pause_ack_v1",
+          "session_id": "454669b3fd7f4d15b75f1b7c6965404d",
+          "request_seq": 3,
+          "status": "paused",
+          "lease_id": "24edab1f109b4083b01a49ac7b180caf",
+          "pid": 39216,
+          "primary_tid": 42160,
+          "creation_filetime": 134349252629503312,
+          "image_base": 4194304,
+          "deadline_tick_ms": 483392250,
+          "paused": true
+        },
+        {
+          "schema": "clash95_debug_pause_ack_v1",
+          "session_id": "454669b3fd7f4d15b75f1b7c6965404d",
+          "request_seq": 4,
+          "status": "resumed",
+          "lease_id": "24edab1f109b4083b01a49ac7b180caf",
+          "pid": 39216,
+          "primary_tid": 42160,
+          "creation_filetime": 134349252629503312,
+          "image_base": 4194304,
+          "deadline_tick_ms": 0,
+          "paused": false
+        }
+      ],
+      "retained_target_exited": true,
+      "fixture_file_unchanged": true,
+      "target_cleanup_verified": true,
+      "host_returncode": 0,
+      "log": "\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nNo .natvis files found at C:\\WINDOWS\\system32\\Visualizers.\nNo .natvis files found at C:\\Users\\andrz\\AppData\\Local\\Dbg\\Visualizers.\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.1 X86\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: \"C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-pause-engine-h5an45s6\\case-v2hi50tk\\fixture.exe\"\nUnable to add extension DLL: ntsdexts\nUnable to add extension DLL: uext\nUnable to add extension DLL: exts\nUnable to add extension DLL: wow64exts\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nSymbol search path is: .\nExecutable search path is: \nModLoad: 00400000 00604000   image00400000\nModLoad: 77ca0000 77e5f000   ntdll.dll\nModLoad: 75c80000 75d70000   C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL\nModLoad: 76e40000 7711a000   C:\\WINDOWS\\SysWOW64\\KERNELBASE.dll\nModLoad: 5e9d0000 5ea7f000   C:\\WINDOWS\\SysWOW64\\apphelp.dll\n(9930.a4b0): Break instruction exception - code 80000003 (first chance)\nREAL_LOADED pid=39216 base=00400000 entry=004010e0 executable_sections_match=1\nBreakpoint 0 hit\n*** WARNING: Unable to verify checksum for C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-pause-engine-h5an45s6\\case-v2hi50tk\\fixture.exe\nREAL_EVENT type=1 ip=004010e0 description=Hit breakpoint 0\nREAL_EXE_ENTRY observed=1\n(9930.8e3c): Break instruction exception - code 80000003 (first chance)\nREAL_CONTEXT pid=39216 tid=42160 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_PAUSE method=DebugBreakProcess paused=1\nREAL_CONTEXT pid=39216 tid=42160 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_CONTEXT pid=39216 tid=42160 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\n(9930.b544): Break instruction exception - code 80000003 (first chance)\nREAL_CONTEXT pid=39216 tid=42160 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_PAUSE method=DebugBreakProcess paused=1\nREAL_CONTEXT pid=39216 tid=42160 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_CONTEXT pid=39216 tid=42160 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\n(9930.71c8): Break instruction exception - code 80000003 (first chance)\nREAL_CONTEXT pid=39216 tid=42160 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_PAUSE method=DebugBreakProcess paused=1\nREAL_PRIMARY_UNAVAILABLE sample=0 reason=bounded read rejected\nLast event: 9930.71c8: Break instruction exception - code 80000003 (first chance)\n  debugger time: Sat Sep 26 21:41:13.302 2026 (UTC + 2:00)\n\n.  0  Id: 9930.a4b0 Suspend: 1 Teb: 00205000 Unfrozen\nChildEBP RetAddr      Args to Child              \nWARNING: Stack unwind information not available. Following frames may be wrong.\n001aff84 77d0e1fb     00202000 73215b6a 00000000 fixture+0x10e6\n001affdc 77d0e181     ffffffff 77d55d5b 00000000 ntdll!RtlInitializeExceptionChain+0x6b\n001affec 00000000     004010e0 00202000 00000000 ntdll!RtlGetAppContainerNamedObjectPath+0x231\n\n#  1  Id: 9930.71c8 Suspend: 1 Teb: 00211000 Unfrozen\nChildEBP RetAddr      Args to Child              \nWARNING: Stack unwind information not available. Following frames may be wrong.\n00b7ff74 75c95d49     00000000 75c95d30 00b7ffdc ntdll!DbgBreakPoint\n00b7ff84 77d0e1fb     00000000 738c5b6a 00000000 KERNEL32!BaseThreadInitThunk+0x19\n00b7ffdc 77d0e181     ffffffff 77d55d5b 00000000 ntdll!RtlInitializeExceptionChain+0x6b\n00b7ffec 00000000     77d6e9b0 00000000 00000000 ntdll!RtlGetAppContainerNamedObjectPath+0x231\n(9930.c674): Break instruction exception - code 80000003 (first chance)\nREAL_CONTEXT pid=39216 tid=42160 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_PAUSE method=DebugBreakProcess paused=1\nREAL_PRIMARY_UNAVAILABLE sample=1 reason=bounded read rejected\nLast event: 9930.c674: Break instruction exception - code 80000003 (first chance)\n  debugger time: Sat Sep 26 21:41:13.307 2026 (UTC + 2:00)\neax=001affcc ebx=00202000 ecx=004010e0 edx=004010e0 esi=004010e0 edi=004010e0\neip=004010e6 esp=001aff78 ebp=001aff84 iopl=0         nv up ei ng nz na po nc\ncs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000282\nfixture+0x10e6:\n004010e6 ebf8            jmp     fixture+0x10e0 (004010e0)\n\n.  0  Id: 9930.a4b0 Suspend: 1 Teb: 00205000 Unfrozen\nChildEBP RetAddr      Args to Child              \nWARNING: Stack unwind information not available. Following frames may be wrong.\n001aff84 77d0e1fb     00202000 73215b6a 00000000 fixture+0x10e6\n001affdc 77d0e181     ffffffff 77d55d5b 00000000 ntdll!RtlInitializeExceptionChain+0x6b\n001affec 00000000     004010e0 00202000 00000000 ntdll!RtlGetAppContainerNamedObjectPath+0x231\n\n#  2  Id: 9930.c674 Suspend: 1 Teb: 00215000 Unfrozen\nChildEBP RetAddr      Args to Child              \nWARNING: Stack unwind information not available. Following frames may be wrong.\n00cbff74 75c95d49     00000000 75c95d30 00cbffdc ntdll!DbgBreakPoint\n00cbff84 77d0e1fb     00000000 73f05b6a 00000000 KERNEL32!BaseThreadInitThunk+0x19\n00cbffdc 77d0e181     ffffffff 77d55d5b 00000000 ntdll!RtlInitializeExceptionChain+0x6b\n00cbffec 00000000     77d6e9b0 00000000 00000000 ntdll!RtlGetAppContainerNamedObjectPath+0x231\nstart    end        module name\n00400000 00604000   fixture  C (no symbols)           \n5e9d0000 5ea7f000   apphelp    (deferred)             \n75c80000 75d70000   KERNEL32   (export symbols)       C:\\WINDOWS\\System32\\KERNEL32.DLL\n76e40000 7711a000   KERNELBASE   (deferred)             \n77ca0000 77e5f000   ntdll      (export symbols)       C:\\WINDOWS\\SYSTEM32\\ntdll.dll\nREAL_END entered=1 exited=0 exception_stop=0 elapsed_ms=10266\nREAL_CLEANUP absent=1 exit=80004005\n"
+    },
+    {
+      "case": "expired-lease",
+      "passed": true,
+      "fixture_sha256": "e761360a69e05f4fbed257b9987ac272e5abce8267b887ef782092b45e55e2e8",
+      "counter_address": 4202496,
+      "counter_stable_while_paused": true,
+      "expired_lease_rejected": true,
+      "acknowledgments": [
+        {
+          "schema": "clash95_debug_pause_ack_v1",
+          "session_id": "f7e8d811d1364b56a567719a9e3c0d44",
+          "request_seq": 0,
+          "status": "ready",
+          "lease_id": "",
+          "pid": 52344,
+          "primary_tid": 43692,
+          "creation_filetime": 134349252735489653,
+          "image_base": 4194304,
+          "deadline_tick_ms": 0,
+          "paused": false
+        },
+        {
+          "schema": "clash95_debug_pause_ack_v1",
+          "session_id": "f7e8d811d1364b56a567719a9e3c0d44",
+          "request_seq": 1,
+          "status": "paused",
+          "lease_id": "188ad673512f4f6f90e32687b0fd741a",
+          "pid": 52344,
+          "primary_tid": 43692,
+          "creation_filetime": 134349252735489653,
+          "image_base": 4194304,
+          "deadline_tick_ms": 483401718,
+          "paused": true
+        }
+      ],
+      "retained_target_exited": true,
+      "fixture_file_unchanged": true,
+      "target_cleanup_verified": true,
+      "host_returncode": 2,
+      "log": "\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nNo .natvis files found at C:\\WINDOWS\\system32\\Visualizers.\nNo .natvis files found at C:\\Users\\andrz\\AppData\\Local\\Dbg\\Visualizers.\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.1 X86\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: \"C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-pause-engine-h5an45s6\\case-rza7grzv\\fixture.exe\"\nUnable to add extension DLL: ntsdexts\nUnable to add extension DLL: uext\nUnable to add extension DLL: exts\nUnable to add extension DLL: wow64exts\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             .\nSymbol search path is: .\nExecutable search path is: \nModLoad: 00400000 00604000   image00400000\nModLoad: 77ca0000 77e5f000   ntdll.dll\nModLoad: 75c80000 75d70000   C:\\WINDOWS\\SysWOW64\\KERNEL32.DLL\nModLoad: 76e40000 7711a000   C:\\WINDOWS\\SysWOW64\\KERNELBASE.dll\nModLoad: 5e9d0000 5ea7f000   C:\\WINDOWS\\SysWOW64\\apphelp.dll\n(cc78.aaac): Break instruction exception - code 80000003 (first chance)\nREAL_LOADED pid=52344 base=00400000 entry=004010e0 executable_sections_match=1\nBreakpoint 0 hit\n*** WARNING: Unable to verify checksum for C:\\Users\\andrz\\AppData\\Local\\Temp\\clash-pause-engine-h5an45s6\\case-rza7grzv\\fixture.exe\nREAL_EVENT type=1 ip=004010e0 description=Hit breakpoint 0\nREAL_EXE_ENTRY observed=1\n(cc78.9fc0): Break instruction exception - code 80000003 (first chance)\nREAL_CONTEXT pid=52344 tid=43692 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_PAUSE method=DebugBreakProcess paused=1\nREAL_CONTEXT pid=52344 tid=43692 engine_process=0 engine_thread=0 ip=004010e6 retained_handles_alive=1\nREAL_HARNESS_ERROR lease expired; owned target must terminate winerror=0\nREAL_CLEANUP absent=1 exit=80004005\n"
+    }
+  ]
+}
