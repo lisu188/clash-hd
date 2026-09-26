@@ -18,11 +18,11 @@ import struct
 
 
 ORIGINAL_SHA256 = "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae"
-CANDIDATE_SHA256 = "99d92ec7c8f81debf60321dcc5c1b5872c96e3c485fa2bdd7d9332287b3c7e87"
+CANDIDATE_SHA256 = "0edef38dac3c5036c6012adde248bc57736273cc1bbcbb9fd05e5867a1946ca0"
 SAVE_SHA256 = "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89"
 STAGE = "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd"
 RESOLUTION = "1280x720"
-PROTOCOL = "expanded_battle_visible_observers_v3"
+PROTOCOL = "expanded_battle_visible_observers_v4"
 IMAGE_BASE = 0x400000
 DEBUGGER_SETUP_COMMANDS = ("bc *", ".expr /s masm", "n 16")
 MAIN_STARTUP_SLEEP_VA = 0x44789A

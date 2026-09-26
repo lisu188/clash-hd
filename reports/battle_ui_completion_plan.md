@@ -29,6 +29,13 @@
 > fixtures pass; hidden helpers pass 7/7 and lifecycle checks remain 11/14.
 > The user kept visible validation pending and requested headless operation
 > by default. These controlled checks do not establish manual input or promotion.
+>
+> **September 26 checkpoint:** [candidate 0EDEF38D](battle_hd_merge_checkpoint_20260926.md)
+> extends the input repair through the native default-renderer battle overlays.
+> The completed hidden probe observes the corrected path, while failed device
+> reads and cursor-return checks remain recorded. The aggregate refresh was
+> interrupted without a fresh final result. Visible/manual acceptance and
+> stable promotion remain pending when the source changes are merged.
 
 Generated: 2026-05-15
 

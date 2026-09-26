@@ -118,6 +118,16 @@ forced lifecycle checks. Native relative-input and sprite-aware bounds fixtures
 pass; three hidden cursor-return checks remain failed. The user chose to keep
 fresh visible validation pending and requested headless operation by default.
 Use hidden captures for progress; see the current rule in `AGENTS.md`.
+The [September 26 merge checkpoint](../../reports/battle_hd_merge_checkpoint_20260926.md)
+records the subsequent `0EDEF38D…1946CA0` overlay correction. Native relative
+input and cursor bounds now include the default-renderer interval while the
+battle object is live. Its completed hidden run observes the corrected banner
+path, but all three device reads fail and cursor centering remains unproven.
+The [separate headless follow-up](../../captures/current/battle-hd-headless-followup-20260924.md)
+preserves the earlier `99D92` camera and cursor diagnostics. The interrupted
+aggregate refresh produced no fresh final result. Visible validation, manual
+input and stable promotion remain pending; the worktree removal does not
+change those evidence boundaries.
 The [September 19 follow-up](../../captures/current/battle-hd-followup-20260919.md)
 observes the forced present body/return (7/7 helper checks) and classifies failed
 hidden device reads. Lifecycle remains 12/14; visible cursor/input acceptance is

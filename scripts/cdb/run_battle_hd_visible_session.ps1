@@ -15,7 +15,7 @@ param(
     [switch]$ExecuteApproved
 )
 $ErrorActionPreference = 'Stop'
-$expected = '99D92EC7C8F81DEBF60321DCC5C1B5872C96E3C485FA2BDD7D9332287B3C7E87'
+$expected = '0EDEF38DAC3C5036C6012ADDE248BC57736273CC1BBCBB9FD05E5867A1946CA0'
 $proxySha = 'B4CF172509083066EEE011FDB866F9A07C6CC4FA1F0CE53EC1F90E28CB5A28B1'
 $stage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd'
 function Assert-NoReparse([string]$Value) {

@@ -119,7 +119,7 @@ class NativeTests(unittest.TestCase):
         self.assertEqual(edge.sha(self.current), edge.CURRENT_BASE_SHA256)
         self.assertNotEqual(self.current, self.base)
         self.assertEqual([(e.offset, len(e.old), len(e.new)) for e in edge.PREDECESSOR_RESTORATIONS],
-                         [(0x05FE61,38,38),(0x060211,38,38),(0x12E200,32,32),(0x12E300,60,60)])
+                         [(0x05FE61,38,38),(0x060211,38,38),(0x12E200,53,53),(0x12E300,81,81)])
         reconstruction = self.manifest['predecessor_reconstruction']
         self.assertEqual(reconstruction['source_candidate_sha256'], edge.CURRENT_BASE_SHA256)
         self.assertEqual(reconstruction['result_candidate_sha256'], edge.BASE_SHA256)
@@ -140,8 +140,8 @@ class NativeTests(unittest.TestCase):
         by_offset = {p.offset: p for p in self.frozen_records}
         self.assertEqual(by_offset[0x05FE61].group, 'mouse-dynamic-origin')
         self.assertEqual(by_offset[0x060211].group, 'viewport-switch-dynamic-surface')
-        self.assertEqual(self.base[0x12E200:0x12E220], bytes(32))
-        self.assertEqual(self.base[0x12E300:0x12E33C], bytes(60))
+        self.assertEqual(self.base[0x12E200:0x12E235], bytes(53))
+        self.assertEqual(self.base[0x12E300:0x12E351], bytes(81))
 
     def test_predecessor_adapter_rejects_unknown_input_and_wrong_old_bytes(self):
         changed = bytearray(self.current); changed[-1] ^= 1

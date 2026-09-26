@@ -51,8 +51,8 @@ class VisibleProbeTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 probe.build_probe(b"wrong original", b"wrong candidate", b"wrong save", **kwargs)
         # All identities are immutable reviewed constants, not CLI assertions.
-        self.assertEqual(probe.CANDIDATE_SHA256, "99d92ec7c8f81debf60321dcc5c1b5872c96e3c485fa2bdd7d9332287b3c7e87")
-        self.assertEqual(probe.PROTOCOL, "expanded_battle_visible_observers_v3")
+        self.assertEqual(probe.CANDIDATE_SHA256, "0edef38dac3c5036c6012adde248bc57736273cc1bbcbb9fd05e5867a1946ca0")
+        self.assertEqual(probe.PROTOCOL, "expanded_battle_visible_observers_v4")
         self.assertEqual(probe.SAVE_BYTES, 586414)
 
     def test_unique_ids_sites_lengths_and_native_acquisition(self):
