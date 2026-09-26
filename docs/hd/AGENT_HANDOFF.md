@@ -101,6 +101,11 @@ outside the launcher and protected stable stage. The additive
 [matrix successor](ORDINARY_CASTLE_ENTRY_MATRIX.md) provides source construction
 for both profiles at the six existing resolutions, with independent gate and
 actual debugger-verifier fixtures. Runtime and launcher acceptance remain separate.
+The [measured ordinary-input planner](ORDINARY_MAP_INPUT_PLAN.md) prepares
+selection and a bounded one-cell move from authenticated paused observations.
+Its 25 pure fixtures pass; the paused reader, click-boundary binding and runtime
+driver integration remain pending. Timed clicks or cursor convergence alone do
+not establish the requested army selection or movement.
 The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
 bounded component and its new complete-wrapper CPU checks; composition into the
 Complete HD/modalwidgets candidate remains required.
