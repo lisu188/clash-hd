@@ -74,6 +74,13 @@ Do not weaken byte checks to accommodate an unknown executable.
 
 ## Approval boundary
 
+The user's default is headless operation. Run game/debugger validation on a
+hidden desktop whenever practical, and use hidden software-surface captures
+for progress screenshots. Keep visible validation pending unless the user
+explicitly requests or approves that specific visible session; do not open
+windows or inject foreground input merely to obtain a screenshot. Headless
+results retain their evidence limits and do not establish visible/manual proof.
+
 Visible/manual runtime, cursor control, foreground-window manipulation,
 `SendInput`, `PostMessage`, and live screen capture require fresh explicit user
 approval unless the command is a documented user-initiated launcher path.

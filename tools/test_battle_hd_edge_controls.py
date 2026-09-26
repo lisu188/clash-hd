@@ -5,6 +5,7 @@ Use --source-exe and --toolchain-path for original-backed x86 verification.
 """
 from __future__ import annotations
 import argparse
+from dataclasses import replace
 from functools import wraps
 import hashlib
 import importlib.util
@@ -91,6 +92,7 @@ class SourceTests(unittest.TestCase):
 
     def test_wrong_original_and_resolution_are_rejected(self):
         with self.assertRaises(ValueError): edge.build_candidate(bytes(32))
+        with self.assertRaises(ValueError): edge._restore_frozen_predecessor(bytes(32))
         for resolution in ('800x600','1920x1080','1280X720',True,None):
             with self.subTest(resolution=resolution), self.assertRaises(ValueError):
                 edge.build_candidate(b'', resolution)
@@ -106,10 +108,68 @@ class NativeTests(unittest.TestCase):
     def setUpClass(cls):
         if SOURCE_EXE is None: raise unittest.SkipTest('explicit --source-exe is required')
         cls.original = SOURCE_EXE.read_bytes()
-        cls.base, _, _ = edge.predecessor(cls.original)
+        cls.current = edge.scalar.apply_patches(cls.original, edge.scalar.select_patches_for(
+            edge.scalar.BATTLE_HD_STAGE, edge.scalar.parse_resolution(edge.RESOLUTION)))
+        cls.base, cls.frozen_records, _ = edge.predecessor(cls.original)
         cls.image, cls.manifest, cls.probe = edge.build_candidate(cls.original)
         cls.view = pe.inspect_pe(cls.image)
         cls.bundle = edge.emit_helpers(cls.view.image_base + pe.inspect_pe(cls.base).image_size)
+
+    def test_guarded_predecessor_adapter_and_inherited_metadata_replay(self):
+        self.assertEqual(edge.sha(self.current), edge.CURRENT_BASE_SHA256)
+        self.assertNotEqual(self.current, self.base)
+        self.assertEqual([(e.offset, len(e.old), len(e.new)) for e in edge.PREDECESSOR_RESTORATIONS],
+                         [(0x05FE61,38,38),(0x060211,38,38),(0x12E200,53,53),(0x12E300,81,81)])
+        reconstruction = self.manifest['predecessor_reconstruction']
+        self.assertEqual(reconstruction['source_candidate_sha256'], edge.CURRENT_BASE_SHA256)
+        self.assertEqual(reconstruction['result_candidate_sha256'], edge.BASE_SHA256)
+        restored = bytearray(self.current)
+        for record in reconstruction['edits']:
+            offset, old, new = record['offset'], bytes.fromhex(record['old_hex']), bytes.fromhex(record['new_hex'])
+            self.assertEqual(restored[offset:offset+len(old)], old)
+            restored[offset:offset+len(new)] = new
+        self.assertEqual(bytes(restored), self.base)
+        records = self.manifest['inherited_patch_records']
+        self.assertEqual(len(records), 283)
+        replay = bytearray(self.original)
+        for record in records:
+            offset, old, new = record['offset'], bytes.fromhex(record['old_hex']), bytes.fromhex(record['new_hex'])
+            self.assertEqual(replay[offset:offset+len(old)], old)
+            replay[offset:offset+len(new)] = new
+        self.assertEqual(bytes(replay), self.base)
+        by_offset = {p.offset: p for p in self.frozen_records}
+        self.assertEqual(by_offset[0x05FE61].group, 'mouse-dynamic-origin')
+        self.assertEqual(by_offset[0x060211].group, 'viewport-switch-dynamic-surface')
+        self.assertEqual(self.base[0x12E200:0x12E235], bytes(53))
+        self.assertEqual(self.base[0x12E300:0x12E351], bytes(81))
+
+    def test_predecessor_adapter_rejects_unknown_input_and_wrong_old_bytes(self):
+        changed = bytearray(self.current); changed[-1] ^= 1
+        for unknown in (bytes(changed), self.base):
+            with self.assertRaises(ValueError): edge._restore_frozen_predecessor(unknown)
+        for i, edit in enumerate(edge.PREDECESSOR_RESTORATIONS):
+            edits = list(edge.PREDECESSOR_RESTORATIONS)
+            edits[i] = replace(edit, old=bytes([edit.old[0] ^ 1]) + edit.old[1:])
+            with self.subTest(i=i), patch.object(edge, 'PREDECESSOR_RESTORATIONS', tuple(edits)):
+                with self.assertRaisesRegex(ValueError, 'restoration old bytes differ'):
+                    edge._restore_frozen_predecessor(self.current)
+
+    def test_predecessor_adapter_rejects_missing_edits_and_changed_result(self):
+        for i, edit in enumerate(edge.PREDECESSOR_RESTORATIONS):
+            edits = list(edge.PREDECESSOR_RESTORATIONS)
+            missing = tuple(edits[:i] + edits[i+1:])
+            edits[i] = replace(edit, new=bytes([edit.new[0] ^ 1]) + edit.new[1:])
+            for invalid in (missing, tuple(edits)):
+                with self.subTest(i=i), patch.object(edge, 'PREDECESSOR_RESTORATIONS', invalid):
+                    with self.assertRaises(ValueError): edge._restore_frozen_predecessor(self.current)
+
+    def test_predecessor_metadata_rejects_incomplete_current_hook_inventory(self):
+        current = edge.scalar.battle_hd_patches()
+        missing = [p for p in current if p.offset != 0x05FE61]
+        with patch.object(edge.scalar, 'battle_hd_patches', return_value=missing):
+            with self.assertRaisesRegex(ValueError, 'input hook inventory differs'):
+                edge._frozen_patch_records(self.original, self.base,
+                                           edge.scalar.parse_resolution(edge.RESOLUTION))
 
     def test_exact_build_replay_preserves_unrelated_bytes_and_relocations(self):
         rebuilt = bytearray(self.base)

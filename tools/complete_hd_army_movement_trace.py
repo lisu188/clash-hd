@@ -21,10 +21,10 @@ import complete_hd_army_movement_probe as producer
 import complete_hd_army_selection_trace as selection
 import framed_army_movement_state as state
 
-PRODUCER_SHA256 = '572816600873f754dcfe1207a19229e04c39986011ae98ac1d1630ecb2a22de5'
+PRODUCER_SHA256 = '6e4a01e1a6272cdb4235f98df2115b297ada5b5d162aa12c222cc63e9d372d4d'
 HELPERS = {
     'tools/framed_army_movement_state.py': '32bd424b3933b3fb831659d715f0c576e9959818d0e123beb304684e21c8fbe7',
-    'tools/complete_hd_army_selection_trace.py': 'bd00dd162ba0a085b18c1bfbe0a9b3c67117657a62fcec01fdd77ba2ad395528',
+    'tools/complete_hd_army_selection_trace.py': '80ef8cd6cdbaa6d783080f5eddc5626aff0f3df7ddcb7240bf53c85488c52fa0',
 }
 H, D = selection.frozen.H, selection.frozen.D
 canonical = selection.canonical

@@ -15,7 +15,7 @@ param(
     [switch]$ExecuteApproved
 )
 $ErrorActionPreference = 'Stop'
-$expected = '7D04FE9005515DAD4E618DF507103946265D7E2A6421287281C1FC5F112D1E47'
+$expected = '0EDEF38DAC3C5036C6012ADDE248BC57736273CC1BBCBB9FD05E5867A1946CA0'
 $proxySha = 'B4CF172509083066EEE011FDB866F9A07C6CC4FA1F0CE53EC1F90E28CB5A28B1'
 $stage = 'gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd'
 function Assert-NoReparse([string]$Value) {
@@ -46,7 +46,7 @@ function Write-Json([string]$Path, $Value) {
     $Value | ConvertTo-Json -Depth 15 | Set-Content -LiteralPath $Path -Encoding UTF8
 }
 function Assert-Approval($Record, [string]$CandidateSha, [string]$WrapperSha, [string]$StageName, [DateTimeOffset]$Now) {
-    if ($Record.user_response -cne 'Yes' -or $Record.candidate_sha256 -ne $CandidateSha -or
+    if ($Record.user_response -cnotin @('Yes', 'Approve visible rerun') -or $Record.candidate_sha256 -ne $CandidateSha -or
         $Record.wrapper_sha256 -ne $WrapperSha -or $Record.wrapper_mode -cne 'proxy-present' -or
         $Record.stage -cne $StageName -or $Record.resolution -cne '1280x720' -or
         $Record.scope -cne 'visible launch, foreground/cursor control, automated input and screenshots' -or
@@ -148,6 +148,7 @@ $plan = [ordered]@{
     ui_controller='SkyJS; runner performs no UI operations'
     input_classification='automated input, if subsequently performed; manual evidence unavailable'
     child_environment=@{__COMPAT_LAYER='HIGHDPIAWARE'; CLASH_PROXY_PRESENT='1'}
+    debugger_launch=@{use_shell_execute=$false; create_no_window=$true; window_style='Normal'}
 }
 if (-not $ExecuteApproved) { $plan | ConvertTo-Json -Depth 15; exit 0 }
 New-Item -ItemType Directory -Path $SessionDir | Out-Null
@@ -176,7 +177,16 @@ try {
     $log = Join-Path $SessionDir 'cdb.log'
     $startup = Join-Path $SessionDir 'probe.cdb'
     $arguments = '-hd -logo "{0}" -cf "{1}" "{2}"' -f $log,$startup,$Exe
-    $debugger = Start-Process -FilePath $Cdb -ArgumentList $arguments -WorkingDirectory (Split-Path $Exe) -WindowStyle Hidden -PassThru
+    # Hide only the debugger console. A Hidden startup show-state could affect
+    # the debuggee's first ShowWindow call; that startup hypothesis is unproven.
+    $startInfo = [Diagnostics.ProcessStartInfo]::new()
+    $startInfo.FileName = $Cdb
+    $startInfo.Arguments = $arguments
+    $startInfo.WorkingDirectory = Split-Path $Exe
+    $startInfo.UseShellExecute = $false
+    $startInfo.CreateNoWindow = $true
+    $startInfo.WindowStyle = [Diagnostics.ProcessWindowStyle]::Normal
+    $debugger = [Diagnostics.Process]::Start($startInfo)
     # Retain handles; process IDs alone are never used for termination.
     $null = $debugger.Handle
     if ($debugger.Path -ine $Cdb -or $debugger.StartTime.ToUniversalTime() -lt $started) { throw 'Debugger identity mismatch.' }

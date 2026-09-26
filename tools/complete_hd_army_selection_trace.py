@@ -19,7 +19,7 @@ import complete_hd_runtime_context as runtime
 import framed_army_selection_trace as frozen
 import initial_map_paint_trace as initial_trace
 
-FROZEN_TRACE_SHA256 = '87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc'
+FROZEN_TRACE_SHA256 = 'd1493a00ab6d31987a81d7d03d37e91debb0776394a4580eacd62c36405cb5b5'
 SOURCE_PATHS = (
     'tools/complete_hd_army_selection_trace.py', 'tools/initial_map_paint_trace.py',
     'tools/partial_tile_trace_probe.py', 'tools/framed_army_selection_trace.py',

@@ -12,7 +12,7 @@ import core
 PROFILE = "framed"
 DIRECTORY = "framed-minimap"
 STAGE = core.patch_clash95_hd.DEFAULT_STAGE + "-combinedui-partialtiles-initialpaint-framed-validation"
-BUILDER_SHA256 = "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40"
+BUILDER_SHA256 = "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc"
 BUILD_REPORT = "framed-build.json"
 PROBE = "framed-probe.cdb"
 WARNING = (

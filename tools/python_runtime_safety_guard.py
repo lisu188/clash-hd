@@ -80,15 +80,15 @@ DYNAMIC_CODE_NAMES = {"__import__", "eval", "exec", "compile", "getattr", "setat
 # including changes whose executable aliases evade the textual risk patterns.
 REVIEWED_OFFLINE_HELPERS = {
     "tools/complete_hd_army_movement_trace.py": {
-        "sha256": "e713338d3e4fb46c3c35578865c826b7be64147ee603b909bd58977c4c014d33",
+        "sha256": "e06baf061390b18f175d61ef6e6412d7c3f60d766425a309e34bd48811cc4f6e",
         "reason": "offline movement-trace parser; reads recorded artifacts and reconstructs probe bytes for comparison; CreateProcess appears only in a recorded-error pattern",
     },
     "tools/framed_army_portrait_trace.py": {
-        "sha256": "8538a49b5fedea4e28f9dc287cdc122522535a2895a12f1ff8862e97f8387ba1",
+        "sha256": "71f4a7721beb2180c7f4efb8dd443b5ba54c5f4ddb9105867e4472e12b4323ed",
         "reason": "offline portrait-trace parser; reads recorded artifacts and reconstructs probe bytes for comparison; CreateProcess appears only in a recorded-error pattern",
     },
     "tools/framed_army_transition_trace.py": {
-        "sha256": "b8e35da8ecc84166ccb1504445639370bd1d3b9e98bcb65931b9bfd4dbf9b873",
+        "sha256": "675f2a7d5d1d9830222b7cebc5ea2a08b9b414126d79d6d7550271569d9986ad",
         "reason": "offline transition-trace parser; reads recorded artifacts and reconstructs probe bytes for comparison; CreateProcess appears only in a recorded-error pattern",
     },
     "tools/framed_primary_surface.py": {

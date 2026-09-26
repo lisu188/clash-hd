@@ -1,0 +1,465 @@
+{
+  "schema": 1,
+  "generated_at": "2026-09-26T18:15:18.846129+00:00",
+  "status": "source_checkpoint_with_completed_forced_hidden_diagnostic_input_acceptance_pending",
+  "passed": false,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
+  "resolution": [
+    1280,
+    720
+  ],
+  "candidate_sha256": "0EDEF38DAC3C5036C6012ADDE248BC57736273CC1BBCBB9FD05E5867A1946CA0",
+  "original_sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+  "previous_candidate_sha256": "99D92EC7C8F81DEBF60321DCC5C1B5872C96E3C485FA2BDD7D9332287B3C7E87",
+  "patch_integrity": {
+    "patch_count": 283,
+    "all_patch_bytes_verified": true,
+    "repeated_build_identical": true,
+    "original_unchanged": true,
+    "difference_from_previous": {
+      "changed_bytes": 104,
+      "file_spans": [
+        [
+          1237504,
+          1237557
+        ],
+        [
+          1237760,
+          1237841
+        ]
+      ],
+      "note": "Only two scoped input helpers change; native hook bytes and all rendering/combat bytes stay identical."
+    }
+  },
+  "runtime": {
+    "run": "20260924-094304",
+    "launch_mode": "hidden-desktop-cdb",
+    "wrapper": "memory-only ddraw_surfdump_proxy",
+    "wrapper_sha256": "D23F6124ACEBC940007F5C994444F6149C3B350F9587E9145E053FF6801A598A",
+    "harness_passed": true,
+    "hidden_desktop": true,
+    "visible_session": false,
+    "input_method": "debugger_memory_register_writes_and_direct_calls",
+    "input_evidence_class": "forced_hidden_lifecycle",
+    "route_method": "forced_unit_attack",
+    "forced_actions": [
+      "Hidden x86 CDB with memory-only DirectDraw proxy and host ReadProcessMemory software-surface capture.",
+      "DirectInput mouse and keyboard acquisition return values forced successful by the base harness; this does not establish successful device-state reads.",
+      "Menu and load-slot 0 coordinates, button flags, selection and accept returns forced by the base harness; startup sleeps fast-forwarded through debugger control-flow changes.",
+      "Live unit scan selected a current-player attacker and another-player defender; attacker coordinates moved beside defender and dword_51d01c forced to 1.",
+      "Unit_Attack called directly with injected CPU-register arguments and a synthetic stack return.",
+      "Prebattle dialog raw mouse coordinates and predicate return forced into the first choice; raw coordinates restored after its return.",
+      "CPU/EFLAGS/stack state saved around injected Unit_Attack and direct command/Yes callback calls, then restored with debugger writes.",
+      "Current-player human-turn flag forced to 1 and restored after Unit_Attack continuation.",
+      "Logical click latch and raw mouse button bytes forcibly released before native release waits.",
+      "Banner wait predicate forced to dismiss; unit type and attack/descriptor state forced for disabled type0 and enabled type8 command callbacks, then restored.",
+      "Retreat callback invoked directly; modal Yes descriptor callback invoked directly and scan return forced to 3.",
+      "Results message dismissal predicate forced to 1.",
+      "After recorded results/free/Unit_Attack return, map redraw owner 00406FA0 called directly, then software surface captured."
+    ],
+    "observer_read_only": true,
+    "whole_run_read_only": false,
+    "initial_acquisition_bypassed": true,
+    "cursor_observations": [
+      {
+        "case": "banner",
+        "caller": "0042da46",
+        "owner": "004617a0",
+        "battle_pointer": "0a986b70",
+        "thread_id": "353c",
+        "cursor_stack_pointer": "000ed80c",
+        "helper_path": "relative",
+        "requested": [
+          576,
+          360
+        ],
+        "returned": [
+          576,
+          385
+        ],
+        "hresult": "8007000c",
+        "device_buffer_unchanged": true,
+        "ordered_correlation_verified": true,
+        "centering_passed": false,
+        "log_lines": [
+          255,
+          257,
+          258,
+          259,
+          260,
+          261,
+          263
+        ]
+      },
+      {
+        "case": "modal",
+        "caller": "0042de6e",
+        "owner": "0042e8b0",
+        "battle_pointer": "0a986b70",
+        "thread_id": "353c",
+        "cursor_stack_pointer": "000ed758",
+        "helper_path": "relative",
+        "requested": [
+          576,
+          360
+        ],
+        "returned": [
+          601,
+          1
+        ],
+        "hresult": "8007000c",
+        "device_buffer_unchanged": true,
+        "ordered_correlation_verified": true,
+        "centering_passed": false,
+        "log_lines": [
+          281,
+          283,
+          284,
+          285,
+          286,
+          287,
+          289
+        ]
+      },
+      {
+        "case": "results",
+        "caller": "00566533",
+        "owner": "0042e8b0",
+        "battle_pointer": "0a986b70",
+        "thread_id": "353c",
+        "cursor_stack_pointer": "000ed85c",
+        "helper_path": "relative",
+        "requested": [
+          576,
+          360
+        ],
+        "returned": [
+          576,
+          385
+        ],
+        "hresult": "8007000c",
+        "device_buffer_unchanged": true,
+        "ordered_correlation_verified": true,
+        "centering_passed": false,
+        "log_lines": [
+          302,
+          304,
+          305,
+          306,
+          307,
+          308,
+          310
+        ]
+      }
+    ],
+    "banner_relative_branch_observed": true,
+    "valid_input_delta_proven": false,
+    "lifecycle_measurements": {
+      "passed": 11,
+      "total": 14,
+      "checks": {
+        "banner_geometry": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "An inclusive banner rectangle was measured within one pixel of the battlefield center; final colors and pixels are separate."
+        },
+        "banner_render_hook_restore": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "Measured render and hook pointers matched their saved values after forced banner dismissal."
+        },
+        "banner_cursor_return": {
+          "passed": false,
+          "measurement_matches": false,
+          "note": "The logical cursor must actually read (576,360) at the banner-return observation; intended patch coordinates alone do not pass."
+        },
+        "disabled_callback_state": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "Unit type and descriptor state were forced before a direct callback; returned state is observed, without physical click or grid-action proof."
+        },
+        "enabled_callback_state": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "Unit type and descriptor state were forced before a direct callback; returned state is observed, without physical click or grid-action proof."
+        },
+        "modal_yes_and_render_restore": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "Centered modal geometry, directly forced Yes callback result, and render-pointer restoration were observed in order; No and real input remain unproven."
+        },
+        "modal_cursor_return": {
+          "passed": false,
+          "measurement_matches": false,
+          "note": "The logical cursor must actually read (576,360) after modal restoration."
+        },
+        "results_geometry": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "The shared results message measured native size at the battlefield center while battle-specific scope was1."
+        },
+        "results_copy_rectangles": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "Results background save/restore copy calls used matching rectangles and the same temporary buffer; final pixels remain separate."
+        },
+        "results_scope_restore": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "After results dismissal, battle-specific scope returned0 and the renderer matched its saved pointer."
+        },
+        "cursor_targets_queued": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "Banner, modal, and results queued(576,360) before the immediate input poll; this does not prove the poll retained that target."
+        },
+        "results_cursor_return": {
+          "passed": false,
+          "measurement_matches": false,
+          "note": "The results cursor must still read(576,360) after its immediate input poll."
+        },
+        "owner_hook_and_map_state_restore": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "Battle owner hook/input bounds matched entry; after Unit_Attack continuation the map poll also matched entry render pointer. This does not prove correct restored pixels or map input."
+        },
+        "results_and_forced_map_redraw": {
+          "passed": true,
+          "measurement_matches": true,
+          "note": "Results and their return preceded the restored map poll and a direct map-redraw return; this is a forced lifecycle diagnostic."
+        }
+      },
+      "method": "Unchanged battle_hd_summary parse_rows and lifecycle_measurements, with independent candidate/patch/harness identity verification."
+    },
+    "runtime_errors": [],
+    "timed_out": false,
+    "access_violation": false,
+    "cleanup": {
+      "Passed": true,
+      "RemainingProcessIds": [],
+      "InspectionErrors": [],
+      "Scope": "launched CDB id/path/start and exact candidate path/start",
+      "WaitMilliseconds": 5000
+    },
+    "stopped_after_dump": true,
+    "post_dump_observation_completed": false,
+    "observer_markers": 21,
+    "probe_packet_status_note": "Packet remains prepared_not_run as created; summary and log separately establish its subsequent execution.",
+    "producer_source_sha256": "F7F4793904085AADCC74E09E10B5DBCCB9CB19F0FFEC8DF9A5AEF3A0EDC96A5D",
+    "source_binding_note": "Runtime is bound to the archived producer and generated probe. The subsequent reviewed LF/CRLF dependency compatibility change in the current producer is source-only and was not used for this runtime."
+  },
+  "surface_review": {
+    "capture_method": "hidden software surface via host ReadProcessMemory",
+    "resolution": [
+      1280,
+      720
+    ],
+    "upper_edge": "Partial upper-left map frame; no full-width outer frame.",
+    "left_edge": "Upper-left map frame visible, not complete full-height frame.",
+    "right_edge": "Top-right minimap frame visible; no complete outer map edge.",
+    "bottom_edge": "Black; complete bottom frame absent.",
+    "bottom_right_action_cells": "All six ordinary-map action cells are absent from the software-surface capture.",
+    "tearing": "No obvious horizontal shearing; no visible capture tear metric or stable-pair claim.",
+    "complete_map_composition_passed": false,
+    "restored_map_input_proven": false
+  },
+  "aggregate_refresh": {
+    "status": "interrupted_no_completed_fresh_result",
+    "checkout_commit": "5151f6765dbae51f30629d7828182d9d65125d50",
+    "stdout_bytes": 0,
+    "execution_json_exists": false,
+    "fresh_report_exists": false,
+    "existing_report_generated_at": "2026-09-06T05:58:14+02:00",
+    "existing_report_classification": "Historical checked-in report, not this attempt; its failure count is not a fresh aggregate result.",
+    "earlier_attempt": "Also interrupted; retained archive-manifest records exit4294967295 and source change during execution.",
+    "passed": false
+  },
+  "focused_validation": {
+    "reported_by": "root task, console test output; no standalone log reference supplied",
+    "fresh_counts": {
+      "relative_input_scenarios": 1249,
+      "cursor_bounds_scenarios": 1186,
+      "existing_core_scenarios": 835,
+      "headless_probe_tests": 9,
+      "edge_controls_tests": 19
+    },
+    "fresh_suites_passed": true,
+    "additional_dated_tests": "Prior visible probe/runner and focused suites retain their earlier evidence; no fresh visible runtime was run."
+  },
+  "acceptance": {
+    "visible": false,
+    "manual_input": false,
+    "natural_lifecycle": false,
+    "cursor_centering": false,
+    "complete_map_composition": false,
+    "promotion": false
+  },
+  "defaults": {
+    "headless": true,
+    "launcher_resolution": "800x600",
+    "stable_stage_changed": false
+  },
+  "artifacts": {
+    "build": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\build.json",
+      "sha256": "4D4C966ABA7A0981AC64B7A570E12C662A58DC652B826EA918A1369BA6044082",
+      "bytes": 2761
+    },
+    "patch_report": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\patch-stage.json",
+      "sha256": "CC15BE3A7747EE7942CD774F079A57624146DF68860D864846585614DEC7C166",
+      "bytes": 529385
+    },
+    "harness_summary": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\cursor-captures\\cdb-surface-dump-20260924-094304\\summary.json",
+      "sha256": "9AA17479CB086B999E0C3C796A89EF9A7CF8B01E0F96078556AEA332248DEB1C",
+      "bytes": 10239
+    },
+    "runtime_log": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\cursor-captures\\cdb-surface-dump-20260924-094304\\cdb-surface-dump.log",
+      "sha256": "42D426106F52892234A13B10E45FA442B0A041718088F8F0BEC00F55AD768E9C",
+      "bytes": 27254
+    },
+    "generated_probe": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\cursor-captures\\cdb-surface-dump-20260924-094304\\clash95_surface_dump_probe.generated.cdb",
+      "sha256": "D912B2C2032296C6E846B33C1FD06066EB80C5387BBCF2964D53256377D735BE",
+      "bytes": 32585
+    },
+    "probe_packet": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\headless-cursor-probe\\manifest.json",
+      "sha256": "3AD8F608DAD29CC3967DE0C8C16E39CDA96C0B7CE4B734E1DE937CA0F2A3596C",
+      "bytes": 3010
+    },
+    "extra_probe": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\headless-cursor-probe\\battle-hd-headless-cursor-extra.cdb",
+      "sha256": "E9F85BFE7233D708F2C12C247CC239EF426E10DC0AE927DEF4988A4AE15AF700",
+      "bytes": 25122
+    },
+    "surface_png": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\cursor-captures\\cdb-surface-dump-20260924-094304\\surface.png",
+      "sha256": "5E57CD1C8516D30D9F3DE9F81D0B48BD6763427593BA18DD45083E14717B2265",
+      "bytes": 199497
+    },
+    "surface_raw": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\cursor-captures\\cdb-surface-dump-20260924-094304\\surface.raw",
+      "sha256": "1C27EB7741D9BCEDE83C41179C569D36BE686043CAB127A4D1A61DE502493E89",
+      "bytes": 921600
+    },
+    "runtime_candidate": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\cursor-candidate\\clash95_hd_surfdump_20260924_094304.exe",
+      "sha256": "0EDEF38DAC3C5036C6012ADDE248BC57736273CC1BBCBB9FD05E5867A1946CA0",
+      "bytes": 1297920
+    },
+    "built_candidate": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\clash95_battlehd_overlay_fixed.exe",
+      "sha256": "0EDEF38DAC3C5036C6012ADDE248BC57736273CC1BBCBB9FD05E5867A1946CA0",
+      "bytes": 1297920
+    },
+    "original": {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+      "bytes": 1232384
+    },
+    "wrapper": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\cursor-candidate\\ddraw.dll",
+      "sha256": "D23F6124ACEBC940007F5C994444F6149C3B350F9587E9145E053FF6801A598A",
+      "bytes": 138240
+    },
+    "wrapper_build": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\cursor-candidate\\ddraw_surfdump_proxy.build.json",
+      "sha256": "79740F11BD2F28A55F819F651546CEAC2DD26CE126E6C338077C77205FEFF31B",
+      "bytes": 774
+    },
+    "aggregate_stdout": {
+      "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\aggregate-final-stdout.log",
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "bytes": 0
+    },
+    "historical_aggregate_json": {
+      "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\aggregate-checkout\\captures\\current\\current-evidence-refresh-current.json",
+      "sha256": "22CC0CCC371028EC6CEF7036A1324780DB25741E8B41C5EE4D68AD2A9770AAD2",
+      "bytes": 167980
+    },
+    "earlier_interrupted_aggregate": {
+      "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\aggregate\\archive-manifest.json",
+      "sha256": "578BE5ADD04BAFF001009CBB6C95E30E4A46000FFBF45E2E3A05C2B8EB7015DE",
+      "bytes": 378
+    },
+    "candidate_source:src/patcher/patch_clash95_hd.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\src\\patcher\\patch_clash95_hd.py",
+      "sha256": "38021E9A4D21BC9A8BF0C2F9B66379595509446B5177D6F91BAB6F677B5E8106",
+      "bytes": 138801
+    },
+    "candidate_source:src/patcher/battle_hd_core.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\src\\patcher\\battle_hd_core.py",
+      "sha256": "879EDDEE26F59D24C04E217FFF7919EDF67AB04363ABB170B244DDA570184BF7",
+      "bytes": 25294
+    },
+    "candidate_source:src/patcher/battle_hd_hud.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\src\\patcher\\battle_hd_hud.py",
+      "sha256": "E77DD58D5348824ABE626C450AAE1F9277D8649EADF98115B84B6B83BE12AA98",
+      "bytes": 27193
+    },
+    "candidate_source:src/patcher/battle_hd_layout.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\src\\patcher\\battle_hd_layout.py",
+      "sha256": "BBEB0D55A9B8A45DA76914FAF857B7EC1F6294B5A247C9129D8E04A562029C99",
+      "bytes": 2068
+    },
+    "candidate_source:src/patcher/battle_hd_section.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\src\\patcher\\battle_hd_section.py",
+      "sha256": "798B8D738AF7062717FF62BA04216124EB4685C1B454F86518DBC7C7C11A46EE",
+      "bytes": 4078
+    },
+    "producer_snapshot_manifest": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\producer-manifest.json",
+      "sha256": "B6A28FF087F5CDD216C286911D2F4E59D2B981CFC1BF1BBE47DFCA60044F788D",
+      "bytes": 2216
+    },
+    "archived_producer_source:tools/battle_hd_headless_cursor_probe.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\tools\\battle_hd_headless_cursor_probe.py",
+      "sha256": "F7F4793904085AADCC74E09E10B5DBCCB9CB19F0FFEC8DF9A5AEF3A0EDC96A5D",
+      "bytes": 13262
+    },
+    "archived_producer_source:tools/test_battle_hd_headless_cursor_probe.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\tools\\test_battle_hd_headless_cursor_probe.py",
+      "sha256": "3348BA4530FD8CC6431E94BADC01DD7F8734C875325A0DBA220F00B5B58D259F",
+      "bytes": 9703
+    },
+    "archived_producer_source:tools/battle_hd_summary.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\tools\\battle_hd_summary.py",
+      "sha256": "505F52B3D871AC1A7CCB27E613956370F723BD9D575EC6AF3774735010CE293E",
+      "bytes": 46915
+    },
+    "archived_producer_source:tools/test_battle_hd_summary.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\tools\\test_battle_hd_summary.py",
+      "sha256": "D091FD15E2363B0400CBED3C54CC9550DBB402E1122A1EBB2BC8C2E24B1B4933",
+      "bytes": 33378
+    },
+    "archived_producer_source:tools/battle_hd_visible_probe.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\tools\\battle_hd_visible_probe.py",
+      "sha256": "A8592BC14C76588D937F0F28BD8614EDF9C846F2762AEFFC61935C7A40998F5B",
+      "bytes": 29489
+    },
+    "archived_producer_source:tools/test_battle_hd_visible_probe.py": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\tools\\test_battle_hd_visible_probe.py",
+      "sha256": "D136E46D6387878563950FF387E05F495A036D8325BC834E4BC6C4E4A022D3C7",
+      "bytes": 10495
+    },
+    "archived_producer_source:scripts/cdb/run_battle_hd_visible_session.ps1": {
+      "path": "C:\\ClashTests\\battle-hd-overlay-fix-20260924\\source-snapshot\\scripts\\cdb\\run_battle_hd_visible_session.ps1",
+      "sha256": "FA5AD2B2C2170BF9349FBB13A8E88C5633A04177808AE7D0DD2C5E85234D2191",
+      "bytes": 15196
+    }
+  },
+  "artifact_validation": {
+    "verified": true,
+    "count": 30,
+    "scope": "Retained file hashes and lengths verified on September26; runtime observations are from September24."
+  },
+  "limitations": [
+    "Failed native GetDeviceState reads left buffers unchanged; the relative arithmetic observation does not establish valid input.",
+    "The original forced lifecycle and acquisition bypass remain; only additive BHDH observer reads state without changing it.",
+    "99D92 camera/helper results belong to the earlier candidate and are not relabeled as 0EDEF runtime evidence.",
+    "No new visible session, manual input, soak, stable promotion or fresh aggregate pass is claimed."
+  ]
+}

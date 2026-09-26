@@ -30,9 +30,9 @@ RESOLUTION = "1024x768"
 SAVE_SHA256 = "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89"
 REVISION = "controlled_own_army_native_selection_v3"
 PINNED_SOURCES = {
-    "tools/build_framed_army_candidate.py": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
+    "tools/build_framed_army_candidate.py": "ec5989d86d8252c43b7a73c8b2bfd612e5050434adcbeecf58dbe47bf96d1114",
     "tools/framed_modal_canvas_trace.py": "2f0ef571acdbc6892c775cc97698d535b56355c8086080713d3dfec040a6d3ba",
-    "tools/framed_modal_canvas_probe.py": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d",
+    "tools/framed_modal_canvas_probe.py": "caadb02a6b15c21701dee9ca31ab54bc83432f233164e4f0bd25324b482f88b6",
     "tools/render_cdb_surface_probe.py": "1cd3103c434a898e0104b519932f1ce30be259888885f251422a8b71d3a9d02f",
     "probes/cdb/render/clash95_surface_dump_probe.cdb": "6346ca89d5c3e8b63fbb6c96839c48920aa9eb039523f49b442f7fc47fef7df8",
 }

@@ -883,6 +883,11 @@
 /tools/test_battle_hd_visible_probe.py text eol=lf
 /scripts/cdb/run_battle_hd_visible_session.ps1 text eol=lf
 /tools/test_battle_hd_visible_session.py text eol=lf
+/tools/test_battle_hd_cursor_bounds.py text eol=lf
+/tools/test_battle_hd_relative_input.py text eol=lf
+/tools/battle_hd_headless_cursor_probe.py text eol=lf
+/tools/test_battle_hd_headless_cursor_probe.py text eol=lf
+/src/patcher/battle_hd_hud.py text eol=lf
 
 /tools/modal_widgets_context.py text eol=lf
 /tools/test_modal_widgets_context.py text eol=lf

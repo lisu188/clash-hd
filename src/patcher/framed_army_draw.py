@@ -16,7 +16,7 @@ from . import partial_tile_clip as clip
 from .framed_army_viewport import FramedArmyViewport
 
 ROOT = Path(__file__).resolve().parents[2]
-BUILDER_SHA256 = "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29"
+BUILDER_SHA256 = "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1"
 HOOK_VA = CLONE_VA = 0x42355A
 CLONE_END = 0x423715
 HOOK_OLD = bytes.fromhex("ba23000000")
