@@ -34,12 +34,11 @@ game assets, or large dumps.
 
 ## Check the current state without launching the game
 
-```powershell
-python tools/current_evidence_refresh.py
-python -c "import json;d=json.load(open('captures/current/current-evidence-refresh-current.json',encoding='utf-8'));print(sum(1 for v in d['checks'].values() if not v.get('passed')),'/',len(d['checks']),'failing')"
-```
-
-Run individual fixtures with `python tools/test_<name>.py`.
+Follow [Development and verification](DEVELOPMENT.md) for interpreter discovery,
+focused fixtures and checkout guards. Read the saved aggregate before running
+`tools/current_evidence_refresh.py`: that command writes current reports and
+may expose unavailable local evidence. Redirect diagnostic guard output to
+task scratch and retain honest failures.
 
 ## Environment constraints
 
@@ -91,40 +90,16 @@ Run individual fixtures with `python tools/test_<name>.py`.
 
 ## Current frontier
 
-The active September integration is documented in
-[`AGENT_HANDOFF.md`](AGENT_HANDOFF.md). Its complete-HD candidate and failing
-runtime evidence are separate from the historical component results below.
-The stable stage and 800x600 default remain unchanged.
+[AGENT_HANDOFF.md](AGENT_HANDOFF.md#evidence-snapshot-and-active-work) owns the
+active integration state, remaining runtime/input requirements and dated
+historical observations. It also records local evidence availability after
+cleanup. Follow its topic links rather than repeating status from a prior
+component run. The [documentation index](README.md) provides the full map.
 
-- Expanded tactical battle has a separate `-castlecenter-all-battlehd`
-  implementation lane at 1280x720 (17x7 tile capacity, native right sidebar).
-  See the [validation report](../../reports/battle_hd_1280_validation.md)
-  and [current evidence](../../captures/current/battle-hd-validation-current.md).
-  Centered-battle evidence does not prove expanded geometry or input; this lane
-  remains validation-only.
-- Terrain tooltip and selected-unit action-panel anchoring have validation-stage
-  implementations and hidden/visible layout evidence. They remain outside the
-  protected stable stage pending the separate manual-input promotion boundary.
-- Right-bottom composition: the rows-present vs rows-absent gate-design
-  contradiction is **resolved**. The user's 2026-07-14 ruling (commit
-  `96a3d078`) accepts the slot5-as-slot0 fixture run
-  `captures/archive/cdb-surface-dump-20260712-155528` as natural-draw evidence,
-  and all 7 required promotion checks now pass. Stable promotion is still
-  `defer_stable_promotion` — deferred **by decision** pending manual input
-  proof (`manual_input_proof_valid=false`), not by an open design question. The
-  fixture's own `proof_class` remains `non_natural_isolated_fixture`.
-- Battle click-to-callback is **PROVEN** (commit `c5fe1d70`, run
-  `captures/archive/battle-visible-input-present-20260717-133221`): a genuine
-  `BATTLE_COMMAND_CLICK_GATE_OBSERVED desc=00514b78 eax=1` followed by
-  `BATTLE_COMMAND_CALLBACK eip=0042d4e0`, with `BATTLE_COMMAND_CLICK_GATE_FORCE`
-  absent from the entire run. This is no longer constrained by the
-  visible-window/CDB wrapper split — the `CLASH_PROXY_PRESENT` painting proxy
-  (present-on-`Unlock`) resolved that. Manual DirectInput proof for the five
-  checklist targets is still outstanding.
-- The hidden-CDB soak class may provide map render/process endurance without a
-  visible-runtime approval, but it must complete the ordered short ladder and
-  both 2h routes honestly. Visible/manual continuity and the five manual-input
-  targets still require fresh approval and remain separate claims.
+The protected stable stage and Classic/800x600 default remain unchanged.
+Complete HD, modal-widget successors and expanded battle retain separate
+validation identities. Source fixes, controlled native calls, hidden surfaces,
+ordinary input, manual proof, endurance and promotion are separate claims.
 
 ## Safe default actions
 

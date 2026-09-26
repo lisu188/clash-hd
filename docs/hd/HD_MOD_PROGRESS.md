@@ -1,5 +1,10 @@
 # Clash95 HD Mod Progress
 
+This is a chronological engineering log. Dates, candidate identities and failed
+results describe their original checkpoints; older "current" or "next" wording
+does not define today's task. Use the [current handoff](AGENT_HANDOFF.md) for
+active work and the [documentation index](README.md) for maintained guides.
+
 ## 2026-04-22
 
 Current milestone: stabilize reproducible HD testing and mouse evidence before
