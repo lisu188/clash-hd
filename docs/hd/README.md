@@ -47,7 +47,7 @@ material.
 | Camera, bounds and small worlds | [Camera clamps](FRAMED_CAMERA_CLAMP.md), [bounded painting](FRAMED_BOUNDED_PAINT.md), [bounded input](FRAMED_BOUNDED_INPUT.md), [small-world integration](SMALL_WORLD_INPUT.md), [world clearing](FRAMED_WORLD_CLEAR_AUDIT.md) |
 | Minimap | [Viewport](MINIMAP_VIEWPORT.md), [scroll validation](MINIMAP_SCROLL_VALIDATION.md) |
 | Army panel and controlled input | [Composition](ARMY_PANEL_COMPOSITION.md), [selection](UNIT_SELECTION_HD.md), [transition routes](ARMY_TRANSITION_ROUTES.md), [complete-HD army input](COMPLETE_HD_ARMY_INPUT.md) |
-| Ordinary input and castle admission | [Measured input planner](ORDINARY_MAP_INPUT_PLAN.md), [castle admission](ORDINARY_CASTLE_ENTRY.md), [admission matrix](ORDINARY_CASTLE_ENTRY_MATRIX.md) |
+| Ordinary input and castle admission | [Measured input planner](ORDINARY_MAP_INPUT_PLAN.md), [paused observations](ORDINARY_MAP_OBSERVATION.md), [castle admission](ORDINARY_CASTLE_ENTRY.md), [admission matrix](ORDINARY_CASTLE_ENTRY_MATRIX.md) |
 | Native modal canvas and slot copies | [Canvas](FRAMED_MODAL_CANVAS.md), [slot diagnosis](FRAMED_MODAL_SLOTS_DIAGNOSIS.md), [barracks capture](MODAL_SLOTS_BARRACKS_CAPTURE.md), [lifecycle](MODAL_SLOTS_LIFECYCLE.md) |
 | Modal primary composition and text | [Composition](MODAL_PRIMARY_COMPOSITION.md), [capture](MODAL_PRIMARY_CAPTURE.md), [checkpoint ledger](MODAL_PRIMARY_CHECKPOINT_LEDGER.md), [text](MODAL_PRIMARY_TEXT.md), [widget text observer](MODAL_WIDGET_TEXT_OBSERVER.md) |
 | Remaining modal routes | [Screen validation](FRAMED_SCREEN_VALIDATION.md), [castle routes](FRAMED_CASTLE_REMAINING_ROUTES.md), [remaining screens](FRAMED_REMAINING_SCREEN_ROUTES.md) |
