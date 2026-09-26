@@ -11,7 +11,7 @@
 /test_launcher_resolution_matrix.py text eol=lf
 /runner_menu_input.py text eol=lf
 /test_runner_cursor_feedback.py text eol=lf
-/resolution_playability.py text eol=lf
+/resolution_playability.py -text whitespace=cr-at-eol
 /test_resolution_playability.py text eol=lf
 
 /test_modal_widget_owner_integration.py text eol=lf

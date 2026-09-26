@@ -155,6 +155,7 @@ class DecoderTests(unittest.TestCase):
         memory.pack(0x514194, 'i', 7)
         memory.pack(0x526994, 'I', 1)
         memory.pack(0x526FA0, 'I', 0x2000000+147174+725*7)
+        put_stack(memory, 0x2000000, 7, 5, 5)
         context = observe(case)[0]['snapshot']['context']
         self.assertEqual((context['selected_stack'], context['previous_stack'], context['panel_stack']), (7, -1, 7))
         memory.pack(0x511B5C, 'i', -2)
@@ -217,6 +218,76 @@ class DecoderTests(unittest.TestCase):
         self.assertLess(receipt['read_calls'], 100)
         self.assertEqual(receipt['complete_read_passes'], 2)
         self.assertEqual(receipt['additional_anchor_passes'], 2)
+
+    def test_explicit_reads_add_and_reread_omitted_selected_stack(self):
+        for types in ((1,), (1, 16)):
+            with self.subTest(types=types):
+                case = fixture(); memory, gd = case[0], 0x2000000
+                put_stack(memory, gd, 7, 5, 5, types=types, aps=(26, 22))
+                select(memory, 7)
+                if len(types) == 1:
+                    memory.pack(0x514194, 'i', -1)
+                    memory.pack(0x526994, 'I', 0)
+                    memory.pack(0x526FA0, 'I', 0x2100000)
+                result = observe(case)[0]
+                self.assertEqual(result['receipt']['requested_stack_indices'], [13])
+                self.assertEqual(result['receipt']['added_selected_indices'], [7])
+                self.assertEqual(result['receipt']['added_occupant_indices'], [])
+                self.assertEqual(result['receipt']['measured_stack_indices'], [7, 13])
+                self.assertEqual(memory.calls.count((gd+147174+725*7, 725)), 2)
+                self.assertEqual(len(planner.occupied_slots(result['snapshot']['stacks'][0])), len(types))
+
+    def test_missing_or_unreadable_selected_record_rejects_after_header_validation(self):
+        for missing in ('empty', 'unreadable'):
+            with self.subTest(missing=missing):
+                case = fixture(); memory, gd = case[0], 0x2000000
+                memory.pack(0x511B58, 'i', 7)
+                address = gd+147174+725*7
+                def read(start, size):
+                    if missing == 'unreadable' and start == address:
+                        raise OSError('selected record unavailable')
+                    return memory.read(start, size)
+                with self.assertRaises(tool.ObservationError):
+                    observe(case, read=read)
+
+    def test_omitted_selected_record_mutation_between_passes_rejects(self):
+        case = fixture(); memory, gd = case[0], 0x2000000
+        put_stack(memory, gd, 7, 5, 5, types=(1,))
+        memory.pack(0x511B58, 'i', 7)
+        address = gd+147174+725*7
+        def change(memory, start, size):
+            if start == address and memory.calls.count((address, 725)) == 2:
+                memory.pack(address+14, 'B', 25)
+        memory.hook = change
+        with self.assertRaisesRegex(tool.ObservationError, 'changed'):
+            observe(case)
+
+    def test_native_single_squad_after_read_uses_dormant_panel_for_selection_and_move(self):
+        for active in (0, 0x2100000):
+            with self.subTest(active=active):
+                case = fixture(); memory, gd = case[0], 0x2000000
+                put_stack(memory, gd, 13, 10, 11, types=(1,), aps=(26,))
+                memory.pack(0x526FA0, 'I', active)
+                initial = observe(case)[0]['snapshot']
+                plan = planner.plan_input(initial, case[1])
+                before = observe(case, sequence=2)[0]['snapshot']
+                memory.pack(0x511B58, 'i', 13)
+                after = observe(case, sequence=3)[0]['snapshot']
+                self.assertTrue(planner.verify_selection(plan, before, after)['selection_state_transition'])
+                put_stack(memory, gd, 13, 11, 11, types=(1,), aps=(21,))
+                memory.pack(gd+556374+200*10+2*11, 'H', 65535)
+                moved = observe(case, sequence=4)[0]['snapshot']
+                self.assertTrue(planner.verify_movement(plan, after, moved)['movement_state_transition'])
+
+    def test_selected_count_panel_mismatch_rejects_for_both_native_branches(self):
+        for single in (False, True):
+            case = fixture(); memory = case[0]
+            memory.pack(0x511B58, 'i', 13)
+            if single:
+                put_stack(memory, 0x2000000, 13, 10, 11, types=(1,))
+                select(memory)
+            with self.subTest(single=single), self.assertRaises(tool.ObservationError):
+                observe(case)
 
     def test_explicit_indices_do_not_require_unrelated_stack_bytes(self):
         case = fixture()

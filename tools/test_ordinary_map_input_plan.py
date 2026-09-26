@@ -44,8 +44,11 @@ def selected(snapshot, sequence):
     result = deepcopy(snapshot)
     result['sequence'] = sequence
     stack = result['stacks'][0]
-    result['context'].update(selected_stack=stack['index'], panel_stack=stack['index'],
-        lower_owner=1, active_stack=result['context']['game_data']+147174+725*stack['index'])
+    if len(tool.occupied_slots(stack)) == 1:
+        result['context'].update(selected_stack=stack['index'], panel_stack=-1, lower_owner=0)
+    else:
+        result['context'].update(selected_stack=stack['index'], panel_stack=stack['index'],
+            lower_owner=1, active_stack=result['context']['game_data']+147174+725*stack['index'])
     return result
 
 
@@ -373,6 +376,106 @@ class TransitionTests(unittest.TestCase):
         fresh = deepcopy(state); fresh['sequence'] = 2
         next(t for t in fresh['tiles'] if (t['x'], t['y']) == (12, 12))['occupant'] = 15
         with self.assertRaises(tool.PlanError): tool.revalidate_before_click(plan, fresh, 'select')
+
+
+class SingleSquadTests(unittest.TestCase):
+    def case(self, active=0):
+        candidate, state = fixture()
+        state['stacks'][0]['slots'][1]['type'] = -1
+        state['context']['active_stack'] = active
+        plan = tool.plan_input(state, candidate)
+        before = deepcopy(state); before['sequence'] = 2
+        after = selected(state, 3)
+        before_move = selected(state, 4)
+        after_move = selected(state, 5)
+        after_move['stacks'][0].update(x=11, y=11)
+        after_move['stacks'][0]['slots'][0]['ap'] = 21
+        after_move['tiles'][0]['occupant'] = 65535
+        after_move['tiles'][1]['occupant'] = 13
+        return candidate, state, plan, before, after, before_move, after_move
+
+    def test_native_single_squad_selection_and_movement_keep_dormant_pointer(self):
+        for active in (0, 0x2100000):
+            with self.subTest(active=active):
+                _, _, plan, before, after, before_move, after_move = self.case(active)
+                self.assertEqual(plan['movement']['measured_cardinal_cost'], 5)
+                self.assertTrue(tool.verify_selection(plan, before, after)['selection_state_transition'])
+                self.assertTrue(tool.verify_movement(plan, before_move, after_move)['movement_state_transition'])
+                self.assertEqual((after['context']['lower_owner'], after['context']['panel_stack'],
+                                  after['context']['active_stack']), (0, -1, active))
+
+    def test_changed_dormant_pointer_rejects_at_every_action_boundary(self):
+        for which in ('before', 'after', 'before_move', 'after_move'):
+            _, _, plan, before, after, before_move, after_move = self.case(0x2100000)
+            states = dict(before=before, after=after, before_move=before_move, after_move=after_move)
+            states[which]['context']['active_stack'] = 0
+            with self.subTest(boundary=which), self.assertRaises(tool.PlanError):
+                if which in ('before', 'after'):
+                    tool.verify_selection(plan, before, after)
+                else:
+                    tool.verify_movement(plan, before_move, after_move)
+
+    def test_selected_count_requires_measured_nonempty_stack_even_with_valid_headers(self):
+        for single in (False, True):
+            candidate, state = fixture()
+            if single:
+                state['stacks'][0]['slots'][1]['type'] = -1
+            state = selected(state, 3)
+            for kind in ('missing', 'empty'):
+                bad = deepcopy(state)
+                if kind == 'missing':
+                    bad['stacks'] = []
+                else:
+                    bad['stacks'][0]['slots'][0]['type'] = -1
+                tool.inspect_header(bad, candidate)  # Bounds are not acceptance.
+                with self.subTest(single=single, kind=kind), self.assertRaises(tool.PlanError):
+                    tool.inspect(bad, candidate)
+
+    def test_single_squad_cannot_claim_live_panel_and_multi_squad_cannot_omit_it(self):
+        candidate, _, _, _, after, _, _ = self.case()
+        for key, value in (('lower_owner', 1), ('panel_stack', 13), ('slot_flags', [1]+[0]*9)):
+            bad = deepcopy(after); bad['context'][key] = value
+            with self.subTest(key=key), self.assertRaises(tool.PlanError):
+                tool.inspect(bad, candidate)
+        candidate, state = fixture()
+        state['context']['selected_stack'] = 13
+        with self.assertRaises(tool.PlanError):
+            tool.inspect(state, candidate)
+        state['context'].update(selected_stack=-1, panel_stack=13)
+        with self.assertRaises(tool.PlanError):
+            tool.inspect(state, candidate)
+
+    def test_count_stops_at_first_native_sentinel_not_later_stale_slot(self):
+        candidate, state = fixture()
+        state['stacks'][0]['slots'][1]['type'] = -1
+        state['stacks'][0]['slots'][2] = dict(type=16, ap=0)
+        plan = tool.plan_input(state, candidate)
+        before = deepcopy(state); before['sequence'] = 2
+        self.assertEqual(plan['movement']['ap_before'], [26])
+        self.assertTrue(tool.verify_selection(plan, before, selected(state, 3))['selection_state_transition'])
+
+    def test_prior_selected_measurement_is_retained_outside_planned_neighborhood(self):
+        candidate, state = fixture()
+        old = deepcopy(state['stacks'][0]); old.update(index=25, x=40, y=40)
+        state['stacks'].append(old)
+        state['context'].update(selected_stack=25, panel_stack=25, lower_owner=1,
+                                active_stack=state['context']['game_data']+147174+725*25)
+        plan = tool.plan_input(state, candidate)
+        self.assertEqual([stack['index'] for stack in plan['basis']['stacks']], [13, 25])
+        self.assertEqual(tool.checked_plan(plan), plan['basis'])
+        before = deepcopy(state); before['sequence'] = 2
+        after = selected(state, 3); after['context']['previous_stack'] = 25
+        self.assertTrue(tool.verify_selection(plan, before, after)['selection_state_transition'])
+
+    def test_state_verifier_preserves_legacy_408030_previous_index_contract(self):
+        candidate, state = fixture()
+        state['context']['previous_stack'] = 42
+        plan = tool.plan_input(state, candidate)
+        before = deepcopy(state); before['sequence'] = 2
+        for previous in (42, -1):
+            after = selected(state, 3); after['context']['previous_stack'] = previous
+            with self.subTest(previous=previous):
+                self.assertTrue(tool.verify_selection(plan, before, after)['selection_state_transition'])
 
 
 if __name__ == '__main__':
