@@ -901,3 +901,14 @@
 /tools/build_ordinary_castle_entry_candidate.py -text whitespace=cr-at-eol
 /tools/test_ordinary_castle_entry.py -text whitespace=cr-at-eol
 /reports/ordinary-castle-entry-baseline-20260924.json -text whitespace=cr-at-eol
+/src/patcher/ordinary_castle_entry_matrix.py -text whitespace=cr-at-eol
+/tools/build_ordinary_castle_entry_matrix_candidate.py -text whitespace=cr-at-eol
+/tools/test_ordinary_castle_entry_matrix.py -text whitespace=cr-at-eol
+/tools/test_ordinary_castle_entry_gate_cpu.py -text whitespace=cr-at-eol
+/tools/test_ordinary_castle_entry_matrix_engine.py -text whitespace=cr-at-eol
+/reports/ordinary-castle-entry-matrix-engine-20260926-a.json -text whitespace=cr-at-eol
+/reports/ordinary-castle-entry-matrix-engine-20260926-b.json -text whitespace=cr-at-eol
+/reports/ordinary-castle-entry-matrix-engine-20260926-c.json -text whitespace=cr-at-eol
+/reports/ordinary-castle-entry-matrix-verification-20260926.json -text whitespace=cr-at-eol
+/reports/ordinary-castle-entry-matrix-verification-20260926-b.json -text whitespace=cr-at-eol
+/reports/ordinary-castle-entry-verification-20260926-b.json -text whitespace=cr-at-eol

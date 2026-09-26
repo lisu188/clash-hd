@@ -97,7 +97,10 @@ screen-owner records. Fixed click targets and the framed input guard for worlds
 smaller than the viewport still need integration repairs. The separate
 [ordinary castle-entry successor](ORDINARY_CASTLE_ENTRY.md) authenticates the
 real native caller before admitting its owned canvas at 1024x768; it remains
-outside the launcher and protected stable stage.
+outside the launcher and protected stable stage. The additive
+[matrix successor](ORDINARY_CASTLE_ENTRY_MATRIX.md) provides source construction
+for both profiles at the six existing resolutions, with independent gate and
+actual debugger-verifier fixtures. Runtime and launcher acceptance remain separate.
 The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
 bounded component and its new complete-wrapper CPU checks; composition into the
 Complete HD/modalwidgets candidate remains required.
@@ -110,9 +113,12 @@ The [native-caller diagnostic and source correction](../../reports/ordinary-cast
 identify why ordinary castle entry bypassed the owned 640x480 canvas: the native
 caller changes the renderer before invoking the castle root. The additive
 successor checks the real caller frame and preserves the remaining admission,
-allocation and rollback checks. It supports only the exact 1024x768 parent;
-other resolutions, launcher composition, ordinary input, exit/free restoration,
-all interiors and battle still need matching implementation and evidence.
+allocation and rollback checks. Its exact-parent 1024x768 inherited-entry suite
+now passes all 15 tests with no skips, as recorded in the
+[fresh CPU follow-up](../../reports/ordinary-castle-entry-verification-20260926-b.json).
+The separate matrix builder extends source construction to both profiles and six
+resolutions. Launcher composition, ordinary input, exit/free restoration, all
+interiors and battle still need matching integration and runtime evidence.
 
 The user confirmed that `C:/ClashCaptures` and `C:/ClashTests` were removed for
 cleanup. Their raw captures, source snapshots, candidate bundles and local
