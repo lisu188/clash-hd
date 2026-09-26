@@ -912,3 +912,5 @@
 /reports/ordinary-castle-entry-matrix-verification-20260926.json -text whitespace=cr-at-eol
 /reports/ordinary-castle-entry-matrix-verification-20260926-b.json -text whitespace=cr-at-eol
 /reports/ordinary-castle-entry-verification-20260926-b.json -text whitespace=cr-at-eol
+/tools/ordinary_map_input_plan.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_input_plan.py -text whitespace=cr-at-eol
