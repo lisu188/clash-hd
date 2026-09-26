@@ -1,0 +1,44 @@
+name: Ordinary map measured input plan
+
+on:
+  pull_request:
+    paths:
+      - 'tools/ordinary_map_input_plan.py'
+      - 'tools/test_ordinary_map_input_plan.py'
+      - 'src/patcher/framed_viewport.py'
+      - 'src/patcher/framed_army_viewport.py'
+      - 'src/patcher/__init__.py'
+      - 'docs/hd/ORDINARY_MAP_INPUT_PLAN.md'
+      - '.github/workflows/ordinary-map-input-plan.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/ordinary_map_input_plan.py'
+      - 'tools/test_ordinary_map_input_plan.py'
+      - 'src/patcher/framed_viewport.py'
+      - 'src/patcher/framed_army_viewport.py'
+      - 'src/patcher/__init__.py'
+      - 'docs/hd/ORDINARY_MAP_INPUT_PLAN.md'
+      - '.github/workflows/ordinary-map-input-plan.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    name: Pure measured input fixtures (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check measured plans and exact state transitions
+        run: python -B tools/test_ordinary_map_input_plan.py -v
