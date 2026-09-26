@@ -8,6 +8,52 @@ and safe starting commands. It is the tracked handoff for new tasks; ignored
 `.codex-loop/` notes and the historical autonomous prompt are not current
 instructions. Preserve existing uncommitted and untracked work.
 
+## Disk space and artifact cleanup
+
+- Check free space on the volumes holding the checkout and generated outputs at
+  task start, before large builds, dependency installs, tests or captures, and
+  after long batches. Treat **90% or more used (10% or less free)** as the cleanup threshold;
+  act earlier if the next operation is likely to reach it. For WSL, check both
+  the Linux filesystem and the Windows volume backing its virtual disk. Honor
+  any stricter project or task reserve; never lower a guard to continue.
+- At the end of each meaningful build, test or capture batch, and periodically
+  during long-running work, inspect project-owned scratch and caches for verified
+  disposable artifacts even when usage is below the threshold. Remove only
+  completed, inactive outputs that satisfy the ownership, reproducibility and
+  evidence-preservation rules below. Report removed and retained paths and
+  measured free space.
+- At or above the threshold, pause large artifact-producing operations and proactively
+  remove verified disposable artifacts from completed, inactive project runs.
+  Prefer obsolete build intermediates, task-local caches and redundant scratch
+  copies. Use an explicit list of paths: confirm ownership, reproducibility and
+  lack of active users before removal. Being old, ignored, untracked or named
+  `build`/`artifacts` is not sufficient proof that a file is disposable.
+- Preserve source and uncommitted work, Git metadata and worktrees, credentials,
+  installed tools/dependencies, original assets, saves/backups, fixtures, final
+  deliverables and required evidence. Keep unique raw captures, manifests and
+  incomplete/failing-run diagnostics; only remove redundant evidence when a
+  verified retained copy or documented replacement preserves its provenance.
+- Resolve every target to an absolute path inside the identified project-owned
+  output directory; reject paths escaping through symlinks, junctions or reparse
+  points. Never blanket-clean the repository, prune worktrees, or sweep shared
+  caches or other projects. On Windows use literal-path operations in one shell.
+- Recheck actual free space after cleanup and report removed/skipped paths plus
+  before/after usage. Moving files on the same volume does not free that volume;
+  WSL deletions do not prove Windows space was reclaimed. Resume large writes
+  only with usage below 90% and enough headroom for the next operation and any
+  stricter reserve. If safe cleanup cannot provide that space, report the blocker
+  and continue only work that does not worsen disk pressure.
+
+### Project-specific artifact boundaries
+
+Inspect inactive Python/tool caches and verified test scratch under
+`.codex-loop/tmp-tests*` and `captures/tmp-tests-probe` first. Preserve referenced
+captures (including current, archived and failed runs), source snapshots,
+retained candidates, original game files, saves and launcher settings.
+`tools/repo_compaction_cleanup.py` is dry-run by default: review its exact
+targets before execution. Its default archive on `C:\ClashCaptures` is on the
+same volume as this checkout and does not reclaim C: space.
+
 ## Project purpose
 
 `clash-hd` is a reverse-engineering and binary-patching project for the 32-bit

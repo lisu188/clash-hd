@@ -1,0 +1,53 @@
+{
+  "schema": "clash95_ordinary_castle_source_verification_v1",
+  "date": "2026-09-26",
+  "head": "aaa8f6025d63a14ea7af4f4266139a91145a4096",
+  "evidence_class": "original_backed_synthetic_cpu_and_byte_checks",
+  "runtime_executed": false,
+  "manual_input_proof": false,
+  "previous_report": "reports/ordinary-castle-entry-verification-20260926.json",
+  "previous_report_sha256": "12b60d4c69b47f6023eafbaf72fc52790f0757db8c1002c8065eaa8e6ae24cc8",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "source_hashes": {
+    "src/patcher/ordinary_castle_entry.py": "f8406a7f5b1ede8aa6fa56580f6e7cb178ccedb22d3f241b23e373cb7b83594b",
+    "tools/build_ordinary_castle_entry_candidate.py": "b08fef80bbff1e462ba2839c55acf7e32333e0791ad50b3702b8a37d6e346188",
+    "tools/test_ordinary_castle_entry.py": "99a10f6ddb9e0889fe31c8b4f2cb54e33850137287c61fb0fd572cff4b01df2a"
+  },
+  "command": "python -B tools/test_ordinary_castle_entry.py --source-exe C:/Clash/clash95.exe --toolchain C:/Users/andrz/git/clash-hd/.codex-loop/toolchain/unicorn-2.1.4 --require-machine-tools -v",
+  "result": {
+    "exit_code": 0,
+    "tests_run": 15,
+    "passed_methods": 15,
+    "unittest_skipped_entries": 0,
+    "elapsed_seconds": 138.665,
+    "full_machine_suite_passed": true
+  },
+  "intermediate_attempts": [
+    {
+      "session_id": 45931,
+      "tests_run": 0,
+      "exit_code": 1,
+      "elapsed_seconds": 155.772,
+      "reason": "Tracked patcher source changed during main fast-forward; source binding failed closed."
+    },
+    {
+      "session_id": 23489,
+      "tests_run": 15,
+      "exit_code": 1,
+      "elapsed_seconds": 127.62,
+      "failed_test_or_subtest_entries": 31,
+      "passed_source_byte_methods": 9,
+      "reason": "Sandbox denied Unicorn internals; import resolved an unusable namespace and x86_const could not be imported."
+    }
+  ],
+  "engine": {
+    "name": "Unicorn",
+    "version": "2.1.4",
+    "wheel_sha256": "d7107500c64ce5c168fbff6bef9485b5db1350050036f4cea568650cf8bdbdf5"
+  },
+  "limitations": [
+    "Actual inherited entry instructions execute in synthetic memory with modeled allocation/free/thread APIs.",
+    "Normal castle body and exit lifecycle, live rendering, ordinary input and promotion remain unproved.",
+    "Deleted raw captures remain unavailable; no prior failed or skipped run is relabeled."
+  ]
+}
