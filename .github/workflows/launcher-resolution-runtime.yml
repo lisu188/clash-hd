@@ -92,7 +92,7 @@ jobs:
       - name: Exercise guarded campaign transition and read-only engine-coordinate input feedback
         shell: pwsh
         run: |
-          python code/tools/resolution_playability.py --execute --native-present-bounds --approval-text "$env:APPROVAL_TEXT" --profile '${{ matrix.profile }}' --resolution '${{ matrix.resolution }}' --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --proxy "$env:PROXY_ROOT/ddraw.dll" --out "$env:RUN_ROOT"
+          python code/tools/resolution_playability.py --execute --mode foreground-diagnostic --native-present-bounds --approval-text "$env:APPROVAL_TEXT" --profile '${{ matrix.profile }}' --resolution '${{ matrix.resolution }}' --runtime assets/runtime/gog-32003 --manifest assets/sources/gog-32003/manifest.json --proxy "$env:PROXY_ROOT/ddraw.dll" --out "$env:RUN_ROOT"
           exit $LASTEXITCODE
       - name: Retain producer sources and proxy identity without binaries
         if: always()

@@ -7,6 +7,7 @@ The observation may contain only measured candidate stacks and their neighbors;
 failure to find a pair is not proof that no other pair exists in the world.
 
 Native evidence: 408030/4084A0 selection and tile dispatch; 40F060 visibility;
+40A500 count-dependent panel ownership; 422B80 contiguous squad count;
 413920 merged slot costs; 414150 tile admission; 4147A0 pathfinding. Arrays in
 game data are X-major, with fixed 100-cell strides, regardless of world size.
 One adjacent click can execute immediately. A planned cost is a bounded native
@@ -101,8 +102,8 @@ def occupied_slots(stack):
     return occupied
 
 
-def inspect(snapshot, candidate):
-    """Validate normalized measurements; caller remains responsible for provenance."""
+def inspect_header(snapshot, candidate):
+    """Validate bounded headers only; no stack/selection acceptance or plan."""
     framed, army = candidate_contract(candidate)
     record(snapshot, 'schema sequence paused identity context world player minimap port stacks tiles unit_profiles', 'observation')
     require(snapshot['schema'] == OBSERVATION_SCHEMA and snapshot['paused'] is True, 'coherent paused observation required')
@@ -132,12 +133,6 @@ def inspect(snapshot, candidate):
     for name in ('selected_stack', 'previous_stack', 'panel_stack'):
         integer(context[name], -1, 499, name)
     integer(context['active_stack'], 0, MAX_ADDRESS-725, 'active stack pointer')
-    if context['selected_stack'] == -1:
-        require(context['lower_owner'] == 0, 'unselected map has an active lower owner')
-    else:
-        require(context['lower_owner'] == 1 and context['panel_stack'] == context['selected_stack']
-                and context['active_stack'] == context['game_data']+147174+725*context['selected_stack'],
-                'selected map/panel ownership is incoherent')
     require(type(context['slot_flags']) is list and len(context['slot_flags']) == 10
             and all(type(v) is int and v == 0 for v in context['slot_flags']), 'whole-army zero slot flags required')
     world = record(snapshot['world'], 'width height scroll_x scroll_y', 'world')
@@ -158,6 +153,33 @@ def inspect(snapshot, candidate):
     integer(port['y'], -1, world['height']-1, 'port y')
     if port['x'] != -1:
         require(0 <= port['y'] < world['height']-1 and port['x'] < world['width']-1, 'port footprint outside world')
+    return framed, army
+
+
+def _selection_owner(context, stacks):
+    """Original 40A500 opens 423B00's panel only for more than one squad."""
+    index = context['selected_stack']
+    if index == -1:
+        require(context['lower_owner'] == 0 and context['panel_stack'] == -1,
+                'unselected map has an active lower owner or panel')
+        return
+    require(index in stacks, 'selected stack measurement missing')
+    count = len(occupied_slots(stacks[index]))
+    if count == 1:
+        require(context['lower_owner'] == 0 and context['panel_stack'] == -1,
+                'single-squad selection must have a dormant panel')
+        # 40A500 and 423B40 do not clear 526FA0. It is not a live owner in
+        # this branch; transition verifiers bind its unchanged prior value.
+    else:
+        require(context['lower_owner'] == 1 and context['panel_stack'] == index
+                and context['active_stack'] == context['game_data']+147174+725*index,
+                'selected map/panel ownership is incoherent')
+
+
+def inspect(snapshot, candidate):
+    """Validate complete measurements, including the selected stack's count."""
+    framed, army = inspect_header(snapshot, candidate)
+    world, context = snapshot['world'], snapshot['context']
     require(type(snapshot['stacks']) is list and len(snapshot['stacks']) <= 500, 'bounded measured stack list required')
     stacks = {}
     for stack in snapshot['stacks']:
@@ -175,6 +197,7 @@ def inspect(snapshot, candidate):
             integer(slot['type'], -32768, 32767, 'signed slot type')
             integer(slot['ap'], 0, 255, 'slot AP')
         stacks[index] = stack
+    _selection_owner(context, stacks)
     require(type(snapshot['tiles']) is list and len(snapshot['tiles']) <= 10000, 'bounded measured tile list required')
     tiles, terrain_profiles = {}, {}
     for tile in snapshot['tiles']:
@@ -277,8 +300,9 @@ def ambush_neighborhood(snapshot, stack, destination, stacks, tiles):
 def _make(snapshot, candidate, tolerance, stack, origin, destination, cost, framed, army, neighborhood, occupants):
     types = {slot['type'] for slot in occupied_slots(stack)}
     basis = deepcopy(snapshot)
+    retained = occupants | {snapshot['context']['selected_stack']}
     basis['stacks'] = [deepcopy(stack)]+sorted((deepcopy(s) for s in snapshot['stacks']
-        if s['index'] in occupants and s['index'] != stack['index']), key=lambda s:s['index'])
+        if s['index'] in retained and s['index'] != stack['index']), key=lambda s:s['index'])
     endpoints = {(origin['x'], origin['y']), (destination['x'], destination['y'])}
     basis['tiles'] = [deepcopy(origin), deepcopy(destination)]+sorted((deepcopy(t) for t in snapshot['tiles']
         if (t['x'], t['y']) in neighborhood-endpoints), key=lambda t:(t['x'], t['y']))
@@ -369,10 +393,12 @@ def _pair(plan, snapshot):
 def _selected(plan, snapshot):
     index = plan['selection']['stack_index']
     context = snapshot['context']
-    require(context['selected_stack'] == index and context['panel_stack'] == index
-            and context['lower_owner'] == 1
-            and context['active_stack'] == context['game_data']+147174+725*index,
-            'planned whole army does not own selection/panel')
+    require(context['selected_stack'] == index, 'planned whole army does not own selection')
+    stacks = {stack['index']: stack for stack in snapshot['stacks']}
+    _selection_owner(context, stacks)
+    if len(occupied_slots(stacks[index])) == 1:
+        require(context['active_stack'] == plan['basis']['context']['active_stack'],
+                'single-squad selection changed the dormant active stack pointer')
 
 
 def revalidate_before_click(plan, fresh, action):
