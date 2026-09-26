@@ -215,7 +215,7 @@ runs. Raw captures, assets and binaries remain outside Git.
 
 ## Focused verification and remaining proof
 
-Use the interpreter discovery in the [handoff](AGENT_HANDOFF.md#start-safely).
+Use [Development and verification](DEVELOPMENT.md#python-and-dependencies) for interpreter discovery.
 These commands are portable fixtures or a dry run; they launch no game:
 
 ```text
