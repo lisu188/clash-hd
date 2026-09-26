@@ -18,7 +18,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src" / "patcher"))
 import battle_hd_core as core
-from test_battle_hd_cursor_bounds import test_stage_contract
+from test_battle_hd_cursor_bounds import test_stage_contract, verify_battle_context_routes
 
 
 def machine_tests(source_exe):
@@ -28,12 +28,13 @@ def machine_tests(source_exe):
 
     source = source_exe.read_bytes()
     assert hashlib.sha256(source).hexdigest() == core.EXPECTED_SOURCE_SHA256
+    verify_battle_context_routes(source)
     selected, inherited = test_stage_contract()
     block = next(b for b in core.ASSEMBLY_BLOCKS if b[0] == "battle_relative_mouse")
     assembler = Ks(KS_ARCH_X86, KS_MODE_32)
     encoded = bytes.fromhex(block[3])
     assert bytes(assembler.asm(block[2], block[1])[0]) == encoded
-    assert encoded[12:50] == source[0x05fe61:0x05fe87]
+    assert encoded[33:71] == source[0x05fe61:0x05fe87]
     hook = next(p for p in selected if p.offset == 0x05fe61)
     assert hook.old == source[0x05fe61:0x05fe87]
     assert hook.new[0] == 0xe9 and hook.new[5:] == b"\x90" * 33
@@ -48,7 +49,7 @@ def machine_tests(source_exe):
         return (value + 0x80000000) % 0x100000000 - 0x80000000
 
     class Machine:
-        def __init__(self, mode, owner, shift, speed, sprite, origin=(0,0)):
+        def __init__(self, mode, owner, shift, speed, sprite, origin=(0,0), battle=0):
             self.u = Uc(UC_ARCH_X86, UC_MODE_32)
             self.u.mem_map(0x400000,0x190000)
             self.u.mem_map(stack-0x10000,0x10000)
@@ -60,6 +61,7 @@ def machine_tests(source_exe):
                     assert source[patch.offset:patch.offset+len(patch.old)] == patch.old
                     self.u.mem_write(patch.offset+0x400c00,patch.new)
             self.put(0x5199d8,owner)
+            self.put(0x532048,battle)
             self.put(obj+0x454,shift)
             self.put(obj+0x20,speed)
             self.put(obj+0x3c,meta)
@@ -79,6 +81,19 @@ def machine_tests(source_exe):
 
         def get(self,address):
             return struct.unpack("<I",self.u.mem_read(address,4))[0]
+
+        def native_scope_fragment(self,start,end,registers):
+            # Execute only the byte-verified native pointer publication/clear
+            # or owner store with explicit fixture operands. No allocation,
+            # game lifecycle, DirectInput or OS activity is simulated as real.
+            self.u.mem_write(start,source[start-0x400c00:end-0x400c00])
+            sp = stack-0x100
+            self.u.reg_write(r.UC_X86_REG_ESP,sp)
+            for register,value in registers:
+                self.u.reg_write(register,value)
+            self.u.emu_start(start,end,count=64)
+            assert self.u.reg_read(r.UC_X86_REG_EIP) == end
+            assert self.u.reg_read(r.UC_X86_REG_ESP) == sp
 
         def ret(self,cleanup=0):
             sp = self.u.reg_read(r.UC_X86_REG_ESP)
@@ -162,12 +177,12 @@ def machine_tests(source_exe):
     samples = ((0,0,0),(-29,1,0),(-257,-5,1),(29,-1,2),(257,5,3),
                (1,0,0),(0,-1,0),(1000000,-1000000,3),(-1000000,1000000,0),
                (0x7fffffff,-0x80000000,2),(0,0,1))
-    for shift in (0,6):
+    for owner,battle,shift in ((o,b,s) for o,b in ((0x42e8b0,0),(0x4617a0,0x570000)) for s in (0,6)):
         for speed in (0,1,3,64,128):
             for sprite in ((30,29,0,0),(48,48,19,20)):
                 for origin in ((0,0),(880,407)):
-                    m = Machine("battle",0x42e8b0,shift,speed,sprite,origin)
-                    native = Machine("native",0x42e8b0,shift,speed,sprite,origin)
+                    m = Machine("battle",owner,shift,speed,sprite,origin,battle)
+                    native = Machine("native",owner,shift,speed,sprite,origin,battle)
                     # Recenter's immediate poll must also use relative data.
                     assert m.poll(-29,1,2,(576,360)) == native.poll(-29,1,2,(576,360))
                     assert "ClientToScreen" not in m.events
@@ -191,10 +206,11 @@ def machine_tests(source_exe):
 
     # Exact scope: nonbattle owners remain byte-for-byte behaviorally equal to
     # the inherited dynamic-origin updater, including its API and stack ABI.
-    for owner in (0x4617a0,0,0x42e8b1):
+    for owner,battle in ((0x4617a0,0),(0,0),(0x42e8b1,0),
+                         (0,0x570000),(0x42e8b1,0x570000)):
         for origin in ((0,0),(880,407)):
-            m = Machine("battle",owner,6,64,(30,29,0,0),origin)
-            legacy = Machine("inherited",owner,6,64,(30,29,0,0),origin)
+            m = Machine("battle",owner,6,64,(30,29,0,0),origin,battle)
+            legacy = Machine("inherited",owner,6,64,(30,29,0,0),origin,battle)
             for sample in samples:
                 assert m.poll(*sample,recenter=(576,360)) == legacy.poll(*sample,recenter=(576,360))
                 assert m.events.count("ClientToScreen") == 1
@@ -206,6 +222,40 @@ def machine_tests(source_exe):
     assert m.poll(-29,1)[0] == (547 << 6,361 << 6,0)
     assert m.poll(-257,-5)[0] == (290 << 6,356 << 6,0)
     total += 3
+
+    # Native-byte fragments establish the active interval, temporary overlay
+    # owners and return to the default hook. The fixture deliberately does not
+    # call allocation/free: publish a controlled pointer via the real copy,
+    # then execute the real post-free clear after the two overlay intervals.
+    m = Machine("battle",0x4617a0,6,64,(30,29,0,0))
+
+    def check_transition(mode,label):
+        expected = Machine(mode,m.get(0x5199d8),6,64,(30,29,0,0),battle=m.get(0x532048))
+        assert m.poll(-29,1,2,(576,360)) == expected.poll(-29,1,2,(576,360)), label
+        assert m.events.count("ClientToScreen") == (mode == "inherited"), label
+        assert m.poll(-257,-5,1) == expected.poll(-257,-5,1), label
+        return 2
+
+    total += check_transition("inherited","before battle")
+    m.native_scope_fragment(0x42ec7c,0x42ec90,(
+        (r.UC_X86_REG_EAX,0x570000),(r.UC_X86_REG_ECX,4),
+        (r.UC_X86_REG_EDI,0x532048),(r.UC_X86_REG_ESI,stack-0x100+0x70)))
+    assert m.get(0x532048) == 0x570000
+    m.native_scope_fragment(0x42ea65,0x42ea6b,((r.UC_X86_REG_EDX,0x42e8b0),))
+    total += check_transition("native","battle")
+    m.native_scope_fragment(0x42d77c,0x42d782,((r.UC_X86_REG_EDX,0x4617a0),))
+    total += check_transition("native","banner before owner restore")
+    m.native_scope_fragment(0x42da62,0x42da67,((r.UC_X86_REG_EAX,0x42e8b0),))
+    total += check_transition("native","banner returned")
+    m.native_scope_fragment(0x4453b5,0x4453bb,((r.UC_X86_REG_ECX,0x4617a0),))
+    total += check_transition("native","results wait")
+    m.native_scope_fragment(0x44585f,0x445864,((r.UC_X86_REG_EAX,0x42e8b0),))
+    total += check_transition("native","results returned")
+    m.native_scope_fragment(0x42f536,0x42f53d,())
+    assert m.get(0x532048) == 0
+    total += check_transition("native","cleared pointer with original battle owner")
+    m.native_scope_fragment(0x42f5a2,0x42f5a7,((r.UC_X86_REG_EAX,0x4617a0),))
+    total += check_transition("inherited","default owner after battle")
     return total
 
 

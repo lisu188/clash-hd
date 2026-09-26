@@ -27,6 +27,41 @@ def canonical(rows):
     return hashlib.sha256(text.encode()).hexdigest()
 
 
+def verify_battle_context_routes(source):
+    """Original-byte contracts for battle lifetime and temporary default hooks.
+
+    The pointer is published by the native four-byte copy at 42EC86 and cleared
+    after free at 42F538. Banner recenter precedes its owner restoration; the
+    shared results wait polls while default-owned, then restores before return.
+    These are source contracts, not evidence that a game session traversed them.
+    """
+    contracts = (
+        (0x42ec43, "8db4248c000000"),
+        (0x42ec63, "bf48205300"),
+        (0x42ec6d, "b87c0f0000b904000000e874530400894424705789c8c1e902f2a58ac880e103f2a45f833d48205300000f8467030000"),
+        (0x42ea49, "bab0e84200"),
+        (0x42ea65, "8915d8995100"),
+        (0x42d763, "baa0174600"),
+        (0x42d77c, "8915d8995100"),
+        (0x42da41, "e8aa300300"),
+        (0x42da5a, "8b4424148b542418a3d8995100"),
+        (0x44539c, "b9a0174600"),
+        (0x4453b5, "890dd8995100"),
+        (0x44543f, "e88cb10100"),
+        (0x445857, "8b4424048b542418a3d8995100"),
+        (0x42f52c, "a148205300e8a74b040031c0a348205300"),
+        (0x42f594, "8b8424840000008b94248c000000a3d8995100"),
+        # Human battle setup selects C8, sets the banner/default cursor to A0,
+        # then the banner selects that A0. A0 is HD even in the inherited path.
+        (0x42f2d6, "bac8965100b8d84c5400bfa0965100e8961a0300b8d84c5400893d50515400"),
+        (0x42d98a, "b8d84c54008b15505154008b4c2410e8e2330300"),
+    )
+    for va, expected in contracts:
+        raw = bytes.fromhex(expected)
+        assert source[va-0x400c00:va-0x400c00+len(raw)] == raw, hex(va)
+    return contracts
+
+
 def test_stage_contract():
     profile = patcher.parse_resolution("1280x720")
     # Pins were measured before adding the stage-only override, including the
@@ -55,6 +90,8 @@ def test_stage_contract():
     block = next(b for b in core.ASSEMBLY_BLOCKS if b[0] == "battle_cursor_viewport")
     assert block[1] == 0x563400
     assert core.CORE_CODE[0x1400:0x1400 + len(bytes.fromhex(block[3]))] == bytes.fromhex(block[3])
+    relative = next(b for b in core.ASSEMBLY_BLOCKS if b[0] == "battle_relative_mouse")
+    assert block[2].split("battle:\n")[0] == relative[2].split("battle:\n")[0]
     return selected, inherited
 
 
@@ -65,6 +102,7 @@ def machine_tests(source_exe):
 
     source = source_exe.read_bytes()
     assert hashlib.sha256(source).hexdigest() == core.EXPECTED_SOURCE_SHA256
+    verify_battle_context_routes(source)
     selected, inherited = test_stage_contract()
     block = next(b for b in core.ASSEMBLY_BLOCKS if b[0] == "battle_cursor_viewport")
     assembler = Ks(KS_ARCH_X86, KS_MODE_32)
@@ -85,7 +123,7 @@ def machine_tests(source_exe):
                0x519808: (24,32,0,0)}
 
     class Machine:
-        def __init__(self, patches, owner, shift, visible):
+        def __init__(self, patches, owner, shift, visible, battle=0):
             self.u = Uc(UC_ARCH_X86, UC_MODE_32)
             self.u.mem_map(0x400000, 0x190000)
             self.u.mem_map(stack - 0x10000, 0x10000)
@@ -104,6 +142,7 @@ def machine_tests(source_exe):
                 self.put(meta+28, 0x2468)
                 self.put(meta+32, 0x1357)
             self.put(0x5199d8, owner)
+            self.put(0x532048, battle)
             self.put(obj+0x454, shift)
             self.put(obj+0x38, visible)
             self.put(obj+0x460, table)
@@ -178,11 +217,14 @@ def machine_tests(source_exe):
 
     total = 0
     sequence = (0x5196a0,0x5196c8,0x5196f0,0x5197b8,0x5196a0,0x519808,0x5196a0)
-    for owner in (0x42e8b0,0x4617a0,0,0x42e8b1):
+    contexts = ((0x42e8b0,0), (0x4617a0,0), (0,0), (0x42e8b1,0),
+                (0x4617a0,0x570000), (0,0x570000), (0x42e8b1,0x570000))
+    for owner,battle in contexts:
+        active = owner == 0x42e8b0 or (owner == 0x4617a0 and battle != 0)
         for shift in (0,6):
             for visible in (0,1):
-                m = Machine(selected,owner,shift,visible)
-                legacy = Machine(inherited,owner,shift,visible)
+                m = Machine(selected,owner,shift,visible,battle)
+                legacy = Machine(inherited,owner,shift,visible,battle)
                 for meta in sequence:
                     # Clamp probes below alter m's mouse state. Give both
                     # switch implementations identical inputs for comparison.
@@ -191,13 +233,13 @@ def machine_tests(source_exe):
                         fixture.put(obj+0x28,360 << shift)
                     bounds = m.switch(meta)
                     legacy_bounds = legacy.switch(meta)
-                    width,height = ((1280,720) if owner == 0x42e8b0 or meta == 0x5196a0 else (640,480))
+                    width,height = ((1280,720) if active or meta == 0x5196a0 else (640,480))
                     sw,sh,hx,hy = sprites[meta]
                     pixels = (hx+1,hy+1,width-(sw-hx+1),height-(sh-hy+1))
                     assert bounds == tuple(v << shift for v in pixels), (owner,meta,shift,bounds)
                     assert m.events.count(0x563400) == m.events.count(0x460b20) == 1
                     assert m.get(meta+32) == 0 and m.get(meta+28) == 0x2468
-                    if owner != 0x42e8b0 or meta == 0x5196a0:
+                    if not active or meta == 0x5196a0:
                         assert bounds == legacy_bounds
                         assert bytes(m.u.mem_read(obj+0x30,8)) == bytes(legacy.u.mem_read(obj+0x30,8))
                     else:
@@ -224,6 +266,27 @@ def machine_tests(source_exe):
     assert m.switch(0x5196a0)[2] > 1120 << 6
     assert m.switch(0x5196c8)[2] == 1249 << 6
     total += 3
+
+    # Original-backed human route: nonbattle A0 -> battle C8 -> banner A0 ->
+    # restored battle same A0. The final same-metadata no-op already has HD
+    # bounds, so changing the generic metadata cache is unnecessary here.
+    m = Machine(selected,0x4617a0,6,0)
+    assert m.switch(0x5196a0)[2] == 1263 << 6
+    m.put(0x532048,0x570000)
+    m.put(0x5199d8,0x42e8b0)
+    assert m.switch(0x5196c8)[2] == 1249 << 6
+    m.put(0x5199d8,0x4617a0)
+    banner_bounds = m.switch(0x5196a0)
+    assert banner_bounds[2] == 1263 << 6
+    m.put(0x5199d8,0x42e8b0)
+    assert m.switch(0x5196a0) == banner_bounds and m.events == []
+    # Live default-owned overlays also retain wide nondefault cursor bounds.
+    m.put(0x5199d8,0x4617a0)
+    assert m.switch(0x5196c8)[2] == 1249 << 6
+    m.put(0x532048,0)
+    assert m.switch(0x5196a0)[2] == 1263 << 6
+    assert m.switch(0x5196c8)[2] == 609 << 6
+    total += 7
     return total
 
 

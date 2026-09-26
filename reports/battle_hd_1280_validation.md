@@ -10,6 +10,15 @@ Its native relative-input and cursor-bounds fixtures pass. Hidden helpers pass
 7/7; the forced lifecycle remains incomplete at 11/14. The user kept visible
 validation pending and selected headless operation as the default.
 
+The [September 26 checkpoint](battle_hd_merge_checkpoint_20260926.md) records
+the subsequent candidate `0EDEF38D…1946CA0`. It also covers native banner/results
+intervals that use the default renderer while a battle object remains live.
+The completed hidden observer sees the relative path during the banner;
+failed device reads still prevent cursor/input acceptance. Source checks and
+the exact candidate are reviewable independently of that missing evidence.
+The earlier `99D92` observations remain in their own
+[headless follow-up](../captures/current/battle-hd-headless-followup-20260924.md).
+
 The [September 19 approved visible attempt](../captures/current/battle-hd-visible-attempt-20260919.md)
 was reviewed on September 24. It stopped at a startup worker debugger breakpoint
 before battle readiness; cleanup passed, while visible/input acceptance remains

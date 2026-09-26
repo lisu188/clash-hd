@@ -59,11 +59,11 @@ predecessor sources, reconstructs all 283 inherited patches, and requires the
 unchanged expanded-battle SHA
 `7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47`.
 The September 24 input repair changed the current expanded-battle output to
-`99d92ec7c8f81debf60321dcc5c1b5872c96e3c485fa2bdd7d9332287b3c7e87`.
+`0edef38dac3c5036c6012adde248bc57736273cc1bbcbb9fd05e5867a1946ca0`.
 This edge recipe preserves its published predecessor and final output. A
 private compatibility adapter first requires that exact current image, restores
-the two complete 38-byte inherited input hooks, and clears only the new 32-byte
-cursor-bounds and 60-byte relative-input helpers. Each edit checks its file
+the two complete 38-byte inherited input hooks, and clears only the new 53-byte
+cursor-bounds and 81-byte relative-input helpers. Each edit checks its file
 offset, RVA, VA and old bytes; the restored image must match the full `7d04fe90…`
 SHA above. Unknown current images or incomplete restorations fail closed.
 The manifest records these four current-to-frozen edits separately, then

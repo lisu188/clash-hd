@@ -48,6 +48,8 @@ jobs:
         run: python tools/test_battle_hd_summary.py
       - name: Check read-only cursor diagnostic contracts
         run: python tools/test_battle_hd_cursor_diagnostic.py -v
+      - name: Check repaired-candidate headless cursor observer
+        run: python tools/test_battle_hd_headless_cursor_probe.py -v
       - name: Check native-input visible probe preparation
         run: python tools/test_battle_hd_visible_probe.py
       - name: Check isolated visible-session launch contracts

@@ -21,7 +21,7 @@ STAGE = scalar.BATTLE_HD_STAGE + '-edgecontrols-validation'
 REVISION = 'expanded_battle_edge_controls_v1'
 RESOLUTION = '1280x720'
 BASE_SHA256 = '7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47'
-CURRENT_BASE_SHA256 = '99d92ec7c8f81debf60321dcc5c1b5872c96e3c485fa2bdd7d9332287b3c7e87'
+CURRENT_BASE_SHA256 = '0edef38dac3c5036c6012adde248bc57736273cc1bbcbb9fd05e5867a1946ca0'
 # Preserve this recipe's published predecessor and output after the separate
 # battle-input repair. These are exact current-to-frozen bytes, not a general
 # downgrade path. Both complete image identities are required around the edits.
@@ -33,10 +33,10 @@ PREDECESSOR_RESTORATIONS = (
         bytes.fromhex('e9ea251000' + '90' * 33), bytes.fromhex('e9aa8b0800' + '90' * 33),
         'restore frozen metadata-based cursor bounds hook'),
     pe.ByteEdit(0x12E200, 0x163400, 0x563400,
-        bytes.fromhex('813dd8995100b0e84200750f68d0020000b900050000e9c365f8ffe9a065f8ff'), bytes(32),
+        bytes.fromhex('813dd8995100b0e842007415813dd8995100a01746007518833d4820530000740f68d0020000b900050000e9ae65f8ffe98b65f8ff'), bytes(53),
         'restore zero padding occupied by the new cursor bounds helper'),
     pe.ByteEdit(0x12E300, 0x163500, 0x563500,
-        bytes.fromhex('813dd8995100b0e84200752ba1a85154000faf42200142248b7220a1ac5154000fafc68b7a28c7422c0000000001c7897a28e950d5efffe9d462f8ff'), bytes(60),
+        bytes.fromhex('813dd8995100b0e842007415813dd8995100a01746007534833d4820530000742ba1a85154000faf42200142248b7220a1ac5154000fafc68b7a28c7422c0000000001c7897a28e93bd5efffe9bf62f8ff'), bytes(81),
         'restore zero padding occupied by the new relative-input helper'),
 )
 # The four battle files have independently checked CRLF checkout and LF Git
@@ -47,8 +47,8 @@ PINNED = {
         'e77dd58d5348824abe626c450aae1f9277d8649eadf98115b84b6b83be12aa98',
     ),
     'src/patcher/battle_hd_core.py': (
-        'fdc5c65197a4a94184380671638ffe448d3ba3c004dac236f10d7388e3079a72',
-        '745c678ae47cb61deae02152d4e2b646dc03932804fd1c0775b192534b5bed0c',
+        '879eddee26f59d24c04e217fff7919edf67ab04363abb170b244dda570184bf7',
+        'b1022821912213596bb88bd8833f17bcc73105f799113746e4089b0fd9c85d6a',
     ),
     'src/patcher/battle_hd_layout.py': (
         '015e4832ae653dba789873b5b14e0768c9cb2b6c42d2d47425f53ae7de795f04',
@@ -170,7 +170,7 @@ def _restore_frozen_predecessor(current):
 def _frozen_patch_records(original, base, profile):
     # Preserve the published ordering and truthful original-to-predecessor
     # records, including the restored appended payload. The general patcher
-    # continues to admit only its current complete 99d92ec7 installation.
+    # continues to admit only its current complete 0edef38d installation.
     inherited = scalar.select_patches_for(scalar.DEFAULT_STAGE + '-castlecenter-all', profile)
     battle = scalar.battle_hd_patches()
     replaced = {('battle-hd-input', 0x05FE61), ('battle-hd-input', 0x060211)}
