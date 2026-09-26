@@ -103,9 +103,14 @@ for both profiles at the six existing resolutions, with independent gate and
 actual debugger-verifier fixtures. Runtime and launcher acceptance remain separate.
 The [measured ordinary-input planner](ORDINARY_MAP_INPUT_PLAN.md) prepares
 selection and a bounded one-cell move from authenticated paused observations.
-Its 25 pure fixtures pass; the paused reader, click-boundary binding and runtime
-driver integration remain pending. Timed clicks or cursor convergence alone do
-not establish the requested army selection or movement.
+Its 25 pure fixtures pass. The [paused observation components](ORDINARY_MAP_OBSERVATION.md)
+add a strict decoder (32 portable fixtures), an opt-in owned host/client lease
+and a session adapter. The [current synthetic x86 report](../../reports/ordinary-map-pause-engine-20260926-c.json)
+passes both pause/resume and expiry cases with matching source hashes. The first
+failed and initial passing attempts remain preserved. These counter-loop tests
+establish no game-input success and produced no screenshots. Click-boundary
+binding and runtime driver integration remain pending. Timed clicks or cursor
+convergence alone do not establish the requested army selection or movement.
 The [small-world input review](SMALL_WORLD_INPUT.md) identifies the existing
 bounded component and its new complete-wrapper CPU checks; composition into the
 Complete HD/modalwidgets candidate remains required.
