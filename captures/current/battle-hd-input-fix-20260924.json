@@ -1,0 +1,353 @@
+{
+  "schema": 1,
+  "generated_at": "2026-09-24T07:00:01.282111+00:00",
+  "status": "source_and_hidden_diagnostics_verified_visible_input_acceptance_pending",
+  "passed": false,
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
+  "resolution": [
+    1280,
+    720
+  ],
+  "stable_stage_should_change": false,
+  "promotion_status": "validation_stage_only",
+  "candidate": {
+    "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\clash95_battlehd_input_fixed.exe",
+    "sha256": "99D92EC7C8F81DEBF60321DCC5C1B5872C96E3C485FA2BDD7D9332287B3C7E87",
+    "bytes": 1297920
+  },
+  "source_executable": {
+    "path": "C:\\Clash\\clash95.exe",
+    "sha256": "500055D77D03D514E8D3168506BD10F67CD8569BCC450604FF8192F46CDAF3AE",
+    "bytes": 1232384
+  },
+  "build_receipt": {
+    "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\build.json",
+    "sha256": "511F9CECE16E2DCC80FA4F4EAD491B8C9065040C836325F2B5C3ABD00F0E5EB5",
+    "bytes": 2220
+  },
+  "patch_report": {
+    "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\patch-stage.json",
+    "sha256": "B6C1A58DCEBBF34735EB1BDC38CCE55A8153D099F602B8DA619D1A48DC44EF7C",
+    "bytes": 529316
+  },
+  "patch_integrity": {
+    "patch_count": 283,
+    "status_counts": {
+      "patched": 283
+    },
+    "repeated_build_identical": true,
+    "fresh_report_reproduction_matches_candidate": true,
+    "original_unchanged": true,
+    "core_records": 34,
+    "core_payload_bytes": 5436,
+    "guarded_source_hooks": [
+      {
+        "group": "battle-hd-input",
+        "file_offset": "0005FE61",
+        "va": "00460A61",
+        "rva": "00060A61",
+        "old_hex": "a1a85154000faf42200142248b7220a1ac5154000fafc68b7a28c7422c0000000001c7897a28",
+        "new_hex": "e99a2a1000909090909090909090909090909090909090909090909090909090909090909090",
+        "note": "VA 00460A61, RVA 060A61: integrate native relative DirectInput deltas with original sensitivity and fixed-point accumulation under battle owner 0042E8B0; retain inherited dynamic-origin mouse behavior for other owners; rejoin native buttons/clamp at 00460A87"
+      },
+      {
+        "group": "battle-hd-input",
+        "file_offset": "00060211",
+        "va": "00460E11",
+        "rva": "00060E11",
+        "old_hex": "68e0010000c7402000000000b9800200008b463c31db31d2c7401c0000000089f0e8e9fcffff",
+        "new_hex": "e9ea251000909090909090909090909090909090909090909090909090909090909090909090",
+        "note": "VA 00460E11, RVA 060E11: keep 1280x720 sprite-aware cursor bounds for every tactical cursor under battle owner 0042E8B0; otherwise retain inherited metadata-based viewport switch"
+      }
+    ],
+    "appended_helpers": [
+      {
+        "name": "battle_cursor_viewport",
+        "va": "00563400",
+        "rva": "00163400",
+        "file_offset": "0012E200",
+        "bytes": 32,
+        "new_hex": "813dd8995100b0e84200750f68d0020000b900050000e9c365f8ffe9a065f8ff",
+        "guard": "Part of strict original-SHA/length/PE-header-guarded .btlhd EOF append; not an unchecked source cave."
+      },
+      {
+        "name": "battle_relative_mouse",
+        "va": "00563500",
+        "rva": "00163500",
+        "file_offset": "0012E300",
+        "bytes": 60,
+        "new_hex": "813dd8995100b0e84200752ba1a85154000faf42200142248b7220a1ac5154000fafc68b7a28c7422c0000000001c7897a28e950d5efffe9d462f8ff",
+        "guard": "Part of strict original-SHA/length/PE-header-guarded .btlhd EOF append; not an unchecked source cave."
+      }
+    ],
+    "unchanged_nonbattle_caves": [
+      {
+        "va": "004E9810",
+        "file_offset": "000E8C10",
+        "bytes": 90
+      },
+      {
+        "va": "004E99C0",
+        "file_offset": "000E8DC0",
+        "bytes": 64
+      }
+    ]
+  },
+  "source_snapshot": {
+    "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\source-snapshot\\manifest.json",
+    "sha256": "9EAB2F38E57FFFDDD8000648A625B4441630AB7A21A114681D7CE5355BDDAF55",
+    "bytes": 6847
+  },
+  "evidence_index": {
+    "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\evidence-index.json",
+    "sha256": "D741AB02D469EF18C9D7E5FA50A121B70695C6C1F50EB9BFCABD9C3F1D1A1AD8",
+    "bytes": 5735
+  },
+  "focused_checks": {
+    "artifact": {
+      "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\focused-checks.json",
+      "sha256": "ACA8618E0EF706EA10D460E4DC27ECFCB5572A298D03ABD214B347BE8C032C3B",
+      "bytes": 3306
+    },
+    "runtime_policy": "Python fixtures and Unicorn x86 emulation only; no game, debugger or Windows UI launched",
+    "scenarios": {
+      "battle_hd_relative_input": 629,
+      "battle_hd_cursor_bounds": 675,
+      "battle_hd_core": 835
+    },
+    "checks": {
+      "battle_hd_relative_input": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+          "-B",
+          "C:\\ClashTests\\battle-hd-input-fix-20260924\\source-snapshot\\tools\\test_battle_hd_relative_input.py",
+          "--source-exe",
+          "C:\\Clash\\clash95.exe",
+          "--toolchain-path",
+          "C:\\ClashTests\\battle-hd-tools\\python",
+          "--require-machine-tools"
+        ],
+        "log": {
+          "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\focused-checks\\battle_hd_relative_input.log",
+          "sha256": "3A01E449F483A163FB33A6CF97D5D07E789AE1E147CA85AFDB77E7E9FA40F3B6",
+          "bytes": 85
+        },
+        "test_source": {
+          "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\source-snapshot\\tools\\test_battle_hd_relative_input.py",
+          "sha256": "5217DC04C67CA187E0C1A1B38F4E343992BC996DCCD0B7EAC11CB053A92849FE",
+          "bytes": 10625
+        }
+      },
+      "battle_hd_cursor_bounds": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+          "-B",
+          "C:\\ClashTests\\battle-hd-input-fix-20260924\\source-snapshot\\tools\\test_battle_hd_cursor_bounds.py",
+          "--source-exe",
+          "C:\\Clash\\clash95.exe",
+          "--toolchain-path",
+          "C:\\ClashTests\\battle-hd-tools\\python",
+          "--require-machine-tools"
+        ],
+        "log": {
+          "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\focused-checks\\battle_hd_cursor_bounds.log",
+          "sha256": "D77F10072890ED4380FF21A0B5980F07F3CBE6464DAA4D503A9CB8623169359F",
+          "bytes": 84
+        },
+        "test_source": {
+          "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\source-snapshot\\tools\\test_battle_hd_cursor_bounds.py",
+          "sha256": "3AFB7B24A91D55CF54075D79901FDF69E20A45D8443EAA937EC8C7B8F1EE95E4",
+          "bytes": 11794
+        }
+      },
+      "battle_hd_core": {
+        "passed": true,
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\andrz\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+          "-B",
+          "C:\\ClashTests\\battle-hd-input-fix-20260924\\source-snapshot\\tools\\test_battle_hd_core.py",
+          "--source-exe",
+          "C:\\Clash\\clash95.exe",
+          "--toolchain-path",
+          "C:\\ClashTests\\battle-hd-tools\\python",
+          "--require-machine-tools"
+        ],
+        "log": {
+          "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\focused-checks\\battle_hd_core.log",
+          "sha256": "F26C15857E3BCE0D2CE80AE6D3D51822ED65ED22D01ED56138037B4618631DD9",
+          "bytes": 74
+        },
+        "test_source": {
+          "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\source-snapshot\\tools\\test_battle_hd_core.py",
+          "sha256": "46E8B8E077A215D7B16970720A4FFEF5C04574D2FD41F6BEA70BA2814DA25A88",
+          "bytes": 28547
+        }
+      }
+    }
+  },
+  "runs": {
+    "helper": {
+      "manifest": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\helper-captures\\cdb-surface-dump-20260924-085204\\battle-hd-run.json",
+        "sha256": "12B14FE5AE5C24A00F6E25C35CCA0366EBF0046FB54069D5934151D99BAC4510",
+        "bytes": 5074
+      },
+      "report": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\helper-captures\\cdb-surface-dump-20260924-085204\\battle-hd-report.json",
+        "sha256": "1955C281396B84A422A5DFEE002BEE182D6B954CC6501FC64AB9FB10AEB9DB5C",
+        "bytes": 20674
+      },
+      "harness_summary": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\helper-captures\\cdb-surface-dump-20260924-085204\\summary.json",
+        "sha256": "F1B726D3EB795F4A39C47C19F274BFE4BD9ACECD0328586680EDD2B6AE471B0C",
+        "bytes": 10211
+      },
+      "log": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\helper-captures\\cdb-surface-dump-20260924-085204\\cdb-surface-dump.log",
+        "sha256": "F7CB6A5FADF5529E4B2BDB28CEBCABE1FE893FD8B2241D73F72D007A71789864",
+        "bytes": 51967
+      },
+      "generated_probe": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\helper-captures\\cdb-surface-dump-20260924-085204\\clash95_surface_dump_probe.generated.cdb",
+        "sha256": "E7818F4F6EDC6584DBECA39053E5B66A9A4B1C4E6BD8E6D468359F3F74B39AB1",
+        "bytes": 19708
+      },
+      "software_surface_raw": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\helper-captures\\cdb-surface-dump-20260924-085204\\surface.raw",
+        "sha256": "164AC9B3FA99F8EEF9E89AEA3778809C641FE709CA0D5B38BCCCA30E50DB5D57",
+        "bytes": 921600
+      },
+      "software_surface_png": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\helper-captures\\cdb-surface-dump-20260924-085204\\surface.png",
+        "sha256": "180A815179A34C8CFEB25A4D00BC625E41B20BF806F22A224B7EFF0F24D8DFFA",
+        "bytes": 214092
+      },
+      "wrapper_sha256": "F03EC244634964D993C729D1215EE1ADC19F54AFF4A3DC3E2B1C6CFD4CD28623",
+      "candidate_sha256": "99D92EC7C8F81DEBF60321DCC5C1B5872C96E3C485FA2BDD7D9332287B3C7E87",
+      "diagnostics": {
+        "passed": 7,
+        "total": 7,
+        "failed": []
+      },
+      "identity_passed": true,
+      "runtime_interval_passed": true,
+      "cleanup_passed": true,
+      "acceptance_passed": false
+    },
+    "lifecycle": {
+      "manifest": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\lifecycle-captures\\cdb-surface-dump-20260924-085326\\battle-hd-run.json",
+        "sha256": "FECB2009668BFA4F0B3AB234870F86CE5E40893DA5D988A147EBAD32A71A42C1",
+        "bytes": 5531
+      },
+      "report": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\lifecycle-captures\\cdb-surface-dump-20260924-085326\\battle-hd-report.json",
+        "sha256": "ED6E1B673E4EAF53566C013782A28EEEDCFF5CBFF1CB813013617D19C29EED3A",
+        "bytes": 25276
+      },
+      "harness_summary": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\lifecycle-captures\\cdb-surface-dump-20260924-085326\\summary.json",
+        "sha256": "3325DB02FFF79DAFDDB16F72C65F260A6D8344FA02FBE4BE52D80BF1BAE022DE",
+        "bytes": 10261
+      },
+      "log": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\lifecycle-captures\\cdb-surface-dump-20260924-085326\\cdb-surface-dump.log",
+        "sha256": "29CAAE4ED6FA8A2AA57BF9E49ED9E46267A6AC39DB82808B3E16A9EB61B10E95",
+        "bytes": 23178
+      },
+      "generated_probe": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\lifecycle-captures\\cdb-surface-dump-20260924-085326\\clash95_surface_dump_probe.generated.cdb",
+        "sha256": "63CACB737FAD2E0600B6FB0EE60243846246987925E3CA7BD847E92081533943",
+        "bytes": 20470
+      },
+      "software_surface_raw": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\lifecycle-captures\\cdb-surface-dump-20260924-085326\\surface.raw",
+        "sha256": "EDCA490CFA212A419A44F71C8324E4F404CDD91D0F1F426C49D65849EC56C38F",
+        "bytes": 921600
+      },
+      "software_surface_png": {
+        "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\lifecycle-captures\\cdb-surface-dump-20260924-085326\\surface.png",
+        "sha256": "698DD1AA4A33C576DF4C8232B1946175398EE4DC707716566220DF4401B40896",
+        "bytes": 243509
+      },
+      "wrapper_sha256": "A6BC99E6AF37A3712C5217457B9BD1E825BA4E2B6D5997D63C8E488CD2D3C188",
+      "candidate_sha256": "99D92EC7C8F81DEBF60321DCC5C1B5872C96E3C485FA2BDD7D9332287B3C7E87",
+      "diagnostics": {
+        "passed": 11,
+        "total": 14,
+        "failed": [
+          "banner_cursor_return",
+          "modal_cursor_return",
+          "results_cursor_return"
+        ]
+      },
+      "identity_passed": true,
+      "runtime_interval_passed": true,
+      "cleanup_passed": true,
+      "acceptance_passed": false
+    }
+  },
+  "helper_surface_comparison": {
+    "identical_raw_bytes": true,
+    "current": {
+      "path": "C:\\ClashTests\\battle-hd-input-fix-20260924\\helper-captures\\cdb-surface-dump-20260924-085204\\surface.raw",
+      "sha256": "164AC9B3FA99F8EEF9E89AEA3778809C641FE709CA0D5B38BCCCA30E50DB5D57",
+      "bytes": 921600
+    },
+    "earlier": {
+      "path": "C:\\ClashTests\\battle-hd-20260919\\helper-captures\\cdb-surface-dump-20260919-115223\\surface.raw",
+      "sha256": "164AC9B3FA99F8EEF9E89AEA3778809C641FE709CA0D5B38BCCCA30E50DB5D57",
+      "bytes": 921600
+    },
+    "scope": "Forced software-surface regression only; matching bytes do not prove live input or wrapper composition."
+  },
+  "lifecycle_cursor_observations": {
+    "queued": [
+      576,
+      360
+    ],
+    "banner_return": [
+      4,
+      324
+    ],
+    "modal_return": [
+      601,
+      1
+    ],
+    "results_return": [
+      576,
+      385
+    ],
+    "strict_failed_checks": [
+      "banner_cursor_return",
+      "modal_cursor_return",
+      "results_cursor_return"
+    ],
+    "device_read_hresult_observed": false,
+    "interpretation": "Exact return checks fail. This probe bypasses acquisition and does not record GetDeviceState HRESULTs; no device-error diagnosis is inferred."
+  },
+  "observations": [
+    {
+      "observation": "Owner-matched battle cursor switches retain HD sprite-aware input bounds; native relative integration replaces the inherited absolute conversion only during battle ownership. Evidence: machine fixtures and exact guarded instructions."
+    },
+    {
+      "observation": "Strict parser identity and bounded runtime interval pass for both fresh hidden runs; cleanup completed with no owned processes remaining."
+    },
+    {
+      "observation": "Helper diagnostics pass 7/7. Lifecycle diagnostics pass 11/14; broad acceptance remains false for both."
+    }
+  ],
+  "limitations": [
+    "No visible launch, input automation, manual acceptance, capture approval or stable promotion is granted by this report.",
+    "The fresh hidden runs use a 16x7 arena and extensive recorded debugger interventions; no natural 17-column scrolling or tactical movement/attack outcome is established.",
+    "Recenter requests are followed by input polling. The hidden lifecycle returned three positions that differ from the queued center; failed checks are retained without changing the parser.",
+    "Same-metadata cursor selection retains the native early return; changing renderer ownership alone does not recalculate bounds until metadata changes.",
+    "The newer candidate requires separate successful visible input and composition evidence; historical 7D04 candidate observations cannot serve as acceptance for this SHA.",
+    "The aggregate repo-only refresh is recorded separately by the coordinating task."
+  ]
+}

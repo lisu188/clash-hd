@@ -16,6 +16,26 @@
 > at a startup worker breakpoint before battle readiness. Its new isolated
 > controller, source repair and [failed evidence](../captures/current/battle-hd-visible-attempt-20260919.md)
 > are separate from the centered baseline. No new visual or input pass is claimed.
+>
+> **September 24 reruns:** the [new expanded-stage report](../captures/current/battle-hd-visible-rerun-20260924.md)
+> records a visible 16x7 battle, six live descriptors, successful native reads,
+> banner dismissal and three identical final logical-resolution captures with
+> advisory clean tear checks. Relative pointer motion exposes an input-mapping
+> defect. Expanded tactical command/movement/attack, map return, manual input
+> and overall acceptance remain unproven; this does not alter the centered proof.
+>
+> **September 24 input repair:** [candidate 99D92E](../captures/current/battle-hd-input-fix-20260924.md)
+> restores native relative motion and tactical cursor bounds. Byte and x86
+> fixtures pass; hidden helpers pass 7/7 and lifecycle checks remain 11/14.
+> The user kept visible validation pending and requested headless operation
+> by default. These controlled checks do not establish manual input or promotion.
+>
+> **September 26 checkpoint:** [candidate 0EDEF38D](battle_hd_merge_checkpoint_20260926.md)
+> extends the input repair through the native default-renderer battle overlays.
+> The completed hidden probe observes the corrected path, while failed device
+> reads and cursor-return checks remain recorded. The aggregate refresh was
+> interrupted without a fresh final result. Visible/manual acceptance and
+> stable promotion remain pending when the source changes are merged.
 
 Generated: 2026-05-15
 

@@ -115,6 +115,22 @@ forced hidden diagnostics, failed hidden cursor polling, and pending visible/inp
 acceptance are recorded in
 [`battle_hd_1280_validation.md`](../../reports/battle_hd_1280_validation.md)
 and [`battle-hd-validation-current.md`](../../captures/current/battle-hd-validation-current.md).
+The [September 24 input repair](../../captures/current/battle-hd-input-fix-20260924.md)
+builds candidate `99D92EC7…B3C7E87`, with 7/7 hidden helper checks and 11/14
+forced lifecycle checks. Native relative-input and sprite-aware bounds fixtures
+pass; three hidden cursor-return checks remain failed. The user chose to keep
+fresh visible validation pending and requested headless operation by default.
+Use hidden captures for progress; see the current rule in `AGENTS.md`.
+The [September 26 merge checkpoint](../../reports/battle_hd_merge_checkpoint_20260926.md)
+records the subsequent `0EDEF38D…1946CA0` overlay correction. Native relative
+input and cursor bounds now include the default-renderer interval while the
+battle object is live. Its completed hidden run observes the corrected banner
+path, but all three device reads fail and cursor centering remains unproven.
+The [separate headless follow-up](../../captures/current/battle-hd-headless-followup-20260924.md)
+preserves the earlier `99D92` camera and cursor diagnostics. The interrupted
+aggregate refresh produced no fresh final result. Visible validation, manual
+input and stable promotion remain pending; the worktree removal does not
+change those evidence boundaries.
 The [September 19 follow-up](../../captures/current/battle-hd-followup-20260919.md)
 observes the forced present body/return (7/7 helper checks) and classifies failed
 hidden device reads. Lifecycle remains 12/14; visible cursor/input acceptance is
@@ -124,6 +140,15 @@ ended at its deadline before battle readiness, after a worker-thread debugger
 breakpoint and failed native mouse acquisition. Owned cleanup passed. The new
 isolated controller and probe repair do not establish a visible/input pass;
 no live screenshot or click was retained from the interrupted session.
+The [September 24 visible reruns](../../captures/current/battle-hd-visible-rerun-20260924.md)
+retain that failure and add a displayed 16x7 battle, six live descriptors,
+successful native mouse/keyboard acquisition, a dismissed banner and eight
+logical-resolution JPEG captures. The final three have identical pixels and
+advisory clean tear checks. Subsequent relative motion exposes the tested
+candidate's cursor-mapping defect; tactical commands, movement, map return,
+manual input and full acceptance remain unproven. Owned cleanup passed for
+both reruns. Their exact 7D04 candidate and frozen sources are kept separate
+from any corrective source or candidate work.
 The [separate edge-controls successor](BATTLE_HD_EDGE_CONTROLS.md), prepared on
 2026-09-24, anchors native top statistics and bottom commands to the screen edges
 while keeping the expanded field and combat unchanged. Fifteen source and original-backed

@@ -1,0 +1,790 @@
+{
+  "schema": 1,
+  "date": "2026-09-24",
+  "historical_hash_basis": "Raw pre-edit Windows checkout bytes. Historical report files were not edited; their existing Git line-ending conversion may make checkout hashes differ from Git blob hashes.",
+  "baseline_commit": "1aa390d71168c81b544a076d39e86be36963d229",
+  "purpose": "Refresh current producer bindings after the battle-only mouse-update and cursor-switch dispatcher override",
+  "patcher": {
+    "path": "src/patcher/patch_clash95_hd.py",
+    "old_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+    "new_sha256": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+    "semantic_change": "Seven added lines filter exactly the two inherited input hook records only for the isolated1280x720 battleHD stage; frozen legacy table and other stage selection remain unchanged"
+  },
+  "records": [
+    {
+      "path": "src/patcher/classic_menu_candidate.py",
+      "old_sha256": "331988d756d83adcaf4436cd2cd0feaa1fc97249913c30caddd0142854c157fd",
+      "new_sha256": "0f32f76ab321cf4793020064a7491fb0e7b8a9c4a1ed0f9c73a81e34f6538473",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+          "new_sha256": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_recipe.py",
+      "old_sha256": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a",
+      "new_sha256": "559b571ce1dd83421f79a58e110cd5b6317807cd68087d7ea77f14c4f4a071b4",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+          "new_sha256": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/native_present_bounds.py",
+      "old_sha256": "b0a4c449856b9dd02b92fb120a7bed449f008e0df67497e4828158278c5dc383",
+      "new_sha256": "dd9e2802c5a705512f741c6f3afe9ddcf217fed4f1c2ed228ffbf680a142061d",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+          "new_sha256": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+          "occurrences": 1
+        },
+        {
+          "dependency": "src/patcher/classic_menu_candidate.py",
+          "old_sha256": "331988d756d83adcaf4436cd2cd0feaa1fc97249913c30caddd0142854c157fd",
+          "new_sha256": "0f32f76ab321cf4793020064a7491fb0e7b8a9c4a1ed0f9c73a81e34f6538473",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/build_framed_candidate.py",
+          "old_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
+          "new_sha256": "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/pe_modal_extension.py",
+      "old_sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9",
+      "new_sha256": "26dca892c289760924031dc9a752de1eecd7ecdeb6ac18f2a6949c1a3b6f233f",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+          "new_sha256": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/build_framed_candidate.py",
+          "old_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
+          "new_sha256": "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/build_partial_tile_candidate.py",
+          "old_sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501",
+          "new_sha256": "363eaabfca63e435448355c406e6390e05b4151ffb928114221032c30b2cd255",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/army_probe_startup.py",
+      "old_sha256": "1998a2925279457e0e5447e79818d7960ec096cae6e256dcd58639505f41eb0f",
+      "new_sha256": "d65dd1460878bdfde853f5a41aa39570f050864dd79a67ed2f7fe202078fbe9a",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+          "new_sha256": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+          "occurrences": 1
+        },
+        {
+          "dependency": "src/patcher/framed_recipe.py",
+          "old_sha256": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a",
+          "new_sha256": "559b571ce1dd83421f79a58e110cd5b6317807cd68087d7ea77f14c4f4a071b4",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/build_framed_candidate.py",
+      "old_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
+      "new_sha256": "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+          "new_sha256": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+          "occurrences": 1
+        },
+        {
+          "dependency": "src/patcher/framed_recipe.py",
+          "old_sha256": "aaf7f0ec724f89e0e48add0f5a608b4e4b7fae90b79be1dcd30effd91174001a",
+          "new_sha256": "559b571ce1dd83421f79a58e110cd5b6317807cd68087d7ea77f14c4f4a071b4",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/build_partial_tile_candidate.py",
+          "old_sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501",
+          "new_sha256": "363eaabfca63e435448355c406e6390e05b4151ffb928114221032c30b2cd255",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/build_framed_modal_candidate.py",
+      "old_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
+      "new_sha256": "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/pe_modal_extension.py",
+          "old_sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9",
+          "new_sha256": "26dca892c289760924031dc9a752de1eecd7ecdeb6ac18f2a6949c1a3b6f233f",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/build_partial_tile_candidate.py",
+      "old_sha256": "576588eb3fe9f8a842fa84b3accc6c0aa1bff23d6e58fe3ad3ef6bfe7406d501",
+      "new_sha256": "363eaabfca63e435448355c406e6390e05b4151ffb928114221032c30b2cd255",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/patch_clash95_hd.py",
+          "old_sha256": "05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31",
+          "new_sha256": "38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_modal_canvas_probe.py",
+      "old_sha256": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d",
+      "new_sha256": "caadb02a6b15c21701dee9ca31ab54bc83432f233164e4f0bd25324b482f88b6",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
+          "new_sha256": "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_modal_primary_capture.py",
+      "old_sha256": "ca11df2774f3c1574fe7ea44af507a8e43a84f63b2cacc59e7a9a7bcacdb6655",
+      "new_sha256": "855779f06cc735f9fd59ff866f97cff577c158b5254f96b332f8ab5c7d8edf3f",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_modal_canvas_probe.py",
+          "old_sha256": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d",
+          "new_sha256": "caadb02a6b15c21701dee9ca31ab54bc83432f233164e4f0bd25324b482f88b6",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/launcher/framed.py",
+      "old_sha256": "3be4d3e3ebf2260175e3dace52d2924c0fd205ff3f225d2695428fdde39dd1bc",
+      "new_sha256": "8f9c43736138b741099698b833241befe2fb9c7a500b656482c6823c89d67c7d",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_candidate.py",
+          "old_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
+          "new_sha256": "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_army_draw.py",
+      "old_sha256": "2a7877f791c52829cd99bca24089d9be02be1f25c9c95c3b27e4d5360fb64a34",
+      "new_sha256": "6b936157da3aa652a74887b9470318a0df745c7694bda4d7ee79004a23a191e9",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
+          "new_sha256": "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_army_input.py",
+      "old_sha256": "3fad316f6511e375a8799694fe487b9eaca5500d6262101100e8e9e9e1868ab4",
+      "new_sha256": "01a3dcc5bb584d53efd809c8fbe2303807b2bdf0e22d095bc3c3155e6c651efb",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
+          "new_sha256": "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_battle_coordinates.py",
+      "old_sha256": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c",
+      "new_sha256": "b67900d7399e0ce807d88a261c97942598beebfc28e2d78774cd109098f95142",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
+          "new_sha256": "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_battle_field.py",
+      "old_sha256": "6f6ad945fea5ac630b58ca4448d604841fa211dfc5fe4cacfec37e5b1447828f",
+      "new_sha256": "f690865e615db65d02e8c59b5c43e0cfbaa1e371dd6502441d16e0d270a7196d",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_battle_coordinates.py",
+          "old_sha256": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c",
+          "new_sha256": "b67900d7399e0ce807d88a261c97942598beebfc28e2d78774cd109098f95142",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/build_framed_army_candidate.py",
+          "old_sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
+          "new_sha256": "ec5989d86d8252c43b7a73c8b2bfd612e5050434adcbeecf58dbe47bf96d1114",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_battle_hud.py",
+      "old_sha256": "231d3022b2583d965cbdee0e199ff8c16750ef40426464bc6813f2524f655f7a",
+      "new_sha256": "3a6cb61a2ec2fcd0fa9c52c09a96e11a9a2d9f75cac6e3a2e826d5caa98a3ee3",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_battle_field.py",
+          "old_sha256": "6f6ad945fea5ac630b58ca4448d604841fa211dfc5fe4cacfec37e5b1447828f",
+          "new_sha256": "f690865e615db65d02e8c59b5c43e0cfbaa1e371dd6502441d16e0d270a7196d",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_battle_input.py",
+      "old_sha256": "6f1fb0f3d312c099570936609890eb9c32e0259400a90a972eb4f6426e9c96b1",
+      "new_sha256": "77802ce504b22efbeb3b958b289ee9cd1b55087bd6c19e4df924bfdcdfa83746",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_battle_coordinates.py",
+          "old_sha256": "47c017a412ec12378785c400fa505baed3ae0825a58e5b1fefad00c67de4260c",
+          "new_sha256": "b67900d7399e0ce807d88a261c97942598beebfc28e2d78774cd109098f95142",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/build_framed_army_candidate.py",
+          "old_sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
+          "new_sha256": "ec5989d86d8252c43b7a73c8b2bfd612e5050434adcbeecf58dbe47bf96d1114",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_camera.py",
+      "old_sha256": "c86e20700cd4716ad0905bcc2cb868c0f4fcfad91b984b38bf513b3829b9d798",
+      "new_sha256": "f8caea185f3714a6924a4e4cb40aa049866fc7864afa41a66da1b56a93059ef8",
+      "updated_pins": [
+        {
+          "dependency": "tools/build_framed_candidate.py",
+          "old_sha256": "0e96598f5125ffa1155c35982bbab54a8d4c85068d63d6381fce14c8a4f95e40",
+          "new_sha256": "fbe2f2c571154312329ab23603d8de45fb8ec5fafcdfd10bad4049876dfb14bc",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/pe_army_extension.py",
+      "old_sha256": "26991a58ca0b9cbc548ad6061d79acde864b015c722b208776af2e5d2752a832",
+      "new_sha256": "d82ce5c3fb2b0927c6ab541705eb20c4cc7d7d92c889f253f059321c8ec056fb",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/pe_modal_extension.py",
+          "old_sha256": "92405bf37ab887242982f2748f120aff471006b73a8cb929db39f06d1ca7eee9",
+          "new_sha256": "26dca892c289760924031dc9a752de1eecd7ecdeb6ac18f2a6949c1a3b6f233f",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/build_framed_modal_candidate.py",
+          "old_sha256": "62043a248c53497af5a3b5e131d782d7474e603981cc2ea2e092fe3a38d74f29",
+          "new_sha256": "ec7c933fd9112b556636510f0b762076fc5f8c4c2e86bbc704b70f26cddf98d1",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/build_framed_army_candidate.py",
+      "old_sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
+      "new_sha256": "ec5989d86d8252c43b7a73c8b2bfd612e5050434adcbeecf58dbe47bf96d1114",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_army_draw.py",
+          "old_sha256": "2a7877f791c52829cd99bca24089d9be02be1f25c9c95c3b27e4d5360fb64a34",
+          "new_sha256": "6b936157da3aa652a74887b9470318a0df745c7694bda4d7ee79004a23a191e9",
+          "occurrences": 1
+        },
+        {
+          "dependency": "src/patcher/framed_army_input.py",
+          "old_sha256": "3fad316f6511e375a8799694fe487b9eaca5500d6262101100e8e9e9e1868ab4",
+          "new_sha256": "01a3dcc5bb584d53efd809c8fbe2303807b2bdf0e22d095bc3c3155e6c651efb",
+          "occurrences": 1
+        },
+        {
+          "dependency": "src/patcher/pe_army_extension.py",
+          "old_sha256": "26991a58ca0b9cbc548ad6061d79acde864b015c722b208776af2e5d2752a832",
+          "new_sha256": "d82ce5c3fb2b0927c6ab541705eb20c4cc7d7d92c889f253f059321c8ec056fb",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_army_selection_probe.py",
+      "old_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+      "new_sha256": "53b39c60267fd68a697d47aefac0fdf5acfb1c9906c764c36ea8e0d0ea33b8ef",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_modal_canvas_probe.py",
+          "old_sha256": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d",
+          "new_sha256": "caadb02a6b15c21701dee9ca31ab54bc83432f233164e4f0bd25324b482f88b6",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/build_framed_army_candidate.py",
+          "old_sha256": "4060856f60ab8589f9dbc0ae73df142cf906e4905f3c24aaa6c8292a161bc167",
+          "new_sha256": "ec5989d86d8252c43b7a73c8b2bfd612e5050434adcbeecf58dbe47bf96d1114",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_army_selection_trace.py",
+      "old_sha256": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc",
+      "new_sha256": "d1493a00ab6d31987a81d7d03d37e91debb0776394a4580eacd62c36405cb5b5",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+          "new_sha256": "53b39c60267fd68a697d47aefac0fdf5acfb1c9906c764c36ea8e0d0ea33b8ef",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_army_transition_probe.py",
+      "old_sha256": "5e6807869583bd6850c98c14ae6e539ca93f6b43540773101a720266bcfceed5",
+      "new_sha256": "35a3763c2f01f296af06f7dd2057dfd7170df449b6341a322fd5e7feec91d5b0",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+          "new_sha256": "53b39c60267fd68a697d47aefac0fdf5acfb1c9906c764c36ea8e0d0ea33b8ef",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_army_transition_trace.py",
+      "old_sha256": "b8e35da8ecc84166ccb1504445639370bd1d3b9e98bcb65931b9bfd4dbf9b873",
+      "new_sha256": "675f2a7d5d1d9830222b7cebc5ea2a08b9b414126d79d6d7550271569d9986ad",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_trace.py",
+          "old_sha256": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc",
+          "new_sha256": "d1493a00ab6d31987a81d7d03d37e91debb0776394a4580eacd62c36405cb5b5",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/framed_army_transition_probe.py",
+          "old_sha256": "5e6807869583bd6850c98c14ae6e539ca93f6b43540773101a720266bcfceed5",
+          "new_sha256": "35a3763c2f01f296af06f7dd2057dfd7170df449b6341a322fd5e7feec91d5b0",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_battle_initial_probe.py",
+      "old_sha256": "8a04e4343128c805a91609b2d51bbaa84a521d3d0a5df2307c1def207216473a",
+      "new_sha256": "991791173de45205b92484ca7d92a40c932708699451b8d55218143df909a152",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_modal_canvas_probe.py",
+          "old_sha256": "57c183d21ec5a696e715b8b3fca39ede14e107bc75102cc9553346053da47b3d",
+          "new_sha256": "caadb02a6b15c21701dee9ca31ab54bc83432f233164e4f0bd25324b482f88b6",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/python_runtime_safety_guard.py",
+      "old_sha256": "3840bda70d6908d6e6afe88efe56aad6b33de3513ed31ce20414a42c8f48fabe",
+      "new_sha256": "5601548a52096ea1eea14a40439eae54daf991fdc3ae0d6c3245d04068f42749",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_transition_trace.py",
+          "old_sha256": "b8e35da8ecc84166ccb1504445639370bd1d3b9e98bcb65931b9bfd4dbf9b873",
+          "new_sha256": "675f2a7d5d1d9830222b7cebc5ea2a08b9b414126d79d6d7550271569d9986ad",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/framed_army_portrait_trace.py",
+          "old_sha256": "8538a49b5fedea4e28f9dc287cdc122522535a2895a12f1ff8862e97f8387ba1",
+          "new_sha256": "71f4a7721beb2180c7f4efb8dd443b5ba54c5f4ddb9105867e4472e12b4323ed",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/complete_hd_army_movement_trace.py",
+          "old_sha256": "e713338d3e4fb46c3c35578865c826b7be64147ee603b909bd58977c4c014d33",
+          "new_sha256": "e06baf061390b18f175d61ef6e6412d7c3f60d766425a309e34bd48811cc4f6e",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_bounded_paint.py",
+      "old_sha256": "4fcadd0130058d0f6d0f542ff4579a96c72e5030b5d5784e53563271dbf822ff",
+      "new_sha256": "981d946007b0438051dba033dce9e8e442cb7863ee49c547fbaad1e35d66cf1f",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_camera.py",
+          "old_sha256": "c86e20700cd4716ad0905bcc2cb868c0f4fcfad91b984b38bf513b3829b9d798",
+          "new_sha256": "f8caea185f3714a6924a4e4cb40aa049866fc7864afa41a66da1b56a93059ef8",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/complete_hd_army_selection_probe.py",
+      "old_sha256": "4d603dd001f420ee6f032041ccc4d563eff8a56e86e6ad2d1c89c97bda2fe7f6",
+      "new_sha256": "6cd1bb175417cbf660b0bc6a48844bd841002e7c143ef2343c9cf5a75df12d6e",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+          "new_sha256": "53b39c60267fd68a697d47aefac0fdf5acfb1c9906c764c36ea8e0d0ea33b8ef",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/complete_hd_army_selection_trace.py",
+      "old_sha256": "bd00dd162ba0a085b18c1bfbe0a9b3c67117657a62fcec01fdd77ba2ad395528",
+      "new_sha256": "80ef8cd6cdbaa6d783080f5eddc5626aff0f3df7ddcb7240bf53c85488c52fa0",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_trace.py",
+          "old_sha256": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc",
+          "new_sha256": "d1493a00ab6d31987a81d7d03d37e91debb0776394a4580eacd62c36405cb5b5",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_army_keypan_probe.py",
+      "old_sha256": "9e5db99a5358a7dea7b0adc762e32e94478d0392312d57debfc3af91cec26a2e",
+      "new_sha256": "edd989bef1ec2b82c080cb90c3b2f5b7dd56d90cfc059e437f1e0853df20a1f5",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+          "new_sha256": "53b39c60267fd68a697d47aefac0fdf5acfb1c9906c764c36ea8e0d0ea33b8ef",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_army_movement_probe.py",
+      "old_sha256": "17b779b29ac1ab6730e2a9ef59db1c2aee51f005edd9ad566db5d6ceeaf4a53b",
+      "new_sha256": "8726d68cb2f20a2a432a88159fc010b8d483e6b5d41f82fa839c729c3d758824",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+          "new_sha256": "53b39c60267fd68a697d47aefac0fdf5acfb1c9906c764c36ea8e0d0ea33b8ef",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_army_portrait_probe.py",
+      "old_sha256": "e2978cde61e979154d70949f6e2ba205ccc41241149b3fd847d73c4bb598d5f8",
+      "new_sha256": "113d42b75b4982fe718d0000f812007ee3b3ef87b9d416a8442d9370ec78237e",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_probe.py",
+          "old_sha256": "e5476178b80c29cf35ac2c64f8f89cb29a34596f8b3d1aa971ae456d0bbfc2e8",
+          "new_sha256": "53b39c60267fd68a697d47aefac0fdf5acfb1c9906c764c36ea8e0d0ea33b8ef",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/framed_army_portrait_trace.py",
+      "old_sha256": "8538a49b5fedea4e28f9dc287cdc122522535a2895a12f1ff8862e97f8387ba1",
+      "new_sha256": "71f4a7721beb2180c7f4efb8dd443b5ba54c5f4ddb9105867e4472e12b4323ed",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_selection_trace.py",
+          "old_sha256": "87523a32e3bd108998d03be16c98936549ddfe261c76e30b5ed58b88aa1164cc",
+          "new_sha256": "d1493a00ab6d31987a81d7d03d37e91debb0776394a4580eacd62c36405cb5b5",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/framed_army_portrait_probe.py",
+          "old_sha256": "e2978cde61e979154d70949f6e2ba205ccc41241149b3fd847d73c4bb598d5f8",
+          "new_sha256": "113d42b75b4982fe718d0000f812007ee3b3ef87b9d416a8442d9370ec78237e",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "src/patcher/framed_bounded_input.py",
+      "old_sha256": "1af36a7e18204ee0e12edfc8d01a1d126d6b63e8b7891ba72d8edd59d544f7cf",
+      "new_sha256": "8117232bb875b1a0f9fb179b7a77ec7325e633ce283574b7f9b8cc3d37589258",
+      "updated_pins": [
+        {
+          "dependency": "src/patcher/framed_bounded_paint.py",
+          "old_sha256": "4fcadd0130058d0f6d0f542ff4579a96c72e5030b5d5784e53563271dbf822ff",
+          "new_sha256": "981d946007b0438051dba033dce9e8e442cb7863ee49c547fbaad1e35d66cf1f",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/complete_hd_army_movement_probe.py",
+      "old_sha256": "572816600873f754dcfe1207a19229e04c39986011ae98ac1d1630ecb2a22de5",
+      "new_sha256": "6e4a01e1a6272cdb4235f98df2115b297ada5b5d162aa12c222cc63e9d372d4d",
+      "updated_pins": [
+        {
+          "dependency": "tools/framed_army_movement_probe.py",
+          "old_sha256": "17b779b29ac1ab6730e2a9ef59db1c2aee51f005edd9ad566db5d6ceeaf4a53b",
+          "new_sha256": "8726d68cb2f20a2a432a88159fc010b8d483e6b5d41f82fa839c729c3d758824",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    },
+    {
+      "path": "tools/complete_hd_army_movement_trace.py",
+      "old_sha256": "e713338d3e4fb46c3c35578865c826b7be64147ee603b909bd58977c4c014d33",
+      "new_sha256": "e06baf061390b18f175d61ef6e6412d7c3f60d766425a309e34bd48811cc4f6e",
+      "updated_pins": [
+        {
+          "dependency": "tools/complete_hd_army_selection_trace.py",
+          "old_sha256": "bd00dd162ba0a085b18c1bfbe0a9b3c67117657a62fcec01fdd77ba2ad395528",
+          "new_sha256": "80ef8cd6cdbaa6d783080f5eddc5626aff0f3df7ddcb7240bf53c85488c52fa0",
+          "occurrences": 1
+        },
+        {
+          "dependency": "tools/complete_hd_army_movement_probe.py",
+          "old_sha256": "572816600873f754dcfe1207a19229e04c39986011ae98ac1d1630ecb2a22de5",
+          "new_sha256": "6e4a01e1a6272cdb4235f98df2115b297ada5b5d162aa12c222cc63e9d372d4d",
+          "occurrences": 1
+        }
+      ],
+      "change_scope": "Exact dependency SHA literals only; no algorithm, protocol, fixture or guard weakening"
+    }
+  ],
+  "updated_files": 36,
+  "updated_pins": 54,
+  "historical_reports_unchanged": {
+    "reports/battle_hd_source_binding_checkpoint326.json": "87bf80701546a4e1572bca3464fa6cc7bd4fae866a3ee1f83f8dec930025b380",
+    "reports/battle_hd_source_binding_checkpoint326.md": "785e0fb1469f9ee039427001df27af05a763cc1ac696ba92de5de84d36279724",
+    "reports/battle_hd_source_binding_integration.json": "b849626b955a3a975fd70e1404800952d76233f10e16cfcea1c340fa2c341b0c",
+    "reports/battle_hd_source_binding_integration.md": "f91f143dc380709918177a689073cc04c553d305cf7f57de1d3a3449338e1f1d",
+    "reports/battle_hd_source_binding_pr60.json": "718545f89b70375f55afa08145ae9b60cdb85735c70b850b0756ecc8ef197cc4",
+    "reports/battle_hd_source_binding_pr60.md": "670bd933d48283b30764d840f241841eee5c1983aae1a1e64154589e135072f6",
+    "reports/hd-foundation-import-manifest.json": "1dee17d4db741614effe98d50dda40b113fc9061b2cea20c6b9989ff319df6dd"
+  },
+  "guard_policy": "Update only dependency hashes that matched actual pre-change current producers; keep independently stale source pins and historical runtime manifests unchanged",
+  "verification_status": "Current dependency closure and fresh Windows Git checkout verified; five independently stale historical framed-army source preflights remain failing",
+  "tests": [
+    {
+      "command": "python -B tools/test_framed_recipe.py",
+      "passed": true,
+      "tests": 11
+    },
+    {
+      "command": "python -B tools/test_python_runtime_safety_guard.py",
+      "passed": true
+    },
+    {
+      "command": "python -B tools/test_battle_hd_cursor_bounds.py --source-exe C:/Clash/clash95.exe --toolchain-path C:/ClashTests/battle-hd-tools/python --require-machine-tools",
+      "passed": true,
+      "native_x86_scenarios": 675
+    },
+    {
+      "command": "python -B tools/test_battle_hd_relative_input.py --source-exe C:/Clash/clash95.exe --toolchain-path C:/ClashTests/battle-hd-tools/python --require-machine-tools",
+      "passed": true,
+      "native_x86_scenarios": 629
+    }
+  ],
+  "source_preflight": [
+    {
+      "check": "src.patcher.framed_recipe._source_contract",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "src.patcher.classic_menu_candidate.source_status",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "army_probe_startup.verify_sources",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "build_framed_modal_candidate.verify_sources",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "build_framed_army_candidate.verify_sources",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "src.patcher.framed_battle_coordinates.verify_sources",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "src.patcher.framed_battle_field.verify_sources",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "src.patcher.framed_battle_hud.verify_sources",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "src.patcher.framed_battle_input.verify_sources",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "framed_army_selection_probe.verify_sources",
+      "passed": false,
+      "error": "ValueError: reviewed army selection source differs: tools/render_cdb_surface_probe.py"
+    },
+    {
+      "check": "framed_army_transition_probe.verify_sources",
+      "passed": false,
+      "error": "ValueError: reviewed army selection source differs: tools/render_cdb_surface_probe.py"
+    },
+    {
+      "check": "framed_army_keypan_probe.verify_sources",
+      "passed": false,
+      "error": "ValueError: reviewed army selection source differs: tools/render_cdb_surface_probe.py"
+    },
+    {
+      "check": "framed_army_movement_probe.verify_sources",
+      "passed": false,
+      "error": "ValueError: reviewed army selection source differs: tools/render_cdb_surface_probe.py"
+    },
+    {
+      "check": "framed_army_portrait_probe.verify_sources",
+      "passed": false,
+      "error": "ValueError: reviewed army selection source differs: tools/render_cdb_surface_probe.py"
+    },
+    {
+      "check": "complete_hd_army_selection_probe.verify_sources",
+      "passed": true,
+      "error": null
+    },
+    {
+      "check": "complete_hd_army_movement_probe.verify_sources",
+      "passed": true,
+      "error": null
+    }
+  ],
+  "fresh_git_checkout": {
+    "path": "C:\\Users\\andrz\\AppData\\Local\\Temp\\battle-binding-20260924-a6xw2x8f\\fresh-checkout",
+    "method": "Source-only temporary Git index checkout into an empty destination with core.autocrlf=true; no game assets copied",
+    "core_autocrlf": true,
+    "reviewed_source_hashes_verified": 37,
+    "updated_dependency_pins_verified": 54,
+    "source_preflight": {
+      "passed": true,
+      "source_count": 14,
+      "battle_candidate_sha256": "99d92ec7c8f81debf60321dcc5c1b5872c96e3c485fa2bdd7d9332287b3c7e87",
+      "battle_patch_count": 283,
+      "framed_candidate_sha256": "6329940475c49c0db92398ec29264044cea8a0476b48a40529a3c104f37da78f",
+      "runtime_executed": false
+    },
+    "passed": true
+  },
+  "legacy_invariance": {
+    "passed": true,
+    "legacy_table_unchanged": true,
+    "stage_groups_unchanged": true,
+    "default_stage_unchanged": true,
+    "supported_selections_identical": 147,
+    "rejected_selections_identical": 225,
+    "excluded_stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
+    "resolutions": [
+      "800x600",
+      "1024x768",
+      "1280x720",
+      "1280x960",
+      "1920x1080",
+      "802x602"
+    ]
+  },
+  "patcher_raw_byte_preservation": {
+    "passed": true,
+    "old_lines": 3048,
+    "added_lines": 7,
+    "changed_or_deleted_old_lines": 0
+  },
+  "preserved_preexisting_source_mismatch": {
+    "dependency": "tools/render_cdb_surface_probe.py",
+    "expected_sha256": "1cd3103c434a898e0104b519932f1ce30be259888885f251422a8b71d3a9d02f",
+    "actual_sha256": "12685fdfde4972e0f5f9c3d5678fd159fff965bd9ddd7642cb3718c8530296cf",
+    "actual_unchanged_from_baseline": true,
+    "affected_preflight_count": 5,
+    "reason": "Independently stale historical renderer binding; unrelated to this dispatcher change and intentionally not repinned"
+  }
+}

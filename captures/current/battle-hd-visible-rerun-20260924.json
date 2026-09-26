@@ -1,0 +1,670 @@
+{
+  "schema": "clash95_battle_hd_visible_rerun_v1",
+  "reviewed_at": "2026-09-24",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-castlecenter-all-battlehd",
+  "resolution": "1280x720",
+  "outcome": "visible_battle_displayed_native_input_reads_succeed_cursor_mapping_defect_observed",
+  "acceptance_passed": false,
+  "stable_promotion": false,
+  "identities": {
+    "candidate": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\game-rerun\\clash95_battlehd.exe",
+      "sha256": "7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47",
+      "size_bytes": 1297920
+    },
+    "original": {
+      "path": "C:\\Clash\\clash95.exe",
+      "sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+      "size_bytes": 1232384
+    },
+    "save": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\game-rerun\\save\\0.dat",
+      "sha256": "4f2182409d209985a527f07c4116b19e44332416698d6acb0a3d35ae68db8a89",
+      "size_bytes": 586414
+    },
+    "wrapper": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\game-rerun\\ddraw.dll",
+      "sha256": "b4cf172509083066eee011fdb866f9a07c6cc4fa1f0ce53ec1f90e28cb5a28b1",
+      "size_bytes": 136704
+    },
+    "wrapper_config": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\game-rerun\\dxcfg.ini",
+      "sha256": "0f35b74b13284901c07145fb945575a7f5a5f313e13aeb24392843609ecda3fe",
+      "size_bytes": 158
+    },
+    "wrapper_build_manifest": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\game-rerun\\ddraw_surfdump_proxy.build.json",
+      "sha256": "0723e15bd1da6747d673d67b58aa080e2f10f662f451f7d3be3b8c92655480c0",
+      "size_bytes": 756
+    }
+  },
+  "wrapper_mode": "proxy-present",
+  "wrapper_source_sha256_recorded_in_build_receipt": "407d41d0d548e6217c6041181efb6466efa90f447110c5b8857bf92714ecb8eb",
+  "wrapper_receipt_note": "Historical B4CF presenting-proxy build receipt is retained. Later repository C++ changes do not relabel this old DLL as a rebuild. This is not the final GOG-wrapper lane.",
+  "approval": {
+    "path": "C:\\ClashTests\\battle-hd-visible-20260924\\rerun-user-approval.json",
+    "sha256": "377cfd2fbda6018ebfc2c71b5e539799eac3d6943f27ceb1cf10e2b47b966ec7",
+    "size_bytes": 1333
+  },
+  "approval_scope": "Explicit user reply Approve visible rerun; exact7D04 candidate, visible launch, foreground/cursor, automated input, screenshots. No manual proof or promotion.",
+  "input_method": "Automated @oai/sky Windows SendInput, recorded in run-03/captures/actions.json; not manual input.",
+  "forced_setup": "Both runs force menu/load, relocate live unit0 from(14,22) to(89,9) next to unit4(90,9), set51D01C=1 and force entry-dialog choice. Subsequent battle command/grid gates remain native.",
+  "runs": [
+    {
+      "id": "run-02",
+      "outcome": "failed_acquisition_and_wrong_content_capture",
+      "artifacts": {
+        "launch-plan.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\launch-plan.json",
+          "sha256": "cc72186d155c27bebf4d5db09c0155355dc840a7342d8b15417b5c0024b8c427",
+          "size_bytes": 4350
+        },
+        "execution.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\execution.json",
+          "sha256": "b27c13920de9b055b4e693e365ef5e47d64f6ab959dc5262339d6ceeaafd6fdd",
+          "size_bytes": 1033
+        },
+        "owned-processes.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\owned-processes.json",
+          "sha256": "51011a2f53da326b9bc4e4ef8c38b72da346b3aa019f151b091a487d161c7aad",
+          "size_bytes": 562
+        },
+        "user-approval.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\user-approval.json",
+          "sha256": "377cfd2fbda6018ebfc2c71b5e539799eac3d6943f27ceb1cf10e2b47b966ec7",
+          "size_bytes": 1333
+        },
+        "probe.cdb": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\probe.cdb",
+          "sha256": "273059563a31aa534f4531347526c6441ee588aee97d72ee4ff1490892aa5b56",
+          "size_bytes": 94254
+        },
+        "probe-packet.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\probe-packet.json",
+          "sha256": "1b202c0a76c3f034c3dca9a1b80cbe241fca33fc837a1093916f26bd87dfe7f4",
+          "size_bytes": 26464
+        },
+        "cdb.log": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\cdb.log",
+          "sha256": "185b3aa0f7fa1c77759b8ab7ab4a7080a6b4cff651710e9dfa67f501c03dc579",
+          "size_bytes": 110378
+        },
+        "stop.request": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\stop.request",
+          "sha256": "cee45a932fd0090212633e64b5de665c4b84effb5d218e9846db3da40dac5c60",
+          "size_bytes": 76
+        }
+      },
+      "frozen_sources": {
+        "producer": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\source\\battle_hd_visible_probe.py",
+          "sha256": "f0c69f7885f45ee97bf3804c676568bb13fa6bc8f2b6bb4ee8e8f344e044132a",
+          "size_bytes": 29367
+        },
+        "runner": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\source\\run_battle_hd_visible_session.ps1",
+          "sha256": "d926b639699d0c505985ccbea060faa56aa311c6a98c40182b3da1aa9a2bc2ff",
+          "size_bytes": 14698
+        }
+      },
+      "debugger_launch": {
+        "method": "Start-Process",
+        "window_style": "Hidden",
+        "source": "frozen runner"
+      },
+      "started_at": "2026-09-24T06:24:41.3334578Z",
+      "ended_at": "2026-09-24T06:31:03.7781034Z",
+      "candidate_process": {
+        "path": "C:\\ClashTests\\battle-hd-visible-20260924\\game-rerun\\clash95_battlehd.exe",
+        "pid": 40492,
+        "parent_pid": 35876,
+        "started_at": "2026-09-24T06:24:42.0566343Z"
+      },
+      "stop_reason": "stop_request",
+      "cleanup": {
+        "debugger_stopped": true,
+        "errors": [],
+        "candidate_stopped": true
+      },
+      "acceptance_passed": false,
+      "manual_input_proven": false,
+      "controller_failure_field": null,
+      "ready_lines": [
+        354
+      ],
+      "acquisition": [
+        {
+          "line": 321,
+          "kind": "mouse",
+          "hresult": "80070005"
+        }
+      ],
+      "device_read_count": 0,
+      "successful_device_read_count": 0,
+      "command_callback_count": 0,
+      "native_map_return_observed": false,
+      "sources_match_launch_plan": true
+    },
+    {
+      "id": "run-03",
+      "outcome": "visible_battle_and_input_diagnostic_incomplete",
+      "artifacts": {
+        "launch-plan.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\launch-plan.json",
+          "sha256": "52a057ffbd1ea18fa9518a48c2ed1a14324d75eed44f774ae057ba7911bf6a47",
+          "size_bytes": 4574
+        },
+        "execution.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\execution.json",
+          "sha256": "dc4e087dbce16b2df39b9031493b606f9c38c5ab208f7d601c85d01be15369b8",
+          "size_bytes": 1033
+        },
+        "owned-processes.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\owned-processes.json",
+          "sha256": "cfa35e119253c70a54db1c1909a87134791266acb91197f740e5fc7d67fb9e1a",
+          "size_bytes": 562
+        },
+        "user-approval.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\user-approval.json",
+          "sha256": "377cfd2fbda6018ebfc2c71b5e539799eac3d6943f27ceb1cf10e2b47b966ec7",
+          "size_bytes": 1333
+        },
+        "probe.cdb": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\probe.cdb",
+          "sha256": "273059563a31aa534f4531347526c6441ee588aee97d72ee4ff1490892aa5b56",
+          "size_bytes": 94254
+        },
+        "probe-packet.json": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\probe-packet.json",
+          "sha256": "1b202c0a76c3f034c3dca9a1b80cbe241fca33fc837a1093916f26bd87dfe7f4",
+          "size_bytes": 26464
+        },
+        "cdb.log": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\cdb.log",
+          "sha256": "fe674241bafa6908be77312e33520a23aaaf3a9b38d393bfb5b959c0d44e286c",
+          "size_bytes": 114171
+        },
+        "stop.request": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\stop.request",
+          "sha256": "4df80bb70d451df62516401d6ae6c6219fe0b4748948076f1b6cdbf62c53ffc2",
+          "size_bytes": 107
+        }
+      },
+      "frozen_sources": {
+        "producer": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\source\\battle_hd_visible_probe.py",
+          "sha256": "f0c69f7885f45ee97bf3804c676568bb13fa6bc8f2b6bb4ee8e8f344e044132a",
+          "size_bytes": 29367
+        },
+        "runner": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\source\\run_battle_hd_visible_session.ps1",
+          "sha256": "6a0a8e9e9d6d40cfed5cf6cbb3979c2f9321afa29091015cc45794a620a6c598",
+          "size_bytes": 15196
+        }
+      },
+      "debugger_launch": {
+        "use_shell_execute": false,
+        "window_style": "Normal",
+        "create_no_window": true
+      },
+      "started_at": "2026-09-24T06:37:09.1671400Z",
+      "ended_at": "2026-09-24T06:45:58.5159919Z",
+      "candidate_process": {
+        "path": "C:\\ClashTests\\battle-hd-visible-20260924\\game-rerun\\clash95_battlehd.exe",
+        "pid": 44824,
+        "parent_pid": 36200,
+        "started_at": "2026-09-24T06:37:09.7744884Z"
+      },
+      "stop_reason": "stop_request",
+      "cleanup": {
+        "debugger_stopped": true,
+        "errors": [],
+        "candidate_stopped": true
+      },
+      "acceptance_passed": false,
+      "manual_input_proven": false,
+      "controller_failure_field": null,
+      "ready_lines": [
+        358
+      ],
+      "acquisition": [
+        {
+          "line": 321,
+          "kind": "mouse",
+          "hresult": "00000000"
+        },
+        {
+          "line": 322,
+          "kind": "keyboard",
+          "hresult": "00000000"
+        }
+      ],
+      "device_read_count": 15,
+      "successful_device_read_count": 15,
+      "command_callback_count": 0,
+      "native_map_return_observed": false,
+      "sources_match_launch_plan": true
+    }
+  ],
+  "asset_inventory": {
+    "path": "C:\\ClashTests\\battle-hd-visible-20260924\\rerun-assets.json",
+    "sha256": "748374df13e511ac772c6afb4baaba97af8321b8f280870fffa65f6c12490745",
+    "size_bytes": 36794
+  },
+  "run02_capture": {
+    "image": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\battle-hd-20260924-wallpaper.jpg",
+      "sha256": "fa7f47c23c87d9d5ce60a977a6919632d998b0c5d599c085911ebffb868a6d31",
+      "size_bytes": 20899
+    },
+    "metadata": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-02\\battle-hd-20260924-wallpaper.jpg.json",
+      "sha256": "5cdbdf39fddb19fd10dd8ee2ff46986809e8f4870099c46b03bb461027dd724d",
+      "size_bytes": 488
+    },
+    "classification": "wallpaper only; no battle pixels, failed activation, no injected clicks; READY in debugger does not prove visible composition"
+  },
+  "run03_observations": {
+    "arena": [
+      16,
+      7
+    ],
+    "camera": [
+      0,
+      0
+    ],
+    "ready_input_bounds": [
+      1,
+      1,
+      609,
+      450
+    ],
+    "ready_input_bounds_line": 350,
+    "bounds_limit": "Transient native cursor metadata at readiness; not proof that every later cursor uses these same bounds.",
+    "descriptors": [
+      {
+        "line": 351,
+        "index": 0,
+        "address": "00514b78",
+        "xy": [
+          1138,
+          490
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "hit_right_bottom_exclusive": [
+          1201,
+          521
+        ],
+        "state": 1,
+        "callback": "0042d4e0"
+      },
+      {
+        "line": 353,
+        "index": 1,
+        "address": "00514bad",
+        "xy": [
+          1201,
+          490
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "hit_right_bottom_exclusive": [
+          1264,
+          521
+        ],
+        "state": 1,
+        "callback": "0042d3a0"
+      },
+      {
+        "line": 354,
+        "index": 2,
+        "address": "00514be2",
+        "xy": [
+          1138,
+          521
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "hit_right_bottom_exclusive": [
+          1201,
+          552
+        ],
+        "state": 1,
+        "callback": "0042d5b0"
+      },
+      {
+        "line": 355,
+        "index": 3,
+        "address": "00514c17",
+        "xy": [
+          1138,
+          552
+        ],
+        "size": [
+          64,
+          32
+        ],
+        "hit_right_bottom_exclusive": [
+          1201,
+          583
+        ],
+        "state": 1,
+        "callback": "0042d670"
+      },
+      {
+        "line": 356,
+        "index": 4,
+        "address": "00514c4c",
+        "xy": [
+          1201,
+          521
+        ],
+        "size": [
+          64,
+          63
+        ],
+        "hit_right_bottom_exclusive": [
+          1264,
+          583
+        ],
+        "state": 1,
+        "callback": "0042d560"
+      },
+      {
+        "line": 357,
+        "index": 5,
+        "address": "00514c81",
+        "xy": [
+          1145,
+          120
+        ],
+        "size": [
+          135,
+          30
+        ],
+        "hit_right_bottom_exclusive": [
+          1279,
+          149
+        ],
+        "state": 1,
+        "callback": "0042d6f0"
+      }
+    ],
+    "selected_unit": {
+      "index": 0,
+      "type": 5,
+      "attack_available": 8,
+      "attack_enabled": 0,
+      "line": 352
+    },
+    "action_record": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\captures\\actions.json",
+      "sha256": "5237d8731a229d493302e21495015f98ddf8db590bd0ed9893614260fcf650ec",
+      "size_bytes": 1051
+    },
+    "ordered_input_observations": [
+      {
+        "lines": [
+          375,
+          376,
+          377
+        ],
+        "observation": "Successful device read reports delta(-34,-5), then mouse button80 and release during the recorded banner click."
+      },
+      {
+        "lines": [
+          378,
+          379,
+          381
+        ],
+        "observation": "Native cursor request/return both576360; banner restores its prior renderer."
+      },
+      {
+        "lines": [
+          382,
+          383
+        ],
+        "observation": "Native grid accepts local/world(8,3) atmouse576360 withbutton0/latch0. This is cursor restoration, not tactical selection proof."
+      },
+      {
+        "lines": [
+          386,
+          387,
+          388
+        ],
+        "observation": "Successful native delta(-29,+1) read followed bymouse5764 and grid rejection."
+      },
+      {
+        "lines": [
+          393,
+          394,
+          395
+        ],
+        "observation": "Successful delta(-257,-5) read whilebutton80 leavesmouse5764 and grid rejection."
+      }
+    ],
+    "source_diagnosis": {
+      "candidate_sha256": "7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47",
+      "relative_format": {
+        "va": "004e80f0",
+        "dwFlags": 2
+      },
+      "updater_va": "004e9810",
+      "x_sequence": "004e9823..004e983a",
+      "y_sequence": "004e983d..004e9855",
+      "native_rejoin": "00460a87",
+      "finding": "The inherited dynamic updater scales fresh relative deltas as absolute coordinates and unsigned-rejects negative transformed values. PositiveY1 becomes4 while negativeX leaves the previousX576.",
+      "bounds_chain": [
+        "0042f2d6 metadata005196c8",
+        "0042f2e5 -> 00460d80",
+        "004e99c0 grantsHD onlymetadata005196a0",
+        "00460b20 subtracts sprite extents/hotspot"
+      ],
+      "evidence_class": "Independent read-only inspection of exact7D04 candidate plus the ordered native observations; corrective candidate/runtime validation remains separate."
+    },
+    "return_key_change": false,
+    "escape_dialog_observed": false,
+    "command_callbacks_observed": false,
+    "movement_or_attack_observed": false,
+    "map_return_observed": false
+  },
+  "capture_audit": {
+    "capture_method": "Sky Windows.Graphics.Capture JPEG",
+    "capture_dimensions": [
+      853,
+      480
+    ],
+    "candidate_surface_dimensions": [
+      1280,
+      720
+    ],
+    "original_capture_directory": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\captures",
+    "original_capture_count": 8,
+    "captures": [
+      {
+        "name": "01-turn-banner.jpg",
+        "sha256": "94c6a8393b459f9f4d11b0cd1377f6824240d1263825408d5932d88e4e74817e",
+        "metadata_sha256": "1a9cbec11626efeb8911cd552753af09b8d42c0025e0f042c555df2ecf48df7a",
+        "recorded_at": "2026-09-24T06:39:25.435Z"
+      },
+      {
+        "name": "02-after-return.jpg",
+        "sha256": "94c6a8393b459f9f4d11b0cd1377f6824240d1263825408d5932d88e4e74817e",
+        "metadata_sha256": "367717b29b1942bba96ff545314f8757d1f22d254c15ac744b09af85af46902e",
+        "recorded_at": "2026-09-24T06:39:26.720Z"
+      },
+      {
+        "name": "03-after-banner-click.jpg",
+        "sha256": "a4db17ffbb07339c7659d3eccebde86b856acc6f2a96b16769be23d10b7bccf3",
+        "metadata_sha256": "57e1c4c0672bbef3c5c56ae789ba4b30ce0af7ec32ec2a22aa0477c94345f551",
+        "recorded_at": "2026-09-24T06:40:01.059Z"
+      },
+      {
+        "name": "04-after-pointer-drag.jpg",
+        "sha256": "44a0ad92b21e21ed65bc1c8ff74394afc2c24c0308dcafbedc2c84d36b403c6f",
+        "metadata_sha256": "ea4444b6d2a3565ad74af67d85fa1fdcf9022e333de6b26b392a095c184ce485",
+        "recorded_at": "2026-09-24T06:44:22.228Z"
+      },
+      {
+        "name": "05-after-escape.jpg",
+        "sha256": "7e59b46f2c022ee0f91ee66bc085d2a8c45da45ee69c09d9161febaebafac768",
+        "metadata_sha256": "299323c5f59e0f62180a5eae52995209b9bcc6f2cc6f0c627108415aa69b9eaa",
+        "recorded_at": "2026-09-24T06:45:14.356Z"
+      },
+      {
+        "name": "06-final-a.jpg",
+        "sha256": "7e59b46f2c022ee0f91ee66bc085d2a8c45da45ee69c09d9161febaebafac768",
+        "metadata_sha256": "9939995fb16e71915fb93de653415d5a0b20f75aaf916884a02825bdb1782c41",
+        "recorded_at": "2026-09-24T06:45:26.195Z"
+      },
+      {
+        "name": "07-final-b.jpg",
+        "sha256": "7e59b46f2c022ee0f91ee66bc085d2a8c45da45ee69c09d9161febaebafac768",
+        "metadata_sha256": "481106f70cb1c07a07e1c1190b1fe81cebf2b15c92ec97115d17c31d091c2a60",
+        "recorded_at": "2026-09-24T06:45:32.620Z"
+      },
+      {
+        "name": "08-final-c.jpg",
+        "sha256": "7e59b46f2c022ee0f91ee66bc085d2a8c45da45ee69c09d9161febaebafac768",
+        "metadata_sha256": "bf98a720419853287ea0a1b8436e180472064e3b6cf4e00f92832283ee6323c0",
+        "recorded_at": "2026-09-24T06:45:50.891Z"
+      }
+    ],
+    "manifest": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\audit-20260924\\audit-manifest.json",
+      "sha256": "6405c4f4dc1d84f0e08b1393e06ba3448d22d1ada72f22668b9c0d6cde149ca5",
+      "size_bytes": 13994
+    },
+    "frozen_audit_producer": {
+      "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\audit-20260924\\audit-producer.py",
+      "sha256": "16b81dbcfb5595482978ab8784be58003aa2f9a65b8bb5752f4d6b1c39c398b3",
+      "size_bytes": 3694
+    },
+    "tear_checker": {
+      "path": "C:\\Users\\andrz\\.codex\\worktrees\\7d0c\\clash-hd\\tools\\capture_tear_check.py",
+      "sha256": "cb524ea00eab5135d7b0d653b03250954e748a17b149a07aadf1658629ac53ac",
+      "bytes": 13071
+    },
+    "conversion": "Pillow JPEG decode to RGB; lossless RGB PNG save; no resize/crop/filter/drawing. Reopened PNG bytes equal decoded RGB bytes.",
+    "original_jpegs_unchanged": true,
+    "audited_final_frames": [
+      "06-final-a.jpg",
+      "07-final-b.jpg",
+      "08-final-c.jpg"
+    ],
+    "final_jpeg_and_decoded_rgb_pairs_identical": true,
+    "final_decoded_rgb_sha256": "8acc15b31fa75aef998c6159da24b47cc8debf1aac35300b5bde7a48313f20b6",
+    "tear_checks": {
+      "full_capture": {
+        "artifact": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\audit-20260924\\full_capture-tear-check.json",
+          "sha256": "0b46c2c213d84df46419164b78c951621112305a850d390d636e43fff3f57fcf",
+          "bytes": 3049
+        },
+        "verdict": "clean_stable_pair",
+        "ratios": [
+          1.064,
+          1.064,
+          1.064
+        ],
+        "rect": [
+          0,
+          0,
+          852,
+          479
+        ],
+        "tear_suspected": [
+          false,
+          false,
+          false
+        ]
+      },
+      "full_battle_band": {
+        "artifact": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\audit-20260924\\full_battle_band-tear-check.json",
+          "sha256": "12c29773628c3db1a8cbc48453a21e0fa464995a03e814546a4dfd904b5ea740",
+          "bytes": 3055
+        },
+        "verdict": "clean_stable_pair",
+        "ratios": [
+          1.045,
+          1.045,
+          1.045
+        ],
+        "rect": [
+          0,
+          80,
+          852,
+          399
+        ],
+        "tear_suspected": [
+          false,
+          false,
+          false
+        ]
+      },
+      "battlefield": {
+        "artifact": {
+          "path": "C:\\ClashTests\\battle-hd-visible-20260924\\run-03\\audit-20260924\\battlefield-tear-check.json",
+          "sha256": "7ce871880edeb109d5258879ea095f5a2d32b88778a8e33d1fa86efebcbf819d",
+          "bytes": 3058
+        },
+        "verdict": "clean_stable_pair",
+        "ratios": [
+          1.009,
+          1.009,
+          1.009
+        ],
+        "rect": [
+          21,
+          90,
+          745,
+          389
+        ],
+        "tear_suspected": [
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "visual_inspection": {
+      "reference": "06-final-a.jpg",
+      "four_frame_edges": "visible at logical capture resolution",
+      "sidebar": "native stats and command artwork visible",
+      "rightmost_battlefield_slot": "black padding after the real16columns is visible",
+      "controls": "six native descriptor positions measured; sidebar artwork present; not six successful command-click observations",
+      "cursor": "sword cursor in upper black padding after bad relative-delta mapping"
+    },
+    "limitations": [
+      "Logical853x480JPEG captures do not establish exact1280x720 native pixels or hitboxes.",
+      "Pillow conversion preserves decoded RGB; it cannot reverse pre-existing JPEG loss or logical capture scaling.",
+      "Tear heuristic is advisory and content/ROI calibrated; applying it toWGC JPEGs does not prove capture independence or native frame continuity.",
+      "Equal files/pixels corroborate stable retained content only; they do not prove fresh independent acquisition."
+    ]
+  },
+  "pending": [
+    "Successful native pointer tracking after a separately verified correction.",
+    "Displayed-coordinate tactical selection, movement and attack beyond column7.",
+    "Six command behaviors according to native enabled states, with real click-gate-to-callback evidence.",
+    "Wider-than17 arena camera endpoints and recentering on real arena data.",
+    "Hover/tooltip/dialog/results lifecycle, natural battle completion or exit, restored HD map and map interaction.",
+    "Native-resolution/final-wrapper composition, manual input proof, endurance and explicit stable promotion."
+  ],
+  "preserved_prior_evidence": "captures/current/battle-hd-visible-attempt-20260919.json and all earlier hidden/centered reports remain unchanged. The controller failure:null field is not an acceptance pass.",
+  "late_user_observation": {
+    "text": "Battle is visible",
+    "source": "User reply in this task to the earlier run-02 foreground/wallpaper question, received after both owned runs had stopped.",
+    "run_id": null,
+    "frame": null,
+    "manual_targeting_proof": false,
+    "limit": "Not assigned retrospectively to either run or a capture timestamp; run-03 image evidence stands independently."
+  }
+}

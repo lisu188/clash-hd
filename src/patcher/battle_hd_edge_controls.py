@@ -5,6 +5,7 @@ It installs no runtime input injection and makes no runtime acceptance claim.
 """
 from __future__ import annotations
 
+from dataclasses import replace
 import hashlib
 from pathlib import Path
 import struct
@@ -13,12 +14,31 @@ from . import battle_hd_hud as hud
 from . import partial_tile_clip as clip
 from . import patch_clash95_hd as scalar
 from . import pe_extension as pe
+from .battle_hd_section import validate_spans
 
 ROOT = Path(__file__).resolve().parents[2]
 STAGE = scalar.BATTLE_HD_STAGE + '-edgecontrols-validation'
 REVISION = 'expanded_battle_edge_controls_v1'
 RESOLUTION = '1280x720'
 BASE_SHA256 = '7d04fe9005515dad4e618df507103946265d7e2a6421287281c1fc5f112d1e47'
+CURRENT_BASE_SHA256 = '0edef38dac3c5036c6012adde248bc57736273cc1bbcbb9fd05e5867a1946ca0'
+# Preserve this recipe's published predecessor and output after the separate
+# battle-input repair. These are exact current-to-frozen bytes, not a general
+# downgrade path. Both complete image identities are required around the edits.
+PREDECESSOR_RESTORATIONS = (
+    pe.ByteEdit(0x05FE61, 0x060A61, 0x460A61,
+        bytes.fromhex('e99a2a1000' + '90' * 33), bytes.fromhex('e9aa8d0800' + '90' * 33),
+        'restore frozen dynamic-origin mouse hook'),
+    pe.ByteEdit(0x060211, 0x060E11, 0x460E11,
+        bytes.fromhex('e9ea251000' + '90' * 33), bytes.fromhex('e9aa8b0800' + '90' * 33),
+        'restore frozen metadata-based cursor bounds hook'),
+    pe.ByteEdit(0x12E200, 0x163400, 0x563400,
+        bytes.fromhex('813dd8995100b0e842007415813dd8995100a01746007518833d4820530000740f68d0020000b900050000e9ae65f8ffe98b65f8ff'), bytes(53),
+        'restore zero padding occupied by the new cursor bounds helper'),
+    pe.ByteEdit(0x12E300, 0x163500, 0x563500,
+        bytes.fromhex('813dd8995100b0e842007415813dd8995100a01746007534833d4820530000742ba1a85154000faf42200142248b7220a1ac5154000fafc68b7a28c7422c0000000001c7897a28e93bd5efffe9bf62f8ff'), bytes(81),
+        'restore zero padding occupied by the new relative-input helper'),
+)
 # The four battle files have independently checked CRLF checkout and LF Git
 # identities. Enumerate those exact byte sequences; never normalize runtime reads.
 PINNED = {
@@ -27,8 +47,8 @@ PINNED = {
         'e77dd58d5348824abe626c450aae1f9277d8649eadf98115b84b6b83be12aa98',
     ),
     'src/patcher/battle_hd_core.py': (
-        '5f37cceadb99a54e7880600a658b7b896e1e8f62a26f74702e97d78eb0c6bcc9',
-        'e6d94266a5c3370ca295c680bf8add4af2ca50517dd72795d2d518a5041f7791',
+        '879eddee26f59d24c04e217fff7919edf67ab04363abb170b244dda570184bf7',
+        'b1022821912213596bb88bd8833f17bcc73105f799113746e4089b0fd9c85d6a',
     ),
     'src/patcher/battle_hd_layout.py': (
         '015e4832ae653dba789873b5b14e0768c9cb2b6c42d2d47425f53ae7de795f04',
@@ -39,7 +59,7 @@ PINNED = {
         '798b8d738af7062717ff62ba04216124eb4685c1b454f86518dbc7c7c11a46ee',
     ),
     'src/patcher/patch_clash95_hd.py': (
-        '05f31359f93a0eb0b319679ee524b21c05cd3e86e485b7ebb92afc8e6da29f31',
+        '38021e9a4d21bc9a8bf0c2f9b66379595509446b5177d6f91bab6f677b5e8106',
     ),
     'src/patcher/pe_extension.py': (
         '4d66e7fa3bf17c6260fffaefc8d4e4e8da0ba76ceea7746858c52299f74d7c27',
@@ -71,6 +91,7 @@ HELPER_Y = ((0x566361, 146, 26), (0x566371, 209, 89),
             (0x5663B1, 130, 10), (0x5663C1, 146, 26))
 LIMITS = [
     '1280x720 only; expanded 17x7-capacity field and combat rules are inherited unchanged.',
+    'Frozen predecessor retains historical mouse/cursor behavior; the separate September 24 input repairs are not included.',
     'This stage is separate from completehd/modalwidgets and requires an explicit matching runtime consumer.',
     'Inherited battle-stage relocation completeness is not established by preserving its old relocation table.',
     'Fresh native artwork, command/hover/input, entry/exit and final-wrapper evidence remain required.',
@@ -129,13 +150,52 @@ def _sources():
     return observed
 
 
+def _restore_frozen_predecessor(current):
+    pe._identity(current, CURRENT_BASE_SHA256, 'reviewed current expanded battle')
+    view = pe.inspect_pe(current)
+    restored = bytearray(current)
+    for edit in PREDECESSOR_RESTORATIONS:
+        pe._require(view.image_base + edit.rva == edit.va
+                    and view.file_offset(edit.rva, len(edit.old)) == edit.offset,
+                    'frozen predecessor restoration address differs')
+        pe._require(len(edit.old) == len(edit.new)
+                    and restored[edit.offset:edit.offset + len(edit.old)] == edit.old,
+                    'frozen predecessor restoration old bytes differ: ' + edit.purpose)
+        restored[edit.offset:edit.offset + len(edit.new)] = edit.new
+    base = bytes(restored)
+    pe._identity(base, BASE_SHA256, 'frozen expanded battle predecessor')
+    return base
+
+
+def _frozen_patch_records(original, base, profile):
+    # Preserve the published ordering and truthful original-to-predecessor
+    # records, including the restored appended payload. The general patcher
+    # continues to admit only its current complete 0edef38d installation.
+    inherited = scalar.select_patches_for(scalar.DEFAULT_STAGE + '-castlecenter-all', profile)
+    battle = scalar.battle_hd_patches()
+    replaced = {('battle-hd-input', 0x05FE61), ('battle-hd-input', 0x060211)}
+    pe._require(sum((p.group, p.offset) in replaced for p in battle) == 2,
+                'reviewed battle input hook inventory differs')
+    frozen = inherited + [replace(p, new_hex=base[len(original):].hex())
+        if p.group == 'battle-hd-section' and p.offset == len(original) else p
+        for p in battle if (p.group, p.offset) not in replaced]
+    validate_spans(frozen)
+    replay = bytearray(original)
+    for patch in frozen:
+        pe._require(replay[patch.offset:patch.offset + len(patch.old)] == patch.old,
+                    'frozen inherited patch old bytes differ')
+        replay[patch.offset:patch.offset + len(patch.new)] = patch.new
+    pe._require(bytes(replay) == base, 'frozen inherited patch records do not replay predecessor')
+    return frozen
+
+
 def predecessor(original):
     pe._identity(original, pe.ORIGINAL_SHA256, 'original')
     sources = _sources()
-    patches = scalar.select_patches_for(scalar.BATTLE_HD_STAGE, scalar.parse_resolution(RESOLUTION))
-    base = scalar.apply_patches(original, patches)
-    pe._identity(base, BASE_SHA256, 'frozen expanded battle predecessor')
-    return base, patches, sources
+    profile = scalar.parse_resolution(RESOLUTION)
+    patches = scalar.select_patches_for(scalar.BATTLE_HD_STAGE, profile)
+    base = _restore_frozen_predecessor(scalar.apply_patches(original, patches))
+    return base, _frozen_patch_records(original, base, profile), sources
 
 
 def edits_for(base, bundle):
@@ -227,6 +287,8 @@ def build_candidate(original, resolution=RESOLUTION):
     metadata = dict(schema='clash95_battle_edge_controls_candidate_v1', stage=STAGE, recipe_revision=REVISION,
         resolution=resolution, original_sha256=pe.ORIGINAL_SHA256, base_stage=scalar.BATTLE_HD_STAGE,
         base_candidate_sha256=sha(base), candidate_sha256=sha(image), source_hashes=sources,
+        predecessor_reconstruction=dict(source_candidate_sha256=CURRENT_BASE_SHA256,
+            result_candidate_sha256=BASE_SHA256, edits=[e.metadata() for e in PREDECESSOR_RESTORATIONS]),
         inherited_patch_count=len(patches), inherited_patch_records=inherited_records, extension=extension.metadata,
         edge_edits=[e.metadata() for e in edits], entry_vas=bundle.entries,
         sidebar_blits=SIDEBAR_BLITS, frame_blits=FRAME_BLITS, descriptor_origins=DESCRIPTORS,
