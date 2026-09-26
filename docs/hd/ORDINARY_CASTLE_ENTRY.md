@@ -50,7 +50,7 @@ Use the repository's discovered Python interpreter:
 
 ```powershell
 python -B tools/test_ordinary_castle_entry.py
-python -B tools/test_ordinary_castle_entry.py --source-exe C:/Clash/clash95.exe --toolchain C:/ClashTests/battle-hd-tools/python --require-machine-tools
+python -B tools/test_ordinary_castle_entry.py --source-exe C:/Clash/clash95.exe --require-machine-tools
 python -B tools/build_ordinary_castle_entry_candidate.py --original C:/Clash/clash95.exe --preflight
 python -B tools/build_ordinary_castle_entry_candidate.py --original C:/Clash/clash95.exe --output C:/ClashTests/hd-completion/ordinary-castle-successor-1024x768-20260924-a/candidate.exe
 ```
@@ -78,14 +78,19 @@ No historical capture is relabeled as successor proof.
 
 ## Current verification and next integration
 
-On 2026-09-26 the five portable source contracts passed again, and an
-independent review found no blocking defect in the two-span change. The
-[fresh original-backed run](../../reports/ordinary-castle-entry-verification-20260926.json)
-passes nine source/byte test methods; six CPU methods were not executed
-(31 skipped test/subtest entries) because Unicorn is unavailable. This is not
-a full-machine pass. The original executable still has its required SHA-256. The optional Unicorn
-installation under C:/ClashTests was removed with the local outputs; use an
-available installation for machine fixtures and report skips explicitly.
+The [first September 26 run](../../reports/ordinary-castle-entry-verification-20260926.json)
+passed nine source/byte methods and skipped six CPU methods because the deleted
+local tool directory had contained Unicorn. The separate
+[fresh CPU follow-up](../../reports/ordinary-castle-entry-verification-20260926-b.json)
+passes all 15 methods with zero skips using Unicorn 2.1.4 and the original-backed
+candidate. Its intermediate source-drift and sandbox-import failures are retained
+in that report. The original SHA and patcher source hashes remain unchanged.
+
+Install or discover a usable Unicorn environment before requiring machine tests;
+`--toolchain` accepts an existing local dependency directory. A namespace-only
+import is not evidence that its native engine is available. This fixture tests
+inherited entry, rollback and caller preservation in synthetic memory, not a
+live game or normal castle exit.
 
 The user confirmed removal of C:/ClashTests and C:/ClashCaptures. The retained
 [baseline manifest](../../reports/ordinary-castle-entry-baseline-20260924.json)
@@ -99,7 +104,8 @@ of the original physical/render surfaces before map redraw, and the native
 caller's renderer restoration. Entry allocation or the first present alone
 cannot prove this lifecycle. All building interiors require their own checks.
 
-Extend admission through a new composed successor for the supported resolution
-matrix while retaining this exact-parent builder and its historical identities.
+The separate [matrix successor](ORDINARY_CASTLE_ENTRY_MATRIX.md) extends admission
+across the six existing resolutions while retaining this exact-parent builder
+and its historical identities.
 Small-world rendering/input and widened tactical battle remain separate
 integration work; this checkpoint does not satisfy the full HD completion goal.
