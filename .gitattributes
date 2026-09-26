@@ -914,3 +914,15 @@
 /reports/ordinary-castle-entry-verification-20260926-b.json -text whitespace=cr-at-eol
 /tools/ordinary_map_input_plan.py -text whitespace=cr-at-eol
 /tools/test_ordinary_map_input_plan.py -text whitespace=cr-at-eol
+/tools/ordinary_map_observation.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_observation.py -text whitespace=cr-at-eol
+/tools/ordinary_map_pause_client.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_pause_client.py -text whitespace=cr-at-eol
+/tools/ordinary_map_pause_host.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_pause_host.py -text whitespace=cr-at-eol
+/tools/ordinary_map_observation_session.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_observation_session.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_pause_engine.py -text whitespace=cr-at-eol
+/reports/ordinary-map-pause-engine-20260926-a.json -text whitespace=cr-at-eol
+/reports/ordinary-map-pause-engine-20260926-b.json -text whitespace=cr-at-eol
+/reports/ordinary-map-pause-engine-20260926-c.json -text whitespace=cr-at-eol
