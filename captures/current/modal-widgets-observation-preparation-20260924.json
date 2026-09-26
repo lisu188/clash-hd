@@ -1,0 +1,107 @@
+{
+  "schema": "clash95_widget_observation_preparation_summary_v1",
+  "date": "2026-09-24",
+  "proof_class": "source_bound_preparation_and_synthetic_fixtures_only",
+  "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalwidgets-validation",
+  "recipe_revision": "owned_modal_widget_bounds_v1",
+  "resolution": "1024x768",
+  "candidate_sha256": "ebea660f885da43896ad5e4303e6e7d7fe112def6c897b4c26312df8505376e5",
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "source_hashes": {
+    "tools/modal_widgets_context.py": "fd211a1eaee64622c02e370adb5e1326d3f27ae0ad3f36fa56801b6177ab3d42",
+    "tools/modal_widgets_barracks_probe.py": "8bae8e5b69fa9bbb6861f480de4aeb742410b8869c8fe367c1b798d92e0406a6",
+    "tools/test_modal_widgets_barracks_probe.py": "f1c0590e774d366d262b09d55101afd7f4db3b3b5e57edb8107801f96747a49f",
+    "tools/modal_widgets_text_observer.py": "26223a6c81c85be1be7e6493affb5317de8609fa03760d447fad90682e651454",
+    "tools/test_modal_widgets_text_observer.py": "0331db48a0fa9475b226c5b0880fd3d2ae83b1dfe5b7a10f74a5b189d52c6df5",
+    "tools/modal_primary_text_observer.py": "b92fbe6fce1c73301ed53873c6739a3b3408662c8f29021abcde9482ff0d491d"
+  },
+  "barracks": {
+    "receipt": {
+      "path": "C:/ClashTests/completehd-integration-20260924/widget-probe-final-20260924T071347200229Z/actual-result.json",
+      "sha256": "436e6dc339e49f206d6eea53e2a9484473261c803208f434ef1979a4c63a908b"
+    },
+    "tests_run": 20,
+    "skipped": 0,
+    "native_spans": 23,
+    "occupied_breakpoints": 76,
+    "checkpoints": [
+      "full-published",
+      "placeholder-before",
+      "placeholder-after",
+      "final-ready"
+    ],
+    "compiled_probe_sha256": "96b9dec66d01fc02da42368c8ad464f5e38187a9fa245476b474515a6f3e4e18",
+    "compiled_probe_format": {
+      "encoding": "ascii",
+      "hash_scope": "prepared_text_bytes",
+      "line_endings": "LF",
+      "runtime_command_file": false
+    },
+    "packet_sha256": "201279a5dd4067cb16cb65a2aa4c9ac5f13c3e6454136e63419dc48a47a9a969"
+  },
+  "quantity_text": {
+    "receipt": {
+      "path": "C:/ClashTests/completehd-integration-20260924/widget-text-observer-20260924T072002462087Z/report.json",
+      "sha256": "62304a252069618bb8c3175a1d7dd8ab7444e4af8b96e4e185141399adcd435e"
+    },
+    "pure_tests": 30,
+    "historical_regression_tests": 19,
+    "skipped": 0,
+    "auth_calls": 1,
+    "authentication_seconds": 252.0,
+    "sites": {
+      "adapter": 6254592,
+      "native": 4243792,
+      "return_va": 4402283,
+      "call_va": 4402278,
+      "state_va": 5857280
+    },
+    "packet": {
+      "path": "C:\\ClashTests\\completehd-integration-20260924\\widget-text-observer-20260924T072002462087Z\\widget-text-observer.packet.json",
+      "bytes": 6547868,
+      "sha256": "52439aa6fc2c6342fc65a8ca72a0e96b9c9bdf4013463ed6c9e399900de6ff50"
+    },
+    "fragment": {
+      "path": "C:\\ClashTests\\completehd-integration-20260924\\widget-text-observer-20260924T072002462087Z\\widget-text-observer.fragment.cdb",
+      "bytes": 5448,
+      "sha256": "428ad3344ce957cc831fb9a295aa77d8de9ef8fde809ff49b829c64d845ee51a"
+    },
+    "inherited_text_identity": {
+      "stage": "gameplay-menu640-centered-map12-dynorigin-mapsurface-scrollclamp-presentbounds-minimapright-dynvswitch-completehd-modalprimarytext-validation",
+      "recipe_revision": "owned_modal_primary_text_v1",
+      "resolution": "1024x768",
+      "candidate_sha256": "cae86c2477b10e61390fddb5079ee841997bf6af4df79a43dd8175f86cfbdc09"
+    }
+  },
+  "preserved_review_failures": {
+    "barracks_pre_fix": {
+      "path": "C:\\ClashTests\\completehd-integration-20260924\\widget-probe-prepare-20260924T065509241183Z\\receipt.json",
+      "sha256": "55e21cd7d80eb9066b37377ef184bf3594952fae0ed8a7fd4ba7fe39ad69c97d",
+      "scope": "pre-fix preparation only; root geometry wrapper binding was incomplete"
+    },
+    "text_review": {
+      "path": "C:\\ClashTests\\completehd-integration-20260924\\widget-text-observer-20260924T072002462087Z\\initial-review-failure\\review-failure.json",
+      "bytes": 1993,
+      "sha256": "4ea68a6f515affbfe093b5cf54982413d8f81535794a14d24085f87aaf150f8f"
+    },
+    "note": "Scope-filtering failure and its correction are also retained beside the text receipt."
+  },
+  "original_unchanged": true,
+  "bundle_unchanged": true,
+  "source_bytes_unchanged": true,
+  "runtime_executed": false,
+  "debugger_executed": false,
+  "whole_command_composed": false,
+  "ready_for_host_capture": false,
+  "primary_composition_proven": false,
+  "manual_input_proof": false,
+  "promotion_ready": false,
+  "remaining": [
+    "Widget native route trace consumer and source binding",
+    "Exact composed runtime command and checkpoint arming",
+    "Cached-primary Lock and real widget-owner observations",
+    "Raw query ledgers, three captures per checkpoint and owned cleanup",
+    "Original artwork and native-font pixel validation",
+    "Ordinary input, native modal exit and healthy map return"
+  ]
+}
