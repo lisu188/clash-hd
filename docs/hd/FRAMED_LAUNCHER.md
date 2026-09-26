@@ -1,7 +1,7 @@
 # Experimental framed launcher profile
 
-The source-tree launcher offers two renderer profiles. **Classic** remains the
-default and uses the existing stages and resolution registry without changes.
+The source-tree launcher offers several [renderer profiles](LAUNCHER.md#renderer-profiles).
+**Classic** remains the default; its 800x600 reference stage is unchanged.
 **Framed + minimap correction** uses the reviewed four-sided-frame candidate
 builder with `minimap_viewport=True`. It is experimental at every resolution,
 including 800x600; selecting it does not promote any resolution or patch stage.

@@ -1,159 +1,170 @@
 # Clash95 HD Launcher
 
-The launcher is the user-facing way to build and start the Clash95 HD mod. It
-verifies the base game, patches an isolated candidate, deploys the DirectDraw
-wrapper config next to it, and starts the game — all from a small Tkinter GUI.
-It replaces the manual verify/patch/copy/launch loop for end users.
+The launcher verifies a user-owned game, prepares an isolated patched candidate
+and starts it after an explicit Play action. [Development and verification](DEVELOPMENT.md)
+covers Python discovery and source-only checks; the [documentation index](README.md)
+links the implementation and evidence guides.
 
 ## Start The Launcher
 
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\launcher\run_launcher.ps1
-```
-
-or directly:
+Use Python with Tkinter (CI uses Python 3.12), a complete game installation and
+its user-owned DirectDraw wrapper. Run from the repository root:
 
 ```powershell
-python .\src\launcher\run.py
+python -B src/launcher/run.py
 ```
 
-Useful flags: `--dry-run` prints the environment report and candidate plan as
-JSON without writing anything; `--gui-selftest` constructs and destroys the
-widget tree headlessly. A headless launch needs the explicit double flag
-`--launch --yes-launch`.
+The PowerShell wrapper accepts an explicit interpreter when the PATH command is
+missing or points at a Windows Store alias:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\launcher\run_launcher.ps1 -Python C:\path\to\python.exe
+```
+
+| Operation | Behavior |
+| --- | --- |
+| `--list-resolutions` | Lists profile-scoped eligibility and status without game files or writes |
+| `--describe-plan --resolution 1920x1080` | Inspects geometry without game files or writes |
+| `--dry-run` | Reports the local environment and candidate plan without writes; missing game/source prerequisites can return failure |
+| `--prepare` / GUI **Create HD exe** | Builds/deploys a candidate without starting the game |
+| GUI **Play** / `--launch --yes-launch` | Explicitly starts a visible game process |
+| `--gui-selftest` | Constructs and destroys a withdrawn Tk window; still needs a working Tk display |
+
+CLI launch does not make the game headless. `--prepare` cannot be combined with
+`--launch`, `--dry-run` or `--gui-selftest`. Preparation can succeed without a
+wrapper and reports `runtime_deployed=false`; Play requires the wrapper.
+The [UI guide](LAUNCHER_UI.md) explains controls, path settings and diagnostics.
+
+## Renderer profiles
+
+The [resolution registry](../../src/launcher/resolutions.json) and source
+backends own recipe eligibility. Profile selection alone does not change the
+saved Classic defaults or grant runtime acceptance.
+
+| Profile | Scope and status | Recipe guide |
+| --- | --- | --- |
+| `classic` | Default; 800x600 is the sole stable entry. Other sizes remain experimental. Source-tree presets at least 1144 pixels wide use the separate wide-menu recipe. | [Wide Classic menus](CLASSIC_MENU_LAUNCHER.md) |
+| `framed` | Four-sided adventure frame and minimap correction; all sizes experimental. | [Framed launcher](FRAMED_LAUNCHER.md) |
+| `completehd` | Integrated framed adventure map, minimap, owned native modal canvas and army panel; all sizes experimental. | [Complete candidate](COMPLETE_HD_CANDIDATE.md) |
+| `modalwidgets` | Adds primary composition, barracks quantity text and context-bound widget comparisons to the Complete HD foundation; all sizes experimental. | [Modal-widget launcher](MODAL_WIDGET_LAUNCHER.md) |
+
+Complete HD and Modal widgets admit exactly 800x600, 1024x768, 1280x720,
+1280x960, 1920x1080 and the 802x602 fixture size. Their native menu, castle and
+battle layouts remain centered. Expanded battle is a separate validation lane,
+not a launcher profile. Use `--profile <name> --list-resolutions` for the
+selected recipe's eligibility rather than applying another profile's presets.
 
 ## Complete-HD Validation Profile
 
-The source-tree launcher offers `completehd`, which uses the shared
-`src/patcher/complete_hd_candidate.py` builder for the framed map, minimap
-correction, native modal canvas and army panel. Menus, castle interiors and
-battles retain the centered native layout. All six supported resolutions
-(800x600, 1024x768, 1280x720, 1280x960, 1920x1080 and 802x602) remain
-experimental. Other/custom resolutions are unavailable for this recipe.
-Classic remains the default profile and 800x600 remains the default resolution.
-
-Inspect geometry without game execution or file writes:
+Inspect the profile without executing a game or writing candidate files:
 
 ```powershell
-python src/launcher/run.py --profile completehd --resolution 1920x1080 --describe-plan
-python src/launcher/run.py --profile completehd --list-resolutions
+python -B src/launcher/run.py --profile completehd --resolution 1920x1080 --describe-plan
+python -B src/launcher/run.py --profile completehd --list-resolutions
 ```
 
-Prepare an isolated bundle and the user-owned wrapper without starting a game:
+Prepare its candidate and available user-owned wrapper without starting a game:
 
 ```powershell
-python src/launcher/run.py --profile completehd --resolution 1920x1080 --prepare
+python -B src/launcher/run.py --profile completehd --resolution 1920x1080 --prepare
 ```
 
-The bundle lives under
-`C:/ClashTests/launcher/completehd-validation/<WxH>/`. Its `.exe`,
-`.candidate.json`, and `.cdb` bytes match the shared patcher/runtime builder.
-Existing bundle files are reused only when byte-identical; a changed recipe
-requires a new candidates root or explicit user cleanup. The deployment
-manifest additionally binds the wrapper and configuration. Preparation and
-launch verification rebuild the source-bound candidate and reject changed
-bytes, metadata, probes, or sources.
-
-The optional GUI profile uses the same backend. Play and the CLI
-`--launch --yes-launch` combination retain the existing user-initiated launch
-boundary. Packaged launchers reject this source-only profile. A prepared
-candidate is not accepted runtime evidence; the complete profile cannot be
-marked validated by a build, a partial component pass, or a deferred report.
-See [COMPLETE_HD_EVIDENCE.md](COMPLETE_HD_EVIDENCE.md) for the separate
-candidate-bound release evaluator and its currently incomplete lanes.
+The shared builder and source-bound verification are documented in
+[COMPLETE_HD_CANDIDATE.md](COMPLETE_HD_CANDIDATE.md). Existing files are reused
+only when byte-identical; changed recipes need a distinct candidates root or
+reviewed cleanup. Candidate, probe, metadata, sources and deployment identities
+must match before reuse or Play. A build or prepared bundle does not establish
+release eligibility; see [COMPLETE_HD_EVIDENCE.md](COMPLETE_HD_EVIDENCE.md).
 
 ## What It Does
 
-1. Verifies `C:\Clash\clash95.exe` against the known-good SHA-256
-   (`500055d7…cdaf3ae`). On mismatch the launcher refuses to patch and offers
-   no override; the CLI patcher's `--allow-unknown-sha` remains the only
-   deliberate escape hatch outside the launcher.
-2. Patches the stable HD stage into a launcher-owned candidate under
-   `C:\ClashTests\launcher\<WxH>\clash95_hd_<WxH>.exe`, reusing the existing
-   candidate when its SHA already matches. Every build passes a byte-manifest
-   gate (all selected patch bytes present, zero original, zero unexpected)
-   before the launcher will start it.
-3. Copies the user's DirectDraw wrapper `ddraw.dll` from `C:\Clash` next to
-   the candidate and renders `dxcfg.ini` from the tracked
-   `dxcfg_windowed.ini` template. The launcher never ships or downloads DLLs
-   or executables; if the wrapper is missing it shows instructions instead of
-   launching.
-4. Starts the candidate with `C:\Clash` as the working directory when the
-   user presses Play.
+1. Verifies the original `C:\Clash\clash95.exe` against SHA-256
+   `500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae`.
+   The launcher refuses unknown originals and offers no hash override.
+2. Selects the profile/resolution recipe and verifies the candidate bytes and
+   metadata. It creates an isolated candidate outside the repository and never
+   overwrites the original.
+3. Copies the user's `ddraw.dll` when available and renders `dxcfg.ini` from
+   [the tracked wrapper template](../../dxcfg_windowed.ini). It never downloads
+   or supplies executable game or wrapper binaries.
+4. Starts the prepared candidate with the game installation as its working
+   directory only on Play or the explicit CLI launch flags.
 
-Game resolution and window scaling are separate concepts in the UI: the game
-resolution is the true engine canvas selected by the patch stage, while
-window scaling is handled by the wrapper (`scaling=` in `dxcfg.ini`) and does
-not change game pixels. Only wrapper vocabulary verified against a real
-install is offered; until then the template value (`integer`) is used
-verbatim.
+Default output directories are separate:
+
+| Recipe | Under `C:\ClashTests\launcher\` |
+| --- | --- |
+| Classic scalar path | `<WxH>\` |
+| Classic wide-menu extension | `classic-menu-validation\<WxH>\` |
+| Framed | `framed-minimap\<WxH>\` |
+| Complete HD | `completehd-validation\<WxH>\` |
+| Modal widgets | `modalwidgets-validation\<WxH>\` |
+
+Game resolution is the engine canvas. Wrapper scaling changes window
+presentation without changing game pixels; the existing verified template uses
+`integer` scaling. Profile implementation details belong in the linked recipe
+guides.
 
 ## Resolution Status Badges
 
-`src/launcher/resolutions.json` is the committed status manifest consumed by
-both the GUI and `tools/resolution_manifest_guard.py`:
+Status is scoped to a recipe and resolution:
 
-- `stable` — the default 800x600 stage, backed by the full archived evidence
-  set. Exactly one resolution is `stable`.
-- `validated` — a resolution whose hidden-desktop CDB evidence lane passed;
-  the manifest links its run directories and smoke matrix.
-- `experimental` — offered behind a warning dialog; no runtime evidence yet.
-  Custom typed resolutions are always treated as experimental and never
-  appear in the manifest.
+- `stable`: the protected Classic 800x600 reference entry.
+- `validated`: a resolution whose required evidence lane has been accepted in
+  the registry; this is not automatic whole-release promotion.
+- `experimental`: acceptance is incomplete. There may already be source,
+  hidden or failed visible observations; the badge does not mean no tests exist.
+
+At this checkpoint the registry has no `validated` entries. Custom dimensions
+are experimental where a profile permits them. The current handoff records
+which source fixes are integrated and which candidates still lack matching
+runtime, ordinary input, continuity or release evidence.
 
 ## Runtime Policy Carve-Out
 
-The launcher is a user-facing interactive tool, not an evidence harness. Its
-visible game launch is user-initiated by definition: the process starts only
-from the GUI Play button or the CLI `--launch --yes-launch` double flag, and
-`core.launch_game` refuses anything that does not pass `confirmed=True` from
-those paths. The launcher is never part of the evidence refresh; evidence
-lanes remain hidden-desktop CDB only. It writes only under
-`C:\ClashTests\launcher\` and `%LOCALAPPDATA%\ClashHD\`, and it never
-modifies `C:\Clash\clash95.exe`. `tools/launcher_policy_guard.py` enforces
-all of this from source.
+The launcher is a user-facing tool. Its explicit Play action or
+`--launch --yes-launch` combination is the documented launch boundary.
+`tools/launcher_policy_guard.py` checks that policy from source. Creating a
+launcher plan is not runtime authorization, and a normal launch is not an
+evidence capture. Automated runtime and manual/visible validation follow
+[AGENTS.md](../../AGENTS.md) and their own protocol guides.
 
 ## Per-Resolution Evidence Lanes
 
-Preset resolutions stay `experimental` until their hidden-desktop evidence
-lane passes and `src/launcher/resolutions.json` flips them to `validated`.
-The lane per preset (1024x768 first — smallest offsets, cheapest discriminator
-for the partial right column — then the 1920x1080 flagship):
+Keep each lane bound to the selected stage, recipe, resolution, exact candidate
+and source revision. Follow [the current handoff](AGENT_HANDOFF.md) and the
+[owning protocol guide](README.md#evidence-and-release-work) before executing a
+lane. Historical Classic 800x600 observations cannot validate Framed, Complete
+HD, Modal widgets or expanded battle by implication.
 
-1. Build the candidate: `python patch_clash95_hd.py --input
-   C:\Clash\clash95.exe --output C:\ClashTests\launcher\<WxH>\clash95_hd_<WxH>.exe
-   --resolution <WxH>` and gate it with `python tools/patch_stage_report.py
-   --exe <candidate> --stage <stable stage> --resolution <WxH>
-   --require-current-hd-map` (the gate's tile expectation derives from the
-   resolution profile).
-2. Hidden-desktop CDB normal run. The surface-dump probe already sizes the
-   dump from the live surface header (`SURFDUMP_READY` computes
-   width*height and `.writemem` uses that length), so a normal run needs no
-   probe edits; `scripts/cdb/run_cdb_surface_dump.ps1` still needs a
-   `-Resolution` parameter threaded into its internal patcher call before it
-   can build non-800x600 candidates itself, and the forced-visible-edge
-   sampling rows hardcode an 800-byte stride that must be parameterized
-   before forced runs are meaningful at other sizes.
-3. Audit/extend the dump consumers for the new cell grid before gating:
-   `tools/cdb_surface_dump_to_png.py` dimensions and the
-   `tools/map_tile_coverage.py` minimap region must derive from the
-   resolution profile.
-4. Gate with `python tools/hd_map_smoke_matrix.py --resolution <WxH>
-   --normal-run <run> --forced-run <run> --require-pass --write-json
-   captures/current/hd-map-smoke-<WxH>-current.json` (non-default
-   resolutions refuse the archived 800x600 default runs).
-5. Flip the manifest entry to `validated` with the evidence paths;
-   `tools/resolution_manifest_guard.py` verifies the runs are hidden-desktop
-   and the matrix passes. `stable` stays exclusive to 800x600.
-
-Run evidence lanes only when no other Clash95/CDB session is active on the
-machine — concurrent manual or visible sessions make process-hygiene
-snapshots ambiguous.
+Promotion requires the actual prescribed evidence and an explicit decision.
+Do not flip a registry badge after only a successful build, a source fixture or
+an unrelated archived smoke result. Review report provenance and missing local
+artifacts before planning a new run.
 
 ## User State
 
-Settings (last resolution, scaling mode, paths, window geometry) persist in
-`%LOCALAPPDATA%\ClashHD\settings.json`; a PID lock file in the same folder
-prevents concurrent launcher instances. `C:\ClashTests\launcher\` holds only
-regenerable candidates and can be deleted at any time (the GUI's "Clean
-candidates" button removes the selected resolution's folder).
+Settings persist in `%LOCALAPPDATA%\ClashHD\settings.json`; a PID lock file in
+the same folder prevents concurrent launcher instances. The GUI offers folder
+selection and selected-candidate cleanup with confirmation.
+
+Before cleanup, check for active users and whether exact candidates, metadata or
+source snapshots are still referenced by retained evidence. A directory holding
+regenerable executables can also contain provenance needed for replay; its name
+alone does not make it disposable. Follow [the disk and artifact policy](../../AGENTS.md).
+
+## Local launcher packaging
+
+The [packaging helper](../../scripts/launcher/build_launcher_exe.ps1) prints a
+dry-run plan by default:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\launcher\build_launcher_exe.ps1 -Python C:\path\to\python.exe
+```
+
+After installing PyInstaller in the selected Python environment, add `-Execute`
+to build locally. Outputs default to `C:\ClashTests\launcher\build`; the helper
+refuses a repository output directory. Do not commit the generated executable.
+The packaged launcher exposes Classic only; experimental source recipes and
+wide-menu source composition require their complete checkout. Building a
+launcher package does not certify gameplay or release acceptance.
