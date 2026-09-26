@@ -181,8 +181,9 @@ def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, st
     """Decode strict planner state and a separate source-byte consistency receipt.
 
     stack_indices is None (all 500) or a nonempty list/tuple of unique native
-    indices. Relevant neighboring occupants are added automatically without
-    recursively expanding their neighborhoods. Every native range is reread.
+    indices. The selected stack is always measured. Relevant neighboring
+    occupants are added without recursively expanding their neighborhoods.
+    Every native range is reread.
     check_lease must synchronously return None only while this lease is paused;
     it is checked before any reads, between passes, and after final comparison.
     No elapsed-time or process-authentication guarantee is provided here.
@@ -242,9 +243,9 @@ def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, st
             minimap=dict(zip(('left', 'top', 'width', 'height'), unpack('4H', mini))),
             port=dict(zip(('x', 'y'), unpack('2i', port))),
             stacks=[], tiles=[], unit_profiles=[])
-        # Validate owners, native pointer bounds and player/world dimensions
-        # before any larger state reads.
-        planner.inspect(snapshot, candidate)
+        # Bound native pointers, owner fields and player/world dimensions
+        # before larger reads. Selection ownership still needs measured slots.
+        planner.inspect_header(snapshot, candidate)
         width, height = snapshot['world']['width'], snapshot['world']['height']
         stacks, raw_stacks, empty = {}, {}, set()
         def load_stacks(indices):
@@ -260,7 +261,9 @@ def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, st
                         empty.add(index)
                     else:
                         stacks[index] = stack
-        load_stacks(requested)
+        selected_indices = {selected} if selected != -1 else set()
+        added_selected = sorted(selected_indices-set(requested))
+        load_stacks(set(requested) | selected_indices)
         snapshot['stacks'] = [stacks[i] for i in sorted(stacks)]
         planner.inspect(snapshot, candidate)
         for stack in stacks.values():
@@ -291,7 +294,7 @@ def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, st
             integer(occupant, 0, STACK_COUNT-1, 'measured neighboring occupant')
             require(occupant not in occupied, 'same army index occupies multiple measured tiles')
             occupied[occupant] = (x, y)
-        added = sorted(set(occupied)-set(requested))
+        added = sorted(set(occupied)-set(requested)-selected_indices)
         load_stacks(occupied)
         for index, xy in occupied.items():
             require(index in stacks, 'occupied tile points to a native empty army record')
@@ -314,7 +317,8 @@ def observe(read_exact, *, candidate, identity, sequence, lease, check_lease, st
             read_set=manifest, read_set_sha256=planner.digest(manifest),
             complete_read_passes=2, additional_anchor_passes=2,
             read_calls=reads.calls, unique_read_bytes=reads.unique_bytes, total_read_bytes=reads.total_bytes,
-            requested_stack_indices=requested, added_occupant_indices=added,
+            requested_stack_indices=requested, added_selected_indices=added_selected,
+            added_occupant_indices=added,
             empty_stack_indices=sorted(empty), measured_stack_indices=sorted(stacks),
             authentication_scope='candidate/process identity and live pause supplied by caller/host; dictionaries and digests do not authenticate them',
             proof_scope='consistent bounded supplied memory reads; no input, native callback, rendering or lifecycle proof')

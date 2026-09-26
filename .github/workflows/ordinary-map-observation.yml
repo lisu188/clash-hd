@@ -52,6 +52,12 @@ jobs:
           python -B tools/test_ordinary_map_pause_client.py -v
           python -B tools/test_ordinary_map_pause_engine.py ReportTests -v
           python -B tools/test_ordinary_map_observation_session.py -v
+          python -B tools/test_ordinary_map_startup.py -v
+          python -B tools/test_ordinary_map_phase_host.py -v
+          python -B tools/test_ordinary_map_phase_client.py -v
+          python -B tools/test_owned_hidden_process.py -v
+          python -B tools/test_owned_hidden_process_engine.py
+          python -B tools/test_resolution_playability.py -v
           python -B tools/test_menu_pulse_delivery.py -v
           python -B tools/test_runner_cursor_feedback.py -v
 
@@ -128,10 +134,17 @@ jobs:
           "@ | Set-Content -Encoding ascii $batch
           & cmd.exe /d /c $batch
           if ($LASTEXITCODE -ne 0) { throw 'Synthetic debugger pause-lease fixtures failed or were skipped.' }
+      - name: Verify private desktop and descendant job cleanup with a synthetic process
+        shell: pwsh
+        run: |
+          python -B tools/test_owned_hidden_process_engine.py --execute --scratch "C:/ClashTests/owned-process-${{ github.run_id }}-${{ github.run_attempt }}" --report reports/owned-process-ci.json
+          if ($LASTEXITCODE -ne 0) { throw 'Synthetic private-desktop process fixture failed.' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: ordinary-map-pause-engine-report
-          path: ${{ runner.temp }}/ordinary-map-pause-engine-report.json
+          path: |
+            ${{ runner.temp }}/ordinary-map-pause-engine-report.json
+            reports/owned-process-ci.json
           retention-days: 7
           if-no-files-found: error

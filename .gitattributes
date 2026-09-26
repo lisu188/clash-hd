@@ -926,3 +926,14 @@
 /reports/ordinary-map-pause-engine-20260926-a.json -text whitespace=cr-at-eol
 /reports/ordinary-map-pause-engine-20260926-b.json -text whitespace=cr-at-eol
 /reports/ordinary-map-pause-engine-20260926-c.json -text whitespace=cr-at-eol
+/tools/ordinary_map_startup.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_startup.py -text whitespace=cr-at-eol
+/tools/ordinary_map_phase_host.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_phase_host.py -text whitespace=cr-at-eol
+/tools/ordinary_map_phase_client.py -text whitespace=cr-at-eol
+/tools/test_ordinary_map_phase_client.py -text whitespace=cr-at-eol
+/tools/owned_hidden_process.py -text whitespace=cr-at-eol
+/tools/test_owned_hidden_process.py -text whitespace=cr-at-eol
+/tools/test_owned_hidden_process_engine.py -text whitespace=cr-at-eol
+/reports/owned-hidden-process-engine-20260926-a.json -text whitespace=cr-at-eol
+/reports/ordinary-map-driver-20260926.json -text whitespace=cr-at-eol
