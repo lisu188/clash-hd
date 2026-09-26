@@ -1,0 +1,50 @@
+{
+  "schema": "clash95_ordinary_castle_source_verification_v1",
+  "date": "2026-09-26",
+  "evidence_class": "source_and_original_backed_byte_checks",
+  "runtime_executed": false,
+  "source_hashes": {
+    "src/patcher/ordinary_castle_entry.py": "f8406a7f5b1ede8aa6fa56580f6e7cb178ccedb22d3f241b23e373cb7b83594b",
+    "tools/build_ordinary_castle_entry_candidate.py": "b08fef80bbff1e462ba2839c55acf7e32333e0791ad50b3702b8a37d6e346188",
+    "tools/test_ordinary_castle_entry.py": "99a10f6ddb9e0889fe31c8b4f2cb54e33850137287c61fb0fd572cff4b01df2a",
+    "reports/ordinary-castle-entry-baseline-20260924.json": "10cb56e6851ce17b7ff3e2750608baa053105fe2de723d7ae612ccbd4a854480"
+  },
+  "original_sha256": "500055d77d03d514e8d3168506bd10f67cd8569bcc450604ff8192f46cdaf3ae",
+  "command": "python -B tools/test_ordinary_castle_entry.py --source-exe C:/Clash/clash95.exe -v",
+  "result": {
+    "exit_code": 0,
+    "tests_run": 15,
+    "elapsed_seconds": 201.189,
+    "passed_methods": 9,
+    "machine_test_methods_not_executed": 6,
+    "unittest_skipped_entries": 31,
+    "skip_reason": "Unicorn unavailable after local tool output removal",
+    "full_machine_suite_passed": false
+  },
+  "portable_source_tests": {
+    "independent_review_passed": 5,
+    "total": 5
+  },
+  "documentation": {
+    "handoff_fixtures_passed": true,
+    "consistency_fixtures_passed": true,
+    "handoff_current_guard_passed": true,
+    "consistency_current_guard_passed": true
+  },
+  "local_evidence": {
+    "user_confirmed_removal": true,
+    "checked_roots": {
+      "C:/ClashTests": false,
+      "C:/ClashCaptures": false
+    },
+    "historical_baseline_manifest": "reports/ordinary-castle-entry-baseline-20260924.json",
+    "raw_evidence_reverified": false,
+    "successor_runtime_pass_claimed": false
+  },
+  "limitations": [
+    "The native CPU cases were skipped; the prior full-machine result is not a fresh result.",
+    "This exact successor supports 1024x768 only and is not integrated into the launcher.",
+    "Normal input, coherent rendering, normal exit/free restoration, all interiors, other resolutions and final wrapper composition require matching evidence.",
+    "Protected stable stage and promotion status are unchanged."
+  ]
+}
